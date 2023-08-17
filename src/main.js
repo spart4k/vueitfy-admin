@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "@mdi/font/css/materialdesignicons.css";
+import "@/assets/styles/main.scss"
 
 Vue.config.productionTip = false;
 
