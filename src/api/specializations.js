@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import store from '../store';
 export default class Specializations {
   constructor(url) {
@@ -13,7 +13,7 @@ export default class Specializations {
         store.commit('alert/show', { type: 'warning', content: `В данный момент специализайций нет` })
         return [];
       }
-  
+
       return data
     } catch(error) {
       console.log(error)
@@ -54,7 +54,7 @@ export default class Specializations {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
 
   }
 
@@ -74,7 +74,7 @@ export default class Specializations {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
 
   async delete(id) {
@@ -86,6 +86,6 @@ export default class Specializations {
       const errorText = error.message
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
 }

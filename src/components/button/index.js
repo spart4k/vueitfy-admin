@@ -15,7 +15,7 @@ const button = {
         domProps: {
           innerHTML: this.backgroundImage ?
           `
-            <img src="${this.backgroundImage}"></img>
+            <img src='${this.backgroundImage}'></img>
             <p>${this.option.label}</p>
           ` : `<p>${this.option.label}</p>`
         },

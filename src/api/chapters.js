@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import store from '../store';
 
 export default class Chapters {
@@ -38,7 +38,7 @@ export default class Chapters {
         console.log(chapter)
         try {
             const {data} = await axios.post(`users/api/admin/chapter`, chapter, {
-                headers: {"Content-Type": "multipart/form-data"},
+                headers: {'Content-Type': 'multipart/form-data'},
             })
             const newChapter = data
             store.commit('alert/show', {
@@ -74,7 +74,7 @@ export default class Chapters {
         try {
             const {data} = await axios.put(`users/api/admin/chapter/${id}`, chapter, {
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    'Content-Type': 'multipart/form-data'
                 },
 
             })

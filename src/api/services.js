@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import store from '../store';
 
 export default class Cities {
@@ -10,9 +10,9 @@ export default class Cities {
         console.log(this.url);
         try {
             const data = await axios.post(`users/api/getFirstNGenerationsOfChildren`, {
-                "n": 4,
-                "conditions": {
-                    "floor": 0,
+                'n': 4,
+                'conditions': {
+                    'floor': 0,
                 }
             }).then((response) => {
                 return response.data;
@@ -60,7 +60,7 @@ export default class Cities {
 
     async update(id, service) {
         const {data} = await axios.put(`users/api/admin/service/${id}`, service, {
-            headers: {"Content-Type": "multipart/form-data"},
+            headers: {'Content-Type': 'multipart/form-data'},
         })
         console.log(data)
         const newService = data

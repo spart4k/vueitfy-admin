@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import store from '../store';
 export default class Clients {
   constructor(url) {
@@ -8,17 +8,17 @@ export default class Clients {
   async get() {
     try {
       const { data } = await axios.post(`users/api/admin/getProfileMasters`, {
-        "email": "",
-        "phone": "",
-        "page": 1,
-        "count": 99999
+        'email': '',
+        'phone': '',
+        'page': 1,
+        'count': 99999
       })
       console.log(data)
       if (!data || data.length === 0) {
         store.commit('alert/show', { type: 'warning', content: `В данный момент городов нет` })
         return [];
       }
-  
+
       return data
     } catch(error) {
       console.log(error)
@@ -41,7 +41,7 @@ export default class Clients {
       if (!newCity) {
         return null;
       }
-  
+
       return {
         id: newCity.id,
         name: newCity.name,
@@ -58,7 +58,7 @@ export default class Clients {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
 
   }
 
@@ -83,9 +83,9 @@ export default class Clients {
       // }
       // store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
-  
+
   async editCourseMaster(requestData, id) {
     try {
       const { data } = await axios.patch(`users/api/admin/editCourseMaster?course_id=${id}`, requestData)
@@ -102,9 +102,9 @@ export default class Clients {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
-  } 
-  
+
+  }
+
   async editDiplomMaster(requestData, id) {
     try {
       const { data } = await axios.patch(`users/api/admin/editDiplomMaster?diplom_id=${id}`, requestData)
@@ -157,7 +157,7 @@ export default class Clients {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
 
   async delCourseMaster(id) {
@@ -203,7 +203,7 @@ export default class Clients {
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
   }
-  
+
   async getSpecializations() {
     try {
       const { data } = await axios.get(`users/api/admin/getSpecializations`)
@@ -211,7 +211,7 @@ export default class Clients {
         store.commit('alert/show', { type: 'warning', content: `В данный момент специализайций нет` })
         return [];
       }
-  
+
       return data
     } catch(error) {
       console.log(error)

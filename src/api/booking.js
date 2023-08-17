@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import store from '../store';
 export default class Booking {
   constructor(url) {
@@ -13,7 +13,7 @@ export default class Booking {
         store.commit('alert/show', { type: 'warning', content: `В данный момент городов нет` })
         return [];
       }
-  
+
       return data.appointmentUser
     } catch(error) {
       console.log(error)
@@ -45,7 +45,7 @@ export default class Booking {
       if (!newCity) {
         return null;
       }
-  
+
       return {
         id: newCity.id,
         name: newCity.name,
@@ -62,7 +62,7 @@ export default class Booking {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
 
   }
 
@@ -83,7 +83,7 @@ export default class Booking {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
 
   async delete(id) {
@@ -95,6 +95,6 @@ export default class Booking {
       const errorText = error.message
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
 }

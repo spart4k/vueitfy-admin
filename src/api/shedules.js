@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import store from '../store';
 export default class Shedules {
   constructor(url) {
@@ -84,7 +84,7 @@ export default class Shedules {
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
   }
-    
+
   async create(city) {
     console.log(city)
     try {
@@ -94,7 +94,7 @@ export default class Shedules {
       if (!newCity) {
         return null;
       }
-  
+
       return {
         id: newCity.id,
         name: newCity.name,
@@ -174,7 +174,7 @@ export default class Shedules {
       }
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
 
   async delete(city) {
@@ -186,6 +186,6 @@ export default class Shedules {
       const errorText = error.message
       store.commit('alert/show', { type: 'error', content: `Ошибка: ${errorText}` })
     }
-    
+
   }
 }

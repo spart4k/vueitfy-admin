@@ -15,7 +15,7 @@ const tableButton = {
         domProps: {
           innerHTML: this.backgroundImage ?
           `
-            <img src="${this.backgroundImage}"></img>
+            <img src='${this.backgroundImage}'></img>
           ` : ''
         },
         on: {

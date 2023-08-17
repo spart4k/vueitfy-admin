@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import store from '../store';
 
 export default class Clients {
@@ -9,10 +9,10 @@ export default class Clients {
     async get() {
         try {
             const {data} = await axios.post(`users/api/admin/getProfileClient`, {
-                "email": "",
-                "phone": "string",
-                "page": 1,
-                "count": 99999
+                'email': '',
+                'phone': 'string',
+                'page': 1,
+                'count': 99999
             })
             console.log(data)
             if (!data || data.length === 0) {
