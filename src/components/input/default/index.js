@@ -1,34 +1,29 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
 
-import template from './template.js'
-
 const inputDefault = {
   name: 'v-input-default',
-  components: {
-
-  },
+  components: {},
   props: {
     value: {
       type: String,
-      default: ''
+      default: '',
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '',
     },
     type: {
       type: String,
-      default: ''
+      default: '',
     },
     clearing: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     valuePass() {
@@ -36,13 +31,10 @@ const inputDefault = {
     },
     clearField() {
       this.$emit('clearfield')
-    }
+    },
   },
-  computed: {
-  },
-  mounted() {
-  },
-  template
+  computed: {},
+  mounted() {},
 }
 
 export default inputDefault

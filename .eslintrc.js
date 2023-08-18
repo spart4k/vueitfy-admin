@@ -11,7 +11,7 @@ module.exports = {
   parserOptions: {
     parser: '@babel/eslint-parser',
   },
-  plugins : ['prettier'],
+  plugins: ['prettier'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -20,10 +20,10 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        'endOfLine': 'auto',
-        'semi': false,
-        'singleQuote': true
-      }
-    ]
+        endOfLine: 'auto',
+        semi: false,
+        singleQuote: true,
+      },
+    ],
   },
-};
+}

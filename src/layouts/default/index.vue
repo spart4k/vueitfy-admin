@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Nav/>
+    <!--<Nav />-->
     <v-main>
       <slot></slot>
-      <Alert/>
+      <!--<Alert />-->
     </v-main>
   </div>
 </template>
-<style lang='scss' module scoped src='./style.scss'></style>
-<script src='./script.js'></script>
+<style lang="scss" module scoped src="./style.scss"></style>
+<script src="./script.js"></script>
