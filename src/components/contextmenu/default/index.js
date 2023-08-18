@@ -1,22 +1,17 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
 
-import template from './template.js'
-
 export default {
   name: 'v-contextmenu',
-  components: {
-
-  },
+  components: {},
   props: {
     options: {
       type: Object,
-      defualt: () => {}
+      defualt: () => {},
     },
   },
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     handlerOutside(e) {
@@ -29,26 +24,23 @@ export default {
         console.log('close')
         this.options.isShow = false
       }
-    }
+    },
   },
-  computed: {
-  },
+  computed: {},
   watch: {
-    'options.isShow': function(newVal) {
-        console.log(newVal)
-        if (newVal) {
-          document.addEventListener('click', this.handlerOutside)
-        } else {
-          document.removeEventListener('click', this.handlerOutside)
-        }
-    }
+    'options.isShow': function (newVal) {
+      console.log(newVal)
+      if (newVal) {
+        document.addEventListener('click', this.handlerOutside)
+      } else {
+        document.removeEventListener('click', this.handlerOutside)
+      }
+    },
   },
   mounted() {
     console.log(this.$el)
     console.log('this')
-
   },
-  template
 }
 
 // Vue.component('message', message)

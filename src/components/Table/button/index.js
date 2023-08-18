@@ -1,26 +1,25 @@
 const tableButton = {
   render: function (createElement) {
     return createElement(
-      "button", // имя тега
+      'button', // имя тега
       {
-        attrs: {
-        },
+        attrs: {},
         class: {
-          "v-table-button": true
+          'v-table-button': true,
         },
         style: {
           //backgroundImage: this.option.urlIcon ? this.backgroundImage : '',
-          color: "red"
+          color: 'red',
         },
         domProps: {
-          innerHTML: this.backgroundImage ?
-          `<img src="${this.backgroundImage}"></img>` : ''
+          innerHTML: this.backgroundImage
+            ? `<img src='${this.backgroundImage}'></img>`
+            : '',
         },
         on: {
-          click: this.buttonClick
+          click: this.buttonClick,
         },
-
-      },
+      }
     )
   },
   props: {
@@ -31,23 +30,21 @@ const tableButton = {
     row: {
       type: Object,
       default: () => {},
-    }
+    },
   },
   computed: {
     backgroundImage() {
       if (this.option.urlIcon) {
-        return this.option.urlIcon;
+        return this.option.urlIcon
       }
-    }
+    },
   },
   methods: {
     buttonClick() {
       event.stopPropagation()
       this.option.function(this.row)
-    }
+    },
   },
-  mounted() {
-
-  }
+  mounted() {},
 }
 export default tableButton

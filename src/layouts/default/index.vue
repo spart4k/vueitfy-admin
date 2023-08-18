@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Nav/>
+    <!--<Nav />-->
     <v-main>
       <slot></slot>
-      <Alert/>
+      <!--<Alert />-->
     </v-main>
   </div>
 </template>
