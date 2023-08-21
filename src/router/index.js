@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import TableView from '../views/DefaultTable.vue'
 import TestView from '@/views/TestView'
+import Navbar from '@/views/Navbar'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,14 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: TestView,
+  },
+  {
+    path: '/navbar',
+    name: 'navbar',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: Navbar,
   },
 ]
 
