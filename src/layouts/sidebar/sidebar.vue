@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-card class="mx-auto" width="300">
     <v-list>
       <v-list-item link>
@@ -46,9 +46,9 @@
       </v-list-group>
     </v-list>
   </v-card>
-</template>
+</template> -->
 
-<!-- <template>
+<template>
   <v-expansion-panels v-model="panel" multiple>
     <v-expansion-panel v-for="item in dataNavbar" :key="item.id">
       <v-expansion-panel-header>
@@ -62,7 +62,7 @@
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
-</template> -->
+</template>
 
 <script src="./setup.js"></script>
 <style src="./style.scss" lang="scss"></style>
