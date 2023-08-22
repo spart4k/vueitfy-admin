@@ -1,11 +1,11 @@
-//import Nav from '@/components/Nav/default'
+import Nav from '@/layouts/sidebar/sidebar.vue'
 //import Alert from '@/components/Alert'
 
 export default {
   name: 'Layout',
   components: {
     //Alert,
-    //Nav,
+    Nav,
   },
   data() {
     return {
