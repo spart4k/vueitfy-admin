@@ -5,8 +5,10 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/styles/main.scss'
+import PortalVue from 'portal-vue'
 
 Vue.config.productionTip = false
+Vue.use(PortalVue)
 
 new Vue({
   router,

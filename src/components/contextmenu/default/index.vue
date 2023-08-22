@@ -3,8 +3,8 @@
     <div
       :class="options.isShow ? 'v-contextmenu--show' : 'v-contextmenu--hide'"
       :style="{
-        top: options.y,
-        [options.direction]: options.x,
+        top: options.y + 'px',
+        [options.direction]: options.x + 'px',
       }"
       class="v-contextmenu"
     >
@@ -22,4 +22,4 @@
   </transition>
 </template>
 
-<script src="./index.js"></script>
+<script src="./setup.js"></script>

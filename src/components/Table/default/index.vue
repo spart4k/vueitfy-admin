@@ -12,13 +12,19 @@
         />
       </div>
       <div class="v-table-panel__search">
-        <v-input
+        <!--<v-input
           @clearfield="clearField('searchField')"
           clearing
           type="search"
           placeholder="Поиск"
           v-model="searchField"
-        />
+        />-->
+        <v-text-field
+          label="Поиск"
+          hide-details="auto"
+          v-model="searchField"
+        ></v-text-field>
+        <v-btn class="ml-2" elevation="2">Фильтры</v-btn>
       </div>
     </div>
     <table id="mainTable" ref="mainTable" class="v-table-wrap">
@@ -27,14 +33,28 @@
         class="v-table-header"
       >
         <tr class="v-table-header-row">
-          <th align="center" v-if="options.options.selecting" width="5%">
+          <th
+            :class="[
+              headerOptions.some((el) => el.fixed.value)
+                ? 'v-table-header-row-cell--fixed'
+                : '',
+            ]"
+            align="center"
+            v-if="options.options.selecting"
+            width="5%"
+          >
             <!--s-->
           </th>
           <th
-            :style="{ left: getWidth(head.value) }"
             :align="head.align"
-            :class="head.fixed ? 'v-table-header-row-cell--fixed' : ''"
-            v-show="true"
+            :class="[
+              head.fixed.value ? 'v-table-header-row-cell--fixed' : '',
+              head.class,
+            ]"
+            :style="{
+              width: head.width,
+            }"
+            v-show="head.isShow"
             :id="head.value + '-table-header'"
             :width="head.width"
             class="v-table-header-row-cell"
@@ -91,7 +111,7 @@
         <template v-for="(row, indexRow) in options.data.rows">
           <tr
             :key="indexRow"
-            :class="row.row.selected ? 'v-table-body-row--selected' : ''"
+            :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
             @contextmenu="openContext($event, row)"
             @click="openChildRow($event, row)"
             class="v-table-body-row"
@@ -101,6 +121,12 @@
               align="center"
               v-if="options.options.selecting"
               width="5%"
+              :class="[
+                headerOptions.some((el) => el.fixed.value)
+                  ? 'v-table-body-row-cell--fixed'
+                  : '',
+                `v-table-body-row__checkbox`,
+              ]"
             >
               <div @click.stop class="v-table-checkbox">
                 <label>
@@ -117,12 +143,10 @@
             </td>
             <td
               :style="{
-                left: getWidth(
-                  cell.value,
-                  cell.value + '-table-cell' + '_id' + row.row.id
-                ),
+                ...getFixedStyle(cell),
+                width: cell.width,
               }"
-              :class="cell.fixed ? 'v-table-body-row-cell--fixed' : ''"
+              :class="cell.fixed.value ? 'v-table-body-row-cell--fixed' : ''"
               :id="cell.value + '-table-cell' + '_id' + row.row.id"
               :align="cell.align"
               class="v-table-body-row-cell v-table-actions"
@@ -271,9 +295,13 @@
       </div>
     </div>
     <v-contextmenu :options="contextmenu" />
+    <portal to="filter" v-if="true">
+      <Sheet>
+        <div class="">dasd</div>
+      </Sheet>
+    </portal>
   </div>
 </template>
 
-<script src="./index.js"></script>
-
+<script src="./setup.js"></script>
 <style lang="scss" scoped src="./style.scss"></style>

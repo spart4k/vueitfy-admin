@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
+import CustomIcons from '@/components/icons/index'
+
 Vue.use(Vuetify)
 
 export default new Vuetify({
@@ -16,6 +18,11 @@ export default new Vuetify({
         success: '#4CAF50',
         warning: '#FFC107',
       },
+    },
+  },
+  icons: {
+    values: {
+      ...CustomIcons,
     },
   },
 })

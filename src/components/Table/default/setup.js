@@ -7,6 +7,7 @@ import vButton from '../../button/index.js'
 import vInput from '../../input/default/index.js'
 import vIconSort from '../../icons/sort/index.js'
 import vContextmenu from '@/components/contextmenu/default/index.vue'
+import Sheet from '@/components/right-sheet/default/index.vue'
 
 const table = {
   name: 'Table',
@@ -16,6 +17,7 @@ const table = {
     vInput,
     vIconSort,
     vContextmenu,
+    Sheet,
   },
   props: {
     options: {
@@ -184,10 +186,29 @@ const table = {
     getWidth(value) {
       if (!value || !this.headerOptions.length) return
       const element = this.headerOptions.find((el) => el.id === value)
-      return element.x + 'px'
+      return element.x
     },
     setStickyCells() {
       this.headerOptions()
+    },
+    getFixedStyle(head) {
+      console.log(head)
+      const { width } = this.headerOptions.find((el) => el.id === head.value)
+      console.log(width)
+      if (head.fixed.value && head.fixed.position) {
+        console.log({ [head.fixed.position]: this.getWidth(head.value) })
+        //if (head.fixed.position === 'right') {
+
+        //}
+        return {
+          [head.fixed.position]:
+            head.fixed.position === 'right'
+              ? window.innerWidth - this.getWidth(head.value) - width * 2 + 'px'
+              : this.getWidth(head.value) + 'px',
+        }
+      } else {
+        return undefined
+      }
     },
   },
   computed: {
