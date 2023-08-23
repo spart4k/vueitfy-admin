@@ -52,9 +52,7 @@
   <v-expansion-panels v-model="panel" multiple>
     <v-expansion-panel v-for="item in dataNavbar" :key="item.id">
       <v-expansion-panel-header>
-        <v-icon>
-          {{ item.icon }}
-        </v-icon>
+        <v-icon>$IconAdd</v-icon>
         {{ item.name }}
       </v-expansion-panel-header>
       <v-expansion-panel-content v-for="item in item.navlink" :key="item.id">
