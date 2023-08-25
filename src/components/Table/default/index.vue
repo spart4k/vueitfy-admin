@@ -297,7 +297,7 @@
     <v-contextmenu :options="contextmenu" />
     <portal to="filter" v-if="true">
       <Sheet>
-        <div class="">dasd</div>
+        <TableFilter :filtersConfig="filtersConfig"></TableFilter>
       </Sheet>
     </portal>
   </div>

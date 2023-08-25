@@ -1,0 +1,17 @@
+.sheet {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: $overlay;
+  z-index: $overlayZIndex;
+  display: flex;
+  justify-content: flex-end;
+  &-body {
+    background-color: $table-background;
+    height: 100%;
+    width: $sheetWidth;
+    // padding: 10px;
+  }
+}

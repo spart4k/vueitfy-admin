@@ -1,12 +1,15 @@
 $fontSizeTest: 50px;
 
-// основные переменные 
+// основные переменные
 $offcanvas-width: 220px; // отступ рабочей зоны при открытом  sidebar
 $topNavbarHeight: 41px; //высота отступа сверху
 $offcanvas-help-width: 400px; // пока хз что это
 $gap-cells-page: 20px;
 $gap-ui-elements: 15px;
 $offcanvas-width-roll-up: 40px;
+$overlay: rgba(0,0,0,0.3);
+$overlayZIndex: 100;
+$sheetWidth: 420px;
 
 //светлая версия
 // цвета
@@ -81,12 +84,12 @@ $dark-con: #E15992;
       height: 10px;
       width: 2px;
     }
-  
+
     &::-webkit-scrollbar-thumb {
       background: #727272;
       border-radius: 10px;
     }
-  
+
     &::-webkit-scrollbar-track {
       border-radius: 10px;
     }
@@ -113,7 +116,7 @@ color: $gray;
 transition: .6s all ease;
 }
 
-//классы для текстов 
+//классы для текстов
 
 .text_medium_13_darkblue{
     font-size: 13px;
@@ -144,7 +147,7 @@ transition: .6s all ease;
 
 
 
-// высота контента для внтурянки 
+// высота контента для внтурянки
 
 .header__conteiner-fluid {
     width: 100%;
@@ -156,7 +159,7 @@ transition: .6s all ease;
     height: calc(100vh - 50px);
 }
 
-// кнопка стандартная синяя 
+// кнопка стандартная синяя
 
 .default-access-btn {
     display: inline-flex;
@@ -226,11 +229,11 @@ transition: .6s all ease;
 		span {
             background-color: $accent-blue;
 			&:first-of-type {
-               
+
 				transform: rotate(-45deg);
 			}
 			&:last-of-type {
-               
+
 				transform: rotate(45deg);
 			}
 		}

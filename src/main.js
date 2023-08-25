@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import axios from 'axios'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.css'
@@ -14,5 +15,6 @@ new Vue({
   router,
   store,
   vuetify,
+  axios,
   render: (h) => h(App),
 }).$mount('#app')

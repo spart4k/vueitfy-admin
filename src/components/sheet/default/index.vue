@@ -1,7 +1,9 @@
 <template>
   <div class="sheet">
     <div class="sheet-body">
-      <slot></slot>
+      <v-container fluid>
+        <slot></slot>
+      </v-container>
     </div>
   </div>
 </template>

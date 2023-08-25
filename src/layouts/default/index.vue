@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Nav></Nav>
+    <!--<Nav></Nav>-->
     <v-main>
       <slot></slot>
       <!--<Alert />-->

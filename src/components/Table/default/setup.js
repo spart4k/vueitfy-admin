@@ -7,7 +7,8 @@ import vButton from '../../button/index.js'
 import vInput from '../../input/default/index.js'
 import vIconSort from '../../icons/sort/index.js'
 import vContextmenu from '@/components/contextmenu/default/index.vue'
-import Sheet from '@/components/right-sheet/default/index.vue'
+import Sheet from '@/components/sheet/default/index.vue'
+import TableFilter from '../filter/index.vue'
 
 const table = {
   name: 'Table',
@@ -18,11 +19,17 @@ const table = {
     vIconSort,
     vContextmenu,
     Sheet,
+    TableFilter,
   },
   props: {
     options: {
       type: Object,
       default: () => {},
+      require: true,
+    },
+    filtersConfig: {
+      type: Array,
+      default: () => [],
     },
   },
   data() {
@@ -61,7 +68,7 @@ const table = {
           x + width + this.tablePosition >= window.innerWidth &&
           headerEl.isShow
         ) {
-          console.log(width, x, window.innerWidth)
+          //console.log(width, x, window.innerWidth)
           this.$emit('changeheadershow', { headerEl, value: false })
         } else if (
           x + width + this.tablePosition <= window.innerWidth &&
@@ -83,8 +90,8 @@ const table = {
       }
     },
     checkboxInput(row, indexRow) {
-      console.log(row, indexRow)
-      console.log('checkbox')
+      //console.log(row, indexRow)
+      //console.log('checkbox')
       let delta = null
       if (indexRow > this.lastSelected.indexRow) {
         delta = indexRow - this.lastSelected.indexRow
@@ -94,8 +101,8 @@ const table = {
           i < this.lastSelected.indexRow + delta;
           i++
         ) {
-          console.log(i)
-          console.log(this.options.data.rows[i].row)
+          //console.log(i)
+          //console.log(this.options.data.rows[i].row)
           if (!this.options.data.rows[i].row.selected) {
             this.options.data.rows[i].row.selected = true
           } else {
@@ -105,15 +112,15 @@ const table = {
           }
         }
       } else {
-        console.log('down')
+        //console.log('down')
         delta = this.lastSelected.indexRow - indexRow
         for (
           let i = this.lastSelected.indexRow;
           i > this.lastSelected.indexRow - delta;
           i--
         ) {
-          console.log(i)
-          console.log(this.options.data.rows[i].row)
+          //console.log(i)
+          //console.log(this.options.data.rows[i].row)
           if (!this.options.data.rows[i].row.selected) {
             this.options.data.rows[i].row.selected = true
           } else {
@@ -123,8 +130,8 @@ const table = {
           }
         }
       }
-      console.log(delta)
-      console.log(this.lastSelected.indexRow)
+      //console.log(delta)
+      //console.log(this.lastSelected.indexRow)
     },
     saveLastSelected(data) {
       console.log(data)
@@ -163,8 +170,8 @@ const table = {
           this.contextmenu.isShow = false
         }, 0)
       }
-      console.log($event.clientX, $event.clientY)
-      console.log($event, row)
+      //console.log($event.clientX, $event.clientY)
+      //console.log($event, row)
       let direction = 'left'
       let clientX = $event.clientX
       if ($event.clientX + contextWidth >= window.innerWidth) {
@@ -192,11 +199,11 @@ const table = {
       this.headerOptions()
     },
     getFixedStyle(head) {
-      console.log(head)
+      //console.log(head)
       const { width } = this.headerOptions.find((el) => el.id === head.value)
-      console.log(width)
+      //console.log(width)
       if (head.fixed.value && head.fixed.position) {
-        console.log({ [head.fixed.position]: this.getWidth(head.value) })
+        //console.log({ [head.fixed.position]: this.getWidth(head.value) })
         //if (head.fixed.position === 'right') {
 
         //}
@@ -249,7 +256,7 @@ const table = {
         fixed: headCell.fixed,
       })
       setTimeout(() => {
-        console.log(headerEl.previousElementSibling.offsetWidth)
+        //console.log(headerEl.previousElementSibling.offsetWidth)
         acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
       }, 0)
     })
@@ -258,6 +265,9 @@ const table = {
     this.pagination = {
       ...this.options.data,
     }
+  },
+  setup() {
+    console.log('test')
   },
 }
 

@@ -109,27 +109,27 @@ $borderColor: rgba(0,0,0,.3);
       cursor: pointer;
     }
   }
-  &-input {
-    position: relative;
-    overflow: hidden;
-    input {
-      padding: 5px;
-      border: 1px solid $borderColor;
-      border-radius: $borderRadius;
-      outline: none;
-      max-width: 100%;
-      width: 100%;
-    }
-    svg {
-      position: absolute;
-      width: $iconSize;
-      height: $iconSize;
-      aspect-ratio: 1;
-      right: 5px;
-      top: 50%;
-      margin-top: calc($iconSize / -2);
-    }
-  }
+  //&-input {
+  //  position: relative;
+  //  overflow: hidden;
+  //  input {
+  //    padding: 5px;
+  //    border: 1px solid $borderColor;
+  //    border-radius: $borderRadius;
+  //    outline: none;
+  //    max-width: 100%;
+  //    width: 100%;
+  //  }
+  //  svg {
+  //    position: absolute;
+  //    width: $iconSize;
+  //    height: $iconSize;
+  //    aspect-ratio: 1;
+  //    right: 5px;
+  //    top: 50%;
+  //    margin-top: calc($iconSize / -2);
+  //  }
+  //}
   &-icon {
     cursor: pointer;
     &-close {
@@ -297,4 +297,12 @@ $borderColor: rgba(0,0,0,.3);
 
 .v-application p {
   margin-bottom: 0;
+}
+
+.fluid {
+  width: 100%;
+}
+
+.row {
+  margin: 0;
 }
