@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Nav></Nav>
+    <div class="d-flex">
+      <div v-if="!isMobile">
+        <Nav></Nav>
+      </div>
+      <Topbar></Topbar>
+    </div>
     <v-main>
       <slot></slot>
       <!--<Alert />-->

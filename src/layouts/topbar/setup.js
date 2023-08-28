@@ -1,0 +1,41 @@
+import { ref } from 'vue'
+import useMobile from '../Adaptive/checkMob.js'
+
+export default {
+  name: 'topBar',
+  setup() {
+    const isMobile = useMobile()
+    const messages = ref(0)
+    const search = ref('')
+
+    const itemSecondMenu = ref({
+      edit: {
+        icon: '$IconEdit',
+        color: '#109CF1',
+        tooltip: 'Новое письмо',
+      },
+      phonebook: {
+        icon: '$IconGuide',
+        color: '#109CF1',
+        tooltip: 'Справочник',
+      },
+      tech: {
+        icon: '$IconTechSupport',
+        color: '#109CF1',
+        tooltip: 'Тех Поддержка',
+      },
+      exit: {
+        icon: '$IconExit',
+        color: '#F7685B',
+        tooltip: 'Выйти',
+      },
+    })
+
+    return {
+      isMobile,
+      messages,
+      search,
+      itemSecondMenu,
+    }
+  },
+}
