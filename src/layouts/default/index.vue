@@ -4,12 +4,14 @@
       <div v-if="!isMobile">
         <Nav></Nav>
       </div>
-      <Topbar></Topbar>
+      <div class="d-flex flex-column flex-grow-1">
+        <Topbar></Topbar>
+        <v-main class="d-flex flex-column flex-grow-1">
+          <slot></slot>
+          <!--<Alert />-->
+        </v-main>
+      </div>
     </div>
-    <v-main class="d-flex flex-column flex-grow-1">
-      <slot></slot>
-      <!--<Alert />-->
-    </v-main>
   </div>
 </template>
 <style lang="scss" module scoped src="./style.scss"></style>
