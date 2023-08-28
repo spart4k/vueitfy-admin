@@ -24,7 +24,7 @@
           hide-details="auto"
           v-model="searchField"
         ></v-text-field>
-        <v-btn class="ml-2" elevation="2">Фильтры</v-btn>
+        <v-btn @click="openFilter" class="ml-2" elevation="2">Фильтры</v-btn>
       </div>
     </div>
     <table id="mainTable" ref="mainTable" class="v-table-wrap">
@@ -110,7 +110,7 @@
       <tbody class="v-table-body">
         <template v-for="(row, indexRow) in options.data.rows">
           <tr
-            :key="indexRow"
+            :key="row.row.id"
             :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
             @contextmenu="openContext($event, row)"
             @click="openChildRow($event, row)"
@@ -143,7 +143,7 @@
             </td>
             <td
               :style="{
-                ...getFixedStyle(cell),
+                //...getFixedStyle(cell),
                 width: cell.width,
               }"
               :class="cell.fixed.value ? 'v-table-body-row-cell--fixed' : ''"
@@ -155,7 +155,7 @@
               :key="cellIndex"
             >
               <template v-if="cell.type === 'default'">
-                {{ row.row[cell.value] }}
+                {{ Object.byString(row.row, cell.value) }}
               </template>
               <template v-else-if="cell.type === 'actions'">
                 <v-table-button
@@ -168,7 +168,7 @@
             </td>
           </tr>
           <tr
-            :key="indexRow"
+            :key="row.row.id + 'child'"
             v-show="row.child.isShow && options.head.some((el) => !el.isShow)"
             class="v-table-body-row v-table-body-row--child overflowHidden"
           >
@@ -225,7 +225,7 @@
             </option>
           </select>
         </div>
-        <div class="v-table-footer-pagination-wrap">
+        <!--<div class="v-table-footer-pagination-wrap">
           <div
             class="v-table-footer-pagination__button v-table-footer-pagination__button--prev"
           >
@@ -291,13 +291,25 @@
               </g>
             </svg>
           </div>
+        </div>-->
+        <div class="text-center">
+          <v-pagination
+            v-model="options.data.currentPage"
+            :length="15"
+            :total-visible="7"
+          ></v-pagination>
         </div>
       </div>
     </div>
     <v-contextmenu :options="contextmenu" />
-    <portal to="filter" v-if="true">
+    <portal to="filter" v-if="filter.isShow">
       <Sheet>
-        <TableFilter :filtersConfig="filtersConfig"></TableFilter>
+        <keep-alive>
+          <TableFilter
+            @closeFilter="closeFilter"
+            :filtersConfig="filtersConfig"
+          />
+        </keep-alive>
       </Sheet>
     </portal>
   </div>

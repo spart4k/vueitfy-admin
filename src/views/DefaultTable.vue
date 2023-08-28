@@ -40,6 +40,7 @@ const tableConfigData = {
       function: searchInputing,
     },
     headerFixed: true,
+    url: 'https://dummyjson.com/users',
   },
   panel: {
     buttons: [
@@ -69,11 +70,11 @@ const tableConfigData = {
   },
   head: [
     {
-      title: 'Сотрудник',
+      title: 'ID',
       type: 'default',
       align: 'center',
       fixed: {
-        value: true,
+        value: false,
         position: 'left',
       },
       sorts: [
@@ -85,8 +86,31 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '5%',
-      value: 'employee',
+      width: '20px',
+      value: 'id',
+      search: {
+        field: '',
+      },
+    },
+    {
+      title: 'Сотрудник',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: 'asc',
+          value: undefined,
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '10%',
+      value: 'firstName',
       search: {
         field: '',
       },
@@ -96,7 +120,7 @@ const tableConfigData = {
       type: 'default',
       align: 'center',
       fixed: {
-        value: true,
+        value: false,
         position: 'left',
       },
       sorts: [
@@ -109,13 +133,13 @@ const tableConfigData = {
       ],
       isShow: true,
       width: '5%',
-      value: 'department',
+      value: 'company.department',
       search: {
         field: '',
       },
     },
     {
-      title: 'Ставка',
+      title: 'Email',
       type: 'default',
       align: 'left',
       fixed: {
@@ -131,14 +155,14 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '5%',
-      value: 'cost',
+      width: '10%',
+      value: 'email',
       search: {
         field: '',
       },
     },
     {
-      title: 'Дата принятие',
+      title: 'Телефон',
       type: 'default',
       align: 'center',
       fixed: {
@@ -155,7 +179,7 @@ const tableConfigData = {
       ],
       isShow: true,
       width: '20%',
-      value: 'date',
+      value: 'phone',
       search: {
         field: '',
       },
@@ -178,13 +202,13 @@ const tableConfigData = {
       ],
       isShow: true,
       width: '10%',
-      value: 'universe',
+      value: 'university',
       search: {
         field: '',
       },
     },
     {
-      title: 'Автомобиль',
+      title: 'Пол',
       type: 'default',
       align: 'center',
       fixed: {
@@ -201,13 +225,13 @@ const tableConfigData = {
       ],
       isShow: true,
       width: '10%',
-      value: 'car',
+      value: 'gender',
       search: {
         field: '',
       },
     },
     {
-      title: 'universe1',
+      title: 'Мак адрес',
       type: 'default',
       align: 'center',
       fixed: {
@@ -224,18 +248,18 @@ const tableConfigData = {
       ],
       isShow: true,
       width: '10%',
-      value: 'universe1',
+      value: 'macAddress',
       search: {
         field: '',
       },
     },
     {
-      title: 'universe2',
+      title: 'Домен',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'right',
+        position: undefined,
       },
       sorts: [
         {
@@ -247,18 +271,18 @@ const tableConfigData = {
       ],
       isShow: true,
       width: '10%',
-      value: 'universe2',
+      value: 'domain',
       search: {
         field: '',
       },
     },
     {
-      title: 'universe3',
+      title: 'День рождения',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'right',
+        position: undefined,
       },
       sorts: [
         {
@@ -269,170 +293,8 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '100px',
-      value: 'universe3',
-      search: {
-        field: '',
-      },
-    },
-    {
-      title: 'universe4',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: undefined,
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '100px',
-      value: 'universe4',
-      search: {
-        field: '',
-      },
-    },
-    {
-      title: 'universe5',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: undefined,
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '100px',
-      value: 'universe5',
-      search: {
-        field: '',
-      },
-    },
-    {
-      title: 'universe6',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: undefined,
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '100px',
-      value: 'universe6',
-      search: {
-        field: '',
-      },
-    },
-    {
-      title: 'universe7',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: undefined,
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '100px',
-      value: 'universe7',
-      search: {
-        field: '',
-      },
-    },
-    {
-      title: 'universe8',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: undefined,
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '100px',
-      value: 'universe8',
-      search: {
-        field: '',
-      },
-    },
-    {
-      title: 'universe9',
-      type: 'default',
-      align: 'center',
-      class: ['univers1e9'],
-      fixed: {
-        value: true,
-        position: 'right',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: undefined,
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '210px',
-      value: 'universe9',
-      search: {
-        field: '',
-      },
-    },
-    {
-      title: 'universe10',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'right',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: undefined,
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '100px',
-      value: 'universe10',
+      width: '10%',
+      value: 'birthDate',
       search: {
         field: '',
       },
@@ -442,11 +304,11 @@ const tableConfigData = {
       type: 'actions',
       align: 'center',
       fixed: {
-        value: true,
+        value: false,
         position: 'right',
       },
       isShow: true,
-      width: '100px',
+      width: '20px',
       value: 'actions',
       actions: [
         {
@@ -469,8 +331,8 @@ const tableConfigData = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: null,
-    currentPage: null,
+    pageLength: 30,
+    currentPage: 1,
     totalPages: null,
   },
 }
@@ -2024,7 +1886,7 @@ export default {
   },
   mounted() {
     console.log(TableDefault)
-    this.initData()
+    //this.initData()
   },
 }
 </script>

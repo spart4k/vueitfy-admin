@@ -1,10 +1,13 @@
 <template>
   <div class="v-table-filter">
-    <v-form class="fluid">
-      <v-row class="mb-8">
+    <v-row class="mb-8 align-center">
+      <v-row class="align-center">
         <v-icon class="mr-2">$IconFilter</v-icon>
         <div class="text-h4">Фильтры</div>
       </v-row>
+      <v-icon @click="closeFilter">$close</v-icon>
+    </v-row>
+    <v-form class="fluid">
       <template v-for="filter in filtersConfig">
         <v-autocomplete
           v-if="filter.type === 'select'"
@@ -52,14 +55,14 @@
             </div>
             <div :data-filter="filter.name" v-intersect="endIntersect" />
           </template>
-          <!--<template v-slot:item="data">
+          <template v-slot:item="data">
             <template>
               <v-list-item-content>
-                <v-list-item-title v-html="data.item.title" />
+                <v-list-item-title v-html="data.item.brand" />
                 <v-list-item-subtitle v-html="data.item.price" />
               </v-list-item-content>
             </template>
-          </template>-->
+          </template>
         </v-autocomplete>
       </template>
     </v-form>

@@ -86,13 +86,10 @@ export default {
       }
     },
   },
-  methods: {
-    removeSelected(data, filter) {
-      console.log(data, filter)
-      filter.select.splice(0, data.index)
-    },
-  },
-  setup(props) {
+  methods: {},
+  setup(props, ctx) {
+    console.log(ctx)
+    const { emit } = ctx
     const querySelections = async (string, filter) => {
       if (string) {
         console.log('quiery')
@@ -150,6 +147,13 @@ export default {
     const tryClick = (data) => {
       console.log(data)
     }
+    const removeSelected = (data, filter) => {
+      filter.select.splice(data.index, 1)
+    }
+    const closeFilter = () => {
+      console.log(emit)
+      emit('closeFilter')
+    }
     watch(
       () => searchFields.value,
       (newVal, oldVal) => {
@@ -177,6 +181,8 @@ export default {
       querySelections,
       endIntersect,
       tryClick,
+      removeSelected,
+      closeFilter,
     }
   },
 }

@@ -6,24 +6,19 @@ export default class Cities {
     this.url = url
   }
 
-  async get() {
+  async get(url) {
     try {
-      const { data } = await axios.get(`users/api/admin/getCities?city=`)
+      const { data } = await axios.get(`${url}`)
       console.log(data)
-      if (!data || data.cityFound.length === 0) {
-        store.commit('alert/show', {
-          type: 'warning',
-          content: `В данный момент городов нет`,
-        })
-        return []
-      }
+      //if (!data || data.cityFound.length === 0) {
+      //  store.commit('alert/show', {
+      //    type: 'warning',
+      //    content: `В данный момент городов нет`,
+      //  })
+      //  return []
+      //}
 
-      return (data?.cityFound || []).map((el) => ({
-        id: el.id,
-        name: el.name,
-        latitude: el.latitude,
-        longitude: el.longtitude,
-      }))
+      return data.users
     } catch (error) {
       console.log(error)
       let errorText = ''
