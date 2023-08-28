@@ -1,14 +1,12 @@
 <template>
   <Layout>
-    <div class="about">
+    <div class="d-flex flex-column flex-grow-1">
       <h1>This is an about page1</h1>
-      <div>
-        <TableDefault
-          @changeheadershow="changeheadershow"
-          :options="tableConfig"
-          :filtersConfig="filtersConfig"
-        />
-      </div>
+      <TableDefault
+        @changeheadershow="changeheadershow"
+        :options="tableConfig"
+        :filtersConfig="filtersConfig"
+      />
     </div>
     <portal-target name="filter" />
   </Layout>

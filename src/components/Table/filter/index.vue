@@ -23,6 +23,7 @@
           class="mb-4"
           item-text="brand"
           item-value="brand"
+          no-data-text="Нет объектов"
         >
           <template v-slot:append>
             <v-progress-circular

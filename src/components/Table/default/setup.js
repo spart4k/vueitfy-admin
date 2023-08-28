@@ -34,8 +34,9 @@ const table = {
       default: () => [],
     },
   },
-  setup(props) {
-    console.log('test')
+  setup(props, ctx) {
+    const { emit } = ctx
+    const loading = ref(false)
     const headerOptions = ref([])
     const tablePosition = ref(null)
     const searchField = ref('')
@@ -70,12 +71,12 @@ const table = {
           headerEl.isShow
         ) {
           //console.log(width, x, window.innerWidth)
-          this.$emit('changeheadershow', { headerEl, value: false })
+          emit('changeheadershow', { headerEl, value: false })
         } else if (
           x + width + tablePosition.value <= window.innerWidth &&
           !headerEl.isShow
         ) {
-          this.$emit('changeheadershow', { headerEl, value: true })
+          emit('changeheadershow', { headerEl, value: true })
         }
       })
     }
@@ -188,7 +189,7 @@ const table = {
           contextmenu.value.y = $event.clientY
           ;(contextmenu.value.row = row),
             (contextmenu.value.direction = direction)
-          contextmenu.value.actions = this.headActions
+          contextmenu.value.actions = headActions
         },
         contextmenu.value.isShow ? 450 : 0
       )
@@ -228,7 +229,9 @@ const table = {
     }
     const getItems = async () => {
       //this.
+      loading.value = true
       const data = await tableApi.get(props.options.options.url)
+      console.log('end loading')
       console.log(data)
       props.options.data.rows = data
       const structuredArray = []
@@ -245,6 +248,7 @@ const table = {
         })
       })
       props.options.data.rows = structuredArray
+      loading.value = false
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -268,8 +272,10 @@ const table = {
     // HOOKS
     onMounted(async () => {
       await getItems()
+      console.log('check loading')
       const table = document.querySelector(props.options.selector)
       console.log(props.options.selector, table)
+      console.log(loading.value)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
       headerCells.forEach((headerEl) => {
@@ -323,6 +329,7 @@ const table = {
       width,
       colspanLength,
       headActions,
+      loading,
     }
   },
 }

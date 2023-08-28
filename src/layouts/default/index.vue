@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="d-flex flex-column flex-grow-1">
     <!--<Nav></Nav>-->
-    <v-main>
+    <v-main class="d-flex flex-column flex-grow-1">
       <slot></slot>
       <!--<Alert />-->
     </v-main>

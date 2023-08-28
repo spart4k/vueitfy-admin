@@ -1,5 +1,5 @@
 <template>
-  <div class="v-table">
+  <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
     <div
       :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
       class="v-table-panel"
@@ -27,7 +27,7 @@
         <v-btn @click="openFilter" class="ml-2" elevation="2">Фильтры</v-btn>
       </div>
     </div>
-    <table id="mainTable" ref="mainTable" class="v-table-wrap">
+    <table v-if="!loading" id="mainTable" ref="mainTable" class="v-table-wrap">
       <thead
         :class="options.options.headerFixed ? 'v-table-header--fixed' : ''"
         class="v-table-header"
@@ -205,6 +205,9 @@
         </template>
       </tbody>
     </table>
+    <div v-else class="text-center">
+      <v-progress-circular color="primary" :size="80" indeterminate />
+    </div>
     <div class="v-table-footer">
       <div class="v-table-footer-total">Итого</div>
       <div class="v-table-footer-pagination">
