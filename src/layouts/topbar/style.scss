@@ -1,0 +1,66 @@
+.v-input input {
+  border: none !important
+}
+
+.icon-menu {
+  svg {
+    // width: 20px;
+    // height: 20px;
+    color: #ffffff;
+  }
+}
+
+// анимация кнопки доп меню
+.etc-menu {
+  .v-btn__content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .line {
+      position: absolute;
+      width: 20px;
+      height: 2px;
+      background-color: #FFFFFF;
+
+      &:first-child {
+        top: 15px;
+        transform: rotate(0deg);
+        transition: all .3s ease;
+      }
+      &:last-child {
+        top: 23px;
+        transform: rotate(0deg);
+        transition: all .3s ease;
+      }
+    }
+  }  
+  &[aria-expanded="true"] {
+    .v-btn__content {
+      .line {
+        &:first-child {
+          top: 50%;
+          transform: rotate(45deg);
+          transition: all .3s ease;
+        }
+        &:last-child {
+          top: 50%;
+          transform: rotate(-45deg);
+          transition: all .3s ease;
+        }
+      }
+    }
+  }
+}
+
+// паддинг элементов  дополнительного меню
+.etc-menu__list-item {
+  padding: 0 7px !important;
+}
+
+.v-card {
+  box-shadow: none !important;
+}
+
+.v-navigation-drawer__border {
+  display: none;
+}

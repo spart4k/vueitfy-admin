@@ -41,6 +41,7 @@ import IconArrowFilter from './arrow-filter/arrow-filter.vue'
 import IconArrowLeft from './arrow-left/arrow-left.vue'
 import IconArrowRight from './arrow-right/arrow-right.vue'
 import IconArrowUp from './arrow-up/arrow-up.vue'
+import IconNotificationBell from './notification/notification.vue'
 
 export default {
   IconAdd: {
@@ -171,5 +172,8 @@ export default {
   },
   IconArrowUp: {
     component: IconArrowUp,
+  },
+  IconNotificationBell: {
+    component: IconNotificationBell,
   },
 }
