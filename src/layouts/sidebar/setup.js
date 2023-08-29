@@ -13,52 +13,52 @@ export default {
           {
             id: 1,
             name: 'Логи',
-            link: '',
+            link: '/table',
           },
           {
             id: 2,
             name: 'Для ОБД',
-            link: '',
+            link: '/navbar',
           },
           {
             id: 3,
             name: 'Планнинг',
-            link: '',
+            link: '/navbar',
           },
           {
             id: 4,
             name: 'Штатное расписание',
-            link: '',
+            link: '/',
           },
           {
             id: 5,
             name: 'Командировка',
-            link: '',
+            link: '/',
           },
           {
             id: 6,
             name: 'График',
-            link: '',
+            link: '/',
           },
           {
             id: 7,
             name: 'Аккаунт',
-            link: '',
+            link: '/',
           },
           {
             id: 8,
             name: 'Персонал',
-            link: '',
+            link: '/',
           },
           {
             id: 9,
             name: 'Персонал',
-            link: '',
+            link: '/',
           },
           {
             id: 10,
             name: 'Документы',
-            link: '',
+            link: '/',
           },
           {
             id: 11,
@@ -346,9 +346,21 @@ export default {
       el.active = !el.active
       console.log('el after', el.active)
     }
+
+    const activeLink = (id) => {
+      // var allLink = document.querySelectorAll('.navlink__item')
+      // console.log('allLink', allLink)
+      // allLink.classList.remove('.activeLink')
+      // var link = document.getElementById(`navlink__${id}`)
+      // console.log('link', link)
+      // link.classList.add('activeLink')
+      console.log(id)
+    }
+
     return {
       dataNavbar,
       Huy,
+      activeLink,
     }
   },
 }

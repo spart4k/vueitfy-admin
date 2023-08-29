@@ -1,5 +1,5 @@
 <template>
-  <v-card class="overflow-hidden" width="100%" height="64px">
+  <v-card class="overflow-hidden topbar-card" width="100%" height="64px">
     <v-app-bar color="white">
       <v-btn icon v-if="isMobile">
         <v-icon>$IconOpenMenu</v-icon>
@@ -8,7 +8,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Поиск"
+          label="Поиск "
           single-line
           hide-details
         ></v-text-field>

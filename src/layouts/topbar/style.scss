@@ -57,8 +57,9 @@
   padding: 0 7px !important;
 }
 
-.v-card {
+.topbar-card {
   box-shadow: none !important;
+  z-index: $default-z;
 }
 
 .v-navigation-drawer__border {

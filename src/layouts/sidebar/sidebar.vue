@@ -1,5 +1,5 @@
 <template>
-  <v-card width="256" height="100vh" tile>
+  <v-card width="256" height="100vh" class="navbar-card" tile>
     <v-list class="header-navbar" height="130px">
       <v-list-item>
         <v-list-item-avatar>
@@ -25,7 +25,15 @@
             v-for="item in item.navlink"
             :key="item.id"
           >
-            {{ item.name }}
+            <router-link active-class="active" :to="item.link">
+              <p
+                :id="'navlink__' + item.id"
+                class="navlink__item"
+                @click.stop="activeLink(item.id)"
+              >
+                {{ item.name }}
+              </p>
+            </router-link>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
