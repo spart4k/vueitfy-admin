@@ -41,7 +41,8 @@
             ]"
             align="center"
             v-if="options.options.selecting"
-            width="5%"
+            width="40"
+            class="v-table-header-row-cell"
           >
             <!--s-->
           </th>

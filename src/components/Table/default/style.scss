@@ -164,6 +164,8 @@ $tablePanelHeight: 41px;
       border: 1px solid $borderColor;
       border-collapse: collapse;
       flex: 1;
+      table-layout: fixed;
+      width:100%;
     }
     &-actions {
       //display: flex;

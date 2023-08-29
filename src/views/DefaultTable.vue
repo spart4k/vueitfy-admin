@@ -84,7 +84,7 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '20px',
+      width: '40',
       value: 'id',
       search: {
         field: '',
@@ -108,7 +108,7 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '10%',
+      width: '100',
       value: 'firstName',
       search: {
         field: '',
@@ -132,7 +132,7 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '5%',
+      width: '80',
       value: 'company.department',
       search: {
         field: '',
@@ -156,7 +156,7 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '10%',
+      width: '100',
       value: 'email',
       search: {
         field: '',
@@ -180,7 +180,7 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '20%',
+      width: '200',
       value: 'phone',
       search: {
         field: '',
@@ -204,7 +204,7 @@ const tableConfigData = {
         },
       ],
       isShow: true,
-      width: '10%',
+      width: '15%',
       value: 'university',
       search: {
         field: '',
