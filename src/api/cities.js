@@ -8,6 +8,7 @@ export default class Cities {
 
   async get(url) {
     try {
+      console.log(url)
       const { data } = await axios.get(`${url}`)
       console.log(data)
       //if (!data || data.cityFound.length === 0) {
@@ -33,6 +34,37 @@ export default class Cities {
         type: 'error',
         content: `Ошибка: ${errorText}`,
       })
+    }
+  }
+
+  async getApi(url, paramsQuery) {
+    try {
+      console.log(paramsQuery)
+      const { data } = await axios.post(`${url}`, paramsQuery)
+      console.log('TRY')
+      //if (!data || data.cityFound.length === 0) {
+      //  store.commit('alert/show', {
+      //    type: 'warning',
+      //    content: `В данный момент городов нет`,
+      //  })
+      //  return []
+      //}
+
+      return data.users
+    } catch (error) {
+      console.log(error)
+      //let errorText = ''
+      //if (error?.response?.data?.message?.name)
+      //  errorText = error?.response?.data?.message?.name
+      //else if (error?.response?.data?.message)
+      //  errorText = error?.response?.data?.message
+      //else {
+      //  errorText = error.message
+      //}
+      //store.commit('alert/show', {
+      //  type: 'error',
+      //  content: `Ошибка: ${errorText}`,
+      //})
     }
   }
 

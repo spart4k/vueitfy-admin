@@ -22,12 +22,12 @@
         <v-text-field
           label="Поиск"
           hide-details="auto"
-          v-model="searchField"
+          v-model="paramsQuery.searchGlobal"
         ></v-text-field>
         <v-btn @click="openFilter" class="ml-2" elevation="2">Фильтры</v-btn>
       </div>
     </div>
-    <table v-if="!loading" id="mainTable" ref="mainTable" class="v-table-wrap">
+    <table id="mainTable" ref="mainTable" class="v-table-wrap">
       <thead
         :class="options.options.headerFixed ? 'v-table-header--fixed' : ''"
         class="v-table-header"
@@ -73,7 +73,16 @@
                     class="v-table-header-row-cell-sort__row"
                     v-if="head.sorts[0].type === 'string'"
                   >
-                    <v-icon-sort :state="head.sorts[0].value" />
+                    <!--<v-icon-sort
+                      :state="
+                        paramsQuery.sorts.find((el) => el.field === head.value)
+                          .value
+                      "
+                    />-->
+                    {{
+                      paramsQuery.sorts.find((el) => el.field === head.value)
+                        .value
+                    }}
                     <p v-if="true">Сортировка от А до Я</p>
                   </div>
                   <div
@@ -81,7 +90,11 @@
                     class="v-table-header-row-cell-sort__row"
                     v-if="head.sorts[0].type === 'number'"
                   >
-                    <v-icon-sort :state="head.sorts[0].value" />
+                    <!--<v-icon-sort :state="head.sorts[0].value" />-->
+                    {{
+                      paramsQuery.sorts.find((el) => el.field === head.value)
+                        .value
+                    }}
                     <p v-if="true">Сортировка по убыванию</p>
                   </div>
                   <div
@@ -89,16 +102,25 @@
                     class="v-table-header-row-cell-sort__row"
                     v-if="head.sorts[0].type === 'date'"
                   >
-                    <v-icon-sort :state="head.sorts[0].value" />
+                    <!--<v-icon-sort :state="head.sorts[0].value" />-->
+                    {{
+                      paramsQuery.sorts.find((el) => el.field === head.value)
+                        .value
+                    }}
                     <p v-if="true">Сортировка по дате</p>
                   </div>
-                  <v-input
+                  <v-text-field
                     class="v-table-header-row-cell-sort__search"
                     @clearfield="clearField('searchField')"
+                    clearable
                     clearing
                     type="search"
                     placeholder="Поиск"
-                    v-model="head.search.field"
+                    v-model="
+                      paramsQuery.searchColumns.find(
+                        (el) => el.field === head.value
+                      ).value
+                    "
                   />
                 </div>
               </transition>
@@ -107,7 +129,7 @@
           <!--<th class='v-table-header-row-cell' v-for='(head, index) in options.head'>{{ head.title }}</th>-->
         </tr>
       </thead>
-      <tbody class="v-table-body">
+      <tbody v-if="!loading" class="v-table-body">
         <template v-for="(row, indexRow) in options.data.rows">
           <tr
             :key="row.row.id"
@@ -204,21 +226,22 @@
           </tr>
         </template>
       </tbody>
+      <div
+        v-else
+        class="text-center d-flex align-center justify-center flex-grow-1"
+      >
+        <v-progress-circular color="primary" :size="80" indeterminate />
+      </div>
     </table>
-    <div v-else class="text-center">
-      <v-progress-circular color="primary" :size="80" indeterminate />
-    </div>
-    <div class="v-table-footer">
+
+    <div class="v-table-footer pl-4">
       <div class="v-table-footer-total">Итого</div>
       <div class="v-table-footer-pagination">
         <div class="v-table-footer-pagination-length">
-          <p class="v-table-footer-pagination-length__label">
-            Количество на странице:
-          </p>
           <!--<span>
             10
           </span>-->
-          <select name="" id="">
+          <!--<select name="" id="">
             <option
               v-for="(option, optionIndex) in 5"
               value=""
@@ -226,7 +249,12 @@
             >
               10
             </option>
-          </select>
+          </select>-->
+          <v-select
+            :items="rowCount"
+            label="Количество на странице:"
+            v-model="paramsQuery.countRows"
+          />
         </div>
         <!--<div class="v-table-footer-pagination-wrap">
           <div
@@ -297,7 +325,7 @@
         </div>-->
         <div class="text-center">
           <v-pagination
-            v-model="options.data.currentPage"
+            v-model="paramsQuery.currentPage"
             :length="15"
             :total-visible="7"
           ></v-pagination>

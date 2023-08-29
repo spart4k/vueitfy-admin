@@ -48,22 +48,29 @@ $tablePanelHeight: 41px;
                 width: 15px;
                 height: 15px;
                 margin-right: 5px;
+                color: rgba(0,0,0,.1);
+                transition: .2s;
                 path {
-                  fill: rgba(0,0,0,.5);
-                  transition: .2s;
+                  fill: red;
+                }
+                .asc {
+                  //fill: black;
+                  color: black !important;
+                }
+                .desc {
+                  //fill: black;
+                  fill: black !important;
                 }
                 &.asc {
-                  path {
-                    &.asc {
-                      fill: black;
-                    }
+                  .asc {
+                    //fill: black;
+                    color: black;
                   }
                 }
                 &.desc {
-                  path {
-                    &.desc {
-                      fill: black;
-                    }
+                  .desc {
+                    //fill: black;
+                    color: black;
                   }
                 }
               }
@@ -156,6 +163,7 @@ $tablePanelHeight: 41px;
     &-wrap {
       border: 1px solid $borderColor;
       border-collapse: collapse;
+      flex: 1;
     }
     &-actions {
       //display: flex;

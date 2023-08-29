@@ -5,7 +5,7 @@ import Vue, { onMounted, ref, computed, watch } from 'vue'
 import vTableButton from '../button/index.js'
 import vButton from '../../button/index.js'
 import vInput from '../../input/default/index.js'
-import vIconSort from '../../icons/sort/index.js'
+import vIconSort from '../../icons/sort/index.vue'
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import TableFilter from '../filter/index.vue'
@@ -44,6 +44,7 @@ const table = {
       indexRow: null,
       row: {},
     })
+    const rowCount = [5, 10, 15, 20, 25, 30]
     const contextmenu = ref({
       isShow: false,
       x: null,
@@ -53,12 +54,19 @@ const table = {
     })
     const pagination = ref({
       totalRows: null,
-      currentPage: null,
+      currentPage: 1,
       totalPages: null,
-      pageLength: null,
+      countRows: 30,
     })
     const filter = ref({
       isShow: false,
+    })
+    const paramsQuery = ref({
+      currentPage: pagination.value.currentPage,
+      searchGlobal: searchField.value,
+      countRows: pagination.value.countRows,
+      sorts: [],
+      searchColumns: [],
     })
     const wrapingRow = () => {
       const table = document.querySelector(props.options.selector)
@@ -154,13 +162,24 @@ const table = {
       }
     }
     const sortRow = (head) => {
-      if (head.sorts[0].value === undefined) {
-        head.sorts[0].value = 'asc'
-      } else if (head.sorts[0].value === 'asc') {
-        head.sorts[0].value = 'desc'
-      } else if (head.sorts[0].value === 'desc') {
-        head.sorts[0].value = undefined
+      const { value } = head
+      const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
+      console.log(paramsCol)
+      if (paramsCol.value === undefined) {
+        paramsCol.value = 'asc'
+      } else if (paramsCol.value === 'asc') {
+        paramsCol.value = 'desc'
+      } else if (paramsCol.value === 'desc') {
+        paramsCol.value = undefined
       }
+      //if (head.sorts[0].value === undefined) {
+      //  head.sorts[0].value = 'asc'
+      //} else if (head.sorts[0].value === 'asc') {
+      //  head.sorts[0].value = 'desc'
+      //} else if (head.sorts[0].value === 'desc') {
+      //  head.sorts[0].value = undefined
+      //}
+      //console.log(paramsCol)
     }
     const openContext = ($event, row) => {
       if (!contextmenu.value.isShow) {
@@ -230,7 +249,13 @@ const table = {
     const getItems = async () => {
       //this.
       loading.value = true
-      const data = await tableApi.get(props.options.options.url)
+      const { url } = props.options.options
+      const data = await tableApi.get(url, {
+        currentPage: pagination.value.currentPage,
+        countRows: 30,
+        searchGlobal: searchField.value,
+      })
+      await tableApi.getApi(url, paramsQuery.value)
       console.log('end loading')
       console.log(data)
       props.options.data.rows = data
@@ -249,6 +274,27 @@ const table = {
       })
       props.options.data.rows = structuredArray
       loading.value = false
+    }
+    const initHeadParams = () => {
+      const { head } = props.options
+      head.forEach((el) => {
+        console.log(el)
+        if (el.sorts?.length) {
+          //Vue.set(el.sorts, 'field', el.value)
+          paramsQuery.value.sorts.push({
+            field: el.value,
+            value: el.sorts[0].default,
+            type: el.sorts[0].type,
+          })
+        }
+        if (el.search?.isShow) {
+          console.log(el)
+          paramsQuery.value.searchColumns.push({
+            field: el.value,
+            value: el.search.field,
+          })
+        }
+      })
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -269,9 +315,25 @@ const table = {
         props.options.options.search.function(newVal)
       }
     )
+    watch(
+      () => pagination.value.currentPage,
+      async (newVal) => {
+        await getItems()
+        console.log(newVal)
+      }
+    )
+    watch(
+      () => paramsQuery,
+      async (newVal) => {
+        await getItems()
+        console.log(newVal.value)
+      },
+      { deep: true }
+    )
     // HOOKS
     onMounted(async () => {
       await getItems()
+      initHeadParams()
       console.log('check loading')
       const table = document.querySelector(props.options.selector)
       console.log(props.options.selector, table)
@@ -330,6 +392,8 @@ const table = {
       colspanLength,
       headActions,
       loading,
+      paramsQuery,
+      rowCount,
     }
   },
 }
