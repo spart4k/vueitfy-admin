@@ -7,6 +7,15 @@
 }
 
 .v-expansion-panel {
+  margin  : 0 !important;
+
+  &::before {
+    box-shadow: none !important;
+  }
+  &:before {
+    box-shadow: none !important;
+  }
+
   &[aria-expanded="true"] {
     button {
       color       : $accent-blue;
@@ -20,6 +29,31 @@
         }
       }
     }
+  }
+  
+  a {
+    cursor  : pointer;
+    outline : none;
+    text-decoration: none;
+    color: $black !important;
+  }
+
+  button {
+    &:hover {
+      color       : $accent-blue;
+      font-weight : 700;
+      opacity     : .8;
+
+      span {
+        color     : $accent-blue;
+      }
+      div {
+        i {
+          color   : $accent-blue !important;
+        }
+      }
+    }
+    
   }
 }
 
@@ -36,17 +70,6 @@
 .v-expansion-panel--active{
   border-radius : 0px !important;
   margin        : 0 !important;
-}
-
-.v-expansion-panel {
-  margin  : 0 !important;
-
-  &::before {
-    box-shadow: none !important;
-  }
-  &:before {
-    box-shadow: none !important;
-  }
 }
 
 .header-navbar {
@@ -86,9 +109,23 @@
 }
 
 .v-expansion-panel-content__wrap {
-  padding :  0 35px 16px !important;
-  cursor  : pointer;
+  padding: 0 !important;
+  a {
+    padding :  0  !important;
+    cursor  : pointer;
+    outline : none;
+    text-decoration: none;
+    color: $black !important;
+    .navlink__item {
+      padding : 5px 35px !important;
+      margin  : 0 !important;
+    }
+  }
 
+  .router-link-exact-active.active {
+    color: $accent-blue !important;
+    font-weight: 700;
+  }
   &:hover {
     color       : $accent-blue;
     opacity     : .6;
@@ -96,7 +133,51 @@
   }
 }
 
-.navlink {
-  padding : 5px 10px;
-  margin  : 0 !important;
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 24px;
+  .icon__navlink {
+
+  }
+  
+  .name__navlink {
+    color: $black;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  &:hover {
+    color       : $accent-blue;
+    font-weight : 700;
+    opacity     : .8;
+
+    .icon__navlink {
+      span {
+        color     : $accent-blue;
+      }
+    }
+    .name__navlink {
+      color   : $accent-blue !important;
+    } 
+  }
+}
+
+
+//открытие закрытие меню на мобилке
+.mobile-menu__window--close {
+  transform : translateX(-100%);
+  position  : absolute;
+  z-index   : $navbar-mobile-z;
+  opacity   : 0;
+  transition: transform .7s ease-out, opacity .4s ease-out;
+}
+
+.mobile-menu__window--open {
+  transform : translateX(0%);
+  position  : absolute;
+  z-index   : $navbar-mobile-z;
+  opacity   : 1;
+  transition: transform .7s ease-in, opacity .4s ease-in;
 }

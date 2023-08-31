@@ -1,0 +1,25 @@
+.bg__black {
+  width           : 100vw;
+  min-height      : 100vh;
+  min-height      : -webkit-fill-available;
+  background-color: rgba(0 0 0/0%);
+  z-index         : $low-level;
+  position        : fixed;
+  top             : 0;
+  left            : 0;
+  pointer-events  : none;
+  transition: z-index .1s ease, background-color .5s ease-out, pointer-events;
+
+  &--active {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100vw;
+    height          : 100vh;
+    z-index         : $black-bg;
+    background-color: $dark--bg;
+    pointer-events  : all;
+    transition: z-index .1s ease, background-color .5s ease-in, pointer-events;
+  }
+
+}

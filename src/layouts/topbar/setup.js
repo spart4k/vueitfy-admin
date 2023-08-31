@@ -1,10 +1,12 @@
 import { ref } from 'vue'
 import useMobile from '../Adaptive/checkMob.js'
+import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
 
 export default {
   name: 'topBar',
   setup() {
     const isMobile = useMobile()
+    const isOpenMenu = useMenuMobile()
     const messages = ref(0)
     const search = ref('')
 
@@ -36,6 +38,7 @@ export default {
       messages,
       search,
       itemSecondMenu,
+      isOpenMenu,
     }
   },
 }

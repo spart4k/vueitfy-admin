@@ -1,6 +1,14 @@
 <template>
   <v-card width="256" height="100vh" class="navbar-card" tile>
-    <v-list class="header-navbar" height="130px">
+    <v-btn
+      class="btn-menu__mob"
+      icon
+      v-if="isMobile"
+      @click="isOpenMenu = !isOpenMenu"
+    >
+      <v-icon v-if="isOpenMenu" key="clear">$IconArrowLeft</v-icon>
+    </v-btn>
+    <v-list class="header-navbar" height="130px" z-index="$default-z">
       <v-list-item>
         <v-list-item-avatar>
           <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
@@ -17,21 +25,31 @@
     <v-navigation-drawer permanent>
       <v-expansion-panels multiple>
         <v-expansion-panel v-for="item in dataNavbar" :key="item.id">
-          <v-expansion-panel-header>
-            <v-icon>{{ item.icon }}</v-icon>
-            {{ item.name }}
-          </v-expansion-panel-header>
+          <template v-if="!item.disclosure">
+            <router-link active-class="active" :to="item.link" exact>
+              <div class="nav-link">
+                <div class="icon__navlink">
+                  <v-icon>{{ item.icon }}</v-icon>
+                </div>
+                <div class="name__navlink">
+                  {{ item.name }}
+                </div>
+              </div>
+            </router-link>
+          </template>
+          <template v-if="item.disclosure">
+            <v-expansion-panel-header>
+              <v-icon>{{ item.icon }}</v-icon>
+              {{ item.name }}
+            </v-expansion-panel-header>
+          </template>
           <v-expansion-panel-content
-            v-for="item in item.navlink"
-            :key="item.id"
+            v-for="link in item.navlink"
+            :key="link.id"
           >
-            <router-link active-class="active" :to="item.link">
-              <p
-                :id="'navlink__' + item.id"
-                class="navlink__item"
-                @click.stop="activeLink(item.id)"
-              >
-                {{ item.name }}
+            <router-link active-class="active" :to="link.link" exact>
+              <p class="navlink__item">
+                {{ link.name }}
               </p>
             </router-link>
           </v-expansion-panel-content>

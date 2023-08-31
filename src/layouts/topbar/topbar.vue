@@ -1,8 +1,10 @@
 <template>
   <v-card class="overflow-hidden topbar-card" width="100%" height="64px">
     <v-app-bar color="white">
-      <v-btn icon v-if="isMobile">
-        <v-icon>$IconOpenMenu</v-icon>
+      <v-btn class="btn-menu__mob" icon v-if="isMobile">
+        <v-icon @click="isOpenMenu = !isOpenMenu" v-if="!isOpenMenu" key="menu">
+          $IconOpenMenu
+        </v-icon>
       </v-btn>
       <v-card-title>
         <v-text-field

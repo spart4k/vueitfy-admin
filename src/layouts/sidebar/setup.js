@@ -1,14 +1,26 @@
 import { ref } from 'vue'
+import useMobile from '../Adaptive/checkMob.js'
+import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
 
 export default {
   name: 'dataNavbar',
   setup() {
+    const isOpenMenu = useMenuMobile()
+
     const dataNavbar = ref({
-      MainTable: {
+      Home: {
         id: 1,
+        icon: `$IconMain`,
+        name: 'Главная',
+        link: '/main',
+        disclosure: false,
+      },
+      MainTable: {
+        id: 2,
         icon: `$IconTable`,
         name: 'Основные таблицы',
         active: false,
+        disclosure: true,
         navlink: [
           {
             id: 1,
@@ -149,9 +161,10 @@ export default {
       },
       Otchets: {
         active: false,
-        id: 2,
+        id: 3,
         icon: '$IconOtchet',
         name: 'Отчеты',
+        disclosure: true,
         navlink: [
           {
             id: 28,
@@ -192,9 +205,10 @@ export default {
       },
       System: {
         active: false,
-        id: 3,
+        id: 4,
         icon: '$IconSystem',
         name: 'Система',
+        disclosure: true,
         navlink: [
           {
             id: 35,
@@ -219,9 +233,10 @@ export default {
         ],
       },
       Graph: {
-        id: 4,
+        id: 5,
         icon: '$IconGraphic',
         name: 'Графики',
+        disclosure: true,
         active: false,
         navlink: [
           {
@@ -232,9 +247,10 @@ export default {
         ],
       },
       Spravochnik: {
-        id: 5,
+        id: 6,
         icon: '$IconSetting',
         name: 'Настройки',
+        disclosure: true,
         active: false,
         navlink: [
           {
@@ -357,10 +373,14 @@ export default {
       console.log(id)
     }
 
+    const isMobile = useMobile()
+
     return {
       dataNavbar,
       Huy,
       activeLink,
+      isMobile,
+      isOpenMenu,
     }
   },
 }
