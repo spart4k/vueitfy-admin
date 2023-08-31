@@ -13,6 +13,7 @@
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "easy-yandex-s3": "^2.0.0",
+    "jquery": "^3.7.1",
     "portal-vue": "^2.1.7",
     "uuid": "^9.0.0",
     "v-mask": "^2.3.0",

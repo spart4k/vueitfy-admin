@@ -25,7 +25,9 @@
             v-for="item in item.navlink"
             :key="item.id"
           >
-            {{ item.name }}
+            <router-link :to="item.link">
+              {{ item.name }}
+            </router-link>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>

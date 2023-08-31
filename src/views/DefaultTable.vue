@@ -348,6 +348,7 @@ const tableConfigData = {
 import Vue from 'vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import Layout from '@/layouts/default/index'
+//import Axios from 'axios'
 
 export default {
   name: 'Table-View',
@@ -1770,8 +1771,20 @@ export default {
       headerEl.isShow = value
     },
   },
-  mounted() {
+  async mounted() {
     console.log(TableDefault)
+    const data = await fetch(
+      'http://10.63.1.132:5000/view/table/shop_request_magnit',
+      {
+        method: 'get',
+        mode: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          //'Content-Type': 'test/html', // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    )
+    console.log(data)
     //this.initData()
   },
 }

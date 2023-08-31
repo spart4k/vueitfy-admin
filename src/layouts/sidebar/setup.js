@@ -13,12 +13,12 @@ export default {
           {
             id: 1,
             name: 'Логи',
-            link: '',
+            link: '/table',
           },
           {
             id: 2,
             name: 'Для ОБД',
-            link: '',
+            link: '/test',
           },
           {
             id: 3,

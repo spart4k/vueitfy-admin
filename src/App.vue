@@ -4,6 +4,7 @@
   </v-app>
 </template>
 
+<script src="@/trash/choosen.min.js"></script>
 <script>
 export default {
   name: 'App',
