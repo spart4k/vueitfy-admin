@@ -1,8 +1,8 @@
-<template>
+<template dark>
   <v-card class="overflow-hidden topbar-card" width="100%" height="64px">
-    <v-app-bar color="white">
+    <v-app-bar color="topbar">
       <v-btn class="btn-menu__mob" icon v-if="isMobile">
-        <v-icon @click="isOpenMenu = !isOpenMenu" v-if="!isOpenMenu" key="menu">
+        <v-icon @click="setNammenu" v-if="true" key="menu">
           $IconOpenMenu
         </v-icon>
       </v-btn>
@@ -16,6 +16,7 @@
         ></v-text-field>
       </v-card-title>
       <v-toolbar-title></v-toolbar-title>
+      <v-switch v-model="$vuetify.theme.dark" inset persistent-hint></v-switch>
       <v-container>
         <!-- <div>
           <v-btn class="mx-1" color="primary" @click="messages++">

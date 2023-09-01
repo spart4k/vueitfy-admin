@@ -92,7 +92,7 @@
 }
 
 .v-navigation-drawer {
-  height    : calc(100% - 130px) !important;
+  height    : calc(100% - 170px) !important;
 }
 
 .nav-fio {
@@ -171,7 +171,7 @@
   position  : absolute;
   z-index   : $navbar-mobile-z;
   opacity   : 0;
-  transition: transform .7s ease-out, opacity .4s ease-out;
+  transition: transform .7s ease-in, opacity .4s ease-in;
 }
 
 .mobile-menu__window--open {
@@ -179,5 +179,5 @@
   position  : absolute;
   z-index   : $navbar-mobile-z;
   opacity   : 1;
-  transition: transform .7s ease-in, opacity .4s ease-in;
+  transition: transform .7s ease-out, opacity .7s ease-out;
 }

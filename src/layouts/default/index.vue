@@ -15,10 +15,12 @@
       >
         <Nav></Nav>
       </div>
-      <div id="bg__black" class="bg__black"></div>
+      <div
+        id="bg__black"
+        :class="isOpenMenu ? 'bg__black--active' : 'bg__black'"
+      ></div>
       <div class="d-flex flex-column flex-grow-1">
         <Topbar></Topbar>
-        {{ isOpenMenu }}
         <v-main class="d-flex flex-column flex-grow-1">
           <slot></slot>
           <!--<Alert />-->

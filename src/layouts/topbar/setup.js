@@ -1,14 +1,18 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from '@/store'
 import useMobile from '../Adaptive/checkMob.js'
-import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
+// import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
 
 export default {
   name: 'topBar',
   setup() {
     const isMobile = useMobile()
-    const isOpenMenu = useMenuMobile()
+    //const isOpenMenu = useMenuMobile()
     const messages = ref(0)
     const search = ref('')
+
+    const store = useStore()
+    const isOpenMenu = computed(() => store.state.navmenu)
 
     const itemSecondMenu = ref({
       edit: {
@@ -33,12 +37,17 @@ export default {
       },
     })
 
+    const setNammenu = () => {
+      store.commit('setNavmenu', !isOpenMenu.value)
+    }
+
     return {
       isMobile,
       messages,
       search,
       itemSecondMenu,
       isOpenMenu,
+      setNammenu,
     }
   },
 }
