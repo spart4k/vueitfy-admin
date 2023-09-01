@@ -15,9 +15,9 @@
 <style src="@/trash/choosen.min.css"></style>
 
 <!--<script src="https://personal-crm.ru/js/vendor/jquery/jquery-with-common-plugins.js"></script>-->
-<script src="@/trash/main.js"></script>
-<script src="@/trash/choosen.min.js"></script>
-<script src="@/trash/choosen.jquery.js"></script>
+<!--<script src="@/trash/main.js"></script>-->
+<!--<script src="@/trash/choosen.min.js"></script>-->
+<!--<script src="@/trash/choosen.jquery.js"></script>-->
 <script>
 //import '@/trash/jquery.common.js'
 import '@/trash/main.js'

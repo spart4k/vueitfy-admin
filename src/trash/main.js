@@ -3,6 +3,7 @@
 var $;
 $ = require('jquery');
 console.log($)
+console.log(require('jquery'))
 
 const currec = [];
 const list = []; //список значений основных полей справочника id name color
@@ -21,7 +22,7 @@ const any = [];
 // }
 
 $(window).ready(function () {
-  $('[data-toload]').appear();//use for appear
+  //$('[data-toload]').appear();//use for appear
   //$.force_appear();           //use for appear
 
 
@@ -424,12 +425,19 @@ function loadContent(url, el = '#content', setpushState = true, urlCondition = '
       history.pushState(null, null, url.replace("?h", "").replace("&h", "").replace("/form", "/wrap_form"));
     }
 
-    $('[data-toload]').appear();
+    //$('[data-toload]').appear();
     forceAppear(el);
   });
   return false;
 }
+fetch('http://10.63.1.132:5000/view/table/shop_request_magnit', {
+  method: "get",
 
+  'headers': {
+    "Access-Control-Allow-Origin": '10.63.1.132:5000',
+    "Content-Type": "application/json"// 'Content-Type': 'application/x-www-form-urlencoded',
+}}
+)
 function loadContentToTabOld(el, viewType, сondition, сonditionValue, setpushState = true) {
   //todo сделать циклом по вкладкам по атрибуту из тега а убрать title-wrapper hidden и сondition сделать массивом и сохранять для возможности фильтрации
   if (empty(сonditionValue)) {
@@ -491,7 +499,7 @@ function forceAppear(el = '#content') {
   if ($(el).hasClass('loaded')) return false;
 
   //$.force_appear();
-  $('[data-toload]').appear();
+  //$('[data-toload]').appear();
 
   $(el).on('appear', '[data-toload]', function (e, $affected) {
     $affected.each(function () {
@@ -560,7 +568,7 @@ function openPopup(url, el, className = 'modal-dialog modal-dialog-centered moda
           $('#form_modal_content' + lz + ' .modal-footer').append('<button focusable="false" class="btn btn-secondary btn-sm close-modal" onClick="hideModal(' + lz + ');unlockBtn();return false;"><i class="fas fa-window-close" aria-hidden="true"></i>Закрыть</button>');
 
           waitForElm('#form_modal_content' + lz).then((elm) => {
-            $('[data-toload]').appear();
+            //$('[data-toload]').appear();
             forceAppear('#form_modal_content' + lz);
           });
 
