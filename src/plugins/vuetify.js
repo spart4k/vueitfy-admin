@@ -18,9 +18,11 @@ export default new Vuetify({
         success: '#4CAF50',
         warning: '#FFC107',
         topbar: '#FFFFFF',
+        text: '#334D6E',
       },
       dark: {
         topbar: '#252525',
+        text: '#FFFFFF',
       },
     },
   },

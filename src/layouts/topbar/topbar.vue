@@ -2,7 +2,7 @@
   <v-card class="overflow-hidden topbar-card" width="100%" height="64px">
     <v-app-bar color="topbar">
       <v-btn class="btn-menu__mob" icon v-if="isMobile">
-        <v-icon @click="setNammenu" v-if="true" key="menu">
+        <v-icon @click="setNavmenu" v-if="true" key="menu">
           $IconOpenMenu
         </v-icon>
       </v-btn>

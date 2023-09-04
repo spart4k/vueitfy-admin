@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     setNavmenu(state, value) {
       state.navmenu = value
     },
-    collaspeNavmenu(state, value) {
+    collapseNavmenu(state, value) {
       state.collapse = value
     },
   },

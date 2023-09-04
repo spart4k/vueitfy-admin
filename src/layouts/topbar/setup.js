@@ -37,7 +37,7 @@ export default {
       },
     })
 
-    const setNammenu = () => {
+    const setNavmenu = () => {
       store.commit('setNavmenu', !isOpenMenu.value)
     }
 
@@ -47,7 +47,7 @@ export default {
       search,
       itemSecondMenu,
       isOpenMenu,
-      setNammenu,
+      setNavmenu,
     }
   },
 }

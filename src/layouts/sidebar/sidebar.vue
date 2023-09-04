@@ -1,4 +1,133 @@
 <template>
+  <transition name="expand" mode="out-in">
+    <v-card
+      height="100vh"
+      :class="isСollapseMenu ? 'navbar-card--collapse' : 'navbar-card'"
+      tile
+    >
+      <v-btn class="btn-menu__mob" icon v-if="isMobile" @click="setNavmenu">
+        <v-icon v-if="isOpenMenu" key="clear">$IconArrowLeft</v-icon>
+      </v-btn>
+      <v-list class="header-navbar" height="130px" z-index="$default-z">
+        <v-list-item>
+          <v-list-item-avatar
+            :class="isСollapseMenu ? 'avatar--collapse ' : ''"
+          >
+            <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+          </v-list-item-avatar>
+        </v-list-item>
+        <v-list-item link>
+          <v-list-item-content>
+            <v-list-item-title
+              :class="!isСollapseMenu ? 'text-h6 nav-fio' : 'nav-fio--collapse'"
+            >
+              <p v-if="!isСollapseMenu" color="text">Азаров Михаил</p>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-navigation-drawer permanent>
+        <v-expansion-panels multiple>
+          <v-expansion-panel v-for="item in dataNavbarHard" :key="item.id">
+            <template v-if="!item.disclosure">
+              <router-link active-class="active" :to="item.link" exact>
+                <div
+                  :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
+                >
+                  <div class="icon__navlink">
+                    <v-icon>{{ item.icon }}</v-icon>
+                  </div>
+                  <div
+                    :class="
+                      isСollapseMenu
+                        ? 'name__navlink--collapse'
+                        : 'name__navlink'
+                    "
+                  >
+                    <p>{{ item.name }}</p>
+                  </div>
+                </div>
+              </router-link>
+            </template>
+            <template v-if="item.disclosure && !isСollapseMenu">
+              <v-expansion-panel-header
+                :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                <p
+                  :class="
+                    isСollapseMenu ? 'name__navlink--collapse' : 'nav__navlink'
+                  "
+                >
+                  {{ item.name }}
+                </p>
+              </v-expansion-panel-header>
+            </template>
+            <template v-if="item.disclosure && isСollapseMenu">
+              <v-menu top :offset-x="offset">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon class="link__btn--collapse" v-bind="attrs" v-on="on">
+                    {{ item.icon }}
+                  </v-icon>
+                </template>
+                <v-list max-height="calc(100vh - 20px)">
+                  <v-list-item v-for="link in item.navlink" :key="link.id">
+                    <router-link active-class="active" :to="link.link" exact>
+                      <p class="navlink__item">
+                        {{ link.name }}
+                      </p>
+                    </router-link>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
+            <template v-if="!isСollapseMenu">
+              <v-expansion-panel-content
+                v-for="link in item.navlink"
+                :key="link.id"
+              >
+                <router-link active-class="active" :to="link.link" exact>
+                  <p class="navlink__item">
+                    {{ link.name }}
+                  </p>
+                </router-link>
+              </v-expansion-panel-content>
+            </template>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-navigation-drawer>
+      <template class="d-flex">
+        <v-btn
+          :class="collapseNavmenu ? 'btn-menu--collapse' : 'btn-menu__collapse'"
+          v-if="!isMobile"
+          @click="collapseNavmenu"
+          text
+          elevation="0"
+        >
+          <v-icon v-if="!isСollapseMenu" key="onCollapse" color="text">
+            $IconArrowLeft
+          </v-icon>
+          <v-icon
+            v-if="isСollapseMenu"
+            key="offCollapse"
+            color="text"
+            padding="0"
+            width="12"
+          >
+            $IconOpenMenu
+          </v-icon>
+          <span v-if="!isСollapseMenu" color="text">Свернуть</span>
+        </v-btn>
+      </template>
+    </v-card>
+  </transition>
+</template>
+
+<script src="./setup.js"></script>
+<style src="./style.scss" lang="scss"></style>
+
+<!-- 
+  <template>
   <v-card width="256" height="100vh" class="navbar-card" tile>
     <v-btn class="btn-menu__mob" icon v-if="isMobile" @click="setNavmenu">
       <v-icon v-if="setNavmenu" key="clear">$IconArrowLeft</v-icon>
@@ -53,16 +182,23 @@
     </v-navigation-drawer>
     <template class="d-flex">
       <v-btn
-        class="btn-menu__mob"
-        v-if="!isMobile && collapseNavmenu"
+        class="btn-menu__collapse"
+        v-if="!isMobile && !collapseNavmenu"
         @click="collapseNavmenu"
       >
-        <v-icon v-if="collapseNavmenu" key="clear">$IconArrowRight</v-icon>
-        <span>Свернуть</span>
+        <v-icon v-if="!collapseNavmenu" key="onCollapse">$IconArrowLeft</v-icon>
+        <span v-if="!collapseNavmenu">Свернуть</span>
+      </v-btn>
+      <v-btn
+        class="btn-menu__collapse"
+        v-if="!isMobile && !collapseNavmenu"
+        @click="collapseNavmenu"
+      >
+        <v-icon v-if="collapseNavmenu" key="offCollapse">$IconOpenMenu</v-icon>
       </v-btn>
     </template>
   </v-card>
 </template>
 
 <script src="./setup.js"></script>
-<style src="./style.scss" lang="scss"></style>
+<style src="./style.scss" lang="scss"></style>-->
