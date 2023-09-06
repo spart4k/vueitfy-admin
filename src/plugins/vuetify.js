@@ -19,10 +19,12 @@ export default new Vuetify({
         warning: '#FFC107',
         topbar: '#FFFFFF',
         text: '#334D6E',
+        navbar: '#FFFFFF',
       },
       dark: {
         topbar: '#252525',
         text: '#FFFFFF',
+        navbar: '#252525',
       },
     },
   },

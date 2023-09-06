@@ -4,14 +4,20 @@
       height="100vh"
       :class="isСollapseMenu ? 'navbar-card--collapse' : 'navbar-card'"
       tile
+      color="navbar"
     >
       <v-btn class="btn-menu__mob" icon v-if="isMobile" @click="setNavmenu">
         <v-icon v-if="isOpenMenu" key="clear">$IconArrowLeft</v-icon>
       </v-btn>
-      <v-list class="header-navbar" height="130px" z-index="$default-z">
+      <v-list
+        class="header-navbar"
+        height="130px"
+        z-index="$default-z"
+        color="navbar"
+      >
         <v-list-item>
           <v-list-item-avatar
-            :class="isСollapseMenu ? 'avatar--collapse ' : ''"
+            :class="isСollapseMenu ? 'avatar--collapse ' : 'avatar'"
           >
             <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
           </v-list-item-avatar>
@@ -19,17 +25,31 @@
         <v-list-item link>
           <v-list-item-content>
             <v-list-item-title
-              :class="!isСollapseMenu ? 'text-h6 nav-fio' : 'nav-fio--collapse'"
+              :class="
+                !isСollapseMenu
+                  ? 'text-h6 nav-fio'
+                  : 'text-h6  nav-fio--collapse'
+              "
             >
-              <p v-if="!isСollapseMenu" color="text">Азаров Михаил</p>
+              <p color="text">Азаров Михаил</p>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-navigation-drawer permanent>
-        <v-expansion-panels multiple>
-          <v-expansion-panel v-for="item in dataNavbarHard" :key="item.id">
-            <template v-if="!item.disclosure">
+      <v-navigation-drawer permanent color="navbar">
+        <v-expansion-panels multiple color="navbar">
+          <v-expansion-panel
+            v-for="item in dataNavbarHard"
+            :key="item.id"
+            color="navbar "
+          >
+            <template
+              :class="
+                !item.disclosure
+                  ? 'navmenu__navlinks'
+                  : 'navmenu__mavlinks--collapse'
+              "
+            >
               <router-link active-class="active" :to="item.link" exact>
                 <div
                   :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
@@ -41,10 +61,12 @@
                     :class="
                       isСollapseMenu
                         ? 'name__navlink--collapse'
-                        : 'name__navlink'
+                        : 'nav__navlink'
                     "
                   >
-                    <p>{{ item.name }}</p>
+                    <p color="text">
+                      {{ item.name }}
+                    </p>
                   </div>
                 </div>
               </router-link>
@@ -52,12 +74,14 @@
             <template v-if="item.disclosure && !isСollapseMenu">
               <v-expansion-panel-header
                 :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
+                color="navbar"
               >
                 <v-icon>{{ item.icon }}</v-icon>
                 <p
                   :class="
                     isСollapseMenu ? 'name__navlink--collapse' : 'nav__navlink'
                   "
+                  color="text"
                 >
                   {{ item.name }}
                 </p>
@@ -73,7 +97,7 @@
                 <v-list max-height="calc(100vh - 20px)">
                   <v-list-item v-for="link in item.navlink" :key="link.id">
                     <router-link active-class="active" :to="link.link" exact>
-                      <p class="navlink__item">
+                      <p class="navlink__item" color="text">
                         {{ link.name }}
                       </p>
                     </router-link>
@@ -85,9 +109,10 @@
               <v-expansion-panel-content
                 v-for="link in item.navlink"
                 :key="link.id"
+                color="navbar"
               >
                 <router-link active-class="active" :to="link.link" exact>
-                  <p class="navlink__item">
+                  <p class="navlink__item" color="text">
                     {{ link.name }}
                   </p>
                 </router-link>
@@ -103,6 +128,7 @@
           @click="collapseNavmenu"
           text
           elevation="0"
+          color="navbar"
         >
           <v-icon v-if="!isСollapseMenu" key="onCollapse" color="text">
             $IconArrowLeft
@@ -116,7 +142,9 @@
           >
             $IconOpenMenu
           </v-icon>
-          <span v-if="!isСollapseMenu" color="text">Свернуть</span>
+          <span v-if="!isСollapseMenu" class="text-collaspe__navbar">
+            Свернуть
+          </span>
         </v-btn>
       </template>
     </v-card>
