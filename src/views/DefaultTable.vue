@@ -1,7 +1,6 @@
 <template>
   <Layout>
     <div class="d-flex flex-column flex-grow-1">
-      <h1>This is an about page1</h1>
       <TableDefault
         @changeheadershow="changeheadershow"
         :options="tableConfig"
@@ -39,6 +38,7 @@ const tableConfigData = {
     },
     headerFixed: true,
     url: 'https://dummyjson.com/users',
+    title: 'This is an about page1',
   },
   panel: {
     buttons: [
