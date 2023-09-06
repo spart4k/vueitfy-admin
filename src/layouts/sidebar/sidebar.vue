@@ -43,34 +43,30 @@
             :key="item.id"
             color="navbar "
           >
-            <template
-              :class="
-                !item.disclosure
-                  ? 'navmenu__navlinks'
-                  : 'navmenu__mavlinks--collapse'
-              "
-            >
-              <router-link active-class="active" :to="item.link" exact>
-                <div
-                  :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
-                >
-                  <div class="icon__navlink">
-                    <v-icon>{{ item.icon }}</v-icon>
-                  </div>
+            <transition name="slide-fade">
+              <template v-if="!item.disclosure">
+                <router-link active-class="active" :to="item.link" exact>
                   <div
-                    :class="
-                      isСollapseMenu
-                        ? 'name__navlink--collapse'
-                        : 'nav__navlink'
-                    "
+                    :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
                   >
-                    <p color="text">
-                      {{ item.name }}
-                    </p>
+                    <div class="icon__navlink">
+                      <v-icon>{{ item.icon }}</v-icon>
+                    </div>
+                    <div
+                      :class="
+                        isСollapseMenu
+                          ? 'name__navlink--collapse'
+                          : 'nav__navlink'
+                      "
+                    >
+                      <p color="text">
+                        {{ item.name }}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </router-link>
-            </template>
+                </router-link>
+              </template>
+            </transition>
             <template v-if="item.disclosure && !isСollapseMenu">
               <v-expansion-panel-header
                 :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
