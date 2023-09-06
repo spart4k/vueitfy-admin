@@ -22,7 +22,9 @@
       <div class="d-flex flex-column flex-grow-1">
         <Topbar></Topbar>
         <v-main class="d-flex flex-column flex-grow-1">
-          <slot></slot>
+          <template color="cell" class="main__cell">
+            <slot></slot>
+          </template>
           <!--<Alert />-->
         </v-main>
       </div>
