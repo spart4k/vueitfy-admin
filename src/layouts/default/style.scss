@@ -1,3 +1,8 @@
+.layout {
+  &-default {
+    max-height: 100%;
+  }
+}
 .bg__black {
   width           : 100vw;
   min-height      : 100vh;
