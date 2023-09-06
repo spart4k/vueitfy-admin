@@ -1,19 +1,22 @@
-<template>
-  <v-card class="overflow-hidden" width="100%" height="64px">
-    <v-app-bar color="white">
-      <v-btn icon v-if="isMobile">
-        <v-icon>$IconOpenMenu</v-icon>
+<template dark>
+  <v-card class="overflow-hidden topbar-card" width="100%" height="64px">
+    <v-app-bar color="topbar">
+      <v-btn class="btn-menu__mob" icon v-if="isMobile">
+        <v-icon @click="setNavmenu" v-if="true" key="menu">
+          $IconOpenMenu
+        </v-icon>
       </v-btn>
       <v-card-title>
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="Поиск "
           single-line
           hide-details
         ></v-text-field>
       </v-card-title>
       <v-toolbar-title></v-toolbar-title>
+      <v-switch v-model="$vuetify.theme.dark" inset persistent-hint></v-switch>
       <v-container>
         <!-- <div>
           <v-btn class="mx-1" color="primary" @click="messages++">

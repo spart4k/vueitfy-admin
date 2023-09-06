@@ -34,7 +34,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-
+  background-color: $table-background;
 }
 
 $paddingCell: 5px;

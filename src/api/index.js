@@ -1,4 +1,5 @@
 import Cities from './cities'
+import Navmenu from './navmenu'
 //import axios from 'axios'
 
 //axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
@@ -9,3 +10,4 @@ import Cities from './cities'
 // 3001/review
 
 export const tableApi = new Cities()
+export const navmenuApi = new Navmenu()

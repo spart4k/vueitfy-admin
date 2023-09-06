@@ -1,14 +1,27 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from '@/store'
+import useMobile from '../Adaptive/checkMob.js'
+
+// import { navmenuApi } from '@/api'
+// import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
 
 export default {
   name: 'dataNavbar',
   setup() {
-    const dataNavbar = ref({
-      MainTable: {
+    const dataNavbarHard = ref({
+      Home: {
         id: 1,
+        icon: `$IconMain`,
+        name: 'Главная',
+        link: '/main',
+        disclosure: false,
+      },
+      MainTable: {
+        id: 2,
         icon: `$IconTable`,
         name: 'Основные таблицы',
         active: false,
+        disclosure: true,
         navlink: [
           {
             id: 1,
@@ -18,47 +31,47 @@ export default {
           {
             id: 2,
             name: 'Для ОБД',
-            link: '/test',
+            link: '/navbar',
           },
           {
             id: 3,
             name: 'Планнинг',
-            link: '',
+            link: '/navbar',
           },
           {
             id: 4,
             name: 'Штатное расписание',
-            link: '',
+            link: '/',
           },
           {
             id: 5,
             name: 'Командировка',
-            link: '',
+            link: '/',
           },
           {
             id: 6,
             name: 'График',
-            link: '',
+            link: '/',
           },
           {
             id: 7,
             name: 'Аккаунт',
-            link: '',
+            link: '/',
           },
           {
             id: 8,
             name: 'Персонал',
-            link: '',
+            link: '/',
           },
           {
             id: 9,
             name: 'Персонал',
-            link: '',
+            link: '/',
           },
           {
             id: 10,
             name: 'Документы',
-            link: '',
+            link: '/',
           },
           {
             id: 11,
@@ -149,9 +162,10 @@ export default {
       },
       Otchets: {
         active: false,
-        id: 2,
+        id: 3,
         icon: '$IconOtchet',
         name: 'Отчеты',
+        disclosure: true,
         navlink: [
           {
             id: 28,
@@ -192,9 +206,10 @@ export default {
       },
       System: {
         active: false,
-        id: 3,
+        id: 4,
         icon: '$IconSystem',
         name: 'Система',
+        disclosure: true,
         navlink: [
           {
             id: 35,
@@ -219,9 +234,10 @@ export default {
         ],
       },
       Graph: {
-        id: 4,
+        id: 5,
         icon: '$IconGraphic',
         name: 'Графики',
+        disclosure: true,
         active: false,
         navlink: [
           {
@@ -232,9 +248,10 @@ export default {
         ],
       },
       Spravochnik: {
-        id: 5,
+        id: 6,
         icon: '$IconSetting',
         name: 'Настройки',
+        disclosure: true,
         active: false,
         navlink: [
           {
@@ -340,15 +357,46 @@ export default {
         ],
       },
     })
+    const store = useStore()
+    const isOpenMenu = computed(() => store.state.navmenu)
+    const isСollapseMenu = computed(() => store.state.collapse)
+    const isMobile = useMobile()
+    const navLinks = ref([])
 
-    const Huy = (el) => {
-      console.log(el)
-      el.active = !el.active
-      console.log('el after', el.active)
+    // const getNavLink = async () => {
+    //   const dataNavbar = await navmenuApi.get()
+    //   dataNavbar.forEach((el) => {
+    //     console.log(el.child_json.length)
+    //     if (el.child_json.length > 0) {
+    //       el.child_json = JSON.parse(el.child_json)
+    //     }
+    //   })
+    //   navLinks.value = dataNavbar
+    // }
+    console.log('navLinks', navLinks.value)
+
+    const setNavmenu = () => {
+      store.commit('setNavmenu', !isOpenMenu.value)
     }
+
+    const collapseNavmenu = () => {
+      store.commit('collapseNavmenu', !isСollapseMenu.value)
+    }
+
+    // onMounted(async () => {
+    //   await getNavLink()
+    // })
+
     return {
-      dataNavbar,
-      Huy,
+      dataNavbarHard,
+      isMobile,
+      isOpenMenu,
+      isСollapseMenu,
+      store,
+      // getNavLink,
+      navLinks,
+      setNavmenu,
+      collapseNavmenu,
     }
   },
 }

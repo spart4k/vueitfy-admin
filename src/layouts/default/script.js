@@ -1,8 +1,11 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from '@/store'
 
 import Nav from '@/layouts/sidebar/sidebar.vue'
 import Topbar from '@/layouts/topbar/topbar.vue'
 import useMobile from '../Adaptive/checkMob.js'
+
+//import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
 //import Alert from '@/components/Alert'
 
 export default {
@@ -14,6 +17,9 @@ export default {
   },
   setup() {
     const isMobile = useMobile()
+    const store = useStore()
+    const isOpenMenu = computed(() => store.state.navmenu)
+
     const el = ref()
     const items = ref([
       { title: 'Главная', icon: 'mdi-cog', route: '/', group: true },
@@ -77,6 +83,7 @@ export default {
       username,
       logout,
       isMobile,
+      isOpenMenu,
     }
   },
 }
