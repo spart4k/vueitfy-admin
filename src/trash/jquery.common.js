@@ -1,4 +1,6 @@
 /* eslint-disable */
+console.log('start jqueary')
+
 /**
  * Combined by jsDelivr.
  * Original files:

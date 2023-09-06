@@ -1,0 +1,678 @@
+<div class="">
+  <div class="modal-header py-0 mb-1">
+    <div class="form-header" data-toload="tpl:'h1',append:false, clear:false, className:'fas fa-money-bill',title:'Начисления добавление'"></div>
+  </div>
+  <div class="card">
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item"><a class="nav-link active" id="a_tab-0-payment" data-bs-toggle="tab" data-bs-target="#tab-0-payment" type="button" role="tab" aria-controls="tab-0-payment">Основные</a></li>
+                      <li class="nav-item">
+              <a class="nav-link" onclick="loadContentToTab(this, 'table', '&payment_id={form_payment_id}', null );return false;" id="a_tab_payment_rashod" data-bs-toggle="tab" data-bs-target="#tab_payment_rashod" type="button" role="tab" aria-controls="tab_payment_rashod">Расход</a>
+            </li>
+                  </ul>
+      </div>
+      <div class="tab-content card-body p-0">
+        <div class="tab-pane p-1 show active" id="tab-0-payment" aria-labelledby="a_tab-0-payment">
+                <form id="form_payment">
+            <div class="modal-body bg-white clearfix">
+
+                           <div id="form_payment_id_div" class="form_block  hidden ">
+
+                                      <label class="form-label mt-1 mb-1 id hidden" for="form_payment_id">id:</label>
+
+
+
+                                    <input id="form_payment_id" type="hidden" value=""  name ="id" autocomplete="off"  class="form-control id hidden">
+                                </div>
+
+                          <div id="form_payment_status_id_div" class="form_block col-sm-12 col-md-3 float-md-start pe-md-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_status_id">Статус:</label>
+
+
+
+                                      <select id="form_payment_status_id"  name ="status_id" autocomplete="off"  data-rules="required:true" class="form-control" data-placeholder=""  data-selval="" data-alias="status_id" data-param="disable_search: true">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_status_id", "disable_search: true")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_status_account_id_div" class="form_block col-sm-12 col-md-6 float-md-start pe-md-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_status_account_id">Cтатус от:</label>
+
+
+
+                                      <select id="form_payment_status_account_id"  name ="status_account_id" autocomplete="off"  class="form-control" data-placeholder=""  data-selval="" data-alias="account_all" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_status_account_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_date_status_div" class="form_block col-sm-12 col-md-3 float-md-start">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_date_status">Смена статуса:</label>
+
+
+
+                                    <input id="form_payment_date_status" type="datetime-local" value="" readonly tabindex="-1" name ="date_status" autocomplete="off"  class="form-control">
+                                </div>
+
+                          <div id="form_payment_Label0_div" class="form_block clearfix col-12">
+
+                              </div>
+
+                          <div id="form_payment_date_add_div" class="form_block col-sm-12 col-md-3 float-md-start pe-md-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_date_add">Дата начисл:</label>
+
+
+
+                                                          <input id="form_payment_date_add" type="date" value="" readonly tabindex="-1" name ="date_add" autocomplete="off"  class="form-control">
+                                                    </div>
+
+                          <div id="form_payment_account_id_div" class="form_block col-sm-12 col-md-6 float-md-start pe-md-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_account_id">Менеджер:</label>
+
+
+
+                                      <select id="form_payment_account_id"  name ="account_id" autocomplete="off"  class="form-control" data-placeholder=""  data-selval="" data-alias="manager_all" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_account_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_direction_id_div" class="form_block col-sm-12 col-md-3 float-md-start">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_direction_id">Направление:</label>
+
+
+
+                                      <select id="form_payment_direction_id"  name ="direction_id" autocomplete="off"  data-rules="required:true" class="form-control" data-placeholder=""  data-selval="" data-alias="direction_id" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_direction_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_Label1_div" class="form_block clearfix col-12">
+
+                              </div>
+
+                          <div id="form_payment_personal_id_div" class="form_block col-sm-12 col-md-4 float-md-start pe-md-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_personal_id">Линейщик:</label>
+
+
+
+                                      <select id="form_payment_personal_id"  name ="personal_id" placeholder="Выберите" autocomplete="off"  data-rules="required:true" class="form-control" data-placeholder="Выберите"  data-selval="" data-alias="personal_id" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_personal_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_object_id_div" class="form_block col-sm-12 col-md-4 float-md-start pe-md-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_object_id">Обьект:</label>
+
+
+
+                                      <select id="form_payment_object_id"  name ="object_id" placeholder="Выберите обьект" autocomplete="off"  data-rules="required:true" class="form-control" data-placeholder="Выберите обьект"  data-selval="" data-alias="object_id" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_object_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_doljnost_id_div" class="form_block col-sm-12 col-md-4 float-md-start">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_doljnost_id">Должность:</label>
+
+
+
+                                      <select id="form_payment_doljnost_id"  name ="doljnost_id" placeholder="Выберите должность" autocomplete="off"  data-rules="required:true" class="form-control" data-placeholder="Выберите должность"  data-selval="" data-alias="doljnost_id" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_doljnost_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_Label2_div" class="form_block clearfix col-12">
+
+                              </div>
+
+                          <div id="form_payment_vid_vedomost_id_div" class="form_block col-6 float-start pe-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_vid_vedomost_id">Вид ведомости:</label>
+
+
+
+                                      <select id="form_payment_vid_vedomost_id"  name ="vid_vedomost_id" autocomplete="off"  data-rules="required:true" class="form-control" data-placeholder=""  data-selval="" data-alias="vid_vedomost_id" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_vid_vedomost_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_st_rashod_id_div" class="form_block col-6 float-start">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_st_rashod_id">Статья расхода:</label>
+
+
+
+                                      <select id="form_payment_st_rashod_id"  name ="st_rashod_id" placeholder="Выберите" autocomplete="off"  data-rules="required:true" class="form-control" data-placeholder="Выберите"  data-selval="1" data-alias="st_rashod_id" data-param="">
+                      </select>
+                      <script type="application/javascript">
+                        initSelect("form_payment_st_rashod_id", "")
+                      </script>
+
+                                    </div>
+
+                          <div id="form_payment_hour_x5_div" class="form_block  hidden ">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_hour_x5">hour_x5:</label>
+
+
+
+                                    <input id="form_payment_hour_x5" type="hidden" value=""  name ="hour_x5" autocomplete="off"  class="form-control">
+                                </div>
+
+                          <div id="form_payment_hour_x5_log_div" class="form_block  hidden ">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_hour_x5_log">hour_x5_log:</label>
+
+
+
+                                    <input id="form_payment_hour_x5_log" type="hidden" value=""  name ="hour_x5_log" autocomplete="off"  class="form-control">
+                                </div>
+
+                          <div id="form_payment_hour_div" class="form_block col-1 float-start pe-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_hour">Часы:</label>
+
+
+
+                                    <input id="form_payment_hour" type="text" value="10.5"  name ="hour" autocomplete="off"  data-rules="required:true,number: true" class="form-control">
+                                </div>
+
+                          <div id="form_payment_object_price_price_div" class="form_block col-2 float-start pe-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_object_price_price">Тариф:</label>
+
+
+
+                                    <input id="form_payment_object_price_price" type="text" value="" readonly tabindex="-1" name ="object_price_price" autocomplete="off"  class="form-control">
+                                </div>
+
+                          <div id="form_payment_total_div" class="form_block col-2 float-start pe-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_total">Сумма:</label>
+
+
+
+                                    <input id="form_payment_total" type="text" value=""  name ="total" autocomplete="off"  data-rules="number:true" class="form-control">
+                                </div>
+
+                          <div id="form_payment_nal_div" class="form_block col-2 float-start pe-2">
+
+                                      <label class="form-label mt-1 mb-1 nal" for="form_payment_nal">Минус нал:</label>
+
+
+
+                                    <input id="form_payment_nal" type="text" value="0"  name ="nal" autocomplete="off"  data-rules="digits:true" class="form-control nal">
+                                </div>
+
+                          <div id="form_payment_debit_div" class="form_block col-2 float-start pe-2">
+
+                                      <label class="form-label mt-1 mb-1 debit" for="form_payment_debit">Удержано:</label>
+
+
+
+                                    <input id="form_payment_debit" type="text" value="0" disabled tabindex="-1" name ="debit" autocomplete="off"  data-rules="digits:true" class="form-control debit">
+                                </div>
+
+                          <div id="form_payment_debit_percent_div" class="form_block col-2 float-start pe-2">
+
+                                      <label class="form-label mt-1 mb-1 debit_percent" for="form_payment_debit_percent">% удержания:</label>
+
+
+
+                                    <input id="form_payment_debit_percent" type="text" value="0" disabled tabindex="-1" name ="debit_percent" autocomplete="off"  data-rules="digits:true" class="form-control debit_percent">
+                                </div>
+
+                          <div id="form_payment_date_target_div" class="form_block col-sm-12 col-md-3 float-md-start">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_date_target">Назначение на даты:</label>
+
+
+
+                                                          <input id="form_payment_date_target" type="date" value=""  name ="date_target" autocomplete="off"  data-rules="required:true" class="form-control">
+                                                    </div>
+
+                          <div id="form_payment_date_target_multiple_div" class="form_block float-lg-start col-lg-5 col-sm-12 row">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_date_target_multiple">Начисления на дни:</label>
+
+
+
+                                    <input id="form_payment_date_target_multiple" type="text" value=""  name ="date_target_multiple" autocomplete="off"  data-rules="required:true" class="form-control">
+                                </div>
+
+                          <div id="form_payment_label4_div" class="form_block clearfix col-12 mb-2">
+
+                              </div>
+
+                          <div id="form_payment_bank_id_div" class="form_block col-sm-12 col-md-6 float-md-start pe-md-2 hidden ">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_bank_id">Банк:</label>
+
+
+
+                                    <input id="form_payment_bank_id" type="hidden" value=""  name ="bank_id" placeholder="Выберите банк" autocomplete="off"  data-rules="required:true" class="form-control">
+                                </div>
+
+                          <div id="form_payment_personal_bank_id_div" class="form_block col-sm-12 col-md-6 float-md-start pe-md-2">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_personal_bank_id">Банк.карта/нал:</label>
+
+
+
+                                    <select id="form_payment_personal_bank_id"  name ="personal_bank_id" placeholder="Выберите" autocomplete="off"  data-rules="required:true" class="form-control" data-json='[{"id": 0, "name": ""}]' data-alias="" data-placeholder="Выберите"  data-selval=""></select><br>
+                    <script type="application/javascript">
+                      initSelect('form_payment_personal_bank_id', 'disable_search: true');
+                    </script>
+                                </div>
+
+                          <div id="form_payment_invoice_div" class="form_block col-sm-12 col-md-6 float-md-start">
+
+                                      <label class="form-label mt-1 mb-1 px-1" for="form_payment_invoice">Р/С:</label>
+
+
+
+                                    <input id="form_payment_invoice" type="text" value="" readonly tabindex="-1" name ="invoice" autocomplete="off"  class="form-control px-1">
+                                </div>
+
+                          <div id="form_payment_Label2_div" class="form_block clearfix">
+
+                              </div>
+
+                          <div id="form_payment_fio_div" class="form_block col-sm-12 col-md-6">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_fio">Карта на имя:</label>
+
+
+
+                                    <input id="form_payment_fio" type="text" value="" readonly tabindex="-1" name ="fio" autocomplete="off"  class="form-control">
+                                </div>
+
+                          <div id="form_payment_Label3_div" class="form_block clearfix row col-12 mb-0 ">
+
+                              </div>
+
+                          <div id="form_payment_error_text_div" class="form_block ">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_error_text">Текст ошибки:</label>
+
+
+
+                                    <textarea id="form_payment_error_text" rows="1"  name ="error_text" autocomplete="off"  class="form-control" ></textarea>
+
+                                                    </div>
+
+                          <div id="form_payment_comment_div" class="form_block ">
+
+                                      <label class="form-label mt-1 mb-1 " for="form_payment_comment">Примечания:</label>
+
+
+
+                                    <textarea id="form_payment_comment" rows="1"  name ="comment" autocomplete="off"  class="form-control" ></textarea>
+
+                                                    </div>
+
+                          <div id="form_payment_object_price_id_div" class="form_block  hidden ">
+
+                                    <input id="form_payment_object_price_id" type="hidden" value=""  name ="object_price_id" autocomplete="off"  class="form-control">
+                                </div>
+
+                          <div id="form_payment_object_price_category_div" class="form_block  hidden ">
+
+                                    <input id="form_payment_object_price_category" type="hidden" value=""  name ="object_price_category" autocomplete="off"  class="form-control">
+                                </div>
+
+                      </div>
+                  <script type="application/javascript">
+          document.dataForm = {};
+          document.array = 'id=;status_id=;status_account_id=;date_status=;date_add=;account_id=;direction_id=;personal_id=;object_id=;doljnost_id=;vid_vedomost_id=;st_rashod_id=;hour_x5=;hour_x5_log=;hour=;object_price_price=;total=;nal=;debit=;debit_percent=;date_target=;bank_id=;personal_bank_id=;invoice=;fio=;error_text=;comment=;object_price_id=;object_price_category=;';
+          document.array.split(';').forEach(newSplit => {
+            let tmp = newSplit.split('=');
+            if (tmp[0] != '') {
+              document.dataForm[tmp[0]] = tmp[1]
+            }
+          })
+        </script>
+        </form>
+                </div>
+                  <div class="tab-pane p-1" id="tab_payment_rashod" aria-labelledby="a_tab_payment_rashod"></div>
+          <script type="application/javascript">
+            setTimeout(() => $('#tab_payment_rashod').height($("#tab-0-payment").height()), 1000);
+          </script>
+              </div>
+        <div class="modal-footer bg-white payment_modal">
+                    <button id="save_form_payment" form="form_payment" type="submit" accesskey="ы" class="btn btn-primary btn-sm"><i class="fas fa-save"></i>Сохранить
+        </button>
+          </div>
+
+    <script type="application/javascript">
+      $(document).ready(function() {
+
+        const alias = 'payment';
+
+        $(document).off('keydown');
+        $(document).on('keydown', function(e) {
+          //  $(document).unbind('keydown', 'Escape');
+          if (e.key === "Escape") {
+            if (1 == 1) {
+              //$('#form_' + alias).find('.close-modal').trigger('click');
+              let n = ''
+              if ($('#modal2').length) {
+                n = '2';
+              }
+
+              $("#modal" + n).modal('hide');
+              $("#modal_wrapper" + n).html('');
+              unlockBtn();
+              document.items = []
+              document.count_price = 1
+            } else {
+              back();
+            }
+            return false;
+          }
+        });
+
+
+        //focus first
+        $("#form_" + alias).find(":first *:input,select,textarea").filter(":not([readonly='readonly']):not([disabled='disabled']):not([type='hidden'])").first().focus();
+        try {
+          $("#form_" + alias).find(":first *:input,select,textarea").filter(":not([readonly='readonly']):not([disabled='disabled']):not([type='hidden'])").first().focus().trigger('chosen:activate');
+        } catch (e) {}
+
+        $('#form_' + alias).find('[data-alias], [data-json]').each(function() {
+
+          //fill defaul value by filter select  if not name=status !!
+          if (empty($('#form_' + alias + '_id').val()) && this.id != 'form_' + alias + '_status' && !empty($('#' + this.id.replace('form_', 'filter_')).val())) {
+            this.dataset.selval = $('#' + this.id.replace('form_', 'filter_')).val(); //status not COPY!
+          }
+
+          const valArr = valToArrInt(this.dataset.selval);
+          //const aliasJoin = replace2all(this.dataset.alias); //_id to _all   в инпутах и таблицах
+
+          if (this.nodeName === 'INPUT') {
+            let elVal = '';
+
+            console.log('this.dataset.alias', this.dataset.alias);
+
+            const aliasJoin = replace2all(this.dataset.alias); //_id to _all   в инпутах и таблицах
+            $.each(valArr, function(i, v) {
+              try {
+                elVal += list[aliasJoin].find(item => item.id == v)['name']; //to do get data
+                elVal += ' ';
+              } catch (e) {
+
+                elVal = ''
+              }
+            });
+
+            if (!empty(this.dataset.selval)) this.value = elVal;
+
+          } else {
+
+            if ($(this).hasAttr("data-json")) {
+              fillItems(JSON.parse(this.dataset.json), valArr, this.id)
+              this.dataset.json = "";
+            }
+
+            if ($(this).hasAttr("data-alias")) {
+              if ($(this).hasAttr("data-chained")) {
+                const chainedEl = this.id;
+                const chainedAlias = this.dataset.alias;
+                const chainedFilter = this.dataset.chained;
+                const $parentEl = $('#form_' + alias + '_' + chainedFilter);
+
+                if (!empty($parentEl.val())) fillItems(list[chainedAlias].filter(item => item[this.dataset.chained] == $parentEl.val()), valArr, chainedEl);
+                $parentEl.on('change', function() {
+                  if (typeof document.items !== "undefined" && "payment" == 'zayavka') {
+                    document.items.forEach(item => {
+                      item.element.empty()
+                      fillItems(list[chainedAlias].filter(item => item[chainedFilter] == $parentEl.val()), valArr, item.id);
+                    })
+                  } else {
+                    $('#' + chainedEl).empty();
+                    fillItems(list[chainedAlias].filter(item => item[chainedFilter] == $parentEl.val()), null, chainedEl, true);
+                  }
+                });
+
+              } else {
+                fillItems(list[this.dataset.alias], valArr, this.id);
+              }
+            }
+          }
+        });
+
+        //default value from_account_id
+        const from_account_id = $('#form_' + alias + '_from_account_id');
+        if (from_account_id.length > 0 && empty(from_account_id.val())) {
+          from_account_id.val(SESSION.get('account_id'));
+        }
+
+        //default value date_add
+        const form_date_add = $('#form_' + alias + '_date_add');
+        if (form_date_add.length > 0 && empty(form_date_add.val())) {
+          form_date_add.val(moment(new Date()).format("YYYY-MM-DD"));
+        }
+
+        //цвет
+        const color_pic = $('#form_' + alias + '_color_pic');
+        $(color_pic).change(function() {
+          const color = $('#form_' + alias + '_color');
+          color.val($(this).val());
+          color.css('background-color', $(this).val());
+        });
+
+        document.isMultiple = `0`;
+        document.isAdd = `1`;
+        document.dataFormGet = JSON.parse(`0`);
+        document.dataDocumentTask = `0`;
+        document.fromTaskIsDocument =`0`;
+        window.eval('var script_openForm = function (){' + '$.ajax({type: \"GET\",url: \'\/js\/payment.js\'+DEBUG,dataType: \"script\",cache: true});' + '};');
+        script_openForm();
+
+        //upload file
+        const dz = $('#form_' + alias).find('.dz-noupload');
+        var fileupload = [];
+        if (dz.length && alias != 'zayavka') {
+
+          console.log('-------')
+          console.log(dz)
+          $(dz).each(function() {
+            let path = this.dataset.path;
+            let el = this.id;
+            let acceptedfiles = this.dataset.acceptedfiles;
+            let filename = el.replace('_dz', '').replace('form_', '') + moment().format('YYDDMMhmmss');
+            if (el == 'form_shop_request_magnit_path_act_dz') {
+
+              let object_name = "";
+              let account_name = "";
+              let date_create = "";
+              let personal_name = "";
+
+             // object
+              $('#form_shop_request_magnit_object_id').on('change', function () {
+                let object = getListValueByNameField(
+                  "object_id",
+                  $('#form_shop_request_magnit_object_id').val(),
+                  "name"
+               );
+               let object_1 = object.split(" ");
+               object_name = object_1[0];
+               filename = account_name + "_"+object_name+"_"+date_create+"_"+personal_name+"_"+ Date.now();
+               fileupload[el].options.url = '/fm?p=' + path + '&newname=' + filename
+              })
+
+              // fio namager
+              $('#form_shop_request_magnit_account_id').on('change', function () {
+                  let account = getListValueByNameField(
+                    "account_all",
+                    $('#form_shop_request_magnit_account_id').val(),
+                    "name"
+                  );
+                  let account_fam = account.split(" ");
+                  account_name = account_fam[0];
+                  filename = account_name + "_"+object_name+"_"+date_create+"_"+personal_name+"_"+ Date.now();
+                  fileupload[el].options.url = '/fm?p=' + path + '&newname=' + filename
+              })
+
+              //date
+
+              $('#form_shop_request_magnit_date_request').on('change', function () {
+                let date_1 = $('#form_shop_request_magnit_date_request').val();
+                let date = date_1.split('T');
+                date_create = date[0];
+                // date_create = $('#form_shop_request_magnit_date_request').val();
+                filename = account_name + "_"+object_name+"_"+date_create +"_"+personal_name+"_"+ Date.now();
+                console.log(filename);
+                fileupload[el].options.url = '/fm?p=' + path + '&newname=' + filename;
+              })
+
+              //fio linear
+
+              $('#form_shop_request_magnit_personal_id').on('change', function () {
+                let personal = getListValueByNameField (
+                    "personal_all",
+                    $('#form_shop_request_magnit_personal_id').val(),
+                    "name"
+                );
+                personal_name = personal.replaceAll(' ', '');
+                filename = account_name + "_"+object_name+"_"+date_create+"_"+personal_name+"_"+ Date.now();
+                console.log(filename);
+                fileupload[el].options.url = '/fm?p=' + path + '&newname=' + filename
+              })
+            }
+            console.log('-------')
+            console.log(path)
+            console.log(el)
+            console.log(acceptedfiles)
+            console.log(filename)
+            //Dropzone.autoDiscover = false;
+            fileupload[el] = new Dropzone('#' + el, {
+              maxFilesize: 12582912, //12mb
+              maxFiles: 1,
+              uploadMultiple: false,
+              parallelUploads: 10,
+              timeout: 0,
+              resizeWidth: 1200, //todo resize
+              resizeHeight: 1200,
+              resizeQuality: 0.8,
+              autoProcessQueue: alias == 'shop_request_magnit' ? true : false,
+              acceptedFiles: acceptedfiles,
+              url: '/fm?p=' + path + '&newname=' + filename,
+              init: function() {
+
+                this.on("sending", function(file, xhr, formData) {
+                  console.log('--a--a--')
+                  let xx = '/files/' + path + '/' + filename + '.' + file.name.toString().split('.').pop().toLowerCase();
+                  console.log(xx);
+                  $('#' + el.replace('_dz', '')).val(xx);
+
+                  xhr.ontimeout = (function() {
+                    slidePopup('Error: Server Timeout', 'danger');
+                  });
+
+                }).on("success", function(res) {
+
+                  let _response = JSON.parse(res.xhr.response);
+                  if (_response.status == "error") {
+                    slidePopup(_response.info, 'danger');
+
+                  } else {
+
+                    $('#' + el).removeClass('dz-noupload').addClass('dz-uploaded');
+
+                  }
+
+                }).on("error", function(file, response) {
+
+                  slidePopup(response, 'danger');
+
+                });
+              }
+            });
+
+            $(this).addClass('dropzone');
+
+          });
+
+        }
+
+        console.log('----'+alias+'----');
+        //console.log(fileupload);
+        //save form
+        $('#save_form_' + alias).on("click", function() {
+
+          lockBtn($(this));
+          //console.log('#form_'+alias+' .dz-noupload')
+          if ($('#form_'+alias+' .dz-noupload').length && alias != 'zayavka') {
+            //console.log('-g-g-g-g-g')
+            $('#form_'+alias+' .dz-noupload').each(function() {
+              //console.log('-s-s-s-s-s')
+              fileupload[this.id].processQueue();
+
+            });
+
+            setTimeout(() => {
+              validForm($('#form_' + alias));
+              if ($('#form_' + alias).valid() === false) return false;
+              saveForm($('#form_' + alias), 'payment', alias);
+            }, 700);
+
+            return false;
+
+          } else {
+
+            validForm($('#form_' + alias));
+            if ($('#form_' + alias).valid() === false) return false;
+
+            saveForm($('#form_' + alias), 'payment', alias);
+
+          }
+
+        });
+
+        // function save() {
+
+        //   //todo wait loading files
+        //   validForm($('#form_' + alias));
+        //   if ($('#form_' + alias).valid() === false) return false;
+        //   //if (validForm($('#form_' + alias)).valid() === false) return false;
+        //   saveForm($('#form_' + alias), 'payment', alias);
+
+        // }
+
+      });
+    </script>
+
+  </div>
+</div>

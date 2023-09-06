@@ -16,5 +16,6 @@ module.exports = {
       .test(/\.html$/)
       .use('html-loader')
       .loader('html-loader')
-  }
+  },
+  runtimeCompiler: true,
 }

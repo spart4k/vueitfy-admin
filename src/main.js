@@ -8,6 +8,8 @@ import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/styles/main.scss'
 import PortalVue from 'portal-vue'
 
+//import mainJS from '@/trash/main.js'
+
 Vue.config.productionTip = false
 Vue.use(PortalVue)
 
@@ -16,6 +18,7 @@ new Vue({
   store,
   vuetify,
   axios,
+  //mainJS,
   render: (h) => h(App),
 }).$mount('#app')
 
