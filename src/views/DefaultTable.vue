@@ -1,14 +1,13 @@
 <template>
-  <Layout>
-    <div class="d-flex flex-column flex-grow-1">
-      <TableDefault
-        @changeheadershow="changeheadershow"
-        :options="tableConfig"
-        :filtersConfig="filtersConfig"
-      />
-    </div>
-    <portal-target name="filter" />
-  </Layout>
+  <!--<Layout>-->
+  <div class="d-flex flex-column flex-grow-1">
+    <TableDefault
+      @changeheadershow="changeheadershow"
+      :options="tableConfig"
+      :filtersConfig="filtersConfig"
+    />
+  </div>
+  <!--</Layout>-->
 </template>
 
 <script>
@@ -347,7 +346,7 @@ const tableConfigData = {
 
 import Vue from 'vue'
 import TableDefault from '@/components/Table/default/index.vue'
-import Layout from '@/layouts/default/index'
+//import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 
 export default {
@@ -355,7 +354,7 @@ export default {
 
   components: {
     TableDefault,
-    Layout,
+    //Layout,
   },
   data() {
     return {

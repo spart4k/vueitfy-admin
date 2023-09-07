@@ -1,14 +1,19 @@
 <template>
   <v-app>
-    <router-view />
+    <LayoutDefault>
+      <router-view />
+      <portal-target name="filter" />
+    </LayoutDefault>
   </v-app>
 </template>
 
-<script src="@/trash/choosen.min.js"></script>
 <script>
+import LayoutDefault from '@/layouts/default/index.vue'
 export default {
   name: 'App',
-
+  components: {
+    LayoutDefault,
+  },
   data: () => ({
     //
   }),
