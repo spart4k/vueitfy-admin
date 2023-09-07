@@ -50,7 +50,12 @@
                   : 'navmenu__mavlinks--collapse'
               "
             >
-              <router-link active-class="active" :to="item.link" exact>
+              <router-link
+                color="text"
+                active-class="active"
+                :to="item.link"
+                exact
+              >
                 <div
                   :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
                 >
@@ -64,7 +69,7 @@
                         : 'nav__navlink'
                     "
                   >
-                    <p color="text">
+                    <p>
                       {{ item.name }}
                     </p>
                   </div>
@@ -154,7 +159,7 @@
 <script src="./setup.js"></script>
 <style src="./style.scss" lang="scss"></style>
 
-<!-- 
+<!--
   <template>
   <v-card width="256" height="100vh" class="navbar-card" tile>
     <v-btn class="btn-menu__mob" icon v-if="isMobile" @click="setNavmenu">

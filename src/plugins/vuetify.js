@@ -8,6 +8,9 @@ Vue.use(Vuetify)
 
 export default new Vuetify({
   theme: {
+    options: {
+      customProperties: true,
+    },
     themes: {
       light: {
         primary: '#007BFF',
@@ -20,11 +23,13 @@ export default new Vuetify({
         topbar: '#FFFFFF',
         text: '#334D6E',
         navbar: '#FFFFFF',
+        background: '#ffffff',
       },
       dark: {
         topbar: '#252525',
         text: '#FFFFFF',
         navbar: '#252525',
+        background: '#252525',
       },
     },
   },
