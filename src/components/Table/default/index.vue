@@ -1,5 +1,6 @@
 <template>
   <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
+    <h1 class="v-table-title">{{ options.options.title }}</h1>
     <div
       :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
       class="v-table-panel"

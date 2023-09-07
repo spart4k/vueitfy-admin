@@ -16,6 +16,11 @@ $borderRadius: 3px;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+
+html {
+  overflow-y: unset !important;
+}
+
 html,
 #app {
   height: 100%;
@@ -55,6 +60,8 @@ $borderColor: rgba(0,0,0,.3);
 }
 
 .v-main {
+  height: calc(100% - $panelHeight);
+  overflow: auto;
   &__wrap {
     display: flex;
     flex-direction: column;

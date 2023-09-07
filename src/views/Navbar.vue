@@ -1,14 +1,14 @@
 <template>
-  <LayoutDefault></LayoutDefault>
+  <div class="">navbar</div>
 </template>
 
 <script>
-import LayoutDefault from '@/layouts/default/index'
+//import LayoutDefault from '@/layouts/default/index'
 
 export default {
   name: 'Navbar-View',
   components: {
-    LayoutDefault,
+    //LayoutDefault,
   },
 }
 </script>
