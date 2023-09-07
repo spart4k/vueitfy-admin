@@ -29,7 +29,6 @@ $tableFooterHeight: 100px;
             position: absolute;
             top: 100%;
             left: 0;
-            background-color: #fff;
             font-size: 12px;
             text-align: left;
             padding: $paddingCell;
@@ -39,6 +38,7 @@ $tableFooterHeight: 100px;
             border-top: 0;
             z-index: 2;
             transform-origin: top;
+            background-color: var(--v-background-base);
             &__row {
               display: flex;
               user-select: none;
@@ -194,7 +194,7 @@ $tableFooterHeight: 100px;
     }
     &-panel {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
       padding: 5px;
       background-color: rgb(225, 225, 225);

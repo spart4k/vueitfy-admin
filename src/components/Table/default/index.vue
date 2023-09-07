@@ -142,7 +142,7 @@
             <!--<th class='v-table-header-row-cell' v-for='(head, index) in options.head'>{{ head.title }}</th>-->
           </tr>
         </thead>
-        <tbody v-if="!loading" class="v-table-body">
+        <tbody v-if="true" class="v-table-body">
           <template v-for="(row, indexRow) in options.data.rows">
             <tr
               :key="row.row.id"
