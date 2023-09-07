@@ -43,44 +43,46 @@
             :key="item.id"
             color="navbar "
           >
-            <transition name="slide-fade">
-              <template v-if="!item.disclosure">
-                <router-link active-class="active" :to="item.link" exact>
-                  <div
-                    :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
-                  >
-                    <div class="icon__navlink">
-                      <v-icon>{{ item.icon }}</v-icon>
-                    </div>
-                    <div
-                      :class="
-                        isСollapseMenu
-                          ? 'name__navlink--collapse'
-                          : 'nav__navlink'
-                      "
-                    >
-                      <p color="text">
-                        {{ item.name }}
-                      </p>
-                    </div>
+            <template v-if="!item.disclosure">
+              <router-link active-class="active" :to="item.link" exact>
+                <div
+                  :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
+                >
+                  <div class="icon__navlink">
+                    <v-icon>{{ item.icon }}</v-icon>
                   </div>
-                </router-link>
-              </template>
-            </transition>
+                  <div
+                    :class="
+                      isСollapseMenu
+                        ? 'name__navlink--collapse'
+                        : 'nav__navlink'
+                    "
+                  >
+                    <p color="text">
+                      {{ item.name }}
+                    </p>
+                  </div>
+                </div>
+              </router-link>
+            </template>
             <template v-if="item.disclosure && !isСollapseMenu">
               <v-expansion-panel-header
                 :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
                 color="navbar"
               >
                 <v-icon>{{ item.icon }}</v-icon>
-                <p
-                  :class="
-                    isСollapseMenu ? 'name__navlink--collapse' : 'nav__navlink'
-                  "
-                  color="text"
-                >
-                  {{ item.name }}
-                </p>
+                <transition name="slide-fade">
+                  <p
+                    :class="
+                      isСollapseMenu
+                        ? 'name__navlink--collapse'
+                        : 'nav__navlink'
+                    "
+                    color="text"
+                  >
+                    {{ item.name }}
+                  </p>
+                </transition>
               </v-expansion-panel-header>
             </template>
             <template v-if="item.disclosure && isСollapseMenu">
