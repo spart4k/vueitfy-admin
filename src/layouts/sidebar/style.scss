@@ -16,6 +16,22 @@
   }
 }
 
+.v-item-group.v-expansion-panels {
+  .v-expansion-panel{
+    a {
+      text-decoration: none;
+      cursor: pointer;
+      // color: $white !important;
+      color: var(--v-text-base);
+    }
+  }
+}
+
+.v-expansion-panel {
+  transition: 0s !important;
+}
+
+
 .main-nav-element {
   > {
     .v-list-group__header {
@@ -33,7 +49,7 @@ v-list {
   min-width: 40px !important;
   width: 40px !important;
   margin: 10px !important;
-  transition: all .5s ease;
+  transition: width .5s ease, height .5s ease, min-width .5s ease, margin .5s ease;
 }
 
 .avatar--collapse {
@@ -41,7 +57,7 @@ v-list {
   min-width: 30px !important;
   width: 30px !important;
   margin: 0 !important;
-  transition: all .5s ease;
+  transition: width .5s ease, height .5s ease, min-width .5s ease, margin .5s ease;
 }
 
 .v-expansion-panel {
@@ -67,13 +83,6 @@ v-list {
         }
       }
     }
-  }
-  
-  a {
-    cursor  : pointer;
-    outline : none;
-    text-decoration: none;
-    color: $black !important;
   }
 
   button {
@@ -157,13 +166,13 @@ v-list {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
   z-index   : $navbar-z;
   width     : 256px;
-  transition: all 1s ease !important;
+  transition: width 1s ease !important;
 
   &--collapse {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
     z-index   : $navbar-z;
     width   : 40px;
-    transition: all 1s ease !important;
+    transition: width 1s ease !important;
   }
 }
 
@@ -174,7 +183,6 @@ v-list {
     cursor  : pointer;
     outline : none;
     text-decoration: none;
-    color: $black !important;
     .navlink__item {
       padding : 5px 35px !important;
       margin  : 0 !important;
@@ -197,6 +205,7 @@ v-list {
   align-items: center;
   gap: 10px;
   padding: 16px 24px;
+  font-weight: 500;
   .icon__navlink {
 
   }
@@ -333,10 +342,10 @@ v-list {
 
 .navmenu__navlinks {
     opacity: 1;
-    transition: all .5s ease;
+    transition: opacity .5s ease;
   &--collapse {
     opacity: 0;
-    transition: all .5s ease;
+    transition: opacity .5s ease;
   }
 }
 
@@ -360,4 +369,45 @@ v-list {
 
 .slide-fade-leave-from {
   opacity: 1;
+}
+
+.v-expansion-panel-header.navbar.link__btn {
+  min-height: unset;
+}
+
+.v-item-group.theme--dark.v-expansion-panels {
+  .v-expansion-panel {
+    .v-expansion-panel-content.navbar {
+      .v-expansion-panel-content__wrap {
+        a {
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+.v-item-group.theme--light.v-expansion-panels {
+  .v-expansion-panel {
+    .v-expansion-panel-content.navbar {
+      .v-expansion-panel-content__wrap {
+        a {
+          color: $dark-blue-text;
+        }
+      }
+    }
+  }
+}
+
+.router-link-exact-active.active {
+  .nav-link {
+    color: $accent-blue;
+    .icon__navlink {
+      span {
+        svg {
+          color: $accent-blue;
+        }
+      }
+    }
+  }
 }

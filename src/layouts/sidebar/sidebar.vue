@@ -41,7 +41,7 @@
           <v-expansion-panel
             v-for="item in dataNavbarHard"
             :key="item.id"
-            color="navbar "
+            color="navbar"
           >
             <template v-if="!item.disclosure">
               <router-link active-class="active" :to="item.link" exact>
@@ -58,7 +58,7 @@
                         : 'nav__navlink'
                     "
                   >
-                    <p color="text">
+                    <p color="text" class="link__navbar-main">
                       {{ item.name }}
                     </p>
                   </div>
