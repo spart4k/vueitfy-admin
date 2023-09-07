@@ -1,6 +1,6 @@
 <template>
   <!--<Layout>-->
-  <div class="d-flex flex-column flex-grow-1">
+  <div class="d-flex flex-column flex-grow-1 h-100">
     <TableDefault
       @changeheadershow="changeheadershow"
       :options="tableConfig"
@@ -44,16 +44,14 @@ const tableConfigData = {
       {
         label: 'Обновить',
         class: ['v-table-button--custom'],
-        urlIcon:
-          'https://uxwing.com/wp-content/themes/uxwing/download/editing-user-action/modify-icon.png',
+        url: '$IconEdit',
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
       {
         label: 'Добавить',
         class: ['v-table-button--custom'],
-        urlIcon:
-          'https://uxwing.com/wp-content/themes/uxwing/download/editing-user-action/modify-icon.png',
+        url: '$IconSetting',
         function: consolePanel,
         backgroundColor: '#fff',
       },
@@ -320,15 +318,13 @@ const tableConfigData = {
       actions: [
         {
           type: 'button',
-          urlIcon:
-            'https://uxwing.com/wp-content/themes/uxwing/download/editing-user-action/modify-icon.png',
+          url: '$IconSetting',
           function: consoleText,
           label: 'Редактировать',
         },
         {
           type: 'button',
-          urlIcon:
-            'https://icons.veryicon.com/png/o/miscellaneous/operation-scenarios-menu-overview/action-delete-2.png',
+          url: '$IconSetting',
           function: consoleButton,
           label: 'Удалить',
         },

@@ -23,13 +23,11 @@ export default new Vuetify({
         topbar: '#FFFFFF',
         text: '#334D6E',
         navbar: '#FFFFFF',
-        cell: '#FFFFFF',
       },
       dark: {
         topbar: '#252525',
         text: '#FFFFFF',
         navbar: '#252525',
-        cell: '#252525',
       },
     },
   },
