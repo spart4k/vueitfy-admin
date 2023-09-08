@@ -239,7 +239,8 @@ table.dataTable .cmd i {
   font-size: 1.05rem;
 }
 
-.navbar a:hover,
+/* закоментил максимка */
+/* .navbar a:hover,
 .navbar-nav a:hover {
   color: #e0f1ff !important;
   text-shadow:
@@ -283,17 +284,18 @@ table.dataTable .cmd i {
     1px -1px 0 #222a35,
     -1px 1px 0 #222a35,
     1px 1px 0 #222a35;
-}
+} */
 
 .navbar-nav .nav-link i {
   width: 22px;
 }
 
 /*nav*/
-.sidebar-nav {
+/* закоментил максимка */
+/* .sidebar-nav {
   width: var(--offcanvas-width) !important;
   top: var(--topNavbarHeight) !important;
-}
+} */
 
 .sidebar-link {
   display: flex !important;
@@ -319,9 +321,10 @@ table.dataTable .cmd i {
     overflow-x: hidden;
   }
 
-  main {
+  /* закоментил максимка */
+  /* main {
     margin-left: var(--offcanvas-width);
-  }
+  } */
 
   /* this is to remove the backdrop */
   .offcanvas-backdrop::before {

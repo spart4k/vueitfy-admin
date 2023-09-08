@@ -82,14 +82,18 @@
                 color="navbar"
               >
                 <v-icon>{{ item.icon }}</v-icon>
-                <p
-                  :class="
-                    isСollapseMenu ? 'name__navlink--collapse' : 'nav__navlink'
-                  "
-                  color="text"
-                >
-                  {{ item.name }}
-                </p>
+                <transition name="slide-fade">
+                  <p
+                    :class="
+                      isСollapseMenu
+                        ? 'name__navlink--collapse'
+                        : 'nav__navlink'
+                    "
+                    color="text"
+                  >
+                    {{ item.name }}
+                  </p>
+                </transition>
               </v-expansion-panel-header>
             </template>
             <template v-if="item.disclosure && isСollapseMenu">
