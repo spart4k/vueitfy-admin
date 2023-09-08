@@ -40,8 +40,8 @@ export default {
           },
           {
             id: 4,
-            name: 'Штатное расписание',
-            link: '/',
+            name: 'Почта',
+            link: '/mails',
           },
           {
             id: 5,
