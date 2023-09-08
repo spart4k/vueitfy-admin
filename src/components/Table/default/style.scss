@@ -165,7 +165,7 @@ $tableFooterHeight: 100px;
     &-wrap {
       display: flex;
       flex: 1;
-      height: calc(100% - $tablePanelHeight - $tableFooterHeight);
+      //height: calc(100% - $tablePanelHeight - $tableFooterHeight);
       overflow: auto;
       table {
         //display: flex;
@@ -176,7 +176,14 @@ $tableFooterHeight: 100px;
         flex: 1;
         // table-layout: fixed;
         width: 100%;
+        position: relative;
       }
+    }
+    &-loading {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
     &-actions {
       //display: flex;
@@ -198,24 +205,37 @@ $tableFooterHeight: 100px;
       display: flex;
       align-items: baseline;
       justify-content: space-between;
+      flex-wrap: wrap;
       padding: 5px;
       background-color: rgb(225, 225, 225);
-
-      height: $tablePanelHeight;
+      min-height: $tablePanelHeight;
       background-color: var(--v-background-base);
       border: 1px solid $borderColor;
       border-bottom: 0;
       &__search {
         display: flex;
         align-items: baseline;
+        @media (max-width: $mobileWidth) {
+          justify-content: space-between;
+          width: 100%;
+          margin-bottom: 10px;
+        }
       }
       &__actions {
         display: flex;
+        flex-wrap: wrap;
         > button, div {
           &:not(:last-child) {
             margin-right: 5px;
           }
         }
+        @media (max-width: $mobileWidth) {
+          //justify-content: space-between;
+          //width: 100%;
+        }
+      }
+      @media (max-width: $mobileWidth) {
+        flex-direction: column-reverse;
       }
       &--fixed {
         top: 0;

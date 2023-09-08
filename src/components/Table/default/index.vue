@@ -5,7 +5,7 @@
       :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
       class="v-table-panel"
     >
-      <div class="v-table-panel__actions">
+      <div class="v-table-panel__actions flex-wrap">
         <!--<v-button
           :option="button"
           v-for="(button, indexButton) in options.panel.buttons"
@@ -19,7 +19,7 @@
           <v-icon small class="mr-2">
             {{ button.url }}
           </v-icon>
-          {{ button.label }}
+          <p v-if="true">{{ button.label }}</p>
         </v-btn>
       </div>
       <div class="v-table-panel__search">
@@ -33,6 +33,7 @@
         <v-text-field
           label="Поиск"
           hide-details="auto"
+          clearable
           v-model="paramsQuery.searchGlobal"
         ></v-text-field>
         <v-btn @click="openFilter" class="ml-2" elevation="2">Фильтры</v-btn>
@@ -265,7 +266,7 @@
         </tbody>
         <div
           v-else
-          class="text-center d-flex align-center justify-center flex-grow-1"
+          class="v-table-loading text-center d-flex align-center justify-center flex-grow-1"
         >
           <v-progress-circular color="primary" :size="80" indeterminate />
         </div>
@@ -371,8 +372,8 @@
       </div>
     </div>
     <v-contextmenu :options="contextmenu" />
-    <portal to="filter" v-if="filter.isShow">
-      <Sheet>
+    <portal to="filter">
+      <Sheet :isShow="filter.isShow">
         <keep-alive>
           <TableFilter
             @closeFilter="closeFilter"

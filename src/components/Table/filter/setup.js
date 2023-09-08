@@ -1,4 +1,4 @@
-import Vue, { onMounted, computed, watch } from 'vue'
+import Vue, { onMounted, computed, watch, ref } from 'vue'
 import axios from 'axios'
 
 export default {
@@ -90,6 +90,11 @@ export default {
   setup(props, ctx) {
     console.log(ctx)
     const { emit } = ctx
+    const menuRef = ref(null)
+    const saveDate = (filter) => {
+      console.log(menuRef)
+      menuRef.value.save(filter.date)
+    }
     const querySelections = async (string, filter) => {
       if (string) {
         console.log('quiery')
@@ -154,6 +159,9 @@ export default {
       console.log(emit)
       emit('closeFilter')
     }
+    const saveFilter = () => {
+      closeFilter()
+    }
     watch(
       () => searchFields.value,
       (newVal, oldVal) => {
@@ -183,6 +191,8 @@ export default {
       tryClick,
       removeSelected,
       closeFilter,
+      saveDate,
+      saveFilter,
     }
   },
 }

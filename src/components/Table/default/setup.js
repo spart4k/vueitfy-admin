@@ -9,6 +9,7 @@ import vIconSort from '../../icons/sort/index.vue'
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import TableFilter from '../filter/index.vue'
+import useMobile from '@/layouts/Adaptive/checkMob.js'
 
 import { tableApi } from '@/api'
 
@@ -40,6 +41,7 @@ const table = {
     const headerOptions = ref([])
     const tablePosition = ref(null)
     const searchField = ref('')
+    const isMobile = useMobile()
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -351,7 +353,7 @@ const table = {
         }, 0)
       })
       wrapingRow()
-      window.addEventListener('resize', () => wrapingRow)
+      window.addEventListener('resize', () => wrapingRow())
       pagination.value = {
         ...props.options.data,
       }
@@ -365,6 +367,7 @@ const table = {
       contextmenu,
       pagination,
       filter,
+      isMobile,
       // METHODS
       wrapingRow,
       openChildRow,
