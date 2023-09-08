@@ -76,13 +76,16 @@
                 </div>
               </router-link>
             </template>
+            <!-- <template v-if="item.disclosure && !isСollapseMenu"> -->
             <template v-if="item.disclosure && !isСollapseMenu">
               <v-expansion-panel-header
                 :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
                 color="navbar"
               >
-                <v-icon>{{ item.icon }}</v-icon>
-                <transition name="slide-fade">
+                <transition name="fadeHeight">
+                  <v-icon>{{ item.icon }}</v-icon>
+                </transition>
+                <transition name="fadeHeight">
                   <p
                     :class="
                       isСollapseMenu
@@ -114,7 +117,9 @@
                 </v-list>
               </v-menu>
             </template>
-            <template v-if="!isСollapseMenu">
+            <template
+              :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
+            >
               <v-expansion-panel-content
                 v-for="link in item.navlink"
                 :key="link.id"
