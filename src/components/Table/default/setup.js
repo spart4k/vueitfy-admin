@@ -69,10 +69,12 @@ const table = {
       searchColumns: [],
     })
     const wrapingRow = () => {
+      console.log('RESIZE1')
       const table = document.querySelector(props.options.selector)
       tablePosition.value = table.getBoundingClientRect().x
       props.options.head.forEach((headerEl) => {
         const headId = headerEl.value
+        console.log(headId)
         const { width, x } = headerOptions.value.find((el) => el.id === headId)
         if (
           x + width + tablePosition.value >= window.innerWidth &&
@@ -146,7 +148,6 @@ const table = {
       //console.log(lastSelected.value.indexRow)
     }
     const saveLastSelected = (data) => {
-      console.log(data)
       lastSelected.value = {
         ...data,
       }
@@ -156,7 +157,6 @@ const table = {
       Vue.set(this, 'searchField', '')
     }
     const openSort = (head) => {
-      console.log(head)
       if (head.sorts) {
         head.sorts[0].isShow = !head.sorts[0].isShow
       }
@@ -164,7 +164,6 @@ const table = {
     const sortRow = (head) => {
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
-      console.log(paramsCol)
       if (paramsCol.value === undefined) {
         paramsCol.value = 'asc'
       } else if (paramsCol.value === 'asc') {
@@ -256,8 +255,6 @@ const table = {
         searchGlobal: searchField.value,
       })
       await tableApi.getApi(url, paramsQuery.value)
-      console.log('end loading')
-      console.log(data)
       props.options.data.rows = data
       const structuredArray = []
       props.options.data.rows.forEach((row) => {
@@ -278,7 +275,6 @@ const table = {
     const initHeadParams = () => {
       const { head } = props.options
       head.forEach((el) => {
-        console.log(el)
         if (el.sorts?.length) {
           //Vue.set(el.sorts, 'field', el.value)
           paramsQuery.value.sorts.push({
@@ -288,7 +284,6 @@ const table = {
           })
         }
         if (el.search?.isShow) {
-          console.log(el)
           paramsQuery.value.searchColumns.push({
             field: el.value,
             value: el.search.field,
@@ -317,16 +312,14 @@ const table = {
     )
     watch(
       () => pagination.value.currentPage,
-      async (newVal) => {
+      async () => {
         await getItems()
-        console.log(newVal)
       }
     )
     watch(
       () => paramsQuery,
-      async (newVal) => {
+      async () => {
         await getItems()
-        console.log(newVal.value)
       },
       { deep: true }
     )
@@ -334,16 +327,16 @@ const table = {
     onMounted(async () => {
       await getItems()
       initHeadParams()
-      console.log('check loading')
       const table = document.querySelector(props.options.selector)
-      console.log(props.options.selector, table)
-      console.log(loading.value)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
+      console.log(headerCells)
       let acumWidth = 0
       headerCells.forEach((headerEl) => {
         const id = headerEl.id.split('-table-header')[0]
+        console.log(headerEl.id)
+        if (!id) return
         const headCell = props.options.head.find((head) => head.value === id)
-
+        console.log(headCell)
         const { width, x } = headerEl.getBoundingClientRect()
         headerOptions.value.push({
           id,
@@ -358,7 +351,7 @@ const table = {
         }, 0)
       })
       wrapingRow()
-      window.addEventListener('resize', () => wrapingRow())
+      window.addEventListener('resize', () => wrapingRow)
       pagination.value = {
         ...props.options.data,
       }

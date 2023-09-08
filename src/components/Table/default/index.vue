@@ -142,7 +142,7 @@
             <!--<th class='v-table-header-row-cell' v-for='(head, index) in options.head'>{{ head.title }}</th>-->
           </tr>
         </thead>
-        <tbody v-if="true" class="v-table-body">
+        <tbody v-if="!loading" class="v-table-body">
           <template v-for="(row, indexRow) in options.data.rows">
             <tr
               :key="row.row.id"
@@ -249,8 +249,12 @@
                       <v-btn
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
+                        class="mr-3"
+                        @click="action.function"
                       >
-                        {{ action }}
+                        <v-icon small>
+                          {{ action.url }}
+                        </v-icon>
                       </v-btn>
                     </li>
                   </template>
