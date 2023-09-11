@@ -1,9 +1,9 @@
 <template dark>
   <v-card
-    class="overflow-hidden topbar-card"
+    class="overflow-hidden topbar topbar-card"
     width="100%"
     height="64px"
-    transition="0"
+    transition="0s"
   >
     <v-app-bar color="topbar">
       <v-btn class="btn-menu__mob" icon v-if="isMobile">

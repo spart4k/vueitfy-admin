@@ -3,18 +3,6 @@
     <div class="">navbar</div>
     <v-switch v-model="$vuetify.theme.dark" inset persistent-hint></v-switch>
     <ChangeColor />
-    <v-navigation-drawer value="true" fixed right temporary>
-      <v-list-item>
-        <v-select label="color theme" :items="themeOptions" v-model="theme" />
-      </v-list-item>
-      <v-list-item>
-        <v-select
-          label="contrast"
-          :items="contrastOptions"
-          v-model="contrast"
-        />
-      </v-list-item>
-    </v-navigation-drawer>
   </div>
 </template>
 
