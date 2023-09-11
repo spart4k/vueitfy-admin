@@ -43,13 +43,14 @@
             :key="item.id"
             color="navbar"
           >
-            <template
+            <!-- <template
               :class="
                 !item.disclosure
                   ? 'navmenu__navlinks'
                   : 'navmenu__mavlinks--collapse'
               "
-            >
+            > -->
+            <template v-if="!item.disclosure">
               <router-link
                 color="text"
                 active-class="active"
