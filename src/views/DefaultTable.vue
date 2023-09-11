@@ -36,7 +36,8 @@ const tableConfigData = {
       function: searchInputing,
     },
     headerFixed: true,
-    url: 'https://dummyjson.com/users',
+    //url: 'https://dummyjson.com/users',
+    url: 'http://10.63.1.132:5000/get/pagination/payment',
     title: 'This is an about page1',
   },
   panel: {
@@ -63,6 +64,274 @@ const tableConfigData = {
       },
     ],
   },
+  //head: [
+  //  {
+  //    title: 'ID',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'left',
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '40',
+  //    value: 'id',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Сотрудник',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'left',
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '90',
+  //    value: 'firstName',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Отдел',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'left',
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'company.department',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Email',
+  //    type: 'default',
+  //    align: 'left',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'number',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'email',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Телефон',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'date',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'phone',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Образование',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '200',
+  //    value: 'university',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Пол',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '100',
+  //    value: 'gender',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Мак адрес',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '130',
+  //    value: 'macAddress',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Домен',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'domain',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'День рождения',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'date',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'birthDate',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Действия',
+  //    type: 'actions',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'right',
+  //    },
+  //    isShow: true,
+  //    width: '100',
+  //    value: 'actions',
+  //    actions: [
+  //      {
+  //        type: 'button',
+  //        url: '$IconSetting',
+  //        function: consoleText,
+  //        label: 'Редактировать',
+  //      },
+  //      {
+  //        type: 'button',
+  //        url: '$IconSetting',
+  //        function: consoleButton,
+  //        label: 'Удалить',
+  //      },
+  //    ],
+  //  },
+  //],
   head: [
     {
       title: 'ID',
@@ -75,11 +344,12 @@ const tableConfigData = {
       sorts: [
         {
           type: 'string',
-          default: 'asc',
-          value: 'asc',
+          default: '',
+          value: '',
           isShow: false,
         },
       ],
+      alias: 'p',
       isShow: true,
       width: '40',
       value: 'id',
@@ -99,21 +369,22 @@ const tableConfigData = {
       sorts: [
         {
           type: 'string',
-          default: 'asc',
-          value: 'asc',
+          default: '',
+          value: '',
           isShow: false,
         },
       ],
       isShow: true,
-      width: '100',
-      value: 'firstName',
+      width: '90',
+      alias: 'pers',
+      value: 'personal_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Отдел',
+      title: 'object_name',
       type: 'default',
       align: 'center',
       fixed: {
@@ -123,23 +394,24 @@ const tableConfigData = {
       sorts: [
         {
           type: 'string',
-          default: 'asc',
-          value: 'asc',
+          default: '',
+          value: '',
           isShow: false,
         },
       ],
       isShow: true,
-      width: '80',
-      value: 'company.department',
+      width: '150',
+      alias: 'o',
+      value: 'object_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Email',
+      title: 'hour',
       type: 'default',
-      align: 'left',
+      align: 'center',
       fixed: {
         value: false,
         position: undefined,
@@ -147,21 +419,22 @@ const tableConfigData = {
       sorts: [
         {
           type: 'number',
-          default: 'asc',
-          value: 'asc',
+          default: '',
+          value: '',
           isShow: false,
         },
       ],
       isShow: true,
-      width: '100',
-      value: 'email',
+      width: '150',
+      value: 'hour',
+      alias: 'p',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Телефон',
+      title: 'Должность',
       type: 'default',
       align: 'center',
       fixed: {
@@ -171,117 +444,22 @@ const tableConfigData = {
       sorts: [
         {
           type: 'date',
-          default: 'asc',
-          value: 'asc',
+          default: '',
+          value: '',
           isShow: false,
         },
       ],
       isShow: true,
-      width: '200',
-      value: 'phone',
+      width: '150',
+      alias: 'd',
+      value: 'doljnost_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Образование',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: 'asc',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '15%',
-      value: 'university',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Пол',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: 'asc',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '10%',
-      value: 'gender',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Мак адрес',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: 'asc',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '10%',
-      value: 'macAddress',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Домен',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: 'asc',
-          value: 'asc',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '10%',
-      value: 'domain',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'День рождения',
+      title: 'total',
       type: 'default',
       align: 'center',
       fixed: {
@@ -291,14 +469,15 @@ const tableConfigData = {
       sorts: [
         {
           type: 'date',
-          default: 'asc',
-          value: 'asc',
+          default: '',
+          value: '',
           isShow: false,
         },
       ],
       isShow: true,
-      width: '10%',
-      value: 'birthDate',
+      width: '150',
+      alias: 'p',
+      value: 'total',
       search: {
         field: '',
         isShow: true,
@@ -313,7 +492,7 @@ const tableConfigData = {
         position: 'right',
       },
       isShow: true,
-      width: '20px',
+      width: '100',
       value: 'actions',
       actions: [
         {
@@ -334,7 +513,7 @@ const tableConfigData = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 30,
+    pageLength: 10,
     currentPage: 1,
     totalPages: null,
   },
@@ -1813,18 +1992,18 @@ export default {
   },
   async mounted() {
     console.log(TableDefault)
-    const data = await fetch(
-      'http://10.63.1.132:5000/view/table/shop_request_magnit',
-      {
-        method: 'get',
-        mode: 'same-origin',
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          //'Content-Type': 'test/html', // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      }
-    )
-    console.log(data)
+    //const data = await fetch(
+    //  'http://10.63.1.132:5000/view/table/shop_request_magnit',
+    //  {
+    //    method: 'get',
+    //    mode: 'same-origin',
+    //    headers: {
+    //      'Access-Control-Allow-Origin': '*',
+    //      //'Content-Type': 'test/html', // 'Content-Type': 'application/x-www-form-urlencoded',
+    //    },
+    //  }
+    //)
+    //console.log(data)
     //this.initData()
   },
 }

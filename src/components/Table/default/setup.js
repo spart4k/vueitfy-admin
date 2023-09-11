@@ -58,7 +58,7 @@ const table = {
       totalRows: null,
       currentPage: 1,
       totalPages: null,
-      countRows: 30,
+      countRows: props.options.data.pageLength,
     })
     const filter = ref({
       isShow: false,
@@ -164,9 +164,10 @@ const table = {
       }
     }
     const sortRow = (head) => {
+      console.log(head)
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
-      if (paramsCol.value === undefined) {
+      if (!paramsCol.value) {
         paramsCol.value = 'asc'
       } else if (paramsCol.value === 'asc') {
         paramsCol.value = 'desc'
@@ -251,46 +252,82 @@ const table = {
       //this.
       loading.value = true
       const { url } = props.options.options
-      const data = await tableApi.get(url, {
-        currentPage: pagination.value.currentPage,
-        countRows: 30,
-        searchGlobal: searchField.value,
-      })
-      await tableApi.getApi(url, paramsQuery.value)
-      props.options.data.rows = data
-      const structuredArray = []
-      props.options.data.rows.forEach((row) => {
-        if (props.options.options.selecting) {
-          Vue.set(row, 'selected', false)
+      //const data = await tableApi.get(url, {
+      //  currentPage: pagination.value.currentPage,
+      //  countRows: 30,
+      //  searchGlobal: searchField.value,
+      //})
+      //body.sorts = Object.assign(target, source).sorts
+      let sorts = []
+      let searchColumns = []
+      paramsQuery.value.sorts.forEach((el, elIndex) => {
+        console.log(el, elIndex)
+        if (!el.value) {
+          return
+        } else {
+          sorts.push(el)
         }
-        structuredArray.push({
-          row,
-          child: {
-            isShow: false,
-            data: row,
-          },
-        })
       })
-      props.options.data.rows = structuredArray
+      paramsQuery.value.searchColumns.forEach((el, elIndex) => {
+        console.log(el, elIndex)
+        if (!el.value) {
+          return
+        } else {
+          searchColumns.push(el)
+        }
+      })
+
+      const data = await tableApi.getApi(url, {
+        countRows: paramsQuery.value.countRows,
+        currentPage: paramsQuery.value.currentPage,
+        searchGlobal: paramsQuery.value.searchGlobal,
+        searchColumns,
+        sorts,
+      })
+      console.log(data)
+      props.options.data.rows = data.rows
+      console.log(props.options.data.rows)
+      if (props.options.data.rows?.length && props.options.data.rows) {
+        props.options.data.totalPages = data.totalPage
+        props.options.data.totalRows = data.total
+        const structuredArray = []
+        console.log(props.options.data.rows)
+        props.options.data.rows.forEach((row) => {
+          if (props.options.options.selecting) {
+            Vue.set(row, 'selected', false)
+          }
+          structuredArray.push({
+            row,
+            child: {
+              isShow: false,
+              data: row,
+            },
+          })
+        })
+        props.options.data.rows = structuredArray
+      }
       loading.value = false
     }
     const initHeadParams = () => {
       const { head } = props.options
       head.forEach((el) => {
         if (el.sorts?.length) {
+          console.log(el.value)
           //Vue.set(el.sorts, 'field', el.value)
           paramsQuery.value.sorts.push({
             field: el.value,
             value: el.sorts[0].default,
-            type: el.sorts[0].type,
+            alias: el.alias,
           })
         }
         if (el.search?.isShow) {
           paramsQuery.value.searchColumns.push({
             field: el.value,
             value: el.search.field,
+            alias: el.alias,
           })
         }
+        console.log(paramsQuery.value)
       })
     }
     // COMPUTED PROPERTIES
@@ -312,12 +349,12 @@ const table = {
         props.options.options.search.function(newVal)
       }
     )
-    watch(
-      () => pagination.value.currentPage,
-      async () => {
-        await getItems()
-      }
-    )
+    //watch(
+    //  () => pagination.value.currentPage,
+    //  async () => {
+    //    await getItems()
+    //  }
+    //)
     watch(
       () => paramsQuery,
       async () => {
@@ -327,8 +364,8 @@ const table = {
     )
     // HOOKS
     onMounted(async () => {
-      await getItems()
       initHeadParams()
+      await getItems()
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       console.log(headerCells)
@@ -352,7 +389,7 @@ const table = {
           acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
         }, 0)
       })
-      wrapingRow()
+      //wrapingRow()
       window.addEventListener('resize', () => wrapingRow())
       pagination.value = {
         ...props.options.data,

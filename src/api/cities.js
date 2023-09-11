@@ -22,26 +22,30 @@ export default class Cities {
       return data.users
     } catch (error) {
       console.log(error)
-      let errorText = ''
-      if (error?.response?.data?.message?.name)
-        errorText = error?.response?.data?.message?.name
-      else if (error?.response?.data?.message)
-        errorText = error?.response?.data?.message
-      else {
-        errorText = error.message
-      }
-      store.commit('alert/show', {
-        type: 'error',
-        content: `Ошибка: ${errorText}`,
-      })
+      //let errorText = ''
+      //if (error?.response?.data?.message?.name)
+      //  errorText = error?.response?.data?.message?.name
+      //else if (error?.response?.data?.message)
+      //  errorText = error?.response?.data?.message
+      //else {
+      //  errorText = error.message
+      //}
+      //store.commit('alert/show', {
+      //  type: 'error',
+      //  content: `Ошибка: ${errorText}`,
+      //})
     }
   }
 
   async getApi(url, paramsQuery) {
     try {
       console.log(paramsQuery)
-      const { data } = await axios.post(`${url}`, paramsQuery)
-      console.log('TRY')
+      const { data } = await axios.post(`${url}`, paramsQuery, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      console.log(data)
       //if (!data || data.cityFound.length === 0) {
       //  store.commit('alert/show', {
       //    type: 'warning',
@@ -50,7 +54,7 @@ export default class Cities {
       //  return []
       //}
 
-      return data.users
+      return data
     } catch (error) {
       console.log(error)
       //let errorText = ''

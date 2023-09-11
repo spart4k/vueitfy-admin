@@ -15,6 +15,7 @@
           v-for="(button, indexButton) in options.panel.buttons"
           :key="indexButton"
           @click="button.function"
+          small
         >
           <v-icon small class="mr-2">
             {{ button.url }}
@@ -36,7 +37,9 @@
           clearable
           v-model="paramsQuery.searchGlobal"
         ></v-text-field>
-        <v-btn @click="openFilter" class="ml-2" elevation="2">Фильтры</v-btn>
+        <v-btn small @click="openFilter" class="ml-2" elevation="2">
+          Фильтры
+        </v-btn>
       </div>
     </div>
     <div class="v-table-wrap">
@@ -53,8 +56,8 @@
                   : '',
               ]"
               align="center"
-              v-if="options.options.selecting"
               width="40"
+              v-if="options.options.selecting"
               class="v-table-header-row-cell"
             >
               <!--s-->
@@ -143,7 +146,7 @@
             <!--<th class='v-table-header-row-cell' v-for='(head, index) in options.head'>{{ head.title }}</th>-->
           </tr>
         </thead>
-        <tbody v-if="!loading" class="v-table-body">
+        <tbody v-if="!loading && options.data.rows.length" class="v-table-body">
           <template v-for="(row, indexRow) in options.data.rows">
             <tr
               :key="row.row.id"
@@ -156,7 +159,7 @@
                 class="v-table-body-row-cell__checkbox"
                 align="center"
                 v-if="options.options.selecting"
-                width="5%"
+                width="40"
                 :class="[
                   headerOptions.some((el) => el.fixed.value)
                     ? 'v-table-body-row-cell--fixed'
@@ -265,16 +268,24 @@
           </template>
         </tbody>
         <div
-          v-else
+          v-if="loading"
           class="v-table-loading text-center d-flex align-center justify-center flex-grow-1"
         >
+          <p
+            v-if="!loading && !options.data.rows.length"
+            class="v-table-loading"
+          >
+            Объекты не найдены
+          </p>
           <v-progress-circular color="primary" :size="80" indeterminate />
         </div>
       </table>
     </div>
 
     <div class="v-table-footer pl-4">
-      <div class="v-table-footer-total">Итого</div>
+      <div class="v-table-footer-total">
+        Итого: {{ options.data.totalRows }}
+      </div>
       <div class="v-table-footer-pagination">
         <div class="v-table-footer-pagination-length">
           <!--<span>
@@ -293,6 +304,7 @@
             :items="rowCount"
             label="Количество на странице:"
             v-model="paramsQuery.countRows"
+            hide-details
           />
         </div>
         <!--<div class="v-table-footer-pagination-wrap">
@@ -365,7 +377,7 @@
         <div class="text-center">
           <v-pagination
             v-model="paramsQuery.currentPage"
-            :length="15"
+            :length="options.data.totalPages"
             :total-visible="7"
           ></v-pagination>
         </div>

@@ -1,7 +1,7 @@
 $paddingCell: 5px;
 $borderColor: rgba(0,0,0,.3);
 $tablePanelHeight: 61px;
-$tableFooterHeight: 100px;
+$tableFooterHeight: 85px;
 .v {
   &-table {
     margin: 10px 10px 30px 10px;
@@ -110,6 +110,10 @@ $tableFooterHeight: 100px;
         &-cell {
           padding: $paddingCell;
           &__checkbox {
+            //display: flex;
+            //justify-content: center;
+            //align-items: center;
+            //flex-direction: column;
             label {
               display: flex;
               width: 100%;
@@ -167,6 +171,8 @@ $tableFooterHeight: 100px;
       flex: 1;
       //height: calc(100% - $tablePanelHeight - $tableFooterHeight);
       overflow: auto;
+      //width: 2500px;
+      max-width: 100%;
       table {
         //display: flex;
         //flex-direction: column;
@@ -189,6 +195,7 @@ $tableFooterHeight: 100px;
       //display: flex;
       &-wrap {
         display: flex;
+        justify-content: center;
         button {
           &.v-btn {
             min-width: unset;
