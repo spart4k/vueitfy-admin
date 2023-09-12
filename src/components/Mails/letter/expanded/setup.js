@@ -5,9 +5,14 @@
 import MailsLetterUser from '../user/index.vue'
 const letterExpanded = {
   name: 'LetterExpanded',
-  props: {},
   components: {
     MailsLetterUser,
+  },
+  props: {
+    edit: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     return {}

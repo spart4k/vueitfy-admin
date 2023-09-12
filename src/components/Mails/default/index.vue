@@ -5,8 +5,8 @@
     <div class="v-mails-group mb-4">
       <MailsControls class="mb-2" />
       <!-- <div class="d-flex"> -->
-      <!-- <MailsContainer /> -->
-      <MailsLetterExpanded class="mb-4" />
+      <MailsContainer />
+      <!-- <MailsLetterExpanded edit class="mb-4" /> -->
       <!-- </div> -->
       <!-- <div class="v-mails-group-controls"></div>
       <div class="v-mails-group-container"></div> -->

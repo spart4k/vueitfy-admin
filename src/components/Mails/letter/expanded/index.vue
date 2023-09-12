@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="v-letter-expanded-container-title mb-1">СРМ-100</div>
-      <div class="v-letter-expanded-container-text mb-1">
+      <div class="v-letter-expanded-container-text mb-1 flex-grow-1">
         Текст сообщения в карточке письма. В нем ограничены символы. Ведь все
         письо не поместиться тут. Примерно 200 символов. Вот пример статьи на
         1000 символов. Это достаточно маленький текст, оптимально подходящий для
@@ -37,13 +37,11 @@
         без единого пропуска, никто не будет. Но большинству нужна цена за 1000
         знаков без пробелов.
       </div>
-      <v-btn color="primary">
+      <v-btn color="primary mt-6">
         <v-icon small class="mr-2">$IconEdit</v-icon>
         Отправить
       </v-btn>
     </div>
-    <!-- <div class="v-letter-expanded-button mt-6">
-    </div> -->
   </div>
 </template>
 <script src="./setup.js"></script>
