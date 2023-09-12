@@ -221,15 +221,6 @@ v-list {
   transition: padding 0.5s ease;
   animation: appearanceLink 0.3s forwards !important;
 
-  &--collapse {
-    padding: 16px 10px !important;
-    transition: padding 0.5s ease;
-    display: flex;
-    height: 56px;
-    gap: 20px;
-    animation: disappearanceLink 0.3s forwards !important;
-  }
-
   .icon__navlink {
   }
 
@@ -268,6 +259,16 @@ v-list {
       }
     }
   }
+}
+
+.nav-link--collapse {
+  padding: 16px 10px !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  transition: padding 0.5s ease;
+  animation: disappearanceLink 0.3s forwards !important;
 }
 
 // .name__navlink--collapse {
