@@ -1,4 +1,4 @@
-@keyframes disappearanceLink{
+@keyframes disappearanceLink {
   0% {
     opacity: 1;
   }
@@ -7,7 +7,7 @@
   }
 }
 
-@keyframes appearanceLink{
+@keyframes appearanceLink {
   0% {
     opacity: 0;
   }
@@ -17,7 +17,7 @@
 }
 
 .v-item-group.v-expansion-panels {
-  .v-expansion-panel{
+  .v-expansion-panel {
     a {
       text-decoration: none;
       cursor: pointer;
@@ -31,11 +31,10 @@
   transition: 0s !important;
 }
 
-
 .main-nav-element {
   > {
     .v-list-group__header {
-      display   : none;
+      display: none;
     }
   }
 }
@@ -49,7 +48,7 @@ v-list {
   min-width: 40px !important;
   width: 40px !important;
   margin: 10px !important;
-  transition: width .5s ease, height .5s ease, min-width .5s ease, margin .5s ease;
+  transition: width 0.5s ease, height 0.5s ease, min-width 0.5s ease, margin 0.5s ease;
 }
 
 .avatar--collapse {
@@ -57,11 +56,11 @@ v-list {
   min-width: 30px !important;
   width: 30px !important;
   margin: 0 !important;
-  transition: width .5s ease, height .5s ease, min-width .5s ease, margin .5s ease;
+  transition: width 0.5s ease, height 0.5s ease, min-width 0.5s ease, margin 0.5s ease;
 }
 
 .v-expansion-panel {
-  margin  : 0 !important;
+  margin: 0 !important;
 
   &::before {
     box-shadow: none !important;
@@ -72,14 +71,14 @@ v-list {
 
   &[aria-expanded="true"] {
     button {
-      color       : $accent-blue;
-      font-weight : 700;
+      color: $accent-blue;
+      font-weight: 700;
       span {
-        color     : $accent-blue;
+        color: $accent-blue;
       }
       div {
         i {
-          color   : $accent-blue !important;
+          color: $accent-blue !important;
         }
       }
     }
@@ -87,16 +86,16 @@ v-list {
 
   button {
     &:hover {
-      color       : $accent-blue;
-      font-weight : 700;
-      opacity     : .8;
+      color: $accent-blue;
+      font-weight: 700;
+      opacity: 0.8;
 
       span {
-        color     : $accent-blue;
+        color: $accent-blue;
       }
       div {
         i {
-          color   : $accent-blue !important;
+          color: $accent-blue !important;
         }
       }
     }
@@ -105,38 +104,40 @@ v-list {
 
 .link__btn {
   padding: 16px 24px !important;
-  &--collapse {
-    padding: 16px 10px !important;
-  }
+  transition: padding 0.5s ease;
+}
+
+.link__btn--collapse {
+  padding: 16px 10px !important;
+  transition: padding 0.5s ease;
 }
 
 .v-expansion-panel-header {
-  padding       : 11px 12px;
-  font-weight   : 500;
+  padding: 11px 12px;
+  font-weight: 500;
   > span {
-    display     : block;
-    max-width   : 20px;
+    display: block;
+    max-width: 20px;
     margin-right: 10px;
   }
 }
 
-.v-expansion-panel--active{
-  border-radius : 0px !important;
-  margin        : 0 !important;
+.v-expansion-panel--active {
+  border-radius: 0px !important;
+  margin: 0 !important;
 }
 
 .header-navbar {
-  display         : flex !important;
-  align-items     : center;
-  justify-content : center;
-  padding         : 20px 14px 43px 14px !important;
-    > div {
-      width       : 50px;
-      display     : contents;
-      padding     : 0;
-    }
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 14px 43px 14px !important;
+  > div {
+    width: 50px;
+    display: contents;
+    padding: 0;
+  }
 }
-
 
 // scroll navmenu
 
@@ -145,16 +146,17 @@ v-list {
 }
 
 .v-navigation-drawer {
-  height    : calc(100% - 170px) !important;
+  height: calc(100% - 170px) !important;
 }
 
-.nav-fio, .nav__navlink {
-  text-wrap : wrap;
-  animation: appearanceLink .3s forwards !important;
+.nav-fio,
+.nav__navlink {
+  text-wrap: wrap;
+  animation: appearanceLink 0.3s forwards !important;
 
   &--collapse {
-    text-wrap : wrap;
-    animation: disappearanceLink .3s forwards !important;
+    text-wrap: wrap;
+    animation: disappearanceLink 0.3s forwards !important;
 
     p {
       width: 200px;
@@ -167,33 +169,35 @@ v-list {
 }
 
 .v-expansion-panel-header {
-  padding   : 0 10px;
+  padding: 0 10px;
 }
 
 .navbar-card {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
-  z-index   : $navbar-z;
-  width     : 256px;
+  z-index: $navbar-z;
+  width: 256px;
   transition: width 1s ease !important;
 
   &--collapse {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
-    z-index   : $navbar-z;
-    width   : 40px;
+    z-index: $navbar-z;
+    width: 40px;
     transition: width 1s ease !important;
   }
 }
 
-.v-expansion-panel-content__wrap, .v-list-item  {
+.v-expansion-panel-content__wrap,
+.v-list-item {
   padding: 0 !important;
   a {
-    padding :  0  !important;
-    cursor  : pointer;
-    outline : none;
+    padding: 0 !important;
+    cursor: pointer;
+    outline: none;
     text-decoration: none;
     .navlink__item {
-      padding : 5px 35px !important;
-      margin  : 0 !important;
+      padding: 5px 35px !important;
+      margin: 0 !important;
+      width: 250px;
     }
   }
 
@@ -202,9 +206,9 @@ v-list {
     font-weight: 700;
   }
   &:hover {
-    color       : $accent-blue;
-    opacity     : .6;
-    font-weight : 600;
+    color: $accent-blue;
+    opacity: 0.6;
+    font-weight: 600;
   }
 }
 
@@ -214,19 +218,31 @@ v-list {
   gap: 10px;
   padding: 16px 24px;
   font-weight: 500;
-  .icon__navlink {
+  transition: padding 0.5s ease;
+  animation: appearanceLink 0.3s forwards !important;
 
+  &--collapse {
+    padding: 16px 10px !important;
+    transition: padding 0.5s ease;
+    display: flex;
+    height: 56px;
+    gap: 20px;
+    animation: disappearanceLink 0.3s forwards !important;
   }
+
+  .icon__navlink {
+  }
+
   .name__navlink {
     color: $black;
     font-size: 15px;
     font-weight: 500;
-    text-wrap : wrap;
-    animation: appearanceLink .3s forwards !important;
+    text-wrap: wrap;
+    animation: appearanceLink 0.3s forwards !important;
 
     &--collapse {
-      text-wrap : wrap;
-      animation: disappearanceLink .3s forwards !important;
+      text-wrap: wrap;
+      animation: disappearanceLink 0.3s forwards !important;
     }
   }
 
@@ -235,50 +251,50 @@ v-list {
   }
 
   &:hover {
-    color       : $accent-blue;
-    font-weight : 700;
-    opacity     : .8;
+    color: $accent-blue;
+    font-weight: 700;
+    opacity: 0.8;
 
     .icon__navlink {
       span {
-        color     : $accent-blue;
+        color: $accent-blue;
       }
     }
     .name__navlink {
-      color   : $accent-blue !important;
-      display: block;
+      color: $accent-blue !important;
+      // display: block;
       &--collapse {
-        display: none !important;
+        // display: none !important;
       }
-    } 
+    }
   }
 }
 
-
-.name__navlink--collapse {
-  display: none !important;
-}
+// .name__navlink--collapse {
+//   display: none !important;
+// }
 
 //открытие закрытие меню на мобилке
 .mobile-menu__window {
   &--close {
-    transform : translateX(-100%);
-    position  : absolute;
-    z-index   : $navbar-mobile-z;
-    opacity   : 0;
-    transition: transform .7s ease-in, opacity .4s ease-in;
+    transform: translateX(-100%);
+    position: absolute;
+    z-index: $navbar-mobile-z;
+    opacity: 0;
+    transition: transform 0.7s ease-in, opacity 0.4s ease-in;
   }
 
   &--open {
-    transform : translateX(0%);
-    position  : absolute;
-    z-index   : $navbar-mobile-z;
-    opacity   : 1;
-    transition: transform .7s ease-out, opacity .7s ease-out;
+    transform: translateX(0%);
+    position: absolute;
+    z-index: $navbar-mobile-z;
+    opacity: 1;
+    transition: transform 0.7s ease-out, opacity 0.7s ease-out;
   }
 }
 
-.expand-enter-active, .expand-leave-active {
+.expand-enter-active,
+.expand-leave-active {
   transition-property: width;
   transition-duration: 5s;
 }
@@ -287,17 +303,17 @@ v-list {
   width: 256px;
 }
 
-.expand-enter{
+.expand-enter {
   width: 40px;
 }
 
-.btn-menu{
+.btn-menu {
   &__collapse {
-    font-size: 12px !important; 
+    font-size: 12px !important;
     padding: 0 !important;
   }
   &--collapse {
-    font-size: 12px !important; 
+    font-size: 12px !important;
     padding: 0 !important;
     min-width: 40px !important;
   }
@@ -308,7 +324,7 @@ v-list {
   color: #fff;
 }
 
-.v-btn{
+.v-btn {
   .v-btn__content {
     .text-collaspe__navbar {
       color: var(--v-text-base) !important;
@@ -329,11 +345,11 @@ v-list {
 }
 
 .navmenu__navlinks {
-    opacity: 1;
-    transition: opacity .5s ease;
+  opacity: 1;
+  transition: opacity 0.5s ease;
   &--collapse {
     opacity: 0;
-    transition: opacity .5s ease;
+    transition: opacity 0.5s ease;
   }
 }
 
@@ -345,10 +361,10 @@ v-list {
 // }
 
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active до версии 2.1.8 */ {
