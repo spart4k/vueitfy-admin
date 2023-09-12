@@ -121,7 +121,10 @@ export default {
           searchValue: string,
         })
         console.log(data)
-        filter.items = [...filter.items, ...data.rows]
+        if (data.rows) {
+          filter.items = [...filter.items, ...data.rows]
+        }
+
         //Vue.set(filter, 'items', data.rows)
         filter.loading = false
         //console.log(data.products, filter)

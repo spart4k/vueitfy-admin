@@ -97,6 +97,7 @@
             min="1950-01-01"
             color="primary"
             locale="ru-RU"
+            :type="filter.subtype === 'period' ? 'month' : undefined"
             :range="filter.subtype === 'range'"
           ></v-date-picker>
         </v-menu>
