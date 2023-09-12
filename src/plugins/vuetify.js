@@ -24,6 +24,8 @@ export default new Vuetify({
         text: '#334D6E',
         navbar: '#FFFFFF',
         background: '#ffffff',
+        pageBackground: '#F5F6F8',
+        disabled: '#C2CFE0',
       },
       dark: {
         topbar: '#252525',

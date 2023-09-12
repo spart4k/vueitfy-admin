@@ -1,0 +1,18 @@
+.v {
+    &-edit {
+        display: flex;
+        flex-direction: column;
+        &-item {
+            display: flex;
+            width: 100%;
+            &_title {
+                width: 32px;
+                color: var(--v-secondary-base);
+                font-size: 12px;
+            }
+            &_input {
+                flex: 1;
+            }
+        }
+    }
+}

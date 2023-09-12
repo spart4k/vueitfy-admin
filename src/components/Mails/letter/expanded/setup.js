@@ -3,10 +3,12 @@
 // import Vue, { onMounted, ref, computed, watch } from 'vue'
 // import { tableApi } from '@/api'
 import MailsLetterUser from '../user/index.vue'
+import MailsLetterUserEdit from '../user/edit/index.vue'
 const letterExpanded = {
   name: 'LetterExpanded',
   components: {
     MailsLetterUser,
+    MailsLetterUserEdit,
   },
   props: {
     edit: {

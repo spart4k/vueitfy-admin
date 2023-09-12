@@ -1,11 +1,13 @@
 <template>
-  <div class="v-mails d-flex flex-row">
+  <div class="v-mails d-flex">
     <!-- <div class="v-mails-filters"></div> -->
     <MailsFilters class="mr-4" :data="$props?.data.pageCases" />
-    <div class="v-mails-group mb-4">
+    <div class="v-mails-group">
       <MailsControls class="mb-2" />
       <!-- <div class="d-flex"> -->
-      <MailsContainer />
+      <div class="d-flex w-100 h-100">
+        <MailsContainer edit />
+      </div>
       <!-- <MailsLetterExpanded edit class="mb-4" /> -->
       <!-- </div> -->
       <!-- <div class="v-mails-group-controls"></div>

@@ -1,7 +1,8 @@
 <template>
   <div class="v-letter-expanded d-flex flex-column">
     <div class="v-letter-expanded_user">
-      <MailsLetterUser expanded />
+      <MailsLetterUser v-if="false" expanded />
+      <MailsLetterUserEdit v-else />
     </div>
     <div class="v-letter-expanded-container">
       <div class="v-letter-expanded-container-files d-flex">
@@ -37,10 +38,12 @@
         без единого пропуска, никто не будет. Но большинству нужна цена за 1000
         знаков без пробелов.
       </div>
-      <v-btn color="primary mt-6">
-        <v-icon small class="mr-2">$IconEdit</v-icon>
-        Отправить
-      </v-btn>
+      <div class="v-letter-expanded-container-btn mb-2">
+        <v-btn color="primary">
+          <v-icon small class="mr-2">$IconEdit</v-icon>
+          Ответить
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>
