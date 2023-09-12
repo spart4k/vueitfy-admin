@@ -1,5 +1,7 @@
 import Vue, { onMounted, computed, watch, ref } from 'vue'
-import axios from 'axios'
+//import axios from 'axios'
+
+import { selectsApi } from '@/api'
 
 export default {
   name: 'Table-Filter',
@@ -96,6 +98,7 @@ export default {
       menuRef.value.save(filter.date)
     }
     const querySelections = async (string, filter) => {
+      console.log(string)
       if (string) {
         console.log('quiery')
         string = string.toLowerCase()
@@ -108,24 +111,31 @@ export default {
         //  Vue.set(filter, 'items', data)
         //}, 200)
         filter.loading = true
-        const { data } = await axios.get(`
-          https://dummyjson.com/products/search?q=${string}&limit=${filter.page}
-        `)
-        console.log(data.products)
-        Vue.set(filter, 'items', data.products)
+        //const { data } = await axios.get(`
+        //  https://dummyjson.com/products/search?q=${string}&limit=${filter.page}
+        //`)
+        const { url } = filter
+        const data = await selectsApi.getApi(url, {
+          countRows: 10,
+          currentPage: filter.page,
+          searchValue: string,
+        })
+        console.log(data)
+        filter.items = [...filter.items, ...data.rows]
+        //Vue.set(filter, 'items', data.rows)
         filter.loading = false
-        console.log(data.products, filter)
+        //console.log(data.products, filter)
       }
     }
     const initData = () => {
       props.filtersConfig.map((el) => {
         //el.loading = false
         Vue.set(el, 'loading', false)
-        Vue.set(el, 'items', [])
+        //Vue.set(el, 'items', [])
         //el.search = 12331
         Vue.set(el, 'search', '')
         Vue.set(el, 'select', null)
-        Vue.set(el, 'page', 10)
+        Vue.set(el, 'page', 1)
         el.component =
           el.type === 'select' ? (el.component = 'v-autocomplete') : ''
       })
@@ -141,8 +151,10 @@ export default {
         const filter = props.filtersConfig.find((el) => el.name === dataset)
         console.log('isIntersecting')
         console.log(filter.items)
-        if (filter.items.length) {
-          filter.page = filter.page + 10
+        if (filter.items.length && !filter.loading) {
+          //filter.page = filter.page + 10
+          //Vue.set(filter, 'page', filter.page + 1)
+          filter.page = filter.page + 1
           querySelections(filter.search, filter)
         }
         //let moreVendors = loadMoreFromApi()
@@ -153,7 +165,7 @@ export default {
       console.log(data)
     }
     const removeSelected = (data, filter) => {
-      filter.select.splice(data.index, 1)
+      filter.value.splice(data.index, 1)
     }
     const closeFilter = () => {
       console.log(emit)
@@ -161,6 +173,7 @@ export default {
     }
     const saveFilter = () => {
       closeFilter()
+      emit('saveFilter')
     }
     watch(
       () => searchFields.value,

@@ -260,6 +260,7 @@ const table = {
       //body.sorts = Object.assign(target, source).sorts
       let sorts = []
       let searchColumns = []
+      let filter = []
       paramsQuery.value.sorts.forEach((el, elIndex) => {
         console.log(el, elIndex)
         if (!el.value) {
@@ -276,16 +277,30 @@ const table = {
           searchColumns.push(el)
         }
       })
-
+      props.filtersConfig.forEach((el) => {
+        if (!el.value) {
+          return
+        } else {
+          filter.push({
+            field: el.name,
+            value: el.value,
+            alias: el.alias,
+            type: el.type,
+            subtype: el.subtype,
+          })
+        }
+      })
       const data = await tableApi.getApi(url, {
         countRows: paramsQuery.value.countRows,
         currentPage: paramsQuery.value.currentPage,
         searchGlobal: paramsQuery.value.searchGlobal,
         searchColumns,
         sorts,
+        filter,
       })
       console.log(data)
       props.options.data.rows = data.rows
+      //props.options.data.rows = data
       console.log(props.options.data.rows)
       if (props.options.data.rows?.length && props.options.data.rows) {
         props.options.data.totalPages = data.totalPage
@@ -330,6 +345,35 @@ const table = {
         console.log(paramsQuery.value)
       })
     }
+    const watchScroll = () => {
+      //const firstListItem = list.querySelector('.horizontal-scroll-container__list-item:first-child');
+      //const lastHeadTable = header.options
+      const table = document.querySelector(props.options.selector)
+      console.log(isElementXPercentInViewport(table))
+    }
+    const isElementXPercentInViewport = (element) => {
+      /* eslint-disable */
+      const { x } = element.getBoundingClientRect()
+      console.log()
+      console.log(element.offsetLeft,element.offsetWidth + ':' + element.offsetLeft, window.innerWidth)
+      /* eslint-disable */
+      if(
+          /* eslint-disable */
+        element.offsetLeft + element.offsetWidth + x
+          /* eslint-disable */
+        && element.offsetLeft<window.innerWidth){
+          /* eslint-disable */
+        return true;
+          /* eslint-disable */
+      } else {
+          /* eslint-disable */
+        return false;
+      }
+    }
+    const saveFilter = () => {
+      console.log('save')
+      getItems()
+    }
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -366,7 +410,9 @@ const table = {
     onMounted(async () => {
       initHeadParams()
       await getItems()
+
       const table = document.querySelector(props.options.selector)
+      console.log(table, props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       console.log(headerCells)
       let acumWidth = 0
@@ -390,7 +436,8 @@ const table = {
         }, 0)
       })
       //wrapingRow()
-      window.addEventListener('resize', () => wrapingRow())
+      window.addEventListener('resize', () => watchScroll())
+      watchScroll()
       pagination.value = {
         ...props.options.data,
       }
@@ -420,6 +467,7 @@ const table = {
       openFilter,
       closeFilter,
       getItems,
+      watchScroll,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
@@ -427,6 +475,8 @@ const table = {
       loading,
       paramsQuery,
       rowCount,
+      isElementXPercentInViewport,
+      saveFilter,
     }
   },
 }

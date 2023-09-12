@@ -1,9 +1,4 @@
 <template>
-
-<svg  width="8" height="7" viewBox="0 0 8 7" fill="none">
-<path d="M3.78125 0L6.81234 5.25H0.750161L3.78125 0Z" fill="#C2CFE0"/>
-</svg>
-
   <svg
     :class="state"
     class="v-table-header-row-cell-sort__row__icon"
@@ -19,12 +14,12 @@
     <path
       class="asc"
       d="M4.78125 0L7.81234 5.25H1.75016L4.78125 0Z"
-      fill="currentColor"
+      :fill="state === 'asc' ? 'black' : 'rgba(0,0,0,.2)'"
     />
     <path
       class="desc"
       d="M1.75 7.03092L7.81218 7.03092L4.78109 12.2809L1.75 7.03092Z"
-      fill="currentColor"
+      :fill="state === 'desc' ? 'black' : 'rgba(0,0,0,.2)'"
     />
   </svg>
 </template>

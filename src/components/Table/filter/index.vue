@@ -9,6 +9,7 @@
     </v-row>
     <v-form class="fluid">
       <template v-for="filter in filtersConfig">
+        {{ filter.page }}
         <v-autocomplete
           v-if="filter.type === 'select'"
           :key="filter.id"
@@ -16,13 +17,13 @@
           :loading="filter.loading"
           :items="filter.items"
           :search-input.sync="filter.search"
-          v-model="filter.select"
+          v-model="filter.value"
           label="Поиск девайса"
           chips
-          multiple
+          :multiple="filter.subtype === 'multiple'"
           class="mb-4"
-          item-text="brand"
-          item-value="brand"
+          item-text="name"
+          item-value="id"
           no-data-text="Нет объектов"
         >
           <template v-slot:append>
@@ -41,7 +42,7 @@
               small
               @click:close="removeSelected(data, filter)"
             >
-              {{ data.item.brand }}
+              {{ data.item.name }}
             </v-chip>
           </template>
           <template v-slot:append-item>
@@ -59,8 +60,8 @@
           <template v-slot:item="data">
             <template>
               <v-list-item-content>
-                <v-list-item-title v-html="data.item.brand" />
-                <v-list-item-subtitle v-html="data.item.price" />
+                <v-list-item-title v-html="data.item.name" />
+                <v-list-item-subtitle v-html="data.item.id" />
               </v-list-item-content>
             </template>
           </template>
@@ -72,7 +73,7 @@
           :label="filter.label"
         ></v-checkbox>
         <v-menu
-          v-if="filter.type === 'datepicker'"
+          v-if="filter.type === 'date'"
           :key="filter.id"
           ref="menuRef"
           v-model="filter.menu"

@@ -1,4 +1,5 @@
 import Cities from './cities'
+import Selects from './selects'
 import Navmenu from './navmenu'
 //import axios from 'axios'
 
@@ -10,4 +11,5 @@ import Navmenu from './navmenu'
 // 3001/review
 
 export const tableApi = new Cities()
+export const selectsApi = new Selects()
 export const navmenuApi = new Navmenu()

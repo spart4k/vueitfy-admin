@@ -73,33 +73,59 @@
               }"
               v-show="head.isShow"
               :id="head.value + '-table-header'"
-              :width="head.width"
               class="v-table-header-row-cell"
               v-for="(head, index) in options.head"
               :key="index"
             >
               <div class="v-table-header-row-cell-wrap">
-                <span @click="openSort(head)">{{ head.title }}</span>
+                <span
+                  :class="
+                    head.align === 'center'
+                      ? 'justify-center'
+                      : head.align === 'left'
+                      ? 'justify-start'
+                      : head.align === 'rigth'
+                      ? 'justify-end'
+                      : ''
+                  "
+                  class="v-table-header-row-cell-wrap__sort"
+                >
+                  <!--<v-icon
+                    v-if="head.sorts && head.sorts.length"
+                    @click="openSort(head)"
+                    color="yellow"
+                    :class="
+                      paramsQuery.sorts.find((el) => el.field === head.value)
+                        .value
+                    "
+                    class="v-table-header-row-cell-wrap__sort-icon"
+                    small
+                  >
+                    $IconSort
+                  </v-icon>-->
+                  <vIconSort
+                    v-if="head.sorts && head.sorts.length"
+                    class="v-table-header-row-cell-wrap__sort-icon mr-1"
+                    :state="
+                      paramsQuery.sorts.find((el) => el.field === head.value)
+                        .value
+                    "
+                    @click="sortRow(head)"
+                  />
+                  <span class="mr-2" @click="sortRow(head)">
+                    {{ head.title }}
+                  </span>
+                  <v-icon @click="openSort(head)" small>$IconSearch</v-icon>
+                </span>
                 <transition name="accordion">
                   <div
                     v-if="head.sorts && head.sorts[0].isShow"
                     class="v-table-header-row-cell-sort"
                   >
-                    <div
-                      @click="sortRow(head)"
+                    <!--<div
                       class="v-table-header-row-cell-sort__row"
                       v-if="head.sorts[0].type === 'string'"
                     >
-                      <!--<v-icon-sort
-                        :state="
-                          paramsQuery.sorts.find((el) => el.field === head.value)
-                            .value
-                        "
-                      />-->
-                      {{
-                        paramsQuery.sorts.find((el) => el.field === head.value)
-                          .value
-                      }}
                       <p v-if="true">Сортировка от А до Я</p>
                     </div>
                     <div
@@ -107,7 +133,6 @@
                       class="v-table-header-row-cell-sort__row"
                       v-if="head.sorts[0].type === 'number'"
                     >
-                      <!--<v-icon-sort :state="head.sorts[0].value" />-->
                       {{
                         paramsQuery.sorts.find((el) => el.field === head.value)
                           .value
@@ -119,13 +144,12 @@
                       class="v-table-header-row-cell-sort__row"
                       v-if="head.sorts[0].type === 'date'"
                     >
-                      <!--<v-icon-sort :state="head.sorts[0].value" />-->
                       {{
                         paramsQuery.sorts.find((el) => el.field === head.value)
                           .value
                       }}
                       <p v-if="true">Сортировка по дате</p>
-                    </div>
+                    </div>-->
                     <v-text-field
                       class="v-table-header-row-cell-sort__search"
                       @clearfield="clearField('searchField')"
@@ -146,7 +170,8 @@
             <!--<th class='v-table-header-row-cell' v-for='(head, index) in options.head'>{{ head.title }}</th>-->
           </tr>
         </thead>
-        <tbody v-if="!loading && options.data.rows.length" class="v-table-body">
+        <tbody v-if="!loading && options.data.rows" class="v-table-body">
+          <!--<tbody v-if="!loading" class="v-table-body">-->
           <template v-for="(row, indexRow) in options.data.rows">
             <tr
               :key="row.row.id"
@@ -159,7 +184,6 @@
                 class="v-table-body-row-cell__checkbox"
                 align="center"
                 v-if="options.options.selecting"
-                width="40"
                 :class="[
                   headerOptions.some((el) => el.fixed.value)
                     ? 'v-table-body-row-cell--fixed'
@@ -271,14 +295,11 @@
           v-if="loading"
           class="v-table-loading text-center d-flex align-center justify-center flex-grow-1"
         >
-          <p
-            v-if="!loading && !options.data.rows.length"
-            class="v-table-loading"
-          >
-            Объекты не найдены
-          </p>
           <v-progress-circular color="primary" :size="80" indeterminate />
         </div>
+        <p v-if="!loading && !options.data.rows.length" class="v-table-loading">
+          Объекты не найдены
+        </p>
       </table>
     </div>
 
@@ -389,6 +410,7 @@
         <keep-alive>
           <TableFilter
             @closeFilter="closeFilter"
+            @saveFilter="saveFilter"
             :filtersConfig="filtersConfig"
           />
         </keep-alive>
