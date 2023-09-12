@@ -1,0 +1,59 @@
+.v {
+    &-upper {
+        height: 53px;
+        width: 100%;
+        display: flex;
+        &_checkbox {
+            margin: 0;
+            padding: 0;
+            &::v-deep .v-input__slot {
+                margin:0 !important;
+            }
+            &::v-deep .v-input--selection-controls__input {
+                margin:0 !important;
+                width: 16px;
+                height: 16px;
+            }
+            &::v-deep .v-messages {
+                display: none;
+            }
+            &::v-deep .v-input--selection-controls__ripple {
+                left: -16px;
+            }
+        }
+        &-user {
+            margin-top: auto;
+            &_image {
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+            }
+            &_name {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--v-text-base);
+            }
+            &_email {
+                font-size: 11px;
+                font-weight: 500;
+                color: var(--v-disabled-base);
+            }
+        }
+        &-viewed {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background-color: var(--v-primary-base);
+        }
+        &-date {
+            &_day {
+                font-size: 10px;
+                color: var(--v-text-base);
+            }
+            &_time {
+                font-size: 8px;
+                color: var(--v-disabled-base);
+            }
+        }
+    }
+}

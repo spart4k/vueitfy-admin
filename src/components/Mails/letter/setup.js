@@ -2,20 +2,15 @@
 //document.adoptedStyleSheets.push(style)
 // import Vue, { onMounted, ref, computed, watch } from 'vue'
 // import { tableApi } from '@/api'
-import MailsLetter from '../letter/index.vue'
-const container = {
-  name: 'Container',
+import MailsLetterUser from './user/index.vue'
+const letter = {
+  name: 'Letter',
+  props: {},
   components: {
-    MailsLetter,
-  },
-  props: {
-    data: {
-      type: Object,
-      default: () => {},
-    },
+    MailsLetterUser,
   },
   setup() {
     return {}
   },
 }
-export default container
+export default letter

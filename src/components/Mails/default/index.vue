@@ -2,9 +2,12 @@
   <div class="v-mails d-flex flex-row">
     <!-- <div class="v-mails-filters"></div> -->
     <MailsFilters class="mr-4" :data="$props?.data.pageCases" />
-    <div class="v-mails-group d-flex flex-column">
+    <div class="v-mails-group mb-4">
       <MailsControls class="mb-2" />
-      <MailsContainer />
+      <!-- <div class="d-flex"> -->
+      <!-- <MailsContainer /> -->
+      <MailsLetterExpanded class="mb-4" />
+      <!-- </div> -->
       <!-- <div class="v-mails-group-controls"></div>
       <div class="v-mails-group-container"></div> -->
     </div>

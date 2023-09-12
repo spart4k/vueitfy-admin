@@ -6,22 +6,102 @@
       <v-icon small class="mr-2">$IconEdit</v-icon>
       Написать
     </v-btn>
-    <div class="v-filters-mail-types-list pl-4 pr-4">
+    <div class="v-filters-mail-types-list pl-4 pr-4 mb-4">
       <div
-        class="v-filters-mail-types-list_item d-flex align-center"
+        :class="[
+          'v-filters-mail-types-list_item',
+          !index && 'v-filters-mail-types-list_item__active',
+          'd-flex',
+          'align-center',
+        ]"
         v-for="(item, index) in $props.data"
         :key="index"
       >
-        <v-icon :color="!index ? 'primary' : 'text'" small class="mr-4">{{
-          item.url
-        }}</v-icon>
-        <div :class="['flex-grow-1', 'fs-12', !index && 'active']">
+        <v-icon small class="mr-4">{{ item.url }}</v-icon>
+        <div :class="['flex-grow-1']">
           {{ item.label }}
         </div>
-        <div :class="['fs-12', !index && 'active']">
+        <div>
           {{ item.number ? item.number : '' }}
         </div>
       </div>
+    </div>
+    <v-expansion-panels class="v-filters-folder">
+      <v-expansion-panel>
+        <v-expansion-panel-header class="v-filters-folder-title"
+          ><v-icon small class="mr-2">$IconEdit</v-icon> Мои
+          папки</v-expansion-panel-header
+        >
+        <v-expansion-panel-content class="v-filters-folder-container">
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div
+            class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
+          >
+            <v-icon small class="mr-2">$IconEdit</v-icon> Добавить папку
+          </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-expansion-panels accordion class="v-filters-folder mb-3">
+      <v-expansion-panel>
+        <v-expansion-panel-header class="v-filters-folder-title"
+          ><v-icon small class="mr-2">$IconEdit</v-icon> Мои
+          ящики</v-expansion-panel-header
+        >
+        <v-expansion-panel-content class="v-filters-folder-container">
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div class="v-filters-folder-container_item ml-4">
+            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+          </div>
+          <div
+            class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
+          >
+            <v-icon small class="mr-2">$IconEdit</v-icon> Добавить папку
+          </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <div class="v-filters-color mb-3">
+      <div class="v-filters-color_item"></div>
+      <div class="v-filters-color_item"></div>
+      <div class="v-filters-color_item"></div>
+      <div class="v-filters-color_item"></div>
+      <div class="v-filters-color_item"></div>
+      <div class="v-filters-color_item"></div>
+      <div class="v-filters-color_item"></div>
+    </div>
+    <div class="v-filters-bottom mb-4">
+      <v-btn
+        color="disabled"
+        outlined
+        plain
+        class="v-filters-bottom_item d-flex align-center"
+      >
+        <v-icon small>$IconEdit</v-icon>
+      </v-btn>
+      <v-btn color="disabled" outlined plain class="v-filters-bottom_item">
+        <div class="v-filters-bottom_item-point mr-2"></div>
+        20
+      </v-btn>
     </div>
   </div>
 </template>

@@ -5,12 +5,14 @@
 import MailsFilters from '../filters/index.vue'
 import MailsControls from '../controls/index.vue'
 import MailsContainer from '../container/index.vue'
+import MailsLetterExpanded from '../letter/expanded/index.vue'
 const mails = {
   name: 'Mails',
   components: {
     MailsFilters,
     MailsControls,
     MailsContainer,
+    MailsLetterExpanded,
   },
   props: {
     data: {
