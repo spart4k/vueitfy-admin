@@ -4,11 +4,15 @@
 // import { tableApi } from '@/api'
 import MailsLetterUser from '../user/index.vue'
 import MailsLetterUserEdit from '../user/edit/index.vue'
+import MailsLetterTextEdit from '../text/edit/index.vue'
+import MailsLetterText from '../text/index.vue'
 const letterExpanded = {
   name: 'LetterExpanded',
   components: {
     MailsLetterUser,
     MailsLetterUserEdit,
+    MailsLetterTextEdit,
+    MailsLetterText,
   },
   props: {
     edit: {

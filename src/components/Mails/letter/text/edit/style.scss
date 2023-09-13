@@ -1,0 +1,19 @@
+.v {
+    &-edit {
+        padding: 0 23px;
+        word-break: break-word;
+        margin-bottom: 20px;
+        :global(.ql-toolbar) {
+            border: none !important;
+            padding: 0 !important;
+        }
+        :global(.ql-container) {
+            border: none !important;
+            padding: 0 !important;
+        }
+        :global(.ql-editor) {
+            padding: 0 !important;
+            min-height: 150px;
+        }
+    }
+}

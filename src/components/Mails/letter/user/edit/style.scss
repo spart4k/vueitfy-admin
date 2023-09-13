@@ -5,14 +5,47 @@
         &-item {
             display: flex;
             width: 100%;
+            padding-right: 50px;
+            // align-items: center;
             &_title {
                 width: 32px;
                 color: var(--v-secondary-base);
                 font-size: 12px;
+                margin-right: 10px;
             }
-            &_input {
+            &-input {
                 flex: 1;
+                &_name {    
+                    color: var(--v-text-base);
+                    font-weight: 500;
+                }
+                &_mail {
+                    color: var(--v-secondary-base);
+                    font-weight: 400;
+                }
+                .v-chip {
+                    border: none;
+                }
+                .v-input {
+                    margin: 0;
+                    padding: 0;
+                }
+                :global(.v-input__slot) {
+                    margin: 0 !important;
+                }
+                :global(.v-text-field__details) {
+                    display: none !important;
+                }
+                :global(.v-input__append-inner) {
+                    display: none !important;
+                }
+                :global(.v-select__selections) {
+                    min-height: 32px !important;
+                }
             }
+        }
+        &-item+&-item {
+            margin-top: 8px;
         }
     }
 }
