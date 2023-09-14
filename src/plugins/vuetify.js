@@ -1,13 +1,10 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import listDark from '../layouts/Theme/ChangeTheme'
 import 'vuetify/dist/vuetify.min.css'
 
 import CustomIcons from '@/components/icons/index'
 
 Vue.use(Vuetify)
-console.log('listDark+++++', listDark)
-console.log('listDark+++++', listDark)
 export default new Vuetify({
   theme: {
     options: {
@@ -38,7 +35,7 @@ export default new Vuetify({
         topbar: '#252525',
         text: '#FFFFFF',
         navbar: '#252525',
-        background: listDark,
+        background: '#000000',
       },
       blue: {
         primary: '#07e0f8',

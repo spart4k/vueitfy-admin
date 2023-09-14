@@ -1,3 +1,5 @@
+$timeoutCollapse : .3s;
+
 @keyframes disappearanceLink{
   0% {
     opacity: 1;
@@ -49,7 +51,7 @@ v-list {
   min-width: 40px !important;
   width: 40px !important;
   margin: 10px !important;
-  transition: width .5s ease, height .5s ease, min-width .5s ease, margin .5s ease;
+  transition: width $timeoutCollapse ease, height $timeoutCollapse ease, min-width $timeoutCollapse ease, margin $timeoutCollapse ease;
 }
 
 .avatar--collapse {
@@ -57,7 +59,7 @@ v-list {
   min-width: 30px !important;
   width: 30px !important;
   margin: 0 !important;
-  transition: width .5s ease, height .5s ease, min-width .5s ease, margin .5s ease;
+  transition: width $timeoutCollapse ease, height $timeoutCollapse ease, min-width $timeoutCollapse ease, margin $timeoutCollapse ease;
 }
 
 .v-expansion-panel {
@@ -70,20 +72,20 @@ v-list {
     box-shadow: none !important;
   }
 
-  &[aria-expanded="true"] {
-    button {
-      color       : $accent-blue;
-      font-weight : 700;
-      span {
-        color     : $accent-blue;
-      }
-      div {
-        i {
-          color   : $accent-blue !important;
-        }
-      }
-    }
-  }
+    // &[aria-expanded="true"] {
+    //   button {
+    //     color       : $accent-blue;
+    //     font-weight : 700;
+    //     span {
+    //       color     : $accent-blue;
+    //     }
+    //     div {
+    //       i {
+    //         color   : $accent-blue !important;
+    //       }
+    //     }
+    //   }
+    // }
 
   button {
     &:hover {
@@ -105,8 +107,10 @@ v-list {
 
 .link__btn {
   padding: 16px 24px !important;
+  // transition: padding .5s ease;
   &--collapse {
-    padding: 16px 10px !important;
+    padding: 16px 10px;
+    // transition: padding .5s ease;
   }
 }
 
@@ -150,11 +154,11 @@ v-list {
 
 .nav-fio, .nav__navlink {
   text-wrap : wrap;
-  animation: appearanceLink .3s forwards !important;
+  animation: appearanceLink $timeoutCollapse forwards !important;
 
   &--collapse {
     text-wrap : wrap;
-    animation: disappearanceLink .3s forwards !important;
+    animation: disappearanceLink $timeoutCollapse forwards !important;
 
     p {
       width: 200px;
@@ -174,13 +178,13 @@ v-list {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
   z-index   : $navbar-z;
   width     : 256px;
-  transition: width 1s ease !important;
+  transition: width $timeoutCollapse ease !important;
 
   &--collapse {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
     z-index   : $navbar-z;
     width   : 40px;
-    transition: width 1s ease !important;
+    transition: width $timeoutCollapse ease !important;
   }
 }
 
@@ -214,6 +218,17 @@ v-list {
   gap: 10px;
   padding: 16px 24px;
   font-weight: 500;
+  // transition: padding .5s ease;
+
+  &--collapse {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 10px;
+    font-weight: 500;
+    // transition: padding .5s ease;
+  }
+
   .icon__navlink {
 
   }
@@ -405,4 +420,22 @@ v-list {
     text-wrap: nowrap;
     width: 160px;
   }
+}
+
+// .fade-anim {
+//   animation: appearanceLink .7s forwards !important;
+//   &--collapse {
+//     animation: disappearanceLink .7s forwards !important;
+//   }
+// }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .7s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0
+}
+
+.v-menu__content  {
+  @include custom-scroll-bar-vertical;
 }

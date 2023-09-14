@@ -2,6 +2,7 @@
   <transition name="expand" mode="out-in">
     <v-card
       height="100vh"
+      overflow="hidden"
       :class="isСollapseMenu ? 'navbar-card--collapse' : 'navbar-card'"
       tile
       color="navbar"
@@ -50,6 +51,7 @@
                   : 'navmenu__mavlinks--collapse'
               "
             > -->
+            <!-- блок повяления при отсутствии доп ссылок внизу -->
             <template v-if="!item.disclosure">
               <router-link
                 color="text"
@@ -77,61 +79,68 @@
                 </div>
               </router-link>
             </template>
-            <!-- <template v-if="item.disclosure && !isСollapseMenu"> -->
+            <!-- блок с развертыванием меню если открыт полностью и есть внутри еще ссылки-->
             <template v-if="item.disclosure && !isСollapseMenu">
               <v-expansion-panel-header
                 :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
                 color="navbar"
               >
-                <transition name="fadeHeight">
-                  <v-icon>{{ item.icon }}</v-icon>
-                </transition>
-                <transition name="fadeHeight">
-                  <p
-                    :class="
-                      isСollapseMenu
-                        ? 'name__navlink--collapse'
-                        : 'nav__navlink'
-                    "
-                    color="text"
-                  >
-                    {{ item.name }}
-                  </p>
-                </transition>
+                <v-icon>{{ item.icon }}</v-icon>
+                <p
+                  :class="
+                    isСollapseMenu ? 'name__navlink--collapse' : 'nav__navlink'
+                  "
+                  color="text"
+                >
+                  {{ item.name }}
+                </p>
               </v-expansion-panel-header>
             </template>
+            <!-- при скрытие показываются только иконки, при клике открывается меню сбоку -->
             <template v-if="item.disclosure && isСollapseMenu">
-              <v-menu top :offset-x="offset">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon class="link__btn--collapse" v-bind="attrs" v-on="on">
-                    {{ item.icon }}
-                  </v-icon>
-                </template>
-                <v-list max-height="calc(100vh - 20px)">
-                  <v-list-item v-for="link in item.navlink" :key="link.id">
-                    <router-link active-class="active" :to="link.link" exact>
-                      <p class="navlink__item" color="text">
-                        {{ link.name }}
-                      </p>
-                    </router-link>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </template>
-            <template
-              :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
-            >
-              <v-expansion-panel-content
-                v-for="link in item.navlink"
-                :key="link.id"
-                color="navbar"
+              <template
+                :class="isСollapseMenu ? 'link__btn--collapse ' : 'link__btn'"
               >
-                <router-link active-class="active" :to="link.link" exact>
-                  <p class="navlink__item" color="text">
-                    {{ link.name }}
-                  </p>
-                </router-link>
-              </v-expansion-panel-content>
+                <v-menu top :offset-x="offset">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      :class="
+                        isСollapseMenu ? 'link__btn--collapse' : 'link__btn'
+                      "
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      {{ item.icon }}
+                    </v-icon>
+                  </template>
+                  <v-list max-height="calc(100vh - 20px)">
+                    <v-list-item v-for="link in item.navlink" :key="link.id">
+                      <router-link active-class="active" :to="link.link" exact>
+                        <p class="navlink__item" color="text">
+                          {{ link.name }}
+                        </p>
+                      </router-link>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </template>
+            </template>
+            <template v-if="!isСollapseMenu">
+              <template
+                :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
+              >
+                <v-expansion-panel-content
+                  v-for="link in item.navlink"
+                  :key="link.id"
+                  color="navbar"
+                >
+                  <router-link active-class="active" :to="link.link" exact>
+                    <p class="navlink__item" color="text">
+                      {{ link.name }}
+                    </p>
+                  </router-link>
+                </v-expansion-panel-content>
+              </template>
             </template>
           </v-expansion-panel>
         </v-expansion-panels>

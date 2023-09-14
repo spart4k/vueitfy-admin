@@ -22,56 +22,67 @@ export default {
         name: 'Основные таблицы',
         active: false,
         disclosure: true,
+        link_active: false,
         navlink: [
           {
             id: 1,
             name: 'Логи',
             link: '/table',
+            active: false,
           },
           {
             id: 2,
             name: 'Для ОБД',
             link: '/navbar',
+            active: false,
           },
           {
             id: 3,
             name: 'Планнинг',
             link: '/navbar',
+            active: false,
           },
           {
             id: 4,
             name: 'Штатное расписание',
             link: '/',
+            active: false,
           },
           {
             id: 5,
             name: 'Командировка',
             link: '/',
+            active: false,
           },
           {
             id: 6,
             name: 'График',
             link: '/',
+            active: false,
           },
           {
             id: 7,
             name: 'Аккаунт',
             link: '/',
+            active: false,
           },
           {
             id: 8,
             name: 'Персонал',
             link: '/',
+            active: false,
           },
           {
             id: 9,
             name: 'Персонал',
             link: '/',
+            active: false,
           },
           {
             id: 10,
             name: 'Документы',
             link: '/',
+            active: false,
           },
           {
             id: 11,
@@ -166,11 +177,13 @@ export default {
         icon: '$IconOtchet',
         name: 'Отчеты',
         disclosure: true,
+        link_active: false,
         navlink: [
           {
             id: 28,
             name: 'Задолжность',
             link: '/',
+            active: false,
           },
           {
             id: 29,
@@ -210,11 +223,13 @@ export default {
         icon: '$IconSystem',
         name: 'Система',
         disclosure: true,
+        link_active: false,
         navlink: [
           {
             id: 35,
             name: 'Представления',
             link: '/',
+            active: false,
           },
           {
             id: 36,
@@ -239,11 +254,13 @@ export default {
         name: 'Графики',
         disclosure: true,
         active: false,
+        link_active: false,
         navlink: [
           {
             id: 39,
             name: 'По сумме',
             link: '/',
+            active: false,
           },
         ],
       },
@@ -253,11 +270,13 @@ export default {
         name: 'Настройки',
         disclosure: true,
         active: false,
+        link_acrtive: false,
         navlink: [
           {
             id: 40,
             name: 'Расход категорий',
             link: '/',
+            active: false,
           },
           {
             id: 41,
@@ -387,12 +406,17 @@ export default {
     //   await getNavLink()
     // })
 
+    const activeFold = () => {
+      console.log(dataNavbarHard[1].navLinks[1].active, 'хуй')
+    }
+
     return {
       dataNavbarHard,
       isMobile,
       isOpenMenu,
       isСollapseMenu,
       store,
+      activeFold,
       // getNavLink,
       navLinks,
       setNavmenu,
