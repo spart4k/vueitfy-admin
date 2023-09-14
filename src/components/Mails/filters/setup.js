@@ -22,7 +22,7 @@ const filters = {
         '--v-primary-base'
       )
     )
-    const openPicker = ref(true)
+    const openPicker = ref(false)
     const popupCase = ref(false)
     const createFolder = () => {
       popupCase.value = true
