@@ -20,22 +20,32 @@ export default {
       pageCases: [
         {
           label: 'Входящие',
-          url: '$IconEdit',
+          url: '$IconMailActive',
           number: 21,
         },
         {
           label: 'Главное',
-          url: '$IconEdit',
+          url: '$IconStarMail',
           number: 21,
         },
         {
           label: 'С вложениями',
-          url: '$IconEdit',
+          url: '$IconAttachMail',
           number: 21,
         },
         {
           label: 'Отправленные',
-          url: '$IconEdit',
+          url: '$IconSendMail',
+          number: 0,
+        },
+        {
+          label: 'Удаленные',
+          url: '$IconDelete',
+          number: 0,
+        },
+        {
+          label: 'Черновики',
+          url: '$IconDocument',
           number: 0,
         },
       ],

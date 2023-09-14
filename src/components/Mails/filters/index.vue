@@ -29,26 +29,27 @@
     <v-expansion-panels class="v-filters-folder">
       <v-expansion-panel>
         <v-expansion-panel-header class="v-filters-folder-title"
-          ><v-icon small class="mr-2">$IconEdit</v-icon> Мои
+          ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
           папки</v-expansion-panel-header
         >
         <v-expansion-panel-content class="v-filters-folder-container">
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div
+            @click="createFolder"
             class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
           >
-            <v-icon small class="mr-2">$IconEdit</v-icon> Добавить папку
+            <v-icon small class="mr-2">$IconSystem</v-icon> Добавить папку
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -56,26 +57,27 @@
     <v-expansion-panels accordion class="v-filters-folder mb-3">
       <v-expansion-panel>
         <v-expansion-panel-header class="v-filters-folder-title"
-          ><v-icon small class="mr-2">$IconEdit</v-icon> Мои
+          ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
           ящики</v-expansion-panel-header
         >
         <v-expansion-panel-content class="v-filters-folder-container">
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconEdit</v-icon> Мои папки
+            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
           </div>
           <div
+            @click="createFolder"
             class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
           >
-            <v-icon small class="mr-2">$IconEdit</v-icon> Добавить папку
+            <v-icon small class="mr-2">$IconSystem</v-icon> Добавить папку
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -96,13 +98,38 @@
         plain
         class="v-filters-bottom_item d-flex align-center"
       >
-        <v-icon small>$IconEdit</v-icon>
+        <v-icon small>$IconBookmark</v-icon>
       </v-btn>
       <v-btn color="disabled" outlined plain class="v-filters-bottom_item">
         <div class="v-filters-bottom_item-point mr-2"></div>
         20
       </v-btn>
     </div>
+    <Popup @close="closePopup" v-if="popupCase">
+      <div class="v-filters-popup d-flex flex-column align-center">
+        <div class="d-flex">
+          <v-icon
+            :color="caseColor"
+            @click="openPicker = !openPicker"
+            large
+            class="mr-9 v-filters-popup_icon"
+            >$IconSystem</v-icon
+          >
+          <div v-if="openPicker" class="v-filters-popup_picker">
+            <v-color-picker v-model="caseColor" hide-inputs></v-color-picker>
+          </div>
+          <v-text-field
+            v-if="!openPicker"
+            max-width="100"
+            label="Название"
+          ></v-text-field>
+        </div>
+        <v-btn tonal color="success" class="mt-8">
+          <v-icon small class="mr-2">$IconAdd</v-icon>
+          Создать
+        </v-btn>
+      </div>
+    </Popup>
   </div>
 </template>
 <script src="./setup.js"></script>

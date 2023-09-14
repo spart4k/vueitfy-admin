@@ -1,7 +1,7 @@
 <template>
   <div class="v-upper">
     <div class="mr-4">
-      <v-icon class="mb-2" small>$IconStarMail</v-icon>
+      <v-icon class="mb-2 pb-1" small>$IconBookmark</v-icon>
       <v-checkbox
         v-if="!$props.expanded"
         color="primary"

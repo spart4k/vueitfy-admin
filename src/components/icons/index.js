@@ -42,10 +42,14 @@ import IconArrowLeft from './arrow-left/arrow-left.vue'
 import IconArrowRight from './arrow-right/arrow-right.vue'
 import IconArrowUp from './arrow-up/arrow-up.vue'
 import IconNotificationBell from './notification/notification.vue'
+import IconMailActive from './mail-active/mail-active.vue'
 
 export default {
   IconAdd: {
     component: IconAdd,
+  },
+  IconMailActive: {
+    component: IconMailActive,
   },
   IconAttachMail: {
     component: IconAttachMail,

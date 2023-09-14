@@ -6,12 +6,12 @@
     <div class="v-letter-bottom d-flex">
       <div class="v-letter-bottom-color-mark mr-4"></div>
       <div class="v-letter-bottom-info d-flex flex-column mt-3">
-        <div class="v-letter-bottom-info-title">СРМ-100</div>
-        <div class="v-letter-bottom-info-text">
+        <p class="v-letter-bottom-info-title">СРМ-100</p>
+        <p class="v-letter-bottom-info-text">
           Текст сообщения в карточке письма. В нем ограничены символы. Ведь все
           письо не поместиться тут. Примерно 200 символов. Текст сообщения в
           карточке письма.
-        </div>
+        </p>
         <div class="v-letter-bottom-info-container d-flex">
           <div class="v-letter-bottom-info-container-files d-flex">
             <div class="v-letter-bottom-info-container-files_item">

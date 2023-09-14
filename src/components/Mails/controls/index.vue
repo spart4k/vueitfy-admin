@@ -6,23 +6,25 @@
         class="v-controls-list_item v-controls-list_item__input"
       ></v-checkbox>
       <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconEdit</v-icon>
+        <v-icon color="disabled" class="mr-3" small>$IconBroadcast</v-icon>
         Транслировать
       </v-btn>
       <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconEdit</v-icon>
+        <v-icon color="disabled" class="mr-3" x-small
+          >$IconCheckoutMessage</v-icon
+        >
         Прочитано
       </v-btn>
       <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconEdit</v-icon>
+        <v-icon color="disabled" class="mr-3" small>$IconSystem</v-icon>
         В папку
       </v-btn>
       <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconEdit</v-icon>
+        <v-icon color="disabled" class="mr-3" small>$IconTag</v-icon>
         Тэг
       </v-btn>
       <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconEdit</v-icon>
+        <v-icon color="disabled" class="mr-3" small>$IconDelete</v-icon>
         Удалить
       </v-btn>
     </div>
