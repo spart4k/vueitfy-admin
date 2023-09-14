@@ -1,6 +1,6 @@
 <template>
   <div class="v-mails d-flex">
-    <MailsFilters class="mr-4" :data="$props?.data.pageCases" />
+    <MailsFilters class="mr-4" :data="$props?.data.filters" />
     <div class="v-mails-group">
       <MailsControls class="mb-2" />
       <div class="d-flex w-100 h-100">

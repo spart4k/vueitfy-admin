@@ -15,10 +15,23 @@
         >
         Прочитано
       </v-btn>
-      <v-btn class="v-controls-list_item" color="text" plain>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn class="v-controls-list_item" v-bind="props" color="text" plain>
+            <v-icon color="disabled" class="mr-3" small>$IconSystem</v-icon>
+            В папку
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>hjgjhg</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- <v-btn class="v-controls-list_item" color="text" plain>
         <v-icon color="disabled" class="mr-3" small>$IconSystem</v-icon>
         В папку
-      </v-btn>
+      </v-btn> -->
       <v-btn class="v-controls-list_item" color="text" plain>
         <v-icon color="disabled" class="mr-3" small>$IconTag</v-icon>
         Тэг

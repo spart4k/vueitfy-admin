@@ -14,7 +14,7 @@
           'd-flex',
           'align-center',
         ]"
-        v-for="(item, index) in $props.data"
+        v-for="(item, index) in $props?.data?.pageCases"
         :key="index"
       >
         <v-icon small class="mr-4">{{ item.url }}</v-icon>
@@ -33,17 +33,13 @@
           папки</v-expansion-panel-header
         >
         <v-expansion-panel-content class="v-filters-folder-container">
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
-          </div>
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
-          </div>
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
-          </div>
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
+          <div
+            class="v-filters-folder-container_item ml-4"
+            v-for="(item, index) in $props?.data?.folders"
+            :key="index"
+          >
+            <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
+            {{ item.name }}
           </div>
           <div
             @click="createFolder"
@@ -61,17 +57,13 @@
           ящики</v-expansion-panel-header
         >
         <v-expansion-panel-content class="v-filters-folder-container">
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
-          </div>
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
-          </div>
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
-          </div>
-          <div class="v-filters-folder-container_item ml-4">
-            <v-icon small class="mr-2">$IconSystem</v-icon> Мои папки
+          <div
+            class="v-filters-folder-container_item ml-4"
+            v-for="(item, index) in $props?.data?.cases"
+            :key="index"
+          >
+            <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
+            {{ item.name }}
           </div>
           <div
             @click="createFolder"
@@ -83,13 +75,12 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <div class="v-filters-color mb-3">
-      <div class="v-filters-color_item"></div>
-      <div class="v-filters-color_item"></div>
-      <div class="v-filters-color_item"></div>
-      <div class="v-filters-color_item"></div>
-      <div class="v-filters-color_item"></div>
-      <div class="v-filters-color_item"></div>
-      <div class="v-filters-color_item"></div>
+      <div
+        class="v-filters-color_item"
+        :style="{ backgroundColor: item.color }"
+        v-for="(item, index) in $props?.data?.colors"
+        :key="index"
+      ></div>
     </div>
     <div class="v-filters-bottom mb-4">
       <v-btn
@@ -102,10 +93,10 @@
       </v-btn>
       <v-btn color="disabled" outlined plain class="v-filters-bottom_item">
         <div class="v-filters-bottom_item-point mr-2"></div>
-        20
+        {{ $props?.data?.unreadeanle }}
       </v-btn>
     </div>
-    <Popup @close="closePopup" v-if="popupCase">
+    <Popup closeButton @close="closePopup" v-if="popupCase">
       <div class="v-filters-popup d-flex flex-column align-center">
         <div class="d-flex">
           <v-icon

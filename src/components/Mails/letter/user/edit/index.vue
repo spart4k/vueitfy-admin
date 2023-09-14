@@ -83,11 +83,11 @@
               </div>
               <v-icon
                 class="ml-2"
-                color="text"
+                color="disabled"
                 small
                 @click="deleteItem(data.index)"
               >
-                $IconDelete
+                $IconClose
               </v-icon>
             </v-chip>
           </template>

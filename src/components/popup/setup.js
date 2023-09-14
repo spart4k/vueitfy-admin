@@ -6,9 +6,9 @@
 const popup = {
   name: 'Popup',
   props: {
-    data: {
-      type: Object,
-      default: () => {},
+    closeButton: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {
