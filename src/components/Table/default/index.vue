@@ -421,11 +421,18 @@
         </keep-alive>
       </Sheet>
     </portal>
-    <portal to="table-form">
-      <Popup closeButton @close="closePopupForm" v-if="popupForm.isShow">
-        <p>asda</p>
-      </Popup>
-    </portal>
+    <Popup
+      closeButton
+      @close="closePopupForm"
+      :options="{ width: '600px', portal: 'table-detail' }"
+      v-if="popupForm.isShow && options.detail.type === 'popup'"
+    >
+      <Detail
+        class="cols-6"
+        :detail="options.detail"
+        :class="[...options.detail.bootstrapClass, ...options.detail.class]"
+      />
+    </Popup>
   </div>
 </template>
 

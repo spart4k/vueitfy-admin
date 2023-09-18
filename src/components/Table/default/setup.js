@@ -2,21 +2,22 @@
 //document.adoptedStyleSheets.push(style)
 import Vue, { onMounted, ref, computed, watch } from 'vue'
 
+import vContextmenu from '@/components/contextmenu/default/index.vue'
+import Sheet from '@/components/sheet/default/index.vue'
+import Popup from '@/components/popup/index.vue'
+
 import vTableButton from '../button/index.js'
 import vButton from '../../button/index.js'
 import vInput from '../../input/default/index.js'
 import vIconSort from '../../icons/sort/index.vue'
-import vContextmenu from '@/components/contextmenu/default/index.vue'
-import Sheet from '@/components/sheet/default/index.vue'
 import TableFilter from '../filter/index.vue'
-import Popup from '@/components/popup/index.vue'
-
+import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
 
 import { tableApi } from '@/api'
 
 const table = {
-  name: 'Table',
+  name: 'TableDefault',
   components: {
     vTableButton,
     vButton,
@@ -26,6 +27,7 @@ const table = {
     Sheet,
     TableFilter,
     Popup,
+    Detail,
   },
   props: {
     options: {
@@ -382,6 +384,9 @@ const table = {
     }
     const openRow = ($event, row) => {
       console.log($event, 'row', row)
+      if (props.options.detail.type === 'popup') {
+        popupForm.value.isShow = true
+      }
     }
     const closePopupForm = () => {
       popupForm.value.isShow = false

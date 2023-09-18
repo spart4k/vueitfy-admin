@@ -10,8 +10,16 @@ const popup = defineComponent({
       type: Boolean,
       default: false,
     },
+    targetPortal: {
+      type: String,
+      default: '',
+    },
+    options: {
+      type: Object,
+      default: {},
+    },
   },
-  setup() {
+  setup(props, ctx) {
     return {}
   },
 })

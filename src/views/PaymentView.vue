@@ -28,6 +28,472 @@ function searchInputing(field) {
   console.log(field)
 }
 
+const tableConsumptionConfig = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'http://10.63.1.132:5000/get/pagination/personal',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+      {
+        label: 'Скачать',
+        class: ['v-table-button--custom'],
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+    ],
+  },
+  //head: [
+  //  {
+  //    title: 'ID',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'left',
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '40',
+  //    value: 'id',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Сотрудник',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'left',
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '90',
+  //    value: 'firstName',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Отдел',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'left',
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'company.department',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Email',
+  //    type: 'default',
+  //    align: 'left',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'number',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'email',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Телефон',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'date',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'phone',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Образование',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '200',
+  //    value: 'university',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Пол',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '100',
+  //    value: 'gender',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Мак адрес',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '130',
+  //    value: 'macAddress',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Домен',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'string',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'domain',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'День рождения',
+  //    type: 'default',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: undefined,
+  //    },
+  //    sorts: [
+  //      {
+  //        type: 'date',
+  //        default: 'asc',
+  //        value: 'asc',
+  //        isShow: false,
+  //      },
+  //    ],
+  //    isShow: true,
+  //    width: '150',
+  //    value: 'birthDate',
+  //    search: {
+  //      field: '',
+  //      isShow: true,
+  //    },
+  //  },
+  //  {
+  //    title: 'Действия',
+  //    type: 'actions',
+  //    align: 'center',
+  //    fixed: {
+  //      value: false,
+  //      position: 'right',
+  //    },
+  //    isShow: true,
+  //    width: '100',
+  //    value: 'actions',
+  //    actions: [
+  //      {
+  //        type: 'button',
+  //        url: '$IconSetting',
+  //        function: consoleText,
+  //        label: 'Редактировать',
+  //      },
+  //      {
+  //        type: 'button',
+  //        url: '$IconSetting',
+  //        function: consoleButton,
+  //        label: 'Удалить',
+  //      },
+  //    ],
+  //  },
+  //],
+  head: [
+    {
+      title: 'ID',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'id',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Статус',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'ps.status',
+      value: 'status_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'ФИО',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'p.name',
+      value: 'name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Телефон',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'telefon',
+      alias: 'p.telefon',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Примечание',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'comment',
+      alias: 'p.comment',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Действия',
+      type: 'actions',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'right',
+      },
+      isShow: true,
+      width: '100',
+      value: 'actions',
+      actions: [
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleText,
+          label: 'Редактировать',
+        },
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleButton,
+          label: 'Удалить',
+        },
+      ],
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 10,
+    currentPage: 1,
+    totalPages: null,
+  },
+}
+
 const tableConfigData = {
   selector: '#mainTable',
   options: {
@@ -541,6 +1007,64 @@ const tableConfigData = {
     pageLength: 10,
     currentPage: 1,
     totalPages: null,
+  },
+  detail: {
+    type: 'popup', // String 'popup' or 'page'
+    class: [''], // List class
+    width: '600px',
+    bootstrapClass: ['col-6'], // List class from bootstrap ( col-6, pa-2... )
+    tabs: [
+      {
+        id: 0,
+        name: 'Основные',
+        type: 'FormDefault',
+        active: false,
+        fields: [
+          {
+            id: 0,
+            label: 'Время создания',
+            value: '',
+            type: 'date',
+            subtype: 'datetime',
+            readonly: false,
+            placeholder: '',
+            class: [''],
+            bootstrapClass: [''],
+            disable: false,
+          },
+          {
+            id: 1,
+            label: 'Время создания',
+            value: '',
+            type: 'string',
+            readonly: false,
+            placeholder: '',
+            class: [''],
+            bootstrapClass: [''],
+            disable: false,
+          },
+          {
+            id: 2,
+            label: 'Время создания',
+            value: '',
+            type: 'select',
+            readonly: false,
+            placeholder: '',
+            class: [''],
+            bootstrapClass: [''],
+            disable: false,
+          },
+        ],
+      },
+      {
+        id: 1,
+        name: 'Расход',
+        type: 'TableDefault',
+        active: false,
+        config: tableConsumptionConfig,
+      },
+    ],
+    activeTab: null,
   },
 }
 
