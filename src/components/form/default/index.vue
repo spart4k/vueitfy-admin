@@ -1,6 +1,6 @@
 <template>
   <div class="form">
-    <p>form</p>
+    <p>form1</p>
   </div>
 </template>
 <script src="./setup.js"></script>

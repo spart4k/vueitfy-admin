@@ -18,6 +18,7 @@
         </v-tab-item>
       </v-tabs-items>
       <TableDefault :options="detail.tabs[1].config"></TableDefault>
+      {{ TableDefault }}
     </div>
   </div>
 </template>
