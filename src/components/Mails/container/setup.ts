@@ -1,28 +1,31 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import Vue, { onMounted, ref, computed, watch } from 'vue'
+import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
-import MailsFilters from '../filters/index.vue'
-import MailsControls from '../controls/index.vue'
-import MailsContainer from '../container/index.vue'
+import MailsLetter from '../letter/index.vue'
 import MailsLetterExpanded from '../letter/expanded/index.vue'
-const mails = {
-  name: 'Mails',
+const container = defineComponent({
+  name: 'Container',
   components: {
-    MailsFilters,
-    MailsControls,
-    MailsContainer,
+    MailsLetter,
     MailsLetterExpanded,
   },
   props: {
     data: {
+      type: Array,
+      default: () => [],
+    },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
+    activeMail: {
       type: Object,
       default: () => {},
-      require: true,
     },
   },
   setup() {
     return {}
   },
-}
-export default mails
+})
+export default container

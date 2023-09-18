@@ -1,9 +1,9 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import Vue, { onMounted, ref, computed, watch } from 'vue'
+import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
 // import vButton from '@/components/button/index.vue'
-const popup = {
+const popup = defineComponent({
   name: 'Popup',
   props: {
     closeButton: {
@@ -14,5 +14,5 @@ const popup = {
   setup() {
     return {}
   },
-}
+})
 export default popup

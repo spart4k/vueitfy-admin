@@ -96,6 +96,9 @@
             display: flex;
             &_item {
                 flex: 1;
+                &-text {
+                    color: var(--v-text-base);
+                }
                 &-point {
                     width: 9px;
                     height: 9px;

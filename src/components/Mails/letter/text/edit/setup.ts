@@ -1,9 +1,9 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import { ref, watch } from 'vue'
+import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
 import { VueEditor } from 'vue2-editor'
-const edit = {
+const edit = defineComponent({
   name: 'Edit',
   props: {},
   components: {
@@ -12,5 +12,5 @@ const edit = {
   setup() {
     return {}
   },
-}
+})
 export default edit

@@ -104,5 +104,5 @@
     </div>
   </div>
 </template>
-<script src="./setup.js"></script>
+<script src="./setup.ts"></script>
 <style lang="scss" scoped src="./style.scss"></style>

@@ -1,10 +1,16 @@
 <template>
-  <div class="v-letter">
+  <div
+    :class="['v-letter', $props.active && 'v-letter__active']"
+    @click="$parent.$emit('setActiveMail', $props.data)"
+  >
     <div class="v-letter-upper">
       <MailsLetterUser />
     </div>
     <div class="v-letter-bottom d-flex">
-      <div class="v-letter-bottom-color-mark mr-4"></div>
+      <div
+        :style="{ backgroundColor: $props.companyColor }"
+        class="v-letter-bottom-color-mark mr-4"
+      ></div>
       <div class="v-letter-bottom-info d-flex flex-column mt-3">
         <p class="v-letter-bottom-info-title">СРМ-100</p>
         <p class="v-letter-bottom-info-text">
@@ -37,5 +43,5 @@
     </div>
   </div>
 </template>
-<script src="./setup.js"></script>
+<script src="./setup.ts"></script>
 <style lang="scss" scoped src="./style.scss"></style>

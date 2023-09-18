@@ -1,6 +1,6 @@
 $shadow: 0px 4px 10px 0px #0000001A;
 $borderRadius: 5px;
-$containerWidth: calc(100vw - 256px - 214px - 16px - 16px - 26px);
+$containerWidth: calc(100vw - 256px - 214px - 16px - 16px - 22px);
 $containerHeight: calc(100vh - 15px - 19px - 72px);
 
 .v {
@@ -17,7 +17,7 @@ $containerHeight: calc(100vh - 15px - 19px - 72px);
             width: $containerWidth;
             // padding-bottom: 42px;
             // padding-right: 26px;
-            width: calc(100vw - 256px - 214px - 16px - 16px - 22px);
+            // width: calc(100vw - 256px - 214px - 16px - 16px - 22px);
         }
     }
 }

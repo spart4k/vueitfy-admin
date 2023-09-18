@@ -1,12 +1,12 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import Vue, { onMounted, ref, computed, watch } from 'vue'
+import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
 import MailsLetterUser from '../user/index.vue'
 import MailsLetterUserEdit from '../user/edit/index.vue'
 import MailsLetterTextEdit from '../text/edit/index.vue'
 import MailsLetterText from '../text/index.vue'
-const letterExpanded = {
+const letterExpanded = defineComponent({
   name: 'LetterExpanded',
   components: {
     MailsLetterUser,
@@ -23,5 +23,5 @@ const letterExpanded = {
   setup() {
     return {}
   },
-}
+})
 export default letterExpanded

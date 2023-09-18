@@ -1,7 +1,9 @@
 <template>
   <div class="v-filters d-flex align-center flex-column">
     <!-- {{ $props.data }} -->
-    <h2 class="v-filters-date mt-2">13 ПН</h2>
+    <h2 class="v-filters-date mt-2">
+      {{ new Date().getDate() }} {{ dayOfWeek[new Date().getDay()] }}
+    </h2>
     <v-btn color="primary" variant="tonal" class="mt-2 mb-7">
       <v-icon small class="mr-2">$IconEdit</v-icon>
       Написать
@@ -10,12 +12,14 @@
       <div
         :class="[
           'v-filters-mail-types-list_item',
-          !index && 'v-filters-mail-types-list_item__active',
+          $route.query.filter === item.query &&
+            'v-filters-mail-types-list_item__active',
           'd-flex',
           'align-center',
         ]"
         v-for="(item, index) in $props?.data?.pageCases"
         :key="index"
+        @click="$router.push({ path: 'mails', query: { filter: item.query } })"
       >
         <v-icon small class="mr-4">{{ item.url }}</v-icon>
         <div :class="['flex-grow-1']">
@@ -69,7 +73,7 @@
             @click="createFolder"
             class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
           >
-            <v-icon small class="mr-2">$IconSystem</v-icon> Добавить папку
+            <v-icon small class="mr-2">$IconSystem</v-icon> Добавить ящик
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -93,7 +97,9 @@
       </v-btn>
       <v-btn color="disabled" outlined plain class="v-filters-bottom_item">
         <div class="v-filters-bottom_item-point mr-2"></div>
-        {{ $props?.data?.unreadeanle }}
+        <p class="v-filters-bottom_item-text">
+          {{ $props?.data?.unreadeanle }}
+        </p>
       </v-btn>
     </div>
     <Popup closeButton @close="closePopup" v-if="popupCase">
@@ -123,5 +129,5 @@
     </Popup>
   </div>
 </template>
-<script src="./setup.js"></script>
+<script src="./setup.ts"></script>
 <style lang="scss" scoped src="./style.scss"></style>

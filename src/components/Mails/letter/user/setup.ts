@@ -1,8 +1,8 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import Vue, { onMounted, ref, computed, watch } from 'vue'
+import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
-const user = {
+const user = defineComponent({
   name: 'User',
   props: {
     expanded: {
@@ -13,5 +13,5 @@ const user = {
   setup() {
     return {}
   },
-}
+})
 export default user

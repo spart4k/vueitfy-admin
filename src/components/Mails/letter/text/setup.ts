@@ -1,8 +1,8 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import Vue, { onMounted, ref, computed, watch } from 'vue'
+import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
-const text = {
+const text = defineComponent({
   name: 'Text',
   props: {
     expanded: {
@@ -17,5 +17,5 @@ const text = {
   setup() {
     return {}
   },
-}
+})
 export default text
