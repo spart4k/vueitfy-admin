@@ -71,6 +71,9 @@
                             color: var(--v-disabled-base);
                         }
                     }
+                    &__active {
+                        color: var(--v-primary-base);
+                    }
                 }
                 &_item + &_item {
                     margin-top: 4px;
@@ -80,14 +83,20 @@
         &-color {
             width: 100%;
             display: flex;
+            min-height: 26px;
             justify-content: space-between;
             padding: 0 7px;
             margin-top: auto;
+            align-items: flex-end;
             &_item {
                 width: 9px;
                 height: 9px;
-                border-radius: 50%;
+                border-radius: 4.5px;
+                transition: all 0.3s;
                 cursor: pointer;
+                &__active {
+                    height: 26px;
+                }
             }
         }
         &-bottom {
@@ -104,6 +113,9 @@
                     height: 9px;
                     background-color: var(--v-disabled-base);
                     border-radius: 50%;
+                    &__active {
+                        background-color: var(--v-primary-base);
+                    }
                 }
             }
             &_item+&_item {

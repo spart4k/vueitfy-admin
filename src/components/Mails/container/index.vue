@@ -3,10 +3,11 @@
     :class="[
       'v-container',
       'd-flex',
-      $props.activeMail.id && 'v-container__expand',
+      ($props.activeMail.id || $props.activeMail.id === 0) &&
+        'v-container__expand',
     ]"
   >
-    <template v-if="$props.activeMail.id">
+    <template v-if="$props.activeMail.id || $props.activeMail.id === 0">
       <div class="v-container-column v-container-column__expand">
         <div class="v-container-column-items">
           <template v-for="item in $props.data">
@@ -24,7 +25,7 @@
         <MailsLetterExpanded :activeMail="$props.activeMail" />
       </div>
     </template>
-    <template v-if="!$props.activeMail.id">
+    <template v-if="!($props.activeMail.id || $props.activeMail.id === 0)">
       <!-- {{ $props.data }} -->
       <div
         class="v-container-column d-flex flex-column"

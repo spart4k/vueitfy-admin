@@ -19,18 +19,18 @@
         ]"
         v-for="(item, index) in $props?.data?.pageCases"
         :key="index"
-        @click="$router.push({ path: 'mails', query: { filter: item.query } })"
+        @click="setRouterPath({ filter: item.query })"
       >
         <v-icon small class="mr-4">{{ item.url }}</v-icon>
         <div :class="['flex-grow-1']">
           {{ item.label }}
         </div>
         <div>
-          {{ item.number ? item.number : '' }}
+          {{ item.number ? item.number : null }}
         </div>
       </div>
     </div>
-    <v-expansion-panels class="v-filters-folder">
+    <v-expansion-panels v-model="boxPanel" class="v-filters-folder">
       <v-expansion-panel>
         <v-expansion-panel-header class="v-filters-folder-title"
           ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
@@ -41,9 +41,24 @@
             class="v-filters-folder-container_item ml-4"
             v-for="(item, index) in $props?.data?.folders"
             :key="index"
+            @click="
+              $router.push({
+                path: 'mails',
+                query: { filter: 'box', id: item.id },
+              })
+              resetActiveMail()
+            "
           >
             <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
-            {{ item.name }}
+            <span
+              :class="
+                $route.query.filter === 'box' &&
+                Number($route.query.id) === item.id &&
+                'v-filters-folder-container_item__active'
+              "
+            >
+              {{ item.name }}
+            </span>
           </div>
           <div
             @click="createFolder"
@@ -54,7 +69,11 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-    <v-expansion-panels accordion class="v-filters-folder mb-3">
+    <v-expansion-panels
+      v-model="folderPanel"
+      accordion
+      class="v-filters-folder mb-3"
+    >
       <v-expansion-panel>
         <v-expansion-panel-header class="v-filters-folder-title"
           ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
@@ -65,9 +84,24 @@
             class="v-filters-folder-container_item ml-4"
             v-for="(item, index) in $props?.data?.cases"
             :key="index"
+            @click="
+              $router.push({
+                path: 'mails',
+                query: { filter: 'folder', id: item.id },
+              })
+              resetActiveMail()
+            "
           >
             <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
-            {{ item.name }}
+            <span
+              :class="
+                $route.query.filter === 'folder' &&
+                Number($route.query.id) === item.id &&
+                'v-filters-folder-container_item__active'
+              "
+            >
+              {{ item.name }}
+            </span>
           </div>
           <div
             @click="createFolder"
@@ -80,23 +114,61 @@
     </v-expansion-panels>
     <div class="v-filters-color mb-3">
       <div
-        class="v-filters-color_item"
+        :class="[
+          'v-filters-color_item',
+          $route.query.filter === 'color' &&
+            Number($route.query.id) === item.id &&
+            'v-filters-color_item__active',
+        ]"
         :style="{ backgroundColor: item.color }"
+        @click="
+          $router.push({
+            path: 'mails',
+            query: { filter: 'color', id: item.id },
+          })
+          resetActiveMail()
+        "
         v-for="(item, index) in $props?.data?.colors"
         :key="index"
       ></div>
     </div>
     <div class="v-filters-bottom mb-4">
       <v-btn
-        color="disabled"
+        :color="$route.query.filter === 'tags' ? 'primary' : 'disabled'"
         outlined
         plain
         class="v-filters-bottom_item d-flex align-center"
+        @click="
+          $router.push({
+            path: 'mails',
+            query: { filter: 'tags' },
+          })
+          resetActiveMail()
+        "
       >
         <v-icon small>$IconBookmark</v-icon>
       </v-btn>
-      <v-btn color="disabled" outlined plain class="v-filters-bottom_item">
-        <div class="v-filters-bottom_item-point mr-2"></div>
+      <v-btn
+        @click="
+          $router.push({
+            path: 'mails',
+            query: { filter: 'unread' },
+          })
+          resetActiveMail()
+        "
+        :color="$route.query.filter === 'unread' ? 'primary' : 'disabled'"
+        outlined
+        plain
+        class="v-filters-bottom_item"
+      >
+        <div
+          :class="[
+            'v-filters-bottom_item-point',
+            'mr-2',
+            $route.query.filter === 'unread' &&
+              'v-filters-bottom_item-point__active',
+          ]"
+        ></div>
         <p class="v-filters-bottom_item-text">
           {{ $props?.data?.unreadeanle }}
         </p>
@@ -129,5 +201,5 @@
     </Popup>
   </div>
 </template>
-<script src="./setup.ts"></script>
+<script src="./setup.js"></script>
 <style lang="scss" scoped src="./style.scss"></style>

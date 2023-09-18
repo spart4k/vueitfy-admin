@@ -3,10 +3,11 @@
 // import Vue, { onMounted, ref, computed, watch } from 'vue'
 // import { tableApi } from '@/api'
 // import vButton from '@/components/button/index.vue'
-import { defineComponent, ref, computed } from 'vue'
-// import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { ref, computed } from 'vue'
 import Popup from '../../popup/index.vue'
-const filters = defineComponent({
+const filters = {
   name: 'Filters',
   components: {
     Popup,
@@ -18,9 +19,20 @@ const filters = defineComponent({
     },
   },
   setup() {
-    const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
+    const router = useRouter()
+    const route = useRoute()
+
+    // const router = useRouter()
     // const route = useRouter()
-    // console.log('11111', $route)
+    console.log(router, route)
+    const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
+    const boxPanel = computed(() => {
+      // if ($route) {
+      //   return 0
+      // }
+      return null
+    })
+    const folderPanel = ref(0)
     const caseColor = ref(
       getComputedStyle(document.documentElement).getPropertyValue(
         '--v-primary-base'
@@ -39,6 +51,9 @@ const filters = defineComponent({
         document.documentElement
       ).getPropertyValue('--v-primary-base')
     }
+    const setRouterPath = (val) => {
+      console.log(val)
+    }
     return {
       caseColor,
       openPicker,
@@ -46,9 +61,13 @@ const filters = defineComponent({
 
       dayOfWeek,
 
+      boxPanel,
+      folderPanel,
+
       createFolder,
       closePopup,
+      setRouterPath,
     }
   },
-})
+}
 export default filters

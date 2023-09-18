@@ -25,6 +25,10 @@ const mails = defineComponent({
     const activeMail = ref({})
     const setActiveMail = (val) => {
       activeMail.value = Object.assign({}, val)
+      // $router.push({
+      //   path: 'mails',
+      //   query: { filter: 'unread' },
+      // })
     }
     return {
       setActiveMail,
