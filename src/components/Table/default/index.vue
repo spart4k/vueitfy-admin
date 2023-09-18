@@ -104,7 +104,11 @@
                     $IconSort
                   </v-icon>-->
                   <vIconSort
-                    v-if="head.sorts && head.sorts.length"
+                    v-if="
+                      head.sorts &&
+                      head.sorts.length &&
+                      paramsQuery.sorts.length
+                    "
                     class="v-table-header-row-cell-wrap__sort-icon mr-1"
                     :state="
                       paramsQuery.sorts.find((el) => el.field === head.value)
@@ -416,6 +420,11 @@
           />
         </keep-alive>
       </Sheet>
+    </portal>
+    <portal to="table-form">
+      <Popup closeButton @close="closePopupForm" v-if="popupForm.isShow">
+        <p>asda</p>
+      </Popup>
     </portal>
   </div>
 </template>

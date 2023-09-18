@@ -1,0 +1,30 @@
+.v {
+    &-text {
+        padding: 0 23px;
+        &__edit {
+            margin-left: 23px;
+            border-left: 3px solid var(--v-primary-base);
+        }
+        &-files {
+            margin-bottom: 27px;
+            &_item {
+                width: 31px;
+                height: 31px;
+                // background-color: aqua;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        &-title {
+            color: var(--v-text-base);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        &-text {
+            color: var(--v-secondary-base);
+            font-size: 12px;
+        }
+    }
+}

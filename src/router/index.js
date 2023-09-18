@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import TableView from '../views/DefaultTable.vue'
 import PersonalView from '../views/PersonalView.vue'
+import MailView from '../views/DefaultMails.vue'
 import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import TestForm from '@/views/testform'
@@ -58,11 +59,19 @@ const routes = [
   //  // which is lazy-loaded when the route is visited.
   //  component: TestTs,
   //},
+  {
+    path: '/mails',
+    name: 'mails',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: MailView,
+  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
   routes,
 })
 

@@ -9,6 +9,8 @@ import vIconSort from '../../icons/sort/index.vue'
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import TableFilter from '../filter/index.vue'
+import Popup from '@/components/popup/index.vue'
+
 import useMobile from '@/layouts/Adaptive/checkMob.js'
 
 import { tableApi } from '@/api'
@@ -23,6 +25,7 @@ const table = {
     vContextmenu,
     Sheet,
     TableFilter,
+    Popup,
   },
   props: {
     options: {
@@ -69,6 +72,9 @@ const table = {
       countRows: pagination.value.countRows,
       sorts: [],
       searchColumns: [],
+    })
+    const popupForm = ref({
+      isShow: true,
     })
     const wrapingRow = () => {
       console.log('RESIZE1')
@@ -377,6 +383,9 @@ const table = {
     const openRow = ($event, row) => {
       console.log($event, 'row', row)
     }
+    const closePopupForm = () => {
+      popupForm.value.isShow = false
+    }
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -481,6 +490,8 @@ const table = {
       isElementXPercentInViewport,
       saveFilter,
       openRow,
+      closePopupForm,
+      popupForm,
     }
   },
 }

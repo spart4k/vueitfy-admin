@@ -44,6 +44,10 @@ export default {
             link: '/testform',
           },
           {
+            name: 'Почта',
+            link: '/mails',
+          },
+          {
             id: 5,
             name: 'Командировка',
             link: '/',

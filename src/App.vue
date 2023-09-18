@@ -3,6 +3,7 @@
     <LayoutDefault>
       <router-view />
       <portal-target name="filter" />
+      <portal-target name="table-form" />
     </LayoutDefault>
   </v-app>
 </template>
