@@ -326,3 +326,29 @@ $borderColor: rgba(0,0,0,.3);
 .row {
   margin: 0;
 }
+
+.view {
+  &-table {
+    .v-tabs {
+      height: 50px;
+      padding: 0 10px 0 10px;
+    }
+    .v-tabs-items {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .v-window__container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        .v-window-item {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

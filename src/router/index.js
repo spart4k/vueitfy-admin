@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import TableView from '../views/DefaultTable.vue'
+import PersonalView from '../views/PersonalView.vue'
 import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import TestForm from '@/views/testform'
+//import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
 
@@ -15,6 +17,14 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: TableView,
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PersonalView,
   },
   {
     path: '/test',
@@ -40,6 +50,14 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: TestForm,
   },
+  //{
+  //  path: '/testts',
+  //  name: 'TestTs',
+  //  // route level code-splitting
+  //  // this generates a separate chunk (about.[hash].js) for this route
+  //  // which is lazy-loaded when the route is visited.
+  //  component: TestTs,
+  //},
 ]
 
 const router = new VueRouter({

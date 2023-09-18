@@ -41,7 +41,7 @@ export default {
           {
             id: 4,
             name: 'Штатное расписание',
-            link: '/',
+            link: '/testform',
           },
           {
             id: 5,
@@ -61,7 +61,7 @@ export default {
           {
             id: 8,
             name: 'Персонал',
-            link: '/',
+            link: '/personal',
           },
           {
             id: 9,

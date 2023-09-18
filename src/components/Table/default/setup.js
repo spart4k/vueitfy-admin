@@ -374,6 +374,9 @@ const table = {
       console.log('save')
       getItems()
     }
+    const openRow = ($event, row) => {
+      console.log($event, 'row', row)
+    }
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -477,6 +480,7 @@ const table = {
       rowCount,
       isElementXPercentInViewport,
       saveFilter,
+      openRow,
     }
   },
 }

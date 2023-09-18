@@ -178,6 +178,7 @@
               :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
               @contextmenu="openContext($event, row)"
               @click="openChildRow($event, row)"
+              v-on:dblclick="openRow($event, row)"
               class="v-table-body-row"
             >
               <td
