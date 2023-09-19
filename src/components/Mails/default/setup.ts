@@ -1,7 +1,7 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
 // import Vue, { onMounted, ref, computed, watch } from 'vue'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from '@vue/composition-api'
 // import { tableApi } from '@/api'
 import MailsFilters from '../filters/index.vue'
 import MailsControls from '../controls/index.vue'
@@ -21,18 +21,17 @@ const mails = defineComponent({
       default: () => {},
     },
   },
-  setup() {
-    const activeMail = ref({})
+  setup(props, context) {
+    const router = context.root.$router
+    const route = context.root.$route
     const setActiveMail = (val) => {
-      activeMail.value = Object.assign({}, val)
-      // $router.push({
-      //   path: 'mails',
-      //   query: { filter: 'unread' },
-      // })
+      const query = {
+        mail: val.id
+      }
+      router.push({ path: 'mails', query: {...route.query, ...query}}).catch(() => {})
     }
     return {
       setActiveMail,
-      activeMail,
     }
   },
 })

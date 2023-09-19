@@ -4,7 +4,12 @@
     <h2 class="v-filters-date mt-2">
       {{ new Date().getDate() }} {{ dayOfWeek[new Date().getDay()] }}
     </h2>
-    <v-btn color="primary" variant="tonal" class="mt-2 mb-7">
+    <v-btn
+      @click="createNewMail"
+      color="primary"
+      variant="tonal"
+      class="mt-2 mb-7"
+    >
       <v-icon small class="mr-2">$IconEdit</v-icon>
       Написать
     </v-btn>
@@ -41,13 +46,7 @@
             class="v-filters-folder-container_item ml-4"
             v-for="(item, index) in $props?.data?.folders"
             :key="index"
-            @click="
-              $router.push({
-                path: 'mails',
-                query: { filter: 'box', id: item.id },
-              })
-              resetActiveMail()
-            "
+            @click="setRouterPath({ filter: 'box', id: item.id })"
           >
             <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
             <span
@@ -84,13 +83,7 @@
             class="v-filters-folder-container_item ml-4"
             v-for="(item, index) in $props?.data?.cases"
             :key="index"
-            @click="
-              $router.push({
-                path: 'mails',
-                query: { filter: 'folder', id: item.id },
-              })
-              resetActiveMail()
-            "
+            @click="setRouterPath({ filter: 'folder', id: item.id })"
           >
             <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
             <span
@@ -121,13 +114,7 @@
             'v-filters-color_item__active',
         ]"
         :style="{ backgroundColor: item.color }"
-        @click="
-          $router.push({
-            path: 'mails',
-            query: { filter: 'color', id: item.id },
-          })
-          resetActiveMail()
-        "
+        @click="setRouterPath({ filter: 'color', id: item.id })"
         v-for="(item, index) in $props?.data?.colors"
         :key="index"
       ></div>
@@ -138,24 +125,12 @@
         outlined
         plain
         class="v-filters-bottom_item d-flex align-center"
-        @click="
-          $router.push({
-            path: 'mails',
-            query: { filter: 'tags' },
-          })
-          resetActiveMail()
-        "
+        @click="setRouterPath({ filter: 'tags' })"
       >
         <v-icon small>$IconBookmark</v-icon>
       </v-btn>
       <v-btn
-        @click="
-          $router.push({
-            path: 'mails',
-            query: { filter: 'unread' },
-          })
-          resetActiveMail()
-        "
+        @click="setRouterPath({ filter: 'unread' })"
         :color="$route.query.filter === 'unread' ? 'primary' : 'disabled'"
         outlined
         plain
@@ -201,5 +176,5 @@
     </Popup>
   </div>
 </template>
-<script src="./setup.js"></script>
+<script src="./setup.ts"></script>
 <style lang="scss" scoped src="./style.scss"></style>
