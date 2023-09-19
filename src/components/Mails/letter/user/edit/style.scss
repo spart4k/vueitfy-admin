@@ -30,18 +30,6 @@
                     margin: 0;
                     padding: 0;
                 }
-                :global(.v-input__slot) {
-                    margin: 0 !important;
-                }
-                :global(.v-text-field__details) {
-                    display: none !important;
-                }
-                :global(.v-input__append-inner) {
-                    display: none !important;
-                }
-                :global(.v-select__selections) {
-                    min-height: 32px !important;
-                }
             }
         }
         &-item+&-item {

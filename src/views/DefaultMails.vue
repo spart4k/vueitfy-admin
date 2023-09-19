@@ -138,6 +138,7 @@ export default {
               },
             },
             {
+              id: 1,
               from: {
                 username: 'Isagi Yoichu',
                 email: 'yoichu@gmail.com',
@@ -164,68 +165,6 @@ export default {
                 ],
               },
             },
-            {
-              from: {
-                username: 'Isagi Yoichu',
-                email: 'yoichu@gmail.com',
-              },
-              content: {
-                theme: 'CPM-100',
-                content: 'gfdfdgfdggfdgf',
-                files: [
-                  {
-                    id: 1,
-                    file: 'asdsad',
-                  },
-                ],
-                date: '00zxzz055474-334:342qsfd',
-              },
-              tags: {
-                bookmarked: false,
-                favorite: false,
-                colorTags: [
-                  {
-                    color: '#4c5678',
-                    id: 1,
-                  },
-                ],
-              },
-            },
-            {
-              from: {
-                username: 'Isagi Yoichu',
-                email: 'yoichu@gmail.com',
-              },
-              content: {
-                theme: 'CPM-100',
-                content: 'gfdfdgfdggfdgf',
-                files: [
-                  {
-                    id: 1,
-                    file: 'asdsad',
-                  },
-                ],
-                date: '00zxzz055474-334:342qsfd',
-              },
-              tags: {
-                bookmarked: false,
-                favorite: false,
-                colorTags: [
-                  {
-                    color: '#4c5678',
-                    id: 1,
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        {
-          company: {
-            name: 'R-лоск',
-            color: '#007BFF',
-          },
-          mail: [
             {
               id: 2,
               from: {
@@ -255,60 +194,7 @@ export default {
               },
             },
             {
-              from: {
-                username: 'Isagi Yoichu',
-                email: 'yoichu@gmail.com',
-              },
-              content: {
-                theme: 'CPM-100',
-                content: 'gfdfdgfdggfdgf',
-                files: [
-                  {
-                    id: 1,
-                    file: 'asdsad',
-                  },
-                ],
-                date: '00zxzz055474-334:342qsfd',
-              },
-              tags: {
-                bookmarked: false,
-                favorite: false,
-                colorTags: [
-                  {
-                    color: '#4c5678',
-                    id: 1,
-                  },
-                ],
-              },
-            },
-            {
-              from: {
-                username: 'Isagi Yoichu',
-                email: 'yoichu@gmail.com',
-              },
-              content: {
-                theme: 'CPM-100',
-                content: 'gfdfdgfdggfdgf',
-                files: [
-                  {
-                    id: 1,
-                    file: 'asdsad',
-                  },
-                ],
-                date: '00zxzz055474-334:342qsfd',
-              },
-              tags: {
-                bookmarked: false,
-                favorite: false,
-                colorTags: [
-                  {
-                    color: '#4c5678',
-                    id: 1,
-                  },
-                ],
-              },
-            },
-            {
+              id: 3,
               from: {
                 username: 'Isagi Yoichu',
                 email: 'yoichu@gmail.com',
@@ -344,7 +230,7 @@ export default {
           },
           mail: [
             {
-              id: 3,
+              id: 4,
               from: {
                 username: 'Isagi Yoichu',
                 email: 'yoichu@gmail.com',
@@ -372,6 +258,7 @@ export default {
               },
             },
             {
+              id: 5,
               from: {
                 username: 'Isagi Yoichu',
                 email: 'yoichu@gmail.com',
@@ -399,6 +286,7 @@ export default {
               },
             },
             {
+              id: 6,
               from: {
                 username: 'Isagi Yoichu',
                 email: 'yoichu@gmail.com',
@@ -426,6 +314,127 @@ export default {
               },
             },
             {
+              id: 7,
+              from: {
+                username: 'Isagi Yoichu',
+                email: 'yoichu@gmail.com',
+              },
+              content: {
+                theme: 'CPM-100',
+                content: 'gfdfdgfdggfdgf',
+                files: [
+                  {
+                    id: 1,
+                    file: 'asdsad',
+                  },
+                ],
+                date: '00zxzz055474-334:342qsfd',
+              },
+              tags: {
+                bookmarked: false,
+                favorite: false,
+                colorTags: [
+                  {
+                    color: '#4c5678',
+                    id: 1,
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          company: {
+            name: 'R-лоск',
+            color: '#007BFF',
+          },
+          mail: [
+            {
+              id: 8,
+              from: {
+                username: 'Isagi Yoichu',
+                email: 'yoichu@gmail.com',
+              },
+              content: {
+                theme: 'CPM-100',
+                content: 'gfdfdgfdggfdgf',
+                files: [
+                  {
+                    id: 1,
+                    file: 'asdsad',
+                  },
+                ],
+                date: '00zxzz055474-334:342qsfd',
+              },
+              tags: {
+                bookmarked: false,
+                favorite: false,
+                colorTags: [
+                  {
+                    color: '#4c5678',
+                    id: 1,
+                  },
+                ],
+              },
+            },
+            {
+              id: 9,
+              from: {
+                username: 'Isagi Yoichu',
+                email: 'yoichu@gmail.com',
+              },
+              content: {
+                theme: 'CPM-100',
+                content: 'gfdfdgfdggfdgf',
+                files: [
+                  {
+                    id: 1,
+                    file: 'asdsad',
+                  },
+                ],
+                date: '00zxzz055474-334:342qsfd',
+              },
+              tags: {
+                bookmarked: false,
+                favorite: false,
+                colorTags: [
+                  {
+                    color: '#4c5678',
+                    id: 1,
+                  },
+                ],
+              },
+            },
+            {
+              id: 10,
+              from: {
+                username: 'Isagi Yoichu',
+                email: 'yoichu@gmail.com',
+              },
+              content: {
+                theme: 'CPM-100',
+                content: 'gfdfdgfdggfdgf',
+                files: [
+                  {
+                    id: 1,
+                    file: 'asdsad',
+                  },
+                ],
+                date: '00zxzz055474-334:342qsfd',
+              },
+              tags: {
+                bookmarked: false,
+                favorite: false,
+                colorTags: [
+                  {
+                    color: '#4c5678',
+                    id: 1,
+                  },
+                ],
+              },
+            },
+            {
+              id: 11,
               from: {
                 username: 'Isagi Yoichu',
                 email: 'yoichu@gmail.com',

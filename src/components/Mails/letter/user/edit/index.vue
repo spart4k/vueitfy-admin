@@ -6,8 +6,6 @@
       <div class="v-edit-item-input">
         <v-combobox
           v-model="user"
-          :search-input.sync="search"
-          @change="onChange"
           :items="[user]"
           chips
           item-text="name"
@@ -39,9 +37,7 @@
       <div class="v-edit-item-input">
         <v-combobox
           v-model="content"
-          :search-input.sync="search"
           hide-selected
-          @change="onChange"
           :items="userArray"
           multiple
           chips

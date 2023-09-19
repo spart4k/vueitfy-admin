@@ -1,5 +1,5 @@
 <template>
-  <div :class="['v-text', 'v-text__edit']">
+  <div :class="['v-text', $route.query.compose === 'answer' && 'v-text__edit']">
     <div class="v-text-files d-flex">
       <div class="v-text-files_item">
         <img src="../../../../../src/assets/image/doc.png" alt="" />

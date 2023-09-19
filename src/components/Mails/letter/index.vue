@@ -1,9 +1,9 @@
 <template>
   <div
     :class="['v-letter', $props.active && 'v-letter__active']"
-    @click="$parent.$emit('setActiveMail', $props.data)"
+    @click.prevent="$parent.$emit('setActiveMail', $props.data)"
   >
-    <div class="v-letter-upper">
+    <div @click.stop class="v-letter-upper">
       <MailsLetterUser />
     </div>
     <div class="v-letter-bottom d-flex">

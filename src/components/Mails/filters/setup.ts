@@ -3,8 +3,9 @@
 // import Vue, { onMounted, ref, computed, watch } from 'vue'
 // import { tableApi } from '@/api'
 // import vButton from '@/components/button/index.vue'
-import { defineComponent, ref, computed } from 'vue'
-// import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router'
+// import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, defineComponent } from '@vue/composition-api'
 import Popup from '../../popup/index.vue'
 const filters = defineComponent({
   name: 'Filters',
@@ -17,10 +18,22 @@ const filters = defineComponent({
       default: () => {},
     },
   },
-  setup() {
+  setup(props, context) {
+    const router = context.root.$router
+    const route = context.root.$route
     const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
-    // const route = useRouter()
-    // console.log('11111', $route)
+    const boxPanel = computed(() => {
+      if (route.query.filter === 'box') {
+        return 0
+      }
+      return null
+    })
+    const folderPanel = computed(() => {
+      if (route.query.filter === 'folder') {
+        return 0
+      }
+      return null
+    })
     const caseColor = ref(
       getComputedStyle(document.documentElement).getPropertyValue(
         '--v-primary-base'
@@ -39,6 +52,14 @@ const filters = defineComponent({
         document.documentElement
       ).getPropertyValue('--v-primary-base')
     }
+    const setRouterPath = (val) => {
+      router.push({ path: 'mails', query: val }).catch(() => {})
+      context.emit('resetActiveMail')
+    }
+    const createNewMail = () => {
+      setRouterPath({ compose: 'new' })
+      console.log(route)
+    }
     return {
       caseColor,
       openPicker,
@@ -46,8 +67,13 @@ const filters = defineComponent({
 
       dayOfWeek,
 
+      boxPanel,
+      folderPanel,
+
       createFolder,
       closePopup,
+      setRouterPath,
+      createNewMail,
     }
   },
 })
