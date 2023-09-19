@@ -44,6 +44,10 @@ export default {
           },
           {
             id: 4,
+            name: 'Штатное расписание',
+            link: '/testform',
+          },
+          {
             name: 'Почта',
             link: '/mails',
           },
@@ -68,8 +72,7 @@ export default {
           {
             id: 8,
             name: 'Персонал',
-            link: '/',
-            active: false,
+            link: '/personal',
           },
           {
             id: 9,

@@ -4,14 +4,22 @@
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: $overlay;
   z-index: $overlayZIndex;
   display: flex;
   justify-content: flex-end;
+  transition: background-color .3s;
   &-body {
-    background-color: $table-background;
+    //background-color: $table-background;
+    background-color: var(--v-background-base);
     height: 100%;
     width: $sheetWidth;
     // padding: 10px;
+  }
+  &--show {
+    background-color: $overlay;
+  }
+  &--hide {
+    background-color: transparent;
+    pointer-events: none;
   }
 }

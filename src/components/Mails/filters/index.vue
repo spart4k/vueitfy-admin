@@ -149,7 +149,12 @@
         </p>
       </v-btn>
     </div>
-    <Popup closeButton @close="closePopup" v-if="popupCase">
+    <Popup
+      :options="{ portal: 'table-detail' }"
+      closeButton
+      @close="closePopup"
+      v-if="popupCase"
+    >
       <div class="v-filters-popup d-flex flex-column align-center">
         <div class="d-flex">
           <v-icon

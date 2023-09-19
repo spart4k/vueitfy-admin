@@ -1024,17 +1024,17 @@
     //var $ = require( "jquery" );
     //var $;
     //$ = require('jquery');
-    const SESSION = new Map([
+    var SESSION = new Map([
       ['username', 'domnon'],
       ['account_id', 25],
       ['permissions', 4]
     ]);
-    const DEBUG = ''
-    const currec = [];
-    const list = []; //список значений основных полей справочника id name color
-    const previous = [];
-    const dataTable = [];
-    const any = [];
+    var DEBUG = ''
+    var currec = [];
+    var list = []; //список значений основных полей справочника id name color
+    var previous = [];
+    var dataTable = [];
+    var any = [];
 
     // if ('serviceWorker' in navigator) {
     //   navigator.serviceWorker.register('/sw.js')
@@ -1163,7 +1163,7 @@
     }
 
 
-    const save2List = (dataToSave, alias) => {
+    var save2List = (dataToSave, alias) => {
       sessionStorage.removeItem(alias);
       list[alias] = [];
       list[alias] = dataToSave;
@@ -1235,7 +1235,7 @@
       return $el;
     }
 
-    const fillItems = (arr, arr_selected, id, permissionSelect = false, costyl = false) => {
+    var fillItems = (arr, arr_selected, id, permissionSelect = false, costyl = false) => {
 
       //заполнение   chosen- селектов
 
@@ -3359,363 +3359,363 @@
 
   </script>
   <script type="application/javascript">
-  //$(document).ready(function() {
-  const PERMISSIONS = 4
-  const table = 'shop_request_magnit';
-  console.log('TEST TABLE TABLE')
-  /// run user script before inicialize
-  window.eval('var script_openTable = function (){' + 'if (PERMISSIONS===1){\n        waitForElm(\'#filter_shop_request_magnit_account_id_div\').then((elm) => {\n            $(elm).remove();\n        });\n}' + '};');
-  script_openTable();
-
-
-  //end uploat section
-
-  waitForElm('.filter-body-' + table).then((elm) => {
-  $('.filter-body-' + table).load('/view/filter/' + table, function(response, status, xhr) {});
-  });
-
-
-  currec[table] = '';
-  let cmdBtnRec = '';
-  let columns = '';
-  let columnDefs = '';
-  let nextColumnId;
-  const field_param = getObjFromJson("[{\"id\":1052,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":1,\"caption\":\"id\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[5, 4, 3, 1]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":0,\"showIn\":1,\"value_json\":null,\"blockClassName\":null,\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":1,\"orderable_b\":0,\"searchable_b\":1,\"visible_b\":0,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1056,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"status\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":7,\"caption\":\"Статус\",\"defaultValue\":null,\"className\":\"strs\",\"placeholder\":\"Выберите\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[5, 4, 3, 1, 2]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":10,\"showIn\":1,\"value_json\":\"[{\\\"id\\\": 1, \\\"name\\\": \\\"Новое\\\"}, {\\\"id\\\": 2, \\\"name\\\": \\\"В работе\\\"}, {\\\"id\\\": 3, \\\"name\\\": \\\"Выполнено в срок\\\"}, {\\\"id\\\": 4, \\\"name\\\": \\\"Не выполнено\\\"}, {\\\"id\\\": 5, \\\"name\\\": \\\"Отмена заявки\\\"}]\",\"blockClassName\":\"float-start col-6\",\"otherParam\":\"disable_search: true\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1074,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"date_create\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":11,\"caption\":\"Создана\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[1, 2, 3, 4, 5, 8]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":13,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-6 float-end ps-1\",\"otherParam\":\"DD.MM.YYYY H:mm\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":1,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":0,\"searchable_b\":0,\"visible_b\":0,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1059,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"date_request\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":9,\"caption\":\"На дату\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[5, 4, 3, 1]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":20,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-6\",\"otherParam\":\"DD.MM.YYYY\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":1,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1061,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"account_id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":17,\"caption\":\"В работе у\",\"defaultValue\":null,\"className\":null,\"placeholder\":\"Выберите\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":40,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-6\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1054,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"object_id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":17,\"caption\":\"Обьект\",\"defaultValue\":null,\"className\":null,\"placeholder\":\"Выберите обьект\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":50,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-12\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1055,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"doljnost_id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":17,\"caption\":\"Должность\",\"defaultValue\":null,\"className\":null,\"placeholder\":\"Выберите\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":60,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-7 float-start\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1063,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"hour\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":5,\"caption\":\"Часы\",\"defaultValue\":null,\"className\":\"total\",\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true, number: true\",\"comment\":null,\"sort_order\":70,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-4 float-start ps-1\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":1,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1058,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"path_act\",\"sourceNameForJoin\":\"act\",\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":8,\"caption\":\"Файл акта\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":80,\"showIn\":1,\"value_json\":null,\"blockClassName\":null,\"otherParam\":\"image\\\/jpg, image\\\/jpeg, image\\\/png, application\\\/pdf\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":0,\"searchable_b\":0,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1138,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"note\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":2,\"caption\":\"Примечание\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[4]\",\"permission_edit_json\":\"[4]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":90,\"showIn\":1,\"value_json\":null,\"blockClassName\":null,\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":0,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null}]");
-
-  $.each(field_param, function(i, value) {
-  let caption = '';
-  let renderExp = '';
-  let renderExpSort = '';
-
-  columnDefs += '{targets:' + i;
-
-  if (!empty(value.caption)) {
-  caption = ',title:"' + deleteSpecialChars(value.caption) + '"'; //todo \\"
-  }
-
-  if (!empty(value.script_render)) {
-  renderExp += deleteSpecialChars(value.script_render); //убираем переносы и ТАБЫ для работы скриптов
-  }
-
-  if (!empty(value.col_width)) {
-  columnDefs += ',width:"' + value.col_width + '"';
-  }
-
-  switch (value.field_type_id) {
-
-  case 2: //todo long text
-  renderExp += 'return "<div style=\\"max-width: 300px\\" class=\\"d-inline-block text-truncate \\">"+data+"</div>";';
-  break;
-  case 3: //todo long text
-  renderExp += 'return "<div style=\\"background-color:"+data+"\\">"+data+"</div>";';
-  break;
-
-  case 4: //int
-  case 5: //float
-  columnDefs += ',type:"num"';
-  break;
-  case 6: //type url
-  renderExp += 'return "<a target=\\"_blank\\" href="+encodeURI( data )+">" + row.name + "</a><sup><i class=\\"fa fa-external-link\\" aria-hidden=\\"true\\"></i></sup>";';
-  break;
-
-  case 7: //type json
-  let nado = !empty(field_param[i]["sourceNameForJoin"]) ? field_param[i]["sourceNameForJoin"] : '' ;
-  nado = replace2all(nado);
-
-  renderExp += "if ('" + nado + "' == '') { let jsonObj = getObjFromJson('" + field_param[i]["value_json"] + "');"
-  renderExp += "try{ return jsonObj.find(item => item.id == data)['name'];} catch(r) {return '';}; }";
-  renderExp += "else { return getDtNameById('" + nado + "',data, type, row) }";
-  break;
-  case 8: //type file//todo: fileext
-
-  renderExp += 'return "<div class=\\"fs-6 text-center\\"><a target=\\"_blank\\" href="+encodeURI( data )+"><i class=\\"far fa-file-alt\\"></i></a></div>";';
-  break;
-  case 9: //type date
-  case 10: //type time
-  case 11: //type date time
-  columnDefs += ',type:"date"';
-  renderExp += 'return moment(data).format("' + field_param[i]["otherParam"] + '");';
-  break;
-
-  case 12: //boolean
-  renderExp += 'return "<div class=\\"d-flex justify-content-center\\"><input "+ ((data ==1) ? "checked" : "") +"  class=\\"form-check-input\\" type=\\"checkbox\\" disabled value=\\""+data+"\\"></div>";';
-  break;
-
-  case 14: // render only
-  if (empty(value.otherParam)) {
-  columns += '{data: null' + caption;
-  } else {
-  //todo проверить если такое поле в массиве
-  columns += '{data: "' + value.otherParam + '"' + caption; //тут стобец по которому сортировать
-  }
-  break;
-
-  case 15:
-  columnDefs += ',className: "text-center fs-6 m-0 text-darck"';
-  columns += '{data:"' + ((empty(value.sourceDataName)) ? value.name : value.sourceDataName) + '"' + caption;
-  renderExp += 'return "<i class=\\""+data+"\\"></i>";';
-  //   renderExp += 'return "<div class=\\"progress\\"><div class=\\"progress-bar progress-bar-striped\\" role=\\"progressbar\\" style=\\"width: "+row.id+"%\\" aria-valuenow=\\""+row.id+"\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">"+row.id+"%</div></div>";';
-  break;
-
-  case 16: //progress bar//todo: row.valuebar  row.valuemin row.valuemax row.colorbar
-  if (empty(value.otherParam)) {
-  columns += '{data: null' + caption;
-  } else {
-  //todo проверить если такое поле в массиве
-  columns += '{data: "' + value.otherParam + '"' + caption; //тут стобец по которому сортировать
-  }
-  renderExp += 'return "<div class=\\"progress\\"><div class=\\"progress-bar progress-bar-striped\\" role=\\"progressbar\\" style=\\"width: "+row.id+"%\\" aria-valuenow=\\""+row.id+"\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">"+row.id+"%</div></div>";';
-  break;
-
-  case 17: //join type значение name из справочника по id
-  //columnDefs += ', type: "string", "orderData":' + i;
-  columnDefs += ', type:"string"';
-
-  let salias = empty(field_param[i]["sourceNameForJoin"]) ? field_param[i]["name"] : field_param[i]["sourceNameForJoin"];
-  salias = replace2all(salias);
-  if (field_param[i]["multiple"] === 1) {
-
-  renderExp += "let r='';$.each(valToArrInt(data),function(i,v) {r+='<span style=\"background-color:'+getDtColorById('" + salias + "',v, type, row)+'\" class=\"badge text-dark fw-light me-1\">'+getDtNameById('" + salias + "',v, type, row)+'</span>'});";
-  renderExp += "return r;"; //todo count multiple objects
-
-  } else {
-  renderExp += "return getDtNameById('" + salias + "',data, type, row)";
-  }
-  break;
-  case 19: //disable
-  if (valToArrInt(field_param[i]["permission_edit_json"]).indexOf(PERMISSIONS) === -1) {
-
-  renderExp += 'return "<div class=\\"m-0 d-flex justify-content-center\\">"+  data.toString().replace("0","<i class=\\"fas fa-check text-success\\"></i>").replace("1","<i class=\\"fas fa-times text-danger\\"></i>") +"</div>";';
-  } else {
-  renderExp += 'return "<div class=\\"form-check form-switch m-0 d-flex justify-content-center\\"><input "+ ((data ==0) ? "checked" : "") +" class=\\"form-check-input switch-in-table\\" data-id=\\""+row.id+"\\" role=\\"switch\\" type=\\"checkbox\\" value=\\""+data+"\\"></div>";';
-  }
-
-  break;
-
-  case 23: //Флаг выбора
-  columns += '{data:null,title:"' + '<div class=\\"d-flex justify-content-center\\"><input id=\\"check-select-all\\" class=\\"form-check-input\\" type=\\"checkbox\\"></div>"';
-  renderExp += 'return "<div class=\\"d-flex justify-content-center\\"><input class=\\"form-check-input check-select\\" data-id=\\""+row.id+"\\" type=\\"checkbox\\"></div>";';
-  break;
-
-  case 24: //ip address
-  renderExp += 'return "<a href=\\"#\\" onclick=\\"infoByIP(long2ip("+data+"))\\">" + long2ip(data) + "</a>"; ';
-  break;
-
-  default:
-  break;
-  }
-
-  // for data column:
-  if (value.field_type_id !== 14 && value.field_type_id !== 15 && value.field_type_id !== 16 && value.field_type_id !== 23) columns += '{data:"' + ((empty(value.sourceDataName)) ? value.name : value.sourceDataName) + '"' + caption;
-
-
-  if (!empty(renderExp)) {
-
-  if (value.field_type_id == 17 || value.field_type_id == 7) {
-  columns += ',render:function(data, type, row){' + renderExp + '}';
-  } else {
-  columns += ',render:function(data, type, row, meta){if(type === "sort" || type === "type"){return data;} if (!empty(data)){' + renderExp + '} else {return ""}}';
-  }
-
-  }
-
-  columns += ',defaultContent: ""},' //defaultContent - disable alert if ajax-data null
-
-  $.each(value, function(key, value) {
-  let str = '';
-  if ((key == 'className' && !empty(value)) || (key == 'width' && !empty(value)) || key.indexOf('_b') > -1) {
-
-  if (key.indexOf('_b') > -1) {
-  str = ', ' + key.replace('_b', '') + ':' + !!value; //2boolean
-  } else {
-  str = ', ' + key + ':' + '"' + value + '"';
-  }
-  columnDefs += str;
-  }
-  });
-
-  if (!empty(value.script_createdCell)) {
-  columnDefs += ',createdCell: function (td, cellData, rowData, row, col) {' + deleteSpecialChars(value.script_createdCell) + '}'
-  }
-
-  columnDefs += '},';
-  nextColumnId = i + 1;
-
-  });
-
-  const columnDefsObj = eval('([' + removeLastComma(columnDefs) + '])');
-  const columnsObj = eval('([' + removeLastComma(columns) + '])');
-  const tableParam = getObjFromJson('{\"id\":75,\"alias\":\"shop_request_magnit\",\"tableName\":\"shop_request_magnit\",\"name\":\"\\u0417\\u0430\\u044f\\u0432\\u043a\\u0438 \\u043c\\u0430\\u0433\\u043d\\u0438\\u0442\\u043e\\u0432\",\"dataSourceType\":1,\"dataTextJson\":null,\"dataUrlAjax\":null,\"icon\":\"fas fa-shopping-basket\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 14]\",\"permission_edit_json\":\"[1, 2, 3, 4, 5]\",\"permission_deladd_json\":\"[5, 4, 3]\",\"urlAddEdit\":null,\"showName_b\":1,\"header_b\":1,\"footer_b\":1,\"search_b\":1,\"buttons_b\":1,\"filter_b\":1,\"hiLight_b\":0,\"autoWidth_b\":1,\"width\":null,\"scrollX\":null,\"scrollY\":null,\"scrollCollapse_b\":null,\"btnXls_b\":1,\"btnColvis_b\":1,\"btnCsv_b\":0,\"btnUpdate_b\":1,\"btnAdd_b\":1,\"btnCmd_b\":1,\"btnImport_b\":0,\"btnPrint_b\":1,\"pageLength\":50,\"script_rowCallback\":\"switch (data.status){\\ncase 1:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-warning bg-opacity-25\\\");\\nbreak;\\ncase 2:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-info bg-opacity-25\\\");\\nbreak;\\ncase 3:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-success bg-opacity-25\\\");\\nbreak;\\ncase 4:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-danger bg-opacity-25\\\");\\nbreak;\\n}\",\"script_ajaxComplete\":null,\"script_initComplete\":null,\"script_openForm\":\"\\\/*\\u0421\\u0442\\u0430\\u0442\\u0443\\u0441 \\u043f\\u043e \\u0443\\u043c\\u043e\\u043b\\u0447\\u0430\\u043d\\u0438\\u044e*\\\/\\nif (empty($(\\\"#form_shop_request_magnit_id\\\").val()))\\n{\\n\\t$(\\\"#form_shop_request_magnit_status\\\").val(1);\\n\\t$(\\\"#form_shop_request_magnit_status\\\").trigger(\\\"chosen:updated\\\");\\n\\t\\\/\\\/$(\'#form_shop_request_magnit_date_request\').val(moment(new Date()).format(\\\"YYYY-MM-DD\\\"));\\n\\t$(\'#form_shop_request_magnit_date_status\').val(moment(new Date()).format(\\\"YYYY-MM-DDThh:mm\\\"));\\n\\t$(\\\"#form_shop_request_magnit_status_account_id\\\").val(ACCOUNT_ID);  \\n}\\n\\n$(\\\"#form_shop_request_magnit_status\\\").on(\\\"change\\\", function() {\\n\\n\\t\\\/*\\u043f\\u0440\\u0438 \\u0441\\u043c\\u0435\\u043d\\u0435 \\u0441\\u0442\\u0430\\u0442\\u0443\\u0441\\u0430 account_id \\u0441\\u043c\\u0435\\u043d\\u0438\\u0432\\u0448\\u0435\\u0433\\u043e*\\\/\\n\\t$(\\\"#form_shop_request_magnit_status_account_id\\\").val(ACCOUNT_ID);\\n\\t$(\'#form_shop_request_magnit_date_status\').val(moment(new Date()).format(\\\"YYYY-MM-DDThh:mm\\\"));\\n\\n});\\n\\n\\nif (PERMISSIONS===1){\\n\\t\\\/*\\u0431\\u043b\\u043e\\u043a\\u0438\\u0440\\u0443\\u0435\\u043c \\u043c\\u0430\\u043d\\u0430\\u0433\\u0435\\u0440\\u0430\\u043c \\u044d\\u043b\\u0435\\u043c\\u0435\\u043d\\u0442\\u044b \\u0441\\u0442\\u0430\\u0442\\u0443\\u0441\\u0430 \\u0443 \\u043c\\u0430\\u043d\\u0430\\u0433\\u0435\\u0440\\u0430*\\\/\\n\\t$(\\\"#form_shop_request_magnit_status option[value=4]\\\").prop(\\\"disabled\\\",true);\\n\\t$(\\\"#form_shop_request_magnit_status option[value=3]\\\").prop(\\\"disabled\\\",true);\\n\\t$(\\\"#form_shop_request_magnit_status\\\").trigger(\\\"chosen:updated\\\");\\n\\n\\t$(\\\"#form_shop_request_magnit_to_account_id\\\").prop(\\\"disabled\\\",true);\\n\\t$(\\\"#form_shop_request_magnit_to_account_id\\\").trigger(\\\"chosen:updated\\\");\\n}\",\"script_openTable\":\"if (PERMISSIONS===1){\\n        waitForElm(\'#filter_shop_request_magnit_account_id_div\').then((elm) => {\\n            $(elm).remove();\\n        });\\n}\",\"script_import\":null,\"form_modal_className\":\"modal-dialog modal-dialog-centered modal-fullscreen-sm-down modal-md\",\"table_className\":\"table table-hover table-striped table-borderless\",\"openFormIn\":1,\"del\":0,\"comment\":null,\"showLentgh_b\":1,\"showInfo_b\":1,\"showPage_b\":1,\"showTotal_b\":1,\"pre_filter_b\":1,\"autofocus_b\":0,\"disable\":0,\"dt_param\":null,\"formHeader\":null,\"formFooter\":null,\"condition\":\"\"}');
-  const customButtons = getObjFromJson('[]');
-
-  if ('shop_request_magnit' == 'personal_target' && PERMISSIONS != 13) {
-  cmdBtnRec += '<a role="button" title="расход" class="dt_personal_target_rashod btn btn-sm btn-outline-secondary"><i class="fas fa-ruble-sign"></i></a>\n';
-  }
-
-  //далее права на показ кнопок:
-  if ($.inArray(PERMISSIONS, tableParam['permission_deladd_json']) > -1) {
-  cmdBtnRec += '<a title="удалить" class="shop_request_magnit_del btn btn-sm btn-outline-secondary"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>\n';
-  }
-  if ($.inArray(PERMISSIONS, tableParam['permission_edit_json']) > -1) {
-  cmdBtnRec += '<a title="редактировать" class="shop_request_magnit_edit btn btn-sm btn-outline-secondary"><i class="fas fa-pencil-alt"></i></i></a>\n';
-  }
-
-  // show cmdButton если в настройках таблицы и позволяют права
-  if (tableParam['btnCmd_b'] === true && $.inArray(PERMISSIONS, tableParam['permission_edit_json']) > -1) {
-  columnsObj.push({
-  data: null,
-  title: "Действия"
-  });
-  columnDefsObj.push({
-  targets: nextColumnId,
-  className: "cmd",
-  orderable: false,
-  type: "html",
-  defaultContent: cmdBtnRec
-  });
-  }
-
-  dataTable[table + '_cond'] = tableParam.condition; //pre filter from GET & POST
-  let param = new Map([
-  ['columns', columnsObj],
-  ['columnDefs', columnDefsObj],
-  ['tableParam', tableParam],
-  ['cmdBtnRec', cmdBtnRec],
-  ['customButtons', customButtons],
-  ]);
-
-  if (typeof(dataTable[table]) === 'undefined') eval("dataTable[table] = dtInit(table, param );");
-
-  $('.btn-upload').click(function() {
-  $('#upload-' + table).trigger('click');
-  lockEL = this;
-  });
-
-  $('#' + table).on('dblclick', 'tr', function() {
-  document.dataRow = currec[table] = dataTable[table].row(curRow(this)).data();
-  //todo jquryselector for  data().block
-  if ($(this).find('td.block').length > 0 && $(this).find('td.block').text() == 1) {
-  slidePopup("Запись заблокирована!", 'warning');
-  return;
-  }
-
-  currec[table] = dataTable[table].row(curRow(this)).data().id;
-
-  //редактирование если включено и права дают  столбец id с классом id и del всегда должны быть в массиве и если есть поле block !=0 //$(this).find('td.id').length > 0 &&
-  if (!empty(currec[table]) && $.inArray(PERMISSIONS, tableParam['permission_view_json']) > -1) {
-
-  const url = empty(tableParam['urlAddEdit']) ? '/view/form/' + table + '?id=' + currec[table] : tableParam['urlAddEdit'] + '?id=' + currec[table];
-
-  switch (tableParam['openFormIn']) {
-  case 1:
-  openPopup(url, null, tableParam['form_modal_className']);
-  break;
-  case 2:
-  loadContent(url, '#content', true);
-  break;
-  case 3:
-  window.open(url, '_blank');
-  break;
-  default:
-  break;
-  }
-
-  }
-  });
-
-
-  //выделение запись
-  $('#' + table).on('mousedown', 'tr', function() {
-  if (!empty(dataTable[table].row(curRow(this)).data().id)) {
-  $(this).addClass('table-active').siblings().removeClass('table-active');
-  currec[table] = dataTable[table].row(curRow(this)).data().id;
-  }
-  $(this).addClass('table-active').siblings().removeClass('table-active');
-  setTimeout(() => checkSelect(), 500); //checkboxing selected
-  });
-
-  function checkSelect() {
-  if ($('tr.selected').length > 1) {
-  $('tr.selected').find('.check-select').prop("checked", true);
-  }
-  }
-
-  //удаление записи
-  $('#' + table).on('click', '.' + table + '_del', function() {
-
-  //if ($(this).closest('tr').find('td.block').length > 0 && Number($(this).closest('tr').find('td.block').text()) > 0) {
-  if (!empty(dataTable[table].row(curRow(this)).data().block) && Number(dataTable[table].row(curRow(this)).data().block)) {
-  slidePopup("Запись заблокирована!", "warning");
-  return;
-  }
-  currec[table] = dataTable[table].row(curRow(this)).data().id;
-  let el = this;
-  let func = function() {
-
-  $.post('/common/save/shop_request_magnit', {
-  id: currec[table],
-  del: 1
-  }, function(result) {
-
-  if (!empty(result) && result.type == "success") {
-  dataTable[table].row(curRow(el)).remove().draw(false);
-  } else {
-  slidePopup(result.message, result.type);
-  }
-  //hideModal();
-  });
-  };
-  //confirmShow('Удалить запись?', 'Удалить', 'fas fa-trash-alt', func);
-  toatsQuest('Удалить запись?', 'Удалить', 'fas fa-trash-alt', func);
-  });
-
-  // запись заблокирована
-  $('#' + table).on('click', '.' + table + '_edit', function() {
-  if ($(this).closest('tr').find('td.block').length > 0 && Number($(this).closest('tr').find('td.block').text()) > 0) {
-  slidePopup("Запись заблокирована!", 'warning');
-  return;
-  }
-
-  currec[table] = dataTable[table].row(curRow(this)).data().id;
-
-  const url = empty(tableParam['urlAddEdit']) ? '/view/form/' + table + '?id=' + currec[table] : tableParam['urlAddEdit'] + '?id=' + currec[table];
-
-  switch (tableParam['openFormIn']) {
-  case 1:
-  openPopup(url, this, tableParam['form_modal_className']);
-  break;
-  case 2:
-  loadContent(url, '#content', true);
-  break;
-  case 3:
-  window.open(url, '_blank');
-  break;
-  default:
-  break;
-  }
-
-  });
-
-  $('#table_' + table).on("click", ".switch-in-table", function() {
-  this.checked ? this.value = 0 : this.value = 1;
-  $.post('/common/save/shop_request_magnit', {
-  id: $(this).attr('data-id'),
-  disable: this.value,
-  }, function(result) {
-  slidePopup(result.message, result.type);
-  });
-  });
-
-  $('#table_' + table).on("click", '#check-select-all', function() {
-  const th = this;
-  $("#table_shop_request_magnit .check-select").each(function() {
-  th.checked ? this.value = 0 : this.value = 1;
-  $(this).attr("checked", th.checked ? true : false);
-  });
-  });
-
-  if (tableParam['pre_filter_b'] === true) glare('.btn_filter_shop_request_magnit');
-
-  //});
+    //$(document).ready(function() {
+      var PERMISSIONS = 4
+      var table = 'shop_request_magnit';
+      console.log('TEST TABLE TABLE')
+      /// run user script before inicialize
+      window.eval('var script_openTable = function (){' + 'if (PERMISSIONS===1){\n        waitForElm(\'#filter_shop_request_magnit_account_id_div\').then((elm) => {\n            $(elm).remove();\n        });\n}' + '};');
+      script_openTable();
+
+
+      //end uploat section
+
+      waitForElm('.filter-body-' + table).then((elm) => {
+      $('.filter-body-' + table).load('/view/filter/' + table, function(response, status, xhr) {});
+      });
+
+
+      currec[table] = '';
+      var cmdBtnRec = '';
+      var columns = '';
+      var columnDefs = '';
+      var nextColumnId;
+      var field_param = getObjFromJson("[{\"id\":1052,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":1,\"caption\":\"id\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[5, 4, 3, 1]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":0,\"showIn\":1,\"value_json\":null,\"blockClassName\":null,\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":1,\"orderable_b\":0,\"searchable_b\":1,\"visible_b\":0,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1056,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"status\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":7,\"caption\":\"Статус\",\"defaultValue\":null,\"className\":\"strs\",\"placeholder\":\"Выберите\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[5, 4, 3, 1, 2]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":10,\"showIn\":1,\"value_json\":\"[{\\\"id\\\": 1, \\\"name\\\": \\\"Новое\\\"}, {\\\"id\\\": 2, \\\"name\\\": \\\"В работе\\\"}, {\\\"id\\\": 3, \\\"name\\\": \\\"Выполнено в срок\\\"}, {\\\"id\\\": 4, \\\"name\\\": \\\"Не выполнено\\\"}, {\\\"id\\\": 5, \\\"name\\\": \\\"Отмена заявки\\\"}]\",\"blockClassName\":\"float-start col-6\",\"otherParam\":\"disable_search: true\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1074,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"date_create\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":11,\"caption\":\"Создана\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[1, 2, 3, 4, 5, 8]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":13,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-6 float-end ps-1\",\"otherParam\":\"DD.MM.YYYY H:mm\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":1,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":0,\"searchable_b\":0,\"visible_b\":0,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1059,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"date_request\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":9,\"caption\":\"На дату\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[5, 4, 3, 1]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":20,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-6\",\"otherParam\":\"DD.MM.YYYY\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":1,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1061,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"account_id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":17,\"caption\":\"В работе у\",\"defaultValue\":null,\"className\":null,\"placeholder\":\"Выберите\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":40,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-6\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1054,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"object_id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":17,\"caption\":\"Обьект\",\"defaultValue\":null,\"className\":null,\"placeholder\":\"Выберите обьект\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":50,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-12\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1055,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"doljnost_id\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":17,\"caption\":\"Должность\",\"defaultValue\":null,\"className\":null,\"placeholder\":\"Выберите\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true\",\"comment\":null,\"sort_order\":60,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-7 float-start\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":1,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1063,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"hour\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":5,\"caption\":\"Часы\",\"defaultValue\":null,\"className\":\"total\",\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":\"required:true, number: true\",\"comment\":null,\"sort_order\":70,\"showIn\":1,\"value_json\":null,\"blockClassName\":\"col-4 float-start ps-1\",\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":1,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":1,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1058,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"path_act\",\"sourceNameForJoin\":\"act\",\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":8,\"caption\":\"Файл акта\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[1, 2, 3, 4, 5, 8]\",\"permission_edit_json\":\"[3, 4, 5]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":80,\"showIn\":1,\"value_json\":null,\"blockClassName\":null,\"otherParam\":\"image\\\/jpg, image\\\/jpeg, image\\\/png, application\\\/pdf\",\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":0,\"searchable_b\":0,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null},{\"id\":1138,\"sys_table_alias\":\"shop_request_magnit\",\"name\":\"note\",\"sourceNameForJoin\":null,\"selectNameForJoin\":null,\"sourceDataName\":null,\"field_type_id\":2,\"caption\":\"Примечание\",\"defaultValue\":null,\"className\":null,\"placeholder\":null,\"permission_view_json\":\"[4]\",\"permission_edit_json\":\"[4]\",\"valid_rule\":null,\"comment\":null,\"sort_order\":90,\"showIn\":1,\"value_json\":null,\"blockClassName\":null,\"otherParam\":null,\"script_render\":null,\"script_createdCell\":null,\"del\":0,\"disabled\":0,\"disable\":0,\"autocomplete\":0,\"multiple\":0,\"readonly\":0,\"hidden\":0,\"orderable_b\":0,\"searchable_b\":1,\"visible_b\":1,\"showTotal_b\":0,\"inFilter_b\":0,\"typeFilter\":0,\"pre_filter\":0,\"fixed_b\":0,\"col_width\":null}]");
+
+      $.each(field_param, function(i, value) {
+      let caption = '';
+      let renderExp = '';
+      let renderExpSort = '';
+
+      columnDefs += '{targets:' + i;
+
+      if (!empty(value.caption)) {
+      caption = ',title:"' + deleteSpecialChars(value.caption) + '"'; //todo \\"
+      }
+
+      if (!empty(value.script_render)) {
+      renderExp += deleteSpecialChars(value.script_render); //убираем переносы и ТАБЫ для работы скриптов
+      }
+
+      if (!empty(value.col_width)) {
+      columnDefs += ',width:"' + value.col_width + '"';
+      }
+
+      switch (value.field_type_id) {
+
+      case 2: //todo long text
+      renderExp += 'return "<div style=\\"max-width: 300px\\" class=\\"d-inline-block text-truncate \\">"+data+"</div>";';
+      break;
+      case 3: //todo long text
+      renderExp += 'return "<div style=\\"background-color:"+data+"\\">"+data+"</div>";';
+      break;
+
+      case 4: //int
+      case 5: //float
+      columnDefs += ',type:"num"';
+      break;
+      case 6: //type url
+      renderExp += 'return "<a target=\\"_blank\\" href="+encodeURI( data )+">" + row.name + "</a><sup><i class=\\"fa fa-external-link\\" aria-hidden=\\"true\\"></i></sup>";';
+      break;
+
+      case 7: //type json
+      let nado = !empty(field_param[i]["sourceNameForJoin"]) ? field_param[i]["sourceNameForJoin"] : '' ;
+      nado = replace2all(nado);
+
+      renderExp += "if ('" + nado + "' == '') { let jsonObj = getObjFromJson('" + field_param[i]["value_json"] + "');"
+      renderExp += "try{ return jsonObj.find(item => item.id == data)['name'];} catch(r) {return '';}; }";
+      renderExp += "else { return getDtNameById('" + nado + "',data, type, row) }";
+      break;
+      case 8: //type file//todo: fileext
+
+      renderExp += 'return "<div class=\\"fs-6 text-center\\"><a target=\\"_blank\\" href="+encodeURI( data )+"><i class=\\"far fa-file-alt\\"></i></a></div>";';
+      break;
+      case 9: //type date
+      case 10: //type time
+      case 11: //type date time
+      columnDefs += ',type:"date"';
+      renderExp += 'return moment(data).format("' + field_param[i]["otherParam"] + '");';
+      break;
+
+      case 12: //boolean
+      renderExp += 'return "<div class=\\"d-flex justify-content-center\\"><input "+ ((data ==1) ? "checked" : "") +"  class=\\"form-check-input\\" type=\\"checkbox\\" disabled value=\\""+data+"\\"></div>";';
+      break;
+
+      case 14: // render only
+      if (empty(value.otherParam)) {
+      columns += '{data: null' + caption;
+      } else {
+      //todo проверить если такое поле в массиве
+      columns += '{data: "' + value.otherParam + '"' + caption; //тут стобец по которому сортировать
+      }
+      break;
+
+      case 15:
+      columnDefs += ',className: "text-center fs-6 m-0 text-darck"';
+      columns += '{data:"' + ((empty(value.sourceDataName)) ? value.name : value.sourceDataName) + '"' + caption;
+      renderExp += 'return "<i class=\\""+data+"\\"></i>";';
+      //   renderExp += 'return "<div class=\\"progress\\"><div class=\\"progress-bar progress-bar-striped\\" role=\\"progressbar\\" style=\\"width: "+row.id+"%\\" aria-valuenow=\\""+row.id+"\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">"+row.id+"%</div></div>";';
+      break;
+
+      case 16: //progress bar//todo: row.valuebar  row.valuemin row.valuemax row.colorbar
+      if (empty(value.otherParam)) {
+      columns += '{data: null' + caption;
+      } else {
+      //todo проверить если такое поле в массиве
+      columns += '{data: "' + value.otherParam + '"' + caption; //тут стобец по которому сортировать
+      }
+      renderExp += 'return "<div class=\\"progress\\"><div class=\\"progress-bar progress-bar-striped\\" role=\\"progressbar\\" style=\\"width: "+row.id+"%\\" aria-valuenow=\\""+row.id+"\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">"+row.id+"%</div></div>";';
+      break;
+
+      case 17: //join type значение name из справочника по id
+      //columnDefs += ', type: "string", "orderData":' + i;
+      columnDefs += ', type:"string"';
+
+      let salias = empty(field_param[i]["sourceNameForJoin"]) ? field_param[i]["name"] : field_param[i]["sourceNameForJoin"];
+      salias = replace2all(salias);
+      if (field_param[i]["multiple"] === 1) {
+
+      renderExp += "let r='';$.each(valToArrInt(data),function(i,v) {r+='<span style=\"background-color:'+getDtColorById('" + salias + "',v, type, row)+'\" class=\"badge text-dark fw-light me-1\">'+getDtNameById('" + salias + "',v, type, row)+'</span>'});";
+      renderExp += "return r;"; //todo count multiple objects
+
+      } else {
+      renderExp += "return getDtNameById('" + salias + "',data, type, row)";
+      }
+      break;
+      case 19: //disable
+      if (valToArrInt(field_param[i]["permission_edit_json"]).indexOf(PERMISSIONS) === -1) {
+
+      renderExp += 'return "<div class=\\"m-0 d-flex justify-content-center\\">"+  data.toString().replace("0","<i class=\\"fas fa-check text-success\\"></i>").replace("1","<i class=\\"fas fa-times text-danger\\"></i>") +"</div>";';
+      } else {
+      renderExp += 'return "<div class=\\"form-check form-switch m-0 d-flex justify-content-center\\"><input "+ ((data ==0) ? "checked" : "") +" class=\\"form-check-input switch-in-table\\" data-id=\\""+row.id+"\\" role=\\"switch\\" type=\\"checkbox\\" value=\\""+data+"\\"></div>";';
+      }
+
+      break;
+
+      case 23: //Флаг выбора
+      columns += '{data:null,title:"' + '<div class=\\"d-flex justify-content-center\\"><input id=\\"check-select-all\\" class=\\"form-check-input\\" type=\\"checkbox\\"></div>"';
+      renderExp += 'return "<div class=\\"d-flex justify-content-center\\"><input class=\\"form-check-input check-select\\" data-id=\\""+row.id+"\\" type=\\"checkbox\\"></div>";';
+      break;
+
+      case 24: //ip address
+      renderExp += 'return "<a href=\\"#\\" onclick=\\"infoByIP(long2ip("+data+"))\\">" + long2ip(data) + "</a>"; ';
+      break;
+
+      default:
+      break;
+      }
+
+      // for data column:
+      if (value.field_type_id !== 14 && value.field_type_id !== 15 && value.field_type_id !== 16 && value.field_type_id !== 23) columns += '{data:"' + ((empty(value.sourceDataName)) ? value.name : value.sourceDataName) + '"' + caption;
+
+
+      if (!empty(renderExp)) {
+
+      if (value.field_type_id == 17 || value.field_type_id == 7) {
+      columns += ',render:function(data, type, row){' + renderExp + '}';
+      } else {
+      columns += ',render:function(data, type, row, meta){if(type === "sort" || type === "type"){return data;} if (!empty(data)){' + renderExp + '} else {return ""}}';
+      }
+
+      }
+
+      columns += ',defaultContent: ""},' //defaultContent - disable alert if ajax-data null
+
+      $.each(value, function(key, value) {
+      let str = '';
+      if ((key == 'className' && !empty(value)) || (key == 'width' && !empty(value)) || key.indexOf('_b') > -1) {
+
+      if (key.indexOf('_b') > -1) {
+      str = ', ' + key.replace('_b', '') + ':' + !!value; //2boolean
+      } else {
+      str = ', ' + key + ':' + '"' + value + '"';
+      }
+      columnDefs += str;
+      }
+      });
+
+      if (!empty(value.script_createdCell)) {
+      columnDefs += ',createdCell: function (td, cellData, rowData, row, col) {' + deleteSpecialChars(value.script_createdCell) + '}'
+      }
+
+      columnDefs += '},';
+      nextColumnId = i + 1;
+
+      });
+
+      var columnDefsObj = eval('([' + removeLastComma(columnDefs) + '])');
+      var columnsObj = eval('([' + removeLastComma(columns) + '])');
+      var tableParam = getObjFromJson('{\"id\":75,\"alias\":\"shop_request_magnit\",\"tableName\":\"shop_request_magnit\",\"name\":\"\\u0417\\u0430\\u044f\\u0432\\u043a\\u0438 \\u043c\\u0430\\u0433\\u043d\\u0438\\u0442\\u043e\\u0432\",\"dataSourceType\":1,\"dataTextJson\":null,\"dataUrlAjax\":null,\"icon\":\"fas fa-shopping-basket\",\"permission_view_json\":\"[1, 2, 3, 4, 5, 14]\",\"permission_edit_json\":\"[1, 2, 3, 4, 5]\",\"permission_deladd_json\":\"[5, 4, 3]\",\"urlAddEdit\":null,\"showName_b\":1,\"header_b\":1,\"footer_b\":1,\"search_b\":1,\"buttons_b\":1,\"filter_b\":1,\"hiLight_b\":0,\"autoWidth_b\":1,\"width\":null,\"scrollX\":null,\"scrollY\":null,\"scrollCollapse_b\":null,\"btnXls_b\":1,\"btnColvis_b\":1,\"btnCsv_b\":0,\"btnUpdate_b\":1,\"btnAdd_b\":1,\"btnCmd_b\":1,\"btnImport_b\":0,\"btnPrint_b\":1,\"pageLength\":50,\"script_rowCallback\":\"switch (data.status){\\ncase 1:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-warning bg-opacity-25\\\");\\nbreak;\\ncase 2:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-info bg-opacity-25\\\");\\nbreak;\\ncase 3:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-success bg-opacity-25\\\");\\nbreak;\\ncase 4:\\n$(row).find(\\\"td.strs\\\").addClass(\\\"bg-danger bg-opacity-25\\\");\\nbreak;\\n}\",\"script_ajaxComplete\":null,\"script_initComplete\":null,\"script_openForm\":\"\\\/*\\u0421\\u0442\\u0430\\u0442\\u0443\\u0441 \\u043f\\u043e \\u0443\\u043c\\u043e\\u043b\\u0447\\u0430\\u043d\\u0438\\u044e*\\\/\\nif (empty($(\\\"#form_shop_request_magnit_id\\\").val()))\\n{\\n\\t$(\\\"#form_shop_request_magnit_status\\\").val(1);\\n\\t$(\\\"#form_shop_request_magnit_status\\\").trigger(\\\"chosen:updated\\\");\\n\\t\\\/\\\/$(\'#form_shop_request_magnit_date_request\').val(moment(new Date()).format(\\\"YYYY-MM-DD\\\"));\\n\\t$(\'#form_shop_request_magnit_date_status\').val(moment(new Date()).format(\\\"YYYY-MM-DDThh:mm\\\"));\\n\\t$(\\\"#form_shop_request_magnit_status_account_id\\\").val(ACCOUNT_ID);  \\n}\\n\\n$(\\\"#form_shop_request_magnit_status\\\").on(\\\"change\\\", function() {\\n\\n\\t\\\/*\\u043f\\u0440\\u0438 \\u0441\\u043c\\u0435\\u043d\\u0435 \\u0441\\u0442\\u0430\\u0442\\u0443\\u0441\\u0430 account_id \\u0441\\u043c\\u0435\\u043d\\u0438\\u0432\\u0448\\u0435\\u0433\\u043e*\\\/\\n\\t$(\\\"#form_shop_request_magnit_status_account_id\\\").val(ACCOUNT_ID);\\n\\t$(\'#form_shop_request_magnit_date_status\').val(moment(new Date()).format(\\\"YYYY-MM-DDThh:mm\\\"));\\n\\n});\\n\\n\\nif (PERMISSIONS===1){\\n\\t\\\/*\\u0431\\u043b\\u043e\\u043a\\u0438\\u0440\\u0443\\u0435\\u043c \\u043c\\u0430\\u043d\\u0430\\u0433\\u0435\\u0440\\u0430\\u043c \\u044d\\u043b\\u0435\\u043c\\u0435\\u043d\\u0442\\u044b \\u0441\\u0442\\u0430\\u0442\\u0443\\u0441\\u0430 \\u0443 \\u043c\\u0430\\u043d\\u0430\\u0433\\u0435\\u0440\\u0430*\\\/\\n\\t$(\\\"#form_shop_request_magnit_status option[value=4]\\\").prop(\\\"disabled\\\",true);\\n\\t$(\\\"#form_shop_request_magnit_status option[value=3]\\\").prop(\\\"disabled\\\",true);\\n\\t$(\\\"#form_shop_request_magnit_status\\\").trigger(\\\"chosen:updated\\\");\\n\\n\\t$(\\\"#form_shop_request_magnit_to_account_id\\\").prop(\\\"disabled\\\",true);\\n\\t$(\\\"#form_shop_request_magnit_to_account_id\\\").trigger(\\\"chosen:updated\\\");\\n}\",\"script_openTable\":\"if (PERMISSIONS===1){\\n        waitForElm(\'#filter_shop_request_magnit_account_id_div\').then((elm) => {\\n            $(elm).remove();\\n        });\\n}\",\"script_import\":null,\"form_modal_className\":\"modal-dialog modal-dialog-centered modal-fullscreen-sm-down modal-md\",\"table_className\":\"table table-hover table-striped table-borderless\",\"openFormIn\":1,\"del\":0,\"comment\":null,\"showLentgh_b\":1,\"showInfo_b\":1,\"showPage_b\":1,\"showTotal_b\":1,\"pre_filter_b\":1,\"autofocus_b\":0,\"disable\":0,\"dt_param\":null,\"formHeader\":null,\"formFooter\":null,\"condition\":\"\"}');
+      var customButtons = getObjFromJson('[]');
+
+      if ('shop_request_magnit' == 'personal_target' && PERMISSIONS != 13) {
+      cmdBtnRec += '<a role="button" title="расход" class="dt_personal_target_rashod btn btn-sm btn-outline-secondary"><i class="fas fa-ruble-sign"></i></a>\n';
+      }
+
+      //далее права на показ кнопок:
+      if ($.inArray(PERMISSIONS, tableParam['permission_deladd_json']) > -1) {
+      cmdBtnRec += '<a title="удалить" class="shop_request_magnit_del btn btn-sm btn-outline-secondary"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>\n';
+      }
+      if ($.inArray(PERMISSIONS, tableParam['permission_edit_json']) > -1) {
+      cmdBtnRec += '<a title="редактировать" class="shop_request_magnit_edit btn btn-sm btn-outline-secondary"><i class="fas fa-pencil-alt"></i></i></a>\n';
+      }
+
+      // show cmdButton если в настройках таблицы и позволяют права
+      if (tableParam['btnCmd_b'] === true && $.inArray(PERMISSIONS, tableParam['permission_edit_json']) > -1) {
+      columnsObj.push({
+      data: null,
+      title: "Действия"
+      });
+      columnDefsObj.push({
+      targets: nextColumnId,
+      className: "cmd",
+      orderable: false,
+      type: "html",
+      defaultContent: cmdBtnRec
+      });
+      }
+
+      dataTable[table + '_cond'] = tableParam.condition; //pre filter from GET & POST
+      var param = new Map([
+      ['columns', columnsObj],
+      ['columnDefs', columnDefsObj],
+      ['tableParam', tableParam],
+      ['cmdBtnRec', cmdBtnRec],
+      ['customButtons', customButtons],
+      ]);
+
+      if (typeof(dataTable[table]) === 'undefined') eval("dataTable[table] = dtInit(table, param );");
+
+      $('.btn-upload').click(function() {
+      $('#upload-' + table).trigger('click');
+      lockEL = this;
+      });
+
+      $('#' + table).on('dblclick', 'tr', function() {
+      document.dataRow = currec[table] = dataTable[table].row(curRow(this)).data();
+      //todo jquryselector for  data().block
+      if ($(this).find('td.block').length > 0 && $(this).find('td.block').text() == 1) {
+      slidePopup("Запись заблокирована!", 'warning');
+      return;
+      }
+
+      currec[table] = dataTable[table].row(curRow(this)).data().id;
+
+      //редактирование если включено и права дают  столбец id с классом id и del всегда должны быть в массиве и если есть поле block !=0 //$(this).find('td.id').length > 0 &&
+      if (!empty(currec[table]) && $.inArray(PERMISSIONS, tableParam['permission_view_json']) > -1) {
+
+      var url = empty(tableParam['urlAddEdit']) ? '/view/form/' + table + '?id=' + currec[table] : tableParam['urlAddEdit'] + '?id=' + currec[table];
+
+      switch (tableParam['openFormIn']) {
+      case 1:
+      openPopup(url, null, tableParam['form_modal_className']);
+      break;
+      case 2:
+      loadContent(url, '#content', true);
+      break;
+      case 3:
+      window.open(url, '_blank');
+      break;
+      default:
+      break;
+      }
+
+      }
+      });
+
+
+      //выделение запись
+      $('#' + table).on('mousedown', 'tr', function() {
+      if (!empty(dataTable[table].row(curRow(this)).data().id)) {
+      $(this).addClass('table-active').siblings().removeClass('table-active');
+      currec[table] = dataTable[table].row(curRow(this)).data().id;
+      }
+      $(this).addClass('table-active').siblings().removeClass('table-active');
+      setTimeout(() => checkSelect(), 500); //checkboxing selected
+      });
+
+      function checkSelect() {
+      if ($('tr.selected').length > 1) {
+      $('tr.selected').find('.check-select').prop("checked", true);
+      }
+      }
+
+      //удаление записи
+      $('#' + table).on('click', '.' + table + '_del', function() {
+
+      //if ($(this).closest('tr').find('td.block').length > 0 && Number($(this).closest('tr').find('td.block').text()) > 0) {
+      if (!empty(dataTable[table].row(curRow(this)).data().block) && Number(dataTable[table].row(curRow(this)).data().block)) {
+      slidePopup("Запись заблокирована!", "warning");
+      return;
+      }
+      currec[table] = dataTable[table].row(curRow(this)).data().id;
+      let el = this;
+      let func = function() {
+
+      $.post('/common/save/shop_request_magnit', {
+      id: currec[table],
+      del: 1
+      }, function(result) {
+
+      if (!empty(result) && result.type == "success") {
+      dataTable[table].row(curRow(el)).remove().draw(false);
+      } else {
+      slidePopup(result.message, result.type);
+      }
+      //hideModal();
+      });
+      };
+      //confirmShow('Удалить запись?', 'Удалить', 'fas fa-trash-alt', func);
+      toatsQuest('Удалить запись?', 'Удалить', 'fas fa-trash-alt', func);
+      });
+
+      // запись заблокирована
+      $('#' + table).on('click', '.' + table + '_edit', function() {
+      if ($(this).closest('tr').find('td.block').length > 0 && Number($(this).closest('tr').find('td.block').text()) > 0) {
+      slidePopup("Запись заблокирована!", 'warning');
+      return;
+      }
+
+      currec[table] = dataTable[table].row(curRow(this)).data().id;
+
+      const url = empty(tableParam['urlAddEdit']) ? '/view/form/' + table + '?id=' + currec[table] : tableParam['urlAddEdit'] + '?id=' + currec[table];
+
+      switch (tableParam['openFormIn']) {
+      case 1:
+      openPopup(url, this, tableParam['form_modal_className']);
+      break;
+      case 2:
+      loadContent(url, '#content', true);
+      break;
+      case 3:
+      window.open(url, '_blank');
+      break;
+      default:
+      break;
+      }
+
+      });
+
+      $('#table_' + table).on("click", ".switch-in-table", function() {
+      this.checked ? this.value = 0 : this.value = 1;
+      $.post('/common/save/shop_request_magnit', {
+      id: $(this).attr('data-id'),
+      disable: this.value,
+      }, function(result) {
+      slidePopup(result.message, result.type);
+      });
+      });
+
+      $('#table_' + table).on("click", '#check-select-all', function() {
+      const th = this;
+      $("#table_shop_request_magnit .check-select").each(function() {
+      th.checked ? this.value = 0 : this.value = 1;
+      $(this).attr("checked", th.checked ? true : false);
+      });
+      });
+
+      if (tableParam['pre_filter_b'] === true) glare('.btn_filter_shop_request_magnit');
+
+      //});
   </script>
 </div>

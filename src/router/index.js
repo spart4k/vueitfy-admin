@@ -1,22 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import TableView from '../views/DefaultTable.vue'
+import PaymentView from '../views/PaymentView.vue'
+import PersonalView from '../views/PersonalView.vue'
 import MailView from '../views/DefaultMails.vue'
 import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import TestForm from '@/views/testform'
 import LoginPage from '@/layouts/login'
+//import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/table',
-    name: 'table',
+    path: '/paymentview',
+    name: 'paymentview',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: TableView,
+    component: PaymentView,
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PersonalView,
   },
   {
     path: '/test',
@@ -42,6 +52,14 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: TestForm,
   },
+  //{
+  //  path: '/testts',
+  //  name: 'TestTs',
+  //  // route level code-splitting
+  //  // this generates a separate chunk (about.[hash].js) for this route
+  //  // which is lazy-loaded when the route is visited.
+  //  component: TestTs,
+  //},
   {
     path: '/login',
     name: 'LoginPage',

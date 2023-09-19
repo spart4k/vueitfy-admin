@@ -16,13 +16,13 @@
           :loading="filter.loading"
           :items="filter.items"
           :search-input.sync="filter.search"
-          v-model="filter.select"
+          v-model="filter.value"
           label="Поиск девайса"
           chips
-          multiple
+          :multiple="filter.subtype === 'multiple'"
           class="mb-4"
-          item-text="brand"
-          item-value="brand"
+          item-text="name"
+          item-value="id"
           no-data-text="Нет объектов"
         >
           <template v-slot:append>
@@ -41,7 +41,7 @@
               small
               @click:close="removeSelected(data, filter)"
             >
-              {{ data.item.brand }}
+              {{ data.item.name }}
             </v-chip>
           </template>
           <template v-slot:append-item>
@@ -59,13 +59,51 @@
           <template v-slot:item="data">
             <template>
               <v-list-item-content>
-                <v-list-item-title v-html="data.item.brand" />
-                <v-list-item-subtitle v-html="data.item.price" />
+                <v-list-item-title v-html="data.item.name" />
+                <v-list-item-subtitle v-html="data.item.id" />
               </v-list-item-content>
             </template>
           </template>
         </v-autocomplete>
+        <v-checkbox
+          v-if="filter.type === 'checkbox'"
+          :key="filter.id"
+          v-model="filter.value"
+          :label="filter.label"
+        ></v-checkbox>
+        <v-menu
+          v-if="filter.type === 'date'"
+          :key="filter.id"
+          ref="menuRef"
+          v-model="filter.menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="filter.value"
+              label="Birthday date"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="filter.value"
+            min="1950-01-01"
+            color="primary"
+            locale="ru-RU"
+            :type="filter.subtype === 'period' ? 'month' : undefined"
+            :range="filter.subtype === 'range'"
+          ></v-date-picker>
+        </v-menu>
       </template>
+      <v-btn @click="saveFilter" color="primary" class="ma">
+        <p>Принять</p>
+      </v-btn>
     </v-form>
   </div>
 </template>

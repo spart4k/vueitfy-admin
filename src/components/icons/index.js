@@ -25,7 +25,7 @@ import IconSearch from './search/search.vue'
 import IconSendMail from './send-mail/send-mail.vue'
 import IconSetting from './setting/setting.vue'
 import IconShedualer from './shedualer/shedualer.vue'
-// import IconSort from './sort/index.vue'
+import IconSort from './sort/index.vue'
 import IconStar from './star/star.vue'
 import IconStarMail from './star-mail/star-mail.vue'
 import IconSystem from './system/system.vue'
@@ -129,9 +129,10 @@ export default {
   IconShedualer: {
     component: IconShedualer,
   },
-  // IconSort: {
-  //   component: IconSort,
-  // },
+  IconSort: {
+    component: IconSort,
+    props: 'state',
+  },
   IconStar: {
     component: IconStar,
   },

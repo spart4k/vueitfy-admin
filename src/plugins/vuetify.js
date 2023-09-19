@@ -22,9 +22,9 @@ export default new Vuetify({
         topbar: '#FFFFFF',
         text: '#334D6E',
         navbar: '#FFFFFF',
-        background: '#FFFFFF',
-        // pageBackground: '#F5F6F8',
-        // disabled: '#C2CFE0',
+        background: '#ffffff',
+        pageBackground: '#F5F6F8',
+        disabled: '#C2CFE0',
       },
       dark: {
         primary: '#007BFF',

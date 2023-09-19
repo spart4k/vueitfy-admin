@@ -160,7 +160,8 @@ $borderColor: rgba(0,0,0,.3);
     width: 0;
     height: auto;
     max-height: 10px;
-    background-color: #fff;
+    //background-color: #fff;
+    background-color: var(--v-background-base);
     transition-property: max-height, width;
     transition: width .15s, max-height .15s, border-color .15s;
     transform-origin: right;
@@ -353,3 +354,28 @@ $borderColor: rgba(0,0,0,.3);
   }
 }
 
+.view {
+  &-table {
+    .v-tabs {
+      height: 50px;
+      padding: 0 10px 0 10px;
+    }
+    .v-tabs-items {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .v-window__container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        .v-window-item {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

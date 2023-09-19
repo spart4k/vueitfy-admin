@@ -2,18 +2,22 @@
 //document.adoptedStyleSheets.push(style)
 import Vue, { onMounted, ref, computed, watch } from 'vue'
 
+import vContextmenu from '@/components/contextmenu/default/index.vue'
+import Sheet from '@/components/sheet/default/index.vue'
+import Popup from '@/components/popup/index.vue'
+
 import vTableButton from '../button/index.js'
 import vButton from '../../button/index.js'
 import vInput from '../../input/default/index.js'
 import vIconSort from '../../icons/sort/index.vue'
-import vContextmenu from '@/components/contextmenu/default/index.vue'
-import Sheet from '@/components/sheet/default/index.vue'
 import TableFilter from '../filter/index.vue'
+import Detail from '../detail/index.vue'
+import useMobile from '@/layouts/Adaptive/checkMob.js'
 
 import { tableApi } from '@/api'
 
 const table = {
-  name: 'Table',
+  name: 'TableDefault',
   components: {
     vTableButton,
     vButton,
@@ -22,6 +26,8 @@ const table = {
     vContextmenu,
     Sheet,
     TableFilter,
+    Popup,
+    Detail,
   },
   props: {
     options: {
@@ -40,6 +46,7 @@ const table = {
     const headerOptions = ref([])
     const tablePosition = ref(null)
     const searchField = ref('')
+    const isMobile = useMobile()
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -56,7 +63,7 @@ const table = {
       totalRows: null,
       currentPage: 1,
       totalPages: null,
-      countRows: 30,
+      countRows: props.options.data.pageLength,
     })
     const filter = ref({
       isShow: false,
@@ -67,6 +74,9 @@ const table = {
       countRows: pagination.value.countRows,
       sorts: [],
       searchColumns: [],
+    })
+    const popupForm = ref({
+      isShow: true,
     })
     const wrapingRow = () => {
       console.log('RESIZE1')
@@ -162,9 +172,10 @@ const table = {
       }
     }
     const sortRow = (head) => {
+      console.log(head)
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
-      if (paramsCol.value === undefined) {
+      if (!paramsCol.value) {
         paramsCol.value = 'asc'
       } else if (paramsCol.value === 'asc') {
         paramsCol.value = 'desc'
@@ -249,47 +260,136 @@ const table = {
       //this.
       loading.value = true
       const { url } = props.options.options
-      const data = await tableApi.get(url, {
-        currentPage: pagination.value.currentPage,
-        countRows: 30,
-        searchGlobal: searchField.value,
-      })
-      await tableApi.getApi(url, paramsQuery.value)
-      props.options.data.rows = data
-      const structuredArray = []
-      props.options.data.rows.forEach((row) => {
-        if (props.options.options.selecting) {
-          Vue.set(row, 'selected', false)
+      //const data = await tableApi.get(url, {
+      //  currentPage: pagination.value.currentPage,
+      //  countRows: 30,
+      //  searchGlobal: searchField.value,
+      //})
+      //body.sorts = Object.assign(target, source).sorts
+      let sorts = []
+      let searchColumns = []
+      let filter = []
+      paramsQuery.value.sorts.forEach((el, elIndex) => {
+        console.log(el, elIndex)
+        if (!el.value) {
+          return
+        } else {
+          sorts.push(el)
         }
-        structuredArray.push({
-          row,
-          child: {
-            isShow: false,
-            data: row,
-          },
-        })
       })
-      props.options.data.rows = structuredArray
+      paramsQuery.value.searchColumns.forEach((el, elIndex) => {
+        console.log(el, elIndex)
+        if (!el.value) {
+          return
+        } else {
+          searchColumns.push(el)
+        }
+      })
+      props.filtersConfig.forEach((el) => {
+        if (!el.value) {
+          return
+        } else {
+          filter.push({
+            field: el.name,
+            value: el.value,
+            alias: el.alias,
+            type: el.type,
+            subtype: el.subtype,
+          })
+        }
+      })
+      const data = await tableApi.getApi(url, {
+        countRows: paramsQuery.value.countRows,
+        currentPage: paramsQuery.value.currentPage,
+        searchGlobal: paramsQuery.value.searchGlobal,
+        searchColumns,
+        sorts,
+        filter,
+      })
+      console.log(data)
+      props.options.data.rows = data.rows
+      //props.options.data.rows = data
+      console.log(props.options.data.rows)
+      if (props.options.data.rows?.length && props.options.data.rows) {
+        props.options.data.totalPages = data.totalPage
+        props.options.data.totalRows = data.total
+        const structuredArray = []
+        console.log(props.options.data.rows)
+        props.options.data.rows.forEach((row) => {
+          if (props.options.options.selecting) {
+            Vue.set(row, 'selected', false)
+          }
+          structuredArray.push({
+            row,
+            child: {
+              isShow: false,
+              data: row,
+            },
+          })
+        })
+        props.options.data.rows = structuredArray
+      }
       loading.value = false
     }
     const initHeadParams = () => {
       const { head } = props.options
       head.forEach((el) => {
         if (el.sorts?.length) {
+          console.log(el.value)
           //Vue.set(el.sorts, 'field', el.value)
           paramsQuery.value.sorts.push({
             field: el.value,
             value: el.sorts[0].default,
-            type: el.sorts[0].type,
+            alias: el.alias,
           })
         }
         if (el.search?.isShow) {
           paramsQuery.value.searchColumns.push({
             field: el.value,
             value: el.search.field,
+            alias: el.alias,
           })
         }
+        console.log(paramsQuery.value)
       })
+    }
+    const watchScroll = () => {
+      //const firstListItem = list.querySelector('.horizontal-scroll-container__list-item:first-child');
+      //const lastHeadTable = header.options
+      const table = document.querySelector(props.options.selector)
+      console.log(isElementXPercentInViewport(table))
+    }
+    const isElementXPercentInViewport = (element) => {
+      /* eslint-disable */
+      const { x } = element.getBoundingClientRect()
+      console.log()
+      console.log(element.offsetLeft,element.offsetWidth + ':' + element.offsetLeft, window.innerWidth)
+      /* eslint-disable */
+      if(
+          /* eslint-disable */
+        element.offsetLeft + element.offsetWidth + x
+          /* eslint-disable */
+        && element.offsetLeft<window.innerWidth){
+          /* eslint-disable */
+        return true;
+          /* eslint-disable */
+      } else {
+          /* eslint-disable */
+        return false;
+      }
+    }
+    const saveFilter = () => {
+      console.log('save')
+      getItems()
+    }
+    const openRow = ($event, row) => {
+      console.log($event, 'row', row)
+      if (props.options.detail.type === 'popup') {
+        popupForm.value.isShow = true
+      }
+    }
+    const closePopupForm = () => {
+      popupForm.value.isShow = false
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -310,12 +410,12 @@ const table = {
         props.options.options.search.function(newVal)
       }
     )
-    watch(
-      () => pagination.value.currentPage,
-      async () => {
-        await getItems()
-      }
-    )
+    //watch(
+    //  () => pagination.value.currentPage,
+    //  async () => {
+    //    await getItems()
+    //  }
+    //)
     watch(
       () => paramsQuery,
       async () => {
@@ -325,9 +425,11 @@ const table = {
     )
     // HOOKS
     onMounted(async () => {
-      await getItems()
       initHeadParams()
+      await getItems()
+
       const table = document.querySelector(props.options.selector)
+      console.log(table, props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       console.log(headerCells)
       let acumWidth = 0
@@ -350,8 +452,9 @@ const table = {
           acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
         }, 0)
       })
-      wrapingRow()
-      window.addEventListener('resize', () => wrapingRow)
+      //wrapingRow()
+      window.addEventListener('resize', () => watchScroll())
+      watchScroll()
       pagination.value = {
         ...props.options.data,
       }
@@ -365,6 +468,7 @@ const table = {
       contextmenu,
       pagination,
       filter,
+      isMobile,
       // METHODS
       wrapingRow,
       openChildRow,
@@ -380,6 +484,7 @@ const table = {
       openFilter,
       closeFilter,
       getItems,
+      watchScroll,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
@@ -387,6 +492,11 @@ const table = {
       loading,
       paramsQuery,
       rowCount,
+      isElementXPercentInViewport,
+      saveFilter,
+      openRow,
+      closePopupForm,
+      popupForm,
     }
   },
 }

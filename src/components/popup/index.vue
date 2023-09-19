@@ -1,7 +1,11 @@
 <template>
-  <portal to="filter">
+  <portal :to="options.portal">
     <div class="v-popup" @click.prevent="$emit('close')">
-      <div @click.stop class="v-popup-container">
+      <div
+        @click.stop
+        :style="{ width: options.width }"
+        class="v-popup-container"
+      >
         <div class="v-popup-container-close">
           <v-icon @click="$emit('close')" color="disabled" small>
             $IconClose

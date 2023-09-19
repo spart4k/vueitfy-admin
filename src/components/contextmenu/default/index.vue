@@ -9,14 +9,25 @@
       class="v-contextmenu"
     >
       <div class="v-contextmenu-wrap">
-        <div
+        <!--<div
           v-for="(action, actionsIndex) in options.actions.actions"
           :key="actionsIndex"
           class="v-contextmenu-item"
         >
-          <img :src="action.urlIcon" alt="" />
+          <v-icon class="mr-2">{{ action.url }}</v-icon>
+
+        </div>-->
+        <v-btn
+          v-for="(action, actionsIndex) in options.actions.actions"
+          :key="actionsIndex"
+          class="v-contextmenu-item d-flex justify-start"
+          block
+        >
+          <v-icon left>
+            {{ action.url }}
+          </v-icon>
           <p>{{ action.label }}</p>
-        </div>
+        </v-btn>
       </div>
     </div>
   </transition>

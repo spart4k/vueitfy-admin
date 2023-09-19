@@ -69,6 +69,8 @@ export default {
         group: true,
       },
     ])
+    console.log('items')
+    console.log(items.value)
 
     const username = () => {
       el.$store.state.auth.user

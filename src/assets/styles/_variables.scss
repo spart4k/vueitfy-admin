@@ -1,7 +1,7 @@
 $fontSizeTest: 50px;
 
 //z-index
-$default-z          : 1;        //деваулт значение 
+$default-z          : 1;        //деваулт значение
 $popup-z            : 20;       //для попапа
 $in-popup-z         : 30;       //Для попапа в попапе
 $context-z          : 5;        //контекстные штуки
@@ -9,7 +9,7 @@ $stiky-z            : 10;       //стики элементы
 $navbar-z           : 11;       //Боковое меню
 $black-bg           : 19;       //затемнение фона
 $high-level         : 9999;     //для элементов изначально наверху прям 100%
-$low-level          : -9999;    //для элементов которые опускаются в низ 
+$low-level          : -9999;    //для элементов которые опускаются в низ
 $navbar-mobile-z    : 1000;     //для попапа из мобилки
 $panelHeight        : 64px;
 
@@ -23,7 +23,7 @@ $offcanvas-width-roll-up: 40px;
 $overlay                : rgba(0,0,0,0.3);
 $overlayZIndex          : 100;
 $sheetWidth             : 420px;
-
+$mobileWidth            : 768px;
 //светлая версия
 // цвета
 $dark--bg           :rgba(0 0 0/40%);
