@@ -22,7 +22,13 @@
       </v-container>
     </v-form>
     <v-btn
-      v-bind:disabled = ""
+      v-if="
+        canSend === true
+          ? (isButtonDisabled = false)
+          : (isButtonDisabled = true)
+      "
+      block
+      :disabled="isButtonDisabled"
       depressed
     ></v-btn>
     <!-- <Alert /> -->

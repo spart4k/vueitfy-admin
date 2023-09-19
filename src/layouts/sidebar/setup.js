@@ -381,7 +381,6 @@ export default {
     const isСollapseMenu = computed(() => store.state.collapse)
     const isMobile = useMobile()
     const navLinks = ref([])
-
     // const getNavLink = async () => {
     //   const dataNavbar = await navmenuApi.get()
     //   dataNavbar.forEach((el) => {
@@ -392,6 +391,9 @@ export default {
     //   })
     //   navLinks.value = dataNavbar
     // }
+
+    //$route.name для получения ссылки акутиыной в юрл
+
     console.log('navLinks', navLinks.value)
 
     const setNavmenu = () => {

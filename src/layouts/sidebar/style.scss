@@ -58,7 +58,7 @@ v-list {
   height: 30px !important;
   min-width: 30px !important;
   width: 30px !important;
-  margin: 0 !important;
+  margin-left: 16px !important;
   transition: width $timeoutCollapse ease, height $timeoutCollapse ease, min-width $timeoutCollapse ease, margin $timeoutCollapse ease;
 }
 
@@ -109,7 +109,11 @@ v-list {
   padding: 16px 24px !important;
   // transition: padding .5s ease;
   &--collapse {
-    padding: 16px 10px;
+    padding: 16px 24px;
+
+    svg {
+      width: 20px;
+    }
     // transition: padding .5s ease;
   }
 }
@@ -183,7 +187,7 @@ v-list {
   &--collapse {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
     z-index   : $navbar-z;
-    width   : 40px;
+    width   : 74px;
     transition: width $timeoutCollapse ease !important;
   }
 }
@@ -246,7 +250,7 @@ v-list {
   }
 
   &--collapse {
-    padding: 16px 10px !important;
+    padding: 16px 24px !important;
   }
 
   &:hover {
@@ -313,8 +317,9 @@ v-list {
   }
   &--collapse {
     font-size: 12px !important; 
-    padding: 0 !important;
+    margin-left:18px !important;
     min-width: 40px !important;
+    padding: 0 !important;
   }
 }
 
@@ -352,12 +357,12 @@ v-list {
   }
 }
 
-// .nav__navlink {
-//   animation: appearanceLink .3s forwards !important;
-//   &--collapse {
-//     animation: disappearanceLink .3s forwards !important;
-//   }
-// }
+.nav__navlink {
+  animation: appearanceLink .3s forwards !important;
+  &--collapse {
+    animation: disappearanceLink .3s forwards !important;
+  }
+}
 
 .slide-fade-enter-active {
   transition: all .3s ease;
@@ -438,4 +443,8 @@ v-list {
 
 .v-menu__content  {
   @include custom-scroll-bar-vertical;
+}
+
+.dop-men__navbar {
+  margin-left: 40px;
 }

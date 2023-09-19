@@ -81,48 +81,68 @@
             </template>
             <!-- блок с развертыванием меню если открыт полностью и есть внутри еще ссылки-->
             <template v-if="item.disclosure && !isСollapseMenu">
-              <v-expansion-panel-header
-                :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
-                color="navbar"
+              <template
+                :class="item.navlink.link == $route.path ? 'navlink-check' : ''"
               >
-                <v-icon>{{ item.icon }}</v-icon>
-                <p
-                  :class="
-                    isСollapseMenu ? 'name__navlink--collapse' : 'nav__navlink'
-                  "
-                  color="text"
+                <v-expansion-panel-header
+                  :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
+                  color="navbar"
                 >
-                  {{ item.name }}
-                </p>
-              </v-expansion-panel-header>
+                  <v-icon>{{ item.icon }}</v-icon>
+                  <p
+                    :class="
+                      isСollapseMenu
+                        ? 'name__navlink--collapse'
+                        : 'nav__navlink'
+                    "
+                    color="text"
+                  >
+                    {{ item.name }}
+                  </p>
+                </v-expansion-panel-header>
+              </template>
             </template>
             <!-- при скрытие показываются только иконки, при клике открывается меню сбоку -->
             <template v-if="item.disclosure && isСollapseMenu">
               <template
                 :class="isСollapseMenu ? 'link__btn--collapse ' : 'link__btn'"
               >
-                <v-menu top :offset-x="offset">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-icon
-                      :class="
-                        isСollapseMenu ? 'link__btn--collapse' : 'link__btn'
-                      "
-                      v-bind="attrs"
-                      v-on="on"
+                <!-- <template
+                  :class="{ 'check-navlink': $route.path == item.navlink }"
+                > -->
+                <template
+                  :class="{ 'check-navlink': $route.path == item.navlink }"
+                >
+                  <v-menu top :offset-x="offset">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        :class="
+                          isСollapseMenu ? 'link__btn--collapse' : 'link__btn'
+                        "
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        {{ item.icon }}
+                      </v-icon>
+                    </template>
+                    <v-list
+                      class="dop-men__navbar"
+                      max-height="calc(100vh - 20px)"
                     >
-                      {{ item.icon }}
-                    </v-icon>
-                  </template>
-                  <v-list max-height="calc(100vh - 20px)">
-                    <v-list-item v-for="link in item.navlink" :key="link.id">
-                      <router-link active-class="active" :to="link.link" exact>
-                        <p class="navlink__item" color="text">
-                          {{ link.name }}
-                        </p>
-                      </router-link>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
+                      <v-list-item v-for="link in item.navlink" :key="link.id">
+                        <router-link
+                          active-class="active"
+                          :to="link.link"
+                          exact
+                        >
+                          <p class="navlink__item" color="text">
+                            {{ link.name }}
+                          </p>
+                        </router-link>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </template>
               </template>
             </template>
             <template v-if="!isСollapseMenu">
