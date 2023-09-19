@@ -1129,7 +1129,7 @@ const tableConfigData = {
             class: [''],
             position: {
               cols: 12,
-              sm: 4,
+              sm: 12,
             },
             bootstrapClass: [''],
             disable: false,

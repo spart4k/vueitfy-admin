@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <v-form>
-      <v-container class="mb-5">
+      <v-container class="">
         <v-row>
           <v-col
             v-for="field in tab.fields"
@@ -110,13 +110,17 @@
                 :range="field.subtype === 'range'"
               ></v-date-picker>
             </v-menu>
-            <v-text-field
+            <v-textarea
               v-if="field.type === 'textarea'"
-              v-model="field.value"
+              v-model-value="field.value"
               :label="field.label"
               clearable
+              rows="1"
             />
           </v-col>
+        </v-row>
+        <v-row>
+          <v-btn type="submit" color="primary" class="ml-auto">Submit</v-btn>
         </v-row>
       </v-container>
     </v-form>
