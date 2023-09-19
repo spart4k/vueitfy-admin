@@ -410,7 +410,7 @@
       </div>
     </div>
     <v-contextmenu :options="contextmenu" />
-    <portal to="filter">
+    <portal v-if="filtersConfig" to="filter">
       <Sheet :isShow="filter.isShow">
         <keep-alive>
           <TableFilter
@@ -425,7 +425,7 @@
       closeButton
       @close="closePopupForm"
       :options="{ width: '600px', portal: 'table-detail' }"
-      v-if="popupForm.isShow && options.detail.type === 'popup'"
+      v-if="options.detail.type === 'popup' && popupForm.isShow"
     >
       <Detail
         class="cols-6"

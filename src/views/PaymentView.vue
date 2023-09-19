@@ -1012,7 +1012,7 @@ const tableConfigData = {
     type: 'popup', // String 'popup' or 'page'
     class: [''], // List class
     width: '600px',
-    bootstrapClass: ['col-6'], // List class from bootstrap ( col-6, pa-2... )
+    bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {
         id: 0,
@@ -1027,8 +1027,13 @@ const tableConfigData = {
             type: 'date',
             subtype: 'datetime',
             readonly: false,
+            menu: false,
             placeholder: '',
             class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
             bootstrapClass: [''],
             disable: false,
           },
@@ -1040,6 +1045,10 @@ const tableConfigData = {
             readonly: false,
             placeholder: '',
             class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
             bootstrapClass: [''],
             disable: false,
           },
@@ -1051,6 +1060,77 @@ const tableConfigData = {
             readonly: false,
             placeholder: '',
             class: [''],
+            selectOption: {
+              text: 'label',
+              value: 'value',
+            },
+            items: [
+              {
+                id: 0,
+                label: 'Зеленый',
+                value: 'green',
+              },
+              {
+                id: 1,
+                label: 'Красный',
+                value: 'red',
+              },
+              {
+                id: 2,
+                label: 'Желтый',
+                value: 'yellow',
+              },
+              {
+                id: 3,
+                label: 'Оранжевый',
+                value: 'orange',
+              },
+            ],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            bootstrapClass: [''],
+            disable: false,
+          },
+          {
+            id: 3,
+            label: 'Время создания',
+            name: 'time',
+            value: '',
+            type: 'autocomplete',
+            subtype: 'multiple',
+            readonly: false,
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'label',
+              value: 'value',
+            },
+            items: [],
+            page: 1,
+            search: '',
+            url: 'http://10.63.1.132:5000/get/pagination_list/object',
+            loading: false,
+            position: {
+              cols: 12,
+              sm: 8,
+            },
+            bootstrapClass: [''],
+            disable: false,
+          },
+          {
+            id: 4,
+            label: 'Время создания',
+            value: '',
+            type: 'textarea',
+            readonly: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
             bootstrapClass: [''],
             disable: false,
           },

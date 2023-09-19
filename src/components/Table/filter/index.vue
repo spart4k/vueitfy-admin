@@ -9,7 +9,6 @@
     </v-row>
     <v-form class="fluid">
       <template v-for="filter in filtersConfig">
-        {{ filter.page }}
         <v-autocomplete
           v-if="filter.type === 'select'"
           :key="filter.id"

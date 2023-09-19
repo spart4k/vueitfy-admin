@@ -15,6 +15,6 @@ export default {
     },
   },
   setup() {
-    console.log(this)
+    console.log(TableDefault)
   },
 }
