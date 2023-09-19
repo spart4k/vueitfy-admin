@@ -14,6 +14,7 @@
     <div class="v-letter-expanded-container">
       <MailsLetterTextEdit v-if="$route.query.compose" />
       <MailsLetterText
+        v-if="$route.query.compose !== 'new'"
         :edit="!$route.query.compose || $route.query.compose === 'edit'"
       />
     </div>

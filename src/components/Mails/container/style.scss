@@ -13,11 +13,15 @@
             &__active {
                 width: 343px;
                 overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                scroll-behavior: smooth;
                 &::-webkit-scrollbar{
                     display: none;
                 }
             }
             &-column {
+                scroll-snap-align: start;
                 width: 343px;
                 &__expand {
                     overflow: auto;
