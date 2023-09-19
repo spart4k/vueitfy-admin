@@ -1,4 +1,4 @@
-/*import { ref, computed, watch, unref, reactive } from '@vue/composition-api'
+import { ref, computed, watch, unref, reactive } from '@vue/composition-api'
 import useVuelidate from '@vuelidate/core'
 
 /**
@@ -7,7 +7,7 @@ import useVuelidate from '@vuelidate/core'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getData: *, validate: *, update: *}}
  */
-/*export default function ({ fields = {}, watcher }) {
+export default function ({ fields = {}, watcher }) {
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
@@ -100,4 +100,3 @@ import useVuelidate from '@vuelidate/core'
     update,
   }
 }
-*/

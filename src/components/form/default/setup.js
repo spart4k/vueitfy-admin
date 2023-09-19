@@ -1,4 +1,6 @@
-import { computed, watch } from 'vue'
+import { computed, watch, useContext } from 'vue'
+import { email, phone, required, onlyNumeric } from '@/utills/validation.js'
+import useForm from '@/compositions/useForm.js'
 
 import { selectsApi } from '@/api'
 
@@ -11,6 +13,8 @@ export default {
     },
   },
   setup(props) {
+    console.log(useContext)
+    const { store } = useContext()
     const querySelections = async (string, field) => {
       console.log(string)
       if (string) {
@@ -64,6 +68,22 @@ export default {
         //this.vendors = [ ...this.vendors, ...moreVendors]
       }
     }
+    const { formData, validate, $errors, $v, $touched } = useForm({
+      fields: {
+        name: {
+          default: store.state.authentication.user.fullname,
+          validations: { required },
+        },
+        email: {
+          default: store.state.authentication.user.email,
+          validations: { email, required },
+        },
+        phone: {
+          default: store.state.authentication.user.phone,
+          validations: { phone, required, onlyNumeric },
+        },
+      },
+    })
     watch(
       () => searchFields.value,
       (newVal, oldVal) => {
@@ -83,6 +103,11 @@ export default {
     return {
       searchFields,
       endIntersect,
+      formData,
+      validate,
+      $errors,
+      $v,
+      $touched,
     }
   },
 }
