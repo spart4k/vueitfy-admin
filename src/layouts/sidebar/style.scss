@@ -1,3 +1,5 @@
+$timeoutCollapse : .3s;
+
 @keyframes disappearanceLink{
   0% {
     opacity: 1;
@@ -16,6 +18,22 @@
   }
 }
 
+.v-item-group.v-expansion-panels {
+  .v-expansion-panel{
+    a {
+      text-decoration: none;
+      cursor: pointer;
+      // color: $white !important;
+      color: var(--v-text-base);
+    }
+  }
+}
+
+.v-expansion-panel {
+  transition: 0s !important;
+}
+
+
 .main-nav-element {
   > {
     .v-list-group__header {
@@ -33,15 +51,15 @@ v-list {
   min-width: 40px !important;
   width: 40px !important;
   margin: 10px !important;
-  transition: all .5s ease;
+  transition: width $timeoutCollapse ease, height $timeoutCollapse ease, min-width $timeoutCollapse ease, margin $timeoutCollapse ease;
 }
 
 .avatar--collapse {
   height: 30px !important;
   min-width: 30px !important;
   width: 30px !important;
-  margin: 0 !important;
-  transition: all .5s ease;
+  margin-left: 16px !important;
+  transition: width $timeoutCollapse ease, height $timeoutCollapse ease, min-width $timeoutCollapse ease, margin $timeoutCollapse ease;
 }
 
 .v-expansion-panel {
@@ -54,27 +72,20 @@ v-list {
     box-shadow: none !important;
   }
 
-  &[aria-expanded="true"] {
-    button {
-      color       : $accent-blue;
-      font-weight : 700;
-      span {
-        color     : $accent-blue;
-      }
-      div {
-        i {
-          color   : $accent-blue !important;
-        }
-      }
-    }
-  }
-  
-  a {
-    cursor  : pointer;
-    outline : none;
-    text-decoration: none;
-    color: $black !important;
-  }
+    // &[aria-expanded="true"] {
+    //   button {
+    //     color       : $accent-blue;
+    //     font-weight : 700;
+    //     span {
+    //       color     : $accent-blue;
+    //     }
+    //     div {
+    //       i {
+    //         color   : $accent-blue !important;
+    //       }
+    //     }
+    //   }
+    // }
 
   button {
     &:hover {
@@ -96,8 +107,14 @@ v-list {
 
 .link__btn {
   padding: 16px 24px !important;
+  // transition: padding .5s ease;
   &--collapse {
-    padding: 16px 10px !important;
+    padding: 16px 24px;
+
+    svg {
+      width: 20px;
+    }
+    // transition: padding .5s ease;
   }
 }
 
@@ -139,13 +156,21 @@ v-list {
   height    : calc(100% - 170px) !important;
 }
 
-.nav-fio {
+.nav-fio, .nav__navlink {
   text-wrap : wrap;
-  animation: appearanceLink .3s forwards !important;
+  animation: appearanceLink $timeoutCollapse forwards !important;
 
   &--collapse {
     text-wrap : wrap;
-    animation: disappearanceLink .3s forwards !important;
+    animation: disappearanceLink $timeoutCollapse forwards !important;
+
+    p {
+      width: 200px;
+    }
+  }
+
+  p {
+    width: 200px;
   }
 }
 
@@ -157,13 +182,13 @@ v-list {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
   z-index   : $navbar-z;
   width     : 256px;
-  transition: all 1s ease !important;
+  transition: width $timeoutCollapse ease !important;
 
   &--collapse {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
     z-index   : $navbar-z;
-    width   : 40px;
-    transition: all 1s ease !important;
+    width   : 74px;
+    transition: width $timeoutCollapse ease !important;
   }
 }
 
@@ -174,7 +199,6 @@ v-list {
     cursor  : pointer;
     outline : none;
     text-decoration: none;
-    color: $black !important;
     .navlink__item {
       padding : 5px 35px !important;
       margin  : 0 !important;
@@ -197,6 +221,18 @@ v-list {
   align-items: center;
   gap: 10px;
   padding: 16px 24px;
+  font-weight: 500;
+  // transition: padding .5s ease;
+
+  &--collapse {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 10px;
+    font-weight: 500;
+    // transition: padding .5s ease;
+  }
+
   .icon__navlink {
 
   }
@@ -214,7 +250,7 @@ v-list {
   }
 
   &--collapse {
-    padding: 16px 10px !important;
+    padding: 16px 24px !important;
   }
 
   &:hover {
@@ -281,8 +317,9 @@ v-list {
   }
   &--collapse {
     font-size: 12px !important; 
-    padding: 0 !important;
+    margin-left:18px !important;
     min-width: 40px !important;
+    padding: 0 !important;
   }
 }
 
@@ -291,40 +328,20 @@ v-list {
   color: #fff;
 }
 
-.v-btn.theme--light {
+.v-btn{
   .v-btn__content {
     .text-collaspe__navbar {
-      color: $dark-blue-text !important;
+      color: var(--v-text-base) !important;
     }
   }
 }
 
-.v-btn.theme--dark {
-  .v-btn__content {
-    .text-collaspe__navbar {
-      color: $white !important;
-    }
-  }
-}
-
-.v-item-group.theme--dark {
+.v-item-group {
   .v-expansion-panel {
     a {
       .nav-link {
         .name__navlink {
-          color: $white;
-        }
-      }
-    }
-  }
-}
-
-.v-item-group.theme--light {
-  .v-expansion-panel {
-    a {
-      .nav-link {
-        .name__navlink {
-          color: $dark-blue-text;
+          color: var(--v-text-base);
         }
       }
     }
@@ -333,19 +350,19 @@ v-list {
 
 .navmenu__navlinks {
     opacity: 1;
-    transition: all .5s ease;
+    transition: opacity .5s ease;
   &--collapse {
     opacity: 0;
-    transition: all .5s ease;
+    transition: opacity .5s ease;
   }
 }
 
-// .nav__navlink {
-//   animation: appearanceLink .3s forwards !important;
-//   &--collapse {
-//     animation: disappearanceLink .3s forwards !important;
-//   }
-// }
+.nav__navlink {
+  animation: appearanceLink .3s forwards !important;
+  &--collapse {
+    animation: disappearanceLink .3s forwards !important;
+  }
+}
 
 .slide-fade-enter-active {
   transition: all .3s ease;
@@ -360,4 +377,74 @@ v-list {
 
 .slide-fade-leave-from {
   opacity: 1;
+}
+
+.v-expansion-panel-header.navbar.link__btn {
+  min-height: unset;
+}
+
+.v-item-group.theme--dark.v-expansion-panels {
+  .v-expansion-panel {
+    .v-expansion-panel-content.navbar {
+      .v-expansion-panel-content__wrap {
+        a {
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+.v-item-group.theme--light.v-expansion-panels {
+  .v-expansion-panel {
+    .v-expansion-panel-content.navbar {
+      .v-expansion-panel-content__wrap {
+        a {
+          color: $dark-blue-text;
+        }
+      }
+    }
+  }
+}
+
+.router-link-exact-active.active {
+  .nav-link {
+    color: $accent-blue;
+    .icon__navlink {
+      span {
+        svg {
+          color: $accent-blue;
+        }
+      }
+    }
+  }
+}
+
+.v-expansion-panel-header.navbar.link__btn {
+  .nav__navlink {
+    text-wrap: nowrap;
+    width: 160px;
+  }
+}
+
+// .fade-anim {
+//   animation: appearanceLink .7s forwards !important;
+//   &--collapse {
+//     animation: disappearanceLink .7s forwards !important;
+//   }
+// }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .7s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0
+}
+
+.v-menu__content  {
+  @include custom-scroll-bar-vertical;
+}
+
+.dop-men__navbar {
+  margin-left: 40px;
 }

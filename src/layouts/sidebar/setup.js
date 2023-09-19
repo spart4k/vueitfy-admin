@@ -22,21 +22,25 @@ export default {
         name: 'Основные таблицы',
         active: false,
         disclosure: true,
+        link_active: false,
         navlink: [
           {
             id: 1,
             name: 'Логи',
             link: '/table',
+            active: false,
           },
           {
             id: 2,
             name: 'Для ОБД',
             link: '/navbar',
+            active: false,
           },
           {
             id: 3,
             name: 'Планнинг',
             link: '/navbar',
+            active: false,
           },
           {
             id: 4,
@@ -47,116 +51,122 @@ export default {
             id: 5,
             name: 'Командировка',
             link: '/',
+            active: false,
           },
           {
             id: 6,
             name: 'График',
             link: '/',
+            active: false,
           },
           {
             id: 7,
             name: 'Аккаунт',
             link: '/',
+            active: false,
           },
           {
             id: 8,
             name: 'Персонал',
             link: '/',
+            active: false,
           },
           {
             id: 9,
             name: 'Персонал',
             link: '/',
+            active: false,
           },
           {
             id: 10,
             name: 'Документы',
             link: '/',
+            active: false,
           },
           {
             id: 11,
             name: 'Назначения',
-            link: '',
+            link: '/',
           },
           {
             id: 12,
             name: 'Импорт с Х5',
-            link: '',
+            link: '/',
           },
           {
             id: 13,
             name: 'Табель',
-            link: '',
+            link: '/',
           },
           {
             id: 14,
             name: 'Табель логистика',
-            link: '',
+            link: '/',
           },
           {
             id: 15,
             name: 'Штрафы/Ошибки',
-            link: '',
+            link: '/',
           },
           {
             id: 16,
             name: 'Начисления',
-            link: '',
+            link: '/',
           },
           {
             id: 17,
             name: 'Заявки на доп.услуги',
-            link: '',
+            link: '/',
           },
           {
             id: 18,
             name: 'Заявки магнитов',
-            link: '',
+            link: '/',
           },
           {
             id: 19,
             name: 'Табель магниты',
-            link: '',
+            link: '/',
           },
           {
             id: 20,
             name: 'Заявки на расход',
-            link: '',
+            link: '/',
           },
           {
             id: 21,
             name: 'Карта',
-            link: '',
+            link: '/',
           },
           {
             id: 22,
             name: 'Объекты',
-            link: '',
+            link: '/',
           },
           {
             id: 23,
             name: 'Проживание',
-            link: '',
+            link: '/',
           },
           {
             id: 24,
             name: 'Тарифы объектов',
-            link: '',
+            link: '/',
           },
           {
             id: 25,
             name: 'Офисы',
-            link: '',
+            link: '/',
           },
           {
             id: 26,
             name: 'Задачи',
-            link: '',
+            link: '/',
           },
           {
             id: 27,
             name: 'Инструкции',
-            link: '',
+            link: '/',
           },
         ],
       },
@@ -166,41 +176,43 @@ export default {
         icon: '$IconOtchet',
         name: 'Отчеты',
         disclosure: true,
+        link_active: false,
         navlink: [
           {
             id: 28,
             name: 'Задолжность',
-            link: '',
+            link: '/',
+            active: false,
           },
           {
             id: 29,
             name: 'Банковские карты',
-            link: '',
+            link: '/',
           },
           {
             id: 30,
             name: 'Отчет "Магнит"',
-            link: '',
+            link: '/',
           },
           {
             id: 31,
             name: 'Ошибки',
-            link: '',
+            link: '/',
           },
           {
             id: 32,
             name: 'Взыскания',
-            link: '',
+            link: '/',
           },
           {
             id: 33,
             name: 'ТМЦ',
-            link: '',
+            link: '/',
           },
           {
             id: 34,
             name: 'Перемещения',
-            link: '',
+            link: '/',
           },
         ],
       },
@@ -210,26 +222,28 @@ export default {
         icon: '$IconSystem',
         name: 'Система',
         disclosure: true,
+        link_active: false,
         navlink: [
           {
             id: 35,
             name: 'Представления',
-            link: '',
+            link: '/',
+            active: false,
           },
           {
             id: 36,
             name: 'Панель навигации',
-            link: '',
+            link: '/',
           },
           {
             id: 37,
             name: 'Loggin',
-            link: '',
+            link: '/',
           },
           {
             id: 38,
             name: 'Менеджер файлов',
-            link: '',
+            link: '/',
           },
         ],
       },
@@ -239,11 +253,13 @@ export default {
         name: 'Графики',
         disclosure: true,
         active: false,
+        link_active: false,
         navlink: [
           {
             id: 39,
             name: 'По сумме',
-            link: '',
+            link: '/',
+            active: false,
           },
         ],
       },
@@ -253,106 +269,108 @@ export default {
         name: 'Настройки',
         disclosure: true,
         active: false,
+        link_acrtive: false,
         navlink: [
           {
             id: 40,
             name: 'Расход категорий',
-            link: '',
+            link: '/',
+            active: false,
           },
           {
             id: 41,
             name: 'Расход вид',
-            link: '',
+            link: '/',
           },
           {
             id: 42,
             name: 'Дисцип.Взыскания',
-            link: '',
+            link: '/',
           },
           {
             id: 43,
             name: 'Нагрузка',
-            link: '',
+            link: '/',
           },
           {
             id: 44,
             name: 'Статусы',
-            link: '',
+            link: '/',
           },
           {
             id: 45,
             name: 'Статьи расходов',
-            link: '',
+            link: '/',
           },
           {
             id: 46,
             name: 'Объекты',
-            link: '',
+            link: '/',
           },
           {
             id: 47,
             name: 'Банки',
-            link: '',
+            link: '/',
           },
           {
             id: 48,
             name: 'Должности',
-            link: '',
+            link: '/',
           },
           {
             id: 49,
             name: 'Каналы продвижения',
-            link: '',
+            link: '/',
           },
           {
             id: 50,
             name: 'Гражданство',
-            link: '',
+            link: '/',
           },
           {
             id: 51,
             name: 'Направления',
-            link: '',
+            link: '/',
           },
           {
             id: 52,
-            name: ['Роли'],
-            link: [''],
+            name: 'Роли',
+            link: '/',
           },
           {
             id: 53,
             name: 'Услуги',
-            link: '',
+            link: '/',
           },
           {
             id: 54,
             name: 'Ведомость вид',
-            link: '',
+            link: '/',
           },
           {
             id: 55,
             name: 'Кластеры',
-            link: '',
+            link: '/',
           },
           {
             id: 56,
             name: 'Регионы',
-            link: '',
+            link: '/',
           },
           {
             id: 57,
             name: 'Вимды задач',
-            link: '',
+            link: '/',
           },
           {
             id: 58,
             name: 'Ошибки системы',
-            link: '',
+            link: '/',
           },
           {
             id: 59,
             name: 'Ошибки ман-в',
-            link: '',
+            link: '/',
           },
         ],
       },
@@ -362,7 +380,6 @@ export default {
     const isСollapseMenu = computed(() => store.state.collapse)
     const isMobile = useMobile()
     const navLinks = ref([])
-
     // const getNavLink = async () => {
     //   const dataNavbar = await navmenuApi.get()
     //   dataNavbar.forEach((el) => {
@@ -373,6 +390,9 @@ export default {
     //   })
     //   navLinks.value = dataNavbar
     // }
+
+    //$route.name для получения ссылки акутиыной в юрл
+
     console.log('navLinks', navLinks.value)
 
     const setNavmenu = () => {
@@ -387,12 +407,17 @@ export default {
     //   await getNavLink()
     // })
 
+    const activeFold = () => {
+      console.log(dataNavbarHard[1].navLinks[1].active, 'хуй')
+    }
+
     return {
       dataNavbarHard,
       isMobile,
       isOpenMenu,
       isСollapseMenu,
       store,
+      activeFold,
       // getNavLink,
       navLinks,
       setNavmenu,
