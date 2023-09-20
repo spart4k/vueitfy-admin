@@ -90,7 +90,7 @@ export default function ({ fields = {}, watcher }) {
 
   return {
     $v,
-    $errors,
+    formErrors: $errors,
     $invalid,
     $touched,
     validate,

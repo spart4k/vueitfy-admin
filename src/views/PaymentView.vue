@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { required, hasDate, hasTime } from '@/utills/validation.js'
+
 function consoleText(row) {
   console.log(row, 2)
   //return 'test'
@@ -1023,6 +1025,7 @@ const tableConfigData = {
           {
             id: 0,
             label: 'Время создания',
+            name: 'date_created',
             value: '',
             type: 'date',
             subtype: 'datetime',
@@ -1034,12 +1037,14 @@ const tableConfigData = {
               cols: 12,
               sm: 4,
             },
+            validations: { required },
             bootstrapClass: [''],
             disable: false,
           },
           {
             id: 1,
             label: 'Время создания',
+            name: 'time_created',
             value: '',
             type: 'string',
             readonly: false,
@@ -1049,12 +1054,14 @@ const tableConfigData = {
               cols: 12,
               sm: 4,
             },
+            validations: { required },
             bootstrapClass: [''],
             disable: false,
           },
           {
             id: 2,
-            label: 'Время создания',
+            label: 'Цвет',
+            name: 'color',
             value: '',
             type: 'select',
             readonly: false,
@@ -1090,13 +1097,14 @@ const tableConfigData = {
               cols: 12,
               sm: 4,
             },
+            validations: { required },
             bootstrapClass: [''],
             disable: false,
           },
           {
             id: 3,
-            label: 'Время создания',
-            name: 'time',
+            label: 'Объект',
+            name: 'object',
             value: '',
             type: 'autocomplete',
             subtype: 'multiple',
@@ -1116,12 +1124,14 @@ const tableConfigData = {
               cols: 12,
               sm: 8,
             },
+            validations: { required },
             bootstrapClass: [''],
             disable: false,
           },
           {
             id: 4,
-            label: 'Время создания',
+            label: 'Описание',
+            name: 'description',
             value: '',
             type: 'textarea',
             readonly: false,
@@ -1131,6 +1141,26 @@ const tableConfigData = {
               cols: 12,
               sm: 12,
             },
+            validations: { required },
+            bootstrapClass: [''],
+            disable: false,
+          },
+          {
+            id: 5,
+            label: 'Время создания',
+            name: 'datetime',
+            value: '',
+            type: 'datetime',
+            subtype: 'datetime',
+            readonly: false,
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            validations: { hasDate, hasTime },
             bootstrapClass: [''],
             disable: false,
           },

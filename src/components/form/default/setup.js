@@ -1,12 +1,18 @@
 import { computed, watch } from 'vue'
+//import DatetimePicker from 'vuetify-datetime-picker'
 //import store from '@/store/index.js'
-import { email, phone, required, onlyNumeric } from '@/utills/validation.js'
+//import { email, phone, required, onlyNumeric } from '@/utills/validation.js'
 import useForm from '@/compositions/useForm.js'
+import Datetimepicker from '@/components/datetimepicker/index.vue'
 
 import { selectsApi } from '@/api'
 
 export default {
   name: 'Form-Default',
+  components: {
+    //DatetimePicker,
+    Datetimepicker,
+  },
   props: {
     tab: {
       type: Object,
@@ -68,27 +74,26 @@ export default {
       }
     }
     const fields = () => {
-      return props.tab.fields.map((field) => {
-        console.log(field)
+      const fields = {}
+      props.tab.fields.forEach((el) => {
+        const { validations } = el
+        fields[el.name] = {}
+        fields[el.name].validations = validations
+        fields[el.name].default = el.value
       })
+      return fields
     }
-    console.log(fields)
-    const { formData, validate, $errors, $v, $touched } = useForm({
-      fields: {
-        name: {
-          //default: store.state.authentication.user.fullname,
-          validations: { required },
-        },
-        email: {
-          //default: store.state.authentication.user.email,
-          validations: { email, required },
-        },
-        phone: {
-          //default: store.state.authentication.user.phone,
-          validations: { phone, required, onlyNumeric },
-        },
-      },
+    console.log(fields())
+    const { formData, validate, formErrors, $v, $touched } = useForm({
+      fields: fields(),
     })
+    const submit = async () => {
+      validate()
+      console.log($v.value)
+      console.log(formData)
+      console.log(formErrors.value)
+    }
+    console.log(formData)
     watch(
       () => searchFields.value,
       (newVal, oldVal) => {
@@ -110,9 +115,11 @@ export default {
       endIntersect,
       formData,
       validate,
-      $errors,
+      //$errors,
       $v,
       $touched,
+      submit,
+      formErrors,
     }
   },
 }
