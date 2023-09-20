@@ -2,13 +2,14 @@
   <svg
     :class="state"
     class="v-table-header-row-cell-sort__row__icon"
-    fill="none"
-    height="14"
-    width="10"
+    fill="#000000"
+    height="800px"
+    width="800px"
     version="1.1"
     id="Capa_1"
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 10 14"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 489.4 489.4"
     xml:space="preserve"
   >
     <path
