@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 // import { tableApi } from '@/api'
 import { VueEditor } from 'vue2-editor'
 const edit = defineComponent({
@@ -10,7 +10,16 @@ const edit = defineComponent({
     VueEditor,
   },
   setup() {
-    return {}
+    const files = ref([])
+    const deleteItem = (index) => {
+      setTimeout(() => {
+        files.value.splice(index, 1)
+      }, 0);
+    }
+    return {
+      files,
+      deleteItem,
+    }
   },
 })
 export default edit

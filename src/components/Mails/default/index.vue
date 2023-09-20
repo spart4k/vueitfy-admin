@@ -1,17 +1,15 @@
 <template>
   <div class="v-mails d-flex">
-    <MailsFilters
-      class="mr-4"
-      @resetActiveMail="resetActiveMail"
-      slot-scope=""
-      :data="$props?.data?.filters"
-    />
+    <MailsFilters class="mr-4" slot-scope="" :data="$props?.data?.filters" />
     <div class="v-mails-group">
-      <MailsControls class="mb-2" />
+      <MailsControls @changeSelection="changeSelection" class="mb-2" />
       <div class="d-flex w-100 h-100">
+        <!-- {{ selectedMails }}
+        {{ allMailsLength }} -->
         <MailsContainer
           @setActiveMail="setActiveMail"
-          :data="$props?.data?.mails"
+          @changeSelection="changeSelection"
+          :data="mailsData"
         />
       </div>
     </div>

@@ -352,6 +352,25 @@ $borderColor: rgba(0,0,0,.3);
   .v-select__selections {
       min-height: 32px !important;
   }
+  .v-input__slot {
+    cursor: pointer;
+    fieldset {
+      border-color: var(--v-disabled-base);
+    }
+  }
+  .v-input__prepend-outer {
+    display: none;
+  }
+  .v-text-field__slot {
+    cursor: pointer;
+    label {
+      text-transform: uppercase;
+      color: var(--v-disabled-base) !important;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+  }
 }
 
 .view {

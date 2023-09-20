@@ -4,7 +4,7 @@
     @click.prevent="$parent.$emit('setActiveMail', $props.data)"
   >
     <div @click.stop class="v-letter-upper">
-      <MailsLetterUser />
+      <MailsLetterUser :data="$props.data" />
     </div>
     <div class="v-letter-bottom d-flex">
       <div

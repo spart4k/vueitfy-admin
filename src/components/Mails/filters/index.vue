@@ -5,7 +5,7 @@
       {{ new Date().getDate() }} {{ dayOfWeek[new Date().getDay()] }}
     </h2>
     <v-btn
-      @click="createNewMail"
+      @click="setRouterPath({ compose: 'new' })"
       color="primary"
       variant="tonal"
       class="mt-2 mb-7"
@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <v-expansion-panels v-model="boxPanel" class="v-filters-folder">
+    <v-expansion-panels v-model="folderPanel" class="v-filters-folder">
       <v-expansion-panel>
         <v-expansion-panel-header class="v-filters-folder-title"
           ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
@@ -44,44 +44,7 @@
         <v-expansion-panel-content class="v-filters-folder-container">
           <div
             class="v-filters-folder-container_item ml-4"
-            v-for="(item, index) in $props?.data?.folders"
-            :key="index"
-            @click="setRouterPath({ filter: 'box', id: item.id })"
-          >
-            <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
-            <span
-              :class="
-                $route.query.filter === 'box' &&
-                Number($route.query.id) === item.id &&
-                'v-filters-folder-container_item__active'
-              "
-            >
-              {{ item.name }}
-            </span>
-          </div>
-          <div
-            @click="createFolder"
-            class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
-          >
-            <v-icon small class="mr-2">$IconSystem</v-icon> Добавить папку
-          </div>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-    <v-expansion-panels
-      v-model="folderPanel"
-      accordion
-      class="v-filters-folder mb-3"
-    >
-      <v-expansion-panel>
-        <v-expansion-panel-header class="v-filters-folder-title"
-          ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
-          ящики</v-expansion-panel-header
-        >
-        <v-expansion-panel-content class="v-filters-folder-container">
-          <div
-            class="v-filters-folder-container_item ml-4"
-            v-for="(item, index) in $props?.data?.cases"
+            v-for="(item, index) in folderData"
             :key="index"
             @click="setRouterPath({ filter: 'folder', id: item.id })"
           >
@@ -97,7 +60,44 @@
             </span>
           </div>
           <div
-            @click="createFolder"
+            @click="openCreatePopup('folder')"
+            class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
+          >
+            <v-icon small class="mr-2">$IconSystem</v-icon> Добавить папку
+          </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-expansion-panels
+      v-model="boxPanel"
+      accordion
+      class="v-filters-folder mb-3"
+    >
+      <v-expansion-panel>
+        <v-expansion-panel-header class="v-filters-folder-title"
+          ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
+          ящики</v-expansion-panel-header
+        >
+        <v-expansion-panel-content class="v-filters-folder-container">
+          <div
+            class="v-filters-folder-container_item ml-4"
+            v-for="(item, index) in boxData"
+            :key="index"
+            @click="setRouterPath({ filter: 'box', id: item.id })"
+          >
+            <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
+            <span
+              :class="
+                $route.query.filter === 'box' &&
+                Number($route.query.id) === item.id &&
+                'v-filters-folder-container_item__active'
+              "
+            >
+              {{ item.name }}
+            </span>
+          </div>
+          <div
+            @click="openCreatePopup('box')"
             class="v-filters-folder-container_item v-filters-folder-container_item__disabled ml-4"
           >
             <v-icon small class="mr-2">$IconSystem</v-icon> Добавить ящик
@@ -150,7 +150,7 @@
       </v-btn>
     </div>
     <Popup
-      :options="{ portal: 'table-detail' }"
+      :options="{ portal: 'filter', padding: '20px 30px' }"
       closeButton
       @close="closePopup"
       v-if="popupCase"
@@ -158,25 +158,41 @@
       <div class="v-filters-popup d-flex flex-column align-center">
         <div class="d-flex">
           <v-icon
-            :color="caseColor"
+            :color="newCase.color"
             @click="openPicker = !openPicker"
             large
             class="mr-9 v-filters-popup_icon"
             >$IconSystem</v-icon
           >
           <div v-if="openPicker" class="v-filters-popup_picker">
-            <v-color-picker v-model="caseColor" hide-inputs></v-color-picker>
+            <v-color-picker
+              v-model="newCase.color"
+              hide-inputs
+            ></v-color-picker>
           </div>
           <v-text-field
             v-if="!openPicker"
             max-width="100"
+            maxlength="50"
             label="Название"
+            v-model="newCase.name"
           ></v-text-field>
         </div>
-        <v-btn tonal color="success" class="mt-8">
+        <v-btn
+          v-if="!newCase.loading"
+          @click="createNewFolder"
+          tonal
+          color="success"
+          class="mt-8"
+        >
           <v-icon small class="mr-2">$IconAdd</v-icon>
           Создать
         </v-btn>
+        <v-progress-circular
+          indeterminate
+          v-else
+          color="primary"
+        ></v-progress-circular>
       </div>
     </Popup>
   </div>

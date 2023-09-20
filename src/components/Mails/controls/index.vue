@@ -4,6 +4,8 @@
       <v-checkbox
         color="primary"
         class="v-controls-list_item v-controls-list_item__input"
+        @change="$emit('changeSelection', 'all')"
+        v-model="allSelection"
       ></v-checkbox>
       <v-btn class="v-controls-list_item" color="text" plain>
         <v-icon color="disabled" class="mr-3" small>$IconBroadcast</v-icon>

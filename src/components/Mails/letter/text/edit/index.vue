@@ -1,11 +1,29 @@
 <template>
   <div class="v-edit">
     <VueEditor v-model="content" />
-    <!-- <v-file-input label="Загрузить файлы" outlined></v-file-input> -->
-    <v-btn height="60" color="disabled" outlined block>
-      <v-icon large class="mr-2">$IconDownload</v-icon>
-      Загрузить файлы
-    </v-btn>
+    <v-file-input
+      v-model="files"
+      outlined
+      label="Загрузить файлы"
+      chips
+      multiple
+    >
+      <template v-slot:selection="data">
+        <v-chip @click.stop outlined>
+          <div class="v-edit-item-input_name">
+            {{ data.text }}
+          </div>
+          <v-icon
+            class="ml-2"
+            color="disabled"
+            small
+            @click="deleteItem(data.index)"
+          >
+            $IconClose
+          </v-icon>
+        </v-chip>
+      </template>
+    </v-file-input>
   </div>
 </template>
 <script src="./setup.ts"></script>

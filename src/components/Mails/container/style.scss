@@ -1,14 +1,14 @@
 .v {
     &-container {
         // height: 100%;
-        width: 100%;
+        // width: 100%;
         overflow: overlay;
         @include custom-scroll-bar-vertical;
         &::-webkit-scrollbar{
             display: none;
         }
         &-box {
-            // width: 100%;
+            width: 100%;
             display: flex;
             &__active {
                 width: 343px;
@@ -23,9 +23,10 @@
             &-column {
                 scroll-snap-align: start;
                 width: 343px;
-                &__expand {
-                    overflow: auto;
-                    @include custom-scroll-bar-vertical;
+                &__horizontal {
+                    width: 100%;
+                    // overflow: auto;
+                    // @include custom-scroll-bar-vertical;
                 }
                 &-title {
                     border-radius: 2px;
@@ -43,6 +44,11 @@
                     @include custom-scroll-bar-vertical;
                     .v-letter+.v-letter {
                         margin-top: 7px;
+                    }
+                    &_stub {
+                        width: 343px;
+                        background: var(--v-background-base);
+                        text-align: center;
                     }
                 }
             }
