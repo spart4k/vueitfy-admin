@@ -112,7 +112,7 @@
             </v-menu>
             <v-textarea
               v-if="field.type === 'textarea'"
-              v-model-value="field.value"
+              v-model="field.value"
               :label="field.label"
               clearable
               rows="1"

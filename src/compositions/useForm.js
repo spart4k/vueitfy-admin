@@ -1,4 +1,4 @@
-import { ref, computed, watch, unref, reactive } from '@vue/composition-api'
+import { ref, computed, watch, unref, reactive } from 'vue'
 import useVuelidate from '@vuelidate/core'
 
 /**
