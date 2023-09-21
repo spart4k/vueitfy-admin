@@ -87,7 +87,7 @@
             <v-menu
               v-if="field.type === 'date'"
               :key="field.id"
-              ref="menuRef"
+              :ref="`menuRef_${field.id}`"
               v-model="field.menu"
               :close-on-content-click="false"
               transition="scale-transition"
@@ -112,6 +112,7 @@
                 locale="ru-RU"
                 :type="field.subtype === 'period' ? 'month' : undefined"
                 :range="field.subtype === 'range'"
+                @input="field.menu = false"
               ></v-date-picker>
             </v-menu>
             <v-textarea
