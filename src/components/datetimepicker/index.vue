@@ -20,7 +20,7 @@
           :error-messages="errorMessages"
         ></v-text-field>
       </template>
-      <v-tabs v-model="activeTab">
+      <v-tabs grow v-model="activeTab">
         <v-tab v-for="item in tabs" :key="item.id">
           {{ item.name }}
         </v-tab>
@@ -37,7 +37,12 @@
           ></v-date-picker>
         </v-tab-item>
         <v-tab-item>
-          <v-time-picker v-model="tabs.time.value" format="ampm" />
+          <v-time-picker
+            ref="menuTime"
+            v-model="tabs.time.value"
+            format="ampm"
+            @click:minute="menuRef.save(tabs.time.value)"
+          />
         </v-tab-item>
       </v-tabs-items>
     </v-menu>

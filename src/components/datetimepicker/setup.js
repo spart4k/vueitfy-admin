@@ -23,6 +23,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const menu = ref(false)
+    const menuRef = ref(null)
     const field = ref({
       id: 5,
       label: 'Время создания',
@@ -66,6 +67,13 @@ export default {
       }
     })
     watch(
+      () => tabs.value.date.value,
+      (newValue) => {
+        console.log(newValue)
+        activeTab.value = 1
+      }
+    )
+    watch(
       () => formatedValue.value,
       (newValue) => {
         emit('input', newValue)
@@ -78,6 +86,7 @@ export default {
       tabs,
       activeTab,
       formatedValue,
+      menuRef,
     }
   },
 }
