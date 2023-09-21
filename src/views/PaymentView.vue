@@ -1020,7 +1020,7 @@ const tableConfigData = {
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
-    class: [''], // List class
+    classes: [''], // List class
     width: '800px',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [

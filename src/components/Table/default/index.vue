@@ -430,7 +430,7 @@
       <Detail
         class="cols-6"
         :detail="options.detail"
-        :class="[...options.detail.bootstrapClass, ...options.detail.class]"
+        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
       />
     </Popup>
   </div>
