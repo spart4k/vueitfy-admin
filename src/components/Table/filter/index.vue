@@ -54,7 +54,7 @@
                 indeterminate
               />
             </div>
-            <div :data-filter="filter.name" v-intersect="endIntersect" />
+            <div :data-field="filter.name" v-intersect="endIntersect" />
           </template>
           <template v-slot:item="data">
             <template>

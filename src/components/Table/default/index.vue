@@ -424,7 +424,7 @@
     <Popup
       closeButton
       @close="closePopupForm"
-      :options="{ width: '600px', portal: 'table-detail' }"
+      :options="{ width: options.detail.width, portal: 'table-detail' }"
       v-if="options.detail.type === 'popup' && popupForm.isShow"
     >
       <Detail

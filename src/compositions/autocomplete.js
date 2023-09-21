@@ -6,9 +6,11 @@ export default function (searchFields, fields) {
     if (isIntersecting) {
       console.log(entries[0].target)
       const dataset = entries[0].target.dataset.field
+      console.log(fields)
+      console.log(dataset)
       const field = fields.find((el) => el.name === dataset)
       console.log('isIntersecting')
-      console.log(field.items)
+      console.log(field)
       if (field.items.length && !field.loading) {
         //field.page = field.page + 10
         //Vue.set(field, 'page', field.page + 1)
