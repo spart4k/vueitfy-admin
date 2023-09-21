@@ -21,7 +21,7 @@
               :items="field.items"
               :item-text="field.selectOption.text"
               :item-value="field.selectOption.value"
-              label="Standard"
+              :label="field.label"
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
               return-object
@@ -36,7 +36,7 @@
               :search-input.sync="field.search"
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
-              label="Поиск девайса"
+              :label="field.label"
               chips
               :multiple="field.subtype === 'multiple'"
               class="mb-4"
@@ -97,7 +97,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="formData[field.name]"
-                  label="Birthday date"
+                  :label="field.label"
                   prepend-icon="mdi-calendar"
                   :error-messages="formErrors[field.name]"
                   readonly

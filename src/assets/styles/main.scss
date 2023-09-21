@@ -385,3 +385,7 @@ $borderColor: rgba(0,0,0,.3);
   padding-top: unset;
   padding-bottom: unset;
 }
+
+.v-select.v-select--chips .v-select__selections {
+  min-height: 32px;
+}
