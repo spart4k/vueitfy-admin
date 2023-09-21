@@ -18,12 +18,14 @@ const filters = defineComponent({
       type: Object,
       default: () => {},
     },
+    filterData: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, context) {
     const router = context.root.$router
     const route = context.root.$route
-    const folderData = ref([])
-    const boxData = ref([])
     const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
     const boxPanel = ref()
     const folderPanel = ref()
@@ -68,22 +70,20 @@ const filters = defineComponent({
             color: newCase.value.color,
           }
           const newObject = await mailsApi.createFolder(requestData)
-          folderData.value.push(newObject[0])
+          context.emit('createNewFilter', {type: newCase.value.type, content: newObject[0]})
         } else if (newCase.value.type === 'box') {
           const requestData = {
             name: newCase.value.name,
             accountjson: JSON.stringify([25]),
             color: newCase.value.color,
           }
-          const newObject = await mailsApi.createFolder(requestData)
-          boxData.value.push(newObject[0])
+          const newObject = await mailsApi.createBox(requestData)
+          context.emit('createNewFilter', {type: newCase.value.type, content: newObject[0]})
         }
         closePopup()
       }
     }
     onMounted(async () => {
-      folderData.value = await mailsApi.getFolders()
-      boxData.value = await mailsApi.getBoxes({ accountId: 25 })
       if (route.query.filter === 'box') {
         boxPanel.value = 0
       }
@@ -95,9 +95,6 @@ const filters = defineComponent({
       newCase,
       openPicker,
       popupCase,
-
-      folderData,
-      boxData,
 
       dayOfWeek,
 

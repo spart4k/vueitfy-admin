@@ -18,6 +18,10 @@ const letter = defineComponent({
       type: Boolean,
       default: false,
     },
+    selectedMails: {
+      type: Array,
+      default: () => [],
+    }
   },
   components: {
     MailsLetterUser,

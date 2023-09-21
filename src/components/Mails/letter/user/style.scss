@@ -6,6 +6,10 @@
         &_checkbox {
             margin: 0;
             padding: 0;
+            &::v-deep .v-icon {
+                color: var(--v-primary-base) !important;
+                caret-color: var(--v-primary-base) !important;
+            }
             &::v-deep .v-input__slot {
                 margin:0 !important;
             }

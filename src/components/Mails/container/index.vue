@@ -1,6 +1,6 @@
 <template>
   <div :class="['v-container', 'd-flex']">
-    <!-- {{ $props.data }} -->
+    <!-- {{ $props.selectedMails }} -->
     <div
       :class="[
         'v-container-box',
@@ -29,6 +29,7 @@
               :active="Number($route.query.mail) === mail.id"
               v-for="(mail, index) in item.mails"
               :key="index"
+              :selectedMails="selectedMails"
             />
           </template>
           <template v-else>

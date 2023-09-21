@@ -33,6 +33,52 @@
                     }
                 }
             }
+            &_menu {
+                height: 150px;
+                width: 100px;
+                transform: translateY(35px);
+                box-shadow: 1px 1px 4px 0px #00000040;
+                // :global(.v-menu__content) {
+                // }
+                &-item {
+                    opacity: 1;
+                    min-height: 17px;
+                    margin: 0 5px;
+                    cursor: pointer;
+                    font-size: 18px;
+                    font-weight: 500;
+                    color: var(--v-text-base) !important;
+                    display: flex;
+                    justify-content: center;
+                    word-break: break-word;
+                    text-align: center;
+                    &:not(:last-child) {
+                        border-bottom: solid 1px var(--v-disabled-base);
+                    }
+                }
+            }
+            &_tags {
+                // height: 150px;
+                width: 50px;
+                transform: translateY(35px);
+                box-shadow: 1px 1px 4px 0px #00000040;
+                &-item {
+                    cursor: pointer;
+                    opacity: 1;
+                    min-height: 9px;
+                    width: 9px;
+                    margin: 0 4px;
+                    // height: 9px;
+                    border-radius: 4.5px;
+                    transition: all 0.3s;
+                    &__active {
+                        width: 26px;
+                    }
+                }
+                &-item+&-item {
+                    margin-top: 6px;
+                }
+            }
         }
     }
 }

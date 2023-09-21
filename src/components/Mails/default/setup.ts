@@ -26,7 +26,14 @@ const mails = defineComponent({
     const router = context.root.$router
     const route = context.root.$route
     const mailsData = ref([])
-    const allMailsLength = computed(() => {
+    const filterData = ref({
+      folderData: [],
+      tagsData: [],
+      boxData: [],
+    })
+
+
+    const allMails = computed(() => {
       const array = []
       mailsData.value.forEach((item) => {
         if (item.mails) {
@@ -35,51 +42,73 @@ const mails = defineComponent({
           })
         }
       })
-      return array.length
+      return array
     })
+
     const selectedMails = ref([])
-    const setActiveMail = (val) => {
-      router
-        .push({ path: 'mails', query: { ...route.query, ...{ mail: val.id } } })
-        .catch(() => {})
-    }
+    const selectedAllMails = ref(false)
     const changeSelection = (val) => {
       if (val === 'all') {
-        mailsData.value.forEach((item) => {
-          if (item.mails) {
-            item.mails.forEach((mail) => {
-              if (!selectedMails.value.includes(mail.id)) {
-                selectedMails.value.push(mail.id)
-              }
-            })
-          }
-        })
-      } else {
+        selectedAllMails.value = !selectedAllMails.value
+        if (selectedAllMails.value) {
+          selectedMails.value = allMails.value
+        } else {
+          selectedMails.value = []
+        }
+      }
+      else {
         if (selectedMails.value.includes(val)) {
           selectedMails.value = selectedMails.value.filter((e) => e !== val)
         } else {
           selectedMails.value.push(val)
         }
+        console.log(allMails.value.length, selectedMails.value.length)
+        if (allMails.value.length === selectedMails.value.length) {
+          selectedAllMails.value = true
+        } else {
+          selectedAllMails.value = false
+        }
+      }
+    }
+
+    const setActiveMail = (val) => {
+      router
+        .push({ path: 'mails', query: { ...route.query, ...{ mail: val.id } } })
+        .catch(() => {})
+    }
+
+    const createNewFilter = (val) => {
+      if (val.type === 'folder') {
+        filterData.value.folderData.push(val.content)
+      } else if (val.type === 'box') {
+        filterData.value.boxData.push(val.content)
       }
     }
     onMounted(async () => {
-      mailsData.value = await mailsApi.getBoxes({accountId: 25})
+      filterData.value.folderData = await mailsApi.getFolders()
+      filterData.value.boxData = (await mailsApi.getBoxes({ accountId: 25 })).data
+      filterData.value.tagsData = (await mailsApi.getTags()).data
+
+      mailsData.value = JSON.parse(JSON.stringify(filterData.value.boxData))
       mailsData.value.forEach(async (item, index) => {
         const data = await mailsApi.getPagination({
           page: 1,
           count: 20,
           boxId: item.id,
         })
-        if (data.rows.length) {
+        if (data.rows && data.rows.length) {
           Vue.set(mailsData.value[index], 'mails', data.rows)
         }
       })
     })
     return {
       selectedMails,
+      selectedAllMails,
+      allMails,
       mailsData,
-      allMailsLength,
+      filterData,
 
+      createNewFilter,
       setActiveMail,
       changeSelection,
     }

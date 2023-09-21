@@ -5,10 +5,14 @@ import { defineComponent, computed, ref } from 'vue'
 const controls = defineComponent({
   name: 'Controls',
   props: {
-    data: {
+    selectedAllMails: {
+      type: Boolean,
+      default: false,
+    },
+    filterData: {
       type: Object,
       default: () => {},
-    },
+    }
   },
   setup() {
     return {

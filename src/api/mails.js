@@ -27,6 +27,16 @@ export default class Mails {
     }
   }
 
+  async getTags() {
+    try {
+      const { data } = await axios.get(`${urlK}/tags`)
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async createBox(params) {
     try {
       const { data } = await axios.post(`${urlK}/box/new`, params)
@@ -53,13 +63,12 @@ export default class Mails {
         page: params.page,
         count: params.count,
       }
-      console.log('cxcxxccxxc', params.boxId)
       const { data } = await axios.post(
-        `${urlK}/mail/pagination/${params.boxId}`,
+        `${urlK}/mail/folder/${params.boxId}`,
         request
       )
       console.log(data)
-      return data
+      return data.data
     } catch (error) {
       console.log(error)
     }

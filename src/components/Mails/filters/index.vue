@@ -35,7 +35,11 @@
         </div>
       </div>
     </div>
-    <v-expansion-panels v-model="folderPanel" class="v-filters-folder">
+    <v-expansion-panels
+      v-if="$props.filterData.folderData.length"
+      v-model="folderPanel"
+      class="v-filters-folder"
+    >
       <v-expansion-panel>
         <v-expansion-panel-header class="v-filters-folder-title"
           ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
@@ -44,7 +48,7 @@
         <v-expansion-panel-content class="v-filters-folder-container">
           <div
             class="v-filters-folder-container_item ml-4"
-            v-for="(item, index) in folderData"
+            v-for="(item, index) in $props.filterData.folderData"
             :key="index"
             @click="setRouterPath({ filter: 'folder', id: item.id })"
           >
@@ -72,6 +76,7 @@
       v-model="boxPanel"
       accordion
       class="v-filters-folder mb-3"
+      v-if="$props.filterData.boxData.length"
     >
       <v-expansion-panel>
         <v-expansion-panel-header class="v-filters-folder-title"
@@ -81,7 +86,7 @@
         <v-expansion-panel-content class="v-filters-folder-container">
           <div
             class="v-filters-folder-container_item ml-4"
-            v-for="(item, index) in boxData"
+            v-for="(item, index) in $props.filterData.boxData"
             :key="index"
             @click="setRouterPath({ filter: 'box', id: item.id })"
           >
@@ -115,7 +120,7 @@
         ]"
         :style="{ backgroundColor: item.color }"
         @click="setRouterPath({ filter: 'color', id: item.id })"
-        v-for="(item, index) in $props?.data?.colors"
+        v-for="(item, index) in $props.filterData.tagsData"
         :key="index"
       ></div>
     </div>

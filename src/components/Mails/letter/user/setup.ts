@@ -12,7 +12,11 @@ const user = defineComponent({
     data: {
       type: Object,
       default: () => {},
-    }
+    },
+    selectedMails: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup() {
     return {}
