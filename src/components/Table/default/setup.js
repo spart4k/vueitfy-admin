@@ -76,7 +76,7 @@ const table = {
       searchColumns: [],
     })
     const popupForm = ref({
-      isShow: true,
+      isShow: false,
     })
     const wrapingRow = () => {
       console.log('RESIZE1')
