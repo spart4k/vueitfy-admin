@@ -18,6 +18,23 @@ const phone = {
   $validator: (val) => val.length > 10,
   $message: () => 'Не менее 11 символов',
 }
+
+const hasDate = {
+  $validator: (val) => {
+    const splitedValue = val.split(' ')
+    return splitedValue[0]
+  },
+  $message: () => 'Выберите дату',
+}
+
+const hasTime = {
+  $validator: (val) => {
+    const splitedValue = val.split(' ')
+    return splitedValue[1]
+  },
+  $message: () => 'Выберите время',
+}
+
 const nameLength = {
   $validator: (val) => val.length > 4,
   $message: () => 'Не менее 5 символов',
@@ -54,5 +71,7 @@ export {
   phone,
   onlyNumeric,
   nameLength,
+  hasDate,
+  hasTime,
   // strongPassword
 }

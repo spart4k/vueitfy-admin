@@ -15,14 +15,6 @@ const container = defineComponent({
       type: Array,
       default: () => [],
     },
-    edit: {
-      type: Boolean,
-      default: false,
-    },
-    activeMail: {
-      type: Object,
-      default: () => {},
-    },
   },
   setup() {
     return {}

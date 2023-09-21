@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent } from 'vue'
+import { defineComponent } from '@vue/composition-api'
 // import { tableApi } from '@/api'
 import MailsLetterUser from '../user/index.vue'
 import MailsLetterUserEdit from '../user/edit/index.vue'
@@ -15,13 +15,24 @@ const letterExpanded = defineComponent({
     MailsLetterText,
   },
   props: {
-    edit: {
-      type: Boolean,
-      default: false,
+    activeMail: {
+      type: Object,
+      default: () => {},
     },
   },
-  setup() {
-    return {}
+  setup(props, context) {
+    const route = context.root.$route
+    const router = context.root.$router
+    const answerToMail = () => {
+      router.push({ path: 'mails', query: {...route.query, ...{ compose: 'answer' }}}).catch(() => {})
+    }
+    const createMail = () => {
+      console.log('newMail')
+    }
+    return {
+      createMail,
+      answerToMail,
+    }
   },
 })
 export default letterExpanded

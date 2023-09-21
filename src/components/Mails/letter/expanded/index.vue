@@ -1,17 +1,30 @@
 <template>
-  <div class="v-letter-expanded d-flex flex-column">
+  <div
+    :class="[
+      'v-letter-expanded',
+      'd-flex',
+      'flex-column',
+      $route.query.mail && 'v-letter-expanded__edited',
+    ]"
+  >
     <div class="v-letter-expanded_user">
-      <MailsLetterUser v-if="false" expanded />
+      <MailsLetterUser v-if="!$route.query.compose" expanded />
       <MailsLetterUserEdit v-else />
     </div>
     <div class="v-letter-expanded-container">
-      <MailsLetterTextEdit />
-      <MailsLetterText edit />
+      <MailsLetterTextEdit v-if="$route.query.compose" />
+      <MailsLetterText
+        v-if="$route.query.compose !== 'new'"
+        :edit="!$route.query.compose || $route.query.compose === 'edit'"
+      />
     </div>
     <div class="v-letter-expanded_btn pb-2 mt-4">
-      <v-btn color="primary">
+      <v-btn
+        @click="$route.query.compose === 'new' ? createMail() : answerToMail()"
+        color="primary"
+      >
         <v-icon small class="mr-2">$IconEdit</v-icon>
-        Ответить
+        {{ $route.query.compose === 'new' ? 'Отправить' : 'Ответить' }}
       </v-btn>
     </div>
   </div>

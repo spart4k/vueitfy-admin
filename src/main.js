@@ -7,11 +7,15 @@ import vuetify from './plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/styles/main.scss'
 import PortalVue from 'portal-vue'
+import DatetimePicker from 'vuetify-datetime-picker'
+Vue.use(DatetimePicker)
+//import VueCompositionApi from '@vue/composition-api'
 
 //import mainJS from '@/trash/main.js'
 
 Vue.config.productionTip = false
 Vue.use(PortalVue)
+//Vue.use(VueCompositionApi)
 
 new Vue({
   router,

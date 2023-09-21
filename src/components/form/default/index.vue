@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <v-form>
-      <v-container class="mb-5">
+      <v-container class="">
         <v-row>
           <v-col
             v-for="field in tab.fields"
@@ -11,8 +11,9 @@
           >
             <v-text-field
               v-if="field.type === 'string'"
-              v-model="field.value"
+              v-model="formData[field.name]"
               :label="field.label"
+              :error-messages="formErrors[field.name]"
               clearable
             />
             <v-select
@@ -20,8 +21,9 @@
               :items="field.items"
               :item-text="field.selectOption.text"
               :item-value="field.selectOption.value"
-              label="Standard"
-              v-model="field.value"
+              :label="field.label"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field.name]"
               return-object
               persistent-hint
             ></v-select>
@@ -32,8 +34,9 @@
               :loading="field.loading"
               :items="field.items"
               :search-input.sync="field.search"
-              v-model="field.value"
-              label="Поиск девайса"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field.name]"
+              :label="field.label"
               chips
               :multiple="field.subtype === 'multiple'"
               class="mb-4"
@@ -84,7 +87,7 @@
             <v-menu
               v-if="field.type === 'date'"
               :key="field.id"
-              ref="menuRef"
+              :ref="`menuRef_${field.id}`"
               v-model="field.menu"
               :close-on-content-click="false"
               transition="scale-transition"
@@ -93,30 +96,58 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="field.value"
-                  label="Birthday date"
+                  v-model="formData[field.name]"
+                  :label="field.label"
                   prepend-icon="mdi-calendar"
+                  :error-messages="formErrors[field.name]"
                   readonly
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="field.value"
+                v-model="formData[field.name]"
                 min="1950-01-01"
                 color="primary"
                 locale="ru-RU"
-                type="datetime-local"
+                :type="field.subtype === 'period' ? 'month' : undefined"
                 :range="field.subtype === 'range'"
+                @input="field.menu = false"
               ></v-date-picker>
             </v-menu>
-            <v-text-field
+            <v-textarea
               v-if="field.type === 'textarea'"
-              v-model="field.value"
+              v-model="formData[field.name]"
               :label="field.label"
+              :error-messages="formErrors[field.name]"
               clearable
+              rows="1"
+            />
+            <v-datetime-picker
+              v-if="false"
+              :label="field.label"
+              v-model="formData[field.name]"
+              clearable
+              :error-messages="formErrors[field.name]"
+            />
+            <Datetimepicker
+              :label="field.label"
+              v-if="field.type === 'datetime'"
+              v-model="formData[field.name]"
+              clearable
+              :error-messages="formErrors[field.name]"
             />
           </v-col>
+        </v-row>
+        <v-row>
+          <v-btn
+            type="submit"
+            color="primary"
+            class="ml-auto"
+            @click.prevent="submit"
+          >
+            Submit
+          </v-btn>
         </v-row>
       </v-container>
     </v-form>

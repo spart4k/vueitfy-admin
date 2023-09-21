@@ -50,7 +50,7 @@
                   ? 'navmenu__navlinks'
                   : 'navmenu__mavlinks--collapse'
               "
-            > -->
+            >  -->
             <!-- блок повяления при отсутствии доп ссылок внизу -->
             <template v-if="!item.disclosure">
               <router-link

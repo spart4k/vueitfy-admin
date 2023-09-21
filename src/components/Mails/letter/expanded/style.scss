@@ -4,9 +4,11 @@
         background: var(--v-background-base);
         box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.10);
         flex: 1;
-        margin-left: 13px;
         // @include custom-scroll-bar-vertical;
         // overflow: auto;
+        &__edited {
+            margin-left: 13px;
+        }
         &_user {
             padding: 0 13px 0 17px;
             margin-bottom: 30px;
