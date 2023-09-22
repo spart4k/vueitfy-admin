@@ -2,6 +2,7 @@ import Cities from './cities'
 import Selects from './selects'
 import Navmenu from './navmenu'
 import Mails from './mails'
+import Form from './form'
 //import axios from 'axios'
 
 //axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
@@ -11,7 +12,10 @@ import Mails from './mails'
 // 5000/appointment
 // 3001/review
 
-export const tableApi = new Cities()
-export const selectsApi = new Selects()
-export const navmenuApi = new Navmenu()
-export const mailsApi = new Mails()
+const tableApi = new Cities()
+const selectsApi = new Selects()
+const navmenuApi = new Navmenu()
+const mailsApi = new Mails()
+const form = new Form()
+
+export { tableApi, selectsApi, navmenuApi, mailsApi, form }

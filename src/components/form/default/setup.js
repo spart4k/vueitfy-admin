@@ -19,6 +19,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     //const querySelections = async (string, field) => {
@@ -86,12 +90,12 @@ export default {
       return fields
     }
     console.log(fields())
-    const { formData, validate, formErrors, $v, $touched } = useForm({
+    const { formData, validate, formErrors, vForm, touchedForm } = useForm({
       fields: fields(),
     })
     const submit = async () => {
       validate()
-      console.log($v.value)
+      console.log(vForm.value)
       console.log(formData)
       console.log(formErrors.value)
     }
@@ -118,8 +122,8 @@ export default {
       formData,
       validate,
       //$errors,
-      $v,
-      $touched,
+      vForm,
+      touchedForm,
       submit,
       formErrors,
     }

@@ -1022,6 +1022,9 @@ const tableConfigData = {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
     width: '800px',
+    method: 'get',
+    alias: 'payment',
+    url: '/get/form/',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {

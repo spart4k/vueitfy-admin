@@ -7,6 +7,7 @@ import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import TestForm from '@/views/testform'
 import LoginPage from '@/layouts/login'
+import Detail from '@/components/Table/detail'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -19,6 +20,13 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: PaymentView,
+    children: [
+      {
+        name: 'paymentview/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
   },
   {
     path: '/personal',

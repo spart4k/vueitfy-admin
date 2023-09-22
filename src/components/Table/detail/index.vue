@@ -14,7 +14,12 @@
       </v-tabs>
       <v-tabs-items v-model="detail.activeTab">
         <v-tab-item v-for="item in detail.tabs" :key="item.id">
-          <component :is="item.type" :tab="item" :options="item.config" />
+          <component
+            :loading="loading"
+            :is="item.type"
+            :tab="item"
+            :options="item.config"
+          />
         </v-tab-item>
       </v-tabs-items>
       <!--<TableDefault :options="detail.tabs[1].config"></TableDefault>-->
