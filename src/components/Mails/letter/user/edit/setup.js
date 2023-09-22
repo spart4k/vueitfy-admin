@@ -3,7 +3,7 @@
 import { ref, watch, defineComponent } from 'vue'
 // import { tableApi } from '@/api'
 import { VueEditor } from 'vue2-editor'
-const edit = defineComponent({
+const edit = {
   name: 'Edit',
   props: {},
   components: {
@@ -74,5 +74,5 @@ const edit = defineComponent({
       deleteItem,
     }
   },
-})
+}
 export default edit

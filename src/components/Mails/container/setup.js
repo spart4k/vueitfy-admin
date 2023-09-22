@@ -4,7 +4,7 @@ import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
 import MailsLetter from '../letter/index.vue'
 import MailsLetterExpanded from '../letter/expanded/index.vue'
-const container = defineComponent({
+const container = {
   name: 'Container',
   components: {
     MailsLetter,
@@ -23,5 +23,5 @@ const container = defineComponent({
   setup() {
     return {}
   },
-})
+}
 export default container

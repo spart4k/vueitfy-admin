@@ -5,10 +5,10 @@
 // import vButton from '@/components/button/index.vue'
 // import { useRouter } from 'vue-router'
 // import { useRouter, useRoute } from 'vue-router'
-import { ref, computed, defineComponent, onMounted } from '@vue/composition-api'
+import { ref, onMounted } from '@vue/composition-api'
 import Popup from '../../popup/index.vue'
 import { mailsApi } from '@/api'
-const filters = defineComponent({
+const filters = {
   name: 'Filters',
   components: {
     Popup,
@@ -70,7 +70,10 @@ const filters = defineComponent({
             color: newCase.value.color,
           }
           const newObject = await mailsApi.createFolder(requestData)
-          context.emit('createNewFilter', {type: newCase.value.type, content: newObject[0]})
+          context.emit('createNewFilter', {
+            type: newCase.value.type,
+            content: newObject[0],
+          })
         } else if (newCase.value.type === 'box') {
           const requestData = {
             name: newCase.value.name,
@@ -78,7 +81,10 @@ const filters = defineComponent({
             color: newCase.value.color,
           }
           const newObject = await mailsApi.createBox(requestData)
-          context.emit('createNewFilter', {type: newCase.value.type, content: newObject[0]})
+          context.emit('createNewFilter', {
+            type: newCase.value.type,
+            content: newObject[0],
+          })
         }
         closePopup()
       }
@@ -107,5 +113,5 @@ const filters = defineComponent({
       setRouterPath,
     }
   },
-})
+}
 export default filters

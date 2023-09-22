@@ -1,8 +1,8 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 // import { tableApi } from '@/api'
-const controls = defineComponent({
+const controls = {
   name: 'Controls',
   props: {
     selectedAllMails: {
@@ -12,12 +12,11 @@ const controls = defineComponent({
     filterData: {
       type: Object,
       default: () => {},
-    }
+    },
   },
   setup() {
-    return {
-    }
+    return {}
   },
-})
+}
 
 export default controls

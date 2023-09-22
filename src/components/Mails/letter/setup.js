@@ -1,14 +1,14 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent } from 'vue'
+// import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
 import MailsLetterUser from './user/index.vue'
-const letter = defineComponent({
+const letter = {
   name: 'Letter',
   props: {
     companyColor: {
       type: String,
-      default: '#000000'
+      default: '#000000',
     },
     data: {
       type: Object,
@@ -21,7 +21,7 @@ const letter = defineComponent({
     selectedMails: {
       type: Array,
       default: () => [],
-    }
+    },
   },
   components: {
     MailsLetterUser,
@@ -29,5 +29,5 @@ const letter = defineComponent({
   setup() {
     return {}
   },
-})
+}
 export default letter

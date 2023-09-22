@@ -1,14 +1,14 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
 import Vue from 'vue'
-import { defineComponent, ref, onMounted, computed } from '@vue/composition-api'
+import { ref, onMounted, computed } from '@vue/composition-api'
 // import { tableApi } from '@/api'
 import MailsFilters from '../filters/index.vue'
 import MailsControls from '../controls/index.vue'
 import MailsContainer from '../container/index.vue'
 import MailsLetterExpanded from '../letter/expanded/index.vue'
 import { mailsApi } from '@/api'
-const mails = defineComponent({
+const mails = {
   name: 'Mails',
   components: {
     MailsFilters,
@@ -23,6 +23,7 @@ const mails = defineComponent({
     },
   },
   setup(props, context) {
+    console.log('zxc')
     const router = context.root.$router
     const route = context.root.$route
     const mailsData = ref([])
@@ -31,7 +32,6 @@ const mails = defineComponent({
       tagsData: [],
       boxData: [],
     })
-
 
     const allMails = computed(() => {
       const array = []
@@ -55,8 +55,7 @@ const mails = defineComponent({
         } else {
           selectedMails.value = []
         }
-      }
-      else {
+      } else {
         if (selectedMails.value.includes(val)) {
           selectedMails.value = selectedMails.value.filter((e) => e !== val)
         } else {
@@ -86,7 +85,9 @@ const mails = defineComponent({
     }
     onMounted(async () => {
       filterData.value.folderData = await mailsApi.getFolders()
-      filterData.value.boxData = (await mailsApi.getBoxes({ accountId: 25 })).data
+      filterData.value.boxData = (
+        await mailsApi.getBoxes({ accountId: 25 })
+      ).data
       filterData.value.tagsData = (await mailsApi.getTags()).data
 
       mailsData.value = JSON.parse(JSON.stringify(filterData.value.boxData))
@@ -113,5 +114,5 @@ const mails = defineComponent({
       changeSelection,
     }
   },
-})
+}
 export default mails
