@@ -13,12 +13,11 @@
           'v-container-box-column',
           'd-flex',
           'flex-column',
-          false && 'v-container-box-column__horizontal',
+          $route.query.filter === 'folder' &&
+            'v-container-box-column__horizontal',
         ]"
-        v-for="(item, index) in $props.data"
-        :key="index"
       >
-        <div class="v-container-box-column-title">
+        <div v-if="false" class="v-container-box-column-title">
           {{ item.name }}
         </div>
         <div class="v-container-box-column-items">
@@ -27,7 +26,7 @@
               :companyColor="item.color"
               :data="mail"
               :active="Number($route.query.mail) === mail.id"
-              v-for="(mail, index) in item.mails"
+              v-for="(mail, index) in $props.data[0].mails"
               :key="index"
               :selectedMails="selectedMails"
             />
