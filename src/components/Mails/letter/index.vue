@@ -1,16 +1,29 @@
 <template>
   <div
-    :class="['v-letter', $props.active && 'v-letter__active']"
+    :class="[
+      'v-letter',
+      $props.active && 'v-letter__active',
+      $route.query.filter === 'folder' && 'v-letter__wide',
+    ]"
     @click.prevent="$parent.$emit('setActiveMail', $props.data)"
   >
-    <div @click.stop class="v-letter-upper">
-      <MailsLetterUser />
-    </div>
-    <div class="v-letter-bottom d-flex">
+    <div class="v-letter-left">
+      <v-icon class="mb-2 pb-1" small>$IconBookmark</v-icon>
+      <v-checkbox
+        color="primary"
+        :value="$props.selectedMails.includes($props.data.id)"
+        class="v-letter-left_checkbox"
+        @change="$parent.$emit('changeSelection', $props.data.id)"
+      ></v-checkbox>
       <div
         :style="{ backgroundColor: $props.companyColor }"
-        class="v-letter-bottom-color-mark mr-4"
+        class="v-letter-left_color-mark"
       ></div>
+    </div>
+    <!-- <div @click.stop class="v-letter-upper">
+      <MailsLetterUser :selectedMails="selectedMails" :data="$props.data" />
+    </div>
+    <div class="v-letter-bottom d-flex">
       <div class="v-letter-bottom-info d-flex flex-column mt-3">
         <p class="v-letter-bottom-info-title">СРМ-100</p>
         <p class="v-letter-bottom-info-text">
@@ -40,7 +53,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script src="./setup.ts"></script>

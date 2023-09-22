@@ -15,6 +15,10 @@ const container = defineComponent({
       type: Array,
       default: () => [],
     },
+    selectedMails: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup() {
     return {}

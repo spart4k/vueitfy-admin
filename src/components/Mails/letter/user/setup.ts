@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 // import { tableApi } from '@/api'
 const user = defineComponent({
   name: 'User',
@@ -8,6 +8,14 @@ const user = defineComponent({
     expanded: {
       type: Boolean,
       default: false,
+    },
+    data: {
+      type: Object,
+      default: () => {},
+    },
+    selectedMails: {
+      type: Array,
+      default: () => [],
     },
   },
   setup() {

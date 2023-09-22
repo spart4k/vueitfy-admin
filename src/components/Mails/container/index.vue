@@ -1,5 +1,6 @@
 <template>
   <div :class="['v-container', 'd-flex']">
+    <!-- {{ $props.selectedMails }} -->
     <div
       :class="[
         'v-container-box',
@@ -8,21 +9,33 @@
       v-if="$route.query.compose !== 'new'"
     >
       <div
-        class="v-container-box-column d-flex flex-column"
-        v-for="(item, index) in $props.data"
-        :key="index"
+        :class="[
+          'v-container-box-column',
+          'd-flex',
+          'flex-column',
+          $route.query.filter === 'folder' &&
+            'v-container-box-column__horizontal',
+        ]"
       >
-        <div class="v-container-box-column-title">
-          {{ item.company.name }}
+        <div v-if="false" class="v-container-box-column-title">
+          {{ item.name }}
         </div>
         <div class="v-container-box-column-items">
-          <MailsLetter
-            :companyColor="item.company.color"
-            :data="mail"
-            :active="Number($route.query.mail) === mail.id"
-            v-for="(mail, index) in item.mail"
-            :key="index"
-          />
+          <template v-if="item.mails">
+            <MailsLetter
+              :companyColor="item.color"
+              :data="mail"
+              :active="Number($route.query.mail) === mail.id"
+              v-for="(mail, index) in $props.data[0].mails"
+              :key="index"
+              :selectedMails="selectedMails"
+            />
+          </template>
+          <template v-else>
+            <div class="v-container-box-column-items_stub">
+              <p>Нет писем</p>
+            </div>
+          </template>
         </div>
       </div>
     </div>

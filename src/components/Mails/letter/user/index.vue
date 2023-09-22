@@ -5,7 +5,9 @@
       <v-checkbox
         v-if="!$props.expanded"
         color="primary"
+        :value="$props.selectedMails.includes($props.data.id)"
         class="v-upper_checkbox"
+        @change="$parent.$parent.$emit('changeSelection', $props.data.id)"
       ></v-checkbox>
     </div>
     <div class="v-upper-user d-flex">
