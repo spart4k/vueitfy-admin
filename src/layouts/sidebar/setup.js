@@ -114,7 +114,7 @@ export default {
           {
             id: 16,
             name: 'Начисления',
-            link: '/',
+            link: '/paymentview',
           },
           {
             id: 17,
