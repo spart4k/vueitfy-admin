@@ -5,7 +5,7 @@
 // import vButton from '@/components/button/index.vue'
 // import { useRouter } from 'vue-router'
 // import { useRouter, useRoute } from 'vue-router'
-import { ref, onMounted } from '@vue/composition-api'
+import { ref, onMounted, computed } from '@vue/composition-api'
 import Popup from '../../popup/index.vue'
 import { mailsApi } from '@/api'
 const filters = {
@@ -25,7 +25,7 @@ const filters = {
   },
   setup(props, context) {
     const router = context.root.$router
-    const route = context.root.$route
+    const route = computed(() => context.root.$route)
     const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
     const boxPanel = ref()
     const folderPanel = ref()
@@ -57,7 +57,7 @@ const filters = {
       }
     }
     const setRouterPath = (val) => {
-      router.push({ path: 'mails', query: val }).catch(() => {})
+      router.replace({ path: 'mails', query: val }).catch(() => {})
       // context.emit('resetActiveMail')
     }
     const createNewFolder = async () => {
@@ -90,10 +90,10 @@ const filters = {
       }
     }
     onMounted(async () => {
-      if (route.query.filter === 'box') {
+      if (route.value.query.filter === 'box') {
         boxPanel.value = 0
       }
-      if (route.query.filter === 'folder') {
+      if (route.value.query.filter === 'folder') {
         folderPanel.value = 0
       }
     })

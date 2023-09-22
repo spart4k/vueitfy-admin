@@ -23,9 +23,8 @@ const mails = {
     },
   },
   setup(props, context) {
-    console.log('zxc')
     const router = context.root.$router
-    const route = context.root.$route
+    const route = computed(() => context.root.$route)
     const mailsData = ref([])
     const filterData = ref({
       folderData: [],
@@ -72,7 +71,10 @@ const mails = {
 
     const setActiveMail = (val) => {
       router
-        .push({ path: 'mails', query: { ...route.query, ...{ mail: val.id } } })
+        .push({
+          path: 'mails',
+          query: { ...route.value.query, ...{ mail: val.id } },
+        })
         .catch(() => {})
     }
 

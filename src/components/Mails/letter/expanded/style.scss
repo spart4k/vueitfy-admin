@@ -9,9 +9,30 @@
         &__edited {
             margin-left: 13px;
         }
-        &_user {
+        &-user {
             padding: 0 13px 0 17px;
             margin-bottom: 30px;
+            display: flex;
+            &_icon {
+                margin-right: 15px;
+            }
+            &-favorite {
+                // background-color: green;
+                display: flex;
+                margin-top: 10px;
+                &-date {
+                    width: 40px;
+                    margin-left: 10px;
+                    &_day {
+                        font-size: 10px;
+                        color: var(--v-text-base);
+                    }
+                    &_time {
+                        font-size: 8px;
+                        color: var(--v-disabled-base);
+                    }
+                }
+            }
         }
         &-container {
             // padding: 0 40px;

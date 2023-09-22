@@ -19,7 +19,7 @@ export default class Mails {
 
   async getFolders() {
     try {
-      const { data } = await axios.get(`${urlK}/folder`)
+      const { data } = await axios.get(`${urlK}/folders`)
       console.log(data)
       return data
     } catch (error) {

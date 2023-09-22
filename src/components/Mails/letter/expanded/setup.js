@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent } from '@vue/composition-api'
+import { computed } from '@vue/composition-api'
 // import { tableApi } from '@/api'
 import MailsLetterUser from '../user/index.vue'
 import MailsLetterUserEdit from '../user/edit/index.vue'
@@ -21,13 +21,13 @@ const letterExpanded = {
     },
   },
   setup(props, context) {
-    const route = context.root.$route
+    const route = computed(() => context.root.$route)
     const router = context.root.$router
     const answerToMail = () => {
       router
-        .push({
+        .replace({
           path: 'mails',
-          query: { ...route.query, ...{ compose: 'answer' } },
+          query: { ...route.value.query, ...{ compose: 'answer' } },
         })
         .catch(() => {})
     }

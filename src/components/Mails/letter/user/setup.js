@@ -13,10 +13,6 @@ const user = {
       type: Object,
       default: () => {},
     },
-    selectedMails: {
-      type: Array,
-      default: () => [],
-    },
   },
   setup() {
     return {}

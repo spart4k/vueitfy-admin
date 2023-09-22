@@ -7,8 +7,22 @@
       $route.query.mail && 'v-letter-expanded__edited',
     ]"
   >
-    <div class="v-letter-expanded_user">
-      <MailsLetterUser v-if="!$route.query.compose" expanded />
+    <div class="v-letter-expanded-user">
+      <template v-if="!$route.query.compose">
+        <v-icon class="v-letter-expanded-user_icon" small>$IconBookmark</v-icon>
+        <MailsLetterUser expanded />
+        <div class="v-letter-expanded-user-favorite">
+          <div class="v-letter-expanded-user-favorite_icon">
+            <v-icon small>$IconStarMail</v-icon>
+          </div>
+          <div class="v-letter-expanded-user-favorite-date">
+            <div class="v-letter-expanded-user-favorite-date_day">13 фев</div>
+            <div class="v-letter-expanded-user-favorite-date_time">
+              13:45:30
+            </div>
+          </div>
+        </div>
+      </template>
       <MailsLetterUserEdit v-else />
     </div>
     <div class="v-letter-expanded-container">
