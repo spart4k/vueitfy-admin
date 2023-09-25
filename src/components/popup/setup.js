@@ -19,7 +19,7 @@ const popup = {
       default: {},
     },
   },
-  setup(props, ctx) {
+  setup() {
     return {}
   },
 }

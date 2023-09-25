@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 // import { tableApi } from '@/api'
 import { VueEditor } from 'vue2-editor'
 const edit = {

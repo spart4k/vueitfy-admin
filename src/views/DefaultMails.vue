@@ -1,9 +1,9 @@
 <template>
-  <!--<Layout>-->
-  <div class="d-flex flex-column flex-grow-1 h-100">
-    <MailsDefault :data="mocData" />
-  </div>
-  <!--</Layout>-->
+  <Layout>
+    <div class="d-flex flex-column flex-grow-1 h-100">
+      <MailsDefault :data="mocData" />
+    </div>
+  </Layout>
 </template>
 
 <script>
