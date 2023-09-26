@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import { defineComponent } from 'vue'
+import { computed } from '@vue/composition-api'
 // import { tableApi } from '@/api'
 import MailsLetterUser from './user/index.vue'
 const letter = {
@@ -22,12 +22,28 @@ const letter = {
       type: Array,
       default: () => [],
     },
+    tagsData: {
+      type: Array,
+      default: () => [],
+    },
   },
   components: {
     MailsLetterUser,
   },
-  setup() {
-    return {}
+  setup(props, context) {
+    const router = context.root.$router
+    const route = computed(() => context.root.$route)
+    const setActiveColorFilter = (val) => {
+      router
+        .push({
+          path: 'mails',
+          query: { ...route.value.query, ...{ color: val } },
+        })
+        .catch(() => {})
+    }
+    return {
+      setActiveColorFilter,
+    }
   },
 }
 export default letter

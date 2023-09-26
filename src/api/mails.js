@@ -99,7 +99,7 @@ export default class Mails {
 
   async deleteFolder(id) {
     try {
-      const { data } = await axios.delete(`${urlK}/folder/${id}`)
+      const { data } = await axios.delete(`${urlK}/folder/del/${id}`)
       console.log(data)
       return data.data
     } catch (error) {

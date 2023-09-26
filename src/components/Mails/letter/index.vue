@@ -10,7 +10,12 @@
     @click.stop="$parent.$emit('setActiveMail', $props.data)"
   >
     <div class="v-letter-left">
-      <v-icon class="v-letter-left_icon" small>$IconBookmark</v-icon>
+      <v-icon
+        class="v-letter-left_icon"
+        :color="$props.data.ismain && 'warning'"
+        small
+        >$IconBookmark</v-icon
+      >
       <v-checkbox
         color="primary"
         :value="$props.selectedMails.includes($props.data.id)"
@@ -28,10 +33,17 @@
       </div>
       <div class="v-letter-content-favorite">
         <div class="v-letter-content-favorite_icon">
-          <v-icon small>$IconStarMail</v-icon>
+          <v-icon
+            class="pb-1"
+            :color="$props.data.isfavorites && 'warning'"
+            small
+            >$IconStar</v-icon
+          >
         </div>
         <div class="v-letter-content-favorite-date">
-          <div class="v-letter-content-favorite-date_day">13 фев</div>
+          <div class="v-letter-content-favorite-date_day">
+            <!-- {{ Date.now($props.data.date) }} -->
+          </div>
           <div class="v-letter-content-favorite-date_time">13:45:30</div>
         </div>
       </div>
@@ -56,10 +68,18 @@
         </div>
         <div class="v-letter-content-files_additional-item">+2</div>
       </div>
+      <!-- {{ $props.tagsData }} -->
+      <!-- {{ JSON.parse($props.data.tags) }} -->
       <div class="v-letter-content-tags">
-        <div class="v-letter-content-tags_item"></div>
-        <div class="v-letter-content-tags_item"></div>
-        <div class="v-letter-content-tags_item"></div>
+        <div
+          class="v-letter-content-tags_item"
+          v-for="(item, index) in JSON.parse($props.data.tags)"
+          :key="index"
+          :style="{
+            background: $props.tagsData.find((x) => x.id === item).color,
+          }"
+          @click="setActiveColorFilter(item)"
+        ></div>
       </div>
     </div>
   </div>

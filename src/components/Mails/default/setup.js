@@ -115,19 +115,31 @@ const mails = {
         console.log(error)
       }
     }
-    const changeFilter = (key) => {
+    const changeFilter = (key, reverse) => {
       mailsData.value.forEach((item, index) => {
         if (item.mails) {
-          mailsData.value[index].mails = mailsData.value[index].mails.filter(
-            (e) => e[key]
-          )
+          if (reverse) {
+            mailsData.value[index].mails = mailsData.value[index].mails.filter(
+              (e) => !e[key]
+            )
+          } else {
+            mailsData.value[index].mails = mailsData.value[index].mails.filter(
+              (e) => e[key]
+            )
+          }
         }
       })
       originalData.value.forEach((item, index) => {
         if (item.mails) {
           item.mails.forEach((mail, mailIndex) => {
-            if (mail[key] && !mailsData.value[index].mails.includes(mail)) {
-              mailsData.value[index].mails.splice(mailIndex, 0, mail)
+            if (reverse) {
+              if (!mail[key] && !mailsData.value[index].mails.includes(mail)) {
+                mailsData.value[index].mails.splice(mailIndex, 0, mail)
+              }
+            } else {
+              if (mail[key] && !mailsData.value[index].mails.includes(mail)) {
+                mailsData.value[index].mails.splice(mailIndex, 0, mail)
+              }
             }
           })
         }
@@ -140,6 +152,10 @@ const mails = {
         changeFilter('id')
       } else if (route.value.query.filter === 'attachment') {
         changeFilter('attachment')
+      } else if (route.value.query.filter === 'tags') {
+        changeFilter('ismain')
+      } else if (route.value.query.filter === 'unread') {
+        changeFilter('is_read', true)
       }
     }
     watch(

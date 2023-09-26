@@ -17,6 +17,7 @@
         <MailsContainer
           @setActiveMail="setActiveMail"
           @changeSelection="changeSelection"
+          :tagsData="filterData.tagsData"
           :selectedMails="selectedMails"
           :data="mailsData"
         />

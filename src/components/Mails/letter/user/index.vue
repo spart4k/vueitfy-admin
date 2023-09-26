@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="v-upper-container">
-      <div class="v-upper-container-viewed"></div>
+      <div v-if="!$props?.data?.is_read" class="v-upper-container-viewed"></div>
     </div>
   </div>
 </template>

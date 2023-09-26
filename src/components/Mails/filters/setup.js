@@ -153,7 +153,7 @@ const filters = {
     const compareItems = () => {
       const itemOld =
         props.filterData[`${newCase.value.type}Data`][newCase.value.index]
-      const itemNew = {
+      let itemNew = {
         color:
           newCase.value.color !== itemOld.color
             ? newCase.value.color
@@ -166,7 +166,9 @@ const filters = {
           delete itemNew[key]
         }
       })
-      return itemNew
+      return (itemNew = Object.entries(itemNew).map((entry) => {
+        return { [entry[0]]: entry[1] }
+      }))
     }
     const editItem = (val, type, index, action) => {
       newCase.value = JSON.parse(JSON.stringify(val))

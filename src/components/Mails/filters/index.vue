@@ -115,7 +115,7 @@
             >
               {{ item.name }}
             </span>
-            <v-icon
+            <!-- <v-icon
               @click.stop="editItem(item, 'box', index)"
               :color="item.color"
               x-small
@@ -127,7 +127,7 @@
               :color="item.color"
               x-small
               >$IconDelete</v-icon
-            >
+            > -->
           </div>
           <div
             @click="openCreatePopup('box')"

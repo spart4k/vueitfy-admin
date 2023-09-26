@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import { defineComponent } from 'vue'
+// import { ref } from '@vue/composition-api'
 // import { tableApi } from '@/api'
 import MailsLetter from '../letter/index.vue'
 import MailsLetterExpanded from '../letter/expanded/index.vue'
@@ -16,6 +16,10 @@ const container = {
       default: () => [],
     },
     selectedMails: {
+      type: Array,
+      default: () => [],
+    },
+    tagsData: {
       type: Array,
       default: () => [],
     },

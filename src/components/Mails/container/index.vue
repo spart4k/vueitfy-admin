@@ -19,7 +19,7 @@
         :key="item.id"
       >
         <div v-if="true" class="v-container-box-column-title">
-          {{ item.name }}
+          {{ item.name }}{{ item.id }}
         </div>
         <div class="v-container-box-column-items">
           <template v-if="item.mails && item.mails.length">
@@ -29,6 +29,7 @@
               :active="Number($route.query.mail) === mail.id"
               v-for="(mail, index) in item.mails"
               :key="index"
+              :tagsData="$props.tagsData"
               :selectedMails="selectedMails"
             />
           </template>
