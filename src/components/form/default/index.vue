@@ -1,5 +1,12 @@
 <template>
   <div class="form">
+    <!--<v-progress-circular
+      v-if="loading"
+      :size="20"
+      :width="2"
+      color="primary"
+      indeterminate
+    />-->
     <v-form>
       <v-container class="">
         <v-row>
@@ -8,27 +15,30 @@
             :key="field.id"
             :cols="field.position.cols"
             :sm="field.position.sm"
+            class="field-col"
           >
+            <div v-if="loading" class="field-loading">
+              <!--<p>loading</p>-->
+            </div>
             <v-text-field
-              v-if="field.type === 'string'"
+              v-else-if="field.type === 'string' && !loading"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field.name]"
               clearable
             />
             <v-select
-              v-if="field.type === 'select' && field.selectOption"
+              v-else-if="field.type === 'select' && !loading"
               :items="field.items"
               :item-text="field.selectOption.text"
               :item-value="field.selectOption.value"
               :label="field.label"
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
-              return-object
               persistent-hint
             ></v-select>
             <v-autocomplete
-              v-if="field.type === 'autocomplete'"
+              v-else-if="field.type === 'autocomplete' && !loading"
               :key="field.id"
               clearable
               :loading="field.loading"
@@ -85,7 +95,7 @@
               </template>
             </v-autocomplete>
             <v-menu
-              v-if="field.type === 'date'"
+              v-else-if="field.type === 'date' && !loading"
               :key="field.id"
               :ref="`menuRef_${field.id}`"
               v-model="field.menu"
@@ -116,23 +126,16 @@
               ></v-date-picker>
             </v-menu>
             <v-textarea
-              v-if="field.type === 'textarea'"
+              v-if="field.type === 'textarea' && !loading"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field.name]"
               clearable
               rows="1"
             />
-            <v-datetime-picker
-              v-if="false"
-              :label="field.label"
-              v-model="formData[field.name]"
-              clearable
-              :error-messages="formErrors[field.name]"
-            />
             <Datetimepicker
+              v-else-if="field.type === 'datetime' && !loading"
               :label="field.label"
-              v-if="field.type === 'datetime'"
               v-model="formData[field.name]"
               clearable
               :error-messages="formErrors[field.name]"

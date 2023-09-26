@@ -427,10 +427,14 @@
       :options="{ width: options.detail.width, portal: 'table-detail' }"
       v-if="options.detail.type === 'popup' && popupForm.isShow"
     >
-      <Detail
+      <!--<Detail
         class="cols-6"
         :detail="options.detail"
-        :class="[...options.detail.bootstrapClass, ...options.detail.class]"
+        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
+      />-->
+      <router-view
+        :detail="options.detail"
+        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
       />
     </Popup>
   </div>

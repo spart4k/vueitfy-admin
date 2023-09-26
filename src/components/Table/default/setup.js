@@ -1,6 +1,7 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
 import Vue, { onMounted, ref, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router/composables'
 
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
@@ -42,6 +43,9 @@ const table = {
   },
   setup(props, ctx) {
     const { emit } = ctx
+    const router = useRouter()
+    const route = useRoute()
+    console.log(route)
     const loading = ref(false)
     const headerOptions = ref([])
     const tablePosition = ref(null)
@@ -76,7 +80,7 @@ const table = {
       searchColumns: [],
     })
     const popupForm = ref({
-      isShow: true,
+      isShow: false,
     })
     const wrapingRow = () => {
       console.log('RESIZE1')
@@ -385,10 +389,22 @@ const table = {
     const openRow = ($event, row) => {
       console.log($event, 'row', row)
       if (props.options.detail.type === 'popup') {
+        console.log(router)
+        //router.push({
+        //  path: `${route.}./1`
+        //})
+        router.push(
+          {
+            name: `${route.name}/:id`,
+            params: {
+              id: row.row.id
+            }
+        })
         popupForm.value.isShow = true
       }
     }
     const closePopupForm = () => {
+      router.back()
       popupForm.value.isShow = false
     }
     // COMPUTED PROPERTIES
@@ -457,6 +473,9 @@ const table = {
       watchScroll()
       pagination.value = {
         ...props.options.data,
+      }
+      if (props.options.detail && props.options.detail.type === 'popup' && route.params.id) {
+        popupForm.value.isShow = true
       }
     })
     return {
