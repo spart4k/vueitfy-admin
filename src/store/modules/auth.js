@@ -13,9 +13,20 @@ const auth = {
     },
   },
   actions: {
-    async auth(_, data) {
-      const token = await login(data)
-      console.log(token)
+    async auth({ commit }, data) {
+      //try {
+      const result = await login(data)
+      commit('auth/setToken', result.AccessToken)
+      //  commit(
+      //    'notifies/showMessage',
+      //    {
+      //      color: 'success',
+      //      content: 'Вы успешно авторизовались',
+      //    },
+      //    { root: true }
+      //  )
+      //  return result
+      //}
     },
   },
 }

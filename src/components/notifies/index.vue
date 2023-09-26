@@ -1,8 +1,11 @@
 <template>
-  <v-snackbar :color="notifier.color" :value="notifier.isShow">
-    <p>{{ notifier.content }}</p>
+  <v-snackbar :color="notifies.color" :value="notifies.isShow">
+    <p>{{ notifies.content }}</p>
     <template v-slot:action="{ attrs }">
-      <v-btn text v-bind="attrs" @click="hideMessage">Close</v-btn>
+      <v-icon class="mr-2" small v-bind="attrs" @click="hideMessage">
+        $IconClose
+      </v-icon>
+      <!--<v-btn text v-bind="attrs" @click="hideMessage"></v-btn>-->
     </template>
   </v-snackbar>
 </template>

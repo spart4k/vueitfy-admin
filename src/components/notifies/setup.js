@@ -4,9 +4,13 @@ import store from '@/store'
 export default {
   name: 'Notifies',
   setup() {
-    const notifier = computed(() => store.state.notifier)
+    const notifies = computed(() => store.state.notifies)
+    const hideMessage = () => {
+      store.commit('notifies/hideMessage')
+    }
     return {
-      notifier,
+      notifies,
+      hideMessage,
     }
   },
 }
