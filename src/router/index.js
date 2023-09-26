@@ -6,7 +6,7 @@ import MailView from '../views/DefaultMails.vue'
 import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import TestForm from '@/views/testform'
-import Login from '@/views/LoginView'
+import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
 //import TestTs from '@/views/testts'
 
@@ -16,6 +16,9 @@ const routes = [
   {
     path: '/paymentview',
     name: 'paymentview',
+    meta: {
+      layout: 'blank-layout',
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -31,6 +34,9 @@ const routes = [
   {
     path: '/personal',
     name: 'personal',
+    meta: {
+      layout: 'blank-layout',
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -39,6 +45,9 @@ const routes = [
   {
     path: '/test',
     name: 'test',
+    meta: {
+      layout: 'blank-layout',
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -47,6 +56,9 @@ const routes = [
   {
     path: '/navbar',
     name: 'navbar',
+    meta: {
+      layout: 'blank-layout',
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -55,6 +67,9 @@ const routes = [
   {
     path: '/testform',
     name: 'TestForm',
+    meta: {
+      layout: 'blank-layout',
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -71,11 +86,17 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    meta: {
+      layout: 'login-layout',
+    },
+    component: LoginView,
   },
   {
     path: '/mails',
     name: 'mails',
+    meta: {
+      layout: 'blank-layout',
+    },
     component: MailView,
   },
 ]
