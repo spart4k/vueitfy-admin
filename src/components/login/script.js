@@ -3,7 +3,7 @@ import { getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
-import { required } from '@/utills/validation'
+import { required } from '@/utils/validation'
 import store from '@/store'
 //import axios from 'axios'
 //import { login } from '@/api/login'
@@ -35,17 +35,18 @@ export default {
     const { loading, makeRequest } = useRequest({
       context,
       request: () => store.dispatch('auth/auth', { ...getData() }),
-      successMessage: 'Успешно',
+      successMessage: 'Вы успешно авторизовались',
+    })
+    const { makeRequest: makeRequestMe } = useRequest({
+      context,
+      request: () => store.dispatch('auth/checkMe'),
     })
     const auth = async () => {
-      //console.log(...getData())
-      validate()
-      //console.log(...getData())
-      loading.value = true
-      //await store.dispatch('auth/auth', formData)
+      if (!validate()) return
       await makeRequest()
       router.push('/')
-      loading.value = false
+      console.log(makeRequestMe, 'makeRequestMe')
+      await makeRequestMe()
     }
 
     return {
@@ -64,6 +65,7 @@ export default {
       touchedForm,
       loading,
       makeRequest,
+      makeRequestMe,
     }
   },
 }

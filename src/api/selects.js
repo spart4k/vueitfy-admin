@@ -42,7 +42,7 @@ export default class Cities {
       console.log(paramsQuery)
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain',
         },
       })
       console.log(data)

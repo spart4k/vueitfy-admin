@@ -11,7 +11,7 @@ export default class Cities {
       console.log(paramsQuery)
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain,
         },
       })
       console.log(data)
@@ -46,7 +46,7 @@ export default class Cities {
       console.log(paramsQuery)
       const { data } = await axios.get(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain',
         },
       })
       console.log(data)
@@ -81,7 +81,7 @@ export default class Cities {
       console.log(paramsQuery)
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain,
         },
       })
       console.log(data)

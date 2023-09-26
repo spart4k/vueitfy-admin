@@ -3,7 +3,7 @@ import { ref, unref } from 'vue'
 
 import _throttle from 'lodash/throttle'
 
-//import processError from '@/utils/processError'
+import processError from '@/utils/processError'
 
 function asyncThrottle(func, wait) {
   const throttled = _throttle(
@@ -39,7 +39,7 @@ export default function ({
   successMessage,
   successCallback,
   failCallback,
-  //withErrors = true,
+  withErrors = true,
   //unconditionalMessage,
   throttled = 0,
 }) {
@@ -65,7 +65,15 @@ export default function ({
         return responseData
       })
       .catch((err) => {
+        console.log(err)
         //if (withErrors) $notifier.showMessage({ content: processError(err).text, color: 'error' })
+        if (withErrors) store.commit(
+          'notifies/showMessage',
+          {
+            color: 'error',
+            content: processError(err).text,
+          },
+        )
         if (failCallback) failCallback()
         throw err
       })

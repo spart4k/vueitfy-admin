@@ -6,9 +6,7 @@ export const instance = setupInterceptors(axios.create())
 const sendData = ({ data }) => data
 
 export const get = (endpoint, params = {}) =>
-  instance
-    .get(`${process.env.VUE_APP_API_URL}/${endpoint}`, { params })
-    .then(sendData)
+  instance.get(endpoint, { params }).then(sendData)
 
 export const getBlob = (endpoint, params = {}) =>
   instance
