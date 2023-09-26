@@ -15,26 +15,28 @@
           $route?.query?.filter === 'folder' &&
             'v-container-box-column__horizontal',
         ]"
+        v-for="item in $props.data"
+        :key="item.id"
       >
-        <!-- <div v-if="true" class="v-container-box-column-title">
+        <div v-if="true" class="v-container-box-column-title">
           {{ item.name }}
-        </div> -->
+        </div>
         <div class="v-container-box-column-items">
-          <template v-if="$props.data">
+          <template v-if="item.mails && item.mails.length">
             <MailsLetter
-              :companyColor="mail.color"
+              :companyColor="item.color"
               :data="mail"
               :active="Number($route.query.mail) === mail.id"
-              v-for="(mail, index) in $props.data[0].mails"
+              v-for="(mail, index) in item.mails"
               :key="index"
               :selectedMails="selectedMails"
             />
           </template>
-          <!-- <template v-else>
+          <template v-else>
             <div class="v-container-box-column-items_stub">
               <p>Нет писем</p>
             </div>
-          </template> -->
+          </template>
         </div>
       </div>
     </div>

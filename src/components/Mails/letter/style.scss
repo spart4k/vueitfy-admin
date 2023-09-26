@@ -6,6 +6,7 @@
         width: 343px;
         height: 174px;
         display: flex;
+        overflow: hidden;
         &:hover {
             background: #F2F9FF;
         }
@@ -83,13 +84,14 @@
                 }
             }
             &-info {
+                // flex: 1;
                 // background-color: aqua;
                 order: 3;
                 &_title {
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    width: 100%;
+                    width: 294px;
                     font-size: 13px;
                     color: var(--v-text-base);
                     font-weight: 500;
@@ -216,6 +218,7 @@
                     &_title {
                         width: 90px;
                         margin-right: 19px;
+                        padding-bottom: 2px;
                     }
                     &_text {
                         white-space: normal;

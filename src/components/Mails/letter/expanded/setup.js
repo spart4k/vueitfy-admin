@@ -19,6 +19,10 @@ const letterExpanded = {
       type: Object,
       default: () => {},
     },
+    data: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, context) {
     const route = computed(() => context.root.$route)

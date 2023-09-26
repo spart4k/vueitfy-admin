@@ -37,11 +37,21 @@ export default class Mails {
     }
   }
 
+  async getNotRead() {
+    try {
+      const { data } = await axios.get(`${urlK}/mails/not_read`)
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async createBox(params) {
     try {
       const { data } = await axios.post(`${urlK}/box/new`, params)
       console.log(data)
-      return data
+      return data.data
     } catch (error) {
       console.log(error)
     }
@@ -51,7 +61,47 @@ export default class Mails {
     try {
       const { data } = await axios.post(`${urlK}/folder`, params)
       console.log(data)
-      return data
+      return data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async editBox(params, id) {
+    try {
+      const { data } = await axios.put(`${urlK}/box/${id}`, params)
+      console.log(data)
+      return data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async editFolder(params, id) {
+    try {
+      const { data } = await axios.put(`${urlK}/folder/${id}`, params)
+      console.log(data)
+      return data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async deleteBox(id) {
+    try {
+      const { data } = await axios.delete(`${urlK}/box/${id}`)
+      console.log(data)
+      return data.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async deleteFolder(id) {
+    try {
+      const { data } = await axios.delete(`${urlK}/folder/${id}`)
+      console.log(data)
+      return data.data
     } catch (error) {
       console.log(error)
     }

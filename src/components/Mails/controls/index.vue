@@ -40,7 +40,6 @@
           >
         </v-list>
       </v-menu>
-      <!-- {{ $props.data.colors }} -->
       <v-btn
         class="v-controls-list_item"
         id="tags-activator"
@@ -63,10 +62,6 @@
           ></v-list-item>
         </v-list>
       </v-menu>
-      <!-- <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconTag</v-icon>
-        Тэг
-      </v-btn> -->
       <v-btn class="v-controls-list_item" color="text" plain>
         <v-icon color="disabled" class="mr-3" small>$IconDelete</v-icon>
         Удалить

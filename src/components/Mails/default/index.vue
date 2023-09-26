@@ -2,9 +2,9 @@
   <div class="v-mails d-flex">
     <MailsFilters
       :filterData="filterData"
-      @createNewFilter="createNewFilter"
+      @editFilter="editFilter"
+      @deleteFilter="deleteFilter"
       class="mr-4"
-      :data="$props?.data?.filters"
     />
     <div class="v-mails-group">
       <MailsControls

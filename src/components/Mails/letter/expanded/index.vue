@@ -10,7 +10,8 @@
     <div class="v-letter-expanded-user">
       <template v-if="!$route?.query?.compose">
         <v-icon class="v-letter-expanded-user_icon" small>$IconBookmark</v-icon>
-        <MailsLetterUser expanded />
+        {{ $props.data }}
+        <MailsLetterUser :data="$props.data" expanded />
         <div class="v-letter-expanded-user-favorite">
           <div class="v-letter-expanded-user-favorite_icon">
             <v-icon small>$IconStarMail</v-icon>

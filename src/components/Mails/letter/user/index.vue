@@ -12,7 +12,9 @@
       ></v-img>
       <div class="v-upper-user-content">
         <div class="v-upper-user-content_name">Kira Zamorevich</div>
-        <div class="v-upper-user-content_email">kira-zamor@email.com</div>
+        <div class="v-upper-user-content_email">
+          {{ $props.data.message_from }}
+        </div>
       </div>
     </div>
     <div class="v-upper-container">

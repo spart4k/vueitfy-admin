@@ -55,14 +55,13 @@
                     opacity: 1 !important;
                 }
                 &_item {
+                    display: flex;
+                    align-items: center;
                     color: var(--v-text-base);
                     font-size: 12px;
                     padding: 0 16px;
                     cursor: pointer;
                     font-weight: 500 !important;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
                     &:hover {
                         color: var(--v-primary-base);
                         span {
@@ -81,6 +80,12 @@
                 }
                 &_item + &_item {
                     margin-top: 4px;
+                }
+                &_text {
+                    flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
         }
@@ -129,6 +134,11 @@
         &-popup {
             &_icon {
                 margin-top: auto;
+            }
+            &_title {
+                color: var(--v-text-base);
+                font-size: 20px;
+                font-weight: 500;
             }
         }
     }

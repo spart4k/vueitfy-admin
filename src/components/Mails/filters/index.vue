@@ -22,7 +22,7 @@
           'd-flex',
           'align-center',
         ]"
-        v-for="(item, index) in $props?.data?.pageCases"
+        v-for="(item, index) in filters"
         :key="index"
         @click="setRouterPath({ filter: item.query })"
       >
@@ -54,14 +54,28 @@
           >
             <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
             <span
-              :class="
+              :class="[
                 $route.query.filter === 'folder' &&
-                Number($route.query.id) === item.id &&
-                'v-filters-folder-container_item__active'
-              "
+                  Number($route.query.id) === item.id &&
+                  'v-filters-folder-container_item__active',
+                'v-filters-folder-container_text',
+              ]"
             >
               {{ item.name }}
             </span>
+            <v-icon
+              @click.stop="editItem(item, 'folder', index)"
+              :color="item.color"
+              x-small
+              class="mr-2"
+              >$IconEdit</v-icon
+            >
+            <v-icon
+              @click.stop="editItem(item, 'folder', index, 'delete')"
+              :color="item.color"
+              x-small
+              >$IconDelete</v-icon
+            >
           </div>
           <div
             @click="openCreatePopup('folder')"
@@ -92,14 +106,28 @@
           >
             <v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
             <span
-              :class="
+              :class="[
                 $route.query.filter === 'box' &&
-                Number($route.query.id) === item.id &&
-                'v-filters-folder-container_item__active'
-              "
+                  Number($route.query.id) === item.id &&
+                  'v-filters-folder-container_item__active',
+                'v-filters-folder-container_text',
+              ]"
             >
               {{ item.name }}
             </span>
+            <v-icon
+              @click.stop="editItem(item, 'box', index)"
+              :color="item.color"
+              x-small
+              class="mr-2"
+              >$IconEdit</v-icon
+            >
+            <v-icon
+              @click.stop="editItem(item, 'box', index, 'delete')"
+              :color="item.color"
+              x-small
+              >$IconDelete</v-icon
+            >
           </div>
           <div
             @click="openCreatePopup('box')"
@@ -150,10 +178,11 @@
           ]"
         ></div>
         <p class="v-filters-bottom_item-text">
-          {{ $props?.data?.unreadeanle }}
+          {{ $props?.filterData?.notReadData }}
         </p>
       </v-btn>
     </div>
+
     <Popup
       :options="{ portal: 'filter', padding: '20px 30px' }"
       closeButton
@@ -161,43 +190,67 @@
       v-if="popupCase"
     >
       <div class="v-filters-popup d-flex flex-column align-center">
-        <div class="d-flex">
-          <v-icon
-            :color="newCase.color"
-            @click="openPicker = !openPicker"
-            large
-            class="mr-9 v-filters-popup_icon"
-            >$IconSystem</v-icon
-          >
-          <div v-if="openPicker" class="v-filters-popup_picker">
-            <v-color-picker
-              v-model="newCase.color"
-              hide-inputs
-            ></v-color-picker>
+        <template v-if="popupDelete">
+          <p class="v-filters-popup_title">Удалить папку?</p>
+          <div class="d-flex mt-7">
+            <template v-if="!newCase.loading">
+              <v-btn @click="deleteFolder" tonal color="error">
+                <v-icon small class="mr-2">$IconDelete</v-icon>
+                Удалить
+              </v-btn>
+              <v-btn @click="closePopup" tonal color="primary" class="ml-5">
+                <v-icon small class="mr-2">$IconArrowCansel</v-icon>
+                Отменить
+              </v-btn>
+            </template>
+            <v-progress-circular
+              indeterminate
+              v-else
+              color="primary"
+            ></v-progress-circular>
           </div>
-          <v-text-field
-            v-if="!openPicker"
-            max-width="100"
-            maxlength="50"
-            label="Название"
-            v-model="newCase.name"
-          ></v-text-field>
-        </div>
-        <v-btn
-          v-if="!newCase.loading"
-          @click="createNewFolder"
-          tonal
-          color="success"
-          class="mt-8"
-        >
-          <v-icon small class="mr-2">$IconAdd</v-icon>
-          Создать
-        </v-btn>
-        <v-progress-circular
-          indeterminate
-          v-else
-          color="primary"
-        ></v-progress-circular>
+        </template>
+        <template v-else>
+          <div class="d-flex">
+            <v-icon
+              :color="newCase.color"
+              @click="openPicker = !openPicker"
+              large
+              class="mr-9 v-filters-popup_icon"
+              >$IconSystem</v-icon
+            >
+            <div v-if="openPicker" class="v-filters-popup_picker">
+              <v-color-picker
+                v-model="newCase.color"
+                hide-inputs
+              ></v-color-picker>
+            </div>
+            <v-text-field
+              v-if="!openPicker"
+              max-width="100"
+              maxlength="50"
+              label="Название"
+              v-model="newCase.name"
+            ></v-text-field>
+          </div>
+          <v-btn
+            v-if="!newCase.loading"
+            @click="editFolder"
+            tonal
+            color="success"
+            class="mt-8"
+          >
+            <v-icon small class="mr-2">{{
+              newCase.id ? '$IconEdit' : '$IconAdd'
+            }}</v-icon>
+            {{ newCase.id ? 'Изменить' : 'Создать' }}
+          </v-btn>
+          <v-progress-circular
+            indeterminate
+            v-else
+            color="primary"
+          ></v-progress-circular>
+        </template>
       </div>
     </Popup>
   </div>

@@ -7,7 +7,7 @@
         !$route.query.mail &&
         'v-letter__wide',
     ]"
-    @click.prevent="$parent.$emit('setActiveMail', $props.data)"
+    @click.stop="$parent.$emit('setActiveMail', $props.data)"
   >
     <div class="v-letter-left">
       <v-icon class="v-letter-left_icon" small>$IconBookmark</v-icon>
@@ -36,12 +36,13 @@
         </div>
       </div>
       <div class="v-letter-content-info">
-        <p class="v-letter-content-info_title">СРМ-100</p>
-        <p class="v-letter-content-info_text">
-          Текст сообщения в карточке письма. В нем ограничены символы. Ведь все
-          письо не поместиться тут. Примерно 200 символов. Текст сообщения в
-          карточке письма.
+        <p class="v-letter-content-info_title">
+          {{ $props.data.subject }}{{ $props.data.id }}
         </p>
+        <p
+          class="v-letter-content-info_text"
+          v-html="$props.data.message_text"
+        ></p>
       </div>
       <div class="v-letter-content-files">
         <div class="v-letter-content-files_item">
