@@ -117,7 +117,6 @@ const mails = {
     onMounted(async () => {
       await getFilterData()
       mailsData.value = JSON.parse(JSON.stringify(filterData.value.boxData))
-      console.log('zxc', 0)
       await getPagination()
       // console.log('zxc', 2, mailsData.value)
       originalData.value = JSON.parse(JSON.stringify(mailsData.value))

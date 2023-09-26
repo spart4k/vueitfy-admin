@@ -114,11 +114,11 @@ export default class Mails {
         count: params.count,
       }
       const { data } = await axios.post(
-        `${urlK}/mail/folder/${params.boxId}`,
+        `${urlK}/mail/box/${params.boxId}`,
         request
       )
       console.log(data)
-      return data.data
+      return data
     } catch (error) {
       console.log(error)
     }
