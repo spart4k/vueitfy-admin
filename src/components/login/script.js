@@ -1,6 +1,6 @@
 // import Alert from '@/components/Alert'
-//import Vue from 'vue'
-//import { useRouter } from 'vue-router/composables'
+import { getCurrentInstance, ref } from 'vue'
+import { useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utills/validation'
 import store from '@/store'
@@ -10,8 +10,12 @@ import store from '@/store'
 export default {
   name: 'login',
   components: {},
-  setup() {
-    //const router = useRouter()
+  setup(_, ctx) {
+    const root = getCurrentInstance()
+    console.log(root)
+    console.log(ctx)
+    const loading = ref(null)
+    const router = useRouter()
     const { formData, validate, formErrors, vForm, touchedForm } = useForm({
       fields: {
         login: { validations: { required } },
@@ -21,12 +25,14 @@ export default {
     const auth = async () => {
       validate()
       //console.log(...getData())
+      loading.value = true
       await store.dispatch('auth/auth', formData)
       //const data = await login.auth('http://10.63.1.132:5000/sign_in', {
       //  login: 'aa',
       //  password: '11',
       //})
-      //router.push('/')
+      router.push('/')
+      loading.value = false
       //console.log(data)
       //store.commit('user/setUser', {
       //  name: 'Aleksey',
@@ -51,6 +57,7 @@ export default {
       formErrors,
       vForm,
       touchedForm,
+      loading,
     }
   },
 }

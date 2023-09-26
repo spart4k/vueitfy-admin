@@ -8,6 +8,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/styles/main.scss'
 import PortalVue from 'portal-vue'
 import DatetimePicker from 'vuetify-datetime-picker'
+import './plugins'
 Vue.use(DatetimePicker)
 import VueCompositionApi from '@vue/composition-api'
 

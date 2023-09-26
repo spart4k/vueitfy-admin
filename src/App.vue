@@ -1,25 +1,32 @@
 <template>
   <v-app>
-    <LayoutDefault v-if="false">
+    <component :is="layout">
       <router-view />
-      <portal-target name="filter" />
-      <portal-target name="table-detail" />
-    </LayoutDefault>
-    <LayoutDefault v-else>
-      <router-view />
-    </LayoutDefault>
+    </component>
+    <Notifier />
+    <portal-target name="filter" />
+    <portal-target name="table-detail" />
   </v-app>
 </template>
 
 <script>
-import LayoutDefault from '@/layouts/default/index.vue'
-//import LoginDefault from '@/layouts/login'
+import BlankLayout from '@/layouts/default/index.vue'
+import LoginLayout from '@/layouts/login'
+import Notifier from '@/components/notifies'
+
 export default {
   name: 'App',
   components: {
-    LayoutDefault,
-    //LoginDefault,
+    BlankLayout,
+    LoginLayout,
+    Notifier,
   },
+  computed: {
+    layout() {
+      return this.$route.meta.layout || 'blank-layout'
+    },
+  },
+
   data: () => ({
     //
   }),

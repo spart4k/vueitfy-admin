@@ -7,7 +7,7 @@ const auth = {
     user: {},
   },
   mutations: {
-    auth(state, user) {
+    setToken(state, user) {
       console.log('mutation user')
       state.user = user
     },

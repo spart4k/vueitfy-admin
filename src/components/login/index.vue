@@ -20,7 +20,9 @@
           </v-row>
         </v-container>
       </v-form>
-      <v-btn @click="auth" color="primary" block>Войти</v-btn>
+      <v-btn :loading="loading" @click="auth" color="primary" block>
+        Войти
+      </v-btn>
     </v-card>
     <!-- <Alert /> -->
   </div>
