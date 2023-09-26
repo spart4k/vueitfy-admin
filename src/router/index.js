@@ -6,7 +6,7 @@ import MailView from '../views/DefaultMails.vue'
 import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import TestForm from '@/views/testform'
-import LoginPage from '@/layouts/login'
+import Login from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
 //import TestTs from '@/views/testts'
 
@@ -70,18 +70,13 @@ const routes = [
   //},
   {
     path: '/login',
-    name: 'LoginPage',
-    component: LoginPage,
+    name: 'Login',
+    component: Login,
   },
   {
     path: '/mails',
     name: 'mails',
     component: MailView,
-  },
-  {
-    path: '/login',
-    name: 'LoginPage',
-    component: LoginPage,
   },
 ]
 

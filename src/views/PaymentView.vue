@@ -1031,6 +1031,8 @@ const tableConfigData = {
         id: 0,
         name: 'Основные',
         type: 'FormDefault',
+        lists: ['vid_vedomost_id', 'status_id', 'direction_id'],
+        alias: 'payment',
         active: false,
         fields: [
           //dateField({
@@ -1156,30 +1158,14 @@ const tableConfigData = {
           // Примеры заполнения полней сверху
           selectField({
             label: 'Статус',
-            name: 'status',
+            name: 'status_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
-            items: [
-              {
-                id: 0,
-                label: 'На проверке',
-                value: 'green',
-              },
-              {
-                id: 1,
-                label: 'Согласован',
-                value: 'red',
-              },
-              {
-                id: 2,
-                label: 'Не согласован',
-                value: 'yellow',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 3,
@@ -1324,12 +1310,12 @@ const tableConfigData = {
           }),
           selectField({
             label: 'Направления',
-            name: 'direction',
+            name: 'direction_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [
               {
@@ -1482,30 +1468,14 @@ const tableConfigData = {
           }),
           selectField({
             label: 'Вид ведомости:',
-            name: 'statement_type',
+            name: 'vid_vedomost_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
-            items: [
-              {
-                id: 0,
-                label: 'Продавец',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Приемщик',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Погрузчик',
-                value: 'Азаров Михаил',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 6,
@@ -1514,7 +1484,7 @@ const tableConfigData = {
             bootstrapClass: [''],
           }),
           selectField({
-            label: 'Зарплата:',
+            label: 'Статья расхода:',
             name: 'payday',
             placeholder: '',
             class: [''],

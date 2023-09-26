@@ -19,7 +19,15 @@
             :is="item.type"
             :tab="item"
             :options="item.config"
+            :syncData="syncForm"
           />
+          <!--<v-progress-circular
+            v-else
+            :size="20"
+            :width="2"
+            color="primary"
+            indeterminate
+          />-->
         </v-tab-item>
       </v-tabs-items>
       <!--<TableDefault :options="detail.tabs[1].config"></TableDefault>-->
