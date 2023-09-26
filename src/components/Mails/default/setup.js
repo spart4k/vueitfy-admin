@@ -2,6 +2,7 @@
 //document.adoptedStyleSheets.push(style)
 import Vue, { watch } from 'vue'
 import { ref, onMounted, computed } from '@vue/composition-api'
+import _ from 'lodash'
 // import { tableApi } from '@/api'
 import MailsFilters from '../filters/index.vue'
 import MailsControls from '../controls/index.vue'
@@ -90,17 +91,17 @@ const mails = {
       filterData.value[`${val.type}Data`].splice(val.index, 1)
     }
     const getPagination = async () => {
-      mailsData.value.forEach(async (item, index) => {
+      for (const item of mailsData.value) {
         const data = await mailsApi.getPagination({
           page: 1,
           count: 20,
           boxId: item.id,
         })
         if (data && data.rows && data.rows.length) {
-          Vue.set(mailsData.value[index], 'mails', data.rows)
+          Vue.set(item, 'mails', data.rows)
         }
-      })
-      console.log('zxc', 1, mailsData.value)
+      }
+      return mailsData.value
     }
     const getFilterData = async () => {
       try {
@@ -114,14 +115,6 @@ const mails = {
         console.log(error)
       }
     }
-    onMounted(async () => {
-      await getFilterData()
-      mailsData.value = JSON.parse(JSON.stringify(filterData.value.boxData))
-      await getPagination()
-      // console.log('zxc', 2, mailsData.value)
-      originalData.value = JSON.parse(JSON.stringify(mailsData.value))
-      // console.log('zxc', 3, mailsData.value, originalData.value)
-    })
     const changeFilter = (key) => {
       mailsData.value.forEach((item, index) => {
         if (item.mails) {
@@ -139,7 +132,6 @@ const mails = {
           })
         }
       })
-      console.log(originalData.value)
     }
     const checkFilterChange = () => {
       if (route.value.query.filter === 'starred') {
@@ -156,6 +148,11 @@ const mails = {
         checkFilterChange()
       }
     )
+    onMounted(async () => {
+      await getFilterData()
+      mailsData.value = _.cloneDeep(filterData.value.boxData)
+      originalData.value = _.cloneDeep(await getPagination())
+    })
     return {
       selectedMails,
       selectedAllMails,
