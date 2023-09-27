@@ -62,6 +62,7 @@ export default {
           method: 'get',
         }
       )
+
       for (let formKey in syncForm.value.data) {
         console.log(formKey)
         const field = props.tab.fields.find(

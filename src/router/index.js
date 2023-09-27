@@ -7,6 +7,7 @@ import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
+import GrishaView from '@/views/GrishaView'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -86,6 +87,14 @@ const routes = [
       layout: 'blank-layout',
     },
     component: MailView,
+  },
+  {
+    path: '/grisha',
+    name: 'grisha',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: GrishaView,
   },
 ]
 

@@ -513,7 +513,7 @@ const tableConfigData = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'http://10.63.1.132:5000/get/pagination/payment',
+    url: 'get/pagination/payment',
     title: 'This is an about page1',
   },
   panel: {
@@ -1182,73 +1182,7 @@ const tableConfigData = {
               text: 'label',
               value: 'value',
             },
-            items: [
-              {
-                id: 0,
-                label: 'Абдуллина Ирина',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Адылова Ильмира',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Азаров Михаил',
-                value: 'Азаров Михаил',
-              },
-              {
-                id: 3,
-                label: 'Айтар Диляра',
-                value: 'Айтар Диляра',
-              },
-              {
-                id: 4,
-                label: 'Аккулова Дилара',
-                value: 'Аккулова Дилара',
-              },
-              {
-                id: 5,
-                label: 'Алексей Викторович',
-                value: 'Алексей Викторович',
-              },
-              {
-                id: 6,
-                label: 'Алисаидов Обид',
-                value: 'Алисаидов Обид',
-              },
-              {
-                id: 7,
-                label: 'Анна320',
-                value: 'Анна320',
-              },
-              {
-                id: 8,
-                label: 'Апаркина Татьяна',
-                value: 'Апаркина Татьяна',
-              },
-              {
-                id: 9,
-                label: 'Арешян Ирина',
-                value: 'Арешян Ирина',
-              },
-              {
-                id: 10,
-                label: 'Афанасьев Александр',
-                value: 'Афанасьев Александр',
-              },
-              {
-                id: 11,
-                label: 'Ашурзода Санжари',
-                value: 'Ашурзода Санжари',
-              },
-              {
-                id: 12,
-                label: 'Ашуров Иброхим',
-                value: 'Ашуров Иброхим',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 6,
@@ -1902,4 +1836,5 @@ export default {
   },
 }
 </script>
-@/utils/validation.js@/utils/fields.js
+
+<!--@/utils/validation.js@/utils/fields.js-->

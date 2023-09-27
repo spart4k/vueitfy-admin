@@ -4,6 +4,7 @@ import vuetify from '@/plugins/vuetify'
 import user from './modules/user'
 import auth from './modules/auth'
 import notifies from './modules/notifies'
+import table from './modules/table'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
@@ -44,6 +45,7 @@ const store = new Vuex.Store({
     user,
     auth,
     notifies,
+    table,
   },
 })
 
