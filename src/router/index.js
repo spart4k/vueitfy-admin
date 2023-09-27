@@ -5,7 +5,6 @@ import PersonalView from '../views/PersonalView.vue'
 import MailView from '../views/DefaultMails.vue'
 import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
-import TestForm from '@/views/testform'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
 //import TestTs from '@/views/testts'
@@ -63,17 +62,6 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: Navbar,
-  },
-  {
-    path: '/testform',
-    name: 'TestForm',
-    meta: {
-      layout: 'blank-layout',
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: TestForm,
   },
   //{
   //  path: '/testts',
