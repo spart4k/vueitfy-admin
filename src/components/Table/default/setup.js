@@ -2,6 +2,7 @@
 //document.adoptedStyleSheets.push(style)
 import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
+import store from '@/store'
 
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
@@ -15,7 +16,7 @@ import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
 
-import { tableApi } from '@/api'
+//import { tableApi } from '@/api'
 
 const table = {
   name: 'TableDefault',
@@ -42,6 +43,7 @@ const table = {
     },
   },
   setup(props, ctx) {
+    console.log('SETUP TABLE')
     const { emit } = ctx
     const router = useRouter()
     const route = useRoute()
@@ -302,13 +304,16 @@ const table = {
           })
         }
       })
-      const data = await tableApi.getApi(url, {
-        countRows: paramsQuery.value.countRows,
-        currentPage: paramsQuery.value.currentPage,
-        searchGlobal: paramsQuery.value.searchGlobal,
-        searchColumns,
-        sorts,
-        filter,
+      const data = await store.dispatch('table/get', {
+        url: url,
+        data: {
+          countRows: paramsQuery.value.countRows,
+          currentPage: paramsQuery.value.currentPage,
+          searchGlobal: paramsQuery.value.searchGlobal,
+          searchColumns,
+          sorts,
+          filter,
+        },
       })
       console.log(data)
       props.options.data.rows = data.rows
@@ -435,7 +440,7 @@ const table = {
     watch(
       () => paramsQuery,
       async () => {
-        await getItems()
+        //await getItems()
       },
       { deep: true }
     )

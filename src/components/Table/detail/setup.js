@@ -5,6 +5,7 @@ import FormDefault from '@/components/form/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 
 import { form, list } from '@/api/index.js'
+import store from '@/store'
 
 export default {
   name: 'Table-Detail',
@@ -37,11 +38,10 @@ export default {
       for (let keyList in lists.data) {
         console.log(keyList)
       }
-      syncForm.value = await form.get(
-        `http://10.63.1.132:5000${url}${alias}/${route.params.id}`,
-        {
-          method: props.detail.method,
-        }
+      console.log('store,dispatch')
+      syncForm.value = await store.dispatch(
+        'table/getDetail',
+        `${url}${alias}/${route.params.id}`
       )
       console.log(lists)
       loading.value = false
