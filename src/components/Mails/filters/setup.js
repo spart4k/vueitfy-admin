@@ -7,7 +7,8 @@
 // import { useRouter, useRoute } from 'vue-router'
 import { ref, onMounted, computed } from '@vue/composition-api'
 import Popup from '../../popup/index.vue'
-import { mailsApi } from '@/api'
+import { useStore } from '@/store'
+
 const filters = {
   name: 'Filters',
   components: {
@@ -20,6 +21,7 @@ const filters = {
     },
   },
   setup(props, context) {
+    const store = useStore()
     const router = context.root.$router
     const route = computed(() => context.root.$route)
     const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
@@ -98,9 +100,9 @@ const filters = {
       newCase.value.loading = true
       let response
       if (newCase.value.type === 'folder') {
-        response = await mailsApi.deleteFolder(newCase.value.id)
+        response = await store.dispatch('mail/deleteFolder', newCase.value.id)
       } else if (newCase.value.type === 'box') {
-        response = await mailsApi.deleteBox(newCase.value.id)
+        response = await store.dispatch('mail/deleteBox', newCase.value.id)
       }
       context.emit('deleteFilter', {
         type: newCase.value.type,
@@ -127,18 +129,23 @@ const filters = {
           let newObject
           if (newCase.value.type === 'folder') {
             if (newCase.value.id) {
-              newObject = await mailsApi.editFolder(
+              newObject = await store.dispatch(
+                'mail/editFolder',
                 requestData,
                 newCase.value.id
               )
             } else {
-              newObject = await mailsApi.createFolder(requestData)
+              newObject = await store.dispatch('mail/createFolder', requestData)
             }
           } else if (newCase.value.type === 'box') {
             if (newCase.value.id) {
-              newObject = await mailsApi.editBox(requestData, newCase.value.id)
+              newObject = await store.dispatch(
+                'mail/editBox',
+                requestData,
+                newCase.value.id
+              )
             } else {
-              newObject = await mailsApi.createBox(requestData)
+              newObject = await store.dispatch('mail/createBox', requestData)
             }
           }
           context.emit('editFilter', {

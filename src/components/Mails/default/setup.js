@@ -3,12 +3,13 @@
 import Vue, { watch } from 'vue'
 import { ref, onMounted, computed } from '@vue/composition-api'
 import _ from 'lodash'
+import { useStore } from '@/store'
 // import { tableApi } from '@/api'
 import MailsFilters from '../filters/index.vue'
 import MailsControls from '../controls/index.vue'
 import MailsContainer from '../container/index.vue'
 import MailsLetterExpanded from '../letter/expanded/index.vue'
-import { mailsApi } from '@/api'
+
 const mails = {
   name: 'Mails',
   components: {
@@ -20,6 +21,7 @@ const mails = {
   props: {},
   setup(props, context) {
     console.log('context', context)
+    const store = useStore()
     const router = context.root.$router
     const route = computed(() => context.root.$route)
     const originalData = ref([])
@@ -92,11 +94,14 @@ const mails = {
     }
     const getPagination = async () => {
       for (const item of mailsData.value) {
-        const data = await mailsApi.getPagination({
-          page: 1,
-          count: 20,
-          boxId: item.id,
-        })
+        const data = await store.dispatch(
+          'mail/getPagination',
+          {
+            page: 1,
+            count: 20,
+          },
+          item.id
+        )
         if (data && data.rows && data.rows.length) {
           Vue.set(item, 'mails', data.rows)
         }
@@ -104,16 +109,12 @@ const mails = {
       return mailsData.value
     }
     const getFilterData = async () => {
-      try {
-        filterData.value.folderData = await mailsApi.getFolders()
-        filterData.value.boxData = (
-          await mailsApi.getBoxes({ accountId: 25 })
-        ).data
-        filterData.value.tagsData = (await mailsApi.getTags()).data
-        filterData.value.notReadData = (await mailsApi.getNotRead()).count
-      } catch (error) {
-        console.log(error)
-      }
+      filterData.value.folderData = await store.dispatch('mail/getFolders')
+      filterData.value.boxData = await store.dispatch('mail/getBoxes', {
+        accountId: 25,
+      })
+      filterData.value.tagsData = await store.dispatch('mail/getTags')
+      filterData.value.notReadData = await store.dispatch('mail/getNotRead')
     }
     const changeFilter = (key, reverse) => {
       mailsData.value.forEach((item, index) => {
