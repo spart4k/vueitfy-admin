@@ -12,13 +12,22 @@
           'v-container-box-column',
           'd-flex',
           'flex-column',
-          $route?.query?.filter === 'folder' &&
+          ($route?.query?.filter === 'folder' ||
+            $route?.query?.filter === 'box') &&
             'v-container-box-column__horizontal',
         ]"
         v-for="item in $props.data"
         :key="item.id"
       >
-        <div v-if="true" class="v-container-box-column-title">
+        <div
+          v-if="
+            !(
+              $route?.query?.filter === 'folder' ||
+              $route?.query?.filter === 'box'
+            )
+          "
+          class="v-container-box-column-title"
+        >
           {{ item.name }}{{ item.id }}
         </div>
         <div class="v-container-box-column-items">
@@ -31,6 +40,7 @@
               :key="index"
               :tagsData="$props.tagsData"
               :selectedMails="selectedMails"
+              @setActiveMail="setActiveMail"
             />
           </template>
           <template v-else>
@@ -45,7 +55,7 @@
       v-if="$route.query.mail || $route.query.compose === 'new'"
       class="v-container-expanded"
     >
-      <MailsLetterExpanded />
+      <MailsLetterExpanded :data="activeMail" />
     </div>
   </div>
 </template>

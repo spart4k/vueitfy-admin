@@ -7,12 +7,31 @@
         @change="$emit('changeSelection', 'all')"
         :value="$props.selectedAllMails"
       ></v-checkbox>
-      <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconBroadcast</v-icon>
+      <v-btn
+        class="v-controls-list_item"
+        color="text"
+        :disabled="!$props.selectedMails.length"
+        plain
+      >
+        <v-icon
+          :color="$props.selectedMails.length ? 'primary' : 'disabled'"
+          class="mr-3"
+          small
+          >$IconBroadcast</v-icon
+        >
         Транслировать
       </v-btn>
-      <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" x-small
+      <v-btn
+        :disabled="!$props.selectedMails.length"
+        class="v-controls-list_item"
+        color="text"
+        plain
+        @click="$emit('changeMailsKey', 'is_read')"
+      >
+        <v-icon
+          :color="$props.selectedMails.length ? 'primary' : 'disabled'"
+          class="mr-3"
+          x-small
           >$IconCheckoutMessage</v-icon
         >
         Прочитано
@@ -22,8 +41,14 @@
         id="menu-activator"
         color="text"
         plain
+        :disabled="!$props.selectedMails.length"
       >
-        <v-icon color="disabled" class="mr-3" small>$IconSystem</v-icon>
+        <v-icon
+          :color="$props.selectedMails.length ? 'primary' : 'disabled'"
+          class="mr-3"
+          small
+          >$IconSystem</v-icon
+        >
         В папку
       </v-btn>
       <v-menu
@@ -36,6 +61,7 @@
             v-for="item in $props.filterData.folderData"
             :key="item.id"
             class="v-controls-list_menu-item"
+            @click="$emit('changeMailsKey', 'folders', item)"
             >{{ item.name }}</v-list-item
           >
         </v-list>
@@ -45,16 +71,27 @@
         id="tags-activator"
         color="text"
         plain
+        :disabled="!$props.selectedMails.length"
       >
-        <v-icon color="disabled" class="mr-3" small>$IconTag</v-icon>
+        <v-icon
+          :color="$props.selectedMails.length ? 'primary' : 'disabled'"
+          class="mr-3"
+          small
+          >$IconTag</v-icon
+        >
         Тэг
       </v-btn>
-      <v-menu content-class="v-controls-list_tags" activator="#tags-activator">
+      <v-menu
+        v-if="$props.filterData.tagsData.length"
+        content-class="v-controls-list_tags"
+        activator="#tags-activator"
+      >
         <v-list>
           <v-list-item
             v-for="item in $props.filterData.tagsData"
             :key="item.id"
             :style="{ background: item.color }"
+            @click="$emit('changeMailsKey', 'tags', item)"
             :class="[
               'v-controls-list_tags-item',
               false && 'v-controls-list_tags-item__active',
@@ -62,8 +99,19 @@
           ></v-list-item>
         </v-list>
       </v-menu>
-      <v-btn class="v-controls-list_item" color="text" plain>
-        <v-icon color="disabled" class="mr-3" small>$IconDelete</v-icon>
+      <v-btn
+        :disabled="!$props.selectedMails.length"
+        class="v-controls-list_item"
+        color="text"
+        plain
+        @click="$emit('changeMailsKey', 'del')"
+      >
+        <v-icon
+          :color="$props.selectedMails.length ? 'primary' : 'disabled'"
+          class="mr-3"
+          small
+          >$IconDelete</v-icon
+        >
         Удалить
       </v-btn>
     </div>

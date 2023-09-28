@@ -1,12 +1,13 @@
 <template>
   <div class="v-edit">
-    <VueEditor v-model="content" />
+    <VueEditor class="flex-grow-1" v-model="content" />
     <v-file-input
       v-model="files"
       outlined
       label="Загрузить файлы"
       chips
       multiple
+      class="flex-grow-0"
     >
       <template v-slot:selection="data">
         <v-chip @click.stop outlined>

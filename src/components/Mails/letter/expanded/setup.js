@@ -6,6 +6,7 @@ import MailsLetterUser from '../user/index.vue'
 import MailsLetterUserEdit from '../user/edit/index.vue'
 import MailsLetterTextEdit from '../text/edit/index.vue'
 import MailsLetterText from '../text/index.vue'
+import MailsLetterDate from '../date/index.vue'
 const letterExpanded = {
   name: 'LetterExpanded',
   components: {
@@ -13,12 +14,9 @@ const letterExpanded = {
     MailsLetterUserEdit,
     MailsLetterTextEdit,
     MailsLetterText,
+    MailsLetterDate,
   },
   props: {
-    activeMail: {
-      type: Object,
-      default: () => {},
-    },
     data: {
       type: Object,
       default: () => {},

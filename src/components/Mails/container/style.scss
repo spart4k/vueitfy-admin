@@ -1,7 +1,7 @@
 .v {
     &-container {
         // height: 100%;
-        // width: 100%;
+        width: 100%;
         overflow: overlay;
         @include custom-scroll-bar-vertical;
         &::-webkit-scrollbar{

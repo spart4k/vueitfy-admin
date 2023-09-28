@@ -20,12 +20,14 @@ const mails = {
   },
   props: {},
   setup(props, context) {
-    console.log('context', context)
     const store = useStore()
     const router = context.root.$router
     const route = computed(() => context.root.$route)
     const originalData = ref([])
+    const folderData = ref([])
     const mailsData = ref([])
+    const selectedMails = ref([])
+    const selectedAllMails = ref(false)
     const filterData = ref({
       folderData: [],
       tagsData: [],
@@ -45,8 +47,6 @@ const mails = {
       return array
     })
 
-    const selectedMails = ref([])
-    const selectedAllMails = ref(false)
     const changeSelection = (val) => {
       if (val === 'all') {
         selectedAllMails.value = !selectedAllMails.value
@@ -61,7 +61,6 @@ const mails = {
         } else {
           selectedMails.value.push(val)
         }
-        console.log(allMails.value.length, selectedMails.value.length)
         if (allMails.value.length === selectedMails.value.length) {
           selectedAllMails.value = true
         } else {
@@ -70,13 +69,19 @@ const mails = {
       }
     }
 
-    const setActiveMail = (val) => {
-      router
-        .push({
-          path: 'mails',
-          query: { ...route.value.query, ...{ mail: val.id } },
-        })
-        .catch(() => {})
+    const changeMailKey = async (val) => {
+      const request = {
+        content: {
+          [val.key]: !val[val.key],
+        },
+        id: val.id,
+      }
+      await store.dispatch('mail/changeMail', request)
+      const company =
+        mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
+          .mails
+      const mail = company.find((x) => x.id === val.id)
+      mail[val.key] = !val[val.key]
     }
 
     const editFilter = (val) => {
@@ -89,25 +94,36 @@ const mails = {
         filterData.value[`${val.type}Data`].push(val.content)
       }
     }
+
     const deleteFilter = (val) => {
       filterData.value[`${val.type}Data`].splice(val.index, 1)
     }
-    const getPagination = async () => {
-      for (const item of mailsData.value) {
-        const data = await store.dispatch(
-          'mail/getPagination',
-          {
+
+    const setActiveMail = (val) => {
+      router
+        .push({
+          path: 'mails',
+          query: { ...route.value.query, ...{ box: val.box_id, mail: val.id } },
+        })
+        .catch(() => {})
+    }
+
+    const getPagination = async (val) => {
+      for (const item of originalData.value) {
+        const data = await store.dispatch('mail/getPagination', {
+          content: {
             page: 1,
             count: 20,
           },
-          item.id
-        )
-        if (data && data.rows && data.rows.length) {
+          id: item.id,
+        })
+        if (data?.rows?.length) {
           Vue.set(item, 'mails', data.rows)
         }
       }
-      return mailsData.value
+      return originalData.value
     }
+
     const getFilterData = async () => {
       filterData.value.folderData = await store.dispatch('mail/getFolders')
       filterData.value.boxData = await store.dispatch('mail/getBoxes', {
@@ -116,6 +132,11 @@ const mails = {
       filterData.value.tagsData = await store.dispatch('mail/getTags')
       filterData.value.notReadData = await store.dispatch('mail/getNotRead')
     }
+
+    const decreaseUnreadMailsCount = () => {
+      filterData.value.notReadData--
+    }
+
     const changeFilter = (key, reverse) => {
       mailsData.value.forEach((item, index) => {
         if (item.mails) {
@@ -146,6 +167,7 @@ const mails = {
         }
       })
     }
+
     const checkFilterChange = () => {
       if (route.value.query.filter === 'starred') {
         changeFilter('isfavorites')
@@ -159,6 +181,11 @@ const mails = {
         changeFilter('is_read', true)
       }
     }
+
+    const checkRouteFilter = () => {
+      console.log('dsa')
+    }
+
     watch(
       () => route.value.fullPath,
       () => {
@@ -167,17 +194,23 @@ const mails = {
     )
     onMounted(async () => {
       await getFilterData()
-      mailsData.value = _.cloneDeep(filterData.value.boxData)
-      originalData.value = _.cloneDeep(await getPagination())
+      originalData.value = _.cloneDeep(filterData.value.boxData)
+      checkRouteFilter()
+      mailsData.value = _.cloneDeep(await getPagination())
     })
     return {
       selectedMails,
       selectedAllMails,
       allMails,
-      originalData,
-      mailsData,
+
       filterData,
 
+      originalData,
+      folderData,
+      mailsData,
+
+      decreaseUnreadMailsCount,
+      changeMailKey,
       getPagination,
       deleteFilter,
       editFilter,
@@ -185,6 +218,7 @@ const mails = {
       changeSelection,
       changeFilter,
       checkFilterChange,
+      checkRouteFilter,
     }
   },
 }

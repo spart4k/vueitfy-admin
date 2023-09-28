@@ -15,6 +15,9 @@
             &_item {
                 padding: 0 11px;
                 height: 35px;
+                &::v-deep .v-btn__content {
+                    opacity: 1 !important;
+                }
                 span {
                     font-size: 12px  !important;
                 }
@@ -54,6 +57,9 @@
                     text-align: center;
                     &:not(:last-child) {
                         border-bottom: solid 1px var(--v-disabled-base);
+                    }
+                    &:hover {
+                        background: #F2F9FF;
                     }
                 }
             }

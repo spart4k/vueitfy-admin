@@ -9,6 +9,10 @@ const controls = {
       type: Boolean,
       default: false,
     },
+    selectedMails: {
+      type: Array,
+      default: () => [],
+    },
     filterData: {
       type: Object,
       default: () => {},

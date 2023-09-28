@@ -44,24 +44,24 @@ const filters = {
         number: 0,
         query: 'attachment',
       },
-      {
-        label: 'Отправленные',
-        url: '$IconSendMail',
-        number: 0,
-        query: 'sent',
-      },
-      {
-        label: 'Удаленные',
-        url: '$IconDelete',
-        number: 0,
-        query: 'trash',
-      },
-      {
-        label: 'Черновики',
-        url: '$IconDocument',
-        number: 0,
-        query: 'drafts',
-      },
+      // {
+      //   label: 'Отправленные',
+      //   url: '$IconSendMail',
+      //   number: 0,
+      //   query: 'sent',
+      // },
+      // {
+      //   label: 'Удаленные',
+      //   url: '$IconDelete',
+      //   number: 0,
+      //   query: 'trash',
+      // },
+      // {
+      //   label: 'Черновики',
+      //   url: '$IconDocument',
+      //   number: 0,
+      //   query: 'drafts',
+      // },
     ])
     const boxPanel = ref()
     const folderPanel = ref()
@@ -93,8 +93,12 @@ const filters = {
         type: '',
       }
     }
-    const setRouterPath = (val) => {
-      router.replace({ path: 'mails', query: val }).catch(() => {})
+    const setRouterPath = (val, addToCurrent) => {
+      if (addToCurrent) {
+        router.push({ query: { ...route.value.query, ...val } }).catch(() => {})
+      } else {
+        router.push({ query: val }).catch(() => {})
+      }
     }
     const deleteFolder = async () => {
       newCase.value.loading = true

@@ -21,3 +21,5 @@ export const deleteBox = (data) => del(`box/${data}`)
 export const deleteFolder = (data) => del(`folder/del/${data}`)
 
 export const getPagination = (data, params) => post(`mail/box/${params}`, data)
+
+export const changeMail = (data, params) => put(`mail/${params}`, data)

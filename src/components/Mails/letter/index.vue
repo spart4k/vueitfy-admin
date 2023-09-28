@@ -3,17 +3,25 @@
     :class="[
       'v-letter',
       $props.active && 'v-letter__active',
-      $route.query.filter === 'folder' &&
+      ($route.query.filter === 'folder' || $route.query.filter === 'box') &&
         !$route.query.mail &&
         'v-letter__wide',
     ]"
-    @click.stop="$parent.$emit('setActiveMail', $props.data)"
+    @click="$emit('setActiveMail', $props.data)"
   >
     <div class="v-letter-left">
       <v-icon
         class="v-letter-left_icon"
-        :color="$props.data.ismain && 'warning'"
+        :color="$props?.data?.ismain ? 'warning' : ''"
         small
+        @click="
+          $parent.$emit('changeMailKey', {
+            id: $props.data.id,
+            ismain: $props.data.ismain,
+            box_id: $props?.data?.box_id,
+            key: 'ismain',
+          })
+        "
         >$IconBookmark</v-icon
       >
       <v-checkbox
@@ -32,24 +40,11 @@
         <MailsLetterUser :data="$props.data" />
       </div>
       <div class="v-letter-content-favorite">
-        <div class="v-letter-content-favorite_icon">
-          <v-icon
-            class="pb-1"
-            :color="$props.data.isfavorites && 'warning'"
-            small
-            >$IconStar</v-icon
-          >
-        </div>
-        <div class="v-letter-content-favorite-date">
-          <div class="v-letter-content-favorite-date_day">
-            <!-- {{ Date.now($props.data.date) }} -->
-          </div>
-          <div class="v-letter-content-favorite-date_time">13:45:30</div>
-        </div>
+        <MailsLetterDate :data="$props.data"></MailsLetterDate>
       </div>
       <div class="v-letter-content-info">
         <p class="v-letter-content-info_title">
-          {{ $props.data.subject }}{{ $props.data.id }}
+          {{ $props.data.subject }}
         </p>
         <p
           class="v-letter-content-info_text"

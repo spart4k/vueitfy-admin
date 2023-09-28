@@ -13,6 +13,10 @@ const text = {
       type: Boolean,
       default: false,
     },
+    data: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup() {
     return {}

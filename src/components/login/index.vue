@@ -8,6 +8,7 @@
               v-model="formData.login"
               label="Имя пользователя"
               required
+              :error-messages="formErrors.login"
             />
           </v-row>
           <v-row>
@@ -16,6 +17,7 @@
               type="password"
               label="Пароль"
               required
+              :error-messages="formErrors.password"
             />
           </v-row>
         </v-container>

@@ -3,5 +3,8 @@
         padding: 0 23px;
         word-break: break-word;
         margin-bottom: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 }

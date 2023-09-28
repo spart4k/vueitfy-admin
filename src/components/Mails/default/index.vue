@@ -10,13 +10,17 @@
       <MailsControls
         :filterData="filterData"
         :selectedAllMails="selectedAllMails"
+        :selectedMails="selectedMails"
         @changeSelection="changeSelection"
         class="mb-2"
       />
       <div class="d-flex w-100 h-100">
         <MailsContainer
+          v-if="mailsData.length"
           @setActiveMail="setActiveMail"
           @changeSelection="changeSelection"
+          @changeMailKey="changeMailKey"
+          @decreaseUnreadMailsCount="decreaseUnreadMailsCount"
           :tagsData="filterData.tagsData"
           :selectedMails="selectedMails"
           :data="mailsData"

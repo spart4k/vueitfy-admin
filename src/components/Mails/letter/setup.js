@@ -3,6 +3,7 @@
 import { computed } from '@vue/composition-api'
 // import { tableApi } from '@/api'
 import MailsLetterUser from './user/index.vue'
+import MailsLetterDate from './date/index.vue'
 const letter = {
   name: 'Letter',
   props: {
@@ -29,6 +30,7 @@ const letter = {
   },
   components: {
     MailsLetterUser,
+    MailsLetterDate,
   },
   setup(props, context) {
     const router = context.root.$router

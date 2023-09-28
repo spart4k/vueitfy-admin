@@ -2,7 +2,9 @@
   <div
     :class="[
       'v-upper',
-      $route.query.filter === 'folder' && !$route.query.mail && 'v-upper__wide',
+      ($route.query.filter === 'folder' || $route.query.filter === 'box') &&
+        !$route.query.mail &&
+        'v-upper__wide',
     ]"
   >
     <div class="v-upper-user d-flex">
@@ -17,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="v-upper-container">
+    <div class="v-upper-container" v-if="!$props.expanded">
       <div v-if="!$props?.data?.is_read" class="v-upper-container-viewed"></div>
     </div>
   </div>

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { required, hasDate, hasTime } from '@/utills/validation.js'
+import { required, hasDate, hasTime } from '@/utils/validation.js'
 import {
   dateField,
   stringField,
@@ -19,7 +19,7 @@ import {
   autocompleteField,
   textareaField,
   datetimeField,
-} from '@/utills/fields.js'
+} from '@/utils/fields.js'
 
 function consoleText(row) {
   console.log(row, 2)
@@ -1902,3 +1902,4 @@ export default {
   },
 }
 </script>
+@/utils/validation.js@/utils/fields.js
