@@ -26,7 +26,7 @@
         class="v-controls-list_item"
         color="text"
         plain
-        @click="$emit('changeMailsKey', 'is_read')"
+        @click="$emit('changeMailArrayKey', 'is_read')"
       >
         <v-icon
           :color="$props.selectedMails.length ? 'primary' : 'disabled'"
@@ -61,7 +61,7 @@
             v-for="item in $props.filterData.folderData"
             :key="item.id"
             class="v-controls-list_menu-item"
-            @click="$emit('changeMailsKey', 'folders', item)"
+            @click="$emit('changeMailArrayKey', 'folders', item)"
             >{{ item.name }}</v-list-item
           >
         </v-list>
@@ -91,7 +91,7 @@
             v-for="item in $props.filterData.tagsData"
             :key="item.id"
             :style="{ background: item.color }"
-            @click="$emit('changeMailsKey', 'tags', item)"
+            @click="$emit('changeMailArrayKey', 'tags', item)"
             :class="[
               'v-controls-list_tags-item',
               false && 'v-controls-list_tags-item__active',
@@ -104,7 +104,7 @@
         class="v-controls-list_item"
         color="text"
         plain
-        @click="$emit('changeMailsKey', 'del')"
+        @click="popupCase = true"
       >
         <v-icon
           :color="$props.selectedMails.length ? 'primary' : 'disabled'"
@@ -115,6 +115,33 @@
         Удалить
       </v-btn>
     </div>
+    <Popup
+      :options="{ portal: 'filter', padding: '20px 30px' }"
+      closeButton
+      @close="popupCase = false"
+      v-if="popupCase"
+    >
+      <div class="v-controls-popup d-flex flex-column align-center">
+        <p class="v-controls-popup_title">Удалить письма?</p>
+        <div class="d-flex mt-7">
+          <v-btn
+            @click="
+              $emit('changeMailArrayKey', 'del')
+              popupCase = false
+            "
+            tonal
+            color="error"
+          >
+            <v-icon small class="mr-2">$IconDelete</v-icon>
+            Удалить
+          </v-btn>
+          <v-btn @click="popupCase = false" tonal color="primary" class="ml-5">
+            <v-icon small class="mr-2">$IconArrowCansel</v-icon>
+            Отменить
+          </v-btn>
+        </div>
+      </div>
+    </Popup>
   </div>
 </template>
 <script src="./setup.js"></script>

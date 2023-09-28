@@ -124,19 +124,6 @@
               >
                 {{ item.name }}
               </span>
-              <!-- <v-icon
-                @click.stop="editItem(item, 'box', index)"
-                :color="item.color"
-                x-small
-                class="mr-2"
-                >$IconEdit</v-icon
-              >
-              <v-icon
-                @click.stop="editItem(item, 'box', index, 'delete')"
-                :color="item.color"
-                x-small
-                >$IconDelete</v-icon
-              > -->
             </div>
             <div
               @click="openCreatePopup('box')"
@@ -152,29 +139,28 @@
       <div
         :class="[
           'v-filters-color_item',
-          $route.query.filter === 'color' &&
-            Number($route.query.id) === item.id &&
+          $route?.query?.color?.includes(item.id) &&
             'v-filters-color_item__active',
         ]"
         :style="{ backgroundColor: item.color }"
-        @click="setRouterPath({ color: item.id }, true)"
+        @click="setRouterPath({ color: item.id })"
         v-for="(item, index) in $props.filterData.tagsData"
         :key="index"
       ></div>
     </div>
     <div class="v-filters-bottom mb-4">
       <v-btn
-        :color="$route.query.filter === 'tags' ? 'primary' : 'disabled'"
+        :color="$route.query.filter === 'ismain' ? 'primary' : 'disabled'"
         outlined
         plain
         class="v-filters-bottom_item d-flex align-center"
-        @click="setRouterPath({ filter: 'tags' })"
+        @click="setRouterPath({ filter: 'ismain' })"
       >
         <v-icon small>$IconBookmark</v-icon>
       </v-btn>
       <v-btn
-        @click="setRouterPath({ filter: 'unread' })"
-        :color="$route.query.filter === 'unread' ? 'primary' : 'disabled'"
+        @click="setRouterPath({ filter: 'is_read' })"
+        :color="$route.query.filter === 'is_read' ? 'primary' : 'disabled'"
         outlined
         plain
         class="v-filters-bottom_item"
@@ -183,7 +169,7 @@
           :class="[
             'v-filters-bottom_item-point',
             'mr-2',
-            $route.query.filter === 'unread' &&
+            $route.query.filter === 'is_read' &&
               'v-filters-bottom_item-point__active',
           ]"
         ></div>

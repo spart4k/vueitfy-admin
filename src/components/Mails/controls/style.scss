@@ -86,5 +86,12 @@
                 }
             }
         }
+        &-popup {
+            &_title {
+                color: var(--v-text-base);
+                font-size: 20px;
+                font-weight: 500;
+            }
+        }
     }
 }

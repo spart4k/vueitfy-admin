@@ -17,11 +17,11 @@
     </div>
     <div class="v-date-container">
       <div class="v-date-container_day">
-        {{ new Date($props.data.date).getDate() }}
-        {{ month[new Date($props.data.date).getMonth()] }}
+        {{ new Date($props?.data?.date).getDate() }}
+        {{ month[new Date($props?.data?.date).getMonth()] }}
       </div>
       <div class="v-date-container_time">
-        {{ new Date($props.data.date).toLocaleTimeString() }}
+        {{ new Date($props?.data?.date).toLocaleTimeString() }}
       </div>
     </div>
   </div>

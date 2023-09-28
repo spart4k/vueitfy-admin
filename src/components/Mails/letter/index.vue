@@ -24,6 +24,7 @@
         "
         >$IconBookmark</v-icon
       >
+      {{ $props.data.id }}
       <v-checkbox
         color="primary"
         :value="$props.selectedMails.includes($props.data.id)"

@@ -36,22 +36,27 @@ const mails = {
     })
 
     const allMails = computed(() => {
-      const array = []
+      const arrayId = []
+      const arrayFull = []
       mailsData.value.forEach((item) => {
         if (item.mails) {
           item.mails.forEach((mail) => {
-            array.push(mail.id)
+            arrayId.push(mail.id)
+            arrayFull.push(mail)
           })
         }
       })
-      return array
+      return {
+        arrayId: arrayId,
+        arrayFull: arrayFull,
+      }
     })
 
     const changeSelection = (val) => {
       if (val === 'all') {
         selectedAllMails.value = !selectedAllMails.value
         if (selectedAllMails.value) {
-          selectedMails.value = allMails.value
+          selectedMails.value = allMails.value.arrayId
         } else {
           selectedMails.value = []
         }
@@ -61,7 +66,7 @@ const mails = {
         } else {
           selectedMails.value.push(val)
         }
-        if (allMails.value.length === selectedMails.value.length) {
+        if (allMails.value.arrayId.length === selectedMails.value.length) {
           selectedAllMails.value = true
         } else {
           selectedAllMails.value = false
@@ -84,6 +89,39 @@ const mails = {
       mail[val.key] = !val[val.key]
     }
 
+    const changeMailArrayKey = async (key, params) => {
+      console.log(key, params, selectedMails.value)
+      if (key === 'del') {
+        selectedMails.value.forEach((item) => {
+          // allMails.value.arrayFull.find((e) => e.id === item).del = true
+          mailsData.value.forEach((row, index) => {
+            if (row?.mails?.length) {
+              row.mails.forEach((mail, mailIndex) => {
+                if (mail.id === item) {
+                  mailsData.value[index].mails.splice(mailIndex, 1)
+                }
+              })
+            }
+          })
+          console.log(route.value.query.mail, item)
+          if (Number(route.value.query.mail) === item) {
+            const newQuery = {}
+            // let filter, id, box
+            if (route?.value?.query?.filter)
+              newQuery.filter = route?.value?.query?.filter
+            if (route?.value?.query?.color)
+              newQuery.color = route?.value?.query?.color
+            console.log(newQuery)
+            router
+              .push({
+                query: { ...newQuery },
+              })
+              .catch(() => {})
+          }
+        })
+      }
+    }
+
     const editFilter = (val) => {
       if (val.index) {
         filterData.value[`${val.type}Data`][val.index] = Object.assign(
@@ -100,10 +138,11 @@ const mails = {
     }
 
     const setActiveMail = (val) => {
+      const oldQuery = route.value.query
+      if (oldQuery.compose) delete oldQuery.compose
       router
         .push({
-          path: 'mails',
-          query: { ...route.value.query, ...{ box: val.box_id, mail: val.id } },
+          query: { ...oldQuery, ...{ mail: val.id, box: val.box_id } },
         })
         .catch(() => {})
     }
@@ -171,8 +210,6 @@ const mails = {
     const checkFilterChange = () => {
       if (route.value.query.filter === 'starred') {
         changeFilter('isfavorites')
-      } else if (route.value.query.filter === 'inbox') {
-        changeFilter('id')
       } else if (route.value.query.filter === 'attachment') {
         changeFilter('attachment')
       } else if (route.value.query.filter === 'tags') {
@@ -183,7 +220,13 @@ const mails = {
     }
 
     const checkRouteFilter = () => {
-      console.log('dsa')
+      // if (route.value.query.filter === 'box') {
+      //   getFolderMails()
+      // } else {
+      // }
+      // if (route.value.quety.params === 'color') {
+      //   console.log('asd')
+      // }
     }
 
     watch(
@@ -211,6 +254,7 @@ const mails = {
 
       decreaseUnreadMailsCount,
       changeMailKey,
+      changeMailArrayKey,
       getPagination,
       deleteFilter,
       editFilter,

@@ -1,9 +1,13 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import { computed, ref } from 'vue'
+import { ref } from 'vue'
 // import { tableApi } from '@/api'
+import Popup from '../../popup/index.vue'
 const controls = {
   name: 'Controls',
+  components: {
+    Popup,
+  },
   props: {
     selectedAllMails: {
       type: Boolean,
@@ -19,7 +23,10 @@ const controls = {
     },
   },
   setup() {
-    return {}
+    const popupCase = ref(false)
+    return {
+      popupCase,
+    }
   },
 }
 

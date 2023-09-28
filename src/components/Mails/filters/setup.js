@@ -30,13 +30,13 @@ const filters = {
         label: 'Входящие',
         url: '$IconMailActive',
         number: 0,
-        query: 'inbox',
+        query: 'all',
       },
       {
         label: 'Помеченные',
         url: '$IconStarMail',
         number: 0,
-        query: 'starred',
+        query: 'isfavorites',
       },
       {
         label: 'С вложениями',
@@ -93,13 +93,39 @@ const filters = {
         type: '',
       }
     }
-    const setRouterPath = (val, addToCurrent) => {
-      if (addToCurrent) {
-        router.push({ query: { ...route.value.query, ...val } }).catch(() => {})
+    const setRouterPath = (val) => {
+      let colorArray = route?.value?.query?.color
+      let filter = route?.value?.query?.filter
+      let id = route?.value?.query?.id
+      if (val.color) {
+        if (!colorArray) colorArray = []
+        if (colorArray?.length) colorArray = JSON.parse(colorArray)
+        if (colorArray.includes(val.color)) {
+          colorArray = colorArray.filter((e) => e !== val.color)
+        } else {
+          if (colorArray) colorArray.push(val.color)
+          else colorArray = [val.color]
+        }
+        if (colorArray?.length) colorArray = JSON.stringify(colorArray)
+      } else if (val.id) {
+        filter = val.filter
+        id = val.id
       } else {
-        router.push({ query: val }).catch(() => {})
+        filter = val.filter
+        id = null
       }
+      let newQuery = {
+        filter: filter,
+      }
+      if (id) newQuery.id = id
+      if (colorArray) newQuery.color = colorArray
+      if (val.compose)
+        newQuery = {
+          compose: 'new',
+        }
+      router.push({ query: newQuery }).catch(() => {})
     }
+
     const deleteFolder = async () => {
       newCase.value.loading = true
       let response

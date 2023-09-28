@@ -12,6 +12,7 @@
         :selectedAllMails="selectedAllMails"
         :selectedMails="selectedMails"
         @changeSelection="changeSelection"
+        @changeMailArrayKey="changeMailArrayKey"
         class="mb-2"
       />
       <div class="d-flex w-100 h-100">
