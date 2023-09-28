@@ -21,10 +21,10 @@ export default function (searchFields, fields) {
       //this.vendors = [ ...this.vendors, ...moreVendors]
     }
   }
-  const querySelections = async (string, field) => {
-    console.log(string)
-    if (string) {
-      console.log('quiery')
+  const querySelections = async (string, field, id) => {
+    console.log(string, id)
+    if (string || id) {
+      console.log(field)
       string = string.toLowerCase()
       //setTimeout(() => {
       //  const data = field.data
@@ -43,6 +43,7 @@ export default function (searchFields, fields) {
         countRows: 10,
         currentPage: field.page,
         searchValue: string,
+        id: id ? id : -1,
       })
       console.log(data)
       if (data.rows) {

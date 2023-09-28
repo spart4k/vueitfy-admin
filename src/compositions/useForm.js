@@ -11,24 +11,24 @@ export default function ({ fields = {}, watcher }) {
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
-
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
+      //console.log(obj[key])
       obj[key] = ref(fields[key].default)
       return obj
     }, {})
   )
-
+  console.log(Object.keys(fields))
   const validations = Object.keys(fields).reduce((obj, key) => {
     obj[key] = { ...fields[key].validations, $autoDirty }
     return obj
   }, {})
-
   const $v = useVuelidate({ ...validations }, formData)
 
   const $errors = computed(() =>
     Object.keys(formData).reduce((obj, key) => {
       if ($touched.value) {
+        console.log($v.value[key])
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
       } else {
         obj[key] = []

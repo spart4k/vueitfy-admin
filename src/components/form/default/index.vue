@@ -44,14 +44,13 @@
               :loading="field.loading"
               :items="field.items"
               :search-input.sync="field.search"
-              v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
               :label="field.label"
               chips
               :multiple="field.subtype === 'multiple'"
               class="mb-4"
-              item-text="name"
-              item-value="id"
+              :item-text="field.selectOption.text"
+              :item-value="field.selectOption.value"
               no-data-text="Нет объектов"
             >
               <template v-slot:append>
@@ -140,6 +139,9 @@
               clearable
               :error-messages="formErrors[field.name]"
             />
+            <p v-if="field.type === 'autocomplete'">
+              <!--{{ field.selectOption.text + field.selectOption.value }}-->
+            </p>
           </v-col>
         </v-row>
         <v-row>
