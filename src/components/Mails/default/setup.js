@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { watch } from 'vue'
+import Vue from 'vue'
 import { ref, onMounted, computed } from '@vue/composition-api'
 import _ from 'lodash'
 import { useStore } from '@/store'
@@ -32,7 +32,7 @@ const mails = {
       folderData: [],
       tagsData: [],
       boxData: [],
-      notReadData: null,
+      notReadData: 0,
     })
 
     const allMails = computed(() => {
@@ -74,6 +74,64 @@ const mails = {
       }
     }
 
+    const getMails = async () => {
+      selectedAllMails.value = false
+      selectedMails.value = []
+      if (route?.value?.query?.id) {
+        if (route?.value?.query?.filter === 'folder') {
+          // mailsData.value = _.cloneDeep(filterData.value.boxData)
+          mailsData.value = [{ id: Number(route?.value?.query?.id) }]
+        } else {
+          mailsData.value = [
+            _.cloneDeep(
+              filterData.value.boxData.find(
+                (e) => e.id === Number(route?.value?.query?.id)
+              )
+            ),
+          ]
+        }
+      } else {
+        mailsData.value = _.cloneDeep(filterData.value.boxData)
+        // mailsData.value = _.cloneDeep(await getPagination(mailsData.value))
+      }
+      for (const item of mailsData.value) {
+        await getPagination(item)
+      }
+      // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
+    }
+
+    const getPagination = async (val) => {
+      let colorTags = []
+      if (route?.value?.query?.color?.length)
+        colorTags = JSON.parse(route?.value?.query?.color)
+      const requestData = {
+        content: {
+          page: 1,
+          count: 20,
+          tags: colorTags,
+          // props: route?.value?.query?.id
+          //   ? {
+          //       all: true,
+          //     }
+          //   : {
+          //       [route?.value?.query?.filter]:
+          //         route?.value?.query?.filter !== 'is_read',
+          //     },
+        },
+        id: val.id,
+      }
+      let data
+      if (route?.value?.query?.filter === 'folder') {
+        data = await store.dispatch('mail/getFolderMails', requestData)
+      } else {
+        data = await store.dispatch('mail/getBoxMails', requestData)
+      }
+      if (data?.rows) {
+        Vue.set(val, 'mails', data)
+      }
+      // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
+    }
+
     const changeMailKey = async (val) => {
       const request = {
         content: {
@@ -90,10 +148,10 @@ const mails = {
     }
 
     const changeMailArrayKey = async (key, params) => {
-      console.log(key, params, selectedMails.value)
+      // console.log(key, params, selectedMails.value)
       if (key === 'del') {
+        await store.dispatch('mail/deleteMails', selectedMails.value)
         selectedMails.value.forEach((item) => {
-          // allMails.value.arrayFull.find((e) => e.id === item).del = true
           mailsData.value.forEach((row, index) => {
             if (row?.mails?.length) {
               row.mails.forEach((mail, mailIndex) => {
@@ -103,15 +161,12 @@ const mails = {
               })
             }
           })
-          console.log(route.value.query.mail, item)
           if (Number(route.value.query.mail) === item) {
             const newQuery = {}
-            // let filter, id, box
             if (route?.value?.query?.filter)
               newQuery.filter = route?.value?.query?.filter
             if (route?.value?.query?.color)
               newQuery.color = route?.value?.query?.color
-            console.log(newQuery)
             router
               .push({
                 query: { ...newQuery },
@@ -147,22 +202,6 @@ const mails = {
         .catch(() => {})
     }
 
-    const getPagination = async (val) => {
-      for (const item of originalData.value) {
-        const data = await store.dispatch('mail/getPagination', {
-          content: {
-            page: 1,
-            count: 20,
-          },
-          id: item.id,
-        })
-        if (data?.rows?.length) {
-          Vue.set(item, 'mails', data.rows)
-        }
-      }
-      return originalData.value
-    }
-
     const getFilterData = async () => {
       filterData.value.folderData = await store.dispatch('mail/getFolders')
       filterData.value.boxData = await store.dispatch('mail/getBoxes', {
@@ -176,71 +215,47 @@ const mails = {
       filterData.value.notReadData--
     }
 
-    const changeFilter = (key, reverse) => {
-      mailsData.value.forEach((item, index) => {
-        if (item.mails) {
-          if (reverse) {
-            mailsData.value[index].mails = mailsData.value[index].mails.filter(
-              (e) => !e[key]
-            )
-          } else {
-            mailsData.value[index].mails = mailsData.value[index].mails.filter(
-              (e) => e[key]
-            )
-          }
-        }
-      })
-      originalData.value.forEach((item, index) => {
-        if (item.mails) {
-          item.mails.forEach((mail, mailIndex) => {
-            if (reverse) {
-              if (!mail[key] && !mailsData.value[index].mails.includes(mail)) {
-                mailsData.value[index].mails.splice(mailIndex, 0, mail)
-              }
-            } else {
-              if (mail[key] && !mailsData.value[index].mails.includes(mail)) {
-                mailsData.value[index].mails.splice(mailIndex, 0, mail)
-              }
-            }
-          })
-        }
-      })
-    }
+    // const changeFilter = (key, reverse) => {
+    // mailsData.value.forEach((item, index) => {
+    //   if (item.mails) {
+    //     if (reverse) {
+    //       mailsData.value[index].mails = mailsData.value[index].mails.filter(
+    //         (e) => !e[key]
+    //       )
+    //     } else {
+    //       mailsData.value[index].mails = mailsData.value[index].mails.filter(
+    //         (e) => e[key]
+    //       )
+    //     }
+    //   }
+    // })
+    // originalData.value.forEach((item, index) => {
+    //   if (item.mails) {
+    //     item.mails.forEach((mail, mailIndex) => {
+    //       if (reverse) {
+    //         if (!mail[key] && !mailsData.value[index].mails.includes(mail)) {
+    //           mailsData.value[index].mails.splice(mailIndex, 0, mail)
+    //         }
+    //       } else {
+    //         if (mail[key] && !mailsData.value[index].mails.includes(mail)) {
+    //           mailsData.value[index].mails.splice(mailIndex, 0, mail)
+    //         }
+    //       }
+    //     })
+    //   }
+    // })
+    // }
 
-    const checkFilterChange = () => {
-      if (route.value.query.filter === 'starred') {
-        changeFilter('isfavorites')
-      } else if (route.value.query.filter === 'attachment') {
-        changeFilter('attachment')
-      } else if (route.value.query.filter === 'tags') {
-        changeFilter('ismain')
-      } else if (route.value.query.filter === 'unread') {
-        changeFilter('is_read', true)
-      }
-    }
-
-    const checkRouteFilter = () => {
-      // if (route.value.query.filter === 'box') {
-      //   getFolderMails()
-      // } else {
-      // }
-      // if (route.value.quety.params === 'color') {
-      //   console.log('asd')
-      // }
-    }
-
-    watch(
-      () => route.value.fullPath,
-      () => {
-        checkFilterChange()
-      }
-    )
     onMounted(async () => {
+      if (!route?.value?.query?.filter) {
+        router.push({
+          query: { filter: 'all' },
+        })
+      }
       await getFilterData()
-      originalData.value = _.cloneDeep(filterData.value.boxData)
-      checkRouteFilter()
-      mailsData.value = _.cloneDeep(await getPagination())
+      getMails()
     })
+
     return {
       selectedMails,
       selectedAllMails,
@@ -260,9 +275,7 @@ const mails = {
       editFilter,
       setActiveMail,
       changeSelection,
-      changeFilter,
-      checkFilterChange,
-      checkRouteFilter,
+      getMails,
     }
   },
 }

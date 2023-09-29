@@ -21,6 +21,8 @@
         >
         Транслировать
       </v-btn>
+      <!-- {{ $props.allMails.arrayFull }} -->
+      <!-- {{ read }} -->
       <v-btn
         :disabled="!$props.selectedMails.length"
         class="v-controls-list_item"

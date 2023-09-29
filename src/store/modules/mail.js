@@ -9,7 +9,9 @@ import {
   editFolder,
   deleteBox,
   deleteFolder,
-  getPagination,
+  deleteMails,
+  getBoxMails,
+  getFolderMails,
   changeMail,
 } from '@/api/mail'
 
@@ -108,10 +110,37 @@ const mail = {
       }
     },
 
-    async getPagination(_, data) {
+    async deleteMails(_, data) {
       try {
-        // console.log('data, params', data, params)
-        const response = await getPagination(data.content, data.id)
+        const response = await deleteMails(data)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    // async getPagination(_, data) {
+    //   try {
+    //     // console.log('data, params', data, params)
+    //     const response = await getPagination(data.content, data.id)
+    //     return response
+    //   } catch (e) {
+    //     console.log(e)
+    //   }
+    // },
+
+    async getBoxMails(_, data) {
+      try {
+        const response = await getBoxMails(data.content, data.id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getFolderMails(_, data) {
+      try {
+        const response = await getFolderMails(data.content, data.id)
         return response
       } catch (e) {
         console.log(e)

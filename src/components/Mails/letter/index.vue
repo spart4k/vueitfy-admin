@@ -24,7 +24,7 @@
         "
         >$IconBookmark</v-icon
       >
-      {{ $props.data.id }}
+      <!-- {{ $props.data.id }} -->
       <v-checkbox
         color="primary"
         :value="$props.selectedMails.includes($props.data.id)"
@@ -64,15 +64,13 @@
         </div>
         <div class="v-letter-content-files_additional-item">+2</div>
       </div>
-      <!-- {{ $props.tagsData }} -->
-      <!-- {{ JSON.parse($props.data.tags) }} -->
       <div class="v-letter-content-tags">
         <div
           class="v-letter-content-tags_item"
-          v-for="(item, index) in JSON.parse($props.data.tags)"
+          v-for="(item, index) in JSON.parse($props?.data?.tags)"
           :key="index"
           :style="{
-            background: $props.tagsData.find((x) => x.id === item).color,
+            background: $props?.tagsData?.find((x) => x.id === item)?.color,
           }"
           @click="setActiveColorFilter(item)"
         ></div>

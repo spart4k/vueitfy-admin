@@ -23,6 +23,7 @@ const filters = {
   setup(props, context) {
     const store = useStore()
     const router = context.root.$router
+    const { emit } = context
     const route = computed(() => context.root.$route)
     const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
     const filters = ref([
@@ -124,6 +125,7 @@ const filters = {
           compose: 'new',
         }
       router.push({ query: newQuery }).catch(() => {})
+      emit('getMails')
     }
 
     const deleteFolder = async () => {

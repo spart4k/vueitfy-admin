@@ -51,6 +51,5 @@ const store = new Vuex.Store({
 
 export default store
 export const useStore = () => {
-  console.log(store, 'store')
   return store
 }

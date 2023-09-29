@@ -46,6 +46,11 @@ const container = {
         emit('decreaseUnreadMailsCount')
       }
     }
+    const getPagination = (isIntersecting, entries, observer, data) => {
+      if (observer) {
+        console.log('getPagination', data)
+      }
+    }
     onMounted(() => {
       const mail = props.data
         .find((x) => x.id === Number(route?.query?.box))
@@ -56,6 +61,7 @@ const container = {
       activeMail,
 
       setActiveMail,
+      getPagination,
     }
   },
 }

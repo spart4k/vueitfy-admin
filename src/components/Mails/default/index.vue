@@ -4,6 +4,7 @@
       :filterData="filterData"
       @editFilter="editFilter"
       @deleteFilter="deleteFilter"
+      @getMails="getMails"
       class="mr-4"
     />
     <div class="v-mails-group">
@@ -11,17 +12,20 @@
         :filterData="filterData"
         :selectedAllMails="selectedAllMails"
         :selectedMails="selectedMails"
+        :allMails="allMails"
         @changeSelection="changeSelection"
         @changeMailArrayKey="changeMailArrayKey"
         class="mb-2"
       />
       <div class="d-flex w-100 h-100">
+        <!-- {{ mailsData }} -->
         <MailsContainer
           v-if="mailsData.length"
           @setActiveMail="setActiveMail"
           @changeSelection="changeSelection"
           @changeMailKey="changeMailKey"
           @decreaseUnreadMailsCount="decreaseUnreadMailsCount"
+          @getPagination="getPagination"
           :tagsData="filterData.tagsData"
           :selectedMails="selectedMails"
           :data="mailsData"

@@ -31,21 +31,35 @@
           {{ item.name }}{{ item.id }}
         </div>
         <div class="v-container-box-column-items">
-          <template v-if="item.mails && item.mails.length">
+          <!-- {{ item?.mails?.rows }} -->
+          <template v-if="item?.mails?.rows && !item?.mails?.rows?.length">
+            <div class="v-container-box-column-items_stub">
+              <p>Нет писем</p>
+            </div>
+          </template>
+          <template v-else-if="item?.mails?.rows?.length">
             <MailsLetter
               :companyColor="item.color"
               :data="mail"
               :active="Number($route.query.mail) === mail.id"
-              v-for="(mail, index) in item.mails"
+              v-for="(mail, index) in item?.mails?.rows"
               :key="index"
               :tagsData="$props.tagsData"
               :selectedMails="selectedMails"
               @setActiveMail="setActiveMail"
+              v-intersect="
+                item?.mails?.rows?.length === index + 1 && getPagination(item)
+              "
             />
           </template>
           <template v-else>
             <div class="v-container-box-column-items_stub">
-              <p>Нет писем</p>
+              <p>
+                <v-progress-circular
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+              </p>
             </div>
           </template>
         </div>
