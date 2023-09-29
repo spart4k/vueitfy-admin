@@ -21,11 +21,10 @@ export default function (searchFields, fields) {
       //this.vendors = [ ...this.vendors, ...moreVendors]
     }
   }
-  const querySelections = async (string, field, id) => {
-    console.log(string, id)
-    if (string || id) {
-      console.log(field)
-      string = string.toLowerCase()
+  const querySelections = async (params, field) => {
+    if (params.search || params.id) {
+      console.log(params)
+      if (params.search) params.search = params.search.toLowerCase()
       //setTimeout(() => {
       //  const data = field.data
       //    .field((el) => el.toLowerCase().includes(string))
@@ -34,6 +33,7 @@ export default function (searchFields, fields) {
       //  console.log(data)
       //  Vue.set(field, 'items', data)
       //}, 200)
+      console.log(field)
       field.loading = true
       //const { data } = await axios.get(`
       //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
@@ -42,12 +42,13 @@ export default function (searchFields, fields) {
       const data = await selectsApi.getApi(url, {
         countRows: 10,
         currentPage: field.page,
-        searchValue: string,
-        id: id ? id : -1,
+        searchValue: params.search ? params.search : '',
+        id: params.id ? params.id : -1,
       })
-      console.log(data)
       if (data.rows) {
         field.items = [...field.items, ...data.rows]
+        field.items = data.rows
+        console.log(field.items)
       }
 
       //Vue.set(field, 'items', data.rows)
@@ -60,9 +61,12 @@ export default function (searchFields, fields) {
     (newVal, oldVal) => {
       newVal.forEach((_, elIndex) => {
         if (newVal[elIndex] !== oldVal[elIndex]) {
-          const string = newVal[elIndex]
-          const fieldElement = fields.find((el) => el.search === string)
-          querySelections(string, fieldElement)
+          const params = newVal[elIndex]
+          console.log(params)
+          console.log(fields)
+          const fieldElement = fields.find((el) => el.search === params.search)
+          console.log(fieldElement)
+          querySelections(params, fieldElement)
         }
       })
       //const

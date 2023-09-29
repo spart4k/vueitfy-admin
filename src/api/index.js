@@ -1,4 +1,3 @@
-import Cities from './cities'
 import Selects from './selects'
 import Navmenu from './navmenu'
 import Mails from './mails'
@@ -14,7 +13,6 @@ import Mails from './mails'
 // 5000/appointment
 // 3001/review
 
-const tableApi = new Cities()
 const selectsApi = new Selects()
 const navmenuApi = new Navmenu()
 const mailsApi = new Mails()
@@ -22,4 +20,4 @@ const mailsApi = new Mails()
 //const list = new List()
 //const login = new Login()
 
-export { tableApi, selectsApi, navmenuApi, mailsApi }
+export { selectsApi, navmenuApi, mailsApi }

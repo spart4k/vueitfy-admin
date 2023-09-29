@@ -8,91 +8,41 @@ export default class Cities {
 
   async getList(url, paramsQuery) {
     try {
-      console.log(paramsQuery)
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
           'Content-Type': 'text/plain,
         },
       })
-      console.log(data)
-      //if (!data || data.cityFound.length === 0) {
-      //  store.commit('alert/show', {
-      //    type: 'warning',
-      //    content: `В данный момент городов нет`,
-      //  })
-      //  return []
-      //}
 
       return data
     } catch (error) {
       console.log(error)
-      //let errorText = ''
-      //if (error?.response?.data?.message?.name)
-      //  errorText = error?.response?.data?.message?.name
-      //else if (error?.response?.data?.message)
-      //  errorText = error?.response?.data?.message
-      //else {
-      //  errorText = error.message
-      //}
-      //store.commit('alert/show', {
-      //  type: 'error',
-      //  content: `Ошибка: ${errorText}`,
-      //})
+      return error
     }
   }
 
   async getDetail(url, paramsQuery) {
     try {
-      console.log(paramsQuery)
       const { data } = await axios.get(`${url}`, paramsQuery, {
         headers: {
           'Content-Type': 'text/plain',
         },
       })
       console.log(data)
-      //if (!data || data.cityFound.length === 0) {
-      //  store.commit('alert/show', {
-      //    type: 'warning',
-      //    content: `В данный момент городов нет`,
-      //  })
-      //  return []
-      //}
-
       return data
     } catch (error) {
       console.log(error)
-      //let errorText = ''
-      //if (error?.response?.data?.message?.name)
-      //  errorText = error?.response?.data?.message?.name
-      //else if (error?.response?.data?.message)
-      //  errorText = error?.response?.data?.message
-      //else {
-      //  errorText = error.message
-      //}
-      //store.commit('alert/show', {
-      //  type: 'error',
-      //  content: `Ошибка: ${errorText}`,
-      //})
+      return error
     }
   }
 
   async getApi(url, paramsQuery) {
     try {
-      console.log(paramsQuery)
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'text/plain,
+          'Content-Type': 'text/plain'
         },
       })
-      console.log(data)
-      //if (!data || data.cityFound.length === 0) {
-      //  store.commit('alert/show', {
-      //    type: 'warning',
-      //    content: `В данный момент городов нет`,
-      //  })
-      //  return []
-      //}
-
       return data
     } catch (error) {
       console.log(error)

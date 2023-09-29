@@ -30,8 +30,5 @@ export default {
   data: () => ({
     //
   }),
-  mounted() {
-    console.log('theme', this.$vuetify.theme)
-  },
 }
 </script>

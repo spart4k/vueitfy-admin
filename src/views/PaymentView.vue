@@ -1021,7 +1021,7 @@ const tableConfigData = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '800px',
+    width: '900px',
     method: 'get',
     alias: 'payment',
     url: '/get/form/',
@@ -1031,7 +1031,15 @@ const tableConfigData = {
         id: 0,
         name: 'Основные',
         type: 'FormDefault',
-        lists: ['vid_vedomost_id', 'status_id', 'direction_id', 'doljnost_id'],
+        lists: [
+          'vid_vedomost_id',
+          'status_id',
+          'direction_id',
+          'doljnost_id',
+          'st_rashod_id',
+          'account_id',
+          'status_account_id',
+        ],
         alias: 'payment',
         active: false,
         fields: [
@@ -1175,12 +1183,12 @@ const tableConfigData = {
           }),
           selectField({
             label: 'Статус от',
-            name: 'status_from',
+            name: 'status_account_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [],
             position: {
@@ -1192,7 +1200,7 @@ const tableConfigData = {
           }),
           datetimeField({
             label: 'Смена статуса',
-            name: 'chamge_status',
+            name: 'date_status',
             value: '',
             type: 'datetime',
             subtype: 'datetime',
@@ -1221,20 +1229,17 @@ const tableConfigData = {
             validations: { required },
             bootstrapClass: [''],
           }),
-          autocompleteField({
+          selectField({
             label: 'Менеджер',
-            name: 'manager',
+            name: 'account_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [],
-            page: 1,
-            search: '',
-            url: 'http://10.63.1.132:5000/get/pagination_list/object',
             position: {
               cols: 12,
               sm: 6,
@@ -1261,18 +1266,18 @@ const tableConfigData = {
           }),
           autocompleteField({
             label: 'Линейщик',
-            name: 'employeer:',
+            name: 'personal_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [],
             page: 1,
             search: '',
-            url: 'http://10.63.1.132:5000/get/pagination_list/object',
+            url: 'http://10.63.1.132:5000/get/pagination_list/personal',
             position: {
               cols: 12,
               sm: 4,
@@ -1307,8 +1312,8 @@ const tableConfigData = {
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [],
             position: {
@@ -1337,12 +1342,12 @@ const tableConfigData = {
           }),
           selectField({
             label: 'Статья расхода:',
-            name: 'payday',
+            name: 'st_rashod_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [
               {
@@ -1455,7 +1460,7 @@ const tableConfigData = {
           }),
           dateField({
             label: 'Назначение на даты:',
-            name: 'state_to_date',
+            name: 'date_target',
             subtype: 'datetime',
             placeholder: '',
             classes: [''],

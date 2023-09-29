@@ -2,7 +2,7 @@ import Vue, { onMounted, computed, ref } from 'vue'
 //import axios from 'axios'
 
 //import { selectsApi } from '@/api'
-import autocomplete from '@/compositions/autocomplete'
+import autocomplete from '@/compositions/useAutocomplete'
 
 export default {
   name: 'Table-Filter',
