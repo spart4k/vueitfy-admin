@@ -1,7 +1,7 @@
 import Vue, { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router/composables'
 //import DatetimePicker from 'vuetify-datetime-picker'
-//import store from '@/store/index.js'
+//import store from '@/store/setup.js'
 //import { email, phone, required, onlyNumeric } from '@/utils/validation.js'
 import useForm from '@/compositions/useForm.js'
 import Datetimepicker from '@/components/datetimepicker/index.vue'

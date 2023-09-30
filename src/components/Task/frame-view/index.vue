@@ -22,8 +22,7 @@
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <TextInfo></TextInfo>
-      <DocScan></DocScan>
+      <FirstPopupView></FirstPopupView>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">

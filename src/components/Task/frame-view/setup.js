@@ -1,12 +1,10 @@
 import { defineComponent } from 'vue'
-import TextInfo from './el/TextInfo/index.vue'
-import DocScan from './el/DocScan/index.vue'
+import FirstPopupView from '../first-popup-view/index.vue'
 
 const task = defineComponent({
   name: 'Task',
   components: {
-    TextInfo,
-    DocScan,
+    FirstPopupView,
   },
   props: {},
   setup() {
