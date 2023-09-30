@@ -1,0 +1,26 @@
+.task {
+    &__title {
+        position: relative;
+
+        .title::before {
+            content: '';
+            position: absolute;
+            height: 50%;
+            width: 5px;
+            background: green;
+            left: 5px;
+            border-radius: 10px;
+        }
+    }
+
+    &-slot {
+        padding: 10px;
+    }
+
+    &__info {}
+
+    &__info-row {
+        display: flex;
+        gap: 10px;
+    }
+}
