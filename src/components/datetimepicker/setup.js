@@ -33,7 +33,7 @@ export default {
       time: {
         id: 1,
         name: 'Время',
-        value: '',
+        value: props.value ? props.value.split(' ')[1] : '',
       },
     })
     const activeTab = ref(null)

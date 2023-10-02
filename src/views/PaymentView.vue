@@ -1284,6 +1284,7 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            dependence: ['statement_card', 'cardowner'],
           }),
           autocompleteField({
             label: 'Объект',
@@ -1508,23 +1509,7 @@ const tableConfigData = {
               text: 'label',
               value: 'value',
             },
-            items: [
-              {
-                id: 0,
-                label: 'Продавец',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Приемщик',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Погрузчик',
-                value: 'Азаров Михаил',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 6,

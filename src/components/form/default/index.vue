@@ -101,6 +101,7 @@
               :error-messages="formErrors[field.name]"
               :formData="formData"
               ref="autocompleteRef"
+              @change="changeAutocomplete"
             />
             <v-menu
               v-else-if="showField('date', field)"

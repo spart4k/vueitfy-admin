@@ -14,6 +14,7 @@
       :item-text="field.selectOption.text"
       :item-value="field.selectOption.value"
       no-data-text="Нет объектов"
+      @change="update"
     >
       <template v-slot:append>
         <v-progress-circular

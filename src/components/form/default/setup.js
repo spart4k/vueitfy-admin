@@ -65,10 +65,6 @@ export default {
           }
         })
     })
-    //const { endIntersect, querySelections } = useAutocomplete(
-    //  searchFields,
-    //  props.tab.fields
-    //)
     const { makeRequest } = useRequest({
       context,
       request: () =>
@@ -122,11 +118,6 @@ export default {
           formData[field.name] = syncForm.data[formKey]
         }
       }
-      //const queries = autocompleteRef.value.forEach((component) => {
-      //  console.log(component)
-      //})
-      //queries()
-      //await Promise.all(queries)
       if (hasSelect()) {
         for (let keyList in lists.data) {
           const field = props.tab.fields.find((el) => el.name === keyList)
@@ -134,13 +125,6 @@ export default {
         }
       }
       await loadAutocompletes()
-      //const queries = props.tab.fields
-      //  .filter((el) => el.search !== undefined)
-      //  .map((el) => (el = querySelections('', el)))
-      //console.log(queries)
-      //props.tab.fields.forEach( async (el) => {
-      //  const result = await querySelections({id: -1, string: ''}, el)
-      //})
       loading.value = false
     }
     const params = props.tab.lists
@@ -150,10 +134,13 @@ export default {
       request: () => store.dispatch('list/get', `get/lists${queryString}`),
     })
     const showField = (type, field) => {
-      return type === field.type && !loading.value && allLoaded && field.isShow
+      return type === field.type && !loading.value && field.isShow
     }
     //makeRequestList()
-    const allLoaded = ref(!props.tab.fields.some((el) => el.loading))
+    const changeAutocomplete = (data) => {
+      const { value, field } = data
+      console.log(value, field)
+    }
     const submit = async () => {
       validate()
     }
@@ -173,8 +160,8 @@ export default {
       getData,
       loading,
       showField,
-      allLoaded,
       autocompleteRef,
+      changeAutocomplete,
     }
   },
 }
