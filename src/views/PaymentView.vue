@@ -835,7 +835,32 @@ const tableConfigData = {
       },
     },
     {
-      title: 'Сотрудник',
+      title: 'Дата назн',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_target',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
       type: 'default',
       align: 'center',
       fixed: {
@@ -860,7 +885,7 @@ const tableConfigData = {
       },
     },
     {
-      title: 'object_name',
+      title: 'Объект',
       type: 'default',
       align: 'center',
       fixed: {
@@ -885,7 +910,7 @@ const tableConfigData = {
       },
     },
     {
-      title: 'hour',
+      title: 'Часы',
       type: 'default',
       align: 'center',
       fixed: {
@@ -904,31 +929,6 @@ const tableConfigData = {
       width: '150',
       value: 'hour',
       alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'date_target',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
       search: {
         field: '',
         isShow: true,
@@ -960,7 +960,7 @@ const tableConfigData = {
       },
     },
     {
-      title: 'total',
+      title: 'Сумма',
       type: 'default',
       align: 'center',
       fixed: {
@@ -1218,7 +1218,7 @@ const tableConfigData = {
           }),
           dateField({
             label: 'Дата начисл:',
-            name: 'date_payment',
+            name: 'date_add',
             subtype: 'datetime',
             placeholder: '',
             classes: [''],
@@ -1400,7 +1400,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Часы:',
-            name: 'Часы',
+            name: 'hour',
             placeholder: '',
             class: [''],
             position: {
@@ -1412,7 +1412,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Тариф:',
-            name: 'traffic',
+            name: 'object_price_price',
             placeholder: '',
             class: [''],
             position: {
@@ -1424,7 +1424,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Сумма:',
-            name: 'summ',
+            name: 'total',
             placeholder: '',
             class: [''],
             position: {
@@ -1445,6 +1445,7 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           stringField({
             label: 'Удержано',
@@ -1457,11 +1458,12 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           dateField({
             label: 'Назначение на даты:',
             name: 'date_target',
-            subtype: 'datetime',
+            subtype: 'date',
             placeholder: '',
             classes: [''],
             position: {
@@ -1482,6 +1484,7 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           stringField({
             label: 'Назначение на даты',
@@ -1494,6 +1497,7 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           selectField({
             label: 'Банки.карта/нал:',
@@ -1530,7 +1534,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Р/С:',
-            name: 'checking_account',
+            name: 'invoice',
             placeholder: '',
             class: [''],
             position: {
@@ -1566,7 +1570,7 @@ const tableConfigData = {
           }),
           textareaField({
             label: 'Примечание',
-            name: 'error_text',
+            name: 'comment',
             placeholder: '',
             class: [''],
             position: {
@@ -1590,7 +1594,6 @@ const tableConfigData = {
   },
 }
 
-import Vue from 'vue'
 import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
@@ -1691,72 +1694,12 @@ export default {
     }
   },
   methods: {
-    initData() {
-      //for (let i = 0  i < 20  i++) {
-
-      //}
-      this.employees.map((el) => (el.id = this.generateId()))
-      //this.tableConfig.data = this.employees
-      this.tableConfig.data.rows = this.employees.slice(0, 20)
-      console.log(this.window)
-      //this.tableConfig.data.map((el) => )
-      const structuredArray = []
-      this.tableConfig.data.rows.forEach((row) => {
-        if (this.tableConfig.options.selecting) {
-          Vue.set(row, 'selected', false)
-        }
-        structuredArray.push({
-          row,
-          child: {
-            isShow: false,
-            data: row,
-          },
-        })
-      })
-      this.tableConfig.data.rows = structuredArray
-      //this.employees.forEach((row, rowIndex) => {
-      //  output.push([])
-      //  for(let i = 0  i < chunkSize  i++) {
-      //    //output[i] = this.employees.slice(i*chunkSize, i*chunkSize+chunkSize)
-      //    output[rowIndex].push([])
-      //    if (i === 0) {
-      //      output[rowIndex][0] = row
-      //    }
-      //    // Добавляем новое значение в исх.массив, которое равно - часть массива из входящего массива от i*size (текущая) позиции до текущая + size, это будет массив.
-      //  }
-      //  this.tableConfig.data = output
-      //})
-      //for(let i = 0  i < chunkSize  i++) {
-      //  //output[i] = this.employees.slice(i*chunkSize, i*chunkSize+chunkSize)
-      //  output.push([])
-      //  // Добавляем новое значение в исх.массив, которое равно - часть массива из входящего массива от i*size (текущая) позиции до текущая + size, это будет массив.
-      //}
-    },
-    generateId() {
-      return 'id' + Math.random().toString(16).slice(2)
-    },
     changeheadershow(options) {
       const { headerEl, value } = options
-
       headerEl.isShow = value
     },
   },
-  async mounted() {
-    console.log(TableDefault)
-    //const data = await fetch(
-    //  'http://10.63.1.132:5000/view/table/shop_request_magnit',
-    //  {
-    //    method: 'get',
-    //    mode: 'same-origin',
-    //    headers: {
-    //      'Access-Control-Allow-Origin': '*',
-    //      //'Content-Type': 'test/html', // 'Content-Type': 'application/x-www-form-urlencoded',
-    //    },
-    //  }
-    //)
-    //console.log(data)
-    //this.initData()
-  },
+  async mounted() {},
 }
 </script>
 

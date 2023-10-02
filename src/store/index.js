@@ -10,7 +10,6 @@ import list from './modules/list'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
-console.log('vuetify', vuetify)
 const store = new Vuex.Store({
   state: {
     navmenu: false,
@@ -55,6 +54,5 @@ const store = new Vuex.Store({
 
 export default store
 export const useStore = () => {
-  console.log(store, 'store')
   return store
 }

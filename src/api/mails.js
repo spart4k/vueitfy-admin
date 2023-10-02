@@ -10,10 +10,9 @@ export default class Mails {
   async getBoxes(params) {
     try {
       const { data } = await axios.post(`${urlK}/box`, params)
-      console.log(data)
       return data
     } catch (error) {
-      console.log(error)
+      return error
     }
   }
 
@@ -67,10 +66,10 @@ export default class Mails {
         `${urlK}/mail/folder/${params.boxId}`,
         request
       )
-      console.log(data)
       return data.data
     } catch (error) {
       console.log(error)
+      return error
     }
   }
 }

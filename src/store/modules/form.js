@@ -7,7 +7,6 @@ const form = {
   actions: {
     async get(_, url) {
       const result = await getForm(url)
-      console.log(result)
       return result
     },
   },

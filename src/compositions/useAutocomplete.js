@@ -4,26 +4,24 @@ import { watch } from 'vue'
 export default function (searchFields, fields) {
   const endIntersect = (entries, observer, isIntersecting) => {
     if (isIntersecting) {
-      console.log(entries[0].target)
       const dataset = entries[0].target.dataset.field
-      console.log(fields)
-      console.log(dataset)
       const field = fields.find((el) => el.name === dataset)
       console.log('isIntersecting')
-      console.log(field)
       if (field.items.length && !field.loading) {
         //field.page = field.page + 10
         //Vue.set(field, 'page', field.page + 1)
         field.page = field.page + 1
-        querySelections(field.search, field)
+        const params = {
+          searc: field.search,
+          name: field.name,
+        }
+        querySelections(params, field)
       }
-      //let moreVendors = loadMoreFromApi()
-      //this.vendors = [ ...this.vendors, ...moreVendors]
     }
   }
   const querySelections = async (params, field) => {
     if (params.search || params.id) {
-      console.log(params)
+      console.log(params.search, params.id)
       if (params.search) params.search = params.search.toLowerCase()
       //setTimeout(() => {
       //  const data = field.data
@@ -33,7 +31,6 @@ export default function (searchFields, fields) {
       //  console.log(data)
       //  Vue.set(field, 'items', data)
       //}, 200)
-      console.log(field)
       field.loading = true
       //const { data } = await axios.get(`
       //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
@@ -48,7 +45,6 @@ export default function (searchFields, fields) {
       if (data.rows) {
         field.items = [...field.items, ...data.rows]
         field.items = data.rows
-        console.log(field.items)
       }
 
       //Vue.set(field, 'items', data.rows)
@@ -56,16 +52,19 @@ export default function (searchFields, fields) {
       //console.log(data.products, field)
     }
   }
+  const deepEqual = (obj1, obj2) => {
+    console.log(obj1, obj2)
+    return JSON.stringify(obj1) === JSON.stringify(obj2)
+  }
   watch(
     () => searchFields.value,
     (newVal, oldVal) => {
       newVal.forEach((_, elIndex) => {
-        if (newVal[elIndex] !== oldVal[elIndex]) {
+        console.log(!deepEqual(newVal[elIndex], oldVal[elIndex]))
+        if (!deepEqual(newVal[elIndex], oldVal[elIndex])) {
           const params = newVal[elIndex]
-          console.log(params)
-          console.log(fields)
           const fieldElement = fields.find((el) => el.search === params.search)
-          console.log(fieldElement)
+          console.log(params, fieldElement)
           querySelections(params, fieldElement)
         }
       })

@@ -17,7 +17,7 @@
             :sm="field.position.sm"
             class="field-col"
           >
-            <div v-if="loading" class="field-loading">
+            <div v-if="loading && field.isShow" class="field-loading">
               <!--<p>loading</p>-->
             </div>
             <v-text-field
@@ -37,7 +37,7 @@
               :error-messages="formErrors[field.name]"
               persistent-hint
             ></v-select>
-            <v-autocomplete
+            <!--<v-autocomplete
               v-else-if="showField('autocomplete', field)"
               :key="field.id"
               clearable
@@ -93,7 +93,13 @@
                   </v-list-item-content>
                 </template>
               </template>
-            </v-autocomplete>
+            </v-autocomplete>-->
+            <Autocomplete
+              v-else-if="showField('autocomplete', field)"
+              :field="field"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field.name]"
+            />
             <v-menu
               v-else-if="showField('date', field)"
               :key="field.id"
@@ -140,7 +146,7 @@
               clearable
               :error-messages="formErrors[field.name]"
             />
-            <p v-if="field.type === 'autocomplete'">
+            <p>
               <!--{{ formData[field.name] }}-->
               <!--{{ field.items }}-->
               <!--{{ allLoaded }}-->

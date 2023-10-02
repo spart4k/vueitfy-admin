@@ -83,12 +83,10 @@ const table = {
       isShow: false,
     })
     const wrapingRow = () => {
-      console.log('RESIZE1')
       const table = document.querySelector(props.options.selector)
       tablePosition.value = table.getBoundingClientRect().x
       props.options.head.forEach((headerEl) => {
         const headId = headerEl.value
-        console.log(headId)
         const { width, x } = headerOptions.value.find((el) => el.id === headId)
         if (
           x + width + tablePosition.value >= window.innerWidth &&
@@ -176,7 +174,6 @@ const table = {
       }
     }
     const sortRow = (head) => {
-      console.log(head)
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {
@@ -317,7 +314,6 @@ const table = {
         props.options.data.totalPages = data.totalPage
         props.options.data.totalRows = data.total
         const structuredArray = []
-        console.log(props.options.data.rows)
         props.options.data.rows.forEach((row) => {
           if (props.options.options.selecting) {
             Vue.set(row, 'selected', false)
@@ -357,8 +353,7 @@ const table = {
     const watchScroll = () => {
       //const firstListItem = list.querySelector('.horizontal-scroll-container__list-item:first-child');
       //const lastHeadTable = header.options
-      const table = document.querySelector(props.options.selector)
-      console.log(isElementXPercentInViewport(table))
+      //const table = document.querySelector(props.options.selector)
     }
     const isElementXPercentInViewport = (element) => {
       /* eslint-disable */
@@ -381,7 +376,6 @@ const table = {
       getItems()
     }
     const openRow = ($event, row) => {
-      console.log($event, 'row', row)
       if (props.options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`

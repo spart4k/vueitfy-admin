@@ -91,11 +91,9 @@ export default {
   },
   methods: {},
   setup(props, ctx) {
-    console.log(ctx)
     const { emit } = ctx
     const menuRef = ref(null)
     const saveDate = (filter) => {
-      console.log(menuRef)
       menuRef.value.save(filter.date)
     }
     //const querySelections = async (string, filter) => {
@@ -166,14 +164,11 @@ export default {
     //    //this.vendors = [ ...this.vendors, ...moreVendors]
     //  }
     //}
-    const tryClick = (data) => {
-      console.log(data)
-    }
+    const tryClick = () => {}
     const removeSelected = (data, filter) => {
       filter.value.splice(data.index, 1)
     }
     const closeFilter = () => {
-      console.log(emit)
       emit('closeFilter')
     }
     const saveFilter = () => {

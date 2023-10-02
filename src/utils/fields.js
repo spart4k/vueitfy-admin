@@ -1,71 +1,58 @@
 import { v4 as uuidv4 } from 'uuid'
 
-const dateField = (properties) => {
+const defaultProperties = (properties) => {
   return {
     id: uuidv4(),
     readonly: false,
-    menu: false,
     disable: false,
-    type: 'date',
     value: '',
+    isShow: true,
     ...properties,
+  }
+}
+
+const dateField = (properties) => {
+  return {
+    menu: false,
+    type: 'date',
+    ...defaultProperties(properties),
   }
 }
 
 const stringField = (properties) => {
   return {
-    id: uuidv4(),
-    readonly: false,
-    disable: false,
     type: 'string',
-    value: '',
-    ...properties,
+    ...defaultProperties(properties),
   }
 }
 
 const selectField = (properties) => {
   return {
-    id: uuidv4(),
-    readonly: false,
-    disable: false,
     type: 'select',
-    value: '',
-    ...properties,
+    ...defaultProperties(properties),
   }
 }
 
 const autocompleteField = (properties) => {
   return {
-    id: uuidv4(),
-    readonly: false,
-    disable: false,
     type: 'autocomplete',
     value: '',
-    loading: false,
-    ...properties,
+    ...defaultProperties(properties),
   }
 }
 
 const textareaField = (properties) => {
   return {
-    id: uuidv4(),
-    readonly: false,
-    disable: false,
     type: 'textarea',
-    value: '',
-    ...properties,
+    ...defaultProperties(properties),
   }
 }
 
 const datetimeField = (properties) => {
   return {
-    id: uuidv4(),
-    readonly: false,
     menu: false,
-    disable: false,
     type: 'date',
-    value: '',
-    ...properties,
+    ...defaultProperties(properties),
   }
 }
 

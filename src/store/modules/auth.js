@@ -1,5 +1,5 @@
 //import
-import { login, me } from '@/api/login'
+import { login } from '@/api/login'
 //import axios from 'axios'
 
 const auth = {
@@ -10,7 +10,6 @@ const auth = {
   },
   mutations: {
     setToken(state, token) {
-      console.log('mutation user')
       //state.user = user
       state.token = token
     },
@@ -23,8 +22,7 @@ const auth = {
     },
     async checkMe() {
       //try {
-      const result = await me()
-      console.log(result)
+      //const result = await me()
       //commit('auth/setToken', result.AccessToken)
     },
   },

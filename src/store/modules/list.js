@@ -7,7 +7,6 @@ const list = {
   actions: {
     async get(_, url) {
       const result = await getList(url)
-      console.log(result)
       return result
     },
   },

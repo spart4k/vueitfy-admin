@@ -10,7 +10,6 @@ import { ref } from 'vue'
 export default {
   name: 'Test-View',
   setup() {
-    console.log('test')
     const testRef = ref('testS')
     return {
       testRef,
