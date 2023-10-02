@@ -1,5 +1,4 @@
-import { defineComponent } from 'vue'
-import { toRefs } from '@vue/composition-api'
+import { defineComponent, watch, ref } from 'vue'
 
 const formComment = defineComponent({
   name: 'FormComment',
@@ -9,12 +8,15 @@ const formComment = defineComponent({
       default: '',
     },
   },
-  setup(props) {
-    console.log(toRefs(props))
-    const { value } = toRefs(props)
-    const text = value.value
+  setup(props, ctx) {
+    const { emit } = ctx
+    const proxyValue = ref(props.value)
+    watch(
+      () => proxyValue.value,
+      (newVal) => emit('input', newVal)
+    )
     return {
-      text,
+      proxyValue,
     }
   },
 })
