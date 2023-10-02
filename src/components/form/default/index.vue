@@ -17,7 +17,7 @@
             :sm="field.position.sm"
             class="field-col"
           >
-            <div v-if="loading && field.isShow" class="field-loading">
+            <div v-if="loading && field.isShow" class="field-loading gradient">
               <!--<p>loading</p>-->
             </div>
             <v-text-field
@@ -99,6 +99,8 @@
               :field="field"
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
+              :formData="formData"
+              ref="autocompleteRef"
             />
             <v-menu
               v-else-if="showField('date', field)"

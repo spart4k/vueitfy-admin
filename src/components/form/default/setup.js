@@ -1,6 +1,7 @@
-import Vue, { computed, ref, onMounted, watch } from 'vue'
+import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/autocomplete'
+import { selectsApi } from '@/api'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -29,6 +30,7 @@ export default {
     //const syncForm = ref({})
     const route = useRoute()
     const router = useRouter()
+    const autocompleteRef = ref(null)
     const context = {
       root: {
         store,
@@ -36,6 +38,7 @@ export default {
         _,
       },
     }
+    const loading = ref(true)
     const { alias } = props.tab
     const fields = () => {
       const fields = {}
@@ -86,6 +89,28 @@ export default {
         return queries
       }
     }
+    const loadAutocompletes = async () => {
+      const fields = props.tab.fields
+        .filter((el) => el.type === 'autocomplete' && el.isShow)
+        .map((el) => el)
+      console.log(fields)
+      const queryFields = fields.map(async (el) => {
+        const { url } = el
+        const data = await selectsApi.getApi(url, {
+          countRows: 10,
+          currentPage: 1,
+          searchValue: '',
+          id: formData[el.name],
+        })
+        if (data.rows) {
+          el.items = [...el.items, ...data.rows]
+          el.items = data.rows
+        }
+        return data
+      })
+      const result = await Promise.all(queryFields)
+      console.log(result)
+    }
     const getData = async () => {
       const [syncForm, lists] = await Promise.all(initPreRequest())
       for (let formKey in syncForm.data) {
@@ -97,10 +122,10 @@ export default {
           formData[field.name] = syncForm.data[formKey]
         }
       }
-      //const queries = searchFields.value.map((el) => {
-      //  const field = props.tab.fields.find((field) => field.name === el.name)
-      //  return (el = querySelections(el, field))
+      //const queries = autocompleteRef.value.forEach((component) => {
+      //  console.log(component)
       //})
+      //queries()
       //await Promise.all(queries)
       if (hasSelect()) {
         for (let keyList in lists.data) {
@@ -108,6 +133,7 @@ export default {
           field.items = lists.data[keyList]
         }
       }
+      await loadAutocompletes()
       //const queries = props.tab.fields
       //  .filter((el) => el.search !== undefined)
       //  .map((el) => (el = querySelections('', el)))
@@ -115,10 +141,11 @@ export default {
       //props.tab.fields.forEach( async (el) => {
       //  const result = await querySelections({id: -1, string: ''}, el)
       //})
+      loading.value = false
     }
     const params = props.tab.lists
     const queryString = '?lists=' + [...params]
-    const { loading, makeRequest: makeRequestList } = useRequest({
+    const { makeRequest: makeRequestList } = useRequest({
       context,
       request: () => store.dispatch('list/get', `get/lists${queryString}`),
     })
@@ -131,15 +158,8 @@ export default {
       validate()
     }
     onMounted(async () => {
-      loading.value = true
       await getData()
     })
-    watch(
-      () => loading.value,
-      () => {
-        console.log(loading.value)
-      }
-    )
     return {
       searchFields,
       //endIntersect,
@@ -154,6 +174,7 @@ export default {
       loading,
       showField,
       allLoaded,
+      autocompleteRef,
     }
   },
 }

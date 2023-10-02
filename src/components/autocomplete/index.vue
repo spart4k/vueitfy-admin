@@ -2,7 +2,7 @@
   <div class="">
     <v-autocomplete
       clearable
-      v-model="value"
+      v-model="proxyValue"
       :loading="field.loading"
       :items="field.items"
       :search-input.sync="field.search"

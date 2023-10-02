@@ -1,4 +1,4 @@
-import { computed, watch, onMounted } from 'vue'
+import { watch, ref, onMounted } from 'vue'
 import { selectsApi } from '@/api'
 
 export default {
@@ -15,14 +15,18 @@ export default {
       type: Array,
       default: () => [],
     },
+    formData: {
+      type: Object,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
     console.log('ref')
-    const proxyValue = computed({
-      get: () => props.value,
-      set: (value) => emit('input', value),
-    })
+    const proxyValue = ref(props.value)
+    //const proxyValue = computed({
+    //  get: () => props.value,
+    //  set: (value) => emit('input', value),
+    //})
     const querySelections = async (params) => {
       if (params.search || params.id) {
         console.log(params.search, params.id)
@@ -76,17 +80,6 @@ export default {
       proxyValue.value = null
     }
     watch(
-      () => props.value,
-      (newVal, oldVal) => {
-        console.log(newVal, oldVal)
-        const params = {
-          id: props.value,
-          search: props.field.search,
-        }
-        querySelections(params)
-      }
-    )
-    watch(
       () => props.field.search,
       (newVal, oldVal) => {
         console.log(newVal, oldVal)
@@ -94,16 +87,22 @@ export default {
           id: props.value,
           search: props.field.search,
         }
-        querySelections(params)
+        if (newVal !== null) querySelections(params)
       }
     )
+    watch(
+      () => proxyValue.value,
+      (newVal) => emit('input', newVal)
+    )
     onMounted(() => {
+      console.log(props.formData[props.field.name])
       console.log(props.value)
     })
     return {
       proxyValue,
       endIntersect,
       removeSelected,
+      querySelections,
     }
   },
 }
