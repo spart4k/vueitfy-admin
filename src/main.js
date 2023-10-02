@@ -10,13 +10,13 @@ import PortalVue from 'portal-vue'
 import DatetimePicker from 'vuetify-datetime-picker'
 import './plugins'
 Vue.use(DatetimePicker)
-import VueCompositionApi from '@vue/composition-api'
+// import VueCompositionApi from '@vue/composition-api'
 
 //import mainJS from '@/trash/main.js'
 
 Vue.config.productionTip = false
 Vue.use(PortalVue)
-Vue.use(VueCompositionApi)
+// Vue.use(VueCompositionApi)
 
 new Vue({
   router,

@@ -26,6 +26,7 @@
           @changeMailKey="changeMailKey"
           @decreaseUnreadMailsCount="decreaseUnreadMailsCount"
           @getPagination="getPagination"
+          @getMails="getMails"
           :tagsData="filterData.tagsData"
           :selectedMails="selectedMails"
           :data="mailsData"

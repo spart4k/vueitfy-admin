@@ -1,5 +1,6 @@
 <template>
   <div :class="['v-container', 'd-flex']">
+    <!-- {{ $props.selectedMails }} -->
     <div
       :class="[
         'v-container-box',
@@ -16,8 +17,9 @@
             $route?.query?.filter === 'box') &&
             'v-container-box-column__horizontal',
         ]"
-        v-for="item in $props.data"
-        :key="item.id"
+        v-for="(item, index) in $props.data"
+        :key="item?.id"
+        ref="upperItems"
       >
         <div
           v-if="
@@ -28,10 +30,9 @@
           "
           class="v-container-box-column-title"
         >
-          {{ item.name }}{{ item.id }}
+          {{ item.name }}{{ item?.id }}
         </div>
         <div class="v-container-box-column-items">
-          <!-- {{ item?.mails?.rows }} -->
           <template v-if="item?.mails?.rows && !item?.mails?.rows?.length">
             <div class="v-container-box-column-items_stub">
               <p>Нет писем</p>
@@ -41,14 +42,16 @@
             <MailsLetter
               :companyColor="item.color"
               :data="mail"
-              :active="Number($route.query.mail) === mail.id"
-              v-for="(mail, index) in item?.mails?.rows"
-              :key="index"
+              :active="Number($route.query.mail) === mail?.id"
+              v-for="(mail, mailIndex) in item?.mails?.rows"
+              :key="mailIndex"
               :tagsData="$props.tagsData"
               :selectedMails="selectedMails"
-              @setActiveMail="setActiveMail"
-              v-intersect="
-                item?.mails?.rows?.length === index + 1 && getPagination(item)
+              @setActiveMail="($emit) => setActiveMail($emit, index, mailIndex)"
+              @getMails="$emit('getMails')"
+              ref="lowerItems"
+              v-intersect.once="
+                item?.mails?.rows?.length === mailIndex + 1 && getPagination
               "
             />
           </template>

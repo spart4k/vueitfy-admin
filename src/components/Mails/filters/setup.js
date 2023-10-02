@@ -5,7 +5,8 @@
 // import vButton from '@/components/button/index.vue'
 // import { useRouter } from 'vue-router'
 // import { useRouter, useRoute } from 'vue-router'
-import { ref, onMounted, computed } from '@vue/composition-api'
+import { useRoute, useRouter } from 'vue-router/composables'
+import { ref, onMounted } from 'vue'
 import Popup from '../../popup/index.vue'
 import { useStore } from '@/store'
 
@@ -22,9 +23,9 @@ const filters = {
   },
   setup(props, context) {
     const store = useStore()
-    const router = context.root.$router
+    const router = useRouter()
     const { emit } = context
-    const route = computed(() => context.root.$route)
+    const route = useRoute()
     const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
     const filters = ref([
       {
@@ -95,9 +96,9 @@ const filters = {
       }
     }
     const setRouterPath = (val) => {
-      let colorArray = route?.value?.query?.color
-      let filter = route?.value?.query?.filter
-      let id = route?.value?.query?.id
+      let colorArray = route?.query?.color
+      let filter = route?.query?.filter
+      let id = route?.query?.id
       if (val.color) {
         if (!colorArray) colorArray = []
         if (colorArray?.length) colorArray = JSON.parse(colorArray)
@@ -159,23 +160,22 @@ const filters = {
         if (Object.keys(requestData).length) {
           newCase.value.loading = true
           let newObject
+          console.log('newCase.value', newCase.value)
           if (newCase.value.type === 'folder') {
             if (newCase.value.id) {
-              newObject = await store.dispatch(
-                'mail/editFolder',
-                requestData,
-                newCase.value.id
-              )
+              newObject = await store.dispatch('mail/editFolder', {
+                content: requestData,
+                id: newCase.value.id,
+              })
             } else {
               newObject = await store.dispatch('mail/createFolder', requestData)
             }
           } else if (newCase.value.type === 'box') {
             if (newCase.value.id) {
-              newObject = await store.dispatch(
-                'mail/editBox',
-                requestData,
-                newCase.value.id
-              )
+              newObject = await store.dispatch('mail/editBox', {
+                content: requestData,
+                id: newCase.value.id,
+              })
             } else {
               newObject = await store.dispatch('mail/createBox', requestData)
             }
@@ -216,10 +216,10 @@ const filters = {
       openCreatePopup(type, action)
     }
     onMounted(async () => {
-      if (route.value.query.filter === 'box') {
+      if (route.query.filter === 'box') {
         boxPanel.value = 0
       }
-      if (route.value.query.filter === 'folder') {
+      if (route.query.filter === 'folder') {
         folderPanel.value = 0
       }
     })

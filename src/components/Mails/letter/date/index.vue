@@ -4,7 +4,7 @@
       <v-icon
         :color="$props?.data?.isfavorites ? 'warning' : ''"
         small
-        @click="
+        @click.stop="
           $parent.$parent.$emit('changeMailKey', {
             id: $props?.data?.id,
             isfavorites: $props?.data?.isfavorites,

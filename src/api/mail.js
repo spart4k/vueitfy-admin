@@ -12,7 +12,7 @@ export const createBox = (data) => post('box/new', data)
 
 export const createFolder = (data) => post('folder', data)
 
-export const editBox = (data, params) => put(`/box/${params}`, data)
+export const editBox = (data, params) => put(`box/${params}`, data)
 
 export const editFolder = (data, params) => put(`folder/${params}`, data)
 
@@ -28,3 +28,5 @@ export const getFolderMails = (data, params) =>
 export const changeMail = (data, params) => put(`mail/${params}`, data)
 
 export const deleteMails = (data) => put('mails/del', data)
+
+export const zxc = () => del('mails/sasha_go')

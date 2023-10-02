@@ -1,6 +1,7 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { computed } from 'vue'
+// import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router/composables'
 // import { tableApi } from '@/api'
 import MailsLetterUser from './user/index.vue'
 import MailsLetterDate from './date/index.vue'
@@ -33,15 +34,19 @@ const letter = {
     MailsLetterDate,
   },
   setup(props, context) {
-    const router = context.root.$router
-    const route = computed(() => context.root.$route)
+    const router = useRouter()
+    const route = useRoute()
+    const { emit } = context
     const setActiveColorFilter = (val) => {
-      router
-        .push({
-          path: 'mails',
-          query: { ...route.value.query, ...{ color: val } },
-        })
-        .catch(() => {})
+      let colorArray = JSON.stringify([val])
+      let filter = route?.query?.filter
+      let id = route?.query?.id
+      const newQuery = {}
+      newQuery.filter = filter
+      newQuery.color = colorArray
+      if (id) newQuery.id = id
+      router.push({ query: newQuery }).catch(() => {})
+      emit('getMails')
     }
     return {
       setActiveColorFilter,

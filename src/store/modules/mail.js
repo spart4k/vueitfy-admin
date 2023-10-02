@@ -13,6 +13,7 @@ import {
   getBoxMails,
   getFolderMails,
   changeMail,
+  zxc,
 } from '@/api/mail'
 
 const mail = {
@@ -23,6 +24,15 @@ const mail = {
     async getBoxes(_, data) {
       try {
         const response = await getBoxes(data)
+        return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async zxc(_, data) {
+      try {
+        const response = await zxc(data)
         return response.data
       } catch (e) {
         console.log(e)
@@ -74,18 +84,18 @@ const mail = {
       }
     },
 
-    async editBox(_, data, params) {
+    async editBox(_, data) {
       try {
-        const response = await editBox(data, params)
+        const response = await editBox(data.content, data.id)
         return response.data
       } catch (e) {
         console.log(e)
       }
     },
 
-    async editFolder(_, data, params) {
+    async editFolder(_, data) {
       try {
-        const response = await editFolder(data, params)
+        const response = await editFolder(data.content, data.id)
         return response.data
       } catch (e) {
         console.log(e)
@@ -141,7 +151,7 @@ const mail = {
     async getFolderMails(_, data) {
       try {
         const response = await getFolderMails(data.content, data.id)
-        return response
+        return response.data
       } catch (e) {
         console.log(e)
       }

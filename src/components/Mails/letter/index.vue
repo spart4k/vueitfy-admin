@@ -14,7 +14,7 @@
         class="v-letter-left_icon"
         :color="$props?.data?.ismain ? 'warning' : ''"
         small
-        @click="
+        @click.stop="
           $parent.$emit('changeMailKey', {
             id: $props.data.id,
             ismain: $props.data.ismain,
@@ -29,6 +29,7 @@
         color="primary"
         :value="$props.selectedMails.includes($props.data.id)"
         class="v-letter-left_checkbox"
+        @click.stop
         @change="$parent.$emit('changeSelection', $props.data.id)"
       ></v-checkbox>
       <div
@@ -49,7 +50,7 @@
         </p>
         <p
           class="v-letter-content-info_text"
-          v-html="$props.data.message_text"
+          v-html="$props?.data?.message_text"
         ></p>
       </div>
       <div class="v-letter-content-files">
@@ -65,15 +66,17 @@
         <div class="v-letter-content-files_additional-item">+2</div>
       </div>
       <div class="v-letter-content-tags">
-        <div
-          class="v-letter-content-tags_item"
-          v-for="(item, index) in JSON.parse($props?.data?.tags)"
-          :key="index"
-          :style="{
-            background: $props?.tagsData?.find((x) => x.id === item)?.color,
-          }"
-          @click="setActiveColorFilter(item)"
-        ></div>
+        <template v-if="$props?.data?.tags">
+          <div
+            class="v-letter-content-tags_item"
+            v-for="(item, index) in JSON.parse($props?.data?.tags)"
+            :key="index"
+            :style="{
+              background: $props?.tagsData?.find((x) => x.id === item)?.color,
+            }"
+            @click.stop="setActiveColorFilter(item)"
+          ></div>
+        </template>
       </div>
     </div>
   </div>

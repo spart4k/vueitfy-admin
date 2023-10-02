@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { ref, onMounted } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router/composables'
 // import { tableApi } from '@/api'
@@ -30,10 +30,19 @@ const container = {
     const store = useStore()
     const route = useRoute()
     const { emit } = context
-    const activeMail = ref({})
-    const setActiveMail = async (val) => {
+    const activeMail = ref(null)
+
+    const lowerItems = ref(null)
+    const upperItems = ref(null)
+
+    const setActiveMail = async (val, upIndex, lowIndex) => {
       emit('setActiveMail', val)
       activeMail.value = val
+      nextTick(() => {
+        upperItems.value[upIndex].scrollIntoView({ behavior: 'smooth' })
+        lowerItems.value[lowIndex].$el.scrollIntoView({ behavior: 'smooth' })
+      })
+
       if (!val.is_read) {
         const request = {
           content: {
@@ -46,19 +55,36 @@ const container = {
         emit('decreaseUnreadMailsCount')
       }
     }
-    const getPagination = (isIntersecting, entries, observer, data) => {
-      if (observer) {
-        console.log('getPagination', data)
+    const getPagination = (val) => {
+      let rowItem = props.data.find(
+        (x) => x.id === val[0].target.__vue__.data.box_id
+      )
+      if (route?.query?.filter === 'folder' || route?.query?.filter === 'box')
+        rowItem = props.data[0]
+      if (val[0].isIntersecting) {
+        emit('getPagination', rowItem)
       }
     }
-    onMounted(() => {
-      const mail = props.data
-        .find((x) => x.id === Number(route?.query?.box))
-        .mails.find((x) => x.id === Number(route?.query?.mail))
-      activeMail.value = mail
-    })
+
+    watch(
+      () =>
+        props.data[
+          props.data.findIndex((x) => x.id === Number(route?.query?.box))
+        ]?.mails?.rows,
+      () => {
+        if (route?.query?.mail) {
+          const mail = props.data
+            .find((x) => x.id === Number(route?.query?.box))
+            .mails?.rows?.find((x) => x.id === Number(route?.query?.mail))
+          activeMail.value = mail
+        }
+      }
+    )
     return {
       activeMail,
+
+      lowerItems,
+      upperItems,
 
       setActiveMail,
       getPagination,

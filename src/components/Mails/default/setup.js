@@ -1,9 +1,10 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue from 'vue'
-import { ref, onMounted, computed } from '@vue/composition-api'
+// import Vue from 'vue'
+import Vue, { ref, onMounted, computed } from 'vue'
 import _ from 'lodash'
 import { useStore } from '@/store'
+import { useRoute, useRouter } from 'vue-router/composables'
 // import { tableApi } from '@/api'
 import MailsFilters from '../filters/index.vue'
 import MailsControls from '../controls/index.vue'
@@ -21,8 +22,8 @@ const mails = {
   props: {},
   setup(props, context) {
     const store = useStore()
-    const router = context.root.$router
-    const route = computed(() => context.root.$route)
+    const router = useRouter()
+    const route = useRoute()
     const originalData = ref([])
     const folderData = ref([])
     const mailsData = ref([])
@@ -40,7 +41,7 @@ const mails = {
       const arrayFull = []
       mailsData.value.forEach((item) => {
         if (item.mails) {
-          item.mails.forEach((mail) => {
+          item.mails.rows.forEach((mail) => {
             arrayId.push(mail.id)
             arrayFull.push(mail)
           })
@@ -77,15 +78,15 @@ const mails = {
     const getMails = async () => {
       selectedAllMails.value = false
       selectedMails.value = []
-      if (route?.value?.query?.id) {
-        if (route?.value?.query?.filter === 'folder') {
+      if (route?.query?.id) {
+        if (route?.query?.filter === 'folder') {
           // mailsData.value = _.cloneDeep(filterData.value.boxData)
-          mailsData.value = [{ id: Number(route?.value?.query?.id) }]
+          mailsData.value = [{ id: Number(route?.query?.id) }]
         } else {
           mailsData.value = [
             _.cloneDeep(
               filterData.value.boxData.find(
-                (e) => e.id === Number(route?.value?.query?.id)
+                (e) => e.id === Number(route?.query?.id)
               )
             ),
           ]
@@ -102,32 +103,44 @@ const mails = {
 
     const getPagination = async (val) => {
       let colorTags = []
-      if (route?.value?.query?.color?.length)
-        colorTags = JSON.parse(route?.value?.query?.color)
+      if (route?.query?.color?.length)
+        colorTags = JSON.parse(route?.query?.color)
       const requestData = {
         content: {
           page: 1,
           count: 20,
           tags: colorTags,
-          // props: route?.value?.query?.id
-          //   ? {
-          //       all: true,
-          //     }
-          //   : {
-          //       [route?.value?.query?.filter]:
-          //         route?.value?.query?.filter !== 'is_read',
-          //     },
+          props: route?.query?.id
+            ? {
+                all: true,
+              }
+            : {
+                [route?.query?.filter]: route?.query?.filter !== 'is_read',
+              },
         },
         id: val.id,
       }
-      let data
-      if (route?.value?.query?.filter === 'folder') {
-        data = await store.dispatch('mail/getFolderMails', requestData)
+      if (val?.mails && val?.mails?.rows?.length !== val?.mails.total) {
+        requestData.content.page = val?.mails?.rows?.length / 20 + 1
       } else {
-        data = await store.dispatch('mail/getBoxMails', requestData)
+        requestData.content.page = 1
       }
-      if (data?.rows) {
-        Vue.set(val, 'mails', data)
+      if (!val?.mails || val?.mails?.rows?.length !== val?.mails?.total) {
+        let data
+        if (route?.query?.filter === 'folder') {
+          data = await store.dispatch('mail/getFolderMails', requestData)
+        } else {
+          data = await store.dispatch('mail/getBoxMails', requestData)
+        }
+        if (data?.rows) {
+          if (val?.mails) {
+            for (const item of data?.rows) {
+              val?.mails?.rows.push(item)
+            }
+          } else {
+            Vue.set(val, 'mails', data)
+          }
+        }
       }
       // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
     }
@@ -142,7 +155,7 @@ const mails = {
       await store.dispatch('mail/changeMail', request)
       const company =
         mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
-          .mails
+          .mails.rows
       const mail = company.find((x) => x.id === val.id)
       mail[val.key] = !val[val.key]
     }
@@ -161,12 +174,10 @@ const mails = {
               })
             }
           })
-          if (Number(route.value.query.mail) === item) {
+          if (Number(route.query.mail) === item) {
             const newQuery = {}
-            if (route?.value?.query?.filter)
-              newQuery.filter = route?.value?.query?.filter
-            if (route?.value?.query?.color)
-              newQuery.color = route?.value?.query?.color
+            if (route?.query?.filter) newQuery.filter = route?.query?.filter
+            if (route?.query?.color) newQuery.color = route?.query?.color
             router
               .push({
                 query: { ...newQuery },
@@ -193,7 +204,7 @@ const mails = {
     }
 
     const setActiveMail = (val) => {
-      const oldQuery = route.value.query
+      const oldQuery = route.query
       if (oldQuery.compose) delete oldQuery.compose
       router
         .push({
@@ -246,14 +257,19 @@ const mails = {
     // })
     // }
 
+    const zxc = async () => {
+      await store.dispatch('mail/zxc')
+    }
+
     onMounted(async () => {
-      if (!route?.value?.query?.filter) {
+      if (!route?.query?.filter) {
         router.push({
           query: { filter: 'all' },
         })
       }
       await getFilterData()
-      getMails()
+      await getMails()
+      zxc()
     })
 
     return {
