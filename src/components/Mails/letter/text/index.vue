@@ -14,7 +14,7 @@
     <div class="v-text-title mb-1">{{ $props?.data?.subject }}</div>
     <div
       class="v-text-text mb-1 flex-grow-1"
-      v-html="$props?.data?.message_text"
+      v-html="$props?.data?.message_text.replace('<br><br><br>', '')"
     ></div>
   </div>
 </template>

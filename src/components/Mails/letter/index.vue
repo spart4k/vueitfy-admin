@@ -50,7 +50,7 @@
         </p>
         <p
           class="v-letter-content-info_text"
-          v-html="$props?.data?.message_text"
+          v-html="$props?.data?.message_text.replace('<br><br><br>', '')"
         ></p>
       </div>
       <div class="v-letter-content-files">

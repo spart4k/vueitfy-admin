@@ -16,8 +16,10 @@ const edit = {
         files.value.splice(index, 1)
       }, 0)
     }
+    const content = ref('')
     return {
       files,
+      content,
       deleteItem,
     }
   },

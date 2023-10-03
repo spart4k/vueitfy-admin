@@ -125,8 +125,13 @@ const filters = {
         newQuery = {
           compose: 'new',
         }
-      router.push({ query: newQuery }).catch(() => {})
-      emit('getMails')
+      if (
+        route?.query?.filter !== val.filter ||
+        Number(route?.query?.id) !== val.id
+      ) {
+        router.push({ query: newQuery }).catch(() => {})
+        emit('getMails')
+      }
     }
 
     const deleteFolder = async () => {
@@ -160,7 +165,6 @@ const filters = {
         if (Object.keys(requestData).length) {
           newCase.value.loading = true
           let newObject
-          console.log('newCase.value', newCase.value)
           if (newCase.value.type === 'folder') {
             if (newCase.value.id) {
               newObject = await store.dispatch('mail/editFolder', {

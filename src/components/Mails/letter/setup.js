@@ -2,6 +2,7 @@
 //document.adoptedStyleSheets.push(style)
 // import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
+import _ from 'lodash'
 // import { tableApi } from '@/api'
 import MailsLetterUser from './user/index.vue'
 import MailsLetterDate from './date/index.vue'
@@ -45,8 +46,15 @@ const letter = {
       newQuery.filter = filter
       newQuery.color = colorArray
       if (id) newQuery.id = id
-      router.push({ query: newQuery }).catch(() => {})
-      emit('getMails')
+      if (route?.query?.color) {
+        if (!_.isEqual([val], JSON.parse(route?.query?.color))) {
+          router.push({ query: newQuery }).catch(() => {})
+          emit('getMails')
+        }
+      } else {
+        router.push({ query: newQuery }).catch(() => {})
+        emit('getMails')
+      }
     }
     return {
       setActiveColorFilter,

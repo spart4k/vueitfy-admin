@@ -21,8 +21,6 @@
         >
         Транслировать
       </v-btn>
-      <!-- {{ $props.allMails.arrayFull }} -->
-      <!-- {{ read }} -->
       <v-btn
         :disabled="!$props.selectedMails.length"
         class="v-controls-list_item"
@@ -36,7 +34,11 @@
           x-small
           >$IconCheckoutMessage</v-icon
         >
-        Прочитано
+        {{
+          intersection.read.length === $props.selectedMails.length
+            ? 'Не прочитаны'
+            : 'Прочитано'
+        }}
       </v-btn>
       <v-btn
         class="v-controls-list_item"
@@ -57,15 +59,28 @@
         v-if="$props.filterData.folderData.length"
         content-class="v-controls-list_menu"
         activator="#menu-activator"
+        :close-on-content-click="false"
       >
         <v-list>
           <v-list-item
             v-for="item in $props.filterData.folderData"
             :key="item.id"
-            class="v-controls-list_menu-item"
+            :class="[
+              'v-controls-list_menu-item',
+              intersection.folders.includes(item.id) &&
+                'v-controls-list_menu-item__active',
+            ]"
             @click="$emit('changeMailArrayKey', 'folders', item)"
-            >{{ item.name }}</v-list-item
           >
+            {{ item.name }}
+            <v-icon
+              v-if="intersection.folders.includes(item.id)"
+              color="text"
+              class="mr-3"
+              small
+              >$IconDelete</v-icon
+            >
+          </v-list-item>
         </v-list>
       </v-menu>
       <v-btn
@@ -87,6 +102,7 @@
         v-if="$props.filterData.tagsData.length"
         content-class="v-controls-list_tags"
         activator="#tags-activator"
+        :close-on-content-click="false"
       >
         <v-list>
           <v-list-item
@@ -96,7 +112,8 @@
             @click="$emit('changeMailArrayKey', 'tags', item)"
             :class="[
               'v-controls-list_tags-item',
-              false && 'v-controls-list_tags-item__active',
+              intersection.tags.includes(item.id) &&
+                'v-controls-list_tags-item__active',
             ]"
           ></v-list-item>
         </v-list>

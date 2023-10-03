@@ -36,23 +36,24 @@ const container = {
     const upperItems = ref(null)
 
     const setActiveMail = async (val, upIndex, lowIndex) => {
-      emit('setActiveMail', val)
-      activeMail.value = val
-      nextTick(() => {
-        upperItems.value[upIndex].scrollIntoView({ behavior: 'smooth' })
-        lowerItems.value[lowIndex].$el.scrollIntoView({ behavior: 'smooth' })
-      })
-
-      if (!val.is_read) {
-        const request = {
-          content: {
-            is_read: true,
-          },
-          id: val.id,
+      if (val.id !== Number(route?.query?.mail)) {
+        emit('setActiveMail', val)
+        activeMail.value = val
+        nextTick(() => {
+          upperItems.value[upIndex].scrollIntoView()
+          lowerItems.value[lowIndex].$el.scrollIntoView({ behavior: 'smooth' })
+        })
+        if (!val.is_read) {
+          const request = {
+            content: {
+              is_read: true,
+            },
+            id: val.id,
+          }
+          await store.dispatch('mail/changeMail', request)
+          val.is_read = true
+          emit('decreaseUnreadMailsCount')
         }
-        await store.dispatch('mail/changeMail', request)
-        val.is_read = true
-        emit('decreaseUnreadMailsCount')
       }
     }
     const getPagination = (val) => {
@@ -77,6 +78,20 @@ const container = {
             .find((x) => x.id === Number(route?.query?.box))
             .mails?.rows?.find((x) => x.id === Number(route?.query?.mail))
           activeMail.value = mail
+          nextTick(() => {
+            const upUndex = props.data.findIndex(
+              (x) => x.id === Number(route?.query?.box)
+            )
+            const lowIndex = props.data[upUndex].mails?.rows?.findIndex(
+              (x) => x.id === Number(route?.query?.mail)
+            )
+            upperItems.value[upUndex].scrollIntoView()
+            if (lowerItems?.value[lowIndex]?.$el) {
+              lowerItems.value[lowIndex].$el.scrollIntoView({
+                behavior: 'smooth',
+              })
+            }
+          })
         }
       }
     )

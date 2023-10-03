@@ -29,11 +29,12 @@ const controls = {
   },
   setup(props) {
     const popupCase = ref(false)
-    const read = computed(() => {
+    const intersection = computed(() => {
       const array = {
         full: [],
         tags: [],
         folders: [],
+        read: [],
       }
       props.selectedMails.forEach((item) => {
         array.full.push(props.allMails.arrayFull.find((e) => e.id === item))
@@ -41,14 +42,16 @@ const controls = {
       array.full.forEach((item) => {
         array.tags.push(JSON.parse(item.tags))
         array.folders.push(JSON.parse(item.folders))
+        array.read.push(item.is_read)
       })
-      array.tags = _.intersection(array.tags)
-      array.folders = _.intersection(array.folders)
+      array.tags = _.intersection(...array.tags)
+      array.folders = _.intersection(...array.folders)
+      array.read = array.read.filter((e) => e === true)
       return array
     })
     return {
       popupCase,
-      read,
+      intersection,
     }
   },
 }

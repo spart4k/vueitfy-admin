@@ -3,12 +3,8 @@
 // import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
 const text = {
-  name: 'Text',
+  name: 'Mail-text',
   props: {
-    expanded: {
-      type: Boolean,
-      default: false,
-    },
     edit: {
       type: Boolean,
       default: false,

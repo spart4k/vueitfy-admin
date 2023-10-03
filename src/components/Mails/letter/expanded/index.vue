@@ -33,8 +33,8 @@
     <div class="v-letter-expanded-container">
       <MailsLetterTextEdit v-if="$route?.query?.compose" />
       <MailsLetterText
-        :data="$props?.data"
         v-if="$route?.query?.compose !== 'new' && $props?.data"
+        :data="$props?.data"
         :edit="!$route?.query?.compose || $route?.query?.compose === 'edit'"
       />
     </div>
