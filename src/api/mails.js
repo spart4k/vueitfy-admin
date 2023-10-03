@@ -10,10 +10,9 @@ export default class Mails {
   async getBoxes(params) {
     try {
       const { data } = await axios.post(`${urlK}/box`, params)
-      console.log(data)
       return data
     } catch (error) {
-      console.log(error)
+      return error
     }
   }
 
@@ -121,6 +120,7 @@ export default class Mails {
       return data
     } catch (error) {
       console.log(error)
+      return error
     }
   }
 }

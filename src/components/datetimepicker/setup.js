@@ -24,52 +24,25 @@ export default {
     const { emit } = ctx
     const menu = ref(false)
     const menuRef = ref(null)
-    const field = ref({
-      id: 5,
-      label: 'Время создания',
-      name: 'datetime',
-      value: '',
-      type: 'datetime',
-      subtype: 'datetime',
-      readonly: false,
-      menu: false,
-      placeholder: '',
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 4,
-      },
-      bootstrapClass: [''],
-      disable: false,
-    })
-    const formData = ref({
-      datetime: '',
-    })
     const tabs = ref({
       date: {
         id: 0,
         name: 'Дата',
-        value: '',
+        value: props.value ? props.value.split(' ')[0] : '',
       },
       time: {
         id: 1,
         name: 'Время',
-        value: '',
+        value: props.value ? props.value.split(' ')[1] : '',
       },
     })
     const activeTab = ref(null)
     const formatedValue = computed(() => {
       return `${tabs.value.date.value} ${tabs.value.time.value}`
     })
-    onMounted(() => {
-      if (props.value) {
-        console.log(props.value)
-      }
-    })
     watch(
       () => tabs.value.date.value,
-      (newValue) => {
-        console.log(newValue)
+      () => {
         activeTab.value = 1
       }
     )
@@ -79,10 +52,9 @@ export default {
         emit('input', newValue)
       }
     )
+    onMounted(() => {})
     return {
       menu,
-      field,
-      formData,
       tabs,
       activeTab,
       formatedValue,

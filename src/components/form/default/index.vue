@@ -17,18 +17,18 @@
             :sm="field.position.sm"
             class="field-col"
           >
-            <div v-if="loading" class="field-loading">
+            <div v-if="loading && field.isShow" class="field-loading gradient">
               <!--<p>loading</p>-->
             </div>
             <v-text-field
-              v-else-if="field.type === 'string' && !loading"
+              v-else-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field.name]"
               clearable
             />
             <v-select
-              v-else-if="field.type === 'select' && !loading"
+              v-else-if="showField('select', field)"
               :items="field.items"
               :item-text="field.selectOption.text"
               :item-value="field.selectOption.value"
@@ -37,21 +37,21 @@
               :error-messages="formErrors[field.name]"
               persistent-hint
             ></v-select>
-            <v-autocomplete
-              v-else-if="field.type === 'autocomplete' && !loading"
+            <!--<v-autocomplete
+              v-else-if="showField('autocomplete', field)"
               :key="field.id"
               clearable
+              v-model="formData[field.name]"
               :loading="field.loading"
               :items="field.items"
               :search-input.sync="field.search"
-              v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
               :label="field.label"
               chips
               :multiple="field.subtype === 'multiple'"
               class="mb-4"
-              item-text="name"
-              item-value="id"
+              :item-text="field.selectOption.text"
+              :item-value="field.selectOption.value"
               no-data-text="Нет объектов"
             >
               <template v-slot:append>
@@ -93,9 +93,18 @@
                   </v-list-item-content>
                 </template>
               </template>
-            </v-autocomplete>
+            </v-autocomplete>-->
+            <Autocomplete
+              v-else-if="showField('autocomplete', field)"
+              :field="field"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field.name]"
+              :formData="formData"
+              ref="autocompleteRef"
+              @change="changeAutocomplete"
+            />
             <v-menu
-              v-else-if="field.type === 'date' && !loading"
+              v-else-if="showField('date', field)"
               :key="field.id"
               :ref="`menuRef_${field.id}`"
               v-model="field.menu"
@@ -126,7 +135,7 @@
               ></v-date-picker>
             </v-menu>
             <v-textarea
-              v-if="field.type === 'textarea' && !loading"
+              v-if="showField('textarea', field)"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field.name]"
@@ -134,12 +143,18 @@
               rows="1"
             />
             <Datetimepicker
-              v-else-if="field.type === 'datetime' && !loading"
+              v-else-if="showField('datetime', field)"
               :label="field.label"
               v-model="formData[field.name]"
               clearable
               :error-messages="formErrors[field.name]"
             />
+            <p>
+              <!--{{ formData[field.name] }}-->
+              <!--{{ field.items }}-->
+              <!--{{ allLoaded }}-->
+              <!--{{ field.selectOption.text + field.selectOption.value }}-->
+            </p>
           </v-col>
         </v-row>
         <v-row>

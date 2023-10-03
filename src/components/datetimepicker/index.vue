@@ -1,9 +1,8 @@
 <template>
   <div class="">
     <v-menu
-      :key="field.id"
       ref="menuRef"
-      v-model="field.menu"
+      v-model="menu"
       :close-on-content-click="false"
       transition="scale-transition"
       offset-y
@@ -32,8 +31,6 @@
             min="1950-01-01"
             color="primary"
             locale="ru-RU"
-            :type="field.subtype === 'period' ? 'month' : undefined"
-            :range="field.subtype === 'range'"
           ></v-date-picker>
         </v-tab-item>
         <v-tab-item>

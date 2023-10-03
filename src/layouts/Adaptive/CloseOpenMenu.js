@@ -2,11 +2,9 @@ import { ref, onMounted } from 'vue'
 
 export default function useMenuMobile() {
   let isOpenMenu = ref(false)
-  console.log(isOpenMenu)
 
   onMounted(() => {
     isOpenMenu.value
-    console.log(isOpenMenu, 'да это onMoumted') // <div>
   })
   // const StateMenuMob = () => {
   //   let menuMob = document.getElementById('mobileMenu')

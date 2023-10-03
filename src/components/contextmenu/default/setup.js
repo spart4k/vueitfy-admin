@@ -21,7 +21,6 @@ export default {
         return
       } else {
         // Clicked outside the box
-        console.log('close')
         this.options.isShow = false
       }
     },
@@ -29,17 +28,12 @@ export default {
   computed: {},
   watch: {
     'options.isShow': function (newVal) {
-      console.log(newVal)
       if (newVal) {
         document.addEventListener('click', this.handlerOutside)
       } else {
         document.removeEventListener('click', this.handlerOutside)
       }
     },
-  },
-  mounted() {
-    console.log(this.$el)
-    console.log('this')
   },
 }
 

@@ -513,7 +513,7 @@ const tableConfigData = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'http://10.63.1.132:5000/get/pagination/payment',
+    url: 'get/pagination/payment',
     title: 'This is an about page1',
   },
   panel: {
@@ -835,7 +835,32 @@ const tableConfigData = {
       },
     },
     {
-      title: 'Сотрудник',
+      title: 'Дата назн',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_target',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
       type: 'default',
       align: 'center',
       fixed: {
@@ -860,7 +885,7 @@ const tableConfigData = {
       },
     },
     {
-      title: 'object_name',
+      title: 'Объект',
       type: 'default',
       align: 'center',
       fixed: {
@@ -885,7 +910,7 @@ const tableConfigData = {
       },
     },
     {
-      title: 'hour',
+      title: 'Часы',
       type: 'default',
       align: 'center',
       fixed: {
@@ -904,31 +929,6 @@ const tableConfigData = {
       width: '150',
       value: 'hour',
       alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'date_target',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
       search: {
         field: '',
         isShow: true,
@@ -960,7 +960,7 @@ const tableConfigData = {
       },
     },
     {
-      title: 'total',
+      title: 'Сумма',
       type: 'default',
       align: 'center',
       fixed: {
@@ -1021,7 +1021,7 @@ const tableConfigData = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '800px',
+    width: '900px',
     method: 'get',
     alias: 'payment',
     url: '/get/form/',
@@ -1031,7 +1031,15 @@ const tableConfigData = {
         id: 0,
         name: 'Основные',
         type: 'FormDefault',
-        lists: ['vid_vedomost_id', 'status_id', 'direction_id'],
+        lists: [
+          'vid_vedomost_id',
+          'status_id',
+          'direction_id',
+          'doljnost_id',
+          'st_rashod_id',
+          'account_id',
+          'status_account_id',
+        ],
         alias: 'payment',
         active: false,
         fields: [
@@ -1175,80 +1183,14 @@ const tableConfigData = {
           }),
           selectField({
             label: 'Статус от',
-            name: 'status_from',
+            name: 'status_account_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
-            items: [
-              {
-                id: 0,
-                label: 'Абдуллина Ирина',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Адылова Ильмира',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Азаров Михаил',
-                value: 'Азаров Михаил',
-              },
-              {
-                id: 3,
-                label: 'Айтар Диляра',
-                value: 'Айтар Диляра',
-              },
-              {
-                id: 4,
-                label: 'Аккулова Дилара',
-                value: 'Аккулова Дилара',
-              },
-              {
-                id: 5,
-                label: 'Алексей Викторович',
-                value: 'Алексей Викторович',
-              },
-              {
-                id: 6,
-                label: 'Алисаидов Обид',
-                value: 'Алисаидов Обид',
-              },
-              {
-                id: 7,
-                label: 'Анна320',
-                value: 'Анна320',
-              },
-              {
-                id: 8,
-                label: 'Апаркина Татьяна',
-                value: 'Апаркина Татьяна',
-              },
-              {
-                id: 9,
-                label: 'Арешян Ирина',
-                value: 'Арешян Ирина',
-              },
-              {
-                id: 10,
-                label: 'Афанасьев Александр',
-                value: 'Афанасьев Александр',
-              },
-              {
-                id: 11,
-                label: 'Ашурзода Санжари',
-                value: 'Ашурзода Санжари',
-              },
-              {
-                id: 12,
-                label: 'Ашуров Иброхим',
-                value: 'Ашуров Иброхим',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 6,
@@ -1258,7 +1200,7 @@ const tableConfigData = {
           }),
           datetimeField({
             label: 'Смена статуса',
-            name: 'chamge_status',
+            name: 'date_status',
             value: '',
             type: 'datetime',
             subtype: 'datetime',
@@ -1276,7 +1218,7 @@ const tableConfigData = {
           }),
           dateField({
             label: 'Дата начисл:',
-            name: 'date_payment',
+            name: 'date_add',
             subtype: 'datetime',
             placeholder: '',
             classes: [''],
@@ -1287,20 +1229,17 @@ const tableConfigData = {
             validations: { required },
             bootstrapClass: [''],
           }),
-          autocompleteField({
+          selectField({
             label: 'Менеджер',
-            name: 'manager',
+            name: 'account_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [],
-            page: 1,
-            search: '',
-            url: 'http://10.63.1.132:5000/get/pagination_list/object',
             position: {
               cols: 12,
               sm: 6,
@@ -1317,73 +1256,7 @@ const tableConfigData = {
               text: 'name',
               value: 'id',
             },
-            items: [
-              {
-                id: 0,
-                label: 'Абдуллина Ирина',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Адылова Ильмира',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Азаров Михаил',
-                value: 'Азаров Михаил',
-              },
-              {
-                id: 3,
-                label: 'Айтар Диляра',
-                value: 'Айтар Диляра',
-              },
-              {
-                id: 4,
-                label: 'Аккулова Дилара',
-                value: 'Аккулова Дилара',
-              },
-              {
-                id: 5,
-                label: 'Алексей Викторович',
-                value: 'Алексей Викторович',
-              },
-              {
-                id: 6,
-                label: 'Алисаидов Обид',
-                value: 'Алисаидов Обид',
-              },
-              {
-                id: 7,
-                label: 'Анна320',
-                value: 'Анна320',
-              },
-              {
-                id: 8,
-                label: 'Апаркина Татьяна',
-                value: 'Апаркина Татьяна',
-              },
-              {
-                id: 9,
-                label: 'Арешян Ирина',
-                value: 'Арешян Ирина',
-              },
-              {
-                id: 10,
-                label: 'Афанасьев Александр',
-                value: 'Афанасьев Александр',
-              },
-              {
-                id: 11,
-                label: 'Ашурзода Санжари',
-                value: 'Ашурзода Санжари',
-              },
-              {
-                id: 12,
-                label: 'Ашуров Иброхим',
-                value: 'Ашуров Иброхим',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 3,
@@ -1393,34 +1266,35 @@ const tableConfigData = {
           }),
           autocompleteField({
             label: 'Линейщик',
-            name: 'employeer:',
+            name: 'personal_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [],
             page: 1,
             search: '',
-            url: 'http://10.63.1.132:5000/get/pagination_list/object',
+            url: 'http://10.63.1.132:5000/get/pagination_list/personal',
             position: {
               cols: 12,
               sm: 4,
             },
             validations: { required },
             bootstrapClass: [''],
+            dependence: ['statement_card', 'cardowner'],
           }),
           autocompleteField({
             label: 'Объект',
-            name: 'object:',
+            name: 'object_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [],
             page: 1,
@@ -1435,30 +1309,14 @@ const tableConfigData = {
           }),
           selectField({
             label: 'Должность:',
-            name: 'job_title',
+            name: 'doljnost_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
-            items: [
-              {
-                id: 0,
-                label: 'Продавец',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Приемщик',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Погрузчик',
-                value: 'Азаров Михаил',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 4,
@@ -1485,12 +1343,12 @@ const tableConfigData = {
           }),
           selectField({
             label: 'Статья расхода:',
-            name: 'payday',
+            name: 'st_rashod_id',
             placeholder: '',
             class: [''],
             selectOption: {
-              text: 'label',
-              value: 'value',
+              text: 'name',
+              value: 'id',
             },
             items: [
               {
@@ -1543,7 +1401,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Часы:',
-            name: 'Часы',
+            name: 'hour',
             placeholder: '',
             class: [''],
             position: {
@@ -1555,7 +1413,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Тариф:',
-            name: 'traffic',
+            name: 'object_price_price',
             placeholder: '',
             class: [''],
             position: {
@@ -1567,7 +1425,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Сумма:',
-            name: 'summ',
+            name: 'total',
             placeholder: '',
             class: [''],
             position: {
@@ -1588,6 +1446,7 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           stringField({
             label: 'Удержано',
@@ -1600,11 +1459,12 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           dateField({
             label: 'Назначение на даты:',
-            name: 'state_to_date',
-            subtype: 'datetime',
+            name: 'date_target',
+            subtype: 'date',
             placeholder: '',
             classes: [''],
             position: {
@@ -1625,6 +1485,7 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           stringField({
             label: 'Назначение на даты',
@@ -1637,6 +1498,7 @@ const tableConfigData = {
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: false,
           }),
           selectField({
             label: 'Банки.карта/нал:',
@@ -1647,23 +1509,7 @@ const tableConfigData = {
               text: 'label',
               value: 'value',
             },
-            items: [
-              {
-                id: 0,
-                label: 'Продавец',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Приемщик',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Погрузчик',
-                value: 'Азаров Михаил',
-              },
-            ],
+            items: [],
             position: {
               cols: 12,
               sm: 6,
@@ -1673,7 +1519,7 @@ const tableConfigData = {
           }),
           stringField({
             label: 'Р/С:',
-            name: 'checking_account',
+            name: 'invoice',
             placeholder: '',
             class: [''],
             position: {
@@ -1709,7 +1555,7 @@ const tableConfigData = {
           }),
           textareaField({
             label: 'Примечание',
-            name: 'error_text',
+            name: 'comment',
             placeholder: '',
             class: [''],
             position: {
@@ -1733,7 +1579,6 @@ const tableConfigData = {
   },
 }
 
-import Vue from 'vue'
 import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
@@ -1834,72 +1679,13 @@ export default {
     }
   },
   methods: {
-    initData() {
-      //for (let i = 0  i < 20  i++) {
-
-      //}
-      this.employees.map((el) => (el.id = this.generateId()))
-      //this.tableConfig.data = this.employees
-      this.tableConfig.data.rows = this.employees.slice(0, 20)
-      console.log(this.window)
-      //this.tableConfig.data.map((el) => )
-      const structuredArray = []
-      this.tableConfig.data.rows.forEach((row) => {
-        if (this.tableConfig.options.selecting) {
-          Vue.set(row, 'selected', false)
-        }
-        structuredArray.push({
-          row,
-          child: {
-            isShow: false,
-            data: row,
-          },
-        })
-      })
-      this.tableConfig.data.rows = structuredArray
-      //this.employees.forEach((row, rowIndex) => {
-      //  output.push([])
-      //  for(let i = 0  i < chunkSize  i++) {
-      //    //output[i] = this.employees.slice(i*chunkSize, i*chunkSize+chunkSize)
-      //    output[rowIndex].push([])
-      //    if (i === 0) {
-      //      output[rowIndex][0] = row
-      //    }
-      //    // Добавляем новое значение в исх.массив, которое равно - часть массива из входящего массива от i*size (текущая) позиции до текущая + size, это будет массив.
-      //  }
-      //  this.tableConfig.data = output
-      //})
-      //for(let i = 0  i < chunkSize  i++) {
-      //  //output[i] = this.employees.slice(i*chunkSize, i*chunkSize+chunkSize)
-      //  output.push([])
-      //  // Добавляем новое значение в исх.массив, которое равно - часть массива из входящего массива от i*size (текущая) позиции до текущая + size, это будет массив.
-      //}
-    },
-    generateId() {
-      return 'id' + Math.random().toString(16).slice(2)
-    },
     changeheadershow(options) {
       const { headerEl, value } = options
-
       headerEl.isShow = value
     },
   },
-  async mounted() {
-    console.log(TableDefault)
-    //const data = await fetch(
-    //  'http://10.63.1.132:5000/view/table/shop_request_magnit',
-    //  {
-    //    method: 'get',
-    //    mode: 'same-origin',
-    //    headers: {
-    //      'Access-Control-Allow-Origin': '*',
-    //      //'Content-Type': 'test/html', // 'Content-Type': 'application/x-www-form-urlencoded',
-    //    },
-    //  }
-    //)
-    //console.log(data)
-    //this.initData()
-  },
+  async mounted() {},
 }
 </script>
-@/utils/validation.js@/utils/fields.js
+
+<!--@/utils/validation.js@/utils/fields.js-->

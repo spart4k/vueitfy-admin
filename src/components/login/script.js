@@ -1,5 +1,5 @@
 // import Alert from '@/components/Alert'
-import { getCurrentInstance } from 'vue'
+//import { getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
@@ -11,10 +11,8 @@ import store from '@/store'
 export default {
   name: 'login',
   components: {},
-  setup(_, ctx) {
-    const root = getCurrentInstance()
-    console.log(root)
-    console.log(ctx)
+  setup(_) {
+    //const root = getCurrentInstance()
     const router = useRouter()
     const context = {
       root: {
@@ -45,7 +43,6 @@ export default {
       if (!validate()) return
       await makeRequest()
       router.push('/')
-      console.log(makeRequestMe, 'makeRequestMe')
       await makeRequestMe()
     }
 

@@ -161,31 +161,46 @@ const mails = {
     }
 
     const changeMailArrayKey = async (key, params) => {
-      // console.log(key, params, selectedMails.value)
-      if (key === 'del') {
-        await store.dispatch('mail/deleteMails', selectedMails.value)
-        selectedMails.value.forEach((item) => {
-          mailsData.value.forEach((row, index) => {
-            if (row?.mails?.length) {
-              row.mails.forEach((mail, mailIndex) => {
-                if (mail.id === item) {
-                  mailsData.value[index].mails.splice(mailIndex, 1)
-                }
-              })
-            }
-          })
-          if (Number(route.query.mail) === item) {
-            const newQuery = {}
-            if (route?.query?.filter) newQuery.filter = route?.query?.filter
-            if (route?.query?.color) newQuery.color = route?.query?.color
-            router
-              .push({
-                query: { ...newQuery },
-              })
-              .catch(() => {})
-          }
-        })
+      const requestData = {
+        content: {},
+        id: 1,
+        type: 'box',
       }
+      if (selectedAllMails.value) {
+        if (route?.query?.color)
+          requestData.content.tags = JSON.parse(route?.query?.color).toString()
+        // if (route?.query?.id) {
+        //   await store.dispatch('mail/changeLettersContainer', requestData)
+        // } else {
+        //   await store.dispatch('mail/changeLettersAll', requestData)
+        // }
+      } else {
+        console.log('array')
+      }
+      // if (key === 'del') {
+      //   await store.dispatch('mail/deleteMails', selectedMails.value)
+      //   selectedMails.value.forEach((item) => {
+      //     mailsData.value.forEach((row, index) => {
+      //       if (row?.mails?.length) {
+      //         row.mails.forEach((mail, mailIndex) => {
+      //           if (mail.id === item) {
+      //             mailsData.value[index].mails.splice(mailIndex, 1)
+      //           }
+      //         })
+      //       }
+      //     })
+      //     if (Number(route.query.mail) === item) {
+      //       const newQuery = {}
+      //       if (route?.query?.filter) newQuery.filter = route?.query?.filter
+      //       if (route?.query?.color) newQuery.color = route?.query?.color
+      //       router
+      //         .push({
+      //           query: { ...newQuery },
+      //         })
+      //         .catch(() => {})
+      //     }
+      //   })
+      // }
     }
 
     const editFilter = (val) => {
@@ -226,41 +241,6 @@ const mails = {
       filterData.value.notReadData--
     }
 
-    // const changeFilter = (key, reverse) => {
-    // mailsData.value.forEach((item, index) => {
-    //   if (item.mails) {
-    //     if (reverse) {
-    //       mailsData.value[index].mails = mailsData.value[index].mails.filter(
-    //         (e) => !e[key]
-    //       )
-    //     } else {
-    //       mailsData.value[index].mails = mailsData.value[index].mails.filter(
-    //         (e) => e[key]
-    //       )
-    //     }
-    //   }
-    // })
-    // originalData.value.forEach((item, index) => {
-    //   if (item.mails) {
-    //     item.mails.forEach((mail, mailIndex) => {
-    //       if (reverse) {
-    //         if (!mail[key] && !mailsData.value[index].mails.includes(mail)) {
-    //           mailsData.value[index].mails.splice(mailIndex, 0, mail)
-    //         }
-    //       } else {
-    //         if (mail[key] && !mailsData.value[index].mails.includes(mail)) {
-    //           mailsData.value[index].mails.splice(mailIndex, 0, mail)
-    //         }
-    //       }
-    //     })
-    //   }
-    // })
-    // }
-
-    const zxc = async () => {
-      await store.dispatch('mail/zxc')
-    }
-
     onMounted(async () => {
       if (!route?.query?.filter) {
         router.push({
@@ -268,8 +248,7 @@ const mails = {
         })
       }
       await getFilterData()
-      await getMails()
-      zxc()
+      getMails()
     })
 
     return {

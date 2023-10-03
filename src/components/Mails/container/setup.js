@@ -41,7 +41,6 @@ const container = {
         activeMail.value = val
         nextTick(() => {
           upperItems.value[upIndex].scrollIntoView()
-          lowerItems.value[lowIndex].$el.scrollIntoView({ behavior: 'smooth' })
         })
         if (!val.is_read) {
           const request = {
@@ -82,15 +81,15 @@ const container = {
             const upUndex = props.data.findIndex(
               (x) => x.id === Number(route?.query?.box)
             )
-            const lowIndex = props.data[upUndex].mails?.rows?.findIndex(
-              (x) => x.id === Number(route?.query?.mail)
-            )
+            // const lowIndex = props.data[upUndex].mails?.rows?.findIndex(
+            //   (x) => x.id === Number(route?.query?.mail)
+            // )
             upperItems.value[upUndex].scrollIntoView()
-            if (lowerItems?.value[lowIndex]?.$el) {
-              lowerItems.value[lowIndex].$el.scrollIntoView({
-                behavior: 'smooth',
-              })
-            }
+            // if (lowerItems?.value[lowIndex]?.$el) {
+            //   lowerItems.value[lowIndex].$el.scrollIntoView({
+            //     behavior: 'smooth',
+            //   })
+            // }
           })
         }
       }

@@ -29,4 +29,7 @@ export const changeMail = (data, params) => put(`mail/${params}`, data)
 
 export const deleteMails = (data) => put('mails/del', data)
 
-export const zxc = () => del('mails/sasha_go')
+export const changeLettersContainer = (data, type, id) =>
+  put(`mails/change/${type}/${id}`, data)
+
+export const changeLettersAll = (data) => put('mails/change/all', data)

@@ -3,12 +3,15 @@ import Vuex from 'vuex'
 import vuetify from '@/plugins/vuetify'
 import user from './modules/user'
 import auth from './modules/auth'
+import notifies from './modules/notifies'
 import mail from './modules/mail'
-import notifier from './modules/notifies'
+import table from './modules/table'
+import form from './modules/form'
+import list from './modules/list'
+import personal from './modules/personal'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
-console.log('vuetify', vuetify)
 const store = new Vuex.Store({
   state: {
     navmenu: false,
@@ -44,8 +47,12 @@ const store = new Vuex.Store({
   modules: {
     user,
     auth,
-    notifier,
+    notifies,
     mail,
+    table,
+    form,
+    list,
+    personal,
   },
 })
 

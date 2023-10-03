@@ -4,28 +4,25 @@ import { watch } from 'vue'
 export default function (searchFields, fields) {
   const endIntersect = (entries, observer, isIntersecting) => {
     if (isIntersecting) {
-      console.log(entries[0].target)
       const dataset = entries[0].target.dataset.field
-      console.log(fields)
-      console.log(dataset)
       const field = fields.find((el) => el.name === dataset)
       console.log('isIntersecting')
-      console.log(field)
       if (field.items.length && !field.loading) {
         //field.page = field.page + 10
         //Vue.set(field, 'page', field.page + 1)
         field.page = field.page + 1
-        querySelections(field.search, field)
+        const params = {
+          searc: field.search,
+          name: field.name,
+        }
+        querySelections(params, field)
       }
-      //let moreVendors = loadMoreFromApi()
-      //this.vendors = [ ...this.vendors, ...moreVendors]
     }
   }
-  const querySelections = async (string, field) => {
-    console.log(string)
-    if (string) {
-      console.log('quiery')
-      string = string.toLowerCase()
+  const querySelections = async (params, field) => {
+    if (params.search || params.id) {
+      console.log(params.search, params.id)
+      if (params.search) params.search = params.search.toLowerCase()
       //setTimeout(() => {
       //  const data = field.data
       //    .field((el) => el.toLowerCase().includes(string))
@@ -42,11 +39,12 @@ export default function (searchFields, fields) {
       const data = await selectsApi.getApi(url, {
         countRows: 10,
         currentPage: field.page,
-        searchValue: string,
+        searchValue: params.search ? params.search : '',
+        id: params.id ? params.id : -1,
       })
-      console.log(data)
       if (data.rows) {
         field.items = [...field.items, ...data.rows]
+        field.items = data.rows
       }
 
       //Vue.set(field, 'items', data.rows)
@@ -54,14 +52,20 @@ export default function (searchFields, fields) {
       //console.log(data.products, field)
     }
   }
+  const deepEqual = (obj1, obj2) => {
+    console.log(obj1, obj2)
+    return JSON.stringify(obj1) === JSON.stringify(obj2)
+  }
   watch(
     () => searchFields.value,
     (newVal, oldVal) => {
       newVal.forEach((_, elIndex) => {
-        if (newVal[elIndex] !== oldVal[elIndex]) {
-          const string = newVal[elIndex]
-          const fieldElement = fields.find((el) => el.search === string)
-          querySelections(string, fieldElement)
+        console.log(!deepEqual(newVal[elIndex], oldVal[elIndex]))
+        if (!deepEqual(newVal[elIndex], oldVal[elIndex])) {
+          const params = newVal[elIndex]
+          const fieldElement = fields.find((el) => el.search === params.search)
+          console.log(params, fieldElement)
+          querySelections(params, fieldElement)
         }
       })
       //const

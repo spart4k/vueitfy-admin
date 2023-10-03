@@ -396,7 +396,7 @@ export default {
 
     //$route.name для получения ссылки акутиыной в юрл
 
-    console.log('navLinks', navLinks.value)
+    //console.log('navLinks', navLinks.value)
 
     const setNavmenu = () => {
       store.commit('setNavmenu', !isOpenMenu.value)
@@ -411,7 +411,7 @@ export default {
     // })
 
     const activeFold = () => {
-      console.log(dataNavbarHard[1].navLinks[1].active, 'хуй')
+      //console.log(dataNavbarHard[1].navLinks[1].active, 'хуй')
     }
 
     return {

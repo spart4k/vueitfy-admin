@@ -1,9 +1,8 @@
-import Cities from './cities'
 import Selects from './selects'
 import Navmenu from './navmenu'
-import Mails from './mails'
-import Form from './form'
-import List from './list'
+// import Mails from './mails'
+//import Form from './form'
+//import List from './list'
 //import Login from './login'
 //import axios from 'axios'
 
@@ -14,12 +13,11 @@ import List from './list'
 // 5000/appointment
 // 3001/review
 
-const tableApi = new Cities()
 const selectsApi = new Selects()
 const navmenuApi = new Navmenu()
-const mailsApi = new Mails()
-const form = new Form()
-const list = new List()
+// const mailsApi = new Mails()
+//const form = new Form()
+//const list = new List()
 //const login = new Login()
 
-export { tableApi, selectsApi, navmenuApi, mailsApi, form, list }
+export { selectsApi, navmenuApi }

@@ -2,6 +2,7 @@
 //document.adoptedStyleSheets.push(style)
 import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
+import store from '@/store'
 
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
@@ -15,7 +16,7 @@ import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
 
-import { tableApi } from '@/api'
+//import { tableApi } from '@/api'
 
 const table = {
   name: 'TableDefault',
@@ -45,7 +46,6 @@ const table = {
     const { emit } = ctx
     const router = useRouter()
     const route = useRoute()
-    console.log(route)
     const loading = ref(false)
     const headerOptions = ref([])
     const tablePosition = ref(null)
@@ -83,12 +83,10 @@ const table = {
       isShow: false,
     })
     const wrapingRow = () => {
-      console.log('RESIZE1')
       const table = document.querySelector(props.options.selector)
       tablePosition.value = table.getBoundingClientRect().x
       props.options.head.forEach((headerEl) => {
         const headId = headerEl.value
-        console.log(headId)
         const { width, x } = headerOptions.value.find((el) => el.id === headId)
         if (
           x + width + tablePosition.value >= window.innerWidth &&
@@ -176,7 +174,6 @@ const table = {
       }
     }
     const sortRow = (head) => {
-      console.log(head)
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {
@@ -273,16 +270,14 @@ const table = {
       let sorts = []
       let searchColumns = []
       let filter = []
-      paramsQuery.value.sorts.forEach((el, elIndex) => {
-        console.log(el, elIndex)
+      paramsQuery.value.sorts.forEach((el) => {
         if (!el.value) {
           return
         } else {
           sorts.push(el)
         }
       })
-      paramsQuery.value.searchColumns.forEach((el, elIndex) => {
-        console.log(el, elIndex)
+      paramsQuery.value.searchColumns.forEach((el) => {
         if (!el.value) {
           return
         } else {
@@ -302,23 +297,23 @@ const table = {
           })
         }
       })
-      const data = await tableApi.getApi(url, {
-        countRows: paramsQuery.value.countRows,
-        currentPage: paramsQuery.value.currentPage,
-        searchGlobal: paramsQuery.value.searchGlobal,
-        searchColumns,
-        sorts,
-        filter,
+      const data = await store.dispatch('table/get', {
+        url: url,
+        data: {
+          countRows: paramsQuery.value.countRows,
+          currentPage: paramsQuery.value.currentPage,
+          searchGlobal: paramsQuery.value.searchGlobal,
+          searchColumns,
+          sorts,
+          filter,
+        },
       })
-      console.log(data)
       props.options.data.rows = data.rows
       //props.options.data.rows = data
-      console.log(props.options.data.rows)
       if (props.options.data.rows?.length && props.options.data.rows) {
         props.options.data.totalPages = data.totalPage
         props.options.data.totalRows = data.total
         const structuredArray = []
-        console.log(props.options.data.rows)
         props.options.data.rows.forEach((row) => {
           if (props.options.options.selecting) {
             Vue.set(row, 'selected', false)
@@ -339,7 +334,6 @@ const table = {
       const { head } = props.options
       head.forEach((el) => {
         if (el.sorts?.length) {
-          console.log(el.value)
           //Vue.set(el.sorts, 'field', el.value)
           paramsQuery.value.sorts.push({
             field: el.value,
@@ -354,20 +348,16 @@ const table = {
             alias: el.alias,
           })
         }
-        console.log(paramsQuery.value)
       })
     }
     const watchScroll = () => {
       //const firstListItem = list.querySelector('.horizontal-scroll-container__list-item:first-child');
       //const lastHeadTable = header.options
-      const table = document.querySelector(props.options.selector)
-      console.log(isElementXPercentInViewport(table))
+      //const table = document.querySelector(props.options.selector)
     }
     const isElementXPercentInViewport = (element) => {
       /* eslint-disable */
       const { x } = element.getBoundingClientRect()
-      console.log()
-      console.log(element.offsetLeft,element.offsetWidth + ':' + element.offsetLeft, window.innerWidth)
       /* eslint-disable */
       if(
           /* eslint-disable */
@@ -383,13 +373,10 @@ const table = {
       }
     }
     const saveFilter = () => {
-      console.log('save')
       getItems()
     }
     const openRow = ($event, row) => {
-      console.log($event, 'row', row)
       if (props.options.detail.type === 'popup') {
-        console.log(router)
         //router.push({
         //  path: `${route.}./1`
         //})
@@ -445,16 +432,12 @@ const table = {
       await getItems()
 
       const table = document.querySelector(props.options.selector)
-      console.log(table, props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
-      console.log(headerCells)
       let acumWidth = 0
       headerCells.forEach((headerEl) => {
         const id = headerEl.id.split('-table-header')[0]
-        console.log(headerEl.id)
         if (!id) return
         const headCell = props.options.head.find((head) => head.value === id)
-        console.log(headCell)
         const { width, x } = headerEl.getBoundingClientRect()
         headerOptions.value.push({
           id,

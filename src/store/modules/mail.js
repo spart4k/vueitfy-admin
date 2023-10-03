@@ -13,7 +13,8 @@ import {
   getBoxMails,
   getFolderMails,
   changeMail,
-  zxc,
+  changeLettersContainer,
+  changeLettersAll,
 } from '@/api/mail'
 
 const mail = {
@@ -24,15 +25,6 @@ const mail = {
     async getBoxes(_, data) {
       try {
         const response = await getBoxes(data)
-        return response.data
-      } catch (e) {
-        console.log(e)
-      }
-    },
-
-    async zxc(_, data) {
-      try {
-        const response = await zxc(data)
         return response.data
       } catch (e) {
         console.log(e)
@@ -161,6 +153,30 @@ const mail = {
       try {
         // console.log('data, params', data, params)
         const response = await changeMail(data.content, data.id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async changeLettersContainer(_, data) {
+      try {
+        // console.log('data, params', data, params)
+        const response = await changeLettersContainer(
+          data.content,
+          data.type,
+          data.id
+        )
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async changeLettersAll(_, data) {
+      try {
+        // console.log('data, params', data, params)
+        const response = await changeLettersAll(data)
         return response
       } catch (e) {
         console.log(e)
