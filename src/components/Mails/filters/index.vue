@@ -139,7 +139,8 @@
       <div
         :class="[
           'v-filters-color_item',
-          $route?.query?.color?.includes(item.id) &&
+          $route?.query?.color &&
+            JSON.parse($route?.query?.color?.includes(item.id)) &&
             'v-filters-color_item__active',
         ]"
         :style="{ backgroundColor: item.color }"

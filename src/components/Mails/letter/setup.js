@@ -46,7 +46,7 @@ const letter = {
       newQuery.filter = filter
       newQuery.color = colorArray
       if (id) newQuery.id = id
-      if (route?.query?.color) {
+      if (route?.query?.color?.length) {
         if (!_.isEqual([val], JSON.parse(route?.query?.color))) {
           router.push({ query: newQuery }).catch(() => {})
           emit('getMails')
