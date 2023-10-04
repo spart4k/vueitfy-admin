@@ -38,10 +38,6 @@ const container = {
     const setActiveMail = async (val, upIndex, lowIndex) => {
       if (val.id !== Number(route?.query?.mail)) {
         emit('setActiveMail', val)
-        activeMail.value = null
-        const responseData = await store.dispatch('mail/getMail', val.id)
-        activeMail.value = responseData.data[0]
-        Vue.set(activeMail.value, 'text', responseData.textfile)
         nextTick(() => {
           lowerItems.value[
             lowerItems.value.findIndex((e) => e.data.id === val.id)
@@ -49,6 +45,10 @@ const container = {
             behavior: 'auto',
           })
         })
+        activeMail.value = null
+        const responseData = await store.dispatch('mail/getMail', val.id)
+        activeMail.value = responseData.data[0]
+        Vue.set(activeMail.value, 'text', responseData.textfile)
         if (!val.is_read) {
           const request = {
             content: {

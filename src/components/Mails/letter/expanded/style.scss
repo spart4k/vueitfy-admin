@@ -3,7 +3,7 @@
         border-radius: 3px;
         background: var(--v-background-base);
         box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.10);
-        flex: 1;
+        width: 100%;
         // @include custom-scroll-bar-vertical;
         // overflow: auto;
         &__edited {
