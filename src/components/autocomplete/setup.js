@@ -22,9 +22,9 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const proxyValue = ref(props.value)
-    const querySelections = async (params) => {
-      if (params.search || params.id) {
-        console.log(params.search, params.id)
+    const querySelections = async (params, isObs = false) => {
+      console.log(params)
+      if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
         //setTimeout(() => {
         //  const data = field.data
@@ -47,7 +47,7 @@ export default {
         })
         if (data.rows) {
           props.field.items = [...props.field.items, ...data.rows]
-          props.field.items = data.rows
+          //props.field.items = data.rows
         }
 
         //Vue.set(field, 'items', data.rows)
@@ -58,16 +58,16 @@ export default {
     const endIntersect = (entries, observer, isIntersecting) => {
       if (isIntersecting) {
         //const dataset = entries[0].target.dataset.field
-        console.log('isIntersecting')
+        console.log(props.field)
         if (props.field.items.length && !props.field.loading) {
           //field.page = field.page + 10
           //Vue.set(field, 'page', field.page + 1)
           props.field.page = props.field.page + 1
           const params = {
-            searc: props.field.search,
+            search: props.field.search,
             name: props.field.name,
           }
-          querySelections(params, props.field)
+          querySelections(params, true)
         }
       }
     }
@@ -79,8 +79,7 @@ export default {
     }
     watch(
       () => props.field.search,
-      (newVal, oldVal) => {
-        console.log(newVal, oldVal)
+      (newVal) => {
         const params = {
           id: props.value,
           search: props.field.search,

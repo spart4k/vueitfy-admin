@@ -10,8 +10,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        //padding: 100px 0 100px 0;
+        overflow: auto;
         &-container {
             padding: 5px;
+            margin: 100px 0 100px 0;
             background-color: var(--v-background-base);
             border-radius: 10px;
             position: relative;

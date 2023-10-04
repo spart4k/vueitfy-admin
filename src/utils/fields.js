@@ -37,6 +37,7 @@ const autocompleteField = (properties) => {
   return {
     type: 'autocomplete',
     value: '',
+    loading: false,
     ...defaultProperties(properties),
   }
 }

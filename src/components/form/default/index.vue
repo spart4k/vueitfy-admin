@@ -26,6 +26,8 @@
               :label="field.label"
               :error-messages="formErrors[field.name]"
               clearable
+              :readonly="field.readonly"
+              :disabled="field.readonly"
             />
             <v-select
               v-else-if="showField('select', field)"
@@ -36,6 +38,7 @@
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
               persistent-hint
+              @change="changeSelect({ value: formData[field.name], field })"
             ></v-select>
             <!--<v-autocomplete
               v-else-if="showField('autocomplete', field)"
@@ -113,15 +116,15 @@
               offset-y
               min-width="auto"
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template v-slot:activator="{ attrs }">
                 <v-text-field
+                  @click:prepend="openMenu(field)"
                   v-model="formData[field.name]"
                   :label="field.label"
                   prepend-icon="mdi-calendar"
                   :error-messages="formErrors[field.name]"
                   readonly
                   v-bind="attrs"
-                  v-on="on"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -135,7 +138,7 @@
               ></v-date-picker>
             </v-menu>
             <v-textarea
-              v-if="showField('textarea', field)"
+              v-else-if="showField('textarea', field)"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field.name]"
@@ -150,7 +153,6 @@
               :error-messages="formErrors[field.name]"
             />
             <p>
-              <!--{{ formData[field.name] }}-->
               <!--{{ field.items }}-->
               <!--{{ allLoaded }}-->
               <!--{{ field.selectOption.text + field.selectOption.value }}-->
@@ -162,6 +164,7 @@
             type="submit"
             color="primary"
             class="ml-auto"
+            :loading="loading"
             @click.prevent="submit"
           >
             Submit

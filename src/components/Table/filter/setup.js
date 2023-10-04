@@ -2,7 +2,8 @@ import Vue, { onMounted, computed, ref } from 'vue'
 //import axios from 'axios'
 
 //import { selectsApi } from '@/api'
-import autocomplete from '@/compositions/useAutocomplete'
+//import autocomplete from '@/compositions/useAutocomplete'
+import FormDefault from '@/components/form/default'
 
 export default {
   name: 'Table-Filter',
@@ -12,73 +13,15 @@ export default {
       default: () => [],
     },
   },
+  components: {
+    FormDefault,
+  },
   data() {
     return {
       loading: false,
       items: [],
       search: null,
       select: null,
-      states: [
-        'Alabama',
-        'Alaska',
-        'American Samoa',
-        'Arizona',
-        'Arkansas',
-        'California',
-        'Colorado',
-        'Connecticut',
-        'Delaware',
-        'District of Columbia',
-        'Federated States of Micronesia',
-        'Florida',
-        'Georgia',
-        'Guam',
-        'Hawaii',
-        'Idaho',
-        'Illinois',
-        'Indiana',
-        'Iowa',
-        'Kansas',
-        'Kentucky',
-        'Louisiana',
-        'Maine',
-        'Marshall Islands',
-        'Maryland',
-        'Massachusetts',
-        'Michigan',
-        'Minnesota',
-        'Mississippi',
-        'Missouri',
-        'Montana',
-        'Nebraska',
-        'Nevada',
-        'New Hampshire',
-        'New Jersey',
-        'New Mexico',
-        'New York',
-        'North Carolina',
-        'North Dakota',
-        'Northern Mariana Islands',
-        'Ohio',
-        'Oklahoma',
-        'Oregon',
-        'Palau',
-        'Pennsylvania',
-        'Puerto Rico',
-        'Rhode Island',
-        'South Carolina',
-        'South Dakota',
-        'Tennessee',
-        'Texas',
-        'Utah',
-        'Vermont',
-        'Virgin Island',
-        'Virginia',
-        'Washington',
-        'West Virginia',
-        'Wisconsin',
-        'Wyoming',
-      ],
       page: 0,
     }
   },
@@ -145,7 +88,7 @@ export default {
     const searchFields = computed(() =>
       props.filtersConfig.map((filter) => filter.search)
     )
-    const { endIntersect } = autocomplete(searchFields, props.filtersConfig)
+    //const { endIntersect } = autocomplete(searchFields, props.filtersConfig)
     //const vm = this
     //const endIntersect = (entries, observer, isIntersecting) => {
     //  if (isIntersecting) {
@@ -200,7 +143,7 @@ export default {
       initData,
       searchFields,
       //querySelections,
-      endIntersect,
+      //endIntersect,
       tryClick,
       removeSelected,
       closeFilter,
