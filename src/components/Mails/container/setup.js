@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { ref, watch, nextTick } from 'vue'
+import Vue, { ref, watch, nextTick } from 'vue'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router/composables'
 // import { tableApi } from '@/api'
@@ -38,9 +38,16 @@ const container = {
     const setActiveMail = async (val, upIndex, lowIndex) => {
       if (val.id !== Number(route?.query?.mail)) {
         emit('setActiveMail', val)
-        activeMail.value = val
+        activeMail.value = null
+        const responseData = await store.dispatch('mail/getMail', val.id)
+        activeMail.value = responseData.data[0]
+        Vue.set(activeMail.value, 'text', responseData.textfile)
         nextTick(() => {
-          upperItems.value[upIndex].scrollIntoView()
+          lowerItems.value[
+            lowerItems.value.findIndex((e) => e.data.id === val.id)
+          ].$el.scrollIntoView({
+            behavior: 'auto',
+          })
         })
         if (!val.is_read) {
           const request = {
@@ -71,25 +78,35 @@ const container = {
         props.data[
           props.data.findIndex((x) => x.id === Number(route?.query?.box))
         ]?.mails?.rows,
-      () => {
+      async () => {
         if (route?.query?.mail) {
-          const mail = props.data
-            .find((x) => x.id === Number(route?.query?.box))
-            .mails?.rows?.find((x) => x.id === Number(route?.query?.mail))
-          activeMail.value = mail
+          const responseData = await store.dispatch(
+            'mail/getMail',
+            Number(route?.query?.mail)
+          )
+          activeMail.value = responseData.data[0]
+          Vue.set(activeMail.value, 'text', responseData.textfile)
           nextTick(() => {
-            const upUndex = props.data.findIndex(
-              (x) => x.id === Number(route?.query?.box)
-            )
-            // const lowIndex = props.data[upUndex].mails?.rows?.findIndex(
-            //   (x) => x.id === Number(route?.query?.mail)
-            // )
-            upperItems.value[upUndex].scrollIntoView()
-            // if (lowerItems?.value[lowIndex]?.$el) {
-            //   lowerItems.value[lowIndex].$el.scrollIntoView({
-            //     behavior: 'smooth',
-            //   })
-            // }
+            if (
+              lowerItems.value.findIndex(
+                (e) => e.data.id === Number(route?.query?.mail)
+              ) !== -1
+            ) {
+              lowerItems?.value[
+                lowerItems.value.findIndex(
+                  (e) => e.data.id === Number(route?.query?.mail)
+                )
+              ]?.$el?.scrollIntoView({
+                behavior: 'smooth',
+              })
+            } else {
+              const upIndex = props.data.findIndex(
+                (e) => e.id === Number(route?.query?.box)
+              )
+              upperItems.value[upIndex].scrollIntoView({
+                behavior: 'smooth',
+              })
+            }
           })
         }
       }

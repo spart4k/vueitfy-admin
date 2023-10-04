@@ -15,6 +15,7 @@ import {
   changeMail,
   changeLettersContainer,
   changeLettersAll,
+  getMail,
 } from '@/api/mail'
 
 const mail = {
@@ -177,6 +178,15 @@ const mail = {
       try {
         // console.log('data, params', data, params)
         const response = await changeLettersAll(data)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getMail(_, data) {
+      try {
+        const response = await getMail(data)
         return response
       } catch (e) {
         console.log(e)

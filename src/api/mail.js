@@ -33,3 +33,5 @@ export const changeLettersContainer = (data, type, id) =>
   put(`mails/change/${type}/${id}`, data)
 
 export const changeLettersAll = (data) => put('mails/change/all', data)
+
+export const getMail = (id) => get(`mail/${id}`)

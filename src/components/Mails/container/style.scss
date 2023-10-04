@@ -11,11 +11,12 @@
             width: 100%;
             display: flex;
             &__active {
-                width: 343px;
+                min-width: 343px;
+                max-width: 343px;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 scroll-snap-type: x mandatory;
-                scroll-behavior: smooth;
+                scroll-behavior: auto;
                 &::-webkit-scrollbar{
                     display: none;
                 }
