@@ -38,8 +38,8 @@ const table = {
       require: true,
     },
     filtersConfig: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => {},
     },
   },
   setup(props, ctx) {
@@ -270,7 +270,7 @@ const table = {
       //body.sorts = Object.assign(target, source).sorts
       let sorts = []
       let searchColumns = []
-      let filter = []
+      //let filter = []
       paramsQuery.value.sorts.forEach((el) => {
         if (!el.value) {
           return
@@ -285,19 +285,19 @@ const table = {
           searchColumns.push(el)
         }
       })
-      props.filtersConfig.forEach((el) => {
-        if (!el.value) {
-          return
-        } else {
-          filter.push({
-            field: el.name,
-            value: el.value,
-            alias: el.alias,
-            type: el.type,
-            subtype: el.subtype,
-          })
-        }
-      })
+      //props.filtersConfig.forEach((el) => {
+      //  if (!el.value) {
+      //    return
+      //  } else {
+      //    filter.push({
+      //      field: el.name,
+      //      value: el.value,
+      //      alias: el.alias,
+      //      type: el.type,
+      //      subtype: el.subtype,
+      //    })
+      //  }
+      //})
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
@@ -376,8 +376,12 @@ const table = {
     const saveFilter = (filterData) => {
       console.log(filterData)
       filtersColumns.value = []
-      props.options.filters.fields.forEach((el) => {
-        if (!filterData[el.name]) return
+      props.filtersConfig.fields.forEach((el) => {
+        if (!filterData[el.name]) {
+          el.value = ''
+          return
+        }
+        el.value = filterData[el.name]
         const obj = {
           field: el.name,
           value: filterData[el.name],

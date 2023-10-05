@@ -2015,7 +2015,7 @@ import TableDefault from '@/components/Table/default/index.vue'
 //import Axios from 'axios'
 
 export default {
-  name: 'Payment-View',
+  name: 'Appointments-View',
 
   components: {
     TableDefault,

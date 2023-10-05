@@ -1,4 +1,4 @@
-import Vue, { watch, ref, toRef } from 'vue'
+import Vue, { watch, ref } from 'vue'
 import { selectsApi } from '@/api'
 
 export default {
@@ -22,7 +22,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const proxyValue = ref(props.value)
-    const searchProps = toRef(props.field.search)
+    const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
       console.log(params)
       if (params.search || params.id || isObs) {
@@ -81,6 +81,7 @@ export default {
       proxyValue.value = null
     }
     const update = (value) => {
+      console.log('update')
       emit('change', { value, field: props.field })
     }
     watch(

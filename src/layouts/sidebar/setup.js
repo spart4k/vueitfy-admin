@@ -89,7 +89,7 @@ export default {
           {
             id: 11,
             name: 'Назначения',
-            link: '/',
+            link: '/appointments',
           },
           {
             id: 12,

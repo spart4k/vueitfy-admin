@@ -167,6 +167,7 @@ export default {
     //makeRequestList()
     const changeAutocomplete = async (params) => {
       //const { value, field } = data
+      console.log('update form')
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
       }

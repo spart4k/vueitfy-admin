@@ -38,6 +38,7 @@
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
               persistent-hint
+              clearable
               @change="changeSelect({ value: formData[field.name], field })"
             ></v-select>
             <!--<v-autocomplete
