@@ -1,7 +1,8 @@
 <template>
   <div>
-    <TextInfo></TextInfo>
+    <!--    <TextInfo></TextInfo>-->
     <DocScan></DocScan>
+    <FormComment />
   </div>
 </template>
 

@@ -5,7 +5,7 @@
       <v-expansion-panel v-for="(item, i) in 5" :key="i">
         <v-expansion-panel-header>
           <v-row align="center">
-            <v-icon v-if="true" small>$IconMain</v-icon>
+            <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
             <span>Item</span>
           </v-row>
         </v-expansion-panel-header>
