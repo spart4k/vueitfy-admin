@@ -26,7 +26,15 @@
         class="v-controls-list_item"
         color="text"
         plain
-        @click="$emit('changeMailArrayKey', 'is_read')"
+        @click="
+          $emit(
+            'changeMailArrayKey',
+            'is_read',
+            intersection.read.length === $props.selectedMails.length
+              ? false
+              : true
+          )
+        "
       >
         <v-icon
           :color="$props.selectedMails.length ? 'primary' : 'disabled'"
@@ -70,7 +78,14 @@
               intersection.folders.includes(item.id) &&
                 'v-controls-list_menu-item__active',
             ]"
-            @click="$emit('changeMailArrayKey', 'folders', item)"
+            @click="
+              $emit(
+                'changeMailArrayKey',
+                'folders',
+                item,
+                intersection.folders.includes(item.id)
+              )
+            "
           >
             {{ item.name }}
             <v-icon
@@ -109,7 +124,14 @@
             v-for="item in $props.filterData.tagsData"
             :key="item.id"
             :style="{ background: item.color }"
-            @click="$emit('changeMailArrayKey', 'tags', item)"
+            @click="
+              $emit(
+                'changeMailArrayKey',
+                'tags',
+                item,
+                intersection.tags.includes(item.id)
+              )
+            "
             :class="[
               'v-controls-list_tags-item',
               intersection.tags.includes(item.id) &&
@@ -145,7 +167,7 @@
         <div class="d-flex mt-7">
           <v-btn
             @click="
-              $emit('changeMailArrayKey', 'del')
+              $emit('changeMailArrayKey', 'del', true)
               popupCase = false
             "
             tonal

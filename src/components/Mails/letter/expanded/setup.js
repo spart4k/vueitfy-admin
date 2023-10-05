@@ -35,8 +35,12 @@ const letterExpanded = {
       files: null,
     })
     const answerToMail = () => {
-      // router.push('/').catch(() => {})
-      edit.value = true
+      router
+        .replace({
+          query: { ...route.query, ...{ compose: 'answer' } },
+        })
+        .catch(() => {})
+      // edit.value = true
     }
 
     const deleteItem = (index) => {
@@ -52,14 +56,14 @@ const letterExpanded = {
         to: ['slepoybanditka@yandex.ru'],
         subject: newMessage.value.subject,
         message: message,
-        files: newMessage.value.files,
+        // files: newMessage.value.files,
       }
       const response = await store.dispatch('mail/sendMessage', requestData)
       console.log(response)
     }
 
     watch(
-      () => props.data.id,
+      () => props?.data?.id,
       () => {
         edit.value = false
       }

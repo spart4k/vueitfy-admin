@@ -208,13 +208,14 @@
           </div>
         </template>
         <template v-else>
-          <div class="d-flex">
+          <div class="d-flex align-center">
             <v-icon
               :color="newCase.color"
               @click="openPicker = !openPicker"
               large
               class="mr-9 v-filters-popup_icon"
-              >$IconSystem</v-icon
+            >
+              {{ openPicker ? '$IconArrowLeft' : '$IconSystem' }}</v-icon
             >
             <div v-if="openPicker" class="v-filters-popup_picker">
               <v-color-picker
@@ -228,25 +229,28 @@
               maxlength="50"
               label="Название"
               v-model="newCase.name"
+              :rules="rules"
             ></v-text-field>
           </div>
-          <v-btn
-            v-if="!newCase.loading"
-            @click="editFolder"
-            tonal
-            color="success"
-            class="mt-8"
-          >
-            <v-icon small class="mr-2">{{
-              newCase.id ? '$IconEdit' : '$IconAdd'
-            }}</v-icon>
-            {{ newCase.id ? 'Изменить' : 'Создать' }}
-          </v-btn>
-          <v-progress-circular
-            indeterminate
-            v-else
-            color="primary"
-          ></v-progress-circular>
+          <template v-if="!openPicker">
+            <v-btn
+              v-if="!newCase.loading"
+              @click="editFolder"
+              tonal
+              color="success"
+              class="mt-4"
+            >
+              <v-icon small class="mr-2">{{
+                newCase.id ? '$IconEdit' : '$IconAdd'
+              }}</v-icon>
+              {{ newCase.id ? 'Изменить' : 'Создать' }}
+            </v-btn>
+            <v-progress-circular
+              indeterminate
+              v-else
+              color="primary"
+            ></v-progress-circular>
+          </template>
         </template>
       </div>
     </Popup>

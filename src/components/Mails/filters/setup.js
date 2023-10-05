@@ -78,6 +78,10 @@ const filters = {
     const openPicker = ref(false)
     const popupCase = ref(false)
     const popupDelete = ref()
+    const rules = ref([
+      (value) => !!value || '',
+      (value) => (value && value.length >= 1) || 'Минимум 1 символ',
+    ])
     const openCreatePopup = (val, action) => {
       popupCase.value = true
       newCase.value.type = val
@@ -238,6 +242,7 @@ const filters = {
 
       boxPanel,
       folderPanel,
+      rules,
 
       compareItems,
       editItem,

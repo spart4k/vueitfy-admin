@@ -107,7 +107,6 @@ const mails = {
         colorTags = JSON.parse(route?.query?.color)
       const requestData = {
         content: {
-          page: 1,
           count: 20,
           tags: colorTags,
           props: route?.query?.id
@@ -120,8 +119,9 @@ const mails = {
         },
         id: val.id,
       }
-      if (val?.mails && val?.mails?.rows?.length !== val?.mails.total) {
-        requestData.content.page = val?.mails?.rows?.length / 20 + 1
+      if (val?.mails && val?.mails?.page !== val?.mails.totalPage) {
+        val.mails.page += 1
+        requestData.content.page = val?.mails?.page
       } else {
         requestData.content.page = 1
       }
@@ -162,61 +162,36 @@ const mails = {
       }
     }
 
-    const changeMailArrayKey = async (key, params) => {
+    const changeMailArrayKey = async (key, item, params) => {
       const requestData = {
-        content: {
-          props: {
-            attachment: true,
-          },
-        },
-        id: 1,
-        type: 'box',
+        content: {},
       }
-      requestData.content.actionArray.folders = '1'
-      requestData.content.actionArray.tags = '1'
-      requestData.content.actions.del = true
-      requestData.content.actions.is_read = true
+      if (route?.query?.color?.length)
+        requestData.content.tags = JSON.parse(route?.query?.color).toString()
+      if (key === 'is_read' || key === 'del') {
+        requestData.content.actions = {}
+        requestData.content.actions[key] = item
+      } else if (key === 'folders' || key === 'tags') {
+        requestData.content.actionArray = {}
+        requestData.content.actionArray[key] = `${item.id}`
+      }
       if (selectedAllMails.value) {
-        // const requestData = {
-        //   content: {
-        //     props: {
-        //       attachment: true,
-        //     },
-        //     actionArray: {
-        //       folders: '1,2,3',
-        //       tags: '1,2,3',
-        //     },
-        //     actions: {
-        //       del: true,
-        //       is_read: true,
-        //     },
-        //   },
-        // }
-        if (route?.query?.color)
-          requestData.content.tags = JSON.parse(route?.query?.color).toString()
-        // if (route?.query?.id) {
-        //   await store.dispatch('mail/changeLettersContainer', requestData)
-        // } else {
-        //   await store.dispatch('mail/changeLettersAll', requestData)
-        // }
+        if (
+          route?.query?.filter !== 'folder' &&
+          route?.query?.filter !== 'box'
+        ) {
+          requestData.content.props = {}
+          if (route?.query?.filter === 'is_read') {
+            requestData.content.props[route?.query?.filter] = false
+          } else {
+            requestData.content.props[route?.query?.filter] = true
+          }
+        }
       } else {
-        requestData.content.id = '1,2,3'
-        // const requestData = {
-        //   content: {
-        //     actionArray: {
-        //       folders: '1,2,3',
-        //       tags: '1,2,3',
-        //     },
-        //     actions: {
-        //       del: true,
-        //       is_read: true,
-        //     },
-        //     id: '19,20',
-        //   },
-        //   id: 1,
-        //   type: 'box',
-        // }
+        requestData.content.id = selectedMails.value.toString()
       }
+      // await store.dispatch('mail/changeLettersAll', requestData.content)
+      console.log('2', requestData.content, params)
       // if (key === 'del') {
       //   await store.dispatch('mail/deleteMails', selectedMails.value)
       //   selectedMails.value.forEach((item) => {
