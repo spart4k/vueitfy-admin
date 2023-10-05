@@ -1,0 +1,212 @@
+{
+    "code": 1,
+    "error": "",
+    "task": {
+        "date_create": "2023-09-29 09:58:22",
+        "date_status": "2023-09-29 09:58:22",
+        "del": 0,
+        "dop_data": "{\"docs_id\":[0,1]}",
+        "entity": 1,
+        "entity_id": 75693,
+        "from_account_id": 1173,
+        "from_fio": "Геннадий Крокодил",
+        "id": 1,
+        "next_step": "{\"2\":[{\"num\":2,\"if\":true}],\"3\":[{\"num\":2,\"if\":true}],\"6\":[{\"num\":5,\"if\":true}]}",
+        "note": null,
+        "parent_action": 13,
+        "process": 1,
+        "process_id": 13,
+        "status": 6,
+        "task_type_id": 1,
+        "time_execution": "420",
+        "to_account_id": 1149,
+        "to_fio": "Зубкова Ирина",
+        "type_parent_action": 1
+    },
+    "entity": {
+        "account_id": 0,
+        "account_json": "[1173]",
+        "account_name": "Геннадий Крокодил",
+        "address_data": null,
+        "address_jit": null,
+        "address_prop": null,
+        "alias": "",
+        "avatar": null,
+        "category": null,
+        "chanel_prom": null,
+        "check_patent": null,
+        "check_patent_2": null,
+        "color": null,
+        "comment": null,
+        "data_rojd": "1999-03-05",
+        "date_add": "2023-09-29 09:58:11",
+        "del": 0,
+        "direction_json": "[1]",
+        "email": null,
+        "grajdanstvo_id": 1,
+        "habitation_id": null,
+        "have_avatar": 0,
+        "id": 75693,
+        "in_state": 0,
+        "inn": null,
+        "is_archive": 0,
+        "is_passive": 0,
+        "medrnij_srok": null,
+        "mesto_rojd": null,
+        "migr_card": null,
+        "migr_uch_2": null,
+        "name": "Алексей Тихонравов",
+        "object_id": 108547,
+        "object_name": "РЦ Чебурашка",
+        "pasp_data_vid": null,
+        "pasp_kem": null,
+        "pasp_kod_podr": null,
+        "pasp_num": null,
+        "pasp_ser": null,
+        "patent_2": null,
+        "patent_data": null,
+        "patent_num": null,
+        "personal_id_referal": null,
+        "reg_data": null,
+        "samozan": 0,
+        "snils": null,
+        "status": 2,
+        "telefon": null,
+        "ticket": "/files/act/ticket_1695971176959.png",
+        "unfinished": 0,
+        "user_key": "[]",
+        "vid_git_2": null
+    },
+    "data": {
+        "docs_id": [
+            {
+                "contributed": 1,
+                "date_create": "2023-09-29 09:58:19",
+                "del": 0,
+                "doc_id": 1,
+                "id": 1,
+                "note": null,
+                "path_doc": "/files/doc/1695970851261.png",
+                "personal_id": 75693
+            }
+        ],
+        "docs_spr": {
+            "1": "Паспорт",
+            "10": "Миграционная карта",
+            "11": "ДМС",
+            "12": "Рабочая виза",
+            "13": "Чек-патент первичный",
+            "14": "Регистрация стр. 2",
+            "15": "Патент стр. 2",
+            "16": "Фото",
+            "17": "ИНН",
+            "18": "Экзамен РФ",
+            "19": "Чек-патент текущий",
+            "2": "СНИЛС",
+            "20": "Дактилоскопия",
+            "21": "Дактилоскопия стр. 2",
+            "22": "Вид на жительство стр. 2",
+            "23": "Медосмотр",
+            "24": "ID карта",
+            "25": "Ученический договор",
+            "3": "Реквизиты карты",
+            "4": "Регистрация",
+            "5": "Патент",
+            "6": "Паспорт стр.2",
+            "7": "Перевод",
+            "8": "Мед. книжка",
+            "9": "Вид на жительство"
+        },
+        "grajdanstvo": [
+            {
+                "del": 0,
+                "id": 1,
+                "name": "РФ"
+            },
+            {
+                "del": 0,
+                "id": 2,
+                "name": "Узбекистан"
+            },
+            {
+                "del": 0,
+                "id": 3,
+                "name": "Таджикистан"
+            },
+            {
+                "del": 0,
+                "id": 4,
+                "name": "Киргизия"
+            },
+            {
+                "del": 0,
+                "id": 5,
+                "name": "Украина"
+            },
+            {
+                "del": 0,
+                "id": 6,
+                "name": "Казахстан"
+            },
+            {
+                "del": 0,
+                "id": 7,
+                "name": "Беларусь"
+            },
+            {
+                "del": 0,
+                "id": 8,
+                "name": "Азербайджан"
+            },
+            {
+                "del": 0,
+                "id": 9,
+                "name": "Армения"
+            },
+            {
+                "del": 0,
+                "id": 10,
+                "name": "Молдова"
+            },
+            {
+                "del": 0,
+                "id": 11,
+                "name": "Туркменистан"
+            }
+        ],
+        "personal_doc_data": {
+            "check_patent_date_pay": null,
+            "check_patent_date_pay_now": null,
+            "id": 1,
+            "inn": null,
+            "med_book_date": null,
+            "med_view_docs_in": null,
+            "migr_card_data_in": null,
+            "migr_card_data_out": null,
+            "migr_card_num": null,
+            "migr_card_ser": null,
+            "pasp_address_reg": null,
+            "pasp_data_vid": "2023-09-05",
+            "pasp_kem": "asdfasdfsdfasfdd",
+            "pasp_kod_podr": "asdfasdf",
+            "pasp_num": "asdfasdf",
+            "pasp_ser": "adsfas",
+            "patent_date_docs_in": null,
+            "patent_num": null,
+            "patent_prof": null,
+            "patent_region": null,
+            "patent_ser": null,
+            "personal_id": 75693,
+            "registration_address": null,
+            "registration_date_c_docs_in": null,
+            "registration_date_do_docs_in": null,
+            "snils": null,
+            "view_home_address_reg": null,
+            "view_home_data_vid": null,
+            "view_home_kem": null,
+            "view_home_num": null,
+            "view_home_podr": null,
+            "view_home_ser": null
+        }
+    }
+}
