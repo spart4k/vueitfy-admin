@@ -9,7 +9,7 @@ export default {
   name: 'Table-Filter',
   props: {
     filtersConfig: {
-      type: Array,
+      type: Object,
       default: () => [],
     },
   },
@@ -114,9 +114,10 @@ export default {
     const closeFilter = () => {
       emit('closeFilter')
     }
-    const saveFilter = () => {
+    const sendFilter = (formData) => {
       closeFilter()
-      emit('saveFilter')
+      console.log(formData)
+      emit('saveFilter', formData)
     }
     //watch(
     //  () => searchFields.value,
@@ -137,7 +138,7 @@ export default {
     //  }
     //)
     onMounted(() => {
-      initData()
+      //initData()
     })
     return {
       initData,
@@ -148,7 +149,7 @@ export default {
       removeSelected,
       closeFilter,
       saveDate,
-      saveFilter,
+      sendFilter,
     }
   },
 }

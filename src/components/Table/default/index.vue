@@ -416,7 +416,7 @@
           <TableFilter
             @closeFilter="closeFilter"
             @saveFilter="saveFilter"
-            :filtersConfig="filtersConfig"
+            :filtersConfig="options.filters"
           />
         </keep-alive>
       </Sheet>

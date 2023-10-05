@@ -116,15 +116,16 @@
               offset-y
               min-width="auto"
             >
-              <template v-slot:activator="{ attrs }">
+              <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  @click:prepend="openMenu(field)"
+                  @click:append="openMenu(field)"
                   v-model="formData[field.name]"
                   :label="field.label"
-                  prepend-icon="mdi-calendar"
+                  append-icon="mdi-calendar"
                   :error-messages="formErrors[field.name]"
                   readonly
                   v-bind="attrs"
+                  v-on="on"
                 ></v-text-field>
               </template>
               <v-date-picker

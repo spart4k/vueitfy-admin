@@ -63,6 +63,7 @@ const table = {
       row: {},
       actions: {},
     })
+    const filtersColumns = ref([])
     const pagination = ref({
       totalRows: null,
       currentPage: 1,
@@ -305,7 +306,7 @@ const table = {
           searchGlobal: paramsQuery.value.searchGlobal,
           searchColumns,
           sorts,
-          filter,
+          filter: filtersColumns.value,
         },
       })
       props.options.data.rows = data.rows
@@ -372,7 +373,20 @@ const table = {
         return false;
       }
     }
-    const saveFilter = () => {
+    const saveFilter = (filterData) => {
+      console.log(filterData)
+      filtersColumns.value = []
+      props.options.filters.fields.forEach((el) => {
+        if (!filterData[el.name]) return
+        const obj = {
+          field: el.name,
+          value: filterData[el.name],
+          alias: el.alias,
+          type: el.type,
+          subtype: el.subtype,
+        }
+        filtersColumns.value.push(obj)
+      })
       getItems()
     }
     const openRow = ($event, row) => {
@@ -499,6 +513,7 @@ const table = {
       openRow,
       closePopupForm,
       popupForm,
+      filtersColumns,
     }
   },
 }

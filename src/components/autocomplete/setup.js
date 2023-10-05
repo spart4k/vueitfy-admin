@@ -1,4 +1,4 @@
-import { watch, ref } from 'vue'
+import Vue, { watch, ref, toRef } from 'vue'
 import { selectsApi } from '@/api'
 
 export default {
@@ -22,6 +22,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const proxyValue = ref(props.value)
+    const searchProps = toRef(props.field.search)
     const querySelections = async (params, isObs = false) => {
       console.log(params)
       if (params.search || params.id || isObs) {
@@ -45,10 +46,15 @@ export default {
           searchValue: params.search ? params.search : '',
           id: params.id ? params.id : -1,
         })
-        if (data.rows) {
-          props.field.items = [...props.field.items, ...data.rows]
+        if (data.rows && data.rows.length) {
+          //props.field.items = [...props.field.items, ...data.rows]
+          Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
           //props.field.items = data.rows
+        } else {
+          Vue.set(props.field, 'items', [])
+          //props.field.items = []
         }
+        console.log(props.field.items)
 
         //Vue.set(field, 'items', data.rows)
         props.field.loading = false
@@ -78,8 +84,9 @@ export default {
       emit('change', { value, field: props.field })
     }
     watch(
-      () => props.field.search,
+      () => searchProps,
       (newVal) => {
+        console.log(newVal, props.field.search, props.field.items)
         const params = {
           id: props.value,
           search: props.field.search,
@@ -97,6 +104,7 @@ export default {
       removeSelected,
       querySelections,
       update,
+      searchProps,
     }
   },
 }

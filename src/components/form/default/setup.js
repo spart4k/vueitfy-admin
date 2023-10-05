@@ -26,8 +26,9 @@ export default {
       default: false,
     },
   },
-  setup(props, _) {
+  setup(props, ctx) {
     //const syncForm = ref({})
+    const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
@@ -35,7 +36,7 @@ export default {
       root: {
         store,
         router,
-        _,
+        ctx,
       },
     }
     const loading = ref(true)
@@ -71,20 +72,31 @@ export default {
       request: () =>
         store.dispatch('form/get', `get/form/${alias}/${route.params.id}`),
     })
+    const getDetail = () => props.tab.detail
     const hasSelect = () =>
       props.tab.fields.some((field) => field.type === 'select' && field.isShow)
     const initPreRequest = () => {
       let queries = []
-      if (hasSelect()) {
+      console.log(hasSelect(), getDetail())
+      if (hasSelect() && getDetail()) {
         const syncForm = makeRequest()
         const lists = makeRequestList()
+        console.log('load list')
         queries = [syncForm, lists]
+        console.log(queries)
         return queries
-      } else {
+      } else if (getDetail() && !hasSelect()) {
         const syncForm = makeRequest()
-        queries = [syncForm]
+        queries = [syncForm, undefined]
+        console.log(queries)
         return queries
-      }
+      } else if (!getDetail() && hasSelect()) {
+        const lists = makeRequestList()
+        console.log('load list')
+        queries = [undefined, lists]
+        console.log(queries)
+        return queries
+      } else return undefined
     }
     const loadAutocompletes = async () => {
       const fields = props.tab.fields
@@ -113,26 +125,31 @@ export default {
     const getData = async () => {
       console.log(formData.hour_fact)
       const [syncForm, lists] = await Promise.all(initPreRequest())
-      for (let formKey in syncForm.data) {
-        const field = props.tab.fields.find(
-          (fieldEl) => fieldEl.name === formKey
-        )
-        if (field) {
-          formData[field.name] = syncForm.data[formKey]
-          console.log(formData.hour_fact)
-          // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
-          if (
-            field.hasOwnProperty('dependence') &&
-            field.dependence.type === 'api'
-          ) {
-            await getDependies({ value: formData[field.name], field })
+      console.log(syncForm, lists)
+      if (syncForm) {
+        for (let formKey in syncForm.data) {
+          const field = props.tab.fields.find(
+            (fieldEl) => fieldEl.name === formKey
+          )
+          if (field) {
+            formData[field.name] = syncForm.data[formKey]
+            console.log(formData.hour_fact)
+            // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
+            if (
+              field.hasOwnProperty('dependence') &&
+              field.dependence.type === 'api'
+            ) {
+              await getDependies({ value: formData[field.name], field })
+            }
           }
         }
       }
       if (hasSelect()) {
         for (let keyList in lists.data) {
+          console.log(keyList)
           const field = props.tab.fields.find((el) => el.name === keyList)
-          field.items = lists.data[keyList]
+          console.log(field)
+          if (field) field.items = lists.data[keyList]
         }
       }
       await loadAutocompletes()
@@ -192,10 +209,11 @@ export default {
 
     //}
     const changeSelect = ({ value, field }) => {
-      console.log(value, field)
-      const data = field.items.find((el) => el.id === value)
-      console.log(data)
-      field.dependence.fields.forEach((el) => (formData[el] = data[el]))
+      if (field.dependence) {
+        const data = field.items.find((el) => el.id === value)
+        console.log(data)
+        field.dependence.fields.forEach((el) => (formData[el] = data[el]))
+      }
     }
     const { makeRequest: changeForm } = useRequest({
       context,
@@ -209,8 +227,11 @@ export default {
     const submit = async () => {
       if (!validate()) return
       loading.value = true
-      const result = await changeForm()
-      console.log(result)
+      if (props.tab.isFilter) {
+        emit('sendFilter', formData)
+      } else {
+        await changeForm()
+      }
       loading.value = false
     }
     const openMenu = (field) => {
@@ -237,6 +258,7 @@ export default {
       autocompleteRef,
       changeAutocomplete,
       changeSelect,
+      getDetail,
       openMenu,
     }
   },
