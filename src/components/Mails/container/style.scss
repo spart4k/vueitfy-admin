@@ -72,6 +72,12 @@
             width: calc(100% - 343px - 13px);
             display: flex;
             padding-bottom: 19px;
+            &__new {
+                width: 100%;
+            }
+            &__edited {
+                margin-left: 13px;
+            }
         }
     }
 }

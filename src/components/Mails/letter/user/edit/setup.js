@@ -5,7 +5,12 @@ import { ref, watch } from 'vue'
 import { VueEditor } from 'vue2-editor'
 const edit = {
   name: 'Edit',
-  props: {},
+  props: {
+    data: {
+      type: Object,
+      default: () => {},
+    },
+  },
   components: {
     VueEditor,
   },

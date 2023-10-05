@@ -12,14 +12,14 @@
     <div class="v-letter-left">
       <v-icon
         class="v-letter-left_icon"
-        :color="$props?.data?.ismain ? 'warning' : ''"
+        :color="$props?.data?.is_main ? 'warning' : ''"
         small
         @click.stop="
           $parent.$emit('changeMailKey', {
             id: $props.data.id,
-            ismain: $props.data.ismain,
+            is_main: $props.data.is_main,
             box_id: $props?.data?.box_id,
-            key: 'ismain',
+            key: 'is_main',
           })
         "
         >$IconBookmark</v-icon

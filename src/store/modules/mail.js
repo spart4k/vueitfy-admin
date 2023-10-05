@@ -16,6 +16,7 @@ import {
   changeLettersContainer,
   changeLettersAll,
   getMail,
+  sendMessage,
 } from '@/api/mail'
 
 const mail = {
@@ -187,6 +188,18 @@ const mail = {
     async getMail(_, data) {
       try {
         const response = await getMail(data)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async sendMessage(_, data) {
+      try {
+        const config = {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+        const response = await sendMessage(data, config)
         return response
       } catch (e) {
         console.log(e)

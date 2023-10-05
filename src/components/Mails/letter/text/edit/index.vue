@@ -1,8 +1,8 @@
 <template>
   <div class="v-edit">
-    <VueEditor class="flex-grow-1" v-model="content" />
+    <VueEditor class="flex-grow-1" v-model="$props.data.text" />
     <v-file-input
-      v-model="files"
+      v-model="$props.data.files"
       outlined
       label="Загрузить файлы"
       chips
@@ -10,7 +10,7 @@
       class="flex-grow-0"
     >
       <template v-slot:selection="data">
-        <v-chip @click.stop outlined>
+        <v-chip outlined>
           <div class="v-edit-item-input_name">
             {{ data.text }}
           </div>
@@ -18,7 +18,7 @@
             class="ml-2"
             color="disabled"
             small
-            @click="deleteItem(data.index)"
+            @click.stop="$emit('deleteItem', data.index)"
           >
             $IconClose
           </v-icon>

@@ -70,7 +70,11 @@
     </div>
     <div
       v-if="$route.query.mail || $route.query.compose === 'new'"
-      class="v-container-expanded"
+      :class="[
+        'v-container-expanded',
+        $route.query.compose === 'new' && 'v-container-expanded__new',
+        $route?.query?.mail && 'v-container-expanded__edited',
+      ]"
     >
       <MailsLetterExpanded :data="activeMail" />
     </div>

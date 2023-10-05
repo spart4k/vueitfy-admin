@@ -38,7 +38,7 @@ const filters = {
         label: 'Помеченные',
         url: '$IconStarMail',
         number: 0,
-        query: 'isfavorites',
+        query: 'is_favorites',
       },
       {
         label: 'С вложениями',
@@ -130,7 +130,7 @@ const filters = {
         Number(route?.query?.id) !== val.id
       ) {
         router.push({ query: newQuery }).catch(() => {})
-        emit('getMails')
+        if (!val.compose) emit('getMails')
       }
     }
 

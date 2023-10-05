@@ -45,9 +45,9 @@ const container = {
             behavior: 'auto',
           })
         })
-        activeMail.value = null
         const responseData = await store.dispatch('mail/getMail', val.id)
-        activeMail.value = responseData.data[0]
+        activeMail.value = val
+        // activeMail.value = responseData.data[0]
         Vue.set(activeMail.value, 'text', responseData.textfile)
         if (!val.is_read) {
           const request = {
@@ -80,34 +80,41 @@ const container = {
         ]?.mails?.rows,
       async () => {
         if (route?.query?.mail) {
-          const responseData = await store.dispatch(
-            'mail/getMail',
-            Number(route?.query?.mail)
-          )
-          activeMail.value = responseData.data[0]
-          Vue.set(activeMail.value, 'text', responseData.textfile)
-          nextTick(() => {
-            if (
-              lowerItems.value.findIndex(
-                (e) => e.data.id === Number(route?.query?.mail)
-              ) !== -1
-            ) {
-              lowerItems?.value[
-                lowerItems.value.findIndex(
-                  (e) => e.data.id === Number(route?.query?.mail)
-                )
-              ]?.$el?.scrollIntoView({
-                behavior: 'smooth',
-              })
-            } else {
-              const upIndex = props.data.findIndex(
-                (e) => e.id === Number(route?.query?.box)
-              )
-              upperItems.value[upIndex].scrollIntoView({
-                behavior: 'smooth',
-              })
-            }
-          })
+          // const responseData = await store.dispatch(
+          //   'mail/getMail',
+          //   Number(route?.query?.mail)
+          // )
+          // const mail = props.data
+          //   .find((x) => x.id === Number(route?.query?.box))
+          //   .mails?.rows?.find((x) => x.id === Number(route?.query?.mail))
+          // if (mail) {
+          //   activeMail.value = mail
+          // } else {
+          //   activeMail.value = responseData.data[0]
+          // }
+          // Vue.set(activeMail.value, 'text', responseData.textfile)
+          // nextTick(() => {
+          //   if (
+          //     lowerItems.value.findIndex(
+          //       (e) => e.data.id === Number(route?.query?.mail)
+          //     ) !== -1
+          //   ) {
+          //     lowerItems?.value[
+          //       lowerItems.value.findIndex(
+          //         (e) => e.data.id === Number(route?.query?.mail)
+          //       )
+          //     ]?.$el?.scrollIntoView({
+          //       behavior: 'smooth',
+          //     })
+          //   } else {
+          //     const upIndex = props.data.findIndex(
+          //       (e) => e.id === Number(route?.query?.box)
+          //     )
+          //     upperItems.value[upIndex].scrollIntoView({
+          //       behavior: 'smooth',
+          //     })
+          //   }
+          // })
         }
       }
     )

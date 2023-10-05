@@ -1,26 +1,19 @@
 <template>
-  <div
-    :class="[
-      'v-letter-expanded',
-      'd-flex',
-      'flex-column',
-      $route?.query?.mail && 'v-letter-expanded__edited',
-    ]"
-  >
-    <!-- {{ $props.data }} -->
-    <template v-if="$props.data">
+  <div :class="['v-letter-expanded', 'd-flex', 'flex-column']">
+    <!-- {{ edit }} -->
+    <template v-if="$props.data || $route?.query?.compose">
       <div class="v-letter-expanded-user">
         <template v-if="!$route?.query?.compose">
           <v-icon
             class="v-letter-expanded-user_icon"
-            :color="$props?.data?.ismain ? 'warning' : ''"
+            :color="$props?.data?.is_main ? 'warning' : ''"
             small
             @click="
               $parent.$emit('changeMailKey', {
                 id: $props.data.id,
-                ismain: $props.data.ismain,
+                is_main: $props.data.is_main,
                 box_id: $props?.data?.box_id,
-                key: 'ismain',
+                key: 'is_main',
               })
             "
             >$IconBookmark</v-icon
@@ -30,10 +23,14 @@
             <MailsLetterDate :data="$props.data"></MailsLetterDate>
           </div>
         </template>
-        <MailsLetterUserEdit v-else />
+        <MailsLetterUserEdit :data="newMessage" v-else />
       </div>
       <div class="v-letter-expanded-container">
-        <MailsLetterTextEdit v-if="$route?.query?.compose" />
+        <MailsLetterTextEdit
+          @deleteItem="deleteItem"
+          :data="newMessage"
+          v-if="$route?.query?.compose"
+        />
         <MailsLetterText
           v-if="$route?.query?.compose !== 'new' && $props?.data"
           :data="$props?.data"

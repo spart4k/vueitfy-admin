@@ -156,17 +156,42 @@ const mails = {
       const company =
         mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
           .mails.rows
-      const mail = company.find((x) => x.id === val.id)
-      mail[val.key] = !val[val.key]
+      if (company.find((x) => x.id === val.id)) {
+        const mail = company.find((x) => x.id === val.id)
+        mail[val.key] = !val[val.key]
+      }
     }
 
     const changeMailArrayKey = async (key, params) => {
       const requestData = {
-        content: {},
+        content: {
+          props: {
+            attachment: true,
+          },
+        },
         id: 1,
         type: 'box',
       }
+      requestData.content.actionArray.folders = '1'
+      requestData.content.actionArray.tags = '1'
+      requestData.content.actions.del = true
+      requestData.content.actions.is_read = true
       if (selectedAllMails.value) {
+        // const requestData = {
+        //   content: {
+        //     props: {
+        //       attachment: true,
+        //     },
+        //     actionArray: {
+        //       folders: '1,2,3',
+        //       tags: '1,2,3',
+        //     },
+        //     actions: {
+        //       del: true,
+        //       is_read: true,
+        //     },
+        //   },
+        // }
         if (route?.query?.color)
           requestData.content.tags = JSON.parse(route?.query?.color).toString()
         // if (route?.query?.id) {
@@ -175,7 +200,22 @@ const mails = {
         //   await store.dispatch('mail/changeLettersAll', requestData)
         // }
       } else {
-        console.log('array')
+        requestData.content.id = '1,2,3'
+        // const requestData = {
+        //   content: {
+        //     actionArray: {
+        //       folders: '1,2,3',
+        //       tags: '1,2,3',
+        //     },
+        //     actions: {
+        //       del: true,
+        //       is_read: true,
+        //     },
+        //     id: '19,20',
+        //   },
+        //   id: 1,
+        //   type: 'box',
+        // }
       }
       // if (key === 'del') {
       //   await store.dispatch('mail/deleteMails', selectedMails.value)
@@ -242,10 +282,19 @@ const mails = {
     }
 
     onMounted(async () => {
-      if (!route?.query?.filter) {
+      if (!route?.query?.filter && !route?.query?.compose) {
         router.push({
           query: { filter: 'all' },
         })
+      } else if (route?.query?.mail) {
+        const newQuery = _.cloneDeep(route?.query)
+        delete newQuery.box
+        delete newQuery.mail
+        router
+          .push({
+            query: newQuery,
+          })
+          .catch(() => {})
       }
       await getFilterData()
       getMails()

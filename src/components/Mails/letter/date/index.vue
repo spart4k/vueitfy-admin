@@ -2,14 +2,14 @@
   <div class="v-date">
     <div class="v-date_icon">
       <v-icon
-        :color="$props?.data?.isfavorites ? 'warning' : ''"
+        :color="$props?.data?.is_favorites ? 'warning' : ''"
         small
         @click.stop="
           $parent.$parent.$emit('changeMailKey', {
             id: $props?.data?.id,
-            isfavorites: $props?.data?.isfavorites,
+            is_favorites: $props?.data?.is_favorites,
             box_id: $props?.data?.box_id,
-            key: 'isfavorites',
+            key: 'is_favorites',
           })
         "
         >$IconStar</v-icon

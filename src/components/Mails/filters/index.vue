@@ -151,11 +151,11 @@
     </div>
     <div class="v-filters-bottom mb-4">
       <v-btn
-        :color="$route.query.filter === 'ismain' ? 'primary' : 'disabled'"
+        :color="$route.query.filter === 'is_main' ? 'primary' : 'disabled'"
         outlined
         plain
         class="v-filters-bottom_item d-flex align-center"
-        @click="setRouterPath({ filter: 'ismain' })"
+        @click="setRouterPath({ filter: 'is_main' })"
       >
         <v-icon small>$IconBookmark</v-icon>
       </v-btn>

@@ -91,11 +91,10 @@
         </v-combobox>
       </div>
     </div>
-
     <div class="v-edit-item">
       <div class="v-edit-item_title mt-2">Тема:</div>
       <div class="v-edit-item-input">
-        <v-text-field></v-text-field>
+        <v-text-field v-model="$props.data.subject"></v-text-field>
       </div>
     </div>
   </div>
