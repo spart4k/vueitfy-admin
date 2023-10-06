@@ -27,7 +27,6 @@ export default function ({ fields = {}, watcher }) {
   const $errors = computed(() =>
     Object.keys(formData).reduce((obj, key) => {
       if ($touched.value) {
-        console.log(key)
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
       } else {
         obj[key] = []

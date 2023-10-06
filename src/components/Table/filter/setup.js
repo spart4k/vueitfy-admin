@@ -116,7 +116,6 @@ export default {
     }
     const sendFilter = (formData) => {
       closeFilter()
-      console.log(formData)
       emit('saveFilter', formData)
     }
     //watch(

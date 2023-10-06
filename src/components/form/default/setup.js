@@ -2,6 +2,7 @@ import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/autocomplete'
 import { selectsApi } from '@/api'
+import FormDefault from '@/components/form/default/index.vue'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -15,6 +16,7 @@ export default {
   components: {
     Datetimepicker,
     Autocomplete,
+    FormDefault,
   },
   props: {
     tab: {
@@ -40,6 +42,7 @@ export default {
       },
     }
     const loading = ref(true)
+    const stage = ref(null)
     const { alias } = props.tab
     const fields = () => {
       const fields = {}
@@ -50,7 +53,6 @@ export default {
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      console.log(fields)
       return fields
     }
     const { formData, validate, formErrors, vForm, touchedForm } = useForm({
@@ -77,24 +79,18 @@ export default {
       props.tab.fields.some((field) => field.type === 'select' && field.isShow)
     const initPreRequest = () => {
       let queries = []
-      console.log(hasSelect(), getDetail())
       if (hasSelect() && getDetail()) {
         const syncForm = makeRequest()
         const lists = makeRequestList()
-        console.log('load list')
         queries = [syncForm, lists]
-        console.log(queries)
         return queries
       } else if (getDetail() && !hasSelect()) {
         const syncForm = makeRequest()
         queries = [syncForm, undefined]
-        console.log(queries)
         return queries
       } else if (!getDetail() && hasSelect()) {
         const lists = makeRequestList()
-        console.log('load list')
         queries = [undefined, lists]
-        console.log(queries)
         return queries
       } else return undefined
     }
@@ -103,12 +99,21 @@ export default {
         .filter((el) => el.type === 'autocomplete' && el.isShow)
         .map((el) => el)
       const queryFields = fields.map(async (el) => {
+        const filters = []
         const { url } = el
+        console.log(el)
+        el.filters.forEach((filter) => {
+          filters.push({
+            field: filter.field,
+            value: formData[filter.field],
+          })
+        })
         const data = await selectsApi.getApi(url, {
           countRows: 10,
           currentPage: 1,
           searchValue: '',
           id: formData[el.name],
+          filters,
         })
         if (data.rows) {
           el.items = [...el.items, ...data.rows]
@@ -123,9 +128,7 @@ export default {
         (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
       )
     const getData = async () => {
-      console.log(formData.hour_fact)
       const [syncForm, lists] = await Promise.all(initPreRequest())
-      console.log(syncForm, lists)
       if (syncForm) {
         for (let formKey in syncForm.data) {
           const field = props.tab.fields.find(
@@ -133,7 +136,6 @@ export default {
           )
           if (field) {
             formData[field.name] = syncForm.data[formKey]
-            console.log(formData.hour_fact)
             // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
             if (
               field.hasOwnProperty('dependence') &&
@@ -146,9 +148,9 @@ export default {
       }
       if (hasSelect()) {
         for (let keyList in lists.data) {
-          console.log(keyList)
-          const field = props.tab.fields.find((el) => el.name === keyList)
-          console.log(field)
+          const field = props.tab.fields.find((el) =>
+            el.alias ? el.alias === keyList : el.name === keyList
+          )
           if (field) field.items = lists.data[keyList]
         }
       }
@@ -167,16 +169,13 @@ export default {
     //makeRequestList()
     const changeAutocomplete = async (params) => {
       //const { value, field } = data
-      console.log('update form')
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
       }
     }
     const getDependies = async (params) => {
-      console.log(formData.hour_fact)
       const { value, field } = params
       const depField = field.dependence.field
-      console.log(field)
       field.loading = true
       const data = await store.dispatch(field.dependence.module, {
         value,
@@ -190,7 +189,6 @@ export default {
       let card = targetField.items.find((el) => el.id === formData[depField])
 
       //if (data.length === 1) formData[depField] = card.id
-      console.log(formData)
       if (card)
         field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
       else if (data.length === 1) {
@@ -212,10 +210,11 @@ export default {
     const changeSelect = ({ value, field }) => {
       if (field.dependence) {
         const data = field.items.find((el) => el.id === value)
-        console.log(data)
         field.dependence.fields.forEach((el) => (formData[el] = data[el]))
       }
     }
+    console.log(props.tab.actions)
+
     const { makeRequest: changeForm } = useRequest({
       context,
       successMessage: 'Сохранено',
@@ -225,6 +224,9 @@ export default {
           body: { data: { id: +route.params.id, ...formData } },
         }),
     })
+    const nextForm = () => {
+      console.log()
+    }
     const submit = async () => {
       if (!validate()) return
       loading.value = true
@@ -232,16 +234,22 @@ export default {
         emit('sendFilter', formData)
       } else {
         await changeForm()
+        const isNextForm = true
+        if (isNextForm) {
+          nextForm()
+        }
       }
       loading.value = false
     }
     const openMenu = (field) => {
       field.menu = true
-      console.log(field)
     }
     onMounted(async () => {
       await getData()
-      console.log(formData.hour_fact)
+      setTimeout(() => {
+        stage.value++
+        console.log(stage.value)
+      }, 5000)
     })
     return {
       searchFields,
@@ -261,6 +269,7 @@ export default {
       changeSelect,
       getDetail,
       openMenu,
+      stage,
     }
   },
 }

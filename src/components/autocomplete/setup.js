@@ -24,7 +24,7 @@ export default {
     const proxyValue = ref(props.value)
     const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
-      console.log(params)
+      console.log('query')
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
         //setTimeout(() => {
@@ -40,11 +40,22 @@ export default {
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
         //`)
         const { url } = props.field
+        const filters = []
+        if (props.field.filters && props.field.filters.length) {
+          props.field.filters.forEach((el) => {
+            filters.push({
+              field: el.field,
+              value: props.formData[el.field],
+            })
+          })
+        }
+        console.log(filters)
         const data = await selectsApi.getApi(url, {
           countRows: 10,
           currentPage: props.field.page,
           searchValue: params.search ? params.search : '',
           id: params.id ? params.id : -1,
+          filters,
         })
         if (data.rows && data.rows.length) {
           //props.field.items = [...props.field.items, ...data.rows]
@@ -54,7 +65,6 @@ export default {
           Vue.set(props.field, 'items', [])
           //props.field.items = []
         }
-        console.log(props.field.items)
 
         //Vue.set(field, 'items', data.rows)
         props.field.loading = false
@@ -64,7 +74,6 @@ export default {
     const endIntersect = (entries, observer, isIntersecting) => {
       if (isIntersecting) {
         //const dataset = entries[0].target.dataset.field
-        console.log(props.field)
         if (props.field.items.length && !props.field.loading) {
           //field.page = field.page + 10
           //Vue.set(field, 'page', field.page + 1)
@@ -81,13 +90,11 @@ export default {
       proxyValue.value = null
     }
     const update = (value) => {
-      console.log('update')
       emit('change', { value, field: props.field })
     }
     watch(
       () => searchProps,
       (newVal) => {
-        console.log(newVal, props.field.search, props.field.items)
         const params = {
           id: props.value,
           search: props.field.search,

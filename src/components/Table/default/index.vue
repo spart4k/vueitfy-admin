@@ -302,7 +302,10 @@
         >
           <v-progress-circular color="primary" :size="80" indeterminate />
         </div>
-        <p v-if="!loading && !options.data.rows.length" class="v-table-loading">
+        <p
+          v-if="!loading && options.data.rows && !options.data.rows.length"
+          class="v-table-loading"
+        >
           Объекты не найдены
         </p>
       </table>
@@ -410,13 +413,13 @@
       </div>
     </div>
     <v-contextmenu :options="contextmenu" />
-    <portal v-if="filtersConfig" to="filter">
+    <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">
         <keep-alive>
           <TableFilter
             @closeFilter="closeFilter"
             @saveFilter="saveFilter"
-            :filtersConfig="filtersConfig"
+            :filtersConfig="filters"
           />
         </keep-alive>
       </Sheet>
@@ -433,7 +436,7 @@
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
       />-->
       <router-view
-        :detail="options.detail"
+        :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
       />
     </Popup>

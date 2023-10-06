@@ -1,6 +1,6 @@
 import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
 
-export default {
+const filters = {
   id: 0,
   name: 'Основные',
   type: 'FormDefault',
@@ -284,3 +284,5 @@ export default {
     ////},
   ],
 }
+
+export default filters

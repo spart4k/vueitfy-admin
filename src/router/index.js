@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PaymentView from '../views/PaymentView.vue'
 import PersonalView from '../views/PersonalView.vue'
+import AppointmentsView from '../views/Appointments.vue'
+
 import MailView from '../views/DefaultMails.vue'
 import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
@@ -40,7 +42,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: PaymentView,
+    component: AppointmentsView,
     children: [
       {
         name: 'appointments/:id',

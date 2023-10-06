@@ -1,3 +1,4 @@
 import payment from './payment'
-console.log(payment)
-export { payment }
+import appointments from './appointments'
+
+export { payment, appointments }

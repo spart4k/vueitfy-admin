@@ -6,7 +6,6 @@ export default function (searchFields, fields) {
     if (isIntersecting) {
       const dataset = entries[0].target.dataset.field
       const field = fields.find((el) => el.name === dataset)
-      console.log('isIntersecting')
       if (field.items.length && !field.loading) {
         //field.page = field.page + 10
         //Vue.set(field, 'page', field.page + 1)
@@ -21,7 +20,6 @@ export default function (searchFields, fields) {
   }
   const querySelections = async (params, field) => {
     if (params.search || params.id) {
-      console.log(params.search, params.id)
       if (params.search) params.search = params.search.toLowerCase()
       //setTimeout(() => {
       //  const data = field.data
@@ -53,18 +51,15 @@ export default function (searchFields, fields) {
     }
   }
   const deepEqual = (obj1, obj2) => {
-    console.log(obj1, obj2)
     return JSON.stringify(obj1) === JSON.stringify(obj2)
   }
   watch(
     () => searchFields.value,
     (newVal, oldVal) => {
       newVal.forEach((_, elIndex) => {
-        console.log(!deepEqual(newVal[elIndex], oldVal[elIndex]))
         if (!deepEqual(newVal[elIndex], oldVal[elIndex])) {
           const params = newVal[elIndex]
           const fieldElement = fields.find((el) => el.search === params.search)
-          console.log(params, fieldElement)
           querySelections(params, fieldElement)
         }
       })

@@ -51,6 +51,8 @@ const table = {
     const tablePosition = ref(null)
     const searchField = ref('')
     const isMobile = useMobile()
+    const detail = ref(props.options.detail)
+    const filters = ref(props.options.filters)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -374,16 +376,15 @@ const table = {
       }
     }
     const saveFilter = (filterData) => {
-      console.log(filterData)
       filtersColumns.value = []
-      props.filtersConfig.fields.forEach((el) => {
+      filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
           el.value = ''
           return
         }
         el.value = filterData[el.name]
         const obj = {
-          field: el.name,
+          //field: el.name,
           value: filterData[el.name],
           alias: el.alias,
           type: el.type,
@@ -518,6 +519,8 @@ const table = {
       closePopupForm,
       popupForm,
       filtersColumns,
+      detail,
+      filters,
     }
   },
 }
