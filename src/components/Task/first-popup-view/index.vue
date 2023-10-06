@@ -1,7 +1,12 @@
 <template>
   <div>
     <TextInfo :infoObj="{ textInfo }"></TextInfo>
-    <FormTitle :params="{}"></FormTitle>
+    <FormTitle
+      :listNames="listNames"
+      v-for="(item, index) in docs"
+      :docs="item"
+      :key="index"
+    ></FormTitle>
     <FormComment />
   </div>
 </template>

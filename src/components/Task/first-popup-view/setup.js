@@ -23,7 +23,11 @@ const firstPopupView = defineComponent({
       manager: props.data.entity.account_name,
       obj: props.data.entity.object_name,
     }
-    return { textInfo }
+    return {
+      textInfo,
+      docs: props.data.data.docs_id,
+      listNames: props.data.data.docs_spr,
+    }
   },
 })
 export default firstPopupView

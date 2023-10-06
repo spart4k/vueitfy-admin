@@ -6,6 +6,9 @@ const docsRequired = defineComponent({
     docs: {
       type: Object,
     },
+    listNames: {
+      type: Object,
+    },
   },
   // setup(props) {
 

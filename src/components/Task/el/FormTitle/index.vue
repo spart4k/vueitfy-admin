@@ -1,11 +1,12 @@
 <template>
   <div class="docs-required">
     <div class="docs-required__container-layout">
-      <a href="" target="_blank" class="docs-required__inner-image">
+      <div class="docs-required__inner-image">
         <img :src="docs.path_doc" class="docs-required__image" />
-      </a>
-      <div class="docs-required">
-        <span>Паспорт</span>
+      </div>
+      <div class="docs-required__name-container">
+        <span>{{ listNames[String(docs.contributed)] }}</span>
+        <span>{{ docs.personal_id }}</span>
       </div>
     </div>
     <div class="docs-required__contols-panel">
