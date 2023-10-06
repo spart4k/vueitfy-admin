@@ -1,6 +1,11 @@
 <template>
   <div>
-    <TextInfo :infoObj="{ textInfo }"></TextInfo>
+    <v-card-title
+      class="d-flex justify-center align-center font-weight-medium py-1"
+    >
+      Title
+    </v-card-title>
+    <TextInfo :infoObj="textInfo"></TextInfo>
     <FormTitle :params="{}"></FormTitle>
     <FormComment />
   </div>

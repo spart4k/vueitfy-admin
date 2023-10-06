@@ -20,8 +20,14 @@ const firstPopupView = defineComponent({
   },
   setup(props) {
     const textInfo = {
-      manager: props.data.entity.account_name,
-      obj: props.data.entity.object_name,
+      manager: {
+        key: 'Менеджер',
+        value: props.data.entity.account_name,
+      },
+      obj: {
+        key: 'Объект',
+        value: props.data.entity.object_name,
+      },
     }
     return { textInfo }
   },

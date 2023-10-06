@@ -5,12 +5,11 @@ const textInfo = defineComponent({
   props: {
     infoObj: {
       type: Object,
-      default: () => {},
     },
   },
   setup(props) {
     return {
-      data: props.infoObj,
+      formData: props.infoObj,
     }
   },
 })
