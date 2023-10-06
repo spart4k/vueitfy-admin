@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!--    <TextInfo></TextInfo>-->
-    <DocScan></DocScan>
+    <TextInfo :infoObj="{ textInfo }"></TextInfo>
+    <!--    <DocScan></DocScan>-->
     <FormComment />
   </div>
 </template>

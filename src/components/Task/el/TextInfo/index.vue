@@ -4,7 +4,7 @@
       class="d-flex justify-center font-weight-bold text-subtitle-1 pt-0"
       >Назначение №24522 на дату 12.07.2023
     </v-card-title>
-    <v-row v-for="item in data" :key="item.key">
+    <v-row v-for="item in data" :key="item.key" class="mt-1">
       {{ item.key }}: {{ item.value }}
     </v-row>
   </div>
