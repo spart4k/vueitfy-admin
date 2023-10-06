@@ -2,6 +2,7 @@ import { defineComponent } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
+import FormTitle from '@/components/Task/el/FormTitle/index.vue'
 
 const firstPopupView = defineComponent({
   name: 'FirstPopupView',
@@ -9,6 +10,7 @@ const firstPopupView = defineComponent({
     FormComment,
     TextInfo,
     DocScan,
+    FormTitle,
   },
   props: {
     data: {

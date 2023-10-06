@@ -1,3 +1,20 @@
-.doc-scan {
-    margin-top: 10px;
+.docs-required {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.docs-required__container-layout {
+    display: flex;
+}
+.docs-required__inner-image {
+    width: 50px;
+    height: 50px;
+}
+.docs-required__image {
+    width: 100%;
+}
+.docs-required__contols-panel {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }

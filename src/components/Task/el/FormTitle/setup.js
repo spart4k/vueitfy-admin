@@ -1,27 +1,14 @@
 import { defineComponent } from 'vue'
 
-const FileReader = defineComponent({
-  name: 'FileReader',
-  props: {},
-  setup() {
-    return {}
-  },
-  props: [],
-  data() {
-    return {}
-  },
-  methods: {
-    previevImage() {},
-  },
-  computed: {
-    calcString: {
-      get() {
-        return 'awdadwwa'
-      },
-      set(newVal) {
-        return newVal + '====='
-      },
+const docsRequired = defineComponent({
+  name: 'DocsRequired',
+  props: {
+    docs: {
+      type: Object,
     },
   },
+  // setup(props) {
+
+  // },
 })
-export default FileReader
+export default docsRequired

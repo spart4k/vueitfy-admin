@@ -1,7 +1,7 @@
 <template>
   <div>
     <TextInfo :infoObj="{ textInfo }"></TextInfo>
-    <!--    <DocScan></DocScan>-->
+    <FormTitle :params="{}"></FormTitle>
     <FormComment />
   </div>
 </template>

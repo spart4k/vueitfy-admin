@@ -1,5 +1,8 @@
 <template>
-  <div class="task" v-if="!loading">
+  <div class="task">
+    <div class="task__loader" v-if="loading">
+      <v-progress-circular indeterminate></v-progress-circular>
+    </div>
     <v-row class="task__title">
       <v-card-title class="title py-5">
         {{ data.task.task_type_id }}
