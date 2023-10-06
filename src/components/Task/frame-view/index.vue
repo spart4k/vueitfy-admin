@@ -1,35 +1,31 @@
 <template>
   <div class="task" v-if="!loading">
-    {{ dataFrom }}
     <v-row class="task__title">
-      <!-- <v-card-title class="title py-5">{{
-        typeName[dataFrom.task_type_id]
-      }}</v-card-title> -->
+      <v-card-title class="title py-5">
+        {{ data.task.task_type_id }}
+      </v-card-title>
     </v-row>
     <v-divider></v-divider>
     <div class="task__info py-3 px-2">
       <v-row class="task__info-row mb-2">
         <v-icon small>$IconPeople</v-icon>
-        <span>{{ dataFrom.task.from_fio }}</span>
+        <span>{{ data.task.from_fio }}</span>
         <v-icon small>$IconArrowRight</v-icon>
-        <span>{{ dataFrom.task.to_fio }}</span>
+        <span>{{ data.task.to_fio }}</span>
       </v-row>
       <v-row class="task__info-row mb-2">
         <v-icon small>$IconMain</v-icon>
-        <span>{{ dataFrom.task.date_create }}</span>
+        <span>{{ formatDate(data.task.date_create) }}</span>
       </v-row>
       <v-row class="task__info-row" align="center">
         <v-icon small>$IconMain</v-icon>
-        <!-- <span
-          :class="`circle circle--${statusName[dataFrom.task.status].class}`"
-        ></span> -->
-        <!-- <span>{{ statusName[dataFrom.task.status].name }}</span> -->
+        <span :class="`circle circle--${data.task.status}`"></span>
+        <span>{{ data.task.status }}</span>
       </v-row>
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <FirstPopupView></FirstPopupView>
-      <SecondPopupView></SecondPopupView>
+      <FirstPopupView :data="data"></FirstPopupView>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">

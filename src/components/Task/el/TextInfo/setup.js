@@ -2,28 +2,15 @@ import { defineComponent } from 'vue'
 
 const textInfo = defineComponent({
   name: 'TextInfo',
-  props: {},
-  setup() {
-    const data = {
-      creator: {
-        key: 'Создатель',
-        value: 'Сафонов Евгений',
-      },
-      type: {
-        key: 'Создатель',
-        value: 'Сафонов Евгений',
-      },
-      employee: {
-        key: 'Создатель',
-        value: 'Сафонов Евгений',
-      },
-      object: {
-        key: 'Создатель',
-        value: 'Сафонов Евгений',
-      },
-    }
+  props: {
+    infoObj: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  setup(props) {
     return {
-      data,
+      data: props.infoObj,
     }
   },
 })

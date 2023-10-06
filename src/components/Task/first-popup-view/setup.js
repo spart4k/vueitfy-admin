@@ -10,9 +10,18 @@ const firstPopupView = defineComponent({
     TextInfo,
     DocScan,
   },
-  props: {},
-  setup() {
-    return {}
+  props: {
+    data: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  setup(props) {
+    const textInfo = {
+      manager: props.data.entity.account_name,
+      obj: props.data.entity.object_name,
+    }
+    return { textInfo }
   },
 })
 export default firstPopupView
