@@ -7,6 +7,13 @@
     </v-card-title>
     <TextInfo :infoObj="textInfo"></TextInfo>
     <FormTitle :params="{}"></FormTitle>
+    <TextInfo :infoObj="{ textInfo }"></TextInfo>
+    <FormTitle
+      :listNames="listNames"
+      v-for="(item, index) in docs"
+      :docs="item"
+      :key="index"
+    ></FormTitle>
     <FormComment />
   </div>
 </template>
