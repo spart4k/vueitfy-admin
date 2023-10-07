@@ -10,7 +10,6 @@
         }"
         class="v-popup-container"
       >
-        <Task />
         <slot></slot>
       </div>
     </div>

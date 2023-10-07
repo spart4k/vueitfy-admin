@@ -2,7 +2,7 @@
   <div class="img-popup">
     <div class="img-popup__wrap">
       <img style="object-fit: cover; position: absolute" :src="src" />
-      <div class="img-popup__close">
+      <div @click="() => $emit('close')" class="img-popup__close">
         <v-icon color="white">$IconClose</v-icon>
       </div>
     </div>
