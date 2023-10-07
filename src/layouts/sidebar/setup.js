@@ -70,14 +70,9 @@ export default {
             active: false,
           },
           {
-            id: 8,
-            name: 'Персонал',
-            link: '/personal',
-          },
-          {
             id: 9,
             name: 'Персонал',
-            link: '/',
+            link: '/personal',
             active: false,
           },
           {
