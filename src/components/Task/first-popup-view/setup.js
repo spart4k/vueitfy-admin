@@ -103,6 +103,7 @@ const firstPopupView = defineComponent({
 
     return {
       textInfo,
+      docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,
       listNames: props.data.data.docs_spr,
       clickCheckBtn,
