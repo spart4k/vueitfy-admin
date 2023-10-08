@@ -17,6 +17,8 @@ import {
   changeLettersAll,
   getMail,
   sendMessage,
+  getSendedMessages,
+  getDeletedMessages,
 } from '@/api/mail'
 
 const mail = {
@@ -201,6 +203,24 @@ const mail = {
         }
         const response = await sendMessage(data, config)
         return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getSendedMessages(_, data) {
+      try {
+        const response = await getSendedMessages(data.content, data.id)
+        return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getDeletedMessages(_, data) {
+      try {
+        const response = await getDeletedMessages(data.content, data.id)
+        return response.data
       } catch (e) {
         console.log(e)
       }

@@ -37,3 +37,9 @@ export const changeLettersAll = (data) => put('mails/change/all', data)
 export const getMail = (id) => get(`mail/${id}`)
 
 export const sendMessage = (data, config) => post('send_message', data, config)
+
+export const getSendedMessages = (data, params) =>
+  post(`send_messages/${params}`, data)
+
+export const getDeletedMessages = (data, params) =>
+  post(`mails/del/${params}`, data)

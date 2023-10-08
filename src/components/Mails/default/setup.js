@@ -132,6 +132,14 @@ const mails = {
         let data
         if (route?.query?.filter === 'folder') {
           data = await store.dispatch('mail/getFolderMails', requestData)
+        } else if (route?.query?.filter === 'sent') {
+          delete requestData.content.tags
+          delete requestData.content.props
+          data = await store.dispatch('mail/getSendedMessages', requestData)
+        } else if (route?.query?.filter === 'trash') {
+          delete requestData.content.tags
+          delete requestData.content.props
+          data = await store.dispatch('mail/getDeletedMessages', requestData)
         } else {
           data = await store.dispatch('mail/getBoxMails', requestData)
         }
