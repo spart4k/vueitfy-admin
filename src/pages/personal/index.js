@@ -35,7 +35,7 @@ const tableConsumptionConfig = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'http://api.personal-crm.ru//get/pagination/personal',
+    url: `${process.env.VUE_APP_API_URL}/get/pagination/personal`,
     title: 'This is an about page1',
   },
   panel: {
@@ -625,7 +625,7 @@ const config = {
           //   items: [],
           //   page: 1,
           //   search: '',
-          //   url: 'http://api.personal-crm.ru//get/pagination_list/personal',
+          //   url: 'process.env.VUE_APP_API_URL/get/pagination_list/personal',
           //   position: {
           //     cols: 12,
           //     sm: 4,
