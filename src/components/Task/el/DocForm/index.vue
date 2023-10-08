@@ -67,10 +67,36 @@
             </v-row>
             <v-row>
               <v-col cols="4">
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.pasp_data_vid"
-                  label="Дата выдачи"
-                ></date-time-picker>
+                <!--                <date-time-picker-->
+                <!--                  v-model="formObj[doc.doc_id].formData.pasp_data_vid"-->
+                <!--                  label="Дата выдачи"-->
+                <!--                ></date-time-picker>-->
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formObj[doc.doc_id].formData.pasp_data_vid"
+                      label="Дата выдачи"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.pasp_data_vid"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
             <v-row>
@@ -147,10 +173,32 @@
           <div v-else-if="doc.doc_id === 8">
             <v-row>
               <v-col>
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.med_book_date"
-                  label="Дата выдачи"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formObj[doc.doc_id].formData.med_book_date"
+                      label="Дата выдачи"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.med_book_date"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
@@ -181,10 +229,32 @@
             </v-row>
             <v-row>
               <v-col cols="4">
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.view_home_data_vid"
-                  label="Дата выдачи"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formObj[doc.doc_id].formData.view_home_data_vid"
+                      label="Дата выдачи"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.view_home_data_vid"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
             <v-row>
@@ -216,16 +286,60 @@
             </v-row>
             <v-row>
               <v-col cols="4">
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.migr_card_data_in"
-                  label="Дата въезда"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formObj[doc.doc_id].formData.migr_card_data_in"
+                      label="Дата въезда"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.migr_card_data_in"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col cols="4">
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.migr_card_data_out"
-                  label="Дата выезда"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerSecondOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formObj[doc.doc_id].formData.migr_card_data_out"
+                      label="Дата выезда"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.migr_card_data_out"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
@@ -233,10 +347,34 @@
           <div v-else-if="doc.doc_id === 13">
             <v-row>
               <v-col>
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.check_patent_date_pay"
-                  label="Дата оплаты"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="
+                        formObj[doc.doc_id].formData.check_patent_date_pay
+                      "
+                      label="Дата оплаты"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.check_patent_date_pay"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
@@ -244,20 +382,69 @@
           <div v-else-if="doc.doc_id === 14">
             <v-row>
               <v-col cols="4">
-                <date-time-picker
-                  v-model="
-                    formObj[doc.doc_id].formData.registration_date_do_docs_in
-                  "
-                  label="Дата с"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="
+                        formObj[doc.doc_id].formData
+                          .registration_date_do_docs_in
+                      "
+                      label="Дата с"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="
+                      formObj[doc.doc_id].formData.registration_date_do_docs_in
+                    "
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col>
-                <date-time-picker
-                  v-model="
-                    formObj[doc.doc_id].formData.registration_date_c_docs_in
-                  "
-                  label="Дата до"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerSecondOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="
+                        formObj[doc.doc_id].formData.registration_date_c_docs_in
+                      "
+                      label="Дата с"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="
+                      formObj[doc.doc_id].formData.registration_date_c_docs_in
+                    "
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
@@ -272,12 +459,12 @@
               ></v-col>
             </v-row>
             <v-row>
-              <v-col
-                ><date-time-picker
+              <v-col>
+                <date-time-picker
                   v-model="formObj[doc.doc_id].formData.patent_date_docs_in"
                   label="Дата выдачи"
-                ></date-time-picker
-              ></v-col>
+                ></date-time-picker>
+              </v-col>
             </v-row>
           </div>
           <!--ИНН-->
@@ -309,12 +496,36 @@
           <div v-else-if="doc.doc_id === 19">
             <v-row>
               <v-col>
-                <date-time-picker
-                  v-model="
-                    formObj[doc.doc_id].formData.check_patent_date_pay_now
-                  "
-                  label="Дата оплаты"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="
+                        formObj[doc.doc_id].formData.check_patent_date_pay_now
+                      "
+                      label="Дата оплаты"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="
+                      formObj[doc.doc_id].formData.check_patent_date_pay_now
+                    "
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
@@ -333,10 +544,32 @@
           <div v-else-if="doc.doc_id === 23">
             <v-row>
               <v-col>
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.view_home_address_reg"
-                  label="Дата"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formObj[doc.doc_id].formData.med_view_docs_in"
+                      label="Дата"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.med_view_docs_in"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </div>

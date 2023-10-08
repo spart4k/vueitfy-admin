@@ -56,7 +56,7 @@
         </v-expansion-panel>
       </v-expansion-panels>
       <DocForm
-        @formSubmit="formSubmit"
+        :docsData="docsData"
         :listNames="listNames"
         :docs="docs"
       ></DocForm>
