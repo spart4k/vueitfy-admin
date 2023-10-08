@@ -25,13 +25,12 @@ const task = defineComponent({
     const { makeRequest, loading } = useRequest({
       context,
       request: () => store.dispatch('taskModule/getTask', 1),
-      successMessage: 'Вы успешно авторизовались',
     })
 
-    // const { makeRequest } = useRequest({
+    // const { makeRequest: makePostRequest } = useRequest({
     //   context,
-    //   request: () => store.dispatch('taskModule/getTask', 1),
-    //   successMessage: 'Вы успешно авторизовались',
+    //   request: () =>
+    //     store.dispatch('taskModule/setPartTask', { wdwd: 1, ffff: 2 }),
     // })
 
     const formatDate = (date) => {
@@ -42,7 +41,17 @@ const task = defineComponent({
       const dataFrom = await makeRequest()
       data.value = dataFrom
     })
-    return { loading, data, formatDate }
+
+    const pushData = (data) => {
+      console.log(data)
+    }
+    return { loading, data, formatDate, pushData }
+  },
+
+  methods: {
+    sendData() {
+      this.$refs.FirstPopupView.prepareCaseAndPush()
+    },
   },
 })
 export default task

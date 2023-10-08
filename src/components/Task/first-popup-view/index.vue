@@ -1,31 +1,22 @@
 <template>
   <div>
     <TextInfo :infoObj="{ textInfo }"></TextInfo>
-    <FormTitle
-      :listNames="listNames"
-      v-for="(item, index) in docs"
-      :docs="item"
-      :key="index"
-      @confirmed="addConfirmed"
-      @unconfirmed="addUnconfirmed"
-    ></FormTitle>
-    <FormComment />
-    <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
-    <!--    <v-card-title-->
-    <!--      class="d-flex justify-center align-center font-weight-medium py-1"-->
-    <!--    >-->
-    <!--      Title-->
-    <!--    </v-card-title>-->
-    <!--    <TextInfo :infoObj="textInfo"></TextInfo>-->
-    <!--    <FormTitle :params="{}"></FormTitle>-->
-    <!--    <FormTitle-->
-    <!--      v-for="(item, index) in docs"-->
-    <!--      :docs="item"-->
-    <!--      :key="index"-->
-    <!--      :name="getDocName(item.id)"-->
-    <!--    ></FormTitle>-->
-    <!--    <FormComment />-->
-    <div>
+    <div v-if="isShow">
+      <FormTitle
+        :listNames="listNames"
+        v-for="(item, index) in docs"
+        :docs="item"
+        :key="index"
+        @confirmed="addConfirmed"
+        @unconfirmed="addUnconfirmed"
+      ></FormTitle>
+      <FormComment v-model="comment" />
+      <span class="danger" v-if="commentError"
+        >Заполните поле комментарий!</span
+      >
+      <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
+    </div>
+    <div v-if="!isShow">
       <v-expansion-panels>
         <v-expansion-panel>
           <v-expansion-panel-header>

@@ -26,21 +26,7 @@ const firstPopupView = defineComponent({
       default: () => {},
     },
   },
-  methods: {
-    // addConfirmed(data) {
-    //   this.confirmed.push(data)
-    //   this.unConfirmed = this.unConfirmed.filter(
-    //     (x) => x.docs_id !== data.docs_id
-    //   )
-    //   console.log(this.confirmed)
-    // },
-    // addUnconfirmed(data) {
-    //   this.unConfirmed.push(data)
-    //   this.confirmed = this.confirmed.filter((x) => x.docs_id !== data.docs_id)
-    //   console.log(this.unConfirmed)
-    // },
-  },
-  setup(props) {
+  setup(props, { emit }) {
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -69,8 +55,13 @@ const firstPopupView = defineComponent({
       console.log(unConfirmed)
     }
 
-    const clickCheckBtn = async () => {
-      if (unConfirmed.value.length) {}
+    const clickCheckBtn = () => {
+      if (unConfirmed.value.length && comment.value.trim()) {
+        isShow.value = false
+        commentError.value = false
+      } else {
+        commentError.value = true
+      }
     }
 
     const formSubmit = (cb) => {
@@ -90,6 +81,10 @@ const firstPopupView = defineComponent({
       },
     })
 
+    const comment = ref('')
+    let isShow = ref(true)
+    let commentError = ref(false)
+
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {
         return {
@@ -101,6 +96,10 @@ const firstPopupView = defineComponent({
         }
       }
     )
+
+    const prepareCaseAndPush = () => {
+      emit('prepareCaseAndPush', { wdw: 1, wddd: 2 })
+    }
 
     return {
       textInfo,
@@ -114,7 +113,13 @@ const firstPopupView = defineComponent({
       validate,
       citizenItems,
       formSubmit,
+      prepareCaseAndPush,
+      comment,
+      isShow,
+      commentError,
     }
   },
+
+  // emits: ['prepareCaseAndPush'],
 })
 export default firstPopupView

@@ -28,11 +28,15 @@
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <FirstPopupView :data="data"></FirstPopupView>
+      <FirstPopupView
+        :data="data"
+        ref="FirstPopupView"
+        @prepareCaseAndPush="pushData"
+      ></FirstPopupView>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn color="info">
+      <v-btn color="info" @click="sendData">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
