@@ -6,6 +6,7 @@ import {
   // autocompleteField,
   dateField,
   checkboxField,
+  // dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 

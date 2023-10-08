@@ -8,6 +8,7 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 
+import DropZone from '@/components/dropzone/default/index.vue'
 import Datetimepicker from '@/components/datetimepicker/index.vue'
 import store from '@/store'
 
@@ -17,6 +18,7 @@ export default {
     Datetimepicker,
     Autocomplete,
     FormDefault,
+    DropZone,
   },
   props: {
     tab: {
@@ -188,6 +190,7 @@ export default {
     const getDependies = async (params) => {
       const { value, field } = params
       const depField = field.dependence.field
+      console.log(depField)
       field.loading = true
       const data = await store.dispatch(field.dependence.module, {
         value,
@@ -195,6 +198,7 @@ export default {
       })
 
       const targetField = props.tab.fields.find((el) => el.name === depField)
+      console.log(targetField)
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data

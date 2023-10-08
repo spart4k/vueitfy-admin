@@ -16,6 +16,7 @@
             :cols="field.position.cols"
             :sm="field.position.sm"
             class="field-col"
+            :class="field.type"
           >
             <div v-if="loading && field.isShow" class="field-loading gradient">
               <!--<p>loading</p>-->
@@ -103,11 +104,7 @@
               clearable
               :error-messages="formErrors[field.name]"
             />
-            <p>
-              <!--{{ field.items }}-->
-              <!--{{ allLoaded }}-->
-              <!--{{ field.selectOption.text + field.selectOption.value }}-->
-            </p>
+            <DropZone v-else-if="showField('dropzone', field)" />
           </v-col>
         </v-row>
         <v-row>
