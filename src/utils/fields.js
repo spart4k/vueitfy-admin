@@ -57,6 +57,13 @@ const datetimeField = (properties) => {
   }
 }
 
+const checkboxField = (properties) => {
+  return {
+    type: 'checkbox',
+    ...defaultProperties(properties),
+  }
+}
+
 export {
   dateField,
   stringField,
@@ -64,4 +71,5 @@ export {
   autocompleteField,
   textareaField,
   datetimeField,
+  checkboxField,
 }

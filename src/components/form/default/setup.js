@@ -102,12 +102,14 @@ export default {
         const filters = []
         const { url } = el
         console.log(el)
-        el.filters.forEach((filter) => {
-          filters.push({
-            field: filter.field,
-            value: formData[filter.field],
+        if (el.filters && el.filters.length) {
+          el.filters.forEach((filter) => {
+            filters.push({
+              field: filter.field,
+              value: formData[filter.field],
+            })
           })
-        })
+        }
         const data = await selectsApi.getApi(url, {
           countRows: 10,
           currentPage: 1,
@@ -127,6 +129,13 @@ export default {
       props.tab.fields.some(
         (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
       )
+    const stringIsArray = (str) => {
+      try {
+        return new Function(`return Array.isArray(${str})`)()
+      } catch {
+        return false
+      }
+    }
     const getData = async () => {
       const [syncForm, lists] = await Promise.all(initPreRequest())
       if (syncForm) {
@@ -135,6 +144,8 @@ export default {
             (fieldEl) => fieldEl.name === formKey
           )
           if (field) {
+            if (stringIsArray(syncForm.data[formKey]))
+              syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
             formData[field.name] = syncForm.data[formKey]
             // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
             if (
@@ -148,6 +159,7 @@ export default {
       }
       if (hasSelect()) {
         for (let keyList in lists.data) {
+          console.log(keyList)
           const field = props.tab.fields.find((el) =>
             el.alias ? el.alias === keyList : el.name === keyList
           )

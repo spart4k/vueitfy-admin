@@ -177,7 +177,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'http://10.63.1.132:5000/get/pagination_list/object',
+      url: 'http://api.personal-crm.ru/get/pagination_list/object',
       position: {
         cols: 12,
         sm: 12,
@@ -210,7 +210,7 @@ export default {
     //  type: 'select',
     //  subtype: 'multiple',
     //  items: [],
-    //  url: 'http://10.63.1.132:5000/get/pagination_list/object',
+    //  url: 'http://api.personal-crm.ru/get/pagination_list/object',
     //  bind: '',
     //  label: 'name',
     //  alias: 'p.object_id',

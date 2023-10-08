@@ -2,9 +2,9 @@ import filters from './filters'
 import { required } from '@/utils/validation.js'
 import {
   stringField,
-  selectField,
-  // autocompleteField,
-  dateField,
+  // selectField,
+  autocompleteField,
+  // dateField,
   checkboxField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -35,7 +35,7 @@ const tableConsumptionConfig = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'http://api.personal-crm.ru//get/pagination/personal',
+    url: 'http://api.personal-crm.ru/get/pagination/personal',
     title: 'This is an about page1',
   },
   panel: {
@@ -233,7 +233,7 @@ const config = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/personal',
+    url: 'get/pagination/user_keys',
     title: 'This is an about page1',
   },
   panel: {
@@ -262,7 +262,7 @@ const config = {
   },
   head: [
     {
-      title: 'id',
+      title: 'Ключ',
       type: 'default',
       align: 'center',
       fixed: {
@@ -277,17 +277,17 @@ const config = {
           isShow: false,
         },
       ],
-      alias: 'p.id',
+      alias: 'uk.user_key',
       isShow: true,
       width: '40',
-      value: 'id',
+      value: 'user_key',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Статус',
+      title: 'ФИО',
       type: 'default',
       align: 'center',
       fixed: {
@@ -304,15 +304,15 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'ps.status',
-      value: 'status_name',
+      alias: 'uk.fio',
+      value: 'fio',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'ФИО',
+      title: 'Линейщик',
       type: 'default',
       align: 'center',
       fixed: {
@@ -330,14 +330,14 @@ const config = {
       isShow: true,
       width: '150',
       alias: 'p.name',
-      value: 'name',
+      value: 'personal_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Телефон',
+      title: 'Объект',
       type: 'default',
       align: 'center',
       fixed: {
@@ -354,15 +354,15 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      value: 'telefon',
-      alias: 'p.telefon',
+      value: 'object_name',
+      alias: 'o.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Примечание',
+      title: 'Тип',
       type: 'default',
       align: 'center',
       fixed: {
@@ -379,8 +379,8 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      value: 'doljnost_name',
-      alias: 'p.comment',
+      value: 'is_stager',
+      alias: 'uk.is_stager',
       search: {
         field: '',
         isShow: true,
@@ -435,7 +435,6 @@ const config = {
         type: 'FormDefault',
         detail: true,
         lists: [
-          'user_keys',
           'habitation_id',
           'account_id',
           'direction_id',
@@ -445,82 +444,37 @@ const config = {
         active: false,
         fields: [
           stringField({
-            label: 'ФИО',
-            name: 'name',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          stringField({
-            label: 'Телефон',
-            name: 'telefon',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          selectField({
-            label: 'Гражданство',
-            name: 'status',
-            alias: 'grajdanstvo_id',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'Примечание',
-            name: 'comment',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          dateField({
-            label: ' Дата рождения',
-            name: 'data_rojd',
-            subtype: 'date',
-            placeholder: '',
-            classes: [''],
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            validations: { required },
-            bootstrapClass: ['changeSelect'],
-          }),
-          selectField({
-            label: 'Личный ключ',
+            label: 'Ключ',
             name: 'user_key',
-            subtype: 'multiselect',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
+          stringField({
+            label: 'ФИО',
+            name: 'fio',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
+          autocompleteField({
+            label: 'Линейщик',
+            name: 'personal_id',
+            subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -528,6 +482,9 @@ const config = {
               value: 'id',
             },
             items: [],
+            page: 1,
+            search: '',
+            url: 'http://api.personal-crm.ru/get/pagination_list/personal',
             position: {
               cols: 12,
               sm: 4,
@@ -535,11 +492,10 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
           }),
-          selectField({
-            label: 'Направление',
-            name: 'direction_json',
-            alias: 'direction_id',
-            subtype: 'multiselect',
+          autocompleteField({
+            label: 'Объект',
+            name: 'object_id',
+            subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -547,25 +503,9 @@ const config = {
               value: 'id',
             },
             items: [],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Доступ',
-            name: 'account_json',
-            alias: 'account_id',
-            subtype: 'multiselect',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
+            page: 1,
+            search: '',
+            url: 'http://api.personal-crm.ru/get/pagination_list/object',
             position: {
               cols: 12,
               sm: 4,
@@ -574,8 +514,8 @@ const config = {
             bootstrapClass: [''],
           }),
           checkboxField({
-            label: 'Штатный',
-            name: 'in_state',
+            label: 'Стажер',
+            name: 'is_stager',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -587,58 +527,6 @@ const config = {
             //validations: { required },
             //isShow: false,
           }),
-          selectField({
-            label: 'Проживание',
-            name: 'habitation_id',
-            alias: 'direction_json',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            defaultItems: [
-              {
-                id: 11,
-                name: '--Самостоятельное--',
-                bank_id: 11,
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          // autocompleteField({
-          //   label: 'Линейщик',
-          //   name: 'personal_id',
-          //   subtype: 'single',
-          //   placeholder: '',
-          //   class: [''],
-          //   selectOption: {
-          //     text: 'name',
-          //     value: 'id',
-          //   },
-          //   items: [],
-          //   page: 1,
-          //   search: '',
-          //   url: 'http://api.personal-crm.ru//get/pagination_list/personal',
-          //   position: {
-          //     cols: 12,
-          //     sm: 4,
-          //   },
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          //   filters: [
-          //     {
-          //       field: 'object_id',
-          //       value: '',
-          //     },
-          //   ],
-          // }),
         ],
         actions: [
           stringAction({

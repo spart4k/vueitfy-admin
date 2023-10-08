@@ -1,5 +1,15 @@
 import payment from './payment'
 import appointments from './appointments'
 import personal from './personal'
+import shopRequestMagnit from './magnit/shop-request'
+import shopRequestMagnitReport from './magnit/shop-request-report'
+import userKeys from './user-keys'
 
-export { payment, appointments, personal }
+export {
+  payment,
+  appointments,
+  personal,
+  shopRequestMagnit,
+  shopRequestMagnitReport,
+  userKeys,
+}
