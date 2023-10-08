@@ -16,7 +16,7 @@
       >
       <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
     </div>
-    <div v-if="!isShow">
+    <div>
       <v-expansion-panels>
         <v-expansion-panel>
           <v-expansion-panel-header>
