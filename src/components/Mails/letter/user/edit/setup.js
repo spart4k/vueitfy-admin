@@ -21,14 +21,11 @@ const edit = {
       avatar: 'https://cdn.vuetifyjs.com/images/john.png',
       id: 0,
     })
-    const content = ref([
-      {
-        name: 'Азаров Михаил1',
-        email: 'azarov@gmail.com',
-        avatar: 'https://cdn.vuetifyjs.com/images/john.png',
-        id: 1,
-      },
+    const rules = ref([
+      (value) => !!value || '',
+      (value) => (value && value.length >= 1) || 'Минимум 1 символ',
     ])
+    // const content = ref([])
     const userArray = ref([
       {
         name: 'Азаров Михаил1',
@@ -55,28 +52,11 @@ const edit = {
         id: 4,
       },
     ])
-    const deleteItem = (index) => {
-      content.value.splice(index, 1)
-    }
-    watch(
-      () => content.value.length,
-      (newCount, oldCount) => {
-        if (newCount > oldCount) {
-          if (!content.value[content.value.length - 1].id) {
-            content.value[content.value.length - 1] = {
-              name: content.value[content.value.length - 1],
-              email: content.value[content.value.length - 1],
-              avatar: null,
-            }
-          }
-        }
-      }
-    )
     return {
-      content,
+      // content,
       userArray,
       user,
-      deleteItem,
+      rules,
     }
   },
 }

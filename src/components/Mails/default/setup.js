@@ -29,6 +29,7 @@ const mails = {
     const mailsData = ref([])
     const selectedMails = ref([])
     const selectedAllMails = ref(false)
+    const selectedTemporary = ref(0)
     const filterData = ref({
       folderData: [],
       tagsData: [],
@@ -58,8 +59,10 @@ const mails = {
         selectedAllMails.value = !selectedAllMails.value
         if (selectedAllMails.value) {
           selectedMails.value = allMails.value.arrayId
+          selectedTemporary.value = 0
         } else {
           selectedMails.value = []
+          // selectedMails.value.push(selectedTemporary.value)
         }
       } else {
         if (selectedMails.value.includes(val)) {
@@ -119,13 +122,13 @@ const mails = {
         },
         id: val.id,
       }
-      if (val?.mails && val?.mails?.page !== val?.mails.totalPage) {
-        val.mails.page += 1
-        requestData.content.page = val?.mails?.page
-      } else {
-        requestData.content.page = 1
-      }
-      if (!val?.mails || val?.mails?.rows?.length !== val?.mails?.total) {
+      if (!val?.mails || val?.mails?.page !== val?.mails?.totalPage) {
+        if (val?.mails && val?.mails?.page !== val?.mails?.totalPage) {
+          val.mails.page += 1
+          requestData.content.page = val?.mails?.page
+        } else {
+          requestData.content.page = 1
+        }
         let data
         if (route?.query?.filter === 'folder') {
           data = await store.dispatch('mail/getFolderMails', requestData)
@@ -135,7 +138,9 @@ const mails = {
         if (data?.rows) {
           if (val?.mails) {
             for (const item of data?.rows) {
+              if (selectedAllMails.value) selectedMails.value.push(item.id)
               val?.mails?.rows.push(item)
+              console.log(item)
             }
           } else {
             Vue.set(val, 'mails', data)
@@ -191,31 +196,37 @@ const mails = {
         requestData.content.id = selectedMails.value.toString()
       }
       // await store.dispatch('mail/changeLettersAll', requestData.content)
-      console.log('2', requestData.content, params)
-      // if (key === 'del') {
-      //   await store.dispatch('mail/deleteMails', selectedMails.value)
-      //   selectedMails.value.forEach((item) => {
-      //     mailsData.value.forEach((row, index) => {
-      //       if (row?.mails?.length) {
-      //         row.mails.forEach((mail, mailIndex) => {
-      //           if (mail.id === item) {
-      //             mailsData.value[index].mails.splice(mailIndex, 1)
-      //           }
-      //         })
-      //       }
-      //     })
-      //     if (Number(route.query.mail) === item) {
-      //       const newQuery = {}
-      //       if (route?.query?.filter) newQuery.filter = route?.query?.filter
-      //       if (route?.query?.color) newQuery.color = route?.query?.color
-      //       router
-      //         .push({
-      //           query: { ...newQuery },
-      //         })
-      //         .catch(() => {})
-      //     }
-      //   })
-      // }
+      if (key === 'del' || key === 'is_read') {
+        selectedMails.value.forEach((select) => {
+          mailsData.value.forEach((row, index) => {
+            if (row?.mails?.rows?.length) {
+              row?.mails?.rows?.forEach((mail, mailIndex) => {
+                if (mail.id === select) {
+                  if (key === 'del')
+                    mailsData.value[index].mails.rows.splice(mailIndex, 1)
+                  if (key === 'is_read') {
+                    console.log(item)
+                    mail.is_read = item
+                  }
+                }
+              })
+            }
+          })
+          if (key === 'del')
+            if (Number(route.query.mail) === item) {
+              const newQuery = {}
+              if (route?.query?.filter) newQuery.filter = route?.query?.filter
+              if (route?.query?.color) newQuery.color = route?.query?.color
+              router
+                .push({
+                  query: { ...newQuery },
+                })
+                .catch(() => {})
+            }
+        })
+        // selectedMails.value = []
+        // selectedAllMails.value = false
+      }
     }
 
     const editFilter = (val) => {
@@ -234,6 +245,23 @@ const mails = {
     }
 
     const setActiveMail = (val) => {
+      if (selectedMails.value.includes(val.id)) {
+        selectedMails.value.splice(
+          selectedMails.value.indexOf(selectedTemporary.value),
+          1
+        )
+        selectedTemporary.value = 0
+      } else if (selectedMails.value.includes(selectedTemporary.value)) {
+        selectedMails.value.splice(
+          selectedMails.value.indexOf(selectedTemporary.value),
+          1
+        )
+        selectedTemporary.value = val.id
+        selectedMails.value.push(selectedTemporary.value)
+      } else {
+        selectedTemporary.value = val.id
+        selectedMails.value.push(selectedTemporary.value)
+      }
       const oldQuery = route.query
       if (oldQuery.compose) delete oldQuery.compose
       router
@@ -276,6 +304,7 @@ const mails = {
     })
 
     return {
+      selectedTemporary,
       selectedMails,
       selectedAllMails,
       allMails,

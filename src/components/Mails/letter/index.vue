@@ -24,10 +24,10 @@
         "
         >$IconBookmark</v-icon
       >
-      <!-- {{ $props.data.id }} -->
       <v-checkbox
         color="primary"
-        :value="$props.selectedMails.includes($props.data.id)"
+        :value="$props?.selectedMails?.includes($props.data.id)"
+        v-model="checkbox"
         class="v-letter-left_checkbox"
         @click.stop
         @change="$parent.$emit('changeSelection', $props.data.id)"
@@ -54,16 +54,7 @@
         ></p>
       </div>
       <div class="v-letter-content-files">
-        <div class="v-letter-content-files_item">
-          <img src="../../../../src/assets/image/doc.png" alt="" />
-        </div>
-        <div class="v-letter-content-files_item">
-          <img src="../../../../src/assets/image/pdf.png" alt="" />
-        </div>
-        <div class="v-letter-content-files_item">
-          <img src="../../../../src/assets/image/pdf.png" alt="" />
-        </div>
-        <div class="v-letter-content-files_additional-item">+2</div>
+        <MailsLetterFiles :data="$props?.data" />
       </div>
       <div class="v-letter-content-tags">
         <template v-if="$props?.data?.tags">

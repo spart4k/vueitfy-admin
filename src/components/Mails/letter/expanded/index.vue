@@ -23,7 +23,11 @@
             <MailsLetterDate :data="$props.data"></MailsLetterDate>
           </div>
         </template>
-        <MailsLetterUserEdit :data="newMessage" v-else />
+        <MailsLetterUserEdit
+          @deleteUser="deleteUser"
+          :data="newMessage"
+          v-else
+        />
       </div>
       <div class="v-letter-expanded-container">
         <MailsLetterTextEdit
@@ -40,12 +44,20 @@
       <div class="v-letter-expanded_btn pb-2 mt-4">
         <v-btn
           @click="
-            $route?.query?.compose === 'new' ? createMail() : answerToMail()
+            $route?.query?.compose === 'new' ||
+            $route?.query?.compose === 'answer'
+              ? createMail()
+              : answerToMail($props.data)
           "
           color="primary"
         >
           <v-icon small class="mr-2">$IconEdit</v-icon>
-          {{ $route?.query?.compose === 'new' ? 'Отправить' : 'Ответить' }}
+          {{
+            $route?.query?.compose === 'new' ||
+            $route?.query?.compose === 'answer'
+              ? 'Отправить'
+              : 'Ответить'
+          }}
         </v-btn>
       </div>
     </template>

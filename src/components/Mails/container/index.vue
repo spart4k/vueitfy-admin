@@ -50,9 +50,7 @@
               @setActiveMail="($emit) => setActiveMail($emit, index, mailIndex)"
               @getMails="$emit('getMails')"
               ref="lowerItems"
-              v-intersect.once="
-                item?.mails?.rows?.length === mailIndex + 1 && getPagination
-              "
+              v-intersect="getPagination"
             />
           </template>
           <template v-else>

@@ -1,15 +1,7 @@
 <template>
   <div :class="['v-text', $route.query.compose === 'answer' && 'v-text__edit']">
-    <div class="v-text-files d-flex">
-      <div class="v-text-files_item">
-        <img src="../../../../../src/assets/image/doc.png" alt="" />
-      </div>
-      <div class="v-text-files_item">
-        <img src="../../../../../src/assets/image/pdf.png" alt="" />
-      </div>
-      <div class="v-text-files_item">
-        <img src="../../../../../src/assets/image/xls.png" alt="" />
-      </div>
+    <div class="v-text-files">
+      <MailsLetterFiles :data="$props?.data" expand />
     </div>
     <div class="v-text-title mb-1">{{ $props?.data?.subject }}</div>
     <div

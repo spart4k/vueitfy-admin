@@ -1,6 +1,10 @@
 <template>
   <div class="v-edit">
-    <VueEditor class="flex-grow-1" v-model="$props.data.text" />
+    <VueEditor
+      class="flex-grow-1"
+      :editor-toolbar="toolbar"
+      v-model="$props.data.text"
+    />
     <v-file-input
       v-model="$props.data.files"
       outlined

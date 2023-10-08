@@ -30,7 +30,7 @@
           $emit(
             'changeMailArrayKey',
             'is_read',
-            intersection.read.length === $props.selectedMails.length
+            intersection.read.length >= $props.selectedMails.length
               ? false
               : true
           )
@@ -43,7 +43,7 @@
           >$IconCheckoutMessage</v-icon
         >
         {{
-          intersection.read.length === $props.selectedMails.length
+          intersection.read.length >= $props.selectedMails.length
             ? 'Не прочитаны'
             : 'Прочитано'
         }}
@@ -129,12 +129,12 @@
                 'changeMailArrayKey',
                 'tags',
                 item,
-                intersection.tags.includes(item.id)
+                intersection?.tags?.includes(item.id)
               )
             "
             :class="[
               'v-controls-list_tags-item',
-              intersection.tags.includes(item.id) &&
+              intersection?.tags?.includes(item.id) &&
                 'v-controls-list_tags-item__active',
             ]"
           ></v-list-item>

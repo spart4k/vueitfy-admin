@@ -46,18 +46,18 @@ const filters = {
         number: 0,
         query: 'attachment',
       },
-      // {
-      //   label: 'Отправленные',
-      //   url: '$IconSendMail',
-      //   number: 0,
-      //   query: 'sent',
-      // },
-      // {
-      //   label: 'Удаленные',
-      //   url: '$IconDelete',
-      //   number: 0,
-      //   query: 'trash',
-      // },
+      {
+        label: 'Отправленные',
+        url: '$IconSendMail',
+        number: 0,
+        query: 'sent',
+      },
+      {
+        label: 'Удаленные',
+        url: '$IconDelete',
+        number: 0,
+        query: 'trash',
+      },
       // {
       //   label: 'Черновики',
       //   url: '$IconDocument',

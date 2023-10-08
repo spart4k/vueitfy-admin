@@ -14,7 +14,10 @@ $containerHeight: calc(100vh - 15px - 19px - 72px);
         &-group {
             // background-color: aqua;
             // height: $containerHeight;
-            width: $containerWidth;
+            width: calc(100vw - 256px - 214px - 16px - 16px - 22px);
+            // @media (max-width: $mobileWidth) {
+            //     width: calc(100vw - 214px - 16px - 16px - 22px);
+            // }
             height: 100%;
             overflow: hidden;
             // padding-bottom: 42px;

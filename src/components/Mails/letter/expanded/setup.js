@@ -32,15 +32,17 @@ const letterExpanded = {
     const newMessage = ref({
       text: '',
       subject: '',
-      files: null,
+      files: [],
+      users: [],
     })
-    const answerToMail = () => {
+    const answerToMail = (val) => {
       router
         .replace({
           query: { ...route.query, ...{ compose: 'answer' } },
         })
         .catch(() => {})
-      // edit.value = true
+      newMessage.value.subject = `re: ${val.subject}`
+      newMessage.value.users = [val.message_from]
     }
 
     const deleteItem = (index) => {
@@ -48,19 +50,53 @@ const letterExpanded = {
     }
 
     const createMail = async () => {
-      const message = newMessage.value.text
-        .replaceAll('class="ql-align-center"', 'style="text-align: center"')
-        .replaceAll('class="ql-align-right"', 'style="text-align: right"')
-      const requestData = {
-        from: 'slepoybanditka@yandex.ru',
-        to: ['slepoybanditka@yandex.ru'],
-        subject: newMessage.value.subject,
-        message: message,
-        // files: newMessage.value.files,
+      if (newMessage?.value?.users?.length) {
+        const message = newMessage.value.text
+          .replaceAll('class="ql-align-center"', 'style="text-align: center"')
+          .replaceAll('class="ql-align-right"', 'style="text-align: right"')
+        const userArray = []
+        newMessage.value.users.forEach((item) => {
+          userArray.push(item.email)
+        })
+        const requestData = {
+          from: 'slepoybanditka@yandex.ru',
+          to: userArray,
+          subject: newMessage.value.subject,
+          message: message,
+          files: newMessage.value.files,
+        }
+        if (route?.query?.compose === 'answer') {
+          requestData.forwarded = true
+          requestData.forwardedFiles = props.data.attachment_filename
+          console.log(props.data)
+          if (props.data.text) {
+            requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.text}`
+          } else {
+            requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.message_text}`
+          }
+        }
+        await store.dispatch('mail/sendMessage', requestData)
       }
-      const response = await store.dispatch('mail/sendMessage', requestData)
-      console.log(response)
     }
+
+    const deleteUser = (index) => {
+      newMessage.value.users.splice(index, 1)
+    }
+
+    watch(
+      () => newMessage.value.users.length,
+      (newCount, oldCount) => {
+        if (newCount > oldCount) {
+          if (!newMessage.value.users[newMessage.value.users.length - 1].id) {
+            newMessage.value.users[newMessage.value.users.length - 1] = {
+              name: newMessage.value.users[newMessage.value.users.length - 1],
+              email: newMessage.value.users[newMessage.value.users.length - 1],
+              avatar: null,
+            }
+          }
+        }
+      }
+    )
 
     watch(
       () => props?.data?.id,
@@ -73,6 +109,7 @@ const letterExpanded = {
       edit,
 
       deleteItem,
+      deleteUser,
       createMail,
       answerToMail,
     }

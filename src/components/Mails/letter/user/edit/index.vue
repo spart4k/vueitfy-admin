@@ -31,12 +31,11 @@
         </v-combobox>
       </div>
     </div>
-
     <div class="v-edit-item">
       <div class="v-edit-item_title mt-3">Кому:</div>
       <div class="v-edit-item-input">
         <v-combobox
-          v-model="content"
+          v-model="$props.data.users"
           hide-selected
           :items="userArray"
           multiple
@@ -45,6 +44,7 @@
           item-value="id"
           clearable
           return-object
+          :rules="rules"
         >
           <template v-slot:item="data">
             <v-avatar
@@ -81,7 +81,7 @@
                 class="ml-2"
                 color="disabled"
                 small
-                @click="deleteItem(data.index)"
+                @click="$emit('deleteUser', data.index)"
               >
                 $IconClose
               </v-icon>

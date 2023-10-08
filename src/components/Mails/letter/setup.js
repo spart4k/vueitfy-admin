@@ -1,11 +1,12 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-// import { computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import _ from 'lodash'
 // import { tableApi } from '@/api'
 import MailsLetterUser from './user/index.vue'
 import MailsLetterDate from './date/index.vue'
+import MailsLetterFiles from './files/index.vue'
 const letter = {
   name: 'Letter',
   props: {
@@ -33,11 +34,13 @@ const letter = {
   components: {
     MailsLetterUser,
     MailsLetterDate,
+    MailsLetterFiles,
   },
   setup(props, context) {
     const router = useRouter()
     const route = useRoute()
     const { emit } = context
+    const checkbox = ref(false)
     const setActiveColorFilter = (val) => {
       let colorArray = JSON.stringify([val])
       let filter = route?.query?.filter
@@ -56,7 +59,11 @@ const letter = {
         emit('getMails')
       }
     }
+    onMounted(() => {
+      checkbox.value = props?.selectedMails?.includes(props.data.id)
+    })
     return {
+      checkbox,
       setActiveColorFilter,
     }
   },

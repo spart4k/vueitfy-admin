@@ -2,8 +2,12 @@
 //document.adoptedStyleSheets.push(style)
 // import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
+import MailsLetterFiles from '../files/index.vue'
 const text = {
   name: 'Mail-text',
+  components: {
+    MailsLetterFiles,
+  },
   props: {
     edit: {
       type: Boolean,

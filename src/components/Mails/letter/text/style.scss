@@ -26,7 +26,10 @@
         &-text {
             color: var(--v-secondary-base);
             font-size: 12px;
-            width: fit-content;
+            width: 100%;
+            // &::v-deep img {
+            //     width: 100%;
+            // }
         }
     }
 }
