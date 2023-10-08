@@ -28,6 +28,12 @@ const task = defineComponent({
       successMessage: 'Вы успешно авторизовались',
     })
 
+    // const { makeRequest } = useRequest({
+    //   context,
+    //   request: () => store.dispatch('taskModule/getTask', 1),
+    //   successMessage: 'Вы успешно авторизовались',
+    // })
+
     const formatDate = (date) => {
       return moment(date, 'dd MMMM HH:mm').locale('ru')
     }

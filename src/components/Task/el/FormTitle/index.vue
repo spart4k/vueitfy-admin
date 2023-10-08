@@ -10,10 +10,10 @@
       </div>
     </div>
     <div class="docs-required__contols-panel">
-      <div>
+      <div v-if="isShowAdd" @click="clickAdd">
         <v-icon small>$IconAdd</v-icon>
       </div>
-      <div>
+      <div v-if="isShowCansel" @click="clickDel">
         <v-icon small>$IconClose</v-icon>
       </div>
     </div>

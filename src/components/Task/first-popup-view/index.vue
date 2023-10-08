@@ -6,8 +6,11 @@
       v-for="(item, index) in docs"
       :docs="item"
       :key="index"
+      @confirmed="addConfirmed"
+      @unconfirmed="addUnconfirmed"
     ></FormTitle>
     <FormComment />
+    <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
   </div>
 </template>
 
