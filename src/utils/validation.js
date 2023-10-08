@@ -1,7 +1,14 @@
-import { required as vueRequired } from '@vuelidate/validators'
+import {
+  required as vueRequired,
+  minLength as vueMinLength,
+} from '@vuelidate/validators'
 
 const required = Object.assign({}, vueRequired, {
   $message: () => 'Обязательное поле',
+})
+
+const minLength = Object.assign({}, vueMinLength, {
+  $message: () => 'Недостаточно символов',
 })
 
 const requiredIf = (needValidation) => ({
@@ -73,5 +80,6 @@ export {
   nameLength,
   hasDate,
   hasTime,
+  minLength,
   // strongPassword
 }

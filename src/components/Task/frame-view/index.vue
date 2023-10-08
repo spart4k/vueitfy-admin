@@ -34,7 +34,7 @@
     <v-row class="py-2" justify="end">
       <v-btn color="info">
         <v-icon left> $IconMain </v-icon>
-        Сохранить
+        Завершить
       </v-btn>
       <v-btn color="blue-grey">
         <v-icon left> $IconMain </v-icon>

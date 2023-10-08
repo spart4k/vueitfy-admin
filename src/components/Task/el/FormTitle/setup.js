@@ -1,19 +1,24 @@
 import { defineComponent } from 'vue'
+import FormPopupPhoto from '@/components/Task/el/FormPopupPhoto/index.vue'
 
 const docsRequired = defineComponent({
   name: 'DocsRequired',
+  components: {
+    FormPopupPhoto,
+  },
   props: {
     docs: {
       type: Object,
     },
-    listNames: {
-      type: Object,
+    name: {
+      type: String,
     },
   },
   data() {
     return {
       isShowAdd: true,
       isShowCansel: true,
+      isImgPopupOpen: false,
     }
   },
 
@@ -29,8 +34,5 @@ const docsRequired = defineComponent({
       this.$emit('unconfirmed', { docs_id: this.docs.contributed })
     },
   },
-  // setup(props) {
-
-  // },
 })
 export default docsRequired

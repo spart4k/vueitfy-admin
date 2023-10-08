@@ -6,9 +6,6 @@ import Task from '@/components/Task/frame-view/index.vue'
 // import vButton from '@/components/button/index.vue'
 const popup = defineComponent({
   name: 'Popup',
-  components: {
-    Task,
-  },
   props: {
     closeButton: {
       type: Boolean,

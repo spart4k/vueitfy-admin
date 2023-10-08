@@ -1,11 +1,14 @@
 <template>
   <div class="docs-required">
     <div class="docs-required__container-layout">
-      <div class="docs-required__inner-image">
+      <div
+        @click="() => (isImgPopupOpen = true)"
+        class="docs-required__inner-image"
+      >
         <img :src="docs.path_doc" class="docs-required__image" />
       </div>
       <div class="docs-required__name-container">
-        <span>{{ listNames[String(docs.contributed)] }}</span>
+        <span>{{ name }}</span>
         <span>{{ docs.personal_id }}</span>
       </div>
     </div>
@@ -17,6 +20,7 @@
         <v-icon small>$IconClose</v-icon>
       </div>
     </div>
+    <FormPopupPhoto v-if="isImgPopupOpen" @close="isImgPopupOpen = false" />
   </div>
 </template>
 
