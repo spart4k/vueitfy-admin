@@ -1,6 +1,8 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import FirstPopupView from '../first-popup-view/index.vue'
 import SecondPopupView from '../second-popup-view/index.vue'
+import ThirdPopupView from '@/components/Task/third-popup-view/index.vue'
+import FourthPopupView from '@/components/Task/fourth-popup-view/index.vue'
 import moment from 'moment'
 
 import store from '@/store'
@@ -11,6 +13,8 @@ const task = defineComponent({
   components: {
     FirstPopupView,
     SecondPopupView,
+    ThirdPopupView,
+    FourthPopupView,
   },
 
   props: {},

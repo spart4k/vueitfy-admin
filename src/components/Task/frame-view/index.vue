@@ -29,6 +29,8 @@
     <v-divider></v-divider>
     <div class="task-slot">
       <FirstPopupView :data="data" ref="FirstPopupView"></FirstPopupView>
+      <!--      <ThirdPopupView />-->
+      <!--      <FourthPopupView />-->
     </div>
   </div>
 </template>
