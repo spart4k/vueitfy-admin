@@ -42,16 +42,16 @@ const task = defineComponent({
       data.value = dataFrom
     })
 
-    const pushData = (data) => {
-      console.log(data)
-    }
-    return { loading, data, formatDate, pushData }
+    // const pushData = (data) => {
+    //   console.log(data)
+    // }
+    return { loading, data, formatDate }
   },
 
-  methods: {
-    sendData() {
-      this.$refs.FirstPopupView.prepareCaseAndPush()
-    },
-  },
+  // methods: {
+  //   sendData() {
+  //     this.$refs.FirstPopupView.prepareCaseAndPush()
+  //   },
+  // },
 })
 export default task

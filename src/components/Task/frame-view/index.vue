@@ -28,23 +28,8 @@
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <FirstPopupView
-        :data="data"
-        ref="FirstPopupView"
-        @prepareCaseAndPush="pushData"
-      ></FirstPopupView>
+      <FirstPopupView :data="data" ref="FirstPopupView"></FirstPopupView>
     </div>
-    <v-divider></v-divider>
-    <v-row class="py-2" justify="end">
-      <v-btn color="info" @click="sendData">
-        <v-icon left> $IconMain </v-icon>
-        Завершить
-      </v-btn>
-      <v-btn color="blue-grey">
-        <v-icon left> $IconMain </v-icon>
-        Закрыть
-      </v-btn>
-    </v-row>
   </div>
 </template>
 
