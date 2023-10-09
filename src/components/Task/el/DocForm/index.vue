@@ -67,10 +67,6 @@
             </v-row>
             <v-row>
               <v-col cols="4">
-                <!--                <date-time-picker-->
-                <!--                  v-model="formObj[doc.doc_id].formData.pasp_data_vid"-->
-                <!--                  label="Дата выдачи"-->
-                <!--                ></date-time-picker>-->
                 <v-menu
                   v-model="datePickerOpen"
                   :close-on-content-click="false"

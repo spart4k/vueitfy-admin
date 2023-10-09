@@ -3,8 +3,6 @@ import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import FormTitle from '@/components/Task/el/FormTitle/index.vue'
-import useForm from '@/compositions/useForm'
-import { required } from '@/utils/validation'
 import FormError from '@/components/Task/el/FormError/setup'
 import DateTimePicker from '@/components/datetimepicker/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
@@ -26,7 +24,14 @@ const firstPopupView = defineComponent({
       default: () => {},
     },
   },
+  data: () => {
+    return {
+      datePickerOpen: false,
+    }
+  },
   setup(props, { emit }) {
+    const finalData = ref({})
+    const endBtnDisabled = ref(true)
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -75,12 +80,6 @@ const firstPopupView = defineComponent({
       return props.data.data.docs_spr[id]
     }
 
-    const { formData, validate } = useForm({
-      fields: {
-        input: { validations: { required } },
-      },
-    })
-
     const comment = ref('')
     let isShow = ref(true)
     let commentError = ref(false)
@@ -101,6 +100,28 @@ const firstPopupView = defineComponent({
       emit('prepareCaseAndPush', { wdw: 1, wddd: 2 })
     }
 
+    const changeDocs = (data) => {
+      console.log(data)
+      const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
+      let isDisabled = endBtnDisabled.value
+      for (let i = 0; i < docsId.length; i++) {
+        isDisabled = data.value[docsId[i]].validate()
+        if (!isDisabled) {
+          break
+        }
+      }
+      endBtnDisabled.value = !isDisabled
+      if (!endBtnDisabled.value) {
+        docsId.forEach((item) => {
+          finalData.value = { ...finalData.value, ...data.value[item].formData }
+        })
+      }
+    }
+
+    const sendData = () => {
+      console.log(finalData.value)
+    }
+
     return {
       textInfo,
       docsData: props.data.data.personal_doc_data,
@@ -110,17 +131,17 @@ const firstPopupView = defineComponent({
       addConfirmed,
       addUnconfirmed,
       getDocName,
-      formData,
-      validate,
       citizenItems,
       formSubmit,
       prepareCaseAndPush,
       comment,
       isShow,
       commentError,
+      changeDocs,
+      endBtnDisabled,
+      finalData,
+      sendData,
     }
   },
-
-  // emits: ['prepareCaseAndPush'],
 })
 export default firstPopupView

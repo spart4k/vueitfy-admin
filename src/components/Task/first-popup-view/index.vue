@@ -34,7 +34,32 @@
               </v-row>
               <v-row>
                 <v-col>
-                  <date-time-picker label="Дата рождения"></date-time-picker>
+                  <!--                  <v-menu-->
+                  <!--                    v-model="datePickerOpen"-->
+                  <!--                    :close-on-content-click="false"-->
+                  <!--                    transition="scale-transition"-->
+                  <!--                    offset-y-->
+                  <!--                    min-width="auto"-->
+                  <!--                    z-index="20"-->
+                  <!--                  >-->
+                  <!--                    <template v-slot:activator="{ on, attrs }">-->
+                  <!--                      <v-text-field-->
+                  <!--                        v-model="formObj[doc.doc_id].formData.pasp_data_vid"-->
+                  <!--                        label="Дата рождения"-->
+                  <!--                        prepend-icon="mdi-calendar"-->
+                  <!--                        readonly-->
+                  <!--                        v-bind="attrs"-->
+                  <!--                        v-on="on"-->
+                  <!--                      ></v-text-field>-->
+                  <!--                    </template>-->
+                  <!--                    <v-date-picker-->
+                  <!--                      class="z-index"-->
+                  <!--                      v-model="formObj[doc.doc_id].formData.pasp_data_vid"-->
+                  <!--                      min="1950-01-01"-->
+                  <!--                      color="primary"-->
+                  <!--                      locale="ru-RU"-->
+                  <!--                    ></v-date-picker>-->
+                  <!--                  </v-menu>-->
                 </v-col>
                 <v-col>
                   <v-select
@@ -48,6 +73,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
         <DocForm
+          @change="changeDocs"
           :docsData="docsData"
           :listNames="listNames"
           :docs="docs"
@@ -57,7 +83,7 @@
 
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn color="info">
+      <v-btn :disabled="endBtnDisabled" color="info" @click="sendData">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>

@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -29,7 +29,7 @@ const docForm = defineComponent({
       datePickerSecondOpen: false,
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const formObj = ref({
       // Паспорт
       1: useForm({
@@ -264,6 +264,13 @@ const docForm = defineComponent({
         },
       }),
     })
+    watch(
+      formObj,
+      () => {
+        emit('change', formObj)
+      },
+      { deep: true }
+    )
     return { formObj }
   },
 })
