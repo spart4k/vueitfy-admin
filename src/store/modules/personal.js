@@ -5,7 +5,7 @@ import { getCard } from '@/api/personal'
 const personal = {
   namespaced: true,
   actions: {
-    async get(_, id) {
+    async getCard(_, { value: id }) {
       const result = await getCard(id)
       return result
     },

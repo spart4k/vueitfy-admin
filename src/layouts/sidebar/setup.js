@@ -70,14 +70,9 @@ export default {
             active: false,
           },
           {
-            id: 8,
-            name: 'Персонал',
-            link: '/personal',
-          },
-          {
             id: 9,
             name: 'Персонал',
-            link: '/',
+            link: '/personal',
             active: false,
           },
           {
@@ -89,7 +84,7 @@ export default {
           {
             id: 11,
             name: 'Назначения',
-            link: '/',
+            link: '/appointments',
           },
           {
             id: 12,
@@ -124,7 +119,7 @@ export default {
           {
             id: 18,
             name: 'Заявки магнитов',
-            link: '/',
+            link: '/shop-request-magnit',
           },
           {
             id: 19,
@@ -171,6 +166,11 @@ export default {
             name: 'Инструкции',
             link: '/',
           },
+          {
+            id: 28,
+            name: 'Личные ключи',
+            link: '/user-keys',
+          },
         ],
       },
       Otchets: {
@@ -195,7 +195,7 @@ export default {
           {
             id: 30,
             name: 'Отчет "Магнит"',
-            link: '/',
+            link: '/shop-request-magnit-report',
           },
           {
             id: 31,

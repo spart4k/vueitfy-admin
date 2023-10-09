@@ -20,6 +20,7 @@ module.exports = {
     'vue/no-use-v-if-with-v-for': 'off',
     'vue/valid-v-for': 'off',
     'no-unused-vars': 'off',
+    'no-prototype-builtins': 'off',
     'prettier/prettier': [
       'error',
       {

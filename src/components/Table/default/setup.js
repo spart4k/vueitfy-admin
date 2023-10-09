@@ -38,8 +38,8 @@ const table = {
       require: true,
     },
     filtersConfig: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => {},
     },
   },
   setup(props, ctx) {
@@ -51,6 +51,8 @@ const table = {
     const tablePosition = ref(null)
     const searchField = ref('')
     const isMobile = useMobile()
+    const detail = ref(props.options.detail)
+    const filters = ref(props.options.filters)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -63,6 +65,7 @@ const table = {
       row: {},
       actions: {},
     })
+    const filtersColumns = ref([])
     const pagination = ref({
       totalRows: null,
       currentPage: 1,
@@ -269,7 +272,7 @@ const table = {
       //body.sorts = Object.assign(target, source).sorts
       let sorts = []
       let searchColumns = []
-      let filter = []
+      //let filter = []
       paramsQuery.value.sorts.forEach((el) => {
         if (!el.value) {
           return
@@ -284,19 +287,19 @@ const table = {
           searchColumns.push(el)
         }
       })
-      props.filtersConfig.forEach((el) => {
-        if (!el.value) {
-          return
-        } else {
-          filter.push({
-            field: el.name,
-            value: el.value,
-            alias: el.alias,
-            type: el.type,
-            subtype: el.subtype,
-          })
-        }
-      })
+      //props.filtersConfig.forEach((el) => {
+      //  if (!el.value) {
+      //    return
+      //  } else {
+      //    filter.push({
+      //      field: el.name,
+      //      value: el.value,
+      //      alias: el.alias,
+      //      type: el.type,
+      //      subtype: el.subtype,
+      //    })
+      //  }
+      //})
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
@@ -305,7 +308,7 @@ const table = {
           searchGlobal: paramsQuery.value.searchGlobal,
           searchColumns,
           sorts,
-          filter,
+          filter: filtersColumns.value,
         },
       })
       props.options.data.rows = data.rows
@@ -372,7 +375,23 @@ const table = {
         return false;
       }
     }
-    const saveFilter = () => {
+    const saveFilter = (filterData) => {
+      filtersColumns.value = []
+      filters.value.fields.forEach((el) => {
+        if (!filterData[el.name]) {
+          el.value = ''
+          return
+        }
+        el.value = filterData[el.name]
+        const obj = {
+          //field: el.name,
+          value: filterData[el.name],
+          alias: el.alias,
+          type: el.type,
+          subtype: el.subtype,
+        }
+        filtersColumns.value.push(obj)
+      })
       getItems()
     }
     const openRow = ($event, row) => {
@@ -499,6 +518,9 @@ const table = {
       openRow,
       closePopupForm,
       popupForm,
+      filtersColumns,
+      detail,
+      filters,
     }
   },
 }
