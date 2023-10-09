@@ -7,7 +7,7 @@
           :options="{ width: '600px', portal: 'table-detail' }"
           v-if="true"
         >
-          <FormDefault :tab="testFields" />
+          <Task />
         </Popup>
       </v-col>
     </v-row>
@@ -15,16 +15,16 @@
 </template>
 <script>
 import { ref } from 'vue'
-import FormDefault from '@/components/form/default'
 import { required } from '@/utils/validation.js'
 import { stringField, textareaField } from '@/utils/fields.js'
 import Popup from '@/components/popup'
+import Task from '@/components/Task/frame-view/index.vue'
 
 export default {
   name: 'Grisha',
   components: {
-    FormDefault,
     Popup,
+    Task,
   },
   setup() {
     const testFields = ref({

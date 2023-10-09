@@ -198,7 +198,7 @@ const config = {
       {
         id: 0,
         name: 'Основные',
-        type: 'FormDefault',
+        type: 'FrameView',
         detail: true,
       },
     ],

@@ -196,7 +196,7 @@
 </template>
 
 <script src="./setup.js"></script>
-<style src="./style.scss" lang="scss"></style>
+<style src="./style.scss" lang="scss" scoped></style>
 
 <!--
   <template>
