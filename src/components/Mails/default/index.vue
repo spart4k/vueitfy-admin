@@ -4,7 +4,7 @@
       :filterData="filterData"
       @editFilter="editFilter"
       @deleteFilter="deleteFilter"
-      @getMails="getMails"
+      @setRouterPath="setRouterPath"
       class="mr-4"
     />
     <div class="v-mails-group">
@@ -29,6 +29,7 @@
           @decreaseUnreadMailsCount="decreaseUnreadMailsCount"
           @getPagination="getPagination"
           @getMails="getMails"
+          @setRouterPath="setRouterPath"
           :tagsData="filterData.tagsData"
           :selectedMails="selectedMails"
           :data="mailsData"

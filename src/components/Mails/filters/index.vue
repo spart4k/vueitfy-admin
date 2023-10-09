@@ -5,7 +5,10 @@
       {{ new Date().getDate() }} {{ dayOfWeek[new Date().getDay()] }}
     </h2>
     <v-btn
-      @click="setRouterPath({ compose: 'new' })"
+      @click="
+        $route.query.compose !== 'new' &&
+          $emit('setRouterPath', null, null, { compose: 'new' }, null, null)
+      "
       color="primary"
       variant="tonal"
       class="mt-2 mb-7"
@@ -24,7 +27,17 @@
         ]"
         v-for="(item, index) in filters"
         :key="index"
-        @click="setRouterPath({ filter: item.query })"
+        @click="
+          $route.query.filter !== item.query &&
+            $emit(
+              'setRouterPath',
+              null,
+              null,
+              { filter: item.query },
+              ['color'],
+              true
+            )
+        "
       >
         <v-icon small class="mr-4">{{ item.url }}</v-icon>
         <div :class="['flex-grow-1']">
@@ -53,7 +66,20 @@
               class="v-filters-expansion-folder-container_item ml-4"
               v-for="(item, index) in $props.filterData.folderData"
               :key="index"
-              @click="setRouterPath({ filter: 'folder', id: item.id })"
+              @click="
+                Number($route.query.id) !== item.id &&
+                  $emit(
+                    'setRouterPath',
+                    null,
+                    null,
+                    {
+                      filter: 'folder',
+                      id: item.id,
+                    },
+                    ['color'],
+                    true
+                  )
+              "
             >
               <v-icon :color="item.color" small class="mr-2"
                 >$IconSystem</v-icon
@@ -109,7 +135,20 @@
               class="v-filters-expansion-folder-container_item ml-4"
               v-for="(item, index) in $props.filterData.boxData"
               :key="index"
-              @click="setRouterPath({ filter: 'box', id: item.id })"
+              @click="
+                Number($route.query.id) !== item.id &&
+                  $emit(
+                    'setRouterPath',
+                    null,
+                    null,
+                    {
+                      filter: 'box',
+                      id: item.id,
+                    },
+                    ['color'],
+                    true
+                  )
+              "
             >
               <v-icon :color="item.color" small class="mr-2"
                 >$IconSystem</v-icon
@@ -144,7 +183,18 @@
             'v-filters-color_item__active',
         ]"
         :style="{ backgroundColor: item.color }"
-        @click="setRouterPath({ color: item.id })"
+        @click="
+          $emit(
+            'setRouterPath',
+            null,
+            null,
+            {
+              color: item.id,
+            },
+            ['filter', 'id'],
+            true
+          )
+        "
         v-for="(item, index) in $props.filterData.tagsData"
         :key="index"
       ></div>
@@ -155,12 +205,32 @@
         outlined
         plain
         class="v-filters-bottom_item d-flex align-center"
-        @click="setRouterPath({ filter: 'is_main' })"
+        @click="
+          $route.query.filter !== 'is_main' &&
+            $emit(
+              'setRouterPath',
+              null,
+              null,
+              { filter: 'is_main' },
+              ['color'],
+              true
+            )
+        "
       >
         <v-icon small>$IconBookmark</v-icon>
       </v-btn>
       <v-btn
-        @click="setRouterPath({ filter: 'is_read' })"
+        @click="
+          $route.query.filter !== 'is_read' &&
+            $emit(
+              'setRouterPath',
+              null,
+              null,
+              { filter: 'is_read' },
+              ['color'],
+              true
+            )
+        "
         :color="$route.query.filter === 'is_read' ? 'primary' : 'disabled'"
         outlined
         plain

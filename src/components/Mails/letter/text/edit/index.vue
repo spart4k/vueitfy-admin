@@ -1,5 +1,5 @@
 <template>
-  <div class="v-edit">
+  <div ref="editorContainer" class="v-edit">
     <VueEditor
       class="flex-grow-1"
       :editor-toolbar="toolbar"

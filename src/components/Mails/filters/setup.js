@@ -3,9 +3,7 @@
 // import Vue, { onMounted, ref, computed, watch } from 'vue'
 // import { tableApi } from '@/api'
 // import vButton from '@/components/button/index.vue'
-// import { useRouter } from 'vue-router'
-// import { useRouter, useRoute } from 'vue-router'
-import { useRoute, useRouter } from 'vue-router/composables'
+import { useRoute } from 'vue-router/composables'
 import { ref, onMounted } from 'vue'
 import Popup from '../../popup/index.vue'
 import { useStore } from '@/store'
@@ -23,7 +21,6 @@ const filters = {
   },
   setup(props, context) {
     const store = useStore()
-    const router = useRouter()
     const { emit } = context
     const route = useRoute()
     const dayOfWeek = ref(['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'])
@@ -35,7 +32,7 @@ const filters = {
         query: 'all',
       },
       {
-        label: 'Помеченные',
+        label: 'Избранные',
         url: '$IconStarMail',
         number: 0,
         query: 'is_favorites',
@@ -97,44 +94,6 @@ const filters = {
         ),
         loading: false,
         type: '',
-      }
-    }
-    const setRouterPath = (val) => {
-      let colorArray = route?.query?.color
-      let filter = route?.query?.filter
-      let id = route?.query?.id
-      if (val.color) {
-        if (!colorArray) colorArray = []
-        if (colorArray?.length) colorArray = JSON.parse(colorArray)
-        if (colorArray.includes(val.color)) {
-          colorArray = colorArray.filter((e) => e !== val.color)
-        } else {
-          if (colorArray) colorArray.push(val.color)
-          else colorArray = [val.color]
-        }
-        if (colorArray?.length) colorArray = JSON.stringify(colorArray)
-      } else if (val.id) {
-        filter = val.filter
-        id = val.id
-      } else {
-        filter = val.filter
-        id = null
-      }
-      let newQuery = {
-        filter: filter,
-      }
-      if (id) newQuery.id = id
-      if (colorArray) newQuery.color = colorArray
-      if (val.compose)
-        newQuery = {
-          compose: 'new',
-        }
-      if (
-        route?.query?.filter !== val.filter ||
-        Number(route?.query?.id) !== val.id
-      ) {
-        router.push({ query: newQuery }).catch(() => {})
-        if (!val.compose) emit('getMails')
       }
     }
 
@@ -250,7 +209,6 @@ const filters = {
       deleteFolder,
       openCreatePopup,
       closePopup,
-      setRouterPath,
     }
   },
 }

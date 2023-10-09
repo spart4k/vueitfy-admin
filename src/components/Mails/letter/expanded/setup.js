@@ -1,8 +1,9 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router/composables'
+import { ref, watch, unref } from 'vue'
+import { useRoute } from 'vue-router/composables'
 import { useStore } from '@/store'
+import _ from 'lodash'
 // import { tableApi } from '@/api'
 import MailsLetterUser from '../user/index.vue'
 import MailsLetterUserEdit from '../user/edit/index.vue'
@@ -26,8 +27,9 @@ const letterExpanded = {
   },
   setup(props, context) {
     const route = useRoute()
-    const router = useRouter()
+    const { emit } = context
     const edit = ref(false)
+    const loading = ref(false)
     const store = useStore()
     const newMessage = ref({
       text: '',
@@ -36,11 +38,7 @@ const letterExpanded = {
       users: [],
     })
     const answerToMail = (val) => {
-      router
-        .replace({
-          query: { ...route.query, ...{ compose: 'answer' } },
-        })
-        .catch(() => {})
+      emit('setRouterPath', [{ key: 'compose', value: 'answer' }])
       newMessage.value.subject = `re: ${val.subject}`
       newMessage.value.users = [val.message_from]
     }
@@ -64,24 +62,61 @@ const letterExpanded = {
           subject: newMessage.value.subject,
           message: message,
           files: newMessage.value.files,
+          forwarded: false,
         }
         if (route?.query?.compose === 'answer') {
           requestData.forwarded = true
-          requestData.forwardedFiles = props.data.attachment_filename
-          if (props.data.text) {
-            requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.text}`
-          } else {
-            requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.message_text}`
-          }
+          requestData.forwardedId = props?.data?.id
+          // requestData.forwardedFiles = props.data.attachment_filename
+          // if (props.data.text) {
+          //   requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.text}`
+          // } else {
+          //   requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.message_text}`
+          // }
         }
+        loading.value = true
         const response = await store.dispatch('mail/sendMessage', requestData)
-        console.log(response)
+        loading.value = false
+        if (response) {
+          if (response.success) {
+            if (route?.query?.compose === 'new') {
+              emit('setRouterPath', null, null, { filter: 'all' })
+              emit('getMails')
+            } else if (route?.query?.compose === 'answer') {
+              newMessage.value = {
+                text: '',
+                subject: '',
+                files: [],
+                users: [],
+              }
+              emit('setRouterPath', null, ['compose'])
+            }
+          }
+          store.commit('notifies/showMessage', {
+            color: response.success ? 'success' : 'error',
+            content: response.success
+              ? unref('Письмо успешно отправленно')
+              : unref(response.message),
+          })
+        }
       }
     }
 
     const deleteUser = (index) => {
       newMessage.value.users.splice(index, 1)
     }
+
+    watch(
+      () => props?.data?.id,
+      () => {
+        newMessage.value = {
+          text: '',
+          subject: '',
+          files: [],
+          users: [],
+        }
+      }
+    )
 
     watch(
       () => newMessage.value.users.length,
@@ -107,6 +142,7 @@ const letterExpanded = {
     return {
       newMessage,
       edit,
+      loading,
 
       deleteItem,
       deleteUser,

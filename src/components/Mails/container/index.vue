@@ -47,6 +47,9 @@
               :key="mailIndex"
               :tagsData="$props.tagsData"
               :selectedMails="selectedMails"
+              @setRouterPath="
+                (add, remove, set) => $emit('setRouterPath', add, remove, set)
+              "
               @setActiveMail="($emit) => setActiveMail($emit, index, mailIndex)"
               @getMails="$emit('getMails')"
               ref="lowerItems"
@@ -74,7 +77,13 @@
         $route?.query?.mail && 'v-container-expanded__edited',
       ]"
     >
-      <MailsLetterExpanded :data="activeMail" />
+      <MailsLetterExpanded
+        @setRouterPath="
+          (add, remove, set) => $emit('setRouterPath', add, remove, set)
+        "
+        @getMails="$emit('getMails')"
+        :data="activeMail"
+      />
     </div>
   </div>
 </template>

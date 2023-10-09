@@ -41,30 +41,38 @@
         <MailsLetterText
           v-if="$route?.query?.compose !== 'new' && $props?.data"
           :data="$props?.data"
-          :edit="!$route?.query?.compose || $route?.query?.compose === 'edit'"
+          :edit="!$route?.query?.compose || $route?.query?.compose === 'answer'"
         />
       </div>
       <div class="v-letter-expanded_btn pb-2 mt-4">
-        <v-btn
-          v-if="
-            $route.query.filter !== 'sent' && $route.query.filter !== 'trash'
-          "
-          @click="
-            $route?.query?.compose === 'new' ||
-            $route?.query?.compose === 'answer'
-              ? createMail()
-              : answerToMail($props.data)
-          "
+        <template v-if="!loading">
+          <v-btn
+            v-if="
+              $route.query.filter !== 'sent' && $route.query.filter !== 'trash'
+            "
+            @click="
+              $route?.query?.compose === 'new' ||
+              $route?.query?.compose === 'answer'
+                ? createMail()
+                : answerToMail($props.data)
+            "
+            color="primary"
+          >
+            <v-icon small class="mr-2">$IconEdit</v-icon>
+            {{
+              $route?.query?.compose === 'new' ||
+              $route?.query?.compose === 'answer'
+                ? 'Отправить'
+                : 'Ответить'
+            }}
+          </v-btn>
+        </template>
+        <v-progress-circular
+          v-else
+          class="ml-14 mb-1"
+          indeterminate
           color="primary"
-        >
-          <v-icon small class="mr-2">$IconEdit</v-icon>
-          {{
-            $route?.query?.compose === 'new' ||
-            $route?.query?.compose === 'answer'
-              ? 'Отправить'
-              : 'Ответить'
-          }}
-        </v-btn>
+        ></v-progress-circular>
       </div>
     </template>
     <template v-else>

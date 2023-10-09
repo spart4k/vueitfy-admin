@@ -62,7 +62,7 @@ const mails = {
           selectedTemporary.value = 0
         } else {
           selectedMails.value = []
-          // selectedMails.value.push(selectedTemporary.value)
+          selectedMails.value.push(selectedTemporary.value)
         }
       } else {
         if (selectedMails.value.includes(val)) {
@@ -158,6 +158,46 @@ const mails = {
       // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
     }
 
+    const setRouterPath = (add, remove, set, exception, get) => {
+      let newQuery = _.cloneDeep(route?.query)
+      if (add) {
+        if (newQuery.compose) delete newQuery.compose
+        add.forEach((item) => {
+          newQuery[item.key] = item.value
+        })
+      } else if (remove) {
+        remove.forEach((item) => {
+          if (newQuery[item]) delete newQuery[item]
+        })
+      } else if (set) {
+        newQuery = set
+        if (set.color) {
+          let colorArray = route?.query?.color
+          if (!colorArray) colorArray = []
+          if (colorArray?.length) colorArray = JSON.parse(colorArray)
+          if (colorArray.includes(set.color)) {
+            colorArray = colorArray.filter((e) => e !== set.color)
+          } else {
+            if (colorArray) colorArray.push(set.color)
+            else colorArray = [set.color]
+          }
+          if (colorArray?.length) colorArray = JSON.stringify(colorArray)
+          newQuery.color = colorArray
+        }
+        if (exception) {
+          exception.forEach((item) => {
+            if (route?.query[item]) newQuery[item] = route?.query[item]
+          })
+        }
+      }
+      router
+        .push({
+          query: newQuery,
+        })
+        .catch(() => {})
+      if (get) getMails()
+    }
+
     const changeMailKey = async (val) => {
       const request = {
         content: {
@@ -203,7 +243,7 @@ const mails = {
       } else {
         requestData.content.id = selectedMails.value.toString()
       }
-      // await store.dispatch('mail/changeLettersAll', requestData.content)
+      await store.dispatch('mail/changeLettersAll', requestData.content)
       if (key === 'del' || key === 'is_read') {
         selectedMails.value.forEach((select) => {
           mailsData.value.forEach((row, index) => {
@@ -212,8 +252,13 @@ const mails = {
                 if (mail.id === select) {
                   if (key === 'del')
                     mailsData.value[index].mails.rows.splice(mailIndex, 1)
+                  if (Number(route?.query?.mail) === mail.id) {
+                    setRouterPath(null, null, {
+                      filter: route?.query?.filter,
+                      color: route?.query?.color,
+                    })
+                  }
                   if (key === 'is_read') {
-                    console.log(item)
                     mail.is_read = item
                   }
                 }
@@ -221,19 +266,15 @@ const mails = {
             }
           })
           if (key === 'del')
-            if (Number(route.query.mail) === item) {
-              const newQuery = {}
-              if (route?.query?.filter) newQuery.filter = route?.query?.filter
-              if (route?.query?.color) newQuery.color = route?.query?.color
-              router
-                .push({
-                  query: { ...newQuery },
-                })
-                .catch(() => {})
+            if (selectedAllMails.value) {
+              setRouterPath(null, null, {
+                filter: route?.query?.filter,
+                color: route?.query?.color,
+              })
             }
         })
-        // selectedMails.value = []
-        // selectedAllMails.value = false
+        selectedMails.value = []
+        selectedAllMails.value = false
       }
     }
 
@@ -270,13 +311,11 @@ const mails = {
         selectedTemporary.value = val.id
         selectedMails.value.push(selectedTemporary.value)
       }
-      const oldQuery = route.query
-      if (oldQuery.compose) delete oldQuery.compose
-      router
-        .push({
-          query: { ...oldQuery, ...{ mail: val.id, box: val.box_id } },
-        })
-        .catch(() => {})
+      if (route?.query?.compose) setRouterPath(null, ['compose'])
+      setRouterPath([
+        { key: 'mail', value: val.id },
+        { key: 'box', value: val.box_id },
+      ])
     }
 
     const getFilterData = async () => {
@@ -294,18 +333,9 @@ const mails = {
 
     onMounted(async () => {
       if (!route?.query?.filter && !route?.query?.compose) {
-        router.push({
-          query: { filter: 'all' },
-        })
+        setRouterPath(null, null, { filter: 'all' })
       } else if (route?.query?.mail) {
-        const newQuery = _.cloneDeep(route?.query)
-        delete newQuery.box
-        delete newQuery.mail
-        router
-          .push({
-            query: newQuery,
-          })
-          .catch(() => {})
+        setRouterPath(null, ['box', 'mail', 'compose'])
       }
       await getFilterData()
       getMails()
@@ -322,6 +352,8 @@ const mails = {
       originalData,
       folderData,
       mailsData,
+
+      setRouterPath,
 
       decreaseUnreadMailsCount,
       changeMailKey,

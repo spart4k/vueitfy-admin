@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 // import { tableApi } from '@/api'
 import { VueEditor } from 'vue2-editor'
 const edit = {
@@ -25,7 +25,14 @@ const edit = {
       ['link', 'image', 'video'],
       ['clean'],
     ])
+    const editorContainer = ref(null)
+    onMounted(() => {
+      editorContainer.value.scrollIntoView({
+        behavior: 'smooth',
+      })
+    })
     return {
+      editorContainer,
       toolbar,
     }
   },

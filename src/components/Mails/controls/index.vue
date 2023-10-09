@@ -90,7 +90,7 @@
               )
             "
           >
-            {{ item.name }}
+            {{ item.name }}//{{ item.id }}
             <v-icon
               v-if="intersection.folders.includes(item.id)"
               color="text"
@@ -140,7 +140,8 @@
               intersection?.tags?.includes(item.id) &&
                 'v-controls-list_tags-item__active',
             ]"
-          ></v-list-item>
+            >{{ item.id }}</v-list-item
+          >
         </v-list>
       </v-menu>
       <v-btn

@@ -1,7 +1,7 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router/composables'
+import { useRoute } from 'vue-router/composables'
 import _ from 'lodash'
 // import { tableApi } from '@/api'
 import MailsLetterUser from './user/index.vue'
@@ -37,25 +37,19 @@ const letter = {
     MailsLetterFiles,
   },
   setup(props, context) {
-    const router = useRouter()
     const route = useRoute()
     const { emit } = context
     const checkbox = ref(false)
     const setActiveColorFilter = (val) => {
-      let colorArray = JSON.stringify([val])
-      let filter = route?.query?.filter
-      let id = route?.query?.id
-      const newQuery = {}
-      newQuery.filter = filter
-      newQuery.color = colorArray
-      if (id) newQuery.id = id
-      if (route?.query?.color?.length) {
-        if (!_.isEqual([val], JSON.parse(route?.query?.color))) {
-          router.push({ query: newQuery }).catch(() => {})
-          emit('getMails')
-        }
-      } else {
-        router.push({ query: newQuery }).catch(() => {})
+      if (
+        !route?.query?.color?.length ||
+        !_.isEqual([val], JSON.parse(route?.query?.color))
+      ) {
+        emit('setRouterPath', null, null, [
+          { key: 'filter', value: route?.query?.filter },
+          { key: 'color', value: JSON.stringify([val]) },
+          route?.query?.id ? { key: 'id', value: route?.query?.id } : undefined,
+        ])
         emit('getMails')
       }
     }
