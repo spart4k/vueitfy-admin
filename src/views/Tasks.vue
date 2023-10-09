@@ -14,7 +14,7 @@ import TableDefault from '@/components/Table/default/index.vue'
 //import Axios from 'axios'
 
 export default {
-  name: 'Personal-View',
+  name: 'Task-View',
   components: {
     TableDefault,
     //Layout,
