@@ -2,6 +2,7 @@
   <div class="v-date">
     <div class="v-date_icon">
       <v-icon
+        v-if="$route.query.filter !== 'sent' && $route.query.filter !== 'trash'"
         :color="$props?.data?.is_favorites ? 'warning' : ''"
         small
         @click.stop="

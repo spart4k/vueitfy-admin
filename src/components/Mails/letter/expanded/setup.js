@@ -68,14 +68,14 @@ const letterExpanded = {
         if (route?.query?.compose === 'answer') {
           requestData.forwarded = true
           requestData.forwardedFiles = props.data.attachment_filename
-          console.log(props.data)
           if (props.data.text) {
             requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.text}`
           } else {
             requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.message_text}`
           }
         }
-        await store.dispatch('mail/sendMessage', requestData)
+        const response = await store.dispatch('mail/sendMessage', requestData)
+        console.log(response)
       }
     }
 

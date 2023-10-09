@@ -11,6 +11,7 @@
   >
     <div class="v-letter-left">
       <v-icon
+        v-if="$route.query.filter !== 'sent' && $route.query.filter !== 'trash'"
         class="v-letter-left_icon"
         :color="$props?.data?.is_main ? 'warning' : ''"
         small
@@ -25,6 +26,7 @@
         >$IconBookmark</v-icon
       >
       <v-checkbox
+        v-if="$route.query.filter !== 'sent' && $route.query.filter !== 'trash'"
         color="primary"
         :value="$props?.selectedMails?.includes($props.data.id)"
         v-model="checkbox"
@@ -33,7 +35,13 @@
         @change="$parent.$emit('changeSelection', $props.data.id)"
       ></v-checkbox>
       <div
-        :style="{ backgroundColor: $props.companyColor }"
+        :style="{
+          backgroundColor: $props.companyColor,
+          marginTop:
+            $route.query.filter !== 'sent' && $route.query.filter !== 'trash'
+              ? '12px'
+              : '0px',
+        }"
         class="v-letter-left_color-mark"
       ></div>
     </div>
@@ -50,7 +58,11 @@
         </p>
         <p
           class="v-letter-content-info_text"
-          v-html="$props?.data?.message_text.replace('<br><br><br>', '')"
+          v-html="
+            $props?.data?.message_text
+              ? $props?.data?.message_text?.replace('<br><br><br>', '')
+              : $props?.data?.text
+          "
         ></p>
       </div>
       <div class="v-letter-content-files">

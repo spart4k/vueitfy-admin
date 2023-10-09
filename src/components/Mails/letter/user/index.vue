@@ -20,7 +20,14 @@
       </div>
     </div>
     <div class="v-upper-container" v-if="!$props.expanded">
-      <div v-if="!$props?.data?.is_read" class="v-upper-container-viewed"></div>
+      <div
+        v-if="
+          !$props?.data?.is_read &&
+          $route.query.filter !== 'sent' &&
+          $route.query.filter !== 'trash'
+        "
+        class="v-upper-container-viewed"
+      ></div>
     </div>
   </div>
 </template>

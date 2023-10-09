@@ -6,6 +6,9 @@
         class="v-controls-list_item v-controls-list_item__input"
         @change="$emit('changeSelection', 'all')"
         :value="$props.selectedAllMails"
+        :disabled="
+          $route.query.filter === 'sent' || $route.query.filter === 'trash'
+        "
       ></v-checkbox>
       <v-btn
         class="v-controls-list_item"

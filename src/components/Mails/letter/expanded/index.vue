@@ -5,6 +5,9 @@
       <div class="v-letter-expanded-user">
         <template v-if="!$route?.query?.compose">
           <v-icon
+            v-if="
+              $route.query.filter !== 'sent' && $route.query.filter !== 'trash'
+            "
             class="v-letter-expanded-user_icon"
             :color="$props?.data?.is_main ? 'warning' : ''"
             small
@@ -43,6 +46,9 @@
       </div>
       <div class="v-letter-expanded_btn pb-2 mt-4">
         <v-btn
+          v-if="
+            $route.query.filter !== 'sent' && $route.query.filter !== 'trash'
+          "
           @click="
             $route?.query?.compose === 'new' ||
             $route?.query?.compose === 'answer'
