@@ -19,6 +19,7 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     'vue/no-use-v-if-with-v-for': 'off',
     'vue/valid-v-for': 'off',
+    'no-prototype-builtins': 'off',
     'prettier/prettier': [
       'error',
       {

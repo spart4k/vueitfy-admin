@@ -16,7 +16,6 @@ const layout = defineComponent({
     Topbar,
   },
   setup(_, ctx) {
-    console.log(ctx)
     const isMobile = false
     const store = ctx.root.$store
     const isOpenMenu = computed(() => store.state.navmenu)

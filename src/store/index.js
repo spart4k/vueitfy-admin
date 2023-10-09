@@ -5,11 +5,13 @@ import user from './modules/user'
 import auth from './modules/auth'
 import notifies from './modules/notifies'
 import table from './modules/table'
+import form from './modules/form'
+import list from './modules/list'
+import personal from './modules/personal'
 import taskModule from './modules/task-module.js'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
-console.log('vuetify', vuetify)
 const store = new Vuex.Store({
   state: {
     navmenu: false,
@@ -47,12 +49,14 @@ const store = new Vuex.Store({
     auth,
     notifies,
     table,
+    form,
+    list,
+    personal,
     taskModule,
   },
 })
 
 export default store
 export const useStore = () => {
-  console.log(store, 'store')
   return store
 }

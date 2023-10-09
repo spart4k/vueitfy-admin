@@ -7,7 +7,7 @@
       </v-row>
       <v-icon @click="closeFilter">$close</v-icon>
     </v-row>
-    <v-form class="fluid">
+    <!--<v-form class="fluid">
       <template v-for="filter in filtersConfig">
         <v-autocomplete
           v-if="filter.type === 'select'"
@@ -104,7 +104,8 @@
       <v-btn @click="saveFilter" color="primary" class="ma">
         <p>Принять</p>
       </v-btn>
-    </v-form>
+    </v-form>-->
+    <FormDefault @sendFilter="sendFilter" :tab="filtersConfig" />
   </div>
 </template>
 

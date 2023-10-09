@@ -44,15 +44,13 @@ export default function ({
   throttled = 0,
 }) {
   const { store } = context.root
-  const loading = ref(false)
+  const loading = ref(true)
 
   let makeRequest = (data) => {
-    loading.value = true
-    console.log(successMessage)
+    //loading.value = true
     return request(data)
       .then((responseData) =>
       {
-        console.log(successMessage)
         //if (successMessage) $notifier.showMessage({ content: unref(successMessage), color: 'success' })
         if (successMessage) store.commit(
           'notifies/showMessage',

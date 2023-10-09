@@ -17,18 +17,25 @@
             :sm="field.position.sm"
             class="field-col"
           >
-            <div v-if="loading" class="field-loading">
+            <div v-if="loading && field.isShow" class="field-loading gradient">
               <!--<p>loading</p>-->
             </div>
             <v-text-field
-              v-else-if="field.type === 'string' && !loading"
+              v-else-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field.name]"
               clearable
+              :readonly="field.readonly"
+              :disabled="field.readonly"
             />
+            <v-checkbox
+              v-else-if="showField('checkbox', field)"
+              v-model="formData[field.name]"
+              :label="field.label"
+            ></v-checkbox>
             <v-select
-              v-else-if="field.type === 'select' && !loading"
+              v-else-if="showField('select', field)"
               :items="field.items"
               :item-text="field.selectOption.text"
               :item-value="field.selectOption.value"
@@ -36,66 +43,21 @@
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
               persistent-hint
-            ></v-select>
-            <v-autocomplete
-              v-else-if="field.type === 'autocomplete' && !loading"
-              :key="field.id"
               clearable
-              :loading="field.loading"
-              :items="field.items"
-              :search-input.sync="field.search"
+              :multiple="field.subtype === 'multiselect'"
+              @change="changeSelect({ value: formData[field.name], field })"
+            ></v-select>
+            <Autocomplete
+              v-else-if="showField('autocomplete', field)"
+              :field="field"
               v-model="formData[field.name]"
               :error-messages="formErrors[field.name]"
-              :label="field.label"
-              chips
-              :multiple="field.subtype === 'multiple'"
-              class="mb-4"
-              item-text="name"
-              item-value="id"
-              no-data-text="Нет объектов"
-            >
-              <template v-slot:append>
-                <v-progress-circular
-                  v-if="field.loading"
-                  :size="20"
-                  :width="2"
-                  color="primary"
-                  indeterminate
-                />
-              </template>
-              <template v-slot:selection="data">
-                <v-chip
-                  close
-                  v-bind="data.attrs"
-                  small
-                  @click:close="removeSelected(data, field)"
-                >
-                  {{ data.item.name }}
-                </v-chip>
-              </template>
-              <template v-slot:append-item>
-                <div class="fluid d-flex justify-center">
-                  <v-progress-circular
-                    v-if="field.loading"
-                    :size="20"
-                    :width="2"
-                    color="primary"
-                    indeterminate
-                  />
-                </div>
-                <div :data-field="field.name" v-intersect="endIntersect" />
-              </template>
-              <template v-slot:item="data">
-                <template>
-                  <v-list-item-content>
-                    <v-list-item-title v-html="data.item.name" />
-                    <v-list-item-subtitle v-html="data.item.id" />
-                  </v-list-item-content>
-                </template>
-              </template>
-            </v-autocomplete>
+              :formData="formData"
+              ref="autocompleteRef"
+              @change="changeAutocomplete"
+            />
             <v-menu
-              v-else-if="field.type === 'date' && !loading"
+              v-else-if="showField('date', field)"
               :key="field.id"
               :ref="`menuRef_${field.id}`"
               v-model="field.menu"
@@ -104,16 +66,26 @@
               offset-y
               min-width="auto"
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template v-slot:activator="{ attrs }">
                 <v-text-field
+                  @click:append="openMenu(field)"
                   v-model="formData[field.name]"
                   :label="field.label"
-                  prepend-icon="mdi-calendar"
+                  append-icon="mdi-calendar"
                   :error-messages="formErrors[field.name]"
+                  v-bind="attrs"
+                ></v-text-field>
+                <!--<v-combobox
+                  @click:append="openMenu(field)"
+                  v-model="formData[field.name]"
+                  :label="field.label"
+                  multiple
+                  chips
+                  small-chips
+                  append-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
+                ></v-combobox>-->
               </template>
               <v-date-picker
                 v-model="formData[field.name]"
@@ -122,11 +94,24 @@
                 locale="ru-RU"
                 :type="field.subtype === 'period' ? 'month' : undefined"
                 :range="field.subtype === 'range'"
-                @input="field.menu = false"
-              ></v-date-picker>
+                :multiple="field.subtype === 'multiple'"
+                @input="
+                  field.subtype !== 'multiple'
+                    ? (field.menu = false)
+                    : undefined
+                "
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="field.menu = false">
+                  Cancel
+                </v-btn>
+                <v-btn text color="primary" @click="field.menu = false">
+                  OK
+                </v-btn>
+              </v-date-picker>
             </v-menu>
             <v-textarea
-              v-if="field.type === 'textarea' && !loading"
+              v-else-if="showField('textarea', field)"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field.name]"
@@ -134,22 +119,30 @@
               rows="1"
             />
             <Datetimepicker
-              v-else-if="field.type === 'datetime' && !loading"
+              v-else-if="showField('datetime', field)"
               :label="field.label"
               v-model="formData[field.name]"
               clearable
               :error-messages="formErrors[field.name]"
             />
+            <p>
+              <!--{{ field.items }}-->
+              <!--{{ allLoaded }}-->
+              <!--{{ field.selectOption.text + field.selectOption.value }}-->
+            </p>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="justify-end">
           <v-btn
             type="submit"
-            color="primary"
-            class="ml-auto"
-            @click.prevent="submit"
+            :color="action.color"
+            class="ml-2"
+            :loading="loading"
+            @click.prevent="clickHandler(action)"
+            v-for="action in tab.actions"
+            :key="action.id"
           >
-            Submit
+            {{ action.text }}
           </v-btn>
         </v-row>
       </v-container>

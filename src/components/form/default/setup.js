@@ -1,20 +1,22 @@
 import Vue, { computed, ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router/composables'
-//import DatetimePicker from 'vuetify-datetime-picker'
-//import store from '@/store/setup.js'
-//import { email, phone, required, onlyNumeric } from '@/utils/validation.js'
-import useForm from '@/compositions/useForm.js'
-import Datetimepicker from '@/components/datetimepicker/index.vue'
+import { useRouter, useRoute } from 'vue-router/composables'
+import Autocomplete from '@/components/autocomplete'
+import { getList } from '@/api/selects'
+import FormDefault from '@/components/form/default/index.vue'
 
-//import { selectsApi } from '@/api'
-import { form, list } from '@/api'
-import autocomplete from '@/compositions/autocomplete'
+import useForm from '@/compositions/useForm.js'
+import useRequest from '@/compositions/useRequest'
+//import useAutocomplete from '@/compositions/useAutocomplete'
+
+import Datetimepicker from '@/components/datetimepicker/index.vue'
+import store from '@/store'
 
 export default {
   name: 'Form-Default',
   components: {
-    //DatetimePicker,
     Datetimepicker,
+    Autocomplete,
+    FormDefault,
   },
   props: {
     tab: {
@@ -25,109 +27,283 @@ export default {
       type: Boolean,
       default: false,
     },
-    syncData: {
-      type: Object,
-      default: () => {},
-    },
   },
-  setup(props) {
-    const loading = ref(false)
-    const syncForm = ref({})
+  setup(props, ctx) {
+    //const syncForm = ref({})
+    const { emit } = ctx
     const route = useRoute()
+    const router = useRouter()
+    const autocompleteRef = ref(null)
+    const context = {
+      root: {
+        store,
+        router,
+        ctx,
+      },
+    }
+    const loading = ref(true)
+    const stage = ref(null)
     const { alias } = props.tab
-    const searchFields = computed(() =>
-      props.tab.fields.map((field) => field.search)
-    )
-    const { endIntersect } = autocomplete(searchFields, props.tab.fields)
-    const fields = async () => {
+    console.log(route)
+    const fields = () => {
       const fields = {}
-      loading.value = true
-      await getData()
-      loading.value = false
       props.tab.fields.forEach((el) => {
         const { validations } = el
-        //fields[el.name] = {}
-        Vue.set(fields, el.name, {})
-        //fields[el.name].validations = validations
+        if (el.isShow) Vue.set(fields, el.name, {})
+        else return
         Vue.set(fields[el.name], 'validations', validations)
-        //fields[el.name].default = el.value
         Vue.set(fields[el.name], 'default', el.value)
       })
       return fields
     }
-    const getData = async () => {
-      syncForm.value = await form.get(
-        `http://10.63.1.132:5000/get/form/${alias}/${route.params.id}`,
-        {
-          method: 'get',
-        }
-      )
-
-      for (let formKey in syncForm.value.data) {
-        console.log(formKey)
-        const field = props.tab.fields.find(
-          (fieldEl) => fieldEl.name === formKey
-        )
-        //field.value = syncForm.value.data[formKey]
-        if (field) {
-          formData[field.name] = syncForm.value.data[formKey]
-        }
-      }
-      console.log(formData)
-      await getLists()
-      loading.value = false
-    }
-    const getLists = async () => {
-      const params = props.tab.lists
-      const queryString = '?lists=' + [...params]
-      const lists = await list.get(
-        `http://10.63.1.132:5000/get/lists${queryString}`,
-        {
-          method: 'get',
-        }
-      )
-      for (let keyList in lists.data) {
-        console.log(lists.data[keyList], keyList)
-        const field = props.tab.fields.find((el) => el.name === keyList)
-        console.log(field)
-        field.items = lists.data[keyList]
-      }
-    }
-    console.log(fields())
     const { formData, validate, formErrors, vForm, touchedForm } = useForm({
       fields: fields(),
     })
-    console.log(formData)
+    const searchFields = computed(() => {
+      return props.tab.fields
+        .filter((field) => field.search !== undefined)
+        .map((field) => {
+          return {
+            id: formData[field.name],
+            search: field.search,
+            name: field.name,
+          }
+        })
+    })
+    const { makeRequest } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('form/get', `get/form/${alias}/${route.params.id}`),
+    })
+    const getDetail = () => props.tab.detail
+    const hasSelect = () =>
+      props.tab.fields.some((field) => field.type === 'select' && field.isShow)
+    const initPreRequest = () => {
+      let queries = []
+      if (hasSelect() && getDetail()) {
+        const syncForm = makeRequest()
+        const lists = makeRequestList()
+        queries = [syncForm, lists]
+        return queries
+      } else if (getDetail() && !hasSelect()) {
+        const syncForm = makeRequest()
+        queries = [syncForm, undefined]
+        return queries
+      } else if (!getDetail() && hasSelect()) {
+        const lists = makeRequestList()
+        queries = [undefined, lists]
+        return queries
+      } else return undefined
+    }
+    const loadAutocompletes = async () => {
+      const fields = props.tab.fields
+        .filter((el) => el.type === 'autocomplete' && el.isShow)
+        .map((el) => el)
+      const queryFields = fields.map(async (el) => {
+        const filters = []
+        const { url } = el
+        console.log(el)
+        if (el.filters && el.filters.length) {
+          el.filters.forEach((filter) => {
+            filters.push({
+              field: filter.field,
+              value: formData[filter.field],
+            })
+          })
+        }
+        const data = await getList(url, {
+          countRows: 10,
+          currentPage: 1,
+          searchValue: '',
+          id: formData[el.name],
+          filters,
+        })
+        if (data.rows) {
+          el.items = [...el.items, ...data.rows]
+          el.items = data.rows
+        }
+        return data
+      })
+      await Promise.all(queryFields)
+    }
+    const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
+    const hasDepenceFieldsApi = () =>
+      props.tab.fields.some(
+        (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
+      )
+    const stringIsArray = (str) => {
+      try {
+        return new Function(`return Array.isArray(${str})`)()
+      } catch {
+        return false
+      }
+    }
+    const getData = async () => {
+      const [syncForm, lists] = await Promise.all(initPreRequest())
+      if (syncForm) {
+        for (let formKey in syncForm.data) {
+          const field = props.tab.fields.find(
+            (fieldEl) => fieldEl.name === formKey
+          )
+          if (field) {
+            if (stringIsArray(syncForm.data[formKey]))
+              syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+            formData[field.name] = syncForm.data[formKey]
+            // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
+            if (
+              field.hasOwnProperty('dependence') &&
+              field.dependence.type === 'api'
+            ) {
+              await getDependies({ value: formData[field.name], field })
+            }
+          }
+        }
+      }
+      if (hasSelect()) {
+        for (let keyList in lists.data) {
+          console.log(keyList)
+          const field = props.tab.fields.find((el) =>
+            el.alias ? el.alias === keyList : el.name === keyList
+          )
+          if (field) field.items = lists.data[keyList]
+        }
+      }
+      await loadAutocompletes()
+      loading.value = false
+    }
+    const params = props.tab.lists
+    const queryString = '?lists=' + [...params]
+    const { makeRequest: makeRequestList } = useRequest({
+      context,
+      request: () => store.dispatch('list/get', `get/lists${queryString}`),
+    })
+    const showField = (type, field) => {
+      return (
+        type === field.type &&
+        !loading.value &&
+        field.isShow &&
+        (field.mode === 'all' || field.mode === isEdit.value)
+      )
+    }
+    //makeRequestList()
+    const changeAutocomplete = async (params) => {
+      //const { value, field } = data
+      if (hasDepenceFieldsApi()) {
+        await getDependies(params)
+      }
+      if (params.field.dependence && params.field.dependence.type) {
+        console.log(params)
+        params.field.dependence.fillField.forEach(
+          (el) => (formData[el] = params.item[el])
+        )
+      }
+    }
+    const getDependies = async (params) => {
+      const { value, field } = params
+      const depField = field.dependence.field
+      field.loading = true
+      const data = await store.dispatch(field.dependence.module, {
+        value,
+        field,
+      })
+
+      const targetField = props.tab.fields.find((el) => el.name === depField)
+      targetField.items = targetField.defaultItems
+        ? [...targetField.defaultItems, ...data]
+        : data
+      let card = targetField.items.find((el) => el.id === formData[depField])
+
+      //if (data.length === 1) formData[depField] = card.id
+      if (card)
+        field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
+      else if (data.length === 1) {
+        formData[depField] = data[0].id
+        card = targetField.items.find((el) => el.id === formData[depField])
+        field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
+      } else if (data.length === 0) {
+        formData[depField] = 11
+        field.dependence.fillField.forEach((el) => (formData[el] = ''))
+      } else {
+        field.dependence.fillField.forEach((el) => (formData[el] = ''))
+      }
+      field.loading = false
+      //formData[field.dependence.field] = data
+    }
+    //const setDepField = () => {
+
+    //}
+    const changeSelect = ({ value, field }) => {
+      if (field.dependence) {
+        const data = field.items.find((el) => el.id === value)
+        field.dependence.fields.forEach((el) => (formData[el] = data[el]))
+      }
+    }
+    console.log(props.tab.actions)
+
+    const { makeRequest: changeForm } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: () =>
+        store.dispatch('form/update', {
+          url: `set/data/${alias}`,
+          body: { data: { id: +route.params.id, ...formData } },
+        }),
+    })
+    const nextForm = () => {
+      console.log()
+    }
     const submit = async () => {
-      validate()
-      console.log(vForm.value)
-      console.log(formData)
-      console.log(formErrors.value)
+      //if (!validate()) return
+      loading.value = true
+      if (props.tab.isFilter) {
+        emit('sendFilter', formData)
+      } else if (props.tab.actions[0].nextForm) {
+        emit('nextStage')
+      } else if (props) {
+        await changeForm()
+        const isNextForm = true
+        if (isNextForm) {
+          nextForm()
+        }
+      }
+      loading.value = false
+    }
+    const clickHandler = async (action) => {
+      loading.value = true
+      if (action.action === 'saveFilter') {
+        emit('sendFilter', formData)
+      } else if (action.action === 'nextStage') {
+        emit('nextStage')
+      } else if (action.action === 'prevStage') {
+        emit('prevStage')
+      } else if (action.action === 'saveForm') {
+        await changeForm()
+        const isNextForm = true
+        if (isNextForm) {
+          nextForm()
+        }
+      }
+      loading.value = false
+    }
+    const cancel = async () => {
+      const action = props.tab.actions.find((el) => el.type === 'cancel')
+      if (action.prevForm) {
+        emit('prevStage')
+      }
+    }
+    const openMenu = (field) => {
+      field.menu = true
     }
     onMounted(async () => {
-      //loading.value = true
-      //getData()
-      //loading.value = false
+      await getData()
+      setTimeout(() => {
+        stage.value++
+        console.log(stage.value)
+      }, 5000)
     })
-    //watch(
-    //  () => searchFields.value,
-    //  (newVal, oldVal) => {
-    //    newVal.forEach((_, elIndex) => {
-    //      if (newVal[elIndex] !== oldVal[elIndex]) {
-    //        const string = newVal[elIndex]
-    //        const fieldElement = props.tab.fields.find(
-    //          (el) => el.search === string
-    //        )
-    //        querySelections(string, fieldElement)
-    //      }
-    //    })
-    //    //const
-    //    //console.log(newVal)
-    //  }
-    //)
     return {
       searchFields,
-      endIntersect,
+      //endIntersect,
       formData,
       validate,
       //$errors,
@@ -136,6 +312,17 @@ export default {
       submit,
       formErrors,
       getData,
+      loading,
+      showField,
+      autocompleteRef,
+      changeAutocomplete,
+      changeSelect,
+      getDetail,
+      openMenu,
+      stage,
+      cancel,
+      clickHandler,
+      isEdit,
     }
   },
 }

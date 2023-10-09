@@ -70,14 +70,9 @@ export default {
             active: false,
           },
           {
-            id: 8,
-            name: 'Персонал',
-            link: '/personal',
-          },
-          {
             id: 9,
             name: 'Персонал',
-            link: '/',
+            link: '/personal',
             active: false,
           },
           {
@@ -89,7 +84,7 @@ export default {
           {
             id: 11,
             name: 'Назначения',
-            link: '/',
+            link: '/appointments',
           },
           {
             id: 12,
@@ -124,7 +119,7 @@ export default {
           {
             id: 18,
             name: 'Заявки магнитов',
-            link: '/',
+            link: '/shop-request-magnit',
           },
           {
             id: 19,
@@ -164,12 +159,17 @@ export default {
           {
             id: 26,
             name: 'Задачи',
-            link: '/',
+            link: '/tasks',
           },
           {
             id: 27,
             name: 'Инструкции',
             link: '/',
+          },
+          {
+            id: 28,
+            name: 'Личные ключи',
+            link: '/user-keys',
           },
         ],
       },
@@ -195,7 +195,7 @@ export default {
           {
             id: 30,
             name: 'Отчет "Магнит"',
-            link: '/',
+            link: '/shop-request-magnit-report',
           },
           {
             id: 31,
@@ -396,7 +396,7 @@ export default {
 
     //$route.name для получения ссылки акутиыной в юрл
 
-    console.log('navLinks', navLinks.value)
+    //console.log('navLinks', navLinks.value)
 
     const setNavmenu = () => {
       store.commit('setNavmenu', !isOpenMenu.value)
@@ -411,7 +411,7 @@ export default {
     // })
 
     const activeFold = () => {
-      console.log(dataNavbarHard[1].navLinks[1].active, 'хуй')
+      //console.log(dataNavbarHard[1].navLinks[1].active, 'хуй')
     }
 
     return {

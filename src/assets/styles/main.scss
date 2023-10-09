@@ -411,3 +411,23 @@ $borderColor: rgba(0,0,0,.3);
 .v-select.v-select--chips .v-select__selections {
   min-height: 32px;
 }
+
+.v-expansion-panel-content__wrap:hover, .v-list-item:hover {
+  font-weight: 400 !important;
+}
+
+.v-select {
+  .v-select__selections {
+    flex-wrap: nowrap;
+  }
+  .v-chip .v-chip__content {
+    p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
+
+.theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
+  color: rgba(0,0,0,0.7);
+}
