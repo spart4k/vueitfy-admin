@@ -1,5 +1,5 @@
 import Vue, { watch, ref } from 'vue'
-import { selectsApi } from '@/api'
+import { getList } from '@/api/selects'
 
 export default {
   name: 'autocomplete',
@@ -24,7 +24,6 @@ export default {
     const proxyValue = ref(props.value)
     const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
-      console.log('query')
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
         //setTimeout(() => {
@@ -50,7 +49,7 @@ export default {
           })
         }
         console.log(filters)
-        const data = await selectsApi.getApi(url, {
+        const data = await getList(url, {
           countRows: 10,
           currentPage: props.field.page,
           searchValue: params.search ? params.search : '',
@@ -90,11 +89,13 @@ export default {
       proxyValue.value = null
     }
     const update = (value) => {
-      emit('change', { value, field: props.field })
+      const item = props.field.items.find((el) => el.id === value)
+      emit('change', { value, field: props.field, item })
     }
     watch(
-      () => searchProps,
+      () => searchProps.value,
       (newVal) => {
+        console.log(newVal)
         const params = {
           id: props.value,
           search: props.field.search,

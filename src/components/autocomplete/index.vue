@@ -5,7 +5,7 @@
       v-model="proxyValue"
       :loading="field.loading"
       :items="field.items"
-      :search-input.sync="field.search"
+      :search-input.sync="searchProps"
       :error-messages="errorMessages"
       :label="field.label"
       chips

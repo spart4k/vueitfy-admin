@@ -36,7 +36,7 @@ const tableConsumptionConfig = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'http://api.personal-crm.ru/get/pagination/shop_request_magnit_rep',
+    url: 'get/pagination/shop_request_magnit_rep',
     title: 'This is an about page1',
   },
   panel: {
@@ -663,7 +663,7 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'http://api.personal-crm.ru/get/pagination_list/personal',
+            url: 'get/pagination_list/personal',
             position: {
               cols: 12,
               sm: 6,
@@ -691,7 +691,7 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'http://api.personal-crm.ru/get/pagination_list/object',
+            url: 'get/pagination_list/object',
             position: {
               cols: 12,
               sm: 12,

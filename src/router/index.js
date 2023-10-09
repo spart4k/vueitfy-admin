@@ -6,6 +6,7 @@ import AppointmentsView from '../views/Appointments.vue'
 import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
 import UserKeysView from '../views/UserKeysView.vue'
+import TasksView from '../views/Tasks.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import TestView from '@/views/TestView'
@@ -47,6 +48,14 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: AppointmentsView,
     children: [
+      {
+        name: 'appointments-add',
+        path: '/appointments/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
       {
         name: 'appointments/:id',
         path: ':id',
@@ -121,6 +130,24 @@ const routes = [
     children: [
       {
         name: 'user-keys/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/tasks',
+    name: 'tasks',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: TasksView,
+    children: [
+      {
+        name: 'tasks/:id',
         path: ':id',
         component: Detail,
       },

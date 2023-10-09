@@ -413,6 +413,27 @@ const table = {
       router.back()
       popupForm.value.isShow = false
     }
+    const addItem = () => {
+      console.log('add item')
+      if (props.options.detail.type === 'popup') {
+        //router.push({
+        //  path: `${route.}./1`
+        //})
+        router.push(
+          {
+            name: `${route.name}-add`,
+          }
+        )
+        popupForm.value.isShow = true
+      }
+    }
+    const panelHandler = (button) => {
+      const { type } = button
+      console.log(button)
+      if (type === 'addItem') {
+        addItem()
+      }
+    }
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -476,7 +497,7 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && route.params.id) {
+      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode === 'add')) {
         popupForm.value.isShow = true
       }
     })
@@ -521,6 +542,8 @@ const table = {
       filtersColumns,
       detail,
       filters,
+      addItem,
+      panelHandler,
     }
   },
 }
