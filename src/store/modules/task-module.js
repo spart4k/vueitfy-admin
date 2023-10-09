@@ -12,8 +12,8 @@ const taskModule = {
       return result
     },
 
-    async setPartTask(_, url) {
-      const result = await setTask('task/change_status' + url)
+    async setPartTask(_, data) {
+      const result = await setTask('task/change_status/' + data.id, data.data)
       console.log(result)
       return result
     },

@@ -8,7 +8,9 @@ import DateTimePicker from '@/components/datetimepicker/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+import useRequest from '@/compositions/useRequest'
 
+import store from '@/store'
 const firstPopupView = defineComponent({
   name: 'FirstPopupView',
   components: {
@@ -32,6 +34,11 @@ const firstPopupView = defineComponent({
     }
   },
   setup(props, { emit }) {
+    const context = {
+      root: {
+        store,
+      },
+    }
     const finalData = ref({})
     const endBtnDisabled = ref(true)
     const textInfo = {
@@ -48,26 +55,44 @@ const firstPopupView = defineComponent({
     let unConfirmed = ref([])
 
     const addConfirmed = (data) => {
+      console.log(data)
       confirmed.value.push(data)
-      unConfirmed.value = unConfirmed.value.filter(
-        (x) => x.docs_id !== data.docs_id
-      )
+      unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
       console.log(confirmed)
     }
     const addUnconfirmed = (data) => {
       unConfirmed.value.push(data)
-      confirmed.value = confirmed.value.filter(
-        (x) => x.docs_id !== data.docs_id
-      )
+      confirmed.value = confirmed.value.filter((x) => x.id !== data.id)
       console.log(unConfirmed)
     }
 
-    const clickCheckBtn = () => {
-      if (unConfirmed.value.length && comment.value.trim()) {
-        isShow.value = false
-        commentError.value = false
+    const { makeRequest, loading } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setPartTask', {
+          id: 1,
+          data: {
+            comment: comment.value,
+            cancel_close: Object.values(unConfirmed.value),
+            docs_id: {},
+          },
+        }),
+    })
+
+    const clickCheckBtn = async () => {
+      if (unConfirmed.value.length) {
+        if (comment.value.trim()) {
+          console.log([...confirmed.value, ...unConfirmed.value])
+          isShow.value = false
+          commentError.value = false
+          const dataFrom = await makeRequest()
+          console.log(dataFrom)
+        } else {
+          commentError.value = true
+        }
       } else {
-        commentError.value = true
+        const dataFrom = await makeRequest()
+        console.log(dataFrom)
       }
     }
 
@@ -142,6 +167,7 @@ const firstPopupView = defineComponent({
       docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,
       listNames: props.data.data.docs_spr,
+      loading,
       clickCheckBtn,
       addConfirmed,
       addUnconfirmed,

@@ -8,7 +8,7 @@
         <img :src="docs.path_doc" class="docs-required__image" />
       </div>
       <div class="docs-required__name-container">
-        <span>{{ name }}</span>
+        <span>{{ docName }}</span>
         <span>{{ docs.personal_id }}</span>
       </div>
     </div>
