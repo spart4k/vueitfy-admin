@@ -29,37 +29,40 @@
             <v-expansion-panel-content>
               <v-row>
                 <v-col>
-                  <v-text-field label="ФИО"></v-text-field>
+                  <v-text-field
+                    v-model="formData.fio"
+                    label="ФИО"
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
-                  <!--                  <v-menu-->
-                  <!--                    v-model="datePickerOpen"-->
-                  <!--                    :close-on-content-click="false"-->
-                  <!--                    transition="scale-transition"-->
-                  <!--                    offset-y-->
-                  <!--                    min-width="auto"-->
-                  <!--                    z-index="20"-->
-                  <!--                  >-->
-                  <!--                    <template v-slot:activator="{ on, attrs }">-->
-                  <!--                      <v-text-field-->
-                  <!--                        v-model="formObj[doc.doc_id].formData.pasp_data_vid"-->
-                  <!--                        label="Дата рождения"-->
-                  <!--                        prepend-icon="mdi-calendar"-->
-                  <!--                        readonly-->
-                  <!--                        v-bind="attrs"-->
-                  <!--                        v-on="on"-->
-                  <!--                      ></v-text-field>-->
-                  <!--                    </template>-->
-                  <!--                    <v-date-picker-->
-                  <!--                      class="z-index"-->
-                  <!--                      v-model="formObj[doc.doc_id].formData.pasp_data_vid"-->
-                  <!--                      min="1950-01-01"-->
-                  <!--                      color="primary"-->
-                  <!--                      locale="ru-RU"-->
-                  <!--                    ></v-date-picker>-->
-                  <!--                  </v-menu>-->
+                  <v-menu
+                    v-model="datePickerOpen"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                    z-index="20"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="formData.birthday"
+                        label="Дата рождения"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      class="z-index"
+                      v-model="formData.birthday"
+                      min="1950-01-01"
+                      color="primary"
+                      locale="ru-RU"
+                    ></v-date-picker>
+                  </v-menu>
                 </v-col>
                 <v-col>
                   <v-select

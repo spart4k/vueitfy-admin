@@ -6,6 +6,8 @@ import FormTitle from '@/components/Task/el/FormTitle/index.vue'
 import FormError from '@/components/Task/el/FormError/setup'
 import DateTimePicker from '@/components/datetimepicker/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
+import useForm from '@/compositions/useForm'
+import { required } from '@/utils/validation'
 
 const firstPopupView = defineComponent({
   name: 'FirstPopupView',
@@ -96,12 +98,25 @@ const firstPopupView = defineComponent({
       }
     )
 
+    const { formData, validate } = useForm({
+      fields: {
+        fio: {
+          validations: { required },
+        },
+        birthday: {
+          validations: { required },
+        },
+        grazhdanstvo: {
+          validations: { required },
+        },
+      },
+    })
+
     const prepareCaseAndPush = () => {
       emit('prepareCaseAndPush', { wdw: 1, wddd: 2 })
     }
 
     const changeDocs = (data) => {
-      console.log(data)
       const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
       let isDisabled = endBtnDisabled.value
       for (let i = 0; i < docsId.length; i++) {
@@ -141,6 +156,8 @@ const firstPopupView = defineComponent({
       endBtnDisabled,
       finalData,
       sendData,
+      formData,
+      validate,
     }
   },
 })
