@@ -62,7 +62,7 @@ const mails = {
           selectedTemporary.value = 0
         } else {
           selectedMails.value = []
-          selectedMails.value.push(selectedTemporary.value)
+          // selectedMails.value.push(selectedTemporary.value)
         }
       } else {
         if (selectedMails.value.includes(val)) {
