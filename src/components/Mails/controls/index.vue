@@ -119,7 +119,7 @@
         Тэг
       </v-btn>
       <v-menu
-        v-if="$props.filterData.tagsData.length"
+        v-if="$props?.filterData?.tagsData?.length"
         content-class="v-controls-list_tags"
         activator="#tags-activator"
         :close-on-content-click="false"
