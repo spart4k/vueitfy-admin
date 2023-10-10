@@ -200,7 +200,7 @@ v-list {
     outline : none;
     text-decoration: none;
     .navlink__item {
-      padding : 5px 35px !important;
+      //padding : 5px 35px !important;
       margin  : 0 !important;
     }
   }
@@ -269,7 +269,7 @@ v-list {
       &--collapse {
         display: none !important;
       }
-    } 
+    }
   }
 }
 
@@ -312,11 +312,11 @@ v-list {
 
 .btn-menu{
   &__collapse {
-    font-size: 12px !important; 
+    font-size: 12px !important;
     padding: 0 !important;
   }
   &--collapse {
-    font-size: 12px !important; 
+    font-size: 12px !important;
     margin-left:18px !important;
     min-width: 40px !important;
     padding: 0 !important;

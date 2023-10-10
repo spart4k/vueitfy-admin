@@ -1,6 +1,6 @@
 import filters from './filters'
 import TableDefault from '@/components/Table/default/index.vue'
-import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { required } from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -866,6 +866,7 @@ const config = {
                   cols: 12,
                   sm: 6,
                 },
+                value: 1,
                 validations: { required },
                 bootstrapClass: [''],
               }),
@@ -883,7 +884,7 @@ const config = {
                   cols: 12,
                   sm: 6,
                 },
-                validations: { hasDate, hasTime },
+                validations: { required },
                 bootstrapClass: [''],
                 disable: false,
                 //mode: 'edit',
@@ -920,6 +921,21 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
+                hiding: {
+                  conditions: [
+                    {
+                      target: 'mode',
+                      value: 'edit',
+                      values: [2, 4, 6, 7, 8],
+                    },
+                    {
+                      target: 'mode',
+                      value: 'add',
+                      values: [2, 3, 4, 5, 6, 7],
+                    },
+                  ],
+                },
               }),
               selectField({
                 label: 'Направления',
@@ -938,6 +954,10 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                update: {
+                  module: 'selects/getList',
+                  fields: ['object_id'],
+                },
               }),
               autocompleteField({
                 label: 'Объект',
@@ -968,6 +988,10 @@ const config = {
                 dependence: {
                   type: 'default',
                   fillField: ['sum_nutrition', 'with_nutrition'],
+                },
+                update: {
+                  module: 'selects/getList',
+                  fields: ['personal_id'],
                 },
                 requiredFields: ['direction_id'],
               }),
@@ -1130,7 +1154,7 @@ const config = {
                   cols: 12,
                   sm: 6,
                 },
-                validations: { hasDate, hasTime },
+                validations: { required },
                 bootstrapClass: [''],
                 disable: false,
               }),

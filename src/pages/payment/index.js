@@ -1399,7 +1399,7 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
             dependence: {
-              type: 'default',
+              type: 'update',
               fields: ['fio', 'invoice'],
             },
           }),
