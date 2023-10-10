@@ -240,7 +240,7 @@ const mails = {
       } else {
         requestData.content.id = selectedMails.value.toString()
       }
-      console.log(requestData)
+      console.log(key, item, params)
       await store.dispatch('mail/changeLettersAll', requestData.content)
       if (key === 'del' || key === 'is_read') {
         selectedMails.value.forEach((select) => {
@@ -264,16 +264,17 @@ const mails = {
               })
             }
           })
-          if (key === 'del')
+          if (key === 'del') {
+            selectedMails.value = []
+            selectedAllMails.value = false
             if (selectedAllMails.value) {
               setRouterPath(null, null, {
                 filter: route?.query?.filter,
                 color: route?.query?.color,
               })
             }
+          }
         })
-        // selectedMails.value = []
-        // selectedAllMails.value = false
       }
     }
 

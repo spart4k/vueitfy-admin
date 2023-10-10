@@ -18,8 +18,8 @@
         class="mb-2"
       />
       <div class="v-mails-group-container d-flex w-100 h-100">
-        <!-- {{ mailsData }} -->
-        <!-- {{ selectedMails }} -->
+        {{ selectedAllMails }}
+        {{ selectedMails }}
         <!-- {{ selectedTemporary }} -->
         <MailsContainer
           v-if="mailsData.length"
