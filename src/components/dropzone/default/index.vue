@@ -1,9 +1,10 @@
 <template>
   <div class="dropzone-wrap">
     <vue-dropzone
-      ref="myVueDropzone"
+      ref="dropzone"
       id="dropzone"
       :options="dropzoneOptions"
+      @vdropzone-file-added="sendingFile"
     />
   </div>
 </template>
