@@ -159,7 +159,7 @@ export default {
           {
             id: 26,
             name: 'Задачи',
-            link: '/',
+            link: '/tasks',
           },
           {
             id: 27,

@@ -14,7 +14,7 @@
         <v-btn
           v-for="(button, indexButton) in options.panel.buttons"
           :key="indexButton"
-          @click="button.function"
+          @click="panelHandler(button)"
           small
         >
           <v-icon small class="mr-2">
@@ -303,7 +303,10 @@
           <v-progress-circular color="primary" :size="80" indeterminate />
         </div>
         <p
-          v-if="!loading && options.data.rows && !options.data.rows.length"
+          v-if="
+            (!loading && options.data.rows && !options.data.rows.length) ||
+            options.data.rows === null
+          "
           class="v-table-loading"
         >
           Объекты не найдены

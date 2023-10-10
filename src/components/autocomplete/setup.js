@@ -1,5 +1,5 @@
-import Vue, { watch, ref } from 'vue'
-import { selectsApi } from '@/api'
+import Vue, { watch, ref, computed } from 'vue'
+import { getList } from '@/api/selects'
 
 export default {
   name: 'autocomplete',
@@ -24,7 +24,6 @@ export default {
     const proxyValue = ref(props.value)
     const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
-      console.log('query')
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
         //setTimeout(() => {
@@ -40,22 +39,23 @@ export default {
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
         //`)
         const { url } = props.field
-        const filters = []
+        const filter = []
         if (props.field.filters && props.field.filters.length) {
           props.field.filters.forEach((el) => {
-            filters.push({
+            console.log(!props.formData[el.field])
+            if (!props.formData[el.field]) return
+            filter.push({
               field: el.field,
               value: props.formData[el.field],
             })
           })
         }
-        console.log(filters)
-        const data = await selectsApi.getApi(url, {
+        const data = await getList(url, {
           countRows: 10,
           currentPage: props.field.page,
           searchValue: params.search ? params.search : '',
           id: params.id ? params.id : -1,
-          filters,
+          filter,
         })
         if (data.rows && data.rows.length) {
           //props.field.items = [...props.field.items, ...data.rows]
@@ -90,11 +90,18 @@ export default {
       proxyValue.value = null
     }
     const update = (value) => {
-      emit('change', { value, field: props.field })
+      const item = props.field.items.find((el) => el.id === value)
+      emit('change', { value, field: props.field, item })
     }
+    const disabled = computed(() => {
+      return props.field.requiredFields
+        ? props.field.requiredFields.some((el) => !props.formData[el])
+        : false
+    })
     watch(
-      () => searchProps,
+      () => searchProps.value,
       (newVal) => {
+        console.log(newVal)
         const params = {
           id: props.value,
           search: props.field.search,
@@ -113,6 +120,7 @@ export default {
       querySelections,
       update,
       searchProps,
+      disabled,
     }
   },
 }

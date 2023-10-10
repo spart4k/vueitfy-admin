@@ -5,7 +5,7 @@
       v-model="proxyValue"
       :loading="field.loading"
       :items="field.items"
-      :search-input.sync="field.search"
+      :search-input.sync="searchProps"
       :error-messages="errorMessages"
       :label="field.label"
       chips
@@ -15,6 +15,7 @@
       :item-value="field.selectOption.value"
       no-data-text="Нет объектов"
       @change="update"
+      :disabled="disabled"
     >
       <template v-slot:append>
         <v-progress-circular

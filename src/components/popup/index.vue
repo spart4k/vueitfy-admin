@@ -10,9 +10,6 @@
         }"
         class="v-popup-container"
       >
-        <div class="v-popup-container-close">
-          <v-icon @click="$emit('close')" small>$IconClose</v-icon>
-        </div>
         <slot></slot>
       </div>
     </div>

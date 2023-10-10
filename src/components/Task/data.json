@@ -1,0 +1,29 @@
+{
+  "task_type_id": 1,
+  "task": {
+    "id": 1,
+    "process": 10,
+    "process_id": 1,
+    "to_account_id": 10,
+    "from_account_id": 11,
+    "task_type_id": 2,
+    "entity": 7,
+    "entity_id": 3,
+    "date_create": "2023-10-02 2:45:34",
+    "time_execution": 3298746,
+    "date_status": "2023-10-02 2:45:34",
+    "del": 0,
+    "status": 1,
+    "note": "Comment",
+    "type_parent_action": 123,
+    "parent_action": 111,
+    "from_fio": "Иванов Иван Иванович",
+    "to_fio": "Петров Петр Петрович"
+  },
+  "entity": {
+
+  },
+  "data": {
+
+  }
+}

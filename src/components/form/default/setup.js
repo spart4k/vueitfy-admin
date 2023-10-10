@@ -1,7 +1,7 @@
 import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/autocomplete'
-import { selectsApi } from '@/api'
+import { getList } from '@/api/selects'
 import FormDefault from '@/components/form/default/index.vue'
 
 import useForm from '@/compositions/useForm.js'
@@ -46,6 +46,7 @@ export default {
     const loading = ref(true)
     const stage = ref(null)
     const { alias } = props.tab
+    console.log(route)
     const fields = () => {
       const fields = {}
       props.tab.fields.forEach((el) => {
@@ -96,28 +97,40 @@ export default {
         return queries
       } else return undefined
     }
-    const loadAutocompletes = async () => {
-      const fields = props.tab.fields
-        .filter((el) => el.type === 'autocomplete' && el.isShow)
-        .map((el) => el)
+    const loadAutocompletes = async (propsFields) => {
+      let fields = []
+      if (!propsFields) {
+        fields = props.tab.fields
+          .filter((el) => el.type === 'autocomplete' && el.isShow)
+          .map((el) => el)
+      } else {
+        fields = propsFields
+        console.log(fields)
+      }
       const queryFields = fields.map(async (el) => {
-        const filters = []
-        const { url } = el
         console.log(el)
+        const filter = []
+        const { url } = el
+        console.log(el.filters, el.name, formData[el.name])
         if (el.filters && el.filters.length) {
-          el.filters.forEach((filter) => {
-            filters.push({
-              field: filter.field,
-              value: formData[filter.field],
+          el.filters.forEach((el) => {
+            console.log(el, formData[el.field])
+            setTimeout(() => {
+              formData[el.field]
+            }, 1000)
+            if (!formData[el.field]) return
+            filter.push({
+              field: el.field,
+              value: formData[el.field],
             })
           })
         }
-        const data = await selectsApi.getApi(url, {
+        const data = await getList(url, {
           countRows: 10,
           currentPage: 1,
           searchValue: '',
-          id: formData[el.name],
-          filters,
+          id: formData[el.name] ? formData[el.name] : -1,
+          filter,
         })
         if (data.rows) {
           el.items = [...el.items, ...data.rows]
@@ -125,8 +138,11 @@ export default {
         }
         return data
       })
+      fields.forEach((el) => (el.loading = true))
       await Promise.all(queryFields)
+      fields.forEach((el) => (el.loading = false))
     }
+    const mode = computed(() => (route.params.id ? 'edit' : 'add'))
     const hasDepenceFieldsApi = () =>
       props.tab.fields.some(
         (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
@@ -137,6 +153,19 @@ export default {
       } catch {
         return false
       }
+    }
+    const hideSelect = (field) => {
+      field.hiding.conditions.forEach((el) => {
+        console.log(el)
+        const condition = el.target
+        if (condition === 'mode') {
+          if (mode.value === el.value) {
+            field.items = field.items.filter((item) =>
+              el.values.includes(item.id)
+            )
+          }
+        }
+      })
     }
     const getData = async () => {
       const [syncForm, lists] = await Promise.all(initPreRequest())
@@ -165,7 +194,19 @@ export default {
           const field = props.tab.fields.find((el) =>
             el.alias ? el.alias === keyList : el.name === keyList
           )
-          if (field) field.items = lists.data[keyList]
+          if (field) {
+            if (field.defaultItems && field.defaultItems.length) {
+              field.items = [...field.defaultItems, ...lists.data[keyList]]
+            } else {
+              field.items = lists.data[keyList]
+            }
+            field.items = field.items.map((el) => ({
+              ...el,
+              disabled: false,
+            }))
+            if (field.hiding) hideSelect(field)
+            console.log(field.items)
+          }
         }
       }
       await loadAutocompletes()
@@ -178,13 +219,34 @@ export default {
       request: () => store.dispatch('list/get', `get/lists${queryString}`),
     })
     const showField = (type, field) => {
-      return type === field.type && !loading.value && field.isShow
+      return (
+        type === field.type &&
+        !loading.value &&
+        field.isShow &&
+        (field.mode === 'all' || field.mode === mode.value)
+      )
     }
     //makeRequestList()
     const changeAutocomplete = async (params) => {
       //const { value, field } = data
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
+      }
+      if (
+        params.field.dependence &&
+        params.field.dependence.type === 'default'
+      ) {
+        params.field.dependence.fillField.forEach(
+          (el) => (formData[el] = params.item[el])
+        )
+      }
+      if (params.field.update) {
+        const fields = props.tab.fields.filter((el) =>
+          params.field.update.fields.includes(el.name)
+        )
+        //console.log(params, formData['object_id'])
+        formData[params.field.name] = params.value
+        await loadAutocompletes(fields)
       }
     }
     const getDependies = async (params) => {
@@ -223,10 +285,16 @@ export default {
     //const setDepField = () => {
 
     //}
-    const changeSelect = ({ value, field }) => {
-      if (field.dependence) {
+    const changeSelect = async ({ value, field }) => {
+      if (field.dependence && field.dependence.type === 'default') {
         const data = field.items.find((el) => el.id === value)
         field.dependence.fields.forEach((el) => (formData[el] = data[el]))
+      }
+      if (field.update) {
+        const fields = props.tab.fields.filter((el) =>
+          field.update.fields.includes(el.name)
+        )
+        await loadAutocompletes(fields)
       }
     }
     console.log(props.tab.actions)
@@ -248,7 +316,9 @@ export default {
       loading.value = true
       if (props.tab.isFilter) {
         emit('sendFilter', formData)
-      } else {
+      } else if (props.tab.actions[0].nextForm) {
+        emit('nextStage')
+      } else if (props) {
         await changeForm()
         const isNextForm = true
         if (isNextForm) {
@@ -256,6 +326,32 @@ export default {
         }
       }
       loading.value = false
+    }
+    const clickHandler = async (action) => {
+      if (action.action === 'saveFilter') {
+        emit('sendFilter', formData)
+      } else if (action.action === 'nextStage') {
+        if (!validate()) return
+        loading.value = true
+        emit('nextStage')
+      } else if (action.action === 'prevStage') {
+        emit('prevStage')
+      } else if (action.action === 'saveForm') {
+        if (!validate()) return
+        loading.value = true
+        await changeForm()
+        const isNextForm = true
+        if (isNextForm) {
+          nextForm()
+        }
+      }
+      loading.value = false
+    }
+    const cancel = async () => {
+      const action = props.tab.actions.find((el) => el.type === 'cancel')
+      if (action.prevForm) {
+        emit('prevStage')
+      }
     }
     const openMenu = (field) => {
       field.menu = true
@@ -286,6 +382,10 @@ export default {
       getDetail,
       openMenu,
       stage,
+      cancel,
+      clickHandler,
+      mode,
+      hideSelect,
     }
   },
 }
