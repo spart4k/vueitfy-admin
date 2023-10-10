@@ -240,42 +240,48 @@ const mails = {
       } else {
         requestData.content.id = selectedMails.value.toString()
       }
-      console.log(key, item, params)
       await store.dispatch('mail/changeLettersAll', requestData.content)
-      if (key === 'del' || key === 'is_read') {
-        selectedMails.value.forEach((select) => {
-          mailsData.value.forEach((row, index) => {
-            if (row?.mails?.rows?.length) {
-              row?.mails?.rows?.forEach((mail, mailIndex) => {
-                if (mail.id === select) {
-                  if (key === 'del') {
-                    mailsData.value[index].mails.rows.splice(mailIndex, 1)
-                    if (Number(route?.query?.mail) === mail.id) {
-                      setRouterPath(null, null, {
-                        filter: route?.query?.filter,
-                        color: route?.query?.color,
-                      })
-                    }
+      selectedMails.value.forEach((select) => {
+        mailsData.value.forEach((row, index) => {
+          if (row?.mails?.rows?.length) {
+            row?.mails?.rows?.forEach((mail, mailIndex) => {
+              if (mail.id === select) {
+                if (key === 'del') {
+                  mailsData.value[index].mails.rows.splice(mailIndex, 1)
+                  if (Number(route?.query?.mail) === mail.id) {
+                    setRouterPath(null, null, {
+                      filter: route?.query?.filter,
+                      color: route?.query?.color,
+                    })
                   }
-                  if (key === 'is_read') {
-                    mail.is_read = item
+                } else if (key === 'is_read') {
+                  mail.is_read = item
+                } else if (key === 'tags' || key === 'folders') {
+                  if (params) {
+                    let newArray = JSON.parse(mail[key])
+                    newArray.splice(newArray.indexOf(`${item.id}`), 1)
+                    mail[key] = JSON.stringify(newArray)
+                  } else {
+                    let newArray = JSON.parse(mail[key])
+                    newArray.push(`${item.id}`)
+                    mail[key] = JSON.stringify(newArray)
                   }
                 }
-              })
-            }
-          })
-          if (key === 'del') {
-            selectedMails.value = []
-            selectedAllMails.value = false
-            if (selectedAllMails.value) {
-              setRouterPath(null, null, {
-                filter: route?.query?.filter,
-                color: route?.query?.color,
-              })
-            }
+              }
+            })
           }
         })
-      }
+        if (key === 'del') {
+          selectedMails.value = []
+          selectedAllMails.value = false
+          if (selectedAllMails.value) {
+            setRouterPath(null, null, {
+              filter: route?.query?.filter,
+              color: route?.query?.color,
+            })
+          }
+        }
+      })
     }
 
     const editFilter = (val) => {
