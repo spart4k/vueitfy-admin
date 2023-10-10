@@ -238,6 +238,7 @@ const mails = {
           }
         }
       } else {
+        requestData.content.props = { all: true }
         requestData.content.id = selectedMails.value.toString()
       }
       await store.dispatch('mail/changeLettersAll', requestData.content)
