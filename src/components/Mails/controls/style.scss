@@ -9,6 +9,7 @@
         border-radius: 5px;
         // overflow: hidden;
         // margin-bottom: 9px;
+        
         &-list {
             display: flex;
 
@@ -40,26 +41,30 @@
                 height: 250px;
                 width: 100px;
                 transform: translateY(35px);
+                @include custom-scroll-bar-vertical;
                 box-shadow: 1px 1px 4px 0px #00000040;
                 // :global(.v-menu__content) {
+                    
                 // }
                 &-item {
                     opacity: 1;
                     min-height: 17px;
                     margin: 0 5px;
                     cursor: pointer;
-                    font-size: 18px;
+                    font-size: 15px;
                     font-weight: 500 !important;
                     color: var(--v-text-base) !important;
                     display: flex;
                     justify-content: center;
                     word-break: break-word;
                     text-align: center;
+                    padding: 0;
                     &:not(:last-child) {
                         border-bottom: solid 1px var(--v-disabled-base);
                     }
                     &:hover {
                         background: #F2F9FF;
+                        font-weight: 500 !important;
                     }
                     &__active {
                         background: #F2F9FF;

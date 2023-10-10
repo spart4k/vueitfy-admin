@@ -7,6 +7,7 @@ const defaultProperties = (properties) => {
     disable: false,
     value: '',
     isShow: true,
+    mode: 'all',
     ...properties,
   }
 }

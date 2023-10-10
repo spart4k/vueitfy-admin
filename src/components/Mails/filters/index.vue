@@ -81,7 +81,10 @@
                   )
               "
             >
-              <v-icon :color="item.color" small class="mr-2"
+              <v-icon
+                :color="item.color"
+                small
+                class="mr-2 v-filters-expansion-folder-container_icon"
                 >$IconSystem</v-icon
               >
               <span

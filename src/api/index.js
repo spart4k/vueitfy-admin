@@ -1,4 +1,4 @@
-import Selects from './selects'
+//import Selects from './selects'
 import Navmenu from './navmenu'
 // import Mails from './mails'
 //import Form from './form'
@@ -13,11 +13,11 @@ import Navmenu from './navmenu'
 // 5000/appointment
 // 3001/review
 
-const selectsApi = new Selects()
+//const selectsApi = new Selects()
 const navmenuApi = new Navmenu()
 // const mailsApi = new Mails()
 //const form = new Form()
 //const list = new List()
 //const login = new Login()
 
-export { selectsApi, navmenuApi }
+export { navmenuApi, mailsApi }

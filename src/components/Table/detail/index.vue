@@ -20,6 +20,7 @@
             :tab="item"
             :options="item.config"
             :syncData="syncForm"
+            :stages="item.stages"
           />
           <!--<v-progress-circular
             v-else

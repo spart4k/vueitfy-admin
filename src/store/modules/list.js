@@ -6,6 +6,7 @@ const list = {
   namespaced: true,
   actions: {
     async get(_, url) {
+      console.log(url)
       const result = await getList(url)
       return result
     },

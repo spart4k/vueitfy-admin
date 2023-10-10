@@ -327,6 +327,63 @@ $borderColor: rgba(0,0,0,.3);
   margin: 0;
 }
 
+
+.view {
+  &-table {
+    .v-tabs {
+      height: 50px;
+      padding: 0 10px 0 10px;
+    }
+    .v-tabs-items {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .v-window__container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        .v-window-item {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
+  //padding: unset;
+  padding-top: unset;
+  padding-bottom: unset;
+}
+
+.v-select.v-select--chips .v-select__selections {
+  min-height: 32px;
+}
+
+.navbar .v-expansion-panel-content__wrap:hover, .v-list-item:hover {
+  font-weight: 400 !important;
+}
+
+.v-select {
+  .v-select__selections {
+    flex-wrap: nowrap;
+  }
+  .v-chip .v-chip__content {
+    p {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
+
+.theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
+  color: rgba(0,0,0,0.7);
+}
+
 .v-mails {
   .ql-toolbar {
     border: none !important;
@@ -374,60 +431,22 @@ $borderColor: rgba(0,0,0,.3);
   .v-menu__content {
     height: 100px !important;
   }
-}
-
-.view {
-  &-table {
-    .v-tabs {
-      height: 50px;
-      padding: 0 10px 0 10px;
+  .v-expansion-panel {
+    margin: 0 !important;
+  
+    &::before {
+      box-shadow: none !important;
     }
-    .v-tabs-items {
+    &:before {
+      box-shadow: none !important;
+    }
+    .v-icon {
+      flex: 0 !important;
+    }
+    .v-expansion-panel-content__wrap {
+      padding: 0 16px;
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      .v-window__container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        .v-window-item {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-        }
-      }
+      max-width: 100%;
     }
   }
-}
-
-.col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
-  //padding: unset;
-  padding-top: unset;
-  padding-bottom: unset;
-}
-
-.v-select.v-select--chips .v-select__selections {
-  min-height: 32px;
-}
-
-.v-expansion-panel-content__wrap:hover, .v-list-item:hover {
-  font-weight: 400 !important;
-}
-
-.v-select {
-  .v-select__selections {
-    flex-wrap: nowrap;
-  }
-  .v-chip .v-chip__content {
-    p {
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-  }
-}
-
-.theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
-  color: rgba(0,0,0,0.7);
 }

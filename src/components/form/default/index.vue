@@ -66,17 +66,26 @@
               offset-y
               min-width="auto"
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template v-slot:activator="{ attrs }">
                 <v-text-field
                   @click:append="openMenu(field)"
                   v-model="formData[field.name]"
                   :label="field.label"
                   append-icon="mdi-calendar"
                   :error-messages="formErrors[field.name]"
+                  v-bind="attrs"
+                ></v-text-field>
+                <!--<v-combobox
+                  @click:append="openMenu(field)"
+                  v-model="formData[field.name]"
+                  :label="field.label"
+                  multiple
+                  chips
+                  small-chips
+                  append-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
+                ></v-combobox>-->
               </template>
               <v-date-picker
                 v-model="formData[field.name]"
@@ -85,8 +94,21 @@
                 locale="ru-RU"
                 :type="field.subtype === 'period' ? 'month' : undefined"
                 :range="field.subtype === 'range'"
-                @input="field.menu = false"
-              ></v-date-picker>
+                :multiple="field.subtype === 'multiple'"
+                @input="
+                  field.subtype !== 'multiple'
+                    ? (field.menu = false)
+                    : undefined
+                "
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="field.menu = false">
+                  Cancel
+                </v-btn>
+                <v-btn text color="primary" @click="field.menu = false">
+                  OK
+                </v-btn>
+              </v-date-picker>
             </v-menu>
             <v-textarea
               v-else-if="showField('textarea', field)"
@@ -110,15 +132,17 @@
             </p>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="justify-end">
           <v-btn
             type="submit"
-            color="primary"
-            class="ml-auto"
+            :color="action.color"
+            class="ml-2"
             :loading="loading"
-            @click.prevent="submit"
+            @click.prevent="clickHandler(action)"
+            v-for="action in tab.actions"
+            :key="action.id"
           >
-            Submit
+            {{ action.text }}
           </v-btn>
         </v-row>
       </v-container>
