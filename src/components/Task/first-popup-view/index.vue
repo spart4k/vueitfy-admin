@@ -64,8 +64,9 @@
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col>
+                <v-col style="position: relative; z-index: 30">
                   <v-select
+                    v-model="formData.grazhdanstvo"
                     persistent-hint
                     :items="citizenItems"
                     label="Гражданство"
@@ -86,7 +87,7 @@
 
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn :disabled="endBtnDisabled" color="info" @click="sendData">
+      <v-btn :disabled="!isFormValid" color="info" @click="sendData">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
