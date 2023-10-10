@@ -38,7 +38,7 @@
                 }
             }
             &_menu {
-                height: 250px;
+                max-height: 250px;
                 width: 100px;
                 transform: translateY(35px);
                 @include custom-scroll-bar-vertical;

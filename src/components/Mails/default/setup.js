@@ -213,35 +213,27 @@ const mails = {
     }
 
     const changeMailArrayKey = async (key, item, params) => {
-      const requestData = {
-        content: {},
-      }
+      const requestData = {}
       if (route?.query?.color?.length)
-        requestData.content.tags = JSON.parse(route?.query?.color).toString()
+        requestData.tags = JSON.parse(route?.query?.color).toString()
       if (key === 'is_read' || key === 'del') {
-        requestData.content.actions = {}
-        requestData.content.actions[key] = item
+        requestData.actions = {}
+        requestData.actions[key] = item
       } else if (key === 'folders' || key === 'tags') {
-        requestData.content.actionArray = {}
-        requestData.content.actionArray[key] = `${item.id}`
+        requestData.actionArray = {}
+        requestData.actionArray[key] = `${item.id}`
+        requestData.arrayOperation = params ? 'del' : 'add'
       }
       if (selectedAllMails.value) {
-        if (
-          route?.query?.filter !== 'folder' &&
-          route?.query?.filter !== 'box'
-        ) {
-          requestData.content.props = {}
-          if (route?.query?.filter === 'is_read') {
-            requestData.content.props[route?.query?.filter] = false
-          } else {
-            requestData.content.props[route?.query?.filter] = true
-          }
-        }
+        requestData.props =
+          route?.query?.filter === 'is_read' ? 'not_read' : route?.query?.filter
+        if (route?.query?.id) requestData.props_id = Number(route?.query?.id)
       } else {
-        requestData.content.props = { all: true }
-        requestData.content.id = selectedMails.value.toString()
+        requestData.id = selectedMails.value.toString()
       }
-      await store.dispatch('mail/changeLettersAll', requestData.content)
+      console.log(requestData)
+      await store.dispatch('mail/filterTest', requestData)
+      // await store.dispatch('mail/changeLettersAll', requestData)
       selectedMails.value.forEach((select) => {
         mailsData.value.forEach((row, index) => {
           if (row?.mails?.rows?.length) {
@@ -334,6 +326,9 @@ const mails = {
       })
       filterData.value.tagsData = await store.dispatch('mail/getTags')
       filterData.value.notReadData = await store.dispatch('mail/getNotRead')
+      if (!filterData.value.folderData) filterData.value.folderData = []
+      if (!filterData.value.boxData) filterData.value.boxData = []
+      if (!filterData.value.tagsData) filterData.value.tagsData = []
     }
 
     const decreaseUnreadMailsCount = () => {

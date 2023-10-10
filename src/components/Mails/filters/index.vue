@@ -50,7 +50,6 @@
     </div>
     <div class="v-filters-expansion">
       <v-expansion-panels
-        v-if="$props.filterData.folderData.length"
         v-model="folderPanel"
         class="v-filters-expansion-folder"
       >
@@ -124,7 +123,6 @@
         v-model="boxPanel"
         accordion
         class="v-filters-expansion-folder mb-3"
-        v-if="$props.filterData.boxData.length"
       >
         <v-expansion-panel>
           <v-expansion-panel-header class="v-filters-expansion-folder-title"

@@ -69,7 +69,7 @@
         В папку
       </v-btn>
       <v-menu
-        v-if="$props.filterData.folderData.length"
+        v-if="$props?.filterData?.folderData?.length"
         content-class="v-controls-list_menu"
         activator="#menu-activator"
         :close-on-content-click="false"

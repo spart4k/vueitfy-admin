@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { ref, watch } from 'vue'
+import { ref, nextTick } from 'vue'
 // import { tableApi } from '@/api'
 import { VueEditor } from 'vue2-editor'
 const edit = {
@@ -52,11 +52,23 @@ const edit = {
         id: 4,
       },
     ])
+    const test = ref(null)
+    const zxc = (val) => {
+      // if (val.code === 'Space') {
+      //   console.log(test)
+      //   // test.value.blur()
+      //   setTimeout(() => {
+      //     test.value.updateCombobox()
+      //   }, 0)
+      // }
+    }
     return {
       // content,
       userArray,
       user,
       rules,
+      test,
+      zxc,
     }
   },
 }
