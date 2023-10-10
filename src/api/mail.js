@@ -36,6 +36,8 @@ export const changeLettersAll = (data) => put('mails/change/all', data)
 
 export const getMail = (id) => get(`mail/${id}`)
 
+export const getSendedMessage = (id) => get(`send_message/${id}`)
+
 export const sendMessage = (data, config) => post('send_message', data, config)
 
 export const getSendedMessages = (data, params) =>

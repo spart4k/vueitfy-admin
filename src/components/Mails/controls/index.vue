@@ -7,7 +7,9 @@
         @change="$emit('changeSelection', 'all')"
         :value="$props.selectedAllMails"
         :disabled="
-          $route.query.filter === 'sent' || $route.query.filter === 'trash'
+          $route.query.filter === 'sent' ||
+          $route.query.filter === 'trash' ||
+          $route.query.compose === 'new'
         "
       ></v-checkbox>
       <v-btn
@@ -78,7 +80,7 @@
             :key="item.id"
             :class="[
               'v-controls-list_menu-item',
-              intersection.folders.includes(item.id) &&
+              intersection.folders.includes(String(item.id)) &&
                 'v-controls-list_menu-item__active',
             ]"
             @click="
@@ -86,13 +88,13 @@
                 'changeMailArrayKey',
                 'folders',
                 item,
-                intersection.folders.includes(item.id)
+                intersection.folders.includes(String(item.id))
               )
             "
           >
             {{ item.name }}//{{ item.id }}
             <v-icon
-              v-if="intersection.folders.includes(item.id)"
+              v-if="intersection.folders.includes(String(item.id))"
               color="text"
               class="mr-3"
               small
@@ -132,12 +134,12 @@
                 'changeMailArrayKey',
                 'tags',
                 item,
-                intersection?.tags?.includes(item.id)
+                intersection?.tags?.includes(String(item.id))
               )
             "
             :class="[
               'v-controls-list_tags-item',
-              intersection?.tags?.includes(item.id) &&
+              intersection?.tags?.includes(String(item.id)) &&
                 'v-controls-list_tags-item__active',
             ]"
             >{{ item.id }}</v-list-item

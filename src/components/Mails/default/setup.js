@@ -81,27 +81,27 @@ const mails = {
     const getMails = async () => {
       selectedAllMails.value = false
       selectedMails.value = []
-      if (route?.query?.id) {
-        if (route?.query?.filter === 'folder') {
-          // mailsData.value = _.cloneDeep(filterData.value.boxData)
-          mailsData.value = [{ id: Number(route?.query?.id) }]
+      if (route?.query?.filter) {
+        if (route?.query?.id) {
+          if (route?.query?.filter === 'folder') {
+            mailsData.value = [{ id: Number(route?.query?.id) }]
+          } else {
+            mailsData.value = [
+              _.cloneDeep(
+                filterData.value.boxData.find(
+                  (e) => e.id === Number(route?.query?.id)
+                )
+              ),
+            ]
+          }
         } else {
-          mailsData.value = [
-            _.cloneDeep(
-              filterData.value.boxData.find(
-                (e) => e.id === Number(route?.query?.id)
-              )
-            ),
-          ]
+          mailsData.value = _.cloneDeep(filterData.value.boxData)
         }
-      } else {
-        mailsData.value = _.cloneDeep(filterData.value.boxData)
-        // mailsData.value = _.cloneDeep(await getPagination(mailsData.value))
+        for (const item of mailsData.value) {
+          await getPagination(item)
+        }
+        // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
       }
-      for (const item of mailsData.value) {
-        await getPagination(item)
-      }
-      // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
     }
 
     const getPagination = async (val) => {
@@ -133,12 +133,10 @@ const mails = {
         if (route?.query?.filter === 'folder') {
           data = await store.dispatch('mail/getFolderMails', requestData)
         } else if (route?.query?.filter === 'sent') {
-          delete requestData.content.tags
-          delete requestData.content.props
+          ;['tags', 'props'].forEach((e) => delete requestData.content[e])
           data = await store.dispatch('mail/getSendedMessages', requestData)
         } else if (route?.query?.filter === 'trash') {
-          delete requestData.content.tags
-          delete requestData.content.props
+          ;['tags', 'props'].forEach((e) => delete requestData.content[e])
           data = await store.dispatch('mail/getDeletedMessages', requestData)
         } else {
           data = await store.dispatch('mail/getBoxMails', requestData)
@@ -148,7 +146,6 @@ const mails = {
             for (const item of data?.rows) {
               if (selectedAllMails.value) selectedMails.value.push(item.id)
               val?.mails?.rows.push(item)
-              console.log(item)
             }
           } else {
             Vue.set(val, 'mails', data)
@@ -243,6 +240,7 @@ const mails = {
       } else {
         requestData.content.id = selectedMails.value.toString()
       }
+      console.log(requestData)
       await store.dispatch('mail/changeLettersAll', requestData.content)
       if (key === 'del' || key === 'is_read') {
         selectedMails.value.forEach((select) => {
@@ -250,13 +248,14 @@ const mails = {
             if (row?.mails?.rows?.length) {
               row?.mails?.rows?.forEach((mail, mailIndex) => {
                 if (mail.id === select) {
-                  if (key === 'del')
+                  if (key === 'del') {
                     mailsData.value[index].mails.rows.splice(mailIndex, 1)
-                  if (Number(route?.query?.mail) === mail.id) {
-                    setRouterPath(null, null, {
-                      filter: route?.query?.filter,
-                      color: route?.query?.color,
-                    })
+                    if (Number(route?.query?.mail) === mail.id) {
+                      setRouterPath(null, null, {
+                        filter: route?.query?.filter,
+                        color: route?.query?.color,
+                      })
+                    }
                   }
                   if (key === 'is_read') {
                     mail.is_read = item
@@ -273,8 +272,8 @@ const mails = {
               })
             }
         })
-        selectedMails.value = []
-        selectedAllMails.value = false
+        // selectedMails.value = []
+        // selectedAllMails.value = false
       }
     }
 
@@ -306,10 +305,12 @@ const mails = {
           1
         )
         selectedTemporary.value = val.id
-        selectedMails.value.push(selectedTemporary.value)
+        if (route?.query?.filter !== 'sent' && route?.query?.filter !== 'trash')
+          selectedMails.value.push(selectedTemporary.value)
       } else {
         selectedTemporary.value = val.id
-        selectedMails.value.push(selectedTemporary.value)
+        if (route?.query?.filter !== 'sent' && route?.query?.filter !== 'trash')
+          selectedMails.value.push(selectedTemporary.value)
       }
       if (route?.query?.compose) setRouterPath(null, ['compose'])
       setRouterPath([

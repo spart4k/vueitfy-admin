@@ -7,7 +7,7 @@
     <v-btn
       @click="
         $route.query.compose !== 'new' &&
-          $emit('setRouterPath', null, null, { compose: 'new' }, null, null)
+          $emit('setRouterPath', null, null, { compose: 'new' }, null, true)
       "
       color="primary"
       variant="tonal"

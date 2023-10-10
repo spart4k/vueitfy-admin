@@ -71,7 +71,8 @@
             v-for="(item, index) in JSON.parse($props?.data?.tags)"
             :key="index"
             :style="{
-              background: $props?.tagsData?.find((x) => x.id === item)?.color,
+              background: $props?.tagsData?.find((x) => x.id === Number(item))
+                ?.color,
             }"
             @click.stop="setActiveColorFilter(item)"
           ></div>
