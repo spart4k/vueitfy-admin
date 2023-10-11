@@ -266,8 +266,11 @@ const DocFormCorrect = defineComponent({
     })
     const correctedDocs = ref({})
     const confirmCorrect = (doc) => {
-      console.log(doc)
-      correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
+      // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
+      correctedDocs.value = {
+        ...correctedDocs.value,
+        [doc.id]: formObj.value[doc.doc_id].getData(),
+      }
       emit('change', correctedDocs.value)
     }
     return { formObj, confirmCorrect, correctedDocs }
