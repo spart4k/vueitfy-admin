@@ -19,8 +19,8 @@
         class="mb-2"
       />
       <div class="v-mails-group-container d-flex w-100 h-100">
-        <!-- {{ selectedAllMails }} -->
-        <!-- {{ selectedMails }} -->
+        <!-- {{ selected.mailsAll }} -->
+        <!-- {{ selected.mails }} -->
         <!-- {{ selectedTemporary }} -->
         <!-- {{ allSelectionFilter }} -->
         <MailsContainer

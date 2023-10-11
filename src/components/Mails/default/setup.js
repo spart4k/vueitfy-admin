@@ -87,8 +87,18 @@ const mails = {
       }
     }
 
+    const getFilterTagsMails = async () => {
+      const requestData = {}
+      if (route?.query?.color?.length)
+        requestData.tags = JSON.parse(route?.query?.color).toString()
+      requestData.props = route?.query?.filter
+      if (route?.query?.id) requestData.props_id = route?.query?.id
+      await store.dispatch('mail/filterTags', requestData)
+    }
+
     const getMails = async () => {
       resetAllSelectionFilter()
+      getFilterTagsMails()
       selected.value.mailsAll = false
       selected.value.mails = []
       if (route?.query?.filter) {
@@ -266,6 +276,11 @@ const mails = {
                   if (params) {
                     let newArray = JSON.parse(mail[key])
                     newArray.splice(newArray.indexOf(`${item.id}`), 1)
+                    if (item.id === Number(route?.query?.id)) {
+                      mailsData.value[index].mails.rows.splice(mailIndex, 1)
+                      selected.value.mails = []
+                      selected.value.mailsAll = false
+                    }
                     mail[key] = JSON.stringify(newArray)
                   } else {
                     let newArray = JSON.parse(mail[key])
@@ -408,6 +423,7 @@ const mails = {
       setActiveMail,
       changeSelection,
       getMails,
+      getFilterTagsMails,
     }
   },
 }

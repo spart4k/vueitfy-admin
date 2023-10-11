@@ -34,6 +34,8 @@ export const changeLettersContainer = (data, type, id) =>
 
 export const filterMail = (data) => post('filter/mail', data)
 
+export const filterTags = (data) => post('filter/tags', data)
+
 export const getMail = (id) => get(`mail/${id}`)
 
 export const getSendedMessage = (id) => get(`send_message/${id}`)

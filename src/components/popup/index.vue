@@ -13,7 +13,7 @@
         <div v-if="$props.closeButton" class="v-popup-container-close">
           <v-icon @click="$emit('close')" small>$IconClose</v-icon>
         </div>
-        // кто удалит крестик тот гнида блядь
+        <!-- // кто удалит крестик тот гнида блядь -->
 
         <slot></slot>
       </div>

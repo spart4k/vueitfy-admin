@@ -20,6 +20,7 @@ import {
   getSendedMessage,
   getDeletedMessages,
   filterMail,
+  filterTags,
 } from '@/api/mail'
 
 const mail = {
@@ -182,6 +183,16 @@ const mail = {
       try {
         // console.log('data, params', data, params)
         const response = await filterMail(data)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async filterTags(_, data) {
+      try {
+        // console.log('data, params', data, params)
+        const response = await filterTags(data)
         return response
       } catch (e) {
         console.log(e)
