@@ -100,7 +100,7 @@
                 @click.stop="editItem(item, 'folder', index)"
                 :color="item.color"
                 x-small
-                class="mr-2"
+                class="ml-1 mr-2"
                 >$IconEdit</v-icon
               >
               <v-icon

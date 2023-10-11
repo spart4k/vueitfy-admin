@@ -10,9 +10,9 @@
     <div class="v-mails-group">
       <MailsControls
         :filterData="filterData"
-        :selectedAllMails="selectedAllMails"
-        :selectedMails="selectedMails"
-        :allSelectionFilter="allSelectionFilter"
+        :selectedAllMails="selected.mailsAll"
+        :selectedMails="selected.mails"
+        :allSelectionFilter="selected.filterAll"
         :allMails="allMails"
         @changeSelection="changeSelection"
         @changeMailArrayKey="changeMailArrayKey"
@@ -33,7 +33,7 @@
           @getMails="getMails"
           @setRouterPath="setRouterPath"
           :tagsData="filterData.tagsData"
-          :selectedMails="selectedMails"
+          :selectedMails="selected.mails"
           :data="mailsData"
         />
       </div>

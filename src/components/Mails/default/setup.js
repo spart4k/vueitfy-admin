@@ -27,10 +27,12 @@ const mails = {
 
     const mailsData = ref([])
 
-    const selectedMails = ref([])
-    const selectedAllMails = ref(false)
-    const selectedTemporary = ref(0)
-    const allSelectionFilter = ref()
+    const selected = ref({
+      mails: [],
+      mailsAll: false,
+      temporary: 0,
+      filterAll: null,
+    })
 
     const filterData = ref({
       folderData: [],
@@ -42,48 +44,53 @@ const mails = {
     const allMails = computed(() => {
       const arrayId = []
       const arrayFull = []
+      let mailsCount = 0
+      let load = false
       mailsData.value.forEach((item) => {
         if (item.mails) {
+          mailsCount += item.mails.total
           item.mails.rows.forEach((mail) => {
             arrayId.push(mail.id)
             arrayFull.push(mail)
           })
         }
       })
+      if (arrayFull.length === mailsCount) load = true
       return {
         arrayId: arrayId,
         arrayFull: arrayFull,
+        loadAll: load,
       }
     })
 
     const changeSelection = (val) => {
       if (val === 'all') {
-        selectedAllMails.value = !selectedAllMails.value
-        if (selectedAllMails.value) {
-          selectedMails.value = allMails.value.arrayId
-          selectedTemporary.value = 0
+        selected.value.mailsAll = !selected.value.mailsAll
+        if (selected.value.mailsAll) {
+          selected.value.mails = allMails.value.arrayId
+          selected.value.temporary = 0
         } else {
-          selectedMails.value = []
-          // selectedMails.value.push(selectedTemporary.value)
+          selected.value.mails = []
+          // selected.value.mails.push(selected.value.temporary)
         }
       } else {
-        if (selectedMails.value.includes(val)) {
-          selectedMails.value = selectedMails.value.filter((e) => e !== val)
+        if (selected.value.mails.includes(val)) {
+          selected.value.mails = selected.value.mails.filter((e) => e !== val)
         } else {
-          selectedMails.value.push(val)
+          selected.value.mails.push(val)
         }
-        if (allMails.value.arrayId.length === selectedMails.value.length) {
-          selectedAllMails.value = true
+        if (allMails.value.arrayId.length === selected.value.mails.length) {
+          selected.value.mailsAll = true
         } else {
-          selectedAllMails.value = false
+          selected.value.mailsAll = false
         }
       }
     }
 
     const getMails = async () => {
       resetAllSelectionFilter()
-      selectedAllMails.value = false
-      selectedMails.value = []
+      selected.value.mailsAll = false
+      selected.value.mails = []
       if (route?.query?.filter) {
         if (route?.query?.id) {
           if (route?.query?.filter === 'folder') {
@@ -147,7 +154,7 @@ const mails = {
         if (data?.rows) {
           if (val?.mails) {
             for (const item of data?.rows) {
-              if (selectedAllMails.value) selectedMails.value.push(item.id)
+              if (selected.value.mailsAll) selected.value.mails.push(item.id)
               val?.mails?.rows.push(item)
             }
           } else {
@@ -227,17 +234,17 @@ const mails = {
         requestData.actionArray[key] = `${item.id}`
         requestData.arrayOperation = params ? 'del' : 'add'
       }
-      if (selectedAllMails.value) {
+      if (selected.value.mailsAll) {
         requestData.props =
           route?.query?.filter === 'is_read' ? 'not_read' : route?.query?.filter
         if (route?.query?.id) requestData.props_id = route?.query?.id
       } else {
-        requestData.id = selectedMails.value.toString()
+        requestData.id = selected.value.mails.toString()
       }
       console.log(requestData)
       await store.dispatch('mail/filterTest', requestData)
       // await store.dispatch('mail/changeLettersAll', requestData)
-      selectedMails.value.forEach((select) => {
+      selected.value.mails.forEach((select) => {
         mailsData.value.forEach((row, index) => {
           if (row?.mails?.rows?.length) {
             row?.mails?.rows?.forEach((mail, mailIndex) => {
@@ -268,9 +275,9 @@ const mails = {
           }
         })
         if (key === 'del') {
-          selectedMails.value = []
-          selectedAllMails.value = false
-          if (selectedAllMails.value) {
+          selected.value.mails = []
+          selected.value.mailsAll = false
+          if (selected.value.mailsAll) {
             setRouterPath(null, null, {
               filter: route?.query?.filter,
               color: route?.query?.color,
@@ -278,9 +285,9 @@ const mails = {
           }
         }
       })
-      if (selectedAllMails.value) {
+      if (selected.value.mailsAll) {
         if (key === 'is_read') {
-          allSelectionFilter.value.read = !allSelectionFilter.value.read
+          selected.value.filterAll.read = !selected.value.filterAll.read
         }
       }
     }
@@ -301,26 +308,26 @@ const mails = {
     }
 
     const setActiveMail = (val) => {
-      if (selectedMails.value.includes(val.id)) {
-        if (selectedTemporary.value) {
-          selectedMails.value.splice(
-            selectedMails.value.indexOf(selectedTemporary.value),
+      if (selected.value.mails.includes(val.id)) {
+        if (selected.value.temporary) {
+          selected.value.mails.splice(
+            selected.value.mails.indexOf(selected.value.temporary),
             1
           )
         }
-        selectedTemporary.value = 0
-      } else if (selectedMails.value.includes(selectedTemporary.value)) {
-        selectedMails.value.splice(
-          selectedMails.value.indexOf(selectedTemporary.value),
+        selected.value.temporary = 0
+      } else if (selected.value.mails.includes(selected.value.temporary)) {
+        selected.value.mails.splice(
+          selected.value.mails.indexOf(selected.value.temporary),
           1
         )
-        selectedTemporary.value = val.id
+        selected.value.temporary = val.id
         if (route?.query?.filter !== 'sent' && route?.query?.filter !== 'trash')
-          selectedMails.value.push(selectedTemporary.value)
+          selected.value.mails.push(selected.value.temporary)
       } else {
-        selectedTemporary.value = val.id
+        selected.value.temporary = val.id
         if (route?.query?.filter !== 'sent' && route?.query?.filter !== 'trash')
-          selectedMails.value.push(selectedTemporary.value)
+          selected.value.mails.push(selected.value.temporary)
       }
       if (route?.query?.compose) setRouterPath(null, ['compose'])
       setRouterPath([
@@ -342,16 +349,16 @@ const mails = {
     }
 
     const resetAllSelectionFilter = () => {
-      allSelectionFilter.value = {
+      selected.value.filterAll = {
         read: false,
         folder: [],
         tag: [],
       }
       filterData.value.folderData.forEach((item) => {
-        allSelectionFilter.value.folder.push({ value: false, param: item.id })
+        selected.value.filterAll.folder.push({ value: false, param: item.id })
       })
       filterData.value.tagsData.forEach((item) => {
-        allSelectionFilter.value.tag.push({ value: false, param: item.id })
+        selected.value.filterAll.tag.push({ value: false, param: item.id })
       })
     }
 
@@ -370,15 +377,11 @@ const mails = {
     })
 
     return {
-      selectedTemporary,
-      selectedMails,
-      selectedAllMails,
       allMails,
+      selected,
 
       filterData,
-
       mailsData,
-      allSelectionFilter,
 
       setRouterPath,
 

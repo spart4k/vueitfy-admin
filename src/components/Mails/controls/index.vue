@@ -26,7 +26,7 @@
           $emit(
             'changeMailArrayKey',
             'is_read',
-            $props.selectedAllMails
+            $props.selectedAllMails && !$props.allMails.loadAll
               ? $props.allSelectionFilter.read
               : intersection.read.length >= $props.selectedMails.length
               ? false
@@ -41,7 +41,7 @@
           >$IconCheckoutMessage</v-icon
         >
         {{
-          $props.selectedAllMails
+          $props.selectedAllMails && !$props.allMails.loadAll
             ? $props.allSelectionFilter.read
               ? 'Прочитано'
               : 'Не прочитаны'
