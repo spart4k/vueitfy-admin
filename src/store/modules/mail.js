@@ -14,13 +14,12 @@ import {
   getFolderMails,
   changeMail,
   changeLettersContainer,
-  changeLettersAll,
   getMail,
   sendMessage,
   getSendedMessages,
   getSendedMessage,
   getDeletedMessages,
-  filterTest,
+  filterMail,
 } from '@/api/mail'
 
 const mail = {
@@ -179,20 +178,10 @@ const mail = {
       }
     },
 
-    async changeLettersAll(_, data) {
+    async filterMail(_, data) {
       try {
         // console.log('data, params', data, params)
-        const response = await changeLettersAll(data)
-        return response
-      } catch (e) {
-        console.log(e)
-      }
-    },
-
-    async filterTest(_, data) {
-      try {
-        // console.log('data, params', data, params)
-        const response = await filterTest(data)
+        const response = await filterMail(data)
         return response
       } catch (e) {
         console.log(e)

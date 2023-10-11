@@ -248,8 +248,7 @@ const mails = {
         requestData.id = selected.value.mails.toString()
       }
       console.log(requestData)
-      await store.dispatch('mail/filterTest', requestData)
-      // await store.dispatch('mail/changeLettersAll', requestData)
+      await store.dispatch('mail/filterMail', requestData)
       selected.value.mails.forEach((select) => {
         mailsData.value.forEach((row, index) => {
           if (row?.mails?.rows?.length) {
