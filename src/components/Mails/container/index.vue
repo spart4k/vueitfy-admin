@@ -40,7 +40,6 @@
           </template>
           <template v-else-if="item?.mails?.rows?.length">
             <MailsLetter
-              :companyColor="item.color"
               :data="mail"
               :active="Number($route.query.mail) === mail?.id"
               v-for="(mail, mailIndex) in item?.mails?.rows"

@@ -10,10 +10,6 @@ import MailsLetterFiles from './files/index.vue'
 const letter = {
   name: 'Letter',
   props: {
-    companyColor: {
-      type: String,
-      default: '#000000',
-    },
     data: {
       type: Object,
       default: () => {},

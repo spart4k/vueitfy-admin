@@ -36,7 +36,7 @@
       ></v-checkbox>
       <div
         :style="{
-          backgroundColor: $props.companyColor,
+          backgroundColor: $props?.data?.color_box,
           marginTop:
             $route.query.filter !== 'sent' && $route.query.filter !== 'trash'
               ? '12px'

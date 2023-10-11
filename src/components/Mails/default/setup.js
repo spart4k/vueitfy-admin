@@ -291,12 +291,18 @@ const mails = {
           }
         }
       })
-      if (key === 'is_read') {
+      if (key === 'is_read' || key === 'del') {
         filterData.value.notReadData = await store.dispatch('mail/getNotRead')
       }
       if (selected.value.mailsAll) {
         if (key === 'is_read') {
           selected.value.filterAll.read = !selected.value.filterAll.read
+        } else if (key === 'folders') {
+          selected.value.filterAll.folder.find((x) => x.id === item.id).value =
+            !selected.value.filterAll.folder.find((x) => x.id === item.id).value
+        } else if (key === 'tags') {
+          selected.value.filterAll.tag.find((x) => x.id === item.id).value =
+            !selected.value.filterAll.tag.find((x) => x.id === item.id).value
         }
       }
     }
@@ -364,10 +370,10 @@ const mails = {
         tag: [],
       }
       filterData.value.folderData.forEach((item) => {
-        selected.value.filterAll.folder.push({ value: false, param: item.id })
+        selected.value.filterAll.folder.push({ value: false, id: item.id })
       })
       filterData.value.tagsData.forEach((item) => {
-        selected.value.filterAll.tag.push({ value: false, param: item.id })
+        selected.value.filterAll.tag.push({ value: false, id: item.id })
       })
     }
 

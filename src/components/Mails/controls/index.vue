@@ -77,21 +77,34 @@
             :key="item.id"
             :class="[
               'v-controls-list_menu-item',
-              intersection.folders.includes(String(item.id)) &&
-                'v-controls-list_menu-item__active',
+              $props.selectedAllMails && !$props.allMails.loadAll
+                ? $props.allSelectionFilter.folder.find((x) => x.id === item.id)
+                    .value && 'v-controls-list_menu-item__active'
+                : intersection.folders.includes(String(item.id)) &&
+                  'v-controls-list_menu-item__active',
             ]"
             @click="
               $emit(
                 'changeMailArrayKey',
                 'folders',
                 item,
-                intersection.folders.includes(String(item.id))
+                $props.selectedAllMails && !$props.allMails.loadAll
+                  ? $props.allSelectionFilter.folder.find(
+                      (x) => x.id === item.id
+                    ).value
+                  : intersection.folders.includes(String(item.id))
               )
             "
           >
             {{ item.name }}
             <v-icon
-              v-if="intersection.folders.includes(String(item.id))"
+              v-if="
+                $props.selectedAllMails && !$props.allMails.loadAll
+                  ? $props.allSelectionFilter.folder.find(
+                      (x) => x.id === item.id
+                    ).value
+                  : intersection.folders.includes(String(item.id))
+              "
               color="text"
               class="ml-3"
               small
@@ -131,13 +144,19 @@
                 'changeMailArrayKey',
                 'tags',
                 item,
-                intersection?.tags?.includes(String(item.id))
+                $props.selectedAllMails && !$props.allMails.loadAll
+                  ? $props.allSelectionFilter.tag.find((x) => x.id === item.id)
+                      .value
+                  : intersection.tags.includes(String(item.id))
               )
             "
             :class="[
               'v-controls-list_tags-item',
-              intersection?.tags?.includes(String(item.id)) &&
-                'v-controls-list_tags-item__active',
+              $props.selectedAllMails && !$props.allMails.loadAll
+                ? $props.allSelectionFilter.tag.find((x) => x.id === item.id)
+                    .value && 'v-controls-list_tags-item__active'
+                : intersection.tags.includes(String(item.id)) &&
+                  'v-controls-list_tags-item__active',
             ]"
           ></v-list-item>
         </v-list>
