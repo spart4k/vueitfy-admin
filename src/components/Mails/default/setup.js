@@ -24,20 +24,20 @@ const mails = {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    const originalData = ref([])
-    const folderData = ref([])
+
     const mailsData = ref([])
+
     const selectedMails = ref([])
     const selectedAllMails = ref(false)
     const selectedTemporary = ref(0)
+    const allSelectionFilter = ref()
+
     const filterData = ref({
       folderData: [],
       tagsData: [],
       boxData: [],
       notReadData: 0,
     })
-
-    const allSelectionFilter = ref()
 
     const allMails = computed(() => {
       const arrayId = []
@@ -230,12 +230,12 @@ const mails = {
       if (selectedAllMails.value) {
         requestData.props =
           route?.query?.filter === 'is_read' ? 'not_read' : route?.query?.filter
-        if (route?.query?.id) requestData.props_id = Number(route?.query?.id)
+        if (route?.query?.id) requestData.props_id = route?.query?.id
       } else {
         requestData.id = selectedMails.value.toString()
       }
       console.log(requestData)
-      // await store.dispatch('mail/filterTest', requestData)
+      await store.dispatch('mail/filterTest', requestData)
       // await store.dispatch('mail/changeLettersAll', requestData)
       selectedMails.value.forEach((select) => {
         mailsData.value.forEach((row, index) => {
@@ -278,6 +278,11 @@ const mails = {
           }
         }
       })
+      if (selectedAllMails.value) {
+        if (key === 'is_read') {
+          allSelectionFilter.value.read = !allSelectionFilter.value.read
+        }
+      }
     }
 
     const editFilter = (val) => {
@@ -372,8 +377,6 @@ const mails = {
 
       filterData,
 
-      originalData,
-      folderData,
       mailsData,
       allSelectionFilter,
 
