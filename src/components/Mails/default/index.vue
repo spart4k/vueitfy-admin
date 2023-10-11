@@ -12,15 +12,17 @@
         :filterData="filterData"
         :selectedAllMails="selectedAllMails"
         :selectedMails="selectedMails"
+        :allSelectionFilter="allSelectionFilter"
         :allMails="allMails"
         @changeSelection="changeSelection"
         @changeMailArrayKey="changeMailArrayKey"
         class="mb-2"
       />
       <div class="v-mails-group-container d-flex w-100 h-100">
-        <!-- {{ selectedAllMails }}
-        {{ selectedMails }} -->
+        <!-- {{ selectedAllMails }} -->
+        <!-- {{ selectedMails }} -->
         <!-- {{ selectedTemporary }} -->
+        <!-- {{ allSelectionFilter }} -->
         <MailsContainer
           v-if="mailsData.length"
           @setActiveMail="setActiveMail"

@@ -37,6 +37,8 @@ const mails = {
       notReadData: 0,
     })
 
+    const allSelectionFilter = ref()
+
     const allMails = computed(() => {
       const arrayId = []
       const arrayFull = []
@@ -79,6 +81,7 @@ const mails = {
     }
 
     const getMails = async () => {
+      resetAllSelectionFilter()
       selectedAllMails.value = false
       selectedMails.value = []
       if (route?.query?.filter) {
@@ -232,7 +235,7 @@ const mails = {
         requestData.id = selectedMails.value.toString()
       }
       console.log(requestData)
-      await store.dispatch('mail/filterTest', requestData)
+      // await store.dispatch('mail/filterTest', requestData)
       // await store.dispatch('mail/changeLettersAll', requestData)
       selectedMails.value.forEach((select) => {
         mailsData.value.forEach((row, index) => {
@@ -294,10 +297,12 @@ const mails = {
 
     const setActiveMail = (val) => {
       if (selectedMails.value.includes(val.id)) {
-        selectedMails.value.splice(
-          selectedMails.value.indexOf(selectedTemporary.value),
-          1
-        )
+        if (selectedTemporary.value) {
+          selectedMails.value.splice(
+            selectedMails.value.indexOf(selectedTemporary.value),
+            1
+          )
+        }
         selectedTemporary.value = 0
       } else if (selectedMails.value.includes(selectedTemporary.value)) {
         selectedMails.value.splice(
@@ -331,6 +336,20 @@ const mails = {
       if (!filterData.value.tagsData) filterData.value.tagsData = []
     }
 
+    const resetAllSelectionFilter = () => {
+      allSelectionFilter.value = {
+        read: false,
+        folder: [],
+        tag: [],
+      }
+      filterData.value.folderData.forEach((item) => {
+        allSelectionFilter.value.folder.push({ value: false, param: item.id })
+      })
+      filterData.value.tagsData.forEach((item) => {
+        allSelectionFilter.value.tag.push({ value: false, param: item.id })
+      })
+    }
+
     const decreaseUnreadMailsCount = () => {
       filterData.value.notReadData--
     }
@@ -356,9 +375,11 @@ const mails = {
       originalData,
       folderData,
       mailsData,
+      allSelectionFilter,
 
       setRouterPath,
 
+      resetAllSelectionFilter,
       decreaseUnreadMailsCount,
       changeMailKey,
       changeMailArrayKey,

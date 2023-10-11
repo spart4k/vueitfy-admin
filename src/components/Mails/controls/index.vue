@@ -12,20 +12,11 @@
           $route.query.compose === 'new'
         "
       ></v-checkbox>
-      <v-btn
-        class="v-controls-list_item"
-        color="text"
-        :disabled="!$props.selectedMails.length"
-        plain
-      >
-        <v-icon
-          :color="$props.selectedMails.length ? 'primary' : 'disabled'"
-          class="mr-3"
-          small
-          >$IconBroadcast</v-icon
-        >
+      <v-btn class="v-controls-list_item" color="text" disabled plain>
+        <v-icon :color="'disabled'" class="mr-3" small>$IconBroadcast</v-icon>
         Транслировать
       </v-btn>
+      <!-- {{ $props.allSelectionFilter }} -->
       <v-btn
         :disabled="!$props.selectedMails.length"
         class="v-controls-list_item"
@@ -35,7 +26,9 @@
           $emit(
             'changeMailArrayKey',
             'is_read',
-            intersection.read.length >= $props.selectedMails.length
+            $props.selectedAllMails
+              ? $props.allSelectionFilter.read
+              : intersection.read.length >= $props.selectedMails.length
               ? false
               : true
           )
@@ -48,7 +41,11 @@
           >$IconCheckoutMessage</v-icon
         >
         {{
-          intersection.read.length >= $props.selectedMails.length
+          $props.selectedAllMails
+            ? $props.allSelectionFilter.read
+              ? 'Прочитано'
+              : 'Не прочитаны'
+            : intersection.read.length >= $props.selectedMails.length
             ? 'Не прочитаны'
             : 'Прочитано'
         }}

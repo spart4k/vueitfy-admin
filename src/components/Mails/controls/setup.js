@@ -26,6 +26,10 @@ const controls = {
       type: Object,
       default: () => {},
     },
+    allSelectionFilter: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props) {
     const popupCase = ref(false)
