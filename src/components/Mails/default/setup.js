@@ -206,6 +206,7 @@ const mails = {
     }
 
     const changeMailKey = async (val) => {
+      console.log(val)
       const request = {
         content: {
           [val.key]: !val[val.key],
@@ -213,12 +214,17 @@ const mails = {
         id: val.id,
       }
       await store.dispatch('mail/changeMail', request)
-      const company =
-        mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
-          .mails.rows
-      if (company.find((x) => x.id === val.id)) {
-        const mail = company.find((x) => x.id === val.id)
+      if (route?.query?.filter === 'folder') {
+        const mail = mailsData.value[0].mails.rows.find((x) => x.id === val.id)
         mail[val.key] = !val[val.key]
+      } else {
+        const company =
+          mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
+            .mails.rows
+        if (company.find((x) => x.id === val.id)) {
+          const mail = company.find((x) => x.id === val.id)
+          mail[val.key] = !val[val.key]
+        }
       }
     }
 
@@ -285,6 +291,9 @@ const mails = {
           }
         }
       })
+      if (key === 'is_read') {
+        filterData.value.notReadData = await store.dispatch('mail/getNotRead')
+      }
       if (selected.value.mailsAll) {
         if (key === 'is_read') {
           selected.value.filterAll.read = !selected.value.filterAll.read
