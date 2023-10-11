@@ -206,7 +206,6 @@ const mails = {
     }
 
     const changeMailKey = async (val) => {
-      console.log(val)
       const request = {
         content: {
           [val.key]: !val[val.key],
@@ -247,7 +246,6 @@ const mails = {
       } else {
         requestData.id = selected.value.mails.toString()
       }
-      console.log(requestData)
       await store.dispatch('mail/filterMail', requestData)
       selected.value.mails.forEach((select) => {
         mailsData.value.forEach((row, index) => {
@@ -271,7 +269,8 @@ const mails = {
                     mail[key] = JSON.stringify(newArray)
                   } else {
                     let newArray = JSON.parse(mail[key])
-                    newArray.push(`${item.id}`)
+                    if (!newArray.includes(`${item.id}`))
+                      newArray.push(`${item.id}`)
                     mail[key] = JSON.stringify(newArray)
                   }
                 }
