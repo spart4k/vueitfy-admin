@@ -48,6 +48,7 @@
                   maxlength="6"
                   v-model="formObj[doc.doc_id].formData.pasp_ser"
                   label="Серия"
+                  :error-messages="formObj[doc.doc_id].formErrors.pasp_ser"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -55,6 +56,7 @@
                   maxlength="10"
                   v-model="formObj[doc.doc_id].formData.pasp_num"
                   label="Номер"
+                  :error-messages="formObj[doc.doc_id].formErrors.pasp_num"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -62,6 +64,7 @@
                   maxlength="8"
                   v-model="formObj[doc.doc_id].formData.pasp_kod_podr"
                   label="К/П"
+                  :error-messages="formObj[doc.doc_id].formErrors.pasp_kod_podr"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -83,6 +86,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.pasp_data_vid
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -100,6 +106,7 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.pasp_kem"
                   label="Кем выдан"
+                  :error-messages="formObj[doc.doc_id].formErrors.pasp_kem"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -112,6 +119,7 @@
                   maxlength="14"
                   v-model="formObj[doc.doc_id].formData.snils"
                   label="Номер"
+                  :error-messages="formObj[doc.doc_id].formErrors.snils"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -125,6 +133,9 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.registration_address"
                   label="Адрес регистрации"
+                  :error-messages="
+                    formObj[doc.doc_id].formErrors.registration_address
+                  "
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -136,12 +147,14 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.patent_ser"
                   label="Серия"
+                  :error-messages="formObj[doc.doc_id].formErrors.patent_ser"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.patent_num"
                   label="Номер"
+                  :error-messages="formObj[doc.doc_id].formErrors.patent_num"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -150,6 +163,7 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.patent_prof"
                   label="Профессия"
+                  :error-messages="formObj[doc.doc_id].formErrors.patent_prof"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -161,6 +175,9 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.pasp_address_reg"
                   label="Адрес регистрации"
+                  :error-messages="
+                    formObj[doc.doc_id].formErrors.pasp_address_reg
+                  "
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -185,6 +202,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.med_book_date
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -206,6 +226,7 @@
                   maxlength="6"
                   v-model="formObj[doc.doc_id].formData.view_home_ser"
                   label="Серия"
+                  :error-messages="formObj[doc.doc_id].formErrors.view_home_ser"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -213,6 +234,7 @@
                   maxlength="10"
                   v-model="formObj[doc.doc_id].formData.view_home_num"
                   label="Номер"
+                  :error-messages="formObj[doc.doc_id].formErrors.view_home_num"
                 ></v-text-field>
               </v-col>
               <v-col>
@@ -220,6 +242,9 @@
                   maxlength="8"
                   v-model="formObj[doc.doc_id].formData.view_home_podr"
                   label="К/П"
+                  :error-messages="
+                    formObj[doc.doc_id].formErrors.view_home_podr
+                  "
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -241,6 +266,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.view_home_data_vid
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -258,6 +286,7 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.view_home_kem"
                   label="Кем выдан"
+                  :error-messages="formObj[doc.doc_id].formErrors.view_home_kem"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -267,6 +296,7 @@
             <v-row>
               <v-col>
                 <v-text-field
+                  :error-messages="formObj[doc.doc_id].formErrors.migr_card_ser"
                   maxlength="6"
                   v-model="formObj[doc.doc_id].formData.migr_card_ser"
                   label="Серия"
@@ -277,6 +307,7 @@
                   maxlength="10"
                   v-model="formObj[doc.doc_id].formData.migr_card_num"
                   label="Номер"
+                  :error-messages="formObj[doc.doc_id].formErrors.migr_card_num"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -298,6 +329,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.migr_card_data_in
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -326,6 +360,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.migr_card_data_out
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -361,6 +398,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.check_patent_date_pay
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -397,6 +437,10 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors
+                          .registration_date_do_docs_in
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -429,6 +473,10 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors
+                          .registration_date_c_docs_in
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -451,15 +499,41 @@
                 ><v-text-field
                   v-model="formObj[doc.doc_id].formData.patent_region"
                   label="Регион"
+                  :error-messages="formObj[doc.doc_id].formErrors.patent_region"
                 ></v-text-field
               ></v-col>
             </v-row>
             <v-row>
               <v-col>
-                <date-time-picker
-                  v-model="formObj[doc.doc_id].formData.patent_date_docs_in"
-                  label="Дата выдачи"
-                ></date-time-picker>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formObj[doc.doc_id].formData.patent_date_docs_in"
+                      label="Дата оплаты"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.patent_date_docs_in
+                      "
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formObj[doc.doc_id].formData.patent_date_docs_in"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
           </div>
@@ -470,6 +544,7 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.inn"
                   label="ИНН"
+                  :error-messages="formObj[doc.doc_id].formErrors.inn"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -510,6 +585,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.check_patent_date_pay_now
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -532,6 +610,9 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.view_home_address_reg"
                   label="Адрес регистрации"
+                  :error-messages="
+                    formObj[doc.doc_id].formErrors.view_home_address_reg
+                  "
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -556,6 +637,9 @@
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      :error-messages="
+                        formObj[doc.doc_id].formErrors.med_view_docs_in
+                      "
                     ></v-text-field>
                   </template>
                   <v-date-picker
@@ -576,6 +660,7 @@
                 <v-text-field
                   v-model="formObj[doc.doc_id].formData.id_card"
                   label="ID"
+                  :error-messages="formObj[doc.doc_id].formErrors.id_card"
                 ></v-text-field>
               </v-col>
             </v-row>
