@@ -5,7 +5,7 @@
     </div>
     <v-row class="task__title">
       <v-card-title class="title py-5">
-        {{ data.task.task_type_id }}
+        {{ taskName }}
       </v-card-title>
     </v-row>
     <v-divider></v-divider>
@@ -28,7 +28,19 @@
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <FirstPopupView :data="data" ref="FirstPopupView"></FirstPopupView>
+      <FirstPopupView
+        v-if="data.task.task_type_id === 1"
+        :data="data"
+        ref="FirstPopupView"
+      ></FirstPopupView>
+      <FifthPopupView
+        v-if="data.task.task_type_id === 2"
+        :data="data"
+      ></FifthPopupView>
+      <SixthPopupView
+        v-if="data.task.task_type_id === 7"
+        :data="data"
+      ></SixthPopupView>
       <!--      <ThirdPopupView />-->
       <!--      <FourthPopupView />-->
     </div>

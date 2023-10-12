@@ -870,7 +870,7 @@ const config = {
                 bootstrapClass: [''],
               }),
               dateField({
-                label: 'Время создания',
+                label: 'На дату',
                 name: 'date_create',
                 value: [],
                 type: 'date',
@@ -969,6 +969,7 @@ const config = {
                   type: 'default',
                   fillField: ['sum_nutrition', 'with_nutrition'],
                 },
+                requiredFields: ['direction_id'],
               }),
               autocompleteField({
                 label: 'Линейщик',
@@ -1050,6 +1051,12 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                defaultItems: [
+                  {
+                    id: 0,
+                    name: '--Без питания--',
+                  },
+                ],
               }),
               stringField({
                 label: 'Стоимость питания:',

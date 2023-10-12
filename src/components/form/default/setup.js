@@ -100,14 +100,14 @@ export default {
         .filter((el) => el.type === 'autocomplete' && el.isShow)
         .map((el) => el)
       const queryFields = fields.map(async (el) => {
-        const filters = []
+        const filter = []
         const { url } = el
         console.log(el)
         if (el.filters && el.filters.length) {
-          el.filters.forEach((filter) => {
-            filters.push({
-              field: filter.field,
-              value: formData[filter.field],
+          el.filters.forEach((el) => {
+            filter.push({
+              field: el.field,
+              value: formData[el.field],
             })
           })
         }
@@ -116,7 +116,7 @@ export default {
           currentPage: 1,
           searchValue: '',
           id: formData[el.name],
-          filters,
+          filter,
         })
         if (data.rows) {
           el.items = [...el.items, ...data.rows]
@@ -165,7 +165,13 @@ export default {
           const field = props.tab.fields.find((el) =>
             el.alias ? el.alias === keyList : el.name === keyList
           )
-          if (field) field.items = lists.data[keyList]
+          if (field) {
+            if (field.defaultItems && field.defaultItems.length) {
+              field.items = [...field.defaultItems, ...lists.data[keyList]]
+            } else {
+              field.items = lists.data[keyList]
+            }
+          }
         }
       }
       await loadAutocompletes()

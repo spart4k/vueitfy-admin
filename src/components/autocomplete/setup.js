@@ -1,4 +1,4 @@
-import Vue, { watch, ref } from 'vue'
+import Vue, { watch, ref, computed } from 'vue'
 import { getList } from '@/api/selects'
 
 export default {
@@ -39,22 +39,21 @@ export default {
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
         //`)
         const { url } = props.field
-        const filters = []
+        const filter = []
         if (props.field.filters && props.field.filters.length) {
           props.field.filters.forEach((el) => {
-            filters.push({
+            filter.push({
               field: el.field,
               value: props.formData[el.field],
             })
           })
         }
-        console.log(filters)
         const data = await getList(url, {
           countRows: 10,
           currentPage: props.field.page,
           searchValue: params.search ? params.search : '',
           id: params.id ? params.id : -1,
-          filters,
+          filter,
         })
         if (data.rows && data.rows.length) {
           //props.field.items = [...props.field.items, ...data.rows]
@@ -92,6 +91,9 @@ export default {
       const item = props.field.items.find((el) => el.id === value)
       emit('change', { value, field: props.field, item })
     }
+    const disabled = computed(() => {
+      return props.field.requiredFields.every((el) => props.formData[el])
+    })
     watch(
       () => searchProps.value,
       (newVal) => {
@@ -114,6 +116,7 @@ export default {
       querySelections,
       update,
       searchProps,
+      disabled,
     }
   },
 }

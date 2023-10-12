@@ -15,6 +15,7 @@
       :item-value="field.selectOption.value"
       no-data-text="Нет объектов"
       @change="update"
+      :disabled="!disabled"
     >
       <template v-slot:append>
         <v-progress-circular
@@ -51,6 +52,9 @@
         </template>
       </template>
     </v-autocomplete>
+    <v-tooltip right :disabled="!disabled">
+      <span>test</span>
+    </v-tooltip>
   </div>
 </template>
 <script src="./setup"></script>

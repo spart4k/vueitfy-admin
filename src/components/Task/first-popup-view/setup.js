@@ -31,6 +31,7 @@ const firstPopupView = defineComponent({
   data: () => {
     return {
       datePickerOpen: false,
+      selectOpen: false,
     }
   },
   setup(props, { emit }) {
@@ -40,7 +41,7 @@ const firstPopupView = defineComponent({
       },
     }
     const finalData = ref({})
-    const endBtnDisabled = ref(true)
+    const isFormValid = ref(false)
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -116,23 +117,23 @@ const firstPopupView = defineComponent({
         return {
           text: citizen.name,
           value: citizen.id,
-          disabled: false,
-          divider: true,
-          header: citizen.name,
         }
       }
     )
 
-    const { formData, validate } = useForm({
+    const { formData, validate: osnValidate } = useForm({
       fields: {
         fio: {
           validations: { required },
+          default: props.data.entity.name,
         },
         birthday: {
           validations: { required },
+          default: props.data.entity.data_rojd,
         },
         grazhdanstvo: {
           validations: { required },
+          default: props.data.entity.grajdanstvo_id,
         },
       },
     })
@@ -143,15 +144,16 @@ const firstPopupView = defineComponent({
 
     const changeDocs = (data) => {
       const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
-      let isDisabled = endBtnDisabled.value
+      let isValid = isFormValid.value
       for (let i = 0; i < docsId.length; i++) {
-        isDisabled = data.value[docsId[i]].validate()
-        if (!isDisabled) {
+        isValid = data.value[docsId[i]].validate()
+        if (!isValid) {
           break
         }
       }
-      endBtnDisabled.value = !isDisabled
-      if (!endBtnDisabled.value) {
+      isFormValid.value = isValid
+      console.log(osnValidate())
+      if (isFormValid.value) {
         docsId.forEach((item) => {
           finalData.value = { ...finalData.value, ...data.value[item].formData }
         })
@@ -179,11 +181,11 @@ const firstPopupView = defineComponent({
       isShow,
       commentError,
       changeDocs,
-      endBtnDisabled,
+      isFormValid,
       finalData,
       sendData,
       formData,
-      validate,
+      osnValidate,
     }
   },
 })

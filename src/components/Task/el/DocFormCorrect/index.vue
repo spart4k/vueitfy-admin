@@ -5,32 +5,10 @@
       <v-expansion-panel v-for="doc in docs" :key="doc.id">
         <v-expansion-panel-header>
           <div style="position: relative">
-            <span
-              class="form-status"
-              :class="{
-                filled: formObj[doc.doc_id].validate(),
-                noFilled: !formObj[doc.doc_id].validate(),
-                visible: formObj[doc.doc_id].touchedForm,
-              }"
-            >
-              <v-icon
-                x-small
-                color="green"
-                v-if="
-                  formObj[doc.doc_id].touchedForm &&
-                  formObj[doc.doc_id].validate()
-                "
-                >$IconMain</v-icon
-              >
-              <v-icon
-                x-small
-                color="red"
-                v-else-if="
-                  formObj[doc.doc_id].touchedForm &&
-                  !formObj[doc.doc_id].validate()
-                "
-                >$IconClose</v-icon
-              >
+            <span class="form-status visible">
+              <v-icon x-small color="green" v-if="correctedDocs[doc.id]">
+                $IconMain
+              </v-icon>
             </span>
             <span style="padding-left: 15px">{{ listNames[doc.id] }}</span>
           </div>
@@ -665,6 +643,16 @@
               </v-col>
             </v-row>
           </div>
+          <v-row class="py-2 px-2" justify="end">
+            <v-btn
+              :disabled="!formObj[doc.doc_id].validate()"
+              @click="() => confirmCorrect(doc)"
+              color="warning"
+            >
+              <v-icon left> $IconMain </v-icon>
+              Исправлено
+            </v-btn>
+          </v-row>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
