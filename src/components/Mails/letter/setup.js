@@ -41,11 +41,16 @@ const letter = {
         !route?.query?.color?.length ||
         !_.isEqual([val], JSON.parse(route?.query?.color))
       ) {
-        emit('setRouterPath', null, null, [
-          { key: 'filter', value: route?.query?.filter },
-          { key: 'color', value: JSON.stringify([val]) },
-          route?.query?.id ? { key: 'id', value: route?.query?.id } : undefined,
-        ])
+        emit(
+          'setRouterPath',
+          null,
+          null,
+          {
+            filter: route?.query?.filter,
+            color: Number(val),
+          },
+          ['id']
+        )
         emit('getMails')
       }
     }

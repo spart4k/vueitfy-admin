@@ -215,8 +215,9 @@ const mails = {
       }
       await store.dispatch('mail/changeMail', request)
       const company =
-        mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
-          .mails.rows
+        mailsData?.value[
+          mailsData?.value?.findIndex((x) => x.id === val.box_id)
+        ]?.mails?.rows
       if (route?.query?.filter === 'folder') {
         const mail = mailsData.value[0].mails.rows.find((x) => x.id === val.id)
         mail[val.key] = !val[val.key]
