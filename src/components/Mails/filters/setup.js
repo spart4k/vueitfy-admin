@@ -4,7 +4,7 @@
 // import { tableApi } from '@/api'
 // import vButton from '@/components/button/index.vue'
 import { useRoute } from 'vue-router/composables'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, unref } from 'vue'
 import Popup from '../../popup/index.vue'
 import { useStore } from '@/store'
 
@@ -125,34 +125,46 @@ const filters = {
             color: newCase.value.color,
           }
         }
-        if (Object.keys(requestData).length) {
-          newCase.value.loading = true
-          let newObject
-          if (newCase.value.type === 'folder') {
-            if (newCase.value.id) {
-              newObject = await store.dispatch('mail/editFolder', {
-                content: requestData,
-                id: newCase.value.id,
-              })
-            } else {
-              newObject = await store.dispatch('mail/createFolder', requestData)
+        if (
+          !props.filterData.folderData.find((x) => x.name === requestData.name)
+        ) {
+          if (Object.keys(requestData).length) {
+            newCase.value.loading = true
+            let newObject
+            if (newCase.value.type === 'folder') {
+              if (newCase.value.id) {
+                newObject = await store.dispatch('mail/editFolder', {
+                  content: requestData,
+                  id: newCase.value.id,
+                })
+              } else {
+                newObject = await store.dispatch(
+                  'mail/createFolder',
+                  requestData
+                )
+              }
+            } else if (newCase.value.type === 'box') {
+              if (newCase.value.id) {
+                newObject = await store.dispatch('mail/editBox', {
+                  content: requestData,
+                  id: newCase.value.id,
+                })
+              } else {
+                newObject = await store.dispatch('mail/createBox', requestData)
+              }
             }
-          } else if (newCase.value.type === 'box') {
-            if (newCase.value.id) {
-              newObject = await store.dispatch('mail/editBox', {
-                content: requestData,
-                id: newCase.value.id,
-              })
-            } else {
-              newObject = await store.dispatch('mail/createBox', requestData)
-            }
+            context.emit('editFilter', {
+              type: newCase.value.type,
+              content: newObject[0],
+              index: newCase.value.index,
+            })
+            closePopup()
           }
-          context.emit('editFilter', {
-            type: newCase.value.type,
-            content: newObject[0],
-            index: newCase.value.index,
+        } else {
+          store.commit('notifies/showMessage', {
+            color: 'error',
+            content: unref('Папка с тааким названием уже существует'),
           })
-          closePopup()
         }
       }
     }
