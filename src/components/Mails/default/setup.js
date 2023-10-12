@@ -301,6 +301,9 @@ const mails = {
               }
             })
           }
+          if (key === 'del') {
+            getPagination(row)
+          }
         })
         if (key === 'del') {
           selected.value.mails = []
