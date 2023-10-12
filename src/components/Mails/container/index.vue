@@ -30,7 +30,7 @@
           "
           class="v-container-box-column-title"
         >
-          {{ item.name }}{{ item?.id }}
+          {{ item.name }}
         </div>
         <div class="v-container-box-column-items">
           <template v-if="item?.mails?.rows && !item?.mails?.rows?.length">
