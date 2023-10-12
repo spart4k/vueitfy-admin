@@ -41,7 +41,8 @@
         v-if="data.task.task_type_id === 7"
         :data="data"
       ></SixthPopupView>
-      <!--      <ThirdPopupView />-->
+      <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
+      <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
       <!--      <FourthPopupView />-->
     </div>
   </div>

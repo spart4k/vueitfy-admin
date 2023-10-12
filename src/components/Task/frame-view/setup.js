@@ -5,6 +5,7 @@ import ThirdPopupView from '@/components/Task/third-popup-view/index.vue'
 import FourthPopupView from '@/components/Task/fourth-popup-view/index.vue'
 import FifthPopupView from '@/components/Task/fifth-popup-view/index.vue'
 import SixthPopupView from '@/components/Task/sixth-popup-view/index.vue'
+import Form23 from '@/components/Task/form23/index.vue'
 import moment from 'moment'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
@@ -52,6 +53,7 @@ const task = defineComponent({
     FourthPopupView,
     FifthPopupView,
     SixthPopupView,
+    Form23,
   },
 
   props: {},
