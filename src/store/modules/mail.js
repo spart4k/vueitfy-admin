@@ -20,7 +20,7 @@ import {
   getSendedMessage,
   getDeletedMessages,
   filterMail,
-  filterTags,
+  countFilter,
 } from '@/api/mail'
 
 const mail = {
@@ -189,11 +189,21 @@ const mail = {
       }
     },
 
-    async filterTags(_, data) {
+    async countTags(_, data) {
       try {
         // console.log('data, params', data, params)
-        const response = await filterTags(data)
-        return response
+        const response = await countFilter(data, 'tags')
+        return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async countFolders(_, data) {
+      try {
+        // console.log('data, params', data, params)
+        const response = await countFilter(data, 'folders')
+        return response.data
       } catch (e) {
         console.log(e)
       }

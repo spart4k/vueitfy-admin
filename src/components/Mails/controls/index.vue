@@ -69,7 +69,7 @@
         v-if="$props?.filterData?.folderData?.length"
         content-class="v-controls-list_menu"
         activator="#menu-activator"
-        :close-on-content-click="false"
+        :close-on-content-click="true"
       >
         <v-list>
           <v-list-item
@@ -78,8 +78,9 @@
             :class="[
               'v-controls-list_menu-item',
               $props.selectedAllMails && !$props.allMails.loadAll
-                ? $props.allSelectionFilter.folder.find((x) => x.id === item.id)
-                    .value && 'v-controls-list_menu-item__active'
+                ? $props.allSelectionFilter.folders.find(
+                    (x) => x.id === item.id
+                  ).value && 'v-controls-list_menu-item__active'
                 : intersection.folders.includes(String(item.id)) &&
                   'v-controls-list_menu-item__active',
             ]"
@@ -89,7 +90,7 @@
                 'folders',
                 item,
                 $props.selectedAllMails && !$props.allMails.loadAll
-                  ? $props.allSelectionFilter.folder.find(
+                  ? $props.allSelectionFilter.folders.find(
                       (x) => x.id === item.id
                     ).value
                   : intersection.folders.includes(String(item.id))
@@ -100,7 +101,7 @@
             <v-icon
               v-if="
                 $props.selectedAllMails && !$props.allMails.loadAll
-                  ? $props.allSelectionFilter.folder.find(
+                  ? $props.allSelectionFilter.folders.find(
                       (x) => x.id === item.id
                     ).value
                   : intersection.folders.includes(String(item.id))
@@ -132,7 +133,7 @@
         v-if="$props?.filterData?.tagsData?.length"
         content-class="v-controls-list_tags"
         activator="#tags-activator"
-        :close-on-content-click="false"
+        :close-on-content-click="true"
       >
         <v-list>
           <v-list-item
@@ -145,7 +146,7 @@
                 'tags',
                 item,
                 $props.selectedAllMails && !$props.allMails.loadAll
-                  ? $props.allSelectionFilter.tag.find((x) => x.id === item.id)
+                  ? $props.allSelectionFilter.tags.find((x) => x.id === item.id)
                       .value
                   : intersection.tags.includes(String(item.id))
               )
@@ -153,7 +154,7 @@
             :class="[
               'v-controls-list_tags-item',
               $props.selectedAllMails && !$props.allMails.loadAll
-                ? $props.allSelectionFilter.tag.find((x) => x.id === item.id)
+                ? $props.allSelectionFilter.tags.find((x) => x.id === item.id)
                     .value && 'v-controls-list_tags-item__active'
                 : intersection.tags.includes(String(item.id)) &&
                   'v-controls-list_tags-item__active',

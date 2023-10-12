@@ -69,6 +69,7 @@ const container = {
       let rowItem = props.data.find(
         (x) => x.id === val[0].target.__vue__.data.box_id
       )
+      if (route?.query?.filter === 'folder') rowItem = props.data[0]
       const mailIndex = rowItem?.mails?.rows.findIndex(
         (x) => x.id === val[0].target.__vue__.data.id
       )

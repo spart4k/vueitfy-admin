@@ -1,5 +1,8 @@
 <template>
   <div :class="['v-text', $route.query.compose === 'answer' && 'v-text__edit']">
+    <div class="v-text-title mb-1" v-if="$route?.query?.filter === 'sent'">
+      Письмо для {{ $props?.data?.message_to }}
+    </div>
     <div class="v-text-files">
       <MailsLetterFiles :data="$props?.data" expand />
     </div>

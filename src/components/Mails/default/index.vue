@@ -21,7 +21,7 @@
       <div class="v-mails-group-container d-flex w-100 h-100">
         <!-- {{ selected.mailsAll }} -->
         <!-- {{ selected.mails }} -->
-        <!-- {{ selectedTemporary }} -->
+        <!-- {{ selected.temporary }} -->
         <!-- {{ allSelectionFilter }} -->
         <MailsContainer
           v-if="mailsData.length"

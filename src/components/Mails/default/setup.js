@@ -60,6 +60,7 @@ const mails = {
         arrayId: arrayId,
         arrayFull: arrayFull,
         loadAll: load,
+        count: mailsCount,
       }
     })
 
@@ -87,18 +88,7 @@ const mails = {
       }
     }
 
-    const getFilterTagsMails = async () => {
-      const requestData = {}
-      if (route?.query?.color?.length)
-        requestData.tags = JSON.parse(route?.query?.color).toString()
-      requestData.props = route?.query?.filter
-      if (route?.query?.id) requestData.props_id = route?.query?.id
-      await store.dispatch('mail/filterTags', requestData)
-    }
-
     const getMails = async () => {
-      resetAllSelectionFilter()
-      getFilterTagsMails()
       selected.value.mailsAll = false
       selected.value.mails = []
       if (route?.query?.filter) {
@@ -122,6 +112,7 @@ const mails = {
         }
         // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
       }
+      resetAllSelectionFilter()
     }
 
     const getPagination = async (val) => {
@@ -223,16 +214,26 @@ const mails = {
         id: val.id,
       }
       await store.dispatch('mail/changeMail', request)
+      const company =
+        mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
+          .mails.rows
       if (route?.query?.filter === 'folder') {
         const mail = mailsData.value[0].mails.rows.find((x) => x.id === val.id)
         mail[val.key] = !val[val.key]
       } else {
-        const company =
-          mailsData.value[mailsData.value.findIndex((x) => x.id === val.box_id)]
-            .mails.rows
         if (company.find((x) => x.id === val.id)) {
           const mail = company.find((x) => x.id === val.id)
           mail[val.key] = !val[val.key]
+        }
+      }
+      if (val[val.key] && val.key === route?.query?.filter) {
+        hideCurrentMail(val.id)
+        company.splice(
+          company.findIndex((x) => x.id === val.id),
+          1
+        )
+        if (selected.value.mails.includes(val.id)) {
+          selected.value.mails.splice(selected.value.mails.indexOf(val.id), 1)
         }
       }
     }
@@ -264,29 +265,35 @@ const mails = {
               if (mail.id === select) {
                 if (key === 'del') {
                   mailsData.value[index].mails.rows.splice(mailIndex, 1)
-                  if (Number(route?.query?.mail) === mail.id) {
-                    setRouterPath(null, null, {
-                      filter: route?.query?.filter,
-                      color: route?.query?.color,
-                    })
-                  }
+                  hideCurrentMail(mail.id)
                 } else if (key === 'is_read') {
                   mail.is_read = item
                 } else if (key === 'tags' || key === 'folders') {
                   if (params) {
                     let newArray = JSON.parse(mail[key])
                     newArray.splice(newArray.indexOf(`${item.id}`), 1)
-                    if (item.id === Number(route?.query?.id)) {
+                    if (
+                      item.id === Number(route?.query?.id) ||
+                      (route?.query?.color &&
+                        JSON?.parse(route?.query?.color)?.includes(item.id))
+                    ) {
                       mailsData.value[index].mails.rows.splice(mailIndex, 1)
-                      selected.value.mails = []
-                      selected.value.mailsAll = false
+                      hideCurrentMail(mail.id)
                     }
+                    // selected.value.mails = []
+                    // selected.value.mailsAll = false
                     mail[key] = JSON.stringify(newArray)
+                    selected.value.filterAll[key].find(
+                      (x) => x.id === item.id
+                    ).count -= 1
                   } else {
                     let newArray = JSON.parse(mail[key])
                     if (!newArray.includes(`${item.id}`))
                       newArray.push(`${item.id}`)
                     mail[key] = JSON.stringify(newArray)
+                    selected.value.filterAll[key].find(
+                      (x) => x.id === item.id
+                    ).count += 1
                   }
                 }
               }
@@ -297,10 +304,15 @@ const mails = {
           selected.value.mails = []
           selected.value.mailsAll = false
           if (selected.value.mailsAll) {
-            setRouterPath(null, null, {
-              filter: route?.query?.filter,
-              color: route?.query?.color,
-            })
+            setRouterPath(
+              null,
+              null,
+              {
+                filter: route?.query?.filter,
+                color: route?.query?.color,
+              },
+              ['id']
+            )
           }
         }
       })
@@ -311,13 +323,15 @@ const mails = {
         if (key === 'is_read') {
           selected.value.filterAll.read = !selected.value.filterAll.read
         } else if (key === 'folders') {
-          selected.value.filterAll.folder.find((x) => x.id === item.id).value =
-            !selected.value.filterAll.folder.find((x) => x.id === item.id).value
+          selected.value.filterAll.folders.find((x) => x.id === item.id).value =
+            !selected.value.filterAll.folders.find((x) => x.id === item.id)
+              .value
         } else if (key === 'tags') {
-          selected.value.filterAll.tag.find((x) => x.id === item.id).value =
-            !selected.value.filterAll.tag.find((x) => x.id === item.id).value
+          selected.value.filterAll.tags.find((x) => x.id === item.id).value =
+            !selected.value.filterAll.tags.find((x) => x.id === item.id).value
         }
       }
+      compareFiltersCount()
     }
 
     const editFilter = (val) => {
@@ -328,6 +342,12 @@ const mails = {
         )
       } else {
         filterData.value[`${val.type}Data`].push(val.content)
+      }
+    }
+
+    const hideCurrentMail = (val) => {
+      if (Number(route?.query?.mail) === val) {
+        setRouterPath(null, ['mail', 'box', 'compose'])
       }
     }
 
@@ -376,17 +396,47 @@ const mails = {
       if (!filterData.value.tagsData) filterData.value.tagsData = []
     }
 
-    const resetAllSelectionFilter = () => {
+    const resetAllSelectionFilter = async () => {
+      const requestData = {
+        account_id: 25,
+      }
+      if (route?.query?.color?.length)
+        requestData.tags = JSON.parse(route?.query?.color).toString()
+      requestData.props = route?.query?.filter
+      if (route?.query?.id) requestData.props_id = route?.query?.id
+      const tags = await store.dispatch('mail/countTags', requestData)
+      const folders = await store.dispatch('mail/countFolders', requestData)
       selected.value.filterAll = {
         read: false,
-        folder: [],
-        tag: [],
+        folders: [],
+        tags: [],
       }
       filterData.value.folderData.forEach((item) => {
-        selected.value.filterAll.folder.push({ value: false, id: item.id })
+        selected.value.filterAll.folders.push({
+          // value: allMails.value.count === folders[item.id],
+          id: item.id,
+          count: folders[item.id],
+        })
       })
       filterData.value.tagsData.forEach((item) => {
-        selected.value.filterAll.tag.push({ value: false, id: item.id })
+        selected.value.filterAll.tags.push({
+          // value: allMails.value.count === tags[item.id],
+          id: item.id,
+          count: tags[item.id],
+        })
+      })
+      compareFiltersCount()
+    }
+
+    const compareFiltersCount = () => {
+      // selected.value.filterAll.read
+      selected.value.filterAll.folders.forEach((item) => {
+        if (item.count === allMails.value.count) item.value = true
+        else item.value = false
+      })
+      selected.value.filterAll.tags.forEach((item) => {
+        if (item.count === allMails.value.count) item.value = true
+        else item.value = false
       })
     }
 
@@ -413,17 +463,18 @@ const mails = {
 
       setRouterPath,
 
+      compareFiltersCount,
       resetAllSelectionFilter,
       decreaseUnreadMailsCount,
       changeMailKey,
       changeMailArrayKey,
       getPagination,
       deleteFilter,
+      hideCurrentMail,
       editFilter,
       setActiveMail,
       changeSelection,
       getMails,
-      getFilterTagsMails,
     }
   },
 }
