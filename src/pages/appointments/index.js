@@ -1021,6 +1021,7 @@ const config = {
                     value: '',
                   },
                 ],
+                requiredFields: ['object_id'],
               }),
               selectField({
                 label: 'Должность',

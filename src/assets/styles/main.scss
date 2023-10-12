@@ -431,3 +431,11 @@ $borderColor: rgba(0,0,0,.3);
 .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
   color: rgba(0,0,0,0.7);
 }
+
+.dropzone-wrap {
+  &.without-api {
+    .dz-progress {
+      display: none;
+    }
+  }
+}

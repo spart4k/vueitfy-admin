@@ -747,6 +747,13 @@ const config = {
               sm: 12,
             },
             bootstrapClass: [''],
+            options: {
+              withoutSave: true,
+              folder: 'act',
+            },
+            value: [
+              'https://upload.wikimedia.org/wikipedia/commons/5/50/1_%D0%9A%D0%B0%D1%81%D1%82%D0%B0_photo_%40katya_mozina_001.jpg',
+            ],
           }),
           stringField({
             label: 'Примечание',

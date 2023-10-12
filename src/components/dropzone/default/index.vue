@@ -1,11 +1,18 @@
 <template>
-  <div class="dropzone-wrap">
+  <div
+    class="dropzone-wrap"
+    :class="[options.withoutSave ? 'without-api' : '']"
+  >
     <vue-dropzone
       ref="dropzone"
       id="dropzone"
       :options="dropzoneOptions"
-      @vdropzone-file-added="sendingFile"
+      @vdropzone-files-added="sendingFile"
+      @vdropzone-success="showSuccess"
+      @vdropzone-removed-file="removed"
     />
+    {{ value }}
+    <!--<img :src="'https://personal-crm.ru' + proxyVal" alt="" />-->
   </div>
 </template>
 

@@ -3,6 +3,11 @@
   &-wrap {
     width: 100%;
     // height: 100%;
-    
+    &.without-api {
+      .dz-progress {
+        /* progress bar covers file name */
+        display: none !important;
+      }
+    }
   }
 }
