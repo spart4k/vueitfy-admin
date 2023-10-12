@@ -163,7 +163,7 @@ const filters = {
         } else {
           store.commit('notifies/showMessage', {
             color: 'error',
-            content: unref('Папка с тааким названием уже существует'),
+            content: unref('Папка с таким названием уже существует'),
           })
         }
       }
