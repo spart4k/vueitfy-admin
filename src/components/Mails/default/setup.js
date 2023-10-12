@@ -463,7 +463,7 @@ const mails = {
     }
 
     onMounted(async () => {
-      if (!route?.query?.filter && !route?.query?.compose) {
+      if (!route?.query?.filter) {
         setRouterPath(null, null, { filter: 'all' })
       } else if (route?.query?.mail) {
         setRouterPath(null, ['box', 'mail', 'compose'])
