@@ -36,6 +36,7 @@ export default {
       thumbnailWidth: 150,
       maxFilesize: 0.5,
       addRemoveLinks: true,
+      dictDefaultMessage: 'Переместите или выберите файл',
       //dictRemoveFile: 'delete',
       //clickable: true,
       //previewsContainer: false,
@@ -95,11 +96,20 @@ export default {
       }
       //proxyVal.value.forEach((el) => (el = 'https://api.personal-crm.ru' + el))
     }
+    //const nameFile = () => {
+
+    //}
     const loadFile = async () => {
       const name = '/TESTTEST.jpg'
+      const params = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
       const data = await store.dispatch('file/create', {
         data: proxyVal.value,
         folder: props.options.folder + name,
+        params,
       })
       console.log(data)
     }
