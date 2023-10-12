@@ -66,6 +66,7 @@ const container = {
       }
     }
     const getPagination = (val) => {
+      // console.log(val)
       let rowItem = props.data.find(
         (x) => x.id === val[0].target.__vue__.data.box_id
       )

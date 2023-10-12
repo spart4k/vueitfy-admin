@@ -268,6 +268,8 @@ const mails = {
                   hideCurrentMail(mail.id)
                 } else if (key === 'is_read') {
                   mail.is_read = item
+                  if (item) selected.value.filterAll[key].count += 1
+                  else selected.value.filterAll[key].count -= 1
                 } else if (key === 'tags' || key === 'folders') {
                   if (params) {
                     let newArray = JSON.parse(mail[key])
@@ -321,14 +323,16 @@ const mails = {
       }
       if (selected.value.mailsAll) {
         if (key === 'is_read') {
-          selected.value.filterAll.read = !selected.value.filterAll.read
-        } else if (key === 'folders') {
-          selected.value.filterAll.folders.find((x) => x.id === item.id).value =
-            !selected.value.filterAll.folders.find((x) => x.id === item.id)
-              .value
-        } else if (key === 'tags') {
-          selected.value.filterAll.tags.find((x) => x.id === item.id).value =
-            !selected.value.filterAll.tags.find((x) => x.id === item.id).value
+          if (item) selected.value.filterAll[key].count = allMails.value.count
+          else selected.value.filterAll[key].count = 0
+        } else if (key === 'tags' || key === 'folders') {
+          if (!params)
+            selected.value.filterAll[key].find((x) => x.id === item.id).count =
+              allMails.value.count
+          else
+            selected.value.filterAll[key].find(
+              (x) => x.id === item.id
+            ).count = 0
         }
       }
       compareFiltersCount()
@@ -407,29 +411,34 @@ const mails = {
       const tags = await store.dispatch('mail/countTags', requestData)
       const folders = await store.dispatch('mail/countFolders', requestData)
       selected.value.filterAll = {
-        read: false,
+        is_read: {
+          count: tags.is_read,
+          value: true,
+        },
         folders: [],
         tags: [],
       }
       filterData.value.folderData.forEach((item) => {
         selected.value.filterAll.folders.push({
-          // value: allMails.value.count === folders[item.id],
           id: item.id,
           count: folders[item.id],
+          value: false,
         })
       })
       filterData.value.tagsData.forEach((item) => {
         selected.value.filterAll.tags.push({
-          // value: allMails.value.count === tags[item.id],
           id: item.id,
           count: tags[item.id],
+          value: false,
         })
       })
       compareFiltersCount()
     }
 
     const compareFiltersCount = () => {
-      // selected.value.filterAll.read
+      if (selected.value.filterAll.is_read.count === allMails.value.count) {
+        selected.value.filterAll.is_read.value = false
+      }
       selected.value.filterAll.folders.forEach((item) => {
         if (item.count === allMails.value.count) item.value = true
         else item.value = false

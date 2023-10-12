@@ -27,7 +27,7 @@
             'changeMailArrayKey',
             'is_read',
             $props.selectedAllMails && !$props.allMails.loadAll
-              ? $props.allSelectionFilter.read
+              ? $props.allSelectionFilter.is_read.value
               : intersection.read.length >= $props.selectedMails.length
               ? false
               : true
@@ -42,7 +42,7 @@
         >
         {{
           $props.selectedAllMails && !$props.allMails.loadAll
-            ? $props.allSelectionFilter.read
+            ? $props.allSelectionFilter.is_read.value
               ? 'Прочитано'
               : 'Не прочитаны'
             : intersection.read.length >= $props.selectedMails.length
