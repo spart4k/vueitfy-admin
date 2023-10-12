@@ -404,38 +404,40 @@ const mails = {
     }
 
     const resetAllSelectionFilter = async () => {
-      const requestData = {
-        account_id: 25,
-      }
-      if (route?.query?.color?.length)
-        requestData.tags = JSON.parse(route?.query?.color).toString()
-      requestData.props = route?.query?.filter
-      if (route?.query?.id) requestData.props_id = route?.query?.id
-      const tags = await store.dispatch('mail/countTags', requestData)
-      const folders = await store.dispatch('mail/countFolders', requestData)
-      selected.value.filterAll = {
-        is_read: {
-          count: tags.is_read,
-          value: true,
-        },
-        folders: [],
-        tags: [],
-      }
-      filterData.value.folderData.forEach((item) => {
-        selected.value.filterAll.folders.push({
-          id: item.id,
-          count: folders[item.id],
-          value: false,
+      if (route?.query?.filter !== 'trash' && route?.query?.filter !== 'sent') {
+        const requestData = {
+          account_id: 25,
+        }
+        if (route?.query?.color?.length)
+          requestData.tags = JSON.parse(route?.query?.color).toString()
+        requestData.props = route?.query?.filter
+        if (route?.query?.id) requestData.props_id = route?.query?.id
+        const tags = await store.dispatch('mail/countTags', requestData)
+        const folders = await store.dispatch('mail/countFolders', requestData)
+        selected.value.filterAll = {
+          is_read: {
+            count: tags.is_read,
+            value: true,
+          },
+          folders: [],
+          tags: [],
+        }
+        filterData.value.folderData.forEach((item) => {
+          selected.value.filterAll.folders.push({
+            id: item.id,
+            count: folders[item.id],
+            value: false,
+          })
         })
-      })
-      filterData.value.tagsData.forEach((item) => {
-        selected.value.filterAll.tags.push({
-          id: item.id,
-          count: tags[item.id],
-          value: false,
+        filterData.value.tagsData.forEach((item) => {
+          selected.value.filterAll.tags.push({
+            id: item.id,
+            count: tags[item.id],
+            value: false,
+          })
         })
-      })
-      compareFiltersCount()
+        compareFiltersCount()
+      }
     }
 
     const compareFiltersCount = () => {
