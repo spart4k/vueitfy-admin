@@ -299,7 +299,7 @@
               max-width="100"
               maxlength="50"
               label="Название"
-              v-model="newCase.name"
+              v-model.trim="newCase.name"
               :rules="rules"
             ></v-text-field>
           </div>
