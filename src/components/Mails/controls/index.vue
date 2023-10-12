@@ -151,7 +151,7 @@
           <v-list-item
             v-for="item in $props.filterData.tagsData"
             :key="item.id"
-            :style="{ background: item.color }"
+            class="v-controls-list_tags-item"
             @click="
               $emit(
                 'changeMailArrayKey',
@@ -163,15 +163,29 @@
                   : intersection.tags.includes(String(item.id))
               )
             "
-            :class="[
-              'v-controls-list_tags-item',
-              $props.selectedAllMails && !$props.allMails.loadAll
-                ? $props.allSelectionFilter.tags.find((x) => x.id === item.id)
-                    .value && 'v-controls-list_tags-item__active'
-                : intersection.tags.includes(String(item.id)) &&
-                  'v-controls-list_tags-item__active',
-            ]"
-          ></v-list-item>
+          >
+            <div
+              :style="{ background: item.color }"
+              :class="[
+                'v-controls-list_tags-item-tag',
+                $props.selectedAllMails && !$props.allMails.loadAll
+                  ? $props.allSelectionFilter.tags.find((x) => x.id === item.id)
+                      .value && 'v-controls-list_tags-item-tag__active'
+                  : intersection.tags.includes(String(item.id)) &&
+                    'v-controls-list_tags-item-tag__active',
+              ]"
+            ></div>
+            {{
+              $props.selectedAllMails
+                ? `${
+                    $props.allSelectionFilter.tags.find((x) => x.id === item.id)
+                      .count
+                  }/${$props.allMails.count}`
+                : `${
+                    intersection.tagsCount.find((x) => x.id === item.id).value
+                  }/${$props.selectedMails.length}`
+            }}
+          </v-list-item>
         </v-list>
       </v-menu>
       <v-btn

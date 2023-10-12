@@ -79,15 +79,28 @@
                 &-item {
                     cursor: pointer;
                     opacity: 1;
-                    min-height: 9px;
-                    width: 9px;
-                    margin: 0 4px;
                     padding: 0;
-                    // height: 9px;
-                    border-radius: 4.5px;
-                    transition: all 0.3s;
-                    &__active {
-                        width: 26px;
+                    display: flex;
+                    min-height: 20px;
+                    padding: 0 4px;
+                    color: var(--v-text-base) !important;
+                    font-weight: 500 !important;
+                    font-size: 11px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    &-tag {
+                        border-radius: 4.5px;
+                        transition: all 0.3s;
+                        min-height: 9px;
+                        width: 9px;
+                        margin-right: auto;
+                        &__active {
+                            width: 26px;
+                        }
+                    }
+                    &:hover {
+                        font-weight: 500 !important;
                     }
                 }
                 &-item+&-item {
