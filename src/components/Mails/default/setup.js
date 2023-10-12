@@ -326,6 +326,7 @@ const mails = {
       }
       if (selected.value.mailsAll) {
         if (key === 'is_read') {
+          console.log(item)
           if (item) selected.value.filterAll[key].count = allMails.value.count
           else selected.value.filterAll[key].count = 0
         } else if (key === 'tags' || key === 'folders') {
@@ -443,6 +444,8 @@ const mails = {
     const compareFiltersCount = () => {
       if (selected.value.filterAll.is_read.count === allMails.value.count) {
         selected.value.filterAll.is_read.value = false
+      } else {
+        selected.value.filterAll.is_read.value = true
       }
       selected.value.filterAll.folders.forEach((item) => {
         if (item.count === allMails.value.count) item.value = true

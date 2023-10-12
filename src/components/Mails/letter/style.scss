@@ -100,8 +100,7 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    min-width: 150px;
-                    max-width: 400px;
+                    width: 280px;
                     height: 42px;
                     font-size: 10px;
                     font-weight: 400;
@@ -230,6 +229,8 @@
                         padding: 4px 0;
                         // display: flex;
                         // align-items: center;
+                        min-width: 150px;
+                        max-width: 400px;
                         -webkit-line-clamp: 2;
                         max-height: 42px;
                         height: auto;

@@ -16,7 +16,6 @@
         <v-icon :color="'disabled'" class="mr-3" small>$IconBroadcast</v-icon>
         Транслировать
       </v-btn>
-      <!-- {{ $props.allSelectionFilter }} -->
       <v-btn
         :disabled="!$props.selectedMails.length"
         class="v-controls-list_item"
@@ -98,6 +97,19 @@
             "
           >
             {{ item.name }}
+            {{
+              $props.selectedAllMails
+                ? `(${
+                    $props.allSelectionFilter.folders.find(
+                      (x) => x.id === item.id
+                    ).count
+                  }
+            / ${$props.allMails.count})`
+                : `(${
+                    intersection.foldersCount.find((x) => x.id === item.id)
+                      .value
+                  } / ${$props.selectedMails.length})`
+            }}
             <v-icon
               v-if="
                 $props.selectedAllMails && !$props.allMails.loadAll
