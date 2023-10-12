@@ -7,6 +7,7 @@ import {
   // dateField,
   // checkboxField,
   datetimeField,
+  dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
@@ -674,13 +675,13 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            dependence: {
-              //fields: ['statement_card', 'cardowner'],
-              fillField: ['fio', 'invoice'],
-              type: 'api',
-              module: 'personal/getCard',
-              field: 'personal_bank_id',
-            },
+            // dependence: {
+            //   //fields: ['statement_card', 'cardowner'],
+            //   fillField: ['fio', 'invoice'],
+            //   type: 'api',
+            //   module: 'personal/getCard',
+            //   field: 'personal_bank_id',
+            // },
           }),
           autocompleteField({
             label: 'Объект',
@@ -734,6 +735,25 @@ const config = {
             bootstrapClass: [''],
             //validations: { required },
             //isShow: false,
+          }),
+          dropZoneField({
+            label: 'Файл акта',
+            name: 'path_act',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            options: {
+              withoutSave: true,
+              folder: 'act',
+            },
+            value: [
+              'https://upload.wikimedia.org/wikipedia/commons/5/50/1_%D0%9A%D0%B0%D1%81%D1%82%D0%B0_photo_%40katya_mozina_001.jpg',
+            ],
           }),
           stringField({
             label: 'Примечание',

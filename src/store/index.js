@@ -8,7 +8,9 @@ import table from './modules/table'
 import form from './modules/form'
 import list from './modules/list'
 import personal from './modules/personal'
-import taskModule from './modules/task-module.js'
+import taskModule from './modules/task-module'
+import selects from './modules/selects'
+import file from './modules/file'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
@@ -53,6 +55,8 @@ const store = new Vuex.Store({
     list,
     personal,
     taskModule,
+    selects,
+    file,
   },
 })
 

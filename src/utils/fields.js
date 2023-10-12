@@ -65,6 +65,13 @@ const checkboxField = (properties) => {
   }
 }
 
+const dropZoneField = (properties) => {
+  return {
+    type: 'dropzone',
+    ...defaultProperties(properties),
+  }
+}
+
 export {
   dateField,
   stringField,
@@ -73,4 +80,5 @@ export {
   textareaField,
   datetimeField,
   checkboxField,
+  dropZoneField,
 }

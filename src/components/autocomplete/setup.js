@@ -42,6 +42,8 @@ export default {
         const filter = []
         if (props.field.filters && props.field.filters.length) {
           props.field.filters.forEach((el) => {
+            console.log(!props.formData[el.field])
+            if (!props.formData[el.field]) return
             filter.push({
               field: el.field,
               value: props.formData[el.field],
@@ -92,7 +94,9 @@ export default {
       emit('change', { value, field: props.field, item })
     }
     const disabled = computed(() => {
-      return props.field.requiredFields.every((el) => props.formData[el])
+      return props.field.requiredFields
+        ? props.field.requiredFields.some((el) => !props.formData[el])
+        : false
     })
     watch(
       () => searchProps.value,

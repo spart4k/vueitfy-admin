@@ -2,6 +2,10 @@
   .field {
     &-col {
       height: 70px;
+      &.dropzone {
+        height: auto;
+        border: unset;
+      }
     }
   }
   .field-loading {

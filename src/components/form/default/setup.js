@@ -8,6 +8,7 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 
+import DropZone from '@/components/dropzone/default/index.vue'
 import Datetimepicker from '@/components/datetimepicker/index.vue'
 import store from '@/store'
 
@@ -17,6 +18,7 @@ export default {
     Datetimepicker,
     Autocomplete,
     FormDefault,
+    DropZone,
   },
   props: {
     tab: {
@@ -95,16 +97,28 @@ export default {
         return queries
       } else return undefined
     }
-    const loadAutocompletes = async () => {
-      const fields = props.tab.fields
-        .filter((el) => el.type === 'autocomplete' && el.isShow)
-        .map((el) => el)
+    const loadAutocompletes = async (propsFields) => {
+      let fields = []
+      if (!propsFields) {
+        fields = props.tab.fields
+          .filter((el) => el.type === 'autocomplete' && el.isShow)
+          .map((el) => el)
+      } else {
+        fields = propsFields
+        console.log(fields)
+      }
       const queryFields = fields.map(async (el) => {
+        console.log(el)
         const filter = []
         const { url } = el
-        console.log(el)
+        console.log(el.filters, el.name, formData[el.name])
         if (el.filters && el.filters.length) {
           el.filters.forEach((el) => {
+            console.log(el, formData[el.field])
+            setTimeout(() => {
+              formData[el.field]
+            }, 1000)
+            if (!formData[el.field]) return
             filter.push({
               field: el.field,
               value: formData[el.field],
@@ -115,7 +129,7 @@ export default {
           countRows: 10,
           currentPage: 1,
           searchValue: '',
-          id: formData[el.name],
+          id: formData[el.name] ? formData[el.name] : -1,
           filter,
         })
         if (data.rows) {
@@ -124,9 +138,11 @@ export default {
         }
         return data
       })
+      fields.forEach((el) => (el.loading = true))
       await Promise.all(queryFields)
+      fields.forEach((el) => (el.loading = false))
     }
-    const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
+    const mode = computed(() => (route.params.id ? 'edit' : 'add'))
     const hasDepenceFieldsApi = () =>
       props.tab.fields.some(
         (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
@@ -137,6 +153,19 @@ export default {
       } catch {
         return false
       }
+    }
+    const hideSelect = (field) => {
+      field.hiding.conditions.forEach((el) => {
+        console.log(el)
+        const condition = el.target
+        if (condition === 'mode') {
+          if (mode.value === el.value) {
+            field.items = field.items.filter((item) =>
+              el.values.includes(item.id)
+            )
+          }
+        }
+      })
     }
     const getData = async () => {
       const [syncForm, lists] = await Promise.all(initPreRequest())
@@ -171,6 +200,12 @@ export default {
             } else {
               field.items = lists.data[keyList]
             }
+            field.items = field.items.map((el) => ({
+              ...el,
+              disabled: false,
+            }))
+            if (field.hiding) hideSelect(field)
+            console.log(field.items)
           }
         }
       }
@@ -188,7 +223,7 @@ export default {
         type === field.type &&
         !loading.value &&
         field.isShow &&
-        (field.mode === 'all' || field.mode === isEdit.value)
+        (field.mode === 'all' || field.mode === mode.value)
       )
     }
     //makeRequestList()
@@ -197,16 +232,27 @@ export default {
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
       }
-      if (params.field.dependence && params.field.dependence.type) {
-        console.log(params)
+      if (
+        params.field.dependence &&
+        params.field.dependence.type === 'default'
+      ) {
         params.field.dependence.fillField.forEach(
           (el) => (formData[el] = params.item[el])
         )
+      }
+      if (params.field.update) {
+        const fields = props.tab.fields.filter((el) =>
+          params.field.update.fields.includes(el.name)
+        )
+        //console.log(params, formData['object_id'])
+        formData[params.field.name] = params.value
+        await loadAutocompletes(fields)
       }
     }
     const getDependies = async (params) => {
       const { value, field } = params
       const depField = field.dependence.field
+      console.log(depField)
       field.loading = true
       const data = await store.dispatch(field.dependence.module, {
         value,
@@ -214,6 +260,7 @@ export default {
       })
 
       const targetField = props.tab.fields.find((el) => el.name === depField)
+      console.log(targetField)
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
@@ -238,10 +285,16 @@ export default {
     //const setDepField = () => {
 
     //}
-    const changeSelect = ({ value, field }) => {
-      if (field.dependence) {
+    const changeSelect = async ({ value, field }) => {
+      if (field.dependence && field.dependence.type === 'default') {
         const data = field.items.find((el) => el.id === value)
         field.dependence.fields.forEach((el) => (formData[el] = data[el]))
+      }
+      if (field.update) {
+        const fields = props.tab.fields.filter((el) =>
+          field.update.fields.includes(el.name)
+        )
+        await loadAutocompletes(fields)
       }
     }
     console.log(props.tab.actions)
@@ -259,7 +312,7 @@ export default {
       console.log()
     }
     const submit = async () => {
-      //if (!validate()) return
+      if (!validate()) return
       loading.value = true
       if (props.tab.isFilter) {
         emit('sendFilter', formData)
@@ -275,14 +328,17 @@ export default {
       loading.value = false
     }
     const clickHandler = async (action) => {
-      loading.value = true
       if (action.action === 'saveFilter') {
         emit('sendFilter', formData)
       } else if (action.action === 'nextStage') {
+        if (!validate()) return
+        loading.value = true
         emit('nextStage')
       } else if (action.action === 'prevStage') {
         emit('prevStage')
       } else if (action.action === 'saveForm') {
+        if (!validate()) return
+        loading.value = true
         await changeForm()
         const isNextForm = true
         if (isNextForm) {
@@ -328,7 +384,8 @@ export default {
       stage,
       cancel,
       clickHandler,
-      isEdit,
+      mode,
+      hideSelect,
     }
   },
 }
