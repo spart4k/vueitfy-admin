@@ -48,8 +48,8 @@ export default {
       console.log(files)
       if (props.options.withoutSave) {
         console.log('process')
-        await loadFile()
-        dropzone.value.processQueue()
+        //await loadFile(files)
+        //dropzone.value.processQueue()
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
@@ -99,16 +99,23 @@ export default {
     //const nameFile = () => {
 
     //}
-    const loadFile = async () => {
-      const name = '/TESTTEST.jpg'
+    const loadFile = async (files) => {
+      const formData = new FormData()
+      formData.append(
+        'name',
+        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
+      )
+      formData.append('file', ...files)
+      const name =
+        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
       const params = {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       }
       const data = await store.dispatch('file/create', {
-        data: proxyVal.value,
-        folder: props.options.folder + name,
+        data: formData,
+        folder: props.options.folder + '/' + name,
         params,
       })
       console.log(data)
