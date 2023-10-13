@@ -11,7 +11,7 @@
               <div style="width: 70px; height: 45px">
                 <img
                   style="object-fit: contain; width: 70px; height: 45px"
-                  src="https://i.pinimg.com/736x/b1/0f/17/b10f17228bdc373bc8a4fe6b7a40edd1.jpg"
+                  :src="imagePreview"
                 />
               </div>
             </v-col>
@@ -19,7 +19,15 @@
               <v-btn class="mr-3" fab x-small>
                 <v-icon x-small>$IconStar</v-icon>
               </v-btn>
-              <v-btn fab x-small>
+              <v-btn fab x-small tag="label">
+                <input
+                  class="d-none"
+                  type="file"
+                  id="file"
+                  ref="file"
+                  accept="image/*"
+                  v-on:change="handleFileUpload()"
+                />
                 <v-icon x-small>$IconEdit</v-icon>
               </v-btn>
             </v-col>

@@ -28,7 +28,7 @@
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <FirstPopupView
+      <!-- <FirstPopupView
         v-if="data.task.task_type_id === 1"
         :data="data"
         ref="FirstPopupView"
@@ -40,9 +40,9 @@
       <SixthPopupView
         v-if="data.task.task_type_id === 7"
         :data="data"
-      ></SixthPopupView>
+      ></SixthPopupView> -->
       <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
-      <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
+      <ThirdPopupView />
       <!--      <FourthPopupView />-->
     </div>
   </div>
