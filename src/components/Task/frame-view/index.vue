@@ -25,25 +25,23 @@
         <span :class="`circle circle--${data.task.status}`"></span>
         <span>{{ data.task.status }}</span>
       </v-row>
+      <v-row class="task__info-row" align="center">
+        <v-icon class="mr-5" small>$IconMain</v-icon>
+        <span class="timer">{{ timerString }}</span>
+      </v-row>
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <FirstPopupView
-        v-if="data.task.task_type_id === 1"
-        :data="data"
-        ref="FirstPopupView"
-      ></FirstPopupView>
-      <FifthPopupView
-        v-if="data.task.task_type_id === 2"
-        :data="data"
-      ></FifthPopupView>
-      <SixthPopupView
-        v-if="data.task.task_type_id === 7"
-        :data="data"
-      ></SixthPopupView>
+      <!--Внесение-->
+      <Form1 v-if="data.task.task_type_id === 1" :data="data"></Form1>
+      <!--Подтверждение-->
+      <Form2 v-if="data.task.task_type_id === 2" :data="data"></Form2>
+      <!--Исправление-->
+      <Form7 v-if="data.task.task_type_id === 7" :data="data"></Form7>
+      <!--Подтверждение назначения-->
+      <Form15 v-if="data.task.task_type_id === 15" :data="data" />
       <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
       <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
-      <!--      <FourthPopupView />-->
     </div>
   </div>
 </template>

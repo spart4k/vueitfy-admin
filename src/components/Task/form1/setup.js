@@ -11,8 +11,8 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
-const firstPopupView = defineComponent({
-  name: 'FirstPopupView',
+const Form1 = defineComponent({
+  name: 'Form1',
   components: {
     FormError,
     FormComment,
@@ -34,7 +34,7 @@ const firstPopupView = defineComponent({
       selectOpen: false,
     }
   },
-  setup(props, { emit }) {
+  setup(props) {
     const context = {
       root: {
         store,
@@ -42,6 +42,9 @@ const firstPopupView = defineComponent({
     }
     const finalData = ref({})
     const isFormValid = ref(false)
+    const isHasOsnDoc = props.data.data.docs_id.filter(
+      (doc) => doc.doc_id === 0
+    ).length
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -78,6 +81,41 @@ const firstPopupView = defineComponent({
             docs_id: {},
           },
         }),
+    })
+
+    const { makeRequest: sendPersonalData } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setPersonalData', {
+          data: {
+            id: props.data.entity.id,
+            name: formData.name,
+            data_rojd: formData.data_rojd,
+            grajdanstvo_id: formData.grajdanstvo_id,
+          },
+        }),
+    })
+
+    const { makeRequest: sendPersonalDoc } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setPersonalDocData', {
+          data: {
+            ...finalData,
+          },
+        }),
+    })
+
+    const { makeRequest: setSaveDocs } = useRequest({
+      context,
+      request: () => {
+        const ids = props.data.data.docs_id.map((doc) => doc.id)
+        return store.dispatch('taskModule/setSaveDocs', {
+          data: {
+            ids: ids,
+          },
+        })
+      },
     })
 
     const clickCheckBtn = async () => {
@@ -123,24 +161,20 @@ const firstPopupView = defineComponent({
 
     const { formData, validate: osnValidate } = useForm({
       fields: {
-        fio: {
+        name: {
           validations: { required },
           default: props.data.entity.name,
         },
-        birthday: {
+        data_rojd: {
           validations: { required },
           default: props.data.entity.data_rojd,
         },
-        grazhdanstvo: {
+        grajdanstvo_id: {
           validations: { required },
           default: props.data.entity.grajdanstvo_id,
         },
       },
     })
-
-    const prepareCaseAndPush = () => {
-      emit('prepareCaseAndPush', { wdw: 1, wddd: 2 })
-    }
 
     const changeDocs = (data) => {
       const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
@@ -160,8 +194,12 @@ const firstPopupView = defineComponent({
       }
     }
 
-    const sendData = () => {
-      console.log(finalData.value)
+    const sendData = async () => {
+      if (isHasOsnDoc) {
+        await sendPersonalData()
+      }
+      await sendPersonalDoc()
+      await setSaveDocs()
     }
 
     return {
@@ -176,7 +214,6 @@ const firstPopupView = defineComponent({
       getDocName,
       citizenItems,
       formSubmit,
-      prepareCaseAndPush,
       comment,
       isShow,
       commentError,
@@ -186,7 +223,8 @@ const firstPopupView = defineComponent({
       sendData,
       formData,
       osnValidate,
+      isHasOsnDoc,
     }
   },
 })
-export default firstPopupView
+export default Form1

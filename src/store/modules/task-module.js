@@ -17,6 +17,24 @@ const taskModule = {
       console.log(result)
       return result
     },
+
+    async setPersonalData(_, data) {
+      const result = await setTask('set/data/personal', data.data)
+      console.log(result)
+      return result
+    },
+
+    async setPersonalDocData(_, data) {
+      const result = await setTask('set/data/personal_doc_data', data.data)
+      console.log(result)
+      return result
+    },
+
+    async setSaveDocs(_, data) {
+      const result = await setTask('set/personal/save_docs', data.data)
+      console.log(result)
+      return result
+    },
   },
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <div v-if="isShow" style="margin-bottom: 30px">
+      <div v-if="false" style="margin-bottom: 30px">
         <TextInfo :infoObj="{ textInfo }"></TextInfo>
         <FormTitle
           :docName="getDocName(item.doc_id)"
@@ -18,7 +18,7 @@
         <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
       </div>
       <div>
-        <v-expansion-panels>
+        <v-expansion-panels v-if="isHasOsnDoc">
           <v-expansion-panel>
             <v-expansion-panel-header>
               <v-row align="center">
@@ -30,7 +30,7 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="formData.fio"
+                    v-model="formData.name"
                     label="ФИО"
                   ></v-text-field>
                 </v-col>
@@ -47,7 +47,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
-                        v-model="formData.birthday"
+                        v-model="formData.data_rojd"
                         label="Дата рождения"
                         prepend-icon="mdi-calendar"
                         readonly
@@ -57,7 +57,7 @@
                     </template>
                     <v-date-picker
                       class="z-index"
-                      v-model="formData.birthday"
+                      v-model="formData.data_rojd"
                       min="1950-01-01"
                       color="primary"
                       locale="ru-RU"
@@ -66,7 +66,7 @@
                 </v-col>
                 <v-col style="position: relative; z-index: 30">
                   <v-select
-                    v-model="formData.grazhdanstvo"
+                    v-model="formData.grajdanstvo_id"
                     persistent-hint
                     :items="citizenItems"
                     label="Гражданство"

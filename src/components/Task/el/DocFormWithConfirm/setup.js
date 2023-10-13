@@ -68,23 +68,23 @@ const DocFormWithConfirm = defineComponent({
       // Банковская карта
       3: useForm({
         fields: {
-          pasp_ser: {
+          number: {
             validations: { required },
             default: props.docsData.pasp_ser,
           },
-          pasp_num: {
+          priority: {
             validations: { required },
             default: props.docsData.pasp_num,
           },
-          pasp_kod_podr: {
+          bank_id: {
             validations: { required },
             default: props.docsData.pasp_kod_podr,
           },
-          pasp_data_vid: {
+          cart_on_fio: {
             validations: { required },
             default: props.docsData.pasp_data_vid,
           },
-          pasp_kem: {
+          prim: {
             validations: { required },
             default: props.docsData.pasp_kem,
           },
