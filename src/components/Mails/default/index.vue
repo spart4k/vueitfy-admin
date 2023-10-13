@@ -20,7 +20,7 @@
       />
       <div class="v-mails-group-container d-flex w-100 h-100">
         <!-- {{ selected.mailsAll }} -->
-        <!-- {{ selected.mails }} -->
+        <!-- {{ selected.mails.length }} -->
         <!-- {{ selected.temporary }} -->
         <!-- {{ allSelectionFilter }} -->
         <MailsContainer

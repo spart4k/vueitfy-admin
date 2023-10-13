@@ -48,7 +48,7 @@ const mails = {
       let load = false
       mailsData.value.forEach((item) => {
         if (item.mails) {
-          mailsCount += item.mails.total
+          mailsCount += item.mails.rows.length
           item.mails.rows.forEach((mail) => {
             arrayId.push(mail.id)
             arrayFull.push(mail)
@@ -282,9 +282,9 @@ const mails = {
                     ) {
                       mailsData.value[index].mails.rows.splice(mailIndex, 1)
                       hideCurrentMail(mail.id)
+                      selected.value.mails = []
+                      selected.value.mailsAll = false
                     }
-                    // selected.value.mails = []
-                    // selected.value.mailsAll = false
                     mail[key] = JSON.stringify(newArray)
                     selected.value.filterAll[key].find(
                       (x) => x.id === item.id

@@ -65,10 +65,12 @@
         В папку
       </v-btn>
       <v-menu
-        v-if="$props?.filterData?.folderData?.length"
+        v-if="
+          $props?.filterData?.folderData?.length && $props.selectedMails.length
+        "
         content-class="v-controls-list_menu"
         activator="#menu-activator"
-        :close-on-content-click="true"
+        :close-on-content-click="false"
       >
         <v-list>
           <v-list-item
@@ -142,10 +144,12 @@
         Тэг
       </v-btn>
       <v-menu
-        v-if="$props?.filterData?.tagsData?.length"
+        v-if="
+          $props?.filterData?.tagsData?.length && $props.selectedMails.length
+        "
         content-class="v-controls-list_tags"
         activator="#tags-activator"
-        :close-on-content-click="true"
+        :close-on-content-click="false"
       >
         <v-list>
           <v-list-item
