@@ -1110,7 +1110,7 @@ const config = {
           {
             id: 1,
             name: 'Основные1',
-            type: 'FormDefault',
+            type: 'FormList',
             detail: true,
             lists: [
               'vid_vedomost_id',

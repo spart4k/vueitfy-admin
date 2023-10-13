@@ -1,10 +1,12 @@
 import { ref } from 'vue'
 import FormDefault from '@/components/form/default/index.vue'
+import FormList from '@/components/form/list/index.vue'
 
 export default {
   name: 'Form-Stage',
   components: {
     FormDefault,
+    FormList,
   },
   props: {
     stages: {

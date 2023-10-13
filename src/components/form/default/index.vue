@@ -7,7 +7,7 @@
       color="primary"
       indeterminate
     />-->
-    <v-form>
+    <v-form class="form-default">
       <v-container class="">
         <v-row>
           <v-col
