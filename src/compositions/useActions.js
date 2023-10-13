@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import form from "../store/modules/form"
+
 /**
  *
  * @param request {function}
@@ -18,6 +20,7 @@ export default function ({
   tab,
   nextForm,
   loading,
+  formData,
 }) {
   const { emit } = context.root.ctx
   const clickHandler = async (action) => {
@@ -25,7 +28,7 @@ export default function ({
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
-      emit('nextStage')
+      emit('nextStage', formData)
     } else if (action.action === 'prevStage') {
       console.log(action)
       emit('prevStage')
@@ -44,7 +47,7 @@ export default function ({
     if (props.tab.isFilter) {
       emit('sendFilter', formData)
     } else if (props.tab.actions[0].nextForm) {
-      emit('nextStage')
+      emit('nextStage', formData)
     } else if (props) {
       await changeForm()
       const isNextForm = true

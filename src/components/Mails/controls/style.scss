@@ -9,12 +9,16 @@
         border-radius: 5px;
         // overflow: hidden;
         // margin-bottom: 9px;
+        
         &-list {
             display: flex;
 
             &_item {
                 padding: 0 11px;
                 height: 35px;
+                &::v-deep .v-btn__content {
+                    opacity: 1 !important;
+                }
                 span {
                     font-size: 12px  !important;
                 }
@@ -34,26 +38,36 @@
                 }
             }
             &_menu {
-                height: 150px;
+                max-height: 250px;
                 width: 100px;
                 transform: translateY(35px);
+                @include custom-scroll-bar-vertical;
                 box-shadow: 1px 1px 4px 0px #00000040;
                 // :global(.v-menu__content) {
+                    
                 // }
                 &-item {
                     opacity: 1;
                     min-height: 17px;
                     margin: 0 5px;
                     cursor: pointer;
-                    font-size: 18px;
-                    font-weight: 500;
+                    font-size: 15px;
+                    font-weight: 500 !important;
                     color: var(--v-text-base) !important;
                     display: flex;
                     justify-content: center;
                     word-break: break-word;
                     text-align: center;
+                    padding: 0;
                     &:not(:last-child) {
                         border-bottom: solid 1px var(--v-disabled-base);
+                    }
+                    &:hover {
+                        background: #F2F9FF;
+                        font-weight: 500 !important;
+                    }
+                    &__active {
+                        background: #F2F9FF;
                     }
                 }
             }
@@ -65,19 +79,40 @@
                 &-item {
                     cursor: pointer;
                     opacity: 1;
-                    min-height: 9px;
-                    width: 9px;
-                    margin: 0 4px;
-                    // height: 9px;
-                    border-radius: 4.5px;
-                    transition: all 0.3s;
-                    &__active {
-                        width: 26px;
+                    padding: 0;
+                    display: flex;
+                    min-height: 20px;
+                    padding: 0 4px;
+                    color: var(--v-text-base) !important;
+                    font-weight: 500 !important;
+                    font-size: 11px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    &-tag {
+                        border-radius: 4.5px;
+                        transition: all 0.3s;
+                        min-height: 9px;
+                        width: 9px;
+                        margin-right: auto;
+                        &__active {
+                            width: 26px;
+                        }
+                    }
+                    &:hover {
+                        font-weight: 500 !important;
                     }
                 }
                 &-item+&-item {
                     margin-top: 6px;
                 }
+            }
+        }
+        &-popup {
+            &_title {
+                color: var(--v-text-base);
+                font-size: 20px;
+                font-weight: 500;
             }
         }
     }

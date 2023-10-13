@@ -14,10 +14,13 @@ export default {
       default: () => [],
     },
   },
-  setup() {
+  setup(props) {
     const activeTab = ref(null)
-    const nextStage = () => {
+    const nextStage = (formData) => {
       activeTab.value++
+      if (formData) {
+        props.stages[activeTab.value].formData = formData
+      }
     }
     const prevStage = () => {
       console.log(activeTab.value)

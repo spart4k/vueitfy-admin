@@ -4,6 +4,7 @@ import vuetify from '@/plugins/vuetify'
 import user from './modules/user'
 import auth from './modules/auth'
 import notifies from './modules/notifies'
+import mail from './modules/mail'
 import table from './modules/table'
 import form from './modules/form'
 import list from './modules/list'
@@ -50,6 +51,7 @@ const store = new Vuex.Store({
     user,
     auth,
     notifies,
+    mail,
     table,
     form,
     list,

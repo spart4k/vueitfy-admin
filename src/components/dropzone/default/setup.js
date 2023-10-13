@@ -48,7 +48,7 @@ export default {
       console.log(files)
       if (props.options.withoutSave) {
         console.log('process')
-        //await loadFile(files)
+        await loadFile(files)
         //dropzone.value.processQueue()
       }
       //console.log(dropzone.value)

@@ -8,7 +8,7 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 import useActions from '@/compositions/useActions'
-
+import DropZone from '@/components/dropzone/default/index.vue'
 import Datetimepicker from '@/components/datetimepicker/index.vue'
 import store from '@/store'
 
@@ -18,6 +18,7 @@ export default {
     Datetimepicker,
     Autocomplete,
     FormDefault,
+    DropZone,
   },
   props: {
     tab: {
@@ -182,6 +183,7 @@ export default {
       context,
       tab: props.tab,
       loading,
+      formData,
     })
     const showField = (type, field) => {
       return (
@@ -194,6 +196,7 @@ export default {
     //makeRequestList()
     const changeAutocomplete = async (params) => {
       //const { value, field } = data
+      console.log(hasDepenceFieldsApi())
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
       }

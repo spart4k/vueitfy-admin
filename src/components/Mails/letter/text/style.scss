@@ -21,10 +21,24 @@
             color: var(--v-text-base);
             font-size: 13px;
             font-weight: 500;
+            word-break: break-word;
         }
         &-text {
             color: var(--v-secondary-base);
             font-size: 12px;
+            width: 100%;
+            // white-space: nowrap;
+            // overflow: hidden;
+            // text-overflow: ellipsis;
+            *{
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            // &::v-deep img {
+            //     width: 100%;
+            // }
         }
     }
 }

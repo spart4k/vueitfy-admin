@@ -10,10 +10,15 @@
         }"
         class="v-popup-container"
       >
+        <div v-if="$props.closeButton" class="v-popup-container-close">
+          <v-icon @click="$emit('close')" small>$IconClose</v-icon>
+        </div>
+        <!-- // кто удалит крестик тот гнида блядь -->
+
         <slot></slot>
       </div>
     </div>
   </portal>
 </template>
-<script src="./setup.ts"></script>
+<script src="./setup.js"></script>
 <style lang="scss" scoped src="./style.scss"></style>

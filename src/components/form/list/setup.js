@@ -1,8 +1,11 @@
-import Vue, { ref } from 'vue'
+import Vue, { ref, onMounted } from 'vue'
 import useActions from '@/compositions/useActions'
 import useForm from '@/compositions/useForm.js'
+import useRequest from '@/compositions/useRequest'
+
 import store from '@/store'
 import Autocomplete from '@/components/autocomplete'
+import { getList } from '@/api/selects'
 
 export default {
   name: 'Form-Rows',
@@ -33,7 +36,11 @@ export default {
         if (el.isShow) Vue.set(fields, el.name, {})
         else return
         Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
+        console.log(props.tab.formData[el.name])
+        Vue.set(fields[el.name], 'default', props.tab.formData[el.name])
+        if (el.type === 'autocomplete' && el.alias) {
+          Vue.set(fields[el.name], 'default', props.tab.formData[el.alias])
+        }
       })
       return fields
     }
@@ -42,6 +49,7 @@ export default {
     })
     const changeAutocomplete = async (params) => {
       //const { value, field } = data
+      console.log(params)
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
       }
@@ -63,6 +71,8 @@ export default {
         //(field.mode === 'all' || field.mode === isEdit.value)
       )
     }
+    const hasSelect = () =>
+      props.tab.fields.some((field) => field.type === 'select' && field.isShow)
     const getDependies = async (params) => {
       const { value, field } = params
       const depField = field.dependence.field
@@ -98,6 +108,94 @@ export default {
       props.tab.fields.some(
         (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
       )
+    const stringIsArray = (str) => {
+      try {
+        return new Function(`return Array.isArray(${str})`)()
+      } catch {
+        return false
+      }
+    }
+    const params = props.tab.lists
+    const queryString = '?lists=' + [...params]
+    const { makeRequest: makeRequestList } = useRequest({
+      context,
+      request: () => store.dispatch('list/get', `get/lists${queryString}`),
+    })
+    const loadAutocompletes = async () => {
+      const fields = props.tab.fields
+        .filter((el) => el.type === 'autocomplete' && el.isShow)
+        .map((el) => el)
+      const queryFields = fields.map(async (el) => {
+        const filters = []
+        const { url } = el
+        console.log(el)
+        if (el.filters && el.filters.length) {
+          el.filters.forEach((filter) => {
+            filters.push({
+              field: filter.field,
+              value: formData[filter.field],
+            })
+          })
+        }
+        const data = await getList(url, {
+          countRows: 10,
+          currentPage: 1,
+          searchValue: '',
+          id: formData[el.name],
+          filters,
+        })
+        if (data.rows) {
+          el.items = [...el.items, ...data.rows]
+          el.items = data.rows
+        }
+        return data
+      })
+      await Promise.all(queryFields)
+    }
+    const initPreRequest = () => {
+      let queries = []
+      if (hasSelect()) {
+        const lists = makeRequestList()
+        queries = [undefined, lists]
+        return queries
+      } else return undefined
+    }
+    const getData = async () => {
+      const [syncForm, lists] = await Promise.all(initPreRequest())
+      if (syncForm) {
+        for (let formKey in syncForm.data) {
+          const field = props.tab.fields.find(
+            (fieldEl) => fieldEl.name === formKey
+          )
+          if (field) {
+            if (stringIsArray(syncForm.data[formKey]))
+              syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+            formData[field.name] = syncForm.data[formKey]
+            // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
+            if (
+              field.hasOwnProperty('dependence') &&
+              field.dependence.type === 'api'
+            ) {
+              await getDependies({ value: formData[field.name], field })
+            }
+          }
+        }
+      }
+      if (hasSelect()) {
+        for (let keyList in lists.data) {
+          console.log(keyList)
+          const field = props.tab.fields.find((el) =>
+            el.alias ? el.alias === keyList : el.name === keyList
+          )
+          if (field) field.items = lists.data[keyList]
+        }
+      }
+      await loadAutocompletes()
+      loading.value = false
+    }
+    onMounted(async () => {
+      await getData()
+    })
     return {
       clickHandler,
       loading,
@@ -109,6 +207,7 @@ export default {
       touchedForm,
       changeAutocomplete,
       getDependies,
+      getData,
     }
   },
 }

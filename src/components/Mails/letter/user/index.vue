@@ -1,36 +1,35 @@
 <template>
-  <div class="v-upper">
-    <div class="mr-4">
-      <v-icon class="mb-2 pb-1" small>$IconBookmark</v-icon>
-      <v-checkbox
-        v-if="!$props.expanded"
-        color="primary"
-        :value="$props.selectedMails.includes($props.data.id)"
-        class="v-upper_checkbox"
-        @change="$parent.$parent.$emit('changeSelection', $props.data.id)"
-      ></v-checkbox>
-    </div>
+  <div
+    :class="[
+      'v-upper',
+      ($route.query.filter === 'folder' || $route.query.filter === 'box') &&
+        !$route.query.mail &&
+        'v-upper__wide',
+    ]"
+  >
     <div class="v-upper-user d-flex">
       <v-img
         class="v-upper-user_image"
         src="https://cdn.vuetifyjs.com/images/john.png"
       ></v-img>
-      <div class="d-flex flex-column ml-1">
-        <div class="v-upper-user_name">Kira Zamorevich</div>
-        <div class="v-upper-user_email">kira-zamor@email.com</div>
+      <div class="v-upper-user-content">
+        <div class="v-upper-user-content_name">Kira Zamorevich</div>
+        <div class="v-upper-user-content_email">
+          {{ $props?.data?.message_from }}
+        </div>
       </div>
     </div>
-    <div class="flex-grow-1">
-      <div class="v-upper-viewed mt-5 ml-3 mr-2"></div>
-    </div>
-    <div class="v-upper-favorites mt-3">
-      <v-icon small>$IconStarMail</v-icon>
-    </div>
-    <div class="v-upper-date d-flex flex-column mt-4 ml-3">
-      <div class="v-upper-date_day">13 фев</div>
-      <div class="v-upper-date_time">13:45:30</div>
+    <div class="v-upper-container" v-if="!$props.expanded">
+      <div
+        v-if="
+          !$props?.data?.is_read &&
+          $route.query.filter !== 'sent' &&
+          $route.query.filter !== 'trash'
+        "
+        class="v-upper-container-viewed"
+      ></div>
     </div>
   </div>
 </template>
-<script src="./setup.ts"></script>
+<script src="./setup.js"></script>
 <style lang="scss" scoped src="./style.scss"></style>

@@ -1,21 +1,25 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent } from 'vue'
+// import { defineComponent } from 'vue'
 // import { tableApi } from '@/api'
-const text = defineComponent({
-  name: 'Text',
+import MailsLetterFiles from '../files/index.vue'
+const text = {
+  name: 'Mail-text',
+  components: {
+    MailsLetterFiles,
+  },
   props: {
-    expanded: {
-      type: Boolean,
-      default: false,
-    },
     edit: {
       type: Boolean,
       default: false,
+    },
+    data: {
+      type: Object,
+      default: () => {},
     },
   },
   setup() {
     return {}
   },
-})
+}
 export default text
