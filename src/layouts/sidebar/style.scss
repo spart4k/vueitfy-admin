@@ -6,6 +6,7 @@
     padding: 12px 0 20px;
     display: flex;
     flex-direction: column;
+    transform: translateX(0%) !important;
     &::v-deep .v-navigation-drawer__content {
       overflow: hidden;
       display: flex;

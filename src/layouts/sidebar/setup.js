@@ -345,8 +345,8 @@ export default {
     }
 
     const getNavmenu = async () => {
-      const responseData = await store.dispatch('navmenu/getNavmenu')
       openCurrentRoute()
+      // const responseData = await store.dispatch('navmenu/getNavmenu')
     }
 
     onMounted(async () => {

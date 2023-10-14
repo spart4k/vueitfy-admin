@@ -9,7 +9,6 @@ import {
   editFolder,
   deleteBox,
   deleteFolder,
-  deleteMails,
   getBoxMails,
   getFolderMails,
   changeMail,
@@ -117,25 +116,6 @@ const mail = {
         console.log(e)
       }
     },
-
-    async deleteMails(_, data) {
-      try {
-        const response = await deleteMails(data)
-        return response
-      } catch (e) {
-        console.log(e)
-      }
-    },
-
-    // async getPagination(_, data) {
-    //   try {
-    //     // console.log('data, params', data, params)
-    //     const response = await getPagination(data.content, data.id)
-    //     return response
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
-    // },
 
     async getBoxMails(_, data) {
       try {
