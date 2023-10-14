@@ -18,19 +18,15 @@ const taskModule = {
       return result
     },
 
+    // Здесь методы для отправки фотки на сервер с доп. запросом об инфе
+
+    // =============================================================
     async updateFileData(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
       const result = await updateDataFile('/set/data/personal_doc', data)
       return result
     },
-
-    async setPersonalData(_, data) {
-      const result = await setTask('set/data/personal', data.data)
-      console.log(result)
-      return result
-    },
-
     async loadImage(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
@@ -38,6 +34,12 @@ const taskModule = {
         `file/save/${data.folder}/${data.fileName}`,
         data.file
       )
+      return result
+    },
+
+    async setPersonalData(_, data) {
+      const result = await setTask('set/data/personal', data.data)
+      console.log(result)
       return result
     },
 
