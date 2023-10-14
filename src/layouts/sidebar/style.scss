@@ -48,6 +48,19 @@
       &_text {
         color: var(--v-text-base) !important;
       }
+      &_icon {
+        color: var(--v-text-base) !important;
+        caret-color: var(--v-text-base) !important;
+      }
+      &:hover {
+        div {
+          color: var(--v-primary-base) !important;
+        }
+        span {
+          color: var(--v-primary-base) !important;
+          caret-color: var(--v-primary-base) !important;
+        }
+      }
     }
     &-link {
       display: flex;

@@ -148,8 +148,15 @@
           text
           color="navbar"
         >
-          <v-icon v-if="!miniMenu" color="text"> $IconArrowLeft </v-icon>
-          <v-icon v-if="miniMenu" color="text" padding="0" width="12">
+          <v-icon v-if="!miniMenu" class="v-sidebar-btn_icon">
+            $IconArrowLeft
+          </v-icon>
+          <v-icon
+            v-if="miniMenu"
+            class="v-sidebar-btn_icon"
+            padding="0"
+            width="12"
+          >
             $IconOpenMenu
           </v-icon>
           <div v-if="!miniMenu" class="v-sidebar-btn_text">Свернуть</div>
