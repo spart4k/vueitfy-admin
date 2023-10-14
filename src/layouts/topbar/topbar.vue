@@ -6,10 +6,8 @@
     transition="0s"
   >
     <v-app-bar color="topbar">
-      <v-btn class="btn-menu__mob" icon v-if="isMobile">
-        <v-icon @click="setNavmenu" v-if="true" key="menu">
-          $IconOpenMenu
-        </v-icon>
+      <v-btn @click="setNavmenu" class="btn-menu__mob" icon v-if="isMobile">
+        <v-icon key="menu"> $IconOpenMenu </v-icon>
       </v-btn>
       <v-card-title>
         <v-text-field

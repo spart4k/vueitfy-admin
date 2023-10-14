@@ -242,7 +242,7 @@ const mail = {
     async getSendedMessage(_, data) {
       try {
         const response = await getSendedMessage(data)
-        return response.data
+        return response
       } catch (e) {
         console.log(e)
       }

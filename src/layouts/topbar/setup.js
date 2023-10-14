@@ -12,7 +12,8 @@ export default {
     const search = ref('')
 
     const store = useStore()
-    const isOpenMenu = computed(() => store.state.navmenu)
+    const openMenu = computed(() => store?.state?.openMenu)
+    const miniMenu = computed(() => store?.state?.miniMenu)
 
     const itemSecondMenu = ref({
       edit: {
@@ -38,7 +39,7 @@ export default {
     })
 
     const setNavmenu = () => {
-      store.commit('setNavmenu', !isOpenMenu.value)
+      store.commit('changeMenuStatus', !openMenu.value)
     }
 
     return {
@@ -46,7 +47,8 @@ export default {
       messages,
       search,
       itemSecondMenu,
-      isOpenMenu,
+      openMenu,
+      miniMenu,
       setNavmenu,
     }
   },

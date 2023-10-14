@@ -15,6 +15,7 @@ $borderRadius: 3px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  @include custom-scroll-bar-vertical;
 }
 
 html {

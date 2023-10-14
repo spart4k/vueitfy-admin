@@ -3,6 +3,9 @@
     max-height: 100%;
   }
 }
+.sidebar-container {
+  z-index: $navbar-z;
+}
 .bg__black {
   width           : 100vw;
   min-height      : 100vh;

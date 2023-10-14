@@ -15,8 +15,8 @@ import taskModule from './modules/task-module.js'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    navmenu: false,
-    collapse: false,
+    openMenu: true,
+    miniMenu: false,
     preferencesDrawer: false,
     preferences: {
       contrast: 'light',
@@ -24,11 +24,11 @@ const store = new Vuex.Store({
     },
   },
   mutations: {
-    setNavmenu(state, value) {
-      state.navmenu = value
+    changeMenuStatus(state, value) {
+      state.openMenu = value
     },
-    collapseNavmenu(state, value) {
-      state.collapse = value
+    changeMenuSize(state, value) {
+      state.miniMenu = value
     },
     setTheme(state, theme) {
       Vue.set(state.preferences, 'theme', theme)

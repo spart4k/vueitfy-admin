@@ -1,7 +1,10 @@
 <template>
   <div class="v-files">
     <div
-      :class="['v-files_item', index > 2 && 'v-files_item__hidden']"
+      :class="[
+        'v-files_item',
+        index > 2 && !$props.expand && 'v-files_item__hidden',
+      ]"
       v-for="(item, index) in files"
       :key="index"
     >
