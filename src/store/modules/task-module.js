@@ -17,21 +17,20 @@ const taskModule = {
       console.log(result)
       return result
     },
-<<<<<<< HEAD
+
     async updateFileData(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
       const result = await updateDataFile('/set/data/personal_doc', data)
-=======
+      return result
+    },
 
     async setPersonalData(_, data) {
       const result = await setTask('set/data/personal', data.data)
->>>>>>> e3cff8830cec699ca7071bf63bc727e71e088516
       console.log(result)
       return result
     },
 
-<<<<<<< HEAD
     async loadImage(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
@@ -39,7 +38,9 @@ const taskModule = {
         `file/save/${data.folder}/${data.fileName}`,
         data.file
       )
-=======
+      return result
+    },
+
     async setPersonalDocData(_, data) {
       const result = await setTask('set/data/personal_doc_data', data.data)
       console.log(result)
@@ -48,7 +49,7 @@ const taskModule = {
 
     async setSaveDocs(_, data) {
       const result = await setTask('set/personal/save_docs', data.data)
->>>>>>> e3cff8830cec699ca7071bf63bc727e71e088516
+
       console.log(result)
       return result
     },
