@@ -1,9 +1,9 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <TextInfo :infoObj="infoObj" />
+      <TextInfo :infoObj="data" />
       <v-row> Проверьте документы: </v-row>
-      <FormError>Какой-то коммент</FormError>
+      <FormError>{{ data.entity.comment }}</FormError>
       <div>
         <template>
           <v-row justify="space-between" class="py-3">
@@ -16,7 +16,13 @@
               </div>
             </v-col>
             <v-col cols="auto" class="d-flex align-center">
-              <v-btn class="mr-3" fab x-small>
+              <v-btn
+                class="mr-3"
+                fab
+                x-small
+                v-if="isShowBtn"
+                @click="addToDenied"
+              >
                 <v-icon x-small>$IconStar</v-icon>
               </v-btn>
               <v-btn fab x-small tag="label">
@@ -26,7 +32,7 @@
                   id="file"
                   ref="file"
                   accept="image/*"
-                  v-on:change="handleFileUpload()"
+                  @change="handleFileUpload"
                 />
                 <v-icon x-small>$IconEdit</v-icon>
               </v-btn>
