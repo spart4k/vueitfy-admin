@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import Vue, { defineComponent, ref } from 'vue'
 import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
@@ -100,18 +100,42 @@ const ThirdPopupView = defineComponent({
       },
     }
 
-    console.log(data)
+    const textInfo = {
+      manager: {
+        key: 'Менеджер',
+        value: data.entity.account_name,
+      },
+      obj: {
+        key: 'Объект',
+        value: data.entity.object_name,
+      },
+    }
+
+    const isShowBtnArray = ref([])
+    const isFormValid = ref(false)
+
     // let file = ref()
-    let imagePreview = ref()
+    let imagePreview = ref([])
     // let sendFile
-    const handleFileUpload = async (e) => {
+    data.data.docs.forEach((element, index) => {
+      imagePreview.value.push('https://api.personal-crm.ru' + element.path_doc)
+      console.log(index)
+      isShowBtnArray.value.push(true)
+    })
+
+    const addToDenied = (index) => {
+      Vue.set(isShowBtnArray.value, index, false)
+    }
+    console.log(imagePreview.value)
+    const handleFileUpload = async (e, indexForPhoto) => {
       let file = e.target.files[0]
       console.log(file)
       let reader = new FileReader()
       reader.addEventListener(
         'load',
         async function () {
-          imagePreview.value = reader.result
+          Vue.set(imagePreview.value, indexForPhoto, reader.result)
+          Vue.set(isShowBtnArray.value, indexForPhoto, false)
           console.log(imagePreview.value)
           const dataFrom = await makeRequest()
           const newVal = await newRequest()
@@ -136,6 +160,8 @@ const ThirdPopupView = defineComponent({
       form_data.append('file', file)
       let fileExt = file.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
+
+      // let dataFromDopData = JSO
       const { makeRequest } = useRequest({
         context,
         request: () =>
@@ -145,6 +171,16 @@ const ThirdPopupView = defineComponent({
             fileName: fileName,
             file: form_data,
           }),
+        successMessage: 'Файл успешно загружен',
+
+        //  process_id: $task['process_id'],
+        //  account_id: ACCOUNT_ID,
+        //  task_id: $task['id'],
+        //  parent_action: $task['id'],
+        //  personal_id: $entity['id'],
+        //  docs_id: $dop_data['docs_id'],
+        //  comment: $('#comment_out').val(),
+        //  bank_card_id: если в доп дата есть $dop_data['bank_card_id']
       })
       const { makeRequest: newRequest } = useRequest({
         context,
@@ -156,11 +192,6 @@ const ThirdPopupView = defineComponent({
       })
     }
 
-    const isShowBtn = ref(true)
-
-    const addToDenied = () => {
-      isShowBtn.value = false
-    }
     // let file = evt.target.files; // FileList object
     // let f = file[0];
     // // Only process image files.
@@ -205,7 +236,9 @@ const ThirdPopupView = defineComponent({
       handleFileUpload,
       imagePreview,
       addToDenied,
-      isShowBtn,
+      isShowBtnArray,
+      textInfo,
+      isFormValid,
     }
   },
 })

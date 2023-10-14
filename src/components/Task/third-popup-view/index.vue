@@ -1,18 +1,26 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <TextInfo :infoObj="data" />
+      <TextInfo :infoObj="textInfo" />
       <v-row> Проверьте документы: </v-row>
-      <FormError>{{ data.entity.comment }}</FormError>
+      <FormError>{{ JSON.parse(data.task.dop_data).comment }}</FormError>
       <div>
         <template>
-          <v-row justify="space-between" class="py-3">
+          <v-row
+            justify="space-between"
+            class="py-3"
+            v-for="(item, index) in data.data.docs"
+            :key="index"
+          >
             <v-col cols="auto">
-              <div style="width: 70px; height: 45px">
-                <img
-                  style="object-fit: contain; width: 70px; height: 45px"
-                  :src="imagePreview"
-                />
+              <div class="accept-docs">
+                <div style="width: 70px; height: 45px">
+                  <img
+                    style="object-fit: contain; width: 70px; height: 45px"
+                    :src="imagePreview[index]"
+                  />
+                </div>
+                <span>{{ data.data.docs_spr[item.doc_id] }}</span>
               </div>
             </v-col>
             <v-col cols="auto" class="d-flex align-center">
@@ -20,8 +28,8 @@
                 class="mr-3"
                 fab
                 x-small
-                v-if="isShowBtn"
-                @click="addToDenied"
+                v-if="isShowBtnArray[index]"
+                @click="addToDenied(index)"
               >
                 <v-icon x-small>$IconStar</v-icon>
               </v-btn>
@@ -32,7 +40,7 @@
                   id="file"
                   ref="file"
                   accept="image/*"
-                  @change="handleFileUpload"
+                  @change="handleFileUpload($event, index)"
                 />
                 <v-icon x-small>$IconEdit</v-icon>
               </v-btn>
@@ -45,7 +53,7 @@
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn class="mr-2" color="info">
+      <v-btn class="mr-2" color="info" :disabled="!isFormValid">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>

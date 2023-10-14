@@ -32,7 +32,6 @@
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-<<<<<<< HEAD
       <!-- <FirstPopupView
         v-if="data.task.task_type_id === 1"
         :data="data"
@@ -46,7 +45,6 @@
         v-if="data.task.task_type_id === 7"
         :data="data"
       ></SixthPopupView> -->
-=======
       <!--Внесение-->
       <Form1 v-if="data.task.task_type_id === 1" :data="data"></Form1>
       <!--Подтверждение-->
@@ -55,7 +53,6 @@
       <Form7 v-if="data.task.task_type_id === 7" :data="data"></Form7>
       <!--Подтверждение назначения-->
       <Form15 v-if="data.task.task_type_id === 15" :data="data" />
->>>>>>> e3cff8830cec699ca7071bf63bc727e71e088516
       <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
       <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
     </div>
