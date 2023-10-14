@@ -1,12 +1,12 @@
 import { defineComponent, ref } from 'vue'
-import DocFormWithConfirm from '@/components/Task/el/DocFormWithConfirm/index.vue'
+import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 
-const FifthPopupView = defineComponent({
-  name: 'FifthPopupView',
+const Form7 = defineComponent({
+  name: 'Form7',
   components: {
-    DocFormWithConfirm,
     FormComment,
+    DocFormCorrect,
   },
   props: {
     data: {
@@ -21,8 +21,7 @@ const FifthPopupView = defineComponent({
     const changeDocs = (data) => {
       finalData.value = data
       isFormValid.value =
-        data.confirmed.length + data.rejected.length ===
-        props.data.data.docs_id.length
+        props.data.data.docs_id.length === Object.values(data).length
     }
 
     const sendData = () => {
@@ -40,4 +39,4 @@ const FifthPopupView = defineComponent({
     }
   },
 })
-export default FifthPopupView
+export default Form7

@@ -4,6 +4,49 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import DateTimePicker from '@/components/datetimepicker/index.vue'
 
+const bankItemsSpr = {
+  1: {
+    text: 'СБЕРБАНК',
+    value: 1,
+  },
+  2: {
+    text: 'Почта Банк',
+    value: 2,
+  },
+  3: {
+    text: 'Пром Связь',
+    value: 3,
+  },
+  4: {
+    text: 'Альфабанк',
+    value: 4,
+  },
+  5: {
+    text: 'Тинькофф',
+    value: 5,
+  },
+  7: {
+    text: 'ВТБ',
+    value: 7,
+  },
+  11: {
+    text: '-НАЛИЧНЫЕ-',
+    value: 11,
+  },
+  12: {
+    text: 'УБРИР',
+    value: 12,
+  },
+  13: {
+    text: 'Открытие',
+    value: 13,
+  },
+  14: {
+    text: 'МТС Банк',
+    value: 14,
+  },
+}
+
 const docForm = defineComponent({
   name: 'DocForm',
   components: {
@@ -25,11 +68,21 @@ const docForm = defineComponent({
   },
   data: function () {
     return {
-      datePickerOpen: false,
-      datePickerSecondOpen: false,
+      pasp_data_vid_open: false,
+      med_book_date_open: false,
+      view_home_data_vid_open: false,
+      migr_card_data_in_open: false,
+      migr_card_data_out_open: false,
+      check_patent_date_pay_open: false,
+      registration_date_do_docs_in_open: false,
+      registration_date_c_docs_in_open: false,
+      patent_date_docs_in_open: false,
+      check_patent_date_pay_now_open: false,
+      med_view_docs_in_open: false,
     }
   },
   setup(props, { emit }) {
+    const bankItems = Object.values(bankItemsSpr)
     const formObj = ref({
       // Паспорт
       1: useForm({
@@ -68,23 +121,23 @@ const docForm = defineComponent({
       // Банковская карта
       3: useForm({
         fields: {
-          pasp_ser: {
+          number: {
             validations: { required },
             default: props.docsData.pasp_ser,
           },
-          pasp_num: {
+          priority: {
             validations: { required },
             default: props.docsData.pasp_num,
           },
-          pasp_kod_podr: {
+          bank_id: {
             validations: { required },
             default: props.docsData.pasp_kod_podr,
           },
-          pasp_data_vid: {
+          cart_on_fio: {
             validations: { required },
             default: props.docsData.pasp_data_vid,
           },
-          pasp_kem: {
+          prim: {
             validations: { required },
             default: props.docsData.pasp_kem,
           },
@@ -271,7 +324,7 @@ const docForm = defineComponent({
       },
       { deep: true }
     )
-    return { formObj }
+    return { formObj, bankItems }
   },
 })
 export default docForm

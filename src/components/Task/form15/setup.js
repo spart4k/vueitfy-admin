@@ -1,26 +1,29 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 
-const FourthPopupView = defineComponent({
-  name: 'FourthPopupView',
+const Form15 = defineComponent({
+  name: 'Form15',
   components: {
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
   },
-  props: {},
+  props: {
+    data: {
+      type: Object,
+      default: () => {},
+    },
+  },
   setup() {
     const infoObj = {
-      pasp: {
-        key: 'key',
-        value: 'value',
+      creator: {
+        key: 'Создатель',
+        value: 'Чеботарёв',
       },
     }
-    const confirmDocs = ref([])
-    const editedDocs = ref({})
-    return { infoObj, confirmDocs, editedDocs }
+    return { infoObj }
   },
 })
-export default FourthPopupView
+export default Form15

@@ -1,12 +1,12 @@
 import { defineComponent, ref } from 'vue'
-import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
+import DocFormWithConfirm from '@/components/Task/el/DocFormWithConfirm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 
-const SixthPopupView = defineComponent({
-  name: 'SixthPopupView',
+const Form2 = defineComponent({
+  name: 'Form2',
   components: {
+    DocFormWithConfirm,
     FormComment,
-    DocFormCorrect,
   },
   props: {
     data: {
@@ -21,7 +21,8 @@ const SixthPopupView = defineComponent({
     const changeDocs = (data) => {
       finalData.value = data
       isFormValid.value =
-        props.data.data.docs_id.length === Object.values(data).length
+        data.confirmed.length + data.rejected.length ===
+        props.data.data.docs_id.length
     }
 
     const sendData = () => {
@@ -39,4 +40,4 @@ const SixthPopupView = defineComponent({
     }
   },
 })
-export default SixthPopupView
+export default Form2
