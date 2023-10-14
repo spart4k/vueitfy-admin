@@ -32,10 +32,9 @@
                 @click="setRouterPath(item?.link)"
               >
                 <div class="v-sidebar-link_icon">
-                  <v-icon
-                    :color="$route?.path === item.link ? 'primary' : 'text'"
-                    >{{ item?.icon }}</v-icon
-                  >
+                  <v-icon :color="$route?.path === item.link && 'primary'">{{
+                    item?.icon
+                  }}</v-icon>
                 </div>
                 <div
                   v-if="!miniMenu"
@@ -53,10 +52,9 @@
                 class="v-sidebar-link v-sidebar-link__default-height"
               >
                 <div class="v-sidebar-link_icon">
-                  <v-icon
-                    :color="$route?.path === item.link ? 'primary' : 'text'"
-                    >{{ item?.icon }}</v-icon
-                  >
+                  <v-icon :color="$route?.path === item.link && 'primary'">{{
+                    item?.icon
+                  }}</v-icon>
                 </div>
                 <div
                   v-if="!miniMenu"
@@ -98,13 +96,16 @@
                   >
                     <div class="v-sidebar-link_icon">
                       <v-icon
-                        :color="$route?.path === item.link ? 'primary' : 'text'"
+                        :color="$route?.path === item.link && 'primary'"
                         >{{ item?.icon }}</v-icon
                       >
                     </div>
                   </div>
                 </template>
-                <v-list max-height="100vh">
+                <v-list>
+                  <v-list-item class="v-sidebar-link_title">
+                    {{ item.name }}
+                  </v-list-item>
                   <v-list-item
                     class="v-sidebar-link"
                     @click="setRouterPath(link.link)"
