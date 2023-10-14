@@ -20,7 +20,11 @@
           </div>
         </div>
 
-        <v-expansion-panels multiple color="navbar">
+        <v-expansion-panels
+          v-model="navbarCurrentRoute"
+          multiple
+          color="navbar"
+        >
           <v-expansion-panel
             v-for="item in dataNavbar"
             :key="item.id"
@@ -80,7 +84,10 @@
                   v-for="(link, index) in item.navlink"
                   :key="index"
                   color="navbar"
-                  class="v-sidebar-link"
+                  :class="[
+                    'v-sidebar-link',
+                    instantNav && 'v-sidebar-link__instant',
+                  ]"
                 >
                   <div
                     @click="setRouterPath(link.link)"

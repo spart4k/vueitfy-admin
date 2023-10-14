@@ -5,12 +5,12 @@ import user from './modules/user'
 import auth from './modules/auth'
 import notifies from './modules/notifies'
 import mail from './modules/mail'
+import navmenu from './modules/navmenu.js'
 import table from './modules/table'
 import form from './modules/form'
 import list from './modules/list'
 import personal from './modules/personal'
 import taskModule from './modules/task-module.js'
-// import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
@@ -55,6 +55,7 @@ const store = new Vuex.Store({
     list,
     personal,
     taskModule,
+    navmenu,
   },
 })
 

@@ -48,7 +48,7 @@ const mails = {
       let load = false
       mailsData.value.forEach((item) => {
         if (item.mails) {
-          console.log(item.mails.total)
+          // console.log(item.mails.total)
           mailsCount += item.mails.total
           item.mails.rows.forEach((mail) => {
             arrayId.push(mail.id)

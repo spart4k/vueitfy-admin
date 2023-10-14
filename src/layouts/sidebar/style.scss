@@ -45,6 +45,7 @@
       margin-top: auto;
       margin-right: auto;
       padding: 0 26px !important;
+      padding-top: 10px !important;
       &_text {
         color: var(--v-text-base) !important;
       }
@@ -69,6 +70,9 @@
       font-weight: 500;
       cursor: pointer;
       height: 30px;
+      &__instant {
+        transition: all 0s !important;
+      }
       &:hover div {
         color: var(--v-primary-base) !important;
       }

@@ -9,6 +9,8 @@ import useMobile from '../Adaptive/checkMob.js'
 export default {
   name: 'dataNavbar',
   setup() {
+    const store = useStore()
+    const route = useRoute()
     const router = useRouter()
     const dataNavbar = ref([
       {
@@ -287,7 +289,8 @@ export default {
         ],
       },
     ])
-    const store = useStore()
+    const navbarCurrentRoute = ref([])
+    const instantNav = ref(false)
     const isMobile = useMobile()
     const openMenu = computed(() => store?.state?.openMenu)
     const miniMenu = computed(() => store?.state?.miniMenu)
@@ -308,6 +311,7 @@ export default {
 
     const changeMenuSize = () => {
       store.commit('changeMenuSize', !miniMenu.value)
+      if (!miniMenu) openCurrentRoute()
     }
 
     watch(
@@ -319,27 +323,54 @@ export default {
         } else if (!isMobile.value) {
           store.commit('changeMenuStatus', true)
           store.commit('changeMenuSize', false)
+          openCurrentRoute()
         }
       }
     )
 
-    onMounted(() => {
+    const openCurrentRoute = () => {
+      navbarCurrentRoute.value = []
+      instantNav.value = true
+      dataNavbar.value.forEach((item, index) => {
+        if (item.navlink) {
+          item.navlink.forEach((navItem) => {
+            if (navItem.link === route.path)
+              navbarCurrentRoute.value.push(index)
+          })
+        }
+      })
+      setTimeout(() => {
+        instantNav.value = false
+      }, 0)
+    }
+
+    const getNavmenu = async () => {
+      const responseData = await store.dispatch('navmenu/getNavmenu')
+      openCurrentRoute()
+    }
+
+    onMounted(async () => {
       if (isMobile.value) {
         store.commit('changeMenuStatus', false)
         store.commit('changeMenuSize', false)
       }
+      getNavmenu()
     })
 
     return {
       dataNavbar,
+      navbarCurrentRoute,
       isMobile,
       store,
+      instantNav,
 
       openMenu,
       miniMenu,
+      openCurrentRoute,
       changeMenuStatus,
       changeMenuSize,
       setRouterPath,
+      getNavmenu,
     }
   },
 }
