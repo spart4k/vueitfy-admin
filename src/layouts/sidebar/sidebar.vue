@@ -27,34 +27,43 @@
             color="navbar"
           >
             <template v-if="item?.link">
-              <div
-                class="v-sidebar-link v-sidebar-link__default-height"
-                @click="setRouterPath(item?.link)"
-              >
-                <div class="v-sidebar-link_icon">
-                  <v-icon :color="$route?.path === item.link && 'primary'">{{
-                    item?.icon
-                  }}</v-icon>
-                </div>
-                <div
-                  v-if="!miniMenu"
-                  :class="[
-                    'v-sidebar-link_name',
-                    $route?.path === item.link && 'v-sidebar-link_name__active',
-                  ]"
-                >
-                  {{ item?.name }}
-                </div>
-              </div>
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
+                  <div
+                    v-on="miniMenu && on"
+                    class="v-sidebar-link v-sidebar-link__default-height"
+                    @click="setRouterPath(item?.link)"
+                  >
+                    <div class="v-sidebar-link_icon">
+                      <v-icon
+                        :color="$route?.path === item.link ? 'primary' : ''"
+                        >{{ item?.icon }}</v-icon
+                      >
+                    </div>
+                    <div
+                      v-if="!miniMenu"
+                      :class="[
+                        'v-sidebar-link_name',
+                        $route?.path === item.link &&
+                          'v-sidebar-link_name__active',
+                      ]"
+                    >
+                      {{ item?.name }}
+                    </div>
+                  </div>
+                </template>
+                <span>{{ item.name }}</span>
+              </v-tooltip>
             </template>
             <template v-else-if="!miniMenu">
               <v-expansion-panel-header
                 class="v-sidebar-link v-sidebar-link__default-height"
               >
                 <div class="v-sidebar-link_icon">
-                  <v-icon :color="$route?.path === item.link && 'primary'">{{
-                    item?.icon
-                  }}</v-icon>
+                  <v-icon
+                    :color="$route?.path === item.link ? 'primary' : ''"
+                    >{{ item?.icon }}</v-icon
+                  >
                 </div>
                 <div
                   v-if="!miniMenu"
@@ -89,18 +98,23 @@
             </template>
             <template v-else>
               <v-menu offset-x top>
-                <template v-slot:activator="{ on }">
-                  <div
-                    v-on="on"
-                    class="v-sidebar-link v-sidebar-link__default-height"
-                  >
-                    <div class="v-sidebar-link_icon">
-                      <v-icon
-                        :color="$route?.path === item.link && 'primary'"
-                        >{{ item?.icon }}</v-icon
+                <template #activator="{ on: onMenu }">
+                  <v-tooltip right>
+                    <template #activator="{ on: hint }">
+                      <div
+                        v-on="{ ...hint, ...onMenu }"
+                        class="v-sidebar-link v-sidebar-link__default-height"
                       >
-                    </div>
-                  </div>
+                        <div class="v-sidebar-link_icon">
+                          <v-icon
+                            :color="$route?.path === item.link ? 'primary' : ''"
+                            >{{ item?.icon }}</v-icon
+                          >
+                        </div>
+                      </div>
+                    </template>
+                    <span>{{ item.name }}</span>
+                  </v-tooltip>
                 </template>
                 <v-list>
                   <v-list-item class="v-sidebar-link_title">
