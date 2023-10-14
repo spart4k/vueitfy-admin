@@ -20,9 +20,9 @@ const Form2 = defineComponent({
     console.log(props.data)
     const changeDocs = (data) => {
       finalData.value = data
+      console.log(data)
       isFormValid.value =
-        data.confirmed.length + data.rejected.length ===
-        props.data.data.docs_id.length
+        data.confirmed.length + data.rejected.length === data.confirmDocsLength
     }
 
     const sendData = () => {
