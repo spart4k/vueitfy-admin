@@ -3,7 +3,10 @@
     <div>Приложенные документы:</div>
     <v-expansion-panels>
       <template v-for="doc in docs">
-        <v-expansion-panel v-if="formObj[doc.doc_id]" :key="doc.id">
+        <v-expansion-panel
+          v-if="formObj[doc.doc_id]"
+          :key="`${doc.id}__${doc.doc_id}`"
+        >
           <v-expansion-panel-header>
             <div style="position: relative">
               <span

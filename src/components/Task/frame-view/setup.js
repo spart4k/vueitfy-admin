@@ -6,6 +6,10 @@ import Form15 from '@/components/Task/form15/index.vue'
 import Form2 from '@/components/Task/form2/index.vue'
 import Form7 from '@/components/Task/form7/index.vue'
 import Form23 from '@/components/Task/form23/index.vue'
+import Form20 from '@/components/Task/form20/index.vue'
+import Form21 from '@/components/Task/form21/index.vue'
+import Form27 from '@/components/Task/form27/index.vue'
+import Form28 from '@/components/Task/form28/index.vue'
 import moment from 'moment'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
@@ -54,6 +58,10 @@ const task = defineComponent({
     Form2,
     Form7,
     Form23,
+    Form20,
+    Form21,
+    Form27,
+    Form28,
   },
 
   props: {},

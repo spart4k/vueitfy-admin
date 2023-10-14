@@ -3,8 +3,8 @@ import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 
-const Form15 = defineComponent({
-  name: 'Form15',
+const Form28 = defineComponent({
+  name: 'Form28',
   components: {
     TextInfo: textInfo,
     FormError: formError,
@@ -42,12 +42,12 @@ const Form15 = defineComponent({
         key: 'Реквизиты',
         value: 'Питание',
       },
-      meals: {
-        key: 'Создатель',
+      trip_ticket: {
+        key: 'Путевой лист',
         value: 'Чеботарёв',
       },
     }
     return { infoObj }
   },
 })
-export default Form15
+export default Form28

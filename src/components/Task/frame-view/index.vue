@@ -32,6 +32,7 @@
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
+<<<<<<< HEAD
       <!-- <FirstPopupView
         v-if="data.task.task_type_id === 1"
         :data="data"
@@ -45,6 +46,8 @@
         v-if="data.task.task_type_id === 7"
         :data="data"
       ></SixthPopupView> -->
+=======
+>>>>>>> fa4cbc551ad8cef7bf057c6ac99ebae57b33ccb9
       <!--Внесение-->
       <Form1 v-if="data.task.task_type_id === 1" :data="data"></Form1>
       <!--Подтверждение-->
@@ -53,7 +56,20 @@
       <Form7 v-if="data.task.task_type_id === 7" :data="data"></Form7>
       <!--Подтверждение назначения-->
       <Form15 v-if="data.task.task_type_id === 15" :data="data" />
+<<<<<<< HEAD
       <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
+=======
+      <!--Внесение ключа-->
+      <Form20 v-if="data.task.task_type_id === 20" :data="data" />
+      <!--Подтверждение ключа-->
+      <Form21 v-if="data.task.task_type_id === 21" :data="data" />
+      <!--Согласование начисления-->
+      <Form27 v-if="data.task.task_type_id === 27" :data="data" />
+      <!--Корректировка начисления-->
+      <Form28 v-if="data.task.task_type_id === 28" :data="data" />
+      <!--Корректировка документов-->
+      <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23>
+>>>>>>> fa4cbc551ad8cef7bf057c6ac99ebae57b33ccb9
       <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
     </div>
   </div>

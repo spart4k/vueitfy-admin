@@ -18,6 +18,13 @@ const taskModule = {
       return result
     },
 
+    async updateFileData(_, data) {
+      // file/save/personal_doc/personal_doc_1231412342134.jpg
+      console.log(data)
+      const result = await updateDataFile('/set/data/personal_doc', data)
+      return result
+    },
+
     async setPersonalData(_, data) {
       const result = await setTask('set/data/personal', data.data)
       console.log(result)
@@ -39,19 +46,15 @@ const taskModule = {
       console.log(result)
       return result
     },
-    async updateFileData(_, data) {
-      const result = await updateDataFile('set/data/personal_doc', data)
-      console.log(result)
-      return result
-    },
+    // async updateFileData(_, data) {
+    //   const result = await updateDataFile('set/data/personal_doc', data)
+    //   console.log(result)
+    //   return result
+    // },
 
     async setSaveDocs(_, data) {
       const result = await setTask('set/personal/save_docs', data.data)
-      console.log(result)
-      return result
-    },
-    async setDocInfo(_, data) {
-      const result = await setTask('set/personal/save_docs', data.data)
+
       console.log(result)
       return result
     },

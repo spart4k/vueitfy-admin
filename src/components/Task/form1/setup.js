@@ -180,26 +180,43 @@ const Form1 = defineComponent({
       const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
       let isValid = isFormValid.value
       for (let i = 0; i < docsId.length; i++) {
-        isValid = data.value[docsId[i]].validate()
-        if (!isValid) {
-          break
+        if (data.value && data.value[docsId[i]]) {
+          isValid = data.value[docsId[i]].validate()
+          if (!isValid) {
+            break
+          }
         }
       }
       isFormValid.value = isValid
-      console.log(osnValidate())
       if (isFormValid.value) {
         docsId.forEach((item) => {
-          finalData.value = { ...finalData.value, ...data.value[item].formData }
+          if (data.value[item]) {
+            finalData.value = {
+              ...finalData.value,
+              ...data.value[item].formData,
+            }
+          }
         })
       }
     }
 
     const sendData = async () => {
+      console.log(props.data)
+      const taskDeadline =
+        Date.parse(props.data.task.date_create) +
+        props.data.task.time_execution * 1000 -
+        Date.now()
+      console.log(taskDeadline < 0)
+      const requestArr = []
       if (isHasOsnDoc) {
-        await sendPersonalData()
+        // await sendPersonalData()
+        requestArr.push(sendPersonalData())
       }
-      await sendPersonalDoc()
-      await setSaveDocs()
+      // await sendPersonalDoc()
+      requestArr.push(sendPersonalDoc())
+      // await setSaveDocs()
+      requestArr.push(setSaveDocs())
+      await Promise.all(requestArr)
     }
 
     return {
