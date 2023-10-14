@@ -9,8 +9,9 @@ const personal = {
       const result = await getCard(id)
       return result
     },
-    async getKeys(_, { object, personal }) {
-      const result = await getKeys(object, personal)
+    async getKeys(_, { url }) {
+      console.log(url)
+      const result = await getKeys(url)
       return result
     },
   },

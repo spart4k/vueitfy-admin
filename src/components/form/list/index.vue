@@ -3,7 +3,7 @@
     <div class="form-row">
       <v-form>
         <v-container>
-          <v-row>
+          <v-row v-for="row in tab.formData.date_target" :key="row">
             <v-col
               v-for="field in tab.fields"
               :key="field.id"
@@ -23,8 +23,8 @@
                 :item-text="field.selectOption.text"
                 :item-value="field.selectOption.value"
                 :label="field.label"
-                v-model="formData[field.name]"
-                :error-messages="formErrors[field.name]"
+                v-model="formData[row + '_' + field.name]"
+                :error-messages="formErrors[row + '_' + field.name]"
                 persistent-hint
                 clearable
                 :multiple="field.subtype === 'multiselect'"

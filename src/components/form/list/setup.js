@@ -31,17 +31,21 @@ export default {
     const loading = ref(false)
     const fields = () => {
       const fields = {}
-      props.tab.fields.forEach((el) => {
-        const { validations } = el
-        if (el.isShow) Vue.set(fields, el.name, {})
-        else return
-        Vue.set(fields[el.name], 'validations', validations)
-        console.log(props.tab.formData[el.name])
-        Vue.set(fields[el.name], 'default', props.tab.formData[el.name])
-        if (el.type === 'autocomplete' && el.alias) {
-          Vue.set(fields[el.name], 'default', props.tab.formData[el.alias])
-        }
+      props.tab.formData.date_target.forEach((date) => {
+        props.tab.fields.forEach((el) => {
+          const { validations } = el
+          if (!el.isShow) return
+          const fieldName = date + '_' + el.name
+          Vue.set(fields, fieldName, {})
+          Vue.set(fields[fieldName], 'validations', validations)
+          console.log(props.tab.formData[el.name])
+          Vue.set(fields[fieldName], 'default', props.tab.formData[el.name])
+          if (el.type === 'autocomplete' && el.alias) {
+            Vue.set(fields[fieldName], 'default', props.tab.formData[el.alias])
+          }
+        })
       })
+      console.log(fields)
       return fields
     }
     const { formData, validate, formErrors, vForm, touchedForm } = useForm({
@@ -53,11 +57,21 @@ export default {
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
       }
-      if (params.field.dependence && params.field.dependence.type) {
+      if (
+        params.field.dependence &&
+        params.field.dependence.type &&
+        params.field.dependence.fillField
+      ) {
         console.log(params)
         params.field.dependence.fillField.forEach(
           (el) => (formData[el] = params.item[el])
         )
+      }
+    }
+    const changeSelect = ({ value, field }) => {
+      if (field.dependence) {
+        const data = field.items.find((el) => el.id === value)
+        field.dependence.fields.forEach((el) => (formData[el] = data[el]))
       }
     }
     const { clickHandler } = useActions({
@@ -76,31 +90,58 @@ export default {
     const getDependies = async (params) => {
       const { value, field } = params
       const depField = field.dependence.field
+      let url = ''
+      if (field.dependence.url) {
+        //const splitedUrl = field.dependence.url.split('/')
+        field.dependence.url.forEach((el) => {
+          console.log(el.source)
+          if (el.source === 'props') {
+            url = '/' + props.tab.formData[el.field]
+          } else if (el.source === 'formData') {
+            url = '/' + formData[el.field]
+          }
+        })
+      }
+      console.log(url)
       field.loading = true
       const data = await store.dispatch(field.dependence.module, {
         value,
         field,
+        url,
       })
 
       const targetField = props.tab.fields.find((el) => el.name === depField)
+      console.log(targetField)
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
       let card = targetField.items.find((el) => el.id === formData[depField])
 
       //if (data.length === 1) formData[depField] = card.id
+      console.log(formData[depField])
+      console.log(targetField)
+      console.log(card)
       if (card)
-        field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
-      else if (data.length === 1) {
-        formData[depField] = data[0].id
-        card = targetField.items.find((el) => el.id === formData[depField])
-        field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
-      } else if (data.length === 0) {
-        formData[depField] = 11
-        field.dependence.fillField.forEach((el) => (formData[el] = ''))
-      } else {
-        field.dependence.fillField.forEach((el) => (formData[el] = ''))
-      }
+        if (field.dependence.fillField) {
+          field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
+        } else if (data.length === 1) {
+          formData[depField] = data[0].id
+          card = targetField.items.find((el) => el.id === formData[depField])
+          if (field.dependence.fillField) {
+            field.dependence.fillField.forEach(
+              (el) => (formData[el] = card[el])
+            )
+          }
+        } else if (data.length === 0) {
+          formData[depField] = 11
+          if (field.dependence.fillField) {
+            field.dependence.fillField.forEach((el) => (formData[el] = ''))
+          }
+        } else {
+          if (field.dependence.fillField) {
+            field.dependence.fillField.forEach((el) => (formData[el] = ''))
+          }
+        }
       field.loading = false
       //formData[field.dependence.field] = data
     }
@@ -131,6 +172,7 @@ export default {
         console.log(el)
         if (el.filters && el.filters.length) {
           el.filters.forEach((filter) => {
+            console.log(formData[filter.field])
             filters.push({
               field: filter.field,
               value: formData[filter.field],
@@ -208,6 +250,7 @@ export default {
       changeAutocomplete,
       getDependies,
       getData,
+      changeSelect,
     }
   },
 }

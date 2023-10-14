@@ -41,6 +41,10 @@ const table = {
       type: Object,
       default: () => {},
     },
+    routeParam: {
+      type: String,
+      default: '',
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -51,8 +55,8 @@ const table = {
     const tablePosition = ref(null)
     const searchField = ref('')
     const isMobile = useMobile()
-    const detail = ref(props.options.detail)
-    const filters = ref(props.options.filters)
+    const detail = ref(props.options?.detail)
+    const filters = ref(props.options?.filters)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -300,6 +304,16 @@ const table = {
       //    })
       //  }
       //})
+      let by = undefined
+      if (props.routeParam) {
+        by = [
+          {
+            field: props.options.options.urlDetail,
+            value: +props.routeParam,
+            alias: props.options.options.alias,
+          },
+        ]
+      }
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
@@ -309,6 +323,7 @@ const table = {
           searchColumns,
           sorts,
           filter: filtersColumns.value,
+          by,
         },
       })
       props.options.data.rows = data.rows

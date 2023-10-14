@@ -1,4 +1,5 @@
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router/composables'
 //import { useRoute } from 'vue-router/composables'
 
 import FormDefault from '@/components/form/default/index.vue'
@@ -27,6 +28,11 @@ export default {
     //console.log(form)
     //const route = useRoute()
     //const { url, alias } = props.detail
+    console.log(TableDefault)
+    console.log('1')
+    const route = useRoute()
+    const { id } = route?.params
+    console.log(id)
     const loading = ref(false)
     const syncForm = ref({})
     onMounted(() => {
@@ -36,6 +42,8 @@ export default {
       loading,
       syncForm,
       //getData,
+      TableDefault,
+      id,
     }
   },
 }

@@ -491,7 +491,7 @@ const tableConsumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -816,7 +816,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -872,7 +872,7 @@ const config = {
               }),
               dateField({
                 label: 'На дату',
-                name: 'date_create',
+                name: 'date_target',
                 value: [],
                 type: 'date',
                 subtype: 'multiple',
@@ -1162,18 +1162,28 @@ const config = {
                   //fields: ['statement_card', 'cardowner'],
                   type: 'api',
                   module: 'personal/getKeys',
-                  field: 'personal_bank_id',
-                  propsData: ['avatar_with_user_key_id', 'object_id'],
+                  //url: 'object_id/avatar_with_user_key_id',
+                  field: 'print_form_key',
+                  url: [
+                    {
+                      source: 'props',
+                      field: 'object_id',
+                    },
+                    {
+                      source: 'formData',
+                      field: 'avatar_with_user_key_id',
+                    },
+                  ],
                 },
               }),
               selectField({
-                label: 'Направления',
-                name: 'direction_id',
-                alias: 'direction_id_logistic',
+                label: 'Ключ',
+                name: 'print_form_key',
+                //alias: 'direction_id_logistic',
                 placeholder: '',
                 class: [''],
                 selectOption: {
-                  text: 'name',
+                  text: 'user_key',
                   value: 'id',
                 },
                 items: [],

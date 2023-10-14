@@ -1,6 +1,7 @@
 <template>
   <div class="detail">
     <div class="detail-tabs">
+      <p>{{ detail.name }}</p>
       <v-tabs
         style="flex: unset"
         v-model="detail.activeTab"
@@ -14,6 +15,7 @@
       </v-tabs>
       <v-tabs-items v-model="detail.activeTab">
         <v-tab-item v-for="item in detail.tabs" :key="item.id">
+          <p></p>
           <component
             :loading="loading"
             :is="item.type"
@@ -21,6 +23,7 @@
             :options="item.config"
             :syncData="syncForm"
             :stages="item.stages"
+            :routeParam="id"
           />
           <!--<v-progress-circular
             v-else

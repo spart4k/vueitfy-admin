@@ -2,5 +2,4 @@ import { get } from '@/api/axios'
 
 export const getCard = (id) => get(`get/personal_bank/${id}`)
 
-export const getKeys = (object, personal) =>
-  get(`get/user_keys/${object}/${personal}`)
+export const getKeys = (url) => get(`get/user_keys${url}`)
