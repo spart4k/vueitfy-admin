@@ -35,20 +35,20 @@ const Form2 = defineComponent({
     const { makeRequest: setPersonalData } = useRequest({
       context,
       request: () => {
-        if (
-          props.data.entity.grajdanstvo_id === 1 &&
-          props.data.entity.unfinished === 1 &&
-          !finalData.value.rejected.length
-        ) {
-          return store.dispatch('taskModule/setPersonalData', {
-            data: {
-              id: props.data.entity.id,
-              unfinished: 0,
-              status: 5,
-              is_passive: 0,
-            },
-          })
-        }
+        // if (
+        //   props.data.entity.grajdanstvo_id === 1 &&
+        //   props.data.entity.unfinished === 1 &&
+        //   !finalData.value.rejected.length
+        // ) {
+        return store.dispatch('taskModule/setPersonalData', {
+          data: {
+            id: props.data.entity.id,
+            unfinished: 0,
+            status: 5,
+            is_passive: 0,
+          },
+        })
+        // }
       },
     })
 
@@ -82,7 +82,11 @@ const Form2 = defineComponent({
               account_id: props.data.task.to_account_id,
               obd_id: props.data.task.from_account_id,
               comment: 'comment',
-              bank_card_id: props.data.data.dop_data.bank_card_id ?? null,
+              bank_card_id:
+                props.data.data.dop_data &&
+                props.data.data.dop_data.bank_card_id
+                  ? props.data.data.dop_data.bank_card_id
+                  : null,
             },
           },
         })

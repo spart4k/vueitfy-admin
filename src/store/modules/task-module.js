@@ -76,7 +76,7 @@ const taskModule = {
 
     // не понял пока, что за метод)
     async setStartStep(_, data) {
-      const result = await setTask('task/start_step', data.data)
+      const result = await setTask('task/start/step', data)
       console.log(result)
       return result
     },
