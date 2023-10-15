@@ -8,7 +8,7 @@ const navmenu = {
     async getNavmenu(_, data) {
       try {
         const response = await getNavmenu()
-        return response.data
+        return response
       } catch (e) {
         console.log(e)
       }

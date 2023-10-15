@@ -1,75 +1,67 @@
-.v-input input {
-  border: none !important
-}
 
-.icon-menu {
-  svg {
-    // width: 20px;
-    // height: 20px;
-    color: #ffffff;
-  }
-}
-
-// анимация кнопки доп меню
-.etc-menu {
-  .v-btn__content {
+.v {
+  &-toolbar__content {
+    height: 100% !important;
+    padding: 0 26px !important;
+    display: flex;
     position: relative;
-    width: 100%;
-    height: 100%;
-    .line {
+  }
+  &-badge {
+    margin: 0 12px 0 auto !important;
+    display: block;
+  }
+  &-topbar {
+    &_title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--v-text-base);
       position: absolute;
-      width: 20px;
-      height: 2px;
-      background-color: #FFFFFF;
-
-      &:first-child {
-        top: 15px;
-        transform: rotate(0deg);
-        transition: all .3s ease;
-      }
-      &:last-child {
-        top: 23px;
-        transform: rotate(0deg);
-        transition: all .3s ease;
-      }
+      left: 50%;
+      transform: translate(-50%, 0);
     }
-  }  
-  &[aria-expanded="true"] {
-    .v-btn__content {
-      .line {
-        &:first-child {
-          top: 50%;
-          transform: rotate(45deg);
-          transition: all .3s ease;
+    &-menu {
+      .v-btn__content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        .line {
+          position: absolute;
+          width: 20px;
+          height: 2px;
+          background-color: #FFFFFF;
+    
+          &:first-child {
+            top: 15px;
+            transform: rotate(0deg);
+            transition: all .3s ease;
+          }
+          &:last-child {
+            top: 23px;
+            transform: rotate(0deg);
+            transition: all .3s ease;
+          }
         }
-        &:last-child {
-          top: 50%;
-          transform: rotate(-45deg);
-          transition: all .3s ease;
+      }  
+      &[aria-expanded="true"] {
+        .v-btn__content {
+          .line {
+            &:first-child {
+              top: 50%;
+              transform: rotate(45deg);
+              transition: all .3s ease;
+            }
+            &:last-child {
+              top: 50%;
+              transform: rotate(-45deg);
+              transition: all .3s ease;
+            }
+          }
         }
       }
     }
   }
-}
-
-// паддинг элементов  дополнительного меню
-.etc-menu__list-item {
-  padding: 0 7px !important;
-}
-
-.topbar-card {
-  box-shadow: none !important;
-  z-index: $default-z;
-}
-
-.v-navigation-drawer__border {
-  display: none;
 }
 
 header.v-toolbar {
   box-shadow: none !important;
-}
-
-.topbar {
-  transition: 0s;
 }

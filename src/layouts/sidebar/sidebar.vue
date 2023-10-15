@@ -20,128 +20,138 @@
         </div>
       </div>
 
-      <v-expansion-panels v-model="navbarCurrentRoute" multiple color="navbar">
-        <v-expansion-panel
-          v-for="item in dataNavbar"
-          :key="item.id"
+      <!-- {{ $props?.navData }} -->
+      <div class="flex-grow-1 overflow-auto">
+        <v-expansion-panels
+          v-model="navbarCurrentRoute"
+          v-if="$props?.navData"
+          multiple
           color="navbar"
         >
-          <template v-if="item?.link">
-            <v-tooltip right>
-              <template v-slot:activator="{ on }">
-                <div
-                  v-on="miniMenu && on"
-                  class="v-sidebar-link v-sidebar-link__default-height"
-                  @click="setRouterPath(item?.link)"
-                >
-                  <div class="v-sidebar-link_icon">
-                    <v-icon
-                      :color="$route?.path === item.link ? 'primary' : ''"
-                      >{{ item?.icon }}</v-icon
-                    >
-                  </div>
+          <v-expansion-panel
+            v-for="item in $props?.navData"
+            :key="item.id"
+            color="navbar"
+          >
+            <template v-if="!item?.child_json">
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
                   <div
-                    v-if="!miniMenu"
-                    :class="[
-                      'v-sidebar-link_name',
-                      $route?.path === item.link &&
-                        'v-sidebar-link_name__active',
-                    ]"
+                    v-on="miniMenu && on"
+                    class="v-sidebar-link v-sidebar-link__default-height"
+                    @click="setRouterPath(item?.link)"
                   >
-                    {{ item?.name }}
+                    <div class="v-sidebar-link_icon">
+                      <v-icon
+                        :color="$route?.path === item.link ? 'primary' : ''"
+                        >{{ item?.icon }}</v-icon
+                      >
+                    </div>
+                    <div
+                      v-if="!miniMenu"
+                      :class="[
+                        'v-sidebar-link_name',
+                        $route?.path === item.link &&
+                          'v-sidebar-link_name__active',
+                      ]"
+                    >
+                      {{ item?.name }}
+                    </div>
                   </div>
+                </template>
+                <span>{{ item.name }}</span>
+              </v-tooltip>
+            </template>
+            <template v-else-if="!miniMenu">
+              <v-expansion-panel-header
+                class="v-sidebar-link v-sidebar-link__default-height"
+              >
+                <div class="v-sidebar-link_icon">
+                  <v-icon
+                    :color="$route?.path === item?.link ? 'primary' : ''"
+                    >{{ item?.icon }}</v-icon
+                  >
                 </div>
-              </template>
-              <span>{{ item.name }}</span>
-            </v-tooltip>
-          </template>
-          <template v-else-if="!miniMenu">
-            <v-expansion-panel-header
-              class="v-sidebar-link v-sidebar-link__default-height"
-            >
-              <div class="v-sidebar-link_icon">
-                <v-icon :color="$route?.path === item.link ? 'primary' : ''">{{
-                  item?.icon
-                }}</v-icon>
-              </div>
-              <div
-                v-if="!miniMenu"
-                :class="[
-                  'v-sidebar-link_name',
-                  $route?.path === item.link && 'v-sidebar-link_name__active',
-                ]"
-              >
-                {{ item?.name }}
-              </div>
-            </v-expansion-panel-header>
-            <template v-if="!miniMenu">
-              <v-expansion-panel-content
-                v-for="(link, index) in item.navlink"
-                :key="index"
-                color="navbar"
-                :class="[
-                  'v-sidebar-link',
-                  instantNav && 'v-sidebar-link__instant',
-                ]"
-              >
                 <div
-                  @click="setRouterPath(link.link)"
+                  v-if="!miniMenu"
                   :class="[
                     'v-sidebar-link_name',
-                    'v-sidebar-link_name__shifted',
-                    $route?.path === link.link && 'v-sidebar-link_name__active',
+                    $route?.path === item.link && 'v-sidebar-link_name__active',
                   ]"
                 >
-                  {{ link.name }}
+                  {{ item?.name }}
                 </div>
-              </v-expansion-panel-content>
-            </template>
-          </template>
-          <template v-else>
-            <v-menu offset-x top>
-              <template #activator="{ on: onMenu }">
-                <v-tooltip right>
-                  <template #activator="{ on: hint }">
-                    <div
-                      v-on="{ ...hint, ...onMenu }"
-                      class="v-sidebar-link v-sidebar-link__default-height"
-                    >
-                      <div class="v-sidebar-link_icon">
-                        <v-icon
-                          :color="$route?.path === item.link ? 'primary' : ''"
-                          >{{ item?.icon }}</v-icon
-                        >
-                      </div>
-                    </div>
-                  </template>
-                  <span>{{ item.name }}</span>
-                </v-tooltip>
-              </template>
-              <v-list>
-                <v-list-item class="v-sidebar-link_title">
-                  {{ item.name }}
-                </v-list-item>
-                <v-list-item
-                  class="v-sidebar-link"
-                  @click="setRouterPath(link.link)"
-                  v-for="(link, index) in item.navlink"
+              </v-expansion-panel-header>
+              <template v-if="!miniMenu">
+                <v-expansion-panel-content
+                  v-for="(link, index) in JSON?.parse(item?.child_json)"
                   :key="index"
+                  color="navbar"
+                  :class="[
+                    'v-sidebar-link',
+                    instantNav && 'v-sidebar-link__instant',
+                  ]"
                 >
                   <div
+                    @click="setRouterPath(link.link)"
                     :class="[
                       'v-sidebar-link_name',
+                      'v-sidebar-link_name__shifted',
                       $route?.path === link.link &&
                         'v-sidebar-link_name__active',
                     ]"
                   >
                     {{ link.name }}
                   </div>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </template>
-        </v-expansion-panel>
-      </v-expansion-panels>
+                </v-expansion-panel-content>
+              </template>
+            </template>
+            <template v-else>
+              <v-menu offset-x top>
+                <template #activator="{ on: onMenu }">
+                  <v-tooltip right>
+                    <template #activator="{ on: hint }">
+                      <div
+                        v-on="{ ...hint, ...onMenu }"
+                        class="v-sidebar-link v-sidebar-link__default-height"
+                      >
+                        <div class="v-sidebar-link_icon">
+                          <v-icon
+                            :color="$route?.path === item.link ? 'primary' : ''"
+                            >{{ item?.icon }}</v-icon
+                          >
+                        </div>
+                      </div>
+                    </template>
+                    <span>{{ item.name }}</span>
+                  </v-tooltip>
+                </template>
+                <v-list>
+                  <v-list-item class="v-sidebar-link_title">
+                    {{ item.name }}
+                  </v-list-item>
+                  <v-list-item
+                    class="v-sidebar-link"
+                    @click="setRouterPath(link.link)"
+                    v-for="(link, index) in JSON?.parse(item?.child_json)"
+                    :key="index"
+                  >
+                    <div
+                      :class="[
+                        'v-sidebar-link_name',
+                        $route?.path === link.link &&
+                          'v-sidebar-link_name__active',
+                      ]"
+                    >
+                      {{ link.name }}
+                    </div>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </div>
 
       <v-btn
         :class="['v-sidebar-btn']"
