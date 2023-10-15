@@ -235,7 +235,9 @@ const DocFormWithConfirm = defineComponent({
     }).length
 
     const confirmDoc = (idDoc) => {
-      confirmedDocs.value = [...confirmedDocs.value, idDoc]
+      if (!confirmedDocs.value.includes(idDoc)) {
+        confirmedDocs.value = [...confirmedDocs.value, idDoc]
+      }
       rejectedDocs.value = rejectedDocs.value.filter((doc) => doc !== idDoc)
       emit('change', {
         confirmed: confirmedDocs.value,
@@ -245,7 +247,9 @@ const DocFormWithConfirm = defineComponent({
     }
 
     const rejectDoc = (idDoc) => {
-      rejectedDocs.value = [...rejectedDocs.value, idDoc]
+      if (!rejectedDocs.value.includes(idDoc)) {
+        rejectedDocs.value = [...rejectedDocs.value, idDoc]
+      }
       confirmedDocs.value = confirmedDocs.value.filter((doc) => doc !== idDoc)
       emit('change', {
         confirmed: confirmedDocs.value,

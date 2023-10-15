@@ -3,6 +3,8 @@ import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import DateTimePicker from '@/components/datetimepicker/index.vue'
+import useRequest from '@/compositions/useRequest'
+import store from '@/store'
 
 const bankItemsSpr = {
   1: {
@@ -65,6 +67,9 @@ const docForm = defineComponent({
     docsData: {
       type: Object,
     },
+    entity: {
+      type: Object,
+    },
   },
   data: function () {
     return {
@@ -82,6 +87,11 @@ const docForm = defineComponent({
     }
   },
   setup(props, { emit }) {
+    const context = {
+      root: {
+        store,
+      },
+    }
     const bankItems = Object.values(bankItemsSpr)
     const formObj = ref({
       // Паспорт
@@ -121,25 +131,22 @@ const docForm = defineComponent({
       // Банковская карта
       3: useForm({
         fields: {
-          number: {
+          invoice: {
             validations: { required },
-            default: props.docsData.pasp_ser,
+            default: '',
           },
           priority: {
-            validations: { required },
-            default: props.docsData.pasp_num,
+            default: false,
           },
           bank_id: {
             validations: { required },
-            default: props.docsData.pasp_kod_podr,
           },
-          cart_on_fio: {
+          fio: {
             validations: { required },
-            default: props.docsData.pasp_data_vid,
+            default: '',
           },
-          prim: {
-            validations: { required },
-            default: props.docsData.pasp_kem,
+          comment: {
+            default: '',
           },
         },
       }),
@@ -277,7 +284,7 @@ const docForm = defineComponent({
       // Экзамен РФ
       18: useForm({
         fields: {
-          ekz_rf: { validations: { required }, default: props.docsData.ekz_rf },
+          ekz_rf: { default: props.docsData.ekz_rf ?? false },
         },
       }),
       // Чек-патент текущий
@@ -317,14 +324,53 @@ const docForm = defineComponent({
         },
       }),
     })
+
+    const bankCardId = ref(0)
+
+    const { makeRequest } = useRequest({
+      context,
+      request: () => {
+        const bankData = formObj.value['3'].formData
+        return store.dispatch('taskModule/setBankData', {
+          data: {
+            data: {
+              bank_id: bankData.bank_id,
+              fio: bankData.fio,
+              invoice: bankData.invoice,
+              priority: bankData.priority,
+              personal_id: props.entity.id,
+            },
+          },
+        })
+      },
+      successMessage: 'Банковские реквизиты успешно добавлены',
+    })
+
+    const sendBankCard = async () => {
+      const { result } = await makeRequest()
+      bankCardId.value = result
+      emit('change', {
+        bank_card_id: bankCardId.value,
+        formObj: formObj,
+      })
+    }
+
     watch(
       formObj,
       () => {
-        emit('change', formObj)
+        emit('change', {
+          bank_card_id: bankCardId.value,
+          formObj: formObj,
+        })
       },
       { deep: true }
     )
-    return { formObj, bankItems }
+    return {
+      formObj,
+      bankItems,
+      sendBankCard,
+      bankCardId,
+    }
   },
 })
 export default docForm

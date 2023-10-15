@@ -13,7 +13,8 @@ const taskModule = {
     },
 
     async setPartTask(_, data) {
-      const result = await setTask('task/change_status/' + data.id, data.data)
+      console.log(data)
+      const result = await setTask('task/change_status_task', data.data)
       console.log(result)
       return result
     },
@@ -56,7 +57,20 @@ const taskModule = {
 
     async setSaveDocs(_, data) {
       const result = await setTask('set/personal/save_docs', data.data)
+      console.log(result)
+      return result
+    },
 
+    // Отправка банковских реквизитов
+    async setBankData(_, data) {
+      const result = await setTask('set/data/personal_bank', data.data)
+      console.log(result)
+      return result
+    },
+
+    // не понял пока, что за метод)
+    async setStartStep(_, data) {
+      const result = await setTask('task/start_step', data.data)
       console.log(result)
       return result
     },

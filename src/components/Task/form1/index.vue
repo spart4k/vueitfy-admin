@@ -81,6 +81,7 @@
           :docsData="docsData"
           :listNames="listNames"
           :docs="docs"
+          :entity="entity"
         ></DocForm>
       </div>
     </div>

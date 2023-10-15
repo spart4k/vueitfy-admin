@@ -112,7 +112,7 @@ const task = defineComponent({
       const dataFrom = await makeRequest()
       data.value = dataFrom
       taskName.value = taskNameSpr[data.value.task.task_type_id]
-      if (data.value.task.time_execution) {
+      if (Number(data.value.task.time_execution) > 0) {
         taskDeadline.value =
           Date.parse(data.value.task.date_create) +
           data.value.task.time_execution * 1000
@@ -122,7 +122,7 @@ const task = defineComponent({
       }
     })
 
-    return { loading, data, formatDate, taskName, timerString }
+    return { loading, data, formatDate, taskName, timerString, taskDeadline }
   },
 })
 export default task

@@ -1,12 +1,71 @@
 <template>
   <div>
     <div style="padding: 20px">
+      <v-expansion-panels v-if="isHasOsnDoc">
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            <v-row align="center">
+              <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
+              <span>Основные данные</span>
+            </v-row>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="formData.name"
+                  label="ФИО"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-menu
+                  v-model="datePickerOpen"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                  z-index="20"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="formData.data_rojd"
+                      label="Дата рождения"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    class="z-index"
+                    v-model="formData.data_rojd"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col style="position: relative; z-index: 30">
+                <v-select
+                  v-model="formData.grajdanstvo_id"
+                  persistent-hint
+                  :items="citizenItems"
+                  label="Гражданство"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
       <DocFormCorrect
         class="mb-10"
         @change="changeDocs"
         :docsData="docsData"
         :listNames="listNames"
         :docs="docs"
+        :entity="entity"
       ></DocFormCorrect>
       <FormComment />
     </div>

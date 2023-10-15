@@ -137,8 +137,8 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="formObj[doc.doc_id].formData.number"
-                    :error-messages="formObj[doc.doc_id].formErrors.number"
+                    v-model="formObj[doc.doc_id].formData.invoice"
+                    :error-messages="formObj[doc.doc_id].formErrors.invoice"
                     label="Номер счёта"
                   >
                   </v-text-field>
@@ -158,6 +158,7 @@
                 <v-col style="position: relative; z-index: 30">
                   <v-select
                     v-model="formObj[doc.doc_id].formData.bank_id"
+                    :error-messages="formObj[doc.doc_id].formErrors.bank_id"
                     persistent-hint
                     :items="bankItems"
                     label="Банк"
@@ -167,8 +168,8 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="formObj[doc.doc_id].formData.cart_on_fio"
-                    :error-messages="formObj[doc.doc_id].formErrors.cart_on_fio"
+                    v-model="formObj[doc.doc_id].formData.fio"
+                    :error-messages="formObj[doc.doc_id].formErrors.fio"
                     label="Карта на ФИО"
                   >
                   </v-text-field>
@@ -177,8 +178,8 @@
               <v-row>
                 <v-col>
                   <v-textarea
-                    v-model="formObj[doc.doc_id].formData.prim"
-                    :error-messages="formObj[doc.doc_id].formErrors.prim"
+                    v-model="formObj[doc.doc_id].formData.comment"
+                    :error-messages="formObj[doc.doc_id].formErrors.comment"
                     label="Примечание"
                   >
                   </v-textarea>
@@ -187,6 +188,7 @@
               <v-row justify="end">
                 <v-btn
                   :disabled="!formObj[doc.doc_id].validate()"
+                  @click="sendBankCard"
                   color="warning"
                 >
                   <v-icon left> $IconMain </v-icon>

@@ -3,6 +3,51 @@ import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import DateTimePicker from '@/components/datetimepicker/index.vue'
+import useRequest from '@/compositions/useRequest'
+import store from '@/store'
+
+const bankItemsSpr = {
+  1: {
+    text: 'СБЕРБАНК',
+    value: 1,
+  },
+  2: {
+    text: 'Почта Банк',
+    value: 2,
+  },
+  3: {
+    text: 'Пром Связь',
+    value: 3,
+  },
+  4: {
+    text: 'Альфабанк',
+    value: 4,
+  },
+  5: {
+    text: 'Тинькофф',
+    value: 5,
+  },
+  7: {
+    text: 'ВТБ',
+    value: 7,
+  },
+  11: {
+    text: '-НАЛИЧНЫЕ-',
+    value: 11,
+  },
+  12: {
+    text: 'УБРИР',
+    value: 12,
+  },
+  13: {
+    text: 'Открытие',
+    value: 13,
+  },
+  14: {
+    text: 'МТС Банк',
+    value: 14,
+  },
+}
 
 const DocFormCorrect = defineComponent({
   name: 'DocFormCorrect',
@@ -22,14 +67,32 @@ const DocFormCorrect = defineComponent({
     docsData: {
       type: Object,
     },
+    entity: {
+      type: Object,
+    },
   },
   data: function () {
     return {
-      datePickerOpen: false,
-      datePickerSecondOpen: false,
+      pasp_data_vid_open: false,
+      med_book_date_open: false,
+      view_home_data_vid_open: false,
+      migr_card_data_in_open: false,
+      migr_card_data_out_open: false,
+      check_patent_date_pay_open: false,
+      registration_date_do_docs_in_open: false,
+      registration_date_c_docs_in_open: false,
+      patent_date_docs_in_open: false,
+      check_patent_date_pay_now_open: false,
+      med_view_docs_in_open: false,
     }
   },
   setup(props, { emit }) {
+    const context = {
+      root: {
+        store,
+      },
+    }
+    const bankItems = Object.values(bankItemsSpr)
     const formObj = ref({
       // Паспорт
       1: useForm({
@@ -68,25 +131,22 @@ const DocFormCorrect = defineComponent({
       // Банковская карта
       3: useForm({
         fields: {
-          number: {
+          invoice: {
             validations: { required },
-            default: props.docsData.pasp_ser,
+            default: '',
           },
           priority: {
-            validations: { required },
-            default: props.docsData.pasp_num,
+            default: false,
           },
           bank_id: {
             validations: { required },
-            default: props.docsData.pasp_kod_podr,
           },
-          cart_on_fio: {
+          fio: {
             validations: { required },
-            default: props.docsData.pasp_data_vid,
+            default: '',
           },
-          prim: {
-            validations: { required },
-            default: props.docsData.pasp_kem,
+          comment: {
+            default: '',
           },
         },
       }),
@@ -224,7 +284,7 @@ const DocFormCorrect = defineComponent({
       // Экзамен РФ
       18: useForm({
         fields: {
-          ekz_rf: { validations: { required }, default: props.docsData.ekz_rf },
+          ekz_rf: { default: props.docsData.ekz_rf ?? false },
         },
       }),
       // Чек-патент текущий
@@ -265,15 +325,49 @@ const DocFormCorrect = defineComponent({
       }),
     })
     const correctedDocs = ref({})
+
+    const bankCardId = ref(0)
+
+    const { makeRequest } = useRequest({
+      context,
+      request: () => {
+        const bankData = formObj.value['3'].formData
+        return store.dispatch('taskModule/setBankData', {
+          data: {
+            data: {
+              bank_id: bankData.bank_id,
+              fio: bankData.fio,
+              invoice: bankData.invoice,
+              priority: bankData.priority,
+              personal_id: props.entity.id,
+            },
+          },
+        })
+      },
+      successMessage: 'Банковские реквизиты успешно добавлены',
+    })
+
+    const sendBankCard = async () => {
+      const { result } = await makeRequest()
+      bankCardId.value = result
+      emit('change', {
+        bank_card_id: bankCardId.value,
+        correctedDocs: correctedDocs.value,
+      })
+    }
+
     const confirmCorrect = (doc) => {
       // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
       correctedDocs.value = {
         ...correctedDocs.value,
         [doc.id]: formObj.value[doc.doc_id].getData(),
       }
-      emit('change', correctedDocs.value)
+      emit('change', {
+        bank_card_id: bankCardId.value,
+        correctedDocs: correctedDocs.value,
+      })
     }
-    return { formObj, confirmCorrect, correctedDocs }
+    return { formObj, confirmCorrect, correctedDocs, sendBankCard, bankItems }
   },
 })
 export default DocFormCorrect
