@@ -269,6 +269,8 @@ const mails = {
                 if (key === 'del') {
                   mailsData.value[index].mails.rows.splice(mailIndex, 1)
                   hideCurrentMail(mail.id)
+                  mailsData.value[index].mails.total -= 1
+                  resetAllSelectionFilter()
                 } else if (key === 'is_read') {
                   mail.is_read = item
                   if (item) selected.value.filterAll[key].count += 1
@@ -283,10 +285,10 @@ const mails = {
                         JSON?.parse(route?.query?.color)?.includes(item.id))
                     ) {
                       mailsData.value[index].mails.rows.splice(mailIndex, 1)
-                      mailsData.value[index].mails.total -= 1
                       hideCurrentMail(mail.id)
                       selected.value.mails = []
                       selected.value.mailsAll = false
+                      mailsData.value[index].mails.total -= 1
                       resetAllSelectionFilter()
                     }
                     mail[key] = JSON.stringify(newArray)
