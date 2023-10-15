@@ -1,13 +1,16 @@
 <template>
   <div ref="editorContainer" class="v-edit">
     <VueEditor
-      class="flex-grow-1"
+      class="flex-grow-1 overflow-hidden"
       :editor-toolbar="toolbar"
       v-model="$props.data.text"
     />
-    {{ $props.data.files }}
-    <DropZone v-model="$props.data.files" :options="{ withoutSave: false }" />
-    <v-file-input
+    <DropZone
+      @addFiles="($event) => $emit('addFiles', $event)"
+      @removeFile="($event) => $emit('removeFile', $event)"
+      :options="{ withoutSave: false }"
+    />
+    <!-- <v-file-input
       v-model="$props.data.files"
       outlined
       label="Загрузить файлы"
@@ -30,7 +33,7 @@
           </v-icon>
         </v-chip>
       </template>
-    </v-file-input>
+    </v-file-input> -->
   </div>
 </template>
 <script src="./setup.js"></script>

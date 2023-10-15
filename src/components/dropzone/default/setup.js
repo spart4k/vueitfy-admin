@@ -45,11 +45,13 @@ export default {
     //const value = ref([]
     const proxyVal = ref(props.value)
     const sendingFile = async (files) => {
-      console.log(files)
       if (props.options.withoutSave) {
         console.log('process')
         await loadFile(files)
         //dropzone.value.processQueue()
+      } else {
+        console.log(files)
+        emit('addFiles', files)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
@@ -63,13 +65,18 @@ export default {
       //console.log(dropzone.value.getAcceptedFiles())
       //dropzone.value.processQueue()
       //value.value.push(files)
-      console.log(dropzone.value)
+      // console.log(dropzone.value)
     }
     const showSuccess = () => {
       //console.log(file)
       //dropzone.value.processQueue()
     }
-    const removed = () => {
+    const removed = (file) => {
+      if (props.options.withoutSave) {
+        console.log('remove')
+      } else {
+        emit('removeFile', file)
+      }
       //console.log(value)
       //const { uuid } = file.upload
       //console.log(uuid)
