@@ -49,6 +49,7 @@ const mails = {
       mailsData.value.forEach((item) => {
         if (item.mails) {
           // console.log(item.mails.total)
+          console.log(item.mails.total)
           mailsCount += item.mails.total
           item.mails.rows.forEach((mail) => {
             arrayId.push(mail.id)
@@ -282,12 +283,11 @@ const mails = {
                         JSON?.parse(route?.query?.color)?.includes(item.id))
                     ) {
                       mailsData.value[index].mails.rows.splice(mailIndex, 1)
-                      // mailsData.value[index].mails.total -= 1
-                      // selected.value.filterAll[key].count -= 1
-                      // console.log(selected.value.filterAll[key].count)
+                      mailsData.value[index].mails.total -= 1
                       hideCurrentMail(mail.id)
                       selected.value.mails = []
                       selected.value.mailsAll = false
+                      resetAllSelectionFilter()
                     }
                     mail[key] = JSON.stringify(newArray)
                     selected.value.filterAll[key].find(
