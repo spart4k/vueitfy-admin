@@ -1,6 +1,12 @@
 // import TaksService from '@/api/TaksService.js'
 
-import { getTask, setTask, setFile, updateDataFile } from '@/api/TaskService'
+import {
+  getTask,
+  setTask,
+  setFile,
+  updateDataFile,
+  putTask,
+} from '@/api/TaskService'
 //import axios from 'axios'
 
 const taskModule = {
@@ -14,7 +20,7 @@ const taskModule = {
 
     async setPartTask(_, data) {
       console.log(data)
-      const result = await setTask('task/change_status_task', data.data)
+      const result = await putTask('task/update/status', data)
       console.log(result)
       return result
     },
@@ -71,6 +77,12 @@ const taskModule = {
     // не понял пока, что за метод)
     async setStartStep(_, data) {
       const result = await setTask('task/start_step', data.data)
+      console.log(result)
+      return result
+    },
+
+    async setPersonalTarget(_, data) {
+      const result = await setTask('set/data/personal_target', data)
       console.log(result)
       return result
     },

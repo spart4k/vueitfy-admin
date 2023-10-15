@@ -52,13 +52,16 @@ const Form7 = defineComponent({
       console.log(data)
       finalData.value = data.correctedDocs
       bankCardId.value = data.bank_card_id
+      const docsIdArr = [
+        ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
+      ]
       if (isHasOsnDoc) {
         isFormValid.value =
-          props.data.data.docs_id.length === Object.values(data).length &&
+          docsIdArr.length === Object.values(data.correctedDocs).length &&
           osnValidate()
       } else {
         isFormValid.value =
-          props.data.data.docs_id.length === Object.values(data).length
+          docsIdArr.length === Object.values(data.correctedDocs).length
       }
     }
 
@@ -108,28 +111,34 @@ const Form7 = defineComponent({
           props.data.task.time_execution * 1000 -
           Date.now()
         return store.dispatch('taskModule/setPartTask', {
-          status: taskDeadline > 0 ? 2 : 3,
           data: {
-            process_id: task.process_id,
-            task_id: task.id,
-            parent_action: task.id,
-            docs_id: props.data.docs_id.map((doc) => doc.id),
-            account_id: task.to_account_id,
-            personal_id: props.data.entity.id,
-            okk_id: props.data.task.entity.id,
-            bank_card_id: bankCardId.value ?? null,
+            status: taskDeadline > 0 ? 2 : 3,
+            data: {
+              process_id: task.process_id,
+              task_id: task.id,
+              parent_action: task.id,
+              docs_id: props.data.data.docs_id.map((doc) => doc.id),
+              account_id: task.to_account_id,
+              personal_id: props.data.entity.id,
+              okk_id: props.data.task.entity.id,
+              bank_card_id: bankCardId.value ?? null,
+            },
           },
         })
       },
     })
 
-    const sendData = () => {
+    const sendData = async () => {
       if (isHasOsnDoc) {
         console.log(setPersonalData)
+        await setPersonalData()
       }
       console.log(setPersonalDocData)
+      await setPersonalDocData()
       console.log(setSaveDocs)
+      await setSaveDocs()
       console.log(changeStatusTask)
+      await changeStatusTask()
       console.log(finalData.value)
     }
 

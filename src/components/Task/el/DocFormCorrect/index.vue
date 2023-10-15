@@ -11,7 +11,9 @@
                   $IconMain
                 </v-icon>
               </span>
-              <span style="padding-left: 15px">{{ listNames[doc.id] }}</span>
+              <span style="padding-left: 15px">{{
+                listNames[doc.doc_id]
+              }}</span>
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>

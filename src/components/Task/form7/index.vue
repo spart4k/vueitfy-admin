@@ -71,12 +71,8 @@
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
-      <v-btn
-        class="mr-2"
-        :disabled="!isFormValid"
-        color="info"
-        @click="sendData"
-      >
+      <!--        :disabled="!isFormValid"-->
+      <v-btn class="mr-2" color="info" @click="sendData">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
