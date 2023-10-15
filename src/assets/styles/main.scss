@@ -2,6 +2,7 @@
 @import './_variables.scss';
 @import './_transitions.scss';
 @import './_fonts.scss';
+@import './form/index.scss';
 
 
 $iconSize: 20px;
@@ -365,7 +366,7 @@ $borderColor: rgba(0,0,0,.3);
   min-height: 32px;
 }
 
-.navbar .v-expansion-panel-content__wrap:hover, .v-list-item:hover {
+.navbar .v-expansion-panel-content__wrap:hover, .navbar .v-list-item:hover {
   font-weight: 400 !important;
 }
 
@@ -385,6 +386,13 @@ $borderColor: rgba(0,0,0,.3);
   color: rgba(0,0,0,0.7);
 }
 
+.dropzone-wrap {
+  &.without-api {
+    .dz-progress {
+      display: none;
+    }
+  }
+}
 .v-mails {
   .ql-toolbar {
     border: none !important;
@@ -434,7 +442,7 @@ $borderColor: rgba(0,0,0,.3);
   }
   .v-expansion-panel {
     margin: 0 !important;
-  
+
     &::before {
       box-shadow: none !important;
     }

@@ -6,8 +6,11 @@ import {
   // autocompleteField,
   dateField,
   checkboxField,
+  // dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
+import FormDefault from '@/components/form/default/index.vue'
+import TableDefault from '@/components/Table/default/index.vue'
 
 function consoleText(row) {
   console.log(row, 2)
@@ -26,7 +29,7 @@ function searchInputing(field) {
   console.log(field)
 }
 
-const tableConsumptionConfig = {
+const consumptionConfig = {
   selector: '#mainTable',
   options: {
     selecting: true,
@@ -35,7 +38,9 @@ const tableConsumptionConfig = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: `${process.env.VUE_APP_API_URL}/get/pagination/personal`,
+    url: 'get/pagination/payment',
+    urlDetail: 'personal_id',
+    alias: 'p.personal_id',
     title: 'This is an about page1',
   },
   panel: {
@@ -89,7 +94,32 @@ const tableConsumptionConfig = {
       },
     },
     {
-      title: 'Статус',
+      title: 'Дата назн',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_target',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
       type: 'default',
       align: 'center',
       fixed: {
@@ -106,15 +136,15 @@ const tableConsumptionConfig = {
       ],
       isShow: true,
       width: '90',
-      alias: 'ps.status',
-      value: 'status_name',
+      alias: 'pers.name',
+      value: 'personal_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'ФИО',
+      title: 'Объект',
       type: 'default',
       align: 'center',
       fixed: {
@@ -131,15 +161,15 @@ const tableConsumptionConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'p.name',
-      value: 'name',
+      alias: 'o.name',
+      value: 'object_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Телефон',
+      title: 'Часы',
       type: 'default',
       align: 'center',
       fixed: {
@@ -156,15 +186,15 @@ const tableConsumptionConfig = {
       ],
       isShow: true,
       width: '150',
-      value: 'telefon',
-      alias: 'p.telefon',
+      value: 'hour',
+      alias: 'p.hour',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Примечание',
+      title: 'Должность',
       type: 'default',
       align: 'center',
       fixed: {
@@ -173,7 +203,7 @@ const tableConsumptionConfig = {
       },
       sorts: [
         {
-          type: 'number',
+          type: 'date',
           default: '',
           value: '',
           isShow: false,
@@ -181,8 +211,33 @@ const tableConsumptionConfig = {
       ],
       isShow: true,
       width: '150',
-      value: 'comment',
-      alias: 'p.comment',
+      alias: 'd.name',
+      value: 'doljnost_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Сумма',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'p.total',
+      value: 'total',
       search: {
         field: '',
         isShow: true,
@@ -222,6 +277,8 @@ const tableConsumptionConfig = {
     currentPage: 1,
     totalPages: null,
   },
+  detail: undefined,
+  filters,
 }
 
 const config = {
@@ -423,16 +480,17 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '900px',
+    width: '1000px',
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
+    name: 'Персонал',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {
         id: 0,
         name: 'Основные',
-        type: 'FormDefault',
+        type: FormDefault,
         detail: true,
         lists: [
           'user_keys',
@@ -653,9 +711,9 @@ const config = {
       {
         id: 1,
         name: 'Расход',
-        type: 'TableDefault',
+        type: TableDefault,
         active: false,
-        config: tableConsumptionConfig,
+        config: consumptionConfig,
       },
     ],
     activeTab: null,

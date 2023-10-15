@@ -7,7 +7,8 @@ import FormDefault from '@/components/form/default/index.vue'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
-
+import useActions from '@/compositions/useActions'
+import DropZone from '@/components/dropzone/default/index.vue'
 import Datetimepicker from '@/components/datetimepicker/index.vue'
 import store from '@/store'
 
@@ -17,6 +18,7 @@ export default {
     Datetimepicker,
     Autocomplete,
     FormDefault,
+    DropZone,
   },
   props: {
     tab: {
@@ -100,14 +102,14 @@ export default {
         .filter((el) => el.type === 'autocomplete' && el.isShow)
         .map((el) => el)
       const queryFields = fields.map(async (el) => {
-        const filter = []
+        const filters = []
         const { url } = el
         console.log(el)
         if (el.filters && el.filters.length) {
-          el.filters.forEach((el) => {
-            filter.push({
-              field: el.field,
-              value: formData[el.field],
+          el.filters.forEach((filter) => {
+            filters.push({
+              field: filter.field,
+              value: formData[filter.field],
             })
           })
         }
@@ -116,7 +118,7 @@ export default {
           currentPage: 1,
           searchValue: '',
           id: formData[el.name],
-          filter,
+          filters,
         })
         if (data.rows) {
           el.items = [...el.items, ...data.rows]
@@ -165,13 +167,7 @@ export default {
           const field = props.tab.fields.find((el) =>
             el.alias ? el.alias === keyList : el.name === keyList
           )
-          if (field) {
-            if (field.defaultItems && field.defaultItems.length) {
-              field.items = [...field.defaultItems, ...lists.data[keyList]]
-            } else {
-              field.items = lists.data[keyList]
-            }
-          }
+          if (field) field.items = lists.data[keyList]
         }
       }
       await loadAutocompletes()
@@ -182,6 +178,12 @@ export default {
     const { makeRequest: makeRequestList } = useRequest({
       context,
       request: () => store.dispatch('list/get', `get/lists${queryString}`),
+    })
+    const { clickHandler } = useActions({
+      context,
+      tab: props.tab,
+      loading,
+      formData,
     })
     const showField = (type, field) => {
       return (
@@ -194,6 +196,7 @@ export default {
     //makeRequestList()
     const changeAutocomplete = async (params) => {
       //const { value, field } = data
+      console.log(hasDepenceFieldsApi())
       if (hasDepenceFieldsApi()) {
         await getDependies(params)
       }
@@ -274,23 +277,23 @@ export default {
       }
       loading.value = false
     }
-    const clickHandler = async (action) => {
-      loading.value = true
-      if (action.action === 'saveFilter') {
-        emit('sendFilter', formData)
-      } else if (action.action === 'nextStage') {
-        emit('nextStage')
-      } else if (action.action === 'prevStage') {
-        emit('prevStage')
-      } else if (action.action === 'saveForm') {
-        await changeForm()
-        const isNextForm = true
-        if (isNextForm) {
-          nextForm()
-        }
-      }
-      loading.value = false
-    }
+    //const clickHandler = async (action) => {
+    //  loading.value = true
+    //  if (action.action === 'saveFilter') {
+    //    emit('sendFilter', formData)
+    //  } else if (action.action === 'nextStage') {
+    //    emit('nextStage')
+    //  } else if (action.action === 'prevStage') {
+    //    emit('prevStage')
+    //  } else if (action.action === 'saveForm') {
+    //    await changeForm()
+    //    const isNextForm = true
+    //    if (isNextForm) {
+    //      nextForm()
+    //    }
+    //  }
+    //  loading.value = false
+    //}
     const cancel = async () => {
       const action = props.tab.actions.find((el) => el.type === 'cancel')
       if (action.prevForm) {
@@ -302,10 +305,6 @@ export default {
     }
     onMounted(async () => {
       await getData()
-      setTimeout(() => {
-        stage.value++
-        console.log(stage.value)
-      }, 5000)
     })
     return {
       searchFields,

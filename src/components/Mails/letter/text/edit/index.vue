@@ -5,6 +5,8 @@
       :editor-toolbar="toolbar"
       v-model="$props.data.text"
     />
+    {{ $props.data.files }}
+    <DropZone v-model="$props.data.files" :options="{ withoutSave: false }" />
     <v-file-input
       v-model="$props.data.files"
       outlined

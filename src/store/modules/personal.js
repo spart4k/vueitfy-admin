@@ -1,5 +1,5 @@
 //import
-import { getCard } from '@/api/personal'
+import { getCard, getKeys } from '@/api/personal'
 //import axios from 'axios'
 
 const personal = {
@@ -7,6 +7,11 @@ const personal = {
   actions: {
     async getCard(_, { value: id }) {
       const result = await getCard(id)
+      return result
+    },
+    async getKeys(_, { url }) {
+      console.log(url)
+      const result = await getKeys(url)
       return result
     },
   },

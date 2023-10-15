@@ -7,7 +7,7 @@
       color="primary"
       indeterminate
     />-->
-    <v-form>
+    <v-form class="form-default">
       <v-container class="">
         <v-row>
           <v-col
@@ -16,24 +16,11 @@
             :cols="field.position.cols"
             :sm="field.position.sm"
             class="field-col"
+            :class="field.type"
           >
             <div v-if="loading && field.isShow" class="field-loading gradient">
               <!--<p>loading</p>-->
             </div>
-            <v-text-field
-              v-else-if="showField('string', field)"
-              v-model="formData[field.name]"
-              :label="field.label"
-              :error-messages="formErrors[field.name]"
-              clearable
-              :readonly="field.readonly"
-              :disabled="field.readonly"
-            />
-            <v-checkbox
-              v-else-if="showField('checkbox', field)"
-              v-model="formData[field.name]"
-              :label="field.label"
-            ></v-checkbox>
             <v-select
               v-else-if="showField('select', field)"
               :items="field.items"
@@ -56,6 +43,20 @@
               ref="autocompleteRef"
               @change="changeAutocomplete"
             />
+            <v-text-field
+              v-else-if="showField('string', field)"
+              v-model="formData[field.name]"
+              :label="field.label"
+              :error-messages="formErrors[field.name]"
+              clearable
+              :readonly="field.readonly"
+              :disabled="field.readonly"
+            />
+            <v-checkbox
+              v-else-if="showField('checkbox', field)"
+              v-model="formData[field.name]"
+              :label="field.label"
+            ></v-checkbox>
             <v-menu
               v-else-if="showField('date', field)"
               :key="field.id"
@@ -125,11 +126,12 @@
               clearable
               :error-messages="formErrors[field.name]"
             />
-            <p>
-              <!--{{ field.items }}-->
-              <!--{{ allLoaded }}-->
-              <!--{{ field.selectOption.text + field.selectOption.value }}-->
-            </p>
+            <DropZone
+              v-else-if="showField('dropzone', field)"
+              :options="field.options"
+              v-model="formData[field.name]"
+              :formData="formData"
+            />
           </v-col>
         </v-row>
         <v-row class="justify-end">
