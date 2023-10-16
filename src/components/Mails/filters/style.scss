@@ -1,6 +1,8 @@
+$filtersHeight: calc(100% - 19px);
+
 .v {
     &-filters {
-        height: calc(100% - 19px);
+        height: $filtersHeight;
         width: 214px;
         background-color: var(--v-background-base);
         box-shadow: 0px 4px 10px 0px #0000001A;

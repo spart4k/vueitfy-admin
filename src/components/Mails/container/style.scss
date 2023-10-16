@@ -1,3 +1,5 @@
+$expandedLetterWidth: calc(100% - 343px - 13px);
+
 .v {
     &-container {
         // height: 100%;
@@ -69,7 +71,7 @@
         }
         &-expanded {
             // flex: 1;
-            width: calc(100% - 343px - 13px);
+            width: $expandedLetterWidth;
             display: flex;
             padding-bottom: 19px;
             &__new {

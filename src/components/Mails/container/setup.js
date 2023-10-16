@@ -51,6 +51,7 @@ const container = {
         else responseData = await store.dispatch('mail/getMail', val.id)
         activeMail.value = val
         // activeMail.value = responseData.data[0]
+        console.log(responseData)
         Vue.set(activeMail.value, 'text', responseData.textfile)
         if (!val.is_read && route?.query?.filter !== 'sent') {
           const request = {

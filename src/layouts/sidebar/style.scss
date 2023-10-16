@@ -1,450 +1,172 @@
-$timeoutCollapse : .3s;
-
-@keyframes disappearanceLink{
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes appearanceLink{
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.v-item-group.v-expansion-panels {
-  .v-expansion-panel{
-    a {
-      text-decoration: none;
-      cursor: pointer;
-      // color: $white !important;
-      color: var(--v-text-base);
+.v {
+  height: 100%;
+  overflow: hidden;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
+  .v-sidebar {
+    height: 100vh !important; /* Use vh as a fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100) !important;
+    // height: 100%;
+    overflow-y: auto;
+    padding: 12px 0 20px;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(0%) !important;
+    &::v-deep .v-navigation-drawer__content {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-  }
-}
-
-.v-expansion-panel {
-  transition: 0s !important;
-}
-
-
-.main-nav-element {
-  > {
-    .v-list-group__header {
-      display   : none;
-    }
-  }
-}
-
-v-list {
-  @include custom-scroll-bar-vertical;
-}
-
-.avatar {
-  height: 40px !important;
-  min-width: 40px !important;
-  width: 40px !important;
-  margin: 10px !important;
-  transition: width $timeoutCollapse ease, height $timeoutCollapse ease, min-width $timeoutCollapse ease, margin $timeoutCollapse ease;
-}
-
-.avatar--collapse {
-  height: 30px !important;
-  min-width: 30px !important;
-  width: 30px !important;
-  margin-left: 16px !important;
-  transition: width $timeoutCollapse ease, height $timeoutCollapse ease, min-width $timeoutCollapse ease, margin $timeoutCollapse ease;
-}
-
-.v-expansion-panel {
-  margin: 0 !important;
-
-  &::before {
-    box-shadow: none !important;
-  }
-  &:before {
-    box-shadow: none !important;
-  }
-
-    // &[aria-expanded="true"] {
-    //   button {
-    //     color       : $accent-blue;
-    //     font-weight : 700;
-    //     span {
-    //       color     : $accent-blue;
-    //     }
-    //     div {
-    //       i {
-    //         color   : $accent-blue !important;
-    //       }
-    //     }
-    //   }
-    // }
-
-  button {
-    &:hover {
-      color       : $accent-blue;
-      font-weight : 700;
-      opacity     : .8;
-
-      span {
-        color     : $accent-blue;
-      }
-      div {
-        i {
-          color   : $accent-blue !important;
+    &-user {
+      display: flex;
+      margin: 15px 0 40px;
+      padding: 0 14px;
+      &_image {
+        width: 48px;
+        height: 48px;
+        &::v-deep .v-image {
+          border-radius: 50%;
         }
       }
-    }
-  }
-}
-
-.link__btn {
-  padding: 16px 24px !important;
-  // transition: padding .5s ease;
-  &--collapse {
-    padding: 16px 24px;
-
-    svg {
-      width: 20px;
-    }
-    // transition: padding .5s ease;
-  }
-}
-
-.v-expansion-panel-header {
-  padding       : 11px 12px;
-  font-weight   : 500;
-  > span {
-    display     : block;
-    max-width   : 20px;
-    margin-right: 10px;
-  }
-}
-
-.v-expansion-panel--active{
-  border-radius : 0px !important;
-  margin        : 0 !important;
-}
-
-.header-navbar {
-  display         : flex !important;
-  align-items     : center;
-  justify-content : center;
-  padding         : 20px 14px 43px 14px !important;
-    > div {
-      width       : 50px;
-      display     : contents;
-      padding     : 0;
-    }
-}
-
-
-// scroll navmenu
-
-.v-navigation-drawer__content {
-  @include custom-scroll-bar-vertical;
-}
-
-.v-navigation-drawer {
-  height    : calc(100% - 170px) !important;
-}
-
-.nav-fio, .nav__navlink {
-  text-wrap : wrap;
-  animation: appearanceLink $timeoutCollapse forwards !important;
-
-  &--collapse {
-    text-wrap : wrap;
-    animation: disappearanceLink $timeoutCollapse forwards !important;
-
-    p {
-      width: 200px;
-    }
-  }
-
-  p {
-    width: 200px;
-  }
-}
-
-.v-expansion-panel-header {
-  padding   : 0 10px;
-}
-
-.navbar-card {
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
-  z-index   : $navbar-z;
-  width     : 256px;
-  transition: width $timeoutCollapse ease !important;
-
-  &--collapse {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
-    z-index   : $navbar-z;
-    width   : 74px;
-    transition: width $timeoutCollapse ease !important;
-  }
-}
-
-.v-expansion-panel-content__wrap, .v-list-item  {
-  padding: 0 !important;
-  a {
-    padding :  0  !important;
-    cursor  : pointer;
-    outline : none;
-    text-decoration: none;
-    .navlink__item {
-      //padding : 5px 35px !important;
-      margin  : 0 !important;
-    }
-  }
-
-  .router-link-exact-active.active {
-    color: $accent-blue !important;
-    font-weight: 700;
-  }
-  &:hover {
-    color       : $accent-blue;
-    opacity     : .6;
-    font-weight : 600;
-  }
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 24px;
-  font-weight: 500;
-  // transition: padding .5s ease;
-
-  &--collapse {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 16px 10px;
-    font-weight: 500;
-    // transition: padding .5s ease;
-  }
-
-  .icon__navlink {
-
-  }
-  .name__navlink {
-    color: $black;
-    font-size: 15px;
-    font-weight: 500;
-    text-wrap : wrap;
-    animation: appearanceLink .3s forwards !important;
-
-    &--collapse {
-      text-wrap : wrap;
-      animation: disappearanceLink .3s forwards !important;
-    }
-  }
-
-  &--collapse {
-    padding: 16px 24px !important;
-  }
-
-  &:hover {
-    color       : $accent-blue;
-    font-weight : 700;
-    opacity     : .8;
-
-    .icon__navlink {
-      span {
-        color     : $accent-blue;
-      }
-    }
-    .name__navlink {
-      color   : $accent-blue !important;
-      display: block;
-      &--collapse {
-        display: none !important;
-      }
-    }
-  }
-}
-
-
-.name__navlink--collapse {
-  display: none !important;
-}
-
-//открытие закрытие меню на мобилке
-.mobile-menu__window {
-  &--close {
-    transform : translateX(-100%);
-    position  : absolute;
-    z-index   : $navbar-mobile-z;
-    opacity   : 0;
-    transition: transform .7s ease-in, opacity .4s ease-in;
-  }
-
-  &--open {
-    transform : translateX(0%);
-    position  : absolute;
-    z-index   : $navbar-mobile-z;
-    opacity   : 1;
-    transition: transform .7s ease-out, opacity .7s ease-out;
-  }
-}
-
-.expand-enter-active, .expand-leave-active {
-  transition-property: width;
-  transition-duration: 5s;
-}
-
-.expand-leave-to {
-  width: 256px;
-}
-
-.expand-enter{
-  width: 40px;
-}
-
-.btn-menu{
-  &__collapse {
-    font-size: 12px !important;
-    padding: 0 !important;
-  }
-  &--collapse {
-    font-size: 12px !important;
-    margin-left:18px !important;
-    min-width: 40px !important;
-    padding: 0 !important;
-  }
-}
-
-.theme--dark.v-expansion-panels .v-expansion-panel {
-  background-color: #252525 !important;
-  color: #fff;
-}
-
-.v-btn{
-  .v-btn__content {
-    .text-collaspe__navbar {
-      color: var(--v-text-base) !important;
-    }
-  }
-}
-
-.v-item-group {
-  .v-expansion-panel {
-    a {
-      .nav-link {
-        .name__navlink {
+      &-info {
+        margin-left: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &_name {
+          font-size: 16px;
+          font-weight: 500;
           color: var(--v-text-base);
         }
+        &_email {
+          font-size: 12px;
+          font-weight: 500;
+          color: var(--v-disabled-base);
+        }
       }
     }
-  }
-}
-
-.navmenu__navlinks {
-    opacity: 1;
-    transition: opacity .5s ease;
-  &--collapse {
-    opacity: 0;
-    transition: opacity .5s ease;
-  }
-}
-
-.nav__navlink {
-  animation: appearanceLink .3s forwards !important;
-  &--collapse {
-    animation: disappearanceLink .3s forwards !important;
-  }
-}
-
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .3s ease;
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active до версии 2.1.8 */ {
-  opacity: 0;
-}
-
-.slide-fade-leave-from {
-  opacity: 1;
-}
-
-.v-expansion-panel-header.navbar.link__btn {
-  min-height: unset;
-}
-
-.v-item-group.theme--dark.v-expansion-panels {
-  .v-expansion-panel {
-    .v-expansion-panel-content.navbar {
-      .v-expansion-panel-content__wrap {
-        a {
-          color: $white;
+    &-btn {
+      font-size: 12px !important; 
+      min-width: 40px !important;
+      margin-top: auto;
+      margin-right: auto;
+      padding: 0 26px !important;
+      padding-top: 10px !important;
+      &_text {
+        color: var(--v-text-base) !important;
+      }
+      &_icon {
+        color: var(--v-text-base) !important;
+        caret-color: var(--v-text-base) !important;
+      }
+      &:hover {
+        div {
+          color: var(--v-primary-base) !important;
+        }
+        span {
+          color: var(--v-primary-base) !important;
+          caret-color: var(--v-primary-base) !important;
+        }
+      }
+    }
+    &-link {
+      display: flex;
+      align-items: center;
+      padding: 16px 12px 16px 26px;
+      font-weight: 500;
+      cursor: pointer;
+      height: 30px;
+      &__instant {
+        transition: all 0s !important;
+      }
+      &:hover div {
+        color: var(--v-primary-base) !important;
+      }
+      &_icon span {
+        color: var(--v-text-base) !important;
+        caret-color: var(--v-text-base) !important;
+      }
+      &:hover span {
+        color: var(--v-primary-base) !important;
+        caret-color: var(--v-primary-base) !important;
+      }
+      &__default-height {
+        min-height: 56px !important;
+      }
+      &_icon {
+        display: flex;
+        margin-right: 15px;
+        flex: 0;
+      }
+      &_name {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--v-text-base);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &__shifted {
+          margin-left: 39px;
+        }
+        &__active {
+          color: var(--v-primary-base);
         }
       }
     }
   }
 }
 
-.v-item-group.theme--light.v-expansion-panels {
-  .v-expansion-panel {
-    .v-expansion-panel-content.navbar {
-      .v-expansion-panel-content__wrap {
-        a {
-          color: $dark-blue-text;
-        }
+.v-expansion-panels {
+  overflow: hidden;
+}
+
+.v-expansion-panel {
+    margin: 0 !important;
+    &::before {
+      box-shadow: none !important;
+    }
+    &:not(:first-child)::after {
+      opacity: 1 !important;
+    }
+}
+
+.v-expansion-panel-content  {
+  padding: 0 !important;
+}
+
+.v-menu__content {
+  left: 76px !important;
+  max-height: calc(100vh - 300px);
+  .v-sidebar-link {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+    height: 30px;
+    background-color: var(--v-navbar-base);
+    &__default-height {
+      min-height: 56px !important;
+    }
+    &:hover div {
+      color: var(--v-primary-base) !important;
+    }
+    &_title {
+      font-size: 15px;
+      font-weight: 500 !important;
+      color: var(--v-primary-base) !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &_name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--v-text-base);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &__active {
+        color: var(--v-primary-base);
       }
     }
   }
-}
-
-.router-link-exact-active.active {
-  .nav-link {
-    color: $accent-blue;
-    .icon__navlink {
-      span {
-        svg {
-          color: $accent-blue;
-        }
-      }
-    }
-  }
-}
-
-.v-expansion-panel-header.navbar.link__btn {
-  .nav__navlink {
-    text-wrap: nowrap;
-    width: 160px;
-  }
-}
-
-// .fade-anim {
-//   animation: appearanceLink .7s forwards !important;
-//   &--collapse {
-//     animation: disappearanceLink .7s forwards !important;
-//   }
-// }
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .7s
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0
-}
-
-.v-menu__content  {
-  @include custom-scroll-bar-vertical;
-}
-
-.dop-men__navbar {
-  margin-left: 40px;
 }

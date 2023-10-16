@@ -48,7 +48,9 @@ const mails = {
       let load = false
       mailsData.value.forEach((item) => {
         if (item.mails) {
-          mailsCount += item.mails.rows.length
+          // console.log(item.mails.total)
+          console.log(item.mails.total)
+          mailsCount += item.mails.total
           item.mails.rows.forEach((mail) => {
             arrayId.push(mail.id)
             arrayFull.push(mail)
@@ -267,6 +269,8 @@ const mails = {
                 if (key === 'del') {
                   mailsData.value[index].mails.rows.splice(mailIndex, 1)
                   hideCurrentMail(mail.id)
+                  mailsData.value[index].mails.total -= 1
+                  resetAllSelectionFilter()
                 } else if (key === 'is_read') {
                   mail.is_read = item
                   if (item) selected.value.filterAll[key].count += 1
@@ -284,6 +288,8 @@ const mails = {
                       hideCurrentMail(mail.id)
                       selected.value.mails = []
                       selected.value.mailsAll = false
+                      mailsData.value[index].mails.total -= 1
+                      resetAllSelectionFilter()
                     }
                     mail[key] = JSON.stringify(newArray)
                     selected.value.filterAll[key].find(
@@ -327,7 +333,6 @@ const mails = {
       }
       if (selected.value.mailsAll) {
         if (key === 'is_read') {
-          console.log(item)
           if (item) selected.value.filterAll[key].count = allMails.value.count
           else selected.value.filterAll[key].count = 0
         } else if (key === 'tags' || key === 'folders') {

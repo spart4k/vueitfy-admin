@@ -1,82 +1,51 @@
-<template dark>
-  <v-card
-    class="overflow-hidden topbar topbar-card"
-    width="100%"
-    height="64px"
-    transition="0s"
-  >
-    <v-app-bar color="topbar">
-      <v-btn class="btn-menu__mob" icon v-if="isMobile">
-        <v-icon @click="setNavmenu" v-if="true" key="menu">
-          $IconOpenMenu
-        </v-icon>
+<template>
+  <v-app-bar class="v-topbar" color="topbar" dense>
+    <v-btn @click="setNavmenu" icon v-if="isMobile">
+      <v-icon color="text"> $IconOpenMenu </v-icon>
+    </v-btn>
+
+    <div class="v-topbar_title">{{ pageName }}</div>
+
+    <v-badge
+      offset-x="22"
+      offset-y="22"
+      :content="messages"
+      :value="messages"
+      color="error"
+      overlap
+    >
+      <v-btn @click="showNotification" icon>
+        <v-icon color="text">$IconNotificationBell</v-icon>
       </v-btn>
-      <v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Поиск "
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-toolbar-title></v-toolbar-title>
-      <v-container>
-        <!-- <div>
-          <v-btn class="mx-1" color="primary" @click="messages++">
-            Send Message
-          </v-btn>
+    </v-badge>
 
-          <v-btn class="mx-1" color="error" @click="messages = 0">
-            Clear Notifications
-          </v-btn>
-        </div> -->
-
-        <v-badge :content="messages" :value="messages" color="blue" overlap>
-          <v-btn icon class="btn-notification">
-            <v-icon>$IconNotificationBell</v-icon>
-          </v-btn>
-        </v-badge>
-      </v-container>
-
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            v-bind="attrs"
-            v-on="on"
-            fab
-            small
-            class="etc-menu"
-          >
-            <span class="line"></span>
-            <span class="line"></span>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="item in itemSecondMenu"
-            :key="item.icon"
-            class="etc-menu__list-item"
-          >
-            <v-tooltip left open-delay="200">
-              <template v-slot:activator="{ on }">
-                <v-btn :color="item.color" fab small v-on="on">
-                  <v-icon class="icon-menu" dark>
-                    {{ item.icon }}
-                  </v-icon>
-                </v-btn>
-              </template>
-              <span>{{ item.tooltip }}</span>
-            </v-tooltip>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-app-bar>
-    <v-sheet>
-      <v-container style="height: 60px"></v-container>
-    </v-sheet>
-  </v-card>
+    <v-menu offset-y nudge-bottom="10">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" v-on="on" fab small class="v-topbar-menu">
+          <span class="line"></span>
+          <span class="line"></span>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in itemSecondMenu"
+          :key="index"
+          class="v-topbar-menu__list-item"
+        >
+          <v-tooltip left>
+            <template #activator="{ on: tooltip }">
+              <v-btn :color="item.color" fab small v-on="!isMobile && tooltip">
+                <v-icon color="navbar">
+                  {{ item.icon }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span>{{ item.tooltip }}</span>
+          </v-tooltip>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </v-app-bar>
 </template>
 
 <script src="./setup.js"></script>

@@ -27,8 +27,6 @@ export const getFolderMails = (data, params) =>
 
 export const changeMail = (data, params) => put(`mail/${params}`, data)
 
-export const deleteMails = (data) => put('mails/del', data)
-
 export const changeLettersContainer = (data, type, id) =>
   put(`mails/change/${type}/${id}`, data)
 

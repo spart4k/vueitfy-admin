@@ -5,6 +5,8 @@ export default function useMobile() {
 
   const onResize = () => {
     clientWidth.value = document.body.clientWidth
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
   }
 
   const isMobile = computed(() => (clientWidth.value <= 758 ? true : false))
