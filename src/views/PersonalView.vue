@@ -1,7 +1,26 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableDefault @changeheadershow="changeheadershow" :options="personal" />
+    <v-tabs
+      style="flex: unset"
+      v-model="personal.activeTab"
+      background-color="transparent"
+      color="basil"
+      class="p-5"
+    >
+      <v-tab v-for="item in personal.tabs" :key="item.options.title">
+        {{ item.options.title }}
+      </v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="personal.activeTab">
+      <v-tab-item v-for="item in personal.tabs" :key="item.options.title">
+        <component
+          :is="item.type"
+          @changeheadershow="changeheadershow"
+          :options="item"
+        />
+      </v-tab-item>
+    </v-tabs-items>
   </div>
   <!--</Layout>-->
 </template>
