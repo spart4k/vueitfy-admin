@@ -5,6 +5,7 @@ import ThirdPopupView from '@/components/Task/third-popup-view/index.vue'
 import Form15 from '@/components/Task/form15/index.vue'
 import Form2 from '@/components/Task/form2/index.vue'
 import Form7 from '@/components/Task/form7/index.vue'
+import Form8 from '@/components/Task/form8/index.vue'
 import Form23 from '@/components/Task/form23/index.vue'
 import Form20 from '@/components/Task/form20/index.vue'
 import Form21 from '@/components/Task/form21/index.vue'
@@ -57,6 +58,7 @@ const task = defineComponent({
     Form15,
     Form2,
     Form7,
+    Form8,
     Form23,
     Form20,
     Form21,

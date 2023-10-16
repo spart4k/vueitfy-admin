@@ -1,6 +1,12 @@
 // import TaksService from '@/api/TaksService.js'
 
-import { getTask, setTask, setFile, updateDataFile } from '@/api/TaskService'
+import {
+  getTask,
+  setTask,
+  setFile,
+  updateDataFile,
+  changeStatusAndData,
+} from '@/api/TaskService'
 //import axios from 'axios'
 
 const taskModule = {
@@ -13,7 +19,15 @@ const taskModule = {
     },
 
     async setPartTask(_, data) {
-      const result = await setTask('task/change_status/' + data.id, data.data)
+      console.log(data)
+      const result = await setTask('task/change_status_task', data.data)
+      console.log(result)
+      return result
+    },
+
+    async changeStatusTasks(_, data) {
+      console.log(data)
+      const result = await changeStatusAndData('task/update/status', data.data)
       console.log(result)
       return result
     },
@@ -24,9 +38,10 @@ const taskModule = {
     async updateFileData(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
-      const result = await updateDataFile('/set/data/personal_doc', data)
+      const result = await updateDataFile('set/data/personal_doc', data)
       return result
     },
+
     async loadImage(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
@@ -36,6 +51,8 @@ const taskModule = {
       )
       return result
     },
+
+    // =============================================================
 
     async setPersonalData(_, data) {
       const result = await setTask('set/data/personal', data.data)
@@ -48,11 +65,6 @@ const taskModule = {
       console.log(result)
       return result
     },
-    // async updateFileData(_, data) {
-    //   const result = await updateDataFile('set/data/personal_doc', data)
-    //   console.log(result)
-    //   return result
-    // },
 
     async setSaveDocs(_, data) {
       const result = await setTask('set/personal/save_docs', data.data)
