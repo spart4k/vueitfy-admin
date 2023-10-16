@@ -86,6 +86,12 @@ const taskModule = {
       console.log(result)
       return result
     },
+
+    async setDataPayment(_, data) {
+      const result = await setTask('set/data/payment', data)
+      console.log(result)
+      return result
+    },
   },
 }
 
