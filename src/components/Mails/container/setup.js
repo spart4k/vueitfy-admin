@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { ref, watch, nextTick } from 'vue'
+import Vue, { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router/composables'
 // import { tableApi } from '@/api'
@@ -35,31 +35,35 @@ const container = {
     const lowerItems = ref(null)
     const upperItems = ref(null)
     const container = ref(null)
+    const containerBox = ref(null)
 
     const trigger = ref({
-      left: true,
-      right: true,
+      left: false,
+      right: false,
     })
 
     const triggerCheck = () => {
-      // if (container?.value?.scrollLeft) {
-      //   trigger.value.left = true
-      // } else {
-      //   trigger.value.left = false
-      // }
-      // if (
-      //   Math.ceil(
-      //     container?.value?.offsetWidth + container?.value?.scrollLeft
-      //   ) >= container?.value?.scrollWidth
-      // ) {
-      //   trigger.value.right = false
-      // } else {
-      //   trigger.value.right = true
-      // }
+      let item = container
+      if (route?.query?.mail) item = containerBox
+      if (item?.value?.scrollLeft) {
+        trigger.value.left = true
+      } else {
+        trigger.value.left = false
+      }
+      if (
+        Math.ceil(item?.value?.offsetWidth + item?.value?.scrollLeft) >=
+        item?.value?.scrollWidth
+      ) {
+        trigger.value.right = false
+      } else {
+        trigger.value.right = true
+      }
     }
 
     const scrollContainer = (val) => {
-      container.value.scrollLeft = container.value.scrollLeft + val
+      let item = container
+      if (route?.query?.mail) item = containerBox
+      item.value.scrollLeft = item.value.scrollLeft + val
     }
 
     const setActiveMail = async (val, upIndex, lowIndex) => {
@@ -72,13 +76,13 @@ const container = {
             behavior: 'smooth',
           })
         })
+        triggerCheck()
         let responseData
         if (route?.query?.filter === 'sent')
           responseData = await store.dispatch('mail/getSendedMessage', val.id)
         else responseData = await store.dispatch('mail/getMail', val.id)
         activeMail.value = val
         // activeMail.value = responseData.data[0]
-        console.log(responseData)
         Vue.set(activeMail.value, 'text', responseData.textfile)
         if (!val.is_read && route?.query?.filter !== 'sent') {
           const request = {
@@ -94,7 +98,6 @@ const container = {
       }
     }
     const getPagination = (val) => {
-      // console.log(val)
       let rowItem = props.data.find(
         (x) => x.id === val[0].target.__vue__.data.box_id
       )
@@ -111,10 +114,22 @@ const container = {
       }
     }
 
-    watch([() => container?.value?.scrollLeft, () => window.innerWidth], () => {
-      console.log(container?.value?.scrollLeft)
-      console.log('trigger')
-      triggerCheck()
+    watch(
+      [
+        () => container?.value?.scrollLeft,
+        () => containerBox?.value?.offsetWidth,
+      ],
+      () => {
+        triggerCheck()
+      }
+    )
+
+    onMounted(() => {
+      window.addEventListener('resize', triggerCheck)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', triggerCheck)
     })
 
     // watch(
@@ -168,6 +183,7 @@ const container = {
       lowerItems,
       upperItems,
       container,
+      containerBox,
       trigger,
 
       triggerCheck,

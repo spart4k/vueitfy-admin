@@ -1,15 +1,17 @@
 <template>
-  <div class="v">
+  <div class="trigger-container">
     <div
       @scroll="triggerCheck"
       ref="container"
-      :class="['v-container', 'd-flex']"
+      :class="['v-container', $route?.query?.mail && 'v-container__active']"
     >
       <div
         :class="[
           'v-container-box',
           $route?.query?.mail && 'v-container-box__active',
         ]"
+        @scroll="$route?.query?.mail && triggerCheck()"
+        ref="containerBox"
         v-if="$route?.query?.compose !== 'new'"
       >
         <div v-if="trigger.left" class="trigger trigger__left">
@@ -21,7 +23,13 @@
             >$IconArrowLeft</v-icon
           >
         </div>
-        <div v-if="trigger.right" class="trigger trigger__right">
+        <div
+          v-if="trigger.right"
+          :class="[
+            'trigger',
+            $route.query.mail ? 'trigger__center' : 'trigger__right',
+          ]"
+        >
           <v-icon
             @click="scrollContainer(350)"
             color="disabled"

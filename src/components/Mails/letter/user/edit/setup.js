@@ -52,23 +52,11 @@ const edit = {
         id: 4,
       },
     ])
-    const test = ref(null)
-    const zxc = (val) => {
-      // if (val.code === 'Space') {
-      //   console.log(test)
-      //   // test.value.blur()
-      //   setTimeout(() => {
-      //     test.value.updateCombobox()
-      //   }, 0)
-      // }
-    }
     return {
       // content,
       userArray,
       user,
       rules,
-      test,
-      zxc,
     }
   },
 }
