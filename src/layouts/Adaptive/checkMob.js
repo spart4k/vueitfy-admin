@@ -9,7 +9,7 @@ export default function useMobile() {
     document.documentElement.style.setProperty('--vh', `${vh}px`)
   }
 
-  const isMobile = computed(() => (clientWidth.value <= 758 ? true : false))
+  const isMobile = computed(() => (clientWidth.value <= 400 ? true : false))
 
   onMounted(() => {
     onResize()

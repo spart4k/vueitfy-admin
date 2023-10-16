@@ -1,8 +1,9 @@
-.v {
+.v-sidebar {
   height: 100%;
+  width: fit-content;
   overflow: hidden;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
-  .v-sidebar {
+  &-container {
     height: 100vh !important; /* Use vh as a fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100) !important;
     // height: 100%;
@@ -11,6 +12,7 @@
     display: flex;
     flex-direction: column;
     transform: translateX(0%) !important;
+    // width: 500px !important;
     &::v-deep .v-navigation-drawer__content {
       overflow: hidden;
       display: flex;
@@ -135,8 +137,8 @@
 
 .v-menu__content {
   left: 76px !important;
-  max-height: calc(100vh - 300px);
-  .v-sidebar-link {
+  max-height: calc(100vh - 150px);
+  .v-sidebar-container-link {
     display: flex;
     align-items: center;
     font-weight: 500;

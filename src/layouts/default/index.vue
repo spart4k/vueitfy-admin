@@ -1,6 +1,6 @@
 <template>
   <div class="layout-default d-flex flex-grow-1">
-    <div class="sidebar-container">
+    <div class="navbar">
       <Sidebar :navData="navData"></Sidebar>
     </div>
     <!-- <div

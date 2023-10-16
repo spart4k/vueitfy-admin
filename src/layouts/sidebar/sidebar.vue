@@ -1,22 +1,23 @@
 <template>
-  <div class="v" v-if="openMenu">
+  <div class="v-sidebar" v-if="openMenu">
     <v-navigation-drawer
-      v-model="openMenu"
+      v-model="isMobile"
       :absolute="isMobile"
       :temporary="isMobile"
       :permanent="openMenu"
-      :class="['v-sidebar']"
+      :class="['v-sidebar-container']"
       :mini-variant="miniMenu"
       :touchless="true"
       mini-variant-width="76px"
     >
-      <div class="v-sidebar-user">
-        <div class="v-sidebar-user_image">
+      <div class="v-sidebar-container-user">
+        <div class="v-sidebar-container-user_image">
           <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
         </div>
-        <div class="v-sidebar-user-info" v-if="!miniMenu">
-          <div class="v-sidebar-user-info_name">Dasha Tsaritsa</div>
-          <div class="v-sidebar-user-info_email">carica@mail.ru</div>
+        <div class="v-sidebar-container-user-info" v-if="!miniMenu">
+          <div class="v-sidebar-container-user-info_name">Dasha Tsaritsa</div>
+          <div class="v-sidebar-container-user-info_email">carica@mail.ru</div>
+          <!-- {{ openMenu }}{{ miniMenu }} -->
         </div>
       </div>
 
@@ -38,10 +39,10 @@
                 <template v-slot:activator="{ on }">
                   <div
                     v-on="miniMenu && on"
-                    class="v-sidebar-link v-sidebar-link__default-height"
+                    class="v-sidebar-container-link v-sidebar-container-link__default-height"
                     @click="setRouterPath(item?.link)"
                   >
-                    <div class="v-sidebar-link_icon">
+                    <div class="v-sidebar-container-link_icon">
                       <v-icon
                         :color="$route?.path === item.link ? 'primary' : ''"
                         >{{ item?.icon }}</v-icon
@@ -50,9 +51,9 @@
                     <div
                       v-if="!miniMenu"
                       :class="[
-                        'v-sidebar-link_name',
+                        'v-sidebar-container-link_name',
                         $route?.path === item.link &&
-                          'v-sidebar-link_name__active',
+                          'v-sidebar-container-link_name__active',
                       ]"
                     >
                       {{ item?.name }}
@@ -64,9 +65,9 @@
             </template>
             <template v-else-if="!miniMenu">
               <v-expansion-panel-header
-                class="v-sidebar-link v-sidebar-link__default-height"
+                class="v-sidebar-container-link v-sidebar-container-link__default-height"
               >
-                <div class="v-sidebar-link_icon">
+                <div class="v-sidebar-container-link_icon">
                   <v-icon
                     :color="$route?.path === item?.link ? 'primary' : ''"
                     >{{ item?.icon }}</v-icon
@@ -75,8 +76,9 @@
                 <div
                   v-if="!miniMenu"
                   :class="[
-                    'v-sidebar-link_name',
-                    $route?.path === item.link && 'v-sidebar-link_name__active',
+                    'v-sidebar-container-link_name',
+                    $route?.path === item.link &&
+                      'v-sidebar-container-link_name__active',
                   ]"
                 >
                   {{ item?.name }}
@@ -88,17 +90,17 @@
                   :key="index"
                   color="navbar"
                   :class="[
-                    'v-sidebar-link',
-                    instantNav && 'v-sidebar-link__instant',
+                    'v-sidebar-container-link',
+                    instantNav && 'v-sidebar-container-link__instant',
                   ]"
                 >
                   <div
                     @click="setRouterPath(link.link)"
                     :class="[
-                      'v-sidebar-link_name',
-                      'v-sidebar-link_name__shifted',
+                      'v-sidebar-container-link_name',
+                      'v-sidebar-container-link_name__shifted',
                       $route?.path === link.link &&
-                        'v-sidebar-link_name__active',
+                        'v-sidebar-container-link_name__active',
                     ]"
                   >
                     {{ link.name }}
@@ -113,9 +115,9 @@
                     <template #activator="{ on: hint }">
                       <div
                         v-on="{ ...hint, ...onMenu }"
-                        class="v-sidebar-link v-sidebar-link__default-height"
+                        class="v-sidebar-container-link v-sidebar-container-link__default-height"
                       >
-                        <div class="v-sidebar-link_icon">
+                        <div class="v-sidebar-container-link_icon">
                           <v-icon
                             :color="$route?.path === item.link ? 'primary' : ''"
                             >{{ item?.icon }}</v-icon
@@ -127,20 +129,20 @@
                   </v-tooltip>
                 </template>
                 <v-list>
-                  <v-list-item class="v-sidebar-link_title">
+                  <v-list-item class="v-sidebar-container-link_title">
                     {{ item.name }}
                   </v-list-item>
                   <v-list-item
-                    class="v-sidebar-link"
+                    class="v-sidebar-container-link"
                     @click="setRouterPath(link.link)"
                     v-for="(link, index) in JSON?.parse(item?.child_json)"
                     :key="index"
                   >
                     <div
                       :class="[
-                        'v-sidebar-link_name',
+                        'v-sidebar-container-link_name',
                         $route?.path === link.link &&
-                          'v-sidebar-link_name__active',
+                          'v-sidebar-container-link_name__active',
                       ]"
                     >
                       {{ link.name }}
@@ -154,23 +156,25 @@
       </div>
 
       <v-btn
-        :class="['v-sidebar-btn']"
+        :class="['v-sidebar-container-btn']"
         @click="isMobile ? changeMenuStatus() : changeMenuSize()"
         text
         color="navbar"
       >
-        <v-icon v-if="!miniMenu" class="v-sidebar-btn_icon">
+        <v-icon v-if="!miniMenu" class="v-sidebar-container-btn_icon">
           $IconArrowLeft
         </v-icon>
         <v-icon
           v-if="miniMenu"
-          class="v-sidebar-btn_icon"
+          class="v-sidebar-container-btn_icon"
           padding="0"
           width="12"
         >
           $IconOpenMenu
         </v-icon>
-        <div v-if="!miniMenu" class="v-sidebar-btn_text">Свернуть</div>
+        <div v-if="!miniMenu" class="v-sidebar-container-btn_text">
+          Свернуть
+        </div>
       </v-btn>
     </v-navigation-drawer>
   </div>

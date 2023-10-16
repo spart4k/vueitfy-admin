@@ -1,11 +1,33 @@
 $expandedLetterWidth: calc(100% - 343px - 13px);
-
+.trigger {
+    position: absolute;
+    width: 46px;
+    height: 60%;
+    top: 20%;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+    z-index: $navbar-z;
+    &__left {
+        justify-content: flex-end;
+        left: 10px;
+        border-right: var(--v-disabled-base) solid 6px;
+    }
+    &__right {
+        justify-content: flex-start;
+        right: 10px;
+        border-left: var(--v-disabled-base) solid 6px;
+    }
+}
 .v {
+    width: 100%;
+    position: relative;
     &-container {
-        // height: 100%;
+        height: 100%;
         width: 100%;
         overflow: overlay;
         @include custom-scroll-bar-vertical;
+        scroll-behavior: smooth;
         &::-webkit-scrollbar{
             display: none;
         }
