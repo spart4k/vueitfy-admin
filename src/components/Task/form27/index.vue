@@ -5,6 +5,15 @@
         Назначение <a href="#">&nbsp;№234234&nbsp;</a> на дату 07.02.2023
       </v-card-title>
       <TextInfo :infoObj="infoObj" />
+      <div>
+        <div>Путевой лист:</div>
+        <div v-if="directionToMagnit">
+          <a download href="#">
+            <img style="width: 100%" src="/file/get/:folder/:file" alt="#" />
+          </a>
+        </div>
+        <div v-else>Не приложен</div>
+      </div>
       <FormComment
         v-model="formData.comment"
         :errors="formErrors.comment"

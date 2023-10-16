@@ -92,6 +92,12 @@ const taskModule = {
       console.log(result)
       return result
     },
+
+    async getPaymentId(_, url) {
+      const result = await getTask('get/payment/' + url)
+      console.log(result)
+      return result
+    },
   },
 }
 

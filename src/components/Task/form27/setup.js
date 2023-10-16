@@ -26,6 +26,7 @@ const Form27 = defineComponent({
         store,
       },
     }
+    const directionToMagnit = props.data.entity.direction_id === 5
     const isFormConfirmed = ref(null)
     const infoObj = {
       creator: {
@@ -40,21 +41,25 @@ const Form27 = defineComponent({
         key: 'Сотрудник',
         value: props.data.entity.personal_name,
       },
-      avatar: {
-        key: 'Аватар',
-        value: props.data.entity.avatar_name,
+      object: {
+        key: 'Объект',
+        value: props.data.entity.object_name,
       },
       position: {
         key: 'Должность',
         value: props.data.entity.doljnost_name,
       },
-      personal_key: {
-        key: 'Личный ключ',
-        value: props.data.entity.print_key,
+      hour: {
+        key: 'Часы',
+        value: props.data.entity.hour,
       },
-      object: {
-        key: 'Объект',
-        value: props.data.entity.object_name,
+      sum: {
+        key: 'Сумма',
+        value: props.data.entity.total,
+      },
+      tarif: {
+        key: 'Тариф на должность',
+        value: props.data.entity.object_price_price,
       },
       details: {
         key: 'Реквизиты',
@@ -153,7 +158,7 @@ const Form27 = defineComponent({
         }
       }
     }
-    return { infoObj, confirm, reject, formData, formErrors }
+    return { infoObj, confirm, reject, formData, formErrors, directionToMagnit }
   },
 })
 export default Form27
