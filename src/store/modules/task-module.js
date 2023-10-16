@@ -6,6 +6,7 @@ import {
   setFile,
   updateDataFile,
   changeStatusAndData,
+  putTask,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -28,6 +29,8 @@ const taskModule = {
     async changeStatusTasks(_, data) {
       console.log(data)
       const result = await changeStatusAndData('task/update/status', data.data)
+      console.log(data)
+      const result = await putTask('task/update/status', data)
       console.log(result)
       return result
     },
@@ -68,7 +71,38 @@ const taskModule = {
 
     async setSaveDocs(_, data) {
       const result = await setTask('set/personal/save_docs', data.data)
+      console.log(result)
+      return result
+    },
 
+    // Отправка банковских реквизитов
+    async setBankData(_, data) {
+      const result = await setTask('set/data/personal_bank', data.data)
+      console.log(result)
+      return result
+    },
+
+    // не понял пока, что за метод)
+    async setStartStep(_, data) {
+      const result = await setTask('task/start/step', data)
+      console.log(result)
+      return result
+    },
+
+    async setPersonalTarget(_, data) {
+      const result = await setTask('set/data/personal_target', data)
+      console.log(result)
+      return result
+    },
+
+    async setDataPayment(_, data) {
+      const result = await setTask('set/data/payment', data)
+      console.log(result)
+      return result
+    },
+
+    async getPaymentId(_, url) {
+      const result = await getTask('get/payment/' + url)
       console.log(result)
       return result
     },

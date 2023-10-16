@@ -25,7 +25,7 @@
         <span :class="`circle circle--${data.task.status}`"></span>
         <span>{{ data.task.status }}</span>
       </v-row>
-      <v-row class="task__info-row" align="center">
+      <v-row v-if="taskDeadline" class="task__info-row" align="center">
         <v-icon class="mr-5" small>$IconMain</v-icon>
         <span class="timer">{{ timerString }}</span>
       </v-row>
@@ -50,6 +50,7 @@
       <Form28 v-if="data.task.task_type_id === 28" :data="data" />
       <!--Корректировка документов-->
       <Form8 v-if="data.task.task_type_id === 8" :data="data"></Form8>
+      <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
       <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
     </div>
   </div>

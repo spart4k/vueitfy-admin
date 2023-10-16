@@ -11,7 +11,9 @@
                   $IconMain
                 </v-icon>
               </span>
-              <span style="padding-left: 15px">{{ listNames[doc.id] }}</span>
+              <span style="padding-left: 15px">{{
+                listNames[doc.doc_id]
+              }}</span>
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
@@ -52,7 +54,7 @@
               <v-row>
                 <v-col cols="4">
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="pasp_data_vid_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -110,8 +112,8 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="formObj[doc.doc_id].formData.number"
-                    :error-messages="formObj[doc.doc_id].formErrors.number"
+                    v-model="formObj[doc.doc_id].formData.invoice"
+                    :error-messages="formObj[doc.doc_id].formErrors.invoice"
                     label="Номер счёта"
                   >
                   </v-text-field>
@@ -128,20 +130,21 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
-                  <v-text-field
+                <v-col style="position: relative; z-index: 30">
+                  <v-select
                     v-model="formObj[doc.doc_id].formData.bank_id"
                     :error-messages="formObj[doc.doc_id].formErrors.bank_id"
+                    persistent-hint
+                    :items="bankItems"
                     label="Банк"
-                  >
-                  </v-text-field>
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="formObj[doc.doc_id].formData.cart_on_fio"
-                    :error-messages="formObj[doc.doc_id].formErrors.cart_on_fio"
+                    v-model="formObj[doc.doc_id].formData.fio"
+                    :error-messages="formObj[doc.doc_id].formErrors.fio"
                     label="Карта на ФИО"
                   >
                   </v-text-field>
@@ -150,8 +153,8 @@
               <v-row>
                 <v-col>
                   <v-textarea
-                    v-model="formObj[doc.doc_id].formData.prim"
-                    :error-messages="formObj[doc.doc_id].formErrors.prim"
+                    v-model="formObj[doc.doc_id].formData.comment"
+                    :error-messages="formObj[doc.doc_id].formErrors.comment"
                     label="Примечание"
                   >
                   </v-textarea>
@@ -160,6 +163,7 @@
               <v-row justify="end">
                 <v-btn
                   :disabled="!formObj[doc.doc_id].validate()"
+                  @click="sendBankCard"
                   color="warning"
                 >
                   <v-icon left> $IconMain </v-icon>
@@ -228,7 +232,7 @@
               <v-row>
                 <v-col>
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="med_book_date_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -296,7 +300,7 @@
               <v-row>
                 <v-col cols="4">
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="view_home_data_vid_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -367,7 +371,7 @@
               <v-row>
                 <v-col cols="4">
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="migr_card_data_in_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -398,7 +402,7 @@
                 </v-col>
                 <v-col cols="4">
                   <v-menu
-                    v-model="datePickerSecondOpen"
+                    v-model="migr_card_data_out_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -436,7 +440,7 @@
               <v-row>
                 <v-col>
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="check_patent_date_pay_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -476,7 +480,7 @@
               <v-row>
                 <v-col cols="4">
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="registration_date_do_docs_in_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -514,7 +518,7 @@
                 </v-col>
                 <v-col>
                   <v-menu
-                    v-model="datePickerSecondOpen"
+                    v-model="registration_date_c_docs_in_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -567,7 +571,7 @@
               <v-row>
                 <v-col>
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="patent_date_docs_in_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -631,7 +635,7 @@
               <v-row>
                 <v-col>
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="check_patent_date_pay_now_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y
@@ -686,7 +690,7 @@
               <v-row>
                 <v-col>
                   <v-menu
-                    v-model="datePickerOpen"
+                    v-model="med_view_docs_in_open"
                     :close-on-content-click="false"
                     transition="scale-transition"
                     offset-y

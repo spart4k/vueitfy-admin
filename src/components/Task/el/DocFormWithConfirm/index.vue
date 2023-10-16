@@ -27,7 +27,9 @@
                   >$IconClose</v-icon
                 >
               </span>
-              <span style="padding-left: 15px">{{ listNames[doc.id] }}</span>
+              <span style="padding-left: 15px">{{
+                listNames[doc.doc_id]
+              }}</span>
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
@@ -152,15 +154,6 @@
                   >
                   </v-textarea>
                 </v-col>
-              </v-row>
-              <v-row justify="end">
-                <v-btn
-                  :disabled="!formObj[doc.doc_id].validate()"
-                  color="warning"
-                >
-                  <v-icon left> $IconMain </v-icon>
-                  Завершить
-                </v-btn>
               </v-row>
             </div>
             <!--Адрес регистрации-->

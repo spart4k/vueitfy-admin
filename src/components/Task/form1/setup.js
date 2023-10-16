@@ -41,6 +41,7 @@ const Form1 = defineComponent({
       },
     }
     const finalData = ref({})
+    const bankCardId = ref(0)
     const isFormValid = ref(false)
     const isHasOsnDoc = props.data.data.docs_id.filter(
       (doc) => doc.doc_id === 0
@@ -118,6 +119,31 @@ const Form1 = defineComponent({
       },
     })
 
+    const { makeRequest: changeStatusTask } = useRequest({
+      context,
+      request: () => {
+        const task = props.data.task
+        const taskDeadline =
+          Date.parse(props.data.task.date_create) +
+          props.data.task.time_execution * 1000 -
+          Date.now()
+        return store.dispatch('taskModule/setPartTask', {
+          data: {
+            status: taskDeadline > 0 ? 2 : 6,
+            data: {
+              process_id: task.process_id,
+              task_id: task.id,
+              parent_action: task.id,
+              docs_id: props.data.data.docs_id.map((doc) => doc.id),
+              account_id: task.to_account_id,
+              personal_id: props.data.entity.id,
+              bank_card_id: bankCardId.value ?? null,
+            },
+          },
+        })
+      },
+    })
+
     const clickCheckBtn = async () => {
       if (unConfirmed.value.length) {
         if (comment.value.trim()) {
@@ -177,11 +203,14 @@ const Form1 = defineComponent({
     })
 
     const changeDocs = (data) => {
+      if (data.bank_card_id) {
+        bankCardId.value = data.bank_card_id
+      }
       const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
       let isValid = isFormValid.value
       for (let i = 0; i < docsId.length; i++) {
-        if (data.value && data.value[docsId[i]]) {
-          isValid = data.value[docsId[i]].validate()
+        if (data.formObj.value && data.formObj.value[docsId[i]]) {
+          isValid = data.formObj.value[docsId[i]].validate()
           if (!isValid) {
             break
           }
@@ -190,10 +219,10 @@ const Form1 = defineComponent({
       isFormValid.value = isValid
       if (isFormValid.value) {
         docsId.forEach((item) => {
-          if (data.value[item]) {
+          if (data.formObj.value[item] && item !== 3) {
             finalData.value = {
               ...finalData.value,
-              ...data.value[item].formData,
+              ...data.formObj.value[item].formData,
             }
           }
         })
@@ -201,22 +230,17 @@ const Form1 = defineComponent({
     }
 
     const sendData = async () => {
-      console.log(props.data)
-      const taskDeadline =
-        Date.parse(props.data.task.date_create) +
-        props.data.task.time_execution * 1000 -
-        Date.now()
-      console.log(taskDeadline < 0)
       const requestArr = []
       if (isHasOsnDoc) {
-        // await sendPersonalData()
-        requestArr.push(sendPersonalData())
+        // requestArr.push(sendPersonalData())
+        await sendPersonalData()
       }
-      // await sendPersonalDoc()
-      requestArr.push(sendPersonalDoc())
-      // await setSaveDocs()
-      requestArr.push(setSaveDocs())
+      // requestArr.push(sendPersonalDoc())
+      await sendPersonalDoc()
+      // requestArr.push(setSaveDocs())
+      await setSaveDocs()
       await Promise.all(requestArr)
+      await changeStatusTask()
     }
 
     return {
@@ -224,6 +248,7 @@ const Form1 = defineComponent({
       docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,
       listNames: props.data.data.docs_spr,
+      entity: props.data.entity,
       loading,
       clickCheckBtn,
       addConfirmed,
