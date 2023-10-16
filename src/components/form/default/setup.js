@@ -142,6 +142,7 @@ export default {
     }
     const getData = async () => {
       const [syncForm, lists] = await Promise.all(initPreRequest())
+      console.log(syncForm)
       if (syncForm) {
         for (let formKey in syncForm.data) {
           const field = props.tab.fields.find(
@@ -184,6 +185,7 @@ export default {
       tab: props.tab,
       loading,
       formData,
+      validate,
     })
     const showField = (type, field) => {
       return (

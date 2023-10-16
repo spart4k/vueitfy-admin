@@ -1,9 +1,9 @@
 <template>
   <!--<Layout>-->
-  <div class="d-flex flex-column flex-grow-1 h-100">
+  <div class="d-flex flex-column flex-grow-1 h-100 view-table">
     <v-tabs
       style="flex: unset"
-      v-model="personal.activeTab"
+      v-model="activeTab"
       background-color="transparent"
       color="basil"
       class="p-5"
@@ -12,7 +12,7 @@
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="personal.activeTab">
+    <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="item in personal.tabs" :key="item.options.title">
         <component
           :is="item.type"
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import { personal } from '@/pages'
 
 import TableDefault from '@/components/Table/default/index.vue'
@@ -45,8 +46,10 @@ export default {
     },
   },
   setup() {
+    const activeTab = ref(0)
     return {
       personal,
+      activeTab,
     }
   },
 }

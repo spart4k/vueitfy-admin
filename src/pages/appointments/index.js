@@ -1,5 +1,8 @@
 import filters from './filters'
 import TableDefault from '@/components/Table/default/index.vue'
+import FormDefault from '@/components/form/default/index.vue'
+import FormList from '@/components/form/list/index.vue'
+
 import { required } from '@/utils/validation.js'
 import {
   stringField,
@@ -7,6 +10,7 @@ import {
   autocompleteField,
   //datetimeField,
   dateField,
+  textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
@@ -838,7 +842,7 @@ const config = {
           {
             id: 0,
             name: 'Основные',
-            type: 'FormDefault',
+            type: FormDefault,
             detail: true,
             lists: [
               'vid_vedomost_id',
@@ -1111,13 +1115,21 @@ const config = {
           {
             id: 1,
             name: 'Основные1',
-            type: 'FormList',
+            type: FormList,
             detail: true,
             lists: ['avatar_with_user_key_id'],
             alias: 'personal_target',
             active: false,
+            fromLastTab: [
+              {
+                name: 'personal_id',
+                alias: 'name',
+                nameInTab: 'account_name',
+                type: 'list',
+              },
+            ],
             fields: [
-              stringField({
+              textBlock({
                 label: 'Создал',
                 name: 'account_name',
                 placeholder: '',
@@ -1125,7 +1137,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
                 //validations: { required },
@@ -1189,7 +1201,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 2,
                 },
                 validations: { required },
                 bootstrapClass: [''],
