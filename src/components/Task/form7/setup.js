@@ -5,6 +5,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import moment from 'moment'
 
 const Form7 = defineComponent({
   name: 'Form7',
@@ -19,6 +20,7 @@ const Form7 = defineComponent({
     },
   },
   setup(props) {
+    const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const context = {
       root: {
         store,
@@ -143,6 +145,7 @@ const Form7 = defineComponent({
     }
 
     return {
+      dataRojd,
       docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,
       listNames: props.data.data.docs_spr,

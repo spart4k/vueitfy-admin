@@ -1,6 +1,9 @@
 <template>
   <div>
     <div style="padding: 20px">
+      <v-card-title class="d-flex justify-center">
+        {{ entity.name }} ({{ dataRojd }} г.р)
+      </v-card-title>
       <DocFormWithConfirm
         class="mb-10"
         @change="changeDocs"

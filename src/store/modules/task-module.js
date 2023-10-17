@@ -5,7 +5,7 @@ import {
   setTask,
   setFile,
   updateDataFile,
-  changeStatusAndData,
+  // changeStatusAndData,
   putTask,
 } from '@/api/TaskService'
 //import axios from 'axios'
@@ -28,7 +28,7 @@ const taskModule = {
 
     async changeStatusTasks(_, data) {
       console.log(data)
-      const result = await changeStatusAndData('task/update/status', data.data)
+      // const result = await changeStatusAndData('task/update/status', data.data) // TODO: определить формат
       console.log(data)
       const result = await putTask('task/update/status', data)
       console.log(result)
@@ -103,6 +103,18 @@ const taskModule = {
 
     async getPaymentId(_, url) {
       const result = await getTask('get/payment/' + url)
+      console.log(result)
+      return result
+    },
+
+    async setUserKey(_, data) {
+      const result = await setTask('set/data/user_keys', data)
+      console.log(result)
+      return result
+    },
+
+    async addKeyToPersonal(_, data) {
+      const result = await setTask('set/set/personal/add_key_to_personal', data)
       console.log(result)
       return result
     },

@@ -3,6 +3,7 @@ import DocFormWithConfirm from '@/components/Task/el/DocFormWithConfirm/index.vu
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import moment from 'moment/moment'
 
 const Form2 = defineComponent({
   name: 'Form2',
@@ -24,6 +25,7 @@ const Form2 = defineComponent({
     }
     const finalData = ref({})
     const isFormValid = ref(false)
+    const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     console.log(props.data)
     const changeDocs = (data) => {
       finalData.value = data
@@ -104,6 +106,8 @@ const Form2 = defineComponent({
     }
 
     return {
+      dataRojd,
+      entity: props.data.entity,
       docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,
       listNames: props.data.data.docs_spr,
