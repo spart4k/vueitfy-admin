@@ -1,24 +1,24 @@
 import { get, post, put, del } from '@/api/axios'
 
-export const getBoxes = (data) => post('box', data)
+export const getBoxes = (data) => post('mail/box', data)
 
-export const getFolders = () => get('folders')
+export const getFolders = () => get('mail/folders')
 
-export const getTags = () => get('tags')
+export const getTags = () => get('mail/tags')
 
-export const getNotRead = () => get('mails/not_read')
+export const getNotRead = () => get('mail/not_read')
 
-export const createBox = (data) => post('box/new', data)
+export const createBox = (data) => post('mail/box/new', data)
 
-export const createFolder = (data) => post('folder', data)
+export const createFolder = (data) => post('mail/folder', data)
 
-export const editBox = (data, params) => put(`box/${params}`, data)
+export const editBox = (data, params) => put(`mail/box/${params}`, data)
 
-export const editFolder = (data, params) => put(`folder/${params}`, data)
+export const editFolder = (data, params) => put(`mail/folder/${params}`, data)
 
-export const deleteBox = (data) => del(`box/${data}`)
+export const deleteBox = (data) => del(`mail/box/${data}`)
 
-export const deleteFolder = (data) => del(`folder/del/${data}`)
+export const deleteFolder = (data) => del(`mail/folder/del/${data}`)
 
 export const getBoxMails = (data, params) => post(`mail/box/${params}`, data)
 
@@ -28,20 +28,21 @@ export const getFolderMails = (data, params) =>
 export const changeMail = (data, params) => put(`mail/${params}`, data)
 
 export const changeLettersContainer = (data, type, id) =>
-  put(`mails/change/${type}/${id}`, data)
+  put(`mail/change/${type}/${id}`, data)
 
-export const filterMail = (data) => post('filter/mail', data)
+export const filterMail = (data) => post('mail/filter/mail', data)
 
-export const countFilter = (data, type) => post(`count/${type}`, data)
+export const countFilter = (data, type) => post(`mail/count/${type}`, data)
 
 export const getMail = (id) => get(`mail/${id}`)
 
-export const getSendedMessage = (id) => get(`send_message/${id}`)
+export const getSendedMessage = (id) => get(`mail/send_message/${id}`)
 
-export const sendMessage = (data, config) => post('send_message', data, config)
+export const sendMessage = (data, config) =>
+  post('mail/send_message', data, config)
 
 export const getSendedMessages = (data, params) =>
-  post(`send_messages/${params}`, data)
+  post(`mail/send_messages/${params}`, data)
 
 export const getDeletedMessages = (data, params) =>
-  post(`mails/del/${params}`, data)
+  post(`mail/del/${params}`, data)

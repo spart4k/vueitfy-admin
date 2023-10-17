@@ -320,154 +320,83 @@ const config = {
   head: [
     {
       title: 'id',
-      type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'p.id',
       isShow: true,
-      width: '40',
-      value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Статус',
-      type: 'default',
-      align: 'center',
+      width: '20px',
       fixed: {
-        value: false,
+        value: true,
         position: 'left',
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'ps.status',
-      value: 'status_name',
-      search: {
-        field: '',
-        isShow: true,
       },
     },
     {
       title: 'ФИО',
-      type: 'default',
       align: 'center',
+      isShow: true,
+      width: '65px',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+    },
+    {
+      title: 'Задолжность',
+      align: 'center',
+      isShow: true,
+      width: '100px',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+    },
+    {
+      title: '01',
+      align: 'center',
+      isShow: true,
+      width: '50px',
       fixed: {
         value: false,
         position: 'left',
       },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
+    },
+    {
+      title: '02',
+      align: 'center',
       isShow: true,
-      width: '150',
-      alias: 'p.name',
-      value: 'name',
-      search: {
-        field: '',
-        isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
       },
     },
     {
-      title: 'Телефон',
-      type: 'default',
+      title: '03',
       align: 'center',
+      isShow: true,
+      width: '50px',
       fixed: {
         value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'telefon',
-      alias: 'p.telefon',
-      search: {
-        field: '',
-        isShow: true,
+        position: 'left',
       },
     },
     {
-      title: 'Примечание',
-      type: 'default',
+      title: 'Объект',
       align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
       isShow: true,
-      width: '150',
-      value: 'doljnost_name',
-      alias: 'p.comment',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
+      width: '60px',
       fixed: {
-        value: false,
+        value: true,
         position: 'right',
       },
+    },
+    {
+      title: 'Качалка',
+      align: 'center',
       isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
+      width: '60px',
+      fixed: {
+        value: true,
+        position: 'right',
+      },
     },
   ],
   data: {

@@ -16,7 +16,7 @@
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">
           <div class="v-sidebar-container-user-info_name">Dasha Tsaritsa</div>
-          <div class="v-sidebar-container-user-info_email">carica@mail.ru</div>
+          <div class="v-sidebar-container-user-info_email">ferz'@mail.ru</div>
           <!-- {{ openMenu }}{{ miniMenu }} -->
         </div>
       </div>

@@ -21,8 +21,15 @@
     </v-badge>
 
     <v-menu offset-y nudge-bottom="10">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" v-on="on" fab small class="v-topbar-menu">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          v-on="on"
+          v-bind="attrs"
+          fab
+          small
+          class="v-topbar-menu"
+        >
           <span class="line"></span>
           <span class="line"></span>
         </v-btn>
