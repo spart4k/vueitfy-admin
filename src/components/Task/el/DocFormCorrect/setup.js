@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -49,8 +49,8 @@ const bankItemsSpr = {
   },
 }
 
-const docForm = defineComponent({
-  name: 'DocForm',
+const DocFormCorrect = defineComponent({
+  name: 'DocFormCorrect',
   components: {
     FormError,
     DateTimePicker,
@@ -324,6 +324,7 @@ const docForm = defineComponent({
         },
       }),
     })
+    const correctedDocs = ref({})
 
     const bankCardId = ref(0)
 
@@ -351,26 +352,22 @@ const docForm = defineComponent({
       bankCardId.value = result
       emit('change', {
         bank_card_id: bankCardId.value,
-        formObj: formObj,
+        correctedDocs: correctedDocs.value,
       })
     }
 
-    watch(
-      formObj,
-      () => {
-        emit('change', {
-          bank_card_id: bankCardId.value,
-          formObj: formObj,
-        })
-      },
-      { deep: true }
-    )
-    return {
-      formObj,
-      bankItems,
-      sendBankCard,
-      bankCardId,
+    const confirmCorrect = (doc) => {
+      // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
+      correctedDocs.value = {
+        ...correctedDocs.value,
+        [doc.id]: formObj.value[doc.doc_id].getData(),
+      }
+      emit('change', {
+        bank_card_id: bankCardId.value,
+        correctedDocs: correctedDocs.value,
+      })
     }
+    return { formObj, confirmCorrect, correctedDocs, sendBankCard, bankItems }
   },
 })
-export default docForm
+export default DocFormCorrect

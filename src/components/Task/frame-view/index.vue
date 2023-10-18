@@ -5,7 +5,7 @@
     </div>
     <v-row class="task__title">
       <v-card-title class="title py-5">
-        {{ data.task.task_type_id }}
+        {{ taskName }}
       </v-card-title>
     </v-row>
     <v-divider></v-divider>
@@ -25,12 +25,33 @@
         <span :class="`circle circle--${data.task.status}`"></span>
         <span>{{ data.task.status }}</span>
       </v-row>
+      <v-row v-if="taskDeadline" class="task__info-row" align="center">
+        <v-icon class="mr-5" small>$IconMain</v-icon>
+        <span class="timer">{{ timerString }}</span>
+      </v-row>
     </div>
     <v-divider></v-divider>
     <div class="task-slot">
-      <FirstPopupView :data="data" ref="FirstPopupView"></FirstPopupView>
-      <!--      <ThirdPopupView />-->
-      <!--      <FourthPopupView />-->
+      <!--Внесение-->
+      <Form1 v-if="data.task.task_type_id === 1" :data="data"></Form1>
+      <!--Подтверждение-->
+      <Form2 v-if="data.task.task_type_id === 2" :data="data"></Form2>
+      <!--Исправление-->
+      <Form7 v-if="data.task.task_type_id === 7" :data="data"></Form7>
+      <!--Подтверждение назначения-->
+      <Form15 v-if="data.task.task_type_id === 15" :data="data" />
+      <!--Внесение ключа-->
+      <Form20 v-if="data.task.task_type_id === 20" :data="data" />
+      <!--Подтверждение ключа-->
+      <Form21 v-if="data.task.task_type_id === 21" :data="data" />
+      <!--Согласование начисления-->
+      <Form27 v-if="data.task.task_type_id === 27" :data="data" />
+      <!--Корректировка начисления-->
+      <Form28 v-if="data.task.task_type_id === 28" :data="data" />
+      <!--Корректировка документов-->
+      <Form8 v-if="data.task.task_type_id === 8" :data="data"></Form8>
+      <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
+      <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
     </div>
   </div>
 </template>

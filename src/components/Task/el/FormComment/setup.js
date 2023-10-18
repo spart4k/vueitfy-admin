@@ -7,6 +7,10 @@ const formComment = defineComponent({
       type: String,
       default: '',
     },
+    errors: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
