@@ -5,7 +5,6 @@ import {
   setTask,
   setFile,
   updateDataFile,
-  changeStatusAndData,
   putTask,
 } from '@/api/TaskService'
 //import axios from 'axios'
@@ -27,14 +26,16 @@ const taskModule = {
     },
 
     async changeStatusTasks(_, data) {
-      console.log(data)
-      const result = await changeStatusAndData('task/update/status', data.data)
-      console.log(data)
       const result = await putTask('task/update/status', data)
       console.log(result)
       return result
     },
 
+    // async changeStatusTasks(_, data) {
+    //   console.log(data)
+    //   const result = await changeStatusAndData('task/update/status', data.data)
+    //   console.log(data)
+    // },
     // Здесь методы для отправки фотки на сервер с доп. запросом об инфе
 
     // =============================================================
