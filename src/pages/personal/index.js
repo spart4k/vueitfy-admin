@@ -348,116 +348,116 @@ const config = {
         position: 'left',
       },
     },
-    {
-      title: '01',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '02',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '03',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '04',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '05',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '06',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '07',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '08',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '09',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '10',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
-    {
-      title: '11',
-      align: 'center',
-      isShow: true,
-      width: '50px',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-    },
+    // {
+    //   title: '01',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '02',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '03',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '04',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '05',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '06',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '07',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '08',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '09',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '10',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
+    // {
+    //   title: '11',
+    //   align: 'center',
+    //   isShow: true,
+    //   width: '50px',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    // },
     {
       title: 'Объект',
       align: 'center',

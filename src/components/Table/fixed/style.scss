@@ -101,6 +101,7 @@ $tableFooterHeight: 85px;
           &--fixed {
             position: sticky;
             background-color: #fff;
+            min-width: 150px;
             // right: 0;
             // top: 0;
             // left: 0;
@@ -198,17 +199,17 @@ $tableFooterHeight: 85px;
       overflow: auto;
       //width: 2500px;
       width: 100%;
-      box-sizing: content-box;
+      border: 1px solid $borderColor;
+      border-top: 0;
+      border-collapse: collapse;
       table {
         //display: flex;
         //flex-direction: column;
-        border: 1px solid $borderColor;
-        border-top: 0;
-        border-collapse: collapse;
+        // border: 1px solid $borderColor;
         flex: 1;
         // table-layout: fixed;
-        // width: 100%;
-        width: 1000px;
+        width: 100%;
+        // width: 1000px;
         //position: relative;
       }
     }
@@ -236,45 +237,57 @@ $tableFooterHeight: 85px;
       }
     }
     &-panel {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      flex-wrap: wrap;
       padding: 5px;
       background-color: rgb(225, 225, 225);
       min-height: $tablePanelHeight;
       background-color: var(--v-background-base);
       border: 1px solid $borderColor;
       border-bottom: 0;
-      &__search {
+      &-items {
         display: flex;
         align-items: baseline;
-        @media (max-width: $mobileWidth) {
-          justify-content: space-between;
-          width: 100%;
-          margin-bottom: 10px;
-        }
-      }
-      &__actions {
-        display: flex;
+        justify-content: space-between;
         flex-wrap: wrap;
-        > button, div {
-          &:not(:last-child) {
-            margin-right: 5px;
+        &__search {
+          display: flex; 
+          align-items: baseline;
+          @media (max-width: $mobileWidth) {
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+          }
+        }
+        &__actions {
+          display: flex;
+          flex-wrap: wrap;
+          > button, div {
+            &:not(:last-child) {
+              margin-right: 5px;
+            }
+          }
+          @media (max-width: $mobileWidth) {
+            //justify-content: space-between;
+            //width: 100%;
           }
         }
         @media (max-width: $mobileWidth) {
-          //justify-content: space-between;
-          //width: 100%;
+          flex-direction: column-reverse;
         }
-      }
-      @media (max-width: $mobileWidth) {
-        flex-direction: column-reverse;
       }
       &--fixed {
         top: 0;
         position: sticky;
         z-index: 2;
+      }
+      &-date {
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        font-weight: 500;
+        &_month {
+          width: 160px;
+          text-align: center;
+        }
       }
     }
     &-footer {

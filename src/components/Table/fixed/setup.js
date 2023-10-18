@@ -89,6 +89,24 @@ const table = {
     const popupForm = ref({
       isShow: false,
     })
+    const currentDate = ref({
+      month: new Date().getMonth(),
+      monthArray: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
+      year: new Date().getFullYear(),
+    })
     const cells = ref(null)
     const mainTable = ref(null)
     const wrapingRow = () => {
@@ -456,24 +474,56 @@ const table = {
       let right = 0
       let all = 0
       cells?.value?.forEach((item, index) => {
-        all += Number(props.options.head[index].width.replace('px', ''))
-        if (props.options.head[index].fixed.value) {
-          if (props.options.head[index].fixed.position === 'left') {
+        all += Number(getComputedStyle(item).width.replace('px', ''))
+        if (props?.options?.head[index]?.fixed?.value) {
+          if (props?.options?.head[index]?.fixed?.position === 'left') {
             item.style.left = `${left}px`
-            left += item.offsetWidth
+            left += Number(getComputedStyle(item).width.replace('px', ''))
           }
         }
       })
       for (let index = cells?.value?.length - 1; index >= 0; index--) {
-        if (props.options.head[index].fixed.value) {
-          if (props.options.head[index].fixed.position === 'right') {
+        if (props?.options?.head[index]?.fixed?.value) {
+          if (props?.options?.head[index]?.fixed?.position === 'right') {
             cells.value[index].style.right = `${right}px`
-            right += cells?.value[index]?.offsetWidth
+            right += Number(getComputedStyle(cells?.value[index]).width.replace('px', ''))
           }
         }
       }
       mainTable.value.style.width = `${all}px`
-      console.log(all, mainTable.value.style.width)
+    }
+    const addDayOfMonth = () => {
+      props.options.head = props.options.head.filter((item) => !item.added)
+      const date = new Date(currentDate.value.year, currentDate.value.month, 1)
+      let lastLeftIndex = props.options.head.findLastIndex((x) => x.fixed.position === 'left')
+      while (date.getMonth() === currentDate.value.month) {
+        props.options.head.splice(lastLeftIndex + 1, 0, {
+          title: `${new Date(date).getDate()}`,
+          align: 'center',
+          isShow: true,
+          width: '50px',
+          added: true,
+          fixed: {
+            value: false,
+          },
+        })
+        lastLeftIndex += 1
+        date.setDate(date.getDate() + 1)
+      }
+      countingDistances()
+      // console.log(days)
+    }
+    const changeMonth = async (val) => {
+      currentDate.value.month += val
+      if (currentDate.value.month < 0) {
+        currentDate.value.month = 11
+        currentDate.value.year -= 1
+      } else if (currentDate.value.month > 11) {
+        currentDate.value.month = 0
+        currentDate.value.year += 1
+      }
+      addDayOfMonth()
+      await getItems()
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -509,7 +559,8 @@ const table = {
     )
     // HOOKS
     onMounted(async () => {
-      countingDistances()
+
+      addDayOfMonth()
       initHeadParams()
       await getItems()
       
@@ -555,6 +606,7 @@ const table = {
       isMobile,
       cells,
       mainTable,
+      currentDate,
       // METHODS
       wrapingRow,
       openChildRow,
@@ -572,6 +624,8 @@ const table = {
       getItems,
       watchScroll,
       countingDistances,
+      addDayOfMonth,
+      changeMonth,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
