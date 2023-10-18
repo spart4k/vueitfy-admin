@@ -1,13 +1,16 @@
 <template>
   <div class="layout-default d-flex flex-grow-1">
-    <div class="sidebar-container">
+    <div class="navbar">
       <Sidebar :navData="navData"></Sidebar>
     </div>
     <!-- <div
       id="bg__black"
       :class="isOpenMenu ? 'bg__black--active' : 'bg__black'"
     ></div> -->
-    <div class="d-flex flex-column flex-grow-1">
+    <div
+      :style="{ overflowX: 'hidden' }"
+      class="d-flex flex-column flex-grow-1"
+    >
       <Topbar :navData="navData"></Topbar>
       <v-main class="d-flex flex-column flex-grow-1">
         <slot></slot>

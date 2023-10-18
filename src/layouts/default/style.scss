@@ -1,12 +1,13 @@
 .layout {
   &-default {
-    max-height: 100%;
+    height: 100%;
   }
 }
-.sidebar-container {
+.navbar {
   z-index: $navbar-z;
   height: 100%;
 }
+
 .bg__black {
   width           : 100vw;
   min-height      : 100vh;

@@ -35,7 +35,6 @@
       <div class="v-edit-item_title mt-3">Кому:</div>
       <div class="v-edit-item-input">
         <v-combobox
-          ref="test"
           v-model="$props.data.users"
           hide-selected
           :items="userArray"
@@ -46,7 +45,6 @@
           clearable
           return-object
           :rules="rules"
-          @keydown="zxc"
         >
           <template v-slot:item="data">
             <v-avatar

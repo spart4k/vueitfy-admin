@@ -33,6 +33,7 @@ export default {
 
     const store = useStore()
     const openMenu = computed(() => store?.state?.openMenu)
+    const miniMenu = computed(() => store?.state?.miniMenu)
 
     const itemSecondMenu = ref({
       edit: {
@@ -68,6 +69,8 @@ export default {
     return {
       isMobile,
       messages,
+      openMenu,
+      miniMenu,
       pageName,
       itemSecondMenu,
 

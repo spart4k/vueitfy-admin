@@ -29,14 +29,17 @@
 import { ref } from 'vue'
 import { personal } from '@/pages'
 
-import TableDefault from '@/components/Table/default/index.vue'
+// import TableDefault from '@/components/Table/default/index.vue'
+import TableFixed from '@/components/Table/fixed/index.vue'
+
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 
 export default {
   name: 'Personal-View',
   components: {
-    TableDefault,
+    // TableDefault,
+    TableFixed,
     //Layout,
   },
   methods: {
