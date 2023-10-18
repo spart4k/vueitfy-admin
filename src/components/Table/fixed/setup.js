@@ -90,6 +90,7 @@ const table = {
       isShow: false,
     })
     const cells = ref(null)
+    const mainTable = ref(null)
     const wrapingRow = () => {
       const table = document.querySelector(props.options.selector)
       tablePosition.value = table.getBoundingClientRect().x
@@ -453,17 +454,26 @@ const table = {
     const countingDistances = () => {
       let left = 0
       let right = 0
+      let all = 0
       cells?.value?.forEach((item, index) => {
+        all += Number(props.options.head[index].width.replace('px', ''))
         if (props.options.head[index].fixed.value) {
           if (props.options.head[index].fixed.position === 'left') {
             item.style.left = `${left}px`
             left += item.offsetWidth
-          } else if (props.options.head[index].fixed.position === 'right') {
-            item.style.right = `${right}px`
-            right += item.offsetWidth
           }
         }
       })
+      for (let index = cells?.value?.length - 1; index >= 0; index--) {
+        if (props.options.head[index].fixed.value) {
+          if (props.options.head[index].fixed.position === 'right') {
+            cells.value[index].style.right = `${right}px`
+            right += cells?.value[index]?.offsetWidth
+          }
+        }
+      }
+      mainTable.value.style.width = `${all}px`
+      console.log(all, mainTable.value.style.width)
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -544,6 +554,7 @@ const table = {
       filter,
       isMobile,
       cells,
+      mainTable,
       // METHODS
       wrapingRow,
       openChildRow,

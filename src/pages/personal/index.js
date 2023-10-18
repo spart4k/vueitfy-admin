@@ -322,7 +322,7 @@ const config = {
       title: 'id',
       align: 'center',
       isShow: true,
-      width: '20px',
+      width: '50px',
       fixed: {
         value: true,
         position: 'left',
@@ -332,7 +332,7 @@ const config = {
       title: 'ФИО',
       align: 'center',
       isShow: true,
-      width: '65px',
+      width: '100px',
       fixed: {
         value: true,
         position: 'left',
@@ -342,7 +342,7 @@ const config = {
       title: 'Задолжность',
       align: 'center',
       isShow: true,
-      width: '100px',
+      width: '200px',
       fixed: {
         value: true,
         position: 'left',
@@ -379,7 +379,97 @@ const config = {
       },
     },
     {
+      title: '04',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
+      title: '05',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
+      title: '06',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
+      title: '07',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
+      title: '08',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
+      title: '09',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
+      title: '10',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
+      title: '11',
+      align: 'center',
+      isShow: true,
+      width: '50px',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+    },
+    {
       title: 'Объект',
+      align: 'center',
+      isShow: true,
+      width: '60px',
+      fixed: {
+        value: true,
+        position: 'right',
+      },
+    },
+    {
+      title: 'Гриша',
       align: 'center',
       isShow: true,
       width: '60px',
