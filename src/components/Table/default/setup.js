@@ -42,7 +42,7 @@ const table = {
       default: () => {},
     },
     routeParam: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
   },

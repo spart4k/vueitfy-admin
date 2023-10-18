@@ -93,9 +93,11 @@ export default {
       console.log('test')
       if (typeof proxyVal.value === 'string') {
         let url = proxyVal.value
-        url = 'https://personal-crm.ru' + url
+        //url = 'https://personal-crm.ru' + url
+        url = 'http://10.63.1.132:5000' + '/file/get' + url
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
+
         const file = { name: filename, size: 12322, type: 'image/' + type }
         console.log(type)
         console.log(file, url)
@@ -130,7 +132,7 @@ export default {
     onMounted(() => {
       console.log(dropzone.value)
       if (proxyVal.value) {
-        //fillPreview()
+        fillPreview()
       }
       //value.value = dropzone.value.dropzone.files
       //const file = { size: 123, name: 'Icon', type: 'image/png' }
