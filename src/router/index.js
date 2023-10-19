@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PaymentView from '../views/PaymentView.vue'
 import PersonalView from '../views/PersonalView.vue'
+import PivotView from '../views/PivotView.vue'
 import AppointmentsView from '../views/Appointments.vue'
 import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
@@ -76,6 +77,24 @@ const routes = [
     children: [
       {
         name: 'personal/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/pivot',
+    name: 'pivot',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PivotView,
+    children: [
+      {
+        name: 'pivot/:id',
         path: ':id',
         component: Detail,
       },

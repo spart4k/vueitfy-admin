@@ -71,13 +71,14 @@
                   head.class,
                 ]"
                 :style="{
-                  width: head.width,
+                  minWidth: `${head.width}px`,
+                  width: `${head.width}px`,
                 }"
                 v-show="head.isShow"
                 :id="head.value + '-table-header'"
                 class="v-table-header-row-cell"
-                v-for="(head, index) in options.head"
-                :key="index"
+                v-for="head in options.head"
+                :key="head.id"
                 ref="cells"
               >
                 <div class="v-table-header-row-cell-wrap">

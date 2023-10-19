@@ -12,7 +12,9 @@
     >
       <div class="v-sidebar-container-user">
         <div class="v-sidebar-container-user_image">
-          <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+          <v-img
+            src="https://papik.pro/uploads/posts/2022-08/thumbs/1661424622_35-papik-pro-p-stikeri-papich-png-61.png"
+          ></v-img>
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">
           <div class="v-sidebar-container-user-info_name">Dasha Tsaritsa</div>

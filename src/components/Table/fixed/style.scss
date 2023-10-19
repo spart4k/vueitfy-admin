@@ -101,7 +101,7 @@ $tableFooterHeight: 85px;
           &--fixed {
             position: sticky;
             background-color: #fff;
-            min-width: 150px;
+            // min-width: 150px;
             // right: 0;
             // top: 0;
             // left: 0;
@@ -206,9 +206,10 @@ $tableFooterHeight: 85px;
         //display: flex;
         //flex-direction: column;
         // border: 1px solid $borderColor;
-        flex: 1;
+        // flex: 1;
         // table-layout: fixed;
-        width: 100%;
+        // width: 100%;
+        // width: 2101.11px !important;
         // width: 1000px;
         //position: relative;
       }

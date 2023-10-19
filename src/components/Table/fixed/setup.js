@@ -1,8 +1,9 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch } from 'vue'
+import Vue, { onMounted, ref, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
+import { v4 as uuidv4 } from 'uuid'
 
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
@@ -469,24 +470,25 @@ const table = {
         addItem()
       }
     }
-    const countingDistances = () => {
+    const countingDistances = () => { 
       let left = 0
       let right = 0
       let all = 0
       cells?.value?.forEach((item, index) => {
-        all += Number(getComputedStyle(item).width.replace('px', ''))
+        all += Number(props?.options?.head[index].width)
         if (props?.options?.head[index]?.fixed?.value) {
           if (props?.options?.head[index]?.fixed?.position === 'left') {
             item.style.left = `${left}px`
-            left += Number(getComputedStyle(item).width.replace('px', ''))
+            left += Number(props?.options?.head[index].width)
           }
         }
       })
-      for (let index = cells?.value?.length - 1; index >= 0; index--) {
+
+      for (let index = props?.options?.head.length - 1; index >= 0; index--) {
         if (props?.options?.head[index]?.fixed?.value) {
           if (props?.options?.head[index]?.fixed?.position === 'right') {
-            cells.value[index].style.right = `${right}px`
-            right += Number(getComputedStyle(cells?.value[index]).width.replace('px', ''))
+            cells.value.find(x => x.innerText === props?.options?.head[index].title).style.right = `${right}px`
+            right += Number(props?.options?.head[index].width)
           }
         }
       }
@@ -500,9 +502,10 @@ const table = {
         props.options.head.splice(lastLeftIndex + 1, 0, {
           title: `${new Date(date).getDate()}`,
           align: 'center',
-          isShow: true,
-          width: '50px',
+          isShow: true, 
+          width: '50',  
           added: true,
+          id: uuidv4(),
           fixed: {
             value: false,
           },
@@ -510,8 +513,13 @@ const table = {
         lastLeftIndex += 1
         date.setDate(date.getDate() + 1)
       }
-      countingDistances()
-      // console.log(days)
+      nextTick(() => {
+        let all = 0
+        cells?.value?.forEach((item, index) => {
+          all += Number(props?.options?.head[index].width)
+        })
+        mainTable.value.style.width = `${all}px`
+      })
     }
     const changeMonth = async (val) => {
       currentDate.value.month += val
@@ -522,6 +530,9 @@ const table = {
         currentDate.value.month = 0
         currentDate.value.year += 1
       }
+      // setTimeout(() => {
+      //   countingDistances()
+      // }, 0)
       addDayOfMonth()
       await getItems()
     }
@@ -563,6 +574,7 @@ const table = {
       addDayOfMonth()
       initHeadParams()
       await getItems()
+      countingDistances()
       
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
