@@ -6,13 +6,18 @@ $tableFooterHeight: 85px;
   &-table {
     margin: 10px 10px 30px 10px;
     //position: relative;
-    overflow: auto;
+    //overflow: auto;
+    height: 100%;
+    min-height: 400px;
+    height: calc(100% - $tableFooterHeight);
+    position: relative;
     &-header {
       //border: 1px solid $borderColor;
       //box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
       box-shadow: 0px 4px 10px -4px rgba(34, 60, 80, 0.1);
       //border-top: 1px solid $borderColor;
       background-color: var(--v-background-base);
+      white-space: nowrap;
       &-row {
         //border: 1px solid $borderColor;
         &-cell {
@@ -178,10 +183,13 @@ $tableFooterHeight: 85px;
         }
 
       }
+      &-wrap {
+        height: calc(100% - $tableFooterHeight);
+      }
     }
     &-wrap {
       display: flex;
-      flex: 1;
+      //flex: 1;
       //height: calc(100% - $tablePanelHeight - $tableFooterHeight);
       overflow: auto;
       //width: 2500px;
@@ -195,7 +203,7 @@ $tableFooterHeight: 85px;
         flex: 1;
         // table-layout: fixed;
         width: 100%;
-        position: relative;
+        //position: relative;
       }
     }
     &-loading {

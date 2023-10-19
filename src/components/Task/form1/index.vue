@@ -18,6 +18,9 @@
         <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
       </div>
       <div>
+        <v-card-title class="d-flex justify-center">
+          {{ entity.name }} ({{ dataRojd }} г.р)
+        </v-card-title>
         <v-expansion-panels v-if="isHasOsnDoc">
           <v-expansion-panel>
             <v-expansion-panel-header>

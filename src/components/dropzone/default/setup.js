@@ -45,11 +45,13 @@ export default {
     //const value = ref([]
     const proxyVal = ref(props.value)
     const sendingFile = async (files) => {
-      console.log(files)
       if (props.options.withoutSave) {
         console.log('process')
-        //await loadFile(files)
+        await loadFile(files)
         //dropzone.value.processQueue()
+      } else {
+        console.log(files)
+        emit('addFiles', files)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
@@ -63,13 +65,18 @@ export default {
       //console.log(dropzone.value.getAcceptedFiles())
       //dropzone.value.processQueue()
       //value.value.push(files)
-      console.log(dropzone.value)
+      // console.log(dropzone.value)
     }
     const showSuccess = () => {
       //console.log(file)
       //dropzone.value.processQueue()
     }
-    const removed = () => {
+    const removed = (file) => {
+      if (props.options.withoutSave) {
+        console.log('remove')
+      } else {
+        emit('removeFile', file)
+      }
       //console.log(value)
       //const { uuid } = file.upload
       //console.log(uuid)
@@ -86,9 +93,11 @@ export default {
       console.log('test')
       if (typeof proxyVal.value === 'string') {
         let url = proxyVal.value
-        url = 'https://personal-crm.ru' + url
+        //url = 'https://personal-crm.ru' + url
+        url = 'http://10.63.1.132:5000' + '/file/get' + url
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
+
         const file = { name: filename, size: 12322, type: 'image/' + type }
         console.log(type)
         console.log(file, url)
@@ -123,7 +132,7 @@ export default {
     onMounted(() => {
       console.log(dropzone.value)
       if (proxyVal.value) {
-        //fillPreview()
+        fillPreview()
       }
       //value.value = dropzone.value.dropzone.files
       //const file = { size: 123, name: 'Icon', type: 'image/png' }

@@ -1,13 +1,10 @@
 <template>
   <div>
     <div style="padding: 20px">
-      <v-card-title class="py-1 justify-center">
-        Назначение <a href="#">&nbsp;№234234&nbsp;</a> на дату 07.02.2023
-      </v-card-title>
       <FormError v-if="data.data.dop_data" class="mb-5">
         {{ data.data.dop_data }}
       </FormError>
-      <div class="mb-3">Внесите данные личного ключа:</div>
+      <div class="mb-3">Проверьте данные личного ключа:</div>
       <v-form>
         <v-row>
           <span>Скан:</span>
@@ -52,11 +49,23 @@
         </v-row>
       </v-form>
       <v-divider class="mb-5"></v-divider>
-      <FormComment v-model="keyForm.comment"></FormComment>
+      <v-textarea
+        rows="2"
+        clearable
+        label="Комментарий"
+        v-model="keyForm.comment"
+        :error-messages="keyFormErrors.comment"
+      ></v-textarea>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn :disabled="isBtnDisabled" class="mr-2" small color="info">
+      <v-btn
+        @click="completeTask"
+        :disabled="isBtnDisabled"
+        class="mr-2"
+        small
+        color="info"
+      >
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>

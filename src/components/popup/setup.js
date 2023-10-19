@@ -4,7 +4,7 @@ import { defineComponent } from 'vue'
 import Task from '@/components/Task/frame-view/index.vue'
 // import { tableApi } from '@/api'
 // import vButton from '@/components/button/index.vue'
-const popup = defineComponent({
+const popup = {
   name: 'Popup',
   props: {
     closeButton: {
@@ -20,8 +20,8 @@ const popup = defineComponent({
       default: {},
     },
   },
-  setup(props, ctx) {
+  setup() {
     return {}
   },
-})
+}
 export default popup

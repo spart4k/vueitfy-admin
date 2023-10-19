@@ -11,7 +11,7 @@
       @vdropzone-success="showSuccess"
       @vdropzone-removed-file="removed"
     />
-    {{ value }}
+    <!-- {{ value }} -->
     <!--<img :src="'https://personal-crm.ru' + proxyVal" alt="" />-->
   </div>
 </template>

@@ -749,10 +749,10 @@ const config = {
             bootstrapClass: [''],
             options: {
               withoutSave: true,
-              folder: 'act',
+              folder: 'tmp',
             },
             value: [
-              'https://upload.wikimedia.org/wikipedia/commons/5/50/1_%D0%9A%D0%B0%D1%81%D1%82%D0%B0_photo_%40katya_mozina_001.jpg',
+              'http://10.63.1.132:5000/file/get/tmp/Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg',
             ],
           }),
           stringField({

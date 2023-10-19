@@ -7,46 +7,91 @@
           :options="{ width: '600px', portal: 'table-detail' }"
           v-if="true"
         >
-          <div class="task">
+          <div style="padding: 20px">
             <v-row>
-              <v-col cols="6">
-                <v-select
-                  label="Select"
-                  :items="[
-                    'California',
-                    'Colorado',
-                    'Florida',
-                    'Georgia',
-                    'Texas',
-                    'Wyoming',
-                  ]"
-                ></v-select
-              ></v-col>
-              <v-col cols="3"> <v-text-field disabled></v-text-field></v-col>
-              <v-col cols="3"> <v-text-field></v-text-field></v-col>
-            </v-row>
-            <v-divider></v-divider>
-            <div
-              style="
-                padding: 15px;
-                background-color: gray;
-                color: white;
-                font-size: 24px;
-                font-weight: 600;
-              "
-            >
-              Какие-то данные
-            </div>
-            <v-divider></v-divider>
-            <v-row>
-              <v-col>
-                <span> Приложите билет(ы): </span>
-                <Dropzone :options="field.options"></Dropzone>
+              <v-col cols="12">
+                <div style="display: flex; justify-content: center">
+                  <v-btn color="info"> Открыть </v-btn>
+                </div>
               </v-col>
             </v-row>
-            <span style="font-size: 24px; font-weight: 600"
-              >Контактная информация</span
-            >
+
+            <v-row>
+              <v-col>
+                <div class="mb-10">
+                  <span style="font-size: 20px">Приложите документы</span>
+                  <v-expansion-panels>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>
+                        <v-row align="center">
+                          <span>Паспорт</span>
+                        </v-row>
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <Dropzone :options="options"></Dropzone>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>
+                        <v-row align="center">
+                          <span>СНИЛС</span>
+                        </v-row>
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <Dropzone :options="options"></Dropzone>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>
+                        <v-row align="center">
+                          <span>Паспорт стр. 2</span>
+                        </v-row>
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <Dropzone :options="options"></Dropzone>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>
+                        <v-row align="center">
+                          <span>ИНН</span>
+                        </v-row>
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <Dropzone :options="options"></Dropzone>
+                      </v-expansion-panel-content> </v-expansion-panel
+                  ></v-expansion-panels>
+                </div>
+
+                <v-divider></v-divider>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
+                <div style="display: flex; justify-content: center">
+                  <v-btn color="success"> Приложить </v-btn>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <Dropzone :options="options"></Dropzone>
+              </v-col>
+              <v-col cols="6">
+                <Dropzone :options="options"></Dropzone>
+              </v-col>
+            </v-row>
+            <v-row class="py-2" justify="end">
+              <v-btn color="info">
+                <v-icon left> $IconMain </v-icon>
+                Завершить
+              </v-btn>
+              <v-btn color="blue-grey">
+                <v-icon left> $IconMain </v-icon>
+                Закрыть
+              </v-btn>
+            </v-row>
           </div>
         </Popup>
       </v-col>
@@ -67,7 +112,13 @@ export default {
     Dropzone,
   },
   setup() {
-    return {}
+    let options = {
+      withoutSave: true,
+      folder: 'tmp',
+    }
+    return {
+      options,
+    }
   },
 }
 </script>

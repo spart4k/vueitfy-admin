@@ -14,14 +14,14 @@
         overflow: auto;
         &-container {
             // padding: 5px;
-            margin: 100px 0 100px 0;
+            //margin: 100px 0 100px 0;
             background-color: var(--v-background-base);
             border-radius: 10px;
             position: relative;
             &-close {
                 position: absolute;
-                top: 10px;
-                right: 15px;
+                top: 5px;
+                right: 10px;
                 z-index: 5;
                 &:hover {
                   color: black;

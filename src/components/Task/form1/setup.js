@@ -11,6 +11,7 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
+import moment from 'moment'
 const Form1 = defineComponent({
   name: 'Form1',
   components: {
@@ -43,6 +44,7 @@ const Form1 = defineComponent({
     const finalData = ref({})
     const bankCardId = ref(0)
     const isFormValid = ref(false)
+    const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const isHasOsnDoc = props.data.data.docs_id.filter(
       (doc) => doc.doc_id === 0
     ).length
@@ -244,6 +246,7 @@ const Form1 = defineComponent({
     }
 
     return {
+      dataRojd,
       textInfo,
       docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,

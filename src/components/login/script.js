@@ -23,7 +23,7 @@ export default {
     }
     //const loading = ref(null)
 
-    const { formData, validate, formErrors, vForm, touchedForm, getData } =
+    const { formData, validate, formErrors, vForm, touchedForm, getDataForm } =
       useForm({
         fields: {
           login: { validations: { required } },
@@ -32,7 +32,7 @@ export default {
       })
     const { loading, makeRequest } = useRequest({
       context,
-      request: () => store.dispatch('auth/auth', { ...getData() }),
+      request: () => store.dispatch('auth/auth', { ...getDataForm() }),
       successMessage: 'Вы успешно авторизовались',
     })
     const { makeRequest: makeRequestMe } = useRequest({

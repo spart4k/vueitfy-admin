@@ -20,8 +20,8 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/paymentview',
-    name: 'paymentview',
+    path: '/payment',
+    name: 'payment',
     meta: {
       layout: 'blank-layout',
     },
@@ -31,15 +31,15 @@ const routes = [
     component: PaymentView,
     children: [
       {
-        name: 'paymentview/:id',
+        name: 'payment/:id',
         path: ':id',
         component: Detail,
       },
     ],
   },
   {
-    path: '/appointments',
-    name: 'appointments',
+    path: '/personal_target',
+    name: 'personal_target',
     meta: {
       layout: 'blank-layout',
     },
@@ -49,15 +49,15 @@ const routes = [
     component: AppointmentsView,
     children: [
       {
-        name: 'appointments-add',
-        path: '/appointments/add',
+        name: 'personal_target-add',
+        path: '/personal_target/add',
         meta: {
           mode: 'add',
         },
         component: Detail,
       },
       {
-        name: 'appointments/:id',
+        name: 'personal_target/:id',
         path: ':id',
         component: Detail,
       },

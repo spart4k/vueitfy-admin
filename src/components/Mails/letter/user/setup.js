@@ -1,23 +1,21 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { defineComponent, computed, ref } from 'vue'
+// import { defineComponent, ref } from 'vue'
 // import { tableApi } from '@/api'
-const controls = defineComponent({
-  name: 'Controls',
+const user = {
+  name: 'User',
   props: {
-    selectedAllMails: {
+    expanded: {
       type: Boolean,
       default: false,
     },
-    filterData: {
+    data: {
       type: Object,
       default: () => {},
-    }
+    },
   },
   setup() {
-    return {
-    }
+    return {}
   },
-})
-
-export default controls
+}
+export default user

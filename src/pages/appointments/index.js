@@ -1,5 +1,8 @@
 import filters from './filters'
 import TableDefault from '@/components/Table/default/index.vue'
+import FormDefault from '@/components/form/default/index.vue'
+import FormList from '@/components/form/list/index.vue'
+
 import { required } from '@/utils/validation.js'
 import {
   stringField,
@@ -7,6 +10,7 @@ import {
   autocompleteField,
   //datetimeField,
   dateField,
+  textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
@@ -491,7 +495,7 @@ const tableConsumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -816,14 +820,14 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '600px',
+    width: '800px',
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',
@@ -838,7 +842,7 @@ const config = {
           {
             id: 0,
             name: 'Основные',
-            type: 'FormDefault',
+            type: FormDefault,
             detail: true,
             lists: [
               'vid_vedomost_id',
@@ -872,7 +876,7 @@ const config = {
               }),
               dateField({
                 label: 'На дату',
-                name: 'date_create',
+                name: 'date_target',
                 value: [],
                 type: 'date',
                 subtype: 'multiple',
@@ -1106,64 +1110,30 @@ const config = {
                 color: 'primary',
               }),
             ],
+            formData: {},
           },
           {
             id: 1,
             name: 'Основные1',
-            type: 'FormDefault',
-            detail: true,
-            lists: [
-              'vid_vedomost_id',
-              'status_pt',
-              'direction_id_logistic',
-              'doljnost_id_logistic',
-              'shifts',
-              'nutritions',
-            ],
+            type: FormList,
+            //detail: true,
+            lists: ['avatar_with_user_key_id'],
             alias: 'personal_target',
             active: false,
+            fromLastTab: [
+              {
+                name: 'personal_id',
+                alias: 'name',
+                nameInTab: 'account_name',
+                type: 'list',
+              },
+            ],
             fields: [
-              selectField({
-                label: 'Статус',
-                name: 'status',
-                alias: 'status_pt',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              dateField({
-                label: 'Время создания',
-                name: 'date_create',
-                value: '',
-                type: 'date',
-                subtype: 'multiplie',
-                readonly: true,
-                menu: false,
-                placeholder: '',
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-                disable: false,
-              }),
-              stringField({
+              textBlock({
                 label: 'Создал',
                 name: 'account_name',
                 placeholder: '',
-                readonly: false,
+                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -1173,76 +1143,10 @@ const config = {
                 //validations: { required },
                 //isShow: false,
               }),
-              selectField({
-                label: 'Вид ведомости:',
-                name: 'vid_vedomost_id',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              selectField({
-                label: 'Направления',
-                name: 'direction_id',
-                alias: 'direction_id_logistic',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
               autocompleteField({
-                label: 'Объект',
-                name: 'object_id',
-                subtype: 'single',
-
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                page: 1,
-                search: '',
-                url: 'get/pagination_list/object',
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-                filters: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                  },
-                ],
-                dependence: {
-                  type: 'default',
-                  fillField: ['sum_nutrition', 'with_nutrition'],
-                },
-              }),
-              autocompleteField({
-                label: 'Линейщик',
-                name: 'personal_id',
+                label: '',
+                name: 'avatar_with_user_key_id',
+                alias: 'personal_id',
                 subtype: 'single',
                 placeholder: '',
                 class: [''],
@@ -1253,10 +1157,10 @@ const config = {
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/avatar_with_user_key_id',
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1266,75 +1170,38 @@ const config = {
                     value: '',
                   },
                 ],
+                dependence: {
+                  //fields: ['statement_card', 'cardowner'],
+                  type: 'api',
+                  module: 'personal/getKeys',
+                  //url: 'object_id/avatar_with_user_key_id',
+                  field: 'print_form_key',
+                  url: [
+                    {
+                      source: 'props',
+                      field: 'object_id',
+                    },
+                    {
+                      source: 'formData',
+                      field: 'avatar_with_user_key_id',
+                    },
+                  ],
+                },
               }),
               selectField({
-                label: 'Должность',
-                name: 'doljnost_id',
-                alias: 'doljnost_id_logistic',
+                label: 'Ключ',
+                name: 'print_form_key',
+                //alias: 'direction_id_logistic',
                 placeholder: '',
                 class: [''],
                 selectOption: {
-                  text: 'name',
+                  text: 'user_key',
                   value: 'id',
                 },
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              selectField({
-                label: 'Тип смены',
-                name: 'type_shift',
-                alias: 'shifts',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              selectField({
-                label: 'Питание',
-                name: 'with_nutrition',
-                alias: 'nutritions',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                defaultItems: [
-                  {
-                    id: 0,
-                    name: '--Без питания--',
-                  },
-                ],
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              stringField({
-                label: 'Стоимость питания:',
-                name: 'sum_nutrition',
-                placeholder: '',
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 6,
+                  sm: 2,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1358,6 +1225,7 @@ const config = {
                 color: 'primary',
               }),
             ],
+            formData: {},
           },
         ],
       },

@@ -1,13 +1,3 @@
-import axios from 'axios'
+import { get, post, put, del } from '@/api/axios'
 
-export default class Navmenu {
-  async get() {
-    try {
-      const { data } = await axios.post(`/view/json/sys_navmenu`)
-      console.log(data)
-      return data
-    } catch (error) {
-      console.log(error)
-    }
-  }
-}
+export const getNavmenu = () => post('view/json/sys_navmenu')

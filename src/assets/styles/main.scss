@@ -2,6 +2,7 @@
 @import './_variables.scss';
 @import './_transitions.scss';
 @import './_fonts.scss';
+@import './form/index.scss';
 
 
 $iconSize: 20px;
@@ -15,6 +16,7 @@ $borderRadius: 3px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  @include custom-scroll-bar-vertical;
 }
 
 html {
@@ -327,54 +329,6 @@ $borderColor: rgba(0,0,0,.3);
   margin: 0;
 }
 
-.v-mails {
-  .ql-toolbar {
-    border: none !important;
-    padding: 0 !important;
-  }
-  .ql-container {
-      border: none !important;
-      padding: 0 !important;
-  }
-  .ql-editor {
-      padding: 0 !important;
-      min-height: 150px;
-  }
-  .v-input__slot {
-    margin: 0 !important;
-  }
-  .v-text-field__details {
-      display: none !important;
-  }
-  .v-input__append-inner {
-      display: none !important;
-  }
-  .v-select__selections {
-      min-height: 32px !important;
-  }
-  .v-input__slot {
-    cursor: pointer;
-    fieldset {
-      border-color: var(--v-disabled-base);
-    }
-  }
-  .v-input__prepend-outer {
-    display: none;
-  }
-  .v-text-field__slot {
-    cursor: pointer;
-    label {
-      text-transform: uppercase;
-      color: var(--v-disabled-base) !important;
-      font-weight: 500;
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-  }
-  .v-menu__content {
-    height: 100px !important;
-  }
-}
 
 .view {
   &-table {
@@ -438,4 +392,74 @@ $borderColor: rgba(0,0,0,.3);
       display: none;
     }
   }
+}
+.v-mails {
+  .ql-toolbar {
+    border: none !important;
+    padding: 0 !important;
+  }
+  .ql-container {
+      border: none !important;
+      padding: 0 !important;
+  }
+  .ql-editor {
+      padding: 0 !important;
+      min-height: 100px;
+  }
+  .v-input__slot {
+    margin: 0 !important;
+  }
+  .v-text-field__details {
+      display: none !important;
+  }
+  .v-input__append-inner {
+      display: none !important;
+  }
+  .v-select__selections {
+      min-height: 32px !important;
+  }
+  .v-input__slot {
+    cursor: pointer;
+    fieldset {
+      border-color: var(--v-disabled-base);
+    }
+  }
+  .v-input__prepend-outer {
+    display: none;
+  }
+  .v-text-field__slot {
+    cursor: pointer;
+    label {
+      text-transform: uppercase;
+      color: var(--v-disabled-base) !important;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+  }
+  .v-menu__content {
+    height: 100px !important;
+  }
+  .v-expansion-panel {
+    margin: 0 !important;
+
+    &::before {
+      box-shadow: none !important;
+    }
+    &:before {
+      box-shadow: none !important;
+    }
+    .v-icon {
+      flex: 0 !important;
+    }
+    .v-expansion-panel-content__wrap {
+      padding: 0 16px;
+      flex: 1;
+      max-width: 100%;
+    }
+  }
+}
+
+.view-table {
+
 }
