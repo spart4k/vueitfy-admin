@@ -68,6 +68,7 @@
                 :align="head.align"
                 :class="[
                   head.fixed.value ? 'v-table-header-row-cell--fixed' : '',
+                  head.currentDate && 'v-table-header-row-cell--currentDate',
                   head.class,
                 ]"
                 :style="{
@@ -94,16 +95,50 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
+                    <!-- <vIconSort
+                      v-if="
+                        head.sorts &&
+                        head.sorts.length &&
+                        paramsQuery.sorts.length
+                      "
+                      class="v-table-header-row-cell-wrap__sort-icon mr-1"
+                      :state="
+                        paramsQuery.sorts.find((el) => el.field === head.value)
+                          .value
+                      "
+                      @click="sortRow(head)"
+                    /> -->
                     <span @click="sortRow(head)">
                       {{ head.title }}
                     </span>
+                    <!-- <v-icon @click="openSort(head)" small>$IconSearch</v-icon> -->
                   </span>
+                  <!-- <transition name="accordion">
+                    <div
+                      v-if="head.sorts && head.sorts[0].isShow"
+                      class="v-table-header-row-cell-sort"
+                    >
+                      <v-text-field
+                        class="v-table-header-row-cell-sort__search"
+                        @clearfield="clearField('searchField')"
+                        clearable
+                        clearing
+                        type="search"
+                        placeholder="Поиск"
+                        v-model="
+                          paramsQuery.searchColumns.find(
+                            (el) => el.field === head.value
+                          ).value
+                        "
+                      />
+                    </div>
+                  </transition> -->
                 </div>
               </th>
             </tr>
           </thead>
 
-          <!-- <tbody v-if="!loading && options.data.rows" class="v-table-body">
+          <tbody v-if="!loading && options.data.rows" class="v-table-body">
             <template v-for="(row, indexRow) in options.data.rows">
               <tr
                 :key="row.row.id"
@@ -212,7 +247,7 @@
                 </td>
               </tr>
             </template>
-          </tbody> -->
+          </tbody>
           <div
             v-if="loading"
             class="v-table-loading text-center d-flex align-center justify-center flex-grow-1"

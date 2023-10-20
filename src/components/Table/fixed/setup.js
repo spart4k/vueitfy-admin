@@ -476,20 +476,22 @@ const table = {
       let all = 0
       cells?.value?.forEach((item, index) => {
         all += Number(props?.options?.head[index].width)
-        if (props?.options?.head[index]?.fixed?.value) {
-          if (props?.options?.head[index]?.fixed?.position === 'left') {
-            item.style.left = `${left}px`
-            left += Number(props?.options?.head[index].width)
-          }
+        if (props?.options?.head[index]?.fixed?.position === 'left') {
+          item.style.left = `${left}px`
+          left += Number(props?.options?.head[index].width)
         }
       })
 
       for (let index = props?.options?.head.length - 1; index >= 0; index--) {
-        if (props?.options?.head[index]?.fixed?.value) {
-          if (props?.options?.head[index]?.fixed?.position === 'right') {
-            cells.value.find(x => x.innerText === props?.options?.head[index].title).style.right = `${right}px`
-            right += Number(props?.options?.head[index].width)
-          }
+        if (props?.options?.head[index]?.fixed?.position === 'right') {
+          // console.log(cells.value[0].children[0].children[0].textContent)
+          // cells.value[0].innerHTML = cells.value[11].children[0].children[0].textContent
+          const item = cells.value.find(x => x.innerText === props?.options?.head[index]?.title)
+          // cells.value[0].textContent = props?.options?.head[index]?.title
+          // console.log(item.style)
+          // item.style.backgroundColor = 'aqua'
+          item.style.right = `${right}px`
+          right += Number(props?.options?.head[index].width)
         }
       }
       mainTable.value.style.width = `${all}px`
@@ -497,6 +499,7 @@ const table = {
     const addDayOfMonth = () => {
       props.options.head = props.options.head.filter((item) => !item.added)
       const date = new Date(currentDate.value.year, currentDate.value.month, 1)
+      const dateNow = new Date()
       let lastLeftIndex = props.options.head.findLastIndex((x) => x.fixed.position === 'left')
       while (date.getMonth() === currentDate.value.month) {
         props.options.head.splice(lastLeftIndex + 1, 0, {
@@ -506,6 +509,7 @@ const table = {
           width: '50',  
           added: true,
           id: uuidv4(),
+          currentDate: dateNow.getDate() === date.getDate() && dateNow.getMonth() === date.getMonth() && dateNow.getFullYear() === date.getFullYear(),
           fixed: {
             value: false,
           },
@@ -573,8 +577,8 @@ const table = {
 
       addDayOfMonth()
       initHeadParams()
-      await getItems()
       countingDistances()
+      await getItems()
       
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')

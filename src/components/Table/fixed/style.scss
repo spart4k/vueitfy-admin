@@ -108,6 +108,9 @@ $tableFooterHeight: 85px;
             // border: aqua solid 1px;
             z-index: 1;
           }
+          &--currentDate {
+            background-color: #f5f6f8;
+          }
           &:hover {
             cursor: pointer;
           }

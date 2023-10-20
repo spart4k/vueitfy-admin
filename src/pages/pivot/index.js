@@ -319,70 +319,160 @@ const config = {
   },
   head: [
     {
-      title: 'id',
       id: 1,
+      title: 'id',
       align: 'center',
+      type: 'default',
       isShow: true,
       width: '50',
+      alias: 'p.id',
+      value: 'id',
       fixed: {
         value: true,
         position: 'left',
       },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
     },
     {
-      title: 'ФИО',
       id: 2,
+      title: 'ФИО',
       align: 'center',
+      type: 'default',
       isShow: true,
       width: '100',
+      alias: 'p.id',
+      value: 'id',
       fixed: {
         value: true,
         position: 'left',
       },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
     },
     {
       title: 'Задолжность',
       id: 3,
       align: 'center',
+      type: 'default',
       isShow: true,
       width: '200',
+      alias: 'p.id',
+      value: 'id',
       fixed: {
         value: true,
         position: 'left',
       },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
     },
     {
       title: 'Объект',
       id: 4,
       align: 'center',
+      type: 'default',
       isShow: true,
       width: '70',
+      alias: 'p.id',
+      value: 'id',
       fixed: {
         value: true,
         position: 'right',
       },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
     },
     {
       title: 'Гриша',
       id: 5,
       align: 'center',
+      type: 'default',
       isShow: true,
       width: '70',
+      alias: 'p.id',
+      value: 'id',
       fixed: {
         value: true,
         position: 'right',
       },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
     },
     {
       title: 'Качалка',
       id: 6,
       align: 'center',
+      type: 'default',
       isShow: true,
       width: '80',
+      alias: 'p.id',
+      value: 'id',
       fixed: {
         value: true,
         position: 'right',
       },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
     },
   ],
   data: {
