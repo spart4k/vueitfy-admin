@@ -398,9 +398,7 @@ const mails = {
 
     const getFilterData = async () => {
       filterData.value.folderData = await store.dispatch('mail/getFolders')
-      filterData.value.boxData = await store.dispatch('mail/getBoxes', {
-        accountId: 25,
-      })
+      filterData.value.boxData = await store.dispatch('mail/getBoxes')
       filterData.value.tagsData = await store.dispatch('mail/getTags')
       filterData.value.notReadData = await store.dispatch('mail/getNotRead')
       if (!filterData.value.folderData) filterData.value.folderData = []
@@ -410,9 +408,7 @@ const mails = {
 
     const resetAllSelectionFilter = async () => {
       if (route?.query?.filter !== 'trash' && route?.query?.filter !== 'sent') {
-        const requestData = {
-          account_id: 25,
-        }
+        const requestData = {}
         if (route?.query?.color?.length)
           requestData.tags = JSON.parse(route?.query?.color).toString()
         requestData.props = route?.query?.filter

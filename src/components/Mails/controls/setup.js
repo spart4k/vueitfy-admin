@@ -32,7 +32,22 @@ const controls = {
     },
   },
   setup(props) {
-    const popupCase = ref(false)
+    const popupDelete = ref(false)
+    const popupBroadcast = ref(false)
+    const broadcast = ref({
+      direction: '',
+      directionArray: [
+        {
+          title: 'Направление',
+          value: 'all',
+        },
+        {
+          title: 'Люди',
+          value: 'people',
+        },
+      ],
+      toAll: true,
+    })
     const intersection = computed(() => {
       const array = {
         full: [],
@@ -72,7 +87,9 @@ const controls = {
       return array
     })
     return {
-      popupCase,
+      broadcast,
+      popupDelete,
+      popupBroadcast,
       intersection,
     }
   },

@@ -27,9 +27,9 @@ const mail = {
   state: {},
   mutations: {},
   actions: {
-    async getBoxes(_, data) {
+    async getBoxes(_) {
       try {
-        const response = await getBoxes(data)
+        const response = await getBoxes()
         return response.data
       } catch (e) {
         console.log(e)
