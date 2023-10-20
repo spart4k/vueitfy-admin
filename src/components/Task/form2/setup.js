@@ -17,10 +17,11 @@ const Form2 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const finalData = ref({})

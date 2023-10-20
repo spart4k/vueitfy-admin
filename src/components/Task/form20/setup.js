@@ -18,10 +18,11 @@ const Form20 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const {
@@ -46,6 +47,7 @@ const Form20 = defineComponent({
           default: '',
         },
       },
+      context,
     })
 
     const { makeRequest: changeStatusTask } = useRequest({

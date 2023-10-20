@@ -35,10 +35,11 @@ const Form1 = defineComponent({
       selectOpen: false,
     }
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const finalData = ref({})
@@ -202,6 +203,7 @@ const Form1 = defineComponent({
           default: props.data.entity.grajdanstvo_id,
         },
       },
+      context,
     })
 
     const changeDocs = (data) => {

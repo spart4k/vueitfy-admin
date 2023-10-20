@@ -19,11 +19,12 @@ const Form7 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const isHasOsnDoc = props.data.data.docs_id.filter(
@@ -48,6 +49,7 @@ const Form7 = defineComponent({
           default: props.data.entity.grajdanstvo_id,
         },
       },
+      context,
     })
 
     const changeDocs = (data) => {

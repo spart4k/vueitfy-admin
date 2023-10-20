@@ -86,10 +86,11 @@ const DocFormCorrect = defineComponent({
       med_view_docs_in_open: false,
     }
   },
-  setup(props, { emit }) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const bankItems = Object.values(bankItemsSpr)
@@ -118,6 +119,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.pasp_kem,
           },
         },
+        context,
       }),
       // Снилс
       2: useForm({
@@ -127,6 +129,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.snils,
           },
         },
+        context,
       }),
       // Банковская карта
       3: useForm({
@@ -149,6 +152,7 @@ const DocFormCorrect = defineComponent({
             default: '',
           },
         },
+        context,
       }),
       // Адрес регистрации
       4: useForm({
@@ -158,6 +162,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.registration_address,
           },
         },
+        context,
       }),
       // Патент
       5: useForm({
@@ -175,6 +180,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.patent_prof,
           },
         },
+        context,
       }),
       // Паспорт, страница 2
       6: useForm({
@@ -184,6 +190,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.pasp_address_reg,
           },
         },
+        context,
       }),
       // Мед.книжка
       8: useForm({
@@ -193,6 +200,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.med_book_date,
           },
         },
+        context,
       }),
       // Вид на жительство
       9: useForm({
@@ -218,6 +226,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.view_home_kem,
           },
         },
+        context,
       }),
       // Миграционная карта
       10: useForm({
@@ -239,6 +248,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.migr_card_data_out,
           },
         },
+        context,
       }),
       // Чек-патент первичный
       13: useForm({
@@ -248,6 +258,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.check_patent_date_pay,
           },
         },
+        context,
       }),
       // Регистрация стр. 2
       14: useForm({
@@ -261,6 +272,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.registration_date_c_docs_in,
           },
         },
+        context,
       }),
       // Патент стр. 2
       15: useForm({
@@ -274,18 +286,21 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.patent_date_docs_in,
           },
         },
+        context,
       }),
       // ИНН
       17: useForm({
         fields: {
           inn: { validations: { required }, default: props.docsData.inn },
         },
+        context,
       }),
       // Экзамен РФ
       18: useForm({
         fields: {
           ekz_rf: { default: props.docsData.ekz_rf ?? false },
         },
+        context,
       }),
       // Чек-патент текущий
       19: useForm({
@@ -295,6 +310,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.check_patent_date_pay_now,
           },
         },
+        context,
       }),
       // Вид на жительство стр. 2
       22: useForm({
@@ -304,6 +320,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.view_home_address_reg,
           },
         },
+        context,
       }),
       // мед осмотр
       23: useForm({
@@ -313,6 +330,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.med_view_docs_in,
           },
         },
+        context,
       }),
       // мед осмотр ID
       24: useForm({
@@ -322,6 +340,7 @@ const DocFormCorrect = defineComponent({
             default: props.docsData.id_card,
           },
         },
+        context,
       }),
     })
     const correctedDocs = ref({})
@@ -350,7 +369,7 @@ const DocFormCorrect = defineComponent({
     const sendBankCard = async () => {
       const { result } = await makeRequest()
       bankCardId.value = result
-      emit('change', {
+      ctx.emit('change', {
         bank_card_id: bankCardId.value,
         correctedDocs: correctedDocs.value,
       })
@@ -362,7 +381,7 @@ const DocFormCorrect = defineComponent({
         ...correctedDocs.value,
         [doc.id]: formObj.value[doc.doc_id].getData(),
       }
-      emit('change', {
+      ctx.emit('change', {
         bank_card_id: bankCardId.value,
         correctedDocs: correctedDocs.value,
       })

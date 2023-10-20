@@ -20,10 +20,11 @@ const Form27 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const directionToMagnit = props.data.entity.direction_id === 5
@@ -88,6 +89,7 @@ const Form27 = defineComponent({
           validations: { requiredIf: requiredIf(!isFormConfirmed.value) },
         },
       },
+      context,
     })
 
     const { makeRequest: changeStatusConfirm } = useRequest({

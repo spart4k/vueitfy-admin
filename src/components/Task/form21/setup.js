@@ -20,10 +20,11 @@ const Form21 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const isBtnDisabled = ref(true)
@@ -44,6 +45,7 @@ const Form21 = defineComponent({
           default: '',
         },
       },
+      context,
     })
 
     const { makeRequest: changeStatusTask } = useRequest({
