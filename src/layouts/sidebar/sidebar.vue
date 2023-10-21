@@ -44,7 +44,14 @@
                   >
                     <div class="v-sidebar-container-link_icon">
                       <v-icon
-                        :color="$route?.path === item.link ? 'primary' : ''"
+                        :color="
+                          $route?.path === item.link ||
+                          JSON?.parse(item?.child_json)?.some(
+                            (e) => e?.link === $route?.path
+                          )
+                            ? 'primary'
+                            : ''
+                        "
                         >{{ item?.icon }}</v-icon
                       >
                     </div>
@@ -69,7 +76,14 @@
               >
                 <div class="v-sidebar-container-link_icon">
                   <v-icon
-                    :color="$route?.path === item?.link ? 'primary' : ''"
+                    :color="
+                      $route?.path === item?.link ||
+                      JSON?.parse(item?.child_json).some(
+                        (e) => e.link === $route?.path
+                      )
+                        ? 'primary'
+                        : ''
+                    "
                     >{{ item?.icon }}</v-icon
                   >
                 </div>
@@ -77,7 +91,10 @@
                   v-if="!miniMenu"
                   :class="[
                     'v-sidebar-container-link_name',
-                    $route?.path === item.link &&
+                    ($route?.path === item.link ||
+                      JSON?.parse(item?.child_json).some(
+                        (e) => e.link === $route?.path
+                      )) &&
                       'v-sidebar-container-link_name__active',
                   ]"
                 >
@@ -114,12 +131,19 @@
                   <v-tooltip right>
                     <template #activator="{ on: hint }">
                       <div
-                        v-on="{ ...hint, ...onMenu }"
+                        v-on="!isMobile && { ...hint, ...onMenu }"
                         class="v-sidebar-container-link v-sidebar-container-link__default-height"
                       >
                         <div class="v-sidebar-container-link_icon">
                           <v-icon
-                            :color="$route?.path === item.link ? 'primary' : ''"
+                            :color="
+                              $route?.path === item.link ||
+                              JSON?.parse(item?.child_json).some(
+                                (e) => e.link === $route?.path
+                              )
+                                ? 'primary'
+                                : ''
+                            "
                             >{{ item?.icon }}</v-icon
                           >
                         </div>
