@@ -29,6 +29,10 @@ function searchInputing(field) {
   console.log(field)
 }
 
+function importFile() {
+  console.log('importFile')
+}
+
 const consumptionConfig = {
   selector: '#mainTable',
   options: {
@@ -302,24 +306,24 @@ const config = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Добавить',
+      //   class: ['v-table-button--custom'],
+      //   url: '$IconSetting',
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
       {
         label: 'Импорт',
         class: ['v-table-button--custom'],
         url: '$IconInputMail',
-        function: consolePanel,
+        type: 'importFile',
         backgroundColor: '#fff',
       },
       {
@@ -330,20 +334,153 @@ const config = {
         backgroundColor: '#fff',
       },
     ],
+    filters: false,
+    search: true,
+    date: false,
   },
   head: [
     {
       id: 1,
-      title: 'ФИО',
+      title: 'п',
       align: 'center',
       type: 'default',
       isShow: true,
-      width: '200',
+      width: '50',
       alias: 'p.name',
       value: 'name',
       fixed: {
         value: true,
         position: 'left',
+      },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Менеджер',
+      align: 'center',
+      type: 'default',
+      isShow: true,
+      width: '110',
+      alias: 'p.name',
+      value: 'name',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Объект',
+      align: 'center',
+      type: 'default',
+      isShow: true,
+      width: '240',
+      alias: 'p.name',
+      value: 'name',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: 'ФИО',
+      align: 'center',
+      type: 'default',
+      isShow: true,
+      width: '240',
+      alias: 'p.name',
+      value: 'name',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+    },
+    {
+      id: 5,
+      title: 'Должность',
+      align: 'center',
+      type: 'default',
+      isShow: true,
+      width: '110',
+      alias: 'p.name',
+      value: 'name',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+    },
+    {
+      id: 6,
+      title: 'Часы',
+      align: 'center',
+      type: 'default',
+      isShow: true,
+      width: '55',
+      alias: 'p.name',
+      value: 'name',
+      fixed: {
+        value: true,
+        position: 'right',
       },
       search: {
         field: '',

@@ -6,6 +6,7 @@ import shopRequestMagnitReport from './magnit/shop-request-report'
 import userKeys from './user-keys'
 import tasks from './tasks'
 import pivot from './pivot'
+import x5import from './x5import'
 
 export {
   payment,
@@ -16,4 +17,5 @@ export {
   userKeys,
   tasks,
   pivot,
+  x5import,
 }

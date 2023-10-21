@@ -1,12 +1,13 @@
 <template>
   <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
     <!--<h1 class="v-table-title">{{ options.options.title }}</h1>-->
+    <DropZone v-show="false" :options="{ withoutSave: false }" ref="dropzone" />
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
         class="v-table-panel"
       >
-        <div class="v-table-panel-date">
+        <div v-if="options.panel.date" class="v-table-panel-date">
           <v-btn icon class="mr-4" @click="changeMonth(-1)">
             <v-icon small> $IconArrowLeft </v-icon>
           </v-btn>
@@ -34,12 +35,19 @@
           </div>
           <div class="v-table-panel-items__search">
             <v-text-field
+              v-if="options.panel.search"
               label="Поиск"
               hide-details="auto"
               clearable
               v-model="paramsQuery.searchGlobal"
             ></v-text-field>
-            <v-btn small @click="openFilter" class="ml-2" elevation="2">
+            <v-btn
+              v-if="options.panel.filters"
+              small
+              @click="openFilter"
+              class="ml-2"
+              elevation="2"
+            >
               Фильтры
             </v-btn>
           </div>
@@ -111,9 +119,15 @@
                     <span @click="sortRow(head)">
                       {{ head.title }}
                     </span>
-                    <!-- <v-icon @click="openSort(head)" small>$IconSearch</v-icon> -->
+                    <v-icon
+                      v-if="!head.added"
+                      class="ml-2"
+                      @click="openSort(head)"
+                      small
+                      >$IconSearch</v-icon
+                    >
                   </span>
-                  <!-- <transition name="accordion">
+                  <transition name="accordion">
                     <div
                       v-if="head.sorts && head.sorts[0].isShow"
                       class="v-table-header-row-cell-sort"
@@ -132,14 +146,14 @@
                         "
                       />
                     </div>
-                  </transition> -->
+                  </transition>
                 </div>
               </th>
             </tr>
           </thead>
 
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
-            <template v-for="(row, indexRow) in options.data.rows">
+            <template v-for="row in options.data.rows">
               <tr
                 :key="row.row.id"
                 :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
@@ -147,36 +161,16 @@
                 @click="openChildRow($event, row)"
                 v-on:dblclick="openRow($event, row)"
                 class="v-table-body-row"
+                ref="cellItems"
               >
-                <td
-                  class="v-table-body-row-cell__checkbox"
-                  align="center"
-                  v-if="options.options.selecting"
-                  :class="[
-                    headerOptions.some((el) => el.fixed.value)
-                      ? 'v-table-body-row-cell--fixed'
-                      : '',
-                    `v-table-body-row__checkbox`,
-                  ]"
-                >
-                  <div @click.stop class="v-table-checkbox">
-                    <label>
-                      <input
-                        @change="saveLastSelected({ row, indexRow })"
-                        @click.stop.shift="checkboxInput(row, indexRow)"
-                        v-model="row.row.selected"
-                        type="checkbox"
-                      />
-                    </label>
-                  </div>
-                </td>
                 <td
                   :style="{
                     width: cell.width,
                   }"
-                  :class="
-                    cell.fixed.value ? 'v-table-body-row-cell--fixed' : ''
-                  "
+                  :class="[
+                    cell.fixed.value ? 'v-table-body-row-cell--fixed' : '',
+                    cell.currentDate && 'v-table-body-row-cell--currentDate',
+                  ]"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
                   :align="cell.align"
                   class="v-table-body-row-cell v-table-actions"
@@ -202,7 +196,7 @@
                 </td>
               </tr>
               <tr
-                :key="row.row.id + 'child'"
+                :key="row.row.personal_id + 'child'"
                 v-show="
                   row.child.isShow && options.head.some((el) => !el.isShow)
                 "
@@ -267,7 +261,7 @@
       </div>
     </div>
 
-    <!-- <div class="v-table-footer pl-4">
+    <div class="v-table-footer pl-4">
       <div class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
       </div>
@@ -288,7 +282,7 @@
           ></v-pagination>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 

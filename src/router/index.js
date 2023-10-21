@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import PaymentView from '../views/PaymentView.vue'
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
+import X5importView from '../views/X5importView.vue'
 import AppointmentsView from '../views/Appointments.vue'
 import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
@@ -95,6 +96,24 @@ const routes = [
     children: [
       {
         name: 'pivot/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/x5import',
+    name: 'x5import',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: X5importView,
+    children: [
+      {
+        name: 'x5import/:id',
         path: ':id',
         component: Detail,
       },
