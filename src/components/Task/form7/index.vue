@@ -4,6 +4,7 @@
       <v-card-title class="d-flex justify-center">
         {{ entity.name }} ({{ dataRojd }} г.р)
       </v-card-title>
+      <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <v-expansion-panels v-if="isHasOsnDoc">
         <v-expansion-panel>
           <v-expansion-panel-header>

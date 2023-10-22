@@ -6,10 +6,12 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment'
+import TextInfo from '@/components/Task/el/TextInfo/setup'
 
 const Form7 = defineComponent({
   name: 'Form7',
   components: {
+    TextInfo,
     FormComment,
     DocFormCorrect,
   },
@@ -25,6 +27,16 @@ const Form7 = defineComponent({
       root: {
         store,
         ctx,
+      },
+    }
+    const textInfo = {
+      manager: {
+        key: 'Менеджер',
+        value: props.data.entity.account_name,
+      },
+      obj: {
+        key: 'Объект',
+        value: props.data.entity.object_name,
       },
     }
     const isHasOsnDoc = props.data.data.docs_id.filter(
@@ -159,6 +171,7 @@ const Form7 = defineComponent({
       isHasOsnDoc,
       formData,
       osnValidate,
+      textInfo,
     }
   },
 })

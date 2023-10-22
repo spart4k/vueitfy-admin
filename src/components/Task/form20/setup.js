@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
@@ -25,6 +25,9 @@ const Form20 = defineComponent({
         ctx,
       },
     }
+
+    const dopData = JSON.stringify(props.data.task.dop_data)
+
     const {
       formData: keyForm,
       validate: keyFormValidate,
@@ -61,7 +64,7 @@ const Form20 = defineComponent({
               task_id: props.data.entity.id,
               parent_action: props.data.entity.id,
               user_key: props.data.entity.id,
-              photo_path: JSON.parse(props.data.task.dop_data).photo_path,
+              photo_path: dopData.photo_path ?? '',
               obd_id: props.data.entity.id,
               comment: keyForm.comment,
               okk_id: props.data.task.from_account_id,
@@ -89,7 +92,7 @@ const Form20 = defineComponent({
       await changeStatusTask()
     }
 
-    return { keyForm, keyFormErrors, keyFormValidate, completeTask }
+    return { keyForm, keyFormErrors, keyFormValidate, completeTask, dopData }
   },
 })
 export default Form20
