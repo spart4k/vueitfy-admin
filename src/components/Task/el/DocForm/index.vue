@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>Приложенные документы:</div>
-    <v-expansion-panels>
+    <v-expansion-panels v-model="panel" multiple>
       <template v-for="doc in docs">
         <v-expansion-panel
           v-if="formObj[doc.doc_id]"

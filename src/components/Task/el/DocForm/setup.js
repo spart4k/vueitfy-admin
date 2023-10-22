@@ -73,6 +73,7 @@ const docForm = defineComponent({
   },
   data: function () {
     return {
+      panel: [],
       pasp_data_vid_open: false,
       med_book_date_open: false,
       view_home_data_vid_open: false,

@@ -25,6 +25,7 @@ const DocFormWithConfirm = defineComponent({
   },
   data: function () {
     return {
+      panel: [],
       datePickerOpen: false,
       datePickerSecondOpen: false,
     }

@@ -4,7 +4,7 @@ import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment/moment'
-import TextInfo from '@/components/Task/el/TextInfo/setup'
+import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 
 const Form2 = defineComponent({
   name: 'Form2',

@@ -6,7 +6,7 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment'
-import TextInfo from '@/components/Task/el/TextInfo/setup'
+import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 
 const Form7 = defineComponent({
   name: 'Form7',
