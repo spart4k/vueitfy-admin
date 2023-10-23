@@ -1,3 +1,7 @@
+.v-tooltip__content {
+  font-size: 12px;
+  padding: 5px 12px;
+}
 .v-sidebar {
   height: 100%;
   width: fit-content;
@@ -61,13 +65,15 @@
         color: var(--v-text-base) !important;
         caret-color: var(--v-text-base) !important;
       }
-      &:hover {
-        div {
-          color: var(--v-primary-base) !important;
-        }
-        span {
-          color: var(--v-primary-base) !important;
-          caret-color: var(--v-primary-base) !important;
+      &__hover {
+        &:hover {
+          div {
+            color: var(--v-primary-base) !important;
+          }
+          span {
+            color: var(--v-primary-base) !important;
+            caret-color: var(--v-primary-base) !important;
+          }
         }
       }
     }
@@ -81,16 +87,19 @@
       &__instant {
         transition: all 0s !important;
       }
-      &:hover div {
-        color: var(--v-primary-base) !important;
-      }
+
       &_icon span {
         color: var(--v-text-base) !important;
         caret-color: var(--v-text-base) !important;
       }
-      &:hover span {
-        color: var(--v-primary-base) !important;
-        caret-color: var(--v-primary-base) !important;
+      &__hover {
+        &:hover div {
+          color: var(--v-primary-base) !important;
+        }
+        &:hover span {
+          color: var(--v-primary-base) !important;
+          caret-color: var(--v-primary-base) !important;
+        }
       }
       &__default-height {
         min-height: 56px !important;
@@ -149,8 +158,10 @@
     &__default-height {
       min-height: 56px !important;
     }
-    &:hover div {
-      color: var(--v-primary-base) !important;
+    &__hover {
+      &:hover div {
+        color: var(--v-primary-base) !important;
+      }
     }
     &_title {
       font-size: 15px;
