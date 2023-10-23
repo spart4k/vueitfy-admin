@@ -1,13 +1,44 @@
 <template>
   <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
     <!--<h1 class="v-table-title">{{ options.options.title }}</h1>-->
-    <DropZone v-show="false" :options="{ withoutSave: false }" ref="dropzone" />
+    <DropZone
+      v-show="false"
+      @addFiles="importFiles"
+      :options="{ withoutSave: false }"
+      ref="dropzone"
+    />
+    <Popup
+      :options="{ portal: 'filter', padding: '20px 30px' }"
+      closeButton
+      @close="acceptData.popup = false"
+      v-if="acceptData.popup"
+    >
+      <div class="d-flex flex-column align-center">
+        <v-date-picker
+          locale="ru"
+          v-model="acceptData.value"
+          color="primary"
+          type="month"
+        ></v-date-picker>
+        <div class="d-flex mt-7">
+          <v-btn @click="acceptForm" tonal color="primary"> Принять </v-btn>
+          <v-btn
+            @click="acceptData.popup = false"
+            tonal
+            color="error"
+            class="ml-5"
+          >
+            Отменить
+          </v-btn>
+        </div>
+      </div>
+    </Popup>
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
         class="v-table-panel"
       >
-        <div v-if="options.panel.date" class="v-table-panel-date">
+        <div v-if="panel.date" class="v-table-panel-date">
           <v-btn icon class="mr-4" @click="changeMonth(-1)">
             <v-icon small> $IconArrowLeft </v-icon>
           </v-btn>
@@ -22,9 +53,10 @@
         <div class="v-table-panel-items">
           <div class="v-table-panel-items__actions flex-wrap">
             <v-btn
-              v-for="(button, indexButton) in options.panel.buttons"
+              v-for="(button, indexButton) in panel.buttons"
               :key="indexButton"
               @click="panelHandler(button)"
+              :disabled="button.isDisabled"
               small
             >
               <v-icon small class="mr-2">
@@ -35,14 +67,14 @@
           </div>
           <div class="v-table-panel-items__search">
             <v-text-field
-              v-if="options.panel.search"
+              v-if="panel.search"
               label="Поиск"
               hide-details="auto"
               clearable
               v-model="paramsQuery.searchGlobal"
             ></v-text-field>
             <v-btn
-              v-if="options.panel.filters"
+              v-if="panel.filters"
               small
               @click="openFilter"
               class="ml-2"
@@ -116,7 +148,7 @@
                       "
                       @click="sortRow(head)"
                     /> -->
-                    <span @click="sortRow(head)">
+                    <span @click="!head.added && sortRow(head)">
                       {{ head.title }}
                     </span>
                     <v-icon
@@ -180,6 +212,7 @@
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
+                    <!-- {{ row.child }} -->
                   </template>
                   <template v-else-if="cell.type === 'actions'">
                     <div class="v-table-actions-wrap">
@@ -196,7 +229,7 @@
                 </td>
               </tr>
               <tr
-                :key="row.row.personal_id + 'child'"
+                :key="row.row.id + 'child'"
                 v-show="
                   row.child.isShow && options.head.some((el) => !el.isShow)
                 "

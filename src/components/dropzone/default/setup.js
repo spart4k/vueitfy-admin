@@ -46,11 +46,9 @@ export default {
     const proxyVal = ref(props.value)
     const sendingFile = async (files) => {
       if (props.options.withoutSave) {
-        console.log('process')
         await loadFile(files)
         //dropzone.value.processQueue()
       } else {
-        console.log(files)
         emit('addFiles', files)
       }
       //console.log(dropzone.value)

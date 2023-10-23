@@ -60,6 +60,7 @@ const table = {
     const isMobile = useMobile()
     const detail = ref(props.options?.detail)
     const filters = ref(props.options?.filters)
+    const panel = ref(props.options?.panel)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -114,6 +115,10 @@ const table = {
     const cellItems = ref(null)
     const mainTable = ref(null)
     const dropzone = ref(null)
+    const acceptData = ref({
+      popup: false,
+      value: null,
+    })
     const wrapingRow = () => {
       const table = document.querySelector(props.options.selector)
       tablePosition.value = table.getBoundingClientRect().x
@@ -339,489 +344,33 @@ const table = {
           },
         ]
       }
-      // const data = await store.dispatch('table/get', {
-      //   url: url,
-      //   data: {
-      //     countRows: paramsQuery.value.countRows,
-      //     currentPage: paramsQuery.value.currentPage,
-      //     searchGlobal: paramsQuery.value.searchGlobal,
-      //     searchColumns,
-      //     sorts,
-      //     filter: filtersColumns.value,
-      //     by,
-      //   },
-      // })
-      const mocData = {
-        total: 5815,
-        rows: [
-          {
-            name: 'Махшулов Шервган Хурсандович',
-            direction_id: 1,
-            personal_id: 58819,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 10842,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Рауткин Вячеслав Вячеславович',
-            direction_id: 1,
-            personal_id: 56587,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 10843,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Сархан Шахд Мустафа Ибрахим',
-            direction_id: 1,
-            personal_id: 58256,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 10844,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Сулиман Шамселдин Сулиман Ахмед',
-            direction_id: 1,
-            personal_id: 58266,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 10845,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Сухарев Виталий Вадимович',
-            direction_id: 1,
-            personal_id: 55925,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 10846,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Максимов Вадим Алексеевич',
-            direction_id: 1,
-            personal_id: 58992,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 10847,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Адам Ибрахим Хиссейн',
-            direction_id: 1,
-            personal_id: 55943,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7387,
-                day: '01',
-                total: '1128541.00',
-                hour: '10.5',
-              },
-            ],
-          },
-          {
-            name: 'Муравлев Сергей Николаевич',
-            direction_id: 1,
-            personal_id: 55960,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7388,
-                day: '01',
-                total: '1128541.00',
-                hour: '10.5',
-              },
-            ],
-          },
-          {
-            name: 'Юзбоев Илёс Жамолович',
-            direction_id: 1,
-            personal_id: 55971,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7390,
-                day: '01',
-                total: '11284541.00',
-                hour: '10.5',
-              },
-            ],
-          },
-          {
-            name: 'Тиллабоев Хаётжон Акрамонович',
-            direction_id: 1,
-            personal_id: 55968,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7391,
-                day: '01',
-                total: null,
-                hour: '10.5',
-              },
-            ],
-          },
-          {
-            name: 'Джумабеков Алоуддин Джураевич',
-            direction_id: 1,
-            personal_id: 55951,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7392,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Томин Сергей Александрович',
-            direction_id: 1,
-            personal_id: 15082,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7393,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Каримов Анварджон Ахмаджонович',
-            direction_id: 1,
-            personal_id: 56100,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7394,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Каримов Наимджон Анварджонович',
-            direction_id: 1,
-            personal_id: 56101,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7395,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Васюнькова Оксана Александровна',
-            direction_id: 1,
-            personal_id: 55949,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7396,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Корнеев Александр Васильевич',
-            direction_id: 1,
-            personal_id: 9122,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7397,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Бердиев Аскар Исматуллавич',
-            direction_id: 1,
-            personal_id: 56114,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7444,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Саидзода Манучехри Гайбулло',
-            direction_id: 1,
-            personal_id: 56621,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7445,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Бердиев Зулфикор Абдумурод Угли',
-            direction_id: 1,
-            personal_id: 57271,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7446,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Михлиев Аброр Баходир Угли',
-            direction_id: 1,
-            personal_id: 56620,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7447,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Нилов Бахриддин Файзиддинович',
-            direction_id: 1,
-            personal_id: 56251,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7457,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Савчук Андрей Викторович',
-            direction_id: 1,
-            personal_id: 14977,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7458,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Чирков Евгений Вячеславович',
-            direction_id: 1,
-            personal_id: 56250,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7459,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Федотов Андрей Анатольевич',
-            direction_id: 1,
-            personal_id: 3716,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7460,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Марат Уулу Марлен',
-            direction_id: 1,
-            personal_id: 51623,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7461,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Мелис Уулу Бексултан',
-            direction_id: 1,
-            personal_id: 58104,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7462,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Антонов Антон Викторович',
-            direction_id: 1,
-            personal_id: 54042,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7463,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Кропчев Владимир Сергеевич',
-            direction_id: 1,
-            personal_id: 12200,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7464,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Паляев Алексей Павлович',
-            direction_id: 1,
-            personal_id: 56075,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7465,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-          {
-            name: 'Маркеев Алексей Михайлович',
-            direction_id: 1,
-            personal_id: 54121,
-            date: [
-              {
-                date: '2023-05-01',
-                status: 3,
-                id: 7468,
-                day: '01',
-                total: null,
-                hour: null,
-              },
-            ],
-          },
-        ],
-        page: '1',
-        totalPage: 194,
-        count: '30',
-      }
-      props.options.data.rows = mocData.rows
+      const data = await store.dispatch('table/get', {
+        url: url,
+        data: {
+          countRows: paramsQuery.value.countRows,
+          currentPage: paramsQuery.value.currentPage,
+          searchGlobal: paramsQuery.value.searchGlobal,
+          searchColumns,
+          sorts,
+          filter: filtersColumns.value,
+          by,
+        },
+      })
+      props.options.data.rows = data.rows
       //props.options.data.rows = data
       if (props.options.data.rows?.length && props.options.data.rows) {
-        props.options.data.totalPages = mocData.totalPage
-        props.options.data.totalRows = mocData.total
+        props.options.data.totalPages = data.totalPage
+        props.options.data.totalRows = data.total
         const structuredArray = []
         props.options.data.rows.forEach((row) => {
           if (props.options.options.selecting) {
             Vue.set(row, 'selected', false)
           }
-          row?.date?.forEach((item) => {
-            Vue.set(row, `day_${Number(item.day)}`, item.total)
-          })
+          if (props.options.panel.date) {
+            row?.date?.forEach((item) => {
+              Vue.set(row, `day_${Number(item.day)}`, item.total)
+            })
+          }
           structuredArray.push({
             row,
             child: {
@@ -834,6 +383,9 @@ const table = {
         // console.log('zxc', props.options.data)
       }
       loading.value = false
+      setTimeout(() => {
+        coutingCells()
+      }, 0)
     }
     const initHeadParams = () => {
       const { head } = props.options
@@ -934,10 +486,9 @@ const table = {
       if (type === 'addItem') {
         addItem()
       } else if (type === 'importFile') {
-        console.log('import', dropzone.value.$children[0])
         dropzone.value.$children[0].$el.click()
-        // importFile()
-        // dropzone.value.$refs.hiddenFileInput.click()
+      } else if (type === 'acceptPeriod') {
+        acceptData.value.popup = true
       }
     }
     const countingDistances = () => { 
@@ -948,7 +499,26 @@ const table = {
         all += Number(props?.options?.head[index].width)
         if (props?.options?.head[index]?.fixed?.position === 'left') {
           item.style.left = `${left}px`
-          cellItems.value.forEach(element => {
+          left += Number(getComputedStyle(item).width.replace('px', ''))
+        }
+      })
+
+      for (let index = props?.options?.head.length - 1; index >= 0; index--) {
+        if (props?.options?.head[index]?.fixed?.position === 'right') {
+          const item = cells.value.find(x => x.innerText === props?.options?.head[index]?.title)
+          item.style.right = `${right}px`
+          right += Number(getComputedStyle(item).width.replace('px', ''))
+        }
+      }
+      mainTable.value.style.width = `${all}px`
+    }
+
+    const coutingCells = () => {
+      let left = 0
+      let right = 0
+      cells?.value?.forEach((item, index) => {
+        if (props?.options?.head[index]?.fixed?.position === 'left') {
+          cellItems?.value?.forEach(element => {
             element.children[index].style.left = `${left}px`
           })
           left += Number(getComputedStyle(item).width.replace('px', ''))
@@ -958,50 +528,83 @@ const table = {
       for (let index = props?.options?.head.length - 1; index >= 0; index--) {
         if (props?.options?.head[index]?.fixed?.position === 'right') {
           const item = cells.value.find(x => x.innerText === props?.options?.head[index]?.title)
-          item.style.right = `${right}px`
-          cellItems.value.forEach(element => {
+          cellItems?.value?.forEach(element => {
             element.children[index].style.right = `${right}px`
           })
           right += Number(getComputedStyle(item).width.replace('px', ''))
         }
       }
-      mainTable.value.style.width = `${all}px`
     }
+
     const addDayOfMonth = () => {
       props.options.head = props.options.head.filter((item) => !item.added)
       const date = new Date(currentDate.value.year, currentDate.value.month, 1)
       const dateNow = new Date()
       let lastLeftIndex = props.options.head.findLastIndex((x) => x.fixed.position === 'left')
-      while (date.getMonth() === currentDate.value.month) {
-        props.options.head.splice(lastLeftIndex + 1, 0, {
-          id: uuidv4(),
-          title: `${new Date(date).getDate()}`,
-          align: 'center',
-          type: 'default',
-          isShow: true, 
-          width: '50',  
-          added: true,
-          alias: 'p.total',
-          value: `day_${new Date(date).getDate()}`,
-          currentDate: dateNow.getDate() === date.getDate() && dateNow.getMonth() === date.getMonth() && dateNow.getFullYear() === date.getFullYear(),
-          fixed: {
-            value: false,
-          },
-          search: {
-            field: '',
-            isShow: true,
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
+      if (props.options.panel.date) {
+        while (date.getMonth() === currentDate.value.month) {
+          props.options.head.splice(lastLeftIndex + 1, 0, {
+            id: uuidv4(),
+            title: `${new Date(date).getDate()}`,
+            align: 'center',
+            type: 'default',
+            isShow: true, 
+            width: '50',  
+            added: true,
+            alias: `p.col${new Date(date).getDate()}`,
+            value: `col${new Date(date).getDate() < 10 ? '0' : ''}${new Date(date).getDate()}`,
+            currentDate: dateNow.getDate() === date.getDate() && dateNow.getMonth() === date.getMonth() && dateNow.getFullYear() === date.getFullYear(),
+            fixed: {
+              value: false,
             },
-          ],
-        })
-        lastLeftIndex += 1
-        date.setDate(date.getDate() + 1)
+            search: {
+              field: '',
+              isShow: true,
+            },
+            sorts: [
+              {
+                type: 'string',
+                default: '',
+                value: '',
+                isShow: false,
+              },
+            ],
+          })
+          lastLeftIndex += 1
+          date.setDate(date.getDate() + 1)
+        }
+      } else {
+        let dateIndex = 1
+        while (dateIndex < 32) {
+          props.options.head.splice(lastLeftIndex + 1, 0, {
+            id: uuidv4(),
+            title: `${dateIndex}`,
+            align: 'center',
+            type: 'default',
+            isShow: true, 
+            width: '50',  
+            added: true,
+            alias: `p.col${dateIndex}`,
+            value: `col${dateIndex < 10 ? '0' : ''}${dateIndex}`,
+            fixed: {
+              value: false,
+            },
+            search: {
+              field: '',
+              isShow: true,
+            },
+            sorts: [
+              {
+                type: 'string',
+                default: '',
+                value: '',
+                isShow: false,
+              },
+            ],
+          })
+          lastLeftIndex += 1
+          dateIndex += 1
+        }
       }
       nextTick(() => {
         let all = 0
@@ -1026,6 +629,18 @@ const table = {
       addDayOfMonth()
       await getItems()
     }
+    const importFiles = (val) => {
+      const file = Array.from(val)[0]
+      // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))
+      panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
+      // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))
+    }
+
+    const acceptForm = () => {
+      panel.value.buttons.find(x => x.value === 'accept').isDisabled = true
+      acceptData.value.popup = false
+    }
+  
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -1063,7 +678,8 @@ const table = {
 
       addDayOfMonth()
       initHeadParams()
-      await getItems()
+      // await getItems()
+      countingDistances()
       
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
@@ -1080,12 +696,11 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
-        setTimeout(() => {
-          //console.log(headerEl.previousElementSibling.offsetWidth)
-          // acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
-          countingDistances()
-        }, 0)
       })
+      // setTimeout(() => {
+      //   //console.log(headerEl.previousElementSibling.offsetWidth)
+      //   // acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
+      // }, 0)
       //wrapingRow()
       window.addEventListener('resize', () => watchScroll())
       watchScroll()
@@ -1105,12 +720,14 @@ const table = {
       contextmenu,
       pagination,
       filter,
+      panel,
       isMobile,
       cells,
       cellItems,
       mainTable,
       currentDate,
       dropzone,
+      acceptData,
       // METHODS
       wrapingRow,
       openChildRow,
@@ -1128,8 +745,11 @@ const table = {
       getItems,
       watchScroll,
       countingDistances,
+      coutingCells,
       addDayOfMonth,
       changeMonth,
+      importFiles,
+      acceptForm,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
