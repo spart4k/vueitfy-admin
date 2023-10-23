@@ -3,9 +3,8 @@
     <v-btn @click="setNavmenu" icon v-if="isMobile">
       <v-icon color="text"> $IconOpenMenu </v-icon>
     </v-btn>
-    <!-- {{ openMenu }}{{ miniMenu }} -->
 
-    <div class="v-topbar_title">{{ pageName }}</div>
+    <div v-if="!isMobile" class="v-topbar_title">{{ pageName }}</div>
 
     <v-badge
       offset-x="22"
