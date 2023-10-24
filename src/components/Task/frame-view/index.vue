@@ -36,8 +36,12 @@
       <Form1 v-if="data.task.task_type_id === 1" :data="data"></Form1>
       <!--Подтверждение-->
       <Form2 v-if="data.task.task_type_id === 2" :data="data"></Form2>
+      <!--Расходы-->
+      <Form3 v-if="data.task.task_type_id === 3" :data="data"></Form3>
+      <Form4 v-if="data.task.task_type_id === 4" :data="data"></Form4>
       <!--Исправление-->
       <Form7 v-if="data.task.task_type_id === 7" :data="data"></Form7>
+      <Form8 v-if="data.task.task_type_id === 8" :data="data"></Form8>
       <!--Подтверждение назначения-->
       <Form15 v-if="data.task.task_type_id === 15" :data="data" />
       <!--Внесение ключа-->
