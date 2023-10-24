@@ -247,7 +247,6 @@
           label="Выберите направление"
           item-text="name"
           return-object
-          persistent-hint
         ></v-autocomplete>
         <div class="d-flex">
           <v-autocomplete
@@ -259,9 +258,10 @@
             label="Выберите подразделение"
             multiple
             chips
+            clearable
+            deletable-chips
             item-text="name"
             return-object
-            persistent-hint
           ></v-autocomplete>
           <div
             v-if="broadcast.direction.value === 'route'"
@@ -276,9 +276,10 @@
             label="Выберите объект"
             multiple
             chips
+            clearable
+            deletable-chips
             item-text="name"
             return-object
-            persistent-hint
           ></v-autocomplete>
         </div>
         <v-autocomplete
@@ -288,14 +289,16 @@
           label="Выберите пользователей"
           multiple
           chips
+          clearable
+          deletable-chips
           item-text="name"
+          @change="checkAll"
           return-object
-          persistent-hint
         >
           <template slot="item" slot-scope="{ item }">
-            <div class="d-flex">
+            <div class="d-flex flex-column">
               <p>{{ item.name }}</p>
-              <p>{{ item.role }}</p>
+              <p class="v-controls-popup_subtitle">{{ item.role }}</p>
             </div>
           </template>
         </v-autocomplete>

@@ -69,6 +69,12 @@ const controls = {
         { name: 'Прогресс' },
         { name: 'Коробка' },
         { name: 'ООО Глина' },
+        { name: 'Прогресс1' },
+        { name: 'Коробка1' },
+        { name: 'ООО Глина1' },
+        { name: 'Прогресс2' },
+        { name: 'Коробка2' },
+        { name: 'ООО Глина2' },
       ],
       peopleArray: [
         { name: '-ВСЕ-' },
@@ -115,11 +121,24 @@ const controls = {
       array.read = array.read.filter((e) => e === true)
       return array
     })
+
+    const checkAll = (val) => {
+      if (val[val?.length - 1]?.name === '-ВСЕ-') {
+        broadcast.value.people = [{ name: '-ВСЕ-' }]
+      } else if (val.find((x) => x.name === '-ВСЕ-')) {
+        broadcast.value.people.splice(
+          val.findIndex((x) => x.name === '-ВСЕ-'),
+          1
+        )
+      }
+    }
     return {
       broadcast,
       popupDelete,
       popupBroadcast,
       intersection,
+
+      checkAll,
     }
   },
 }
