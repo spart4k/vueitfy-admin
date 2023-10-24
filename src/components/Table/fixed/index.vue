@@ -3,21 +3,39 @@
     <!--<h1 class="v-table-title">{{ options.options.title }}</h1>-->
     <DropZone
       v-show="false"
-      @addFiles="importFiles"
-      :options="{ withoutSave: true, folder: 'test' }"
+      @fileUpload="fileUpload"
+      :options="{ withoutSave: true, folder: options.options.folder }"
       ref="dropzone"
     />
     <Popup
-      :options="{ portal: 'filter', padding: '20px 30px' }"
-      closeButton
+      v-if="globalLoading"
+      :options="{ portal: 'filter', transparent: true }"
+    >
+      <v-progress-circular color="primary" :size="80" indeterminate />
+    </Popup>
+    <Popup
+      :options="{ portal: 'filter', padding: '20px 30px', width: '434px' }"
       @close="acceptData.popup = false"
       v-if="acceptData.popup"
     >
       <div class="d-flex flex-column align-center">
+        <v-select
+          v-model="acceptData.valueProfit"
+          :items="[
+            { title: 'Аванс', value: 5 },
+            { title: 'Зарплата', value: 3 },
+          ]"
+          item-text="title"
+          full-width
+          return-object
+          style="width: 100%"
+          label="Вид ведомости"
+        ></v-select>
         <v-date-picker
           locale="ru"
-          v-model="acceptData.value"
+          v-model="acceptData.valueDate"
           color="primary"
+          width="100%"
           type="month"
         ></v-date-picker>
         <div class="d-flex mt-7">

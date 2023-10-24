@@ -54,6 +54,7 @@ const table = {
     const router = useRouter()
     const route = useRoute()
     const loading = ref(false)
+    const globalLoading = ref(false)
     const headerOptions = ref([])
     const tablePosition = ref(null)
     const searchField = ref('')
@@ -117,7 +118,8 @@ const table = {
     const dropzone = ref(null)
     const acceptData = ref({
       popup: false,
-      value: null,
+      valueDate: new Date().toISOString().substr(0, 7),
+      valueProfit: { title: 'Аванс', value: 5 },
     })
     const wrapingRow = () => {
       const table = document.querySelector(props.options.selector)
@@ -629,17 +631,15 @@ const table = {
       addDayOfMonth()
       await getItems()
     }
-    const importFiles = async (val) => {
-      // const file = Array.from(val)[0]
-      // console.log(file.name)
-      // const url = panel.value.buttons.find(x => x.type === 'importFile').requestUrl + file.name 
-      // const data = await store.dispatch('table/saveFile', { url: url, data: val })
-      // console.log(data)
-      // requestUrl
-      // panel.value.buttons.find(x => x.type === 'importFile').requestUrl
-      // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))
-      // panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
-      // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))
+    const fileUpload = async (val) => {
+      const requestData = {
+        filepath: val,
+      }
+      globalLoading.value = true
+      const data = await store.dispatch('table/getImportX5', requestData)
+      globalLoading.value = false
+      panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
+      getItems()
     }
 
     const acceptForm = () => {
@@ -754,13 +754,14 @@ const table = {
       coutingCells,
       addDayOfMonth,
       changeMonth,
-      importFiles,
+      fileUpload,
       acceptForm,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
       headActions,
       loading,
+      globalLoading,
       paramsQuery,
       rowCount,
       isElementXPercentInViewport,

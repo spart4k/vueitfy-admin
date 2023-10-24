@@ -295,6 +295,8 @@ const config = {
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination_pivot/x5',
+    // folder: 'parser_x5',
+    folder: 'test',
     title: 'This is an about page1',
   },
   panel: {

@@ -106,8 +106,14 @@ export default {
     //}
     const loadFile = async (files) => {
       const formData = new FormData()
-      const name = files[0].name
-      formData.append('name', name)
+      const fileType =
+        files[0].name.split('.')[files[0].name.split('.').length - 1]
+      const name = `${
+        props.options.folder
+      }_25_${new Date().getTime()}.${fileType}`
+      const folder = props.options.folder + '/' + name
+      console.log(fileType)
+      formData.append('name', files[0].name)
       formData.append('file', ...files)
       const params = {
         headers: {
@@ -116,10 +122,10 @@ export default {
       }
       const data = await store.dispatch('file/create', {
         data: formData,
-        folder: props.options.folder + '/' + name,
+        folder,
         params,
       })
-      console.log(data)
+      emit('fileUpload', folder)
     }
     onMounted(() => {
       console.log(dropzone.value)

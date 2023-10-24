@@ -3,12 +3,13 @@
     <div class="v-popup" @click.prevent="$emit('close')">
       <div
         @click.stop
+        class="v-popup-container"
         :style="{
           width: options.width,
           height: options.height,
           padding: options.padding,
+          background: options.transparent && 'transparent',
         }"
-        class="v-popup-container"
       >
         <div v-if="$props.closeButton" class="v-popup-container-close">
           <v-icon @click="$emit('close')" small>$IconClose</v-icon>
