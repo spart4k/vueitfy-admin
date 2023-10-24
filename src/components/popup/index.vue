@@ -1,6 +1,9 @@
 <template>
   <portal :to="options.portal">
-    <div class="v-popup" @click.prevent="$emit('close')">
+    <div
+      class="v-popup"
+      @click.prevent="options.closeOutsideClick && $emit('close')"
+    >
       <div
         @click.stop
         class="v-popup-container"

@@ -12,8 +12,19 @@
           $route.query.compose === 'new'
         "
       ></v-checkbox>
-      <v-btn class="v-controls-list_item" color="text" disabled plain>
-        <v-icon :color="'disabled'" class="mr-3" small>$IconBroadcast</v-icon>
+      <v-btn
+        class="v-controls-list_item"
+        color="text"
+        :disabled="!$props.selectedMails.length"
+        plain
+        @click="popupBroadcast = true"
+      >
+        <v-icon
+          :color="$props.selectedMails.length ? 'primary' : 'disabled'"
+          class="mr-3"
+          small
+          >$IconBroadcast</v-icon
+        >
         Транслировать
       </v-btn>
       <v-btn
@@ -197,7 +208,7 @@
         class="v-controls-list_item"
         color="text"
         plain
-        @click="popupCase = true"
+        @click="popupDelete = true"
       >
         <v-icon
           :color="$props.selectedMails.length ? 'primary' : 'disabled'"
@@ -209,18 +220,124 @@
       </v-btn>
     </div>
     <Popup
+      :options="{
+        portal: 'filter',
+        padding: '20px 30px',
+        width: '600px',
+      }"
+      @close="popupBroadcast = false"
+      v-if="popupBroadcast"
+    >
+      <div class="v-controls-popup d-flex flex-column">
+        <p class="v-controls-popup_title text-center">Транслировать письма</p>
+        <v-autocomplete
+          v-model="broadcast.direction"
+          class="mt-4"
+          :items="broadcast.directionArray"
+          item-text="title"
+          return-object
+          outlined
+          label="Кому транслировать"
+        ></v-autocomplete>
+        <v-autocomplete
+          v-if="broadcast.direction.value === 'route'"
+          v-model="broadcast.route"
+          :items="broadcast.routeArray"
+          :menu-props="{ maxHeight: '400' }"
+          label="Выберите направление"
+          item-text="name"
+          return-object
+        ></v-autocomplete>
+        <div class="d-flex">
+          <v-autocomplete
+            v-if="broadcast.direction.value !== 'people'"
+            style="min-width: 45%"
+            v-model="broadcast.unit"
+            :items="broadcast.unitArray"
+            :menu-props="{ maxHeight: '400' }"
+            label="Выберите подразделение"
+            multiple
+            chips
+            clearable
+            deletable-chips
+            item-text="name"
+            return-object
+          ></v-autocomplete>
+          <div
+            v-if="broadcast.direction.value === 'route'"
+            style="min-width: 10%"
+          ></div>
+          <v-autocomplete
+            v-if="broadcast.direction.value === 'route'"
+            style="min-width: 45%"
+            v-model="broadcast.object"
+            :items="broadcast.objectArray"
+            :menu-props="{ maxHeight: '400' }"
+            label="Выберите объект"
+            multiple
+            chips
+            clearable
+            deletable-chips
+            item-text="name"
+            return-object
+          ></v-autocomplete>
+        </div>
+        <v-autocomplete
+          v-model="broadcast.people"
+          :items="broadcast.peopleArray"
+          :menu-props="{ maxHeight: '400' }"
+          label="Выберите пользователей"
+          multiple
+          chips
+          clearable
+          deletable-chips
+          item-text="name"
+          @change="checkAll"
+          return-object
+        >
+          <template slot="item" slot-scope="{ item }">
+            <div class="d-flex flex-column">
+              <p>{{ item.name }}</p>
+              <p class="v-controls-popup_subtitle">{{ item.role }}</p>
+            </div>
+          </template>
+        </v-autocomplete>
+        <div class="d-flex mt-9 justify-center">
+          <v-btn
+            @click="
+              $emit('broadcast')
+              popupBroadcast = false
+            "
+            tonal
+            color="primary"
+          >
+            <v-icon small class="mr-2">$IconBroadcast</v-icon>
+            Транслировать
+          </v-btn>
+          <v-btn
+            class="ml-8"
+            @click="popupBroadcast = false"
+            tonal
+            color="error"
+          >
+            Отменить
+          </v-btn>
+        </div>
+      </div>
+    </Popup>
+    <Popup
       :options="{ portal: 'filter', padding: '20px 30px' }"
       closeButton
-      @close="popupCase = false"
-      v-if="popupCase"
+      @close="popupDelete = false"
+      v-if="popupDelete"
     >
-      <div class="v-controls-popup d-flex flex-column align-center">
-        <p class="v-controls-popup_title">Удалить письма?</p>
+      <div class="v-controls-popup d-flex flex-column">
+        <p class="v-controls-popup_title text-center">Удалить письма?</p>
         <div class="d-flex mt-7">
           <v-btn
             @click="
               $emit('changeMailArrayKey', 'del', true)
-              popupCase = false
+              popupDelete = false
             "
             tonal
             color="error"
@@ -228,7 +345,12 @@
             <v-icon small class="mr-2">$IconDelete</v-icon>
             Удалить
           </v-btn>
-          <v-btn @click="popupCase = false" tonal color="primary" class="ml-5">
+          <v-btn
+            @click="popupDelete = false"
+            tonal
+            color="primary"
+            class="ml-5"
+          >
             <v-icon small class="mr-2">$IconArrowCansel</v-icon>
             Отменить
           </v-btn>

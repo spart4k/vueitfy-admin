@@ -106,6 +106,13 @@
                 font-size: 20px;
                 font-weight: 500;
             }
+            &_subtitle {
+                font-size: 10px;
+                color: #222222;
+            }
+            &::v-deep .v-select__selections {
+                flex-wrap: wrap !important;
+            }
         }
     }
 }

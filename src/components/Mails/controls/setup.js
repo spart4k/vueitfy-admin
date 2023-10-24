@@ -32,7 +32,57 @@ const controls = {
     },
   },
   setup(props) {
-    const popupCase = ref(false)
+    const popupDelete = ref(false)
+    const popupBroadcast = ref(true)
+    const broadcast = ref({
+      direction: {
+        title: 'Сотрудники',
+        value: 'people',
+      },
+      route: null,
+      unit: null,
+      object: null,
+      people: null,
+
+      directionArray: [
+        {
+          title: 'Сотрудники',
+          value: 'people',
+        },
+        {
+          title: 'Направление',
+          value: 'route',
+        },
+        {
+          title: 'Подразделение',
+          value: 'unit',
+        },
+      ],
+      routeArray: [
+        { name: 'Логистика' },
+        { name: 'Бедолаги' },
+        { name: 'Горимыки' },
+        { name: 'Лево' },
+      ],
+      unitArray: [{ name: 'IT' }, { name: 'HUIT' }, { name: 'APTI' }],
+      objectArray: [
+        { name: 'Прогресс' },
+        { name: 'Коробка' },
+        { name: 'ООО Глина' },
+        { name: 'Прогресс1' },
+        { name: 'Коробка1' },
+        { name: 'ООО Глина1' },
+        { name: 'Прогресс2' },
+        { name: 'Коробка2' },
+        { name: 'ООО Глина2' },
+      ],
+      peopleArray: [
+        { name: '-ВСЕ-' },
+        { name: 'Азаров', role: 'Главный' },
+        { name: 'Тихонравов', role: 'Подглавный' },
+        { name: 'Громконравов', role: 'Работяга' },
+      ],
+    })
     const intersection = computed(() => {
       const array = {
         full: [],
@@ -71,9 +121,24 @@ const controls = {
       array.read = array.read.filter((e) => e === true)
       return array
     })
+
+    const checkAll = (val) => {
+      if (val[val?.length - 1]?.name === '-ВСЕ-') {
+        broadcast.value.people = [{ name: '-ВСЕ-' }]
+      } else if (val.find((x) => x.name === '-ВСЕ-')) {
+        broadcast.value.people.splice(
+          val.findIndex((x) => x.name === '-ВСЕ-'),
+          1
+        )
+      }
+    }
     return {
-      popupCase,
+      broadcast,
+      popupDelete,
+      popupBroadcast,
       intersection,
+
+      checkAll,
     }
   },
 }
