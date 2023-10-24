@@ -630,15 +630,15 @@ const table = {
       await getItems()
     }
     const importFiles = async (val) => {
-      const file = Array.from(val)[0]
-      console.log(file.name)
-      const url = panel.value.buttons.find(x => x.type === 'importFile').requestUrl + file.name 
-      const data = await store.dispatch('table/saveFile', { url: url, data: val })
-      console.log(data)
+      // const file = Array.from(val)[0]
+      // console.log(file.name)
+      // const url = panel.value.buttons.find(x => x.type === 'importFile').requestUrl + file.name 
+      // const data = await store.dispatch('table/saveFile', { url: url, data: val })
+      // console.log(data)
       // requestUrl
       // panel.value.buttons.find(x => x.type === 'importFile').requestUrl
       // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))
-      panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
+      // panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
       // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))
     }
 

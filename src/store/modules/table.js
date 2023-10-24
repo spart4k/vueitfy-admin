@@ -1,5 +1,5 @@
 //import
-import { getList, getDetail, saveFile } from '@/api/table'
+import { getList, getDetail } from '@/api/table'
 //import axios from 'axios'
 
 const auth = {
@@ -11,14 +11,6 @@ const auth = {
     },
     async getDetail(_, url) {
       const result = await getDetail(url)
-      return result
-    },
-    async saveFile(_, data) {
-      const config = {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }
-      console.log('data, config', data, config)
-      const result = await saveFile(data, config)
       return result
     },
   },
