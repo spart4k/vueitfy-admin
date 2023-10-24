@@ -633,7 +633,7 @@ const table = {
       const file = Array.from(val)[0]
       console.log(file.name)
       const url = panel.value.buttons.find(x => x.type === 'importFile').requestUrl + file.name 
-      const data = await store.dispatch('table/saveFile', { url: url , data: file})
+      const data = await store.dispatch('table/saveFile', { url: url, data: val })
       console.log(data)
       // requestUrl
       // panel.value.buttons.find(x => x.type === 'importFile').requestUrl

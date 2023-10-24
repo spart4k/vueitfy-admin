@@ -4,7 +4,7 @@
     <DropZone
       v-show="false"
       @addFiles="importFiles"
-      :options="{ withoutSave: false }"
+      :options="{ withoutSave: true, folder: 'test' }"
       ref="dropzone"
     />
     <Popup

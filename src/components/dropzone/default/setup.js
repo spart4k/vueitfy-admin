@@ -106,13 +106,9 @@ export default {
     //}
     const loadFile = async (files) => {
       const formData = new FormData()
-      formData.append(
-        'name',
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
-      )
+      const name = files[0].name
+      formData.append('name', name)
       formData.append('file', ...files)
-      const name =
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
       const params = {
         headers: {
           'Content-Type': 'multipart/form-data',
