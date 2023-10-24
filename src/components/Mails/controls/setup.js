@@ -33,20 +33,49 @@ const controls = {
   },
   setup(props) {
     const popupDelete = ref(false)
-    const popupBroadcast = ref(false)
+    const popupBroadcast = ref(true)
     const broadcast = ref({
-      direction: '',
+      direction: {
+        title: 'Сотрудники',
+        value: 'people',
+      },
+      route: null,
+      unit: null,
+      object: null,
+      people: null,
+
       directionArray: [
         {
-          title: 'Направление',
-          value: 'all',
-        },
-        {
-          title: 'Люди',
+          title: 'Сотрудники',
           value: 'people',
         },
+        {
+          title: 'Направление',
+          value: 'route',
+        },
+        {
+          title: 'Подразделение',
+          value: 'unit',
+        },
       ],
-      toAll: true,
+      routeArray: [
+        { name: 'Логистика' },
+        { name: 'Бедолаги' },
+        { name: 'Горимыки' },
+        { name: 'Лево' },
+      ],
+      unitArray: [{ name: 'IT' }, { name: 'HUIT' }, { name: 'APTI' }],
+      objectArray: [
+        { name: 'Прогресс' },
+        { name: 'Коробка' },
+        { name: 'ООО Глина' },
+      ],
+      peopleArray: [
+        { name: '-ВСЕ-' },
+        { name: 'Азаров', role: 'Главный' },
+        { name: 'Тихонравов', role: 'Подглавный' },
+        { name: 'Громконравов', role: 'Работяга' },
+      ],
     })
     const intersection = computed(() => {
       const array = {

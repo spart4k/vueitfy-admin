@@ -229,31 +229,76 @@
       v-if="popupBroadcast"
     >
       <div class="v-controls-popup d-flex flex-column">
-        <p class="v-controls-popup_title text-center">Транслировать письма?</p>
-        <v-select
+        <p class="v-controls-popup_title text-center">Транслировать письма</p>
+        <v-autocomplete
           v-model="broadcast.direction"
           class="mt-4"
           :items="broadcast.directionArray"
           item-text="title"
-          item-value="value"
+          return-object
           outlined
           label="Кому транслировать"
-        ></v-select>
-        <v-checkbox
-          v-if="broadcast.direction === 'all'"
-          color="primary"
-          label="Для всех"
-          v-model="broadcast.toAll"
-        ></v-checkbox>
-        <v-select
-          v-if="broadcast.direction"
-          v-model="broadcast.users"
-          :items="['a', 'b', 'c']"
+        ></v-autocomplete>
+        <v-autocomplete
+          v-if="broadcast.direction.value === 'route'"
+          v-model="broadcast.route"
+          :items="broadcast.routeArray"
+          :menu-props="{ maxHeight: '400' }"
+          label="Выберите направление"
+          item-text="name"
+          return-object
+          persistent-hint
+        ></v-autocomplete>
+        <div class="d-flex">
+          <v-autocomplete
+            v-if="broadcast.direction.value !== 'people'"
+            style="min-width: 45%"
+            v-model="broadcast.unit"
+            :items="broadcast.unitArray"
+            :menu-props="{ maxHeight: '400' }"
+            label="Выберите подразделение"
+            multiple
+            chips
+            item-text="name"
+            return-object
+            persistent-hint
+          ></v-autocomplete>
+          <div
+            v-if="broadcast.direction.value === 'route'"
+            style="min-width: 10%"
+          ></div>
+          <v-autocomplete
+            v-if="broadcast.direction.value === 'route'"
+            style="min-width: 45%"
+            v-model="broadcast.object"
+            :items="broadcast.objectArray"
+            :menu-props="{ maxHeight: '400' }"
+            label="Выберите объект"
+            multiple
+            chips
+            item-text="name"
+            return-object
+            persistent-hint
+          ></v-autocomplete>
+        </div>
+        <v-autocomplete
+          v-model="broadcast.people"
+          :items="broadcast.peopleArray"
           :menu-props="{ maxHeight: '400' }"
           label="Выберите пользователей"
           multiple
+          chips
+          item-text="name"
+          return-object
           persistent-hint
-        ></v-select>
+        >
+          <template slot="item" slot-scope="{ item }">
+            <div class="d-flex">
+              <p>{{ item.name }}</p>
+              <p>{{ item.role }}</p>
+            </div>
+          </template>
+        </v-autocomplete>
         <div class="d-flex mt-9 justify-center">
           <v-btn
             @click="
