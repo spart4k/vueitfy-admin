@@ -4,10 +4,12 @@ import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment/moment'
+import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 
 const Form2 = defineComponent({
   name: 'Form2',
   components: {
+    TextInfo,
     DocFormWithConfirm,
     FormComment,
   },
@@ -17,10 +19,21 @@ const Form2 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
+        ctx,
+      },
+    }
+    const textInfo = {
+      manager: {
+        key: 'Менеджер',
+        value: props.data.entity.account_name,
+      },
+      obj: {
+        key: 'Объект',
+        value: props.data.entity.object_name,
       },
     }
     const finalData = ref({})
@@ -115,6 +128,7 @@ const Form2 = defineComponent({
       sendData,
       isFormValid,
       finalData,
+      textInfo,
     }
   },
 })

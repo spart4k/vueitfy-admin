@@ -1,8 +1,8 @@
 <template>
   <div>
     <div style="padding: 20px">
-      <FormError v-if="data.data.task.dop_data" class="mb-5">
-        {{ JSON.parse(data.data.task.dop_data).comment }}
+      <FormError v-if="dopData && dopData.comment" class="mb-5">
+        {{ dopData.comment }}
       </FormError>
       <div class="mb-3">Внесите данные личного ключа:</div>
       <v-form>

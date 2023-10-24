@@ -6,10 +6,12 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment'
+import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 
 const Form7 = defineComponent({
   name: 'Form7',
   components: {
+    TextInfo,
     FormComment,
     DocFormCorrect,
   },
@@ -19,11 +21,22 @@ const Form7 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const context = {
       root: {
         store,
+        ctx,
+      },
+    }
+    const textInfo = {
+      manager: {
+        key: 'Менеджер',
+        value: props.data.entity.account_name,
+      },
+      obj: {
+        key: 'Объект',
+        value: props.data.entity.object_name,
       },
     }
     const isHasOsnDoc = props.data.data.docs_id.filter(
@@ -48,6 +61,7 @@ const Form7 = defineComponent({
           default: props.data.entity.grajdanstvo_id,
         },
       },
+      context,
     })
 
     const changeDocs = (data) => {
@@ -157,6 +171,7 @@ const Form7 = defineComponent({
       isHasOsnDoc,
       formData,
       osnValidate,
+      textInfo,
     }
   },
 })

@@ -2,6 +2,7 @@ import { defineComponent, ref } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import DateTimePicker from '@/components/datetimepicker/index.vue'
+import store from '@/store'
 
 const DocFormWithConfirm = defineComponent({
   name: 'DocFormWithConfirm',
@@ -24,11 +25,18 @@ const DocFormWithConfirm = defineComponent({
   },
   data: function () {
     return {
+      panel: [],
       datePickerOpen: false,
       datePickerSecondOpen: false,
     }
   },
-  setup(props, { emit }) {
+  setup(props, ctx) {
+    const context = {
+      root: {
+        store,
+        ctx,
+      },
+    }
     const formObj = ref({
       // Паспорт
       1: useForm({
@@ -49,6 +57,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.pasp_kem,
           },
         },
+        context,
       }),
       // Снилс
       2: useForm({
@@ -57,6 +66,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.snils,
           },
         },
+        context,
       }),
       // Банковская карта
       3: useForm({
@@ -77,6 +87,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.pasp_kem,
           },
         },
+        context,
       }),
       // Адрес регистрации
       4: useForm({
@@ -85,6 +96,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.registration_address,
           },
         },
+        context,
       }),
       // Патент
       5: useForm({
@@ -99,6 +111,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.patent_prof,
           },
         },
+        context,
       }),
       // Паспорт, страница 2
       6: useForm({
@@ -107,6 +120,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.pasp_address_reg,
           },
         },
+        context,
       }),
       // Мед.книжка
       8: useForm({
@@ -115,6 +129,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.med_book_date,
           },
         },
+        context,
       }),
       // Вид на жительство
       9: useForm({
@@ -135,6 +150,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.view_home_kem,
           },
         },
+        context,
       }),
       // Миграционная карта
       10: useForm({
@@ -152,6 +168,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.migr_card_data_out,
           },
         },
+        context,
       }),
       // Чек-патент первичный
       13: useForm({
@@ -160,6 +177,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.check_patent_date_pay,
           },
         },
+        context,
       }),
       // Регистрация стр. 2
       14: useForm({
@@ -171,6 +189,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.registration_date_c_docs_in,
           },
         },
+        context,
       }),
       // Патент стр. 2
       15: useForm({
@@ -182,18 +201,21 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.patent_date_docs_in,
           },
         },
+        context,
       }),
       // ИНН
       17: useForm({
         fields: {
           inn: { default: props.docsData.inn },
         },
+        context,
       }),
       // Экзамен РФ
       18: useForm({
         fields: {
           ekz_rf: { default: props.docsData.ekz_rf },
         },
+        context,
       }),
       // Чек-патент текущий
       19: useForm({
@@ -202,6 +224,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.check_patent_date_pay_now,
           },
         },
+        context,
       }),
       // Вид на жительство стр. 2
       22: useForm({
@@ -210,6 +233,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.view_home_address_reg,
           },
         },
+        context,
       }),
       // мед осмотр
       23: useForm({
@@ -218,6 +242,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.med_view_docs_in,
           },
         },
+        context,
       }),
       // мед осмотр ID
       24: useForm({
@@ -226,6 +251,7 @@ const DocFormWithConfirm = defineComponent({
             default: props.docsData.id_card,
           },
         },
+        context,
       }),
     })
     const confirmedDocs = ref([])
@@ -239,7 +265,7 @@ const DocFormWithConfirm = defineComponent({
         confirmedDocs.value = [...confirmedDocs.value, idDoc]
       }
       rejectedDocs.value = rejectedDocs.value.filter((doc) => doc !== idDoc)
-      emit('change', {
+      ctx.emit('change', {
         confirmed: confirmedDocs.value,
         rejected: rejectedDocs.value,
         confirmDocsLength: confirmDocsLength,
@@ -251,7 +277,7 @@ const DocFormWithConfirm = defineComponent({
         rejectedDocs.value = [...rejectedDocs.value, idDoc]
       }
       confirmedDocs.value = confirmedDocs.value.filter((doc) => doc !== idDoc)
-      emit('change', {
+      ctx.emit('change', {
         confirmed: confirmedDocs.value,
         rejected: rejectedDocs.value,
         confirmDocsLength: confirmDocsLength,
