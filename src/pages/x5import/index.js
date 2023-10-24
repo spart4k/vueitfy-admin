@@ -324,7 +324,7 @@ const config = {
         class: ['v-table-button--custom'],
         url: '$IconInputMail',
         type: 'importFile',
-        requestUrl: '/file/save/test/',
+        requestUrl: 'file/save/test/',
         backgroundColor: '#fff',
       },
       {

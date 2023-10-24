@@ -13,8 +13,12 @@ const auth = {
       const result = await getDetail(url)
       return result
     },
-    async saveFile(_, url) {
-      const result = await getDetail(url)
+    async saveFile(_, data) {
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+      console.log('data, config', data, config)
+      const result = await saveFile(data, config)
       return result
     },
   },
