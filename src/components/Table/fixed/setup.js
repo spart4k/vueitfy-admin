@@ -629,8 +629,14 @@ const table = {
       addDayOfMonth()
       await getItems()
     }
-    const importFiles = (val) => {
+    const importFiles = async (val) => {
       const file = Array.from(val)[0]
+      console.log(file.name)
+      const url = panel.value.buttons.find(x => x.type === 'importFile').requestUrl + file.name 
+      const data = await store.dispatch('table/get', { url: url })
+      console.log(data)
+      // requestUrl
+      // panel.value.buttons.find(x => x.type === 'importFile').requestUrl
       // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))
       panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
       // console.log(props.options.panel.buttons.find(x => x.value === 'accept'))

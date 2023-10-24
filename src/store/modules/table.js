@@ -1,5 +1,5 @@
 //import
-import { getList, getDetail } from '@/api/table'
+import { getList, getDetail, saveFile } from '@/api/table'
 //import axios from 'axios'
 
 const auth = {
@@ -10,6 +10,10 @@ const auth = {
       return result
     },
     async getDetail(_, url) {
+      const result = await getDetail(url)
+      return result
+    },
+    async saveFile(_, url) {
       const result = await getDetail(url)
       return result
     },
