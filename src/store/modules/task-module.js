@@ -21,16 +21,16 @@ const taskModule = {
 
     async setPartTask(_, data) {
       console.log(data)
-      const result = await setTask('task/change_status_task', data.data)
+      const result = await putTask('task/update/status', data.data)
       console.log(result)
       return result
     },
 
     async changeStatusTasks(_, data) {
       console.log(data)
-      // const result = await changeStatusAndData('task/update/status', data.data) // TODO: определить формат
+      const result = await putTask('task/update/status', data.data) // TODO: определить формат
       console.log(data)
-      const result = await putTask('task/update/status', data)
+      // const result = await putTask('task/update/status', data)
       console.log(result)
       return result
     },
