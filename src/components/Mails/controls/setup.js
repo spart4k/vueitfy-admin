@@ -34,6 +34,7 @@ const controls = {
   },
   setup(props) {
     const store = useStore()
+    let debounce = ref()
     const popupDelete = ref(false)
     const popupBroadcast = ref(true)
     const broadcast = ref({
@@ -152,23 +153,34 @@ const controls = {
       })
     }
 
-    const getItems = async () => {
-      const requestData = {
-        countRows: 5,
-        currentPage: 1,
-      }
-      const data = await store.dispatch('mail/getBroadcast', requestData)
-      console.log(data)
+    // const getItems = async () => {
+    //   const requestData = {
+    //     countRows: 5,
+    //     currentPage: 1,
+    //   }
+    //   const data = await store.dispatch('mail/getBroadcast', requestData)
+    //   console.log(data)
+    // }
+
+    const getItems = () => {
+      // cancel pending call
+      clearTimeout(debounce)
+      // delay new call 500ms
+      debounce = setTimeout(() => {
+        // this.fetch()
+        console.log(broadcast.value.search.people)
+      }, 500)
     }
 
     onMounted(async () => {
-      getItems()
+      // getItems()
     })
 
     watch(
       () => broadcast.value.search.people,
       (newVal) => {
-        console.log(newVal)
+        // console.log(newVal)
+        getItems()
         // const params = {
         //   id: props.value,
         //   search: props.field.search,
