@@ -21,6 +21,11 @@ const Form7 = defineComponent({
       default: () => {},
     },
   },
+  data() {
+    return {
+      datePickerOpen: false,
+    }
+  },
   setup(props, ctx) {
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const context = {
@@ -39,14 +44,22 @@ const Form7 = defineComponent({
         value: props.data.entity.object_name,
       },
     }
-    const isHasOsnDoc = props.data.data.docs_id.filter(
-      (doc) => doc.doc_id === 0
-    ).length
+    const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    console.log(JSON.parse(props.data.task.dop_data))
     const finalData = ref({})
     const isFormValid = ref(false)
     const bankCardId = ref(0)
 
-    const { formData, validate: osnValidate } = useForm({
+    const citizenItems = Object.values(props.data.data.grajdanstvo).map(
+      (citizen) => {
+        return {
+          text: citizen.name,
+          value: citizen.id,
+        }
+      }
+    )
+
+    const formObj = useForm({
       fields: {
         name: {
           validations: { required },
@@ -74,7 +87,7 @@ const Form7 = defineComponent({
       if (isHasOsnDoc) {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length &&
-          osnValidate()
+          formObj.validate()
       } else {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length
@@ -87,9 +100,9 @@ const Form7 = defineComponent({
         return store.dispatch('taskModule/setPersonalData', {
           data: {
             id: props.data.entity.id,
-            name: formData.name,
-            data_rojd: formData.data_rojd,
-            grajdanstvo_id: formData.grajdanstvo_id,
+            name: formObj.formData.name,
+            data_rojd: formObj.formData.data_rojd,
+            grajdanstvo_id: formObj.formData.grajdanstvo_id,
           },
         })
       },
@@ -169,9 +182,9 @@ const Form7 = defineComponent({
       isFormValid,
       finalData,
       isHasOsnDoc,
-      formData,
-      osnValidate,
+      formObj,
       textInfo,
+      citizenItems,
     }
   },
 })
