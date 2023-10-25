@@ -49,3 +49,5 @@ export const changeLettersContainer = (data, type, id) =>
 export const deleteBox = (data) => del(`mail/box/${data}`)
 
 export const deleteFolder = (data) => del(`mail/folder/${data}`)
+
+export const getBroadcast = (data) => post('get/account/broadcast', data)

@@ -1,6 +1,7 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { ref, computed } from 'vue'
+import Vue, { ref, computed, onMounted } from 'vue'
+import { useStore } from '@/store'
 import _ from 'lodash'
 // import { tableApi } from '@/api'
 import Popup from '../../popup/index.vue'
@@ -32,6 +33,7 @@ const controls = {
     },
   },
   setup(props) {
+    const store = useStore()
     const popupDelete = ref(false)
     const popupBroadcast = ref(true)
     const broadcast = ref({
@@ -132,6 +134,33 @@ const controls = {
         )
       }
     }
+
+    const changeDirection = () => {
+      broadcast.value.route = null
+      broadcast.value.unit = null
+      broadcast.value.object = null
+      broadcast.value.people = null
+    }
+
+    const clearKey = (val) => {
+      val.forEach((key) => {
+        broadcast.value[key] = null
+      })
+    }
+
+    const getItems = async () => {
+      const requestData = {
+        countRows: 5,
+        currentPage: 1,
+      }
+      const data = await store.dispatch('mail/getBroadcast', requestData)
+      console.log(data)
+    }
+
+    onMounted(async () => {
+      getItems()
+    })
+
     return {
       broadcast,
       popupDelete,
@@ -139,6 +168,8 @@ const controls = {
       intersection,
 
       checkAll,
+      clearKey,
+      changeDirection,
     }
   },
 }

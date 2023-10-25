@@ -238,12 +238,14 @@
           return-object
           outlined
           label="Кому транслировать"
+          @change="changeDirection"
         ></v-autocomplete>
         <v-autocomplete
           v-if="broadcast.direction.value === 'route'"
           v-model="broadcast.route"
           :items="broadcast.routeArray"
           :menu-props="{ maxHeight: '400' }"
+          @change="clearKey(['people', 'object', 'unit'])"
           label="Выберите направление"
           item-text="name"
           return-object
@@ -256,9 +258,15 @@
             :items="broadcast.unitArray"
             :menu-props="{ maxHeight: '400' }"
             label="Выберите подразделение"
+            @change="
+              broadcast.direction.value === 'unit' && clearKey(['people'])
+            "
             multiple
             chips
             clearable
+            :disabled="
+              broadcast.direction.value === 'route' && !broadcast?.route
+            "
             deletable-chips
             item-text="name"
             return-object
@@ -279,6 +287,9 @@
             clearable
             deletable-chips
             item-text="name"
+            :disabled="
+              broadcast.direction.value === 'route' && !broadcast?.route
+            "
             return-object
           ></v-autocomplete>
         </div>
@@ -292,6 +303,11 @@
           clearable
           deletable-chips
           item-text="name"
+          :disabled="
+            (broadcast.direction.value === 'unit' &&
+              !broadcast?.unit?.length) ||
+            (broadcast.direction.value === 'route' && !broadcast?.route)
+          "
           @change="checkAll"
           return-object
         >
