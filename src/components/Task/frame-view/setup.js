@@ -13,6 +13,8 @@ import Form20 from '@/components/Task/form20/index.vue'
 import Form21 from '@/components/Task/form21/index.vue'
 import Form27 from '@/components/Task/form27/index.vue'
 import Form28 from '@/components/Task/form28/index.vue'
+import Form17 from '@/components/Task/form17/index.vue'
+import Form18 from '@/components/Task/form18/index.vue'
 import moment from 'moment'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
@@ -68,6 +70,8 @@ const task = defineComponent({
     Form21,
     Form27,
     Form28,
+    Form17,
+    Form18,
   },
 
   props: {},

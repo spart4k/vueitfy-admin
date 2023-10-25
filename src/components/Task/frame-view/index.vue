@@ -47,6 +47,10 @@
       <Form8 v-if="data.task.task_type_id === 8" :data="data"></Form8>
       <!--Подтверждение назначения-->
       <Form15 v-if="data.task.task_type_id === 15" :data="data" />
+      <!--Прикладывание/корректировка выработки-->
+      <Form17 v-if="data.task.task_type_id === 17" :data="data"></Form17>
+      <!--Проверка выработки-->
+      <Form18 v-if="data.task.task_type_id === 18" :data="data"></Form18>
       <!--Внесение ключа-->
       <Form20 v-if="data.task.task_type_id === 20" :data="data" />
       <!--Подтверждение ключа-->
