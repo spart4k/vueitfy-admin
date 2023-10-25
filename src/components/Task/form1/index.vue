@@ -1,8 +1,8 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <div v-if="false" style="margin-bottom: 30px">
-        <TextInfo :infoObj="{ textInfo }"></TextInfo>
+      <div style="margin-bottom: 30px">
+        <!-- <TextInfo :infoObj="{ textInfo }"></TextInfo> -->
         <FormTitle
           :docName="getDocName(item.doc_id)"
           v-for="(item, index) in docs"
@@ -17,7 +17,7 @@
         >
         <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
       </div>
-      <div>
+      <div v-if="showNextStep">
         <v-card-title class="d-flex justify-center">
           {{ entity.name }} ({{ dataRojd }} г.р)
         </v-card-title>
@@ -91,7 +91,7 @@
     </div>
 
     <v-divider></v-divider>
-    <v-row class="py-2" justify="end">
+    <v-row class="py-2" justify="end" v-if="showNextStep">
       <v-btn :disabled="!isFormValid" color="info" @click="sendData">
         <v-icon left> $IconMain </v-icon>
         Завершить

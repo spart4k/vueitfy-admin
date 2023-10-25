@@ -78,11 +78,18 @@ const Form1 = defineComponent({
       context,
       request: () =>
         store.dispatch('taskModule/setPartTask', {
-          id: 1,
           data: {
-            comment: comment.value,
-            cancel_close: Object.values(unConfirmed.value),
-            docs_id: {},
+            status: 6,
+            data: {
+              process_id: props.data.task.process_id,
+              task_id: props.data.task.id,
+              personal_id: props.data.entity.id,
+              parent_action: props.data.task.id,
+              comment: comment.value,
+              cancel_close: Object.values(unConfirmed.value).map((x) => x.id),
+              manager_id: props.data.task.from_account_id,
+              docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+            },
           },
         }),
     })
@@ -147,6 +154,7 @@ const Form1 = defineComponent({
       },
     })
 
+    let showNextStep = ref(false)
     const clickCheckBtn = async () => {
       if (unConfirmed.value.length) {
         if (comment.value.trim()) {
@@ -155,6 +163,7 @@ const Form1 = defineComponent({
           commentError.value = false
           const dataFrom = await makeRequest()
           console.log(dataFrom)
+          showNextStep.value = true
         } else {
           commentError.value = true
         }
