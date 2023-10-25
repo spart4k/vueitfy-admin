@@ -29,10 +29,6 @@ function searchInputing(field) {
   console.log(field)
 }
 
-function importFile() {
-  console.log('importFile')
-}
-
 const consumptionConfig = {
   selector: '#mainTable',
   options: {
@@ -305,7 +301,7 @@ const config = {
         label: 'Обновить',
         class: ['v-table-button--custom'],
         url: '$IconEdit',
-        function: consolePanel,
+        // function: consolePanel,
         backgroundColor: '#ffffff',
       },
       // {

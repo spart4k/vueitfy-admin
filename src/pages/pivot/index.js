@@ -29,6 +29,24 @@ function searchInputing(field) {
   console.log(field)
 }
 
+function changeSort() {
+  let btn = config.panel.buttons.find((x) => x.function === changeSort)
+  let heading = config.head.find((x) => x.changeable)
+  if (btn.label === 'Объекты') {
+    btn.label = 'ФИО'
+    heading.title = 'Объект'
+    heading.alias = 'p.object'
+    heading.value = 'object'
+    config.options.url = 'tech_request/get_pivot_fio'
+  } else if (btn.label === 'ФИО') {
+    btn.label = 'Объекты'
+    heading.title = 'ФИО'
+    heading.alias = 'p.name'
+    heading.value = 'name'
+    config.options.url = 'tech_request/get_pivot_obj'
+  }
+}
+
 const consumptionConfig = {
   selector: '#mainTable',
   options: {
@@ -64,6 +82,13 @@ const consumptionConfig = {
         class: ['v-table-button--custom'],
         function: consolePanel,
         backgroundColor: '#fff',
+      },
+      {
+        label: 'Объекты',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: changeSort,
+        backgroundColor: '#ffffff',
       },
     ],
   },
@@ -299,37 +324,34 @@ const config = {
         label: 'Обновить',
         class: ['v-table-button--custom'],
         url: '$IconEdit',
-        function: consolePanel,
+        // function: consolePanel,
         backgroundColor: '#ffffff',
       },
       {
         label: 'Добавить',
         class: ['v-table-button--custom'],
         url: '$IconSetting',
-        function: consolePanel,
+        // function: consolePanel,
         backgroundColor: '#fff',
       },
       {
         label: 'Скачать',
         class: ['v-table-button--custom'],
-        function: consolePanel,
+        // function: consolePanel,
         backgroundColor: '#fff',
       },
       {
-        label: 'Импорт',
+        label: 'Объекты',
         class: ['v-table-button--custom'],
-        url: '$IconInputMail',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
-        label: 'Принять',
-        class: ['v-table-button--custom'],
-        url: '$IconGalka',
-        function: consolePanel,
-        backgroundColor: '#fff',
+        url: '$IconUpdate',
+        function: changeSort,
+        backgroundColor: '#ffffff',
+        type: 'changeUrl',
       },
     ],
+    filters: true,
+    search: true,
+    date: true,
   },
   head: [
     {
@@ -341,6 +363,7 @@ const config = {
       width: '200',
       alias: 'p.name',
       value: 'name',
+      changeable: true,
       fixed: {
         value: true,
         position: 'left',

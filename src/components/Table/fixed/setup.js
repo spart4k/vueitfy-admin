@@ -349,6 +349,7 @@ const table = {
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
+          period: acceptData.value.valueDate,
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
@@ -485,12 +486,15 @@ const table = {
     }
     const panelHandler = (button) => {
       const { type } = button
+      if (button.function) button.function()
       if (type === 'addItem') {
         addItem()
       } else if (type === 'importFile') {
         dropzone.value.$children[0].$el.click()
       } else if (type === 'acceptPeriod') {
         acceptData.value.popup = true
+      } else if (type === 'changeUrl') {
+        getItems()
       }
     }
     const countingDistances = () => { 
@@ -642,7 +646,13 @@ const table = {
       getItems()
     }
 
-    const acceptForm = () => {
+    const acceptForm = async () => {
+      const requestData = {
+        period: acceptData.value.valueDate,
+        vid: acceptData.value.valueProfit.value,
+      }
+      const data = await store.dispatch('table/getLoadX5', requestData)
+      console.log(data)
       panel.value.buttons.find(x => x.value === 'accept').isDisabled = true
       acceptData.value.popup = false
     }
