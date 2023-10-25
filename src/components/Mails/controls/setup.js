@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { ref, computed, onMounted } from 'vue'
+import Vue, { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from '@/store'
 import _ from 'lodash'
 // import { tableApi } from '@/api'
@@ -45,6 +45,10 @@ const controls = {
       unit: null,
       object: null,
       people: null,
+
+      search: {
+        people: '',
+      },
 
       directionArray: [
         {
@@ -160,6 +164,18 @@ const controls = {
     onMounted(async () => {
       getItems()
     })
+
+    watch(
+      () => broadcast.value.search.people,
+      (newVal) => {
+        console.log(newVal)
+        // const params = {
+        //   id: props.value,
+        //   search: props.field.search,
+        // }
+        // if (newVal !== null) querySelections(params)
+      }
+    )
 
     return {
       broadcast,

@@ -298,6 +298,7 @@
           :items="broadcast.peopleArray"
           :menu-props="{ maxHeight: '400' }"
           label="Выберите пользователей"
+          :search-input.sync="broadcast.search.people"
           multiple
           chips
           clearable
@@ -318,6 +319,7 @@
             </div>
           </template>
         </v-autocomplete>
+        {{ broadcast.search.people }}
         <div class="d-flex mt-9 justify-center">
           <v-btn
             @click="
