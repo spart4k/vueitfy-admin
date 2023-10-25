@@ -349,10 +349,12 @@ const table = {
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
-          period: acceptData.value.valueDate,
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
+          period: props.options.panel.date
+            ? acceptData.value.valueDate
+            : undefined,
           searchColumns,
           sorts,
           filter: filtersColumns.value,
