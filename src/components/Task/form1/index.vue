@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <div style="margin-bottom: 30px">
+      <div style="margin-bottom: 30px" v-if="!showNextStep">
         <!-- <TextInfo :infoObj="{ textInfo }"></TextInfo> -->
         <FormTitle
           :docName="getDocName(item.doc_id)"
@@ -15,7 +15,14 @@
         <span class="danger" v-if="commentError"
           >Заполните поле комментарий!</span
         >
-        <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
+        <v-btn
+          @click="clickCheckBtn"
+          color="primary"
+          block
+          :disabled="!isActiveBtnFirst"
+        >
+          Завершить
+        </v-btn>
       </div>
       <div v-if="showNextStep">
         <v-card-title class="d-flex justify-center">

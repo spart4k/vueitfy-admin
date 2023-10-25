@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed, watchEffect } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -63,17 +63,38 @@ const Form1 = defineComponent({
     let unConfirmed = ref([])
 
     const addConfirmed = (data) => {
-      console.log(data)
       confirmed.value.push(data)
       unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
-      console.log(confirmed)
+      console.log(confirmed.value)
+      console.log('UNconfirmed', unConfirmed.value)
+      checkAllowDisable()
     }
     const addUnconfirmed = (data) => {
       unConfirmed.value.push(data)
       confirmed.value = confirmed.value.filter((x) => x.id !== data.id)
-      console.log(unConfirmed)
+      console.log('Confirmed', unConfirmed.value)
+      checkAllowDisable()
+    }
+    let isActiveBtnFirst = ref(false)
+    let checkAllowDisable = () => {
+      if (
+        props.data.data.docs_id.length ==
+        unConfirmed.value.length + confirmed.value.length
+      ) {
+        console.log('wdwdwdwd')
+        isActiveBtnFirst.value = true
+      }
     }
 
+    // let computedValue = computed(() => {
+    //   console.log(12312123213)
+    //   checkAllowDisable()
+    //   return comment.value
+    // })
+    watchEffect(() => {
+      const arr = comment.value
+      console.log(arr)
+    })
     const { makeRequest, loading } = useRequest({
       context,
       request: () =>
@@ -158,18 +179,16 @@ const Form1 = defineComponent({
     const clickCheckBtn = async () => {
       if (unConfirmed.value.length) {
         if (comment.value.trim()) {
-          console.log([...confirmed.value, ...unConfirmed.value])
+          console.log([...confirmed.value, ...unConfirmed.value], 'is push')
           isShow.value = false
           commentError.value = false
           const dataFrom = await makeRequest()
           console.log(dataFrom)
-          showNextStep.value = true
         } else {
           commentError.value = true
         }
       } else {
-        const dataFrom = await makeRequest()
-        console.log(dataFrom)
+        showNextStep.value = true
       }
     }
 
@@ -280,6 +299,8 @@ const Form1 = defineComponent({
       formData,
       osnValidate,
       isHasOsnDoc,
+      showNextStep,
+      isActiveBtnFirst,
     }
   },
 })
