@@ -6,6 +6,7 @@ import { useStore } from '@/store'
 import _ from 'lodash'
 // import { tableApi } from '@/api'
 import Popup from '../../popup/index.vue'
+import filters from './filters.js'
 const controls = {
   name: 'Controls',
   components: {
@@ -36,46 +37,9 @@ const controls = {
   setup(props) {
     const store = useStore()
     // let debounce = ref()
+    console.log('filters', filters)
     const popupDelete = ref(false)
     const popupBroadcast = ref(true)
-    const fields = ref([
-      selectField({
-        label: 'Менеджеры',
-        name: 'account_id',
-        subtype: 'single',
-        placeholder: '',
-        class: [''],
-        selectOption: {
-          text: 'name',
-          value: 'id',
-        },
-        items: [],
-        position: {
-          cols: 6,
-          sm: 6,
-        },
-        bootstrapClass: [''],
-        alias: 'p.account_id',
-      }),
-      selectField({
-        label: 'Направления',
-        name: 'direction_id',
-        subtype: 'single',
-        placeholder: '',
-        class: [''],
-        selectOption: {
-          text: 'name',
-          value: 'id',
-        },
-        items: [],
-        position: {
-          cols: 12,
-          sm: 6,
-        },
-        bootstrapClass: [''],
-        alias: 'p.direction_id',
-      }),
-    ])
     const broadcast = ref({
       direction: {
         title: 'Сотрудники',
@@ -221,7 +185,7 @@ const controls = {
       popupDelete,
       popupBroadcast,
       intersection,
-      fields,
+      filters,
 
       showField,
       checkAll,

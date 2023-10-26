@@ -230,34 +230,36 @@
     >
       <div class="v-controls-popup d-flex flex-column">
         <p class="v-controls-popup_title text-center">Транслировать письма</p>
-        <v-col
-          v-for="field in fields"
-          :key="field.id"
-          :cols="field.position.cols"
-          :sm="field.position.sm"
-          class="field-col"
-          :class="field.type"
-        >
-          <v-select
-            v-if="showField('select', field)"
-            :items="field.items"
-            :item-text="field.selectOption.text"
-            :label="field.label"
-            persistent-hint
-            clearable
-            :multiple="field.subtype === 'multiselect'"
-            @change="changeSelect({ value: formData[field.name], field })"
-          ></v-select>
-          <!-- <Autocomplete
-            v-else-if="showField('autocomplete', field)"
-            :field="field"
-            v-model="formData[field.name]"
-            :error-messages="formErrors[field.name]"
-            :formData="formData"
-            ref="autocompleteRef"
-            @change="changeAutocomplete"
-          /> -->
-        </v-col>
+        <v-row>
+          <v-col
+            v-for="field in filters.fields"
+            :key="field.id"
+            :cols="field.position.cols"
+            :sm="field.position.sm"
+            class="field-col"
+            :class="field.type"
+          >
+            <v-select
+              v-if="showField('select', field)"
+              :items="field.items"
+              :item-text="field.selectOption.text"
+              :label="field.label"
+              persistent-hint
+              clearable
+              :multiple="field.subtype === 'multiselect'"
+              @change="changeSelect({ value: formData[field.name], field })"
+            ></v-select>
+            <!-- <Autocomplete
+              v-else-if="showField('autocomplete', field)"
+              :field="field"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field.name]"
+              :formData="formData"
+              ref="autocompleteRef"
+              @change="changeAutocomplete"
+            /> -->
+          </v-col>
+        </v-row>
 
         <div class="d-flex mt-9 justify-center">
           <v-btn
