@@ -240,21 +240,19 @@
             :class="field.type"
           >
             <v-select
-              v-if="showField('select', field)"
+              v-if="field.isShow"
               :items="field.items"
+              v-model="field.value"
               :item-text="field.selectOption.text"
               :label="field.label"
               persistent-hint
-              clearable
+              :clearable="field.clearable"
               :multiple="field.subtype === 'multiselect'"
-              @change="changeSelect({ value: formData[field.name], field })"
+              @change="changeSelect(field)"
             ></v-select>
             <!-- <Autocomplete
               v-else-if="showField('autocomplete', field)"
               :field="field"
-              v-model="formData[field.name]"
-              :error-messages="formErrors[field.name]"
-              :formData="formData"
               ref="autocompleteRef"
               @change="changeAutocomplete"
             /> -->
@@ -268,6 +266,7 @@
               popupBroadcast = false
             "
             tonal
+            disabled
             color="primary"
           >
             <v-icon small class="mr-2">$IconBroadcast</v-icon>

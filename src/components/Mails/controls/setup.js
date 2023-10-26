@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
+// import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
 import Vue, { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from '@/store'
 import _ from 'lodash'
@@ -36,29 +36,16 @@ const controls = {
   },
   setup(props) {
     const store = useStore()
-    // let debounce = ref()
-    console.log('filters', filters)
     const popupDelete = ref(false)
     const popupBroadcast = ref(true)
+    const formData = ref([])
+    const filtersData = ref(filters)
     const broadcast = ref({
       direction: {
         title: 'Сотрудники',
         value: 'people',
       },
-      directionArray: [
-        {
-          title: 'Сотрудники',
-          value: 'people',
-        },
-        {
-          title: 'Направление',
-          value: 'route',
-        },
-        {
-          title: 'Подразделение',
-          value: 'unit',
-        },
-      ],
+      directionArray: [],
 
       route: {
         name: 'xzc',
@@ -134,12 +121,12 @@ const controls = {
       }
     }
 
-    const changeDirection = () => {
-      broadcast.value.route = null
-      broadcast.value.unit = null
-      broadcast.value.object = null
-      broadcast.value.people = null
-    }
+    // const changeDirection = () => {
+    //   broadcast.value.route = null
+    //   broadcast.value.unit = null
+    //   broadcast.value.object = null
+    //   broadcast.value.people = null
+    // }
 
     const clearKey = (val) => {
       val.forEach((key) => {
@@ -148,9 +135,31 @@ const controls = {
     }
 
     const getItems = async () => {
-      const data = await store.dispatch('mail/getDirections')
-      const data1 = await store.dispatch('mail/getUnit', 1)
-      console.log(data)
+      // const data = await store.dispatch('mail/getDirections')
+      // const data1 = await store.dispatch('mail/getUnit', 1)
+      // console.log(data)
+    }
+
+    const changeSelect = (val) => {
+      console.log(val)
+      if (val.name === 'direction') {
+        changeDirection(val.value)
+      }
+    }
+
+    const changeDirection = (val) => {
+      filtersData.value.fields.forEach((item) => {
+        if (item.clearable) item.value = null
+        if (item?.isShowWhen?.includes(val)) {
+          item.isShow = true
+          if (item.name == 'unit') {
+            if (val === 'unit') item.position.sm = 12
+            else item.position.sm = 6
+          }
+        } else {
+          item.isShow = false
+        }
+      })
     }
 
     // const getItems = () => {
@@ -164,7 +173,7 @@ const controls = {
     // }
 
     onMounted(async () => {
-      getItems()
+      // getItems()
     })
 
     // watch(
@@ -181,12 +190,15 @@ const controls = {
     // )
 
     return {
+      formData,
       broadcast,
       popupDelete,
       popupBroadcast,
       intersection,
       filters,
+      filtersData,
 
+      changeSelect,
       showField,
       checkAll,
       clearKey,
