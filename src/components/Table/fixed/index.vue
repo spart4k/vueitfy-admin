@@ -4,7 +4,11 @@
     <DropZone
       v-show="false"
       @fileUpload="fileUpload"
-      :options="{ withoutSave: true, folder: options.options.folder }"
+      :options="{
+        withoutSave: true,
+        folder: options.options.folder,
+        formats: options.options.formats,
+      }"
       ref="dropzone"
     />
     <Popup

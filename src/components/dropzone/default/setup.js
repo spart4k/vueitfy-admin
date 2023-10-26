@@ -108,24 +108,25 @@ export default {
       const formData = new FormData()
       const fileType =
         files[0].name.split('.')[files[0].name.split('.').length - 1]
-      const name = `${
-        props.options.folder
-      }_25_${new Date().getTime()}.${fileType}`
-      const folder = props.options.folder + '/' + name
-      console.log(fileType)
-      formData.append('name', files[0].name)
-      formData.append('file', ...files)
-      const params = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      if (!props.options.formats || props.options.formats.includes(fileType)) {
+        const name = `${
+          props.options.folder
+        }_25_${new Date().getTime()}.${fileType}`
+        const folder = props.options.folder + '/' + name
+        formData.append('name', files[0].name)
+        formData.append('file', ...files)
+        const params = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+        const data = await store.dispatch('file/create', {
+          data: formData,
+          folder,
+          params,
+        })
+        emit('fileUpload', folder)
       }
-      const data = await store.dispatch('file/create', {
-        data: formData,
-        folder,
-        params,
-      })
-      emit('fileUpload', folder)
     }
     onMounted(() => {
       console.log(dropzone.value)

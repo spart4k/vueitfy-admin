@@ -293,6 +293,7 @@ const config = {
     url: 'get/pagination_pivot/x5',
     // folder: 'parser_x5',
     folder: 'test',
+    formats: ['xlsx'],
     title: 'This is an about page1',
   },
   panel: {
