@@ -20,7 +20,8 @@ import {
   getDeletedMessages,
   filterMail,
   countFilter,
-  getBroadcast,
+  getDirections,
+  getUnit,
 } from '@/api/mail'
 
 const mail = {
@@ -238,9 +239,18 @@ const mail = {
       }
     },
 
-    async getBroadcast(_, data) {
+    async getDirections(_) {
       try {
-        const response = await getBroadcast(data)
+        const response = await getDirections()
+        return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getUnit(_, id) {
+      try {
+        const response = await getUnit(id)
         return response.data
       } catch (e) {
         console.log(e)

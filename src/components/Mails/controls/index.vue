@@ -230,96 +230,35 @@
     >
       <div class="v-controls-popup d-flex flex-column">
         <p class="v-controls-popup_title text-center">Транслировать письма</p>
-        <v-autocomplete
-          v-model="broadcast.direction"
-          class="mt-4"
-          :items="broadcast.directionArray"
-          item-text="title"
-          return-object
-          outlined
-          label="Кому транслировать"
-          @change="changeDirection"
-        ></v-autocomplete>
-        <v-autocomplete
-          v-if="broadcast.direction.value === 'route'"
-          v-model="broadcast.route"
-          :items="broadcast.routeArray"
-          :menu-props="{ maxHeight: '400' }"
-          @change="clearKey(['people', 'object', 'unit'])"
-          label="Выберите направление"
-          item-text="name"
-          return-object
-        ></v-autocomplete>
-        <div class="d-flex">
-          <v-autocomplete
-            v-if="broadcast.direction.value !== 'people'"
-            style="min-width: 45%"
-            v-model="broadcast.unit"
-            :items="broadcast.unitArray"
-            :menu-props="{ maxHeight: '400' }"
-            label="Выберите подразделение"
-            @change="
-              broadcast.direction.value === 'unit' && clearKey(['people'])
-            "
-            multiple
-            chips
-            clearable
-            :disabled="
-              broadcast.direction.value === 'route' && !broadcast?.route
-            "
-            deletable-chips
-            item-text="name"
-            return-object
-          ></v-autocomplete>
-          <div
-            v-if="broadcast.direction.value === 'route'"
-            style="min-width: 10%"
-          ></div>
-          <v-autocomplete
-            v-if="broadcast.direction.value === 'route'"
-            style="min-width: 45%"
-            v-model="broadcast.object"
-            :items="broadcast.objectArray"
-            :menu-props="{ maxHeight: '400' }"
-            label="Выберите объект"
-            multiple
-            chips
-            clearable
-            deletable-chips
-            item-text="name"
-            :disabled="
-              broadcast.direction.value === 'route' && !broadcast?.route
-            "
-            return-object
-          ></v-autocomplete>
-        </div>
-        <v-autocomplete
-          v-model="broadcast.people"
-          :items="broadcast.peopleArray"
-          :menu-props="{ maxHeight: '400' }"
-          label="Выберите пользователей"
-          :search-input.sync="broadcast.search.people"
-          multiple
-          chips
-          clearable
-          deletable-chips
-          item-text="name"
-          :disabled="
-            (broadcast.direction.value === 'unit' &&
-              !broadcast?.unit?.length) ||
-            (broadcast.direction.value === 'route' && !broadcast?.route)
-          "
-          @change="checkAll"
-          return-object
+        <v-col
+          v-for="field in fields"
+          :key="field.id"
+          :cols="field.position.cols"
+          :sm="field.position.sm"
+          class="field-col"
+          :class="field.type"
         >
-          <template slot="item" slot-scope="{ item }">
-            <div class="d-flex flex-column">
-              <p>{{ item.name }}</p>
-              <p class="v-controls-popup_subtitle">{{ item.role }}</p>
-            </div>
-          </template>
-        </v-autocomplete>
-        {{ broadcast.search.people }}
+          <v-select
+            v-if="showField('select', field)"
+            :items="field.items"
+            :item-text="field.selectOption.text"
+            :label="field.label"
+            persistent-hint
+            clearable
+            :multiple="field.subtype === 'multiselect'"
+            @change="changeSelect({ value: formData[field.name], field })"
+          ></v-select>
+          <!-- <Autocomplete
+            v-else-if="showField('autocomplete', field)"
+            :field="field"
+            v-model="formData[field.name]"
+            :error-messages="formErrors[field.name]"
+            :formData="formData"
+            ref="autocompleteRef"
+            @change="changeAutocomplete"
+          /> -->
+        </v-col>
+
         <div class="d-flex mt-9 justify-center">
           <v-btn
             @click="

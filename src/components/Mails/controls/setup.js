@@ -1,5 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
+import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
 import Vue, { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from '@/store'
 import _ from 'lodash'
@@ -34,23 +35,52 @@ const controls = {
   },
   setup(props) {
     const store = useStore()
-    let debounce = ref()
+    // let debounce = ref()
     const popupDelete = ref(false)
     const popupBroadcast = ref(true)
+    const fields = ref([
+      selectField({
+        label: 'Менеджеры',
+        name: 'account_id',
+        subtype: 'single',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [],
+        position: {
+          cols: 6,
+          sm: 6,
+        },
+        bootstrapClass: [''],
+        alias: 'p.account_id',
+      }),
+      selectField({
+        label: 'Направления',
+        name: 'direction_id',
+        subtype: 'single',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [],
+        position: {
+          cols: 12,
+          sm: 6,
+        },
+        bootstrapClass: [''],
+        alias: 'p.direction_id',
+      }),
+    ])
     const broadcast = ref({
       direction: {
         title: 'Сотрудники',
         value: 'people',
       },
-      route: null,
-      unit: null,
-      object: null,
-      people: null,
-
-      search: {
-        people: '',
-      },
-
       directionArray: [
         {
           title: 'Сотрудники',
@@ -65,30 +95,26 @@ const controls = {
           value: 'unit',
         },
       ],
-      routeArray: [
-        { name: 'Логистика' },
-        { name: 'Бедолаги' },
-        { name: 'Горимыки' },
-        { name: 'Лево' },
-      ],
-      unitArray: [{ name: 'IT' }, { name: 'HUIT' }, { name: 'APTI' }],
-      objectArray: [
-        { name: 'Прогресс' },
-        { name: 'Коробка' },
-        { name: 'ООО Глина' },
-        { name: 'Прогресс1' },
-        { name: 'Коробка1' },
-        { name: 'ООО Глина1' },
-        { name: 'Прогресс2' },
-        { name: 'Коробка2' },
-        { name: 'ООО Глина2' },
-      ],
-      peopleArray: [
-        { name: '-ВСЕ-' },
-        { name: 'Азаров', role: 'Главный' },
-        { name: 'Тихонравов', role: 'Подглавный' },
-        { name: 'Громконравов', role: 'Работяга' },
-      ],
+
+      route: {
+        name: 'xzc',
+        items: [],
+        page: 1,
+        search: '',
+        alias: 'p.object_id',
+      },
+      unit: null,
+      object: null,
+      people: null,
+
+      search: {
+        people: '',
+      },
+
+      routeArray: [],
+      unitArray: [],
+      objectArray: [],
+      peopleArray: [],
     })
     const intersection = computed(() => {
       const array = {
@@ -129,6 +155,10 @@ const controls = {
       return array
     })
 
+    const showField = (type, field) => {
+      return type === field.type && field.isShow
+    }
+
     const checkAll = (val) => {
       if (val[val?.length - 1]?.name === '-ВСЕ-') {
         broadcast.value.people = [{ name: '-ВСЕ-' }]
@@ -153,48 +183,47 @@ const controls = {
       })
     }
 
-    // const getItems = async () => {
-    //   const requestData = {
-    //     countRows: 5,
-    //     currentPage: 1,
-    //   }
-    //   const data = await store.dispatch('mail/getBroadcast', requestData)
-    //   console.log(data)
-    // }
-
-    const getItems = () => {
-      // cancel pending call
-      clearTimeout(debounce)
-      // delay new call 500ms
-      debounce = setTimeout(() => {
-        // this.fetch()
-        console.log(broadcast.value.search.people)
-      }, 500)
+    const getItems = async () => {
+      const data = await store.dispatch('mail/getDirections')
+      const data1 = await store.dispatch('mail/getUnit', 1)
+      console.log(data)
     }
 
+    // const getItems = () => {
+    //   // cancel pending call
+    //   clearTimeout(debounce)
+    //   // delay new call 500ms
+    //   debounce = setTimeout(() => {
+    //     // this.fetch()
+    //     console.log(broadcast.value.search.people)
+    //   }, 500)
+    // }
+
     onMounted(async () => {
-      // getItems()
+      getItems()
     })
 
-    watch(
-      () => broadcast.value.search.people,
-      (newVal) => {
-        // console.log(newVal)
-        getItems()
-        // const params = {
-        //   id: props.value,
-        //   search: props.field.search,
-        // }
-        // if (newVal !== null) querySelections(params)
-      }
-    )
+    // watch(
+    //   // () => broadcast.value.search.people,
+    //   // (newVal) => {
+    //   //   // console.log(newVal)
+    //   //   getItems()
+    //   //   // const params = {
+    //   //   //   id: props.value,
+    //   //   //   search: props.field.search,
+    //   //   // }
+    //   //   // if (newVal !== null) querySelections(params)
+    //   // }
+    // )
 
     return {
       broadcast,
       popupDelete,
       popupBroadcast,
       intersection,
+      fields,
 
+      showField,
       checkAll,
       clearKey,
       changeDirection,

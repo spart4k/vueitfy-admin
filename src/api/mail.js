@@ -50,4 +50,6 @@ export const deleteBox = (data) => del(`mail/box/${data}`)
 
 export const deleteFolder = (data) => del(`mail/folder/${data}`)
 
-export const getBroadcast = (data) => post('get/account/broadcast', data)
+export const getDirections = () => get('get/account/get_directions')
+
+export const getUnit = (id) => get(`get/account/get_otdel/${id}`)
