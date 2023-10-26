@@ -173,11 +173,11 @@ export default {
       await loadAutocompletes()
       loading.value = false
     }
-    const params = props.tab.lists
-    const queryString = '?lists=' + [...params]
+    // const params = props.tab.lists
+    // const queryString = '?lists=' + [...params]
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () => store.dispatch('list/get', `get/lists${queryString}`),
+      request: () => store.dispatch('list/get', props.tab.lists),
     })
     const { clickHandler } = useActions({
       context,
@@ -242,6 +242,7 @@ export default {
 
     //}
     const changeSelect = ({ value, field }) => {
+      console.log('sad')
       if (field.dependence) {
         const data = field.items.find((el) => el.id === value)
         field.dependence.fields.forEach((el) => (formData[el] = data[el]))

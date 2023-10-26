@@ -371,11 +371,6 @@ const table = {
           if (props.options.options.selecting) {
             Vue.set(row, 'selected', false)
           }
-          if (props.options.panel.date) {
-            row?.date?.forEach((item) => {
-              Vue.set(row, `day_${Number(item.day)}`, item.total)
-            })
-          }
           structuredArray.push({
             row,
             child: {
@@ -555,13 +550,14 @@ const table = {
             id: uuidv4(),
             title: `${new Date(date).getDate()}`,
             align: 'center',
-            type: 'default',
+            type: props.options.panel.addedItemsChildrenType ? 'object' : 'default',
             isShow: true, 
             width: '50',  
             added: true,
-            alias: `p.col${new Date(date).getDate()}`,
-            value: `col${new Date(date).getDate() < 10 ? '0' : ''}${new Date(date).getDate()}`,
+            alias: `p.${new Date(date).getDate()}`,
+            value: `${new Date(date).getDate() < 10 ? '0' : ''}${new Date(date).getDate()}`,
             currentDate: dateNow.getDate() === date.getDate() && dateNow.getMonth() === date.getMonth() && dateNow.getFullYear() === date.getFullYear(),
+            weekendDate: date.getDay() === 0 || date.getDay() === 6,
             fixed: {
               value: false,
             },
@@ -631,6 +627,8 @@ const table = {
         currentDate.value.month = 0
         currentDate.value.year += 1
       }
+      acceptData.value.valueDate = `${currentDate.value.year}-${currentDate.value.month < 10 ? '0' : ''}${currentDate.value.month + 1}`
+      // acceptData.value.valueDate
       // setTimeout(() => {
       //   countingDistances()
       // }, 0)

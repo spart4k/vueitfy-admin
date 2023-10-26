@@ -35,15 +35,15 @@ function changeSort() {
   if (btn.label === 'Объекты') {
     btn.label = 'ФИО'
     heading.title = 'Объект'
-    heading.alias = 'p.object'
-    heading.value = 'object'
-    config.options.url = 'tech_request/get_pivot_fio'
+    heading.alias = 'p.object_name'
+    heading.value = 'object_name'
+    config.options.url = 'get/pagination_pivot/personal_target_object'
   } else if (btn.label === 'ФИО') {
     btn.label = 'Объекты'
     heading.title = 'ФИО'
-    heading.alias = 'p.name'
-    heading.value = 'name'
-    config.options.url = 'tech_request/get_pivot_obj'
+    heading.alias = 'p.personal_name'
+    heading.value = 'personal_name'
+    config.options.url = 'get/pagination_pivot/personal_target_personal'
   }
 }
 
@@ -315,7 +315,7 @@ const config = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'tech_request/get_pivot',
+    url: 'get/pagination_pivot/personal_target_personal',
     title: 'This is an about page1',
   },
   panel: {
@@ -352,6 +352,7 @@ const config = {
     filters: true,
     search: true,
     date: true,
+    addedItemsChildrenType: 'object',
   },
   head: [
     {
@@ -361,8 +362,8 @@ const config = {
       type: 'default',
       isShow: true,
       width: '200',
-      alias: 'p.name',
-      value: 'name',
+      alias: 'p.personal_name',
+      value: 'personal_name',
       changeable: true,
       fixed: {
         value: true,

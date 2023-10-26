@@ -126,6 +126,7 @@
                 :align="head.align"
                 :class="[
                   head.fixed.value ? 'v-table-header-row-cell--fixed' : '',
+                  head.weekendDate && 'v-table-header-row-cell--weekendDate',
                   head.currentDate && 'v-table-header-row-cell--currentDate',
                   head.class,
                 ]"
@@ -219,7 +220,10 @@
                   }"
                   :class="[
                     cell.fixed.value ? 'v-table-body-row-cell--fixed' : '',
+                    cell.weekendDate && 'v-table-body-row-cell--weekendDate',
                     cell.currentDate && 'v-table-body-row-cell--currentDate',
+                    cell.type === 'object' &&
+                      'v-table-body-row-cell--noPadding',
                   ]"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
                   :align="cell.align"
@@ -230,7 +234,37 @@
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
-                    <!-- {{ row.child }} -->
+                  </template>
+                  <template v-else-if="cell.type === 'object'">
+                    <template
+                      v-for="card in Object.byString(row.row, cell.value)"
+                    >
+                      <div
+                        :key="card.id"
+                        class="v-table-body-row-cell-item"
+                        :style="{
+                          background:
+                            card.type_shift === 1
+                              ? '#c5ffc5'
+                              : card.type_shift === 2
+                              ? '#d0f6ff'
+                              : '#f4d0ff',
+                        }"
+                      >
+                        <p class="v-table-body-row-cell-item_text">
+                          {{ card.doljnost_name }}
+                        </p>
+                        <p
+                          class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
+                        >
+                          {{
+                            options.head[0].value === 'personal_name'
+                              ? card.object_name
+                              : card.personal_name
+                          }}
+                        </p>
+                      </div>
+                    </template>
                   </template>
                   <template v-else-if="cell.type === 'actions'">
                     <div class="v-table-actions-wrap">
@@ -334,6 +368,18 @@
         </div>
       </div>
     </div>
+    <v-contextmenu :options="contextmenu" />
+    <portal v-if="filters" to="filter">
+      <Sheet :isShow="filter.isShow">
+        <keep-alive>
+          <TableFilter
+            @closeFilter="closeFilter"
+            @saveFilter="saveFilter"
+            :filtersConfig="filters"
+          />
+        </keep-alive>
+      </Sheet>
+    </portal>
   </div>
 </template>
 

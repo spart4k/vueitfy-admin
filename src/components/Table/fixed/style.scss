@@ -111,6 +111,9 @@ $tableFooterHeight: 85px;
           &--currentDate {
             background-color: rgba(0,0,0,.1);
           }
+          &--weekendDate {
+            background-color: rgba(181, 129, 129, 0.5);
+          }
           &:hover {
             cursor: pointer;
           }
@@ -136,6 +139,7 @@ $tableFooterHeight: 85px;
         &-cell {
           padding: $paddingCell;
           border: rgba(0,0,0,.1) solid 1px;
+          vertical-align: top;
           &__checkbox {
             //display: flex;
             //justify-content: center;
@@ -147,6 +151,35 @@ $tableFooterHeight: 85px;
               height: 100%;
             }
           }
+          &-item {
+            width: 160px;
+            height: 72px;
+            display: flex;
+            // align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            &_text {
+              display: flex;
+              justify-content: center;
+
+              // overflow: hidden;
+              // text-overflow: ellipsis;
+              &__bold {
+                white-space: break-spaces;
+                font-weight: 700;
+                font-size: 12px;
+              }
+            }
+            &:hover {
+              border: black solid 2px;
+            }
+          }
+          &-item+&-item {
+            margin-top: 4px;
+          }
+          &--noPadding {
+            padding: 0;
+          }
           &--fixed {
             position: sticky;
             background-color: #fff;
@@ -156,6 +189,12 @@ $tableFooterHeight: 85px;
           &--currentDate {
             background-color: rgba(0,0,0,.1);
           }
+          &--weekendDate {
+            background-color: rgba(181, 129, 129, 0.5);
+          }
+          // &:hover {
+          //   border: red solid 1px;
+          // }
         }
         &-paragraph {
           display: flex;
@@ -182,9 +221,9 @@ $tableFooterHeight: 85px;
             flex-direction: column;
           }
         }
-        &:hover {
-          background-color: rgba(0,0,0,.1);
-        }
+        // &:hover {
+        //   background-color: rgba(0,0,0,.1);
+        // }
         &--selected {
           background-color: rgba(45, 65, 250, 0.752);
           color: #fff;
