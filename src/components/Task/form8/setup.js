@@ -1,26 +1,49 @@
-import { defineComponent, ref } from 'vue'
-import TextInfo from '@/components/Task/el/TextInfo/index.vue'
-import DocScan from '@/components/Task/el/DocScan/index.vue'
-import FormComment from '@/components/Task/el/FormComment/index.vue'
-import FormTitle from '@/components/Task/el/FormTitle/index.vue'
-import FormError from '@/components/Task/el/FormError/setup'
-import DateTimePicker from '@/components/datetimepicker/index.vue'
-import DocForm from '@/components/Task/el/DocForm/index.vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
+import Dropzone from '@/components/dropzone/default'
+// import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
+// import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+// import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
-
 import store from '@/store'
-const firstPopupView = defineComponent({
-  name: 'FirstPopupView',
+// import moment from 'moment'
+
+const Form8 = defineComponent({
+  name: 'Form8',
   components: {
-    FormError,
-    FormComment,
-    TextInfo,
-    DocScan,
-    FormTitle,
-    DateTimePicker,
-    DocForm,
+    Dropzone,
+  },
+  data() {
+    return {
+      docs_spr: [
+        'Паспорт',
+        'СНИЛС',
+        'Реквизиты карты',
+        'Регистрация',
+        'Патент',
+        'Паспорт стр.2',
+        'Перевод',
+        'Мед. книжка',
+        'Вид на жительство',
+        'Миграционная карта',
+        'ДМС',
+        'Рабочая виза',
+        'Чек-патент первичный',
+        'Регистрация стр. 2',
+        'Патент стр. 2',
+        'Фото',
+        'ИНН',
+        'Экзамен РФ',
+        'Чек-патент текущий',
+        'Дактилоскопия',
+        'Дактилоскопия стр. 2',
+        'Вид на жительство стр. 2',
+        'Медосмотр',
+        'ID карта',
+        'Ученический договор',
+      ],
+    }
   },
   props: {
     data: {
@@ -28,163 +51,81 @@ const firstPopupView = defineComponent({
       default: () => {},
     },
   },
-  data: () => {
-    return {
-      datePickerOpen: false,
-    }
-  },
-  setup(props, { emit }) {
+  setup({ data }) {
     const context = {
       root: {
         store,
       },
     }
-    const finalData = ref({})
-    const endBtnDisabled = ref(true)
-    const textInfo = {
-      manager: {
-        key: 'Менеджер',
-        value: props.data.entity.account_name,
-      },
-      obj: {
-        key: 'Объект',
-        value: props.data.entity.object_name,
-      },
+    let docs_spr = [
+      'Паспорт',
+      'СНИЛС',
+      'Реквизиты карты',
+      'Регистрация',
+      'Патент',
+      'Паспорт стр.2',
+      'Перевод',
+      'Мед. книжка',
+      'Вид на жительство',
+      'Миграционная карта',
+      'ДМС',
+      'Рабочая виза',
+      'Чек-патент первичный',
+      'Регистрация стр. 2',
+      'Патент стр. 2',
+      'Фото',
+      'ИНН',
+      'Экзамен РФ',
+      'Чек-патент текущий',
+      'Дактилоскопия',
+      'Дактилоскопия стр. 2',
+      'Вид на жительство стр. 2',
+      'Медосмотр',
+      'ID карта',
+      'Ученический договор',
+    ]
+    // let getNameDoc = (docID) => {
+    //   return docs_spr[docID]
+    // }
+
+    // onMounted(() => {
+    //   console.log(docs_spr, getNameDoc)
+    // })
+    let options = {
+      withoutSave: false,
+      folder: 'tmp',
     }
-    let confirmed = ref([])
-    let unConfirmed = ref([])
+    let selectName = ref('')
+    let price = ref('')
+    let nameComp = JSON.parse(data.entity.items)[0].name
 
-    const addConfirmed = (data) => {
-      console.log(data)
-      confirmed.value.push(data)
-      unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
-      console.log(confirmed)
-    }
-    const addUnconfirmed = (data) => {
-      unConfirmed.value.push(data)
-      confirmed.value = confirmed.value.filter((x) => x.id !== data.id)
-      console.log(unConfirmed)
-    }
-
-    const { makeRequest, loading } = useRequest({
-      context,
-      request: () =>
-        store.dispatch('taskModule/setPartTask', {
-          id: 1,
-          data: {
-            comment: comment.value,
-            cancel_close: Object.values(unConfirmed.value),
-            docs_id: {},
-          },
-        }),
-    })
-
-    const clickCheckBtn = async () => {
-      if (unConfirmed.value.length) {
-        if (comment.value.trim()) {
-          console.log([...confirmed.value, ...unConfirmed.value])
-          isShow.value = false
-          commentError.value = false
-          const dataFrom = await makeRequest()
-          console.log(dataFrom)
-        } else {
-          commentError.value = true
-        }
-      } else {
-        const dataFrom = await makeRequest()
-        console.log(dataFrom)
-      }
-    }
-
-    const formSubmit = (cb) => {
-      if (cb) {
-        cb()
-      }
-      console.log('submit')
-    }
-
-    const getDocName = (id) => {
-      return props.data.data.docs_spr[id]
-    }
-
-    const comment = ref('')
-    let isShow = ref(true)
-    let commentError = ref(false)
-
-    const citizenItems = Object.values(props.data.data.grajdanstvo).map(
-      (citizen) => {
-        return {
-          text: citizen.name,
-          value: citizen.id,
-          disabled: false,
-          divider: true,
-          header: citizen.name,
-        }
-      }
+    let landPhone = computed(() =>
+      data.data.account.landline_phone
+        ? data.data.account.landline_phone
+        : 'Не указан'
     )
-
-    const { formData, validate } = useForm({
-      fields: {
-        fio: {
-          validations: { required },
-        },
-        birthday: {
-          validations: { required },
-        },
-        grazhdanstvo: {
-          validations: { required },
-        },
-      },
-    })
-
-    const prepareCaseAndPush = () => {
-      emit('prepareCaseAndPush', { wdw: 1, wddd: 2 })
+    let mobilePhone = computed(() =>
+      data.data.account.mobile_phone
+        ? data.data.account.mobile_phone
+        : 'Не указан'
+    )
+    let file = ref('')
+    let addFiles = (e) => {
+      file.value = e[0]
+      console.log(file.value)
     }
 
-    const changeDocs = (data) => {
-      const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
-      let isDisabled = endBtnDisabled.value
-      for (let i = 0; i < docsId.length; i++) {
-        isDisabled = data.value[docsId[i]].validate()
-        if (!isDisabled) {
-          break
-        }
-      }
-      endBtnDisabled.value = !isDisabled
-      if (!endBtnDisabled.value) {
-        docsId.forEach((item) => {
-          finalData.value = { ...finalData.value, ...data.value[item].formData }
-        })
-      }
-    }
-
-    const sendData = () => {
-      console.log(finalData.value)
-    }
-
+    const sendData = () => {}
     return {
-      textInfo,
-      docsData: props.data.data.personal_doc_data,
-      docs: props.data.data.docs_id,
-      listNames: props.data.data.docs_spr,
-      loading,
-      clickCheckBtn,
-      addConfirmed,
-      addUnconfirmed,
-      getDocName,
-      citizenItems,
-      formSubmit,
-      prepareCaseAndPush,
-      comment,
-      isShow,
-      commentError,
-      changeDocs,
-      endBtnDisabled,
-      finalData,
+      options,
+      selectName,
+      price,
+      nameComp,
+      landPhone,
+      mobilePhone,
+      addFiles,
       sendData,
-      formData,
-      validate,
     }
   },
 })
-export default firstPopupView
+export default Form8

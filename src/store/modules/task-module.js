@@ -7,6 +7,7 @@ import {
   updateDataFile,
   // changeStatusAndData,
   putTask,
+  setBid,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -15,6 +16,13 @@ const taskModule = {
   actions: {
     async getTask(_, url) {
       const result = await getTask('task/get/' + url)
+      console.log(result)
+      return result
+    },
+
+    async setBid(_, data) {
+      console.log(data)
+      const result = await setBid('set/data/zayavka', data.data)
       console.log(result)
       return result
     },

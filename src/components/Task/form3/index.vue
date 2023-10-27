@@ -15,8 +15,9 @@
       <v-col cols="6">
         <v-select
           label="Наименование"
-          :items="[...data.data.rashod_vid_id, {}]"
+          :items="data.data.rashod_vid_id"
           item-text="name"
+          item-value="id"
           v-model="selectName"
         >
           <!-- <template v-slot:item="{ props, item }">
@@ -25,7 +26,9 @@
         </v-select></v-col
       >
       <v-col cols="3"> <v-text-field disabled value="1"></v-text-field></v-col>
-      <v-col cols="3"> <v-text-field v-model="price"></v-text-field></v-col>
+      <v-col cols="3">
+        <v-text-field v-model="price" placeholder="Цена"></v-text-field
+      ></v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
@@ -60,7 +63,7 @@
       >
     </v-row>
     <v-row class="py-2" justify="end">
-      <v-btn color="info" class="mr-3">
+      <v-btn color="info" class="mr-3" @click="sendData">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>

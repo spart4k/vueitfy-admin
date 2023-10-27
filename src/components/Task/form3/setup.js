@@ -49,25 +49,12 @@ const Form3 = defineComponent({
       file.value = e[0]
     }
 
-    // const { formData, validate } = useForm({
-    //   fields: {
-    //     selectName: {
-    //       validations: { required },
-    //     },
-    //     price: {
-    //       validations: { required },
-    //     },
-    //     file: {
-    //       validations: { required },
-    //     },
-    //   },
-    // })
-
     const sendData = () => {
-      let fileExt = file.type.split('/')[1]
+      console.log(selectName.value, file.value)
+      let fileExt = file.value.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
-      form_data.append('file', file)
+      form_data.append('file', file.value)
       const { makeRequest } = useRequest({
         context,
         request: () =>
@@ -94,16 +81,52 @@ const Form3 = defineComponent({
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
-              // process_id: data.task.process_id,
-              // task_id: data.task.id,
-              // parent_action: data.task.id,
-              // transfer: true,
-              // manager_id: JSON.parse(data.entity.data_subvision)['leader'],
-              // personal_id: data.entity.personal_id,
-              // next: data.dop_data.after_return ? data.dop_data.after_return : true;
+              process_id: data.task.process_id,
+              task_id: data.task.id,
+              parent_action: data.task.id,
+              transfer: true,
+              manager_id: JSON.parse(data.entity.data_subvision)['leader'],
+              personal_id: data.entity.personal_id,
+              next: JSON.parse(data.task.dop_data).after_return
+                ? JSON.parse(data.task.dop_data).after_return
+                : true,
             },
           }),
       })
+      const { makeRequest: pushSomeShit } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/setBid', {
+            data: {
+              id: data.entity.id,
+              items: {
+                rashod_vid_id: selectName.value.id,
+                count: 1,
+                price: price.value,
+                name: '',
+                is_debit: 1,
+              },
+            },
+          }),
+      })
+      // Если after_return == true
+      //                       	items = `[{"rashod_vid_id":"${$('#form_zayavka_rashod_vid_id').val()}","count":"${$('#form_zayavka_count').val()}","price":"${$('#form_zayavka_price').val()}","name":"${$('#form_zayavka_name').val()}","is_debit":"1"},{"rashod_vid_id":"${$('#form_zayavka_rashod_vid_id_2').val()}","count":"${$('#form_zayavka_count_2').val()}","price":"${$('#form_zayavka_price_2').val()}","name":"${$('#form_zayavka_name_2').val()}","is_debit":"1"}]`
+
+      //   $.ajax('/common/save/zayavka', {
+      //         method: "POST",
+      //         data: {id: $entity['id'], items: строка с данными билета},
+      //         success: function() {
+
+      //         }
+      //     })
+
+      // $.ajax('/common/save/personal/', {
+      //         method: "POST",
+      //         data: {id: <?php echo $entity['personal_id']; ?>, ticket: `/files/act/${document.filename}`, status: 2},
+      //         success: function() {
+
+      //         }
+      //     })
 
       //   <?php } else { ?>
       //     data = {
@@ -126,9 +149,10 @@ const Form3 = defineComponent({
       //         hideModal();
       //     }
       // })
-
       makeRequest()
       updateFileData()
+      pushSomeShit()
+      changeStatus()
     }
     return {
       options,
@@ -138,6 +162,7 @@ const Form3 = defineComponent({
       landPhone,
       mobilePhone,
       addFiles,
+      sendData,
     }
   },
 })

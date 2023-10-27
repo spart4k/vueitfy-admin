@@ -1,100 +1,93 @@
 <template>
   <div>
-    <div style="padding: 10px">
-      <div v-if="isShow" style="margin-bottom: 30px">
-        <TextInfo :infoObj="{ textInfo }"></TextInfo>
-        <FormTitle
-          :docName="getDocName(item.doc_id)"
-          v-for="(item, index) in docs"
-          :docs="item"
-          :key="index"
-          @confirmed="addConfirmed"
-          @unconfirmed="addUnconfirmed"
-        ></FormTitle>
-        <FormComment v-model="comment" />
-        <span class="danger" v-if="commentError"
-          >Заполните поле комментарий!</span
-        >
-        <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
-      </div>
+    <div style="padding: 20px">
+      <span style="font-weight: 700; font-size: 20px"
+        >{{ data.entity.name }} {{ data.entity.data_rojd }}</span
+      >
       <div>
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              <v-row align="center">
-                <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
-                <span>Основные данные</span>
-              </v-row>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    v-model="formData.fio"
-                    label="ФИО"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  <v-menu
-                    v-model="datePickerOpen"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                    z-index="20"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="formData.birthday"
-                        label="Дата рождения"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      class="z-index"
-                      v-model="formData.birthday"
-                      min="1950-01-01"
-                      color="primary"
-                      locale="ru-RU"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col>
-                  <v-select
-                    persistent-hint
-                    :items="citizenItems"
-                    label="Гражданство"
-                  ></v-select>
-                </v-col>
-              </v-row>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <DocForm
-          @change="changeDocs"
-          :docsData="docsData"
-          :listNames="listNames"
-          :docs="docs"
-        ></DocForm>
+        <div>
+          <span>Менеджер: {{ data.entity.account_name }}</span>
+        </div>
+        <div>
+          <span>Объект: {{ data.entity.object_id }}</span>
+        </div>
       </div>
-    </div>
+      <span>Создайте расход на документы:</span>
+      <v-row>
+        <v-col cols="12">
+          <div style="display: flex; justify-content: center">
+            <v-btn color="info"> Открыть </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+      <!-- {{ getNameDoc(1) }} -->
+      <v-row>
+        <v-col>
+          <div class="mb-10">
+            <span style="font-size: 20px">Приложите документы</span>
+            <v-expansion-panels>
+              <v-expansion-panel
+                v-for="(item, index) in data.data.docs_zayavka"
+                :key="index"
+              >
+                <v-expansion-panel-header>
+                  <v-row align="center">
+                    <span> {{ docs_spr[0] }} </span>
+                  </v-row>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <Dropzone
+                    :options="{
+                      withoutSave: false,
+                      folder: 'tmp',
+                    }"
+                    @addFiles="addFiles"
+                  ></Dropzone>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </div>
 
-    <v-divider></v-divider>
-    <v-row class="py-2" justify="end">
-      <v-btn :disabled="endBtnDisabled" color="info" @click="sendData">
-        <v-icon left> $IconMain </v-icon>
-        Завершить
-      </v-btn>
-      <v-btn color="blue-grey">
-        <v-icon left> $IconMain </v-icon>
-        Закрыть
-      </v-btn>
-    </v-row>
+          <v-divider></v-divider>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <div style="display: flex; justify-content: center">
+            <v-btn color="success"> Приложить </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6">
+          <Dropzone
+            :options="{
+              withoutSave: false,
+              folder: 'tmp',
+            }"
+          ></Dropzone>
+        </v-col>
+        <v-col cols="6">
+          <Dropzone
+            :options="{
+              withoutSave: false,
+              folder: 'tmp',
+            }"
+          ></Dropzone>
+        </v-col>
+      </v-row>
+      <v-row class="py-2" justify="end">
+        <v-btn color="info" class="mr-3">
+          <v-icon left> $IconMain </v-icon>
+          Завершить
+        </v-btn>
+        <v-btn color="blue-grey">
+          <v-icon left> $IconMain </v-icon>
+          Закрыть
+        </v-btn>
+      </v-row>
+    </div>
   </div>
 </template>
 
