@@ -5,6 +5,61 @@
         {{ entity.name }} ({{ dataRojd }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
+      <v-expansion-panels v-if="isHasOsnDoc">
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            <v-row align="center">
+              <template v-if="isOsnDocTouched">
+                <v-icon x-small color="green" v-if="isOsnDocConfirmed"
+                  >$IconMain</v-icon
+                >
+                <v-icon x-small color="red" v-else>$IconClose</v-icon>
+              </template>
+              <span class="ml-2">Основные данные</span>
+            </v-row>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="formData.name"
+                  readonly
+                  label="ФИО"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="formData.data_rojd"
+                  label="Дата рождения"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                ></v-text-field>
+              </v-col>
+              <v-col style="position: relative; z-index: 30">
+                <v-select
+                  v-model="formData.grajdanstvo_id"
+                  persistent-hint
+                  :items="citizenItems"
+                  label="Гражданство"
+                  readonly
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row class="py-2 px-2" justify="end">
+              <v-btn @click="rejectOsnData" class="mr-2" color="error">
+                <v-icon left> $IconClose </v-icon>
+                Отклонить
+              </v-btn>
+              <v-btn @click="confirmOsnData" color="primary">
+                <v-icon left> $IconMain </v-icon>
+                Подтвердить
+              </v-btn>
+            </v-row>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
       <DocFormWithConfirm
         class="mb-10"
         @change="changeDocs"
@@ -18,7 +73,7 @@
     <v-row class="py-2 px-2" justify="end">
       <v-btn
         class="mr-2"
-        :disabled="!isFormValid"
+        :disabled="!isFormValid && !isOsnDocTouched"
         color="info"
         @click="sendData"
       >

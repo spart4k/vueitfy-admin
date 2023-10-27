@@ -5,6 +5,8 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment/moment'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import useForm from '@/compositions/useForm'
+import { required } from '@/utils/validation'
 
 const Form2 = defineComponent({
   name: 'Form2',
@@ -39,12 +41,38 @@ const Form2 = defineComponent({
     const finalData = ref({})
     const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
-    console.log(props.data)
+    const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const isOsnDocConfirmed = ref(false)
+    const isOsnDocTouched = ref(false)
     const changeDocs = (data) => {
       finalData.value = data
       console.log(data)
       isFormValid.value =
         data.confirmed.length + data.rejected.length === data.confirmDocsLength
+    }
+
+    const citizenItems = Object.values(props.data.data.grajdanstvo).map(
+      (citizen) => {
+        return {
+          text: citizen.name,
+          value: citizen.id,
+        }
+      }
+    )
+
+    const formData = {
+      name: props.data.entity.name,
+      data_rojd: props.data.entity.data_rojd,
+      grajdanstvo_id: props.data.entity.grajdanstvo_id,
+    }
+
+    const confirmOsnData = () => {
+      isOsnDocTouched.value = true
+      isOsnDocConfirmed.value = true
+    }
+    const rejectOsnData = () => {
+      isOsnDocTouched.value = true
+      isOsnDocConfirmed.value = false
     }
 
     const { makeRequest: setPersonalData } = useRequest({
@@ -87,13 +115,16 @@ const Form2 = defineComponent({
       request: () => {
         return store.dispatch('taskModule/setPartTask', {
           data: {
-            status: 2,
+            status: finalData.value.rejectedDocs.length ? 6 : 2,
             data: {
               process_id: props.data.task.process_id,
               personal_id: props.data.entity.id,
               task: props.data.task.id,
               parent_action: props.data.task.id,
-              docs_id: finalData.value.rejectedDocs,
+              docs_id:
+                isHasOsnDoc && !isOsnDocConfirmed
+                  ? [0, ...finalData.value.rejectedDocs]
+                  : finalData.value.rejectedDocs,
               account_id: props.data.task.to_account_id,
               obd_id: props.data.task.from_account_id,
               comment: 'comment',
@@ -129,6 +160,13 @@ const Form2 = defineComponent({
       isFormValid,
       finalData,
       textInfo,
+      isHasOsnDoc,
+      formData,
+      citizenItems,
+      confirmOsnData,
+      rejectOsnData,
+      isOsnDocConfirmed,
+      isOsnDocTouched,
     }
   },
 })

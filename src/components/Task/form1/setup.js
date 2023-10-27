@@ -46,9 +46,8 @@ const Form1 = defineComponent({
     const bankCardId = ref(0)
     const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
-    const isHasOsnDoc = props.data.data.docs_id.filter(
-      (doc) => doc.doc_id === 0
-    ).length
+    const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    console.log('dopData', JSON.parse(props.data.task.dop_data))
     const textInfo = {
       manager: {
         key: 'Менеджер',

@@ -17,7 +17,7 @@
             <v-row>
               <v-col>
                 <v-text-field
-                  v-model="formData.name"
+                  v-model="formObj.formData.name"
                   label="ФИО"
                 ></v-text-field>
               </v-col>
@@ -34,7 +34,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="formData.data_rojd"
+                      v-model="formObj.formData.data_rojd"
                       label="Дата рождения"
                       prepend-icon="mdi-calendar"
                       readonly
@@ -44,7 +44,7 @@
                   </template>
                   <v-date-picker
                     class="z-index"
-                    v-model="formData.data_rojd"
+                    v-model="formObj.formData.data_rojd"
                     min="1950-01-01"
                     color="primary"
                     locale="ru-RU"
@@ -53,12 +53,22 @@
               </v-col>
               <v-col style="position: relative; z-index: 30">
                 <v-select
-                  v-model="formData.grajdanstvo_id"
+                  v-model="formObj.formData.grajdanstvo_id"
                   persistent-hint
                   :items="citizenItems"
                   label="Гражданство"
                 ></v-select>
               </v-col>
+            </v-row>
+            <v-row class="py-2 px-2" justify="end">
+              <v-btn
+                :disabled="formObj.validate()"
+                @click="() => {}"
+                color="warning"
+              >
+                <v-icon left> $IconMain </v-icon>
+                Исправлено
+              </v-btn>
             </v-row>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -75,8 +85,12 @@
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
-      <!--        :disabled="!isFormValid"-->
-      <v-btn class="mr-2" color="info" @click="sendData">
+      <v-btn
+        :disabled="!isFormValid"
+        class="mr-2"
+        color="info"
+        @click="sendData"
+      >
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
