@@ -27,12 +27,12 @@
             <span style="font-size: 20px">Приложите документы</span>
             <v-expansion-panels>
               <v-expansion-panel
-                v-for="(item, index) in data.data.docs_zayavka"
+                v-for="(item, index) in data.data.docs"
                 :key="index"
               >
                 <v-expansion-panel-header>
                   <v-row align="center">
-                    <span> {{ docs_spr[0] }} </span>
+                    <span> {{ data.data.docs_spr[item.doc_id] }} </span>
                   </v-row>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>

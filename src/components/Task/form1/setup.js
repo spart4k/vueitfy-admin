@@ -99,16 +99,18 @@ const Form1 = defineComponent({
       request: () =>
         store.dispatch('taskModule/setPartTask', {
           data: {
-            status: 6,
             data: {
-              process_id: props.data.task.process_id,
-              task_id: props.data.task.id,
-              personal_id: props.data.entity.id,
-              parent_action: props.data.task.id,
-              comment: comment.value,
-              cancel_close: Object.values(unConfirmed.value).map((x) => x.id),
-              manager_id: props.data.task.from_account_id,
-              docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+              status: 6,
+              data: {
+                process_id: props.data.task.process_id,
+                task_id: props.data.task.id,
+                personal_id: props.data.entity.id,
+                parent_action: props.data.task.id,
+                comment: comment.value,
+                cancel_close: Object.values(unConfirmed.value).map((x) => x.id),
+                manager_id: props.data.task.from_account_id,
+                docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+              },
             },
           },
         }),
@@ -159,15 +161,17 @@ const Form1 = defineComponent({
           Date.now()
         return store.dispatch('taskModule/setPartTask', {
           data: {
-            status: taskDeadline > 0 ? 2 : 6,
             data: {
-              process_id: task.process_id,
-              task_id: task.id,
-              parent_action: task.id,
-              docs_id: props.data.data.docs_id.map((doc) => doc.id),
-              account_id: task.to_account_id,
-              personal_id: props.data.entity.id,
-              bank_card_id: bankCardId.value ?? null,
+              status: taskDeadline > 0 ? 2 : 6,
+              data: {
+                process_id: task.process_id,
+                task_id: task.id,
+                parent_action: task.id,
+                docs_id: props.data.data.docs_id.map((doc) => doc.id),
+                account_id: task.to_account_id,
+                personal_id: props.data.entity.id,
+                bank_card_id: bankCardId.value ?? null,
+              },
             },
           },
         })

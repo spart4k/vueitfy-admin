@@ -5,12 +5,14 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
+import Dropzone from '@/components/dropzone/default'
 
 const Form17 = defineComponent({
   name: 'Form17',
   components: {
     FormError,
     FormComment,
+    Dropzone,
   },
   props: {
     data: {

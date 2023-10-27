@@ -1,60 +1,32 @@
 <template>
   <div>
     <div style="padding: 20px">
-      <FormError v-if="dopData && dopData.comment" class="mb-5">
-        {{ dopData.comment }}
-      </FormError>
-      <div class="mb-3">Внесите данные личного ключа:</div>
-      <v-form>
-        <v-row>
-          <span>Скан:</span>
-          <a target="_blank" :href="'#'">scan</a>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              :error-messages="keyFormErrors.key"
-              v-model="keyForm.key"
-              label="Ключ"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-text-field
-              :error-messages="keyFormErrors.name"
-              v-model="keyForm.name"
-              label="ФИО"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-checkbox
-              v-model="keyForm.trainee"
-              label="Стажерская"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-      </v-form>
-      <v-divider class="mb-5"></v-divider>
-      <v-textarea
-        rows="2"
-        clearable
-        label="Комментарий"
-        v-model="keyForm.comment"
-        :error-messages="keyFormErrors.comment"
-      ></v-textarea>
+      <div class="mb-3">
+        <span style="font-weight: 700; font-size: 20px"
+          >Назначение {{ data.entity.id }} на дату {{ data.entity.date_target }}
+        </span>
+      </div>
+      <div
+        v-if="
+          data.entity.doljnost_id == 5 ||
+          data.entity.doljnost_id == 7 ||
+          data.entity.doljnost_id == 32
+        "
+      >
+        <!-- ($entity['doljnost_id'] == 5 || $entity['doljnost_id'] == 7 || $entity['doljnost_id'] == 32) -->
+        <span>Приложите выработку</span>
+
+        <Dropzone
+          :options="{
+            withoutSave: false,
+            folder: 'tmp',
+          }"
+        ></Dropzone>
+      </div>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn
-        :disabled="!keyFormValidate()"
-        @click="completeTask"
-        class="mr-2"
-        small
-        color="info"
-      >
+      <v-btn :disabled="true" class="mr-2" small color="info">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>

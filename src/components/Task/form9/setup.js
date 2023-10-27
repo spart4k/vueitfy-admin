@@ -1,188 +1,131 @@
-import Vue, { computed, defineComponent, ref } from 'vue'
-import textInfo from '@/components/Task/el/TextInfo/index.vue'
-import formError from '@/components/Task/el/FormError/index.vue'
-import formComment from '@/components/Task/el/FormComment/index.vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
+import Dropzone from '@/components/dropzone/default'
+// import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
+// import FormComment from '@/components/Task/el/FormComment/index.vue'
+import useForm from '@/compositions/useForm'
+import { required } from '@/utils/validation'
+// import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
-import FormPopupPhoto from '@/components/Task/el/FormPopupPhoto/index.vue'
 import store from '@/store'
-const ThirdPopupView = defineComponent({
-  name: 'ThirdPopupView',
+// import moment from 'moment'
+
+const Form8 = defineComponent({
+  name: 'Form8',
   components: {
-    TextInfo: textInfo,
-    FormError: formError,
-    FormComment: formComment,
-    FormPopupPhoto,
+    Dropzone,
+  },
+  data() {
+    return {
+      docs_spr: [
+        'Паспорт',
+        'СНИЛС',
+        'Реквизиты карты',
+        'Регистрация',
+        'Патент',
+        'Паспорт стр.2',
+        'Перевод',
+        'Мед. книжка',
+        'Вид на жительство',
+        'Миграционная карта',
+        'ДМС',
+        'Рабочая виза',
+        'Чек-патент первичный',
+        'Регистрация стр. 2',
+        'Патент стр. 2',
+        'Фото',
+        'ИНН',
+        'Экзамен РФ',
+        'Чек-патент текущий',
+        'Дактилоскопия',
+        'Дактилоскопия стр. 2',
+        'Вид на жительство стр. 2',
+        'Медосмотр',
+        'ID карта',
+        'Ученический договор',
+      ],
+    }
   },
   props: {
-    objectData: {
-      type: Object,
-    },
     data: {
       type: Object,
+      default: () => {},
     },
   },
   setup({ data }) {
-    const infoObj = {
-      pasp: {
-        key: 'key',
-        value: 'value',
-      },
-    }
     const context = {
       root: {
         store,
       },
     }
+    let docs_spr = [
+      'Паспорт',
+      'СНИЛС',
+      'Реквизиты карты',
+      'Регистрация',
+      'Патент',
+      'Паспорт стр.2',
+      'Перевод',
+      'Мед. книжка',
+      'Вид на жительство',
+      'Миграционная карта',
+      'ДМС',
+      'Рабочая виза',
+      'Чек-патент первичный',
+      'Регистрация стр. 2',
+      'Патент стр. 2',
+      'Фото',
+      'ИНН',
+      'Экзамен РФ',
+      'Чек-патент текущий',
+      'Дактилоскопия',
+      'Дактилоскопия стр. 2',
+      'Вид на жительство стр. 2',
+      'Медосмотр',
+      'ID карта',
+      'Ученический договор',
+    ]
+    // let getNameDoc = (docID) => {
+    //   return docs_spr[docID]
+    // }
 
-    const textInfo = {
-      manager: {
-        key: 'Менеджер',
-        value: data.entity.account_name,
-      },
-      obj: {
-        key: 'Объект',
-        value: data.entity.object_name,
-      },
+    // onMounted(() => {
+    //   console.log(docs_spr, getNameDoc)
+    // })
+    let options = {
+      withoutSave: false,
+      folder: 'tmp',
+    }
+    let selectName = ref('')
+    let price = ref('')
+    let nameComp = JSON.parse(data.entity.items)[0].name
+
+    let landPhone = computed(() =>
+      data.data.account.landline_phone
+        ? data.data.account.landline_phone
+        : 'Не указан'
+    )
+    let mobilePhone = computed(() =>
+      data.data.account.mobile_phone
+        ? data.data.account.mobile_phone
+        : 'Не указан'
+    )
+    let file = ref('')
+    let addFiles = (e) => {
+      file.value = e[0]
+      console.log(file.value)
     }
 
-    const isShowBtnArray = ref([])
-    const isFormValid = ref(false)
-    const isImgPopupOpen = ref(false)
-    // let file = ref()
-    let imagePreview = ref([])
-    let imageShowPopup = ref('')
-    let comment = ref('')
-
-    let accForSend = ref(0)
-    let setImageForPopup = (index) => {
-      console.log(index)
-      imageShowPopup.value = imagePreview.value[index]
-    }
-    // let sendFile
-    data.data.docs.forEach((element, index) => {
-      imagePreview.value.push('https://api.personal-crm.ru' + element.path_doc)
-      console.log(index)
-      isShowBtnArray.value.push(true)
-    })
-
-    let watchForComment = computed({
-      get: () => comment.value,
-      set: (val) => {
-        console.log(val)
-        if (val && accForSend.value >= 0) {
-          isFormValid.value = true
-        } else {
-          isFormValid.value = false
-        }
-        comment.value = val
-      },
-    })
-
-    const addToDenied = (index) => {
-      Vue.set(isShowBtnArray.value, index, false)
-      accForSend.value = 1 + accForSend.value
-      console.log()
-    }
-    const { makeRequest: doneRequest } = useRequest({
-      context,
-      request: () =>
-        store.dispatch('taskModule/changeStatusTasks', {
-          data: {
-            data: {
-              status: accForSend.value > 0 ? 6 : 2,
-              data: {
-                process_id: data.task.process_id,
-                account_id: 25,
-                task_id: data.task.id,
-                parent_action: data.task.parent_action,
-                personal_id: data.entity.id,
-                docs_id: JSON.parse(data.task.dop_data).docs_id,
-                comment: comment.value,
-              },
-            },
-          },
-        }),
-      successMessage: 'Файл успешно загружен',
-    })
-    let sendDoneTask = async () => {
-      await doneRequest()
-    }
-    console.log(imagePreview.value)
-    const handleFileUpload = async (e, indexForPhoto) => {
-      accForSend.value = accForSend.value - 1
-      let file = e.target.files[0]
-      console.log(file)
-      let reader = new FileReader()
-      reader.addEventListener(
-        'load',
-        async function () {
-          Vue.set(imagePreview.value, indexForPhoto, reader.result)
-          Vue.set(isShowBtnArray.value, indexForPhoto, false)
-          console.log(imagePreview.value)
-          const dataFrom = await makeRequest()
-          const newVal = await newRequest()
-          console.log(dataFrom, newVal)
-        }.bind(this),
-        false
-      )
-
-      reader.readAsDataURL(file)
-      let form_data = new FormData()
-      // file/save/personal_doc/personal_doc_1231412342134.jpg
-
-      // Объект для отправки данных в самом конце формы
-
-      // accaunt_id по дефолту полставить 25
-      // $.ajax('/set/data/personal_doc', {
-      //  method: "POST",
-      //    data: {id: $doc['id'], path_doc: '/personal_doc/имя файла'
-      //    success: function() {
-      //     }
-      //   })
-      form_data.append('file', file)
-      let fileExt = file.type.split('/')[1]
-      let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-      // let dataFromDopData = JSO
-      const { makeRequest } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/loadImage', {
-            id: 1,
-            folder: 'personal_doc',
-            fileName: fileName,
-            file: form_data,
-          }),
-        successMessage: 'Файл успешно загружен',
-      })
-      const { makeRequest: newRequest } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/updateFileData', {
-            id: 1,
-            path_doc: `/personal_doc/${fileName}`,
-          }),
-      })
-    }
-
-    const confirmDocs = ref([])
-    const editedDocs = ref({})
+    const sendData = () => {}
     return {
-      infoObj,
-      confirmDocs,
-      editedDocs,
-      handleFileUpload,
-      imagePreview,
-      addToDenied,
-      isShowBtnArray,
-      textInfo,
-      isFormValid,
-      isImgPopupOpen,
-      setImageForPopup,
-      imageShowPopup,
-      comment,
-      sendDoneTask,
-      watchForComment,
+      options,
+      selectName,
+      price,
+      nameComp,
+      landPhone,
+      mobilePhone,
+      addFiles,
+      sendData,
     }
   },
 })
-export default ThirdPopupView
+export default Form8

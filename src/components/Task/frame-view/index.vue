@@ -45,6 +45,7 @@
       <!--Исправление-->
       <Form7 v-if="data.task.task_type_id === 7" :data="data"></Form7>
       <Form8 v-if="data.task.task_type_id === 8" :data="data"></Form8>
+      <Form8 v-if="data.task.task_type_id === 9" :data="data"></Form8>
       <!--Подтверждение назначения-->
       <Form15 v-if="data.task.task_type_id === 15" :data="data" />
       <!--Прикладывание/корректировка выработки-->

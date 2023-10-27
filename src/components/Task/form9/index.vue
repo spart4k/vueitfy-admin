@@ -1,86 +1,96 @@
 <template>
   <div>
-    <div style="padding: 10px">
-      <TextInfo :infoObj="textInfo" />
-      <v-row> Проверьте документы: </v-row>
-      <FormError>{{ JSON.parse(data.task.dop_data).comment }}</FormError>
-      <div>
-        <template>
-          <v-row
-            justify="space-between"
-            class="py-3"
-            v-for="(item, index) in data.data.docs"
-            :key="index"
-          >
-            <v-col cols="auto">
-              <div class="accept-docs">
-                <div style="width: 70px; height: 45px">
-                  <img
-                    style="object-fit: contain; width: 70px; height: 45px"
-                    :src="imagePreview[index]"
-                    @click="
-                      () => {
-                        setImageForPopup(index)
-                        isImgPopupOpen = true
-                      }
-                    "
-                  />
-                </div>
-                <span>{{ data.data.docs_spr[item.doc_id] }}</span>
-              </div>
-            </v-col>
-            <v-col cols="auto" class="d-flex align-center">
-              <v-btn
-                class="mr-3"
-                fab
-                x-small
-                v-if="isShowBtnArray[index]"
-                @click="addToDenied(index)"
-              >
-                <v-icon x-small>$IconStar</v-icon>
-              </v-btn>
-              <v-btn fab x-small tag="label">
-                <input
-                  class="d-none"
-                  type="file"
-                  id="file"
-                  ref="file"
-                  accept="image/*"
-                  @change="handleFileUpload($event, index)"
-                />
-                <v-icon x-small>$IconEdit</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-divider></v-divider>
-        </template>
-      </div>
-      <FormComment v-model="watchForComment" />
-    </div>
-    <FormPopupPhoto
-      :src="imageShowPopup"
-      v-if="isImgPopupOpen"
-      @close="isImgPopupOpen = false"
-    />
-    <v-divider></v-divider>
-    <v-row class="py-2 px-5" justify="end">
-      <v-btn
-        class="mr-2"
-        color="info"
-        :disabled="!isFormValid"
-        @click="sendDoneTask"
+    <div style="padding: 20px">
+      <span style="font-weight: 700; font-size: 20px"
+        >{{ data.entity.name }} {{ data.entity.data_rojd }}</span
       >
-        <v-icon left> $IconMain </v-icon>
-        Завершить
-      </v-btn>
-      <v-btn color="blue-grey">
-        <v-icon left> $IconMain </v-icon>
-        Закрыть
-      </v-btn>
-    </v-row>
+      <div>
+        <div>
+          <span>Менеджер: {{ data.entity.account_name }}</span>
+        </div>
+        <div>
+          <span>Объект: {{ data.entity.object_id }}</span>
+        </div>
+      </div>
+      <span>Создайте расход на документы:</span>
+      <v-row>
+        <v-col cols="12">
+          <div style="display: flex; justify-content: center">
+            <v-btn color="info"> Открыть </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+      <!-- {{ getNameDoc(1) }} -->
+      <v-row>
+        <v-col>
+          <div class="mb-10">
+            <span style="font-size: 20px">Приложите документы</span>
+            <v-expansion-panels>
+              <v-expansion-panel
+                v-for="(item, index) in data.data.docs"
+                :key="index"
+              >
+                <v-expansion-panel-header>
+                  <v-row align="center">
+                    <span> {{ data.data.docs_spr[item.doc_id] }} </span>
+                  </v-row>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <Dropzone
+                    :options="{
+                      withoutSave: false,
+                      folder: 'tmp',
+                    }"
+                    @addFiles="addFiles"
+                  ></Dropzone>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </div>
+
+          <v-divider></v-divider>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <div style="display: flex; justify-content: center">
+            <v-btn color="success"> Приложить </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6">
+          <Dropzone
+            :options="{
+              withoutSave: false,
+              folder: 'tmp',
+            }"
+          ></Dropzone>
+        </v-col>
+        <v-col cols="6">
+          <Dropzone
+            :options="{
+              withoutSave: false,
+              folder: 'tmp',
+            }"
+          ></Dropzone>
+        </v-col>
+      </v-row>
+      <v-row class="py-2" justify="end">
+        <v-btn color="info" class="mr-3">
+          <v-icon left> $IconMain </v-icon>
+          Завершить
+        </v-btn>
+        <v-btn color="blue-grey">
+          <v-icon left> $IconMain </v-icon>
+          Закрыть
+        </v-btn>
+      </v-row>
+    </div>
   </div>
 </template>
 
 <script src="./setup.js"></script>
 
-<style lang="scss" scoped src="./style.scss"></style>
+<style lang="scss" scoped></style>
