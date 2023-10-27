@@ -231,31 +231,96 @@
       <div class="v-controls-popup d-flex flex-column">
         <p class="v-controls-popup_title text-center">Транслировать письма</p>
         <v-row>
-          <v-col
-            v-for="field in filters.fields"
-            :key="field.id"
-            :cols="field.position.cols"
-            :sm="field.position.sm"
-            class="field-col"
-            :class="field.type"
-          >
+          <v-col cols="12" sm="12">
             <v-select
-              v-if="field.isShow"
-              :items="field.items"
-              v-model="field.value"
-              :item-text="field.selectOption.text"
-              :label="field.label"
-              persistent-hint
-              :clearable="field.clearable"
-              :multiple="field.subtype === 'multiselect'"
-              @change="changeSelect(field)"
+              v-model="broadcast.path.value"
+              class="mt-4"
+              :items="broadcast.path.items"
+              item-text="name"
+              item-value="value"
+              outlined
+              label="Кому транслировать"
+              @change="changeKey(broadcast.path.name)"
             ></v-select>
-            <!-- <Autocomplete
-              v-else-if="showField('autocomplete', field)"
-              :field="field"
-              ref="autocompleteRef"
-              @change="changeAutocomplete"
-            /> -->
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-select
+              v-if="broadcast.path.value === 'direction'"
+              v-model="broadcast.direction.value"
+              :items="broadcast.direction.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите направление"
+              item-text="name"
+              item-value="value"
+              @change="changeKey(broadcast.direction.name)"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" :sm="broadcast.path.value === 'direction' ? 6 : 12">
+            <v-autocomplete
+              v-if="broadcast.path.value !== 'account'"
+              v-model="broadcast.otdel.value"
+              :items="broadcast.otdel.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите подразделение"
+              multiple
+              chips
+              clearable
+              :disabled="
+                broadcast.path.value === 'direction' &&
+                !broadcast.direction.value
+              "
+              deletable-chips
+              item-text="name"
+              item-value="value"
+              @change="changeKey(broadcast.otdel.name)"
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-autocomplete
+              v-if="broadcast.path.value === 'direction'"
+              v-model="broadcast.object.value"
+              :items="broadcast.object.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите объект"
+              multiple
+              chips
+              clearable
+              deletable-chips
+              :disabled="
+                broadcast.path.value === 'direction' &&
+                !broadcast.direction.value
+              "
+              item-text="name"
+              item-value="value"
+              @change="changeKey(broadcast.object.name)"
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-autocomplete
+              v-model="broadcast.account.value"
+              :items="broadcast.account.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите пользователей"
+              multiple
+              chips
+              clearable
+              deletable-chips
+              :disabled="
+                (broadcast.path.value === 'otdel' && !broadcast.otdel.value) ||
+                (broadcast.path.value === 'direction' &&
+                  !broadcast.direction.value)
+              "
+              item-text="name"
+              item-value="value"
+              @change="changeKey(broadcast.account.name)"
+            >
+              <template slot="item" slot-scope="{ item }">
+                <div class="d-flex flex-column">
+                  <p>{{ item.name }}</p>
+                  <p class="v-controls-popup_subtitle">{{ item.role }}</p>
+                </div>
+              </template>
+            </v-autocomplete>
           </v-col>
         </v-row>
 
@@ -266,7 +331,7 @@
               popupBroadcast = false
             "
             tonal
-            disabled
+            :disabled="!broadcast.account.value"
             color="primary"
           >
             <v-icon small class="mr-2">$IconBroadcast</v-icon>

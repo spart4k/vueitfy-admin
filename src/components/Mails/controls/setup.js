@@ -6,7 +6,6 @@ import { useStore } from '@/store'
 import _ from 'lodash'
 // import { tableApi } from '@/api'
 import Popup from '../../popup/index.vue'
-import filters from './filters.js'
 const controls = {
   name: 'Controls',
   components: {
@@ -39,33 +38,96 @@ const controls = {
     const popupDelete = ref(false)
     const popupBroadcast = ref(true)
     const formData = ref([])
-    const filtersData = ref(filters)
+    // const broadcast = ref({
+    //   direction: {
+    //     title: 'Сотрудники',
+    //     value: 'people',
+    //   },
+    //   directionArray: [],
+
+    //   route: {
+    //     name: 'xzc',
+    //     items: [],
+    //     page: 1,
+    //     search: '',
+    //     alias: 'p.object_id',
+    //   },
+    //   unit: null,
+    //   object: null,
+    //   people: null,
+
+    //   search: {
+    //     people: '',
+    //   },
+
+    //   routeArray: [],
+    //   unitArray: [],
+    //   objectArray: [],
+    //   peopleArray: [],
+    // })
     const broadcast = ref({
+      path: {
+        name: 'path',
+        value: 'account',
+        dependences: ['direction', 'otdel', 'object', 'account'],
+        items: [
+          {
+            name: 'Сотрудники',
+            value: 'account',
+          },
+          {
+            name: 'Направление',
+            value: 'direction',
+          },
+          {
+            name: 'Подразделение',
+            value: 'otdel',
+          },
+        ],
+      },
       direction: {
-        title: 'Сотрудники',
-        value: 'people',
+        name: 'direction',
+        value: null,
+        dependences: ['otdel', 'object', 'account'],
+        items: [
+          {
+            name: 'Подразделение',
+            value: 'otdel',
+          },
+        ],
       },
-      directionArray: [],
-
-      route: {
-        name: 'xzc',
-        items: [],
-        page: 1,
-        search: '',
-        alias: 'p.object_id',
+      otdel: {
+        name: 'otdel',
+        value: null,
+        dependences: ['account'],
+        items: [
+          {
+            name: 'Подразделение',
+            value: 'otdel',
+          },
+        ],
       },
-      unit: null,
-      object: null,
-      people: null,
-
-      search: {
-        people: '',
+      object: {
+        name: 'object',
+        value: null,
+        dependences: ['account'],
+        items: [
+          {
+            name: 'Подразделение',
+            value: 'otdel',
+          },
+        ],
       },
-
-      routeArray: [],
-      unitArray: [],
-      objectArray: [],
-      peopleArray: [],
+      account: {
+        name: 'account',
+        value: null,
+        items: [
+          {
+            name: 'Подразделение',
+            value: 'otdel',
+          },
+        ],
+      },
     })
     const intersection = computed(() => {
       const array = {
@@ -106,10 +168,6 @@ const controls = {
       return array
     })
 
-    const showField = (type, field) => {
-      return type === field.type && field.isShow
-    }
-
     const checkAll = (val) => {
       if (val[val?.length - 1]?.name === '-ВСЕ-') {
         broadcast.value.people = [{ name: '-ВСЕ-' }]
@@ -121,6 +179,18 @@ const controls = {
       }
     }
 
+    const changeKey = (val) => {
+      if (broadcast.value[val].name === 'path') {
+        clearKeyValue(['direction', 'otdel', 'object', 'account'])
+      }
+    }
+
+    const clearKeyValue = (val) => {
+      val.forEach((key) => {
+        broadcast.value[key].value = null
+      })
+    }
+
     // const changeDirection = () => {
     //   broadcast.value.route = null
     //   broadcast.value.unit = null
@@ -128,11 +198,11 @@ const controls = {
     //   broadcast.value.people = null
     // }
 
-    const clearKey = (val) => {
-      val.forEach((key) => {
-        broadcast.value[key] = null
-      })
-    }
+    // const clearKey = (val) => {
+    //   val.forEach((key) => {
+    //     broadcast.value[key] = null
+    //   })
+    // }
 
     const getItems = async () => {
       // const data = await store.dispatch('mail/getDirections')
@@ -140,27 +210,28 @@ const controls = {
       // console.log(data)
     }
 
-    const changeSelect = (val) => {
-      console.log(val)
-      if (val.name === 'direction') {
-        changeDirection(val.value)
-      }
-    }
+    // const changeSelect = (val) => {
+    //   console.log(val)
+    //   if (val.name === 'direction') {
+    //     changeDirection(val.value)
+    //   }
+    //   // changeDisable()
+    // }
 
-    const changeDirection = (val) => {
-      filtersData.value.fields.forEach((item) => {
-        if (item.clearable) item.value = null
-        if (item?.isShowWhen?.includes(val)) {
-          item.isShow = true
-          if (item.name == 'unit') {
-            if (val === 'unit') item.position.sm = 12
-            else item.position.sm = 6
-          }
-        } else {
-          item.isShow = false
-        }
-      })
-    }
+    // const changeDirection = (val) => {
+    //   filtersData.value.fields.forEach((item) => {
+    //     if (item.clearable) item.value = null
+    //     if (item?.isShowWhen?.includes(val)) {
+    //       item.isShow = true
+    //       if (item.name == 'otdel') {
+    //         if (val === 'unit') item.position.sm = 12
+    //         else item.position.sm = 6
+    //       }
+    //     } else {
+    //       item.isShow = false
+    //     }
+    //   })
+    // }
 
     // const getItems = () => {
     //   // cancel pending call
@@ -173,6 +244,9 @@ const controls = {
     // }
 
     onMounted(async () => {
+      broadcast.value.direction.items = await store.dispatch(
+        'mail/getDirections'
+      )
       // getItems()
     })
 
@@ -195,14 +269,15 @@ const controls = {
       popupDelete,
       popupBroadcast,
       intersection,
-      filters,
-      filtersData,
+      // filters,
+      // filtersData,
 
-      changeSelect,
-      showField,
+      changeKey,
+      // changeSelect,
+      // showField,
       checkAll,
-      clearKey,
-      changeDirection,
+      // clearKey,
+      // changeDirection,
     }
   },
 }

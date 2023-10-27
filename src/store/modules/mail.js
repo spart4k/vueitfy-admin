@@ -242,7 +242,7 @@ const mail = {
     async getDirections(_) {
       try {
         const response = await getDirections()
-        return response.data
+        return response
       } catch (e) {
         console.log(e)
       }
