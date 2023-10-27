@@ -21,7 +21,9 @@ import {
   filterMail,
   countFilter,
   getDirections,
-  getUnit,
+  getOtdel,
+  getObjects,
+  getAccounts,
 } from '@/api/mail'
 
 const mail = {
@@ -248,9 +250,27 @@ const mail = {
       }
     },
 
-    async getUnit(_, id) {
+    async getOtdel(_, id) {
       try {
-        const response = await getUnit(id)
+        const response = await getOtdel(id)
+        return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getObjects(_, id) {
+      try {
+        const response = await getObjects(id)
+        return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getAccounts(_, id) {
+      try {
+        const response = await getAccounts(id)
         return response.data
       } catch (e) {
         console.log(e)

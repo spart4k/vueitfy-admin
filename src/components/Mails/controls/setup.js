@@ -88,7 +88,6 @@ const controls = {
       direction: {
         name: 'direction',
         value: null,
-        dependences: ['otdel', 'object', 'account'],
         items: [
           {
             name: 'Подразделение',
@@ -98,8 +97,11 @@ const controls = {
       },
       otdel: {
         name: 'otdel',
+        page: 1,
+        search: '',
         value: null,
-        dependences: ['account'],
+        dependences: ['direction'],
+        request: 'getOtdel',
         items: [
           {
             name: 'Подразделение',
@@ -110,7 +112,10 @@ const controls = {
       object: {
         name: 'object',
         value: null,
-        dependences: ['account'],
+        page: 1,
+        search: '',
+        dependences: ['direction'],
+        request: 'getObjects',
         items: [
           {
             name: 'Подразделение',
@@ -121,6 +126,10 @@ const controls = {
       account: {
         name: 'account',
         value: null,
+        page: 1,
+        search: '',
+        dependences: ['direction', 'object', 'otdel'],
+        request: 'getAccounts',
         items: [
           {
             name: 'Подразделение',
@@ -204,8 +213,27 @@ const controls = {
     //   })
     // }
 
-    const getItems = async () => {
-      // const data = await store.dispatch('mail/getDirections')
+    const getItems = async (val) => {
+      const requestData = {
+        countRows: 15,
+        currentPage: 1,
+        filter: [],
+      }
+      broadcast.value[val].dependences.forEach((item) => {
+        if (broadcast.value[item].value) {
+          requestData.push({
+            field: broadcast.value[item].name,
+            alias: broadcast.value[item].name,
+            value: broadcast.value[item].value.toString(),
+          })
+        }
+      })
+      // const
+      const data = await store.dispatch(
+        `mail/${broadcast.value[val].request}`,
+        requestData
+      )
+      console.log(data)
       // const data1 = await store.dispatch('mail/getUnit', 1)
       // console.log(data)
     }

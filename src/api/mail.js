@@ -52,4 +52,8 @@ export const deleteFolder = (data) => del(`mail/folder/${data}`)
 
 export const getDirections = () => get('get/account/get_directions')
 
-export const getUnit = (id) => get(`get/account/get_otdel/${id}`)
+export const getOtdel = (data) => post('get/account/get_otdel', data)
+
+export const getObjects = (data) => post('get/account/get_objects', data)
+
+export const getAccounts = (data) => post('get/account/get_accounts', data)
