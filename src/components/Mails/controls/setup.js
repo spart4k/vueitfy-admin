@@ -89,27 +89,20 @@ const controls = {
         name: 'direction',
         alias: 'direction_json',
         value: null,
-        items: [
-          {
-            name: 'Подразделение',
-            value: 'otdel',
-          },
-        ],
+        multiple: false,
+        items: [],
       },
       otdel: {
         name: 'otdel',
         alias: 'otdel',
         page: 1,
         search: '',
+        multiple: true,
+        debounce: null,
         value: null,
         dependences: ['direction'],
         request: 'getOtdel',
-        items: [
-          {
-            name: 'Подразделение',
-            value: 'otdel',
-          },
-        ],
+        items: [],
       },
       object: {
         name: 'object',
@@ -117,28 +110,22 @@ const controls = {
         value: null,
         page: 1,
         search: '',
+        multiple: true,
+        debounce: null,
         dependences: ['direction'],
         request: 'getObjects',
-        items: [
-          {
-            name: 'Подразделение',
-            value: 'otdel',
-          },
-        ],
+        items: [],
       },
       account: {
         name: 'account',
         value: null,
         page: 1,
         search: '',
+        multiple: true,
+        debounce: null,
         dependences: ['direction', 'object', 'otdel'],
         request: 'getAccounts',
-        items: [
-          {
-            name: 'Подразделение',
-            value: 'otdel',
-          },
-        ],
+        items: [],
       },
     })
     const intersection = computed(() => {
@@ -194,38 +181,36 @@ const controls = {
     const changeKey = (val) => {
       if (broadcast.value[val].name === 'path') {
         clearKeyValue(['direction', 'otdel', 'object', 'account'])
+        if (broadcast.value[val].value === 'otdel') {
+          getItems(['otdel'])
+        } else if (broadcast.value[val].value === 'account') {
+          getItems(['account'])
+        }
       }
     }
 
     const clearKeyValue = (val) => {
       val.forEach((key) => {
         broadcast.value[key].value = null
+        broadcast.value[key].page = 1
+        broadcast.value[key].search = ''
       })
     }
 
-    // const changeDirection = () => {
-    //   broadcast.value.route = null
-    //   broadcast.value.unit = null
-    //   broadcast.value.object = null
-    //   broadcast.value.people = null
-    // }
-
-    // const clearKey = (val) => {
-    //   val.forEach((key) => {
-    //     broadcast.value[key] = null
-    //   })
-    // }
-
     const getItems = (val) => {
-      console.log(val)
       val.forEach(async (valItem) => {
         const requestData = {
+          searchColumn: broadcast.value[valItem].search,
           countRows: 15,
           currentPage: 1,
           filter: [],
         }
         broadcast.value[valItem].dependences.forEach((item) => {
-          if (broadcast.value[item].value) {
+          if (
+            (broadcast?.value[item]?.multiple &&
+              broadcast?.value[item]?.value?.length) ||
+            (!broadcast?.value[item]?.multiple && broadcast?.value[item]?.value)
+          ) {
             requestData.filter.push({
               field: broadcast.value[item].alias,
               alias: broadcast.value[item].name,
@@ -238,8 +223,7 @@ const controls = {
           `mail/${broadcast.value[valItem].request}`,
           requestData
         )
-        console.log(data)
-        broadcast.value[valItem].items = data.Rows
+        broadcast.value[valItem].items = [...data.Rows]
       })
       // const data1 = await store.dispatch('mail/getUnit', 1)
       // console.log(data)
@@ -268,35 +252,40 @@ const controls = {
     //   })
     // }
 
-    // const getItems = () => {
-    //   // cancel pending call
-    //   clearTimeout(debounce)
-    //   // delay new call 500ms
-    //   debounce = setTimeout(() => {
-    //     // this.fetch()
-    //     console.log(broadcast.value.search.people)
-    //   }, 500)
-    // }
+    const searchItems = (val) => {
+      clearTimeout(val.debounce)
+      val.debounce = setTimeout(() => {
+        getItems([val.name])
+      }, 500)
+    }
 
     onMounted(async () => {
+      getItems(['account'])
       broadcast.value.direction.items = await store.dispatch(
         'mail/getDirections'
       )
-      // getItems('otdel')
     })
 
-    // watch(
-    //   // () => broadcast.value.search.people,
-    //   // (newVal) => {
-    //   //   // console.log(newVal)
-    //   //   getItems()
-    //   //   // const params = {
-    //   //   //   id: props.value,
-    //   //   //   search: props.field.search,
-    //   //   // }
-    //   //   // if (newVal !== null) querySelections(params)
-    //   // }
-    // )
+    watch(
+      () => broadcast.value.account.search,
+      () => {
+        searchItems(broadcast.value.account)
+      }
+    )
+
+    watch(
+      () => broadcast.value.object.search,
+      () => {
+        searchItems(broadcast.value.object)
+      }
+    )
+
+    watch(
+      () => broadcast.value.otdel.search,
+      () => {
+        searchItems(broadcast.value.otdel)
+      }
+    )
 
     return {
       formData,
@@ -309,6 +298,7 @@ const controls = {
 
       changeKey,
       getItems,
+      searchItems,
       // changeSelect,
       // showField,
       checkAll,

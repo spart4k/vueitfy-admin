@@ -262,7 +262,8 @@
               :items="broadcast.otdel.items"
               :menu-props="{ maxHeight: '400' }"
               label="Выберите подразделение"
-              multiple
+              :search-input.sync="broadcast.otdel.search"
+              :multiple="broadcast.otdel.multiple"
               chips
               clearable
               :disabled="
@@ -279,10 +280,12 @@
             <v-autocomplete
               v-if="broadcast.path.value === 'direction'"
               v-model="broadcast.object.value"
+              class="v-controls-popup-item__cutted"
               :items="broadcast.object.items"
               :menu-props="{ maxHeight: '400' }"
               label="Выберите объект"
-              multiple
+              :search-input.sync="broadcast.object.search"
+              :multiple="broadcast.object.multiple"
               chips
               clearable
               deletable-chips
@@ -296,12 +299,14 @@
             ></v-autocomplete>
           </v-col>
           <v-col cols="12" sm="12">
+            {{ broadcast.account.search }}
             <v-autocomplete
               v-model="broadcast.account.value"
               :items="broadcast.account.items"
               :menu-props="{ maxHeight: '400' }"
               label="Выберите пользователей"
-              multiple
+              :search-input.sync="broadcast.account.search"
+              :multiple="broadcast.account.multiple"
               chips
               clearable
               deletable-chips
@@ -311,6 +316,7 @@
                   !broadcast.direction.value)
               "
               item-value="id"
+              item-text="fio"
               @change="changeKey(broadcast.account.name)"
             >
               <template slot="item" slot-scope="{ item }">
