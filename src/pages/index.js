@@ -7,6 +7,7 @@ import userKeys from './user-keys'
 import tasks from './tasks'
 import pivot from './pivot'
 import x5import from './x5import'
+import object from './object'
 
 export {
   payment,
@@ -18,4 +19,5 @@ export {
   tasks,
   pivot,
   x5import,
+  object,
 }
