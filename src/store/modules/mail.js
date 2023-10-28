@@ -253,7 +253,7 @@ const mail = {
     async getOtdel(_, id) {
       try {
         const response = await getOtdel(id)
-        return response.data
+        return response
       } catch (e) {
         console.log(e)
       }
@@ -262,7 +262,7 @@ const mail = {
     async getObjects(_, id) {
       try {
         const response = await getObjects(id)
-        return response.data
+        return response
       } catch (e) {
         console.log(e)
       }
@@ -271,7 +271,7 @@ const mail = {
     async getAccounts(_, id) {
       try {
         const response = await getAccounts(id)
-        return response.data
+        return response
       } catch (e) {
         console.log(e)
       }

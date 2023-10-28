@@ -87,6 +87,7 @@ const controls = {
       },
       direction: {
         name: 'direction',
+        alias: 'direction_json',
         value: null,
         items: [
           {
@@ -97,6 +98,7 @@ const controls = {
       },
       otdel: {
         name: 'otdel',
+        alias: 'otdel',
         page: 1,
         search: '',
         value: null,
@@ -111,6 +113,7 @@ const controls = {
       },
       object: {
         name: 'object',
+        alias: 'object_json',
         value: null,
         page: 1,
         search: '',
@@ -213,27 +216,31 @@ const controls = {
     //   })
     // }
 
-    const getItems = async (val) => {
-      const requestData = {
-        countRows: 15,
-        currentPage: 1,
-        filter: [],
-      }
-      broadcast.value[val].dependences.forEach((item) => {
-        if (broadcast.value[item].value) {
-          requestData.push({
-            field: broadcast.value[item].name,
-            alias: broadcast.value[item].name,
-            value: broadcast.value[item].value.toString(),
-          })
+    const getItems = (val) => {
+      console.log(val)
+      val.forEach(async (valItem) => {
+        const requestData = {
+          countRows: 15,
+          currentPage: 1,
+          filter: [],
         }
+        broadcast.value[valItem].dependences.forEach((item) => {
+          if (broadcast.value[item].value) {
+            requestData.filter.push({
+              field: broadcast.value[item].alias,
+              alias: broadcast.value[item].name,
+              value: broadcast.value[item].value.toString(),
+            })
+          }
+        })
+        // const
+        const data = await store.dispatch(
+          `mail/${broadcast.value[valItem].request}`,
+          requestData
+        )
+        console.log(data)
+        broadcast.value[valItem].items = data.Rows
       })
-      // const
-      const data = await store.dispatch(
-        `mail/${broadcast.value[val].request}`,
-        requestData
-      )
-      console.log(data)
       // const data1 = await store.dispatch('mail/getUnit', 1)
       // console.log(data)
     }
@@ -275,7 +282,7 @@ const controls = {
       broadcast.value.direction.items = await store.dispatch(
         'mail/getDirections'
       )
-      // getItems()
+      // getItems('otdel')
     })
 
     // watch(
@@ -301,6 +308,7 @@ const controls = {
       // filtersData,
 
       changeKey,
+      getItems,
       // changeSelect,
       // showField,
       checkAll,

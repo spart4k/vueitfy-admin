@@ -251,8 +251,8 @@
               :menu-props="{ maxHeight: '400' }"
               label="Выберите направление"
               item-text="name"
-              item-value="value"
-              @change="changeKey(broadcast.direction.name)"
+              item-value="id"
+              @change="getItems(['otdel', 'object', 'account'])"
             ></v-select>
           </v-col>
           <v-col cols="12" :sm="broadcast.path.value === 'direction' ? 6 : 12">
@@ -271,8 +271,8 @@
               "
               deletable-chips
               item-text="name"
-              item-value="value"
-              @change="changeKey(broadcast.otdel.name)"
+              item-value="id"
+              @change="getItems(['account'])"
             ></v-autocomplete>
           </v-col>
           <v-col cols="12" sm="6">
@@ -290,9 +290,9 @@
                 broadcast.path.value === 'direction' &&
                 !broadcast.direction.value
               "
-              item-text="name"
-              item-value="value"
-              @change="changeKey(broadcast.object.name)"
+              item-text="address"
+              item-value="id"
+              @change="getItems(['account'])"
             ></v-autocomplete>
           </v-col>
           <v-col cols="12" sm="12">
@@ -310,14 +310,13 @@
                 (broadcast.path.value === 'direction' &&
                   !broadcast.direction.value)
               "
-              item-text="name"
-              item-value="value"
+              item-value="id"
               @change="changeKey(broadcast.account.name)"
             >
               <template slot="item" slot-scope="{ item }">
                 <div class="d-flex flex-column">
-                  <p>{{ item.name }}</p>
-                  <p class="v-controls-popup_subtitle">{{ item.role }}</p>
+                  <p>{{ item.fio }}</p>
+                  <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
               </template>
             </v-autocomplete>
