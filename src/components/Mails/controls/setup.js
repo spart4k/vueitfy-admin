@@ -82,6 +82,7 @@ const controls = {
           {
             name: 'Подразделение',
             value: 'otdel',
+            disabled: true,
           },
         ],
       },
@@ -97,6 +98,7 @@ const controls = {
         alias: 'otdel',
         page: 1,
         search: '',
+        pageSearch: 1,
         multiple: true,
         debounce: null,
         value: null,
@@ -110,6 +112,7 @@ const controls = {
         value: null,
         page: 1,
         search: '',
+        pageSearch: 1,
         multiple: true,
         debounce: null,
         dependences: ['direction'],
@@ -121,6 +124,7 @@ const controls = {
         value: null,
         page: 1,
         search: '',
+        pageSearch: 1,
         multiple: true,
         debounce: null,
         dependences: ['direction', 'object', 'otdel'],
@@ -182,9 +186,9 @@ const controls = {
       if (broadcast.value[val].name === 'path') {
         clearKeyValue(['direction', 'otdel', 'object', 'account'])
         if (broadcast.value[val].value === 'otdel') {
-          getItems(['otdel'])
+          getItems({ val: ['otdel'] })
         } else if (broadcast.value[val].value === 'account') {
-          getItems(['account'])
+          getItems({ val: ['account'] })
         }
       }
     }
@@ -197,12 +201,16 @@ const controls = {
       })
     }
 
-    const getItems = (val) => {
+    const getItems = ({ val, search, pagination }) => {
       val.forEach(async (valItem) => {
+        if (!pagination && !search) broadcast.value[valItem].items = []
+        if (!search) broadcast.value[valItem].page = 1
         const requestData = {
           searchColumn: broadcast.value[valItem].search,
-          countRows: 15,
-          currentPage: 1,
+          countRows: 5,
+          currentPage: search
+            ? broadcast.value[valItem].pageSearch
+            : broadcast.value[valItem].page,
           filter: [],
         }
         broadcast.value[valItem].dependences.forEach((item) => {
@@ -218,12 +226,25 @@ const controls = {
             })
           }
         })
-        // const
         const data = await store.dispatch(
           `mail/${broadcast.value[valItem].request}`,
           requestData
         )
-        broadcast.value[valItem].items = [...data.Rows]
+        data.Rows.forEach((item) => {
+          if (!_.includes(broadcast.value[valItem].items, item)) {
+            broadcast.value[valItem].items.push(item)
+          }
+        })
+        // broadcast.value[valItem].items = data.Rows
+        if (
+          valItem === 'account' &&
+          !_.includes(broadcast.value[valItem].items, {
+            fio: '-ВСЕ-',
+            id: 'all',
+          })
+        ) {
+          broadcast.value[valItem].items.unshift({ fio: '-ВСЕ-', id: 'all' })
+        }
       })
       // const data1 = await store.dispatch('mail/getUnit', 1)
       // console.log(data)
@@ -272,12 +293,22 @@ const controls = {
     const searchItems = (val) => {
       clearTimeout(val.debounce)
       val.debounce = setTimeout(() => {
-        getItems([val.name])
+        getItems({ val: [val.name], search: true })
       }, 250)
     }
 
+    const accountFilter = (item, queryText) => {
+      return (
+        item?.fio?.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
+          -1 ||
+        item?.doljnost
+          ?.toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
+      )
+    }
+
     onMounted(async () => {
-      getItems(['account'])
+      getItems({ val: ['account'] })
       broadcast.value.direction.items = await store.dispatch(
         'mail/getDirections'
       )
@@ -286,21 +317,30 @@ const controls = {
     watch(
       () => broadcast.value.account.search,
       () => {
-        searchItems(broadcast.value.account)
+        if (broadcast.value.account.search) {
+          broadcast.value.account.pageSearch = 1
+          searchItems(broadcast.value.account)
+        }
       }
     )
 
     watch(
       () => broadcast.value.object.search,
       () => {
-        searchItems(broadcast.value.object)
+        if (broadcast.value.object.search) {
+          broadcast.value.object.pageSearch = 1
+          searchItems(broadcast.value.object)
+        }
       }
     )
 
     watch(
       () => broadcast.value.otdel.search,
       () => {
-        searchItems(broadcast.value.otdel)
+        if (broadcast.value.otdel.search) {
+          broadcast.value.otdel.pageSearch = 1
+          searchItems(broadcast.value.otdel)
+        }
       }
     )
 
@@ -320,6 +360,7 @@ const controls = {
       // changeSelect,
       // showField,
       checkAll,
+      accountFilter,
       // clearKey,
       // changeDirection,
     }

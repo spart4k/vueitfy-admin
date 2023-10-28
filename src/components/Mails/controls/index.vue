@@ -252,7 +252,7 @@
               label="Выберите направление"
               item-text="name"
               item-value="id"
-              @change="getItems(['otdel', 'object', 'account'])"
+              @change="getItems({ val: ['otdel', 'object', 'account'] })"
             ></v-select>
           </v-col>
           <v-col cols="12" :sm="broadcast.path.value === 'direction' ? 6 : 12">
@@ -267,16 +267,16 @@
               :multiple="broadcast.otdel.multiple"
               hide-selected
               chips
-              no-filter
               clearable
               :disabled="
-                broadcast.path.value === 'direction' &&
-                !broadcast.direction.value
+                (broadcast.path.value === 'direction' &&
+                  !broadcast.direction.value) ||
+                true
               "
               deletable-chips
               item-text="name"
               item-value="id"
-              @change="getItems(['account'])"
+              @change="getItems({ val: ['account'] })"
             ></v-autocomplete>
           </v-col>
           <v-col cols="12" sm="6">
@@ -292,7 +292,6 @@
               :multiple="broadcast.object.multiple"
               hide-selected
               chips
-              no-filter
               clearable
               deletable-chips
               :disabled="
@@ -301,12 +300,12 @@
               "
               item-text="address"
               item-value="id"
-              @change="getItems(['account'])"
+              @change="getItems({ val: ['account'] })"
             ></v-autocomplete>
           </v-col>
           <v-col cols="12" sm="12">
-            {{ broadcast.account.search }}
-            {{ broadcast.account.value }}
+            <!-- {{ broadcast.account.search }}
+            {{ broadcast.account.value }} -->
             <v-autocomplete
               v-model="broadcast.account.value"
               :value="broadcast.account.value"
@@ -317,7 +316,7 @@
               hide-selected
               :search-input.sync="broadcast.account.search"
               :multiple="broadcast.account.multiple"
-              no-filter
+              :filter="accountFilter"
               chips
               clearable
               deletable-chips
@@ -337,9 +336,9 @@
                   <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
               </template>
-              <template v-slot:append-item>
+              <!-- <template v-slot:append-item>
                 <div v-intersect="endIntersect" />
-              </template>
+              </template> -->
             </v-autocomplete>
           </v-col>
         </v-row>
