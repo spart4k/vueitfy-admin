@@ -229,6 +229,23 @@ const controls = {
       // console.log(data)
     }
 
+    const endIntersect = (entries, observer, isIntersecting) => {
+      if (isIntersecting) {
+        //const dataset = entries[0].target.dataset.field
+        console.log('dsa')
+        // if (props.field.items.length) {
+        //   //field.page = field.page + 10
+        //   //Vue.set(field, 'page', field.page + 1)
+        //   props.field.page = props.field.page + 1
+        //   const params = {
+        //     search: props.field.search,
+        //     name: props.field.name,
+        //   }
+        //   querySelections(params, true)
+        // }
+      }
+    }
+
     // const changeSelect = (val) => {
     //   console.log(val)
     //   if (val.name === 'direction') {
@@ -256,7 +273,7 @@ const controls = {
       clearTimeout(val.debounce)
       val.debounce = setTimeout(() => {
         getItems([val.name])
-      }, 500)
+      }, 250)
     }
 
     onMounted(async () => {
@@ -299,6 +316,7 @@ const controls = {
       changeKey,
       getItems,
       searchItems,
+      endIntersect,
       // changeSelect,
       // showField,
       checkAll,

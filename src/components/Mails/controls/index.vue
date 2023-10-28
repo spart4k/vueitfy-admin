@@ -223,7 +223,7 @@
       :options="{
         portal: 'filter',
         padding: '20px 30px',
-        width: '600px',
+        width: '900px',
       }"
       @close="popupBroadcast = false"
       v-if="popupBroadcast"
@@ -263,8 +263,11 @@
               :menu-props="{ maxHeight: '400' }"
               label="Выберите подразделение"
               :search-input.sync="broadcast.otdel.search"
+              no-data-text="Нет подразделение"
               :multiple="broadcast.otdel.multiple"
+              hide-selected
               chips
+              no-filter
               clearable
               :disabled="
                 broadcast.path.value === 'direction' &&
@@ -284,9 +287,12 @@
               :items="broadcast.object.items"
               :menu-props="{ maxHeight: '400' }"
               label="Выберите объект"
+              no-data-text="Нет объектов"
               :search-input.sync="broadcast.object.search"
               :multiple="broadcast.object.multiple"
+              hide-selected
               chips
+              no-filter
               clearable
               deletable-chips
               :disabled="
@@ -300,13 +306,18 @@
           </v-col>
           <v-col cols="12" sm="12">
             {{ broadcast.account.search }}
+            {{ broadcast.account.value }}
             <v-autocomplete
               v-model="broadcast.account.value"
+              :value="broadcast.account.value"
               :items="broadcast.account.items"
               :menu-props="{ maxHeight: '400' }"
               label="Выберите пользователей"
+              no-data-text="Нет пользователей"
+              hide-selected
               :search-input.sync="broadcast.account.search"
               :multiple="broadcast.account.multiple"
+              no-filter
               chips
               clearable
               deletable-chips
@@ -318,12 +329,16 @@
               item-value="id"
               item-text="fio"
               @change="changeKey(broadcast.account.name)"
+              @blur="broadcast.account.search = ''"
             >
               <template slot="item" slot-scope="{ item }">
                 <div class="d-flex flex-column">
                   <p>{{ item.fio }}</p>
                   <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
+              </template>
+              <template v-slot:append-item>
+                <div v-intersect="endIntersect" />
               </template>
             </v-autocomplete>
           </v-col>
