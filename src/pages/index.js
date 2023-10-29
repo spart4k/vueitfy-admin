@@ -9,6 +9,7 @@ import pivot from './pivot'
 import x5import from './x5import'
 import object from './object'
 import account from './account'
+import zayavka from './zayavka'
 
 export {
   payment,
@@ -22,4 +23,5 @@ export {
   x5import,
   object,
   account,
+  zayavka,
 }

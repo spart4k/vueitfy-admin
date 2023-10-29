@@ -6,6 +6,7 @@ import PivotView from '../views/PivotView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
+import ZayavkaView from '../views/ZayavkaView.vue'
 import AppointmentsView from '../views/Appointments.vue'
 import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
@@ -224,6 +225,24 @@ const routes = [
     children: [
       {
         name: 'tasks/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/zayavka',
+    name: 'zayavka',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: ZayavkaView,
+    children: [
+      {
+        name: 'zayavka/:id',
         path: ':id',
         component: Detail,
       },
