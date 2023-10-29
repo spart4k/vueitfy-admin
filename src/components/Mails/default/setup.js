@@ -254,7 +254,7 @@ const mails = {
       if (val.account[0] === 'all') {
         requestData.filter = val.filter
       } else {
-        requestData.account = val.account.toString()
+        requestData.account = val.account
       }
       const data = await store.dispatch('mail/broadcast', requestData)
       console.log(data)
