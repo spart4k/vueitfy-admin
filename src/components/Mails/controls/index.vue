@@ -277,6 +277,8 @@
               item-text="name"
               item-value="id"
               @change="getItems({ val: ['account'] })"
+              ><template v-slot:append-item>
+                <div id="otdel" v-intersect="endIntersect" /> </template
             ></v-autocomplete>
           </v-col>
           <v-col cols="12" sm="6">
@@ -301,7 +303,11 @@
               item-text="address"
               item-value="id"
               @change="getItems({ val: ['account'] })"
-            ></v-autocomplete>
+            >
+              <template v-slot:append-item>
+                <div id="object" v-intersect="endIntersect" />
+              </template>
+            </v-autocomplete>
           </v-col>
           <v-col cols="12" sm="12">
             <!-- {{ broadcast.account.search }}
@@ -327,7 +333,7 @@
               "
               item-value="id"
               item-text="fio"
-              @change="changeKey(broadcast.account.name)"
+              @change="checkAll"
               @blur="broadcast.account.search = ''"
             >
               <template slot="item" slot-scope="{ item }">
@@ -336,19 +342,16 @@
                   <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
               </template>
-              <!-- <template v-slot:append-item>
-                <div v-intersect="endIntersect" />
-              </template> -->
+              <template v-slot:append-item>
+                <div id="account" v-intersect="endIntersect" />
+              </template>
             </v-autocomplete>
           </v-col>
         </v-row>
 
         <div class="d-flex mt-9 justify-center">
           <v-btn
-            @click="
-              $emit('broadcast')
-              popupBroadcast = false
-            "
+            @click="broadcastLetters"
             tonal
             :disabled="!broadcast.account.value"
             color="primary"

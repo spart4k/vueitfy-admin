@@ -24,6 +24,7 @@ import {
   getOtdel,
   getObjects,
   getAccounts,
+  broadcast,
 } from '@/api/mail'
 
 const mail = {
@@ -271,6 +272,15 @@ const mail = {
     async getAccounts(_, id) {
       try {
         const response = await getAccounts(id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async broadcast(_, data) {
+      try {
+        const response = await broadcast(data)
         return response
       } catch (e) {
         console.log(e)

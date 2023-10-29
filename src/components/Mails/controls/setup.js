@@ -33,38 +33,11 @@ const controls = {
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const store = useStore()
+    const { emit } = ctx
     const popupDelete = ref(false)
-    const popupBroadcast = ref(true)
-    const formData = ref([])
-    // const broadcast = ref({
-    //   direction: {
-    //     title: 'Сотрудники',
-    //     value: 'people',
-    //   },
-    //   directionArray: [],
-
-    //   route: {
-    //     name: 'xzc',
-    //     items: [],
-    //     page: 1,
-    //     search: '',
-    //     alias: 'p.object_id',
-    //   },
-    //   unit: null,
-    //   object: null,
-    //   people: null,
-
-    //   search: {
-    //     people: '',
-    //   },
-
-    //   routeArray: [],
-    //   unitArray: [],
-    //   objectArray: [],
-    //   peopleArray: [],
-    // })
+    const popupBroadcast = ref(false)
     const broadcast = ref({
       path: {
         name: 'path',
@@ -96,9 +69,9 @@ const controls = {
       otdel: {
         name: 'otdel',
         alias: 'otdel',
-        page: 1,
+        page: 0,
+        total: null,
         search: '',
-        pageSearch: 1,
         multiple: true,
         debounce: null,
         value: null,
@@ -110,9 +83,9 @@ const controls = {
         name: 'object',
         alias: 'object_json',
         value: null,
-        page: 1,
+        page: 0,
+        total: null,
         search: '',
-        pageSearch: 1,
         multiple: true,
         debounce: null,
         dependences: ['direction'],
@@ -122,9 +95,9 @@ const controls = {
       account: {
         name: 'account',
         value: null,
-        page: 1,
+        page: 0,
+        total: null,
         search: '',
-        pageSearch: 1,
         multiple: true,
         debounce: null,
         dependences: ['direction', 'object', 'otdel'],
@@ -171,12 +144,12 @@ const controls = {
       return array
     })
 
-    const checkAll = (val) => {
-      if (val[val?.length - 1]?.name === '-ВСЕ-') {
-        broadcast.value.people = [{ name: '-ВСЕ-' }]
-      } else if (val.find((x) => x.name === '-ВСЕ-')) {
-        broadcast.value.people.splice(
-          val.findIndex((x) => x.name === '-ВСЕ-'),
+    const checkAll = () => {
+      if (broadcast.value.account.value.at(-1) === 'all') {
+        broadcast.value.account.value = ['all']
+      } else if (broadcast.value.account.value.includes('all')) {
+        broadcast.value.account.value.splice(
+          broadcast.value.account.value.findIndex((x) => x === 'all'),
           1
         )
       }
@@ -184,7 +157,7 @@ const controls = {
 
     const changeKey = (val) => {
       if (broadcast.value[val].name === 'path') {
-        clearKeyValue(['direction', 'otdel', 'object', 'account'])
+        clearKeyValue(['otdel', 'object', 'account'])
         if (broadcast.value[val].value === 'otdel') {
           getItems({ val: ['otdel'] })
         } else if (broadcast.value[val].value === 'account') {
@@ -196,104 +169,79 @@ const controls = {
     const clearKeyValue = (val) => {
       val.forEach((key) => {
         broadcast.value[key].value = null
-        broadcast.value[key].page = 1
+        broadcast.value[key].page = 0
+        broadcast.value[key].total = null
         broadcast.value[key].search = ''
+        broadcast.value[key].items = []
       })
     }
 
-    const getItems = ({ val, search, pagination }) => {
+    const getItems = ({ val }) => {
       val.forEach(async (valItem) => {
-        if (!pagination && !search) broadcast.value[valItem].items = []
-        if (!search) broadcast.value[valItem].page = 1
-        const requestData = {
-          searchColumn: broadcast.value[valItem].search,
-          countRows: 5,
-          currentPage: search
-            ? broadcast.value[valItem].pageSearch
-            : broadcast.value[valItem].page,
-          filter: [],
-        }
-        broadcast.value[valItem].dependences.forEach((item) => {
-          if (
-            (broadcast?.value[item]?.multiple &&
-              broadcast?.value[item]?.value?.length) ||
-            (!broadcast?.value[item]?.multiple && broadcast?.value[item]?.value)
-          ) {
-            requestData.filter.push({
-              field: broadcast.value[item].alias,
-              alias: broadcast.value[item].name,
-              value: broadcast.value[item].value.toString(),
-            })
-          }
-        })
-        const data = await store.dispatch(
-          `mail/${broadcast.value[valItem].request}`,
-          requestData
-        )
-        data.Rows.forEach((item) => {
-          if (!_.includes(broadcast.value[valItem].items, item)) {
-            broadcast.value[valItem].items.push(item)
-          }
-        })
-        // broadcast.value[valItem].items = data.Rows
         if (
-          valItem === 'account' &&
-          !_.includes(broadcast.value[valItem].items, {
-            fio: '-ВСЕ-',
-            id: 'all',
-          })
+          broadcast.value[valItem].total === null ||
+          broadcast.value[valItem].total >= broadcast.value[valItem].page
         ) {
-          broadcast.value[valItem].items.unshift({ fio: '-ВСЕ-', id: 'all' })
+          broadcast.value[valItem].page += 1
+          const requestData = {
+            searchColumn: broadcast.value[valItem].search,
+            countRows: 15,
+            currentPage: broadcast.value[valItem].page,
+            filter: [],
+          }
+          broadcast.value[valItem].dependences.forEach((item) => {
+            if (
+              (broadcast?.value[item]?.multiple &&
+                broadcast?.value[item]?.value?.length) ||
+              (!broadcast?.value[item]?.multiple &&
+                broadcast?.value[item]?.value)
+            ) {
+              requestData.filter.push({
+                field: broadcast.value[item].alias,
+                alias: broadcast.value[item].name,
+                value: broadcast.value[item].value.toString(),
+              })
+            }
+          })
+          const data = await store.dispatch(
+            `mail/${broadcast.value[valItem].request}`,
+            requestData
+          )
+          broadcast.value[valItem].total = data.totalPage
+
+          let newItems = data.Rows.length
+          data.Rows.forEach((item) => {
+            if (broadcast.value[valItem].items.some((x) => x.id === item.id)) {
+              newItems -= 1
+            } else {
+              broadcast.value[valItem].items.push(item)
+            }
+          })
+          if (!newItems) getItems({ val: [valItem] })
+
+          if (
+            valItem === 'account' &&
+            !_.includes(broadcast.value[valItem].items, {
+              fio: '-ВСЕ-',
+              id: 'all',
+            })
+          ) {
+            broadcast.value[valItem].items.unshift({ fio: '-ВСЕ-', id: 'all' })
+          }
         }
       })
-      // const data1 = await store.dispatch('mail/getUnit', 1)
-      // console.log(data)
     }
 
     const endIntersect = (entries, observer, isIntersecting) => {
       if (isIntersecting) {
-        //const dataset = entries[0].target.dataset.field
-        console.log('dsa')
-        // if (props.field.items.length) {
-        //   //field.page = field.page + 10
-        //   //Vue.set(field, 'page', field.page + 1)
-        //   props.field.page = props.field.page + 1
-        //   const params = {
-        //     search: props.field.search,
-        //     name: props.field.name,
-        //   }
-        //   querySelections(params, true)
-        // }
+        getItems({ val: [entries[0].target.id] })
       }
     }
-
-    // const changeSelect = (val) => {
-    //   console.log(val)
-    //   if (val.name === 'direction') {
-    //     changeDirection(val.value)
-    //   }
-    //   // changeDisable()
-    // }
-
-    // const changeDirection = (val) => {
-    //   filtersData.value.fields.forEach((item) => {
-    //     if (item.clearable) item.value = null
-    //     if (item?.isShowWhen?.includes(val)) {
-    //       item.isShow = true
-    //       if (item.name == 'otdel') {
-    //         if (val === 'unit') item.position.sm = 12
-    //         else item.position.sm = 6
-    //       }
-    //     } else {
-    //       item.isShow = false
-    //     }
-    //   })
-    // }
 
     const searchItems = (val) => {
       clearTimeout(val.debounce)
       val.debounce = setTimeout(() => {
-        getItems({ val: [val.name], search: true })
+        getItems({ val: [val.name] })
       }, 250)
     }
 
@@ -307,6 +255,31 @@ const controls = {
       )
     }
 
+    const broadcastLetters = () => {
+      const data = {
+        account: broadcast.value.account.value,
+        filter: [],
+      }
+      broadcast.value.account.dependences.forEach((item) => {
+        if (
+          (broadcast?.value[item]?.multiple &&
+            broadcast?.value[item]?.value?.length) ||
+          (!broadcast?.value[item]?.multiple && broadcast?.value[item]?.value)
+        ) {
+          data.filter.push({
+            field: broadcast.value[item].alias,
+            alias: broadcast.value[item].name,
+            value: broadcast.value[item].value.toString(),
+          })
+        }
+      })
+      emit('broadcast', data)
+      clearKeyValue(['otdel', 'object', 'account'])
+      broadcast.value.direction.value = null
+      broadcast.value.path.value = 'account'
+      popupBroadcast.value = false
+    }
+
     onMounted(async () => {
       getItems({ val: ['account'] })
       broadcast.value.direction.items = await store.dispatch(
@@ -317,52 +290,43 @@ const controls = {
     watch(
       () => broadcast.value.account.search,
       () => {
-        if (broadcast.value.account.search) {
-          broadcast.value.account.pageSearch = 1
-          searchItems(broadcast.value.account)
-        }
+        broadcast.value.account.page = 0
+        broadcast.value.account.total = null
+        searchItems(broadcast.value.account)
       }
     )
 
     watch(
       () => broadcast.value.object.search,
       () => {
-        if (broadcast.value.object.search) {
-          broadcast.value.object.pageSearch = 1
-          searchItems(broadcast.value.object)
-        }
+        broadcast.value.object.page = 0
+        broadcast.value.object.total = null
+        searchItems(broadcast.value.object)
       }
     )
 
     watch(
       () => broadcast.value.otdel.search,
       () => {
-        if (broadcast.value.otdel.search) {
-          broadcast.value.otdel.pageSearch = 1
-          searchItems(broadcast.value.otdel)
-        }
+        broadcast.value.otdel.page = 0
+        broadcast.value.otdel.total = null
+        searchItems(broadcast.value.otdel)
       }
     )
 
     return {
-      formData,
       broadcast,
       popupDelete,
       popupBroadcast,
       intersection,
-      // filters,
-      // filtersData,
 
       changeKey,
       getItems,
       searchItems,
       endIntersect,
-      // changeSelect,
-      // showField,
+      broadcastLetters,
       checkAll,
       accountFilter,
-      // clearKey,
-      // changeDirection,
     }
   },
 }

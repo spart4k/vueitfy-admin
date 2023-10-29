@@ -57,3 +57,5 @@ export const getOtdel = (data) => post('get/account/get_otdel', data)
 export const getObjects = (data) => post('get/account/get_objects', data)
 
 export const getAccounts = (data) => post('get/account/get_accounts', data)
+
+export const broadcast = (data) => post('mail/broadcast', data)

@@ -239,6 +239,27 @@ const mails = {
       }
     }
 
+    const broadcast = async (val) => {
+      const requestData = {
+        data: {},
+      }
+      if (selected.value.mailsAll) {
+        if (route?.query?.color?.length)
+          requestData.data.tags = JSON.parse(route?.query?.color).toString()
+        requestData.data.props = route?.query?.filter
+        if (route?.query?.id) requestData.data.props_id = route?.query?.id
+      } else {
+        requestData.data.id = selected.value.mails.toString()
+      }
+      if (val.account[0] === 'all') {
+        requestData.filter = val.filter
+      } else {
+        requestData.account = val.account.toString()
+      }
+      const data = await store.dispatch('mail/broadcast', requestData)
+      console.log(data)
+    }
+
     const changeMailArrayKey = async (key, item, params) => {
       const requestData = {}
       if (route?.query?.color?.length)
@@ -485,6 +506,7 @@ const mails = {
       decreaseUnreadMailsCount,
       changeMailKey,
       changeMailArrayKey,
+      broadcast,
       getPagination,
       deleteFilter,
       hideCurrentMail,

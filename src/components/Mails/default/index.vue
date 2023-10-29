@@ -16,6 +16,7 @@
         :allMails="allMails"
         @changeSelection="changeSelection"
         @changeMailArrayKey="changeMailArrayKey"
+        @broadcast="broadcast"
         class="mb-2"
       />
       <div class="v-mails-group-container d-flex w-100 h-100">
