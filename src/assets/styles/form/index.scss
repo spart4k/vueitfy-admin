@@ -6,6 +6,18 @@
         height: auto;
         border: unset;
       }
+      &.textBlock {
+        //height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        //align-items: center;
+        p {
+          &:first-child {
+            //font-weight: 600;
+          }
+        }
+      }
     }
   }
   .field-loading {

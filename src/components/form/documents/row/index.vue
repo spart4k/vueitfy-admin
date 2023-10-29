@@ -1,21 +1,16 @@
 <template>
-  <div class="form">
-    <div class="form-row">
-      <v-form>
-        <v-container>
-          <Row
-            v-for="row in tab.formData.date_target"
-            :tab="tab"
-            :tabs="tabs"
-            :key="row"
-            :row="row"
-            :formData="formData"
-            :formErrors="formErrors"
-            :loading="loading"
-          >
-            <!--<v-col
-              v-for="field in tab.fields"
+  <div class="document">
+    <div class="document-wrap">
+      <div class="document-title text-h6">
+        {{ document.name }}
+      </div>
+      <v-row>
+        <v-col cols="12" sm="6" class="document-fields">
+          <v-row>
+            <v-col
+              v-for="field in document.fields"
               :key="field.id"
+              :cols="field.position.cols"
               :sm="field.position.sm"
               class="field-col"
               :class="field.type"
@@ -24,6 +19,7 @@
                 v-if="loading && field.isShow"
                 class="field-loading gradient"
               >
+                <!--<p>loading</p>-->
               </div>
               <v-select
                 v-else-if="showField('select', field)"
@@ -31,8 +27,8 @@
                 :item-text="field.selectOption.text"
                 :item-value="field.selectOption.value"
                 :label="field.label"
-                v-model="formData[row + '/' + field.name]"
-                :error-messages="formErrors[row + '_' + field.name]"
+                v-model="formData[field.name]"
+                :error-messages="formErrors[field.name]"
                 persistent-hint
                 clearable
                 :multiple="field.subtype === 'multiselect'"
@@ -41,7 +37,7 @@
               <Autocomplete
                 v-else-if="showField('autocomplete', field)"
                 :field="field"
-                v-model="formData[row + '/' + field.name]"
+                v-model="formData[field.name]"
                 :error-messages="formErrors[field.name]"
                 :formData="formData"
                 ref="autocompleteRef"
@@ -80,6 +76,17 @@
                     :error-messages="formErrors[field.name]"
                     v-bind="attrs"
                   ></v-text-field>
+                  <!--<v-combobox
+                    @click:append="openMenu(field)"
+                    v-model="formData[field.name]"
+                    :label="field.label"
+                    multiple
+                    chips
+                    small-chips
+                    append-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                  ></v-combobox>-->
                 </template>
                 <v-date-picker
                   v-model="formData[field.name]"
@@ -125,27 +132,19 @@
                 v-model="formData[field.name]"
                 :formData="formData"
               />
-              <div v-else-if="showField('textBlock', field)">
-                <p>{{ formData[row + '/' + field.name] }}</p>
-                <p>{{ row }}</p>
-              </div>
-            </v-col>-->
-          </Row>
-          <v-row class="justify-end">
-            <v-btn
-              type="submit"
-              :color="action.color"
-              class="ml-2"
-              :loading="loading"
-              @click.prevent="clickHandler(action)"
-              v-for="action in tab.actions"
-              :key="action.id"
-            >
-              {{ action.text }}
-            </v-btn>
+            </v-col>
           </v-row>
-        </v-container>
-      </v-form>
+        </v-col>
+        <v-col cols="12" sm="6">
+          <DropZone :options="dropZoneOptions" :formData="formData" />
+          <!--<img
+            src="http://10.63.1.132:5000/file/get/tmp/%D0%AF%D0%BC%D1%89%D0%B8%D0%BA%D0%BE%D0%B2%D0%B0_%D0%91%D0%A4_2023-10-11_%D0%9A%D0%B0%D0%B2%D0%B0%D0%BB%D1%8F%D1%83%D1%81%D0%BA%D0%B0%D0%B9%D1%82%D0%B5%D0%95%D0%BB%D0%B5%D0%BD%D0%B0%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B5%D0%B2%D0%BD%D0%B0_1697092059882.jpg"
+            alt=""
+          />-->
+        </v-col>
+      </v-row>
+
+      <div class="document-file"></div>
     </div>
   </div>
 </template>

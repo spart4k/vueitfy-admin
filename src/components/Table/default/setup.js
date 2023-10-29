@@ -42,7 +42,7 @@ const table = {
       default: () => {},
     },
     routeParam: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
   },
@@ -410,6 +410,7 @@ const table = {
       getItems()
     }
     const openRow = ($event, row) => {
+      if (!props.options.detail) return
       if (props.options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -489,11 +490,13 @@ const table = {
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
+      console.log(headerCells)
       headerCells.forEach((headerEl) => {
         const id = headerEl.id.split('-table-header')[0]
         if (!id) return
         const headCell = props.options.head.find((head) => head.value === id)
         const { width, x } = headerEl.getBoundingClientRect()
+        console.log(headCell)
         headerOptions.value.push({
           id,
           headCell,

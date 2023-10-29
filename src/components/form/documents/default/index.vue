@@ -4,14 +4,13 @@
       <v-form>
         <v-container>
           <Row
-            v-for="row in tab.formData.date_target"
+            v-for="document in tab.documents"
             :tab="tab"
-            :tabs="tabs"
-            :key="row"
-            :row="row"
+            :key="document.title"
             :formData="formData"
             :formErrors="formErrors"
             :loading="loading"
+            :document="document"
           >
             <!--<v-col
               v-for="field in tab.fields"

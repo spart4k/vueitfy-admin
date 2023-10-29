@@ -10,12 +10,12 @@
       color="basil"
       class="p-5"
     >
-      <v-tab v-for="item in object.tabs" :key="item.options.title">
+      <v-tab v-for="item in account.tabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="activeTab">
-      <v-tab-item v-for="item in object.tabs" :key="item.options.title">
+      <v-tab-item v-for="item in account.tabs" :key="item.options.title">
         <component
           :is="item.type"
           @changeheadershow="changeheadershow"
@@ -29,7 +29,7 @@
 
 <script>
 import { ref } from 'vue'
-import { object } from '@/pages'
+import { account } from '@/pages'
 
 import TableDefault from '@/components/Table/default/index.vue'
 // import TableFixed from '@/components/Table/fixed/index.vue'
@@ -38,7 +38,7 @@ import TableDefault from '@/components/Table/default/index.vue'
 //import Axios from 'axios'
 
 export default {
-  name: 'Object-View',
+  name: 'Account-View',
   components: {
     TableDefault,
     // TableFixed,
@@ -53,7 +53,7 @@ export default {
   setup() {
     const activeTab = ref(0)
     return {
-      object,
+      account,
       activeTab,
     }
   },

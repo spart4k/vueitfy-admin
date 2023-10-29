@@ -5,6 +5,7 @@ import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
+import AccountView from '../views/AccountView.vue'
 import AppointmentsView from '../views/Appointments.vue'
 import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
@@ -23,8 +24,8 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/paymentview',
-    name: 'paymentview',
+    path: '/payment',
+    name: 'payment',
     meta: {
       layout: 'blank-layout',
     },
@@ -34,15 +35,15 @@ const routes = [
     component: PaymentView,
     children: [
       {
-        name: 'paymentview/:id',
+        name: 'payment/:id',
         path: ':id',
         component: Detail,
       },
     ],
   },
   {
-    path: '/appointments',
-    name: 'appointments',
+    path: '/personal_target',
+    name: 'personal_target',
     meta: {
       layout: 'blank-layout',
     },
@@ -52,15 +53,15 @@ const routes = [
     component: AppointmentsView,
     children: [
       {
-        name: 'appointments-add',
-        path: '/appointments/add',
+        name: 'personal_target-add',
+        path: '/personal_target/add',
         meta: {
           mode: 'add',
         },
         component: Detail,
       },
       {
-        name: 'appointments/:id',
+        name: 'personal_target/:id',
         path: ':id',
         component: Detail,
       },
@@ -133,6 +134,24 @@ const routes = [
     children: [
       {
         name: 'object/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/account',
+    name: 'account',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: AccountView,
+    children: [
+      {
+        name: 'account/:id',
         path: ':id',
         component: Detail,
       },
@@ -269,6 +288,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   // base: process.env.BASE_URL,
+  base: './',
   routes,
 })
 
