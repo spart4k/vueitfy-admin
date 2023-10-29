@@ -826,6 +826,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
+          {
+            label: 'Добавить персонал',
+            class: ['v-table-button--custom'],
+            function: consolePanel,
+            backgroundColor: '#fff',
+          },
         ],
       },
       head: [
@@ -1004,11 +1010,11 @@ const config = {
             type: FormDefault,
             detail: true,
             lists: [
-              'user_keys',
-              'habitation_id',
-              'account_id',
-              'direction_id',
-              'grajdanstvo_id',
+              { alias: 'user_keys', filter: [] },
+              { alias: 'habitation_id', filter: [] },
+              { alias: 'account_id', filter: [] },
+              { alias: 'direction_id', filter: [] },
+              { alias: 'grajdanstvo_id', filter: [] },
             ],
             alias: 'personal',
             active: false,
@@ -1638,6 +1644,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
+          {
+            label: 'Добавить персонал',
+            class: ['v-table-button--custom'],
+            function: consolePanel,
+            backgroundColor: '#fff',
+          },
         ],
       },
       head: [
@@ -2074,6 +2086,12 @@ const config = {
           },
           {
             label: 'Скачать',
+            class: ['v-table-button--custom'],
+            function: consolePanel,
+            backgroundColor: '#fff',
+          },
+          {
+            label: 'Добавить персонал',
             class: ['v-table-button--custom'],
             function: consolePanel,
             backgroundColor: '#fff',
