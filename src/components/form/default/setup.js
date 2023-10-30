@@ -57,7 +57,7 @@ export default {
       return fields
     }
     const params = props.tab.lists
-    const queryString = '?lists=' + [...params]
+    const data = params
     const { makeRequest } = useRequest({
       context,
       request: () =>
@@ -65,7 +65,7 @@ export default {
     })
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () => store.dispatch('list/get', `get/lists${queryString}`),
+      request: () => store.dispatch('list/get', data),
     })
     const { makeRequest: changeForm } = useRequest({
       context,

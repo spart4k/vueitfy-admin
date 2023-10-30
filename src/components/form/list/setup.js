@@ -58,10 +58,10 @@ export default {
     }
     const prevTab = ref({})
     const params = props.tab.lists
-    const queryString = '?lists=' + [...params]
+    const data = params
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () => store.dispatch('list/get', `get/lists${queryString}`),
+      request: () => store.dispatch('list/get', data),
     })
     const {
       formData,

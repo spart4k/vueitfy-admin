@@ -80,6 +80,14 @@ const routes = [
     component: PersonalView,
     children: [
       {
+        name: 'personal-add',
+        path: '/personal/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
+      {
         name: 'personal/:id',
         path: ':id',
         component: Detail,
