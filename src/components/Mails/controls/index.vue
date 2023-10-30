@@ -223,92 +223,137 @@
       :options="{
         portal: 'filter',
         padding: '20px 30px',
-        width: '600px',
+        width: '900px',
       }"
       @close="popupBroadcast = false"
       v-if="popupBroadcast"
     >
       <div class="v-controls-popup d-flex flex-column">
         <p class="v-controls-popup_title text-center">Транслировать письма</p>
-        <v-autocomplete
-          v-model="broadcast.direction"
-          class="mt-4"
-          :items="broadcast.directionArray"
-          item-text="title"
-          return-object
-          outlined
-          label="Кому транслировать"
-        ></v-autocomplete>
-        <v-autocomplete
-          v-if="broadcast.direction.value === 'route'"
-          v-model="broadcast.route"
-          :items="broadcast.routeArray"
-          :menu-props="{ maxHeight: '400' }"
-          label="Выберите направление"
-          item-text="name"
-          return-object
-        ></v-autocomplete>
-        <div class="d-flex">
-          <v-autocomplete
-            v-if="broadcast.direction.value !== 'people'"
-            style="min-width: 45%"
-            v-model="broadcast.unit"
-            :items="broadcast.unitArray"
-            :menu-props="{ maxHeight: '400' }"
-            label="Выберите подразделение"
-            multiple
-            chips
-            clearable
-            deletable-chips
-            item-text="name"
-            return-object
-          ></v-autocomplete>
-          <div
-            v-if="broadcast.direction.value === 'route'"
-            style="min-width: 10%"
-          ></div>
-          <v-autocomplete
-            v-if="broadcast.direction.value === 'route'"
-            style="min-width: 45%"
-            v-model="broadcast.object"
-            :items="broadcast.objectArray"
-            :menu-props="{ maxHeight: '400' }"
-            label="Выберите объект"
-            multiple
-            chips
-            clearable
-            deletable-chips
-            item-text="name"
-            return-object
-          ></v-autocomplete>
-        </div>
-        <v-autocomplete
-          v-model="broadcast.people"
-          :items="broadcast.peopleArray"
-          :menu-props="{ maxHeight: '400' }"
-          label="Выберите пользователей"
-          multiple
-          chips
-          clearable
-          deletable-chips
-          item-text="name"
-          @change="checkAll"
-          return-object
-        >
-          <template slot="item" slot-scope="{ item }">
-            <div class="d-flex flex-column">
-              <p>{{ item.name }}</p>
-              <p class="v-controls-popup_subtitle">{{ item.role }}</p>
-            </div>
-          </template>
-        </v-autocomplete>
+        <v-row>
+          <v-col cols="12" sm="12">
+            <v-select
+              v-model="broadcast.path.value"
+              class="mt-4"
+              :items="broadcast.path.items"
+              item-text="name"
+              item-value="value"
+              outlined
+              label="Кому транслировать"
+              @change="changeKey(broadcast.path.name)"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-select
+              v-if="broadcast.path.value === 'direction'"
+              v-model="broadcast.direction.value"
+              :items="broadcast.direction.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите направление"
+              item-text="name"
+              item-value="id"
+              @change="getItems({ val: ['otdel', 'object', 'account'] })"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" :sm="broadcast.path.value === 'direction' ? 6 : 12">
+            <v-autocomplete
+              v-if="broadcast.path.value !== 'account'"
+              v-model="broadcast.otdel.value"
+              :items="broadcast.otdel.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите подразделение"
+              :search-input.sync="broadcast.otdel.search"
+              no-data-text="Нет подразделение"
+              :multiple="broadcast.otdel.multiple"
+              hide-selected
+              chips
+              clearable
+              :disabled="
+                (broadcast.path.value === 'direction' &&
+                  !broadcast.direction.value) ||
+                true
+              "
+              deletable-chips
+              item-text="name"
+              item-value="id"
+              @change="getItems({ val: ['account'] })"
+              ><template v-slot:append-item>
+                <div id="otdel" v-intersect="endIntersect" /> </template
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-autocomplete
+              v-if="broadcast.path.value === 'direction'"
+              v-model="broadcast.object.value"
+              class="v-controls-popup-item__cutted"
+              :items="broadcast.object.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите объект"
+              no-data-text="Нет объектов"
+              :search-input.sync="broadcast.object.search"
+              :multiple="broadcast.object.multiple"
+              hide-selected
+              chips
+              clearable
+              deletable-chips
+              :disabled="
+                broadcast.path.value === 'direction' &&
+                !broadcast.direction.value
+              "
+              item-text="address"
+              item-value="id"
+              @change="getItems({ val: ['account'] })"
+            >
+              <template v-slot:append-item>
+                <div id="object" v-intersect="endIntersect" />
+              </template>
+            </v-autocomplete>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <!-- {{ broadcast.account.search }}
+            {{ broadcast.account.value }} -->
+            <v-autocomplete
+              v-model="broadcast.account.value"
+              :value="broadcast.account.value"
+              :items="broadcast.account.items"
+              :menu-props="{ maxHeight: '400' }"
+              label="Выберите пользователей"
+              no-data-text="Нет пользователей"
+              hide-selected
+              :search-input.sync="broadcast.account.search"
+              :multiple="broadcast.account.multiple"
+              :filter="accountFilter"
+              chips
+              clearable
+              deletable-chips
+              :disabled="
+                (broadcast.path.value === 'otdel' && !broadcast.otdel.value) ||
+                (broadcast.path.value === 'direction' &&
+                  !broadcast.direction.value)
+              "
+              item-value="id"
+              item-text="fio"
+              @change="checkAll"
+              @blur="broadcast.account.search = ''"
+            >
+              <template slot="item" slot-scope="{ item }">
+                <div class="d-flex flex-column">
+                  <p>{{ item.fio }}</p>
+                  <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
+                </div>
+              </template>
+              <template v-slot:append-item>
+                <div id="account" v-intersect="endIntersect" />
+              </template>
+            </v-autocomplete>
+          </v-col>
+        </v-row>
+
         <div class="d-flex mt-9 justify-center">
           <v-btn
-            @click="
-              $emit('broadcast')
-              popupBroadcast = false
-            "
+            @click="broadcastLetters"
             tonal
+            :disabled="!broadcast.account.value"
             color="primary"
           >
             <v-icon small class="mr-2">$IconBroadcast</v-icon>
