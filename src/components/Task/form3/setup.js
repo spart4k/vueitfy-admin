@@ -109,46 +109,6 @@ const Form3 = defineComponent({
             },
           }),
       })
-      // Если after_return == true
-      //                       	items = `[{"rashod_vid_id":"${$('#form_zayavka_rashod_vid_id').val()}","count":"${$('#form_zayavka_count').val()}","price":"${$('#form_zayavka_price').val()}","name":"${$('#form_zayavka_name').val()}","is_debit":"1"},{"rashod_vid_id":"${$('#form_zayavka_rashod_vid_id_2').val()}","count":"${$('#form_zayavka_count_2').val()}","price":"${$('#form_zayavka_price_2').val()}","name":"${$('#form_zayavka_name_2').val()}","is_debit":"1"}]`
-
-      //   $.ajax('/common/save/zayavka', {
-      //         method: "POST",
-      //         data: {id: $entity['id'], items: строка с данными билета},
-      //         success: function() {
-
-      //         }
-      //     })
-
-      // $.ajax('/common/save/personal/', {
-      //         method: "POST",
-      //         data: {id: <?php echo $entity['personal_id']; ?>, ticket: `/files/act/${document.filename}`, status: 2},
-      //         success: function() {
-
-      //         }
-      //     })
-
-      //   <?php } else { ?>
-      //     data = {
-      //         process_id: <?php echo $task['process_id']; ?>,
-      //         task_id: <?php echo $task['id']; ?>,
-      //         parent_action: <?php echo $task['id']; ?>,
-      //         transfer: true,
-      //         manager_id: JSON.parse('<?php echo $entity['data_subvision']; ?>')['leader'],
-      //         personal_id: <?php echo $entity['personal_id']; ?>,
-      //         next: <?php echo isset($dop_data['after_return']) ? $dop_data['after_return'] : true ?>
-      //     }
-      // <?php } ?>
-
-      // $.ajax('/task/change_status_task', {
-      //     method: "POST",
-      //     data: {status: 2, data: data},
-      //     success: function (data) {
-      //         slidePopup('Задача выполнена!', 'success');
-      //         typeof dataTable['task'] != "undefined" ? dataTable['task'].ajax.reload() : dataTable[document.taskTable].ajax.reload();
-      //         hideModal();
-      //     }
-      // })
       makeRequest()
       updateFileData()
       pushSomeShit()

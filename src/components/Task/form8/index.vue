@@ -27,12 +27,16 @@
             <span style="font-size: 20px">Приложите документы</span>
             <v-expansion-panels>
               <v-expansion-panel
-                v-for="(item, index) in data.data.docs"
+                v-for="(item, index) in listDocuments"
                 :key="index"
               >
                 <v-expansion-panel-header>
                   <v-row align="center">
-                    <span> {{ data.data.docs_spr[item.doc_id] }} </span>
+                    <span>
+                      <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
+                      <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                      {{ data.data.docs_spr[item.doc_id] }}
+                    </span>
                   </v-row>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
@@ -40,7 +44,9 @@
                     :options="{
                       withoutSave: false,
                       folder: 'tmp',
+                      removeble: false,
                     }"
+                    :paramsForEmit="{ item: item.doc_id }"
                     @addFiles="addFiles"
                   ></Dropzone>
                 </v-expansion-panel-content>

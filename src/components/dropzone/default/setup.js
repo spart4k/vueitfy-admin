@@ -22,6 +22,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    paramsForEmit: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -36,7 +40,11 @@ export default {
       autoDiscover: false,
       thumbnailWidth: 150,
       maxFilesize: 0.5,
-      addRemoveLinks: true,
+      maxFiles: props.options.countFiles ? props.options.countFiles : 1,
+      addRemoveLinks:
+        props.options.removeble == true && props.options.removeble
+          ? true
+          : false,
       dictDefaultMessage: 'Переместите или выберите файл',
       //dictRemoveFile: 'delete',
       //clickable: true,
@@ -52,7 +60,7 @@ export default {
         //dropzone.value.processQueue()
       } else {
         console.log(files)
-        emit('addFiles', files)
+        emit('addFiles', { ...files, ...props.paramsForEmit })
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')

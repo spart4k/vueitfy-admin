@@ -1,50 +1,16 @@
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import Dropzone from '@/components/dropzone/default'
-// import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
-// import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
-// import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
-// import moment from 'moment'
 
 const Form8 = defineComponent({
   name: 'Form8',
   components: {
     Dropzone,
   },
-  data() {
-    return {
-      docs_spr: [
-        'Паспорт',
-        'СНИЛС',
-        'Реквизиты карты',
-        'Регистрация',
-        'Патент',
-        'Паспорт стр.2',
-        'Перевод',
-        'Мед. книжка',
-        'Вид на жительство',
-        'Миграционная карта',
-        'ДМС',
-        'Рабочая виза',
-        'Чек-патент первичный',
-        'Регистрация стр. 2',
-        'Патент стр. 2',
-        'Фото',
-        'ИНН',
-        'Экзамен РФ',
-        'Чек-патент текущий',
-        'Дактилоскопия',
-        'Дактилоскопия стр. 2',
-        'Вид на жительство стр. 2',
-        'Медосмотр',
-        'ID карта',
-        'Ученический договор',
-      ],
-    }
-  },
+
   props: {
     data: {
       type: Object,
@@ -57,33 +23,6 @@ const Form8 = defineComponent({
         store,
       },
     }
-    let docs_spr = [
-      'Паспорт',
-      'СНИЛС',
-      'Реквизиты карты',
-      'Регистрация',
-      'Патент',
-      'Паспорт стр.2',
-      'Перевод',
-      'Мед. книжка',
-      'Вид на жительство',
-      'Миграционная карта',
-      'ДМС',
-      'Рабочая виза',
-      'Чек-патент первичный',
-      'Регистрация стр. 2',
-      'Патент стр. 2',
-      'Фото',
-      'ИНН',
-      'Экзамен РФ',
-      'Чек-патент текущий',
-      'Дактилоскопия',
-      'Дактилоскопия стр. 2',
-      'Вид на жительство стр. 2',
-      'Медосмотр',
-      'ID карта',
-      'Ученический договор',
-    ]
     // let getNameDoc = (docID) => {
     //   return docs_spr[docID]
     // }
@@ -91,40 +30,102 @@ const Form8 = defineComponent({
     // onMounted(() => {
     //   console.log(docs_spr, getNameDoc)
     // })
-    let options = {
-      withoutSave: false,
-      folder: 'tmp',
-    }
-    let selectName = ref('')
-    let price = ref('')
-    let nameComp = JSON.parse(data.entity.items)[0].name
+    let aaaaa = 1
+    let listDocuments = ref([])
 
-    let landPhone = computed(() =>
-      data.data.account.landline_phone
-        ? data.data.account.landline_phone
-        : 'Не указан'
-    )
-    let mobilePhone = computed(() =>
-      data.data.account.mobile_phone
-        ? data.data.account.mobile_phone
-        : 'Не указан'
-    )
+    onMounted(() => {
+      data.data.docs_grajdanstvo.forEach((item, index) => {
+        let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
+        if (pasteObject) {
+          pasteObject['inProcess'] = false
+        } else {
+          pasteObject = { doc_id: item }
+          pasteObject['inProcess'] = true
+        }
+        listDocuments.value.push(pasteObject)
+      })
+    })
+
+    let listRequestsForUpload = []
     let file = ref('')
-    let addFiles = (e) => {
-      file.value = e[0]
-      console.log(file.value)
+
+    // const sendData = () => {
+    //   console.log(selectName.value, file.value)
+    //   let fileExt = file.value.type.split('/')[1]
+    //   let fileName = `personal_doc_` + Date.now() + '.' + fileExt
+    //   let form_data = new FormData()
+    //   form_data.append('file', file.value)
+    //   const { makeRequest } = useRequest({
+    //     context,
+    //     request: () =>
+    //       store.dispatch('taskModule/loadImage', {
+    //         id: 1,
+    //         folder: 'personal_doc',
+    //         fileName: fileName,
+    //         file: form_data,
+    //       }),
+    //     successMessage: 'Файл успешно загружен',
+    //   })
+    //   const { makeRequest: updateFileData } = useRequest({
+    //     context,
+    //     request: () =>
+    //       store.dispatch('taskModule/updateFileData', {
+    //         id: 1,
+    //         path_doc: `/personal_doc/${fileName}`,
+    //       }),
+    //   })
+
+    //   const { makeRequest: changeStatus } = useRequest({
+    //     context,
+    //     request: () =>
+    //       store.dispatch('taskModule/setPartTask', {
+    //         status: 2,
+    //         data: {
+    //           process_id: data.task.process_id,
+    //           task_id: data.task.id,
+    //           parent_action: data.task.id,
+    //           transfer: true,
+    //           manager_id: JSON.parse(data.entity.data_subvision)['leader'],
+    //           personal_id: data.entity.personal_id,
+    //           next: JSON.parse(data.task.dop_data).after_return
+    //             ? JSON.parse(data.task.dop_data).after_return
+    //             : true,
+    //         },
+    //       }),
+    //   })
+    //   const { makeRequest: pushSomeShit } = useRequest({
+    //     context,
+    //     request: () =>
+    //       store.dispatch('taskModule/setBid', {
+    //         data: {
+    //           id: data.entity.id,
+    //           items: {
+    //             rashod_vid_id: selectName.value.id,
+    //             count: 1,
+    //             price: price.value,
+    //             name: '',
+    //             is_debit: 1,
+    //           },
+    //         },
+    //       }),
+    //   })
+    //   makeRequest()
+    //   updateFileData()
+    //   pushSomeShit()
+    //   changeStatus()
+    // }
+
+    let addFiles = (e, awdwdw) => {
+      // file.value = e[0]
+      console.log(e, awdwdw)
     }
 
     const sendData = () => {}
     return {
-      options,
-      selectName,
-      price,
-      nameComp,
-      landPhone,
-      mobilePhone,
       addFiles,
       sendData,
+      listDocuments,
+      aaaaa,
     }
   },
 })
