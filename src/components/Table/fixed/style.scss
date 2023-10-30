@@ -1,6 +1,6 @@
 $paddingCell: 5px;
 $borderColor: rgba(0,0,0,.3);
-$tablePanelHeight: 61px;
+$tablePanelHeight: 100px;
 $tableFooterHeight: 85px;
 .v {
   &-table {
@@ -101,11 +101,18 @@ $tableFooterHeight: 85px;
           &--fixed {
             position: sticky;
             background-color: #fff;
+            // min-width: 150px;
             // right: 0;
             // top: 0;
             // left: 0;
             // border: aqua solid 1px;
             z-index: 1;
+          }
+          &--currentDate {
+            background-color: rgba(0,0,0,.1);
+          }
+          &--weekendDate {
+            background-color: rgba(181, 129, 129, 0.5);
           }
           &:hover {
             cursor: pointer;
@@ -131,6 +138,8 @@ $tableFooterHeight: 85px;
         }
         &-cell {
           padding: $paddingCell;
+          border: rgba(0,0,0,.1) solid 1px;
+          vertical-align: top;
           &__checkbox {
             //display: flex;
             //justify-content: center;
@@ -142,12 +151,50 @@ $tableFooterHeight: 85px;
               height: 100%;
             }
           }
+          &-item {
+            width: 160px;
+            height: 72px;
+            display: flex;
+            // align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            &_text {
+              display: flex;
+              justify-content: center;
+
+              // overflow: hidden;
+              // text-overflow: ellipsis;
+              &__bold {
+                white-space: break-spaces;
+                font-weight: 700;
+                font-size: 12px;
+              }
+            }
+            &:hover {
+              border: black solid 2px;
+            }
+          }
+          &-item+&-item {
+            margin-top: 4px;
+          }
+          &--noPadding {
+            padding: 0;
+          }
           &--fixed {
             position: sticky;
             background-color: #fff;
             z-index: 1;
-            left: 0;
+            // left: 0;
           }
+          &--currentDate {
+            background-color: rgba(0,0,0,.1);
+          }
+          &--weekendDate {
+            background-color: rgba(181, 129, 129, 0.5);
+          }
+          // &:hover {
+          //   border: red solid 1px;
+          // }
         }
         &-paragraph {
           display: flex;
@@ -174,9 +221,9 @@ $tableFooterHeight: 85px;
             flex-direction: column;
           }
         }
-        &:hover {
-          background-color: rgba(0,0,0,.1);
-        }
+        // &:hover {
+        //   background-color: rgba(0,0,0,.1);
+        // }
         &--selected {
           background-color: rgba(45, 65, 250, 0.752);
           color: #fff;
@@ -198,17 +245,19 @@ $tableFooterHeight: 85px;
       overflow: auto;
       //width: 2500px;
       width: 100%;
-      box-sizing: content-box;
+      border: 1px solid $borderColor;
+      border-top: 0;
+      border-collapse: collapse;
       table {
+        border-collapse: separate;
         //display: flex;
         //flex-direction: column;
-        border: 1px solid $borderColor;
-        border-top: 0;
-        border-collapse: collapse;
-        flex: 1;
+        // border: 1px solid $borderColor;
+        // flex: 1;
         // table-layout: fixed;
         // width: 100%;
-        width: 1000px;
+        // width: 2101.11px !important;
+        // width: 1000px;
         //position: relative;
       }
     }
@@ -236,45 +285,57 @@ $tableFooterHeight: 85px;
       }
     }
     &-panel {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      flex-wrap: wrap;
       padding: 5px;
       background-color: rgb(225, 225, 225);
-      min-height: $tablePanelHeight;
+      // min-height: $tablePanelHeight;
       background-color: var(--v-background-base);
       border: 1px solid $borderColor;
       border-bottom: 0;
-      &__search {
+      &-items {
         display: flex;
         align-items: baseline;
-        @media (max-width: $mobileWidth) {
-          justify-content: space-between;
-          width: 100%;
-          margin-bottom: 10px;
-        }
-      }
-      &__actions {
-        display: flex;
+        justify-content: space-between;
         flex-wrap: wrap;
-        > button, div {
-          &:not(:last-child) {
-            margin-right: 5px;
+        &__search {
+          display: flex; 
+          align-items: baseline;
+          @media (max-width: $mobileWidth) {
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+          }
+        }
+        &__actions {
+          display: flex;
+          flex-wrap: wrap;
+          > button, div {
+            &:not(:last-child) {
+              margin-right: 5px;
+            }
+          }
+          @media (max-width: $mobileWidth) {
+            //justify-content: space-between;
+            //width: 100%;
           }
         }
         @media (max-width: $mobileWidth) {
-          //justify-content: space-between;
-          //width: 100%;
+          flex-direction: column-reverse;
         }
-      }
-      @media (max-width: $mobileWidth) {
-        flex-direction: column-reverse;
       }
       &--fixed {
         top: 0;
-        position: sticky;
+        // position: sticky;
         z-index: 2;
+      }
+      &-date {
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        font-weight: 500;
+        &_month {
+          width: 160px;
+          text-align: center;
+        }
       }
     }
     &-footer {

@@ -1,12 +1,14 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch } from 'vue'
+import Vue, { onMounted, ref, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
+import { v4 as uuidv4 } from 'uuid'
 
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import Popup from '@/components/popup/index.vue'
+import DropZone from '@/components/dropzone/default/index.vue'
 
 import vTableButton from '../button/index.js'
 import vButton from '../../button/index.js'
@@ -30,6 +32,7 @@ const table = {
     TableFilter,
     Popup,
     Detail,
+    DropZone,
   },
   props: {
     options: {
@@ -51,12 +54,14 @@ const table = {
     const router = useRouter()
     const route = useRoute()
     const loading = ref(false)
+    const globalLoading = ref(false)
     const headerOptions = ref([])
     const tablePosition = ref(null)
     const searchField = ref('')
     const isMobile = useMobile()
     const detail = ref(props.options?.detail)
     const filters = ref(props.options?.filters)
+    const panel = ref(props.options?.panel)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -89,8 +94,33 @@ const table = {
     const popupForm = ref({
       isShow: false,
     })
+    const currentDate = ref({
+      month: new Date().getMonth(),
+      monthArray: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
+      year: new Date().getFullYear(),
+    })
     const cells = ref(null)
+    const cellItems = ref(null)
     const mainTable = ref(null)
+    const dropzone = ref(null)
+    const acceptData = ref({
+      popup: false,
+      valueDate: new Date().toISOString().substr(0, 7),
+      valueProfit: { title: 'Аванс', value: 5 },
+    })
     const wrapingRow = () => {
       const table = document.querySelector(props.options.selector)
       tablePosition.value = table.getBoundingClientRect().x
@@ -322,6 +352,9 @@ const table = {
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
+          period: props.options.panel.date
+            ? acceptData.value.valueDate
+            : undefined,
           searchColumns,
           sorts,
           filter: filtersColumns.value,
@@ -341,14 +374,18 @@ const table = {
           structuredArray.push({
             row,
             child: {
-              isShow: false,
+              isShow: true,
               data: row,
             },
           })
         })
         props.options.data.rows = structuredArray
+        // console.log('zxc', props.options.data)
       }
       loading.value = false
+      setTimeout(() => {
+        coutingCells()
+      }, 0)
     }
     const initHeadParams = () => {
       const { head } = props.options
@@ -446,35 +483,180 @@ const table = {
     }
     const panelHandler = (button) => {
       const { type } = button
-      console.log(button)
+      if (button.function) button.function()
       if (type === 'addItem') {
         addItem()
+      } else if (type === 'importFile') {
+        dropzone.value.$children[0].$el.click()
+      } else if (type === 'acceptPeriod') {
+        acceptData.value.popup = true
+      } else if (type === 'changeUrl') {
+        getItems()
       }
     }
-    const countingDistances = () => {
+    const countingDistances = () => { 
       let left = 0
       let right = 0
       let all = 0
       cells?.value?.forEach((item, index) => {
-        all += Number(props.options.head[index].width.replace('px', ''))
-        if (props.options.head[index].fixed.value) {
-          if (props.options.head[index].fixed.position === 'left') {
-            item.style.left = `${left}px`
-            left += item.offsetWidth
-          }
+        all += Number(props?.options?.head[index].width)
+        if (props?.options?.head[index]?.fixed?.position === 'left') {
+          item.style.left = `${left}px`
+          left += Number(getComputedStyle(item).width.replace('px', ''))
         }
       })
-      for (let index = cells?.value?.length - 1; index >= 0; index--) {
-        if (props.options.head[index].fixed.value) {
-          if (props.options.head[index].fixed.position === 'right') {
-            cells.value[index].style.right = `${right}px`
-            right += cells?.value[index]?.offsetWidth
-          }
+
+      for (let index = props?.options?.head.length - 1; index >= 0; index--) {
+        if (props?.options?.head[index]?.fixed?.position === 'right') {
+          const item = cells.value.find(x => x.innerText === props?.options?.head[index]?.title)
+          item.style.right = `${right}px`
+          right += Number(getComputedStyle(item).width.replace('px', ''))
         }
       }
       mainTable.value.style.width = `${all}px`
-      console.log(all, mainTable.value.style.width)
     }
+
+    const coutingCells = () => {
+      let left = 0
+      let right = 0
+      cells?.value?.forEach((item, index) => {
+        if (props?.options?.head[index]?.fixed?.position === 'left') {
+          cellItems?.value?.forEach(element => {
+            element.children[index].style.left = `${left}px`
+          })
+          left += Number(getComputedStyle(item).width.replace('px', ''))
+        }
+      })
+
+      for (let index = props?.options?.head.length - 1; index >= 0; index--) {
+        if (props?.options?.head[index]?.fixed?.position === 'right') {
+          const item = cells.value.find(x => x.innerText === props?.options?.head[index]?.title)
+          cellItems?.value?.forEach(element => {
+            element.children[index].style.right = `${right}px`
+          })
+          right += Number(getComputedStyle(item).width.replace('px', ''))
+        }
+      }
+    }
+
+    const addDayOfMonth = () => {
+      props.options.head = props.options.head.filter((item) => !item.added)
+      const date = new Date(currentDate.value.year, currentDate.value.month, 1)
+      const dateNow = new Date()
+      let lastLeftIndex = props.options.head.findLastIndex((x) => x.fixed.position === 'left')
+      if (props.options.panel.date) {
+        while (date.getMonth() === currentDate.value.month) {
+          props.options.head.splice(lastLeftIndex + 1, 0, {
+            id: uuidv4(),
+            title: `${new Date(date).getDate()}`,
+            align: 'center',
+            type: props.options.panel.addedItemsChildrenType ? 'object' : 'default',
+            isShow: true, 
+            width: '50',  
+            added: true,
+            alias: `p.${new Date(date).getDate()}`,
+            value: `${new Date(date).getDate() < 10 ? '0' : ''}${new Date(date).getDate()}`,
+            currentDate: dateNow.getDate() === date.getDate() && dateNow.getMonth() === date.getMonth() && dateNow.getFullYear() === date.getFullYear(),
+            weekendDate: date.getDay() === 0 || date.getDay() === 6,
+            fixed: {
+              value: false,
+            },
+            search: {
+              field: '',
+              isShow: true,
+            },
+            sorts: [
+              {
+                type: 'string',
+                default: '',
+                value: '',
+                isShow: false,
+              },
+            ],
+          })
+          lastLeftIndex += 1
+          date.setDate(date.getDate() + 1)
+        }
+      } else {
+        let dateIndex = 1
+        while (dateIndex < 32) {
+          props.options.head.splice(lastLeftIndex + 1, 0, {
+            id: uuidv4(),
+            title: `${dateIndex}`,
+            align: 'center',
+            type: 'default',
+            isShow: true, 
+            width: '50',  
+            added: true,
+            alias: `p.col${dateIndex}`,
+            value: `col${dateIndex < 10 ? '0' : ''}${dateIndex}`,
+            fixed: {
+              value: false,
+            },
+            search: {
+              field: '',
+              isShow: true,
+            },
+            sorts: [
+              {
+                type: 'string',
+                default: '',
+                value: '',
+                isShow: false,
+              },
+            ],
+          })
+          lastLeftIndex += 1
+          dateIndex += 1
+        }
+      }
+      nextTick(() => {
+        let all = 0
+        cells?.value?.forEach((item, index) => {
+          all += Number(props?.options?.head[index].width)
+        })
+        mainTable.value.style.width = `${all}px`
+      })
+    }
+    const changeMonth = async (val) => {
+      currentDate.value.month += val
+      if (currentDate.value.month < 0) {
+        currentDate.value.month = 11
+        currentDate.value.year -= 1
+      } else if (currentDate.value.month > 11) {
+        currentDate.value.month = 0
+        currentDate.value.year += 1
+      }
+      acceptData.value.valueDate = `${currentDate.value.year}-${currentDate.value.month < 10 ? '0' : ''}${currentDate.value.month + 1}`
+      // acceptData.value.valueDate
+      // setTimeout(() => {
+      //   countingDistances()
+      // }, 0)
+      addDayOfMonth()
+      await getItems()
+    }
+    const fileUpload = async (val) => {
+      const requestData = {
+        filepath: val,
+      }
+      globalLoading.value = true
+      const data = await store.dispatch('table/getImportX5', requestData)
+      globalLoading.value = false
+      panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
+      getItems()
+    }
+
+    const acceptForm = async () => {
+      const requestData = {
+        period: acceptData.value.valueDate,
+        vid: acceptData.value.valueProfit.value,
+      }
+      const data = await store.dispatch('table/getLoadX5', requestData)
+      console.log(data)
+      panel.value.buttons.find(x => x.value === 'accept').isDisabled = true
+      acceptData.value.popup = false
+    }
+  
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -509,9 +691,11 @@ const table = {
     )
     // HOOKS
     onMounted(async () => {
-      countingDistances()
+
+      addDayOfMonth()
       initHeadParams()
-      await getItems()
+      // await getItems()
+      countingDistances()
       
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
@@ -528,11 +712,11 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
-        setTimeout(() => {
-          //console.log(headerEl.previousElementSibling.offsetWidth)
-          // acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
-        }, 0)
       })
+      // setTimeout(() => {
+      //   //console.log(headerEl.previousElementSibling.offsetWidth)
+      //   // acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
+      // }, 0)
       //wrapingRow()
       window.addEventListener('resize', () => watchScroll())
       watchScroll()
@@ -552,9 +736,14 @@ const table = {
       contextmenu,
       pagination,
       filter,
+      panel,
       isMobile,
       cells,
+      cellItems,
       mainTable,
+      currentDate,
+      dropzone,
+      acceptData,
       // METHODS
       wrapingRow,
       openChildRow,
@@ -572,11 +761,17 @@ const table = {
       getItems,
       watchScroll,
       countingDistances,
+      coutingCells,
+      addDayOfMonth,
+      changeMonth,
+      fileUpload,
+      acceptForm,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
       headActions,
       loading,
+      globalLoading,
       paramsQuery,
       rowCount,
       isElementXPercentInViewport,

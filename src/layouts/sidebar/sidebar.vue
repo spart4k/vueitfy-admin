@@ -12,7 +12,9 @@
     >
       <div class="v-sidebar-container-user">
         <div class="v-sidebar-container-user_image">
-          <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+          <v-img
+            src="https://papik.pro/uploads/posts/2022-08/thumbs/1661424622_35-papik-pro-p-stikeri-papich-png-61.png"
+          ></v-img>
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">
           <div class="v-sidebar-container-user-info_name">Dasha Tsaritsa</div>
@@ -38,13 +40,23 @@
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div
-                    v-on="miniMenu && on"
+                    v-on="miniMenu && !isMobileDevice && on"
                     class="v-sidebar-container-link v-sidebar-container-link__default-height"
+                    :class="
+                      !isMobileDevice && 'v-sidebar-container-link__hover'
+                    "
                     @click="setRouterPath(item?.link)"
                   >
                     <div class="v-sidebar-container-link_icon">
                       <v-icon
-                        :color="$route?.path === item.link ? 'primary' : ''"
+                        :color="
+                          $route?.path === item.link ||
+                          JSON?.parse(item?.child_json)?.some(
+                            (e) => e?.link === $route?.path
+                          )
+                            ? 'primary'
+                            : ''
+                        "
                         >{{ item?.icon }}</v-icon
                       >
                     </div>
@@ -66,10 +78,18 @@
             <template v-else-if="!miniMenu">
               <v-expansion-panel-header
                 class="v-sidebar-container-link v-sidebar-container-link__default-height"
+                :class="!isMobileDevice && 'v-sidebar-container-link__hover'"
               >
                 <div class="v-sidebar-container-link_icon">
                   <v-icon
-                    :color="$route?.path === item?.link ? 'primary' : ''"
+                    :color="
+                      $route?.path === item?.link ||
+                      JSON?.parse(item?.child_json).some(
+                        (e) => e.link === $route?.path
+                      )
+                        ? 'primary'
+                        : ''
+                    "
                     >{{ item?.icon }}</v-icon
                   >
                 </div>
@@ -77,7 +97,10 @@
                   v-if="!miniMenu"
                   :class="[
                     'v-sidebar-container-link_name',
-                    $route?.path === item.link &&
+                    ($route?.path === item.link ||
+                      JSON?.parse(item?.child_json).some(
+                        (e) => e.link === $route?.path
+                      )) &&
                       'v-sidebar-container-link_name__active',
                   ]"
                 >
@@ -92,6 +115,7 @@
                   :class="[
                     'v-sidebar-container-link',
                     instantNav && 'v-sidebar-container-link__instant',
+                    !isMobileDevice && 'v-sidebar-container-link__hover',
                   ]"
                 >
                   <div
@@ -111,15 +135,25 @@
             <template v-else>
               <v-menu offset-x top>
                 <template #activator="{ on: onMenu }">
-                  <v-tooltip right>
+                  <v-tooltip right :open-on-hover="!isMobileDevice">
                     <template #activator="{ on: hint }">
                       <div
                         v-on="{ ...hint, ...onMenu }"
                         class="v-sidebar-container-link v-sidebar-container-link__default-height"
+                        :class="
+                          !isMobileDevice && 'v-sidebar-container-link__hover'
+                        "
                       >
                         <div class="v-sidebar-container-link_icon">
                           <v-icon
-                            :color="$route?.path === item.link ? 'primary' : ''"
+                            :color="
+                              $route?.path === item.link ||
+                              JSON?.parse(item?.child_json).some(
+                                (e) => e.link === $route?.path
+                              )
+                                ? 'primary'
+                                : ''
+                            "
                             >{{ item?.icon }}</v-icon
                           >
                         </div>
@@ -134,6 +168,9 @@
                   </v-list-item>
                   <v-list-item
                     class="v-sidebar-container-link"
+                    :class="
+                      !isMobileDevice && 'v-sidebar-container-link__hover'
+                    "
                     @click="setRouterPath(link.link)"
                     v-for="(link, index) in JSON?.parse(item?.child_json)"
                     :key="index"
@@ -156,7 +193,10 @@
       </div>
 
       <v-btn
-        :class="['v-sidebar-container-btn']"
+        :class="[
+          'v-sidebar-container-btn',
+          !isMobileDevice && 'v-sidebar-container-btn__hover',
+        ]"
         @click="isMobile ? changeMenuStatus() : changeMenuSize()"
         text
         color="navbar"

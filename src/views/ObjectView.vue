@@ -1,6 +1,8 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100 view-table">
+    <!-- <TableDefault @changeheadershow="changeheadershow" :options="object" /> -->
+    <!-- <TableFixed @changeheadershow="changeheadershow" :options="personal" /> -->
     <v-tabs
       style="flex: unset"
       v-model="activeTab"
@@ -8,12 +10,12 @@
       color="basil"
       class="p-5"
     >
-      <v-tab v-for="item in personal.tabs" :key="item.options.title">
+      <v-tab v-for="item in object.tabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="activeTab">
-      <v-tab-item v-for="item in personal.tabs" :key="item.options.title">
+      <v-tab-item v-for="item in object.tabs" :key="item.options.title">
         <component
           :is="item.type"
           @changeheadershow="changeheadershow"
@@ -27,7 +29,7 @@
 
 <script>
 import { ref } from 'vue'
-import { personal } from '@/pages'
+import { object } from '@/pages'
 
 import TableDefault from '@/components/Table/default/index.vue'
 // import TableFixed from '@/components/Table/fixed/index.vue'
@@ -36,7 +38,7 @@ import TableDefault from '@/components/Table/default/index.vue'
 //import Axios from 'axios'
 
 export default {
-  name: 'Personal-View',
+  name: 'Object-View',
   components: {
     TableDefault,
     // TableFixed,
@@ -51,7 +53,7 @@ export default {
   setup() {
     const activeTab = ref(0)
     return {
-      personal,
+      object,
       activeTab,
     }
   },

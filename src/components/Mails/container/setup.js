@@ -84,7 +84,11 @@ const container = {
         activeMail.value = val
         // activeMail.value = responseData.data[0]
         Vue.set(activeMail.value, 'text', responseData.textfile)
-        if (!val.is_read && route?.query?.filter !== 'sent') {
+        if (
+          !val.is_read &&
+          route?.query?.filter !== 'sent' &&
+          route?.query?.filter !== 'trash'
+        ) {
           const request = {
             content: {
               is_read: true,

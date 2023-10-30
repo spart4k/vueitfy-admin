@@ -20,6 +20,11 @@ import {
   getDeletedMessages,
   filterMail,
   countFilter,
+  getDirections,
+  getOtdel,
+  getObjects,
+  getAccounts,
+  broadcast,
 } from '@/api/mail'
 
 const mail = {
@@ -27,9 +32,9 @@ const mail = {
   state: {},
   mutations: {},
   actions: {
-    async getBoxes(_, data) {
+    async getBoxes(_) {
       try {
-        const response = await getBoxes(data)
+        const response = await getBoxes()
         return response.data
       } catch (e) {
         console.log(e)
@@ -232,6 +237,51 @@ const mail = {
       try {
         const response = await getDeletedMessages(data.content, data.id)
         return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getDirections(_) {
+      try {
+        const response = await getDirections()
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getOtdel(_, id) {
+      try {
+        const response = await getOtdel(id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getObjects(_, id) {
+      try {
+        const response = await getObjects(id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getAccounts(_, id) {
+      try {
+        const response = await getAccounts(id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async broadcast(_, data) {
+      try {
+        const response = await broadcast(data)
+        return response
       } catch (e) {
         console.log(e)
       }

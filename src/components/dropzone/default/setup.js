@@ -46,11 +46,9 @@ export default {
     const proxyVal = ref(props.value)
     const sendingFile = async (files) => {
       if (props.options.withoutSave) {
-        console.log('process')
         await loadFile(files)
         //dropzone.value.processQueue()
       } else {
-        console.log(files)
         emit('addFiles', files)
       }
       //console.log(dropzone.value)
@@ -110,24 +108,27 @@ export default {
     //}
     const loadFile = async (files) => {
       const formData = new FormData()
-      formData.append(
-        'name',
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
-      )
-      formData.append('file', ...files)
-      const name =
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
-      const params = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const fileType =
+        files[0].name.split('.')[files[0].name.split('.').length - 1]
+      if (!props.options.formats || props.options.formats.includes(fileType)) {
+        const name = `${
+          props.options.folder
+        }_25_${new Date().getTime()}.${fileType}`
+        const folder = props.options.folder + '/' + name
+        formData.append('name', files[0].name)
+        formData.append('file', ...files)
+        const params = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+        const data = await store.dispatch('file/create', {
+          data: formData,
+          folder,
+          params,
+        })
+        emit('fileUpload', folder)
       }
-      const data = await store.dispatch('file/create', {
-        data: formData,
-        folder: props.options.folder + '/' + name,
-        params,
-      })
-      console.log(data)
     }
     onMounted(() => {
       console.log(dropzone.value)
