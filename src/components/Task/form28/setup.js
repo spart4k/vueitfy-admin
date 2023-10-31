@@ -94,7 +94,7 @@ const Form28 = defineComponent({
       }
     }
 
-    return { infoObj, confirm, directionToMagnit }
+    return { infoObj, confirm, directionToMagnit, entity: props.data.entity }
   },
 })
 export default Form28
