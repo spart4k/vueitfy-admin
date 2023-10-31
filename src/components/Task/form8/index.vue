@@ -1,17 +1,11 @@
 <template>
   <div>
     <div style="padding: 20px">
-      <span style="font-weight: 700; font-size: 20px"
-        >{{ data.entity.name }} {{ data.entity.data_rojd }}</span
-      >
-      <div>
-        <div>
-          <span>Менеджер: {{ data.entity.account_name }}</span>
-        </div>
-        <div>
-          <span>Объект: {{ data.entity.object_id }}</span>
-        </div>
-      </div>
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
+        >&nbsp;({{ data.entity.data_rojd }} г.р)
+      </v-card-title>
+      <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <span>Создайте расход на документы:</span>
       <v-row>
         <v-col cols="12">
@@ -22,40 +16,38 @@
       </v-row>
       <!-- {{ getNameDoc(1) }} -->
       <v-row>
-        <v-col>
-          <div class="mb-10">
-            <span style="font-size: 20px">Приложите документы</span>
-            <v-expansion-panels>
-              <v-expansion-panel
-                v-for="(item, index) in listDocuments"
-                :key="index"
-              >
-                <v-expansion-panel-header>
-                  <v-row align="center">
-                    <span>
-                      <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                      <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
-                      {{ data.data.docs_spr[item.doc_id] }}
-                    </span>
-                  </v-row>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <Dropzone
-                    :options="{
-                      withoutSave: false,
-                      folder: 'tmp',
-                      removeble: false,
-                    }"
-                    :paramsForEmit="{ item: item.doc_id }"
-                    @addFiles="addFiles"
-                  ></Dropzone>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </div>
+        <div class="mb-10">
+          <span style="font-size: 20px">Приложите документы</span>
+          <v-expansion-panels>
+            <v-expansion-panel
+              v-for="(item, index) in listDocuments"
+              :key="index"
+            >
+              <v-expansion-panel-header>
+                <v-row align="center">
+                  <span>
+                    <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
+                    <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                    {{ data.data.docs_spr[item.doc_id] }}
+                  </span>
+                </v-row>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Dropzone
+                  :options="{
+                    withoutSave: false,
+                    folder: 'tmp',
+                    removeble: false,
+                  }"
+                  :paramsForEmit="{ item: item.doc_id }"
+                  @addFiles="addFiles"
+                ></Dropzone>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
 
-          <v-divider></v-divider>
-        </v-col>
+        <v-divider></v-divider>
       </v-row>
 
       <v-row>

@@ -1,16 +1,22 @@
 <template>
-  <div style="padding: 20px">
-    <div>
-      <span>Паспорт:</span>
-      <a
-        download
-        :href="
-          'https://test.api.personal-crm.ru' + data.data.doc_ident.path_doc
-        "
-        ><v-icon left> $IconDocument </v-icon></a
-      >
-    </div>
-    <span style="font-size: 20px"> Заполните данные заявки: </span>
+  <div style="padding: 10px">
+    <v-row>
+      <v-col class="d-flex align-center mb-1">
+        <span style="font-size: 18px">Паспорт:</span>
+        <a
+          download
+          :href="
+            'https://test.api.personal-crm.ru' + data.data.doc_ident.path_doc
+          "
+          ><v-icon left> $IconDocument </v-icon></a
+        >
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col style="font-size: 18px" class="mb-2">
+        Заполните данные заявки:
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="6">
         <v-select
@@ -25,9 +31,11 @@
           </template>  -->
         </v-select></v-col
       >
-      <v-col cols="3"> <v-text-field disabled value="1"></v-text-field></v-col>
       <v-col cols="3">
-        <v-text-field v-model="price" placeholder="Цена"></v-text-field
+        <v-text-field disabled value="1" label="Кол-во"></v-text-field
+      ></v-col>
+      <v-col cols="3">
+        <v-text-field v-model="price" label="Цена"></v-text-field
       ></v-col>
     </v-row>
     <v-row>
@@ -35,7 +43,7 @@
         <div
           style="
             padding: 5px;
-            background-color: gray;
+            background-color: rgb(128, 128, 128);
             color: white;
             font-weight: 600;
             margin-bottom: 20px;
@@ -62,6 +70,7 @@
         ><span>Моб. {{ mobilePhone }} Стац. {{ landPhone }}</span></v-col
       >
     </v-row>
+    <v-divider></v-divider>
     <v-row class="py-2" justify="end">
       <v-btn color="info" class="mr-3" @click="sendData">
         <v-icon left> $IconMain </v-icon>

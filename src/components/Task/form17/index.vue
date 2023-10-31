@@ -1,11 +1,10 @@
 <template>
   <div>
     <div style="padding: 20px">
-      <div class="mb-3">
-        <span style="font-weight: 700; font-size: 20px"
-          >Назначение {{ data.entity.id }} на дату {{ data.entity.date_target }}
-        </span>
-      </div>
+      <v-card-title class="py-1 justify-center font-weight-bold text-h6">
+        Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
+        >&nbsp; на дату 07.02.2023
+      </v-card-title>
       <div
         v-if="
           data.entity.doljnost_id == 5 ||

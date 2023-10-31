@@ -8,7 +8,9 @@
       <v-form>
         <v-row>
           <span>Скан:</span>
-          <a target="_blank" :href="'#'">scan</a>
+          <a target="_blank" :href="'#'"
+            ><v-icon left small> $IconDocument </v-icon></a
+          >
         </v-row>
         <v-row>
           <v-col>

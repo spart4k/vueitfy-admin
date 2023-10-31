@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>Приложенные документы:</div>
-    <v-expansion-panels v-model="panel" multiple>
+    <div class="mb-2">Приложенные документы:</div>
+    <v-expansion-panels v-model="panel" multiple accordion>
       <template v-for="doc in docs">
         <v-expansion-panel v-if="formObj[doc.doc_id]" :key="doc.id">
           <v-expansion-panel-header>
@@ -35,7 +35,9 @@
           <v-expansion-panel-content>
             <div>
               <span>Скан:</span>
-              <a target="_blank" :href="doc.path_doc">scan</a>
+              <a target="_blank" :href="doc.path_doc"
+                ><v-icon left small> $IconDocument </v-icon></a
+              >
             </div>
             <!--Паспорт-->
             <div v-if="doc.doc_id === 1">

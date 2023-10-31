@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch, onMounted } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -385,6 +385,7 @@ const docForm = defineComponent({
       },
       { deep: true }
     )
+
     return {
       formObj,
       bankItems,

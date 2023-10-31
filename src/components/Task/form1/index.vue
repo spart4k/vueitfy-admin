@@ -2,7 +2,11 @@
   <div>
     <div style="padding: 10px">
       <div style="margin-bottom: 30px" v-if="!showNextStep">
-        <!-- <TextInfo :infoObj="{ textInfo }"></TextInfo> -->
+        <v-card-title class="d-flex justify-center text-h6">
+          <span class="font-weight-bold text-h6">{{ entity.name }}</span
+          >&nbsp;({{ dataRojd }} г.р)
+        </v-card-title>
+        <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
         <FormTitle
           :docName="getDocName(item.doc_id)"
           v-for="(item, index) in docs"
@@ -25,11 +29,12 @@
         </v-btn>
       </div>
       <div v-if="showNextStep">
-        <v-card-title class="d-flex justify-center">
-          {{ entity.name }} ({{ dataRojd }} г.р)
+        <v-card-title class="d-flex justify-center text-h6">
+          <span class="font-weight-bold text-h6">{{ entity.name }}</span
+          >&nbsp;({{ dataRojd }} г.р)
         </v-card-title>
         <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-        <v-expansion-panels v-if="isHasOsnDoc">
+        <v-expansion-panels class="mb-5" v-if="isHasOsnDoc" accordion>
           <v-expansion-panel>
             <v-expansion-panel-header>
               <v-row align="center">
