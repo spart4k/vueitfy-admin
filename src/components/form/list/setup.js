@@ -64,6 +64,44 @@ export default {
       request: () => store.dispatch('list/get', data),
     })
     const rows = ref([])
+    const changeForm = async ({ url, module }) => {
+      console.log(url, module)
+      const {
+        object_id,
+        personal_id,
+        doljnost_id,
+        date_target,
+        status,
+        type_shift,
+        with_nutrition,
+        direction_id,
+        sum_nutrition,
+      } = props.tab.formData
+      const defaultData = {
+        object_id,
+        personal_id,
+        account_id: null, // ?
+        doljnost_id,
+        date_target: date_target[0],
+        status,
+        direction_id,
+        comment: null,
+        personal_bank_id: null, // ?
+        bank_id: null, // ?
+        fio: null,
+        invoice: null,
+        who_is_chief: null, // ?
+        manager: null, // ?
+        user_key: null,
+        subtype: 9,
+        brigadir_id: null, // ?
+        type_shift,
+        with_nutrition,
+        sum_nutrition,
+        print_form_key: null,
+      }
+      console.log(defaultData)
+    }
     const {
       formData,
       validate,
@@ -81,6 +119,7 @@ export default {
       context,
       loading,
       makeRequestList,
+      changeForm,
     })
     // const getDataFromPrevTav = () => {
     //   console.log('getPrev')

@@ -24,6 +24,7 @@ export default {
     const proxyValue = ref(props.value)
     const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
+      console.log(params.search, params.id, isObs)
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
         //setTimeout(() => {
@@ -104,8 +105,9 @@ export default {
         console.log(newVal)
         const params = {
           id: props.value,
-          search: props.field.search,
+          search: newVal,
         }
+        console.log(params)
         if (newVal !== null) querySelections(params)
       }
     )

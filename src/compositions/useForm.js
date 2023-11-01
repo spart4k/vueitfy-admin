@@ -22,6 +22,7 @@ export default function ({
   isEdit,
   prevTab,
 }) {
+  console.log(changeForm)
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
@@ -92,7 +93,8 @@ export default function ({
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
-      await changeForm({ url: action.url })
+      console.log('saveForm', changeForm)
+      await changeForm({ url: action.url, module: action.module })
       loading.value = false
       const isNextForm = true
       if (isNextForm) {
