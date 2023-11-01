@@ -25,7 +25,7 @@ export default function ({
 }) {
   const { emit } = context.root.ctx
   const clickHandler = async (action) => {
-    //if (!validate()) return
+    if (!validate()) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
