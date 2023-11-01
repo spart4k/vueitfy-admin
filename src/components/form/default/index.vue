@@ -33,6 +33,7 @@
               clearable
               :multiple="field.subtype === 'multiselect'"
               @change="changeSelect({ value: formData[field.name], field })"
+              :disabled="disabledField(field)"
             ></v-select>
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
@@ -50,12 +51,13 @@
               :error-messages="formErrors[field.name]"
               clearable
               :readonly="field.readonly"
-              :disabled="field.readonly"
+              :disabled="disabledField(field)"
             />
             <v-checkbox
               v-else-if="showField('checkbox', field)"
               v-model="formData[field.name]"
               :label="field.label"
+              :disabled="disabledField(field)"
             ></v-checkbox>
             <v-menu
               v-else-if="showField('date', field)"
@@ -75,6 +77,7 @@
                   append-icon="mdi-calendar"
                   :error-messages="formErrors[field.name]"
                   v-bind="attrs"
+                  :disabled="disabledField(field)"
                 ></v-text-field>
                 <!--<v-combobox
                   @click:append="openMenu(field)"
@@ -118,6 +121,7 @@
               :error-messages="formErrors[field.name]"
               clearable
               rows="1"
+              :disabled="disabledField(field)"
             />
             <Datetimepicker
               v-else-if="showField('datetime', field)"
@@ -131,6 +135,7 @@
               :options="field.options"
               v-model="formData[field.name]"
               :formData="formData"
+              :disabled="disabledField(field)"
             />
           </v-col>
         </v-row>

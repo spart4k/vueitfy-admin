@@ -88,6 +88,7 @@ export default {
       changeSelect,
       showField,
       openMenu,
+      disabledField,
     } = useForm({
       form: props.tab,
       context,
@@ -119,6 +120,7 @@ export default {
       stage,
       clickHandler,
       isEdit,
+      disabledField,
     }
   },
 }
