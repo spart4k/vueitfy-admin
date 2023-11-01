@@ -15,7 +15,9 @@
       <v-tab-item v-for="item in stages" :key="item.id">
         <component
           :is="item.type"
+          :activeTab="activeTab"
           :tab="item"
+          :tabs="stages"
           :options="item.config"
           @nextStage="nextStage"
           @prevStage="prevStage"

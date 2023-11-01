@@ -44,7 +44,7 @@ export default function ({
   throttled = 0,
 }) {
   const { store } = context.root
-  const loading = ref(true)
+  const loading = ref(false)
 
   let makeRequest = (data) => {
     //loading.value = true

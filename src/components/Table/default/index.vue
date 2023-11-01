@@ -228,6 +228,15 @@
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
                   </template>
+                  <template v-else-if="cell.type === 'checkbox'">
+                    <v-row class="d-flex justify-center">
+                      <v-checkbox
+                        :input-value="Object.byString(row.row, cell.value)"
+                        value
+                        disabled
+                      ></v-checkbox>
+                    </v-row>
+                  </template>
                   <template v-else-if="cell.type === 'actions'">
                     <!--<v-table-button
                       :row="row.row"
@@ -235,7 +244,14 @@
                       v-for="(action, indexAction) in cell.actions"
                       :key="indexAction"
                     />-->
-                    <div class="v-table-actions-wrap">
+                    <div
+                      v-if="
+                        !cell.actionCondition ||
+                        (cell.actionCondition &&
+                          Object.byString(row.row, cell.value))
+                      "
+                      class="v-table-actions-wrap"
+                    >
                       <v-btn
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
@@ -308,7 +324,7 @@
             <v-progress-circular color="primary" :size="80" indeterminate />
           </div>
           <p
-            v-if="
+            v-else-if="
               (!loading && options.data.rows && !options.data.rows.length) ||
               options.data.rows === null
             "
@@ -320,7 +336,10 @@
       </div>
     </div>
 
-    <div class="v-table-footer pl-4">
+    <div
+      v-if="options.data.rows && options.data.rows.length"
+      class="v-table-footer pl-4"
+    >
       <div class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
       </div>

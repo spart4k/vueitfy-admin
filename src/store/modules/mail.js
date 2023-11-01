@@ -9,7 +9,6 @@ import {
   editFolder,
   deleteBox,
   deleteFolder,
-  deleteMails,
   getBoxMails,
   getFolderMails,
   changeMail,
@@ -21,6 +20,11 @@ import {
   getDeletedMessages,
   filterMail,
   countFilter,
+  getDirections,
+  getOtdel,
+  getObjects,
+  getAccounts,
+  broadcast,
 } from '@/api/mail'
 
 const mail = {
@@ -28,9 +32,9 @@ const mail = {
   state: {},
   mutations: {},
   actions: {
-    async getBoxes(_, data) {
+    async getBoxes(_) {
       try {
-        const response = await getBoxes(data)
+        const response = await getBoxes()
         return response.data
       } catch (e) {
         console.log(e)
@@ -117,25 +121,6 @@ const mail = {
         console.log(e)
       }
     },
-
-    async deleteMails(_, data) {
-      try {
-        const response = await deleteMails(data)
-        return response
-      } catch (e) {
-        console.log(e)
-      }
-    },
-
-    // async getPagination(_, data) {
-    //   try {
-    //     // console.log('data, params', data, params)
-    //     const response = await getPagination(data.content, data.id)
-    //     return response
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
-    // },
 
     async getBoxMails(_, data) {
       try {
@@ -242,7 +227,7 @@ const mail = {
     async getSendedMessage(_, data) {
       try {
         const response = await getSendedMessage(data)
-        return response.data
+        return response
       } catch (e) {
         console.log(e)
       }
@@ -252,6 +237,51 @@ const mail = {
       try {
         const response = await getDeletedMessages(data.content, data.id)
         return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getDirections(_) {
+      try {
+        const response = await getDirections()
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getOtdel(_, id) {
+      try {
+        const response = await getOtdel(id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getObjects(_, id) {
+      try {
+        const response = await getObjects(id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getAccounts(_, id) {
+      try {
+        const response = await getAccounts(id)
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async broadcast(_, data) {
+      try {
+        const response = await broadcast(data)
+        return response
       } catch (e) {
         console.log(e)
       }

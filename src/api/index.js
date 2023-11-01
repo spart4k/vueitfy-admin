@@ -1,5 +1,5 @@
 //import Selects from './selects'
-import Navmenu from './navmenu'
+// import Navmenu from './navmenu'
 // import Mails from './mails'
 //import Form from './form'
 //import List from './list'
@@ -14,10 +14,10 @@ import Navmenu from './navmenu'
 // 3001/review
 
 //const selectsApi = new Selects()
-const navmenuApi = new Navmenu()
+// const navmenuApi = new Navmenu()
 // const mailsApi = new Mails()
 //const form = new Form()
 //const list = new List()
 //const login = new Login()
 
-export { navmenuApi, mailsApi }
+// export { navmenuApi, mailsApi }

@@ -45,11 +45,11 @@ export default {
     //const value = ref([]
     const proxyVal = ref(props.value)
     const sendingFile = async (files) => {
-      console.log(files)
       if (props.options.withoutSave) {
-        console.log('process')
         await loadFile(files)
         //dropzone.value.processQueue()
+      } else {
+        emit('addFiles', files)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
@@ -63,13 +63,18 @@ export default {
       //console.log(dropzone.value.getAcceptedFiles())
       //dropzone.value.processQueue()
       //value.value.push(files)
-      console.log(dropzone.value)
+      // console.log(dropzone.value)
     }
     const showSuccess = () => {
       //console.log(file)
       //dropzone.value.processQueue()
     }
-    const removed = () => {
+    const removed = (file) => {
+      if (props.options.withoutSave) {
+        console.log('remove')
+      } else {
+        emit('removeFile', file)
+      }
       //console.log(value)
       //const { uuid } = file.upload
       //console.log(uuid)
@@ -86,9 +91,11 @@ export default {
       console.log('test')
       if (typeof proxyVal.value === 'string') {
         let url = proxyVal.value
-        url = 'https://personal-crm.ru' + url
+        //url = 'https://personal-crm.ru' + url
+        url = 'http://10.63.1.132:5000' + '/file/get' + url
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
+
         const file = { name: filename, size: 12322, type: 'image/' + type }
         console.log(type)
         console.log(file, url)
@@ -101,29 +108,32 @@ export default {
     //}
     const loadFile = async (files) => {
       const formData = new FormData()
-      formData.append(
-        'name',
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
-      )
-      formData.append('file', ...files)
-      const name =
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
-      const params = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const fileType =
+        files[0].name.split('.')[files[0].name.split('.').length - 1]
+      if (!props.options.formats || props.options.formats.includes(fileType)) {
+        const name = `${
+          props.options.folder
+        }_25_${new Date().getTime()}.${fileType}`
+        const folder = props.options.folder + '/' + name
+        formData.append('name', files[0].name)
+        formData.append('file', ...files)
+        const params = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+        const data = await store.dispatch('file/create', {
+          data: formData,
+          folder,
+          params,
+        })
+        emit('fileUpload', folder)
       }
-      const data = await store.dispatch('file/create', {
-        data: formData,
-        folder: props.options.folder + '/' + name,
-        params,
-      })
-      console.log(data)
     }
     onMounted(() => {
       console.log(dropzone.value)
       if (proxyVal.value) {
-        //fillPreview()
+        fillPreview()
       }
       //value.value = dropzone.value.dropzone.files
       //const file = { size: 123, name: 'Icon', type: 'image/png' }

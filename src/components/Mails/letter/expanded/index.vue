@@ -34,7 +34,8 @@
       </div>
       <div class="v-letter-expanded-container">
         <MailsLetterTextEdit
-          @deleteItem="deleteItem"
+          @addFiles="addFiles"
+          @removeFile="removeFile"
           :data="newMessage"
           v-if="$route?.query?.compose"
         />

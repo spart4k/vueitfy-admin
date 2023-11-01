@@ -126,7 +126,9 @@ const filters = {
           }
         }
         if (
-          !props.filterData.folderData.find((x) => x.name === requestData.name)
+          !props.filterData[`${newCase.value.type}Data`].find(
+            (x) => x.name === requestData.name
+          )
         ) {
           if (Object.keys(requestData).length) {
             newCase.value.loading = true

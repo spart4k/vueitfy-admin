@@ -11,28 +11,21 @@ import store from '@/store'
 export default {
   name: 'login',
   components: {},
-  setup(_) {
+  setup(_, ctx) {
     //const root = getCurrentInstance()
     const router = useRouter()
     const context = {
       root: {
         store,
         router,
-        _,
+        ctx,
       },
     }
     //const loading = ref(null)
 
-    const { formData, validate, formErrors, vForm, touchedForm, getData } =
-      useForm({
-        fields: {
-          login: { validations: { required } },
-          password: { validations: { required } },
-        },
-      })
     const { loading, makeRequest } = useRequest({
       context,
-      request: () => store.dispatch('auth/auth', { ...getData() }),
+      request: () => store.dispatch('auth/auth', { ...getDataForm() }),
       successMessage: 'Вы успешно авторизовались',
     })
     const { makeRequest: makeRequestMe } = useRequest({
@@ -45,7 +38,15 @@ export default {
       router.push('/')
       await makeRequestMe()
     }
-
+    const { formData, validate, formErrors, vForm, touchedForm, getDataForm } =
+      useForm({
+        fields: {
+          login: { validations: { required } },
+          password: { validations: { required } },
+        },
+        context,
+        loading,
+      })
     return {
       auth,
       // valid,

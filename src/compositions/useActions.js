@@ -21,10 +21,11 @@ export default function ({
   nextForm,
   loading,
   formData,
+  validate,
 }) {
   const { emit } = context.root.ctx
   const clickHandler = async (action) => {
-    loading.value = true
+    //if (!validate()) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -33,13 +34,15 @@ export default function ({
       console.log(action)
       emit('prevStage')
     } else if (action.action === 'saveForm') {
+      loading.value = true
       await changeForm()
+      loading.value = false
       const isNextForm = true
       if (isNextForm) {
         nextForm()
       }
     }
-    loading.value = false
+
   }
   const submit = async () => {
     //if (!validate()) return

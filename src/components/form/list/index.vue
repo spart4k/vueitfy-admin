@@ -3,8 +3,17 @@
     <div class="form-row">
       <v-form>
         <v-container>
-          <v-row v-for="row in tab.formData.date_target" :key="row">
-            <v-col
+          <Row
+            v-for="row in tab.formData.date_target"
+            :tab="tab"
+            :tabs="tabs"
+            :key="row"
+            :row="row"
+            :formData="formData"
+            :formErrors="formErrors"
+            :loading="loading"
+          >
+            <!--<v-col
               v-for="field in tab.fields"
               :key="field.id"
               :sm="field.position.sm"
@@ -15,7 +24,6 @@
                 v-if="loading && field.isShow"
                 class="field-loading gradient"
               >
-                <!--<p>loading</p>-->
               </div>
               <v-select
                 v-else-if="showField('select', field)"
@@ -23,7 +31,7 @@
                 :item-text="field.selectOption.text"
                 :item-value="field.selectOption.value"
                 :label="field.label"
-                v-model="formData[row + '_' + field.name]"
+                v-model="formData[row + '/' + field.name]"
                 :error-messages="formErrors[row + '_' + field.name]"
                 persistent-hint
                 clearable
@@ -33,7 +41,7 @@
               <Autocomplete
                 v-else-if="showField('autocomplete', field)"
                 :field="field"
-                v-model="formData[field.name]"
+                v-model="formData[row + '/' + field.name]"
                 :error-messages="formErrors[field.name]"
                 :formData="formData"
                 ref="autocompleteRef"
@@ -72,17 +80,6 @@
                     :error-messages="formErrors[field.name]"
                     v-bind="attrs"
                   ></v-text-field>
-                  <!--<v-combobox
-                    @click:append="openMenu(field)"
-                    v-model="formData[field.name]"
-                    :label="field.label"
-                    multiple
-                    chips
-                    small-chips
-                    append-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                  ></v-combobox>-->
                 </template>
                 <v-date-picker
                   v-model="formData[field.name]"
@@ -128,8 +125,12 @@
                 v-model="formData[field.name]"
                 :formData="formData"
               />
-            </v-col>
-          </v-row>
+              <div v-else-if="showField('textBlock', field)">
+                <p>{{ formData[row + '/' + field.name] }}</p>
+                <p>{{ row }}</p>
+              </div>
+            </v-col>-->
+          </Row>
           <v-row class="justify-end">
             <v-btn
               type="submit"

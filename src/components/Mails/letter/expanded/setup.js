@@ -43,7 +43,16 @@ const letterExpanded = {
       newMessage.value.users = [val.message_from]
     }
 
-    const deleteItem = (index) => {
+    const addFiles = (val) => {
+      Array.from(val).forEach((item) => {
+        newMessage.value.files.push(item)
+      })
+    }
+
+    const removeFile = (val) => {
+      const index = newMessage.value.files.findIndex(
+        (x) => x.upload.uuid === val.upload.uuid
+      )
       newMessage.value.files.splice(index, 1)
     }
 
@@ -67,12 +76,6 @@ const letterExpanded = {
         if (route?.query?.compose === 'answer') {
           requestData.forwarded = true
           requestData.forwardedId = props?.data?.id
-          // requestData.forwardedFiles = props.data.attachment_filename
-          // if (props.data.text) {
-          //   requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.text}`
-          // } else {
-          //   requestData.message = `${message}<p>-------- Пересылаемое сообщение --------</p>${props.data.message_text}`
-          // }
         }
         loading.value = true
         const response = await store.dispatch('mail/sendMessage', requestData)
@@ -144,7 +147,8 @@ const letterExpanded = {
       edit,
       loading,
 
-      deleteItem,
+      addFiles,
+      removeFile,
       deleteUser,
       createMail,
       answerToMail,

@@ -5,6 +5,7 @@ import user from './modules/user'
 import auth from './modules/auth'
 import notifies from './modules/notifies'
 import mail from './modules/mail'
+import navmenu from './modules/navmenu.js'
 import table from './modules/table'
 import form from './modules/form'
 import list from './modules/list'
@@ -17,8 +18,8 @@ import file from './modules/file'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    navmenu: false,
-    collapse: false,
+    openMenu: true,
+    miniMenu: false,
     preferencesDrawer: false,
     preferences: {
       contrast: 'light',
@@ -26,11 +27,11 @@ const store = new Vuex.Store({
     },
   },
   mutations: {
-    setNavmenu(state, value) {
-      state.navmenu = value
+    changeMenuStatus(state, value) {
+      state.openMenu = value
     },
-    collapseNavmenu(state, value) {
-      state.collapse = value
+    changeMenuSize(state, value) {
+      state.miniMenu = value
     },
     setTheme(state, theme) {
       Vue.set(state.preferences, 'theme', theme)
@@ -57,6 +58,7 @@ const store = new Vuex.Store({
     list,
     personal,
     taskModule,
+    navmenu,
     selects,
     file,
   },

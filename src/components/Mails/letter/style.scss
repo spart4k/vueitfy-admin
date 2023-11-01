@@ -100,15 +100,15 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    white-space: normal;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
                     width: 280px;
                     height: 42px;
                     font-size: 10px;
                     font-weight: 400;
                     color: var(--v-secondary-base);
-                    white-space: normal;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
                 }
             }
             &-files {

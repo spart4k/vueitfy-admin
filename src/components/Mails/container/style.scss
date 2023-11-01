@@ -1,11 +1,46 @@
-.v {
+$expandedLetterWidth: calc(100% - 343px - 13px);
+.trigger {
+    position: absolute;
+    width: 46px;
+    height: 60%;
+    top: 20%;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+    z-index: $navbar-z;
+    &__left {
+        justify-content: flex-end;
+        left: 0px;
+        border-right: var(--v-disabled-base) solid 6px;
+    }
+    &__right {
+        justify-content: flex-start;
+        right: 0px;
+        border-left: var(--v-disabled-base) solid 6px;
+    }
+    &__center {
+        transform: translate(-100%, 0);
+        left: 350px;
+        border-left: var(--v-disabled-base) solid 6px;
+    }
+}
+.trigger-container {
+    width: 100%;
+    position: relative;
+}
+.v{
     &-container {
-        // height: 100%;
+        height: 100%;
         width: 100%;
         overflow: overlay;
+        display: flex;
         @include custom-scroll-bar-vertical;
+        scroll-behavior: smooth;
         &::-webkit-scrollbar{
             display: none;
+        }
+        &__active {
+            overflow: hidden;
         }
         &-box {
             width: 100%;
@@ -16,7 +51,7 @@
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 scroll-snap-type: x mandatory;
-                scroll-behavior: auto;
+                scroll-behavior: smooth;
                 &::-webkit-scrollbar{
                     display: none;
                 }
@@ -69,7 +104,7 @@
         }
         &-expanded {
             // flex: 1;
-            width: calc(100% - 343px - 13px);
+            width: $expandedLetterWidth;
             display: flex;
             padding-bottom: 19px;
             &__new {
