@@ -19,6 +19,7 @@ export default {
     },
   },
   setup(props, ctx) {
+    const router = useRouter()
     const context = {
       root: {
         store,
@@ -26,9 +27,9 @@ export default {
         ctx,
       },
     }
-    const activeTab = ref(null)
-    const router = useRouter()
+    const activeTab = ref(1)
     const nextStage = async ({ formData, action }) => {
+      console.log(action)
       if (action.request) {
         console.log('request')
         const { makeRequestStage } = useRequest({
