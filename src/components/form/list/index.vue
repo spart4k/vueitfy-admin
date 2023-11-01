@@ -13,6 +13,7 @@
             :formErrors="formErrors"
             :loading="loading"
             :activeTab="activeTab"
+            ref="rows"
           >
             <!--<v-col
               v-for="field in tab.fields"

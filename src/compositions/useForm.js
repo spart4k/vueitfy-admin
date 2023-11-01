@@ -86,13 +86,13 @@ export default function ({
       console.log('NEXT FORM')
       console.log(form, formData)
       Vue.set(form, 'formData', formData)
-      emit('nextStage', formData)
+      emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
       console.log(action)
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
-      await changeForm()
+      await changeForm({ url: action.url })
       loading.value = false
       const isNextForm = true
       if (isNextForm) {

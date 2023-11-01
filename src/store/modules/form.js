@@ -1,5 +1,5 @@
 //import
-import { getForm, update } from '@/api/form'
+import { getForm, update, create } from '@/api/form'
 //import axios from 'axios'
 
 const form = {
@@ -11,6 +11,10 @@ const form = {
     },
     async update(_, params) {
       const result = await update(params)
+      return result
+    },
+    async create(_, params) {
+      const result = await create(params)
       return result
     },
   },

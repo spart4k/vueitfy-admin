@@ -63,6 +63,7 @@ export default {
       context,
       request: () => store.dispatch('list/get', data),
     })
+    const rows = ref([])
     const {
       formData,
       validate,
@@ -127,6 +128,7 @@ export default {
       getData,
       changeSelect,
       prevTab,
+      rows,
     }
   },
 }
