@@ -1100,6 +1100,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                requiredFields: ['with_nutrition', 'sum_nutrition'],
               }),
             ],
             actions: [

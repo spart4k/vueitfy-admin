@@ -306,6 +306,12 @@ export default function ({
     field.menu = true
   }
 
+  const disabledField = (field) => {
+    return field.requiredFields
+      ? field.requiredFields.some((el) => !formData[el])
+      : false
+  }
+
   watch(
     () => watcher,
     (wtch) => {
@@ -345,5 +351,6 @@ export default function ({
     getData,
     showField,
     openMenu,
+    disabledField,
   }
 }
