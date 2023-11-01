@@ -127,7 +127,7 @@ const taskModule = {
     },
 
     async addKeyToPersonal(_, data) {
-      const result = await setTask('set/set/personal/add_key_to_personal', data)
+      const result = await setTask('set/personal/add_key_to_personal', data)
       console.log(result)
       return result
     },
