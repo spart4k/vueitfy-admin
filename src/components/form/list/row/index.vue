@@ -18,8 +18,8 @@
           :item-text="field.selectOption.text"
           :item-value="field.selectOption.value"
           :label="field.label"
-          v-model="formData[row + '/' + field.name]"
-          :error-messages="formErrors[row + '/' + field.name]"
+          v-model="formData[field.name]"
+          :error-messages="formErrors[field.name]"
           persistent-hint
           clearable
           :multiple="field.subtype === 'multiselect'"
@@ -28,7 +28,7 @@
         <Autocomplete
           v-else-if="showField('autocomplete', field)"
           :field="field"
-          v-model="formData[row + '/' + field.name]"
+          v-model="formData[field.name]"
           :error-messages="formErrors[field.name]"
           :formData="formData"
           ref="autocompleteRef"
@@ -120,7 +120,7 @@
           :formData="formData"
         />
         <div v-else-if="showField('textBlock', field)">
-          <p>{{ formData[row + '/' + field.name] }}</p>
+          <p>{{ formData[field.name] }}</p>
           <p>{{ row }}</p>
         </div>
       </v-col>

@@ -9,9 +9,10 @@
             :tabs="tabs"
             :key="row"
             :row="row"
-            :formData="formData"
+            :formData="tab.formData"
             :formErrors="formErrors"
             :loading="loading"
+            :activeTab="activeTab"
           >
             <!--<v-col
               v-for="field in tab.fields"

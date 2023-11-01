@@ -1,4 +1,4 @@
-import { ref, computed, watch, unref, reactive } from 'vue'
+import Vue, { ref, computed, watch, unref, reactive } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import store from '@/store'
 import { getList } from '@/api/selects'
@@ -20,6 +20,7 @@ export default function ({
   makeRequest,
   makeRequestList,
   isEdit,
+  prevTab,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
@@ -82,6 +83,9 @@ export default function ({
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
+      console.log('NEXT FORM')
+      console.log(form, formData)
+      Vue.set(form, 'formData', formData)
       emit('nextStage', formData)
     } else if (action.action === 'prevStage') {
       console.log(action)
@@ -144,6 +148,7 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
+    console.log(value)
     const depField = field.dependence.field
     let url = ''
     if (field.dependence.url) {
@@ -151,9 +156,9 @@ export default function ({
       field.dependence.url.forEach((el) => {
         console.log(el.source)
         if (el.source === 'props') {
-          url = '/' + form.formData[el.field]
+          url = url + '/' + form.formData[el.field]
         } else if (el.source === 'formData') {
-          url = '/' + formData[el.field]
+          url = url + '/' + formData[el.field]
         }
       })
     }
@@ -222,11 +227,18 @@ export default function ({
       const filters = []
       const { url } = el
       console.log(el)
+      console.log(formData)
       if (el.filters && el.filters.length) {
         el.filters.forEach((filter) => {
+          let value
+          if (filter.type === 'fromPrev') {
+            value = form.formData[filter.field]
+          } else {
+            value = formData[filter.field]
+          }
           filters.push({
             field: filter.field,
-            value: formData[filter.field],
+            value,
           })
         })
       }

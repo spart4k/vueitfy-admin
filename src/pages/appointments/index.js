@@ -2,6 +2,7 @@ import filters from './filters'
 import TableDefault from '@/components/Table/default/index.vue'
 import FormDefault from '@/components/form/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
+import FormStage from '@/components/form/stage/index.vue'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -836,8 +837,9 @@ const config = {
       {
         id: 0,
         name: 'Основные',
-        type: 'FormStage',
+        type: FormStage,
         detail: true,
+        path: 'add',
         stages: [
           {
             id: 0,
@@ -1168,6 +1170,7 @@ const config = {
                   {
                     field: 'object_id',
                     value: '',
+                    type: 'fromPrev',
                   },
                 ],
                 dependence: {
@@ -1232,7 +1235,7 @@ const config = {
       {
         id: 1,
         name: 'Расход',
-        type: 'TableDefault',
+        type: TableDefault,
         active: false,
         config: tableConsumptionConfig,
       },
