@@ -1215,7 +1215,7 @@ const config = {
                 text: 'Назад',
                 type: 'cancel',
                 module: '',
-                name: 'saveForm',
+                name: 'prevStage',
                 action: 'prevStage',
                 color: 'normal',
               }),

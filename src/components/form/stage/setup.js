@@ -27,7 +27,7 @@ export default {
         ctx,
       },
     }
-    const activeTab = ref(1)
+    const activeTab = ref(null)
     const nextStage = async ({ formData, action }) => {
       console.log(action)
       if (action.request) {
