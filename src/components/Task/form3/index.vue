@@ -14,6 +14,9 @@
     </v-row>
     <v-row>
       <v-col style="font-size: 18px" class="mb-2">
+        <v-icon v-if="selectName && price" small color="green"
+          >$IconGalka</v-icon
+        >
         Заполните данные заявки:
       </v-col>
     </v-row>
@@ -55,7 +58,10 @@
     </v-row>
     <v-row>
       <v-col>
-        <span> Приложите билет(ы): </span>
+        <span>
+          <v-icon v-if="file" small color="green">$IconGalka</v-icon>
+          Приложите билет(ы):
+        </span>
         <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
       </v-col>
     </v-row>
@@ -72,7 +78,12 @@
     </v-row>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn color="info" class="mr-3" @click="sendData">
+      <v-btn
+        :disabled="!selectName || !price || !file"
+        color="info"
+        class="mr-3"
+        @click="sendData"
+      >
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>

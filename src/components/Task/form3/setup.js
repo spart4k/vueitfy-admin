@@ -116,6 +116,7 @@ const Form3 = defineComponent({
     }
     return {
       options,
+      file,
       selectName,
       price,
       nameComp,

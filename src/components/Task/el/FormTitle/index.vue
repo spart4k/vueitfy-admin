@@ -1,5 +1,10 @@
 <template>
-  <div class="docs-required">
+  <div
+    class="docs-required"
+    :class="{
+      'is-unconfirmed': !isShowCansel,
+    }"
+  >
     <div class="docs-required__container-layout">
       <div
         @click="() => (isImgPopupOpen = true)"
