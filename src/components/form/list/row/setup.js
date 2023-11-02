@@ -206,7 +206,7 @@ export default {
     })
     onMounted(async () => {
       getDataFromPrevTav()
-      //await getData()
+      await getData()
     })
     return {
       formData,

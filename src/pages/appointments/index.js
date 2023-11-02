@@ -1120,7 +1120,7 @@ const config = {
             name: 'Основные1',
             type: FormList,
             //detail: true,
-            lists: ['avatar_with_user_key_id'],
+            lists: ['avatar_with_user_key_id', ''],
             alias: 'personal_target',
             active: false,
             fromLastTab: [
@@ -1195,6 +1195,7 @@ const config = {
               selectField({
                 label: 'Ключ',
                 name: 'print_form_key',
+                withoutList: true,
                 //alias: 'direction_id_logistic',
                 placeholder: '',
                 class: [''],

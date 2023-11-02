@@ -86,21 +86,22 @@ export default {
         status,
         direction_id,
         comment: null,
-        personal_bank_id: null, // ?
-        bank_id: null, // ?
-        fio: null,
-        invoice: null,
-        who_is_chief: null, // ?
-        manager: null, // ?
-        user_key: null,
-        subtype: 9,
-        brigadir_id: null, // ?
+        manager: null, // ? миша отправит с объектом
+        avatar_with_user_key_id: null,
         type_shift,
         with_nutrition,
         sum_nutrition,
-        print_form_key: null,
       }
-      console.log(defaultData)
+      const persons = rows.value.map((el) => {
+        console.log(el)
+        const person = defaultData
+        person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
+        if (el.formData.print_form_key) {
+          person.print_form_key = el.formData.print_form_key
+        }
+        return person
+      })
+      console.log(defaultData, persons)
     }
     const {
       formData,

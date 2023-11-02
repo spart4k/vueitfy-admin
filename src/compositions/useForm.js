@@ -105,7 +105,9 @@ export default function ({
   const getDetail = () => form.detail
 
   const hasSelect = () =>
-    form.fields.some((field) => field.type === 'select' && field.isShow)
+    form.fields.some(
+      (field) => field.type === 'select' && field.isShow && !field.withoutList
+    )
 
   const initPreRequest = () => {
     let queries = []
@@ -151,6 +153,10 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field } = params
     console.log(value)
+    console.log(JSON.stringify(formData))
+    setTimeout(() => {
+      console.log(JSON.stringify(formData))
+    }, 2000)
     const depField = field.dependence.field
     let url = ''
     if (field.dependence.url) {
@@ -160,6 +166,7 @@ export default function ({
         if (el.source === 'props') {
           url = url + '/' + form.formData[el.field]
         } else if (el.source === 'formData') {
+          console.log(formData)
           url = url + '/' + formData[el.field]
         }
       })
@@ -222,9 +229,11 @@ export default function ({
   }
 
   const loadAutocompletes = async () => {
+    console.log(form.fields)
     const fields = form.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
+    console.log(fields)
     const queryFields = fields.map(async (el) => {
       const filters = []
       const { url } = el
@@ -248,7 +257,7 @@ export default function ({
         countRows: 10,
         currentPage: 1,
         searchValue: '',
-        id: formData[el.name],
+        id: formData[el.name ? el.name : el.alias],
         filters,
       })
       if (data.rows) {
@@ -261,32 +270,34 @@ export default function ({
   }
 
   const getData = async () => {
-    const [syncForm, lists] = await Promise.all(initPreRequest())
-    console.log(syncForm)
-    if (syncForm) {
-      for (let formKey in syncForm.data) {
-        const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
-        if (field) {
-          if (stringIsArray(syncForm.data[formKey]))
-            syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-          formData[field.name] = syncForm.data[formKey]
-          // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
-          if (
-            field.hasOwnProperty('dependence') &&
-            field.dependence.type === 'api'
-          ) {
-            await getDependies({ value: formData[field.name], field })
+    if (initPreRequest()) {
+      const [syncForm, lists] = await Promise.all(initPreRequest())
+      console.log(syncForm)
+      if (syncForm) {
+        for (let formKey in syncForm.data) {
+          const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
+          if (field) {
+            if (stringIsArray(syncForm.data[formKey]))
+              syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+            formData[field.name] = syncForm.data[formKey]
+            // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
+            if (
+              field.hasOwnProperty('dependence') &&
+              field.dependence.type === 'api'
+            ) {
+              await getDependies({ value: formData[field.name], field })
+            }
           }
         }
       }
-    }
-    if (hasSelect()) {
-      for (let keyList in lists.data) {
-        console.log(keyList)
-        const field = form.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
-        if (field) field.items = lists.data[keyList]
+      if (hasSelect()) {
+        for (let keyList in lists.data) {
+          console.log(keyList)
+          const field = form.fields.find((el) =>
+            el.alias ? el.alias === keyList : el.name === keyList
+          )
+          if (field) field.items = lists.data[keyList]
+        }
       }
     }
     await loadAutocompletes()

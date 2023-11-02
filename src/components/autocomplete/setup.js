@@ -108,7 +108,11 @@ export default {
           search: newVal,
         }
         console.log(params)
-        if (newVal !== null) querySelections(params)
+        props.field.page
+        if (newVal !== null) {
+          props.field.page = 1
+          querySelections(params)
+        }
       }
     )
     watch(
