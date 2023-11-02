@@ -430,7 +430,6 @@ const table = {
       popupForm.value.isShow = false
     }
     const addItem = () => {
-      console.log('add item')
       if (props.options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -445,7 +444,6 @@ const table = {
     }
     const panelHandler = (button) => {
       const { type } = button
-      console.log(button)
       if (type === 'addItem') {
         addItem()
       }
@@ -496,7 +494,6 @@ const table = {
         if (!id) return
         const headCell = props.options.head.find((head) => head.value === id)
         const { width, x } = headerEl.getBoundingClientRect()
-        console.log(headCell)
         headerOptions.value.push({
           id,
           headCell,

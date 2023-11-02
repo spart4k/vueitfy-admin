@@ -65,7 +65,6 @@ export default {
     })
     const rows = ref([])
     const changeForm = async ({ url, module }) => {
-      console.log(url, module)
       const {
         object_id,
         personal_id,
@@ -80,26 +79,29 @@ export default {
       const defaultData = {
         object_id,
         personal_id,
-        account_id: null, // ?
+        account_id: 25, // ?
         doljnost_id,
         date_target: date_target[0],
         status,
         direction_id,
         comment: null,
-        manager: null, // ? миша отправит с объектом
+        manager: 25, // ? миша отправит с объектом
         avatar_with_user_key_id: null,
         type_shift,
         with_nutrition,
         sum_nutrition,
       }
       const persons = rows.value.map((el) => {
-        console.log(el)
         const person = defaultData
         person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
         if (el.formData.print_form_key) {
           person.print_form_key = el.formData.print_form_key
         }
         return person
+      })
+      const { makeRequest } = useRequest({
+        context,
+        request: () => store.dispatch(module, {}),
       })
       console.log(defaultData, persons)
     }

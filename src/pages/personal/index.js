@@ -1211,37 +1211,30 @@ const defaultForm = [
         type: FormDefault,
         detail: true,
         lists: [
-          'vid_vedomost_id',
-          'status_pt',
+          // 'vid_vedomost_id',
+          // 'status_pt',
           'direction_id_logistic',
-          'doljnost_id_logistic',
-          'shifts',
-          'nutritions',
+          'grajdanstvo_id',
+          // 'shifts',
+          // 'nutritions',
         ],
         alias: 'personal_target',
         active: false,
         fields: [
-          selectField({
+          stringField({
             label: 'ФИО',
-            name: 'status',
-            alias: 'status_pt',
+            name: 'fio',
             placeholder: '',
             class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
             position: {
               cols: 12,
               sm: 12,
             },
-            value: 1,
             validations: { required },
             bootstrapClass: [''],
           }),
           dateField({
-            label: 'На дату',
+            label: 'Дата рождения',
             name: 'date_target',
             value: [],
             type: 'date',
@@ -1258,7 +1251,6 @@ const defaultForm = [
             bootstrapClass: [''],
             disable: false,
             //mode: 'edit',
-            isShow: true,
           }),
           selectField({
             label: 'Направления',
@@ -1298,7 +1290,7 @@ const defaultForm = [
             url: 'get/pagination_list/object_logistic',
             position: {
               cols: 12,
-              sm: 6,
+              sm: 12,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -1319,7 +1311,7 @@ const defaultForm = [
             requiredFields: ['direction_id'],
           }),
           autocompleteField({
-            label: 'Линейщик',
+            label: 'Бригадир',
             name: 'personal_id',
             subtype: 'single',
             placeholder: '',
@@ -1334,7 +1326,7 @@ const defaultForm = [
             url: 'get/pagination_list/personal',
             position: {
               cols: 12,
-              sm: 6,
+              sm: 12,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -1347,9 +1339,9 @@ const defaultForm = [
             requiredFields: ['object_id'],
           }),
           selectField({
-            label: 'Должность',
-            name: 'doljnost_id',
-            alias: 'doljnost_id_logistic',
+            label: 'Гражданство',
+            name: 'grajdanstvo_id',
+            alias: 'grajdanstvo_id',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -1359,61 +1351,53 @@ const defaultForm = [
             items: [],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 12,
             },
             validations: { required },
             bootstrapClass: [''],
+            update: {
+              module: 'selects/getList',
+              fields: ['object_id'],
+            },
           }),
-          selectField({
-            label: 'Тип смены',
-            name: 'type_shift',
-            alias: 'shifts',
+          checkboxField({
+            label: 'Трансфер',
+            name: 'transfer',
             placeholder: '',
+            readonly: false,
             class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 12,
             },
-            validations: { required },
             bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Питание',
-            name: 'with_nutrition',
-            alias: 'nutritions',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            defaultItems: [
-              {
-                id: 0,
-                name: '--Без питания--',
-              },
-            ],
           }),
           stringField({
-            label: 'Стоимость питания:',
-            name: 'sum_nutrition',
+            label: 'Адрес А',
+            name: 'addressA',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            isShow: {
+              conditions: [
+                { field: 'transfer', value: true },
+                { field: 'grajdanstvo_id', value: 1 },
+              ],
+            },
+          }),
+          stringField({
+            label: 'Адрес Б',
+            name: 'addressB',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
             },
             validations: { required },
             bootstrapClass: [''],

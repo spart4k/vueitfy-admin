@@ -24,7 +24,6 @@ export default {
     const proxyValue = ref(props.value)
     const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
-      console.log(params.search, params.id, isObs)
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
         //setTimeout(() => {
@@ -43,7 +42,6 @@ export default {
         const filter = []
         if (props.field.filters && props.field.filters.length) {
           props.field.filters.forEach((el) => {
-            console.log(!props.formData[el.field])
             if (!props.formData[el.field]) return
             filter.push({
               field: el.field,
@@ -102,12 +100,10 @@ export default {
     watch(
       () => searchProps.value,
       (newVal) => {
-        console.log(newVal)
         const params = {
           id: props.value,
           search: newVal,
         }
-        console.log(params)
         props.field.page
         if (newVal !== null) {
           props.field.page = 1

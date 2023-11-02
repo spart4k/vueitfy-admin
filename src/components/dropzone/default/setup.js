@@ -88,7 +88,6 @@ export default {
     const getUrlExtension = (url) =>
       url.split(/[#?]/)[0].split('.').pop().trim()
     const fillPreview = () => {
-      console.log('test')
       if (typeof proxyVal.value === 'string') {
         let url = proxyVal.value
         //url = 'https://personal-crm.ru' + url
@@ -97,8 +96,6 @@ export default {
         const filename = url.split('/').pop()
 
         const file = { name: filename, size: 12322, type: 'image/' + type }
-        console.log(type)
-        console.log(file, url)
         dropzone.value.manuallyAddFile(file, url)
       }
       //proxyVal.value.forEach((el) => (el = 'https://api.personal-crm.ru' + el))

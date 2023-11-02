@@ -40,6 +40,15 @@ export default function ({
   }, {})
   const $v = useVuelidate({ ...validations }, formData)
 
+  const rebuildFormData = () => {
+    const newFormData = Object.keys(fields).reduce((obj, key) => {
+      //console.log(obj[key])
+      obj[key] = ref(fields[key].default)
+      return obj
+    }, {})
+    return reactive(newFormData)
+  }
+  console.log(rebuildFormData())
   const $errors = computed(() =>
     Object.keys(formData).reduce((obj, key) => {
       if ($touched.value) {
@@ -84,16 +93,12 @@ export default function ({
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
-      console.log('NEXT FORM')
-      console.log(form, formData)
       Vue.set(form, 'formData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
-      console.log(action)
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
-      console.log('saveForm', changeForm)
       await changeForm({ url: action.url, module: action.module })
       loading.value = false
       const isNextForm = true
@@ -129,7 +134,6 @@ export default function ({
 
   const changeAutocomplete = async (params) => {
     //const { value, field } = data
-    console.log(params)
     if (hasDepenceFieldsApi()) {
       await getDependies(params)
     }
@@ -138,7 +142,6 @@ export default function ({
       params.field.dependence.type &&
       params.field.dependence.fillField
     ) {
-      console.log(params)
       params.field.dependence.fillField.forEach(
         (el) => (formData[el] = params.item[el])
       )
@@ -152,26 +155,18 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log(value)
-    console.log(JSON.stringify(formData))
-    setTimeout(() => {
-      console.log(JSON.stringify(formData))
-    }, 2000)
     const depField = field.dependence.field
     let url = ''
     if (field.dependence.url) {
       //const splitedUrl = field.dependence.url.split('/')
       field.dependence.url.forEach((el) => {
-        console.log(el.source)
         if (el.source === 'props') {
           url = url + '/' + form.formData[el.field]
         } else if (el.source === 'formData') {
-          console.log(formData)
           url = url + '/' + formData[el.field]
         }
       })
     }
-    console.log(url)
     field.loading = true
     const data = await store.dispatch(field.dependence.module, {
       value,
@@ -180,16 +175,12 @@ export default function ({
     })
 
     const targetField = form.fields.find((el) => el.name === depField)
-    console.log(targetField)
     targetField.items = targetField.defaultItems
       ? [...targetField.defaultItems, ...data]
       : data
     let card = targetField.items.find((el) => el.id === formData[depField])
 
     //if (data.length === 1) formData[depField] = card.id
-    console.log(formData[depField])
-    console.log(targetField)
-    console.log(card)
     if (card)
       if (field.dependence.fillField) {
         field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -229,16 +220,12 @@ export default function ({
   }
 
   const loadAutocompletes = async () => {
-    console.log(form.fields)
     const fields = form.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
-    console.log(fields)
     const queryFields = fields.map(async (el) => {
       const filters = []
       const { url } = el
-      console.log(el)
-      console.log(formData)
       if (el.filters && el.filters.length) {
         el.filters.forEach((filter) => {
           let value
@@ -272,7 +259,6 @@ export default function ({
   const getData = async () => {
     if (initPreRequest()) {
       const [syncForm, lists] = await Promise.all(initPreRequest())
-      console.log(syncForm)
       if (syncForm) {
         for (let formKey in syncForm.data) {
           const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
@@ -292,7 +278,6 @@ export default function ({
       }
       if (hasSelect()) {
         for (let keyList in lists.data) {
-          console.log(keyList)
           const field = form.fields.find((el) =>
             el.alias ? el.alias === keyList : el.name === keyList
           )
@@ -305,11 +290,16 @@ export default function ({
   }
 
   const showField = (type, field) => {
+    console.log(field)
+    console.log(typeof field.isShow === 'boolean', field.isShow)
+    const condition = () =>
+      (typeof field.isShow === 'boolean' && field.isShow) ||
+      field.isShow.conditions?.every((el) => formData[el.field] === el.value)
     return (
       type === field.type &&
       !loading.value &&
-      field.isShow &&
-      (field.mode === 'all' || field.mode === isEdit.value)
+      (field.mode === 'all' || field.mode === isEdit.value) &&
+      condition()
     )
   }
 
@@ -321,6 +311,12 @@ export default function ({
     return field.requiredFields
       ? field.requiredFields.some((el) => !formData[el])
       : false
+  }
+
+  const hideField = (field) => {
+    return field.isShow
+      ? field.isShow.every((el) => formData[el.field] === el.value)
+      : true
   }
 
   watch(
@@ -363,5 +359,6 @@ export default function ({
     showField,
     openMenu,
     disabledField,
+    hideField,
   }
 }

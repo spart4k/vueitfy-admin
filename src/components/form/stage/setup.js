@@ -29,9 +29,7 @@ export default {
     }
     const activeTab = ref(null)
     const nextStage = async ({ formData, action }) => {
-      console.log(action)
       if (action.request) {
-        console.log('request')
         const { makeRequestStage } = useRequest({
           context,
           request: () =>
@@ -39,7 +37,6 @@ export default {
           successMessage: 'Сохранено',
         })
         const data = await makeRequestStage()
-        console.log(data)
       }
       activeTab.value++
       if (formData) {
@@ -48,7 +45,6 @@ export default {
     }
 
     const prevStage = () => {
-      console.log(activeTab.value)
       activeTab.value--
     }
     return {

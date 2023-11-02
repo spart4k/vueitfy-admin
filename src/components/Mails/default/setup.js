@@ -257,7 +257,6 @@ const mails = {
         requestData.account = val.account
       }
       const data = await store.dispatch('mail/broadcast', requestData)
-      console.log(data)
     }
 
     const changeMailArrayKey = async (key, item, params) => {

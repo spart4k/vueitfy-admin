@@ -55,16 +55,13 @@ export default {
         const { validations } = el
         if (!el.isShow) return
         const fieldName = el.name
-        console.log(fieldName)
         Vue.set(fields, fieldName, {})
         Vue.set(fields[fieldName], 'validations', validations)
-        console.log(props.tab.formData[el.name])
         Vue.set(fields[fieldName], 'default', props.tab.formData[el.name])
         if (el.type === 'autocomplete' && el.alias) {
           Vue.set(fields[fieldName], 'default', props.tab.formData[el.alias])
         }
       })
-      console.log(fields)
       return fields
     }
     // const showField = (type, field) => {
@@ -164,8 +161,6 @@ export default {
     //   )
     const prevTab = ref({})
     const getDataFromPrevTav = () => {
-      console.log('getPrev')
-      console.log(prevTab.value)
       prevTab.value = props.tabs[props.activeTab - 1]
       if (props.tab.fromLastTab) {
         //const field = prevTab.value.find((el) => el.name === )
@@ -174,10 +169,7 @@ export default {
             //console.log(tabField[el.alias], el.alias)
             return tabField[el.alias] === el.name
           })
-          console.log(findEl)
           if (el.type === 'list') {
-            console.log(findEl.items)
-            console.log(formData)
             formData[el.nameInTab] = findEl.items.find(
               (elItem) => elItem.id === props.tab.formData[el.name]
             ).name

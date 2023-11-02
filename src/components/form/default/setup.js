@@ -49,7 +49,8 @@ export default {
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
-        if (el.isShow) Vue.set(fields, el.name, {})
+        if (el.isShow && !el.isShow?.condition?.length)
+          Vue.set(fields, el.name, {})
         else return
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
@@ -89,6 +90,7 @@ export default {
       showField,
       openMenu,
       disabledField,
+      hideField,
     } = useForm({
       form: props.tab,
       context,
@@ -121,6 +123,7 @@ export default {
       clickHandler,
       isEdit,
       disabledField,
+      hideField,
     }
   },
 }
