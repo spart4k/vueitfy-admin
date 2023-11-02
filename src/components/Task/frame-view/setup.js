@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, onUnmounted } from 'vue'
 import Form1 from '@/components/Task/form1/index.vue'
 import SecondPopupView from '../second-popup-view/index.vue'
 import ThirdPopupView from '@/components/Task/third-popup-view/index.vue'
@@ -117,7 +117,7 @@ const task = defineComponent({
     // })
 
     const formatDate = (date) => {
-      return moment(date).locale('ru').format('D MMMM YYYY, HH:mm')
+      return moment(date).locale('ru').format('D MMMM, HH:mm')
     }
 
     onMounted(async () => {
@@ -132,6 +132,10 @@ const task = defineComponent({
         countdownTimer()
         countdownTimerIntervalId.value = setInterval(countdownTimer, 1000)
       }
+    })
+
+    onUnmounted(() => {
+      clearInterval(countdownTimerIntervalId.value)
     })
 
     return { loading, data, formatDate, taskName, timerString, taskDeadline }

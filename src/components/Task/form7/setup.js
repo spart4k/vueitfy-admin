@@ -167,7 +167,8 @@ const Form7 = defineComponent({
       console.log(setSaveDocs)
       await setSaveDocs()
       console.log(changeStatusTask)
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
       console.log(finalData.value)
     }
 

@@ -100,7 +100,10 @@
           <v-icon left> $IconMain </v-icon>
           Завершить
         </v-btn>
-        <v-btn color="blue-grey"> Закрыть </v-btn>
+        <v-btn @click="$emit('closePopup')" color="blue-grey">
+          <v-icon left> $IconMain </v-icon>
+          Закрыть
+        </v-btn>
       </v-row>
     </div>
   </div>

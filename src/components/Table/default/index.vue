@@ -452,6 +452,7 @@
       <router-view
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
+        @closePopup="closePopupForm"
       />
     </Popup>
   </div>

@@ -161,7 +161,7 @@ const Form1 = defineComponent({
         return store.dispatch('taskModule/setPartTask', {
           data: {
             data: {
-              status: taskDeadline > 0 ? 2 : 6,
+              status: taskDeadline > 0 ? 2 : 3,
               data: {
                 process_id: task.process_id,
                 task_id: task.id,
@@ -186,6 +186,7 @@ const Form1 = defineComponent({
           commentError.value = false
           const dataFrom = await makeRequest()
           console.log(dataFrom)
+          dataFrom.success && ctx.emit('closePopup')
         } else {
           commentError.value = true
         }
@@ -264,17 +265,13 @@ const Form1 = defineComponent({
     }
 
     const sendData = async () => {
-      const requestArr = []
       if (isHasOsnDoc) {
-        // requestArr.push(sendPersonalData())
         await sendPersonalData()
       }
-      // requestArr.push(sendPersonalDoc())
       await sendPersonalDoc()
-      // requestArr.push(setSaveDocs())
       await setSaveDocs()
-      await Promise.all(requestArr)
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
     }
 
     return {

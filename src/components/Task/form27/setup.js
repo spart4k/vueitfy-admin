@@ -140,7 +140,8 @@ const Form27 = defineComponent({
         await changeStatusConfirm()
       } else {
         await setPaymentData()
-        await changeStatusConfirm()
+        const { success } = await changeStatusConfirm()
+        success && ctx.emit('closePopup')
       }
     }
     const reject = async () => {
@@ -153,10 +154,12 @@ const Form27 = defineComponent({
       if (window.confirm('Начисление будет не согласовано, подтвердите!')) {
         const statusId = props.data.entity.status_id
         if (statusId === 4 || statusId === 5) {
-          await changeStatusReject()
+          const { success } = await changeStatusReject()
+          success && ctx.emit('closePopup')
         } else {
           await setPaymentData()
-          await changeStatusReject()
+          const { success } = await changeStatusReject()
+          success && ctx.emit('closePopup')
         }
       }
     }

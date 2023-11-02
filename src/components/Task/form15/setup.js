@@ -18,7 +18,7 @@ const Form15 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
@@ -146,7 +146,8 @@ const Form15 = defineComponent({
       isFormConfirmed.value = false
       console.log('confirm')
       await setPersonalTarget()
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
     }
     return { infoObj, confirm, reject }
   },
