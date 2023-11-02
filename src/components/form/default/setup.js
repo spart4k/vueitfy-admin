@@ -46,15 +46,21 @@ export default {
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
+      console.log('rebuild fields')
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
-        if (el.isShow && !el.isShow?.condition?.length)
+        if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
-        else return
+        else if (typeof el.isShow === 'object' && el.isShow.value) {
+          console.log('CONDITION TRUE', el.name)
+          Vue.set(fields, el.name, {})
+        } else return
+        Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
+      console.log(fields)
       return fields
     }
     const params = props.tab.lists
@@ -96,6 +102,7 @@ export default {
       context,
       loading,
       fields: fields(),
+      setFields: fields,
       makeRequest,
       makeRequestList,
       isEdit,

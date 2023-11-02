@@ -1384,6 +1384,7 @@ const defaultForm = [
             validations: { required },
             bootstrapClass: [''],
             isShow: {
+              value: false,
               conditions: [
                 { field: 'transfer', value: true },
                 { field: 'grajdanstvo_id', value: 1 },

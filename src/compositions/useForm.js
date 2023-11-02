@@ -2,6 +2,7 @@ import Vue, { ref, computed, watch, unref, reactive } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import store from '@/store'
 import { getList } from '@/api/selects'
+import { required } from '@/utils/validation.js'
 
 /**
  * @param loading {boolean}
@@ -21,12 +22,14 @@ export default function ({
   makeRequestList,
   isEdit,
   prevTab,
+  setFields,
 }) {
   console.log(changeForm)
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
   const { emit } = context.root.ctx
+  console.log(Object.keys(fields))
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       //console.log(obj[key])
@@ -34,31 +37,73 @@ export default function ({
       return obj
     }, {})
   )
-  const validations = Object.keys(fields).reduce((obj, key) => {
-    obj[key] = { ...fields[key].validations, $autoDirty }
-    return obj
-  }, {})
-  const $v = useVuelidate({ ...validations }, formData)
-
-  const rebuildFormData = () => {
-    const newFormData = Object.keys(fields).reduce((obj, key) => {
-      //console.log(obj[key])
-      obj[key] = ref(fields[key].default)
+  const validations = () => {
+    console.log('CHANGE RULES')
+    const formFields = {}
+    form.fields.forEach((el) => {
+      formFields[el.name] = el
+    })
+    return Object.keys(formData).reduce((obj, key) => {
+      if (
+        (typeof formFields[key].isShow === 'boolean' &&
+          !formFields[key].isShow) ||
+        (typeof formFields[key].isShow === 'object' &&
+          !formFields[key].isShow.value)
+      ) {
+        return obj
+      }
+      console.log(obj, key)
+      obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
-    return reactive(newFormData)
+    //console.log({
+    //  fields: {
+    //    $each: valFields,
+    //  },
+    //})
+    //return {
+    //  required,
+    //  fields: {
+    //    $each: valFields,
+    //  },
+    //}
   }
-  console.log(rebuildFormData())
-  const $errors = computed(() =>
-    Object.keys(formData).reduce((obj, key) => {
-      if ($touched.value) {
+
+  console.log(validations)
+  let $v = null
+  const computedFormData = computed(() => formData)
+  $v = useVuelidate(validations(), computedFormData.value)
+
+  const rebuildFormData = () => {
+    console.log(setFields(), 'FIELDS SET UP')
+    console.log(fields, 'FIELDS SET')
+    Object.assign(
+      formData,
+      reactive(
+        Object.keys(setFields()).reduce((obj, key) => {
+          //console.log(obj[key])
+          obj[key] = ref(formData[key])
+          return obj
+        }, {})
+      )
+    )
+  }
+  //setTimeout(() => {
+  //  rebuildFormData()
+  //  console.log('rebuild')
+  //}, 10000)
+  const $errors = computed(() => {
+    console.log(formData)
+    console.log($v.value)
+    return Object.keys(formData).reduce((obj, key) => {
+      if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
       } else {
         obj[key] = []
       }
       return obj
     }, {})
-  )
+  })
 
   const validate = () => {
     unref($v).$touch()
@@ -89,12 +134,15 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
-    //if (!validate()) return
+    console.log($v.value)
+    console.log(validations.value)
+    //$v.value.$touch()
+    if (!validate()) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
       Vue.set(form, 'formData', formData)
-      emit('nextStage', { formData, action })
+      //emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
       emit('prevStage')
     } else if (action.action === 'saveForm') {
@@ -290,11 +338,15 @@ export default function ({
   }
 
   const showField = (type, field) => {
-    console.log(field)
-    console.log(typeof field.isShow === 'boolean', field.isShow)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => formData[el.field] === el.value)
+    if (field.isShow.conditions) {
+      field.isShow.value = condition()
+      console.log(validations.value)
+      //$v = useVuelidate(validations.value, formData)
+      rebuildFormData()
+    }
     return (
       type === field.type &&
       !loading.value &&
