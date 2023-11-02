@@ -338,7 +338,7 @@
             >
               <template slot="item" slot-scope="{ item }">
                 <div class="d-flex flex-column">
-                  <p>{{ item.fio }}</p>
+                  <p>{{ item.fio }}{{ item.id }}</p>
                   <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
               </template>
