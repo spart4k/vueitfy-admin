@@ -75,6 +75,7 @@ export default function ({
   const update = (data) => {
     Object.keys(data).forEach((key) => {
       if (formData[key]) {
+        console.log(data)
         formData[key].value = data[key]
       }
     })
@@ -127,7 +128,7 @@ export default function ({
 
   const changeAutocomplete = async (params) => {
     //const { value, field } = data
-    console.log(params)
+    console.log(params, hasDepenceFieldsApi())
     if (hasDepenceFieldsApi()) {
       await getDependies(params)
     }
@@ -136,7 +137,6 @@ export default function ({
       params.field.dependence.type &&
       params.field.dependence.fillField
     ) {
-      console.log(params)
       params.field.dependence.fillField.forEach(
         (el) => (formData[el] = params.item[el])
       )
@@ -150,7 +150,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log(value)
     const depField = field.dependence.field
     let url = ''
     if (field.dependence.url) {
@@ -164,7 +163,6 @@ export default function ({
         }
       })
     }
-    console.log(url)
     field.loading = true
     const data = await store.dispatch(field.dependence.module, {
       value,
@@ -173,16 +171,12 @@ export default function ({
     })
 
     const targetField = form.fields.find((el) => el.name === depField)
-    console.log(targetField)
     targetField.items = targetField.defaultItems
       ? [...targetField.defaultItems, ...data]
       : data
     let card = targetField.items.find((el) => el.id === formData[depField])
 
     //if (data.length === 1) formData[depField] = card.id
-    console.log(formData[depField])
-    console.log(targetField)
-    console.log(card)
     if (card)
       if (field.dependence.fillField) {
         field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -312,6 +306,13 @@ export default function ({
       : false
   }
 
+  const hideField = (field) => {
+    console.log('zxc', field.isShow)
+    return field.isShow
+      ? field.isShow.every((el) => formData[el.field] === el.value)
+      : true
+  }
+
   watch(
     () => watcher,
     (wtch) => {
@@ -352,5 +353,6 @@ export default function ({
     showField,
     openMenu,
     disabledField,
+    hideField,
   }
 }

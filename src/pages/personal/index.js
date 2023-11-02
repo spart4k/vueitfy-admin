@@ -1251,7 +1251,6 @@ const defaultForm = [
             bootstrapClass: [''],
             disable: false,
             //mode: 'edit',
-            isShow: true,
           }),
           selectField({
             label: 'Направления',
@@ -1384,7 +1383,11 @@ const defaultForm = [
             },
             validations: { required },
             bootstrapClass: [''],
-            isShow: [{ field: 'transfer', value: true }],
+            isShow: false,
+            isShowDependence: [
+              { field: 'transfer', value: true },
+              { field: 'grajdanstvo_id', value: 1 },
+            ],
           }),
           stringField({
             label: 'Адрес Б',

@@ -89,6 +89,7 @@ export default {
       showField,
       openMenu,
       disabledField,
+      hideField,
     } = useForm({
       form: props.tab,
       context,
@@ -121,6 +122,7 @@ export default {
       clickHandler,
       isEdit,
       disabledField,
+      hideField,
     }
   },
 }
