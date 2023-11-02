@@ -1,8 +1,8 @@
 import Vue, { ref, computed, watch, unref, reactive } from 'vue'
-import useVuelidate from '@vuelidate/core'
+import { useVuelidate } from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
-import { required } from '@/utils/validation.js'
 
 /**
  * @param loading {boolean}
@@ -24,12 +24,10 @@ export default function ({
   prevTab,
   setFields,
 }) {
-  console.log(changeForm)
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
   const { emit } = context.root.ctx
-  console.log(Object.keys(fields))
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       //console.log(obj[key])
@@ -38,12 +36,11 @@ export default function ({
     }, {})
   )
   const validations = () => {
-    console.log('CHANGE RULES')
     const formFields = {}
     form.fields.forEach((el) => {
       formFields[el.name] = el
     })
-    return Object.keys(formData).reduce((obj, key) => {
+    const valFields = Object.keys(formData).reduce((obj, key) => {
       if (
         (typeof formFields[key].isShow === 'boolean' &&
           !formFields[key].isShow) ||
@@ -52,7 +49,6 @@ export default function ({
       ) {
         return obj
       }
-      console.log(obj, key)
       obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
@@ -61,22 +57,21 @@ export default function ({
     //    $each: valFields,
     //  },
     //})
-    //return {
-    //  required,
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //}
+    console.log('VALIDATION', valFields.value)
+    return valFields
+    // return {
+    //   required,
+    //   fields: {
+    //     $each: valFields,
+    //   },
+    // }
   }
 
-  console.log(validations)
-  let $v = null
   const computedFormData = computed(() => formData)
-  $v = useVuelidate(validations(), computedFormData.value)
+  const $v = useVuelidate(validations(), computedFormData.value)
+  console.log('$v', $v.value)
 
   const rebuildFormData = () => {
-    console.log(setFields(), 'FIELDS SET UP')
-    console.log(fields, 'FIELDS SET')
     Object.assign(
       formData,
       reactive(
@@ -93,8 +88,7 @@ export default function ({
   //  console.log('rebuild')
   //}, 10000)
   const $errors = computed(() => {
-    console.log(formData)
-    console.log($v.value)
+    console.log('ERROR CHANGE')
     return Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
@@ -134,8 +128,6 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
-    console.log($v.value)
-    console.log(validations.value)
     //$v.value.$touch()
     if (!validate()) return
     if (action.action === 'saveFilter') {
@@ -343,7 +335,6 @@ export default function ({
       field.isShow.conditions?.every((el) => formData[el.field] === el.value)
     if (field.isShow.conditions) {
       field.isShow.value = condition()
-      console.log(validations.value)
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
     }
