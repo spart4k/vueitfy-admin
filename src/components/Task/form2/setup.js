@@ -144,7 +144,8 @@ const Form2 = defineComponent({
       console.log(setPersonalData)
       await setStartStep()
       console.log(setStartStep)
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
       console.log(changeStatusTask)
       console.log(finalData.value)
     }

@@ -18,7 +18,7 @@ const Form28 = defineComponent({
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
@@ -90,7 +90,8 @@ const Form28 = defineComponent({
       // const data = await getPaymentId() TODO: Доделать, когда запрос поправят
       if ((() => true)()) {
         // TODO: Сюда закинуть data из строки выше
-        await changeStatustask()
+        const { success } = await changeStatustask()
+        success && ctx.emit('closePopup')
       }
     }
 

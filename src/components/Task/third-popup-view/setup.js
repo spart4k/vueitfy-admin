@@ -21,7 +21,7 @@ const ThirdPopupView = defineComponent({
       type: Object,
     },
   },
-  setup({ data }) {
+  setup({ data }, ctx) {
     const infoObj = {
       pasp: {
         key: 'key',
@@ -103,7 +103,8 @@ const ThirdPopupView = defineComponent({
       successMessage: 'Файл успешно загружен',
     })
     let sendDoneTask = async () => {
-      await doneRequest()
+      const { success } = await doneRequest()
+      success && ctx.emit('closePopup')
     }
     console.log(imagePreview.value)
     const handleFileUpload = async (e, indexForPhoto) => {

@@ -96,7 +96,8 @@ const Form21 = defineComponent({
     const completeTask = async () => {
       await setUserKey()
       await addKeyToPersonal()
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
     }
 
     const confirmKey = () => {

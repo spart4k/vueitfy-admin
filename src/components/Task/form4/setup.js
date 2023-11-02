@@ -20,7 +20,7 @@ const Form4 = defineComponent({
     },
   },
 
-  setup({ data }) {
+  setup({ data }, ctx) {
     const context = {
       root: {
         store,

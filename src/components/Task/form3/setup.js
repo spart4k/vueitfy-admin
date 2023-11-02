@@ -20,7 +20,7 @@ const Form3 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }) {
+  setup({ data }, ctx) {
     const context = {
       root: {
         store,
@@ -49,7 +49,7 @@ const Form3 = defineComponent({
       file.value = e[0]
     }
 
-    const sendData = () => {
+    const sendData = async () => {
       console.log(selectName.value, file.value)
       let fileExt = file.value.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -109,10 +109,11 @@ const Form3 = defineComponent({
             },
           }),
       })
-      makeRequest()
-      updateFileData()
-      pushSomeShit()
-      changeStatus()
+      await makeRequest()
+      await updateFileData()
+      await pushSomeShit()
+      const { success } = await changeStatus()
+      success && ctx.emit('closePopup')
     }
     return {
       options,

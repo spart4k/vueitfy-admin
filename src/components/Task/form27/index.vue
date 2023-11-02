@@ -30,7 +30,7 @@
         <v-icon left> $IconClose </v-icon>
         Отклонить
       </v-btn>
-      <v-btn small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" small color="blue-grey">
         <v-icon left> $IconMain </v-icon>
         Закрыть
       </v-btn>

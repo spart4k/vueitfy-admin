@@ -117,7 +117,7 @@ const task = defineComponent({
     // })
 
     const formatDate = (date) => {
-      return moment(date).locale('ru').format('D MMMM YYYY, HH:mm')
+      return moment(date).locale('ru').format('D MMMM, HH:mm')
     }
 
     onMounted(async () => {

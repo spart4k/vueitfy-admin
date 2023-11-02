@@ -18,7 +18,7 @@
         <v-row class="task__info-row mb-2">
           <v-icon small>$IconPeople</v-icon>
           <span>{{ data.task.from_fio }}</span>
-          <v-icon small>$IconArrowRight</v-icon>
+          <span>→</span>
           <span>{{ data.task.to_fio }}</span>
         </v-row>
         <v-row class="task__info-row mb-2">
@@ -38,34 +38,94 @@
       <v-divider></v-divider>
       <div class="task-slot">
         <!--Внесение-->
-        <Form1 v-if="data.task.task_type_id === 1" :data="data"></Form1>
+        <Form1
+          v-if="data.task.task_type_id === 1"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form1>
         <!--Подтверждение-->
-        <Form2 v-if="data.task.task_type_id === 2" :data="data"></Form2>
+        <Form2
+          v-if="data.task.task_type_id === 2"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form2>
         <!--Расходы-->
-        <Form3 v-if="data.task.task_type_id === 3" :data="data"></Form3>
-        <Form4 v-if="data.task.task_type_id === 4" :data="data"></Form4>
+        <Form3
+          v-if="data.task.task_type_id === 3"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form3>
+        <Form4
+          v-if="data.task.task_type_id === 4"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form4>
         <!--Исправление-->
-        <Form7 v-if="data.task.task_type_id === 7" :data="data"></Form7>
-        <Form8 v-if="data.task.task_type_id === 8" :data="data"></Form8>
-        <Form8 v-if="data.task.task_type_id === 9" :data="data"></Form8>
+        <Form7
+          v-if="data.task.task_type_id === 7"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form7>
+        <Form8
+          v-if="data.task.task_type_id === 8"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form8>
+        <Form8
+          v-if="data.task.task_type_id === 9"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form8>
         <!--Подтверждение назначения-->
-        <Form15 v-if="data.task.task_type_id === 15" :data="data" />
+        <Form15
+          v-if="data.task.task_type_id === 15"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
         <!--Прикладывание/корректировка выработки-->
-        <Form17 v-if="data.task.task_type_id === 17" :data="data"></Form17>
+        <Form17
+          v-if="data.task.task_type_id === 17"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form17>
         <!--Проверка выработки-->
-        <Form18 v-if="data.task.task_type_id === 18" :data="data"></Form18>
+        <Form18
+          v-if="data.task.task_type_id === 18"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form18>
         <!--Внесение ключа-->
-        <Form20 v-if="data.task.task_type_id === 20" :data="data" />
+        <Form20
+          v-if="data.task.task_type_id === 20"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
         <!--Подтверждение ключа-->
-        <Form21 v-if="data.task.task_type_id === 21" :data="data" />
+        <Form21
+          v-if="data.task.task_type_id === 21"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
         <!--Согласование начисления-->
-        <Form27 v-if="data.task.task_type_id === 27" :data="data" />
+        <Form27
+          v-if="data.task.task_type_id === 27"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
         <!--Корректировка начисления-->
-        <Form28 v-if="data.task.task_type_id === 28" :data="data" />
+        <Form28
+          v-if="data.task.task_type_id === 28"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
         <!--Корректировка документов-->
-        <!-- <Form8 v-if="data.task.task_type_id === 8" :data="data"></Form8> -->
-        <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data"></Form23> -->
-        <ThirdPopupView v-if="data.task.task_type_id === 23" :data="data" />
+        <!-- <Form8 v-if="data.task.task_type_id === 8" :data="data" @closePopup"$emit('closePopup')></Form8> -->
+        <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data" @closePopup"$emit('closePopup')></Form23> -->
+        <ThirdPopupView
+          v-if="data.task.task_type_id === 23"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
       </div>
     </div>
     <div v-if="data.code === 2" class="task-error">

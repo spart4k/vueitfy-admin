@@ -89,7 +89,8 @@ const Form20 = defineComponent({
 
     const completeTask = async () => {
       await setUserKey()
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
     }
 
     return { keyForm, keyFormErrors, keyFormValidate, completeTask, dopData }
