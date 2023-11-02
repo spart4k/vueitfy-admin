@@ -113,9 +113,17 @@ const Form2 = defineComponent({
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: () => {
+        const taskDeadline =
+          Date.parse(props.data.task.date_create) +
+          props.data.task.time_execution * 1000 -
+          Date.now()
         return store.dispatch('taskModule/setPartTask', {
           data: {
-            status: finalData.value.rejectedDocs.length ? 6 : 2,
+            status: finalData.value.rejectedDocs.length
+              ? 6
+              : taskDeadline > 0
+              ? 2
+              : 3,
             data: {
               process_id: props.data.task.process_id,
               personal_id: props.data.entity.id,

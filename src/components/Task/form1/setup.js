@@ -161,7 +161,7 @@ const Form1 = defineComponent({
         return store.dispatch('taskModule/setPartTask', {
           data: {
             data: {
-              status: taskDeadline > 0 ? 2 : 6,
+              status: taskDeadline > 0 ? 2 : 3,
               data: {
                 process_id: task.process_id,
                 task_id: task.id,
