@@ -1,17 +1,11 @@
 <template>
   <div>
     <div style="padding: 20px">
-      <span style="font-weight: 700; font-size: 20px"
-        >{{ data.entity.name }} {{ data.entity.data_rojd }}</span
-      >
-      <div>
-        <div>
-          <span>Менеджер: {{ data.entity.account_name }}</span>
-        </div>
-        <div>
-          <span>Объект: {{ data.entity.object_id }}</span>
-        </div>
-      </div>
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
+        >&nbsp;({{ data.entity.data_rojd }} г.р)
+      </v-card-title>
+      <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <span>Создайте расход на документы:</span>
       <v-row>
         <v-col cols="12">

@@ -1,5 +1,10 @@
 <template>
-  <div class="docs-required">
+  <div
+    class="docs-required"
+    :class="{
+      'is-unconfirmed': !isShowCansel,
+    }"
+  >
     <div class="docs-required__container-layout">
       <div
         @click="() => (isImgPopupOpen = true)"
@@ -14,7 +19,7 @@
     </div>
     <div class="docs-required__contols-panel">
       <div v-if="isShowAdd" @click="clickAdd">
-        <v-icon small>$IconAdd</v-icon>
+        <v-icon small>$IconGalka</v-icon>
       </div>
       <div v-if="isShowCansel" @click="clickDel">
         <v-icon small>$IconClose</v-icon>

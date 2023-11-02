@@ -4,11 +4,13 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 
 const Form8 = defineComponent({
   name: 'Form8',
   components: {
     Dropzone,
+    TextInfo,
   },
 
   props: {
@@ -21,6 +23,16 @@ const Form8 = defineComponent({
     const context = {
       root: {
         store,
+      },
+    }
+    const textInfo = {
+      manager: {
+        key: 'Менеджер',
+        value: data.entity.account_name,
+      },
+      obj: {
+        key: 'Объект',
+        value: data.entity.object_name,
       },
     }
     // let getNameDoc = (docID) => {

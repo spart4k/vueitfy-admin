@@ -36,10 +36,11 @@
                 x-small
                 v-if="isShowBtnArray[index]"
                 @click="addToDenied(index)"
+                icon
               >
-                <v-icon x-small>$IconStar</v-icon>
+                <v-icon x-small>$IconGalka</v-icon>
               </v-btn>
-              <v-btn fab x-small tag="label">
+              <v-btn icon fab x-small tag="label">
                 <input
                   class="d-none"
                   type="file"

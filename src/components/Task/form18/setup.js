@@ -64,7 +64,13 @@ const Form18 = defineComponent({
       addGroup()
     })
 
-    return { textInfo, addGroup, removeGroup, formGroup }
+    return {
+      textInfo,
+      addGroup,
+      removeGroup,
+      formGroup,
+      entity: props.data.entity,
+    }
   },
 })
 export default Form18

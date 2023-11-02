@@ -94,7 +94,14 @@ const Form17 = defineComponent({
       await changeStatusTask()
     }
 
-    return { keyForm, keyFormErrors, keyFormValidate, completeTask, dopData }
+    return {
+      keyForm,
+      keyFormErrors,
+      keyFormValidate,
+      completeTask,
+      dopData,
+      entity: props.data.entity,
+    }
   },
 })
 export default Form17

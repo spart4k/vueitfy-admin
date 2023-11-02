@@ -160,7 +160,15 @@ const Form27 = defineComponent({
         }
       }
     }
-    return { infoObj, confirm, reject, formData, formErrors, directionToMagnit }
+    return {
+      infoObj,
+      confirm,
+      reject,
+      formData,
+      formErrors,
+      directionToMagnit,
+      entity: props.data.entity,
+    }
   },
 })
 export default Form27

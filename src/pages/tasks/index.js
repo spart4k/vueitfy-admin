@@ -189,7 +189,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '900px',
+    width: '650px',
     method: 'get',
     alias: 'personal',
     url: '/get/form/',

@@ -47,7 +47,6 @@ const Form1 = defineComponent({
     const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
-    console.log('dopData', JSON.parse(props.data.task.dop_data))
     const textInfo = {
       manager: {
         key: 'Менеджер',

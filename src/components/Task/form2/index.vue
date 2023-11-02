@@ -1,11 +1,12 @@
 <template>
   <div>
     <div style="padding: 20px">
-      <v-card-title class="d-flex justify-center">
-        {{ entity.name }} ({{ dataRojd }} г.р)
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ entity.name }}</span
+        >&nbsp;({{ dataRojd }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <v-expansion-panels v-if="isHasOsnDoc">
+      <v-expansion-panels class="mb-5" v-if="isHasOsnDoc" accordion>
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">

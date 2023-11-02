@@ -15,7 +15,18 @@
         }
     }
 
-    &__info {}
+    .circle {
+        height: 10px;
+        width: 10px;
+        background-color: #002FD3;
+        border-radius: 50%;
+    }
+
+    &__info {
+        * {
+            font-size: 14px;
+        }
+    }
 
     &__info-row {
         display: flex;
@@ -50,4 +61,15 @@
         padding: 5px;
         border-radius: 10px
     }
+}
+
+.task-error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: rgba(0 0 0/20%);
+    height: 500px;
 }
