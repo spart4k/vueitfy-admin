@@ -49,6 +49,7 @@ export default {
             })
           })
         }
+        console.log(url)
         const data = await getList(url, {
           countRows: 10,
           currentPage: props.field.page,

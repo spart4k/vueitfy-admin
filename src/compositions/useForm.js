@@ -3,6 +3,8 @@ import useVuelidate from '@vuelidate/core'
 import store from '@/store'
 import { getList } from '@/api/selects'
 import { required } from '@/utils/validation.js'
+import { data } from 'jquery'
+import { filter } from 'lodash'
 
 /**
  * @param loading {boolean}
@@ -23,13 +25,12 @@ export default function ({
   isEdit,
   prevTab,
   setFields,
+  mode,
 }) {
-  console.log(changeForm)
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
   const { emit } = context.root.ctx
-  console.log(Object.keys(fields))
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       //console.log(obj[key])
@@ -38,7 +39,6 @@ export default function ({
     }, {})
   )
   const validations = () => {
-    console.log('CHANGE RULES')
     const formFields = {}
     form.fields.forEach((el) => {
       formFields[el.name] = el
@@ -52,7 +52,6 @@ export default function ({
       ) {
         return obj
       }
-      console.log(obj, key)
       obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
@@ -69,14 +68,11 @@ export default function ({
     //}
   }
 
-  console.log(validations)
   let $v = null
   const computedFormData = computed(() => formData)
   $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
-    console.log(setFields(), 'FIELDS SET UP')
-    console.log(fields, 'FIELDS SET')
     Object.assign(
       formData,
       reactive(
@@ -93,8 +89,6 @@ export default function ({
   //  console.log('rebuild')
   //}, 10000)
   const $errors = computed(() => {
-    console.log(formData)
-    console.log($v.value)
     return Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
@@ -134,15 +128,13 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
-    console.log($v.value)
-    console.log(validations.value)
     //$v.value.$touch()
     if (!validate()) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
       Vue.set(form, 'formData', formData)
-      //emit('nextStage', { formData, action })
+      emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
       emit('prevStage')
     } else if (action.action === 'saveForm') {
@@ -163,6 +155,7 @@ export default function ({
     )
 
   const initPreRequest = () => {
+    console.log('init pre request')
     let queries = []
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
@@ -182,7 +175,8 @@ export default function ({
 
   const changeAutocomplete = async (params) => {
     //const { value, field } = data
-    if (hasDepenceFieldsApi()) {
+    console.log('test')
+    if (params.field.dependence && params.field.dependence.type === 'api') {
       await getDependies(params)
     }
     if (
@@ -203,30 +197,47 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
+    console.log(field, 'DEPENDIES')
+    let fieldValue
+    if (field.dependence.type !== 'api') return
     const depField = field.dependence.field
     let url = ''
     if (field.dependence.url) {
       //const splitedUrl = field.dependence.url.split('/')
       field.dependence.url.forEach((el) => {
-        if (el.source === 'props') {
-          url = url + '/' + form.formData[el.field]
+        if (el.field === 'this' && el.source === 'formData') {
+          fieldValue = value
         } else if (el.source === 'formData') {
-          url = url + '/' + formData[el.field]
+          fieldValue = formData[el.field]
+        } else if (el.source === 'props') {
+          fieldValue = form.formData[fieldValue]
         }
+        console.log(fieldValue)
+        url = url + '/' + fieldValue
+        //if (el.source === 'props') {
+        //  url = url + '/' + form.formData[fieldValue]
+        //} else if (el.source === 'formData') {
+        //  console.log(JSON.stringify(formData))
+        //  url = url + '/' + formData[fieldValue]
+        //}
       })
     }
     field.loading = true
+    console.log(field.dependence.module)
     const data = await store.dispatch(field.dependence.module, {
       value,
       field,
       url,
     })
 
-    const targetField = form.fields.find((el) => el.name === depField)
-    targetField.items = targetField.defaultItems
-      ? [...targetField.defaultItems, ...data]
-      : data
-    let card = targetField.items.find((el) => el.id === formData[depField])
+    let targetField, card
+    if (targetField) {
+      targetField = form.fields.find((el) => el.name === depField)
+      targetField.items = targetField.defaultItems
+        ? [...targetField.defaultItems, ...data]
+        : data
+      card = targetField.items.find((el) => el.id === formData[depField])
+    }
 
     //if (data.length === 1) formData[depField] = card.id
     if (card)
@@ -248,6 +259,11 @@ export default function ({
           field.dependence.fillField.forEach((el) => (formData[el] = ''))
         }
       }
+    if (field.dependence.action) {
+      if (field.dependence.action.type === 'hideOptions') {
+        console.log(data)
+      }
+    }
     field.loading = false
     //formData[field.dependence.field] = data
   }
@@ -305,31 +321,43 @@ export default function ({
   }
 
   const getData = async () => {
-    if (initPreRequest()) {
-      const [syncForm, lists] = await Promise.all(initPreRequest())
-      if (syncForm) {
-        for (let formKey in syncForm.data) {
-          const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
-          if (field) {
-            if (stringIsArray(syncForm.data[formKey]))
-              syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-            formData[field.name] = syncForm.data[formKey]
-            // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
-            if (
-              field.hasOwnProperty('dependence') &&
-              field.dependence.type === 'api'
-            ) {
-              await getDependies({ value: formData[field.name], field })
-            }
+    const [syncForm, lists] = await Promise.all(initPreRequest())
+    if (syncForm) {
+      for (let formKey in syncForm.data) {
+        const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
+        if (field) {
+          if (stringIsArray(syncForm.data[formKey]))
+            syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+          formData[field.name] = syncForm.data[formKey]
+          // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
+          if (
+            field.hasOwnProperty('dependence') &&
+            field.dependence.type === 'api'
+          ) {
+            await getDependies({ value: formData[field.name], field })
           }
         }
       }
-      if (hasSelect()) {
-        for (let keyList in lists.data) {
-          const field = form.fields.find((el) =>
-            el.alias ? el.alias === keyList : el.name === keyList
-          )
-          if (field) field.items = lists.data[keyList]
+    }
+    if (hasSelect()) {
+      console.log(lists)
+      for (let keyList in lists.data) {
+        const field = form.fields.find((el) =>
+          el.alias ? el.alias === keyList : el.name === keyList
+        )
+        if (field) {
+          if (field.hiding) {
+            if (field.hiding.conditions) {
+              const condition = field.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              console.log(condition)
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          field.items = lists.data[keyList]
         }
       }
     }
@@ -343,7 +371,6 @@ export default function ({
       field.isShow.conditions?.every((el) => formData[el.field] === el.value)
     if (field.isShow.conditions) {
       field.isShow.value = condition()
-      console.log(validations.value)
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
     }

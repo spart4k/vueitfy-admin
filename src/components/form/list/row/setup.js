@@ -3,6 +3,7 @@ import useForm from '@/compositions/useForm.js'
 
 import Autocomplete from '@/components/autocomplete'
 import store from '@/store'
+import useRequest from '@/compositions/useRequest'
 
 export default {
   name: 'Form-Rows-Row',
@@ -177,6 +178,13 @@ export default {
         })
       }
     }
+    const { makeRequest: makeRequestList } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('personal/getKeys', {
+          url: `/${props.tab.formData.object_id}/${formData.avatar_with_user_key_id}`,
+        }),
+    })
     const {
       formData,
       validate,
@@ -194,7 +202,7 @@ export default {
       context,
       loading,
       prevTab,
-      // makeRequestList,
+      makeRequestList,
     })
     onMounted(async () => {
       getDataFromPrevTav()

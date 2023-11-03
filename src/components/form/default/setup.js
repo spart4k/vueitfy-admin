@@ -107,6 +107,7 @@ export default {
       makeRequestList,
       isEdit,
       changeForm,
+      mode: isEdit.value,
     })
     onMounted(async () => {
       await getData()
