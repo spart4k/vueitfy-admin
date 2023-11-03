@@ -40,7 +40,8 @@ export default function ({
     form.fields.forEach((el) => {
       formFields[el.name] = el
     })
-    const valFields = Object.keys(formData).reduce((obj, key) => {
+    console.log('formFields', formFields, formData)
+    const valFields = Object.keys(formFields).reduce((obj, key) => {
       if (
         (typeof formFields[key].isShow === 'boolean' &&
           !formFields[key].isShow) ||
@@ -48,16 +49,12 @@ export default function ({
           !formFields[key].isShow.value)
       ) {
         return obj
+        // console.log(key, fields[key])
       }
       obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
-    //console.log({
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //})
-    console.log('VALIDATION', valFields.value)
+    console.log('VALIDATION', valFields)
     return valFields
     // return {
     //   required,
@@ -68,8 +65,8 @@ export default function ({
   }
 
   const computedFormData = computed(() => formData)
-  const $v = useVuelidate(validations(), computedFormData.value)
-  console.log('$v', $v.value)
+  let $v = useVuelidate(validations(), computedFormData.value)
+  console.log('$v', $v)
 
   const rebuildFormData = () => {
     Object.assign(
@@ -83,25 +80,41 @@ export default function ({
       )
     )
   }
-  //setTimeout(() => {
-  //  rebuildFormData()
-  //  console.log('rebuild')
-  //}, 10000)
-  const $errors = computed(() => {
-    console.log('ERROR CHANGE')
-    return Object.keys(formData).reduce((obj, key) => {
+  // setInterval(() => {
+  //   // console.log(errors.value)
+  // }, 3000)
+  const errors = ref({})
+  const errorsCount = () => {
+    // console.log('ERROR CHANGE')
+    console.log(form.fields, formData)
+    errors.value = Object.keys(formData).reduce((obj, key) => {
+      console.log($v.value[key])
       if ($touched.value && $v.value[key]) {
-        obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
-      } else {
-        obj[key] = []
+        const item = form.fields.find((x) => x.name === key).isShow
+        if (
+          (typeof item === 'boolean' && item) ||
+          (typeof item === 'object' && item.value)
+        ) {
+          // console.log(errors.value, key)
+          obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
+          // obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
+        } else {
+          obj[key] = []
+        }
       }
+      // console.log(obj)
       return obj
     }, {})
-  })
+    // console.log('errors.value', errors.value)
+    // console.log(errors.value)
+  }
+  // errorsCount()
 
   const validate = () => {
+    $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
     $touched.value = true
+    errorsCount()
     return !unref($v).$invalid
   }
 
@@ -134,7 +147,7 @@ export default function ({
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
       Vue.set(form, 'formData', formData)
-      //emit('nextStage', { formData, action })
+      emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
       emit('prevStage')
     } else if (action.action === 'saveForm') {
@@ -386,7 +399,7 @@ export default function ({
 
   return {
     vForm: $v,
-    formErrors: $errors,
+    formErrors: errors,
     invalidForm: $invalid,
     touchedForm: $touched,
     validate,
