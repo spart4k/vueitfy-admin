@@ -71,11 +71,11 @@
           :data="data"
           @closePopup="$emit('closePopup')"
         ></Form8>
-        <Form8
+        <Form9
           v-if="data.task.task_type_id === 9"
           :data="data"
           @closePopup="$emit('closePopup')"
-        ></Form8>
+        ></Form9>
         <!--Подтверждение назначения-->
         <Form15
           v-if="data.task.task_type_id === 15"

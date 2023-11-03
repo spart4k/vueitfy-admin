@@ -6,6 +6,7 @@ import {
   setFile,
   updateDataFile,
   // changeStatusAndData,
+  startProcess,
   putTask,
   setBid,
 } from '@/api/TaskService'
@@ -55,6 +56,14 @@ const taskModule = {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
       const result = await updateDataFile('set/data/personal_doc', data)
+      return result
+    },
+
+    // /task/start/process
+
+    async startProcess(_, data) {
+      console.log(data)
+      const result = await startProcess('task/start/process', data)
       return result
     },
 

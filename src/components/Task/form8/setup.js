@@ -201,34 +201,31 @@ const Form8 = defineComponent({
 
       // Когда запрос будет готов от Миши, нужно сформировать его по примеру ниже из старого кода. Функцию эту запушить в переменную, которая при нажаити на кнопку вызывает функции запросов в цикле
       // Добавить эот запрос в массив запросов нужно по условию, код закомментирован
-      // const { makeRequest: createFillScanProcess } = useRequest({
-      //   context,
-      //   request: () =>
-      //     store.dispatch('taskModule/loadImage', {
-      //       id: 1,
-      //       folder: 'personal_doc',
-      //       fileName: fileName,
-      //       file: form_data,
-      //     }),
-      //   successMessage: 'Файл успешно загружен',
+      const { makeRequest: createFillScanProcess } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/startProcess', {
+            id: 1,
+            folder: 'personal_doc',
+            fileName: fileName,
+            file: form_data,
+          }),
+        successMessage: 'Файл успешно загружен',
+      })
 
-      //   $.ajax('/personal/create_fill_scan_process', {
-      //     method: "POST",
-      //     data: { parent_process: <?php echo $task['process_id']; ?>,
-      //             process_id: 1,
-      //             account_id: <?php echo $task['to_account_id']; ?>,
-      //             personal_id: <?php echo $entity['id']; ?>,
-      //             parent_action: <?php echo $task['id']; ?>,
-      //             type_parent_action: 2,
-      //             docs_id: docs_id
-      //     },
-      //     success: function() {
-      //         docsAdd = [];
-      //         slidePopup('Документы успешно прикреплены!', 'success');
-      //         checkValid();
-      //     }
-      // })
-      // })
+      // $.ajax('/personal/create_fill_scan_process', {
+      //   method: "POST",
+      //   data: { parent_process: <?php echo $task['process_id']; ?>,
+      //           process_id: 1,
+      //           account_id: <?php echo $task['to_account_id']; ?>,
+      //           personal_id: <?php echo $entity['id']; ?>,
+      //           docs_id: docs_id,
+      //           parent_action: <?php echo $task['id']; ?>,
+      //           type_parent_action: 2
+      //   },
+      //   success: function() {
+
+      //   }
       let additionalRequestFlag
       if (
         e.item != 7 &&
