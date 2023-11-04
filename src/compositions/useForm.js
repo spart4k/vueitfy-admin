@@ -30,7 +30,6 @@ export default function ({
   const { emit } = context.root.ctx
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
-      //console.log(obj[key])
       obj[key] = ref(fields[key].default)
       return obj
     }, {})
@@ -40,7 +39,6 @@ export default function ({
     form.fields.forEach((el) => {
       formFields[el.name] = el
     })
-    console.log('formFields', formFields, formData)
     const valFields = Object.keys(formFields).reduce((obj, key) => {
       if (
         (typeof formFields[key].isShow === 'boolean' &&
@@ -49,12 +47,10 @@ export default function ({
           !formFields[key].isShow.value)
       ) {
         return obj
-        // console.log(key, fields[key])
       }
-      obj[key] = { ...fields[key].validations, $autoDirty }
+      obj[key] = { ...formFields[key].validations, $autoDirty }
       return obj
     }, {})
-    console.log('VALIDATION', valFields)
     return valFields
     // return {
     //   required,
@@ -66,14 +62,12 @@ export default function ({
 
   const computedFormData = computed(() => formData)
   let $v = useVuelidate(validations(), computedFormData.value)
-  console.log('$v', $v)
 
   const rebuildFormData = () => {
     Object.assign(
       formData,
       reactive(
         Object.keys(setFields()).reduce((obj, key) => {
-          //console.log(obj[key])
           obj[key] = ref(formData[key])
           return obj
         }, {})
@@ -83,30 +77,23 @@ export default function ({
   // setInterval(() => {
   //   // console.log(errors.value)
   // }, 3000)
-  const errors = ref({})
+  const $errors = ref({})
   const errorsCount = () => {
-    // console.log('ERROR CHANGE')
-    console.log(form.fields, formData)
-    errors.value = Object.keys(formData).reduce((obj, key) => {
-      console.log($v.value[key])
+    $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         const item = form.fields.find((x) => x.name === key).isShow
         if (
           (typeof item === 'boolean' && item) ||
           (typeof item === 'object' && item.value)
         ) {
-          // console.log(errors.value, key)
           obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
           // obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
         } else {
           obj[key] = []
         }
       }
-      // console.log(obj)
       return obj
     }, {})
-    // console.log('errors.value', errors.value)
-    // console.log(errors.value)
   }
   // errorsCount()
 
@@ -399,7 +386,7 @@ export default function ({
 
   return {
     vForm: $v,
-    formErrors: errors,
+    formErrors: $errors,
     invalidForm: $invalid,
     touchedForm: $touched,
     validate,
