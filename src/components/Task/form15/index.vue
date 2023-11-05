@@ -8,15 +8,15 @@
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn class="mr-2" small color="info">
+      <v-btn @click="confirm" class="mr-2" small color="info">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
-      <v-btn class="mr-2" small color="error">
+      <v-btn @click="reject" class="mr-2" small color="error">
         <v-icon left> $IconClose </v-icon>
         Отклонить
       </v-btn>
-      <v-btn small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" small color="blue-grey">
         <v-icon left> $IconMain </v-icon>
         Закрыть
       </v-btn>

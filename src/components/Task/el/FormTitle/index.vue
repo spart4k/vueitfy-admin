@@ -1,5 +1,10 @@
 <template>
-  <div class="docs-required">
+  <div
+    class="docs-required"
+    :class="{
+      'is-unconfirmed': !isShowCansel,
+    }"
+  >
     <div class="docs-required__container-layout">
       <div
         @click="() => (isImgPopupOpen = true)"
@@ -8,13 +13,13 @@
         <img :src="docs.path_doc" class="docs-required__image" />
       </div>
       <div class="docs-required__name-container">
-        <span>{{ name }}</span>
+        <span>{{ docName }}</span>
         <span>{{ docs.personal_id }}</span>
       </div>
     </div>
     <div class="docs-required__contols-panel">
       <div v-if="isShowAdd" @click="clickAdd">
-        <v-icon small>$IconAdd</v-icon>
+        <v-icon small>$IconGalka</v-icon>
       </div>
       <div v-if="isShowCansel" @click="clickDel">
         <v-icon small>$IconClose</v-icon>

@@ -18,7 +18,7 @@ import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
-import GrishaView from '@/views/GrishaView'
+import GrishaView from '@/views/GrishaView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
