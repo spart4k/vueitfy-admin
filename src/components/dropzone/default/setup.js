@@ -57,6 +57,9 @@ export default {
       if (props.options.withoutSave) {
         console.log('process')
         await loadFile(files)
+        if (props.options.callbacks) {
+          props.options.callbacks()
+        }
         //dropzone.value.processQueue()
       } else {
         console.log(files)
@@ -75,6 +78,10 @@ export default {
       //dropzone.value.processQueue()
       //value.value.push(files)
       // console.log(dropzone.value)
+    }
+    let clearDropzone = () => {
+      dropzone.value.removeAllFiles()
+      // console.log('wdadwwadwadwa')
     }
     const showSuccess = () => {
       //console.log(file)
@@ -163,6 +170,7 @@ export default {
       fillPreview,
       getUrlExtension,
       loadFile,
+      clearDropzone,
     }
   },
 }

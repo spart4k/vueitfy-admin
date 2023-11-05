@@ -44,6 +44,14 @@ const Form8 = defineComponent({
     // })
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
+    let listNewChet = ref('')
+
+    let clearDropzone = ref(null)
+
+    let listRequestsForUpload = ref([])
+    let file = ref('')
+    let disableFinishState = ref(0)
+    let isSetFilesCloseSchet = ref(false)
 
     onMounted(() => {
       data.data.docs_grajdanstvo.forEach((item, index) => {
@@ -57,87 +65,61 @@ const Form8 = defineComponent({
         }
         listDocuments.value.push(pasteObject)
       })
+      listNewChet.value = JSON.parse(data.data.zayavka.close_schet)
     })
-
-    let listRequestsForUpload = ref([])
-    let file = ref('')
-    let disableFinishState = ref(0)
-
-    // const sendData = () => {
-    //   console.log(selectName.value, file.value)
-    //   let fileExt = file.value.type.split('/')[1]
-    //   let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-    //   let form_data = new FormData()
-    //   form_data.append('file', file.value)
-    //   const { makeRequest } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/loadImage', {
-    //         id: 1,
-    //         folder: 'personal_doc',
-    //         fileName: fileName,
-    //         file: form_data,
-    //       }),
-    //     successMessage: 'Файл успешно загружен',
-    //   })
-    //   const { makeRequest: updateFileData } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/updateFileData', {
-    //         id: 1,
-    //         path_doc: `/personal_doc/${fileName}`,
-    //       }),
-    //   })
-
-    //   const { makeRequest: changeStatus } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/setPartTask', {
-    //         status: 2,
-    //         data: {
-    //           process_id: data.task.process_id,
-    //           task_id: data.task.id,
-    //           parent_action: data.task.id,
-    //           transfer: true,
-    //           manager_id: JSON.parse(data.entity.data_subvision)['leader'],
-    //           personal_id: data.entity.personal_id,
-    //           next: JSON.parse(data.task.dop_data).after_return
-    //             ? JSON.parse(data.task.dop_data).after_return
-    //             : true,
-    //         },
-    //       }),
-    //   })
-    //   const { makeRequest: pushSomeShit } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/setBid', {
-    //         data: {
-    //           id: data.entity.id,
-    //           items: {
-    //             rashod_vid_id: selectName.value.id,
-    //             count: 1,
-    //             price: price.value,
-    //             name: '',
-    //             is_debit: 1,
-    //           },
-    //         },
-    //       }),
-    //   })
-    //   makeRequest()
-    //   updateFileData()
-    //   pushSomeShit()
-    //   changeStatus()
-    // }
     let removeFilesPatent = (e, options) => {
       console.log(e, options)
     }
+    let sendCloseDocsSchet = (e) => {
+      console.log(e)
+      const { makeRequest: setDataZayavka } = useRequest({
+        context,
+        request: () => {
+          console.log(JSON.parse(data.task.dop_data).rashod_id)
+          return store.dispatch('taskModule/setBid', {
+            data: {
+              id: Number(JSON.parse(data.task.dop_data).rashod_id),
+              close_schet: listNewChet.value,
+            },
+          })
+        },
+        successMessage: 'Файл успешно загружен',
+      })
+
+      setDataZayavka()
+      isSetFilesCloseSchet.value = false
+      listOtherDoc.value.forEach((elem, index) => {
+        elem()
+      })
+      listOtherDoc.value = []
+      clearDropzone.value.clearDropzone()
+    }
+    let isSaveDocCloses = ref(false)
     let listOtherDoc = ref([])
     let addFilesPatent = (e, options) => {
-      e.forEach((elem, index) => {
+      console.log(Object.values(e), listNewChet.value, listNewChet.value.at(-1))
+      let objectForCloseChet
+      let lastElem
+      Object.values(e).forEach((elem, index) => {
+        if (listNewChet.value.length) {
+          lastElem = listNewChet.value.length
+          objectForCloseChet = lastElem + 1
+        }
         let fileExt = elem.type.split('/')[1]
-        let fileName = `personal_doc_` + Date.now() + '.' + fileExt
+        let fileName =
+          `personal_doc_` +
+          Date.now() +
+          Math.floor(Math.random()) * Math.floor(Math.random()) +
+          '.' +
+          fileExt
         let form_data = new FormData()
         form_data.append('file', elem)
+        listNewChet.value.push({
+          id: listNewChet.value.length ? objectForCloseChet : 1,
+          name: fileName,
+          valid: 0,
+        })
+        console.log(listNewChet.value)
         const { makeRequest: updateFileData } = useRequest({
           context,
           request: () =>
@@ -159,9 +141,30 @@ const Form8 = defineComponent({
             }),
           successMessage: 'Файл успешно загружен',
         })
-
         listOtherDoc.value.push(updateFileData, loadImage)
+        isSetFilesCloseSchet.value = true
       })
+
+      // const { makeRequest: setDataZayavka } = useRequest({
+      //   context,
+      //   request: () =>
+      //     store.dispatch('taskModule/setBid', {
+      //       id: JSON.parse(data.task.dop_data).rashod_id,
+      //       close_schet: listNewChet.value,
+      //     }),
+      //   successMessage: 'Файл успешно загружен',
+      // })
+      //   $.ajax('/common/save/zayavka', {
+      //     method: "POST",
+      //     data: {id: <?php echo $rashod['id']; ?>, close_schet: JSON.stringify(closeSchet)},
+      //     success: function() {
+      //         docsClose = [];
+      //         slidePopup('Закрывающие документы успешно прикреплены!', 'success');
+      //         $('#form_zayavka_close_dz .dz-preview').remove();
+      //         $('#form_zayavka_close_dz').removeClass('dz-started');
+      //         checkValid();
+      //     }
+      // })
     }
 
     let addFiles = (e, options) => {
@@ -323,6 +326,10 @@ const Form8 = defineComponent({
       disableFinishState,
       sendTaskFinish,
       removeFilesPatent,
+      sendCloseDocsSchet,
+      isSetFilesCloseSchet,
+      clearDropzone,
+      listNewChet,
     }
   },
 })

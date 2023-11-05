@@ -6,12 +6,11 @@
         >&nbsp;({{ data.entity.data_rojd }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <span>Создайте расход на документы:</span>
       <v-row>
         <v-col cols="12">
-          <div style="display: flex; justify-content: center">
+          <!-- <div style="display: flex; justify-content: center">
             <v-btn color="info"> Открыть </v-btn>
-          </div>
+          </div> -->
         </v-col>
       </v-row>
       <div class="mb-10">
@@ -37,6 +36,7 @@
                 }"
                 :paramsForEmit="{ item: item.doc_id }"
                 @addFiles="addFiles"
+                ref="clearDropzone"
               ></Dropzone>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -57,7 +57,7 @@
         </v-col>
       </v-row>
       <div>
-        <span>Патент</span>
+        <span>Приложите закрывающие документы</span>
       </div>
       <v-row>
         <Dropzone
@@ -69,12 +69,19 @@
           }"
           :paramsForEmit="{}"
           @addFiles="addFilesPatent"
+          ref="clearDropzone"
         ></Dropzone>
       </v-row>
       <v-row>
         <v-col cols="12">
           <div style="display: flex; justify-content: center">
-            <v-btn color="success"> Приложить </v-btn>
+            <v-btn
+              color="success"
+              :disabled="!isSetFilesCloseSchet"
+              @click="sendCloseDocsSchet"
+            >
+              Приложить
+            </v-btn>
             <!-- <v-btn
               color="success"
               :disabled="listDisbledDocuments != 0"
@@ -85,11 +92,13 @@
           </div>
         </v-col>
       </v-row>
+      {{ listNewChet }} {{ listDisbledDocuments }}
+      {{ listNewChet.length }}
       <v-row class="py-2" justify="end">
         <v-btn
           color="info"
           class="mr-3"
-          :disabled="disableFinishState !== 2"
+          :disabled="listDisbledDocuments !== 0 && listNewChet.length"
           @click="sendTaskFinish"
         >
           <v-icon left> $IconMain </v-icon>
