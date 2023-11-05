@@ -52,7 +52,7 @@ const Form8 = defineComponent({
     let file = ref('')
     let disableFinishState = ref(0)
     let isSetFilesCloseSchet = ref(false)
-
+    let docs = ref(null)
     onMounted(() => {
       data.data.docs_grajdanstvo.forEach((item, index) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -75,7 +75,6 @@ const Form8 = defineComponent({
       const { makeRequest: setDataZayavka } = useRequest({
         context,
         request: () => {
-          console.log(JSON.parse(data.task.dop_data).rashod_id)
           return store.dispatch('taskModule/setBid', {
             data: {
               id: Number(JSON.parse(data.task.dop_data).rashod_id),
@@ -273,12 +272,16 @@ const Form8 = defineComponent({
       }
       console.log(listRequestsForUpload.value.length)
     }
-
     const sendDocuments = () => {
       listRequestsForUpload.value.forEach((elem, index) => {
         elem()
       })
       listRequestsForUpload.value = []
+      let newArray = []
+      listDocuments.value.forEach((elem, index) => {
+        newArray.push(ref(`docDropzone` + index))
+      })
+      console.log(newArray)
     }
 
     let sendTaskFinish = () => {
@@ -305,11 +308,13 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/setPartTask', {
-            status: 2,
             data: {
-              process_id: data.task.process_id,
-              task_id: data.task.id,
-              parent_action: data.task.id,
+              status: 2,
+              data: {
+                process_id: data.task.process_id,
+                task_id: data.task.id,
+                parent_action: data.task.id,
+              },
             },
           }),
       })
@@ -330,6 +335,7 @@ const Form8 = defineComponent({
       isSetFilesCloseSchet,
       clearDropzone,
       listNewChet,
+      docs,
     }
   },
 })

@@ -19,13 +19,24 @@
           <v-expansion-panel
             v-for="(item, index) in listDocuments"
             :key="index"
+            ref="docs"
           >
             <v-expansion-panel-header>
-              <span>
-                <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
-                {{ data.data.docs_spr[item.doc_id] }}
-              </span>
+              <div>
+                <span>
+                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
+                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  {{ data.data.docs_spr[item.doc_id] }}
+                </span>
+                <div v-if="item.path_doc" style="margin-top: 10px">
+                  Скан:
+                  <a
+                    :href="'https://test.api.personal-crm.ru' + item.path_doc"
+                    target="_blank"
+                    ><v-icon left width="10px"> $IconDocument </v-icon></a
+                  >
+                </div>
+              </div>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <Dropzone
@@ -36,7 +47,7 @@
                 }"
                 :paramsForEmit="{ item: item.doc_id }"
                 @addFiles="addFiles"
-                ref="clearDropzone"
+                :ref="`docDropzone` + index"
               ></Dropzone>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -92,13 +103,11 @@
           </div>
         </v-col>
       </v-row>
-      {{ listNewChet }} {{ listDisbledDocuments }}
-      {{ listNewChet.length }}
       <v-row class="py-2" justify="end">
         <v-btn
           color="info"
           class="mr-3"
-          :disabled="listDisbledDocuments !== 0 && listNewChet.length"
+          :disabled="listDisbledDocuments !== 0 && !listNewChet.length"
           @click="sendTaskFinish"
         >
           <v-icon left> $IconMain </v-icon>
