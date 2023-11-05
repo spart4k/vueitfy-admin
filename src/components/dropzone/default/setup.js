@@ -59,7 +59,7 @@ export default {
         //dropzone.value.processQueue()
       } else {
         console.log(files)
-        emit('addFiles', { ...files, ...props.paramsForEmit })
+        emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')

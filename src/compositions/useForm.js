@@ -28,6 +28,7 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  const filesBasket = ref({})
   const { emit } = context.root.ctx
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
@@ -146,8 +147,34 @@ export default function ({
       if (isNextForm) {
         nextForm()
       }
+    } else if (action.action === 'saveFormStore') {
+      loadStoreFile()
     }
   }
+
+  const addFiles = (files, field) => {
+    console.log(files)
+    console.log(field)
+    console.log(formData)
+    if (field.options.countFiles?.length > 1) {
+      // Vue.set(filesBasket.value, field.name, files)
+    } else {
+      filesBasket.value[field.name] = { name: '', files, field }
+      console.log(filesBasket.value)
+    }
+    // filesBasket.value.push(files)
+  }
+
+  const loadStoreFile = () => {
+    console.log('load')
+    // const promises = []
+    for (let key in filesBasket.value) {
+      const name = eval(filesBasket.value[key].field.options.name)
+      console.log(name)
+    }
+    // const
+  }
+
   const getDetail = () => form.detail
 
   const hasSelect = () =>
@@ -188,6 +215,11 @@ export default function ({
       params.field.dependence.fillField.forEach(
         (el) => (formData[el] = params.item[el])
       )
+    }
+    if (params.field.hasOwnProperty('selectOptionName')) {
+      const item = params.field.items.find((el) => el.id === params.value)
+      params.field.selectOptionName = item[params.field.selectOption.text]
+      console.log(params.field.selectOptionName)
     }
   }
 
@@ -447,5 +479,6 @@ export default function ({
     openMenu,
     disabledField,
     hideField,
+    addFiles,
   }
 }

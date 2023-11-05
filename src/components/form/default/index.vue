@@ -137,6 +137,8 @@
               v-model="formData[field.name]"
               :formData="formData"
               :disabled="disabledField(field)"
+              :field="field"
+              @addFiles="addFiles($event, field)"
             />
           </v-col>
         </v-row>

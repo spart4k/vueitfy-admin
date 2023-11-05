@@ -4184,6 +4184,7 @@ const config = {
                   text: 'name',
                   value: 'id',
                 },
+                selectOptionName: '',
                 items: [],
                 page: 1,
                 search: '',
@@ -4238,8 +4239,10 @@ const config = {
                 },
                 bootstrapClass: [''],
                 options: {
-                  withoutSave: true,
-                  folder: 'tmp',
+                  withoutSave: false,
+                  folder: 'user_keys',
+                  name: '`Заявка_ФИО_${filesBasket.value[key].field.selectOptionName}_${formData["object_id"]}`',
+                  paramsForEmit: this,
                 },
                 value: [
                   'http://10.63.1.132:5000/file/get/tmp/Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg',
@@ -4252,6 +4255,7 @@ const config = {
                 type: 'submit',
                 module: '',
                 name: 'saveForm',
+                action: 'saveFormStore',
               }),
             ],
           },

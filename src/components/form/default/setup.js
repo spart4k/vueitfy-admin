@@ -97,6 +97,7 @@ export default {
       openMenu,
       disabledField,
       hideField,
+      addFiles,
     } = useForm({
       form: props.tab,
       context,
@@ -132,6 +133,7 @@ export default {
       isEdit,
       disabledField,
       hideField,
+      addFiles,
     }
   },
 }
