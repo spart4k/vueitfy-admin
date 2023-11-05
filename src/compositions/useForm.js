@@ -169,6 +169,7 @@ export default function ({
     console.log('load')
     // const promises = []
     for (let key in filesBasket.value) {
+      console.log(filesBasket.value[key])
       const name = eval(filesBasket.value[key].field.options.name)
       console.log(name)
     }
@@ -218,6 +219,7 @@ export default function ({
     }
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
+      console.log(item)
       params.field.selectOptionName = item[params.field.selectOption.text]
       console.log(params.field.selectOptionName)
     }

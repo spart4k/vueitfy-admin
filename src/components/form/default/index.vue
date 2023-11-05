@@ -139,6 +139,7 @@
               :disabled="disabledField(field)"
               :field="field"
               @addFiles="addFiles($event, field)"
+              :error-messages="formErrors[field?.name]"
             />
           </v-col>
         </v-row>

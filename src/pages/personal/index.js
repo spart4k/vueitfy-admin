@@ -4238,15 +4238,14 @@ const config = {
                   sm: 12,
                 },
                 bootstrapClass: [''],
+                validations: { required },
                 options: {
                   withoutSave: false,
                   folder: 'user_keys',
-                  name: '`Заявка_ФИО_${filesBasket.value[key].field.selectOptionName}_${formData["object_id"]}`',
+                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_logistic_x5").selectOptionName}_${formData["object_id"]}`',
                   paramsForEmit: this,
                 },
-                value: [
-                  'http://10.63.1.132:5000/file/get/tmp/Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg',
-                ],
+                value: '',
               }),
             ],
             actions: [

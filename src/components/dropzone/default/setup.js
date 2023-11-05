@@ -26,6 +26,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    errorMessages: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -59,6 +63,7 @@ export default {
         //dropzone.value.processQueue()
       } else {
         console.log(files)
+        proxyVal.value = [...files]
         emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //console.log(dropzone.value)
