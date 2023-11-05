@@ -232,14 +232,21 @@ export default function ({
     })
 
     let targetField, card
+    if (depField) targetField = form.fields.find((el) => el.name === depField)
+    console.log(form.fields, targetField)
     if (targetField) {
-      targetField = form.fields.find((el) => el.name === depField)
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
       card = targetField.items.find((el) => el.id === formData[depField])
+      if (data.length === 1) {
+        if (data[0].del) {
+          targetField.items = []
+        } else {
+          formData[depField] = data[0].id
+        }
+      }
     }
-
     //if (data.length === 1) formData[depField] = card.id
     if (card)
       if (field.dependence.fillField) {

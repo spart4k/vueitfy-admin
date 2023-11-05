@@ -88,6 +88,14 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'personal-add-key',
+        path: '/personal/add-key',
+        meta: {
+          mode: 'add-key',
+        },
+        component: Detail,
+      },
+      {
         name: 'personal/:id',
         path: ':id',
         component: Detail,
@@ -188,6 +196,14 @@ const routes = [
       {
         name: 'shop-request-magnit/:id',
         path: ':id',
+        component: Detail,
+      },
+      {
+        name: 'shop-request-magnit/upload',
+        path: './upload',
+        meta: {
+          mode: 'upload',
+        },
         component: Detail,
       },
     ],
