@@ -308,13 +308,11 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/setPartTask', {
+            status: 2,
             data: {
-              status: 2,
-              data: {
-                process_id: data.task.process_id,
-                task_id: data.task.id,
-                parent_action: data.task.id,
-              },
+              process_id: data.task.process_id,
+              task_id: data.task.id,
+              parent_action: data.task.id,
             },
           }),
       })

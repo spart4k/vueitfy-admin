@@ -18,20 +18,20 @@
         <v-row class="task__info-row mb-2">
           <v-icon small>$IconPeople</v-icon>
           <span>{{ data.task.from_fio }}</span>
-          <span>→</span>
+          <v-icon>mdi-arrow-right</v-icon>
           <span>{{ data.task.to_fio }}</span>
         </v-row>
         <v-row class="task__info-row mb-2">
-          <v-icon small>$IconMain</v-icon>
+          <v-icon>mdi-calendar</v-icon>
           <span>{{ formatDate(data.task.date_create) }}</span>
         </v-row>
         <v-row class="task__info-row" align="center">
-          <v-icon small>$IconMain</v-icon>
+          <v-icon>mdi-tag</v-icon>
           <span :class="`circle circle--${data.task.status}`"></span>
           <span>{{ data.task.status_name }}</span>
         </v-row>
         <v-row v-if="taskDeadline" class="task__info-row" align="center">
-          <v-icon class="mr-5" small>$IconMain</v-icon>
+          <v-icon>mdi-timer</v-icon>
           <span class="timer">{{ timerString }}</span>
         </v-row>
       </div>
