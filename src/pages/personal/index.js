@@ -1,5 +1,5 @@
 import filters from './filters'
-import { required } from '@/utils/validation.js'
+import { required, nameLength } from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -1381,7 +1381,7 @@ const defaultForm = [
               cols: 12,
               sm: 12,
             },
-            validations: { required },
+            validations: { required, nameLength },
             bootstrapClass: [''],
             isShow: {
               value: false,

@@ -1,10 +1,11 @@
 import Vue, { ref, computed, watch, unref, reactive } from 'vue'
-import useVuelidate from '@vuelidate/core'
+import { useVuelidate } from '@vuelidate/core'
+// import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
-import { required } from '@/utils/validation.js'
-import { data } from 'jquery'
-import { filter, result } from 'lodash'
+// import { required } from '@/utils/validation.js'
+// import { data } from 'jquery'
+// import { filter } from 'lodash'
 
 /**
  * @param loading {boolean}
@@ -52,7 +53,7 @@ export default function ({
       ) {
         return obj
       }
-      obj[key] = { ...fields[key].validations, $autoDirty }
+      obj[key] = { ...formFields[key].validations, $autoDirty }
       return obj
     }, {})
     //console.log({
@@ -68,8 +69,8 @@ export default function ({
     //}
   }
 
-  let $v = null
   const computedFormData = computed(() => formData)
+  let $v
   $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
@@ -84,12 +85,12 @@ export default function ({
       )
     )
   }
-  //setTimeout(() => {
-  //  rebuildFormData()
-  //  console.log('rebuild')
-  //}, 10000)
-  const $errors = computed(() => {
-    return Object.keys(formData).reduce((obj, key) => {
+  // setInterval(() => {
+  //   // console.log(errors.value)
+  // }, 3000)
+  const $errors = ref({})
+  const errorsCount = () => {
+    $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
       } else {
@@ -97,7 +98,7 @@ export default function ({
       }
       return obj
     }, {})
-  })
+  }
 
   const validate = () => {
     unref($v).$touch()
@@ -231,14 +232,14 @@ export default function ({
     })
 
     let targetField, card
+    targetField = form.fields.find((el) => el.name === depField)
     if (targetField) {
-      targetField = form.fields.find((el) => el.name === depField)
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
-      targetField.hideItems = targetField.defaultItems
-        ? [...targetField.defaultItems, ...data]
-        : data
+      //targetField.hideItems = targetField.defaultItems
+      //  ? [...targetField.defaultItems, ...data]
+      //  : data
       card = targetField.items.find((el) => el.id === formData[depField])
     }
 
@@ -423,6 +424,16 @@ export default function ({
           formData[key] = values[key]
         }
       })
+    },
+    { immediate: true, deep: true }
+  )
+
+  watch(
+    () => formData,
+    () => {
+      if ($touched.value) {
+        errorsCount()
+      }
     },
     { immediate: true, deep: true }
   )
