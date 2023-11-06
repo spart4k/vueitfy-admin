@@ -77,7 +77,7 @@ const Form28 = defineComponent({
             parent_action: props.data.task.id,
             payment_id: props.data.entity.id,
             manager_id: JSON.parse(props.data.task.dop_data).manager_id,
-            everyday: props.data.data.vid_vedomost_id, //TODO: Вставить поле "vid_vedomost_id" из data
+            everyday: props.data.data.vid_vedomost_id,
           },
         })
       },
