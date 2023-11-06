@@ -178,6 +178,14 @@ const routes = [
     component: ShopRequestMagnitView,
     children: [
       {
+        name: 'shop-request-magnit-add',
+        path: '/shop-request-magnit/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
+      {
         name: 'shop-request-magnit/:id',
         path: ':id',
         component: Detail,

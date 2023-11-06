@@ -101,8 +101,9 @@ export default {
       })
       const { makeRequest } = useRequest({
         context,
-        request: () => store.dispatch(module, {}),
+        request: () => store.dispatch(module, { url, body: { persons } }),
       })
+      await makeRequest()
       console.log(defaultData, persons)
     }
     const {
@@ -155,7 +156,7 @@ export default {
     // }
     onMounted(async () => {
       // if (props.tabs && props.activeTab) getDataFromPrevTav()
-      await getData()
+      //await getData()
     })
     return {
       clickHandler,

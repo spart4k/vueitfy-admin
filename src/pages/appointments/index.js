@@ -847,12 +847,14 @@ const config = {
             type: FormDefault,
             detail: true,
             lists: [
-              'vid_vedomost_id',
-              'status_pt',
-              'direction_id_logistic',
-              'doljnost_id_logistic',
-              'shifts',
-              'nutritions',
+              { alias: 'vid_vedomost_id_logistic', filter: [] },
+              { alias: 'status_pt', filter: [] },
+              // { alias: 'object_id_logistic', filter: [] },
+              // { alias: 'account_id_logistic', filter: [] },
+              { alias: 'direction_id_logistic', filter: [] },
+              { alias: 'doljnost_id_logistic', filter: [] },
+              { alias: 'shifts', filter: [] },
+              { alias: 'nutritions', filter: [] },
             ],
             alias: 'personal_target',
             active: false,
@@ -913,7 +915,7 @@ const config = {
               }),
               selectField({
                 label: 'Вид ведомости:',
-                name: 'vid_vedomost_id',
+                name: 'vid_vedomost_id_logistic',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -933,7 +935,7 @@ const config = {
                     {
                       target: 'mode',
                       value: 'edit',
-                      values: [2, 4, 6, 7, 8],
+                      values: [8],
                     },
                     {
                       target: 'mode',
@@ -942,6 +944,7 @@ const config = {
                     },
                   ],
                 },
+                requiredFields: ['personal_id'],
               }),
               selectField({
                 label: 'Направления',
@@ -1028,6 +1031,23 @@ const config = {
                   },
                 ],
                 requiredFields: ['object_id'],
+                dependence: {
+                  //fields: ['statement_card', 'cardowner'],
+                  type: 'api',
+                  module: 'personal/checkEveryDayPayment',
+                  action: {
+                    type: 'hideOptions',
+                    values: [8],
+                    field: 'vid_vedomost_id_logistic',
+                  },
+                  //url: 'object_id/avatar_with_user_key_id',
+                  url: [
+                    {
+                      source: 'formData',
+                      field: 'this',
+                    },
+                  ],
+                },
               }),
               selectField({
                 label: 'Должность',
@@ -1120,7 +1140,7 @@ const config = {
             name: 'Основные1',
             type: FormList,
             //detail: true,
-            lists: ['avatar_with_user_key_id', ''],
+            lists: ['avatar_with_user_key_id'],
             alias: 'personal_target',
             active: false,
             fromLastTab: [
@@ -1140,7 +1160,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 5,
                 },
                 bootstrapClass: [''],
                 //validations: { required },
@@ -1187,7 +1207,7 @@ const config = {
                     },
                     {
                       source: 'formData',
-                      field: 'avatar_with_user_key_id',
+                      field: 'this',
                     },
                   ],
                 },
@@ -1195,21 +1215,37 @@ const config = {
               selectField({
                 label: 'Ключ',
                 name: 'print_form_key',
-                withoutList: true,
+                //withoutList: true,
                 //alias: 'direction_id_logistic',
                 placeholder: '',
                 class: [''],
                 selectOption: {
-                  text: 'user_key',
+                  text: 'name',
                   value: 'id',
                 },
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 2,
+                  sm: 3,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                customList: {
+                  type: 'api',
+                  module: 'personal/getKeys',
+                  //url: 'object_id/avatar_with_user_key_id',
+                  field: 'print_form_key',
+                  url: [
+                    {
+                      source: 'props',
+                      field: 'object_id',
+                    },
+                    {
+                      source: 'formData',
+                      field: 'this',
+                    },
+                  ],
+                },
               }),
             ],
             actions: [
@@ -1225,7 +1261,7 @@ const config = {
                 text: 'Создать',
                 type: 'submit',
                 module: 'form/create',
-                url: '/multiple_target',
+                url: 'create/multiple_target',
                 name: 'saveForm',
                 action: 'saveForm',
                 color: 'primary',

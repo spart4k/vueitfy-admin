@@ -1,8 +1,11 @@
 import Vue, { ref, computed, watch, unref, reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+// import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
+// import { required } from '@/utils/validation.js'
+// import { data } from 'jquery'
+// import { filter } from 'lodash'
 
 /**
  * @param loading {boolean}
@@ -23,6 +26,7 @@ export default function ({
   isEdit,
   prevTab,
   setFields,
+  mode,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
@@ -155,6 +159,7 @@ export default function ({
     )
 
   const initPreRequest = () => {
+    console.log('init pre request')
     let queries = []
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
@@ -174,7 +179,8 @@ export default function ({
 
   const changeAutocomplete = async (params) => {
     //const { value, field } = data
-    if (hasDepenceFieldsApi()) {
+    console.log('test')
+    if (params.field.dependence && params.field.dependence.type === 'api') {
       await getDependies(params)
     }
     if (
@@ -195,30 +201,47 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
+    console.log(field, 'DEPENDIES')
+    let fieldValue
+    if (field.dependence.type !== 'api') return
     const depField = field.dependence.field
     let url = ''
     if (field.dependence.url) {
       //const splitedUrl = field.dependence.url.split('/')
       field.dependence.url.forEach((el) => {
-        if (el.source === 'props') {
-          url = url + '/' + form.formData[el.field]
+        if (el.field === 'this' && el.source === 'formData') {
+          fieldValue = value
         } else if (el.source === 'formData') {
-          url = url + '/' + formData[el.field]
+          fieldValue = formData[el.field]
+        } else if (el.source === 'props') {
+          fieldValue = form.formData[fieldValue]
         }
+        console.log(fieldValue)
+        url = url + '/' + fieldValue
+        //if (el.source === 'props') {
+        //  url = url + '/' + form.formData[fieldValue]
+        //} else if (el.source === 'formData') {
+        //  console.log(JSON.stringify(formData))
+        //  url = url + '/' + formData[fieldValue]
+        //}
       })
     }
     field.loading = true
+    console.log(field.dependence.module)
     const data = await store.dispatch(field.dependence.module, {
       value,
       field,
       url,
     })
 
-    const targetField = form.fields.find((el) => el.name === depField)
-    targetField.items = targetField.defaultItems
-      ? [...targetField.defaultItems, ...data]
-      : data
-    let card = targetField.items.find((el) => el.id === formData[depField])
+    let targetField, card
+    if (targetField) {
+      targetField = form.fields.find((el) => el.name === depField)
+      targetField.items = targetField.defaultItems
+        ? [...targetField.defaultItems, ...data]
+        : data
+      card = targetField.items.find((el) => el.id === formData[depField])
+    }
 
     //if (data.length === 1) formData[depField] = card.id
     if (card)
@@ -240,6 +263,11 @@ export default function ({
           field.dependence.fillField.forEach((el) => (formData[el] = ''))
         }
       }
+    if (field.dependence.action) {
+      if (field.dependence.action.type === 'hideOptions') {
+        console.log(data)
+      }
+    }
     field.loading = false
     //formData[field.dependence.field] = data
   }
@@ -297,31 +325,43 @@ export default function ({
   }
 
   const getData = async () => {
-    if (initPreRequest()) {
-      const [syncForm, lists] = await Promise.all(initPreRequest())
-      if (syncForm) {
-        for (let formKey in syncForm.data) {
-          const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
-          if (field) {
-            if (stringIsArray(syncForm.data[formKey]))
-              syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-            formData[field.name] = syncForm.data[formKey]
-            // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
-            if (
-              field.hasOwnProperty('dependence') &&
-              field.dependence.type === 'api'
-            ) {
-              await getDependies({ value: formData[field.name], field })
-            }
+    const [syncForm, lists] = await Promise.all(initPreRequest())
+    if (syncForm) {
+      for (let formKey in syncForm.data) {
+        const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
+        if (field) {
+          if (stringIsArray(syncForm.data[formKey]))
+            syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+          formData[field.name] = syncForm.data[formKey]
+          // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
+          if (
+            field.hasOwnProperty('dependence') &&
+            field.dependence.type === 'api'
+          ) {
+            await getDependies({ value: formData[field.name], field })
           }
         }
       }
-      if (hasSelect()) {
-        for (let keyList in lists.data) {
-          const field = form.fields.find((el) =>
-            el.alias ? el.alias === keyList : el.name === keyList
-          )
-          if (field) field.items = lists.data[keyList]
+    }
+    if (hasSelect()) {
+      console.log(lists)
+      for (let keyList in lists.data) {
+        const field = form.fields.find((el) =>
+          el.alias ? el.alias === keyList : el.name === keyList
+        )
+        if (field) {
+          if (field.hiding) {
+            if (field.hiding.conditions) {
+              const condition = field.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              console.log(condition)
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          field.items = lists.data[keyList]
         }
       }
     }
