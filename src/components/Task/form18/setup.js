@@ -97,7 +97,7 @@ const Form18 = defineComponent({
               account_id: data.entity.manager,
               personal_bank_id: data.entity.personal_bank_id,
               status_id: 2,
-              status_account_id: 2,
+              status_account_id: 25,
               personal_id: data.entity.personal_id,
               vid_vedomost_id: 1,
               direction_id: data.entity.direction_id,
