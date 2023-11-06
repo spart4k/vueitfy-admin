@@ -82,23 +82,27 @@ const Form18 = defineComponent({
           fields: {
             name: {
               validations: { required },
-              default: dataForService.length ? serviceId : undefined,
+              default:
+                dataForService && dataForService.length ? serviceId : undefined,
             },
             qty: {
               validations: { required },
-              default: dataForService.length ? qty : undefined,
+              default:
+                dataForService && dataForService.length ? qty : undefined,
             },
             price: {
               validations: { required },
-              default: dataForService.length
-                ? dataForService[0].price
-                : undefined,
+              default:
+                dataForService && dataForService.length
+                  ? dataForService[0].price
+                  : undefined,
             },
             sum: {
               validations: { required },
-              default: dataForService.length
-                ? qty * dataForService[0].price
-                : undefined,
+              default:
+                dataForService && dataForService.length
+                  ? qty * dataForService[0].price
+                  : undefined,
             },
           },
           context,
