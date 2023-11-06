@@ -4,6 +4,10 @@
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
         >&nbsp; на дату 07.02.2023
+        <v-icon v-if="typeShift == 2" color="#8f8e77"
+          >mdi-moon-waning-crescent</v-icon
+        >
+        <v-icon v-else color="#FFF100">mdi-white-balance-sunny</v-icon>
       </v-card-title>
       <div v-if="fileOutput">
         <span>Скан:</span>

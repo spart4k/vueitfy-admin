@@ -216,6 +216,7 @@ const Form18 = defineComponent({
       removeGroup,
       formGroup,
       entity: data.entity,
+      typeShift: data.entity.type_shift,
       fileOutput,
       idDirection,
       confirmTask,
