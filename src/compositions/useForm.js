@@ -426,6 +426,16 @@ export default function ({
     { immediate: true, deep: true }
   )
 
+  watch(
+    () => formData,
+    () => {
+      if ($touched.value) {
+        errorsCount()
+      }
+    },
+    { immediate: true, deep: true }
+  )
+
   return {
     vForm: $v,
     formErrors: $errors,
