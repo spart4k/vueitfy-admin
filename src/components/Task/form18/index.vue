@@ -31,10 +31,12 @@
               dense
               outlined
               label="Наименование"
+              :readonly="idDirection === 6"
             ></v-select>
           </v-col>
           <v-col>
             <v-text-field
+              :readonly="idDirection === 6"
               dense
               type="number"
               outlined
@@ -64,7 +66,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row v-if="idDirection === 6">
+        <v-row v-if="idDirection === 1">
           <v-col style="padding: 0" cols="6">
             <v-btn
               @click="removeGroup"
