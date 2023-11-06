@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import store from '@/store'
@@ -6,6 +6,7 @@ import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
 import form from '@/store/modules/form'
+import { required } from '@/utils/validation'
 
 const Form18 = defineComponent({
   name: 'Form18',
@@ -52,15 +53,26 @@ const Form18 = defineComponent({
     const idDirection = data.entity.direction_id
     const formCommentError = ref('')
     const formComment = ref('')
+    const servicesDetail = data.data.services
+    const rejectedPrice = ref('')
+    const isFormValid = ref(false)
     const addGroup = () => {
       formGroup.value = [
         ...formGroup.value,
         useForm({
           fields: {
-            name: {},
-            qty: 0,
-            price: 0,
-            sum: 0,
+            name: {
+              validations: { required },
+            },
+            qty: {
+              validations: { required },
+            },
+            price: {
+              validations: { required },
+            },
+            sum: {
+              validations: { required },
+            },
           },
           context,
         }),
@@ -158,15 +170,13 @@ const Form18 = defineComponent({
         context,
         request: () => {
           return store.dispatch('taskModule/setPartTask', {
+            status: 2,
             data: {
-              status: 2,
-              data: {
-                process_id: data.task.process_id,
-                manager_id: data.task.from_account_id,
-                task_id: data.task.task_id,
-                parent_action: data.task.task_id,
-                personal_target_id: data.entity.id,
-              },
+              process_id: data.task.process_id,
+              manager_id: data.task.from_account_id,
+              task_id: data.task.task_id,
+              parent_action: data.task.task_id,
+              personal_target_id: data.entity.id,
             },
           })
         },
@@ -188,19 +198,17 @@ const Form18 = defineComponent({
           context,
           request: () => {
             return store.dispatch('taskModule/setPartTask', {
+              status: 6,
               data: {
-                status: 6,
-                data: {
-                  process_id: data.task.process_id,
-                  manager_id: data.task.from_account_id,
-                  task_id: data.task.id,
-                  personal_target_id: data.entity.id,
-                  parent_action: data.task.id,
-                  comment: formComment,
-                  error: 1,
-                  need_input: 1,
-                  need_parse: 0,
-                },
+                process_id: data.task.process_id,
+                manager_id: data.task.from_account_id,
+                task_id: data.task.id,
+                personal_target_id: data.entity.id,
+                parent_action: data.task.id,
+                comment: formComment,
+                error: 1,
+                need_input: 1,
+                need_parse: 0,
               },
             })
           },
@@ -209,6 +217,59 @@ const Form18 = defineComponent({
         success && ctx.emit('closePopup')
       }
     }
+
+    const getServiceInfo = async (idService) => {
+      const { makeRequest } = useRequest({
+        context,
+        request: () => {
+          return store.dispatch(
+            'taskModule/getServicePrice',
+            `object_id=${data.entity.object_id}&service_id=${idService}&date_target=${data.entity.date_target}`
+          )
+        },
+      })
+      return await makeRequest()
+    }
+
+    const changeServiceDetail = async (i, idService) => {
+      rejectedPrice.value = ''
+      console.log(i, idService)
+      const data = await getServiceInfo(idService)
+      if (!data.length) {
+        rejectedPrice.value = servicesDetail.find(
+          (item) => item.id == idService
+        ).name
+        return false
+      }
+      formGroup.value[i].formData.price = data[0].price
+      changeSum(i)
+    }
+
+    const changeSum = (i) => {
+      if (
+        formGroup.value[i].formData.price &&
+        formGroup.value[i].formData.qty
+      ) {
+        const sum =
+          formGroup.value[i].formData.price * formGroup.value[i].formData.qty
+        formGroup.value[i].formData.sum = Math.round(sum * 100) / 100
+      } else {
+        formGroup.value[i].formData.sum = 0
+      }
+    }
+
+    watch(
+      formGroup,
+      () => {
+        if (formGroup) {
+          isFormValid.value = formGroup.value.every(
+            (group) => group.validate && group.validate()
+          )
+          console.log(isFormValid, formGroup.value)
+        }
+      },
+      { deep: true }
+    )
 
     return {
       textInfo,
@@ -223,6 +284,11 @@ const Form18 = defineComponent({
       rejectTask,
       formComment,
       formCommentError,
+      servicesDetail,
+      changeServiceDetail,
+      changeSum,
+      rejectedPrice,
+      isFormValid,
     }
   },
 })

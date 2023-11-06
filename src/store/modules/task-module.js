@@ -21,6 +21,13 @@ const taskModule = {
       return result
     },
 
+    // Получение информации о тарифе для заполнения полей
+    async getServicePrice(_, params) {
+      const result = await getTask('get/service_price?' + params)
+      console.log(result)
+      return result
+    },
+
     async setBid(_, data) {
       console.log(data)
       const result = await setBid('set/data/zayavka', data.data)
@@ -30,7 +37,7 @@ const taskModule = {
 
     async setPartTask(_, data) {
       console.log(data)
-      const result = await putTask('task/update/status', data.data)
+      const result = await putTask('task/update/status', data)
       console.log(result)
       return result
     },

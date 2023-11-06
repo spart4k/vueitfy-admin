@@ -16,24 +16,47 @@
         >
       </div>
       <TextInfo class="mb-3" :infoObj="textInfo" />
+      <FormError class="mb-4" v-if="rejectedPrice">
+        Отсутствует тариф: {{ rejectedPrice }}
+      </FormError>
       <div>
         <v-row v-for="(group, i) in formGroup" :key="i">
-          <v-col class="p-0" cols="6">
-            <v-select outlined label="Наименование"></v-select>
+          <v-col class="p-0" cols="5">
+            <v-select
+              v-model="group.formData.name"
+              :items="servicesDetail"
+              @change="(idService) => changeServiceDetail(i, idService)"
+              item-text="name"
+              item-value="id"
+              dense
+              outlined
+              label="Наименование"
+            ></v-select>
           </v-col>
-          <v-col cols="2">
-            <v-text-field type="number" outlined label="QTY"></v-text-field>
-          </v-col>
-          <v-col cols="2">
+          <v-col>
             <v-text-field
+              dense
+              type="number"
+              outlined
+              label="QTY"
+              v-model="group.formData.qty"
+              @blur="() => changeSum(i)"
+            ></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field
+              v-model="group.formData.price"
+              dense
               outlined
               label="Тариф"
               disabled
               readonly
             ></v-text-field>
           </v-col>
-          <v-col class="p-0" cols="2">
+          <v-col class="p-0">
             <v-text-field
+              v-model="group.formData.sum"
+              dense
               outlined
               label="Сумма"
               disabled
@@ -73,7 +96,13 @@
     </div>
     <v-divider></v-divider>
     <v-row class="pb-0 pt-3" justify="end">
-      <v-btn @click="confirmTask" class="mr-2" small color="info">
+      <v-btn
+        :disabled="!isFormValid"
+        @click="confirmTask"
+        class="mr-2"
+        small
+        color="info"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>

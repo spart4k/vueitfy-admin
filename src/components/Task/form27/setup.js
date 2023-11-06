@@ -96,10 +96,8 @@ const Form27 = defineComponent({
       context,
       request: () => {
         return store.dispatch('taskModule/setPartTask', {
-          data: {
-            status: 2,
-            data: dataForConfirm,
-          },
+          status: 2,
+          data: dataForConfirm,
         })
       },
     })
@@ -121,13 +119,11 @@ const Form27 = defineComponent({
       context,
       request: () => {
         return store.dispatch('taskModule/setPartTask', {
+          status: 6,
           data: {
-            status: 6,
-            data: {
-              ...dataForConfirm,
-              account_id: JSON.parse(props.data.task.dop_data).manager_id,
-              comment: 'commentariy)',
-            },
+            ...dataForConfirm,
+            account_id: JSON.parse(props.data.task.dop_data).manager_id,
+            comment: 'commentariy)',
           },
         })
       },
