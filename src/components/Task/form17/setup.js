@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
@@ -27,17 +27,49 @@ const Form17 = defineComponent({
         ctx,
       },
     }
+
+    const getServiceInfo = async (idService) => {
+      const { makeRequest } = useRequest({
+        context,
+        request: () => {
+          return store.dispatch(
+            'taskModule/getServicePrice',
+            `object_id=${data.entity.object_id}&service_id=${idService}&date_target=${data.entity.date_target}`
+          )
+        },
+      })
+      return await makeRequest()
+    }
+    let selectName = ref('')
     let qty = ref(10.5)
-    // let sum = computed(() => Number(qty) / )
+    let tariff
+    let changeQTY = computed(() => {
+      if (qty.value) {
+        return true
+      }
+      return false
+    })
+    onMounted(() => {
+      tariff = getServiceInfo(data.entity.doljnost_id)
+    })
+    let sum = computed(() => {
+      if (tariff) {
+        return (tariff / 10.5) * qty
+      } else {
+        return 0
+      }
+    })
     let updateFileData
     let loadImage
     let changeStatusTask
+    let isSetTask = ref(false)
     const dopData = JSON.stringify(data.task.dop_data)
     const addFiles = (e) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `workout_25_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
       form_data.append('file', e[0])
+      isSetTask.value = true
       updateFileData = useRequest({
         context,
         request: () =>
@@ -141,7 +173,15 @@ const Form17 = defineComponent({
     //     })
     //   },
     // })
-
+    let services_spr = [
+      { 24: 61 },
+      { 25: 62 },
+      { 26: 63 },
+      { 27: 64 },
+      { 49: 70 },
+      { 50: 77 },
+      { 51: 78 },
+    ]
     const completeTask = async () => {
       // await setUserKey()
       // const { success } = await changeStatusTask()
@@ -154,6 +194,90 @@ const Form17 = defineComponent({
         updateFileData.makeRequest()
         loadImage.makeRequest()
         changeStatusTask.makeRequest()
+      } else if (
+        data.entity.doljnost_id == 6 ||
+        data.entity.doljnost_id == 49
+      ) {
+        const { makeRequest: setPersonalTarget } = useRequest({
+          context,
+          request: () => {
+            return store.dispatch('taskModule/setPersonalData', {
+              data: {
+                id: data.entity.id,
+                services: {
+                  3: {
+                    services: [
+                      {
+                        service_id: services_spr.find(
+                          (x) => data.entity.doljnost_id
+                        )[0],
+                        qty: qty.value,
+                        price: '',
+                        sum: 0,
+                      },
+                    ],
+                    payment_id: false,
+                    is_pay: false,
+                    sum: 0,
+                  },
+                },
+                // payment_id: paymentData.result,
+              },
+            })
+          },
+        })
+        const { makeRequest: changeStatus } = useRequest({
+          context,
+          request: () => {
+            return store.dispatch('taskModule/setPartTask', {
+              data: {
+                status: 2,
+                data: {
+                  process_id: data.task.process_id,
+                  manager_id: data.task.from_account_id,
+                  task_id: data.task.id,
+                  parent_action: data.task.id,
+                  personal_target_id: data.entity.id,
+                  have_price: 0,
+                  object_id: data.entity.object_id,
+                  service_id: services_spr.find(
+                    (x) => data.entity.doljnost_id
+                  )[0],
+                  date_target: data.entity.date_target,
+                },
+              },
+            })
+          },
+        })
+        setPersonalTarget()
+        changeStatus()
+        //   $.ajax('/common/save/personal_target', {
+        //     method: "POST",
+        // //     data: {id: <?php echo $entity['id']; ?>, services: `{"3": {"services": [{"service_id": <?php echo $services_spr[$entity['doljnost_id']]; ?>,
+        // "qty": ${$('#form_personal_target_qty').val()}, "price": ${$('#form_personal_target_price').val()}, "sum": ${$('#form_personal_target_sum').val()}"}]"],
+        // "payment_id": false, "is_pay": false, "sum": ${$('#form_personal_target_sum').val()}}}` },
+        //     success: function() {
+        //         $.ajax('/task/change_status_task', {
+        //             method: "POST",
+        //             data: {status: 2, data: {
+        //                 process_id: <?php echo $task['process_id']; ?>,
+        //                 manager_id: <?php echo $task['from_account_id']; ?>,
+        //                 task_id: <?php echo $task['id']; ?>,
+        //                 parent_action: <?php echo $task['id']; ?>,
+        //                 personal_target_id: <?php echo $entity['id']; ?>,
+        //                 have_price: <?php echo isset($service_price[0]) ? 1 : 0; ?>,
+        //                 object_id: <?php echo $entity['object_id']; ?>,
+        //                 service_id: <?php echo $services_spr[$entity['doljnost_id']]; ?>,
+        //                 date_target: '<?php echo $entity['date_target']; ?>'
+        //             }},
+        //             success: function (data) {
+        //                 slidePopup('Задача выполнена!', 'success');
+        //                 typeof dataTable['task'] != "undefined" ? dataTable['task'].ajax.reload() : dataTable[document.taskTable].ajax.reload();
+        //                 hideModal();
+        //             }
+        //         })
+        //     }
+        // })
       }
       ctx.emit('closePopup')
     }
@@ -167,7 +291,10 @@ const Form17 = defineComponent({
       entity: data.entity,
       addFiles,
       qty,
-      // sum,
+      sum,
+      isSetTask,
+      selectName,
+      changeQTY,
     }
   },
 })

@@ -38,15 +38,37 @@
           <div>
             <span>QTY:</span><v-text-field v-model="qty"></v-text-field>
           </div>
-          <div><span>Тариф</span><v-text-field disabled></v-text-field></div>
-          <div><span>Сумма:</span><v-text-field disabled></v-text-field></div>
+          <div>
+            <span>Тариф</span
+            ><v-text-field disabled label="Не определен"></v-text-field>
+          </div>
+          <div>
+            <span>Сумма:</span
+            ><v-text-field v-model="sum" disabled></v-text-field>
+          </div>
         </div>
       </div>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
       <v-btn
-        :disabled="true"
+        v-if="
+          data.entity.doljnost_id == 5 ||
+          data.entity.doljnost_id == 7 ||
+          data.entity.doljnost_id == 32
+        "
+        :disabled="!isSetTask"
+        class="mr-2"
+        small
+        color="info"
+        @click="completeTask"
+      >
+        <v-icon left> $IconMain </v-icon>
+        Завершить
+      </v-btn>
+      <v-btn
+        v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49"
+        :disabled="!changeQTY"
         class="mr-2"
         small
         color="info"
