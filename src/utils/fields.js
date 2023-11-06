@@ -30,6 +30,7 @@ const stringField = (properties) => {
 const selectField = (properties) => {
   return {
     type: 'select',
+    hideItems: [],
     ...defaultProperties(properties),
   }
 }
