@@ -332,7 +332,9 @@ export default function ({
   const showField = (type, field) => {
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
-      field.isShow.conditions?.every((el) => formData[el.field] === el.value)
+      field.isShow.conditions?.every((el) =>
+        el.value.includes(formData[el.field])
+      )
     if (field.isShow.conditions) {
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)

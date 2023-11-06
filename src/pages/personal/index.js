@@ -1386,8 +1386,8 @@ const defaultForm = [
             isShow: {
               value: false,
               conditions: [
-                { field: 'transfer', value: true },
-                { field: 'grajdanstvo_id', value: 1 },
+                { field: 'transfer', value: [true] },
+                { field: 'grajdanstvo_id', value: [1, 2] },
               ],
             },
           }),
