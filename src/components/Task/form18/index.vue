@@ -70,15 +70,15 @@
     <v-divider></v-divider>
     <v-row class="pb-0 pt-3" justify="end">
       <v-btn @click="confirmTask" class="mr-2" small color="info">
-        <v-icon left> $IconMain </v-icon>
+        <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
       <v-btn @click="rejectTask" class="mr-2" small color="error">
-        <v-icon left> $IconClose </v-icon>
+        <v-icon small>mdi-close</v-icon>
         Отклонить
       </v-btn>
       <v-btn @click="$emit('closePopup')" small color="blue-grey">
-        <v-icon left> $IconMain </v-icon>
+        <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
     </v-row>

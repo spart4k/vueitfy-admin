@@ -26,11 +26,11 @@
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
       <v-btn :disabled="true" class="mr-2" small color="info">
-        <v-icon left> $IconMain </v-icon>
+        <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
       <v-btn @click="$emit('closePopup')" small color="blue-grey">
-        <v-icon left> $IconMain </v-icon>
+        <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
     </v-row>
