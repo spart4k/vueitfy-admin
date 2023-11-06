@@ -74,6 +74,7 @@ export default {
       context,
       request: () => store.dispatch('list/get', data),
     })
+    console.log(alias)
     const { makeRequest: changeForm } = useRequest({
       context,
       successMessage: 'Сохранено',
@@ -81,6 +82,15 @@ export default {
         store.dispatch('form/update', {
           url: `set/data/${alias}`,
           body: { data: { id: +route.params.id, ...formData } },
+        }),
+    })
+    const { makeRequest: createForm } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: () =>
+        store.dispatch('form/create', {
+          url: `query/${alias}`,
+          body: formData,
         }),
     })
     const {
@@ -109,6 +119,7 @@ export default {
       isEdit,
       changeForm,
       mode: isEdit.value,
+      createForm,
     })
     onMounted(async () => {
       await getData()

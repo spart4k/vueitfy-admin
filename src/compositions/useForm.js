@@ -6,6 +6,7 @@ import { getList } from '@/api/selects'
 // import { required } from '@/utils/validation.js'
 // import { data } from 'jquery'
 // import { filter } from 'lodash'
+import useRequest from '@/compositions/useRequest'
 
 /**
  * @param loading {boolean}
@@ -27,10 +28,12 @@ export default function ({
   prevTab,
   setFields,
   mode,
+  createForm,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  const filesBasket = ref({})
   const { emit } = context.root.ctx
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
@@ -70,8 +73,7 @@ export default function ({
   }
 
   const computedFormData = computed(() => formData)
-  let $v
-  $v = useVuelidate(validations(), computedFormData.value)
+  let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
     Object.assign(
@@ -101,8 +103,10 @@ export default function ({
   }
 
   const validate = () => {
+    $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
     $touched.value = true
+    errorsCount()
     return !unref($v).$invalid
   }
 
@@ -146,14 +150,95 @@ export default function ({
       if (isNextForm) {
         nextForm()
       }
+    } else if (action.action === 'saveFormStore') {
+      loadStoreFile()
     }
+  }
+  const addFiles = (files, field) => {
+    console.log()
+    console.log(field)
+    console.log(formData)
+    if (field.options.countFiles?.length > 1) {
+      // Vue.set(filesBasket.value, field.name, files)
+    } else {
+      filesBasket.value[field.name] = { name: '', files, field }
+      console.log(filesBasket.value)
+    }
+    // filesBasket.value.push(files)
+  }
+
+  const getStoreQueries = async () => {
+    return await store.dispatch('storage/loadFile')
+  }
+
+  const loadStoreFile = async () => {
+    console.log('load')
+    // const promises = []
+    const queries = []
+    for (let key in filesBasket.value) {
+      console.log(filesBasket.value[key])
+      const name =
+        eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+        '_' +
+        new Date().getTime()
+      const ext = filesBasket.value[key].files[0].name.split('.').pop()
+      console.log(name, ext)
+      //getStoreQueris(filesBasket.value[key]., name)
+      console.log(getStoreQueries)
+      console.log(store)
+      const storeForm = new FormData()
+      storeForm.append('name', name + '.' + ext)
+      storeForm.append('file', filesBasket.value[key].files[0])
+      const params = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      queries.push(
+        store.dispatch('file/create', {
+          data: storeForm,
+          folder: `${filesBasket.value[key].field.options.folder}/${name}.${ext}`,
+          params,
+        })
+      )
+      console.log(
+        `file/save/${filesBasket.value[key].field.options.folder}/${name}.${ext}`
+      )
+    }
+    const data = await Promise.all(queries)
+    if (data.length === 1) {
+      let path = ''
+      for (let key in filesBasket.value) {
+        const name =
+          eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+          '_' +
+          new Date().getTime()
+        const ext = filesBasket.value[key].files[0].name.split('.').pop()
+        path =
+          'files/' +
+          filesBasket.value[key].field.options.folder +
+          '/' +
+          name +
+          '.' +
+          ext
+        console.log(path)
+        formData[filesBasket.value[key].field.name] = path
+      }
+    }
+    const result = await createForm()
+    //context.root.router.go(-1)
+    emit('closePopup')
+    console.log(result)
+    console.log(data)
+    // const
   }
   const getDetail = () => form.detail
 
-  const hasSelect = () =>
-    form.fields.some(
+  const hasSelect = () => {
+    return form.fields.some(
       (field) => field.type === 'select' && field.isShow && !field.withoutList
     )
+  }
 
   const initPreRequest = () => {
     console.log('init pre request')
@@ -188,6 +273,12 @@ export default function ({
       params.field.dependence.fillField.forEach(
         (el) => (formData[el] = params.item[el])
       )
+    }
+    if (params.field.hasOwnProperty('selectOptionName')) {
+      const item = params.field.items.find((el) => el.id === params.value)
+      console.log(item)
+      params.field.selectOptionName = item[params.field.selectOption.text]
+      console.log(params.field.selectOptionName)
     }
   }
 
@@ -460,5 +551,6 @@ export default function ({
     openMenu,
     disabledField,
     hideField,
+    addFiles,
   }
 }

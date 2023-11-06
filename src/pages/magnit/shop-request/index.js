@@ -822,6 +822,7 @@ const config = {
             name: 'in_state',
             placeholder: '',
             readonly: false,
+            notSend: true,
             class: [''],
             position: {
               cols: 12,
@@ -830,6 +831,7 @@ const config = {
             bootstrapClass: [''],
             //validations: { required },
             //isShow: false,
+            value: true,
           }),
           dropZoneField({
             label: 'Тип файла / часы:',
@@ -843,8 +845,10 @@ const config = {
             },
             bootstrapClass: [''],
             options: {
-              withoutSave: true,
-              folder: 'tmp',
+              withoutSave: false,
+              folder: 'query_magnit',
+              name: '`Заявка_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
+              paramsForEmit: this,
             },
             value: [
               'http://10.63.1.132:5000/file/get/tmp/Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg',
@@ -857,6 +861,11 @@ const config = {
             type: 'submit',
             module: '',
             name: 'saveForm',
+            condition: [
+              {
+                target: 'in_state',
+              },
+            ],
           }),
         ],
       },

@@ -13,7 +13,7 @@ import personal from './modules/personal'
 import taskModule from './modules/task-module'
 import selects from './modules/selects'
 import file from './modules/file'
-import storage from './modules/file'
+import storage from './modules/storage'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
