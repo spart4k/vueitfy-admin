@@ -19,13 +19,39 @@
           :options="{
             withoutSave: false,
             folder: 'tmp',
+            removeble: false,
           }"
+          @addFiles="addFiles"
         ></Dropzone>
+      </div>
+      <div v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49">
+        <div style="display: flex; gap: 5px">
+          <div style="width: 500px">
+            <span>Наименование:</span>
+            <v-select
+              :label="data.entity.doljnost_name"
+              v-model="selectName"
+              disabled
+            >
+            </v-select>
+          </div>
+          <div>
+            <span>QTY:</span><v-text-field v-model="qty"></v-text-field>
+          </div>
+          <div><span>Тариф</span><v-text-field disabled></v-text-field></div>
+          <div><span>Сумма:</span><v-text-field disabled></v-text-field></div>
+        </div>
       </div>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn :disabled="true" class="mr-2" small color="info">
+      <v-btn
+        :disabled="true"
+        class="mr-2"
+        small
+        color="info"
+        @click="completeTask"
+      >
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
