@@ -60,6 +60,9 @@ export default {
     const sendingFile = async (files) => {
       if (props.options.withoutSave) {
         await loadFile(files)
+        if (props.options.callbacks) {
+          props.options.callbacks()
+        }
         //dropzone.value.processQueue()
       } else {
         console.log(files)
@@ -79,6 +82,10 @@ export default {
       //dropzone.value.processQueue()
       //value.value.push(files)
       // console.log(dropzone.value)
+    }
+    let clearDropzone = () => {
+      dropzone.value.removeAllFiles()
+      // console.log('wdadwwadwadwa')
     }
     const showSuccess = () => {
       //console.log(file)
@@ -167,6 +174,7 @@ export default {
       fillPreview,
       getUrlExtension,
       loadFile,
+      clearDropzone,
     }
   },
 }

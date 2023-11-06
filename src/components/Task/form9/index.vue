@@ -6,12 +6,11 @@
         >&nbsp;({{ data.entity.data_rojd }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <span>Создайте расход на документы:</span>
       <v-row>
         <v-col cols="12">
-          <div style="display: flex; justify-content: center">
+          <!-- <div style="display: flex; justify-content: center">
             <v-btn color="info"> Открыть </v-btn>
-          </div>
+          </div> -->
         </v-col>
       </v-row>
       <div class="mb-10">
@@ -20,13 +19,24 @@
           <v-expansion-panel
             v-for="(item, index) in listDocuments"
             :key="index"
+            ref="docs"
           >
             <v-expansion-panel-header>
-              <span>
-                <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
-                {{ data.data.docs_spr[item.doc_id] }}
-              </span>
+              <div>
+                <span>
+                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
+                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  {{ data.data.docs_spr[item.doc_id] }}
+                </span>
+                <div v-if="item.path_doc" style="margin-top: 10px">
+                  Скан:
+                  <a
+                    :href="'https://test.api.personal-crm.ru' + item.path_doc"
+                    target="_blank"
+                    ><v-icon left width="10px"> $IconDocument </v-icon></a
+                  >
+                </div>
+              </div>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <Dropzone
@@ -37,6 +47,7 @@
                 }"
                 :paramsForEmit="{ item: item.doc_id }"
                 @addFiles="addFiles"
+                :ref="`docDropzone` + index"
               ></Dropzone>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -57,7 +68,7 @@
         </v-col>
       </v-row>
       <div>
-        <span>Патент</span>
+        <span>Приложите закрывающие документы</span>
       </div>
       <v-row>
         <Dropzone
@@ -69,12 +80,19 @@
           }"
           :paramsForEmit="{}"
           @addFiles="addFilesPatent"
+          ref="clearDropzone"
         ></Dropzone>
       </v-row>
       <v-row>
         <v-col cols="12">
           <div style="display: flex; justify-content: center">
-            <v-btn color="success"> Приложить </v-btn>
+            <v-btn
+              color="success"
+              :disabled="!isSetFilesCloseSchet"
+              @click="sendCloseDocsSchet"
+            >
+              Приложить
+            </v-btn>
             <!-- <v-btn
               color="success"
               :disabled="listDisbledDocuments != 0"
@@ -89,7 +107,7 @@
         <v-btn
           color="info"
           class="mr-3"
-          :disabled="disableFinishState !== 2"
+          :disabled="listDisbledDocuments !== 0 && !listNewChet.length"
           @click="sendTaskFinish"
         >
           <v-icon left> $IconMain </v-icon>
