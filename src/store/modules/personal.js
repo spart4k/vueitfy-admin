@@ -1,5 +1,10 @@
 //import
-import { getCard, getKeys, checkEveryDayPayment } from '@/api/personal'
+import {
+  getCard,
+  getKeys,
+  checkEveryDayPayment,
+  getObject,
+} from '@/api/personal'
 //import axios from 'axios'
 
 const personal = {
@@ -19,6 +24,12 @@ const personal = {
       const result = await checkEveryDayPayment(url)
       console.log(result)
       return result
+    },
+    async getObject(_, { url }) {
+      console.log(url)
+      const { data } = await getObject(url)
+      // console.log(result)
+      return data
     },
   },
 }

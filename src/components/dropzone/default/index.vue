@@ -4,13 +4,16 @@
     :class="[options.withoutSave ? 'without-api' : '']"
   >
     <vue-dropzone
+      class="dropzone"
       ref="dropzone"
       id="dropzone"
+      :class="[errorMessages.length ? 'dropzone--error' : '']"
       :options="dropzoneOptions"
       @vdropzone-files-added="sendingFile"
       @vdropzone-success="showSuccess"
       @vdropzone-removed-file="removed"
     />
+    <v-messages color="error" :value="errorMessages" />
     <!-- {{ value }} -->
     <!--<img :src="'https://personal-crm.ru' + proxyVal" alt="" />-->
   </div>

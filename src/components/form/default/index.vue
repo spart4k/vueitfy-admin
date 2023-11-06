@@ -18,6 +18,7 @@
             class="field-col"
             :class="field.type"
           >
+            <!-- {{ formErrors[field?.name] }} -->
             <div v-if="loading && field.isShow" class="field-loading gradient">
               <!--<p>loading</p>-->
             </div>
@@ -28,7 +29,7 @@
               :item-value="field.selectOption.value"
               :label="field.label"
               v-model="formData[field.name]"
-              :error-messages="formErrors[field.name]"
+              :error-messages="formErrors[field?.name]"
               persistent-hint
               clearable
               :multiple="field.subtype === 'multiselect'"
@@ -39,7 +40,7 @@
               v-else-if="showField('autocomplete', field)"
               :field="field"
               v-model="formData[field.name]"
-              :error-messages="formErrors[field.name]"
+              :error-messages="formErrors[field?.name]"
               :formData="formData"
               ref="autocompleteRef"
               @change="changeAutocomplete"
@@ -48,7 +49,7 @@
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
-              :error-messages="formErrors[field.name]"
+              :error-messages="formErrors[field?.name]"
               clearable
               :readonly="field.readonly"
               :disabled="disabledField(field)"
@@ -75,7 +76,7 @@
                   v-model="formData[field.name]"
                   :label="field.label"
                   append-icon="mdi-calendar"
-                  :error-messages="formErrors[field.name]"
+                  :error-messages="formErrors[field?.name]"
                   v-bind="attrs"
                   :disabled="disabledField(field)"
                 ></v-text-field>
@@ -118,7 +119,7 @@
               v-else-if="showField('textarea', field)"
               v-model="formData[field.name]"
               :label="field.label"
-              :error-messages="formErrors[field.name]"
+              :error-messages="formErrors[field?.name]"
               clearable
               rows="1"
               :disabled="disabledField(field)"
@@ -128,7 +129,7 @@
               :label="field.label"
               v-model="formData[field.name]"
               clearable
-              :error-messages="formErrors[field.name]"
+              :error-messages="formErrors[field?.name]"
             />
             <DropZone
               v-else-if="showField('dropzone', field)"
@@ -136,6 +137,9 @@
               v-model="formData[field.name]"
               :formData="formData"
               :disabled="disabledField(field)"
+              :field="field"
+              @addFiles="addFiles($event, field)"
+              :error-messages="formErrors[field?.name]"
             />
           </v-col>
         </v-row>

@@ -4,6 +4,7 @@
     clearable
     label="Комментарий"
     v-model="proxyValue"
+    :error-messages="errors"
   ></v-textarea>
 </template>
 

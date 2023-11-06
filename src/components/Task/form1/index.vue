@@ -1,10 +1,14 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <div v-if="isShow">
-        <TextInfo :infoObj="{ textInfo }"></TextInfo>
+      <div style="margin-bottom: 30px" v-if="!showNextStep">
+        <v-card-title class="d-flex justify-center text-h6">
+          <span class="font-weight-bold text-h6">{{ entity.name }}</span
+          >&nbsp;({{ dataRojd }} г.р)
+        </v-card-title>
+        <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
         <FormTitle
-          :listNames="listNames"
+          :docName="getDocName(item.doc_id)"
           v-for="(item, index) in docs"
           :docs="item"
           :key="index"
@@ -15,10 +19,22 @@
         <span class="danger" v-if="commentError"
           >Заполните поле комментарий!</span
         >
-        <v-btn @click="clickCheckBtn" color="primary" block> Завершить </v-btn>
+        <v-btn
+          @click="clickCheckBtn"
+          color="primary"
+          block
+          :disabled="!isActiveBtnFirst"
+        >
+          Завершить
+        </v-btn>
       </div>
-      <div>
-        <v-expansion-panels>
+      <div v-if="showNextStep">
+        <v-card-title class="d-flex justify-center text-h6">
+          <span class="font-weight-bold text-h6">{{ entity.name }}</span
+          >&nbsp;({{ dataRojd }} г.р)
+        </v-card-title>
+        <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
+        <v-expansion-panels class="mb-5" v-if="isHasOsnDoc" accordion>
           <v-expansion-panel>
             <v-expansion-panel-header>
               <v-row align="center">
@@ -30,7 +46,7 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-model="formData.fio"
+                    v-model="formData.name"
                     label="ФИО"
                   ></v-text-field>
                 </v-col>
@@ -47,7 +63,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
-                        v-model="formData.birthday"
+                        v-model="formData.data_rojd"
                         label="Дата рождения"
                         prepend-icon="mdi-calendar"
                         readonly
@@ -57,15 +73,16 @@
                     </template>
                     <v-date-picker
                       class="z-index"
-                      v-model="formData.birthday"
+                      v-model="formData.data_rojd"
                       min="1950-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col>
+                <v-col style="position: relative; z-index: 30">
                   <v-select
+                    v-model="formData.grajdanstvo_id"
                     persistent-hint
                     :items="citizenItems"
                     label="Гражданство"
@@ -80,17 +97,18 @@
           :docsData="docsData"
           :listNames="listNames"
           :docs="docs"
+          :entity="entity"
         ></DocForm>
       </div>
     </div>
 
     <v-divider></v-divider>
-    <v-row class="py-2" justify="end">
-      <v-btn :disabled="endBtnDisabled" color="info" @click="sendData">
+    <v-row class="py-2" justify="end" v-if="showNextStep">
+      <v-btn :disabled="!isFormValid" color="info" @click="sendData">
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
-      <v-btn color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey">
         <v-icon left> $IconMain </v-icon>
         Закрыть
       </v-btn>

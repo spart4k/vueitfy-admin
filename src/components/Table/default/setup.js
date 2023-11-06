@@ -443,10 +443,20 @@ const table = {
       }
     }
     const panelHandler = (button) => {
-      const { type } = button
+      const { type, url } = button
+      const changeUrl = (url) => {
+        router.push(
+          {
+            name: url,
+          })
+        popupForm.value.isShow = true
+      }
       if (type === 'addItem') {
         addItem()
+      } else if (type === 'changeUrl') {
+        changeUrl(url)
       }
+      
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {

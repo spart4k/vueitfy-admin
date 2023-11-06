@@ -18,7 +18,7 @@ import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
-import GrishaView from '@/views/GrishaView'
+import GrishaView from '@/views/GrishaView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -84,6 +84,14 @@ const routes = [
         path: '/personal/add',
         meta: {
           mode: 'add',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal-add-key',
+        path: '/personal/add-key',
+        meta: {
+          mode: 'add-key',
         },
         component: Detail,
       },
@@ -188,6 +196,14 @@ const routes = [
       {
         name: 'shop-request-magnit/:id',
         path: ':id',
+        component: Detail,
+      },
+      {
+        name: 'shop-request-magnit/upload',
+        path: './upload',
+        meta: {
+          mode: 'upload',
+        },
         component: Detail,
       },
     ],

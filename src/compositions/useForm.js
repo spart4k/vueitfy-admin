@@ -1,10 +1,8 @@
 import Vue, { ref, computed, watch, unref, reactive } from 'vue'
-import useVuelidate from '@vuelidate/core'
+import { useVuelidate } from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
-import { required } from '@/utils/validation.js'
-import { data } from 'jquery'
-import { filter } from 'lodash'
 
 /**
  * @param loading {boolean}
@@ -30,10 +28,10 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  const filesBasket = ref({})
   const { emit } = context.root.ctx
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
-      //console.log(obj[key])
       obj[key] = ref(fields[key].default)
       return obj
     }, {})
@@ -43,7 +41,7 @@ export default function ({
     form.fields.forEach((el) => {
       formFields[el.name] = el
     })
-    return Object.keys(formData).reduce((obj, key) => {
+    const valFields = Object.keys(formFields).reduce((obj, key) => {
       if (
         (typeof formFields[key].isShow === 'boolean' &&
           !formFields[key].isShow) ||
@@ -52,56 +50,60 @@ export default function ({
       ) {
         return obj
       }
-      obj[key] = { ...fields[key].validations, $autoDirty }
+      obj[key] = { ...formFields[key].validations, $autoDirty }
       return obj
     }, {})
-    //console.log({
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //})
-    //return {
-    //  required,
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //}
+    return valFields
+    // return {
+    //   required,
+    //   fields: {
+    //     $each: valFields,
+    //   },
+    // }
   }
 
-  let $v = null
   const computedFormData = computed(() => formData)
-  $v = useVuelidate(validations(), computedFormData.value)
+  let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
     Object.assign(
       formData,
       reactive(
         Object.keys(setFields()).reduce((obj, key) => {
-          //console.log(obj[key])
           obj[key] = ref(formData[key])
           return obj
         }, {})
       )
     )
   }
-  //setTimeout(() => {
-  //  rebuildFormData()
-  //  console.log('rebuild')
-  //}, 10000)
-  const $errors = computed(() => {
-    return Object.keys(formData).reduce((obj, key) => {
+  // setInterval(() => {
+  //   // console.log(errors.value)
+  // }, 3000)
+  const $errors = ref({})
+  const errorsCount = () => {
+    $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
-        obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
-      } else {
-        obj[key] = []
+        const item = form.fields.find((x) => x.name === key).isShow
+        if (
+          (typeof item === 'boolean' && item) ||
+          (typeof item === 'object' && item.value)
+        ) {
+          obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
+          // obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
+        } else {
+          obj[key] = []
+        }
       }
       return obj
     }, {})
-  })
+  }
+  // errorsCount()
 
   const validate = () => {
+    $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
     $touched.value = true
+    errorsCount()
     return !unref($v).$invalid
   }
 
@@ -145,8 +147,35 @@ export default function ({
       if (isNextForm) {
         nextForm()
       }
+    } else if (action.action === 'saveFormStore') {
+      loadStoreFile()
     }
   }
+
+  const addFiles = (files, field) => {
+    console.log(files)
+    console.log(field)
+    console.log(formData)
+    if (field.options.countFiles?.length > 1) {
+      // Vue.set(filesBasket.value, field.name, files)
+    } else {
+      filesBasket.value[field.name] = { name: '', files, field }
+      console.log(filesBasket.value)
+    }
+    // filesBasket.value.push(files)
+  }
+
+  const loadStoreFile = () => {
+    console.log('load')
+    // const promises = []
+    for (let key in filesBasket.value) {
+      console.log(filesBasket.value[key])
+      const name = eval(filesBasket.value[key].field.options.name)
+      console.log(name)
+    }
+    // const
+  }
+
   const getDetail = () => form.detail
 
   const hasSelect = () =>
@@ -187,6 +216,12 @@ export default function ({
       params.field.dependence.fillField.forEach(
         (el) => (formData[el] = params.item[el])
       )
+    }
+    if (params.field.hasOwnProperty('selectOptionName')) {
+      const item = params.field.items.find((el) => el.id === params.value)
+      console.log(item)
+      params.field.selectOptionName = item[params.field.selectOption.text]
+      console.log(params.field.selectOptionName)
     }
   }
 
@@ -231,14 +266,21 @@ export default function ({
     })
 
     let targetField, card
+    if (depField) targetField = form.fields.find((el) => el.name === depField)
+    console.log(form.fields, targetField)
     if (targetField) {
-      targetField = form.fields.find((el) => el.name === depField)
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
       card = targetField.items.find((el) => el.id === formData[depField])
+      if (data.length === 1) {
+        if (data[0].del) {
+          targetField.items = []
+        } else {
+          formData[depField] = data[0].id
+        }
+      }
     }
-
     //if (data.length === 1) formData[depField] = card.id
     if (card)
       if (field.dependence.fillField) {
@@ -439,5 +481,6 @@ export default function ({
     openMenu,
     disabledField,
     hideField,
+    addFiles,
   }
 }
