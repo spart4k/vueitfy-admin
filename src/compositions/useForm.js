@@ -237,6 +237,9 @@ export default function ({
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
+      if (targetField.items.length === 1) {
+        formData[targetField.name] = targetField.items[0].id
+      }
       //targetField.hideItems = targetField.defaultItems
       //  ? [...targetField.defaultItems, ...data]
       //  : data
