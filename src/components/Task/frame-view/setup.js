@@ -6,6 +6,8 @@ import Form15 from '@/components/Task/form15/index.vue'
 import Form2 from '@/components/Task/form2/index.vue'
 import Form3 from '@/components/Task/form3/index.vue'
 import Form4 from '@/components/Task/form4/index.vue'
+import Form5 from '@/components/Task/form5/index.vue'
+import Form6 from '@/components/Task/form6/index.vue'
 import Form7 from '@/components/Task/form7/index.vue'
 import Form8 from '@/components/Task/form8/index.vue'
 import Form9 from '@/components/Task/form9/index.vue'
@@ -64,6 +66,8 @@ const task = defineComponent({
     Form2,
     Form3,
     Form4,
+    Form5,
+    Form6,
     Form7,
     Form8,
     Form9,
