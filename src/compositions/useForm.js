@@ -150,7 +150,7 @@ export default function ({
   const getDetail = () => form.detail
 
   const hasSelect = () =>
-    form.fields.some(
+    form?.fields.some(
       (field) => field.type === 'select' && field.isShow && !field.withoutList
     )
 
