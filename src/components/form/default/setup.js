@@ -78,10 +78,11 @@ export default {
     const { makeRequest: changeForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: (data) => {
+      request: (params) => {
         console.log(data)
-        return store.dispatch('form/update', {
-          url: `set/data/${alias}`,
+        return store.dispatch(params.module, {
+          //url: `set/data/${alias}`,
+          url: params.url,
           body: { data: { id: +route.params.id, ...formData } },
         })
       },
@@ -89,9 +90,9 @@ export default {
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: () =>
-        store.dispatch('form/create', {
-          url: `query/${alias}`,
+      request: (params) =>
+        store.dispatch(params.module, {
+          url: params.url,
           body: formData,
         }),
     })

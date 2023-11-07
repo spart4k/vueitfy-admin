@@ -145,7 +145,16 @@ export default function ({
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
-      await changeForm({ url: action.url, module: action.module })
+      if (action.conditionAction) {
+        console.log('action')
+        action.conditionAction.forEach((el) => {
+          action[el.target] = el.result[formData[el.from]]
+        })
+        //await createForm({ url: action.url, module: action.module })
+        loadStoreFile({ url: action.url, module: action.module })
+      } else {
+        await changeForm({ url: action.url, module: action.module })
+      }
       loading.value = false
       //const isNextForm = true
       //if (isNextForm) {
@@ -172,7 +181,7 @@ export default function ({
     return await store.dispatch('storage/loadFile')
   }
 
-  const loadStoreFile = async () => {
+  const loadStoreFile = async (queryParams) => {
     console.log('load')
     // const promises = []
     const queries = []
@@ -226,7 +235,7 @@ export default function ({
         formData[filesBasket.value[key].field.name] = path
       }
     }
-    const result = await createForm()
+    const result = await createForm(queryParams)
     //context.root.router.go(-1)
     emit('closePopup')
     console.log(result)
