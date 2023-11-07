@@ -2,6 +2,7 @@ import { ref, onMounted, watch } from 'vue'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import store from '@/store'
+import { Callbacks } from 'jquery'
 //import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -21,6 +22,14 @@ export default {
       type: Object,
       default: () => {},
     },
+    paramsForEmit: {
+      type: Object,
+      default: () => {},
+    },
+    errorMessages: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -35,7 +44,11 @@ export default {
       autoDiscover: false,
       thumbnailWidth: 150,
       maxFilesize: 0.5,
-      addRemoveLinks: true,
+      maxFiles: props.options.countFiles ? props.options.countFiles : 1,
+      addRemoveLinks:
+        props.options.removeble == true && props.options.removeble
+          ? true
+          : false,
       dictDefaultMessage: 'Переместите или выберите файл',
       //dictRemoveFile: 'delete',
       //clickable: true,
@@ -47,9 +60,14 @@ export default {
     const sendingFile = async (files) => {
       if (props.options.withoutSave) {
         await loadFile(files)
+        if (props.options.callbacks) {
+          props.options.callbacks()
+        }
         //dropzone.value.processQueue()
       } else {
-        emit('addFiles', files)
+        console.log(files)
+        proxyVal.value = [...files]
+        emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
@@ -64,6 +82,10 @@ export default {
       //dropzone.value.processQueue()
       //value.value.push(files)
       // console.log(dropzone.value)
+    }
+    let clearDropzone = () => {
+      dropzone.value.removeAllFiles()
+      // console.log('wdadwwadwadwa')
     }
     const showSuccess = () => {
       //console.log(file)
@@ -152,6 +174,7 @@ export default {
       fillPreview,
       getUrlExtension,
       loadFile,
+      clearDropzone,
     }
   },
 }

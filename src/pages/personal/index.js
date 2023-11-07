@@ -1536,7 +1536,17 @@ const defaultForm = [
             url: 'create/unfinished_personal',
             name: 'nextAwaitStage',
             action: 'nextAwaitStage',
-            // condition: {},
+            conditionCode: [
+              {
+                code: 1,
+              },
+              {
+                code: 2,
+              },
+              {
+                code: 3,
+              },
+            ],
           }),
         ],
         formData: {},

@@ -1,24 +1,14 @@
 import { defineComponent, ref } from 'vue'
-import TextInfo from '@/components/Task/el/TextInfo/index.vue'
-import DocScan from '@/components/Task/el/DocScan/index.vue'
-import FormComment from '@/components/Task/el/FormComment/index.vue'
 import FormTitle from '@/components/Task/el/FormTitle/index.vue'
-import FormError from '@/components/Task/el/FormError/setup'
-import DateTimePicker from '@/components/datetimepicker/index.vue'
-import DocForm from '@/components/Task/el/DocForm/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+import useRequest from '@/compositions/useRequest'
 
-const firstPopupView = defineComponent({
-  name: 'FirstPopupView',
+import store from '@/store'
+const form23 = defineComponent({
+  name: 'Form23',
   components: {
-    FormError,
-    FormComment,
-    TextInfo,
-    DocScan,
     FormTitle,
-    DateTimePicker,
-    DocForm,
   },
   props: {
     data: {
@@ -29,11 +19,17 @@ const firstPopupView = defineComponent({
   data: () => {
     return {
       datePickerOpen: false,
+      selectOpen: false,
     }
   },
   setup(props, { emit }) {
+    const context = {
+      root: {
+        store,
+      },
+    }
     const finalData = ref({})
-    const endBtnDisabled = ref(true)
+    const isFormValid = ref(false)
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -48,26 +44,44 @@ const firstPopupView = defineComponent({
     let unConfirmed = ref([])
 
     const addConfirmed = (data) => {
+      console.log(data)
       confirmed.value.push(data)
-      unConfirmed.value = unConfirmed.value.filter(
-        (x) => x.docs_id !== data.docs_id
-      )
+      unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
       console.log(confirmed)
     }
     const addUnconfirmed = (data) => {
       unConfirmed.value.push(data)
-      confirmed.value = confirmed.value.filter(
-        (x) => x.docs_id !== data.docs_id
-      )
+      confirmed.value = confirmed.value.filter((x) => x.id !== data.id)
       console.log(unConfirmed)
     }
 
-    const clickCheckBtn = () => {
-      if (unConfirmed.value.length && comment.value.trim()) {
-        isShow.value = false
-        commentError.value = false
+    const { makeRequest, loading } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setPartTask', {
+          id: 1,
+          data: {
+            comment: comment.value,
+            cancel_close: Object.values(unConfirmed.value),
+            docs_id: {},
+          },
+        }),
+    })
+
+    const clickCheckBtn = async () => {
+      if (unConfirmed.value.length) {
+        if (comment.value.trim()) {
+          console.log([...confirmed.value, ...unConfirmed.value])
+          isShow.value = false
+          commentError.value = false
+          const dataFrom = await makeRequest()
+          console.log(dataFrom)
+        } else {
+          commentError.value = true
+        }
       } else {
-        commentError.value = true
+        const dataFrom = await makeRequest()
+        console.log(dataFrom)
       }
     }
 
@@ -91,23 +105,23 @@ const firstPopupView = defineComponent({
         return {
           text: citizen.name,
           value: citizen.id,
-          disabled: false,
-          divider: true,
-          header: citizen.name,
         }
       }
     )
 
-    const { formData, validate } = useForm({
+    const { formData, validate: osnValidate } = useForm({
       fields: {
         fio: {
           validations: { required },
+          default: props.data.entity.name,
         },
         birthday: {
           validations: { required },
+          default: props.data.entity.data_rojd,
         },
         grazhdanstvo: {
           validations: { required },
+          default: props.data.entity.grajdanstvo_id,
         },
       },
     })
@@ -118,15 +132,16 @@ const firstPopupView = defineComponent({
 
     const changeDocs = (data) => {
       const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
-      let isDisabled = endBtnDisabled.value
+      let isValid = isFormValid.value
       for (let i = 0; i < docsId.length; i++) {
-        isDisabled = data.value[docsId[i]].validate()
-        if (!isDisabled) {
+        isValid = data.value[docsId[i]].validate()
+        if (!isValid) {
           break
         }
       }
-      endBtnDisabled.value = !isDisabled
-      if (!endBtnDisabled.value) {
+      isFormValid.value = isValid
+      console.log(osnValidate())
+      if (isFormValid.value) {
         docsId.forEach((item) => {
           finalData.value = { ...finalData.value, ...data.value[item].formData }
         })
@@ -142,6 +157,7 @@ const firstPopupView = defineComponent({
       docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,
       listNames: props.data.data.docs_spr,
+      loading,
       clickCheckBtn,
       addConfirmed,
       addUnconfirmed,
@@ -153,12 +169,12 @@ const firstPopupView = defineComponent({
       isShow,
       commentError,
       changeDocs,
-      endBtnDisabled,
+      isFormValid,
       finalData,
       sendData,
       formData,
-      validate,
+      osnValidate,
     }
   },
 })
-export default firstPopupView
+export default form23

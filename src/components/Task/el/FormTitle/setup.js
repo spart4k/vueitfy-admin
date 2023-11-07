@@ -10,7 +10,7 @@ const docsRequired = defineComponent({
     docs: {
       type: Object,
     },
-    name: {
+    docName: {
       type: String,
     },
   },
@@ -26,12 +26,12 @@ const docsRequired = defineComponent({
     clickAdd() {
       this.isShowAdd = false
       this.isShowCansel = true
-      this.$emit('confirmed', { docs_id: this.docs.contributed })
+      this.$emit('confirmed', { id: this.docs.id })
     },
     clickDel() {
       this.isShowCansel = false
       this.isShowAdd = true
-      this.$emit('unconfirmed', { docs_id: this.docs.contributed })
+      this.$emit('unconfirmed', { id: this.docs.id })
     },
   },
 })
