@@ -846,9 +846,7 @@ const config = {
               withoutSave: true,
               folder: 'tmp',
             },
-            value: [
-              'http://10.63.1.132:5000/file/get/tmp/Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg',
-            ],
+            value: '',
           }),
         ],
         actions: [
