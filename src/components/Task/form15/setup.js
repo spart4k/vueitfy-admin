@@ -121,17 +121,15 @@ const Form15 = defineComponent({
       context,
       request: () => {
         return store.dispatch('taskModule/setPartTask', {
-          data: {
-            status: 2,
-            data: isFormConfirmed.value
-              ? confirmData
-              : {
-                  process_id: props.data.task.process_id,
-                  manager_id: props.data.task.from_account_id,
-                  parent_action: props.data.task.id,
-                  task_id: props.data.task.id,
-                },
-          },
+          status: 2,
+          data: isFormConfirmed.value
+            ? confirmData
+            : {
+                process_id: props.data.task.process_id,
+                manager_id: props.data.task.from_account_id,
+                parent_action: props.data.task.id,
+                task_id: props.data.task.id,
+              },
         })
       },
     })

@@ -84,11 +84,11 @@
         class="mr-3"
         @click="sendData"
       >
-        <v-icon left> $IconMain </v-icon>
+        <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
       <v-btn @click="$emit('closePopup')" color="blue-grey">
-        <v-icon left> $IconMain </v-icon>
+        <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
     </v-row>

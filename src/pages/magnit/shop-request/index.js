@@ -8,6 +8,7 @@ import {
   checkboxField,
   datetimeField,
   dropZoneField,
+  textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
@@ -806,7 +807,7 @@ const config = {
         fields: [
           dateField({
             label: 'Период:',
-            name: 'date_status',
+            name: 'date',
             subtype: 'period',
             placeholder: '',
             classes: [''],
@@ -835,7 +836,7 @@ const config = {
           }),
           dropZoneField({
             label: 'Тип файла / часы:',
-            name: 'path_act',
+            name: 'file',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -849,8 +850,24 @@ const config = {
               folder: 'parser_magnit',
               name: '`parser_magnit_25`',
               paramsForEmit: this,
+              acceptedFiles: '.xlsx',
             },
             value: '',
+          }),
+          textBlock({
+            label: 'Создал',
+            name: 'type',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            value: 1,
+            //validations: { required },
+            //isShow: false,
           }),
         ],
         actions: [

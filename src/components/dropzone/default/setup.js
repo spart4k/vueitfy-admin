@@ -50,6 +50,7 @@ export default {
           ? true
           : false,
       dictDefaultMessage: 'Переместите или выберите файл',
+      acceptedFiles: props.options?.acceptedFiles,
       //dictRemoveFile: 'delete',
       //clickable: true,
       //previewsContainer: false,

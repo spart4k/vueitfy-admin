@@ -118,30 +118,27 @@ const Form2 = defineComponent({
           props.data.task.time_execution * 1000 -
           Date.now()
         return store.dispatch('taskModule/setPartTask', {
+          status: finalData.value.rejectedDocs.length
+            ? 6
+            : taskDeadline > 0
+            ? 2
+            : 3,
           data: {
-            status: finalData.value.rejectedDocs.length
-              ? 6
-              : taskDeadline > 0
-              ? 2
-              : 3,
-            data: {
-              process_id: props.data.task.process_id,
-              personal_id: props.data.entity.id,
-              task: props.data.task.id,
-              parent_action: props.data.task.id,
-              docs_id:
-                isHasOsnDoc && !isOsnDocConfirmed
-                  ? [0, ...finalData.value.rejectedDocs]
-                  : finalData.value.rejectedDocs,
-              account_id: props.data.task.to_account_id,
-              obd_id: props.data.task.from_account_id,
-              comment: 'comment',
-              bank_card_id:
-                props.data.data.dop_data &&
-                props.data.data.dop_data.bank_card_id
-                  ? props.data.data.dop_data.bank_card_id
-                  : null,
-            },
+            process_id: props.data.task.process_id,
+            personal_id: props.data.entity.id,
+            task: props.data.task.id,
+            parent_action: props.data.task.id,
+            docs_id:
+              isHasOsnDoc && !isOsnDocConfirmed
+                ? [0, ...finalData.value.rejectedDocs]
+                : finalData.value.rejectedDocs,
+            account_id: props.data.task.to_account_id,
+            obd_id: props.data.task.from_account_id,
+            comment: 'comment',
+            bank_card_id:
+              props.data.data.dop_data && props.data.data.dop_data.bank_card_id
+                ? props.data.data.dop_data.bank_card_id
+                : null,
           },
         })
       },
