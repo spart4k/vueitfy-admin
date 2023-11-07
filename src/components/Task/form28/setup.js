@@ -70,16 +70,14 @@ const Form28 = defineComponent({
       context,
       request: () => {
         return store.dispatch('taskModule/setPartTask', {
+          status: 2,
           data: {
-            status: 2,
-            data: {
-              process_id: props.data.task.process_id,
-              task_id: props.data.task.id,
-              parent_action: props.data.task.id,
-              payment_id: props.data.entity.id,
-              manager_id: JSON.parse(props.data.task.dop_data).manager_id,
-              everyday: 1, //TODO: Вставить поле "vid_vedomost_id" из data
-            },
+            process_id: props.data.task.process_id,
+            task_id: props.data.task.id,
+            parent_action: props.data.task.id,
+            payment_id: props.data.entity.id,
+            manager_id: JSON.parse(props.data.task.dop_data).manager_id,
+            everyday: props.data.data.vid_vedomost_id,
           },
         })
       },

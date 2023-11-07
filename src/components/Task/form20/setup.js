@@ -57,18 +57,16 @@ const Form20 = defineComponent({
       context,
       request: () => {
         return store.dispatch('taskModule/setPartTask', {
+          status: 2,
           data: {
-            status: 2,
-            data: {
-              process_id: props.data.entity.process_id,
-              task_id: props.data.entity.id,
-              parent_action: props.data.entity.id,
-              user_key: props.data.entity.id,
-              photo_path: dopData.photo_path ?? '',
-              obd_id: props.data.entity.id,
-              comment: keyForm.comment,
-              okk_id: props.data.task.from_account_id,
-            },
+            process_id: props.data.entity.process_id,
+            task_id: props.data.entity.id,
+            parent_action: props.data.entity.id,
+            user_key: props.data.entity.id,
+            photo_path: dopData.photo_path ?? '',
+            obd_id: props.data.entity.id,
+            comment: keyForm.comment,
+            okk_id: props.data.task.from_account_id,
           },
         })
       },
