@@ -93,18 +93,8 @@ export default {
       request: (params) =>
         store.dispatch(params.module, {
           url: params.url,
-          body: formData,
+          body: params.formData ? params.formData : formData,
         }),
-    })
-    const { makeRequest: customForm } = useRequest({
-      context,
-      successMessage: 'Сохранено',
-      request: (data) => {
-        return store.dispatch(data.module, {
-          url: data.url,
-          body: formData,
-        })
-      },
     })
     // const { makeRequest: createForm } = useRequest({
     //   context,
@@ -142,7 +132,6 @@ export default {
       changeForm,
       mode: isEdit.value,
       createForm,
-      customForm,
     })
     onMounted(async () => {
       await getData()

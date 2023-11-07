@@ -20,7 +20,6 @@ export default function ({
   context,
   loading,
   changeForm,
-  customForm,
   nextForm,
   form,
   makeRequest,
@@ -135,6 +134,7 @@ export default function ({
   }
   const clickHandler = async (action) => {
     if (!validate()) return
+    const sortedData = sortData()
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -163,11 +163,27 @@ export default function ({
       loadStoreFile()
     } else if (action.action === 'nextAwaitStage') {
       loading.value = true
-      console.log('action', action, formData)
-      const data = await customForm({ url: action.url, module: action.module })
-      console.log(data)
+      const data = await createForm({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      console.log('data', data)
       loading.value = false
     }
+  }
+  const sortData = () => {
+    const newForm = {}
+    Object.keys(formData).forEach((key) => {
+      const item = form.fields.find((x) => x.name === key)
+      if (
+        (typeof item.isShow === 'boolean' && item.isShow) ||
+        (typeof item.isShow === 'object' && item.isShow.value)
+      ) {
+        newForm[key] = formData[key]
+      }
+    })
+    return newForm
   }
   const addFiles = (files, field) => {
     console.log()
@@ -553,5 +569,6 @@ export default function ({
     openMenu,
     disabledField,
     addFiles,
+    sortData,
   }
 }
