@@ -996,7 +996,7 @@ const config = {
                 ],
                 dependence: {
                   type: 'default',
-                  fillField: ['sum_nutrition', 'with_nutrition'],
+                  fillField: ['sum_nutrition', 'with_nutrition', 'subtype'],
                 },
                 update: {
                   module: 'selects/getList',
@@ -1037,8 +1037,12 @@ const config = {
                   module: 'personal/checkEveryDayPayment',
                   action: {
                     type: 'hideOptions',
-                    values: [8],
+                    //values: [8],
                     field: 'vid_vedomost_id_logistic',
+                    condition: {
+                      true: [],
+                      false: 1,
+                    },
                   },
                   //url: 'object_id/avatar_with_user_key_id',
                   url: [
@@ -1121,6 +1125,20 @@ const config = {
                 validations: { required },
                 bootstrapClass: [''],
                 requiredFields: ['with_nutrition', 'sum_nutrition'],
+              }),
+              textBlock({
+                label: 'Создал',
+                name: 'subtype',
+                placeholder: '',
+                readonly: true,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                //validations: { required },
+                //isShow: false,
               }),
             ],
             actions: [
@@ -1243,6 +1261,26 @@ const config = {
                     {
                       source: 'formData',
                       field: 'this',
+                    },
+                  ],
+                },
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'subtype',
+                      value: [9],
+                      source: 'form.formData[el.field]',
+                    },
+                    {
+                      field: 'direction_id',
+                      value: [1],
+                      source: 'form.formData[el.field]',
+                    },
+                    {
+                      field: 'doljnost_id',
+                      value: [5, 7],
+                      source: 'form.formData[el.field]',
                     },
                   ],
                 },

@@ -34,8 +34,10 @@ export default {
     const context = {
       root: {
         ctx,
+        store,
       },
     }
+    const { emit } = ctx
     const loading = ref(false)
     // const fields = () => {
     //   const fields = {}
@@ -91,7 +93,10 @@ export default {
         with_nutrition,
         sum_nutrition,
       }
+      let validate = null
       const persons = rows.value.map((el) => {
+        console.log(el)
+        validate = !el.validate()
         const person = defaultData
         person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
         if (el.formData.print_form_key) {
@@ -102,8 +107,11 @@ export default {
       const { makeRequest } = useRequest({
         context,
         request: () => store.dispatch(module, { url, body: { persons } }),
+        successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
+      if (validate) return
       await makeRequest()
+      emit('closePopup')
       console.log(defaultData, persons)
     }
     const {

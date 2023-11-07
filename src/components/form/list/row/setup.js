@@ -199,6 +199,7 @@ export default {
     } = useForm({
       form: props.tab,
       fields: fields(),
+      setFields: fields,
       context,
       loading,
       prevTab,

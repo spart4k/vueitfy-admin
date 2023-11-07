@@ -21,6 +21,7 @@
           :options="item.config"
           @nextStage="nextStage"
           @prevStage="prevStage"
+          @closePopup="$emit('closePopup')"
         />
         <!--<v-progress-circular
           v-else

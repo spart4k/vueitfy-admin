@@ -384,14 +384,14 @@ export default function ({
       if (targetField.items.length === 1) {
         formData[targetField.name] = targetField.items[0].id
       }
-      //targetField.hideItems = targetField.defaultItems
-      //  ? [...targetField.defaultItems, ...data]
-      //  : data
+      targetField.hideItems = targetField.defaultItems
+        ? [...targetField.defaultItems, ...data]
+        : data
       card = targetField.items.find((el) => el.id === formData[depField])
     }
-
+    console.log(targetField)
     //if (data.length === 1) formData[depField] = card.id
-    if (card)
+    if (card) {
       if (field.dependence.fillField) {
         field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
       } else if (data.length === 1) {
@@ -410,8 +410,33 @@ export default function ({
           field.dependence.fillField.forEach((el) => (formData[el] = ''))
         }
       }
+    }
+
     if (field.dependence.action) {
       if (field.dependence.action.type === 'hideOptions') {
+        const selectField = form.fields.find(
+          (el) => el.name === field.dependence.action.field
+        )
+        selectField.items = selectField.hideItems.filter((el) => {
+          return el.id !== field.dependence.action.condition[data.result]
+        })
+        // говно чтобы прятать option после обновления
+        if (selectField.hiding) {
+          if (selectField.hiding.conditions) {
+            const condition = selectField.hiding.conditions.find(
+              (el) => mode === el.value
+            )
+            console.log(condition)
+            //selectField.hideItems = lists.data[keyList]
+            selectField.items = selectField.items.filter((el) => {
+              console.log(condition.values.includes(el.id))
+              return !condition.values.includes(el.id)
+            })
+            console.log(checkInvalidSelect(selectField))
+          }
+        }
+        // говно чтобы прятать option после обновления
+        console.log(selectField.items)
         if (data.result) {
           console.log(data.result)
         }
@@ -419,6 +444,11 @@ export default function ({
     }
     field.loading = false
     //formData[field.dependence.field] = data
+  }
+
+  const checkInvalidSelect = (field) => {
+    const result = field.items.find((el) => el.id === formData[field.name])
+    if (!result) formData[field.name] = ''
   }
 
   const changeSelect = ({ value, field }) => {
@@ -503,12 +533,16 @@ export default function ({
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
+              console.log(condition)
+              field.hideItems = lists.data[keyList]
               lists.data[keyList] = lists.data[keyList].filter((el) => {
+                console.log(condition.values.includes(el.id))
                 return !condition.values.includes(el.id)
               })
             }
           }
           field.items = lists.data[keyList]
+          console.log(field.items)
         }
       }
     }
@@ -520,7 +554,7 @@ export default function ({
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) =>
-        el.value.includes(formData[el.field])
+        el.value.includes(el.source ? eval(el.source) : formData[el.field])
       )
     if (field.isShow.conditions) {
       field.isShow.value = condition()
