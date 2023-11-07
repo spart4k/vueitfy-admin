@@ -819,7 +819,7 @@ const config = {
           }),
           checkboxField({
             label: 'Табель',
-            name: 'in_state',
+            name: 'tabel',
             placeholder: '',
             readonly: false,
             notSend: true,
@@ -861,9 +861,16 @@ const config = {
             type: 'submit',
             module: '',
             name: 'saveForm',
+            action: 'saveForm',
+            url: '',
             condition: [
               {
-                target: 'in_state',
+                target: 'url',
+                from: 'tabel',
+                result: {
+                  true: 'parser/magnit_list',
+                  false: 'parser/magnit_pivot',
+                },
               },
             ],
           }),

@@ -78,11 +78,13 @@ export default {
     const { makeRequest: changeForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: () =>
-        store.dispatch('form/update', {
+      request: (data) => {
+        console.log(data)
+        return store.dispatch('form/update', {
           url: `set/data/${alias}`,
           body: { data: { id: +route.params.id, ...formData } },
-        }),
+        })
+      },
     })
     const { makeRequest: createForm } = useRequest({
       context,

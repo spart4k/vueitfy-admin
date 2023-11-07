@@ -133,8 +133,9 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
+    console.log(action)
     //$v.value.$touch()
-    if (!validate()) return
+    //if (!validate()) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -146,10 +147,10 @@ export default function ({
       loading.value = true
       await changeForm({ url: action.url, module: action.module })
       loading.value = false
-      const isNextForm = true
-      if (isNextForm) {
-        nextForm()
-      }
+      //const isNextForm = true
+      //if (isNextForm) {
+      //  nextForm()
+      //}
     } else if (action.action === 'saveFormStore') {
       loadStoreFile()
     }
