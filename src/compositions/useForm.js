@@ -327,6 +327,9 @@ export default function ({
   }
 
   const getData = async () => {
+    if (!initPreRequest()) {
+      return false
+    }
     const [syncForm, lists] = await Promise.all(initPreRequest())
     if (syncForm) {
       for (let formKey in syncForm.data) {
