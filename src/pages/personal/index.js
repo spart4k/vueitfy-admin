@@ -1332,8 +1332,8 @@ const defaultForm = [
         lists: [
           // 'vid_vedomost_id',
           // 'status_pt',
-          'direction_id_logistic',
-          'grajdanstvo_id',
+          { alias: 'direction_id_logistic', filter: [] },
+          { alias: 'grajdanstvo_id', filter: [] },
           // 'shifts',
           // 'nutritions',
         ],
@@ -1354,10 +1354,8 @@ const defaultForm = [
           }),
           dateField({
             label: 'Дата рождения',
-            name: 'date_target',
-            value: [],
+            name: 'date_rojd',
             type: 'date',
-            subtype: 'multiple',
             readonly: true,
             menu: false,
             placeholder: '',
@@ -1484,6 +1482,7 @@ const defaultForm = [
           checkboxField({
             label: 'Трансфер',
             name: 'transfer',
+            value: false,
             placeholder: '',
             readonly: false,
             class: [''],

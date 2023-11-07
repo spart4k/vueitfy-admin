@@ -20,6 +20,7 @@ export default function ({
   context,
   loading,
   changeForm,
+  customForm,
   nextForm,
   form,
   makeRequest,
@@ -133,7 +134,7 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
-    // if (!validate()) return
+    if (!validate()) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -154,7 +155,8 @@ export default function ({
     } else if (action.action === 'nextAwaitStage') {
       loading.value = true
       console.log('action', action, formData)
-      const data = await makeRequest({ url: action.url, module: action.module })
+      const data = await customForm({ url: action.url, module: action.module })
+      console.log(data)
       loading.value = false
     }
   }
