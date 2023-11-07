@@ -169,7 +169,11 @@ export default function ({
       //  nextForm()
       //}
     } else if (action.action === 'saveFormStore') {
-      loadStoreFile()
+      loadStoreFile({
+        url: action.url,
+        module: action.module,
+        formData,
+      })
     } else if (action.action === 'nextAwaitStage') {
       loading.value = true
       const data = await createForm({
@@ -219,7 +223,7 @@ export default function ({
   }
 
   const loadStoreFile = async (queryParams) => {
-    console.log('load')
+    console.log(queryParams)
     // const promises = []
     const queries = []
     for (let key in filesBasket.value) {
@@ -270,7 +274,7 @@ export default function ({
           '.' +
           ext
         console.log(path)
-        if (queryParams.formData) {
+        if (queryParams && queryParams.formData) {
           queryParams.formData[filesBasket.value[key].field.name] = path
         } else {
           formData[filesBasket.value[key].field.name] = path
