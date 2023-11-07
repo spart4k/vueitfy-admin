@@ -151,9 +151,17 @@ export default function ({
           action[el.target] = el.result[formData[el.from]]
         })
         //await createForm({ url: action.url, module: action.module })
-        loadStoreFile({ url: action.url, module: action.module })
+        loadStoreFile({
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        })
       } else {
-        await changeForm({ url: action.url, module: action.module })
+        await changeForm({
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        })
       }
       loading.value = false
       //const isNextForm = true
@@ -177,12 +185,19 @@ export default function ({
     const newForm = {}
     Object.keys(formData).forEach((key) => {
       const item = form.fields.find((x) => x.name === key)
+      console.log(
+        typeof item.isShow === 'boolean' && item.isShow,
+        typeof item.isShow === 'object' && item.isShow.value,
+        !item.notSend
+      )
       if (
         (typeof item.isShow === 'boolean' && item.isShow) ||
-        (typeof item.isShow === 'object' && item.isShow.value)
+        (typeof item.isShow === 'object' && item.isShow.value) ||
+        !item.notSend
       ) {
         newForm[key] = formData[key]
       }
+      if (item.notSend) delete newForm[key]
     })
     return newForm
   }
@@ -238,6 +253,7 @@ export default function ({
       )
     }
     const data = await Promise.all(queries)
+    console.log(data)
     if (data.length === 1) {
       let path = ''
       for (let key in filesBasket.value) {
@@ -254,9 +270,15 @@ export default function ({
           '.' +
           ext
         console.log(path)
-        formData[filesBasket.value[key].field.name] = path
+        if (queryParams.formData) {
+          queryParams.formData[filesBasket.value[key].field.name] = path
+        } else {
+          formData[filesBasket.value[key].field.name] = path
+        }
+        console.log(formData)
       }
     }
+    console.log(queryParams)
     const result = await createForm(queryParams)
     //context.root.router.go(-1)
     emit('closePopup')
