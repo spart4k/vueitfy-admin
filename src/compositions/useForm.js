@@ -40,9 +40,10 @@ export default function ({
   )
   const validations = () => {
     const formFields = {}
-    form.fields.forEach((el) => {
+    form?.fields.forEach((el) => {
       formFields[el.name] = el
     })
+    if (!form) return
     return Object.keys(formData).reduce((obj, key) => {
       if (
         (typeof formFields[key].isShow === 'boolean' &&
@@ -67,7 +68,7 @@ export default function ({
     //  },
     //}
   }
-
+  console.log(form)
   let $v = null
   const computedFormData = computed(() => formData)
   $v = useVuelidate(validations(), computedFormData.value)
@@ -147,7 +148,7 @@ export default function ({
       }
     }
   }
-  const getDetail = () => form.detail
+  const getDetail = () => form?.detail
 
   const hasSelect = () =>
     form?.fields.some(
@@ -191,7 +192,7 @@ export default function ({
   }
 
   const hasDepenceFieldsApi = () =>
-    form.fields.some(
+    form?.fields.some(
       (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
     )
 
@@ -210,12 +211,12 @@ export default function ({
         } else if (el.source === 'formData') {
           fieldValue = formData[el.field]
         } else if (el.source === 'props') {
-          fieldValue = form.formData[fieldValue]
+          fieldValue = form?.formData[fieldValue]
         }
         console.log(fieldValue)
         url = url + '/' + fieldValue
         //if (el.source === 'props') {
-        //  url = url + '/' + form.formData[fieldValue]
+        //  url = url + '/' + form?.formData[fieldValue]
         //} else if (el.source === 'formData') {
         //  console.log(JSON.stringify(formData))
         //  url = url + '/' + formData[fieldValue]
@@ -232,7 +233,7 @@ export default function ({
 
     let targetField, card
     if (targetField) {
-      targetField = form.fields.find((el) => el.name === depField)
+      targetField = form?.fields.find((el) => el.name === depField)
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
@@ -289,7 +290,7 @@ export default function ({
   }
 
   const loadAutocompletes = async () => {
-    const fields = form.fields
+    const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
@@ -299,7 +300,7 @@ export default function ({
         el.filters.forEach((filter) => {
           let value
           if (filter.type === 'fromPrev') {
-            value = form.formData[filter.field]
+            value = form?.formData[filter.field]
           } else {
             value = formData[filter.field]
           }
@@ -329,7 +330,7 @@ export default function ({
     const [syncForm, lists] = await Promise.all(initPreRequest())
     if (syncForm) {
       for (let formKey in syncForm.data) {
-        const field = form.fields.find((fieldEl) => fieldEl.name === formKey)
+        const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
@@ -347,7 +348,7 @@ export default function ({
     if (hasSelect()) {
       console.log(lists)
       for (let keyList in lists.data) {
-        const field = form.fields.find((el) =>
+        const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
         )
         if (field) {
