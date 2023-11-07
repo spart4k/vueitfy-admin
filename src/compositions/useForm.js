@@ -43,6 +43,7 @@ export default function ({
     form.fields.forEach((el) => {
       formFields[el.name] = el
     })
+    if (!form) return
     return Object.keys(formData).reduce((obj, key) => {
       if (
         (typeof formFields[key].isShow === 'boolean' &&
