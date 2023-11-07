@@ -285,6 +285,125 @@ const consumptionConfig = {
   filters,
 }
 
+const documentConfig = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/personal_doc',
+    // alias: 'p.personal_id',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+    ],
+  },
+  head: [
+    {
+      title: 'Тип документа',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'pds.name',
+      isShow: true,
+      width: '40',
+      value: 'doc_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Скан-копия/фото',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'path_doc',
+      alias: 'pd.path_doc',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Примечание',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pd.note',
+      value: 'comment',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 10,
+    currentPage: 1,
+    totalPages: null,
+  },
+  detail: undefined,
+  filters,
+}
+
 const skanConfig = {
   selector: '#mainTable',
   options: {
@@ -1300,15 +1419,14 @@ const defaultForm = [
                 value: '',
               },
             ],
-            dependence: {
-              type: 'default',
-              fillField: ['sum_nutrition', 'with_nutrition'],
-            },
             update: {
               module: 'selects/getList',
               fields: ['personal_id'],
             },
-            requiredFields: ['direction_id'],
+            isShow: {
+              value: false,
+              conditions: [{ field: 'direction_id', value: [1] }],
+            },
           }),
           autocompleteField({
             label: 'Бригадир',
@@ -1336,7 +1454,10 @@ const defaultForm = [
                 value: '',
               },
             ],
-            requiredFields: ['object_id'],
+            isShow: {
+              value: false,
+              conditions: [{ field: 'direction_id', value: [1] }],
+            },
           }),
           selectField({
             label: 'Гражданство',
@@ -1385,10 +1506,7 @@ const defaultForm = [
             bootstrapClass: [''],
             isShow: {
               value: false,
-              conditions: [
-                { field: 'transfer', value: [true] },
-                { field: 'grajdanstvo_id', value: [1, 2] },
-              ],
+              conditions: [{ field: 'transfer', value: [true] }],
             },
           }),
           stringField({
@@ -1402,134 +1520,33 @@ const defaultForm = [
             },
             validations: { required },
             bootstrapClass: [''],
+            isShow: {
+              value: false,
+              conditions: [{ field: 'transfer', value: [true] }],
+            },
           }),
         ],
         actions: [
           stringAction({
             text: 'Сохранить',
             type: 'submit',
-            module: '',
-            name: 'saveForm',
-            action: 'nextStage',
             color: 'primary',
+            // action: 'nextStage',
+            module: 'form/create',
+            url: 'create/unfinished_personal',
+            name: 'nextAwaitStage',
+            action: 'nextAwaitStage',
+            // condition: {},
           }),
         ],
         formData: {},
       },
       {
         id: 1,
-        name: 'Основные1',
-        type: FormList,
-        //detail: true,
-        lists: ['avatar_with_user_key_id'],
-        alias: 'personal_target',
+        name: 'Документы',
+        type: TableDefault,
         active: false,
-        fromLastTab: [
-          {
-            name: 'personal_id',
-            alias: 'name',
-            nameInTab: 'account_name',
-            type: 'list',
-          },
-        ],
-        fields: [
-          textBlock({
-            label: 'Создал',
-            name: 'account_name',
-            placeholder: '',
-            readonly: true,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          autocompleteField({
-            label: '',
-            name: 'avatar_with_user_key_id',
-            alias: 'personal_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/avatar_with_user_key_id',
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            filters: [
-              {
-                field: 'object_id',
-                value: '',
-              },
-            ],
-            dependence: {
-              //fields: ['statement_card', 'cardowner'],
-              type: 'api',
-              module: 'personal/getKeys',
-              //url: 'object_id/avatar_with_user_key_id',
-              field: 'print_form_key',
-              url: [
-                {
-                  source: 'props',
-                  field: 'object_id',
-                },
-                {
-                  source: 'formData',
-                  field: 'avatar_with_user_key_id',
-                },
-              ],
-            },
-          }),
-          selectField({
-            label: 'Ключ',
-            name: 'print_form_key',
-            //alias: 'direction_id_logistic',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'user_key',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 2,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
-        actions: [
-          stringAction({
-            text: 'Назад',
-            type: 'cancel',
-            module: '',
-            name: 'saveForm',
-            action: 'prevStage',
-            color: 'normal',
-          }),
-          stringAction({
-            text: 'Сохранить',
-            type: 'submit',
-            module: '',
-            name: 'saveForm',
-            action: 'nextStage',
-            color: 'primary',
-          }),
-        ],
-        formData: {},
+        config: documentConfig,
       },
     ],
   },

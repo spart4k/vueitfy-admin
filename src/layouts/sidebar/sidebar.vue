@@ -13,7 +13,7 @@
       <div class="v-sidebar-container-user">
         <div class="v-sidebar-container-user_image">
           <v-img
-            src="https://papik.pro/uploads/posts/2022-08/thumbs/1661424622_35-papik-pro-p-stikeri-papich-png-61.png"
+            src="https://i7.photo.2gis.com/images/profile/30258560110704335_9a1e_1920x.jpg"
           ></v-img>
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">

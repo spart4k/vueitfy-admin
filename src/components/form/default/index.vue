@@ -18,10 +18,14 @@
             class="field-col"
             :class="field.type"
           >
+            <!-- {{ typeof field.isShow === 'boolean' && field.isShow
+            }}{{ typeof field.isShow === 'object' && field.isShow.value }} -->
             <!-- {{ formErrors[field?.name] }} -->
-            <div v-if="loading && field.isShow" class="field-loading gradient">
-              <!--<p>loading</p>-->
-            </div>
+            <!-- {{ disabledField(field) }} -->
+            <div
+              v-if="loading && field.isShow"
+              class="field-loading gradient"
+            ></div>
             <v-select
               v-else-if="showField('select', field)"
               :items="field.items"
@@ -80,17 +84,6 @@
                   v-bind="attrs"
                   :disabled="disabledField(field)"
                 ></v-text-field>
-                <!--<v-combobox
-                  @click:append="openMenu(field)"
-                  v-model="formData[field.name]"
-                  :label="field.label"
-                  multiple
-                  chips
-                  small-chips
-                  append-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                ></v-combobox>-->
               </template>
               <v-date-picker
                 v-model="formData[field.name]"

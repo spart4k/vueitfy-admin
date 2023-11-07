@@ -132,8 +132,7 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
-    //$v.value.$touch()
-    if (!validate()) return
+    // if (!validate()) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -149,6 +148,11 @@ export default function ({
       if (isNextForm) {
         nextForm()
       }
+    } else if (action.action === 'nextAwaitStage') {
+      loading.value = true
+      console.log('action', action, formData)
+      const data = await makeRequest({ url: action.url, module: action.module })
+      loading.value = false
     }
   }
   const getDetail = () => form.detail
@@ -159,7 +163,6 @@ export default function ({
     )
 
   const initPreRequest = () => {
-    console.log('init pre request')
     let queries = []
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
@@ -179,7 +182,6 @@ export default function ({
 
   const changeAutocomplete = async (params) => {
     //const { value, field } = data
-    console.log('test')
     if (params.field.dependence && params.field.dependence.type === 'api') {
       await getDependies(params)
     }
@@ -201,7 +203,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log(field, 'DEPENDIES')
     let fieldValue
     if (field.dependence.type !== 'api') return
     const depField = field.dependence.field
@@ -216,7 +217,6 @@ export default function ({
         } else if (el.source === 'props') {
           fieldValue = form.formData[fieldValue]
         }
-        console.log(fieldValue)
         url = url + '/' + fieldValue
         //if (el.source === 'props') {
         //  url = url + '/' + form.formData[fieldValue]
@@ -227,7 +227,6 @@ export default function ({
       })
     }
     field.loading = true
-    console.log(field.dependence.module)
     const data = await store.dispatch(field.dependence.module, {
       value,
       field,
@@ -265,7 +264,7 @@ export default function ({
       }
     if (field.dependence.action) {
       if (field.dependence.action.type === 'hideOptions') {
-        console.log(data)
+        // console.log('sda')
       }
     }
     field.loading = false
@@ -344,7 +343,6 @@ export default function ({
       }
     }
     if (hasSelect()) {
-      console.log(lists)
       for (let keyList in lists.data) {
         const field = form.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
@@ -355,7 +353,6 @@ export default function ({
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              console.log(condition)
               lists.data[keyList] = lists.data[keyList].filter((el) => {
                 return !condition.values.includes(el.id)
               })
@@ -396,12 +393,6 @@ export default function ({
     return field.requiredFields
       ? field.requiredFields.some((el) => !formData[el])
       : false
-  }
-
-  const hideField = (field) => {
-    return field.isShow
-      ? field.isShow.every((el) => formData[el.field] === el.value)
-      : true
   }
 
   watch(
@@ -454,6 +445,5 @@ export default function ({
     showField,
     openMenu,
     disabledField,
-    hideField,
   }
 }
