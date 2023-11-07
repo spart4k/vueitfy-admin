@@ -846,24 +846,22 @@ const config = {
             bootstrapClass: [''],
             options: {
               withoutSave: false,
-              folder: 'query_magnit',
-              name: '`Заявка_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
+              folder: 'parser_magnit',
+              name: '`parser_magnit_25`',
               paramsForEmit: this,
             },
-            value: [
-              'http://10.63.1.132:5000/file/get/tmp/Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg',
-            ],
+            value: '',
           }),
         ],
         actions: [
           stringAction({
             text: 'Загрузить',
             type: 'submit',
-            module: '',
+            module: 'form/create',
             name: 'saveForm',
             action: 'saveForm',
             url: '',
-            condition: [
+            conditionAction: [
               {
                 target: 'url',
                 from: 'tabel',
