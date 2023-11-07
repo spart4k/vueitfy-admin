@@ -40,10 +40,10 @@ export default function ({
   )
   const validations = () => {
     const formFields = {}
-    if (!form) return
     form?.fields.forEach((el) => {
       formFields[el.name] = el
     })
+    if (!form) return
     return Object.keys(formData).reduce((obj, key) => {
       if (
         (typeof formFields[key].isShow === 'boolean' &&
@@ -68,7 +68,7 @@ export default function ({
     //  },
     //}
   }
-
+  console.log(form)
   let $v = null
   const computedFormData = computed(() => formData)
   $v = useVuelidate(validations(), computedFormData.value)
