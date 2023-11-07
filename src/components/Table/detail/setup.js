@@ -24,19 +24,16 @@ export default {
       default: () => {},
     },
   },
-  setup() {
+  setup(props) {
     //console.log(form)
     //const route = useRoute()
     //const { url, alias } = props.detail
-    console.log(TableDefault)
-    console.log('1')
     const route = useRoute()
     const { id } = route?.params
-    console.log(id)
     const loading = ref(false)
     const syncForm = ref({})
     onMounted(() => {
-      // getData()
+      // currentTab.value = 5
     })
     return {
       loading,

@@ -2,6 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PaymentView from '../views/PaymentView.vue'
 import PersonalView from '../views/PersonalView.vue'
+import PivotView from '../views/PivotView.vue'
+import X5importView from '../views/X5importView.vue'
+import ObjectView from '../views/ObjectView.vue'
+import AccountView from '../views/AccountView.vue'
+import ZayavkaView from '../views/ZayavkaView.vue'
 import AppointmentsView from '../views/Appointments.vue'
 import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
@@ -75,7 +80,95 @@ const routes = [
     component: PersonalView,
     children: [
       {
+        name: 'personal-add',
+        path: '/personal/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal-add-key',
+        path: '/personal/add-key',
+        meta: {
+          mode: 'add-key',
+        },
+        component: Detail,
+      },
+      {
         name: 'personal/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/pivot',
+    name: 'pivot',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PivotView,
+    children: [
+      {
+        name: 'pivot/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/x5import',
+    name: 'x5import',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: X5importView,
+    children: [
+      {
+        name: 'x5import/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/object',
+    name: 'object',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: ObjectView,
+    children: [
+      {
+        name: 'object/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/account',
+    name: 'account',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: AccountView,
+    children: [
+      {
+        name: 'account/:id',
         path: ':id',
         component: Detail,
       },
@@ -93,8 +186,24 @@ const routes = [
     component: ShopRequestMagnitView,
     children: [
       {
+        name: 'shop-request-magnit-add',
+        path: '/shop-request-magnit/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
+      {
         name: 'shop-request-magnit/:id',
         path: ':id',
+        component: Detail,
+      },
+      {
+        name: 'shop-request-magnit/upload',
+        path: './upload',
+        meta: {
+          mode: 'upload',
+        },
         component: Detail,
       },
     ],
@@ -148,6 +257,24 @@ const routes = [
     children: [
       {
         name: 'tasks/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/zayavka',
+    name: 'zayavka',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: ZayavkaView,
+    children: [
+      {
+        name: 'zayavka/:id',
         path: ':id',
         component: Detail,
       },
@@ -212,6 +339,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   // base: process.env.BASE_URL,
+  base: './',
   routes,
 })
 

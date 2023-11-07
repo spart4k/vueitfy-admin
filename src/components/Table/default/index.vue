@@ -228,6 +228,15 @@
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
                   </template>
+                  <template v-else-if="cell.type === 'checkbox'">
+                    <v-row class="d-flex justify-center">
+                      <v-checkbox
+                        :input-value="Object.byString(row.row, cell.value)"
+                        value
+                        disabled
+                      ></v-checkbox>
+                    </v-row>
+                  </template>
                   <template v-else-if="cell.type === 'actions'">
                     <!--<v-table-button
                       :row="row.row"
@@ -235,7 +244,14 @@
                       v-for="(action, indexAction) in cell.actions"
                       :key="indexAction"
                     />-->
-                    <div class="v-table-actions-wrap">
+                    <div
+                      v-if="
+                        !cell.actionCondition ||
+                        (cell.actionCondition &&
+                          Object.byString(row.row, cell.value))
+                      "
+                      class="v-table-actions-wrap"
+                    >
                       <v-btn
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"

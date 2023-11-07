@@ -21,6 +21,7 @@ export default {
     const navbarCurrentRoute = ref([])
     const instantNav = ref(false)
     const isMobile = useMobile()
+    const isMobileDevice = useMobile()
     const openMenu = computed(() => store?.state?.openMenu)
     const miniMenu = computed(() => store?.state?.miniMenu)
     // Then we set the value in the --vh custom property to the root of the document
@@ -91,6 +92,7 @@ export default {
     return {
       navbarCurrentRoute,
       isMobile,
+      isMobileDevice,
       store,
       instantNav,
 

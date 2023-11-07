@@ -42,7 +42,6 @@ export default {
         const filter = []
         if (props.field.filters && props.field.filters.length) {
           props.field.filters.forEach((el) => {
-            console.log(!props.formData[el.field])
             if (!props.formData[el.field]) return
             filter.push({
               field: el.field,
@@ -50,6 +49,7 @@ export default {
             })
           })
         }
+        console.log(url)
         const data = await getList(url, {
           countRows: 10,
           currentPage: props.field.page,
@@ -101,12 +101,15 @@ export default {
     watch(
       () => searchProps.value,
       (newVal) => {
-        console.log(newVal)
         const params = {
           id: props.value,
-          search: props.field.search,
+          search: newVal,
         }
-        if (newVal !== null) querySelections(params)
+        props.field.page
+        if (newVal !== null) {
+          props.field.page = 1
+          querySelections(params)
+        }
       }
     )
     watch(

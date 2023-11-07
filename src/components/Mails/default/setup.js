@@ -239,6 +239,26 @@ const mails = {
       }
     }
 
+    const broadcast = async (val) => {
+      const requestData = {
+        data: {},
+      }
+      if (selected.value.mailsAll) {
+        if (route?.query?.color?.length)
+          requestData.data.tags = JSON.parse(route?.query?.color).toString()
+        requestData.data.props = route?.query?.filter
+        if (route?.query?.id) requestData.data.props_id = route?.query?.id
+      } else {
+        requestData.data.id = selected.value.mails.toString()
+      }
+      if (val.account[0] === 'all') {
+        requestData.filter = val.filter
+      } else {
+        requestData.account = val.account
+      }
+      const data = await store.dispatch('mail/broadcast', requestData)
+    }
+
     const changeMailArrayKey = async (key, item, params) => {
       const requestData = {}
       if (route?.query?.color?.length)
@@ -398,9 +418,7 @@ const mails = {
 
     const getFilterData = async () => {
       filterData.value.folderData = await store.dispatch('mail/getFolders')
-      filterData.value.boxData = await store.dispatch('mail/getBoxes', {
-        accountId: 25,
-      })
+      filterData.value.boxData = await store.dispatch('mail/getBoxes')
       filterData.value.tagsData = await store.dispatch('mail/getTags')
       filterData.value.notReadData = await store.dispatch('mail/getNotRead')
       if (!filterData.value.folderData) filterData.value.folderData = []
@@ -410,9 +428,7 @@ const mails = {
 
     const resetAllSelectionFilter = async () => {
       if (route?.query?.filter !== 'trash' && route?.query?.filter !== 'sent') {
-        const requestData = {
-          account_id: 25,
-        }
+        const requestData = {}
         if (route?.query?.color?.length)
           requestData.tags = JSON.parse(route?.query?.color).toString()
         requestData.props = route?.query?.filter
@@ -489,6 +505,7 @@ const mails = {
       decreaseUnreadMailsCount,
       changeMailKey,
       changeMailArrayKey,
+      broadcast,
       getPagination,
       deleteFilter,
       hideCurrentMail,

@@ -14,7 +14,7 @@
         ref="containerBox"
         v-if="$route?.query?.compose !== 'new'"
       >
-        <div v-if="trigger.left" class="trigger trigger__left">
+        <!-- <div v-if="trigger.left" class="trigger trigger__left">
           <v-icon
             @click="scrollContainer(-350)"
             color="disabled"
@@ -37,7 +37,7 @@
             x-large
             >$IconArrowRight</v-icon
           >
-        </div>
+        </div> -->
         <div
           :class="[
             'v-container-box-column',

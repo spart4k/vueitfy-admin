@@ -8,13 +8,11 @@ export default class Cities {
 
   async getList(url, paramsQuery) {
     try {
-      console.log(paramsQuery)
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
           'Content-Type': 'text/plain,
         },
       })
-      console.log(data)
       //if (!data || data.cityFound.length === 0) {
       //  store.commit('alert/show', {
       //    type: 'warning',
@@ -43,13 +41,11 @@ export default class Cities {
 
   async getDetail(url, paramsQuery) {
     try {
-      console.log(paramsQuery)
       const { data } = await axios.get(`${url}`, paramsQuery, {
         headers: {
           'Content-Type': 'text/plain',
         },
       })
-      console.log(data)
       //if (!data || data.cityFound.length === 0) {
       //  store.commit('alert/show', {
       //    type: 'warning',
@@ -78,13 +74,11 @@ export default class Cities {
 
   async getApi(url, paramsQuery) {
     try {
-      console.log(paramsQuery)
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
           'Content-Type': 'text/plain,
         },
       })
-      console.log(data)
       //if (!data || data.cityFound.length === 0) {
       //  store.commit('alert/show', {
       //    type: 'warning',
@@ -112,7 +106,6 @@ export default class Cities {
   }
 
   async create(city) {
-    console.log(city)
     try {
       const { data } = await axios.post(`users/api/admin/addCity`, city)
       const newCity = data.createCity
@@ -163,7 +156,6 @@ export default class Cities {
       if (!updatedCity) {
         return null
       }
-      console.log(updatedCity)
       return {
         id: updatedCity.id,
         name: updatedCity.name,
@@ -192,7 +184,6 @@ export default class Cities {
       const response = await axios.delete(
         `users/api/admin/delCityId?city_id=${city.id}`
       )
-      console.log(response)
       store.commit('alert/show', {
         type: 'success',
         content: `Город: ${city.name} успешно удален`,

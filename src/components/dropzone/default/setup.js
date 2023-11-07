@@ -26,6 +26,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    errorMessages: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -55,7 +59,6 @@ export default {
     const proxyVal = ref(props.value)
     const sendingFile = async (files) => {
       if (props.options.withoutSave) {
-        console.log('process')
         await loadFile(files)
         if (props.options.callbacks) {
           props.options.callbacks()
@@ -63,7 +66,8 @@ export default {
         //dropzone.value.processQueue()
       } else {
         console.log(files)
-        emit('addFiles', { ...files, ...props.paramsForEmit })
+        proxyVal.value = [...files]
+        emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
@@ -106,7 +110,6 @@ export default {
     const getUrlExtension = (url) =>
       url.split(/[#?]/)[0].split('.').pop().trim()
     const fillPreview = () => {
-      console.log('test')
       if (typeof proxyVal.value === 'string') {
         let url = proxyVal.value
         //url = 'https://personal-crm.ru' + url
@@ -115,8 +118,6 @@ export default {
         const filename = url.split('/').pop()
 
         const file = { name: filename, size: 12322, type: 'image/' + type }
-        console.log(type)
-        console.log(file, url)
         dropzone.value.manuallyAddFile(file, url)
       }
       //proxyVal.value.forEach((el) => (el = 'https://api.personal-crm.ru' + el))
@@ -126,24 +127,27 @@ export default {
     //}
     const loadFile = async (files) => {
       const formData = new FormData()
-      formData.append(
-        'name',
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
-      )
-      formData.append('file', ...files)
-      const name =
-        'Ямщикова_БФ_2023-10-11_КаваляускайтеЕленаАндреевна_1697092059882.jpg'
-      const params = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const fileType =
+        files[0].name.split('.')[files[0].name.split('.').length - 1]
+      if (!props.options.formats || props.options.formats.includes(fileType)) {
+        const name = `${
+          props.options.folder
+        }_25_${new Date().getTime()}.${fileType}`
+        const folder = props.options.folder + '/' + name
+        formData.append('name', files[0].name)
+        formData.append('file', ...files)
+        const params = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+        const data = await store.dispatch('file/create', {
+          data: formData,
+          folder,
+          params,
+        })
+        emit('fileUpload', folder)
       }
-      const data = await store.dispatch('file/create', {
-        data: formData,
-        folder: props.options.folder + '/' + name,
-        params,
-      })
-      console.log(data)
     }
     onMounted(() => {
       console.log(dropzone.value)

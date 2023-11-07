@@ -2,6 +2,7 @@ import filters from './filters'
 import TableDefault from '@/components/Table/default/index.vue'
 import FormDefault from '@/components/form/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
+import FormStage from '@/components/form/stage/index.vue'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -836,8 +837,9 @@ const config = {
       {
         id: 0,
         name: 'Основные',
-        type: 'FormStage',
+        type: FormStage,
         detail: true,
+        path: 'add',
         stages: [
           {
             id: 0,
@@ -845,12 +847,14 @@ const config = {
             type: FormDefault,
             detail: true,
             lists: [
-              'vid_vedomost_id',
-              'status_pt',
-              'direction_id_logistic',
-              'doljnost_id_logistic',
-              'shifts',
-              'nutritions',
+              { alias: 'vid_vedomost_id_logistic', filter: [] },
+              { alias: 'status_pt', filter: [] },
+              // { alias: 'object_id_logistic', filter: [] },
+              // { alias: 'account_id_logistic', filter: [] },
+              { alias: 'direction_id_logistic', filter: [] },
+              { alias: 'doljnost_id_logistic', filter: [] },
+              { alias: 'shifts', filter: [] },
+              { alias: 'nutritions', filter: [] },
             ],
             alias: 'personal_target',
             active: false,
@@ -911,7 +915,7 @@ const config = {
               }),
               selectField({
                 label: 'Вид ведомости:',
-                name: 'vid_vedomost_id',
+                name: 'vid_vedomost_id_logistic',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -931,7 +935,7 @@ const config = {
                     {
                       target: 'mode',
                       value: 'edit',
-                      values: [2, 4, 6, 7, 8],
+                      values: [8],
                     },
                     {
                       target: 'mode',
@@ -940,6 +944,7 @@ const config = {
                     },
                   ],
                 },
+                requiredFields: ['personal_id'],
               }),
               selectField({
                 label: 'Направления',
@@ -1026,6 +1031,23 @@ const config = {
                   },
                 ],
                 requiredFields: ['object_id'],
+                dependence: {
+                  //fields: ['statement_card', 'cardowner'],
+                  type: 'api',
+                  module: 'personal/checkEveryDayPayment',
+                  action: {
+                    type: 'hideOptions',
+                    values: [8],
+                    field: 'vid_vedomost_id_logistic',
+                  },
+                  //url: 'object_id/avatar_with_user_key_id',
+                  url: [
+                    {
+                      source: 'formData',
+                      field: 'this',
+                    },
+                  ],
+                },
               }),
               selectField({
                 label: 'Должность',
@@ -1098,6 +1120,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                requiredFields: ['with_nutrition', 'sum_nutrition'],
               }),
             ],
             actions: [
@@ -1137,7 +1160,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 5,
                 },
                 bootstrapClass: [''],
                 //validations: { required },
@@ -1168,6 +1191,7 @@ const config = {
                   {
                     field: 'object_id',
                     value: '',
+                    type: 'fromPrev',
                   },
                 ],
                 dependence: {
@@ -1183,7 +1207,7 @@ const config = {
                     },
                     {
                       source: 'formData',
-                      field: 'avatar_with_user_key_id',
+                      field: 'this',
                     },
                   ],
                 },
@@ -1191,20 +1215,37 @@ const config = {
               selectField({
                 label: 'Ключ',
                 name: 'print_form_key',
+                //withoutList: true,
                 //alias: 'direction_id_logistic',
                 placeholder: '',
                 class: [''],
                 selectOption: {
-                  text: 'user_key',
+                  text: 'name',
                   value: 'id',
                 },
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 2,
+                  sm: 3,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                customList: {
+                  type: 'api',
+                  module: 'personal/getKeys',
+                  //url: 'object_id/avatar_with_user_key_id',
+                  field: 'print_form_key',
+                  url: [
+                    {
+                      source: 'props',
+                      field: 'object_id',
+                    },
+                    {
+                      source: 'formData',
+                      field: 'this',
+                    },
+                  ],
+                },
               }),
             ],
             actions: [
@@ -1212,16 +1253,17 @@ const config = {
                 text: 'Назад',
                 type: 'cancel',
                 module: '',
-                name: 'saveForm',
+                name: 'prevStage',
                 action: 'prevStage',
                 color: 'normal',
               }),
               stringAction({
-                text: 'Сохранить',
+                text: 'Создать',
                 type: 'submit',
-                module: '',
+                module: 'form/create',
+                url: 'create/multiple_target',
                 name: 'saveForm',
-                action: 'nextStage',
+                action: 'saveForm',
                 color: 'primary',
               }),
             ],
@@ -1232,7 +1274,7 @@ const config = {
       {
         id: 1,
         name: 'Расход',
-        type: 'TableDefault',
+        type: TableDefault,
         active: false,
         config: tableConsumptionConfig,
       },

@@ -39,7 +39,6 @@ export default {
     const loading = ref(false)
     const fields = () => {
       const fields = {}
-      console.log(fields)
       return fields
     }
     const prevTab = ref({})

@@ -5,9 +5,8 @@ import { getList } from '@/api/list'
 const list = {
   namespaced: true,
   actions: {
-    async get(_, url) {
-      console.log(url)
-      const result = await getList(url)
+    async get(_, data) {
+      const result = await getList(data)
       return result
     },
   },

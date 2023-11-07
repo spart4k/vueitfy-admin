@@ -1,6 +1,7 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100 view-table">
+    <!--<p class="text-h4 ml-2">{{ personal.title }}</p>-->
     <v-tabs
       style="flex: unset"
       v-model="activeTab"
@@ -29,17 +30,14 @@
 import { ref } from 'vue'
 import { personal } from '@/pages'
 
-// import TableDefault from '@/components/Table/default/index.vue'
-import TableFixed from '@/components/Table/fixed/index.vue'
-
+//import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 
 export default {
   name: 'Personal-View',
   components: {
-    // TableDefault,
-    TableFixed,
+    //TableDefault,
     //Layout,
   },
   methods: {

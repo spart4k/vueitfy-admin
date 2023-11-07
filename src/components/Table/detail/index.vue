@@ -9,12 +9,26 @@
         color="basil"
         class="p-5"
       >
-        <v-tab v-for="item in detail.tabs" :key="item.id">
+        <v-tab
+          v-for="item in detail.tabs"
+          v-if="
+            ($route.meta.mode && item.path === $route.meta.mode) ||
+            (!$route.meta.mode && !item.path)
+          "
+          :key="item.id"
+        >
           {{ item.name }}
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="detail.activeTab">
-        <v-tab-item v-for="item in detail.tabs" :key="item.id">
+        <v-tab-item
+          v-for="item in detail.tabs"
+          v-if="
+            ($route.meta.mode && item.path === $route.meta.mode) ||
+            (!$route.meta.mode && !item.path)
+          "
+          :key="item.id"
+        >
           <p></p>
           <component
             :loading="loading"

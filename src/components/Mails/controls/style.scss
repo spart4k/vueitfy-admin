@@ -106,6 +106,25 @@
                 font-size: 20px;
                 font-weight: 500;
             }
+            &_subtitle {
+                font-size: 10px;
+                color: #222222;
+            }
+            &::v-deep .v-select__selections {
+                flex-wrap: wrap !important;
+            }
+            &-item {
+                &__cutted {
+                    &::v-deep .v-chip__content {
+                        margin-right: 18px;
+                        overflow: hidden;
+                    }
+                    &::v-deep .v-chip__close {
+                        position: absolute;
+                        right: 12px;
+                    }
+                }
+            }
         }
     }
 }

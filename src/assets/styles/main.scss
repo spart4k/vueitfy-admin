@@ -460,6 +460,10 @@ $borderColor: rgba(0,0,0,.3);
   }
 }
 
-.view-table {
-
+.view {
+  &-table {
+    .v-tabs-items {
+      flex: 1;
+    }
+  }
 }
