@@ -1,7 +1,8 @@
 .form {
   .field {
     &-col {
-      height: 70px;
+      // height: 70px;
+      height: fit-content;
       &.dropzone {
         height: auto;
         border: unset;

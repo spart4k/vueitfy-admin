@@ -134,9 +134,8 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
-    console.log(action)
-    //$v.value.$touch()
-    //if (!validate()) return
+    if (!validate()) return
+    const sortedData = sortData()
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -163,7 +162,29 @@ export default function ({
       //}
     } else if (action.action === 'saveFormStore') {
       loadStoreFile()
+    } else if (action.action === 'nextAwaitStage') {
+      loading.value = true
+      const data = await createForm({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      console.log('data', data)
+      loading.value = false
     }
+  }
+  const sortData = () => {
+    const newForm = {}
+    Object.keys(formData).forEach((key) => {
+      const item = form.fields.find((x) => x.name === key)
+      if (
+        (typeof item.isShow === 'boolean' && item.isShow) ||
+        (typeof item.isShow === 'object' && item.isShow.value)
+      ) {
+        newForm[key] = formData[key]
+      }
+    })
+    return newForm
   }
   const addFiles = (files, field) => {
     console.log()
@@ -252,7 +273,6 @@ export default function ({
   }
 
   const initPreRequest = () => {
-    console.log('init pre request')
     let queries = []
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
@@ -272,7 +292,6 @@ export default function ({
 
   const changeAutocomplete = async (params) => {
     //const { value, field } = data
-    console.log('test')
     if (params.field.dependence && params.field.dependence.type === 'api') {
       await getDependies(params)
     }
@@ -300,7 +319,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log(field, 'DEPENDIES')
     let fieldValue
     if (field.dependence.type !== 'api') return
     const depField = field.dependence.field
@@ -315,7 +333,6 @@ export default function ({
         } else if (el.source === 'props') {
           fieldValue = form?.formData[fieldValue]
         }
-        console.log(fieldValue)
         url = url + '/' + fieldValue
         //if (el.source === 'props') {
         //  url = url + '/' + form?.formData[fieldValue]
@@ -326,7 +343,6 @@ export default function ({
       })
     }
     field.loading = true
-    console.log(field.dependence.module)
     const data = await store.dispatch(field.dependence.module, {
       value,
       field,
@@ -451,7 +467,6 @@ export default function ({
       }
     }
     if (hasSelect()) {
-      console.log(lists)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
@@ -462,7 +477,6 @@ export default function ({
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              console.log(condition)
               lists.data[keyList] = lists.data[keyList].filter((el) => {
                 return !condition.values.includes(el.id)
               })
@@ -503,12 +517,6 @@ export default function ({
     return field.requiredFields
       ? field.requiredFields.some((el) => !formData[el])
       : false
-  }
-
-  const hideField = (field) => {
-    return field.isShow
-      ? field.isShow.every((el) => formData[el.field] === el.value)
-      : true
   }
 
   watch(
@@ -561,7 +569,7 @@ export default function ({
     showField,
     openMenu,
     disabledField,
-    hideField,
     addFiles,
+    sortData,
   }
 }

@@ -93,9 +93,18 @@ export default {
       request: (params) =>
         store.dispatch(params.module, {
           url: params.url,
-          body: formData,
+          body: params.formData ? params.formData : formData,
         }),
     })
+    // const { makeRequest: createForm } = useRequest({
+    //   context,
+    //   successMessage: 'Сохранено',
+    //   request: () =>
+    //     store.dispatch('form/create', {
+    //       url: `query/${alias}`,
+    //       body: formData,
+    //     }),
+    // })
     const {
       formData,
       validate,
