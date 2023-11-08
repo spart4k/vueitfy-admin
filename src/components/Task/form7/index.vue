@@ -10,7 +10,9 @@
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">
-              <v-icon class="mr-2" v-if="true" small>$IconGalka</v-icon>
+              <v-icon class="mr-2" v-if="osnConfirmed" small color="green"
+                >$IconGalka</v-icon
+              >
               <span>Основные данные</span>
             </v-row>
           </v-expansion-panel-header>
@@ -63,8 +65,8 @@
             </v-row>
             <v-row class="py-2 px-2" justify="end">
               <v-btn
-                :disabled="formObj.validate()"
-                @click="() => {}"
+                :disabled="!formObj.validate()"
+                @click="osnConfirmed = true"
                 color="warning"
               >
                 <v-icon left> $IconMain </v-icon>

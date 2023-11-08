@@ -99,8 +99,6 @@ const task = defineComponent({
 
     const countdownTimer = () => {
       const diff = taskDeadline.value - new Date()
-      console.log(diff)
-
       const minutes = Math.floor(diff / 1000 / 60)
       const seconds =
         Math.floor(diff / 1000) % 60 > 0
