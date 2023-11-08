@@ -12,7 +12,7 @@
             <v-row align="center">
               <template v-if="isOsnDocTouched">
                 <v-icon x-small color="green" v-if="isOsnDocConfirmed"
-                  >$IconMain</v-icon
+                  >$IconGalka</v-icon
                 >
                 <v-icon x-small color="red" v-else>$IconClose</v-icon>
               </template>

@@ -94,19 +94,19 @@ const task = defineComponent({
     const data = ref({})
     const taskDeadline = ref(0)
     const timerString = ref('')
+    const timerDiff = ref(0)
     const countdownTimerIntervalId = ref(null)
 
     const countdownTimer = () => {
       const diff = taskDeadline.value - new Date()
-      console.log(diff)
-      if (diff <= 0) {
-        clearInterval(countdownTimerIntervalId.value)
-      }
-
-      const minutes = diff > 0 ? Math.floor(diff / 1000 / 60) : 0
-      const seconds = diff > 0 ? Math.floor(diff / 1000) % 60 : 0
+      const minutes = Math.floor(diff / 1000 / 60)
+      const seconds =
+        Math.floor(diff / 1000) % 60 > 0
+          ? Math.floor(diff / 1000) % 60
+          : -Math.floor(diff / 1000) % 60
 
       timerString.value = `${minutes}:${seconds}`
+      timerDiff.value = diff
     }
 
     const { makeRequest, loading } = useRequest({
@@ -142,7 +142,15 @@ const task = defineComponent({
       clearInterval(countdownTimerIntervalId.value)
     })
 
-    return { loading, data, formatDate, taskName, timerString, taskDeadline }
+    return {
+      loading,
+      data,
+      formatDate,
+      taskName,
+      timerString,
+      taskDeadline,
+      timerDiff,
+    }
   },
 })
 export default task

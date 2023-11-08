@@ -179,12 +179,12 @@ const Form1 = defineComponent({
         if (comment.value.trim()) {
           console.log([...confirmed.value, ...unConfirmed.value], 'is push')
           isShow.value = false
-          commentError.value = false
+          commentError.value = ''
           const dataFrom = await makeRequest()
           console.log(dataFrom)
           dataFrom.success && ctx.emit('closePopup')
         } else {
-          commentError.value = true
+          commentError.value = 'Заполните комментарий'
         }
       } else {
         showNextStep.value = true
@@ -204,7 +204,7 @@ const Form1 = defineComponent({
 
     const comment = ref('')
     let isShow = ref(true)
-    let commentError = ref(false)
+    let commentError = ref('')
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {

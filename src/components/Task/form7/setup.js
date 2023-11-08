@@ -49,6 +49,7 @@ const Form7 = defineComponent({
     const finalData = ref({})
     const isFormValid = ref(false)
     const bankCardId = ref(0)
+    const osnConfirmed = ref(false)
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {
@@ -79,7 +80,9 @@ const Form7 = defineComponent({
 
     const changeDocs = (data) => {
       console.log(data)
-      finalData.value = data.correctedDocs
+      finalData.value = isHasOsnDoc.value
+        ? { 0: formObj.formData, ...data.correctedDocs }
+        : data.correctedDocs
       bankCardId.value = data.bank_card_id
       const docsIdArr = [
         ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
@@ -184,6 +187,7 @@ const Form7 = defineComponent({
       formObj,
       textInfo,
       citizenItems,
+      osnConfirmed,
     }
   },
 })

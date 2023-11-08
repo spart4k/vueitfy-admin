@@ -8,7 +8,7 @@
             <div style="position: relative">
               <span class="form-status visible">
                 <v-icon x-small color="green" v-if="correctedDocs[doc.id]">
-                  $IconMain
+                  $IconGalka
                 </v-icon>
               </span>
               <span style="padding-left: 15px">{{

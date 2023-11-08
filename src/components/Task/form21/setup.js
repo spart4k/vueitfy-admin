@@ -29,6 +29,8 @@ const Form21 = defineComponent({
     }
     const isBtnDisabled = ref(true)
     const isKeyConfrmed = ref(null)
+    const formComment = ref('')
+    const formCommentError = ref('')
     const { formData: keyForm, formErrors: keyFormErrors } = useForm({
       fields: {
         key: {
@@ -39,10 +41,6 @@ const Form21 = defineComponent({
         },
         trainee: {
           default: false,
-        },
-        comment: {
-          validations: { required },
-          default: '',
         },
       },
       context,
@@ -60,7 +58,7 @@ const Form21 = defineComponent({
             user_key: props.data.entity.id,
             photo_path: JSON.parse(props.data.task.dop_data).photo_path,
             obd_id: props.data.entity.id,
-            comment: keyForm.comment,
+            comment: formComment.value,
             okk_id: props.data.task.from_account_id,
           },
         })
@@ -92,6 +90,10 @@ const Form21 = defineComponent({
     })
 
     const completeTask = async () => {
+      if (!formComment.value && !isKeyConfrmed.value) {
+        formCommentError.value = 'Заполните комментарий'
+        return false
+      }
       await setUserKey()
       await addKeyToPersonal()
       const { success } = await changeStatusTask()
@@ -115,6 +117,8 @@ const Form21 = defineComponent({
       rejectKey,
       keyFormErrors,
       completeTask,
+      formComment,
+      formCommentError,
     }
   },
 })
