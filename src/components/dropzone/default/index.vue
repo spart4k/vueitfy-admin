@@ -13,7 +13,7 @@
       @vdropzone-success="showSuccess"
       @vdropzone-removed-file="removed"
     />
-    <v-messages color="error" :value="errorMessages" />
+    <v-messages v-if="errorMessages" color="error" :value="errorMessages" />
     <!-- {{ value }} -->
     <!--<img :src="'https://personal-crm.ru' + proxyVal" alt="" />-->
   </div>
