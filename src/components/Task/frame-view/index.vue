@@ -32,7 +32,9 @@
         </v-row>
         <v-row v-if="taskDeadline" class="task__info-row" align="center">
           <v-icon>mdi-timer</v-icon>
-          <span class="timer">{{ timerString }}</span>
+          <span class="timer" :class="{ 'timer-minus': timerDiff < 0 }">{{
+            timerString
+          }}</span>
         </v-row>
       </div>
       <v-divider></v-divider>

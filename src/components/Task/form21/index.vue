@@ -4,7 +4,19 @@
       <FormError v-if="data.data.dop_data" class="mb-5">
         {{ data.data.dop_data }}
       </FormError>
-      <div class="mb-3">Проверьте данные личного ключа:</div>
+      <div class="mb-3">
+        <v-icon class="mr-2" v-if="isKeyConfrmed" x-small color="green"
+          >$IconGalka</v-icon
+        >
+        <v-icon
+          class="mr-2"
+          v-else-if="!isKeyConfrmed && !isBtnDisabled"
+          x-small
+          color="red"
+          >$IconClose</v-icon
+        >
+        <span>Проверьте данные личного ключа:</span>
+      </div>
       <v-form>
         <v-row>
           <span>Скан:</span>
@@ -54,9 +66,10 @@
       <v-textarea
         rows="2"
         clearable
+        @input="formCommentError = ''"
         label="Комментарий"
-        v-model="keyForm.comment"
-        :error-messages="keyFormErrors.comment"
+        v-model="formComment"
+        :error-messages="formCommentError"
       ></v-textarea>
     </div>
     <v-divider></v-divider>
@@ -65,13 +78,12 @@
         @click="completeTask"
         :disabled="isBtnDisabled"
         class="mr-2"
-        small
         color="info"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

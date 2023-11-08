@@ -1,8 +1,8 @@
 <template>
-  <div style="padding: 10px">
+  <div style="padding-top: 10px">
     <v-row>
-      <v-col class="d-flex align-center mb-1">
-        <span style="font-size: 18px">Паспорт:</span>
+      <v-col class="d-flex align-center">
+        <span class="font-weight-medium" style="font-size: 18px">Паспорт:</span>
         <a
           download
           :href="
@@ -17,10 +17,10 @@
         <v-icon v-if="selectName && price" small color="green"
           >$IconGalka</v-icon
         >
-        Заполните данные заявки:
+        <span class="font-weight-medium">Заполните данные заявки:</span>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="mt-0">
       <v-col cols="6">
         <v-select
           label="Наименование"
@@ -43,31 +43,32 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <div
-          style="
-            padding: 5px;
-            background-color: rgb(128, 128, 128);
-            color: white;
-            font-weight: 600;
-            margin-bottom: 20px;
-          "
-        >
-          {{ nameComp }}
-        </div>
+        <v-text-field
+          :value="nameComp"
+          disabled
+          outlined
+          filled
+          readonly
+          hide-details
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
         <span>
           <v-icon v-if="file" small color="green">$IconGalka</v-icon>
-          Приложите билет(ы):
+          <span class="font-weight-medium" style="font-size: 18px"
+            >Приложите билет(ы):</span
+          >
         </span>
         <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="mt-0">
       <v-col cols="12"
-        ><span style="font-weight: 600">Контактная информация</span></v-col
+        ><span class="font-weight-medium" style="font-size: 18px"
+          >Контактная информация:</span
+        ></v-col
       >
 
       <v-col cols="12"
@@ -97,4 +98,8 @@
 
 <script src="./setup.js"></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.col::v-deep {
+  padding-left: 8px;
+}
+</style>
