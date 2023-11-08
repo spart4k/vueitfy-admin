@@ -24,7 +24,7 @@
                     formObj[doc.doc_id].touchedForm &&
                     formObj[doc.doc_id].validate()
                   "
-                  >$IconMain</v-icon
+                  >$IconGalka</v-icon
                 >
                 <v-icon
                   x-small

@@ -10,7 +10,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">
-              <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
+              <v-icon class="mr-2" v-if="true" small>$IconGalka</v-icon>
               <span>Основные данные</span>
             </v-row>
           </v-expansion-panel-header>
