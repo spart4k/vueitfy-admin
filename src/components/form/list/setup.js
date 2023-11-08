@@ -106,7 +106,11 @@ export default {
       })
       const { makeRequest } = useRequest({
         context,
-        request: () => store.dispatch(module, { url, body: { persons } }),
+        request: () =>
+          store.dispatch(module, {
+            url,
+            body: { persons },
+          }),
         successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
       if (validate) return

@@ -180,10 +180,7 @@ export default {
     }
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () =>
-        store.dispatch('personal/getKeys', {
-          url: `/${props.tab.formData.object_id}/${formData.avatar_with_user_key_id}`,
-        }),
+      request: (listdata) => store.dispatch('list/get', listdata),
     })
     const {
       formData,

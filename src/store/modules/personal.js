@@ -14,11 +14,15 @@ const personal = {
       const result = await getCard(id)
       return result
     },
-    async getKeys(_, { url }) {
+    async getKeys(_, { url, wrap, body }) {
       console.log(url)
       const result = await getKeys(url)
-      console.log(result)
-      return { data: { print_form_key: result } }
+      console.log(result, wrap, body)
+      if (wrap) {
+        return { data: { [wrap]: result } }
+      } else {
+        return result
+      }
     },
     async checkEveryDayPayment(_, { url }) {
       const result = await checkEveryDayPayment(url)

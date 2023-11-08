@@ -21,6 +21,7 @@ export default {
   },
   setup(props, ctx) {
     const { emit } = ctx
+    const loading = ref(false)
     const proxyValue = ref(props.value)
     const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
@@ -34,7 +35,7 @@ export default {
         //  console.log(data)
         //  Vue.set(field, 'items', data)
         //}, 200)
-        props.field.loading = true
+        loading.value = true
         //const { data } = await axios.get(`
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
         //`)
@@ -67,7 +68,7 @@ export default {
         }
 
         //Vue.set(field, 'items', data.rows)
-        props.field.loading = false
+        loading.value = false
         //console.log(data.products, field)
       }
     }

@@ -300,9 +300,29 @@ export default function ({
 
   const initPreRequest = () => {
     let queries = []
+    let listData
+    if (hasSelect()) {
+      listData = form?.lists.map((list) => {
+        let filter = list.filter.map((el) => {
+          const source = eval(el.source)
+          console.log(source)
+          return {
+            alias: el.field,
+            value: source[el.field],
+            type: el.type,
+          }
+        })
+        const element = {
+          alias: list.alias,
+          filter,
+        }
+        return element
+      })
+    }
+    console.log(listData)
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
-      const lists = makeRequestList()
+      const lists = makeRequestList(listData)
       queries = [syncForm, lists]
       return queries
     } else if (getDetail() && !hasSelect()) {
@@ -310,7 +330,7 @@ export default function ({
       queries = [syncForm, undefined]
       return queries
     } else if (!getDetail() && hasSelect()) {
-      const lists = makeRequestList()
+      const lists = makeRequestList(listData)
       queries = [undefined, lists]
       return queries
     } else return undefined
@@ -345,6 +365,7 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
+    console.log(field.name, 'KEY', value)
     let fieldValue
     if (field.dependence.type !== 'api') return
     const depField = field.dependence.field
@@ -354,10 +375,11 @@ export default function ({
       field.dependence.url.forEach((el) => {
         if (el.field === 'this' && el.source === 'formData') {
           fieldValue = value
-        } else if (el.source === 'formData') {
+        } else if (el.source === 'formData' && el.field !== 'this') {
           fieldValue = formData[el.field]
         } else if (el.source === 'props') {
-          fieldValue = form?.formData[fieldValue]
+          console.log(form?.formData)
+          fieldValue = form?.formData[el.field]
         }
         url = url + '/' + fieldValue
         //if (el.source === 'props') {
@@ -374,10 +396,13 @@ export default function ({
       field,
       url,
     })
-
+    console.log(data)
     let targetField, card
+    console.log(field.name, form.fields)
     targetField = form.fields.find((el) => el.name === depField)
     if (targetField) {
+      console.log(targetField)
+      //if (typeof data === 'object') data = [data]
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
@@ -542,6 +567,10 @@ export default function ({
             }
           }
           field.items = lists.data[keyList]
+          console.log(field, formData, field.selectOption.value)
+          if (field.items.length === 1) {
+            formData[field.name] = field.items[0][field.selectOption.value]
+          }
           console.log(field.items)
         }
       }
