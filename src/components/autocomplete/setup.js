@@ -107,7 +107,6 @@ export default {
           id: props.value,
           search: newVal,
         }
-        console.log(params)
         props.field.page
         if (newVal !== null) {
           props.field.page = 1

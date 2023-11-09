@@ -31,8 +31,6 @@ function searchInputing(field) {
   console.log(field)
 }
 
-console.log(TableDefault)
-
 const tableConsumptionConfig = {
   selector: '#mainTable',
   options: {
