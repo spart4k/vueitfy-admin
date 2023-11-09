@@ -17,7 +17,7 @@
       <!-- {{ getNameDoc(1) }} -->
       <div class="mb-10">
         <span>Приложите документы</span>
-        <v-expansion-panels>
+        <v-expansion-panels v-if="data.data.zayavka.status == 5">
           <v-expansion-panel
             v-for="(item, index) in listDocuments"
             :key="index"
