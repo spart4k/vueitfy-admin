@@ -29,6 +29,7 @@ export default function ({
   setFields,
   mode,
   createForm,
+  detail,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
@@ -168,10 +169,30 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
-      console.log('data', data)
+      const response = action.conditionCode.results.find(
+        (x) => x.value === data[action.conditionCode.key]
+      )
+      tabStorageChange(response, data)
+      // console.log('responseType', response)
       loading.value = false
+      Vue.set(form, 'formData', formData)
+      emit('nextStage', { formData, action })
     }
   }
+
+  const tabStorageChange = (response, data) => {
+    if (response.toStorage) {
+      response.toStorage.forEach((item) => {
+        detail.stageData[item] = data[item]
+      })
+    }
+    if (response.fromStorage) {
+      response.fromStorage.forEach((item) => {
+        delete detail.stageData[item]
+      })
+    }
+  }
+
   const sortData = () => {
     const newForm = {}
     Object.keys(formData).forEach((key) => {
@@ -570,5 +591,6 @@ export default function ({
     disabledField,
     addFiles,
     sortData,
+    tabStorageChange,
   }
 }

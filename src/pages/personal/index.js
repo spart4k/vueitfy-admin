@@ -1323,6 +1323,7 @@ const defaultForm = [
     name: 'Заявка на персонал',
     type: 'FormStage',
     detail: true,
+    stageData: {},
     stages: [
       {
         id: 0,
@@ -1405,6 +1406,7 @@ const defaultForm = [
             page: 1,
             search: '',
             url: 'get/pagination_list/object_logistic',
+            // object
             position: {
               cols: 12,
               sm: 12,
@@ -1440,11 +1442,12 @@ const defaultForm = [
             page: 1,
             search: '',
             url: 'get/pagination_list/personal',
+            // brigadirs
             position: {
               cols: 12,
               sm: 12,
             },
-            // validations: { required },
+            validations: { required },
             bootstrapClass: [''],
             filters: [
               {
@@ -1535,17 +1538,24 @@ const defaultForm = [
             url: 'create/unfinished_personal',
             name: 'nextAwaitStage',
             action: 'nextAwaitStage',
-            conditionCode: [
-              {
-                code: 1,
-              },
-              {
-                code: 2,
-              },
-              {
-                code: 3,
-              },
-            ],
+            conditionCode: {
+              key: 'code',
+              results: [
+                {
+                  value: 1,
+                  type: 'success',
+                  toStorage: ['id'],
+                },
+                {
+                  value: 2,
+                  type: 'error',
+                },
+                {
+                  value: 3,
+                  type: 'error',
+                },
+              ],
+            },
           }),
         ],
         formData: {},

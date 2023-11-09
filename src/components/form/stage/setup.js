@@ -17,6 +17,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const router = useRouter()

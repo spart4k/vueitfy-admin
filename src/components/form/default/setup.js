@@ -27,6 +27,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    detail: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     //const syncForm = ref({})
@@ -123,6 +127,7 @@ export default {
     } = useForm({
       form: props.tab,
       context,
+      detail: props.detail,
       loading,
       fields: fields(),
       setFields: fields,

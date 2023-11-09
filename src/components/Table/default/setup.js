@@ -41,6 +41,10 @@ const table = {
       type: Object,
       default: () => {},
     },
+    detail: {
+      type: Object,
+      default: () => {},
+    },
     routeParam: {
       type: [String, Number],
       default: '',
@@ -305,11 +309,12 @@ const table = {
       //  }
       //})
       let by = undefined
-      if (props.routeParam) {
+      console.log('props.filtersConfig', props, props.detail?.stageData?.id)
+      if (props.routeParam || props.detail?.stageData?.id) {
         by = [
           {
             field: props.options.options.urlDetail,
-            value: +props.routeParam,
+            value: +props.routeParam || props.detail?.stageData?.id,
             alias: props.options.options.alias,
           },
         ]

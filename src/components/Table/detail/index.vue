@@ -35,6 +35,7 @@
             :is="item.type"
             :tab="item"
             :options="item.config"
+            :detail="detail"
             :syncData="syncForm"
             :stages="item.stages"
             :routeParam="id"

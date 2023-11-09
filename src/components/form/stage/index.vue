@@ -18,6 +18,7 @@
           :activeTab="activeTab"
           :tab="item"
           :tabs="stages"
+          :detail="tab"
           :options="item.config"
           @nextStage="nextStage"
           @prevStage="prevStage"
