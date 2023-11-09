@@ -8,6 +8,7 @@ import {
   checkboxField,
   datetimeField,
   dropZoneField,
+  textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
@@ -806,7 +807,7 @@ const config = {
         fields: [
           dateField({
             label: 'Период:',
-            name: 'date_status',
+            name: 'date',
             subtype: 'period',
             placeholder: '',
             classes: [''],
@@ -819,9 +820,10 @@ const config = {
           }),
           checkboxField({
             label: 'Табель',
-            name: 'in_state',
+            name: 'tabel',
             placeholder: '',
             readonly: false,
+            notSend: true,
             class: [''],
             position: {
               cols: 12,
@@ -830,10 +832,11 @@ const config = {
             bootstrapClass: [''],
             //validations: { required },
             //isShow: false,
+            value: true,
           }),
           dropZoneField({
             label: 'Тип файла / часы:',
-            name: 'path_act',
+            name: 'file',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -843,18 +846,48 @@ const config = {
             },
             bootstrapClass: [''],
             options: {
-              withoutSave: true,
-              folder: 'tmp',
+              withoutSave: false,
+              folder: 'parser_magnit',
+              name: '`parser_magnit_25`',
+              paramsForEmit: this,
+              acceptedFiles: '.xlsx',
             },
             value: '',
+          }),
+          textBlock({
+            label: 'Создал',
+            name: 'type',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            value: 1,
+            //validations: { required },
+            //isShow: false,
           }),
         ],
         actions: [
           stringAction({
             text: 'Загрузить',
             type: 'submit',
-            module: '',
+            module: 'form/create',
             name: 'saveForm',
+            action: 'saveForm',
+            url: '',
+            conditionAction: [
+              {
+                target: 'url',
+                from: 'tabel',
+                result: {
+                  true: 'parser/magnit_list',
+                  false: 'parser/magnit_pivot',
+                },
+              },
+            ],
           }),
         ],
       },

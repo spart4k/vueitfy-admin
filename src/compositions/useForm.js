@@ -1,10 +1,12 @@
 import Vue, { ref, computed, watch, unref, reactive } from 'vue'
-import useVuelidate from '@vuelidate/core'
+import { useVuelidate } from '@vuelidate/core'
+// import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
-import { required } from '@/utils/validation.js'
-import { data } from 'jquery'
-import { filter, result } from 'lodash'
+// import { required } from '@/utils/validation.js'
+// import { data } from 'jquery'
+// import { filter } from 'lodash'
+import useRequest from '@/compositions/useRequest'
 
 /**
  * @param loading {boolean}
@@ -26,10 +28,12 @@ export default function ({
   prevTab,
   setFields,
   mode,
+  createForm,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  const filesBasket = ref({})
   const { emit } = context.root.ctx
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
@@ -53,7 +57,7 @@ export default function ({
       ) {
         return obj
       }
-      obj[key] = { ...fields[key].validations, $autoDirty }
+      obj[key] = { ...formFields[key].validations, $autoDirty }
       return obj
     }, {})
     //console.log({
@@ -69,9 +73,8 @@ export default function ({
     //}
   }
 
-  let $v = null
   const computedFormData = computed(() => formData)
-  $v = useVuelidate(validations(), computedFormData.value)
+  let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
     Object.assign(
@@ -85,12 +88,12 @@ export default function ({
       )
     )
   }
-  //setTimeout(() => {
-  //  rebuildFormData()
-  //  console.log('rebuild')
-  //}, 10000)
-  const $errors = computed(() => {
-    return Object.keys(formData).reduce((obj, key) => {
+  // setInterval(() => {
+  //   // console.log(errors.value)
+  // }, 3000)
+  const $errors = ref({})
+  const errorsCount = () => {
+    $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
       } else {
@@ -98,11 +101,13 @@ export default function ({
       }
       return obj
     }, {})
-  })
+  }
 
   const validate = () => {
+    $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
     $touched.value = true
+    errorsCount()
     return !unref($v).$invalid
   }
 
@@ -129,8 +134,8 @@ export default function ({
     })
   }
   const clickHandler = async (action) => {
-    //$v.value.$touch()
     if (!validate()) return
+    const sortedData = sortData()
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -140,23 +145,164 @@ export default function ({
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
-      await changeForm({ url: action.url, module: action.module })
+      if (action.conditionAction) {
+        console.log('action')
+        action.conditionAction.forEach((el) => {
+          action[el.target] = el.result[formData[el.from]]
+        })
+        //await createForm({ url: action.url, module: action.module })
+        loadStoreFile({
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        })
+      } else {
+        await changeForm({
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        })
+      }
       loading.value = false
-      const isNextForm = true
-      if (isNextForm) {
-        nextForm()
+      //const isNextForm = true
+      //if (isNextForm) {
+      //  nextForm()
+      //}
+    } else if (action.action === 'saveFormStore') {
+      loadStoreFile({
+        url: action.url,
+        module: action.module,
+        formData,
+      })
+    } else if (action.action === 'nextAwaitStage') {
+      loading.value = true
+      const data = await createForm({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      console.log('data', data)
+      loading.value = false
+    }
+  }
+<<<<<<< HEAD
+  const sortData = () => {
+    const newForm = {}
+    Object.keys(formData).forEach((key) => {
+      const item = form.fields.find((x) => x.name === key)
+      console.log(
+        typeof item.isShow === 'boolean' && item.isShow,
+        typeof item.isShow === 'object' && item.isShow.value,
+        !item.notSend
+      )
+      if (
+        (typeof item.isShow === 'boolean' && item.isShow) ||
+        (typeof item.isShow === 'object' && item.isShow.value) ||
+        !item.notSend
+      ) {
+        newForm[key] = formData[key]
+      }
+      if (item.notSend) delete newForm[key]
+    })
+    return newForm
+  }
+  const addFiles = (files, field) => {
+    console.log()
+    console.log(field)
+    console.log(formData)
+    if (field.options.countFiles?.length > 1) {
+      // Vue.set(filesBasket.value, field.name, files)
+    } else {
+      filesBasket.value[field.name] = { name: '', files, field }
+      console.log(filesBasket.value)
+    }
+    // filesBasket.value.push(files)
+  }
+=======
+  const getDetail = () => form?.detail
+>>>>>>> 76067d358096626ce3c54bc0eff9a12264816f0f
+
+  const getStoreQueries = async () => {
+    return await store.dispatch('storage/loadFile')
+  }
+
+  const loadStoreFile = async (queryParams) => {
+    console.log(queryParams)
+    // const promises = []
+    const queries = []
+    for (let key in filesBasket.value) {
+      console.log(filesBasket.value[key])
+      const name =
+        eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+        '_' +
+        new Date().getTime()
+      const ext = filesBasket.value[key].files[0].name.split('.').pop()
+      console.log(name, ext)
+      //getStoreQueris(filesBasket.value[key]., name)
+      console.log(getStoreQueries)
+      console.log(store)
+      const storeForm = new FormData()
+      storeForm.append('name', name + '.' + ext)
+      storeForm.append('file', filesBasket.value[key].files[0])
+      const params = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      queries.push(
+        store.dispatch('file/create', {
+          data: storeForm,
+          folder: `${filesBasket.value[key].field.options.folder}/${name}.${ext}`,
+          params,
+        })
+      )
+      console.log(
+        `file/save/${filesBasket.value[key].field.options.folder}/${name}.${ext}`
+      )
+    }
+    const data = await Promise.all(queries)
+    console.log(data)
+    if (data.length === 1) {
+      let path = ''
+      for (let key in filesBasket.value) {
+        const name =
+          eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+          '_' +
+          new Date().getTime()
+        const ext = filesBasket.value[key].files[0].name.split('.').pop()
+        path =
+          'files/' +
+          filesBasket.value[key].field.options.folder +
+          '/' +
+          name +
+          '.' +
+          ext
+        console.log(path)
+        if (queryParams && queryParams.formData) {
+          queryParams.formData[filesBasket.value[key].field.name] = path
+        } else {
+          formData[filesBasket.value[key].field.name] = path
+        }
+        console.log(formData)
       }
     }
+    console.log(queryParams)
+    const result = await createForm(queryParams)
+    //context.root.router.go(-1)
+    emit('closePopup')
+    console.log(result)
+    console.log(data)
+    // const
   }
   const getDetail = () => form?.detail
 
-  const hasSelect = () =>
-    form?.fields.some(
+  const hasSelect = () => {
+    return form?.fields.some(
       (field) => field.type === 'select' && field.isShow && !field.withoutList
     )
+  }
 
   const initPreRequest = () => {
-    console.log('init pre request')
     let queries = []
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
@@ -176,7 +322,6 @@ export default function ({
 
   const changeAutocomplete = async (params) => {
     //const { value, field } = data
-    console.log('test')
     if (params.field.dependence && params.field.dependence.type === 'api') {
       await getDependies(params)
     }
@@ -189,6 +334,12 @@ export default function ({
         (el) => (formData[el] = params.item[el])
       )
     }
+    if (params.field.hasOwnProperty('selectOptionName')) {
+      const item = params.field.items.find((el) => el.id === params.value)
+      console.log(item)
+      params.field.selectOptionName = item[params.field.selectOption.text]
+      console.log(params.field.selectOptionName)
+    }
   }
 
   const hasDepenceFieldsApi = () =>
@@ -198,7 +349,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log(field, 'DEPENDIES')
     let fieldValue
     if (field.dependence.type !== 'api') return
     const depField = field.dependence.field
@@ -213,7 +363,6 @@ export default function ({
         } else if (el.source === 'props') {
           fieldValue = form?.formData[fieldValue]
         }
-        console.log(fieldValue)
         url = url + '/' + fieldValue
         //if (el.source === 'props') {
         //  url = url + '/' + form?.formData[fieldValue]
@@ -224,7 +373,6 @@ export default function ({
       })
     }
     field.loading = true
-    console.log(field.dependence.module)
     const data = await store.dispatch(field.dependence.module, {
       value,
       field,
@@ -232,14 +380,21 @@ export default function ({
     })
 
     let targetField, card
+    targetField = form.fields.find((el) => el.name === depField)
     if (targetField) {
+<<<<<<< HEAD
+=======
       targetField = form?.fields.find((el) => el.name === depField)
+>>>>>>> 76067d358096626ce3c54bc0eff9a12264816f0f
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
-      targetField.hideItems = targetField.defaultItems
-        ? [...targetField.defaultItems, ...data]
-        : data
+      if (targetField.items.length === 1) {
+        formData[targetField.name] = targetField.items[0].id
+      }
+      //targetField.hideItems = targetField.defaultItems
+      //  ? [...targetField.defaultItems, ...data]
+      //  : data
       card = targetField.items.find((el) => el.id === formData[depField])
     }
 
@@ -349,7 +504,6 @@ export default function ({
       }
     }
     if (hasSelect()) {
-      console.log(lists)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
@@ -360,7 +514,6 @@ export default function ({
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              console.log(condition)
               lists.data[keyList] = lists.data[keyList].filter((el) => {
                 return !condition.values.includes(el.id)
               })
@@ -403,12 +556,6 @@ export default function ({
       : false
   }
 
-  const hideField = (field) => {
-    return field.isShow
-      ? field.isShow.every((el) => formData[el.field] === el.value)
-      : true
-  }
-
   watch(
     () => watcher,
     (wtch) => {
@@ -431,6 +578,16 @@ export default function ({
     { immediate: true, deep: true }
   )
 
+  watch(
+    () => formData,
+    () => {
+      if ($touched.value) {
+        errorsCount()
+      }
+    },
+    { immediate: true, deep: true }
+  )
+
   return {
     vForm: $v,
     formErrors: $errors,
@@ -449,6 +606,7 @@ export default function ({
     showField,
     openMenu,
     disabledField,
-    hideField,
+    addFiles,
+    sortData,
   }
 }

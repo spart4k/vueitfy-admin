@@ -74,15 +74,37 @@ export default {
       context,
       request: () => store.dispatch('list/get', data),
     })
+    console.log(alias)
     const { makeRequest: changeForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: () =>
-        store.dispatch('form/update', {
-          url: `set/data/${alias}`,
+      request: (params) => {
+        console.log(data)
+        return store.dispatch(params.module, {
+          //url: `set/data/${alias}`,
+          url: params.url,
           body: { data: { id: +route.params.id, ...formData } },
+        })
+      },
+    })
+    const { makeRequest: createForm } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: (params) =>
+        store.dispatch(params.module, {
+          url: params.url,
+          body: params.formData ? params.formData : formData,
         }),
     })
+    // const { makeRequest: createForm } = useRequest({
+    //   context,
+    //   successMessage: 'Сохранено',
+    //   request: () =>
+    //     store.dispatch('form/create', {
+    //       url: `query/${alias}`,
+    //       body: formData,
+    //     }),
+    // })
     const {
       formData,
       validate,
@@ -109,6 +131,7 @@ export default {
       isEdit,
       changeForm,
       mode: isEdit.value,
+      createForm,
     })
     onMounted(async () => {
       await getData()

@@ -4175,8 +4175,8 @@ const config = {
             fields: [
               autocompleteField({
                 label: 'Сотрудник',
-                name: 'personal_logistic_x5',
-                // alias: 'personal_id',
+                name: 'personal_id',
+                alias: 'personal_logistic_x5',
                 subtype: 'single',
                 placeholder: '',
                 class: [''],
@@ -4229,7 +4229,7 @@ const config = {
               }),
               dropZoneField({
                 label: 'Файл акта',
-                name: 'path_act',
+                name: 'photo_path',
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -4242,7 +4242,7 @@ const config = {
                 options: {
                   withoutSave: false,
                   folder: 'user_keys',
-                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_logistic_x5").selectOptionName}_${formData["object_id"]}`',
+                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
                   paramsForEmit: this,
                 },
                 value: '',
@@ -4252,7 +4252,8 @@ const config = {
               stringAction({
                 text: 'Загрузить',
                 type: 'submit',
-                module: '',
+                module: 'form/create',
+                url: 'query/user_key',
                 name: 'saveForm',
                 action: 'saveFormStore',
               }),
