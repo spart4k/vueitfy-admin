@@ -61,6 +61,11 @@
           class="v-letter-content-info_text"
           v-html="$props?.data?.message_text?.replace('<br><br><br>', '')"
         ></p> -->
+        <iframe
+          class="v-letter-content-info_text"
+          ref="iframe"
+          frameborder="0"
+        ></iframe>
       </div>
       <div class="v-letter-content-files">
         <MailsLetterFiles :data="$props?.data" />
