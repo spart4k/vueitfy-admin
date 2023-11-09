@@ -135,7 +135,6 @@ const task = defineComponent({
         console.log(taskDeadline.value)
         countdownTimer()
         countdownTimerIntervalId.value = setInterval(countdownTimer, 1000)
-        clearInterval(countdownTimerIntervalId.value)
       }
     })
 
