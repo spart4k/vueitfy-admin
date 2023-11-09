@@ -57,10 +57,10 @@
         <p class="v-letter-content-info_title">
           {{ $props.data.subject }}
         </p>
-        <p
+        <!-- <p
           class="v-letter-content-info_text"
           v-html="$props?.data?.message_text?.replace('<br><br><br>', '')"
-        ></p>
+        ></p> -->
       </div>
       <div class="v-letter-content-files">
         <MailsLetterFiles :data="$props?.data" />

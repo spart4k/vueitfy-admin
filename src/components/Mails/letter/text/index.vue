@@ -7,14 +7,22 @@
       <MailsLetterFiles :data="$props?.data" expand />
     </div>
     <div class="v-text-title mb-1">{{ $props?.data?.subject }}</div>
-    <div
+    <!-- <article>
+      <div
+        class="v-text-text mb-1 flex-grow-1"
+        v-html="$props?.data?.message_text.replace('<br><br><br>', '')"
+      ></div>
+    </article> -->
+    <!-- <iframe
       class="v-text-text mb-1 flex-grow-1"
-      v-html="
-        $props?.data?.text
-          ? $props?.data?.text.replace('<br><br><br>', '')
-          : $props?.data?.message_text.replace('<br><br><br>', '')
-      "
-    ></div>
+      src="https://agario.fun/"
+      frameborder="0"
+    ></iframe> -->
+    <iframe
+      class="v-text-text mb-1 flex-grow-1"
+      ref="iframe"
+      frameborder="0"
+    ></iframe>
   </div>
 </template>
 <script src="./setup.js"></script>
