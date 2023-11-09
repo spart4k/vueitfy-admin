@@ -95,7 +95,6 @@ export default {
       }
       let validate = null
       const persons = rows.value.map((el) => {
-        console.log(el)
         validate = !el.validate()
         const person = defaultData
         person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
@@ -116,7 +115,6 @@ export default {
       if (validate) return
       await makeRequest()
       emit('closePopup')
-      console.log(defaultData, persons)
     }
     const {
       formData,

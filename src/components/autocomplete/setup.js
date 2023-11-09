@@ -27,6 +27,7 @@ export default {
     const querySelections = async (params, isObs = false) => {
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
+
         //setTimeout(() => {
         //  const data = field.data
         //    .field((el) => el.toLowerCase().includes(string))
@@ -35,6 +36,7 @@ export default {
         //  console.log(data)
         //  Vue.set(field, 'items', data)
         //}, 200)
+
         loading.value = true
         //const { data } = await axios.get(`
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
@@ -50,7 +52,6 @@ export default {
             })
           })
         }
-        console.log(url)
         const data = await getList(url, {
           countRows: 10,
           currentPage: props.field.page,
@@ -106,6 +107,7 @@ export default {
           id: props.value,
           search: newVal,
         }
+        console.log(params)
         props.field.page
         if (newVal !== null) {
           props.field.page = 1
@@ -125,6 +127,7 @@ export default {
       update,
       searchProps,
       disabled,
+      loading,
     }
   },
 }

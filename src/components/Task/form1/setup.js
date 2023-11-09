@@ -63,8 +63,6 @@ const Form1 = defineComponent({
     const addConfirmed = (data) => {
       confirmed.value.push(data)
       unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
-      console.log(confirmed.value)
-      console.log('UNconfirmed', unConfirmed.value)
       checkAllowDisable()
     }
     const addUnconfirmed = (data) => {

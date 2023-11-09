@@ -146,7 +146,6 @@ export default function ({
     } else if (action.action === 'saveForm') {
       loading.value = true
       if (action.conditionAction) {
-        console.log('action')
         action.conditionAction.forEach((el) => {
           action[el.target] = el.result[formData[el.from]]
         })
@@ -181,7 +180,6 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
-      console.log('data', data)
       loading.value = false
     }
   }
@@ -189,11 +187,6 @@ export default function ({
     const newForm = {}
     Object.keys(formData).forEach((key) => {
       const item = form.fields.find((x) => x.name === key)
-      console.log(
-        typeof item.isShow === 'boolean' && item.isShow,
-        typeof item.isShow === 'object' && item.isShow.value,
-        !item.notSend
-      )
       if (
         (typeof item.isShow === 'boolean' && item.isShow) ||
         (typeof item.isShow === 'object' && item.isShow.value) ||
@@ -206,14 +199,10 @@ export default function ({
     return newForm
   }
   const addFiles = (files, field) => {
-    console.log()
-    console.log(field)
-    console.log(formData)
     if (field.options.countFiles?.length > 1) {
       // Vue.set(filesBasket.value, field.name, files)
     } else {
       filesBasket.value[field.name] = { name: '', files, field }
-      console.log(filesBasket.value)
     }
     // filesBasket.value.push(files)
   }
@@ -223,20 +212,15 @@ export default function ({
   }
 
   const loadStoreFile = async (queryParams) => {
-    console.log(queryParams)
     // const promises = []
     const queries = []
     for (let key in filesBasket.value) {
-      console.log(filesBasket.value[key])
       const name =
         eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
         '_' +
         new Date().getTime()
       const ext = filesBasket.value[key].files[0].name.split('.').pop()
-      console.log(name, ext)
       //getStoreQueris(filesBasket.value[key]., name)
-      console.log(getStoreQueries)
-      console.log(store)
       const storeForm = new FormData()
       storeForm.append('name', name + '.' + ext)
       storeForm.append('file', filesBasket.value[key].files[0])
@@ -252,12 +236,8 @@ export default function ({
           params,
         })
       )
-      console.log(
-        `file/save/${filesBasket.value[key].field.options.folder}/${name}.${ext}`
-      )
     }
     const data = await Promise.all(queries)
-    console.log(data)
     if (data.length === 1) {
       let path = ''
       for (let key in filesBasket.value) {
@@ -273,21 +253,16 @@ export default function ({
           name +
           '.' +
           ext
-        console.log(path)
         if (queryParams && queryParams.formData) {
           queryParams.formData[filesBasket.value[key].field.name] = path
         } else {
           formData[filesBasket.value[key].field.name] = path
         }
-        console.log(formData)
       }
     }
-    console.log(queryParams)
     const result = await createForm(queryParams)
     //context.root.router.go(-1)
     emit('closePopup')
-    console.log(result)
-    console.log(data)
     // const
   }
   const getDetail = () => form?.detail
@@ -305,7 +280,6 @@ export default function ({
       listData = form?.lists.map((list) => {
         let filter = list.filter.map((el) => {
           const source = eval(el.source)
-          console.log(source)
           return {
             alias: el.field,
             value: source[el.field],
@@ -319,7 +293,6 @@ export default function ({
         return element
       })
     }
-    console.log(listData)
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
       const lists = makeRequestList(listData)
@@ -352,9 +325,7 @@ export default function ({
     }
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
-      console.log(item)
       params.field.selectOptionName = item[params.field.selectOption.text]
-      console.log(params.field.selectOptionName)
     }
   }
 
@@ -365,10 +336,10 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log(field.name, 'KEY', value)
-    let fieldValue
-    if (field.dependence.type !== 'api') return
     const depField = field.dependence.field
+    let fieldValue, targetField, card
+    targetField = form.fields.find((el) => el.name === depField)
+    if (field.dependence.type !== 'api') return
     let url = ''
     if (field.dependence.url) {
       //const splitedUrl = field.dependence.url.split('/')
@@ -378,7 +349,6 @@ export default function ({
         } else if (el.source === 'formData' && el.field !== 'this') {
           fieldValue = formData[el.field]
         } else if (el.source === 'props') {
-          console.log(form?.formData)
           fieldValue = form?.formData[el.field]
         }
         url = url + '/' + fieldValue
@@ -391,17 +361,13 @@ export default function ({
       })
     }
     field.loading = true
+    if (depField) targetField.loading = true
     const data = await store.dispatch(field.dependence.module, {
       value,
       field,
       url,
     })
-    console.log(data)
-    let targetField, card
-    console.log(field.name, form.fields)
-    targetField = form.fields.find((el) => el.name === depField)
     if (targetField) {
-      console.log(targetField)
       //if (typeof data === 'object') data = [data]
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
@@ -414,7 +380,6 @@ export default function ({
         : data
       card = targetField.items.find((el) => el.id === formData[depField])
     }
-    console.log(targetField)
     //if (data.length === 1) formData[depField] = card.id
     if (card) {
       if (field.dependence.fillField) {
@@ -451,23 +416,17 @@ export default function ({
             const condition = selectField.hiding.conditions.find(
               (el) => mode === el.value
             )
-            console.log(condition)
             //selectField.hideItems = lists.data[keyList]
             selectField.items = selectField.items.filter((el) => {
-              console.log(condition.values.includes(el.id))
               return !condition.values.includes(el.id)
             })
-            console.log(checkInvalidSelect(selectField))
           }
         }
         // говно чтобы прятать option после обновления
-        console.log(selectField.items)
-        if (data.result) {
-          console.log(data.result)
-        }
       }
     }
     field.loading = false
+    if (depField) targetField.loading = false
     //formData[field.dependence.field] = data
   }
 
@@ -558,20 +517,16 @@ export default function ({
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              console.log(condition)
               field.hideItems = lists.data[keyList]
               lists.data[keyList] = lists.data[keyList].filter((el) => {
-                console.log(condition.values.includes(el.id))
                 return !condition.values.includes(el.id)
               })
             }
           }
           field.items = lists.data[keyList]
-          console.log(field, formData, field.selectOption.value)
           if (field.items.length === 1) {
             formData[field.name] = field.items[0][field.selectOption.value]
           }
-          console.log(field.items)
         }
       }
     }

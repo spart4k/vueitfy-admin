@@ -74,12 +74,10 @@ export default {
       context,
       request: () => store.dispatch('list/get', data),
     })
-    console.log(alias)
     const { makeRequest: changeForm } = useRequest({
       context,
       successMessage: 'Сохранено',
       request: (params) => {
-        console.log(data)
         return store.dispatch(params.module, {
           //url: `set/data/${alias}`,
           url: params.url,

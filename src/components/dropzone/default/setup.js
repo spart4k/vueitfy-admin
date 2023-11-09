@@ -66,7 +66,6 @@ export default {
         }
         //dropzone.value.processQueue()
       } else {
-        console.log(files)
         proxyVal.value = [...files]
         emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
@@ -93,9 +92,7 @@ export default {
       //dropzone.value.processQueue()
     }
     const removed = (file) => {
-      if (props.options.withoutSave) {
-        console.log('remove')
-      } else {
+      if (!props.options.withoutSave) {
         emit('removeFile', file)
       }
       //console.log(value)
@@ -151,7 +148,6 @@ export default {
       }
     }
     onMounted(() => {
-      console.log(dropzone.value)
       if (proxyVal.value) {
         fillPreview()
       }

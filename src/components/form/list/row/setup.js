@@ -4,6 +4,7 @@ import useForm from '@/compositions/useForm.js'
 import Autocomplete from '@/components/autocomplete'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
+import _ from 'lodash'
 
 export default {
   name: 'Form-Rows-Row',
@@ -49,7 +50,9 @@ export default {
         ctx,
       },
     }
+
     const loading = ref(false)
+
     const fields = () => {
       const fields = {}
       props.tab.fields.forEach((el) => {
@@ -162,7 +165,8 @@ export default {
     //   )
     const prevTab = ref({})
     const getDataFromPrevTav = () => {
-      prevTab.value = props.tabs[props.activeTab - 1]
+      console.log(props.activeTab - 1, props.tabs)
+      prevTab.value = props.tabs[0]
       if (props.tab.fromLastTab) {
         //const field = prevTab.value.find((el) => el.name === )
         const fields = props.tab.fromLastTab.map((el) => {
@@ -182,6 +186,7 @@ export default {
       context,
       request: (listdata) => store.dispatch('list/get', listdata),
     })
+    const cloneForm = ref(_.cloneDeep(props.tab))
     const {
       formData,
       validate,
@@ -194,7 +199,7 @@ export default {
       changeSelect,
       showField,
     } = useForm({
-      form: props.tab,
+      form: cloneForm.value,
       fields: fields(),
       setFields: fields,
       context,
@@ -219,6 +224,7 @@ export default {
       changeSelect,
       fields,
       prevTab,
+      cloneForm,
     }
   },
 }

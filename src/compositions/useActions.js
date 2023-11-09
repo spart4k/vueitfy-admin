@@ -31,7 +31,6 @@ export default function ({
     } else if (action.action === 'nextStage') {
       emit('nextStage', formData)
     } else if (action.action === 'prevStage') {
-      console.log(action)
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true

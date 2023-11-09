@@ -456,7 +456,7 @@ const table = {
       } else if (type === 'changeUrl') {
         changeUrl(url)
       }
-      
+
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -498,7 +498,6 @@ const table = {
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
-      console.log(headerCells)
       headerCells.forEach((headerEl) => {
         const id = headerEl.id.split('-table-header')[0]
         if (!id) return
