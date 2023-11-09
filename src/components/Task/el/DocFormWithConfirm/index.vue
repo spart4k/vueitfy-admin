@@ -18,7 +18,7 @@
                   x-small
                   color="green"
                   v-if="confirmedDocs.includes(doc.id)"
-                  >$IconMain</v-icon
+                  >$IconGalka</v-icon
                 >
                 <v-icon
                   x-small

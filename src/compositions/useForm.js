@@ -185,6 +185,7 @@ export default function ({
       loading.value = false
     }
   }
+<<<<<<< HEAD
   const sortData = () => {
     const newForm = {}
     Object.keys(formData).forEach((key) => {
@@ -217,6 +218,9 @@ export default function ({
     }
     // filesBasket.value.push(files)
   }
+=======
+  const getDetail = () => form?.detail
+>>>>>>> 76067d358096626ce3c54bc0eff9a12264816f0f
 
   const getStoreQueries = async () => {
     return await store.dispatch('storage/loadFile')
@@ -378,6 +382,10 @@ export default function ({
     let targetField, card
     targetField = form.fields.find((el) => el.name === depField)
     if (targetField) {
+<<<<<<< HEAD
+=======
+      targetField = form?.fields.find((el) => el.name === depField)
+>>>>>>> 76067d358096626ce3c54bc0eff9a12264816f0f
       targetField.items = targetField.defaultItems
         ? [...targetField.defaultItems, ...data]
         : data
@@ -474,6 +482,9 @@ export default function ({
   }
 
   const getData = async () => {
+    if (!initPreRequest()) {
+      return false
+    }
     const [syncForm, lists] = await Promise.all(initPreRequest())
     if (syncForm) {
       for (let formKey in syncForm.data) {

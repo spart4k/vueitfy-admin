@@ -380,7 +380,7 @@ const DocFormCorrect = defineComponent({
       // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
       correctedDocs.value = {
         ...correctedDocs.value,
-        [doc.id]: formObj.value[doc.doc_id].getData(),
+        [doc.id]: formObj.value[doc.doc_id].formData,
       }
       ctx.emit('change', {
         bank_card_id: bankCardId.value,

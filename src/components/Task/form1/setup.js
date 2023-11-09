@@ -157,17 +157,15 @@ const Form1 = defineComponent({
           props.data.task.time_execution * 1000 -
           Date.now()
         return store.dispatch('taskModule/setPartTask', {
+          status: taskDeadline > 0 ? 2 : 3,
           data: {
-            status: taskDeadline > 0 ? 2 : 3,
-            data: {
-              process_id: task.process_id,
-              task_id: task.id,
-              parent_action: task.id,
-              docs_id: props.data.data.docs_id.map((doc) => doc.id),
-              account_id: task.to_account_id,
-              personal_id: props.data.entity.id,
-              bank_card_id: bankCardId.value ?? null,
-            },
+            process_id: task.process_id,
+            task_id: task.id,
+            parent_action: task.id,
+            docs_id: props.data.data.docs_id.map((doc) => doc.id),
+            account_id: task.to_account_id,
+            personal_id: props.data.entity.id,
+            bank_card_id: bankCardId.value ?? null,
           },
         })
       },
@@ -179,12 +177,12 @@ const Form1 = defineComponent({
         if (comment.value.trim()) {
           console.log([...confirmed.value, ...unConfirmed.value], 'is push')
           isShow.value = false
-          commentError.value = false
+          commentError.value = ''
           const dataFrom = await makeRequest()
           console.log(dataFrom)
           dataFrom.success && ctx.emit('closePopup')
         } else {
-          commentError.value = true
+          commentError.value = 'Заполните комментарий'
         }
       } else {
         showNextStep.value = true
@@ -204,7 +202,7 @@ const Form1 = defineComponent({
 
     const comment = ref('')
     let isShow = ref(true)
-    let commentError = ref(false)
+    let commentError = ref('')
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {

@@ -68,7 +68,7 @@
       <v-btn
         class="mr-2"
         color="info"
-        :disabled="!isFormValid"
+        :disabled="!comment"
         @click="sendDoneTask"
       >
         <v-icon small>mdi-content-save</v-icon>
