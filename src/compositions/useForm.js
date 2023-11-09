@@ -408,6 +408,7 @@ export default function ({
           (el) => el.name === field.dependence.action.field
         )
         selectField.items = selectField.hideItems.filter((el) => {
+          console.log(field, field.dependence.action)
           return el.id !== field.dependence.action.condition[data.result]
         })
         // говно чтобы прятать option после обновления
@@ -615,5 +616,6 @@ export default function ({
     disabledField,
     addFiles,
     sortData,
+    rebuildFormData,
   }
 }

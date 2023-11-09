@@ -1,4 +1,4 @@
-import Vue, { onMounted, ref, watch } from 'vue'
+import Vue, { onMounted, ref, watch, toRef } from 'vue'
 import useForm from '@/compositions/useForm.js'
 
 import Autocomplete from '@/components/autocomplete'
@@ -52,6 +52,7 @@ export default {
     }
     const loading = ref(false)
     const fields = () => {
+      console.log('fields')
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
@@ -66,7 +67,7 @@ export default {
       })
       return fields
     }
-    const propsActiveTab = ref(props.activeTab)
+    const propsActiveTab = toRef(props, 'activeTab')
     const prevTab = ref({})
     const getDataFromPrevTav = () => {
       console.log(props.activeTab - 1, props.tabs)
@@ -111,10 +112,8 @@ export default {
       prevTab,
       makeRequestList,
     })
-    watch(propsActiveTab, (newVal) => {
-      console.log(newVal)
-    })
     onMounted(async () => {
+      console.log('moun row')
       getDataFromPrevTav()
       await getData()
     })
