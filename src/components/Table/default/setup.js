@@ -315,6 +315,7 @@ const table = {
           {
             field: props.options.options.urlDetail,
             value: +props.routeParam || props.detail?.stageData?.id,
+            // value: +props.routeParam,
             alias: props.options.options.alias,
           },
         ]
