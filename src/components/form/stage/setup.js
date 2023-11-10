@@ -23,6 +23,7 @@ export default {
     },
   },
   setup(props, ctx) {
+    // console.log('tab', props.tab, props.stages)
     const router = useRouter()
     const context = {
       root: {

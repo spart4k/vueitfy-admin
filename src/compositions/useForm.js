@@ -135,13 +135,18 @@ export default function ({
   }
   const clickHandler = async (action) => {
     if (!validate()) return
-    const sortedData = sortData()
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
+      if (action.url) {
+        await stageRequest(action)
+      }
       Vue.set(form, 'formData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
+      if (action.url) {
+        await stageRequest(action)
+      }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
@@ -162,22 +167,22 @@ export default function ({
       //}
     } else if (action.action === 'saveFormStore') {
       loadStoreFile()
-    } else if (action.action === 'nextAwaitStage') {
-      loading.value = true
-      const data = await createForm({
-        url: action.url,
-        module: action.module,
-        formData: sortedData,
-      })
-      const response = action.conditionCode.results.find(
-        (x) => x.value === data[action.conditionCode.key]
-      )
-      tabStorageChange(response, data)
-      // console.log('responseType', response)
-      loading.value = false
-      Vue.set(form, 'formData', formData)
-      emit('nextStage', { formData, action })
     }
+  }
+
+  const stageRequest = async (action) => {
+    const sortedData = sortData()
+    loading.value = true
+    const data = await createForm({
+      url: action.url,
+      module: action.module,
+      formData: sortedData,
+    })
+    const response = action.conditionCode.results.find(
+      (x) => x.value === data[action.conditionCode.key]
+    )
+    tabStorageChange(response, data)
+    loading.value = false
   }
 
   const tabStorageChange = (response, data) => {
@@ -592,5 +597,6 @@ export default function ({
     addFiles,
     sortData,
     tabStorageChange,
+    stageRequest,
   }
 }

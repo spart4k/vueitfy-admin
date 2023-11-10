@@ -1536,8 +1536,8 @@ const defaultForm = [
             // action: 'nextStage',
             module: 'form/create',
             url: 'create/unfinished_personal',
-            name: 'nextAwaitStage',
-            action: 'nextAwaitStage',
+            name: 'nextStage',
+            action: 'nextStage',
             conditionCode: {
               key: 'code',
               results: [
@@ -1566,6 +1566,35 @@ const defaultForm = [
         type: TableDefault,
         active: false,
         config: documentConfig,
+        actions: [
+          stringAction({
+            text: 'Оставить заявку',
+            type: 'submit',
+            color: 'primary',
+            module: '',
+            name: 'saveForm',
+            nextForm: true,
+          }),
+          stringAction({
+            text: 'Вернуться',
+            type: 'submit',
+            color: 'disabled',
+            module: 'form/del',
+            url: 'delete/unfinished_personal',
+            name: 'backStage',
+            action: 'backStage',
+            conditionCode: {
+              key: 'code',
+              results: [
+                {
+                  value: 1,
+                  type: 'success',
+                  fromStorage: ['id'],
+                },
+              ],
+            },
+          }),
+        ],
       },
     ],
   },

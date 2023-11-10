@@ -4,6 +4,8 @@ import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 
+import useForm from '@/compositions/useForm.js'
+
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import Popup from '@/components/popup/index.vue'
@@ -37,6 +39,10 @@ const table = {
       default: () => {},
       require: true,
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
     filtersConfig: {
       type: Object,
       default: () => {},
@@ -51,6 +57,7 @@ const table = {
     },
   },
   setup(props, ctx) {
+    console.log('tab', props.tab)
     const { emit } = ctx
     const router = useRouter()
     const route = useRoute()
@@ -309,7 +316,7 @@ const table = {
       //  }
       //})
       let by = undefined
-      console.log('props.filtersConfig', props, props.detail?.stageData?.id)
+      console.log('props.filtersConfig', props, props.detail?.stageData.id)
       if (props.routeParam || props.detail?.stageData?.id) {
         by = [
           {
@@ -464,6 +471,8 @@ const table = {
       }
       
     }
+    const { clickHandler } = useForm({})
+    console.log('clickHandler', clickHandler)
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -558,6 +567,7 @@ const table = {
       closeFilter,
       getItems,
       watchScroll,
+      clickHandler,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
