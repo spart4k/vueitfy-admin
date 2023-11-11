@@ -85,7 +85,23 @@ const Form4 = defineComponent({
           path_doc: `/personal_doc/${fileName}`,
         }),
     })
+    const { makeRequest: doneTask } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setPartTask', {
+          data: {
+            status: 6,
+            data: {
+              process_id: data.task.process_id,
+              task_id: data.task.id,
+              personal_id: data.entity.id,
+              parent_action: data.task.id,
+            },
+          },
+        }),
+    })
     let sendData = () => {
+      doneTask()
       pushSomeShit()
       makeRequest()
       updateFileData()
