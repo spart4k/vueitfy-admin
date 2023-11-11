@@ -17,7 +17,7 @@
         ></FormTitle>
         <v-textarea
           v-model="comment"
-          @input="comment = ''"
+          @input="commentError = ''"
           :error-messages="commentError"
           rows="2"
           clearable
@@ -100,7 +100,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
         <DocForm
-          @change="changeDocs"
+          @changeDocs="changeDocs"
           :docsData="docsData"
           :listNames="listNames"
           :docs="docs"

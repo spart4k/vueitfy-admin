@@ -369,7 +369,7 @@ const docForm = defineComponent({
     const sendBankCard = async () => {
       const { result } = await makeRequest()
       bankCardId.value = result
-      ctx.emit('change', {
+      ctx.emit('changeDocs', {
         bank_card_id: bankCardId.value,
         formObj: formObj,
       })
@@ -378,7 +378,7 @@ const docForm = defineComponent({
     watch(
       formObj,
       () => {
-        ctx.emit('change', {
+        ctx.emit('changeDocs', {
           bank_card_id: bankCardId.value,
           formObj: formObj,
         })
