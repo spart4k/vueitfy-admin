@@ -19,10 +19,11 @@ const Form5 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }) {
+  setup({ data }, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const textInfo = {
@@ -44,122 +45,46 @@ const Form5 = defineComponent({
     // })
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
-
+    let newSpr = [4, 14, 17, 25]
     onMounted(() => {
-      data.data.docs_grajdanstvo.forEach((item, index) => {
-        let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
-        if (pasteObject) {
-          pasteObject['inProcess'] = false
-        } else {
-          pasteObject = { doc_id: item }
-          pasteObject['inProcess'] = true
-          listDisbledDocuments.value = listDisbledDocuments.value + 1
+      if (data.data.docs) {
+        for (let index = 0; index < newSpr.length; index++) {
+          let pasteObject = data.data.docs.find(
+            (doc) => doc.doc_id === newSpr[index]
+          )
+          console.log(pasteObject)
+          if (pasteObject) {
+            pasteObject['inProcess'] = false
+          } else {
+            pasteObject = {
+              inProcess: true,
+              doc_id: newSpr[index],
+            }
+            listDisbledDocuments.value = listDisbledDocuments.value + 1
+            console.log('listDisbledDocuments', listDisbledDocuments)
+          }
+          listDocuments.value.push(pasteObject)
+          console.log(listDocuments.value)
         }
-        listDocuments.value.push(pasteObject)
-      })
+      }
+
+      // data.data.docs.forEach((item, index) => {
+      //   let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
+      //   if (pasteObject) {
+      //     pasteObject['inProcess'] = false
+      //   } else {
+      //     pasteObject = { doc_id: item.doc_id }
+      //     pasteObject['inProcess'] = true
+      //     listDisbledDocuments.value = listDisbledDocuments.value + 1
+      //   }
+      //   listDocuments.value.push(pasteObject)
+      // })
+      // console.log(listDocuments)
     })
 
     let listRequestsForUpload = ref([])
     let file = ref('')
     let disableFinishState = ref(0)
-
-    // const sendData = () => {
-    //   console.log(selectName.value, file.value)
-    //   let fileExt = file.value.type.split('/')[1]
-    //   let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-    //   let form_data = new FormData()
-    //   form_data.append('file', file.value)
-    //   const { makeRequest } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/loadImage', {
-    //         id: 1,
-    //         folder: 'personal_doc',
-    //         fileName: fileName,
-    //         file: form_data,
-    //       }),
-    //     successMessage: 'Файл успешно загружен',
-    //   })
-    //   const { makeRequest: updateFileData } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/updateFileData', {
-    //         id: 1,
-    //         path_doc: `/personal_doc/${fileName}`,
-    //       }),
-    //   })
-
-    //   const { makeRequest: changeStatus } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/setPartTask', {
-    //         status: 2,
-    //         data: {
-    //           process_id: data.task.process_id,
-    //           task_id: data.task.id,
-    //           parent_action: data.task.id,
-    //           transfer: true,
-    //           manager_id: JSON.parse(data.entity.data_subvision)['leader'],
-    //           personal_id: data.entity.personal_id,
-    //           next: JSON.parse(data.task.dop_data).after_return
-    //             ? JSON.parse(data.task.dop_data).after_return
-    //             : true,
-    //         },
-    //       }),
-    //   })
-    //   const { makeRequest: pushSomeShit } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/setBid', {
-    //         data: {
-    //           id: data.entity.id,
-    //           items: {
-    //             rashod_vid_id: selectName.value.id,
-    //             count: 1,
-    //             price: price.value,
-    //             name: '',
-    //             is_debit: 1,
-    //           },
-    //         },
-    //       }),
-    //   })
-    //   makeRequest()
-    //   updateFileData()
-    //   pushSomeShit()
-    //   changeStatus()
-    // }
-    let addFilesPatent = (e, options) => {
-      let fileExt = e[0].type.split('/')[1]
-      let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-      let form_data = new FormData()
-      form_data.append('file', e[0])
-
-      const { makeRequest: updateFileData } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
-            doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
-            from_task: true,
-          }),
-      })
-
-      const { makeRequest: loadImage } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/loadImage', {
-            id: 1,
-            folder: 'personal_doc',
-            fileName: fileName,
-            file: form_data,
-          }),
-        successMessage: 'Файл успешно загружен',
-      })
-      updateFileData()
-      loadImage()
-      disableFinishState.value = disableFinishState.value + 1
-    }
 
     let addFiles = (e, options) => {
       console.log(e, options, listDocuments.value)
@@ -199,8 +124,6 @@ const Form5 = defineComponent({
         successMessage: 'Файл успешно загружен',
       })
 
-      // Когда запрос будет готов от Миши, нужно сформировать его по примеру ниже из старого кода. Функцию эту запушить в переменную, которая при нажаити на кнопку вызывает функции запросов в цикле
-      // Добавить эот запрос в массив запросов нужно по условию, код закомментирован
       const { makeRequest: createFillScanProcess } = useRequest({
         context,
         request: () =>
@@ -213,32 +136,6 @@ const Form5 = defineComponent({
         successMessage: 'Файл успешно загружен',
       })
 
-      // $.ajax('/personal/create_fill_scan_process', {
-      //   method: "POST",
-      //   data: { parent_process: <?php echo $task['process_id']; ?>,
-      //           process_id: 1,
-      //           account_id: <?php echo $task['to_account_id']; ?>,
-      //           personal_id: <?php echo $entity['id']; ?>,
-      //           docs_id: docs_id,
-      //           parent_action: <?php echo $task['id']; ?>,
-      //           type_parent_action: 2
-      //   },
-      //   success: function() {
-
-      //   }
-      let additionalRequestFlag
-      if (
-        e.item != 7 &&
-        e.item != 8 &&
-        e.item != 11 &&
-        e.item != 12 &&
-        e.item != 16 &&
-        e.item != 18 &&
-        e.item != 20 &&
-        e.item != 21
-      ) {
-        additionalRequestFlag = true
-      }
       console.log(listDocuments.value)
       if (!currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
@@ -265,15 +162,11 @@ const Form5 = defineComponent({
       console.log(listRequestsForUpload.value.length)
     }
 
-    const sendDocuments = () => {
+    let sendTaskFinish = () => {
       listRequestsForUpload.value.forEach((elem, index) => {
         elem()
       })
       listRequestsForUpload.value = []
-    }
-
-    let sendTaskFinish = () => {
-      sendDocuments()
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -288,16 +181,45 @@ const Form5 = defineComponent({
       })
 
       changeStatus()
+
+      ctx.emit('closePopup')
+    }
+    let spr = {
+      1: 'Паспорт',
+      2: 'СНИЛС',
+      3: 'Реквизиты карты',
+      4: 'Регистрация',
+      5: 'Патент',
+      6: 'Паспорт стр.2',
+      7: 'Перевод',
+      8: 'Мед. книжка',
+      9: 'Вид на жительство',
+      10: 'Миграционная карта',
+      11: 'ДМС',
+      12: 'Рабочая виза',
+      13: 'Чек-патент первичный',
+      14: 'Регистрация стр. 2',
+      15: 'Патент стр. 2',
+      16: 'Фото',
+      17: 'ИНН',
+      18: 'Экзамен РФ',
+      19: 'Чек-патент текущий',
+      20: 'Дактилоскопия',
+      21: 'Дактилоскопия стр. 2',
+      22: 'Вид на жительство стр. 2',
+      23: 'Медосмотр',
+      24: 'ID карта',
+      25: 'Ученический договор',
     }
     return {
       addFiles,
       listDocuments,
       listRequestsForUpload,
-      sendDocuments,
       listDisbledDocuments,
-      addFilesPatent,
+      // addFilesPatent,
       disableFinishState,
       sendTaskFinish,
+      spr,
     }
   },
 })
