@@ -75,6 +75,7 @@ export default {
     }
     const endIntersect = (entries, observer, isIntersecting) => {
       if (isIntersecting) {
+        console.log(isIntersecting)
         //const dataset = entries[0].target.dataset.field
         if (props.field.items.length && !props.field.loading) {
           //field.page = field.page + 10
@@ -93,6 +94,7 @@ export default {
     }
     const update = (value) => {
       const item = props.field.items.find((el) => el.id === value)
+      emit('input', value)
       emit('change', { value, field: props.field, item })
     }
     const disabled = computed(() => {
@@ -116,7 +118,9 @@ export default {
     )
     watch(
       () => proxyValue.value,
-      (newVal) => emit('input', newVal)
+      (newVal) => {
+        emit('input', newVal)
+      }
     )
     return {
       proxyValue,

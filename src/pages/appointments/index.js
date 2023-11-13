@@ -428,21 +428,21 @@ const config = {
                 //mode: 'edit',
                 isShow: true,
               }),
-              stringField({
-                label: 'Создал',
-                name: 'account_name',
-                placeholder: '',
-                readonly: false,
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                bootstrapClass: [''],
-                mode: 'edit',
-                //validations: { required },
-                //isShow: false,
-              }),
+              //stringField({
+              //  label: 'Создал',
+              //  name: 'account_name',
+              //  placeholder: '',
+              //  readonly: false,
+              //  class: [''],
+              //  position: {
+              //    cols: 12,
+              //    sm: 6,
+              //  },
+              //  bootstrapClass: [''],
+              //  mode: 'edit',
+              //  //validations: { required },
+              //  //isShow: false,
+              //}),
               selectField({
                 label: 'Вид ведомости:',
                 name: 'vid_vedomost_id_logistic',
@@ -493,10 +493,18 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                update: {
-                  module: 'selects/getList',
-                  fields: ['object_id'],
-                },
+                //update: {
+                //  module: 'selects/getList',
+                //  fields: ['object_id'],
+                //},
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'object_id',
+                    url: 'get/pagination_list/object_logistic',
+                  },
+                ],
               }),
               autocompleteField({
                 label: 'Объект',
@@ -524,10 +532,18 @@ const config = {
                     value: '',
                   },
                 ],
-                dependence: {
-                  type: 'default',
-                  fillField: ['sum_nutrition', 'with_nutrition', 'subtype'],
-                },
+                dependence: [
+                  {
+                    type: 'default',
+                    fillField: ['sum_nutrition', 'with_nutrition', 'subtype'],
+                  },
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'personal_id',
+                    url: 'get/pagination_list/personal',
+                  },
+                ],
                 update: {
                   module: 'selects/getList',
                   fields: ['personal_id'],
@@ -561,27 +577,29 @@ const config = {
                   },
                 ],
                 requiredFields: ['object_id'],
-                dependence: {
-                  //fields: ['statement_card', 'cardowner'],
-                  type: 'api',
-                  module: 'personal/checkEveryDayPayment',
-                  action: {
-                    type: 'hideOptions',
-                    //values: [8],
-                    field: 'vid_vedomost_id_logistic',
-                    condition: {
-                      true: [],
-                      false: 1,
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'api',
+                    module: 'personal/checkEveryDayPayment',
+                    action: {
+                      type: 'hideOptions',
+                      //values: [8],
+                      field: 'vid_vedomost_id_logistic',
+                      condition: {
+                        true: [],
+                        false: 1,
+                      },
                     },
+                    //url: 'object_id/avatar_with_user_key_id',
+                    url: [
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
                   },
-                  //url: 'object_id/avatar_with_user_key_id',
-                  url: [
-                    {
-                      source: 'formData',
-                      field: 'this',
-                    },
-                  ],
-                },
+                ],
               }),
               selectField({
                 label: 'Должность',
@@ -760,23 +778,25 @@ const config = {
                     type: 'fromPrev',
                   },
                 ],
-                dependence: {
-                  //fields: ['statement_card', 'cardowner'],
-                  type: 'api',
-                  module: 'personal/getKeys',
-                  //url: 'object_id/avatar_with_user_key_id',
-                  field: 'print_form_key',
-                  url: [
-                    {
-                      source: 'props',
-                      field: 'object_id',
-                    },
-                    {
-                      source: 'formData',
-                      field: 'this',
-                    },
-                  ],
-                },
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'api',
+                    module: 'personal/getKeys',
+                    //url: 'object_id/avatar_with_user_key_id',
+                    field: 'print_form_key',
+                    url: [
+                      {
+                        source: 'props',
+                        field: 'object_id',
+                      },
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Ключ',

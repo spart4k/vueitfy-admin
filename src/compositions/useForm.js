@@ -310,19 +310,7 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
-    //const { value, field } = data
-    if (params.field.dependence && params.field.dependence.type === 'api') {
-      await getDependies(params)
-    }
-    if (
-      params.field.dependence &&
-      params.field.dependence.type &&
-      params.field.dependence.fillField
-    ) {
-      params.field.dependence.fillField.forEach(
-        (el) => (formData[el] = params.item[el])
-      )
-    }
+    await getDependies(params)
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
       params.field.selectOptionName = item[params.field.selectOption.text]
@@ -336,99 +324,145 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    const depField = field.dependence.field
-    let fieldValue, targetField, card
-    targetField = form.fields.find((el) => el.name === depField)
-    if (field.dependence.type !== 'api') return
-    let url = ''
-    if (field.dependence.url) {
-      //const splitedUrl = field.dependence.url.split('/')
-      field.dependence.url.forEach((el) => {
-        if (el.field === 'this' && el.source === 'formData') {
-          fieldValue = value
-        } else if (el.source === 'formData' && el.field !== 'this') {
-          fieldValue = formData[el.field]
-        } else if (el.source === 'props') {
-          fieldValue = form?.formData[el.field]
-        }
-        url = url + '/' + fieldValue
-        //if (el.source === 'props') {
-        //  url = url + '/' + form?.formData[fieldValue]
-        //} else if (el.source === 'formData') {
-        //  console.log(JSON.stringify(formData))
-        //  url = url + '/' + formData[fieldValue]
-        //}
-      })
-    }
-    field.loading = true
-    if (depField) targetField.loading = true
-    const data = await store.dispatch(field.dependence.module, {
-      value,
-      field,
-      url,
-    })
-    if (targetField) {
-      //if (typeof data === 'object') data = [data]
-      targetField.items = targetField.defaultItems
-        ? [...targetField.defaultItems, ...data]
-        : data
-      if (targetField.items.length === 1) {
-        formData[targetField.name] = targetField.items[0].id
-      }
-      targetField.hideItems = targetField.defaultItems
-        ? [...targetField.defaultItems, ...data]
-        : data
-      card = targetField.items.find((el) => el.id === formData[depField])
-    }
-    //if (data.length === 1) formData[depField] = card.id
-    if (card) {
-      if (field.dependence.fillField) {
-        field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
-      } else if (data.length === 1) {
-        formData[depField] = data[0].id
-        card = targetField.items.find((el) => el.id === formData[depField])
-        if (field.dependence.fillField) {
-          field.dependence.fillField.forEach((el) => (formData[el] = card[el]))
-        }
-      } else if (data.length === 0) {
-        formData[depField] = 11
-        if (field.dependence.fillField) {
-          field.dependence.fillField.forEach((el) => (formData[el] = ''))
-        }
-      } else {
-        if (field.dependence.fillField) {
-          field.dependence.fillField.forEach((el) => (formData[el] = ''))
-        }
-      }
-    }
-
-    if (field.dependence.action) {
-      if (field.dependence.action.type === 'hideOptions') {
-        const selectField = form.fields.find(
-          (el) => el.name === field.dependence.action.field
-        )
-        selectField.items = selectField.hideItems.filter((el) => {
-          console.log(field, field.dependence.action)
-          return el.id !== field.dependence.action.condition[data.result]
+    console.log(field)
+    field.dependence.forEach(async (dependence) => {
+      console.log(dependence)
+      const depField = dependence.field
+      let fieldValue, targetField, card, body
+      targetField = form.fields.find((el) => el.name === depField)
+      let url = ''
+      console.log(dependence.url)
+      if (dependence.url && Array.isArray(dependence.url)) {
+        //const splitedUrl = dependence.url.split('/')
+        dependence.url.forEach((el) => {
+          if (el.field === 'this' && el.source === 'formData') {
+            fieldValue = value
+          } else if (el.source === 'formData' && el.field !== 'this') {
+            fieldValue = formData[el.field]
+          } else if (el.source === 'props') {
+            fieldValue = form?.formData[el.field]
+          }
+          url = url + '/' + fieldValue
+          //if (el.source === 'props') {
+          //  url = url + '/' + form?.formData[fieldValue]
+          //} else if (el.source === 'formData') {
+          //  console.log(JSON.stringify(formData))
+          //  url = url + '/' + formData[fieldValue]
+          //}
         })
-        // говно чтобы прятать option после обновления
-        if (selectField.hiding) {
-          if (selectField.hiding.conditions) {
-            const condition = selectField.hiding.conditions.find(
-              (el) => mode === el.value
-            )
-            //selectField.hideItems = lists.data[keyList]
-            selectField.items = selectField.items.filter((el) => {
-              return !condition.values.includes(el.id)
+      } else if (dependence.url && typeof dependence.url === 'string') {
+        console.log(targetField)
+        url = dependence.url
+        if (targetField.type === 'autocomplete') {
+          const filter = []
+          if (targetField.filters && targetField.filters.length) {
+            targetField.filters.forEach((el) => {
+              console.log(formData, el.field, formData[el.field], value)
+              if (!formData[el.field]) return
+              filter.push({
+                field: el.field,
+                value: formData[el.field],
+              })
             })
           }
+          body = {
+            countRows: 10,
+            currentPage: 1,
+            searchValue: '',
+            //id: params.id ? params.id : -1,
+            id: -1,
+            filter,
+          }
+          console.log(body)
         }
-        // говно чтобы прятать option после обновления
       }
-    }
-    field.loading = false
-    if (depField) targetField.loading = false
-    //formData[field.dependence.field] = data
+      console.log(
+        dependence,
+        dependence.type === 'default',
+        dependence.fillField
+      )
+      //if (dependence && (dependence.type !== 'api' || !dependence.type)) {
+      //  const data = field.items.find((el) => el.id === value)
+      //  dependence.fields.forEach((el) => (formData[el] = data[el]))
+      //  //return
+      //}
+      if (dependence && dependence.type === 'default' && dependence.fillField) {
+        console.log(dependence.fillField)
+        dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
+        return
+      }
+      field.loading = true
+      if (depField) targetField.loading = true
+      const data = await store.dispatch(dependence.module, {
+        value,
+        field,
+        url,
+        body,
+      })
+      if (targetField) {
+        //if (typeof data === 'object') data = [data]
+        targetField.items = targetField.defaultItems
+          ? [...targetField.defaultItems, ...data]
+          : data
+        if (targetField.items.length === 1) {
+          formData[targetField.name] = targetField.items[0].id
+        }
+        targetField.hideItems = targetField.defaultItems
+          ? [...targetField.defaultItems, ...data]
+          : data
+        console.log(targetField)
+        card = targetField.items.find((el) => el.id === formData[depField])
+      }
+      //if (data.length === 1) formData[depField] = card.id
+      if (card) {
+        if (dependence.fillField) {
+          dependence.fillField.forEach((el) => (formData[el] = card[el]))
+        } else if (data.length === 1) {
+          formData[depField] = data[0].id
+          card = targetField.items.find((el) => el.id === formData[depField])
+          if (dependence.fillField) {
+            dependence.fillField.forEach((el) => (formData[el] = card[el]))
+          }
+        } else if (data.length === 0) {
+          formData[depField] = 11
+          if (dependence.fillField) {
+            dependence.fillField.forEach((el) => (formData[el] = ''))
+          }
+        } else {
+          if (dependence.fillField) {
+            dependence.fillField.forEach((el) => (formData[el] = ''))
+          }
+        }
+      }
+
+      if (dependence.action) {
+        if (dependence.action.type === 'hideOptions') {
+          const selectField = form.fields.find(
+            (el) => el.name === dependence.action.field
+          )
+          selectField.items = selectField.hideItems.filter((el) => {
+            return el.id !== dependence.action.condition[data.result]
+          })
+          // говно чтобы прятать option после обновления
+          if (selectField.hiding) {
+            if (selectField.hiding.conditions) {
+              const condition = selectField.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              //selectField.hideItems = lists.data[keyList]
+              selectField.items = selectField.items.filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          // говно чтобы прятать option после обновления
+        }
+      }
+      field.loading = false
+      if (depField) targetField.loading = false
+    })
+
+    //formData[dependence.field] = data
   }
 
   const checkInvalidSelect = (field) => {
@@ -436,10 +470,9 @@ export default function ({
     if (!result) formData[field.name] = ''
   }
 
-  const changeSelect = ({ value, field }) => {
+  const changeSelect = async ({ value, field }) => {
     if (field.dependence) {
-      const data = field.items.find((el) => el.id === value)
-      field.dependence.fields.forEach((el) => (formData[el] = data[el]))
+      await getDependies({ value, field })
     }
   }
 

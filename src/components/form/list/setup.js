@@ -112,6 +112,7 @@ export default {
           }),
         successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
+      console.log(validate)
       if (validate) return
       await makeRequest()
       emit('closePopup')

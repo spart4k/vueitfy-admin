@@ -32,10 +32,10 @@ export default {
     row: {
       type: [String, Object],
     },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+    //loading: {
+    //  type: Boolean,
+    //  default: false,
+    //},
     activeTab: {
       type: Number,
       default: null,
@@ -50,7 +50,7 @@ export default {
         ctx,
       },
     }
-    const loading = ref(false)
+    const loading = ref(true)
     const fields = () => {
       console.log('fields')
       const fields = {}
@@ -115,7 +115,9 @@ export default {
     onMounted(async () => {
       console.log('moun row')
       getDataFromPrevTav()
+      loading.value = true
       await getData()
+      loading.value = false
     })
     return {
       formData,
@@ -132,6 +134,7 @@ export default {
       prevTab,
       cloneForm,
       propsActiveTab,
+      loading,
     }
   },
 }
