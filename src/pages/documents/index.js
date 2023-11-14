@@ -577,7 +577,7 @@ const paymentConfig = {
   },
   head: [
     {
-      title: 'ID',
+      title: 'IDasdf',
       type: 'default',
       align: 'center',
       fixed: {
@@ -595,7 +595,7 @@ const paymentConfig = {
       alias: 'p.id',
       isShow: true,
       width: '40',
-      value: 'id',
+      value: 'id32sdfuuu',
       search: {
         field: '',
         isShow: true,
@@ -2148,7 +2148,7 @@ const config = {
       },
       head: [
         {
-          title: 'id',
+          title: 'ФИО',
           type: 'default',
           align: 'center',
           fixed: {
@@ -2163,10 +2163,10 @@ const config = {
               isShow: false,
             },
           ],
-          alias: 'p.id',
           isShow: true,
-          width: '40',
-          value: 'id',
+          width: '149',
+          alias: 'p.name',
+          value: 'name',
           search: {
             field: '',
             isShow: true,
@@ -2197,31 +2197,32 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'ФИО',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.name',
-          value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
+        // {
+        //   title: 'id',
+        //   type: 'default',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'left',
+        //   },
+        //   sorts: [
+        //     {
+        //       type: 'string',
+        //       default: '',
+        //       value: '',
+        //       isShow: false,
+        //     },
+        //   ],
+        //   alias: 'p.id',
+        //   isShow: true,
+        //   width: '40',
+        //   value: 'id',
+        //   search: {
+        //     field: '',
+        //     isShow: true,
+        //   },
+        // },
+
         {
           title: 'Телефон',
           type: 'default',
