@@ -19,6 +19,7 @@ import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
+import DocumentView from '@/views/DocumentView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -333,6 +334,17 @@ const routes = [
       layout: 'blank-layout',
     },
     component: GrishaView,
+  },
+  {
+    path: '/documents',
+    name: 'documents',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: DocumentView,
   },
 ]
 
