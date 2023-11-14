@@ -135,6 +135,7 @@ const Form6 = defineComponent({
       disableFinishState,
       sendTaskFinish,
       isLoadedImage,
+      textInfo,
     }
   },
 })
