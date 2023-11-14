@@ -24,6 +24,7 @@ const Form4 = defineComponent({
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     let selectName = ref('')
@@ -103,6 +104,7 @@ const Form4 = defineComponent({
       pushSomeShit()
       makeRequest()
       updateFileData()
+      ctx.emit('closePopup')
     }
     return {
       sendData,
