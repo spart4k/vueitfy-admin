@@ -1,8 +1,9 @@
 <template>
   <div style="padding-top: 10px">
-    <div>
-      <span style="font-weight: 700; font-size: 20px"
-        >{{ data.entity.name }} {{ data.entity.data_rojd }}</span
+    <div style="text-align: center">
+      <span style="font-weight: 700; font-size: 20px; text-align: center"
+        >{{ data.entity.name }}
+        {{ data.entity.data_rojd.split('-').reverse().join('.') }}</span
       >
       <!-- <span>(28.08.1998 г.р.)</span> -->
     </div>

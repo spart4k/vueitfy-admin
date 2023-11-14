@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="d-flex justify-center text-h6">
         <span class="font-weight-bold text-h6">{{ entity.name }}</span
         >&nbsp;({{ dataRojd }} г.р)

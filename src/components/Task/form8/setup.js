@@ -128,6 +128,7 @@ const Form8 = defineComponent({
     //   pushSomeShit()
     //   changeStatus()
     // }
+    let docs_ids = ref([])
     let addFilesPatent = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -170,7 +171,7 @@ const Form8 = defineComponent({
       form_data.append('file', e[0])
 
       let currentDropzone = listDocuments.value.find((x) => x.doc_id === e.item)
-
+      docs_ids.value.push(e.item)
       const { makeRequest: delInfoAFile } = useRequest({
         context,
         request: () =>
@@ -205,10 +206,13 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/startProcess', {
-            id: 1,
-            folder: 'personal_doc',
-            fileName: fileName,
-            file: form_data,
+            parent_process: data.task.process_id,
+            process_id: 1,
+            parent_action: data.task.process_id,
+            type_parent_action: 2,
+            account_id: data.task.to_account_id,
+            personal_id: data.entity.id,
+            docs_id: docs_ids.value,
           }),
         successMessage: 'Файл успешно загружен',
       })
@@ -249,14 +253,14 @@ const Form8 = defineComponent({
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
-        // if (additionalRequestFlag) {
-        //   listRequestsForUpload.value.push(createFillScanProcess)
-        // }
+        if (additionalRequestFlag) {
+          listRequestsForUpload.value.push(createFillScanProcess)
+        }
       } else {
         listRequestsForUpload.value.push(updateFileData, loadImage)
-        // if (additionalRequestFlag) {
-        //   listRequestsForUpload.value.push(createFillScanProcess)
-        // }
+        if (additionalRequestFlag) {
+          listRequestsForUpload.value.push(createFillScanProcess)
+        }
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false

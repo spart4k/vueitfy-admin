@@ -85,10 +85,10 @@ const Form5 = defineComponent({
     let listRequestsForUpload = ref([])
     let file = ref('')
     let disableFinishState = ref(0)
-
+    let docs_ids = ref([])
     let addFiles = (e, options) => {
       console.log(e, options, listDocuments.value)
-
+      docs_ids.value.push(e.item)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -128,10 +128,13 @@ const Form5 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/startProcess', {
-            id: 1,
-            folder: 'personal_doc',
-            fileName: fileName,
-            file: form_data,
+            parent_process: data.task.process_id,
+            process_id: 1,
+            parent_action: data.task.process_id,
+            type_parent_action: 2,
+            account_id: data.task.to_account_id,
+            personal_id: data.entity.id,
+            docs_id: docs_ids.value,
           }),
         successMessage: 'Файл успешно загружен',
       })
@@ -150,7 +153,11 @@ const Form5 = defineComponent({
         //   listRequestsForUpload.value.push(createFillScanProcess)
         // }
       } else {
-        listRequestsForUpload.value.push(updateFileData, loadImage)
+        listRequestsForUpload.value.push(
+          updateFileData,
+          createFillScanProcess,
+          loadImage
+        )
         // if (additionalRequestFlag) {
         //   listRequestsForUpload.value.push(createFillScanProcess)
         // }
@@ -176,8 +183,19 @@ const Form5 = defineComponent({
               process_id: data.task.process_id,
               task_id: data.task.id,
               parent_action: data.task.id,
+              manager_id: data.task.from_account_id,
+              account_id: data.task.from_account_id,
+              x5: data.entity.object_id == 9 ? 1 : 0,
             },
           }),
+
+        // <?php echo $task['process_id']; ?>,
+        //           task_id: <?php echo $task['id']; ?>,
+        //           parent_action: <?php echo $task['id']; ?>,
+        //           personal_id: <?php echo $entity['id']; ?>,
+        //           manager_id: <?php echo $task['from_account_id']; ?>,
+        //           account_id: <?php echo $task['from_account_id']; ?>,
+        //           x5: getListValueByNameField('objects_all', <?php echo $entity['object_id']; ?>, 'subtype') == 9 ? 1 : 0
       })
 
       changeStatus()

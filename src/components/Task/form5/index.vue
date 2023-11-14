@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="d-flex justify-center text-h6">
         <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
-        >&nbsp;({{ data.entity.data_rojd }} г.р)
+        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <!-- {{ getNameDoc(1) }} -->
       <div class="mb-10">
         <span>Приложите документы</span>
-        <v-expansion-panels>
+        <v-expansion-panels multiple>
           <v-expansion-panel>
             <v-expansion-panel-header>
               <span>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <FormError v-if="dopData && dopData.comment" class="mb-5">
         {{ dopData.comment }}
       </FormError>

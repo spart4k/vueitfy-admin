@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
         >&nbsp; на дату 07.02.2023
