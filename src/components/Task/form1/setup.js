@@ -94,18 +94,16 @@ const Form1 = defineComponent({
       context,
       request: () =>
         store.dispatch('taskModule/setPartTask', {
+          status: 6,
           data: {
-            status: 6,
-            data: {
-              process_id: props.data.task.process_id,
-              task_id: props.data.task.id,
-              personal_id: props.data.entity.id,
-              parent_action: props.data.task.id,
-              comment: comment.value,
-              cancel_close: Object.values(unConfirmed.value).map((x) => x.id),
-              manager_id: props.data.task.from_account_id,
-              docs_id: JSON.parse(props.data.task.dop_data).docs_id,
-            },
+            process_id: props.data.task.process_id,
+            task_id: props.data.task.id,
+            personal_id: props.data.entity.id,
+            parent_action: props.data.task.id,
+            comment: comment.value,
+            cancel_close: Object.values(unConfirmed.value).map((x) => x.id),
+            manager_id: props.data.task.from_account_id,
+            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
           },
         }),
     })
