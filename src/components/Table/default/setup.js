@@ -471,8 +471,8 @@ const table = {
       }
       
     }
-    const { clickHandler } = useForm({})
-    console.log('clickHandler', clickHandler)
+    // const { clickHandler } = useForm({})
+    // console.log('clickHandler', clickHandler)
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -567,7 +567,7 @@ const table = {
       closeFilter,
       getItems,
       watchScroll,
-      clickHandler,
+      // clickHandler,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
