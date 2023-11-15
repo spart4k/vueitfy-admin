@@ -66,7 +66,8 @@ const letterExpanded = {
           userArray.push(item.email)
         })
         const requestData = {
-          from: 'slepoybanditka@yandex.ru',
+          // from: 'slepoybanditka@yandex.ru',
+          box_id: 1,
           to: userArray,
           subject: newMessage.value.subject,
           message: message,

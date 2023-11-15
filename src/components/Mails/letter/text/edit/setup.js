@@ -24,7 +24,7 @@ const edit = {
       ['blockquote', 'code-block'],
       [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
       [{ color: [] }, { background: [] }],
-      ['link', 'image', 'video'],
+      ['link', 'image'],
       ['clean'],
     ])
     const editorContainer = ref(null)
