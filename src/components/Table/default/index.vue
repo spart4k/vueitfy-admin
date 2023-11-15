@@ -240,7 +240,22 @@
                       <v-icon color="red">mdi-close</v-icon>
                     </template>
                     <template v-if="Object.byString(row.row, cell.value) == 1">
-                      <v-icon color="green">mdi-check</v-icon>
+                      <template v-if="cell.conditionValue">
+                        <template
+                          v-if="
+                            Object.byString(row.row, cell.conditionValue) ===
+                            null
+                          "
+                        >
+                          <v-icon color="red">mdi-close</v-icon>
+                        </template>
+                        <template v-esle>
+                          {{ Object.byString(row.row, cell.conditionValue) }}
+                        </template>
+                      </template>
+                      <template v-else>
+                        <v-icon color="green">mdi-check</v-icon>
+                      </template>
                     </template>
                     <template v-if="Object.byString(row.row, cell.value) == 2">
                       <v-icon color="yellow">mdi-minus</v-icon>

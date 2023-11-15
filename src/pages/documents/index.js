@@ -811,7 +811,7 @@ const defaultForm = [
     active: false,
     fields: [
       stringField({
-        label: 'ФИО',
+        label: 'ФИО2',
         name: 'name',
         placeholder: '',
         readonly: false,
@@ -1222,7 +1222,7 @@ const defaultForm = [
         active: false,
         fields: [
           stringField({
-            label: 'ФИО',
+            label: 'ФИО2',
             name: 'fio',
             placeholder: '',
             class: [''],
@@ -2147,56 +2147,6 @@ const config = {
         ],
       },
       head: [
-        {
-          title: 'ФИО',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '149',
-          alias: 'p.name',
-          value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Статус',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'ps.status',
-          value: 'status_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
         // {
         //   title: 'id',
         //   type: 'default',
@@ -2396,6 +2346,7 @@ const config = {
           width: '90',
           alias: 'ps.migr_card',
           value: 'migr_card',
+          conditionValue: 'migr_card_data_in',
           search: {
             field: '',
             isShow: true,
@@ -2448,6 +2399,7 @@ const config = {
           width: '90',
           alias: 'ps.migr_uch_2',
           value: 'migr_uch_2',
+          conditionValue: 'registration_date_c_docs_in',
           search: {
             field: '',
             isShow: true,
@@ -2630,6 +2582,7 @@ const config = {
           width: '90',
           alias: 'ps.med_view',
           value: 'med_view',
+          conditionValue: 'med_view_docs_in',
           search: {
             field: '',
             isShow: true,
@@ -2682,6 +2635,7 @@ const config = {
           width: '90',
           alias: 'ps.patent_2',
           value: 'patent_2',
+          conditionValue: 'patent_date_docs_in',
           search: {
             field: '',
             isShow: true,
@@ -2708,6 +2662,7 @@ const config = {
           width: '90',
           alias: 'ps.check_patent',
           value: 'check_patent',
+          conditionValue: 'check_patent_date_pay',
           search: {
             field: '',
             isShow: true,
@@ -2734,6 +2689,7 @@ const config = {
           width: '90',
           alias: 'ps.check_patent_2',
           value: 'check_patent_2',
+          conditionValue: 'check_patent_date_pay_now',
           search: {
             field: '',
             isShow: true,
@@ -2793,31 +2749,6 @@ const config = {
         },
 
         {
-          title: 'Телефон',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'telefon',
-          alias: 'p.telefon',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
           title: 'Действия',
           type: 'actions',
           align: 'center',
@@ -2828,20 +2759,6 @@ const config = {
           isShow: true,
           width: '100',
           value: 'actions',
-          actions: [
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
-            },
-          ],
         },
       ],
       data: {
@@ -2954,31 +2871,6 @@ const config = {
           width: '90',
           alias: 'ps.status',
           value: 'status_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'ФИО',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.name',
-          value: 'name',
           search: {
             field: '',
             isShow: true,
@@ -3381,81 +3273,6 @@ const config = {
           },
         },
         {
-          title: 'Статус',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'ps.status',
-          value: 'status_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'ФИО',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.name',
-          value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Телефон',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'telefon',
-          alias: 'p.telefon',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
           title: 'Примечание',
           type: 'default',
           align: 'center',
@@ -3846,7 +3663,7 @@ const config = {
           },
         },
         {
-          title: 'ФИО',
+          title: 'ФИО2',
           type: 'default',
           align: 'center',
           fixed: {
@@ -3865,31 +3682,6 @@ const config = {
           width: '150',
           alias: 'p.name',
           value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Телефон',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'telefon',
-          alias: 'p.telefon',
           search: {
             field: '',
             isShow: true,
@@ -3980,7 +3772,7 @@ const config = {
             active: false,
             fields: [
               stringField({
-                label: 'ФИО',
+                label: 'ФИО2',
                 name: 'name',
                 placeholder: '',
                 readonly: false,
