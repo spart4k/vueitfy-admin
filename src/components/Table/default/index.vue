@@ -117,10 +117,17 @@
                       "
                       @click="sortRow(head)"
                     />
-                    <span class="mr-2" @click="sortRow(head)">
-                      {{ head.title }}
-                    </span>
-                    <v-icon @click="openSort(head)" small>$IconSearch</v-icon>
+                    <div v-if="head.type === 'default'">
+                      <span class="mr-2" @click="sortRow(head)">
+                        {{ head.title }}
+                      </span>
+                      <v-icon @click="openSort(head)" small>$IconSearch</v-icon>
+                    </div>
+                    <div v-if="head.type === 'icon'">
+                      <span class="mr-2" @click="sortRow(head)">
+                        <v-icon> {{ head.icon }}</v-icon>
+                      </span>
+                    </div>
                   </span>
                   <transition name="accordion">
                     <div
@@ -227,6 +234,18 @@
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
+                  </template>
+                  <template v-if="cell.type === 'icon'">
+                    <template v-if="Object.byString(row.row, cell.value) == 0">
+                      <v-icon color="red">mdi-close</v-icon>
+                    </template>
+                    <template v-if="Object.byString(row.row, cell.value) == 1">
+                      <v-icon color="green">mdi-check</v-icon>
+                    </template>
+                    <template v-if="Object.byString(row.row, cell.value) == 2">
+                      <v-icon color="yellow">mdi-minus</v-icon>
+                    </template>
+                    <!-- {{ Object.byString(row.row, cell.value) }} -->
                   </template>
                   <template v-else-if="cell.type === 'checkbox'">
                     <v-row class="d-flex justify-center">

@@ -4,7 +4,7 @@
     version="1.1"
     width="324px"
     height="324px"
-    viewVox="0 0 324 324"
+    viewBox="0 0 324 324"
     style="
       shape-rendering: geometricPrecision;
       text-rendering: geometricPrecision;
