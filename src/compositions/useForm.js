@@ -42,38 +42,29 @@ export default function ({
       return obj
     }, {})
   )
+
+  const computedFormData = computed(() => formData)
+
   const validations = () => {
     const formFields = {}
-    form?.fields.forEach((el) => {
+    form?.fields?.forEach((el) => {
       formFields[el.name] = el
     })
-    if (!form) return
-    return Object.keys(formData).reduce((obj, key) => {
+    if (!fields) return
+    return Object.keys(fields).reduce((obj, key) => {
       if (
-        (typeof formFields[key].isShow === 'boolean' &&
-          !formFields[key].isShow) ||
-        (typeof formFields[key].isShow === 'object' &&
-          !formFields[key].isShow.value)
+        (typeof formFields[key]?.isShow === 'boolean' &&
+          !formFields[key]?.isShow) ||
+        (typeof formFields[key]?.isShow === 'object' &&
+          !formFields[key]?.isShow.value)
       ) {
         return obj
       }
-      obj[key] = { ...formFields[key].validations, $autoDirty }
+      obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
-    //console.log({
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //})
-    //return {
-    //  required,
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //}
   }
 
-  const computedFormData = computed(() => formData)
   let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
@@ -81,16 +72,13 @@ export default function ({
       formData,
       reactive(
         Object.keys(setFields()).reduce((obj, key) => {
-          //console.log(obj[key])
           obj[key] = ref(formData[key])
           return obj
         }, {})
       )
     )
   }
-  // setInterval(() => {
-  //   // console.log(errors.value)
-  // }, 3000)
+
   const $errors = ref({})
   const errorsCount = () => {
     $errors.value = Object.keys(formData).reduce((obj, key) => {
@@ -103,11 +91,15 @@ export default function ({
     }, {})
   }
 
-  const validate = () => {
-    $v = useVuelidate(validations(), computedFormData.value)
+  const validate = (touch) => {
+    if (touch) {
+      $v = useVuelidate(validations(), computedFormData.value)
+    }
     unref($v).$touch()
-    $touched.value = true
-    errorsCount()
+    if (touch) {
+      $touched.value = true
+      errorsCount()
+    }
     return !unref($v).$invalid
   }
 
