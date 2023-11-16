@@ -1199,7 +1199,7 @@ const defaultForm = [
     config: paymentConfig,
   },
   {
-    path: 'add',
+    path: 'query',
     id: 5,
     name: 'Заявка на персонал',
     type: 'FormStage',
@@ -1763,7 +1763,7 @@ const keysForm = [
     ],
   },
   {
-    path: 'add',
+    path: 'query',
     id: 5,
     name: 'Заявка на персонал',
     type: 'FormStage',
@@ -2099,6 +2099,16 @@ const keysForm = [
   },
 ]
 
+const buttonsMixin = [
+  {
+    route: 'query-document',
+    label: 'Запросить документы',
+    class: ['v-table-button--custom'],
+    url: '$IconSetting',
+    function: consolePanel,
+    backgroundColor: '#fff',
+  },
+]
 const config = {
   title: 'Персонал',
   activeTab: 2,
@@ -2118,6 +2128,7 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
+          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -2400,6 +2411,7 @@ const config = {
           alias: 'ps.migr_uch_2',
           value: 'migr_uch_2',
           conditionValue: 'registration_date_c_docs_in',
+          backgroundValue: 'need_reg',
           search: {
             field: '',
             isShow: true,
@@ -2791,7 +2803,7 @@ const config = {
         },
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
-        url: 'get/pagination/personal_passive',
+        url: 'get/pagination/documents_eaes',
         title: 'ЕАЭС',
       },
       type: TableDefault,
@@ -2827,25 +2839,25 @@ const config = {
       },
       head: [
         {
-          title: 'id',
+          title: 'ФИО',
           type: 'default',
           align: 'center',
           fixed: {
-            value: true,
+            value: false,
             position: 'left',
           },
           sorts: [
             {
-              type: 'string',
+              type: 'text',
               default: '',
               value: '',
               isShow: false,
             },
           ],
-          alias: 'p.id',
           isShow: true,
-          width: '40',
-          value: 'id',
+          width: '90',
+          alias: 'ps.name',
+          value: 'name',
           search: {
             field: '',
             isShow: true,
@@ -2877,12 +2889,12 @@ const config = {
           },
         },
         {
-          title: 'Телефон',
+          title: 'Объект',
           type: 'default',
           align: 'center',
           fixed: {
             value: false,
-            position: undefined,
+            position: 'left',
           },
           sorts: [
             {
@@ -2893,21 +2905,21 @@ const config = {
             },
           ],
           isShow: true,
-          width: '150',
-          value: 'telefon',
-          alias: 'p.telefon',
+          width: '90',
+          alias: 'ps.object_name',
+          value: 'object_name',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'Примечание',
+          title: 'Гражданство',
           type: 'default',
           align: 'center',
           fixed: {
             value: false,
-            position: undefined,
+            position: 'left',
           },
           sorts: [
             {
@@ -2918,39 +2930,145 @@ const config = {
             },
           ],
           isShow: true,
-          width: '150',
-          value: 'doljnost_name',
-          alias: 'p.comment',
+          width: '90',
+          alias: 'ps.grajdanstvo',
+          value: 'grajdanstvo',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'Действия',
-          type: 'actions',
+          title: 'Паспорт',
+          type: 'icon',
+          icon: '$IconPassport',
           align: 'center',
           fixed: {
             value: false,
-            position: 'right',
+            position: 'left',
           },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
+          sorts: [
             {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
             },
           ],
+          isShow: true,
+          width: '90',
+          alias: 'p.pasport',
+          value: 'pasport',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Мигр карта',
+          type: 'icon',
+          icon: '$IconMigrCarta',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.migr_card',
+          value: 'migr_card',
+          conditionValue: 'migr_card_data_in',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Регистрация',
+          type: 'icon',
+          icon: '$IconMigrUch',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.migr_uch',
+          value: 'migr_uch',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Регистрация 2',
+          type: 'icon',
+          icon: '$IconMigrUch2',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.migr_uch_2',
+          value: 'migr_uch_2',
+          conditionValue: 'registration_date_c_docs_in',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Счет',
+          type: 'icon',
+          icon: '$IconRekvizit',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.invoice',
+          value: 'invoice',
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
       ],
       data: {
@@ -3212,7 +3330,7 @@ const config = {
         },
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
-        url: 'get/pagination/personal_archive',
+        url: 'get/pagination/documents_dont_res',
         title: 'Не резиденты',
       },
       type: TableDefault,
@@ -3248,37 +3366,12 @@ const config = {
       },
       head: [
         {
-          title: 'id',
+          title: 'ФИО',
           type: 'default',
           align: 'center',
           fixed: {
             value: false,
             position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          alias: 'p.id',
-          isShow: true,
-          width: '40',
-          value: 'id',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Примечание',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
           },
           sorts: [
             {
@@ -3289,39 +3382,327 @@ const config = {
             },
           ],
           isShow: true,
-          width: '150',
-          value: 'doljnost_name',
-          alias: 'p.comment',
+          width: '90',
+          alias: 'ps.name',
+          value: 'name',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'Действия',
-          type: 'actions',
+          title: 'Статус',
+          type: 'default',
           align: 'center',
           fixed: {
             value: false,
-            position: 'right',
+            position: 'left',
           },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
+          sorts: [
             {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
             },
           ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.status',
+          value: 'status_name',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Объект',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.object_name',
+          value: 'object_name',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Гражданство',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.grajdanstvo',
+          value: 'grajdanstvo',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Паспорт',
+          type: 'icon',
+          icon: '$IconPassport',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.pasport',
+          value: 'pasport',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Мигр карта',
+          type: 'icon',
+          icon: '$IconMigrCarta',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.migr_card',
+          value: 'migr_card',
+          conditionValue: 'migr_card_data_in',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Регистрация',
+          type: 'icon',
+          icon: '$IconMigrUch',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.migr_uch',
+          value: 'migr_uch',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Регистрация 2',
+          type: 'icon',
+          icon: '$IconMigrUch2',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.migr_uch_2',
+          value: 'migr_uch_2',
+          conditionValue: 'registration_date_c_docs_in',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Счет',
+          type: 'icon',
+          icon: '$IconRekvizit',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.invoice',
+          value: 'invoice',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Патент',
+          type: 'icon',
+          icon: '$IconPatent',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.patent',
+          value: 'patent',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Патент 2',
+          type: 'icon',
+          icon: '$IconPatent2',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.patent_2',
+          value: 'patent_2',
+          conditionValue: 'patent_date_docs_in',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Чек-патент первичный',
+          type: 'icon',
+          icon: '$IconCheckPoten',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.check_patent',
+          value: 'check_patent',
+          conditionValue: 'check_patent_date_pay',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Чек-патент текущий',
+          type: 'icon',
+          icon: '$IconCheckPoten',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.check_patent_2',
+          value: 'check_patent_2',
+          conditionValue: 'check_patent_date_pay_now',
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
       ],
       data: {
@@ -3583,7 +3964,7 @@ const config = {
         },
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
-        url: 'get/pagination/personal',
+        url: 'get/pagination/documents_rf',
         title: 'РФ',
       },
       type: TableDefault,
@@ -3613,7 +3994,7 @@ const config = {
       },
       head: [
         {
-          title: 'id',
+          title: 'ФИО',
           type: 'default',
           align: 'center',
           fixed: {
@@ -3622,16 +4003,16 @@ const config = {
           },
           sorts: [
             {
-              type: 'string',
+              type: 'text',
               default: '',
               value: '',
               isShow: false,
             },
           ],
-          alias: 'p.id',
           isShow: true,
-          width: '40',
-          value: 'id',
+          width: '90',
+          alias: 'ps.name',
+          value: 'name',
           search: {
             field: '',
             isShow: true,
@@ -3663,37 +4044,12 @@ const config = {
           },
         },
         {
-          title: 'ФИО2',
+          title: 'Объект',
           type: 'default',
           align: 'center',
           fixed: {
             value: false,
             position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.name',
-          value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Примечание',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
           },
           sorts: [
             {
@@ -3704,39 +4060,169 @@ const config = {
             },
           ],
           isShow: true,
-          width: '150',
-          value: 'doljnost_name',
-          alias: 'p.comment',
+          width: '90',
+          alias: 'ps.object_name',
+          value: 'object_name',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'Действия',
-          type: 'actions',
+          title: 'Гражданство',
+          type: 'default',
           align: 'center',
           fixed: {
             value: false,
-            position: 'right',
+            position: 'left',
           },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
+          sorts: [
             {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
             },
           ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.grajdanstvo',
+          value: 'grajdanstvo',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Паспорт',
+          type: 'icon',
+          icon: '$IconPassport',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.pasport',
+          value: 'pasport',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Паспорт 2',
+          type: 'icon',
+          icon: '$IconPassport2',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.pasport_2',
+          value: 'pasport_2',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Мигр карта',
+          type: 'icon',
+          icon: '$IconMigrCarta',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.migr_card',
+          value: 'migr_card',
+          conditionValue: 'migr_card_data_in',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'ИНН',
+          type: 'icon',
+          icon: '$IconInn',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: '',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.inn',
+          value: 'inn',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'СНИЛС',
+          type: 'icon',
+          icon: '$IconSnils',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: '',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.snils',
+          value: 'snils',
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
       ],
       data: {

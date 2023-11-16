@@ -341,6 +341,16 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
+    children: [
+      {
+        name: 'document-query',
+        path: 'documents/query',
+        component: Detail,
+        meta: {
+          mode: 'add',
+        },
+      },
+    ],
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

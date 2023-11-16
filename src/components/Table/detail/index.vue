@@ -29,7 +29,6 @@
           "
           :key="item.id"
         >
-          <p></p>
           <component
             :loading="loading"
             :is="item.type"

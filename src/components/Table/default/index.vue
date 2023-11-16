@@ -222,9 +222,17 @@
                     //...getFixedStyle(cell),
                     width: cell.width,
                   }"
-                  :class="
-                    cell.fixed.value ? 'v-table-body-row-cell--fixed' : ''
-                  "
+                  :class="{
+                    'red-1': true,
+                    'v-table-body-row-cell--error':
+                      'backgroundValue' in cell
+                        ? Object.byString(row.row, cell.backgroundValue) == 1
+                        : false,
+                    'table-body-row-cell--error1':
+                      'backgroundValue' in cell
+                        ? Object.byString(row.row, cell.backgroundValue) == 2
+                        : false,
+                  }"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
                   :align="cell.align"
                   class="v-table-body-row-cell v-table-actions"
@@ -236,6 +244,25 @@
                     {{ Object.byString(row.row, cell.value) }}
                   </template>
                   <template v-if="cell.type === 'icon'">
+                    <!-- <slot #name="icons"></slot> -->
+                    <!-- <v-icon :color="iconColor">{{ iconType }}</v-icon>  -->
+                    <!-- :class="{
+                        'red-1': true,
+                        'v-table-body-row-cell--error':
+                          Object.byString(
+                            row.row,
+                            'backgroundValue' in cell
+                              ? cell.backgroundValue
+                              : null
+                          ) == 0,
+                        'v-table-body-row-cell--error1':
+                          Object.byString(
+                            row.row,
+                            'backgroundValue' in cell
+                              ? cell.backgroundValue
+                              : null
+                          ) == 1,
+                      }" -->
                     <template v-if="Object.byString(row.row, cell.value) == 0">
                       <v-icon color="red">mdi-close</v-icon>
                     </template>

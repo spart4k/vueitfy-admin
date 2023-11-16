@@ -470,11 +470,43 @@ const table = {
     const headActions = computed(() => {
       return props.options.head.find((cell) => cell.type === 'actions')
     })
+    //props.options.data.rows = data.rows
+    console.log(props);
+    const iconColor = computed(() => {
+      // const value = Object.byString(row.row, cell.value);
+      const value = 0;
+      if (value === 0) {
+        return 'red';
+      } else if (value === 1) {
+        if (cell.conditionValue) {
+          // const conditionValue = Object.byString(row.row, cell.conditionValue);
+          const conditionsValue = null;
+          return conditionValue === null ? 'red' : 'green';
+        } else {
+          return 'green';
+        }
+      } else if (value === 2) {
+        return 'yellow';
+      }
+    });
+    const iconType = computed(() => {
+      //const value = Object.byString(row.row, cell.value);
+      const value = 0;
+      if (value === 0) {
+        return 'mdi-close';
+      } else if (value === 1) {
+        return cell.conditionValue ? '' : 'mdi-check';
+      } else if (value === 2) {
+        return 'mdi-minus';
+      }
+    });
     // WATCH
     watch(
       () => searchField,
       (newVal) => {
         props.options.options.search.function(newVal)
+      },
+      () => {
       }
     )
     //watch(
@@ -552,6 +584,8 @@ const table = {
       getItems,
       watchScroll,
       // COMPUTED PROPERTIES
+      iconType,
+      iconColor,
       width,
       colspanLength,
       headActions,
