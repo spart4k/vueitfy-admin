@@ -68,11 +68,13 @@ export default function ({
 
   const validations = () => {
     const formFields = {}
-    form?.fields?.forEach((el) => {
-      formFields[el.name] = el
-    })
-    if (!fields) return
-    return Object.keys(fields).reduce((obj, key) => {
+    if (form) {
+      form?.fields?.forEach((el) => {
+        formFields[el.name] = el
+      })
+      if (!form) return
+    }
+    return Object.keys(formData || fields).reduce((obj, key) => {
       if (
         (typeof formFields[key]?.isShow === 'boolean' &&
           !formFields[key]?.isShow) ||
@@ -81,7 +83,8 @@ export default function ({
       ) {
         return obj
       }
-      obj[key] = { ...fields[key].validations, $autoDirty }
+      if (form) obj[key] = { ...formFields[key].validations, $autoDirty }
+      else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
   }
