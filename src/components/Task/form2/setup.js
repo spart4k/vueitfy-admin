@@ -117,8 +117,9 @@ const Form2 = defineComponent({
           Date.parse(props.data.task.date_create) +
           props.data.task.time_execution * 1000 -
           Date.now()
+        console.log(finalData)
         return store.dispatch('taskModule/setPartTask', {
-          status: finalData.value.rejectedDocs.length
+          status: finalData.value.rejected.length
             ? 6
             : taskDeadline > 0
             ? 2
@@ -130,8 +131,8 @@ const Form2 = defineComponent({
             parent_action: props.data.task.id,
             docs_id:
               isHasOsnDoc && !isOsnDocConfirmed
-                ? [0, ...finalData.value.rejectedDocs]
-                : finalData.value.rejectedDocs,
+                ? [0, ...finalData.value.rejected]
+                : finalData.value.rejected,
             account_id: props.data.task.to_account_id,
             obd_id: props.data.task.from_account_id,
             comment: 'comment',

@@ -74,7 +74,7 @@
     <v-row class="py-2 px-2" justify="end">
       <v-btn
         class="mr-2"
-        :disabled="!isFormValid && !isOsnDocTouched"
+        :disabled="!isFormValid || !isOsnDocTouched"
         color="info"
         @click="sendData"
       >
