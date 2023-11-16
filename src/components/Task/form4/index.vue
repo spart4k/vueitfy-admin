@@ -20,7 +20,7 @@
     <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
 
     <v-row class="py-2" justify="end">
-      <v-btn color="info" class="mr-3" @click="sendData" :disabled="!isShowBtn">
+      <v-btn color="info" class="mr-2" @click="sendData" :disabled="!isShowBtn">
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>

@@ -111,7 +111,12 @@
 
     <v-divider></v-divider>
     <v-row class="py-2" justify="end" v-if="showNextStep">
-      <v-btn :disabled="!isFormValid" color="info" @click="sendData">
+      <v-btn
+        class="mr-2"
+        :disabled="!isFormValid"
+        color="info"
+        @click="sendData"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>

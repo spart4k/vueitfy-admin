@@ -108,11 +108,11 @@
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="rejectTask" class="mr-2" small color="error">
+      <v-btn @click="rejectTask" class="mr-2" color="error">
         <v-icon small>mdi-close</v-icon>
         Отклонить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
