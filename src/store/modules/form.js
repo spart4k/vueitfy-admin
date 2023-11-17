@@ -17,8 +17,8 @@ const form = {
       const result = await create(params)
       return result
     },
-    async del(_, url) {
-      const result = await del(url)
+    async del(_, params) {
+      const result = await del(params)
       return result
     },
   },

@@ -147,8 +147,8 @@ export default function ({
       }
     })
   }
-  const clickHandler = async (action) => {
-    if (!validate(true)) return
+  const clickHandler = async ({ action, skipValidation }) => {
+    if (!validate(true) && !skipValidation) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {

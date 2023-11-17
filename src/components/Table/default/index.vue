@@ -440,19 +440,19 @@
         </div>
       </div>
     </div>
-    <!-- <v-row class="justify-end align-end">
+    <v-row class="justify-end align-end">
       <v-btn
         type="submit"
         :color="action.color"
         class="ml-2"
         :loading="loading"
-        @click.prevent="clickHandler(action)"
+        @click.prevent="clickHandler({ action, skipValidation: true })"
         v-for="action in $props?.tab?.actions"
         :key="action.id"
       >
         {{ action.text }}
       </v-btn>
-    </v-row> -->
+    </v-row>
     <v-contextmenu :options="contextmenu" />
     <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">

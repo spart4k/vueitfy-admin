@@ -1581,8 +1581,8 @@ const defaultForm = [
             color: 'disabled',
             module: 'form/del',
             url: 'delete/unfinished_personal',
-            name: 'backStage',
-            action: 'backStage',
+            name: 'prevStage',
+            action: 'prevStage',
             conditionCode: {
               key: 'code',
               results: [
