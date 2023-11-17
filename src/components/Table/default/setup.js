@@ -471,35 +471,7 @@ const table = {
       return props.options.head.find((cell) => cell.type === 'actions')
     })
     //props.options.data.rows = data.rows
-    console.log(props);
-    const iconColor = computed(() => {
-      // const value = Object.byString(row.row, cell.value);
-      const value = 0;
-      if (value === 0) {
-        return 'red';
-      } else if (value === 1) {
-        if (cell.conditionValue) {
-          // const conditionValue = Object.byString(row.row, cell.conditionValue);
-          const conditionsValue = null;
-          return conditionValue === null ? 'red' : 'green';
-        } else {
-          return 'green';
-        }
-      } else if (value === 2) {
-        return 'yellow';
-      }
-    });
-    const iconType = computed(() => {
-      //const value = Object.byString(row.row, cell.value);
-      const value = 0;
-      if (value === 0) {
-        return 'mdi-close';
-      } else if (value === 1) {
-        return cell.conditionValue ? '' : 'mdi-check';
-      } else if (value === 2) {
-        return 'mdi-minus';
-      }
-    });
+    
     // WATCH
     watch(
       () => searchField,
@@ -557,6 +529,73 @@ const table = {
         popupForm.value.isShow = true
       }
     })
+  
+    const styleDate = (row, cell, innerDataCallBack) => {
+      if ('conditionValue' in cell) {
+        const conditionValue = innerDataCallBack(row, cell.conditionValue);
+        return conditionValue ? 'font-style: normal; font-size: 14px' : ''; 
+      }
+      return '';
+    };
+    const iconColor = (value, conditionValue) => {
+      if (value === 0) {
+        return 'red';
+      } else if (value === 1) {
+        if (conditionValue) {
+          return conditionValue === null ? 'red' : 'black';
+        } else {
+          return 'green';
+        }
+      } else if (value === 2) {
+        return 'yellow';
+      }
+      return 'blue';
+    };
+    const iconType = (row, cell, innerDataCallBack) => {
+     const value = innerDataCallBack(row, cell.value); 
+
+      if (value === 0) {
+        return 'mdi-close';
+      } else if (value === 1) {
+        if ('conditionValue' in cell) {
+          const conditionValue = innerDataCallBack(row, cell.conditionValue);
+          const dateValue = new Date(conditionValue);
+          const formattedDate = `${dateValue.getDate()}.${dateValue.getMonth() + 1}.${dateValue.getFullYear()}`;
+          return Boolean(conditionValue) ? formattedDate : 'mdi-check'; 
+        } else { 
+          return 'mdi-check' 
+        } 
+      } else if (value === 2) {
+        return 'mdi-minus';
+      }
+
+      return 'mdi-help';
+    };
+    
+   const addBackgroundClass = (cell, row, innerDataCallBack) => {
+       let isClass1; 
+       let isClass2; 
+
+      if ('backgroundValue' in cell) {
+        // console.log('mkas', cell);
+        isClass1 = Boolean(innerDataCallBack(row, cell.backgroundValue) == 1);
+        isClass2 = Boolean(innerDataCallBack(row, cell.backgroundValue) == 2);
+      } else {
+        isClass1 = false;
+        isClass2 = false;
+      } 
+
+      return {
+        'v-table-body-row-cell--error1': isClass1,
+        'v-table-body-row-cell--error2': isClass2,
+      }
+         
+    }
+
+    const checkFieldExist = computed((obj, key) => {
+      return key in obj;
+    });
+
     return {
       // DATA
       headerOptions,
@@ -568,6 +607,10 @@ const table = {
       filter,
       isMobile,
       // METHODS
+
+      addBackgroundClass,
+      iconColor,
+      iconType,
       wrapingRow,
       openChildRow,
       checkboxInput,
@@ -584,6 +627,8 @@ const table = {
       getItems,
       watchScroll,
       // COMPUTED PROPERTIES
+      styleDate,
+      checkFieldExist,
       iconType,
       iconColor,
       width,

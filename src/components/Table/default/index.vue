@@ -224,14 +224,7 @@
                   }"
                   :class="{
                     'red-1': true,
-                    'v-table-body-row-cell--error':
-                      'backgroundValue' in cell
-                        ? Object.byString(row.row, cell.backgroundValue) == 1
-                        : false,
-                    'table-body-row-cell--error1':
-                      'backgroundValue' in cell
-                        ? Object.byString(row.row, cell.backgroundValue) == 2
-                        : false,
+                    ...addBackgroundClass(cell, row.row, Object.byString),
                   }"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
                   :align="cell.align"
@@ -263,7 +256,7 @@
                               : null
                           ) == 1,
                       }" -->
-                    <template v-if="Object.byString(row.row, cell.value) == 0">
+                    <!-- <template v-if="Object.byString(row.row, cell.value) == 0">
                       <v-icon color="red">mdi-close</v-icon>
                     </template>
                     <template v-if="Object.byString(row.row, cell.value) == 1">
@@ -286,8 +279,20 @@
                     </template>
                     <template v-if="Object.byString(row.row, cell.value) == 2">
                       <v-icon color="yellow">mdi-minus</v-icon>
-                    </template>
-                    <!-- {{ Object.byString(row.row, cell.value) }} -->
+                    </template> -->
+                    <v-icon
+                      :style="styleDate(row.row, cell, Object.byString)"
+                      :color="
+                        iconColor(
+                          Object.byString(row.row, cell.value),
+                          'conditionValue' in cell
+                            ? Object.byString(row.row, cell.conditionValue)
+                            : cell.conditionValue
+                        )
+                      "
+                    >
+                      {{ iconType(row.row, cell, Object.byString) }}
+                    </v-icon>
                   </template>
                   <template v-else-if="cell.type === 'checkbox'">
                     <v-row class="d-flex justify-center">

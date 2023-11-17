@@ -2647,6 +2647,7 @@ const config = {
           width: '90',
           alias: 'ps.patent_2',
           value: 'patent_2',
+          backgroundColor: 'need_patent',
           conditionValue: 'patent_date_docs_in',
           search: {
             field: '',
@@ -2702,6 +2703,7 @@ const config = {
           alias: 'ps.check_patent_2',
           value: 'check_patent_2',
           conditionValue: 'check_patent_date_pay_now',
+          backgroundValue: 'need_check_patent',
           search: {
             field: '',
             isShow: true,
@@ -3038,6 +3040,7 @@ const config = {
           width: '90',
           alias: 'ps.migr_uch_2',
           value: 'migr_uch_2',
+          backgroundValue: 'need_red',
           conditionValue: 'registration_date_c_docs_in',
           search: {
             field: '',
@@ -3562,12 +3565,13 @@ const config = {
             },
           ],
           isShow: true,
-          width: '90',
+          idth: '90',
           alias: 'ps.migr_uch_2',
           value: 'migr_uch_2',
           conditionValue: 'registration_date_c_docs_in',
-          search: {
-            field: '',
+          backgroundValue: 'need_red',
+          earch: {
+            ield: '',
             isShow: true,
           },
         },
@@ -3643,6 +3647,7 @@ const config = {
           isShow: true,
           width: '90',
           alias: 'ps.patent_2',
+          backgroundColor: 'need_patent',
           value: 'patent_2',
           conditionValue: 'patent_date_docs_in',
           search: {
@@ -3699,6 +3704,7 @@ const config = {
           alias: 'ps.check_patent_2',
           value: 'check_patent_2',
           conditionValue: 'check_patent_date_pay_now',
+          backgroundValue: 'need_check_patent',
           search: {
             field: '',
             isShow: true,
