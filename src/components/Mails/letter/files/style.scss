@@ -12,13 +12,13 @@
                 height: 100%;
             }
             &-unregistered {
-                text-transform: uppercase;
+                // text-transform: uppercase;
                 width: 28px;
                 height: 100%;
                 color: var(--v-background-base);
                 background-color: var(--v-text-base);
                 font-weight: 600;
-                font-size: 7px;
+                font-size: 16px;
                 border-radius: 4px;
                 display: flex;
                 align-items: center;

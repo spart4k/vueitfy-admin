@@ -47,8 +47,11 @@
             @include custom-scroll-bar-vertical;
         }
         &_btn {
-            margin-top: auto;
-            margin-left: 19px;
+            margin: 0 19px;
+            margin-top: 16px;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
         }
     }
 }

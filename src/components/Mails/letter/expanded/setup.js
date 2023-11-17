@@ -43,6 +43,10 @@ const letterExpanded = {
       newMessage.value.users = [val.message_from]
     }
 
+    const closeLetter = () => {
+      emit('setRouterPath', null, ['box', 'mail', 'compose'])
+    }
+
     const addFiles = (val) => {
       Array.from(val).forEach((item) => {
         newMessage.value.files.push(item)
@@ -153,6 +157,7 @@ const letterExpanded = {
       deleteUser,
       createMail,
       answerToMail,
+      closeLetter,
     }
   },
 }

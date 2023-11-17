@@ -20,8 +20,9 @@
       <div class="v-date-container_day">
         {{ new Date($props?.data?.date).getDate() }}
         {{ month[new Date($props?.data?.date).getMonth()] }}
+        {{ new Date($props?.data?.date).getFullYear() }}
       </div>
-      <div class="v-date-container_time">
+      <div class="v-date-container_time text-end">
         {{ new Date($props?.data?.date).toLocaleTimeString() }}
       </div>
     </div>
