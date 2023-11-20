@@ -24,6 +24,7 @@
             <p v-if="true">{{ button.label }}</p>
           </v-btn>
         </div>
+
         <div class="v-table-panel__search">
           <!--<v-input
             @clearfield="clearField('searchField')"
@@ -117,51 +118,32 @@
                       "
                       @click="sortRow(head)"
                     />
-                    <div v-if="head.type === 'default'">
-                      <span class="mr-2" @click="sortRow(head)">
-                        {{ head.title }}
-                      </span>
-                      <v-icon @click="openSort(head)" small>$IconSearch</v-icon>
-                    </div>
-                    <div v-if="head.type === 'icon'">
-                      <span class="mr-2" @click="sortRow(head)">
-                        <v-icon> {{ head.icon }}</v-icon>
-                      </span>
-                    </div>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <div v-bind="attrs" v-on="on">
+                          <div v-if="head.type === 'default'">
+                            <span class="mr-2" @click="sortRow(head)">
+                              {{ head.title }}
+                            </span>
+                            <v-icon @click="openSort(head)" small
+                              >$IconSearch</v-icon
+                            >
+                          </div>
+                          <div v-if="head.type === 'icon'">
+                            <span class="mr-2" @click="sortRow(head)">
+                              <v-icon> {{ head.icon }}</v-icon>
+                            </span>
+                          </div>
+                        </div>
+                      </template>
+                      <span>{{ head.title }}</span>
+                    </v-tooltip>
                   </span>
                   <transition name="accordion">
                     <div
                       v-if="head.sorts && head.sorts[0].isShow"
                       class="v-table-header-row-cell-sort"
                     >
-                      <!--<div
-                        class="v-table-header-row-cell-sort__row"
-                        v-if="head.sorts[0].type === 'string'"
-                      >
-                        <p v-if="true">Сортировка от А до Я</p>
-                      </div>
-                      <div
-                        @click="sortRow(head)"
-                        class="v-table-header-row-cell-sort__row"
-                        v-if="head.sorts[0].type === 'number'"
-                      >
-                        {{
-                          paramsQuery.sorts.find((el) => el.field === head.value)
-                            .value
-                        }}
-                        <p v-if="true">Сортировка по убыванию</p>
-                      </div>
-                      <div
-                        @click="sortRow(head)"
-                        class="v-table-header-row-cell-sort__row"
-                        v-if="head.sorts[0].type === 'date'"
-                      >
-                        {{
-                          paramsQuery.sorts.find((el) => el.field === head.value)
-                            .value
-                        }}
-                        <p v-if="true">Сортировка по дате</p>
-                      </div>-->
                       <v-text-field
                         class="v-table-header-row-cell-sort__search"
                         @clearfield="clearField('searchField')"
