@@ -21,9 +21,9 @@ const container = {
       type: Array,
       default: () => [],
     },
-    tagsData: {
-      type: Array,
-      default: () => [],
+    filterData: {
+      type: Object,
+      default: () => {},
     },
   },
   setup(props, context) {
@@ -125,6 +125,13 @@ const container = {
       ],
       () => {
         triggerCheck()
+      }
+    )
+
+    watch(
+      () => route?.query?.compose,
+      () => {
+        if (route?.query?.compose === 'new') activeMail.value = null
       }
     )
 

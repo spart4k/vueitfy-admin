@@ -73,7 +73,7 @@
                 :active="Number($route.query.mail) === mail?.id"
                 v-for="(mail, mailIndex) in item?.mails?.rows"
                 :key="mailIndex"
-                :tagsData="$props.tagsData"
+                :tagsData="$props.filterData.tagsData"
                 :selectedMails="selectedMails"
                 @setRouterPath="
                   (add, remove, set) => $emit('setRouterPath', add, remove, set)
@@ -112,6 +112,7 @@
             (add, remove, set) => $emit('setRouterPath', add, remove, set)
           "
           @getMails="$emit('getMails')"
+          :filterData="$props.filterData"
           :data="activeMail"
         />
       </div>

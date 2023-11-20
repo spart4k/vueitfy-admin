@@ -20,10 +20,6 @@
         class="mb-2"
       />
       <div class="v-mails-group-container d-flex w-100 h-100">
-        <!-- {{ selected.mailsAll }} -->
-        <!-- {{ selected.mails.length }} -->
-        <!-- {{ selected.temporary }} -->
-        <!-- {{ allSelectionFilter }} -->
         <MailsContainer
           v-if="mailsData.length"
           @setActiveMail="setActiveMail"
@@ -33,7 +29,7 @@
           @getPagination="getPagination"
           @getMails="getMails"
           @setRouterPath="setRouterPath"
-          :tagsData="filterData.tagsData"
+          :filterData="filterData"
           :selectedMails="selected.mails"
           :data="mailsData"
         />

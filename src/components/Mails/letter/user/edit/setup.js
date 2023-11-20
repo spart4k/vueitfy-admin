@@ -10,21 +10,22 @@ const edit = {
       type: Object,
       default: () => {},
     },
+    filterData: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: {
     VueEditor,
   },
-  setup() {
+  setup(props, ctx) {
+    console.log('$props.filterData', props.filterData.boxData)
     const user = ref({
       name: 'Азаров Михаил',
       email: 'azarov@gmail.com',
       avatar: 'https://cdn.vuetifyjs.com/images/john.png',
       id: 0,
     })
-    const rules = ref([
-      (value) => !!value || '',
-      (value) => (value && value.length >= 1) || 'Минимум 1 символ',
-    ])
     // const content = ref([])
     const userArray = ref([
       {
@@ -56,7 +57,6 @@ const edit = {
       // content,
       userArray,
       user,
-      rules,
     }
   },
 }

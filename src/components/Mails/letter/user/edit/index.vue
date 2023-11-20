@@ -1,34 +1,16 @@
 <template>
   <div class="v-edit">
-    <!-- <VueEditor v-model="content" /> -->
     <div class="v-edit-item">
       <div class="v-edit-item_title mt-3">От:</div>
       <div class="v-edit-item-input">
-        <v-combobox
-          v-model="user"
-          :items="[user]"
-          chips
+        <v-select
+          v-model="$props.data.box_id"
+          :items="$props.filterData.boxData"
           item-text="name"
           item-value="id"
-          return-object
-          disabled
+          :disabled="!!$route?.query?.mail"
         >
-          <template v-slot:selection="data">
-            <v-chip
-              outlined
-              small
-              :key="JSON.stringify(data.item.name)"
-              @click:close="data.parent.selectItem(data.item.name)"
-            >
-              <v-avatar v-if="data.item.avatar" class="accent white--text" left>
-                <v-img :src="data.item.avatar"></v-img>
-              </v-avatar>
-              <div class="v-edit-item-input_name">
-                {{ data.item.name }}
-              </div>
-            </v-chip>
-          </template>
-        </v-combobox>
+        </v-select>
       </div>
     </div>
     <div class="v-edit-item">
@@ -44,7 +26,6 @@
           item-value="id"
           clearable
           return-object
-          :rules="rules"
         >
           <template v-slot:item="data">
             <v-avatar

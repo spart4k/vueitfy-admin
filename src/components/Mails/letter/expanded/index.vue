@@ -28,6 +28,7 @@
         </template>
         <MailsLetterUserEdit
           @deleteUser="deleteUser"
+          :filterData="$props.filterData"
           :data="newMessage"
           v-else
         />
@@ -58,6 +59,7 @@
                 : answerToMail($props.data)
             "
             color="primary"
+            :disabled="!validation"
           >
             <v-icon small class="mr-2">$IconEdit</v-icon>
             {{
@@ -67,7 +69,12 @@
                 : 'Ответить'
             }}
           </v-btn>
-          <v-btn class="ml-4" @click="closeLetter" color="error">
+          <v-btn
+            v-if="$route?.query?.compose !== 'new'"
+            class="ml-4"
+            @click="closeLetter"
+            color="error"
+          >
             <!-- <v-icon small class="mr-2">$IconEdit</v-icon> -->
             Закрыть
           </v-btn>
