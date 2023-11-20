@@ -571,25 +571,17 @@ const table = {
 
       return 'mdi-help';
     };
-    
-   const addBackgroundClass = (cell, row, innerDataCallBack) => {
-       let isClass1; 
-       let isClass2; 
 
+    const addBackgroundClass = (cell, row, innerDataCallBack) => {
       if ('backgroundValue' in cell) {
-        // console.log('mkas', cell);
-        isClass1 = Boolean(innerDataCallBack(row, cell.backgroundValue) == 1);
-        isClass2 = Boolean(innerDataCallBack(row, cell.backgroundValue) == 2);
-      } else {
-        isClass1 = false;
-        isClass2 = false;
-      } 
-
-      return {
-        'v-table-body-row-cell--error1': isClass1,
-        'v-table-body-row-cell--error2': isClass2,
+        const value = innerDataCallBack(row, cell.backgroundValue);
+        return {
+          'v-table-body-row-cell--error1': value === 1,
+          'v-table-body-row-cell--error2': value === 2,
+        }
       }
-         
+
+      return {};
     }
 
     const checkFieldExist = computed((obj, key) => {
