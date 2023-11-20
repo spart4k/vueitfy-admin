@@ -77,10 +77,7 @@ const taskModule = {
     async loadImage(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
       console.log(data)
-      const result = await setFile(
-        `file/save/${data.folder}/${data.fileName}`,
-        data.file
-      )
+      const result = await setFile(`file/save/${data.folder}`, data.file)
       return result
     },
 

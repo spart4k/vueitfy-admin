@@ -54,13 +54,12 @@
         :disabled="!keyFormValidate()"
         @click="completeTask"
         class="mr-2"
-        small
         color="info"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

@@ -277,25 +277,6 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = () => {
-      //   $.ajax('/common/save/personal', {
-      //     method: "POST",
-      //     data: {id: <?php echo $entity['id']; ?>, status: 5},
-      //     success: function() {
-      //     }
-      // })
-      // $.ajax('/task/change_status_task', {
-      //     method: "POST",
-      //     data: {status: 2, data: {
-      //         process_id: <?php echo $task['process_id']; ?>,
-      //         task_id: <?php echo $task['id']; ?>,
-      //         parent_action: <?php echo $task['id']; ?>
-      //     }},
-      //     success: function (data) {
-      //         slidePopup('Задача выполнена!', 'success');
-      //         typeof dataTable['task'] != "undefined" ? dataTable['task'].ajax.reload() : dataTable[document.taskTable].ajax.reload();
-      //         hideModal();
-      //     }
-      // })
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>

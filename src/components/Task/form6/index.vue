@@ -22,7 +22,7 @@
       <v-row class="py-2" justify="end">
         <v-btn
           color="info"
-          class="mr-3"
+          class="mr-2"
           :disabled="!isLoadedImage"
           @click="sendTaskFinish"
         >

@@ -70,14 +70,13 @@
         v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49"
         :disabled="!changeQTY"
         class="mr-2"
-        small
         color="info"
         @click="completeTask"
       >
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

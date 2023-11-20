@@ -65,7 +65,7 @@
             </v-row>
             <v-row class="py-2 px-2" justify="end">
               <v-btn
-                :disabled="!formObj.validate()"
+                :disabled="!isOsnDocValid"
                 @click="osnConfirmed = true"
                 color="warning"
               >
