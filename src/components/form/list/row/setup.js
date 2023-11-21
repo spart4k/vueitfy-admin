@@ -106,6 +106,9 @@ export default {
     } = useForm({
       form: cloneForm.value,
       fields: fields(),
+      isEdit: {
+        value: true,
+      },
       setFields: fields,
       context,
       loading,

@@ -277,7 +277,7 @@ export default function ({
     let queries = []
     let listData
     if (hasSelect()) {
-      listData = form?.lists.map((list) => {
+      listData = form?.lists?.map((list) => {
         let filter = list.filter.map((el) => {
           const source = eval(el.source)
           return {
@@ -406,6 +406,8 @@ export default function ({
           : data
         if (targetField.items.length === 1) {
           formData[targetField.name] = targetField.items[0].id
+        } else if (!targetField.items.length) {
+          formData[targetField.name] = null
         }
         targetField.hideItems = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
@@ -579,6 +581,11 @@ export default function ({
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
     }
+    console.log(field.name)
+    console.log(
+      ('field', field.mode === 'all', field.mode === isEdit.value) &&
+        condition()
+    )
     return (
       type === field.type &&
       !loading.value &&

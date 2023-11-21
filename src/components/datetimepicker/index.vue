@@ -12,7 +12,7 @@
         <v-text-field
           v-model="value"
           :label="label"
-          prepend-icon="mdi-calendar"
+          append-icon="mdi-calendar"
           readonly
           v-bind="attrs"
           v-on="on"
@@ -31,6 +31,7 @@
             min="1950-01-01"
             color="primary"
             locale="ru-RU"
+            append-icon="mdi-calendar"
           ></v-date-picker>
         </v-tab-item>
         <v-tab-item>

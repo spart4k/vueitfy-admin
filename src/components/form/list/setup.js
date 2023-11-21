@@ -95,7 +95,7 @@ export default {
       }
       let validate = null
       const persons = rows.value.map((el) => {
-        validate = !el.validate()
+        // validate = !el.validate()
         const person = defaultData
         person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
         if (el.formData.print_form_key) {
@@ -103,6 +103,8 @@ export default {
         }
         return person
       })
+      rows.value.forEach((el) => el.validate())
+      const isValid = rows.value.every((el) => el.validate())
       const { makeRequest } = useRequest({
         context,
         request: () =>
@@ -112,8 +114,8 @@ export default {
           }),
         successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
-      console.log(validate)
-      if (validate) return
+      console.log(isValid)
+      if (!isValid) return
       await makeRequest()
       emit('closePopup')
     }
