@@ -8,6 +8,8 @@ import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 import DropZone from '@/components/dropzone/default/index.vue'
 import Datetimepicker from '@/components/datetimepicker/index.vue'
+import ColorPicker from '@/components/colorpicker/index.vue'
+
 import store from '@/store'
 
 export default {
@@ -17,6 +19,7 @@ export default {
     Autocomplete,
     FormDefault,
     DropZone,
+    ColorPicker,
   },
   props: {
     tab: {
