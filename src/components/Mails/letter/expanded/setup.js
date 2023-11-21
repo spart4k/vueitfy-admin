@@ -79,14 +79,16 @@ const letterExpanded = {
         const message = newMessage.value.text
           .replaceAll('class="ql-align-center"', 'style="text-align: center"')
           .replaceAll('class="ql-align-right"', 'style="text-align: right"')
-        const userArray = []
+        const accounts = []
+        const mails = []
         newMessage.value.users.forEach((item) => {
-          userArray.push(item.email)
+          if (item.id) accounts.push(item.id)
+          else mails.push(item.fio)
         })
         const requestData = {
-          // from: 'slepoybanditka@yandex.ru',
           box_id: newMessage.value.box_id,
-          to: userArray,
+          accounts: accounts,
+          mails: mails,
           subject: newMessage.value.subject,
           message: message,
           files: newMessage.value.files,
@@ -157,7 +159,7 @@ const letterExpanded = {
         if (newCount > oldCount) {
           if (!newMessage.value.users[newMessage.value.users.length - 1].id) {
             newMessage.value.users[newMessage.value.users.length - 1] = {
-              name: newMessage.value.users[newMessage.value.users.length - 1],
+              fio: newMessage.value.users[newMessage.value.users.length - 1],
               email: newMessage.value.users[newMessage.value.users.length - 1],
               avatar: null,
             }

@@ -28,6 +28,12 @@ const edit = {
       ['clean'],
     ])
     const editorContainer = ref(null)
+    const editorSettings = ref({
+      modules: {
+        imageDrop: true,
+        imageResize: {},
+      },
+    })
     onMounted(() => {
       editorContainer.value.scrollIntoView({
         behavior: 'smooth',
@@ -35,6 +41,7 @@ const edit = {
     })
     return {
       editorContainer,
+      editorSettings,
       toolbar,
     }
   },

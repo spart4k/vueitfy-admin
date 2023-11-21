@@ -10,7 +10,7 @@
       v-for="(item, index) in files"
       :key="index"
     >
-      <v-tooltip top>
+      <v-tooltip content-class="v-files_tooltip" top>
         <template v-slot:activator="{ on, attrs }">
           <div v-bind="attrs" v-on="$props.expand && on">
             <template v-if="item.format">
