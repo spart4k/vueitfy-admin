@@ -23,7 +23,7 @@ const text = {
     const iframe = ref(null)
     // table:first-child{table-layout: auto; width: 100%}
     const style =
-      '<style>html{ box-sizing: border-box; padding: 0; margin: 0; font-family: "Helvetica Neue","Segoe UI",helvetica,verdana,sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; &::-webkit-scrollbar {border-radius : 10px; height: 10px; width: 6px;} &::-webkit-scrollbar-thumb {background: #727272; border-radius : 10px;} &::-webkit-scrollbar-track {border-radius : 10px;}} html{padding: 0 23px}</style>'
+      '<style>html{ box-sizing: border-box; padding: 0; margin: 0; font-family: "Helvetica Neue","Segoe UI",helvetica,verdana,sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; &::-webkit-scrollbar {border-radius : 10px; height: 6px; width: 6px;} &::-webkit-scrollbar-thumb {background: #727272; border-radius : 10px;} &::-webkit-scrollbar-track {border-radius : 10px;}} html{padding: 0 23px}</style>'
     onMounted(() => {
       iframe.value.srcdoc = props?.data?.message_text + style
     })

@@ -79,15 +79,12 @@ const letterExpanded = {
         const message = newMessage.value.text
           .replaceAll('class="ql-align-center"', 'style="text-align: center"')
           .replaceAll('class="ql-align-right"', 'style="text-align: right"')
-        const accounts = []
         const mails = []
         newMessage.value.users.forEach((item) => {
-          if (item.id) accounts.push(item.id)
-          else mails.push(item.fio)
+          mails.push(item.email)
         })
         const requestData = {
           box_id: newMessage.value.box_id,
-          accounts: accounts,
           mails: mails,
           subject: newMessage.value.subject,
           message: message,
