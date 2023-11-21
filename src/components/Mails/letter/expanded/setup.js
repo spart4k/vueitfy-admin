@@ -90,10 +90,14 @@ const letterExpanded = {
           message: message,
           files: newMessage.value.files,
           forwarded: false,
+          hasImg: false,
         }
         if (route?.query?.compose === 'answer') {
           requestData.forwarded = true
           requestData.forwardedId = props?.data?.id
+        }
+        if (message.includes('<img')) {
+          requestData.hasImg = true
         }
         loading.value = true
         const response = await store.dispatch('mail/sendMessage', requestData)
