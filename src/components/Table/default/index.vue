@@ -18,7 +18,7 @@
             @click="panelHandler(button)"
             small
           >
-            <v-icon small class="mr-2">
+            <v-icon v-if="button.type === 'icon'" small class="mr-2">
               {{ button.url }}
             </v-icon>
             <p v-if="true">{{ button.label }}</p>

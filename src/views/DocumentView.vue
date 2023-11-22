@@ -5,15 +5,16 @@
     <v-tabs
       style="flex: unset"
       v-model="activeTab"
+      value="1"
       background-color="transparent"
       color="basil"
       class="p-5"
     >
       <v-tab v-for="item in documents.tabs" :key="item.options.title">
-        {{ item.options.title }}
+        {{ item.options.title }} - {{ activeTab }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="activeTab">
+    <v-tabs-items v-model="activeTab" value="1">
       <v-tab-item v-for="item in documents.tabs" :key="item.options.title">
         <component
           :is="item.type"
@@ -27,11 +28,13 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, toRefs, watch } from 'vue'
 import { documents } from '@/pages'
+import { warn } from '@vue/composition-api'
 
+console.log(documents)
 //import TableDefault from '@/components/Table/default/index.vue'
-//import Layout from '@/layouts/default/index'
+//import Layout from '@/layouts/default/indedx'
 //import Axios from 'axios'
 
 export default {
@@ -47,7 +50,25 @@ export default {
     },
   },
   setup() {
+    //const activeTab = documents.activeTab
+
     const activeTab = ref(0)
+
+    watch(activeTab, (newVal) => {
+      if (documents.bindField) {
+        documents.bindField.forEach((bindField) => {
+          const form = documents.tabs[newVal].detail.tabs.find(
+            (el) => el.id === bindField.targetForm
+          )
+          console.log(form)
+          const targetField = form.stages[0].fields.find(
+            (field) => field.name === bindField.field
+          )
+          targetField.value = newVal
+        })
+      }
+    })
+
     return {
       documents,
       activeTab,

@@ -561,7 +561,7 @@ const table = {
           const conditionValue = innerDataCallBack(row, cell.conditionValue);
           const dateValue = new Date(conditionValue);
           const formattedDate = `${dateValue.getDate()}.${dateValue.getMonth() + 1}.${dateValue.getFullYear()}`;
-          return Boolean(conditionValue) ? formattedDate : 'mdi-check'; 
+          return conditionValue ? formattedDate : 'mdi-check'; 
         } else { 
           return 'mdi-check' 
         } 

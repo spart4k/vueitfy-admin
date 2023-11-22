@@ -18,10 +18,6 @@
             class="field-col"
             :class="field.type"
           >
-            <!-- {{ typeof field.isShow === 'boolean' && field.isShow
-            }}{{ typeof field.isShow === 'object' && field.isShow.value }} -->
-            <!-- {{ formErrors[field?.name] }} -->
-            <!-- {{ disabledField(field) }} -->
             <div
               v-if="loading && field.isShow"
               class="field-loading gradient"
