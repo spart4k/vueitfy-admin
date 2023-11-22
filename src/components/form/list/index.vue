@@ -7,7 +7,19 @@
             v-for="row in tab.formData.date_target"
             :tab="tab"
             :tabs="tabs"
-            :key="row + '_' + tab.formData.personal_id"
+            :key="
+              row +
+              '_' +
+              tab.formData.personal_id +
+              '_' +
+              tab.formData.object_id +
+              '_' +
+              tab.formData.direction_id +
+              '_' +
+              tab.formData.doljnost_id +
+              '_' +
+              tab.formData.subtypr
+            "
             :row="row"
             :formData="tab.formData"
             :formErrors="formErrors"

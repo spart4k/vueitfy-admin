@@ -163,6 +163,14 @@ const routes = [
         path: ':id',
         component: Detail,
       },
+      {
+        name: 'object-add',
+        path: '/object/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
     ],
   },
   {

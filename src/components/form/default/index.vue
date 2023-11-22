@@ -130,6 +130,14 @@
               @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
             />
+            <ColorPicker
+              v-else-if="showField('colorPicker', field)"
+              v-model="formData[field.name]"
+              :formData="formData"
+              :disabled="disabledField(field)"
+              :field="field"
+              :error-messages="formErrors[field?.name]"
+            />
           </v-col>
         </v-row>
         <v-row class="justify-end">

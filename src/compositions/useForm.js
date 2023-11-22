@@ -277,12 +277,15 @@ export default function ({
     let queries = []
     let listData
     if (hasSelect()) {
-      listData = form?.lists.map((list) => {
+      listData = form?.lists?.map((list) => {
         let filter = list.filter.map((el) => {
           const source = eval(el.source)
+          console.log(el, el.source, source, source[el.field])
           return {
             alias: el.field,
-            value: source[el.field],
+            value: Array.isArray(source[el.field])
+              ? source[el.field]
+              : [source[el.field]],
             type: el.type,
           }
         })
@@ -390,6 +393,13 @@ export default function ({
         console.log(dependence.fillField)
         dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
         return
+      } else if (dependence && dependence.type === 'default' && dependence.action.type === 'hideOptions') {
+        const selectField = form.fields.find(
+          (el) => el.name === dependence.action.field
+        )
+        selectField.items = selectField.hideItems.filter((el) => {
+          return el.id !== dependence.action.condition[data.result]
+        })
       }
       field.loading = true
       if (depField) targetField.loading = true
@@ -406,6 +416,8 @@ export default function ({
           : data
         if (targetField.items.length === 1) {
           formData[targetField.name] = targetField.items[0].id
+        } else if (!targetField.items.length) {
+          formData[targetField.name] = null
         }
         targetField.hideItems = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
@@ -579,6 +591,11 @@ export default function ({
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
     }
+    console.log(field.name)
+    console.log(
+      ('field', field.mode === 'all', field.mode === isEdit.value) &&
+        condition()
+    )
     return (
       type === field.type &&
       !loading.value &&

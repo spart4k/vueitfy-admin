@@ -4194,23 +4194,10 @@ const config = {
       panel: {
         buttons: [
           {
-            label: 'Обновить',
-            class: ['v-table-button--custom'],
-            url: '$IconEdit',
-            function: consolePanel,
-            backgroundColor: '#ffffff',
-          },
-          {
             label: 'Добавить',
             class: ['v-table-button--custom'],
             type: 'changeUrl',
             url: 'personal-add-key',
-            backgroundColor: '#fff',
-          },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
             backgroundColor: '#fff',
           },
         ],
@@ -4497,7 +4484,7 @@ const config = {
             path: 'add-key',
             id: 5,
             name: 'Добавить ключ',
-            type: 'FormDefault',
+            type: FormDefault,
             detail: true,
             fields: [
               autocompleteField({
@@ -4522,19 +4509,21 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                dependence: {
-                  //fields: ['statement_card', 'cardowner'],
-                  type: 'api',
-                  module: 'personal/getObject',
-                  //url: 'object_id/avatar_with_user_key_id',
-                  field: 'object_id',
-                  url: [
-                    {
-                      source: 'formData',
-                      field: 'this',
-                    },
-                  ],
-                },
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'api',
+                    module: 'personal/getObject',
+                    //url: 'object_id/avatar_with_user_key_id',
+                    field: 'object_id',
+                    url: [
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Объект',
