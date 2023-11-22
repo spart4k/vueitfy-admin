@@ -1024,14 +1024,23 @@ const config = {
             name: 'Основные',
             type: FormDefault,
             detail: true,
-            lists: [],
+            lists: [
+              {
+                alias: 'direction_id',
+                filter: [],
+              },
+              {
+                alias: 'subtype',
+                filter: [],
+              },
+            ],
             alias: 'personal',
             active: false,
             fields: [
               selectField({
                 label: 'Направление',
-                name: 'status',
-                alias: 'grajdanstvo_id',
+                name: 'direction_id',
+                subtype: 'multiselect',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1045,11 +1054,32 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'default',
+                    action: {
+                      type: 'hideOptions',
+                      //values: [8],
+                      field: 'direction_id',
+                      condition: {
+                        true: [],
+                        false: 1,
+                      },
+                    },
+                    //url: 'object_id/avatar_with_user_key_id',
+                    url: [
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Подтип',
-                name: 'status',
-                alias: 'grajdanstvo_id',
+                name: 'subtype',
                 placeholder: '',
                 class: [''],
                 selectOption: {
