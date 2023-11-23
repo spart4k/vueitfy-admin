@@ -136,6 +136,7 @@ const Form4 = defineComponent({
       selectName,
       isShowBtn,
       addFiles,
+      ticket: data.ticket,
     }
   },
 })

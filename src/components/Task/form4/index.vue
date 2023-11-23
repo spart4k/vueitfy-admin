@@ -7,7 +7,26 @@
       >
       <!-- <span>(28.08.1998 г.р.)</span> -->
     </div>
-    <span style="">Заселите:</span>
+    <div class="mb-2">
+      <div style="font-size: 18px" class="font-weight-bold">
+        Встретьте линейщика:
+      </div>
+      <div class="d-flex align-center">
+        <span class="mr-1">Билет:</span>
+        <a :href="data.data.ticket" target="_blank">
+          <v-icon small>mdi-ticket</v-icon>
+        </a>
+      </div>
+    </div>
+    <div
+      style="font-size: 18px"
+      class="d-flex align-center font-weight-bold mb-2"
+    >
+      <v-icon class="mr-1" v-if="selectName !== ''" x-small color="green"
+        >$IconGalka</v-icon
+      >
+      Заселите:
+    </div>
     <v-select
       label="Выберите проживание"
       :items="[...data.data.habitations, { id: 0, name: '-Самостоятельное-' }]"
@@ -16,7 +35,9 @@
       v-model="selectName"
     ></v-select>
 
-    <span style="">Приложите миграционную карту:</span>
+    <span style="font-size: 18px" class="font-weight-bold"
+      >Приложите миграционную карту:</span
+    >
     <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
 
     <v-row class="py-2" justify="end">
