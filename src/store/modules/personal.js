@@ -35,6 +35,9 @@ const personal = {
       // console.log(result)
       return data
     },
+    async create(obj, obk2) {
+      console.log(obj, obk2)
+    },
   },
 }
 

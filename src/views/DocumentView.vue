@@ -64,6 +64,7 @@ export default {
           const targetField = form.stages[0].fields.find(
             (field) => field.name === bindField.field
           )
+          console.log(targetField)
           targetField.value = newVal
         })
       }

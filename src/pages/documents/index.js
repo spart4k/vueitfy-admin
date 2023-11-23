@@ -1211,13 +1211,19 @@ const defaultForm = [
         id: 0,
         name: '',
         type: FormDefault,
-        detail: true,
+        // detail: true,
         lists: [
           {
             alias: 'personal_missing_documents',
             filter: [
               {
                 field: 'type',
+                type: 'num',
+                value: '',
+                source: 'formData',
+              },
+              {
+                field: 'personal_id',
                 type: 'num',
                 value: '',
                 source: 'formData',
@@ -1239,7 +1245,7 @@ const defaultForm = [
               value: 'id',
             },
             disabled: true,
-            // value: value,
+            value: 0,
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
@@ -1261,6 +1267,7 @@ const defaultForm = [
             label: 'Персонально',
             name: 'personally',
             placeholder: '',
+            notSend: true,
             readonly: false,
             class: [''],
             position: {
@@ -1271,7 +1278,7 @@ const defaultForm = [
           }),
           autocompleteField({
             label: 'Линейщики',
-            name: 'personal_logistic_document',
+            name: 'personal_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -1293,16 +1300,19 @@ const defaultForm = [
             },
             // validations: { required },
             bootstrapClass: [''],
-            filters: [
+            dependence: [
               {
-                field: 'object_id',
-                value: '',
+                //fields: ['statement_card', 'cardowner'],
+                type: 'api',
+                module: 'personal/getKeys',
+                //url: 'object_id/avatar_with_user_key_id',
+                field: 'print_form_key',
               },
             ],
           }),
           selectField({
             label: 'Документы',
-            name: 'personal_missing_documents',
+            name: 'docs_id',
             // url: 'get/pagination_list/personal_logistic_document',
             subtype: 'multiselect',
             placeholder: '',
@@ -1332,11 +1342,12 @@ const defaultForm = [
         ],
         actions: [
           stringAction({
-            text: 'Сохранить',
+            text: 'Создать',
             type: 'submit',
-            module: '',
+            module: 'personal/create',
+            url: 'query/docs',
             name: 'saveForm',
-            action: 'nextStage',
+            action: 'saveForm',
             color: 'primary',
           }),
         ],
@@ -1926,7 +1937,7 @@ const config = {
   // activeTab: activeTab,
   bindField: [
     {
-      field: 'typeCitizen',
+      field: 'type',
       targetForm: 5,
     },
   ],

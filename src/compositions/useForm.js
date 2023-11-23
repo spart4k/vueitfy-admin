@@ -278,24 +278,29 @@ export default function ({
     let listData
     if (hasSelect()) {
       listData = form?.lists?.map((list) => {
-        let filter = list.filter.map((el) => {
+        let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
-          console.log(el, el.source, source, source[el.field])
-          return {
-            alias: el.field,
-            value: Array.isArray(source[el.field])
-              ? source[el.field]
-              : [source[el.field]],
-            type: el.type,
+          if (source[el.field] !== null && source[el.field] !== undefined) {
+            acc.push({
+              alias: el.field,
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
+              type: el.type,
+            })
           }
-        })
+          return acc
+        }, [])
+
         const element = {
           alias: list.alias,
           filter,
         }
+        console.log(element, list)
         return element
       })
     }
+    console.log(listData)
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
       const lists = makeRequestList(listData)
@@ -393,7 +398,11 @@ export default function ({
         console.log(dependence.fillField)
         dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
         return
-      } else if (dependence && dependence.type === 'default' && dependence.action.type === 'hideOptions') {
+      } else if (
+        dependence &&
+        dependence.type === 'default' &&
+        dependence.action.type === 'hideOptions'
+      ) {
         const selectField = form.fields.find(
           (el) => el.name === dependence.action.field
         )
@@ -591,11 +600,7 @@ export default function ({
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
     }
-    console.log(field.name)
-    console.log(
-      ('field', field.mode === 'all', field.mode === isEdit.value) &&
-        condition()
-    )
+
     return (
       type === field.type &&
       !loading.value &&
