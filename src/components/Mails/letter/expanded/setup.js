@@ -81,11 +81,11 @@ const letterExpanded = {
           .replaceAll('class="ql-align-right"', 'style="text-align: right"')
         const mails = []
         newMessage.value.users.forEach((item) => {
-          mails.push(item.email)
+          if (item.email.includes('@')) mails.push(item.email)
         })
         const requestData = {
           box_id: newMessage.value.box_id,
-          mails: mails,
+          to: mails.toString(),
           subject: newMessage.value.subject,
           message: message,
           files: newMessage.value.files,
