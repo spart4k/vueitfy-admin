@@ -409,9 +409,26 @@ export default function ({
         const selectField = form.fields.find(
           (el) => el.name === dependence.action.field
         )
-        selectField.items = selectField.hideItems.filter((el) => {
-          return !formData[dependence.action.field].includes(el.id)
+        console.log(!formData[dependence.action.field])
+        dependence.action.condition.forEach((condition) => {
+          if (
+            JSON.stringify(condition.value) ===
+            JSON.stringify(formData[dependence.action.field])
+          ) {
+            console.log(condition)
+            selectField.items = selectField.hideItems.filter((item) => {
+              return !condition.options.includes(item.id)
+            })
+          } else if (
+            !formData[dependence.action.field] ||
+            !formData[dependence.action.field].length
+          ) {
+            selectField.items = selectField.hideItems
+          }
         })
+        //selectField.items = selectField.hideItems.filter((el) => {
+
+        //})
         return
       }
       field.loading = true
@@ -604,11 +621,6 @@ export default function ({
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
     }
-    console.log(field.name)
-    console.log(
-      ('field', field.mode === 'all', field.mode === isEdit.value) &&
-        condition()
-    )
     return (
       type === field.type &&
       !loading.value &&

@@ -1053,6 +1053,7 @@ const config = {
                   sm: 12,
                 },
                 validations: { required },
+                updateList: ['direction_id'],
                 bootstrapClass: [''],
                 dependence: [
                   {
@@ -1062,10 +1063,12 @@ const config = {
                       type: 'hideOptions',
                       //values: [8],
                       field: 'direction_id',
-                      condition: {
-                        true: [],
-                        false: 1,
-                      },
+                      condition: [
+                        {
+                          value: [1],
+                          options: [5, 4],
+                        },
+                      ],
                     },
                     //url: 'object_id/avatar_with_user_key_id',
                     url: [
