@@ -1,13 +1,12 @@
 <template>
   <div style="padding-top: 10px">
     <div style="text-align: center">
-      <span style="font-weight: 700; font-size: 20px; text-align: center"
-        >{{ data.entity.name }}
-        {{ data.entity.data_rojd.split('-').reverse().join('.') }}</span
-      >
-      <!-- <span>(28.08.1998 г.р.)</span> -->
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
+        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
+      </v-card-title>
     </div>
-    <div class="mb-2">
+    <div v-if="data.data.ticket" class="mb-2">
       <div style="font-size: 18px" class="font-weight-bold">
         Встретьте линейщика:
       </div>
