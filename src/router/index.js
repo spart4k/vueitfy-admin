@@ -19,6 +19,7 @@ import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
+import DocumentView from '@/views/DocumentView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -82,6 +83,14 @@ const routes = [
       {
         name: 'personal-add',
         path: '/personal/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal-add2',
+        path: '/personal/add2',
         meta: {
           mode: 'add',
         },
@@ -341,6 +350,32 @@ const routes = [
       layout: 'blank-layout',
     },
     component: GrishaView,
+  },
+  {
+    path: '/documents',
+    name: 'documents',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: DocumentView,
+    children: [
+      {
+        name: 'documents-query',
+        path: '/documents/query',
+        meta: {
+          mode: 'query',
+        },
+        component: Detail,
+      },
+      {
+        name: 'documents/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
   },
 ]
 

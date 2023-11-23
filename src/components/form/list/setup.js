@@ -63,7 +63,7 @@ export default {
     const data = params
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () => store.dispatch('list/get', data),
+      request: (data) => store.dispatch('list/get', data),
     })
     const rows = ref([])
     const changeForm = async ({ url, module }) => {

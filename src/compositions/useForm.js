@@ -516,6 +516,27 @@ export default function ({
     if (field.dependence) {
       await getDependies({ value, field })
     }
+    //if (field.updateList && field.updateList.length) {
+    //  const listData = field.updateList?.map((list) => {
+    //    let filter = list.filter.map((el) => {
+    //      const source = eval(el.source)
+    //      console.log(el, el.source, source, source[el.field])
+    //      return {
+    //        alias: el.field,
+    //        value: Array.isArray(source[el.field])
+    //          ? source[el.field]
+    //          : [source[el.field]],
+    //        type: el.type,
+    //      }
+    //    })
+    //    const element = {
+    //      alias: list.alias,
+    //      filter,
+    //    }
+    //    return element
+    //  })
+    //}
+    //}
   }
 
   const stringIsArray = (str) => {

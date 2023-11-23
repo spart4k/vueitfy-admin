@@ -19,7 +19,7 @@ export default {
     },
     activeTab: {
       type: Number,
-      default: 0,
+      default: 1,
     },
     loading: {
       type: Boolean,

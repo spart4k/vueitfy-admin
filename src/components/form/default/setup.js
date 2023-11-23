@@ -75,7 +75,7 @@ export default {
     })
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () => store.dispatch('list/get', data),
+      request: (data) => store.dispatch('list/get', data),
     })
     const { makeRequest: changeForm } = useRequest({
       context,
