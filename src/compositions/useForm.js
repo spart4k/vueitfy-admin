@@ -181,6 +181,14 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
+    } else if (action.action === 'createForm') {
+      loading.value = true
+      await createForm({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      loading.value = false
     }
   }
   const sortData = () => {
@@ -393,13 +401,18 @@ export default function ({
         console.log(dependence.fillField)
         dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
         return
-      } else if (dependence && dependence.type === 'default' && dependence.action.type === 'hideOptions') {
+      } else if (
+        dependence &&
+        dependence.type === 'default' &&
+        dependence.action.type === 'hideOptions'
+      ) {
         const selectField = form.fields.find(
           (el) => el.name === dependence.action.field
         )
         selectField.items = selectField.hideItems.filter((el) => {
-          return el.id !== dependence.action.condition[data.result]
+          return !formData[dependence.action.field].includes(el.id)
         })
+        return
       }
       field.loading = true
       if (depField) targetField.loading = true
@@ -558,12 +571,12 @@ export default function ({
           el.alias ? el.alias === keyList : el.name === keyList
         )
         if (field) {
+          field.hideItems = lists.data[keyList]
           if (field.hiding) {
             if (field.hiding.conditions) {
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              field.hideItems = lists.data[keyList]
               lists.data[keyList] = lists.data[keyList].filter((el) => {
                 return !condition.values.includes(el.id)
               })
