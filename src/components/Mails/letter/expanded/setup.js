@@ -127,7 +127,6 @@ const letterExpanded = {
     }
 
     const setBoxId = () => {
-      console.log(props.data)
       if (props?.data?.box_id) newMessage.value.box_id = props?.data?.box_id
     }
 
@@ -148,9 +147,11 @@ const letterExpanded = {
     watch(
       () => [props?.data?.id, route?.query?.compose],
       () => {
-        resetNewMessage()
-        setBoxId()
-        edit.value = false
+        if (route?.query?.compose !== 'answer') {
+          resetNewMessage()
+          setBoxId()
+          edit.value = false
+        }
       }
     )
 
