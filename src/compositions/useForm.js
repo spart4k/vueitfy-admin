@@ -148,6 +148,7 @@ export default function ({
     })
   }
   const clickHandler = async ({ action, skipValidation }) => {
+    console.log('clickHandler', action.action)
     if (!validate(true) && !skipValidation) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
@@ -158,9 +159,9 @@ export default function ({
       Vue.set(form, 'formData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
-      if (action.url) {
-        await stageRequest(action)
-      }
+      // if (action.url) {
+      //   await stageRequest(action)
+      // }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
@@ -187,11 +188,13 @@ export default function ({
   const stageRequest = async (action) => {
     const sortedData = sortData()
     loading.value = true
+    console.log('stageRequest', createForm)
     const data = await createForm({
       url: action.url,
       module: action.module,
       formData: sortedData,
     })
+    console.log('afterform')
     const response = action.conditionCode.results.find(
       (x) => x.value === data[action.conditionCode.key]
     )

@@ -30,6 +30,22 @@
           color="primary"
           indeterminate
         />-->
+        <v-row
+          v-if="item.type.name === 'TableDefault'"
+          class="justify-end align-end"
+        >
+          <v-btn
+            type="submit"
+            :color="action.color"
+            class="ml-2"
+            :loading="loading"
+            @click.prevent="clickHandler({ action })"
+            v-for="action in item.actions"
+            :key="action.id"
+          >
+            {{ action.text }}
+          </v-btn>
+        </v-row>
       </v-tab-item>
     </v-tabs-items>
   </div>

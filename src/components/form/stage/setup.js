@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import FormDefault from '@/components/form/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
 import { useRouter } from 'vue-router/composables'
+import useStage from '@/compositions/useStage'
 
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
@@ -23,7 +24,6 @@ export default {
     },
   },
   setup(props, ctx) {
-    // console.log('tab', props.tab, props.stages)
     const router = useRouter()
     const context = {
       root: {
@@ -32,7 +32,29 @@ export default {
         ctx,
       },
     }
+    const loading = ref(false)
     const activeTab = ref(null)
+
+    const { makeRequest: createForm } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: (params) => {
+        console.log('xzc', props.tab.stageData.id)
+        return store.dispatch(params.module, {
+          url: params.url,
+          id: props.tab.stageData?.id,
+          body: params.formData,
+        })
+      },
+    })
+
+    const { clickHandler } = useStage({
+      context,
+      loading,
+      activeTab,
+      createForm,
+    })
+
     const nextStage = async ({ formData, action }) => {
       if (action.request) {
         const { makeRequestStage } = useRequest({
@@ -56,6 +78,8 @@ export default {
       activeTab,
       nextStage,
       prevStage,
+      clickHandler,
+      loading,
     }
   },
 }

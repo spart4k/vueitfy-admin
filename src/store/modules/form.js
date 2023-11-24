@@ -18,6 +18,7 @@ const form = {
       return result
     },
     async del(_, params) {
+      console.log('formdel', params)
       const result = await del(params)
       return result
     },

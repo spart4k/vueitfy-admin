@@ -58,7 +58,6 @@ const table = {
     },
   },
   setup(props, ctx) {
-    console.log('tab', props)
     const { emit } = ctx
     const router = useRouter()
     const route = useRoute()
@@ -69,13 +68,6 @@ const table = {
     const isMobile = useMobile()
     const detail = ref(props.options?.detail)
     const filters = ref(props.options?.filters)
-    const context = {
-      root: {
-        store,
-        router,
-        ctx,
-      },
-    }
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -479,21 +471,6 @@ const table = {
       }
       
     }
-    const { makeRequest } = useRequest({
-      context,
-      successMessage: 'Сохранено',
-      request: (params) =>
-        store.dispatch(params.module, {
-          url: params.url,
-          body: params.formData,
-        }),
-    })
-    const { clickHandler } = useForm({
-      loading,
-      context,
-      createForm: makeRequest,
-      // createForm, 
-    })
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -588,7 +565,6 @@ const table = {
       closeFilter,
       getItems,
       watchScroll,
-      clickHandler,
       // COMPUTED PROPERTIES
       width,
       colspanLength,
