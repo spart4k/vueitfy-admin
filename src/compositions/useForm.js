@@ -426,6 +426,7 @@ export default function ({
             !formData[dependence.action.field] ||
             !formData[dependence.action.field].length
           ) {
+            console.log(selectField)
             selectField.items = selectField.hideItems
           }
         })
@@ -520,9 +521,10 @@ export default function ({
       await getDependies({ value, field })
     }
     if (field.updateList && field.updateList.length) {
-      const listData = form?.lists?.map((list) => {
+      const listData = field?.updateList?.map((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
+          console.log(source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
               alias: el.field,
@@ -541,7 +543,32 @@ export default function ({
         }
         return element
       })
-      console.log(listData)
+      field.loading = true
+      const lists = await makeRequestList(listData)
+      for (let keyList in lists.data) {
+        const field = form?.fields.find((el) =>
+          el.alias ? el.alias === keyList : el.name === keyList
+        )
+        if (field) {
+          field.hideItems = lists.data[keyList]
+          if (field.hiding) {
+            if (field.hiding.conditions) {
+              const condition = field.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          field.items = lists.data[keyList]
+          if (field.items.length === 1) {
+            formData[field.name] = field.items[0][field.selectOption.value]
+          }
+        }
+      }
+      field.loading = false
+      console.log(lists)
     }
   }
 

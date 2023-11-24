@@ -1026,7 +1026,11 @@ const config = {
             detail: true,
             lists: [
               {
-                alias: 'direction_id',
+                alias: 'direction_object',
+                filter: [],
+              },
+              {
+                alias: 'type',
                 filter: [],
               },
               {
@@ -1039,7 +1043,8 @@ const config = {
             fields: [
               selectField({
                 label: 'Направление',
-                name: 'direction_id',
+                name: 'direction_json',
+                alias: 'direction_object',
                 subtype: 'multiselect',
                 placeholder: '',
                 class: [''],
@@ -1053,7 +1058,19 @@ const config = {
                   sm: 12,
                 },
                 validations: { required },
-                updateList: ['direction_id'],
+                updateList: [
+                  {
+                    alias: 'type',
+                    filter: [
+                      {
+                        field: 'direction_json',
+                        value: '',
+                        source: 'formData',
+                        type: 'num',
+                      },
+                    ],
+                  },
+                ],
                 bootstrapClass: [''],
                 dependence: [
                   {
@@ -1062,11 +1079,19 @@ const config = {
                     action: {
                       type: 'hideOptions',
                       //values: [8],
-                      field: 'direction_id',
+                      field: 'direction_json',
                       condition: [
                         {
+                          value: [2],
+                          options: [1, 6],
+                        },
+                        {
+                          value: [6],
+                          options: [2],
+                        },
+                        {
                           value: [1],
-                          options: [5, 4],
+                          options: [2],
                         },
                       ],
                     },
@@ -1079,6 +1104,23 @@ const config = {
                     ],
                   },
                 ],
+              }),
+              selectField({
+                label: 'Тип',
+                name: 'type',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
               }),
               selectField({
                 label: 'Подтип',
