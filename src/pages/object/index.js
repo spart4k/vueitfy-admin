@@ -1060,13 +1060,13 @@ const config = {
                 validations: { required },
                 updateList: [
                   {
-                    alias: 'type',
+                    alias: 'object_type',
                     filter: [
                       {
                         field: 'direction_json',
                         value: '',
                         source: 'formData',
-                        type: 'num',
+                        type: 'array',
                       },
                     ],
                   },
@@ -1096,18 +1096,13 @@ const config = {
                       ],
                     },
                     //url: 'object_id/avatar_with_user_key_id',
-                    url: [
-                      {
-                        source: 'formData',
-                        field: 'this',
-                      },
-                    ],
                   },
                 ],
               }),
               selectField({
                 label: 'Тип',
                 name: 'type',
+                alias: 'object_type',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1121,10 +1116,24 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                updateList: [
+                  {
+                    alias: 'object_subtype',
+                    filter: [
+                      {
+                        field: 'type',
+                        value: '',
+                        source: 'formData',
+                        type: 'num',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Подтип',
                 name: 'subtype',
+                alias: 'object_subtype',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1138,6 +1147,21 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'subtype',
+                      target: 'items',
+                      value: 'notEmpty',
+                    },
+                    {
+                      field: 'type',
+                      target: 'value',
+                      value: 'notEmpty',
+                    },
+                  ],
+                },
               }),
               stringField({
                 label: 'Название',
@@ -1245,6 +1269,167 @@ const config = {
                 //validations: { required },
                 //isShow: false,
               }),
+              checkboxField({
+                label: 'Питание',
+                name: 'with_nutrition',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                bootstrapClass: [''],
+                //validations: { required },
+                //isShow: false,
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [6], [1, 6]],
+                    },
+                  ],
+                },
+              }),
+              stringField({
+                label: 'Стоимость питания',
+                name: 'sum_nutrition',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'with_nutrition',
+                      value: [true],
+                    },
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [6], [1, 6]],
+                    },
+                  ],
+                },
+                //validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'Имя печатной формы',
+                name: 'print_form_name',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [1, 6]],
+                    },
+                    {
+                      field: 'type',
+                      value: [8, 11],
+                    },
+                  ],
+                },
+                //validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'ID X5',
+                name: 'num_from_x5',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [1, 6], [6], [2]],
+                    },
+                    {
+                      field: 'type',
+                      value: [11, 1],
+                    },
+                  ],
+                },
+                //validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'Площадь М^2',
+                name: 'square',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[6], [1, 6]],
+                    },
+                  ],
+                },
+                //validations: { required },
+                //isShow: false,
+              }),
+              //selectField({
+              //  label: 'Филиал',
+              //  name: 'filial',
+              //  placeholder: '',
+              //  readonly: false,
+              //  class: [''],
+              //  position: {
+              //    cols: 12,
+              //    sm: 12,
+              //  },
+              //  items: [],
+              //  bootstrapClass: [''],
+              //  isShow: {
+              //    value: false,
+              //    conditions: [
+              //      {
+              //        field: 'direction_json',
+              //        type: 'array',
+              //        value: [[2]],
+              //      },
+              //      {
+              //        field: 'type',
+              //        value: [2],
+              //      },
+              //    ],
+              //  },
+              //  //validations: { required },
+              //  //isShow: false,
+              //}),
             ],
             actions: [
               stringAction({
