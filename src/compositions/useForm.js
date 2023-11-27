@@ -296,11 +296,9 @@ export default function ({
           alias: list.alias,
           filter,
         }
-        console.log(element, list)
         return element
       })
     }
-    console.log(listData)
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
       const lists = makeRequestList(listData)
@@ -314,7 +312,7 @@ export default function ({
       const lists = makeRequestList(listData)
       queries = [undefined, lists]
       return queries
-    } else return undefined
+    } else return [undefined, undefined]
   }
 
   const changeAutocomplete = async (params) => {
@@ -333,7 +331,7 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field } = params
     console.log(field)
-    field.dependence.forEach(async (dependence) => {
+    field.dependence?.forEach(async (dependence) => {
       console.log(dependence)
       const depField = dependence.field
       let fieldValue, targetField, card, body
@@ -411,7 +409,9 @@ export default function ({
         })
       }
       field.loading = true
+
       if (depField) targetField.loading = true
+
       const data = await store.dispatch(dependence.module, {
         value,
         field,
@@ -544,6 +544,7 @@ export default function ({
 
   const getData = async () => {
     const [syncForm, lists] = await Promise.all(initPreRequest())
+    console.log(syncForm, lists)
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
@@ -562,10 +563,13 @@ export default function ({
       }
     }
     if (hasSelect()) {
+      console.log(lists.data)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
         )
+        console.log(field)
+        window.fields = form.fields
         if (field) {
           if (field.hiding) {
             if (field.hiding.conditions) {

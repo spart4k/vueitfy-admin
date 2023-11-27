@@ -11,7 +11,7 @@
       class="p-5"
     >
       <v-tab v-for="item in documents.tabs" :key="item.options.title">
-        {{ item.options.title }} - {{ activeTab }}
+        {{ item.options.title }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="activeTab" value="1">
@@ -60,11 +60,11 @@ export default {
           const form = documents.tabs[newVal].detail.tabs.find(
             (el) => el.id === bindField.targetForm
           )
-          console.log(form)
+          // console.log(form)
           const targetField = form.stages[0].fields.find(
             (field) => field.name === bindField.field
           )
-          console.log(targetField)
+          // console.log(targetField)
           targetField.value = newVal
         })
       }
