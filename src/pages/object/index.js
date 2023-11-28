@@ -13,6 +13,7 @@ import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/form/default/index.vue'
 import FormDocuments from '@/components/form/documents/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
+import Rates from '@/components/form/rates/default/index.vue'
 import { userKeys } from '@/pages'
 
 function consoleText(row) {
@@ -1019,7 +1020,6 @@ const config = {
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
-            path: 'add',
             id: 0,
             name: 'Основные',
             type: FormDefault,
@@ -1035,6 +1035,10 @@ const config = {
               },
               {
                 alias: 'subtype',
+                filter: [],
+              },
+              {
+                alias: 'filial_id',
                 filter: [],
               },
             ],
@@ -1116,6 +1120,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                requiredFields: ['direction_json'],
                 updateList: [
                   {
                     alias: 'object_subtype',
@@ -1147,6 +1152,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                requiredFields: ['type'],
                 isShow: {
                   value: false,
                   conditions: [
@@ -1174,8 +1180,6 @@ const config = {
                   sm: 8,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
               }),
               colorPicker({
                 label: 'Цвет',
@@ -1191,10 +1195,11 @@ const config = {
                 //validations: { required },
                 //isShow: false,
               }),
-              selectField({
+              autocompleteField({
                 label: 'Регион',
-                name: 'status',
-                alias: 'grajdanstvo_id',
+                name: 'regions_id',
+                alias: 'regions_id',
+                subtype: 'single',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1202,17 +1207,33 @@ const config = {
                   value: 'id',
                 },
                 items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/regions_id',
                 position: {
                   cols: 12,
                   sm: 6,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                updateList: [
+                  {
+                    alias: 'city_id',
+                    filter: [
+                      {
+                        field: 'regions_id',
+                        value: '',
+                        source: 'formData',
+                        type: 'num',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Город',
-                name: 'status',
-                alias: 'grajdanstvo_id',
+                name: 'city_id',
+                alias: 'city_id',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1226,6 +1247,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                requiredFields: ['regions_id'],
               }),
               stringField({
                 label: 'Адрес',
@@ -1238,6 +1260,7 @@ const config = {
                   sm: 12,
                 },
                 bootstrapClass: [''],
+                validations: { required },
                 //validations: { required },
                 //isShow: false,
               }),
@@ -1252,7 +1275,7 @@ const config = {
                   sm: 12,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
+                validations: { required },
                 //isShow: false,
               }),
               stringField({
@@ -1266,7 +1289,7 @@ const config = {
                   sm: 12,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
+                validations: { required },
                 //isShow: false,
               }),
               checkboxField({
@@ -1280,7 +1303,7 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
+                validations: { required },
                 //isShow: false,
                 isShow: {
                   value: false,
@@ -1305,7 +1328,7 @@ const config = {
                 },
                 bootstrapClass: [''],
                 isShow: {
-                  value: false,
+                  value: true,
                   conditions: [
                     {
                       field: 'with_nutrition',
@@ -1318,7 +1341,7 @@ const config = {
                     },
                   ],
                 },
-                //validations: { required },
+                validations: { required },
                 //isShow: false,
               }),
               stringField({
@@ -1346,7 +1369,7 @@ const config = {
                     },
                   ],
                 },
-                //validations: { required },
+                validations: { required },
                 //isShow: false,
               }),
               stringField({
@@ -1374,7 +1397,7 @@ const config = {
                     },
                   ],
                 },
-                //validations: { required },
+                validations: { required },
                 //isShow: false,
               }),
               stringField({
@@ -1398,38 +1421,505 @@ const config = {
                     },
                   ],
                 },
+                validations: { required },
+                //isShow: false,
+              }),
+              selectField({
+                label: 'Филиал',
+                name: 'filial_id',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[2]],
+                    },
+                    {
+                      field: 'type',
+                      value: [2],
+                    },
+                  ],
+                },
+              }),
+            ],
+            actions: [
+              stringAction({
+                text: 'Сохранить',
+                type: 'submit',
+                module: '',
+                name: 'saveForm',
+                nextForm: true,
+              }),
+            ],
+          },
+          {
+            id: 1,
+            name: 'Тарифы',
+            type: Rates,
+            detail: true,
+            alias: 'personal',
+            active: false,
+            actions: [
+              stringAction({
+                text: 'Сохранить',
+                type: 'submit',
+                module: '',
+                name: 'saveForm',
+                nextForm: true,
+              }),
+            ],
+          },
+          {
+            path: 'add',
+            id: 2,
+            name: 'Основные',
+            type: FormDefault,
+            detail: true,
+            lists: [
+              {
+                alias: 'direction_object',
+                filter: [],
+              },
+              {
+                alias: 'type',
+                filter: [],
+              },
+              {
+                alias: 'subtype',
+                filter: [],
+              },
+              {
+                alias: 'filial_id',
+                filter: [],
+              },
+            ],
+            alias: 'personal',
+            active: false,
+            fields: [
+              selectField({
+                label: 'Направление',
+                name: 'direction_json',
+                alias: 'direction_object',
+                subtype: 'multiselect',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                updateList: [
+                  {
+                    alias: 'object_type',
+                    filter: [
+                      {
+                        field: 'direction_json',
+                        value: '',
+                        source: 'formData',
+                        type: 'array',
+                      },
+                    ],
+                  },
+                ],
+                bootstrapClass: [''],
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'default',
+                    action: {
+                      type: 'hideOptions',
+                      //values: [8],
+                      field: 'direction_json',
+                      condition: [
+                        {
+                          value: [2],
+                          options: [1, 6],
+                        },
+                        {
+                          value: [6],
+                          options: [2],
+                        },
+                        {
+                          value: [1],
+                          options: [2],
+                        },
+                      ],
+                    },
+                    //url: 'object_id/avatar_with_user_key_id',
+                  },
+                ],
+              }),
+              selectField({
+                label: 'Тип',
+                name: 'type',
+                alias: 'object_type',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                requiredFields: ['direction_json'],
+                updateList: [
+                  {
+                    alias: 'object_subtype',
+                    filter: [
+                      {
+                        field: 'type',
+                        value: '',
+                        source: 'formData',
+                        type: 'num',
+                      },
+                    ],
+                  },
+                ],
+              }),
+              selectField({
+                label: 'Подтип',
+                name: 'subtype',
+                alias: 'object_subtype',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                requiredFields: ['type'],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'subtype',
+                      target: 'items',
+                      value: 'notEmpty',
+                    },
+                    {
+                      field: 'type',
+                      target: 'value',
+                      value: 'notEmpty',
+                    },
+                  ],
+                },
+              }),
+              stringField({
+                label: 'Название',
+                name: 'name',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 8,
+                },
+                bootstrapClass: [''],
+              }),
+              colorPicker({
+                label: 'Цвет',
+                name: 'telefon',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                bootstrapClass: [''],
                 //validations: { required },
                 //isShow: false,
               }),
-              //selectField({
-              //  label: 'Филиал',
-              //  name: 'filial',
-              //  placeholder: '',
-              //  readonly: false,
-              //  class: [''],
-              //  position: {
-              //    cols: 12,
-              //    sm: 12,
-              //  },
-              //  items: [],
-              //  bootstrapClass: [''],
-              //  isShow: {
-              //    value: false,
-              //    conditions: [
-              //      {
-              //        field: 'direction_json',
-              //        type: 'array',
-              //        value: [[2]],
-              //      },
-              //      {
-              //        field: 'type',
-              //        value: [2],
-              //      },
-              //    ],
-              //  },
-              //  //validations: { required },
-              //  //isShow: false,
-              //}),
+              autocompleteField({
+                label: 'Регион',
+                name: 'regions_id',
+                alias: 'regions_id',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/regions_id',
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                updateList: [
+                  {
+                    alias: 'city_id',
+                    filter: [
+                      {
+                        field: 'regions_id',
+                        value: '',
+                        source: 'formData',
+                        type: 'num',
+                      },
+                    ],
+                  },
+                ],
+              }),
+              selectField({
+                label: 'Город',
+                name: 'city_id',
+                alias: 'city_id',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                requiredFields: ['regions_id'],
+              }),
+              stringField({
+                label: 'Адрес',
+                name: 'comment',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                validations: { required },
+                //validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'ФИО директора',
+                name: 'comment',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'Телефон',
+                name: 'comment',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                validations: { required },
+                //isShow: false,
+              }),
+              checkboxField({
+                label: 'Питание',
+                name: 'with_nutrition',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                bootstrapClass: [''],
+                validations: { required },
+                //isShow: false,
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [6], [1, 6]],
+                    },
+                  ],
+                },
+              }),
+              stringField({
+                label: 'Стоимость питания',
+                name: 'sum_nutrition',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: true,
+                  conditions: [
+                    {
+                      field: 'with_nutrition',
+                      value: [true],
+                    },
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [6], [1, 6]],
+                    },
+                  ],
+                },
+                validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'Имя печатной формы',
+                name: 'print_form_name',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [1, 6]],
+                    },
+                    {
+                      field: 'type',
+                      value: [8, 11],
+                    },
+                  ],
+                },
+                validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'ID X5',
+                name: 'num_from_x5',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[1], [1, 6], [6], [2]],
+                    },
+                    {
+                      field: 'type',
+                      value: [11, 1],
+                    },
+                  ],
+                },
+                validations: { required },
+                //isShow: false,
+              }),
+              stringField({
+                label: 'Площадь М^2',
+                name: 'square',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[6], [1, 6]],
+                    },
+                  ],
+                },
+                validations: { required },
+                //isShow: false,
+              }),
+              selectField({
+                label: 'Филиал',
+                name: 'filial_id',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'direction_json',
+                      type: 'array',
+                      value: [[2]],
+                    },
+                    {
+                      field: 'type',
+                      value: [2],
+                    },
+                  ],
+                },
+              }),
             ],
             actions: [
               stringAction({

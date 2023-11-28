@@ -8,6 +8,7 @@ import { getList } from '@/api/selects'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
+import { param } from 'jquery'
 
 /**
  * @param loading {boolean}
@@ -330,6 +331,59 @@ export default function ({
       const item = params.field.items.find((el) => el.id === params.value)
       params.field.selectOptionName = item[params.field.selectOption.text]
     }
+    const { field, value } = params
+    if (field.updateList && field.updateList.length) {
+      const listData = field?.updateList?.map((list) => {
+        let filter = list.filter.reduce((acc, el) => {
+          const source = eval(el.source)
+          if (source[el.field] !== null && source[el.field] !== undefined) {
+            acc.push({
+              alias: el.field,
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
+              type: el.type,
+            })
+          }
+          return acc
+        }, [])
+
+        const element = {
+          alias: list.alias,
+          filter,
+        }
+        return element
+      })
+      field.loading = true
+      const lists = await makeRequestList(listData)
+      for (let keyList in lists.data) {
+        const field = form?.fields.find((el) =>
+          el.alias ? el.alias === keyList : el.name === keyList
+        )
+        if (field) {
+          console.log(field)
+          formData[field.name] = ''
+          field.hideItems = lists.data[keyList]
+          if (field.hiding) {
+            if (field.hiding.conditions) {
+              const condition = field.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          field.items = lists.data[keyList]
+          if (field.items.length === 1) {
+            formData[field.name] = field.items[0][field.selectOption.value]
+          }
+          showField(field.type, field, true)
+        }
+      }
+
+      field.loading = false
+    }
   }
 
   const hasDepenceFieldsApi = () =>
@@ -339,7 +393,7 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    field.dependence.forEach(async (dependence) => {
+    field.dependence?.forEach(async (dependence) => {
       const depField = dependence.field
       let fieldValue, targetField, card, body
       targetField = form.fields.find((el) => el.name === depField)
@@ -499,6 +553,10 @@ export default function ({
   const checkInvalidSelect = (field) => {
     const result = field.items.find((el) => el.id === formData[field.name])
     if (!result) formData[field.name] = ''
+  }
+
+  const changeCheckbox = (field) => {
+    showField(field.type, field)
   }
 
   const changeSelect = async ({ value, field }) => {
@@ -678,7 +736,7 @@ export default function ({
           })
         }
       })
-    if (field.isShow.conditions) {
+    if (field.isShow.conditions && field.isShow.conditions.length) {
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
@@ -727,7 +785,7 @@ export default function ({
     () => formData,
     () => {
       console.log('change form')
-      form.fields.forEach((el) => {
+      form?.fields?.forEach((el) => {
         showField(el.type, el)
       })
       if ($touched.value) {
@@ -758,5 +816,6 @@ export default function ({
     addFiles,
     sortData,
     rebuildFormData,
+    changeCheckbox,
   }
 }

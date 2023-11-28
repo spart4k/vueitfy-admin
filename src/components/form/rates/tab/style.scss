@@ -1,0 +1,16 @@
+.rates {
+  &-tab {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow: auto;
+  }
+  &-position {
+    display: flex;
+    flex-direction: column;
+    &__title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+  }
+}

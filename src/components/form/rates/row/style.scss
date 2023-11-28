@@ -1,0 +1,31 @@
+.rates {
+  &-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    &__title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    &-wrap {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-left: none;
+      border-right: none;
+    }
+    .action {
+      background-color: #269926;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: .2rem;
+      transition: .2s;
+      &:hover {
+        transform: scale(1.01);
+        cursor: pointer;
+      }
+    }
+  }
+}

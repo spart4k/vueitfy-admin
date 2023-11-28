@@ -59,6 +59,7 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
+              @change="changeCheckbox"
             ></v-checkbox>
             <v-menu
               v-else-if="showField('date', field)"
@@ -137,6 +138,7 @@
               :disabled="disabledField(field)"
               :field="field"
               :error-messages="formErrors[field?.name]"
+              :label="field.label"
             />
           </v-col>
         </v-row>

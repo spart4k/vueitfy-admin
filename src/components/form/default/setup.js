@@ -121,6 +121,7 @@ export default {
       disabledField,
       hideField,
       addFiles,
+      changeCheckbox,
     } = useForm({
       form: props.tab,
       context,
@@ -158,6 +159,7 @@ export default {
       disabledField,
       hideField,
       addFiles,
+      changeCheckbox,
     }
   },
 }
