@@ -1217,13 +1217,13 @@ const defaultForm = [
             alias: 'personal_missing_documents',
             filter: [
               {
-                field: 'type',
+                field: 'personal_id',
                 type: 'num',
                 value: '',
                 source: 'formData',
               },
               {
-                field: 'personal_id',
+                field: 'grajdanstvo_id',
                 type: 'num',
                 value: '',
                 source: 'formData',
@@ -1236,7 +1236,7 @@ const defaultForm = [
         fields: [
           selectField({
             label: 'Тип граждан',
-            name: 'type',
+            name: 'grajdanstvo_id',
             // alias: 'direction_id_logistic',
             placeholder: '',
             class: [''],
@@ -1300,10 +1300,30 @@ const defaultForm = [
             },
             // validations: { required },
             bootstrapClass: [''],
+            updateList: [
+              {
+                alias: 'personal_missing_documents',
+                filter: [
+                  {
+                    field: 'grajdanstvo_id',
+                    type: 'num',
+                    value: '',
+                    source: 'formData',
+                  },
+                  {
+                    field: 'personal_id',
+                    type: 'num',
+                    value: '',
+                    source: 'formData',
+                  },
+                ],
+              },
+            ],
           }),
           selectField({
             label: 'Документы',
             name: 'docs_id',
+            alias: 'personal_missing_documents',
             // url: 'get/pagination_list/personal_logistic_document',
             subtype: 'multiselect',
             placeholder: '',
@@ -1337,8 +1357,8 @@ const defaultForm = [
             type: 'submit',
             module: 'personal/create',
             url: 'query/docs',
-            name: 'saveForm',
-            action: 'saveForm',
+            name: 'createForm',
+            action: 'createForm',
             color: 'primary',
           }),
         ],
@@ -1928,7 +1948,7 @@ const config = {
   // activeTab: activeTab,
   bindField: [
     {
-      field: 'type',
+      field: 'grajdanstvo_id',
       targetForm: 5,
     },
   ],
