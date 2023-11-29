@@ -13,7 +13,7 @@
       <div class="v-sidebar-container-user">
         <div class="v-sidebar-container-user_image">
           <v-img
-            src="https://i7.photo.2gis.com/images/profile/30258560110704335_9a1e_1920x.jpg"
+            src="https://media.tenor.com/Q-gxepiJHagAAAAM/nono.gif"
           ></v-img>
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">

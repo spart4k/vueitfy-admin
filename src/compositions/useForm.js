@@ -30,12 +30,33 @@ export default function ({
   setFields,
   mode,
   createForm,
+  detail,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
   const filesBasket = ref({})
   const { emit } = context.root.ctx
+
+  // const validations = () => {
+  //   const formFields = {}
+  //   form.fields.forEach((el) => {
+  //     formFields[el.name] = el
+  //   })
+  //   return Object.keys(formData).reduce((obj, key) => {
+  //     if (
+  //       (typeof formFields[key].isShow === 'boolean' &&
+  //         !formFields[key].isShow) ||
+  //       (typeof formFields[key].isShow === 'object' &&
+  //         !formFields[key].isShow.value)
+  //     ) {
+  //       return obj
+  //     }
+  //     obj[key] = { ...formFields[key].validations, $autoDirty }
+  //     return obj
+  //   }, {})
+  // }
+
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       //console.log(obj[key])
@@ -43,38 +64,32 @@ export default function ({
       return obj
     }, {})
   )
+
+  const computedFormData = computed(() => formData)
+
   const validations = () => {
     const formFields = {}
-    form?.fields.forEach((el) => {
-      formFields[el.name] = el
-    })
-    if (!form) return
-    return Object.keys(formData).reduce((obj, key) => {
+    if (form) {
+      form?.fields?.forEach((el) => {
+        formFields[el.name] = el
+      })
+      if (!form) return
+    }
+    return Object.keys(formData || fields).reduce((obj, key) => {
       if (
-        (typeof formFields[key].isShow === 'boolean' &&
-          !formFields[key].isShow) ||
-        (typeof formFields[key].isShow === 'object' &&
-          !formFields[key].isShow.value)
+        (typeof formFields[key]?.isShow === 'boolean' &&
+          !formFields[key]?.isShow) ||
+        (typeof formFields[key]?.isShow === 'object' &&
+          !formFields[key]?.isShow.value)
       ) {
         return obj
       }
-      obj[key] = { ...formFields[key].validations, $autoDirty }
+      if (form) obj[key] = { ...formFields[key].validations, $autoDirty }
+      else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
-    //console.log({
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //})
-    //return {
-    //  required,
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //}
   }
 
-  const computedFormData = computed(() => formData)
   let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
@@ -82,16 +97,13 @@ export default function ({
       formData,
       reactive(
         Object.keys(setFields()).reduce((obj, key) => {
-          //console.log(obj[key])
           obj[key] = ref(formData[key])
           return obj
         }, {})
       )
     )
   }
-  // setInterval(() => {
-  //   // console.log(errors.value)
-  // }, 3000)
+
   const $errors = ref({})
   const errorsCount = () => {
     $errors.value = Object.keys(formData).reduce((obj, key) => {
@@ -104,11 +116,13 @@ export default function ({
     }, {})
   }
 
-  const validate = () => {
-    $v = useVuelidate(validations(), computedFormData.value)
+  const validate = (touch) => {
+    if (touch) $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
-    $touched.value = true
-    errorsCount()
+    if (touch) {
+      $touched.value = true
+      errorsCount()
+    }
     return !unref($v).$invalid
   }
 
@@ -134,15 +148,21 @@ export default function ({
       }
     })
   }
-  const clickHandler = async (action) => {
-    if (!validate()) return
+  const clickHandler = async ({ action, skipValidation }) => {
+    if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData()
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
+      if (action.url) {
+        await stageRequest(action)
+      }
       Vue.set(form, 'formData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
+      // if (action.url) {
+      //   await stageRequest(action)
+      // }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
@@ -192,6 +212,35 @@ export default function ({
       loading.value = false
     }
   }
+
+  const stageRequest = async (action) => {
+    const sortedData = sortData()
+    loading.value = true
+    const data = await createForm({
+      url: action.url,
+      module: action.module,
+      formData: sortedData,
+    })
+    const response = action?.conditionCode?.results?.find(
+      (x) => x.value === data[action.conditionCode.key]
+    )
+    tabStorageChange(response, data)
+    loading.value = false
+  }
+
+  const tabStorageChange = (response, data) => {
+    if (response?.toStorage) {
+      response.toStorage.forEach((item) => {
+        detail.stageData[item] = data[item]
+      })
+    }
+    if (response?.fromStorage) {
+      response.fromStorage.forEach((item) => {
+        delete detail.stageData[item]
+      })
+    }
+  }
+
   const sortData = () => {
     const newForm = {}
     Object.keys(formData).forEach((key) => {
@@ -826,5 +875,7 @@ export default function ({
     sortData,
     rebuildFormData,
     changeCheckbox,
+    tabStorageChange,
+    stageRequest,
   }
 }

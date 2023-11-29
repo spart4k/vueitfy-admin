@@ -4,6 +4,9 @@ import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 
+import useForm from '@/compositions/useForm.js'
+import useRequest from '@/compositions/useRequest'
+
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import Popup from '@/components/popup/index.vue'
@@ -37,7 +40,15 @@ const table = {
       default: () => {},
       require: true,
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
     filtersConfig: {
+      type: Object,
+      default: () => {},
+    },
+    detail: {
       type: Object,
       default: () => {},
     },
@@ -307,11 +318,13 @@ const table = {
       //  }
       //})
       let by = undefined
-      if (props.routeParam) {
+      console.log('props.filtersConfig', props, props.detail?.stageData.id)
+      if (props.routeParam || props.detail?.stageData?.id) {
         by = [
           {
             field: props.options.options.urlDetail,
-            value: +props.routeParam,
+            value: +props.routeParam || props.detail?.stageData?.id,
+            // value: +props.routeParam,
             alias: props.options.options.alias,
           },
         ]
@@ -463,8 +476,10 @@ const table = {
         console.log(filtersColumns.value);
         console.log(url);
         axios.post(url, filtersColumns.value)
+      } else if (type === 'nextStage') {
+        emit('nextStage', {})
       }
-
+      if (button.function) button.function()
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {

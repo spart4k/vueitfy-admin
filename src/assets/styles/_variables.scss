@@ -96,8 +96,8 @@ $dark-con           : #E15992;
 @mixin custom-scroll-bar-vertical() {
     &::-webkit-scrollbar {
         border-radius : 10px;
-        height        : 10px;
-        width         : 2px;
+        height        : 6px;
+        width         : 6px;
     }
 
     &::-webkit-scrollbar-thumb {

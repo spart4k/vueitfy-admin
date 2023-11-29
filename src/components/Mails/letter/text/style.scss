@@ -1,11 +1,16 @@
 .v {
     &-text {
-        padding: 0 23px;
+        // padding: 0 23px;
+        // height: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         &__edit {
             margin-left: 23px;
             border-left: 3px solid var(--v-primary-base);
         }
         &-files {
+            padding: 0 23px;
             margin-bottom: 27px;
             &_item {
                 width: 31px;
@@ -18,6 +23,7 @@
             }
         }
         &-title {
+            padding: 0 23px;
             color: var(--v-text-base);
             font-size: 13px;
             font-weight: 500;
@@ -27,16 +33,17 @@
             color: var(--v-secondary-base);
             font-size: 12px;
             width: 100%;
-            word-break: break-all;
+            word-break: break-word;
+            // height: 100%;
             // white-space: nowrap;
             // overflow: hidden;
             // text-overflow: ellipsis;
-            *{
-                width: 100%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+            // *{
+            //     width: 100%;
+            //     white-space: nowrap;
+            //     overflow: hidden;
+            //     text-overflow: ellipsis;
+            // }
             // &::v-deep img {
             //     width: 100%;
             // }
