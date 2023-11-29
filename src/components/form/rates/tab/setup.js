@@ -5,7 +5,8 @@ export default {
   components: {
     row,
   },
-  setup() {
+  setup(_, ctx) {
+    const { emit } = ctx
     const items = ref([
       {
         id: 3,
@@ -672,9 +673,13 @@ export default {
       },
     ])
     const search = ref('')
+    const openDialog = () => {
+      emit('openDialog')
+    }
     return {
       items,
       search,
+      openDialog,
     }
   },
 }

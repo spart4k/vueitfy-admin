@@ -12,21 +12,15 @@
             class="field-col"
             :class="field.type"
           >
-            <div
-              v-if="loading && field.isShow"
-              class="field-loading gradient"
-            ></div>
             <v-text-field
-              v-else-if="showField('string', field)"
+              v-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
-              :error-messages="formErrors[field?.name]"
               clearable
               :readonly="field.readonly"
-              :disabled="disabledField(field)"
             />
             <v-menu
-              v-else-if="showField('date', field)"
+              v-if="showField('date', field)"
               :key="field.id"
               :ref="`menuRef_${field.id}`"
               v-model="field.menu"
@@ -41,9 +35,7 @@
                   v-model="formData[field.name]"
                   :label="field.label"
                   append-icon="mdi-calendar"
-                  :error-messages="formErrors[field?.name]"
                   v-bind="attrs"
-                  :disabled="disabledField(field)"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -67,7 +59,7 @@
           </v-col>
         </v-row>
       </div>
-      <div class="action">+</div>
+      <div @click="openDialog" class="action">+</div>
     </div>
   </div>
 </template>

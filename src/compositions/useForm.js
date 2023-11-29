@@ -614,56 +614,7 @@ export default function ({
       await getDependies({ value, field })
     }
     if (field.updateList && field.updateList.length) {
-      const listData = field?.updateList?.map((list) => {
-        let filter = list.filter.reduce((acc, el) => {
-          const source = eval(el.source)
-          if (source[el.field] !== null && source[el.field] !== undefined) {
-            acc.push({
-              alias: el.field,
-              value: Array.isArray(source[el.field])
-                ? source[el.field]
-                : [source[el.field]],
-              type: el.type,
-            })
-          }
-          return acc
-        }, [])
-
-        const element = {
-          alias: list.alias,
-          filter,
-        }
-        return element
-      })
-      field.loading = true
-      const lists = await makeRequestList(listData)
-      for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
-        if (field) {
-          console.log(field)
-          formData[field.name] = ''
-          field.hideItems = lists.data[keyList]
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value
-              )
-              lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
-              })
-            }
-          }
-          field.items = lists.data[keyList]
-          if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
-          }
-          showField(field.type, field, true)
-        }
-      }
-
-      field.loading = false
+      await queryList(field)
     }
   }
 
@@ -716,6 +667,60 @@ export default function ({
     await Promise.all(queryFields)
   }
 
+  const queryList = async (field, clear = true) => {
+    const listData = field?.updateList?.map((list) => {
+      let filter = list.filter.reduce((acc, el) => {
+        const source = eval(el.source)
+        if (source[el.field] !== null && source[el.field] !== undefined) {
+          acc.push({
+            alias: el.field,
+            value: Array.isArray(source[el.field])
+              ? source[el.field]
+              : [source[el.field]],
+            type: el.type,
+          })
+        }
+        return acc
+      }, [])
+
+      const element = {
+        alias: list.alias,
+        filter,
+      }
+      return element
+    })
+    console.log(field, 'field')
+    field.loading = true
+    const lists = await makeRequestList(listData)
+    for (let keyList in lists.data) {
+      const field = form?.fields.find((el) =>
+        el.alias ? el.alias === keyList : el.name === keyList
+      )
+      if (field) {
+        console.log(field)
+        if (clear) formData[field.name] = ''
+        field.hideItems = lists.data[keyList]
+        if (field.hiding) {
+          if (field.hiding.conditions) {
+            const condition = field.hiding.conditions.find(
+              (el) => mode === el.value
+            )
+            lists.data[keyList] = lists.data[keyList].filter((el) => {
+              return !condition.values.includes(el.id)
+            })
+          }
+        }
+        field.items = lists.data[keyList]
+        if (field.items.length === 1) {
+          formData[field.name] = field.items[0][field.selectOption.value]
+        }
+        showField(field.type, field, true)
+      }
+    }
+
+    field.loading = false
+  }
+
   const getData = async () => {
     const [syncForm, lists] = await Promise.all(initPreRequest())
     console.log(syncForm, lists)
@@ -725,16 +730,22 @@ export default function ({
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+          console.log('syncForm', syncForm.data[formKey], formKey)
           formData[field.name] = syncForm.data[formKey]
+          console.log(formData.city_id)
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
             field.dependence.type === 'api'
           ) {
-            await getDependies({ value: formData[field.name], field })
+            //await getDependies({ value: formData[field.name], field })
+          }
+          if (field.updateList && field.updateList.length) {
+            await queryList(field, false)
           }
         }
       }
+      console.log(formData)
     }
     if (hasSelect()) {
       console.log(lists.data)
@@ -743,7 +754,6 @@ export default function ({
           el.alias ? el.alias === keyList : el.name === keyList
         )
         console.log(field)
-        window.fields = form.fields
         if (field) {
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
@@ -768,7 +778,6 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    console.log(field.name)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {

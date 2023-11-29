@@ -1,11 +1,31 @@
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import tab from '../tab/index.vue'
 import { stringAction } from '@/utils/actions'
+import { useRoute, useRouter } from 'vue-router/composables'
+import useRequest from '@/compositions/useRequest'
+
+import store from '@/store'
 
 export default {
   name: 'Rates',
   components: { tab },
-  setup() {
+  props: {
+    tab: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
+    const context = {
+      root: {
+        store,
+        router,
+        ctx,
+      },
+    }
+    const { id } = route?.params
     const activeTab = ref(0)
     const actions = ref([
       stringAction({
@@ -16,6 +36,7 @@ export default {
         nextForm: true,
       }),
     ])
+    const dialog = ref(false)
     const loading = ref(false)
     const tabs = ref([
       {
@@ -31,11 +52,28 @@ export default {
         name: 'Не активные',
       },
     ])
+    const openDialog = () => {
+      dialog.value = true
+    }
+    const { makeRequest } = useRequest({
+      context,
+      request: () =>
+        store.dispatch(
+          'form/gets',
+          `get/form/${props.tab.alias}/${route.params.id}`
+        ),
+    })
+    onMounted(async () => {
+      const type = await makeRequest()
+      //console.log(type)
+    })
     return {
       tabs,
       activeTab,
       actions,
       loading,
+      dialog,
+      openDialog,
     }
   },
 }

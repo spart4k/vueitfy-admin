@@ -1237,7 +1237,7 @@ const config = {
               selectField({
                 label: 'Город',
                 name: 'city_id',
-                alias: 'city_id',
+                //alias: 'city_id',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1475,7 +1475,7 @@ const config = {
             name: 'Тарифы',
             type: Rates,
             detail: true,
-            alias: 'personal',
+            alias: 'object',
             active: false,
             actions: [
               stringAction({
@@ -1511,7 +1511,7 @@ const config = {
                 filter: [],
               },
             ],
-            alias: 'personal',
+            alias: 'object',
             active: false,
             fields: [
               selectField({
@@ -2161,7 +2161,7 @@ const config = {
         classes: [''], // List class
         width: '1000px',
         method: 'get',
-        alias: 'personal',
+        alias: 'object',
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
@@ -2178,7 +2178,7 @@ const config = {
               'direction_id',
               'grajdanstvo_id',
             ],
-            alias: 'personal',
+            alias: 'object',
             active: false,
             fields: [
               stringField({
@@ -2620,7 +2620,7 @@ const config = {
         classes: [''], // List class
         width: '1000px',
         method: 'get',
-        alias: 'personal',
+        alias: 'object',
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
@@ -2637,7 +2637,7 @@ const config = {
               'direction_id',
               'grajdanstvo_id',
             ],
-            alias: 'personal',
+            alias: 'object',
             active: false,
             fields: [
               stringField({
@@ -3104,7 +3104,7 @@ const config = {
         classes: [''], // List class
         width: '1000px',
         method: 'get',
-        alias: 'personal',
+        alias: 'object',
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
@@ -3121,7 +3121,7 @@ const config = {
               'direction_id',
               'grajdanstvo_id',
             ],
-            alias: 'personal',
+            alias: 'object',
             active: false,
             fields: [
               stringField({
