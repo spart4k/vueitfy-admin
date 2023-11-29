@@ -795,7 +795,7 @@ const config = {
                   {
                     field: 'object_id',
                     value: '',
-                    type: 'fromPrev',
+                    source: 'fromPrev',
                   },
                 ],
                 dependence: [

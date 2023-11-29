@@ -20,6 +20,7 @@ import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
+import SlataReportView from '@/views/SlataReportView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -376,6 +377,24 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
+  },
+  {
+    path: '/slata-report',
+    name: 'slata-report',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: SlataReportView,
+    // children: [
+    //   {
+    //     name: 'slata',
+    //     path: '/salta',
+    //     meta: {
+    //       mode: 'blank-layout',
+    //     },
+    //     component: Detail,
+    //   },
+    // ],
   },
 ]
 
