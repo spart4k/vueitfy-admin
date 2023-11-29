@@ -1014,7 +1014,7 @@ const config = {
         classes: [''], // List class
         width: '600px',
         method: 'get',
-        alias: 'personal',
+        alias: 'object_active',
         url: '/get/form/',
         name: 'Объекты - добавления',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
@@ -1030,11 +1030,11 @@ const config = {
                 filter: [],
               },
               {
-                alias: 'type',
+                alias: 'object_type',
                 filter: [],
               },
               {
-                alias: 'subtype',
+                alias: 'object_subtype',
                 filter: [],
               },
               {
@@ -1042,7 +1042,7 @@ const config = {
                 filter: [],
               },
             ],
-            alias: 'personal',
+            alias: 'object',
             active: false,
             fields: [
               selectField({
@@ -1183,7 +1183,7 @@ const config = {
               }),
               colorPicker({
                 label: 'Цвет',
-                name: 'telefon',
+                name: 'color',
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -1251,7 +1251,7 @@ const config = {
               }),
               stringField({
                 label: 'Адрес',
-                name: 'comment',
+                name: 'address',
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -1266,7 +1266,7 @@ const config = {
               }),
               stringField({
                 label: 'ФИО директора',
-                name: 'comment',
+                name: 'fio_director',
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -1280,7 +1280,7 @@ const config = {
               }),
               stringField({
                 label: 'Телефон',
-                name: 'comment',
+                name: 'tel_director',
                 placeholder: '',
                 readonly: false,
                 class: [''],
