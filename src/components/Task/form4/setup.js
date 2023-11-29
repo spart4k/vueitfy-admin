@@ -130,6 +130,9 @@ const Form4 = defineComponent({
       startTask()
       ctx.emit('closePopup')
     }
+
+    // let widthTrasfer = ref('')
+    // widthTrasfer.value = JSON.parse(data.task.dop_data).transfer
     return {
       sendData,
       options,
@@ -137,6 +140,7 @@ const Form4 = defineComponent({
       isShowBtn,
       addFiles,
       ticket: data.ticket,
+      widthTrasfer: JSON.parse(data.task.dop_data).transfer,
     }
   },
 })

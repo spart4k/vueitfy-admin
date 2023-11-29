@@ -6,7 +6,7 @@
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
     </div>
-    <div v-if="data.data.ticket" class="mb-2">
+    <div v-if="widthTrasfer" class="mb-2">
       <div style="font-size: 18px" class="font-weight-bold">
         Встретьте линейщика:
       </div>
