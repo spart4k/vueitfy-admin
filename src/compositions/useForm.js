@@ -633,15 +633,19 @@ export default function ({
       const { url } = el
       if (el.filters && el.filters.length) {
         el.filters.forEach((filter) => {
-          let value
-          if (filter.type === 'fromPrev') {
+          let value, type
+          if (filter.source === 'fromPrev') {
             value = form?.formData[filter.field]
+          } else if (filter.source === undefined) {
+            value = filter.value
           } else {
             value = formData[filter.field]
           }
+          if (filter.type) type = filter.type
           filters.push({
             field: filter.field,
             value,
+            type,
           })
         })
       }

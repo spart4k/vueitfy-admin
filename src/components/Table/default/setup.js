@@ -15,7 +15,7 @@ import vIconSort from '../../icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
-
+import axios from 'axios'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -266,6 +266,7 @@ const table = {
       filter.value.isShow = false
     }
     const getItems = async () => {
+      console.log('get items')
       //this.
       loading.value = true
       const { url } = props.options.options
@@ -315,6 +316,7 @@ const table = {
           },
         ]
       }
+      console.log('table get')
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
@@ -456,6 +458,11 @@ const table = {
         addItem()
       } else if (type === 'changeUrl') {
         changeUrl(url)
+      } else if (type === 'getFilters') {
+        console.log('click inner getFilter');
+        console.log(filtersColumns.value);
+        console.log(url);
+        axios.post(url, filtersColumns.value)
       }
 
     }
@@ -498,6 +505,7 @@ const table = {
     // HOOKS
     onMounted(async () => {
       initHeadParams()
+      console.log('mount')
       await getItems()
 
       const table = document.querySelector(props.options.selector)
