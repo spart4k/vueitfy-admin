@@ -1030,6 +1030,10 @@ const config = {
                 filter: [],
               },
               {
+                alias: 'type',
+                filter: [],
+              },
+              {
                 alias: 'object_type',
                 filter: [],
               },

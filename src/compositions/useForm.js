@@ -8,7 +8,6 @@ import { getList } from '@/api/selects'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
-import { param } from 'jquery'
 
 /**
  * @param loading {boolean}
@@ -322,7 +321,7 @@ export default function ({
       const lists = makeRequestList(listData)
       queries = [undefined, lists]
       return queries
-    } else return undefined
+    } else return [undefined, undefined]
   }
 
   const changeAutocomplete = async (params) => {
@@ -331,7 +330,7 @@ export default function ({
       const item = params.field.items.find((el) => el.id === params.value)
       params.field.selectOptionName = item[params.field.selectOption.text]
     }
-    const { field, value } = params
+    const { field } = params
     if (field.updateList && field.updateList.length) {
       const listData = field?.updateList?.map((list) => {
         let filter = list.filter.reduce((acc, el) => {
@@ -476,7 +475,9 @@ export default function ({
         return
       }
       field.loading = true
+
       if (depField) targetField.loading = true
+
       const data = await store.dispatch(dependence.module, {
         value,
         field,
@@ -664,6 +665,7 @@ export default function ({
 
   const getData = async () => {
     const [syncForm, lists] = await Promise.all(initPreRequest())
+    console.log(syncForm, lists)
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
@@ -682,10 +684,13 @@ export default function ({
       }
     }
     if (hasSelect()) {
+      console.log(lists.data)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
         )
+        console.log(field)
+        window.fields = form.fields
         if (field) {
           field.hideItems = lists.data[keyList]
           if (field.hiding) {

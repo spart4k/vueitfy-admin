@@ -32,6 +32,7 @@ export default {
     },
   },
   setup(props, ctx) {
+    console.log('return ', props.tab)
     //const syncForm = ref({})
     const { emit } = ctx
     const route = useRoute()

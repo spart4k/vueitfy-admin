@@ -258,7 +258,8 @@ const table = {
         return undefined
       }
     }
-    const openFilter = () => {
+    const openFilter = ($event) => {
+      console.log($event)
       filter.value.isShow = true
     }
     const closeFilter = () => {
@@ -401,8 +402,8 @@ const table = {
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          alias: el.alias,
-          type: el.type,
+          alias: el.filterAlias,
+          type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
         filtersColumns.value.push(obj)
@@ -547,7 +548,7 @@ const table = {
           return 'green';
         }
       } else if (value === 2) {
-        return 'yellow';
+        return 'orange';
       }
       return 'blue';
     };

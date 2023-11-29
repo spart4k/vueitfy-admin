@@ -4,6 +4,7 @@ import {
   getKeys,
   checkEveryDayPayment,
   getObject,
+  create,
 } from '@/api/personal'
 //import axios from 'axios'
 
@@ -35,8 +36,10 @@ const personal = {
       // console.log(result)
       return data
     },
-    async create(obj, obk2) {
-      console.log(obj, obk2)
+    async create(_, { url, body }) {
+      console.log(_, url, body)
+      const result = await create(url, body)
+      return result
     },
   },
 }
