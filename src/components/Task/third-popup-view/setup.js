@@ -88,7 +88,7 @@ const ThirdPopupView = defineComponent({
       request: () =>
         store.dispatch('taskModule/changeStatusTasks', {
           data: {
-            status: accForSend.value > 0 ? 6 : 2,
+            status: 2,
             data: {
               process_id: data.task.process_id,
               account_id: 25,
