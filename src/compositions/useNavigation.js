@@ -15,17 +15,18 @@ import useForm from '@/compositions/useForm'
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
 
-export default function ({ context, loading, activeTab, createForm }) {
-  const { stageRequest } = useForm({ context, loading, createForm })
-
-  const clickHandler = async ({ action }) => {
-    if (action.url) await stageRequest(action)
-    if (action.action === 'nextStage') {
-      activeTab.value++
-    } else if (action.action === 'prevStage') {
-      activeTab.value--
-    }
+export default function () {
+  const addOrUpdateURLParam = (key, value) => {
+    const searchParams = new URLSearchParams(window.location.search)
+    searchParams.set(key, value)
+    const newRelativePathQuery =
+      window.location.pathname + '?' + searchParams.toString()
+    history.pushState(null, '', newRelativePathQuery)
   }
 
-  return { clickHandler }
+  const removeURLParam = (key) => {
+    console.log(key)
+  }
+
+  return { addOrUpdateURLParam, removeURLParam }
 }

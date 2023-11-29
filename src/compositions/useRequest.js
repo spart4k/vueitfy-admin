@@ -47,12 +47,10 @@ export default function ({
   const loading = ref(false)
 
   let makeRequest = (data) => {
-    console.log('makeRequest', data)
     //loading.value = true
     return request(data)
       .then((responseData) =>
       {
-        console.log('afterthen')
         //if (successMessage) $notifier.showMessage({ content: unref(successMessage), color: 'success' })
         if (successMessage) store.commit(
           'notifies/showMessage',

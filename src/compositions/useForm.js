@@ -148,8 +148,7 @@ export default function ({
     })
   }
   const clickHandler = async ({ action, skipValidation }) => {
-    console.log('clickHandler', action.action)
-    if (!validate(true) && !skipValidation) return
+    if (!skipValidation) if (!validate(true)) return
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -188,14 +187,12 @@ export default function ({
   const stageRequest = async (action) => {
     const sortedData = sortData()
     loading.value = true
-    console.log('stageRequest', createForm)
     const data = await createForm({
       url: action.url,
       module: action.module,
       formData: sortedData,
     })
-    console.log('afterform')
-    const response = action.conditionCode.results.find(
+    const response = action?.conditionCode?.results?.find(
       (x) => x.value === data[action.conditionCode.key]
     )
     tabStorageChange(response, data)
@@ -203,12 +200,12 @@ export default function ({
   }
 
   const tabStorageChange = (response, data) => {
-    if (response.toStorage) {
+    if (response?.toStorage) {
       response.toStorage.forEach((item) => {
         detail.stageData[item] = data[item]
       })
     }
-    if (response.fromStorage) {
+    if (response?.fromStorage) {
       response.fromStorage.forEach((item) => {
         delete detail.stageData[item]
       })

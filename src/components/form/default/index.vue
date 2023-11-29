@@ -142,7 +142,9 @@
             :color="action.color"
             class="ml-2"
             :loading="loading"
-            @click.prevent="clickHandler({ action })"
+            @click.prevent="
+              clickHandler({ action, skipValidation: action.skipValidation })
+            "
             v-for="action in tab.actions"
             :key="action.id"
           >

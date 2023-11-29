@@ -468,8 +468,10 @@ const table = {
         addItem()
       } else if (type === 'changeUrl') {
         changeUrl(url)
+      } else if (type === 'nextStage') {
+        emit('nextStage', {})
       }
-      
+      if (button.function) button.function()
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {

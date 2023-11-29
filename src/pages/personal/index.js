@@ -7,14 +7,18 @@ import {
   dateField,
   checkboxField,
   textBlock,
-  // dropZoneField,
+  textareaField,
+  dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/form/default/index.vue'
 import FormDocuments from '@/components/form/documents/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
+import useNavigation from '@/compositions/useNavigation'
 import { userKeys } from '@/pages'
+
+const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {
   console.log(row, 2)
@@ -27,6 +31,10 @@ function consoleButton(row) {
 
 function consolePanel() {
   console.log('panel,button')
+}
+
+function addQuery() {
+  addOrUpdateURLParam('target_id', 'add')
 }
 
 function searchInputing(field) {
@@ -311,7 +319,8 @@ const documentConfig = {
         label: 'Добавить',
         class: ['v-table-button--custom'],
         url: '$IconSetting',
-        function: consolePanel,
+        function: addQuery,
+        type: 'nextStage',
         backgroundColor: '#fff',
       },
     ],
@@ -1345,6 +1354,7 @@ const defaultForm = [
             label: 'ФИО',
             name: 'fio',
             placeholder: '',
+            value: 'zxczxc',
             class: [''],
             position: {
               cols: 12,
@@ -1358,6 +1368,7 @@ const defaultForm = [
             name: 'date_rojd',
             type: 'date',
             readonly: true,
+            value: '2023-11-15',
             menu: false,
             placeholder: '',
             class: [''],
@@ -1376,6 +1387,7 @@ const defaultForm = [
             alias: 'direction_id_logistic',
             placeholder: '',
             class: [''],
+            value: '1',
             selectOption: {
               text: 'name',
               value: 'id',
@@ -1466,6 +1478,7 @@ const defaultForm = [
             alias: 'grajdanstvo_id',
             placeholder: '',
             class: [''],
+            value: '1',
             selectOption: {
               text: 'name',
               value: 'id',
@@ -1583,18 +1596,151 @@ const defaultForm = [
             url: 'delete/unfinished_personal',
             name: 'prevStage',
             action: 'prevStage',
-            conditionCode: {
-              key: 'code',
-              results: [
-                {
-                  value: 1,
-                  type: 'success',
-                  fromStorage: ['id'],
-                },
-              ],
-            },
+            // conditionCode: {
+            //   key: 'code',
+            //   results: [
+            //     {
+            //       value: 1,
+            //       type: 'success',
+            //       fromStorage: ['id'],
+            //     },
+            //   ],
+            // },
           }),
         ],
+      },
+      {
+        id: 2,
+        name: 'Основные0',
+        type: FormDefault,
+        detail: true,
+        lists: [
+          // 'vid_vedomost_id',
+          // 'status_pt',
+          { alias: 'documents', filter: [] },
+          // { alias: 'grajdanstvo_id', filter: [] },
+          // 'shifts',
+          // 'nutritions',
+        ],
+        alias: 'personal_target',
+        active: false,
+        fields: [
+          selectField({
+            label: 'Тип документа',
+            name: 'doc_name',
+            alias: 'documents',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          dropZoneField({
+            label: 'Скан-копия/фото:',
+            name: 'path_doc',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { required },
+            options: {
+              withoutSave: false,
+              folder: 'parser_magnit',
+              name: '`parser_magnit_25`',
+              paramsForEmit: this,
+            },
+            value: '',
+          }),
+          textareaField({
+            label: 'Примечание:',
+            name: 'comment',
+            alias: 'pd.note',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Сохранить1',
+            type: 'submit',
+            color: 'primary',
+            condition: {
+              query: {
+                key: 'target_id',
+                type: 'number',
+              },
+            },
+            // action: 'nextStage',
+            module: 'form/create',
+            url: 'set/data',
+            name: 'prevStage',
+            action: 'prevStage',
+            // conditionCode: {
+            //   key: 'code',
+            //   results: [
+            //     {
+            //       value: 1,
+            //       type: 'success',
+            //       toStorage: ['id'],
+            //     },
+            //   ],
+            // },
+          }),
+          stringAction({
+            text: 'Сохранить2',
+            type: 'submit',
+            color: 'primary',
+            condition: {
+              query: {
+                key: 'target_id',
+                value: 'add',
+              },
+            },
+            // action: 'nextStage',
+            module: 'form/update',
+            url: 'set/data',
+            name: 'prevStage',
+            action: 'prevStage',
+            // conditionCode: {
+            //   key: 'code',
+            //   results: [
+            //     {
+            //       value: 1,
+            //       type: 'success',
+            //       toStorage: ['id'],
+            //     },
+            //   ],
+            // },
+          }),
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'disabled',
+            // module: 'form/del',
+            // url: 'delete/unfinished_personal',
+            name: 'prevStage',
+            action: 'prevStage',
+            skipValidation: true,
+          }),
+        ],
+        formData: {},
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { onUnmounted, ref } from 'vue'
 import FormDefault from '@/components/form/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
 import { useRouter } from 'vue-router/composables'
@@ -39,7 +39,6 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: (params) => {
-        console.log('xzc', props.tab.stageData.id)
         return store.dispatch(params.module, {
           url: params.url,
           id: props.tab.stageData?.id,
@@ -56,7 +55,7 @@ export default {
     })
 
     const nextStage = async ({ formData, action }) => {
-      if (action.request) {
+      if (action?.request) {
         const { makeRequestStage } = useRequest({
           context,
           request: () =>
@@ -74,6 +73,12 @@ export default {
     const prevStage = () => {
       activeTab.value--
     }
+
+    onUnmounted(() => {
+      console.log('unmounted', document.title, window.location.pathname)
+      window.history.pushState({}, document.title, window.location.pathname)
+    })
+
     return {
       activeTab,
       nextStage,

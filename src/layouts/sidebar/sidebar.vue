@@ -12,7 +12,9 @@
     >
       <div class="v-sidebar-container-user">
         <div class="v-sidebar-container-user_image">
-          <v-img src="http://h3hota-aabb.ru/gif/monolit.gif"></v-img>
+          <v-img
+            src="https://media.tenor.com/Q-gxepiJHagAAAAM/nono.gif"
+          ></v-img>
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">
           <div class="v-sidebar-container-user-info_name">Dasha Tsaritsa</div>

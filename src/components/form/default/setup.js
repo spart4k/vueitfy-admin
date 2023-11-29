@@ -38,6 +38,17 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
+    // function addOrUpdateURLParam(key, value) {
+    //   const searchParams = new URLSearchParams(window.location.search)
+    //   searchParams.set(key, value)
+    //   const newRelativePathQuery =
+    //     window.location.pathname + '?' + searchParams.toString()
+    //   history.pushState(null, '', newRelativePathQuery)
+    // }
+
+    // addOrUpdateURLParam('add', 'zxczxc')
+
+    // console.log('new URL', window.location.href)
     const context = {
       root: {
         store,
