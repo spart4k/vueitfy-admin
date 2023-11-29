@@ -60,7 +60,6 @@
             flex: 1;
             flex-wrap: wrap;
             &-user {
-                // background-color: red;
                 order: 1;
                 flex: 1;
                 height: 53px;
@@ -95,6 +94,7 @@
                     font-size: 13px;
                     color: var(--v-text-base);
                     font-weight: 500;
+                    // margin: 6px 0;
                 }
                 &_text {
                     white-space: nowrap;
@@ -107,6 +107,7 @@
                     width: 280px;
                     height: 42px;
                     font-size: 10px;
+                    margin-top: 4px;
                     font-weight: 400;
                     color: var(--v-secondary-base);
                 }

@@ -2,6 +2,12 @@
     &-files {
         display: flex;
         align-items: center;
+        &_tooltip {
+            max-width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         &_item {
             width: 31px;
             height: 31px;
@@ -12,13 +18,13 @@
                 height: 100%;
             }
             &-unregistered {
-                text-transform: uppercase;
+                // text-transform: uppercase;
                 width: 28px;
                 height: 100%;
                 color: var(--v-background-base);
                 background-color: var(--v-text-base);
                 font-weight: 600;
-                font-size: 7px;
+                font-size: 16px;
                 border-radius: 4px;
                 display: flex;
                 align-items: center;

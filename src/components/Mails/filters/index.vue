@@ -165,12 +165,12 @@
                 {{ item.name }}
               </span>
             </div>
-            <div
+            <!-- <div
               @click="openCreatePopup('box')"
               class="v-filters-expansion-folder-container_item v-filters-expansion-folder-container_item__disabled ml-4"
             >
               <v-icon small class="mr-2">$IconSystem</v-icon> Добавить ящик
-            </div>
+            </div> -->
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
