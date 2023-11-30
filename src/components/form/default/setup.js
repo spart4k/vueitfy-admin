@@ -135,9 +135,11 @@ export default {
       mode: isEdit.value,
       createForm,
     })
+
     onMounted(async () => {
       await getData()
     })
+
     return {
       //endIntersect,
       formData,

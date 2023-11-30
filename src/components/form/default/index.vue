@@ -45,6 +45,7 @@
               ref="autocompleteRef"
               @change="changeAutocomplete"
             />
+
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"

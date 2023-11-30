@@ -691,7 +691,7 @@ export default function ({
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
         )
-        console.log(field)
+
         window.fields = form.fields
         if (field) {
           field.hideItems = lists.data[keyList]
@@ -717,7 +717,6 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    console.log(field.name)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {

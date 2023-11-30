@@ -50,7 +50,7 @@ const config = {
         label: 'Приложение 2',
         class: ['v-table-button--custom'],
         type: 'getFilters',
-        url: '/slata/report/2',
+        url: 'slata/report/2',
         backgroundColor: '#fff',
       },
       {
