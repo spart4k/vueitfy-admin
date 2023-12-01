@@ -13,7 +13,7 @@
     </v-tabs>
     <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="item in tabs" :key="item.id">
-        <tab @openDialog="openDialog" />
+        <tab :objectInfo="objectInfo" @openDialog="openDialog" />
       </v-tab-item>
     </v-tabs-items>
     <v-row class="mt-5 justify-end">
@@ -30,27 +30,92 @@
       </v-btn>
       <v-dialog v-model="dialog" width="500">
         <v-card>
-          <v-card-title class="text-h5 grey lighten-2">
+          <!--<v-card-title class="text-h5 grey lighten-2">
             Privacy Policy
-          </v-card-title>
-
+          </v-card-title>-->
+          <v-card-title class="text-h5">{{ dialogName }}</v-card-title>
           <v-card-text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            <v-row>
+              <v-col
+                v-for="field in listFields"
+                :key="field.id"
+                :cols="field.position.cols"
+                :sm="field.position.sm"
+                class="field-col"
+                :class="field.type"
+              >
+                <v-text-field
+                  v-if="showField('string', field)"
+                  v-model="formData[field.name]"
+                  :label="field.label"
+                  clearable
+                  :readonly="field.readonly"
+                  :error-messages="formErrors[field?.name]"
+                />
+                <v-menu
+                  v-if="showField('date', field)"
+                  :key="field.id"
+                  :ref="`menuRef_${field.id}`"
+                  v-model="field.menu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ attrs }">
+                    <v-text-field
+                      @click:append="openMenu(field)"
+                      v-model="formData[field.name]"
+                      :label="field.label"
+                      append-icon="mdi-calendar"
+                      v-bind="attrs"
+                      :error-messages="formErrors[field?.name]"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="formData[field.name]"
+                    min="1950-01-01"
+                    color="primary"
+                    locale="ru-RU"
+                    :type="field.subtype === 'period' ? 'month' : undefined"
+                    :range="field.subtype === 'range'"
+                    :multiple="field.subtype === 'multiple'"
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="field.menu = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn text color="primary" @click="field.menu = false">
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
           </v-card-text>
 
           <v-divider></v-divider>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false">
-              I accept
-            </v-btn>
+            <v-row class="justify-end">
+              <v-btn
+                type="submit"
+                :color="action.color"
+                class="ml-2"
+                :loading="loading"
+                @click.prevent="
+                  clickHandler({
+                    action,
+                    skipValidation: action.skipValidation,
+                  })
+                "
+                v-for="action in actionsDialog"
+                :key="action.id"
+              >
+                {{ action.text }}
+              </v-btn>
+            </v-row>
           </v-card-actions>
         </v-card>
       </v-dialog>

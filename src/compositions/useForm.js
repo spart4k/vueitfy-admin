@@ -210,6 +210,8 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
+    } else if (action.action === 'turnOff') {
+      action.variable = false
     }
   }
 
@@ -243,8 +245,9 @@ export default function ({
 
   const sortData = () => {
     const newForm = {}
+    if (!form) return
     Object.keys(formData).forEach((key) => {
-      const item = form.fields.find((x) => x.name === key)
+      const item = form?.fields?.find((x) => x.name === key)
       if (
         (typeof item.isShow === 'boolean' && item.isShow) ||
         (typeof item.isShow === 'object' && item.isShow.value) ||
@@ -666,7 +669,32 @@ export default function ({
     })
     await Promise.all(queryFields)
   }
-
+  const putSelectItems = (lists) => {
+    for (let keyList in lists.data) {
+      const field = form?.fields.find((el) =>
+        el.alias ? el.alias === keyList : el.name === keyList
+      )
+      if (field) {
+        console.log(field)
+        field.hideItems = lists.data[keyList]
+        if (field.hiding) {
+          if (field.hiding.conditions) {
+            const condition = field.hiding.conditions.find(
+              (el) => mode === el.value
+            )
+            lists.data[keyList] = lists.data[keyList].filter((el) => {
+              return !condition.values.includes(el.id)
+            })
+          }
+        }
+        field.items = lists.data[keyList]
+        if (field.items.length === 1) {
+          formData[field.name] = field.items[0][field.selectOption.value]
+        }
+        showField(field.type, field, true)
+      }
+    }
+  }
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
@@ -692,32 +720,8 @@ export default function ({
     console.log(field, 'field')
     field.loading = true
     const lists = await makeRequestList(listData)
-    for (let keyList in lists.data) {
-      const field = form?.fields.find((el) =>
-        el.alias ? el.alias === keyList : el.name === keyList
-      )
-      if (field) {
-        console.log(field)
-        if (clear) formData[field.name] = ''
-        field.hideItems = lists.data[keyList]
-        if (field.hiding) {
-          if (field.hiding.conditions) {
-            const condition = field.hiding.conditions.find(
-              (el) => mode === el.value
-            )
-            lists.data[keyList] = lists.data[keyList].filter((el) => {
-              return !condition.values.includes(el.id)
-            })
-          }
-        }
-        field.items = lists.data[keyList]
-        if (field.items.length === 1) {
-          formData[field.name] = field.items[0][field.selectOption.value]
-        }
-        showField(field.type, field, true)
-      }
-    }
-
+    putSelectItems(lists)
+    if (clear) formData[field.name] = ''
     field.loading = false
   }
 
@@ -749,29 +753,7 @@ export default function ({
     }
     if (hasSelect()) {
       console.log(lists.data)
-      for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
-        console.log(field)
-        if (field) {
-          field.hideItems = lists.data[keyList]
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value
-              )
-              lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
-              })
-            }
-          }
-          field.items = lists.data[keyList]
-          if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
-          }
-        }
-      }
+      putSelectItems(lists)
     }
     await loadAutocompletes()
     loading.value = false

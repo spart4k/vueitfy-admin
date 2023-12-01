@@ -160,7 +160,7 @@ const routes = [
     component: ObjectView,
     children: [
       {
-        name: 'object/:id/:idPersonal',
+        name: 'object/:id',
         path: ':id',
         component: Detail,
       },

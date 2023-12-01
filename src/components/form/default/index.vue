@@ -19,7 +19,13 @@
             :class="field.type"
           >
             <div
-              v-if="loading && field.isShow"
+              v-if="
+                (loading &&
+                  field.isShow &&
+                  typeof field.isShow === 'boolean' &&
+                  field.isShow) ||
+                (typeof field.isShow === 'object' && field.isShow.value)
+              "
               class="field-loading gradient"
             ></div>
             <v-select

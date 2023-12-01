@@ -2,7 +2,6 @@ import { ref, onMounted, watch } from 'vue'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import store from '@/store'
-import { Callbacks } from 'jquery'
 //import { v4 as uuidv4 } from 'uuid'
 
 export default {

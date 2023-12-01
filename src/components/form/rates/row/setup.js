@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm.js'
 
 import store from '@/store'
-import { stringField, dateField } from '@/utils/fields'
+import { stringField, dateField, selectField } from '@/utils/fields'
 
 export default {
   name: 'Row',
@@ -12,7 +12,7 @@ export default {
     row,
   },
   props: {
-    info: {
+    row: {
       type: Object,
       default: () => {},
     },
@@ -22,9 +22,37 @@ export default {
     const formData = reactive({
       price: '',
       category: '',
-      date_add: '',
+      date_active_s: '',
+      date_active_po: '',
     })
     const listFields = ref([
+      selectField({
+        label: 'E',
+        name: 'status_id',
+        subtype: 'single',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [
+          {
+            id: 1,
+            name: '1',
+          },
+          {
+            id: 2,
+            name: '2',
+          },
+        ],
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        alias: 'p.status_id',
+      }),
       stringField({
         label: 'Сумма',
         name: 'price',
@@ -33,7 +61,7 @@ export default {
         class: [''],
         position: {
           cols: 12,
-          sm: 3,
+          sm: 2,
         },
         bootstrapClass: [''],
       }),
@@ -45,14 +73,13 @@ export default {
         class: [''],
         position: {
           cols: 12,
-          sm: 3,
+          sm: 2,
         },
         bootstrapClass: [''],
       }),
       dateField({
-        label: 'Дата',
+        label: 'Дата ',
         name: 'date_active_s',
-        subtype: 'range',
         placeholder: '',
         classes: [''],
         position: {
@@ -65,7 +92,6 @@ export default {
       dateField({
         label: 'Дата',
         name: 'date_active_po',
-        subtype: 'range',
         placeholder: '',
         classes: [''],
         position: {
@@ -83,11 +109,11 @@ export default {
       field.menu = true
     }
     const openDialog = () => {
-      emit('openDialog')
+      emit('openDialog', props.row.name)
     }
     onMounted(() => {
       for (let key in formData) {
-        formData[key] = props.info[key]
+        formData[key] = props.row[key]
       }
     })
     return {
