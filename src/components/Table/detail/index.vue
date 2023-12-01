@@ -14,7 +14,7 @@
         <v-tab
           v-for="item in detail.tabs"
           v-if="
-            ($route.meta.mode && item.path === $route.meta.mode) ||
+            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
             (!$route.meta.mode && !item.path)
           "
           :key="item.id"
@@ -26,7 +26,7 @@
         <v-tab-item
           v-for="item in detail.tabs"
           v-if="
-            ($route.meta.mode && item.path === $route.meta.mode) ||
+            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
             (!$route.meta.mode && !item.path)
           "
           :key="item.id"

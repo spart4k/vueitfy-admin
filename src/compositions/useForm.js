@@ -150,7 +150,7 @@ export default function ({
   }
   const clickHandler = async ({ action, skipValidation }) => {
     if (!skipValidation) if (!validate(true)) return
-    const sortedData = sortData()
+    const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -189,14 +189,8 @@ export default function ({
       //  nextForm()
       //}
     } else if (action.action === 'saveFormStore') {
-      loadStoreFile({
-        url: action.url,
-        module: action.module,
-        formData,
-      })
-    } else if (action.action === 'nextAwaitStage') {
       loading.value = true
-      const data = await createForm({
+      loadStoreFile({
         url: action.url,
         module: action.module,
         formData: sortedData,
@@ -204,6 +198,7 @@ export default function ({
       loading.value = false
     } else if (action.action === 'createForm') {
       loading.value = true
+      console.log(action, sortedData)
       await createForm({
         url: action.url,
         module: action.module,
@@ -214,7 +209,7 @@ export default function ({
   }
 
   const stageRequest = async (action) => {
-    const sortedData = sortData()
+    const sortedData = sortData({ action })
     loading.value = true
     const data = await createForm({
       url: action.url,
@@ -231,17 +226,18 @@ export default function ({
   const tabStorageChange = (response, data) => {
     if (response?.toStorage) {
       response.toStorage.forEach((item) => {
-        detail.stageData[item] = data[item]
+        // detail.stageData[item] = data[item]
+        store.commit('changeFormStorage', { key: item, value: data[item] })
       })
     }
-    if (response?.fromStorage) {
-      response.fromStorage.forEach((item) => {
-        delete detail.stageData[item]
-      })
-    }
+    // if (response?.fromStorage) {
+    //   response.fromStorage.forEach((item) => {
+    //     delete detail.stageData[item]
+    //   })
+    // }
   }
 
-  const sortData = () => {
+  const sortData = ({ action }) => {
     const newForm = {}
     Object.keys(formData).forEach((key) => {
       const item = form.fields.find((x) => x.name === key)
@@ -253,6 +249,13 @@ export default function ({
         newForm[key] = formData[key]
       }
       if (item.notSend) delete newForm[key]
+      if (action?.useStorageKey?.length) {
+        action.useStorageKey.forEach((item) => {
+          // console.log(detail)
+          newForm[item.requestKey] =
+            store?.state?.formStorage?.[item?.storageKey]
+        })
+      }
     })
     return newForm
   }
@@ -441,6 +444,7 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
+    console.log('field', field)
     field.dependence?.forEach(async (dependence) => {
       const depField = dependence.field
       let fieldValue, targetField, card, body
@@ -768,7 +772,7 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    console.log(field.name)
+    // console.log(field.name)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {

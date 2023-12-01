@@ -721,7 +721,7 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode === 'add')) {
+      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode.includes('add'))) {
         popupForm.value.isShow = true
       }
     })

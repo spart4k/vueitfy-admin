@@ -5,6 +5,7 @@ import {
   checkEveryDayPayment,
   getObject,
   create,
+  createForm,
 } from '@/api/personal'
 //import axios from 'axios'
 
@@ -16,9 +17,7 @@ const personal = {
       return result
     },
     async getKeys(_, { url, wrap, body }) {
-      console.log(url)
       const result = await getKeys(url)
-      console.log(result, wrap, body)
       if (wrap) {
         return { data: { [wrap]: result } }
       } else {
@@ -39,6 +38,10 @@ const personal = {
     async create(_, { url, body }) {
       console.log(_, url, body)
       const result = await create(url, body)
+      return result
+    },
+    async createForm(_, params) {
+      const result = await createForm(params)
       return result
     },
   },

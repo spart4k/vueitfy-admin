@@ -15,10 +15,10 @@ import FormDefault from '@/components/form/default/index.vue'
 import FormDocuments from '@/components/form/documents/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
-import useNavigation from '@/compositions/useNavigation'
+// import useNavigation from '@/compositions/useNavigation'
 import { userKeys } from '@/pages'
 
-const { addOrUpdateURLParam } = useNavigation({})
+// const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {
   console.log(row, 2)
@@ -33,9 +33,9 @@ function consolePanel() {
   console.log('panel,button')
 }
 
-function addQuery() {
-  addOrUpdateURLParam('target_id', 'add')
-}
+// function addQuery() {
+//   // addOrUpdateURLParam('target_id', 'add')
+// }
 
 function searchInputing(field) {
   console.log(field)
@@ -303,9 +303,10 @@ const documentConfig = {
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/personal_doc',
-    // alias: 'p.personal_id',
+    alias: 'personal_id',
     title: 'This is an about page1',
   },
+  type: TableDefault,
   panel: {
     buttons: [
       {
@@ -319,8 +320,9 @@ const documentConfig = {
         label: 'Добавить',
         class: ['v-table-button--custom'],
         url: '$IconSetting',
-        function: addQuery,
-        type: 'nextStage',
+        type: 'addItem',
+        // function: addQuery,
+        // type: 'nextStage',
         backgroundColor: '#fff',
       },
     ],
@@ -409,7 +411,191 @@ const documentConfig = {
     currentPage: 1,
     totalPages: null,
   },
-  detail: undefined,
+  detail: {
+    type: 'popup', // String 'popup' or 'page'
+    popupIndex: 2,
+    getOnClose: true,
+    classes: [''], // List class
+    width: '500px',
+    method: 'get',
+    alias: 'personal_doc',
+    url: '/get/form/',
+    name: 'Персонал',
+    bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
+    activeTab: null,
+    tabs: [
+      {
+        path: 'id',
+        id: 0,
+        name: 'Основные',
+        type: FormDefault,
+        detail: true,
+        lists: [{ alias: 'documents', filter: [] }],
+        alias: 'personal_doc',
+        active: false,
+        fields: [
+          selectField({
+            label: 'Тип документа',
+            name: 'doc_id',
+            alias: 'documents',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          dropZoneField({
+            label: 'Скан-копия/фото:',
+            name: 'path_doc',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { required },
+            options: {
+              removeble: true,
+              withoutSave: false,
+              folder: 'parser_magnit',
+              name: '`parser_magnit_25`',
+              paramsForEmit: this,
+            },
+            value: '',
+          }),
+          textareaField({
+            label: 'Примечание:',
+            name: 'note',
+            alias: 'pd.note',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            color: 'primary',
+            module: 'personal/createForm',
+            url: 'set/data/personal_doc',
+            useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+            name: 'saveForm',
+            action: 'saveForm',
+          }),
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'disabled',
+            name: 'prevStage',
+            action: 'prevStage',
+            skipValidation: true,
+          }),
+        ],
+        formData: {},
+      },
+      {
+        path: 'new',
+        id: 1,
+        name: 'Основные',
+        type: FormDefault,
+        detail: true,
+        lists: [{ alias: 'documents', filter: [] }],
+        alias: 'personal_doc',
+        active: false,
+        fields: [
+          selectField({
+            label: 'Тип документа',
+            name: 'doc_id',
+            alias: 'documents',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          dropZoneField({
+            label: 'Скан-копия/фото:',
+            name: 'path_doc',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { required },
+            options: {
+              removeble: true,
+              withoutSave: false,
+              folder: 'personal_doc',
+              name: '`personal_doc_25`',
+              paramsForEmit: this,
+            },
+            value: '',
+          }),
+          textareaField({
+            label: 'Примечание:',
+            name: 'note',
+            alias: 'pd.note',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            color: 'primary',
+            module: 'personal/createForm',
+            url: 'set/data/personal_doc',
+            useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+            name: 'saveFormStore',
+            action: 'saveFormStore',
+          }),
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'disabled',
+            // module: 'form/del',
+            // url: 'delete/unfinished_personal',
+            name: 'closePopup',
+            action: 'closePopup',
+            skipValidation: true,
+          }),
+        ],
+        formData: {},
+      },
+    ],
+  },
   filters,
 }
 
@@ -1609,139 +1795,6 @@ const defaultForm = [
           }),
         ],
       },
-      {
-        id: 2,
-        name: 'Основные0',
-        type: FormDefault,
-        detail: true,
-        lists: [
-          // 'vid_vedomost_id',
-          // 'status_pt',
-          { alias: 'documents', filter: [] },
-          // { alias: 'grajdanstvo_id', filter: [] },
-          // 'shifts',
-          // 'nutritions',
-        ],
-        alias: 'personal_target',
-        active: false,
-        fields: [
-          selectField({
-            label: 'Тип документа',
-            name: 'doc_name',
-            alias: 'documents',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dropZoneField({
-            label: 'Скан-копия/фото:',
-            name: 'path_doc',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            validations: { required },
-            options: {
-              withoutSave: false,
-              folder: 'parser_magnit',
-              name: '`parser_magnit_25`',
-              paramsForEmit: this,
-            },
-            value: '',
-          }),
-          textareaField({
-            label: 'Примечание:',
-            name: 'comment',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
-        actions: [
-          stringAction({
-            text: 'Сохранить1',
-            type: 'submit',
-            color: 'primary',
-            condition: {
-              query: {
-                key: 'target_id',
-                type: 'number',
-              },
-            },
-            // action: 'nextStage',
-            module: 'form/create',
-            url: 'set/data',
-            name: 'prevStage',
-            action: 'prevStage',
-            // conditionCode: {
-            //   key: 'code',
-            //   results: [
-            //     {
-            //       value: 1,
-            //       type: 'success',
-            //       toStorage: ['id'],
-            //     },
-            //   ],
-            // },
-          }),
-          stringAction({
-            text: 'Сохранить2',
-            type: 'submit',
-            color: 'primary',
-            condition: {
-              query: {
-                key: 'target_id',
-                value: 'add',
-              },
-            },
-            // action: 'nextStage',
-            module: 'form/update',
-            url: 'set/data',
-            name: 'prevStage',
-            action: 'prevStage',
-            // conditionCode: {
-            //   key: 'code',
-            //   results: [
-            //     {
-            //       value: 1,
-            //       type: 'success',
-            //       toStorage: ['id'],
-            //     },
-            //   ],
-            // },
-          }),
-          stringAction({
-            text: 'Закрыть',
-            type: 'submit',
-            color: 'disabled',
-            // module: 'form/del',
-            // url: 'delete/unfinished_personal',
-            name: 'prevStage',
-            action: 'prevStage',
-            skipValidation: true,
-          }),
-        ],
-        formData: {},
-      },
     ],
   },
 ]
@@ -1788,7 +1841,8 @@ const config = {
           {
             label: 'Добавить персонал',
             class: ['v-table-button--custom'],
-            type: 'addItem',
+            type: 'changeUrl',
+            url: 'personal-add',
             backgroundColor: '#fff',
           },
         ],

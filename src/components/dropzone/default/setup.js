@@ -45,10 +45,7 @@ export default {
       thumbnailWidth: 150,
       maxFilesize: 0.5,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
-      addRemoveLinks:
-        props.options.removeble == true && props.options.removeble
-          ? true
-          : false,
+      addRemoveLinks: props?.options?.removeble ? true : false,
       dictDefaultMessage: 'Переместите или выберите файл',
       acceptedFiles: props.options?.acceptedFiles,
       //dictRemoveFile: 'delete',

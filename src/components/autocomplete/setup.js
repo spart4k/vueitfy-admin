@@ -59,13 +59,10 @@ export default {
           id: params.id ? params.id : -1,
           filter,
         })
-        if (data.rows && data.rows.length) {
-          //props.field.items = [...props.field.items, ...data.rows]
+        if (data?.rows?.length) {
           Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
-          //props.field.items = data.rows
         } else {
           Vue.set(props.field, 'items', [])
-          //props.field.items = []
         }
 
         //Vue.set(field, 'items', data.rows)

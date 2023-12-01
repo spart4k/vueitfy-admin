@@ -59,7 +59,7 @@ const routes = [
         name: 'personal_target-add',
         path: '/personal_target/add',
         meta: {
-          mode: 'add',
+          mode: ['add'],
         },
         component: Detail,
       },
@@ -85,23 +85,33 @@ const routes = [
         name: 'personal-add',
         path: '/personal/add',
         meta: {
-          mode: 'add',
+          mode: ['add'],
         },
         component: Detail,
-      },
-      {
-        name: 'personal-add2',
-        path: '/personal/add2',
-        meta: {
-          mode: 'add',
-        },
-        component: Detail,
+        children: [
+          {
+            name: 'personal-add/:id',
+            path: ':id',
+            meta: {
+              mode: ['add', 'id'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal-add-new',
+            path: '/personal/add/new',
+            meta: {
+              mode: ['add', 'new'],
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'personal-add-key',
         path: '/personal/add-key',
         meta: {
-          mode: 'add-key',
+          mode: ['add-key'],
         },
         component: Detail,
       },
@@ -168,7 +178,7 @@ const routes = [
         name: 'object-add',
         path: '/object/add',
         meta: {
-          mode: 'add',
+          mode: ['add'],
         },
         component: Detail,
       },
@@ -207,7 +217,7 @@ const routes = [
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
         meta: {
-          mode: 'add',
+          mode: ['add'],
         },
         component: Detail,
       },
@@ -220,7 +230,7 @@ const routes = [
         name: 'shop-request-magnit/upload',
         path: './upload',
         meta: {
-          mode: 'upload',
+          mode: ['upload'],
         },
         component: Detail,
       },
@@ -364,7 +374,7 @@ const routes = [
         name: 'documents-query',
         path: '/documents/query',
         meta: {
-          mode: 'query',
+          mode: ['query'],
         },
         component: Detail,
       },

@@ -1,7 +1,7 @@
 import { onUnmounted, ref } from 'vue'
 import FormDefault from '@/components/form/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
-import { useRouter } from 'vue-router/composables'
+import { useRouter, useRoute } from 'vue-router/composables'
 import useStage from '@/compositions/useStage'
 
 import useRequest from '@/compositions/useRequest'
@@ -25,6 +25,7 @@ export default {
   },
   setup(props, ctx) {
     const router = useRouter()
+    const route = useRoute()
     const context = {
       root: {
         store,
@@ -35,23 +36,23 @@ export default {
     const loading = ref(false)
     const activeTab = ref(null)
 
-    const { makeRequest: createForm } = useRequest({
-      context,
-      successMessage: 'Сохранено',
-      request: (params) => {
-        return store.dispatch(params.module, {
-          url: params.url,
-          id: props.tab.stageData?.id,
-          body: params.formData,
-        })
-      },
-    })
+    // const { makeRequest: createForm } = useRequest({
+    //   context,
+    //   successMessage: 'Сохранено',
+    //   request: (params) => {
+    //     return store.dispatch(params.module, {
+    //       url: params.url,
+    //       id: props.tab.stageData?.id,
+    //       body: params.formData,
+    //     })
+    //   },
+    // })
 
     const { clickHandler } = useStage({
       context,
       loading,
       activeTab,
-      createForm,
+      // createForm,
     })
 
     const nextStage = async ({ formData, action }) => {
@@ -73,11 +74,6 @@ export default {
     const prevStage = () => {
       activeTab.value--
     }
-
-    onUnmounted(() => {
-      console.log('unmounted', document.title, window.location.pathname)
-      window.history.pushState({}, document.title, window.location.pathname)
-    })
 
     return {
       activeTab,

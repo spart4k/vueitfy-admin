@@ -318,12 +318,12 @@ const table = {
       //  }
       //})
       let by = undefined
-      console.log('props.filtersConfig', props, props.detail?.stageData.id)
-      if (props.routeParam || props.detail?.stageData?.id) {
+      // console.log('props.filtersConfig', store.state.formStorage, props.detail?.stageData.id)
+      if (props.routeParam || store?.state?.formStorage?.id) {
         by = [
           {
             field: props.options.options.urlDetail,
-            value: +props.routeParam || props.detail?.stageData?.id,
+            value: +props.routeParam || store?.state?.formStorage?.id,
             // value: +props.routeParam,
             alias: props.options.options.alias,
           },
@@ -431,6 +431,7 @@ const table = {
         //router.push({
         //  path: `${route.}./1`
         //})
+        console.log('route.name', route.name)
         router.push(
           {
             name: `${route.name}/:id`,
@@ -439,11 +440,13 @@ const table = {
             }
         })
         popupForm.value.isShow = true
+        console.log('popupForm.value.isShow', popupForm.value.isShow)
       }
     }
     const closePopupForm = () => {
       router.back()
       popupForm.value.isShow = false
+      if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
       if (props.options.detail.type === 'popup') {
@@ -452,7 +455,7 @@ const table = {
         //})
         router.push(
           {
-            name: `${route.name}-add`,
+            name: `${route.name}-new`,
           }
         )
         popupForm.value.isShow = true
@@ -549,7 +552,7 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode === 'add')) {
+      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode.includes('add'))) {
         popupForm.value.isShow = true
       }
     })
