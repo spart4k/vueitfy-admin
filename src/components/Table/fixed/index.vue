@@ -158,19 +158,6 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <!-- <vIconSort
-                      v-if="
-                        head.sorts &&
-                        head.sorts.length &&
-                        paramsQuery.sorts.length
-                      "
-                      class="v-table-header-row-cell-wrap__sort-icon mr-1"
-                      :state="
-                        paramsQuery.sorts.find((el) => el.field === head.value)
-                          .value
-                      "
-                      @click="sortRow(head)"
-                    /> -->
                     <span @click="!head.added && sortRow(head)">
                       {{ head.title }}
                     </span>

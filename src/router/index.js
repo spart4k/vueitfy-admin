@@ -21,6 +21,7 @@ import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
 import SlataReportView from '@/views/SlataReportView.vue'
+import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -395,6 +396,14 @@ const routes = [
     //     component: Detail,
     //   },
     // ],
+  },
+  {
+    path: '/schedule',
+    name: 'schedule',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ScheduleView,
   },
 ]
 

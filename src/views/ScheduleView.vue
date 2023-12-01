@@ -1,23 +1,20 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableFixed @changeheadershow="changeheadershow" :options="pivot" />
+    <TableFixed @changeheadershow="changeheadershow" :options="schedule" />
   </div>
   <!--</Layout>-->
 </template>
 
 <script>
-import { pivot } from '@/pages'
+import { schedule } from '@/pages'
 
-console.log(pivot)
+console.log(schedule)
 
 import TableFixed from '@/components/Table/fixed/index.vue'
 
-//import Layout from '@/layouts/default/index'
-//import Axios from 'axios'
-
 export default {
-  name: 'Pivot-View',
+  name: 'Schedule-View',
   components: {
     TableFixed,
     //Layout,
@@ -30,7 +27,7 @@ export default {
   },
   setup() {
     return {
-      pivot,
+      schedule,
     }
   },
 }

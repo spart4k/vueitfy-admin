@@ -361,6 +361,7 @@ const table = {
           by,
         },
       })
+      console.log(props.options.data.rows)
       props.options.data.rows = data.rows
       //props.options.data.rows = data
       if (props.options.data.rows?.length && props.options.data.rows) {
