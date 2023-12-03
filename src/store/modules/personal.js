@@ -6,6 +6,7 @@ import {
   getObject,
   create,
   createForm,
+  updateForm,
 } from '@/api/personal'
 //import axios from 'axios'
 
@@ -42,6 +43,10 @@ const personal = {
     },
     async createForm(_, params) {
       const result = await createForm(params)
+      return result
+    },
+    async updateForm(_, params) {
+      const result = await updateForm(params)
       return result
     },
   },

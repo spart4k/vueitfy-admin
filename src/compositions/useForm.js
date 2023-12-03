@@ -151,6 +151,7 @@ export default function ({
   const clickHandler = async ({ action, skipValidation }) => {
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
+    console.log('sortedData', sortedData)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -171,7 +172,7 @@ export default function ({
           action[el.target] = el.result[formData[el.from]]
         })
         //await createForm({ url: action.url, module: action.module })
-        loadStoreFile({
+        await loadStoreFile({
           url: action.url,
           module: action.module,
           formData: sortedData,
@@ -190,11 +191,22 @@ export default function ({
       //}
     } else if (action.action === 'saveFormStore') {
       loading.value = true
-      loadStoreFile({
+      await loadStoreFile({
         url: action.url,
         module: action.module,
         formData: sortedData,
       })
+      loading.value = false
+    } else if (action.action === 'updateFormStore') {
+      loading.value = true
+      await loadStoreFile(
+        {
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        },
+        { update: true }
+      )
       loading.value = false
     } else if (action.action === 'createForm') {
       loading.value = true
@@ -272,8 +284,9 @@ export default function ({
     return await store.dispatch('storage/loadFile')
   }
 
-  const loadStoreFile = async (queryParams) => {
+  const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
+    const { update } = params
     const queries = []
     for (let key in filesBasket.value) {
       const name =
@@ -321,7 +334,11 @@ export default function ({
         }
       }
     }
-    const result = await createForm(queryParams)
+    if (update) {
+      const result = await changeForm(queryParams)
+    } else {
+      const result = await createForm(queryParams)
+    }
     //context.root.router.go(-1)
     emit('closePopup')
     // const
