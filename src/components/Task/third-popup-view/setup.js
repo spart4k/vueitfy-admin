@@ -115,8 +115,10 @@ const ThirdPopupView = defineComponent({
       success && ctx.emit('closePopup')
     }
     console.log(imagePreview.value)
+    let isLoadImage = ref(false)
     const handleFileUpload = async (e, indexForPhoto) => {
       accForSend.value = accForSend.value - 1
+      isLoadImage.value = true
       let file = e.target.files[0]
       console.log(file)
       let reader = new FileReader()
@@ -189,6 +191,7 @@ const ThirdPopupView = defineComponent({
       comment,
       sendDoneTask,
       watchForComment,
+      isLoadImage,
     }
   },
 })
