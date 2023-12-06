@@ -55,6 +55,20 @@
         </div>
       </div>
     </Popup>
+    <Popup
+      closeButton
+      @close="closePopupForm"
+      :options="{ width: options.detail.width, portal: 'table-detail' }"
+      v-if="
+        options.detail && options.detail.type === 'popup' && popupForm.isShow
+      "
+    >
+      <router-view
+        :detail="detail"
+        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
+        @closePopup="closePopupForm"
+      />
+    </Popup>
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"

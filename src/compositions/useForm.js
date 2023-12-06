@@ -15,6 +15,7 @@ import _ from 'lodash'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
+
 export default function ({
   fields = {},
   watcher,
