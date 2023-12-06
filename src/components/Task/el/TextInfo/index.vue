@@ -1,6 +1,10 @@
 <template>
   <div class="text-info">
-    <v-row v-for="item in formData" :key="item.key" class="mt-1">
+    <v-row
+      v-for="item in formData"
+      :key="item.key"
+      class="mt-1 font-weight-bold"
+    >
       {{ item.key }}: {{ item.value }}
     </v-row>
   </div>
