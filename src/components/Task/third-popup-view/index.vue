@@ -4,7 +4,6 @@
       <TextInfo :infoObj="textInfo" />
       <v-row> Проверьте документы: </v-row>
       <FormError>{{ JSON.parse(data.task.dop_data).comment }}</FormError>
-      цуацуацу
       <div>
         <template>
           <v-row
