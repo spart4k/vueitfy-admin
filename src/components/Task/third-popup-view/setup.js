@@ -81,7 +81,15 @@ const ThirdPopupView = defineComponent({
     const addToDenied = (index) => {
       Vue.set(isShowBtnArray.value, index, false)
       accForSend.value = 1 + accForSend.value
-      console.log()
+      console.log(index)
+      store.commit(
+        'notifies/showMessage',
+        {
+          color: 'orange darken-2',
+          content: 'Файл будет возвращен, необходимо указать комментарий!',
+        },
+        1000
+      )
     }
     const { makeRequest: doneRequest } = useRequest({
       context,
