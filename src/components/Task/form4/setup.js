@@ -60,7 +60,7 @@ const Form4 = defineComponent({
     const { makeRequest: pushSomeShit } = useRequest({
       context,
       request: () =>
-        store.dispatch('taskModule/setBid', {
+        store.dispatch('taskModule/updateFileDataNew', {
           data: {
             id: data.entity.id,
             habitation_id: selectName.value,
@@ -82,8 +82,11 @@ const Form4 = defineComponent({
       context,
       request: () =>
         store.dispatch('taskModule/updateFileData', {
-          id: 1,
-          path_doc: `/personal_doc/${fileName}`,
+          data: {
+            doc_id: 10,
+            personal_id: data.entity.id,
+            path_doc: `/personal_doc/${fileName}`,
+          },
         }),
     })
     const { makeRequest: doneTask } = useRequest({
@@ -120,7 +123,7 @@ const Form4 = defineComponent({
             process_id: data.task.process_id,
             account_id: data.task.to_account_id,
             task_id: data.task.id,
-            docs_id: { 10: fixData.result },
+            docs_id: [{ 10: fixData.result }],
             personal_id: data.entity.id,
             parent_action: data.task.id,
             type_parent_action: 2,
