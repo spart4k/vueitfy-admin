@@ -90,6 +90,13 @@ const Form7 = defineComponent({
       const docsIdArr = [
         ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
       ]
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isHasOsnDoc)
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', docsIdArr.length)
+      console.log(
+        'ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ',
+        Object.values(data.correctedDocs).length
+      )
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isOsnDocValid.value)
       if (isHasOsnDoc) {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length &&
