@@ -159,7 +159,7 @@ const Form7 = defineComponent({
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
             okk_id: props.data.task.from_account_id,
-            bank_card_id: bankCardId.value ?? null,
+            bank_card_id: bankCardId.value ? bankCardId.value : null,
           },
         })
       },
