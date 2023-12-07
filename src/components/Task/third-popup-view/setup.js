@@ -81,7 +81,15 @@ const ThirdPopupView = defineComponent({
     const addToDenied = (index) => {
       Vue.set(isShowBtnArray.value, index, false)
       accForSend.value = 1 + accForSend.value
-      console.log()
+      console.log(index)
+      store.commit(
+        'notifies/showMessage',
+        {
+          color: 'orange darken-2',
+          content: 'Файл будет возвращен, необходимо указать комментарий!',
+        },
+        1000
+      )
     }
     const { makeRequest: doneRequest } = useRequest({
       context,
@@ -107,8 +115,10 @@ const ThirdPopupView = defineComponent({
       success && ctx.emit('closePopup')
     }
     console.log(imagePreview.value)
+    let isLoadImage = ref(false)
     const handleFileUpload = async (e, indexForPhoto) => {
       accForSend.value = accForSend.value - 1
+      isLoadImage.value = true
       let file = e.target.files[0]
       console.log(file)
       let reader = new FileReader()
@@ -181,6 +191,7 @@ const ThirdPopupView = defineComponent({
       comment,
       sendDoneTask,
       watchForComment,
+      isLoadImage,
     }
   },
 })
