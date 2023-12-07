@@ -158,7 +158,7 @@ const Form7 = defineComponent({
             docs_id: props.data.data.docs_id.map((doc) => doc.id),
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
-            okk_id: props.data.task.entity.id,
+            okk_id: props.data.task.from_account_id,
             bank_card_id: bankCardId.value ?? null,
           },
         })
