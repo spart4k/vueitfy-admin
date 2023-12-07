@@ -122,7 +122,7 @@ const Form2 = defineComponent({
         console.log('ДАГДЕЖБЛЯТЬ', finalData)
         return store.dispatch('taskModule/setPartTask', {
           status:
-            finalData.value.rejected.length || !isOsnDocConfirmed
+            finalData.value.rejected.length || !isOsnDocConfirmed.value
               ? 6
               : taskDeadline > 0
               ? 2
