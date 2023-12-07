@@ -6,7 +6,7 @@
         &nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </div>
 
-      <TextInfo :infoObj="textInfo" />
+      <TextInfo :infoObj="textInfo" class="mb-2" />
       <v-row> Проверьте документы: </v-row>
       <FormError>{{ JSON.parse(data.task.dop_data).comment }}</FormError>
       <div>
