@@ -123,7 +123,7 @@ const Form4 = defineComponent({
             process_id: data.task.process_id,
             account_id: data.task.to_account_id,
             task_id: data.task.id,
-            docs_id: { 10: fixData.result },
+            docs_id: [{ 10: fixData.result }],
             personal_id: data.entity.id,
             parent_action: data.task.id,
             type_parent_action: 2,
