@@ -164,6 +164,7 @@ const Form5 = defineComponent({
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
+              personal_id: data.entity.id,
               process_id: data.task.process_id,
               task_id: data.task.id,
               parent_action: data.task.id,
