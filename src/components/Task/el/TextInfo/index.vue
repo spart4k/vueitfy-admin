@@ -1,11 +1,8 @@
 <template>
   <div class="text-info">
-    <v-row
-      v-for="item in formData"
-      :key="item.key"
-      class="mt-1 font-weight-bold"
-    >
-      {{ item.key }}: {{ item.value }}
+    <v-row v-for="item in formData" :key="item.key" class="mt-1">
+      <span class="font-weight-bold">{{ item.key }}</span
+      >: {{ item.value }}
     </v-row>
   </div>
 </template>
