@@ -68,7 +68,11 @@
         :listNames="listNames"
         :docs="docs"
       ></DocFormWithConfirm>
-      <FormComment />
+      <FormComment
+        v-model="comment"
+        :errors="[commentErr]"
+        @input="commentErr = ''"
+      />
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
