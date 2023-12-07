@@ -82,8 +82,11 @@ const Form4 = defineComponent({
       context,
       request: () =>
         store.dispatch('taskModule/updateFileData', {
-          id: 1,
-          path_doc: `/personal_doc/${fileName}`,
+          data: {
+            doc_id: 10,
+            personal_id: data.entity.id,
+            path_doc: `/personal_doc/${fileName}`,
+          },
         }),
     })
     const { makeRequest: doneTask } = useRequest({
