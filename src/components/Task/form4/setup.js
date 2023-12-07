@@ -60,7 +60,7 @@ const Form4 = defineComponent({
     const { makeRequest: pushSomeShit } = useRequest({
       context,
       request: () =>
-        store.dispatch('taskModule/setBid', {
+        store.dispatch('taskModule/updateFileDataNew', {
           data: {
             id: data.entity.id,
             habitation_id: selectName.value,
