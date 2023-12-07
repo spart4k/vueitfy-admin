@@ -119,7 +119,7 @@ const Form2 = defineComponent({
           Date.parse(props.data.task.date_create) +
           props.data.task.time_execution * 1000 -
           Date.now()
-        console.log(finalData)
+        console.log('ДАГДЕЖБЛЯТЬ', finalData)
         return store.dispatch('taskModule/setPartTask', {
           status: finalData.value.rejected.length
             ? 6
