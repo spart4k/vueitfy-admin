@@ -41,9 +41,14 @@
         <v-text-field v-model="price" label="Цена"></v-text-field
       ></v-col>
     </v-row>
-    <v-row>
+    <v-row class="pt-0 mt-0">
       <v-col cols="12">
-        <v-text-field :value="nameComp" disabled hide-details></v-text-field>
+        <v-text-field
+          :value="nameComp"
+          disabled
+          hide-details
+          class="pt-0"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row>
@@ -65,9 +70,13 @@
       >
 
       <v-col cols="12"
-        ><span>Заказчик:</span> <span>{{ data.data.account.name }}</span></v-col
-      ><v-col cols="12"
-        ><span>Моб. {{ mobilePhone }} Стац. {{ landPhone }}</span></v-col
+        ><span class="font-weight-bold">Заказчик:</span>
+        <span>{{ data.data.account.name }}</span></v-col
+      ><v-col cols="12 mb-4"
+        ><span class="font-weight-bold"
+          ><span class="font-weight-bold">Моб.</span> {{ mobilePhone }} Стац.
+          {{ landPhone }}</span
+        ></v-col
       >
     </v-row>
     <v-divider></v-divider>
