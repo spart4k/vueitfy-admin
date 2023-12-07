@@ -65,6 +65,12 @@ const taskModule = {
       const result = await updateDataFile('set/data/personal_doc', data)
       return result
     },
+    async updateFileDataNew(_, data) {
+      // file/save/personal_doc/personal_doc_1231412342134.jpg
+      console.log(data)
+      const result = await updateDataFile('set/data/personal', data)
+      return result
+    },
 
     // /task/start/process
 
