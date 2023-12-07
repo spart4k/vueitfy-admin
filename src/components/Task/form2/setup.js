@@ -148,7 +148,10 @@ const Form2 = defineComponent({
     })
 
     const sendData = async () => {
-      if (finalData.value.rejected.length && !comment.value) {
+      if (
+        (finalData.value.rejected.length && !comment.value) ||
+        (!isOsnDocConfirmed.value && !comment.value)
+      ) {
         commentErr.value = 'Заполните комментарий'
       } else {
         await setPersonalData()
