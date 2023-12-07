@@ -73,7 +73,7 @@
         ><span class="font-weight-bold">Заказчик:</span>
         <span>{{ data.data.account.name }}</span></v-col
       ><v-col cols="12 mb-4"
-        ><span class="font-weight-bold"
+        ><span
           ><span class="font-weight-bold">Моб.</span> {{ mobilePhone }} Стац.
           {{ landPhone }}</span
         ></v-col
