@@ -158,10 +158,10 @@ const Form1 = defineComponent({
             process_id: task.process_id,
             task_id: task.id,
             parent_action: task.id,
-            docs_id: props.data.data.docs_id.map((doc) => doc.id),
+            docs_id: JSON.stringify(props.task.dop_data),
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
-            bank_card_id: bankCardId.value ?? null,
+            bank_card_id: bankCardId.value ?? undefined,
           },
         })
       },
