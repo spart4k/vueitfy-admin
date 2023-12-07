@@ -44,6 +44,8 @@ const Form2 = defineComponent({
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
     const isOsnDocConfirmed = ref(false)
     const isOsnDocTouched = ref(false)
+    const commentErr = ref('')
+    const comment = ref('')
     const changeDocs = (data) => {
       finalData.value = data
       console.log(data)
@@ -146,14 +148,18 @@ const Form2 = defineComponent({
     })
 
     const sendData = async () => {
-      await setPersonalData()
-      console.log(setPersonalData)
-      await setStartStep()
-      console.log(setStartStep)
-      const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
-      console.log(changeStatusTask)
-      console.log(finalData.value)
+      if (finalData.value.rejected.length) {
+        commentErr.value = 'Заполните комментарий'
+      } else {
+        await setPersonalData()
+        console.log(setPersonalData)
+        await setStartStep()
+        console.log(setStartStep)
+        const { success } = await changeStatusTask()
+        success && ctx.emit('closePopup')
+        console.log(changeStatusTask)
+        console.log(finalData.value)
+      }
     }
 
     return {
@@ -174,6 +180,8 @@ const Form2 = defineComponent({
       rejectOsnData,
       isOsnDocConfirmed,
       isOsnDocTouched,
+      commentErr,
+      comment,
     }
   },
 })
