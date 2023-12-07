@@ -97,6 +97,7 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: (params) => {
+        console.log(+route.params.id)
         return store.dispatch(params.module, {
           //url: `set/data/${alias}`,
           url: params.url,
@@ -138,6 +139,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
+      readonlyField,
     } = useForm({
       form: props.tab,
       context,
@@ -177,6 +179,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
+      readonlyField,
     }
   },
 }

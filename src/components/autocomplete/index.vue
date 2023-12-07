@@ -16,6 +16,7 @@
       no-data-text="Нет объектов"
       @change="update"
       :disabled="disabled"
+      :readonly="readonly"
     >
       <template v-slot:append>
         <v-progress-circular

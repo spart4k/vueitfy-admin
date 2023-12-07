@@ -44,6 +44,18 @@
                 class="field-col"
                 :class="field.type"
               >
+                <v-select
+                  v-if="showField('select', field)"
+                  :items="field.items"
+                  :item-text="field.selectOption.text"
+                  :item-value="field.selectOption.value"
+                  :label="field.label"
+                  v-model="formData[field.name]"
+                  :error-messages="formErrors[field?.name]"
+                  persistent-hint
+                  clearable
+                  :multiple="field.subtype === 'multiselect'"
+                ></v-select>
                 <v-text-field
                   v-if="showField('string', field)"
                   v-model="formData[field.name]"

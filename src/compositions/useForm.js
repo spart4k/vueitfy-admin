@@ -1,4 +1,4 @@
-import Vue, { ref, computed, watch, unref, reactive } from 'vue'
+import Vue, { ref, computed, watch, unref, reactive, readonly } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
 import store from '@/store'
@@ -445,6 +445,12 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field } = params
     field.dependence?.forEach(async (dependence) => {
+      if (dependence.condition?.length) {
+        const success = dependence.condition.evert((conditionEl) => {
+          return conditionEl.value.includes(formData[conditionEl.field])
+        })
+        if (!success) return
+      }
       const depField = dependence.field
       let fieldValue, targetField, card, body
       targetField = form.fields.find((el) => el.name === depField)
@@ -468,13 +474,23 @@ export default function ({
           //}
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
+        console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
         if (targetField.type === 'autocomplete') {
-          const filter = []
+          const filters = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
               if (!formData[el.field]) return
-              filter.push({
+              filters.push({
+                field: el.field,
+                value: formData[el.field],
+              })
+            })
+          }
+          if (dependence.filter && dependence.filter.length) {
+            dependence.filter.forEach((el) => {
+              if (!formData[el.field]) return
+              filters.push({
                 field: el.field,
                 value: formData[el.field],
               })
@@ -486,7 +502,7 @@ export default function ({
             searchValue: '',
             //id: params.id ? params.id : -1,
             id: -1,
-            filter,
+            filters,
           }
         }
       }
@@ -496,7 +512,9 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
-        dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
+        if (params.item) {
+          dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
+        }
         return
       } else if (
         dependence &&
@@ -578,6 +596,7 @@ export default function ({
           const selectField = form.fields.find(
             (el) => el.name === dependence.action.field
           )
+          console.log(selectField)
           selectField.items = selectField.hideItems.filter((el) => {
             return el.id !== dependence.action.condition[data.result]
           })
@@ -759,6 +778,20 @@ export default function ({
     loading.value = false
   }
 
+  const readonlyField = (field) => {
+    if (typeof field.readonly === 'boolean') return field.readonly
+    else if (typeof field.readonly === 'object') {
+      if (field.readonly.condition?.length) {
+        const condition = () =>
+          field.readonly.condition.every((el) => {
+            return el.value.includes(formData[el.field])
+          })
+        field.readonly.value = condition()
+        return field.readonly.value
+      }
+    }
+  }
+
   const showField = (type, field, loaded) => {
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
@@ -868,5 +901,6 @@ export default function ({
     changeCheckbox,
     tabStorageChange,
     stageRequest,
+    readonlyField,
   }
 }

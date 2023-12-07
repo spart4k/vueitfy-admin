@@ -66,6 +66,9 @@ const routes = [
       {
         name: 'personal_target/:id',
         path: ':id',
+        meta: {
+          mode: 'edit',
+        },
         component: Detail,
       },
     ],
@@ -84,14 +87,6 @@ const routes = [
       {
         name: 'personal-add',
         path: '/personal/add',
-        meta: {
-          mode: 'add',
-        },
-        component: Detail,
-      },
-      {
-        name: 'personal-add2',
-        path: '/personal/add2',
         meta: {
           mode: 'add',
         },
@@ -204,6 +199,14 @@ const routes = [
     component: ShopRequestMagnitView,
     children: [
       {
+        name: 'shop-request-magnit/upload',
+        path: './upload',
+        meta: {
+          mode: 'upload',
+        },
+        component: Detail,
+      },
+      {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
         meta: {
@@ -214,14 +217,6 @@ const routes = [
       {
         name: 'shop-request-magnit/:id',
         path: ':id',
-        component: Detail,
-      },
-      {
-        name: 'shop-request-magnit/upload',
-        path: './upload',
-        meta: {
-          mode: 'upload',
-        },
         component: Detail,
       },
     ],

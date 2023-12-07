@@ -54,7 +54,7 @@ export default {
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
         //`)
         //const { url } = props.field
-        const url = 'get/pagination/object_price_active'
+        const url = 'get/pagination/object_price_unassigned'
         //const filter = []
         console.log(props.objectInfo.id)
         const data = await getList(url, {
@@ -65,7 +65,7 @@ export default {
           sorts: [],
           //id: params.id ? params.id : -1,
           filter: [],
-          by: [{ alias: 'object_id', value: route.params.id }],
+          by: [{ alias: 'object_id', value: +route.params.id }],
         })
         if (data.rows && data.rows.length) {
           //props.field.items = [...props.field.items, ...data.rows]
@@ -73,7 +73,8 @@ export default {
           items.value = [...items.value, ...data.rows]
           //props.field.items = data.rows
         } else {
-          Vue.set(props.field, 'items', [])
+          //Vue.set(props.field, 'items', [])
+          items.value = []
           //props.field.items = []
         }
 
@@ -82,19 +83,20 @@ export default {
         //console.log(data.products, field)
       }
     }
-    const endIntersect = (entries, observer, isIntersecting) => {
+    const endIntersect = async (entries, observer, isIntersecting) => {
       if (isIntersecting) {
         console.log(isIntersecting)
         //const dataset = entries[0].target.dataset.field
-        if (props.field.items.length && !props.field.loading) {
+        if (items.value.length && !loading.value) {
           //field.page = field.page + 10
           //Vue.set(field, 'page', field.page + 1)
           queryOptions.value.page = queryOptions.value.page + 1
           const params = {
-            search: props.field.search,
-            name: props.field.name,
+            search: search.value,
           }
-          querySelections(params, true)
+          loading.value = true
+          await querySelections(params, true)
+          loading.value = true
         }
       }
     }
@@ -112,6 +114,8 @@ export default {
       items,
       search,
       openDialog,
+      endIntersect,
+      loading,
     }
   },
 }
