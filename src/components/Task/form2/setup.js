@@ -130,7 +130,7 @@ const Form2 = defineComponent({
           data: {
             process_id: props.data.task.process_id,
             personal_id: props.data.entity.id,
-            task: props.data.task.id,
+            task_id: props.data.task.id,
             parent_action: props.data.task.id,
             docs_id:
               isHasOsnDoc && !isOsnDocConfirmed.value
