@@ -117,9 +117,13 @@ const Form7 = defineComponent({
     const { makeRequest: setPersonalDocData } = useRequest({
       context,
       request: () => {
+        const data = Object.values(finalData.value).reduce((acc, value) => {
+          acc = { ...acc, ...value }
+          return acc
+        }, {})
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...finalData.value,
+            ...data,
           },
         })
       },
