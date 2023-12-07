@@ -105,10 +105,12 @@ const Form5 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
-            doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
-            from_task: true,
+            data: {
+              personal_id: data.entity.id,
+              doc_id: e.item,
+              path_doc: `/files/personal_doc/${fileName}`,
+              from_task: true,
+            },
           }),
       })
 
@@ -120,21 +122,6 @@ const Form5 = defineComponent({
             folder: 'personal_doc',
             fileName: fileName,
             file: form_data,
-          }),
-        successMessage: 'Файл успешно загружен',
-      })
-
-      const { makeRequest: createFillScanProcess } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/startProcess', {
-            parent_process: data.task.process_id,
-            process_id: 1,
-            parent_action: data.task.process_id,
-            type_parent_action: 2,
-            account_id: data.task.to_account_id,
-            personal_id: data.entity.id,
-            docs_id: docs_ids.value,
           }),
         successMessage: 'Файл успешно загружен',
       })
@@ -153,11 +140,7 @@ const Form5 = defineComponent({
         //   listRequestsForUpload.value.push(createFillScanProcess)
         // }
       } else {
-        listRequestsForUpload.value.push(
-          updateFileData,
-          createFillScanProcess,
-          loadImage
-        )
+        listRequestsForUpload.value.push(updateFileData, loadImage)
         // if (additionalRequestFlag) {
         //   listRequestsForUpload.value.push(createFillScanProcess)
         // }
@@ -199,7 +182,21 @@ const Form5 = defineComponent({
       })
 
       changeStatus()
-
+      const { makeRequest: createFillScanProcess } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/startProcess', {
+            parent_process: data.task.process_id,
+            process_id: 1,
+            parent_action: data.task.process_id,
+            type_parent_action: 2,
+            account_id: data.task.to_account_id,
+            personal_id: data.entity.id,
+            docs_id: docs_ids.value,
+          }),
+        successMessage: 'Файл успешно загружен',
+      })
+      createFillScanProcess()
       ctx.emit('closePopup')
     }
     let spr = {
