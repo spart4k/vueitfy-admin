@@ -121,11 +121,12 @@ const Form2 = defineComponent({
           Date.now()
         console.log('ДАГДЕЖБЛЯТЬ', finalData)
         return store.dispatch('taskModule/setPartTask', {
-          status: finalData.value.rejected.length
-            ? 6
-            : taskDeadline > 0
-            ? 2
-            : 3,
+          status:
+            finalData.value.rejected.length || !isOsnDocConfirmed
+              ? 6
+              : taskDeadline > 0
+              ? 2
+              : 3,
           data: {
             process_id: props.data.task.process_id,
             personal_id: props.data.entity.id,
