@@ -119,6 +119,7 @@ const Form5 = defineComponent({
         request: () =>
           store.dispatch('taskModule/loadImage', {
             id: 1,
+            personal_id: data.entity.id,
             folder: 'personal_doc',
             fileName: fileName,
             file: form_data,
