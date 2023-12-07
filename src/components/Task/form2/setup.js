@@ -148,7 +148,7 @@ const Form2 = defineComponent({
     })
 
     const sendData = async () => {
-      if (finalData.value.rejected.length) {
+      if (finalData.value.rejected.length && !comment.value) {
         commentErr.value = 'Заполните комментарий'
       } else {
         await setPersonalData()
