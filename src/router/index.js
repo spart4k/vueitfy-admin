@@ -66,6 +66,9 @@ const routes = [
       {
         name: 'personal_target/:id',
         path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
     ],

@@ -1,6 +1,7 @@
 <template>
   <div class="detail">
     <div class="detail-tabs pa-4">
+      {{ $route.meta.mode }}
       <p v-if="detail.name" class="text-h4 mb-4">
         {{ detail.name }}
       </p>
