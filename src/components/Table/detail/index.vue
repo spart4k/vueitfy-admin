@@ -40,7 +40,7 @@
             :syncData="syncForm"
             :stages="item.stages"
             :routeParam="id"
-            @closePopup="$emit('closePopup')"
+            @closePopup="(e) => $emit('closePopup', e)"
           />
           <!--<v-progress-circular
             v-else

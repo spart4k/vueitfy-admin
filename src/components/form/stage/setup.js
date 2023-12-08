@@ -1,4 +1,4 @@
-import { onUnmounted, ref } from 'vue'
+import Vue, { onUnmounted, onMounted, ref } from 'vue'
 import FormDefault from '@/components/form/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
 import { useRouter, useRoute } from 'vue-router/composables'
@@ -36,23 +36,24 @@ export default {
     const loading = ref(false)
     const activeTab = ref(null)
 
-    // const { makeRequest: createForm } = useRequest({
-    //   context,
-    //   successMessage: 'Сохранено',
-    //   request: (params) => {
-    //     return store.dispatch(params.module, {
-    //       url: params.url,
-    //       id: props.tab.stageData?.id,
-    //       body: params.formData,
-    //     })
-    //   },
-    // })
+    const { makeRequest: createForm } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: (params) => {
+        return store.dispatch(params.module, {
+          url: params.url,
+          id: store.state.formStorage.id,
+          body: params?.formData,
+        })
+      },
+    })
 
     const { clickHandler } = useStage({
       context,
       loading,
       activeTab,
-      // createForm,
+      createForm,
+      form: props.tab,
     })
 
     const nextStage = async ({ formData, action }) => {
@@ -75,10 +76,20 @@ export default {
       activeTab.value--
     }
 
+    const setStageData = (val) => {
+      Vue.set(props.tab, 'stageData', val)
+    }
+
+    onMounted(() => {
+      if (props?.tab?.setRoute && route.name !== props?.tab?.setRoute)
+        router.push({ name: props.tab.setRoute })
+    })
+
     return {
       activeTab,
       nextStage,
       prevStage,
+      setStageData,
       clickHandler,
       loading,
     }

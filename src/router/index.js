@@ -306,6 +306,14 @@ const routes = [
         path: ':id',
         component: Detail,
       },
+      {
+        name: 'zayavka-add',
+        path: '/zayavka/add',
+        meta: {
+          mode: ['add'],
+        },
+        component: Detail,
+      },
     ],
   },
   {

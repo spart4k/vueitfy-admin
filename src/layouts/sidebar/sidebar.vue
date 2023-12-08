@@ -50,9 +50,9 @@
                     <div class="v-sidebar-container-link_icon">
                       <v-icon
                         :color="
-                          $route?.path === item.link ||
-                          JSON?.parse(item?.child_json)?.some(
-                            (e) => e?.link === $route?.path
+                          $route?.path.includes(item.link) ||
+                          JSON?.parse(item?.child_json)?.some((e) =>
+                            $route?.path.includes(e?.link)
                           )
                             ? 'primary'
                             : ''
@@ -64,7 +64,7 @@
                       v-if="!miniMenu"
                       :class="[
                         'v-sidebar-container-link_name',
-                        $route?.path === item.link &&
+                        $route?.path.includes(item.link) &&
                           'v-sidebar-container-link_name__active',
                       ]"
                     >
@@ -84,8 +84,8 @@
                   <v-icon
                     :color="
                       $route?.path === item?.link ||
-                      JSON?.parse(item?.child_json).some(
-                        (e) => e.link === $route?.path
+                      JSON?.parse(item?.child_json).some((e) =>
+                        $route?.path.includes(e?.link)
                       )
                         ? 'primary'
                         : ''
@@ -97,9 +97,9 @@
                   v-if="!miniMenu"
                   :class="[
                     'v-sidebar-container-link_name',
-                    ($route?.path === item.link ||
-                      JSON?.parse(item?.child_json).some(
-                        (e) => e.link === $route?.path
+                    ($route?.path.includes(item.link) ||
+                      JSON?.parse(item?.child_json).some((e) =>
+                        $route?.path.includes(e?.link)
                       )) &&
                       'v-sidebar-container-link_name__active',
                   ]"
@@ -123,7 +123,7 @@
                     :class="[
                       'v-sidebar-container-link_name',
                       'v-sidebar-container-link_name__shifted',
-                      $route?.path === link.link &&
+                      $route?.path.includes(link.link) &&
                         'v-sidebar-container-link_name__active',
                     ]"
                   >
@@ -147,9 +147,9 @@
                         <div class="v-sidebar-container-link_icon">
                           <v-icon
                             :color="
-                              $route?.path === item.link ||
-                              JSON?.parse(item?.child_json).some(
-                                (e) => e.link === $route?.path
+                              $route?.path.includes(item.link) ||
+                              JSON?.parse(item?.child_json).some((e) =>
+                                $route?.path.includes(e?.link)
                               )
                                 ? 'primary'
                                 : ''
@@ -178,7 +178,7 @@
                     <div
                       :class="[
                         'v-sidebar-container-link_name',
-                        $route?.path === link.link &&
+                        $route?.path.includes(link.link) &&
                           'v-sidebar-container-link_name__active',
                       ]"
                     >

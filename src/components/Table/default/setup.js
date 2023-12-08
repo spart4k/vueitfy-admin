@@ -431,7 +431,6 @@ const table = {
         //router.push({
         //  path: `${route.}./1`
         //})
-        console.log('route.name', route.name)
         router.push(
           {
             name: `${route.name}/:id`,
@@ -440,11 +439,11 @@ const table = {
             }
         })
         popupForm.value.isShow = true
-        console.log('popupForm.value.isShow', popupForm.value.isShow)
       }
     }
-    const closePopupForm = () => {
-      router.back()
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
       popupForm.value.isShow = false
       if (props?.options?.detail?.getOnClose) getItems()
     }
@@ -455,7 +454,7 @@ const table = {
         //})
         router.push(
           {
-            name: `${route.name}-new`,
+            name: `${route.name}-add`,
           }
         )
         popupForm.value.isShow = true
@@ -520,10 +519,10 @@ const table = {
       },
       { deep: true }
     )
+
     // HOOKS
     onMounted(async () => {
       initHeadParams()
-      console.log('mount')
       await getItems()
 
       const table = document.querySelector(props.options.selector)

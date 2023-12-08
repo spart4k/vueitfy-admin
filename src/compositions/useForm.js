@@ -3,6 +3,7 @@ import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
+import { useRoute, useRouter } from 'vue-router/composables'
 // import { required } from '@/utils/validation.js'
 // import { data } from 'jquery'
 // import { filter } from 'lodash'
@@ -36,6 +37,7 @@ export default function ({
   const $invalid = ref(false)
   const $autoDirty = true
   const filesBasket = ref({})
+  const router = useRouter()
   const { emit } = context.root.ctx
 
   // const validations = () => {
@@ -151,19 +153,21 @@ export default function ({
   const clickHandler = async ({ action, skipValidation }) => {
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
-    console.log('sortedData', sortedData)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
       if (action.url) {
-        await stageRequest(action)
+        const response = await stageRequest(action)
+        if (!response) return
       }
       Vue.set(form, 'formData', formData)
+      emit('setStageData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
-      // if (action.url) {
-      //   await stageRequest(action)
-      // }
+      if (action.url) {
+        const response = await stageRequest(action)
+        if (!response) return
+      }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
@@ -185,10 +189,6 @@ export default function ({
         })
       }
       loading.value = false
-      //const isNextForm = true
-      //if (isNextForm) {
-      //  nextForm()
-      //}
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -210,13 +210,14 @@ export default function ({
       loading.value = false
     } else if (action.action === 'createForm') {
       loading.value = true
-      console.log(action, sortedData)
       await createForm({
         url: action.url,
         module: action.module,
         formData: sortedData,
       })
       loading.value = false
+    } else if (action.action === 'closePopup') {
+      emit('closePopup', action.to)
     }
   }
 
@@ -228,20 +229,40 @@ export default function ({
       module: action.module,
       formData: sortedData,
     })
+    loading.value = false
+    const response = responseHandler({ action, data })
+    if (!response) return false
+    return true
+  }
+
+  const responseHandler = ({ action, data }) => {
     const response = action?.conditionCode?.results?.find(
       (x) => x.value === data[action.conditionCode.key]
     )
-    tabStorageChange(response, data)
-    loading.value = false
+    if (response?.type === 'success') {
+      if (response?.toStorage) {
+        tabStorageChange(response, data)
+      }
+      if (response?.emit === 'closePopup') {
+        emit('closePopup', response?.to)
+      }
+    } else if (response?.type === 'error') {
+      store.commit('notifies/showMessage', {
+        color: 'error',
+        content: unref(response.text),
+      })
+      return false
+    }
+    return true
   }
 
   const tabStorageChange = (response, data) => {
-    if (response?.toStorage) {
-      response.toStorage.forEach((item) => {
-        // detail.stageData[item] = data[item]
-        store.commit('changeFormStorage', { key: item, value: data[item] })
-      })
-    }
+    // if (response?.toStorage) {
+    response.toStorage.forEach((item) => {
+      // detail.stageData[item] = data[item]
+      store.commit('changeFormStorage', { key: item, value: data[item] })
+    })
+    // }
     // if (response?.fromStorage) {
     //   response.fromStorage.forEach((item) => {
     //     delete detail.stageData[item]
@@ -258,15 +279,21 @@ export default function ({
         (typeof item.isShow === 'object' && item.isShow.value) ||
         !item.notSend
       ) {
-        newForm[key] = formData[key]
+        if (item.requestKey) newForm[item.requestKey] = formData[key]
+        else newForm[key] = formData[key]
       }
       if (item.notSend) delete newForm[key]
       if (action?.useStorageKey?.length) {
         action.useStorageKey.forEach((item) => {
-          // console.log(detail)
           newForm[item.requestKey] =
             store?.state?.formStorage?.[item?.storageKey]
         })
+      }
+      if (item.stringify) {
+        if (item.requestKey)
+          newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
+        else newForm[key] = JSON.stringify(formData[key])
+        // newForm[key] = JSON.stringify(formData[key])
       }
     })
     return newForm
@@ -287,6 +314,7 @@ export default function ({
   const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
     const { update } = params
+
     const queries = []
     for (let key in filesBasket.value) {
       const name =
@@ -898,5 +926,6 @@ export default function ({
     changeCheckbox,
     tabStorageChange,
     stageRequest,
+    responseHandler,
   }
 }

@@ -1,7 +1,9 @@
 const user = {
   namespaced: true,
   state: {
-    user: {},
+    user: {
+      id: 25,
+    },
   },
   mutations: {
     setUser(state, user) {

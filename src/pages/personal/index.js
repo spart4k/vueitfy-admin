@@ -319,8 +319,8 @@ const documentConfig = {
       {
         label: 'Добавить',
         class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        type: 'addItem',
+        url: 'personal-add-new',
+        type: 'changeUrl',
         // function: addQuery,
         // type: 'nextStage',
         backgroundColor: '#fff',
@@ -501,8 +501,9 @@ const documentConfig = {
             text: 'Закрыть',
             type: 'submit',
             color: 'disabled',
-            name: 'prevStage',
-            action: 'prevStage',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal-add',
             skipValidation: true,
           }),
         ],
@@ -585,10 +586,9 @@ const documentConfig = {
             text: 'Закрыть',
             type: 'submit',
             color: 'disabled',
-            // module: 'form/del',
-            // url: 'delete/unfinished_personal',
             name: 'closePopup',
             action: 'closePopup',
+            to: 'personal-add',
             skipValidation: true,
           }),
         ],
@@ -1518,7 +1518,7 @@ const defaultForm = [
     name: 'Заявка на персонал',
     type: 'FormStage',
     detail: true,
-    stageData: {},
+    setRoute: 'personal-add',
     stages: [
       {
         id: 0,
@@ -1540,7 +1540,7 @@ const defaultForm = [
             label: 'ФИО',
             name: 'fio',
             placeholder: '',
-            value: 'zxczxc',
+            value: '',
             class: [''],
             position: {
               cols: 12,
@@ -1554,7 +1554,7 @@ const defaultForm = [
             name: 'date_rojd',
             type: 'date',
             readonly: true,
-            value: '2023-11-15',
+            value: '',
             menu: false,
             placeholder: '',
             class: [''],
@@ -1573,7 +1573,7 @@ const defaultForm = [
             alias: 'direction_id_logistic',
             placeholder: '',
             class: [''],
-            value: '1',
+            value: '',
             selectOption: {
               text: 'name',
               value: 'id',
@@ -1585,10 +1585,14 @@ const defaultForm = [
             },
             validations: { required },
             bootstrapClass: [''],
-            update: {
-              module: 'selects/getList',
-              fields: ['object_id'],
-            },
+            dependence: [
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'object_id',
+                url: 'get/pagination_list/object_logistic',
+              },
+            ],
           }),
           autocompleteField({
             label: 'Объект',
@@ -1617,6 +1621,18 @@ const defaultForm = [
                 value: '',
               },
             ],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['city_id', 'regions_id'],
+              },
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'personal_id',
+                url: 'get/pagination_list/personal',
+              },
+            ],
             update: {
               module: 'selects/getList',
               fields: ['personal_id'],
@@ -1626,10 +1642,43 @@ const defaultForm = [
               conditions: [{ field: 'direction_id', value: [1] }],
             },
           }),
+          stringField({
+            label: '',
+            name: 'city_id',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            isShow: {
+              value: false,
+              // hide: true,
+            },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: '',
+            name: 'regions_id',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            isShow: {
+              value: false,
+              // hide: true,
+            },
+            bootstrapClass: [''],
+          }),
           autocompleteField({
             label: 'Бригадир',
             name: 'personal_id',
-            subtype: 'single',
+            requestKey: 'account_json',
+            // subtype: 'single',
+            subtype: 'multiple',
+            stringify: true,
             placeholder: '',
             class: [''],
             selectOption: {
@@ -1664,7 +1713,7 @@ const defaultForm = [
             alias: 'grajdanstvo_id',
             placeholder: '',
             class: [''],
-            value: '1',
+            value: '',
             selectOption: {
               text: 'name',
               value: 'id',
@@ -1696,7 +1745,7 @@ const defaultForm = [
           }),
           stringField({
             label: 'Адрес А',
-            name: 'addressA',
+            name: 'start_point',
             placeholder: '',
             class: [''],
             position: {
@@ -1712,14 +1761,14 @@ const defaultForm = [
           }),
           stringField({
             label: 'Адрес Б',
-            name: 'addressB',
+            name: 'end_point',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
               sm: 12,
             },
-            validations: { required },
+            validations: { required, nameLength },
             bootstrapClass: [''],
             isShow: {
               value: false,
@@ -1728,6 +1777,15 @@ const defaultForm = [
           }),
         ],
         actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'disabled',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal',
+            skipValidation: true,
+          }),
           stringAction({
             text: 'Сохранить',
             type: 'submit',
@@ -1748,10 +1806,12 @@ const defaultForm = [
                 {
                   value: 2,
                   type: 'error',
+                  text: 'Error: value 2',
                 },
                 {
                   value: 3,
                   type: 'error',
+                  text: 'Error: value 3',
                 },
               ],
             },
@@ -1770,9 +1830,46 @@ const defaultForm = [
             text: 'Оставить заявку',
             type: 'submit',
             color: 'primary',
-            module: '',
-            name: 'saveForm',
-            nextForm: true,
+            module: 'form/create',
+            url: 'query/personal',
+            to: 'personal',
+            name: 'createForm',
+            action: 'createForm',
+            skipValidation: true,
+            requestBody: {
+              store: [
+                { requestKey: 'manager_id', storageKey: 'user.user.id' },
+                { requestKey: 'personal_id', storageKey: 'formStorage.id' },
+              ],
+              static: { type_parent_action: 3, parent_action: 1 },
+              formData: [
+                'direction_id',
+                'object_id',
+                'grajdanstvo_id',
+                'transfer',
+                'start_point',
+                'end_point',
+                'city_id',
+                'regions_id',
+              ],
+            },
+            conditionCode: {
+              key: 'code',
+              results: [
+                {
+                  value: 1,
+                  type: 'success',
+                  emit: 'closePopup',
+                  to: 'personal',
+                },
+                {
+                  value: 2,
+                  type: 'error',
+                  text: 'Необходимо приложить паспорт',
+                },
+              ],
+            },
+            // nextForm: true,
           }),
           stringAction({
             text: 'Вернуться',
@@ -2017,7 +2114,9 @@ const config = {
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: defaultForm,
+        clearStore: true,
         activeTab: null,
+        formData: {},
       },
       filters,
     },
