@@ -37,7 +37,7 @@ export default function ({
   const $autoDirty = true
   const filesBasket = ref({})
   const { emit } = context.root.ctx
-
+  const permission = computed(() => store.state.user.permission)
   // const validations = () => {
   //   const formFields = {}
   //   form.fields.forEach((el) => {
@@ -783,8 +783,25 @@ export default function ({
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
-          field.readonly.condition.every((el) => {
-            return el.value.includes(formData[el.field])
+          field.readonly.condition.some((conditionEl) => {
+            if (conditionEl.target && conditionEl.target === 'formData') {
+              return conditionEl.value.includes(formData[conditionEl.field])
+            } else if (
+              conditionEl.permissions &&
+              conditionEl.permissions.length
+            ) {
+              console.log(
+                'PERMISSIONS',
+                conditionEl.value.includes(formData[conditionEl.field]),
+                conditionEl.permissions.includes(permission.value),
+                conditionEl.type
+              )
+              return (
+                conditionEl.value.includes(formData[conditionEl.field]) &&
+                conditionEl.permissions.includes(permission.value) ===
+                  conditionEl.type
+              )
+            }
           })
         field.readonly.value = condition()
         return field.readonly.value
