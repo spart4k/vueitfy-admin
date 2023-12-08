@@ -18,6 +18,10 @@ export default {
     formData: {
       type: Object,
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx

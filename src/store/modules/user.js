@@ -1,9 +1,7 @@
-const user = {
+export default {
   namespaced: true,
   state: {
-    user: {
-      id: 25,
-    },
+    permission: 2,
   },
   mutations: {
     setUser(state, user) {
@@ -11,5 +9,3 @@ const user = {
     },
   },
 }
-
-export default user

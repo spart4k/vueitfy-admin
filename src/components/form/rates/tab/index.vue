@@ -5,11 +5,20 @@
       v-model="search"
       label="Поиск"
       clearable
+      class="search"
     />
     <div v-for="position in items" :key="position.id" class="rates-position">
       <!--<div class="rates-position__title">{{ position.key }}</div>-->
-      <row v-for="row in position.items" :key="row.id" :info="row" />
+      <row @openDialog="openDialog" :row="position" />
     </div>
+    <v-progress-circular
+      v-if="loading"
+      :size="20"
+      :width="2"
+      color="primary"
+      indeterminate
+    />
+    <div v-intersect="endIntersect" />
   </div>
 </template>
 <script src="./setup.js"></script>

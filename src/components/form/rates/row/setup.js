@@ -1,10 +1,10 @@
-import Vue, { ref } from 'vue'
+import Vue, { onMounted, reactive, ref } from 'vue'
 import row from '../row/index.vue'
 import { useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm.js'
 
 import store from '@/store'
-import { stringField, dateField } from '@/utils/fields'
+import { stringField, dateField, selectField } from '@/utils/fields'
 
 export default {
   name: 'Row',
@@ -12,21 +12,47 @@ export default {
     row,
   },
   props: {
-    info: {
+    row: {
       type: Object,
       default: () => {},
     },
   },
   setup(props, ctx) {
-    const router = useRouter()
-    const context = {
-      root: {
-        store,
-        router,
-        ctx,
-      },
-    }
+    const { emit } = ctx
+    const formData = reactive({
+      price: '',
+      category: '',
+      date_active_s: '',
+      date_active_po: '',
+    })
     const listFields = ref([
+      selectField({
+        label: 'E',
+        name: 'status_id',
+        subtype: 'single',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [
+          {
+            id: 1,
+            name: '1',
+          },
+          {
+            id: 2,
+            name: '2',
+          },
+        ],
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        alias: 'p.status_id',
+      }),
       stringField({
         label: 'Сумма',
         name: 'price',
@@ -35,7 +61,7 @@ export default {
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 2,
         },
         bootstrapClass: [''],
       }),
@@ -47,68 +73,55 @@ export default {
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 2,
         },
         bootstrapClass: [''],
       }),
       dateField({
-        label: 'Дата',
-        name: 'date_add',
-        subtype: 'range',
+        label: 'Дата ',
+        name: 'date_active_s',
         placeholder: '',
         classes: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 3,
+        },
+        bootstrapClass: [''],
+        alias: 'p.date_add',
+      }),
+      dateField({
+        label: 'Дата',
+        name: 'date_active_po',
+        placeholder: '',
+        classes: [''],
+        position: {
+          cols: 12,
+          sm: 3,
         },
         bootstrapClass: [''],
         alias: 'p.date_add',
       }),
     ])
-    const loading = ref(false)
-    const fields = () => {
-      // console.log('rebuild fields')
-      const fields = {}
-      listFields.value.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
-          // console.log('CONDITION TRUE', el.name)
-          Vue.set(fields, el.name, {})
-        } else return
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', props.info[el.name])
-      })
-      // console.log(fields)
-      return fields
+    const showField = (type, field) => {
+      return type === field.type
     }
-    const {
-      formData,
-      validate,
-      formErrors,
-      vForm,
-      touchedForm,
-      clickHandler,
-      showField,
-      disabledField,
-      hideField,
-      openMenu,
-    } = useForm({
-      context,
-      fields: fields(),
-      setFields: fields,
-      loading,
+    const openMenu = (field) => {
+      field.menu = true
+    }
+    const openDialog = () => {
+      emit('openDialog', props.row.name)
+    }
+    onMounted(() => {
+      for (let key in formData) {
+        formData[key] = props.row[key]
+      }
     })
     return {
-      formData,
       listFields,
-      showField,
-      disabledField,
-      loading,
-      formErrors,
       openMenu,
+      showField,
+      formData,
+      openDialog,
     }
   },
 }

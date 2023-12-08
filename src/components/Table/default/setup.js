@@ -496,7 +496,7 @@ const table = {
       return props.options.head.find((cell) => cell.type === 'actions')
     })
     //props.options.data.rows = data.rows
-    
+
     // WATCH
     watch(
       () => searchField,
@@ -551,15 +551,15 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode.includes('add'))) {
+      if (props.options.detail && props.options.detail.type === 'popup' && route.meta.mode) {
         popupForm.value.isShow = true
       }
     })
-  
+
     const styleDate = (row, cell, innerDataCallBack) => {
       if ('conditionValue' in cell) {
         const conditionValue = innerDataCallBack(row, cell.conditionValue);
-        return conditionValue ? 'font-style: normal; font-size: 14px' : ''; 
+        return conditionValue ? 'font-style: normal; font-size: 14px' : '';
       }
       return '';
     };
@@ -578,7 +578,7 @@ const table = {
       return 'blue';
     };
     const iconType = (row, cell, innerDataCallBack) => {
-     const value = innerDataCallBack(row, cell.value); 
+     const value = innerDataCallBack(row, cell.value);
 
       if (value === 0) {
         return 'mdi-close';
@@ -587,10 +587,10 @@ const table = {
           const conditionValue = innerDataCallBack(row, cell.conditionValue);
           const dateValue = new Date(conditionValue);
           const formattedDate = `${dateValue.getDate()}.${dateValue.getMonth() + 1}.${dateValue.getFullYear()}`;
-          return conditionValue ? formattedDate : 'mdi-check'; 
-        } else { 
-          return 'mdi-check' 
-        } 
+          return conditionValue ? formattedDate : 'mdi-check';
+        } else {
+          return 'mdi-check'
+        }
       } else if (value === 2) {
         return 'mdi-minus';
       }

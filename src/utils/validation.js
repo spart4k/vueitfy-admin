@@ -1,7 +1,12 @@
 import {
   required as vueRequired,
   minLength as vueMinLength,
+  numeric as vueNumeric,
 } from '@vuelidate/validators'
+
+const numeric = Object.assign({}, vueNumeric, {
+  $message: () => 'Только числа',
+})
 
 const required = Object.assign({}, vueRequired, {
   $message: () => 'Обязательное поле',
@@ -81,5 +86,6 @@ export {
   hasDate,
   hasTime,
   minLength,
+  numeric,
   // strongPassword
 }

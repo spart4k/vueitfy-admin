@@ -1,4 +1,11 @@
 .rates {
+  .search {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--v-background-base);
+    margin-top: 0;
+  }
   &-tab {
     display: flex;
     flex-direction: column;

@@ -66,6 +66,9 @@ const routes = [
       {
         name: 'personal_target/:id',
         path: ':id',
+        meta: {
+          mode: 'edit',
+        },
         component: Detail,
       },
     ],
@@ -213,6 +216,14 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: ShopRequestMagnitView,
     children: [
+      {
+        name: 'shop-request-magnit/upload',
+        path: './upload',
+        meta: {
+          mode: 'upload',
+        },
+        component: Detail,
+      },
       {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
