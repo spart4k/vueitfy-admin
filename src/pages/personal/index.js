@@ -1553,7 +1553,6 @@ const defaultForm = [
             label: 'Дата рождения',
             name: 'date_rojd',
             type: 'date',
-            readonly: true,
             value: '',
             menu: false,
             placeholder: '',
