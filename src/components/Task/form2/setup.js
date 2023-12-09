@@ -46,6 +46,7 @@ const Form2 = defineComponent({
     const isOsnDocTouched = ref(false)
     const commentErr = ref('')
     const comment = ref('')
+    const newStatus = ref(0)
     const changeDocs = (data) => {
       finalData.value = data
       console.log(data)
@@ -106,7 +107,7 @@ const Form2 = defineComponent({
             process_id: props.data.task.process_id,
             step_id: 13,
             personal_id: props.data.entity.id,
-            manager_id: props.data.entity.manager_id,
+            manager_id: props.data.entity.account_id,
           },
         })
       },
@@ -115,18 +116,11 @@ const Form2 = defineComponent({
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: () => {
-        const taskDeadline =
-          Date.parse(props.data.task.date_create) +
-          props.data.task.time_execution * 1000 -
-          Date.now()
-        console.log('ДАГДЕЖБЛЯТЬ', finalData)
+        newStatus.value =
+          finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2
         return store.dispatch('taskModule/setPartTask', {
           status:
-            finalData.value.rejected.length || !isOsnDocConfirmed.value
-              ? 6
-              : taskDeadline > 0
-              ? 2
-              : 3,
+            finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2,
           data: {
             process_id: props.data.task.process_id,
             personal_id: props.data.entity.id,
@@ -157,11 +151,18 @@ const Form2 = defineComponent({
       } else {
         await setPersonalData()
         console.log(setPersonalData)
-        await setStartStep()
-        console.log(setStartStep)
+
         const { success } = await changeStatusTask()
         success && ctx.emit('closePopup')
         console.log(changeStatusTask)
+        if (
+          props.data.entity.grajdanstvo_id === 1 &&
+          newStatus.value === 2 &&
+          props.data.entity.unfinished === 1
+        ) {
+          await setStartStep()
+          console.log(setStartStep)
+        }
         console.log(finalData.value)
       }
     }
