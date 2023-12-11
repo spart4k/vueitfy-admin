@@ -91,14 +91,6 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'personal-add2',
-        path: '/personal/add2',
-        meta: {
-          mode: 'add',
-        },
-        component: Detail,
-      },
-      {
         name: 'personal-add-key',
         path: '/personal/add-key',
         meta: {
@@ -351,7 +343,7 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
-    component: GrishaView,
+    csajdomponent: GrishaView,
   },
   {
     path: '/documents',
@@ -404,6 +396,29 @@ const routes = [
       layout: 'blank-layout',
     },
     component: ScheduleView,
+    children: [
+      {
+        name: 'schedule-add',
+        path: '/schedule/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
+      {
+        name: 'schedule/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/test',
+    name: 'test',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: TestView,
   },
 ]
 

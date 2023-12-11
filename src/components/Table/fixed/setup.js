@@ -21,7 +21,7 @@ import useMobile from '@/layouts/Adaptive/checkMob.js'
 //import { tableApi } from '@/api'
 
 const table = {
-  name: 'TableDefault',
+  name: 'TableFixed',
   components: {
     vTableButton,
     vButton,
@@ -93,6 +93,8 @@ const table = {
     })
     const popupForm = ref({
       isShow: false,
+      isShowCellForm: true,
+      dataCellForm: {},
     })
     const currentDate = ref({
       month: new Date().getMonth(),
@@ -449,21 +451,56 @@ const table = {
       })
       getItems()
     }
-    const openRow = ($event, row) => {
-      if (props.options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
-        router.push(
-          {
-            name: `${route.name}/:id`,
-            params: {
-              id: row.row.id
-            }
-        })
-        popupForm.value.isShow = true
-      }
+
+    const openCell = ($event, c) => {
+
     }
+
+    const openRow = ($event, row, text) => {
+      console.log('clicckckekckkckeck', $event, row, text);
+      if (props.options.detail.type === 'popup') {
+        const routeKey = props.options.options.routeKey
+        const dataCell = row.row
+        const hour = '11' //Рабочие часы
+
+       const dataCellForm = {
+          ...dataCell,
+          hour,
+        }
+
+        const porpsContent = {
+          account_id: dataCell.account_id,
+          account_name: dataCell.account_name,
+          hour: 11,
+          date: '2023-12-01',
+        }
+
+        if (routeKey) {
+          router.push(
+            {
+              name: `${route.name}/:id`,
+              params: {
+                id: row.row[routeKey]
+              }
+            }
+          )
+        } else {
+          router.push(
+            {
+              name: `${route.name}/:id`,
+              params: {
+                id: row.row.id
+              }
+          })
+        } 
+
+        popupForm.value.isShow = true
+       // popupForm.value.isShowCellForm = true
+        popupForm.value.dataCellForm = porpsContent
+        //  popupForm.value.isShow = 
+      } 
+    } 
+ 
     const closePopupForm = () => {
       router.back()
       popupForm.value.isShow = false
@@ -519,6 +556,7 @@ const table = {
     const coutingCells = () => {
       let left = 0
       let right = 0
+
       cells?.value?.forEach((item, index) => {
         if (props?.options?.head[index]?.fixed?.position === 'left') {
           cellItems?.value?.forEach(element => {

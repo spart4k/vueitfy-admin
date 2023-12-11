@@ -18,7 +18,7 @@
           <v-icon @click="$emit('close')" small>$IconClose</v-icon>
         </div>
         <!-- // кто удалит крестик тот гнида блядь -->
-
+        {{ options }}
         <slot></slot>
       </div>
     </div>

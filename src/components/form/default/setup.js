@@ -22,6 +22,10 @@ export default {
     ColorPicker,
   },
   props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
     tab: {
       type: Object,
       default: () => {},
@@ -32,7 +36,11 @@ export default {
     },
   },
   setup(props, ctx) {
+    console.log('props.tab: ', props.tab)
     console.log('return ', props.tab)
+
+    console.log('conten', props.content)
+
     //const syncForm = ref({})
     const { emit } = ctx
     const route = useRoute()
@@ -107,6 +115,16 @@ export default {
     //       body: formData,
     //     }),
     // })
+
+    if (props.tab.hasOwnProperty('content')) {
+      props.tab.fields[0].items[0].id = props.content.account_id
+      props.tab.fields[0].items[0].name = props.content.account_name
+      props.tab.fields[0].value = props.content.account_id
+      props.tab.fields[2].value = props.content.hour
+      props.tab.fields[1].value = props.content.date
+    }
+
+    console.log('prosporsad', props.tab)
     const {
       formData,
       validate,

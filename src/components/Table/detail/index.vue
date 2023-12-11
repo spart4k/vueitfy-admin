@@ -1,9 +1,7 @@
 <template>
   <div class="detail">
     <div class="detail-tabs pa-4">
-      <p v-if="detail.name" class="text-h4 mb-4">
-        {{ detail.name }}
-      </p>
+      <p v-if="detail.name" class="text-h4 mb-4">{{ detail.name }} {{ 2 }}</p>
       <v-tabs
         style="flex: unset"
         v-model="detail.activeTab"
@@ -32,6 +30,7 @@
           :key="item.id"
         >
           <component
+            :content="porpsContent"
             :loading="loading"
             :is="item.type"
             :tab="item"
@@ -41,13 +40,6 @@
             :routeParam="id"
             @closePopup="$emit('closePopup')"
           />
-          <!--<v-progress-circular
-            v-else
-            :size="20"
-            :width="2"
-            color="primary"
-            indeterminate
-          />-->
         </v-tab-item>
       </v-tabs-items>
       <!--<TableDefault :options="detail.tabs[1].config"></TableDefault>-->
