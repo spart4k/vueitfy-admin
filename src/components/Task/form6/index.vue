@@ -7,7 +7,8 @@
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <span
-        ><v-icon small v-if="isLoadedImage || data.data.docs">$IconGalka</v-icon
+        ><v-icon small v-if="isLoadedImage || data.data.docs.lenght"
+          >$IconGalka</v-icon
         >Прикрепите реквизиты</span
       >
       <Dropzone
