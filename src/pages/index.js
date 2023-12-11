@@ -10,8 +10,10 @@ import x5import from './x5import'
 import object from './object'
 import account from './account'
 import zayavka from './zayavka'
+import documents from './documents'
 
 export {
+  documents,
   payment,
   appointments,
   personal,

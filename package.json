@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --port 3031",
+    "serve": "vue-cli-service serve --port 3032",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "lint-fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
@@ -16,7 +16,6 @@
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "easy-yandex-s3": "^2.0.0",
-    "jquery": "^3.7.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "portal-vue": "^2.1.7",

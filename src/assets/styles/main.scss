@@ -467,3 +467,18 @@ $borderColor: rgba(0,0,0,.3);
     }
   }
 }
+
+.v-color-picker__dot {
+  width: 25px;
+  height: 25px;
+}
+
+//.v-color-picker__controls {
+//  padding-top: 5px;
+//}
+
+.rates {
+  .v-expansion-panel-content__wrap {
+    padding: 0;
+  }
+}

@@ -1,5 +1,6 @@
 <template>
   <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
+    {{ $route.name }}
     <!--<h1 class="v-table-title">{{ options.options.title }}</h1>-->
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
@@ -18,12 +19,13 @@
             @click="panelHandler(button)"
             small
           >
-            <v-icon small class="mr-2">
+            <v-icon v-if="button.type === 'icon'" small class="mr-2">
               {{ button.url }}
             </v-icon>
             <p v-if="true">{{ button.label }}</p>
           </v-btn>
         </div>
+
         <div class="v-table-panel__search">
           <!--<v-input
             @clearfield="clearField('searchField')"
@@ -38,7 +40,7 @@
             clearable
             v-model="paramsQuery.searchGlobal"
           ></v-text-field>
-          <v-btn small @click="openFilter" class="ml-2" elevation="2">
+          <v-btn small @click="openFilter($event)" class="ml-2" elevation="2">
             Фильтры
           </v-btn>
         </div>
@@ -117,44 +119,32 @@
                       "
                       @click="sortRow(head)"
                     />
-                    <span class="mr-2" @click="sortRow(head)">
-                      {{ head.title }}
-                    </span>
-                    <v-icon @click="openSort(head)" small>$IconSearch</v-icon>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <div v-bind="attrs" v-on="on">
+                          <div v-if="head.type === 'default'">
+                            <span class="mr-2" @click="sortRow(head)">
+                              {{ head.title }}
+                            </span>
+                            <v-icon @click="openSort(head)" small
+                              >$IconSearch</v-icon
+                            >
+                          </div>
+                          <div v-if="head.type === 'icon'">
+                            <span class="mr-2" @click="sortRow(head)">
+                              <v-icon> {{ head.icon }}</v-icon>
+                            </span>
+                          </div>
+                        </div>
+                      </template>
+                      <span>{{ head.title }}</span>
+                    </v-tooltip>
                   </span>
                   <transition name="accordion">
                     <div
                       v-if="head.sorts && head.sorts[0].isShow"
                       class="v-table-header-row-cell-sort"
                     >
-                      <!--<div
-                        class="v-table-header-row-cell-sort__row"
-                        v-if="head.sorts[0].type === 'string'"
-                      >
-                        <p v-if="true">Сортировка от А до Я</p>
-                      </div>
-                      <div
-                        @click="sortRow(head)"
-                        class="v-table-header-row-cell-sort__row"
-                        v-if="head.sorts[0].type === 'number'"
-                      >
-                        {{
-                          paramsQuery.sorts.find((el) => el.field === head.value)
-                            .value
-                        }}
-                        <p v-if="true">Сортировка по убыванию</p>
-                      </div>
-                      <div
-                        @click="sortRow(head)"
-                        class="v-table-header-row-cell-sort__row"
-                        v-if="head.sorts[0].type === 'date'"
-                      >
-                        {{
-                          paramsQuery.sorts.find((el) => el.field === head.value)
-                            .value
-                        }}
-                        <p v-if="true">Сортировка по дате</p>
-                      </div>-->
                       <v-text-field
                         class="v-table-header-row-cell-sort__search"
                         @clearfield="clearField('searchField')"
@@ -215,9 +205,10 @@
                     //...getFixedStyle(cell),
                     width: cell.width,
                   }"
-                  :class="
-                    cell.fixed.value ? 'v-table-body-row-cell--fixed' : ''
-                  "
+                  :class="{
+                    'red-1': true,
+                    ...addBackgroundClass(cell, row.row, Object.byString),
+                  }"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
                   :align="cell.align"
                   class="v-table-body-row-cell v-table-actions"
@@ -227,6 +218,64 @@
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
+                  </template>
+                  <template v-if="cell.type === 'icon'">
+                    <!-- <slot #name="icons"></slot> -->
+                    <!-- <v-icon :color="iconColor">{{ iconType }}</v-icon>  -->
+                    <!-- :class="{
+                        'red-1': true,
+                        'v-table-body-row-cell--error':
+                          Object.byString(
+                            row.row,
+                            'backgroundValue' in cell
+                              ? cell.backgroundValue
+                              : null
+                          ) == 0,
+                        'v-table-body-row-cell--error1':
+                          Object.byString(
+                            row.row,
+                            'backgroundValue' in cell
+                              ? cell.backgroundValue
+                              : null
+                          ) == 1,
+                      }" -->
+                    <!-- <template v-if="Object.byString(row.row, cell.value) == 0">
+                      <v-icon color="red">mdi-close</v-icon>
+                    </template>
+                    <template v-if="Object.byString(row.row, cell.value) == 1">
+                      <template v-if="cell.conditionValue">
+                        <template
+                          v-if="
+                            Object.byString(row.row, cell.conditionValue) ===
+                            null
+                          "
+                        >
+                          <v-icon color="red">mdi-close</v-icon>
+                        </template>
+                        <template v-esle>
+                          {{ Object.byString(row.row, cell.conditionValue) }}
+                        </template>
+                      </template>
+                      <template v-else>
+                        <v-icon color="green">mdi-check</v-icon>
+                      </template>
+                    </template>
+                    <template v-if="Object.byString(row.row, cell.value) == 2">
+                      <v-icon color="yellow">mdi-minus</v-icon>
+                    </template> -->
+                    <v-icon
+                      :style="styleDate(row.row, cell, Object.byString)"
+                      :color="
+                        iconColor(
+                          Object.byString(row.row, cell.value),
+                          'conditionValue' in cell
+                            ? Object.byString(row.row, cell.conditionValue)
+                            : cell.conditionValue
+                        )
+                      "
+                    >
+                      {{ iconType(row.row, cell, Object.byString) }}
+                    </v-icon>
                   </template>
                   <template v-else-if="cell.type === 'checkbox'">
                     <v-row class="d-flex justify-center">
@@ -455,7 +504,12 @@
     <Popup
       closeButton
       @close="closePopupForm"
-      :options="{ width: options.detail.width, portal: 'table-detail' }"
+      :options="{
+        width: options.detail.width,
+        portal: `table-detail${
+          options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
+        }`,
+      }"
       v-if="
         options.detail && options.detail.type === 'popup' && popupForm.isShow
       "

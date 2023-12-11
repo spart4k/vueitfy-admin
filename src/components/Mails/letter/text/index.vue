@@ -7,14 +7,11 @@
       <MailsLetterFiles :data="$props?.data" expand />
     </div>
     <div class="v-text-title mb-1">{{ $props?.data?.subject }}</div>
-    <div
+    <iframe
       class="v-text-text mb-1 flex-grow-1"
-      v-html="
-        $props?.data?.text
-          ? $props?.data?.text.replace('<br><br><br>', '')
-          : $props?.data?.message_text.replace('<br><br><br>', '')
-      "
-    ></div>
+      ref="iframe"
+      frameborder="0"
+    ></iframe>
   </div>
 </template>
 <script src="./setup.js"></script>

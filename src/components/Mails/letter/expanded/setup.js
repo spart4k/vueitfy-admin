@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { ref, watch, unref } from 'vue'
+import { ref, watch, unref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router/composables'
 import { useStore } from '@/store'
 import _ from 'lodash'
@@ -24,6 +24,10 @@ const letterExpanded = {
       type: Object,
       default: () => {},
     },
+    filterData: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, context) {
     const route = useRoute()
@@ -36,11 +40,25 @@ const letterExpanded = {
       subject: '',
       files: [],
       users: [],
+      box_id: null,
+    })
+    const validation = computed(() => {
+      if (
+        (newMessage.value.users.length && newMessage.value.box_id) ||
+        !route?.query?.compose
+      ) {
+        return true
+      }
+      return false
     })
     const answerToMail = (val) => {
       emit('setRouterPath', [{ key: 'compose', value: 'answer' }])
       newMessage.value.subject = `re: ${val.subject}`
       newMessage.value.users = [val.message_from]
+    }
+
+    const closeLetter = () => {
+      emit('setRouterPath', null, ['box', 'mail', 'compose'])
     }
 
     const addFiles = (val) => {
@@ -61,21 +79,25 @@ const letterExpanded = {
         const message = newMessage.value.text
           .replaceAll('class="ql-align-center"', 'style="text-align: center"')
           .replaceAll('class="ql-align-right"', 'style="text-align: right"')
-        const userArray = []
+        const mails = []
         newMessage.value.users.forEach((item) => {
-          userArray.push(item.email)
+          if (item.email.includes('@')) mails.push(item.email)
         })
         const requestData = {
-          from: 'slepoybanditka@yandex.ru',
-          to: userArray,
+          box_id: newMessage.value.box_id,
+          to: mails.toString(),
           subject: newMessage.value.subject,
           message: message,
           files: newMessage.value.files,
           forwarded: false,
+          hasImg: false,
         }
         if (route?.query?.compose === 'answer') {
           requestData.forwarded = true
           requestData.forwardedId = props?.data?.id
+        }
+        if (message.includes('<img')) {
+          requestData.hasImg = true
         }
         loading.value = true
         const response = await store.dispatch('mail/sendMessage', requestData)
@@ -86,12 +108,7 @@ const letterExpanded = {
               emit('setRouterPath', null, null, { filter: 'all' })
               emit('getMails')
             } else if (route?.query?.compose === 'answer') {
-              newMessage.value = {
-                text: '',
-                subject: '',
-                files: [],
-                users: [],
-              }
+              resetNewMessage()
               emit('setRouterPath', null, ['compose'])
             }
           }
@@ -109,14 +126,31 @@ const letterExpanded = {
       newMessage.value.users.splice(index, 1)
     }
 
+    const setBoxId = () => {
+      if (props?.data?.box_id) newMessage.value.box_id = props?.data?.box_id
+    }
+
+    onMounted(() => {
+      setBoxId()
+    })
+
+    const resetNewMessage = () => {
+      newMessage.value = {
+        text: '',
+        subject: '',
+        files: [],
+        users: [],
+        box_id: null,
+      }
+    }
+
     watch(
-      () => props?.data?.id,
+      () => [props?.data?.id, route?.query?.compose],
       () => {
-        newMessage.value = {
-          text: '',
-          subject: '',
-          files: [],
-          users: [],
+        if (route?.query?.compose !== 'answer') {
+          resetNewMessage()
+          setBoxId()
+          edit.value = false
         }
       }
     )
@@ -127,7 +161,7 @@ const letterExpanded = {
         if (newCount > oldCount) {
           if (!newMessage.value.users[newMessage.value.users.length - 1].id) {
             newMessage.value.users[newMessage.value.users.length - 1] = {
-              name: newMessage.value.users[newMessage.value.users.length - 1],
+              fio: newMessage.value.users[newMessage.value.users.length - 1],
               email: newMessage.value.users[newMessage.value.users.length - 1],
               avatar: null,
             }
@@ -136,22 +170,20 @@ const letterExpanded = {
       }
     )
 
-    watch(
-      () => props?.data?.id,
-      () => {
-        edit.value = false
-      }
-    )
     return {
       newMessage,
       edit,
       loading,
+      validation,
 
       addFiles,
       removeFile,
       deleteUser,
       createMail,
       answerToMail,
+      closeLetter,
+      setBoxId,
+      resetNewMessage,
     }
   },
 }

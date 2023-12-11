@@ -19,6 +19,8 @@ import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
+import DocumentView from '@/views/DocumentView.vue'
+import SlataReportView from '@/views/SlataReportView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
@@ -57,13 +59,16 @@ const routes = [
         name: 'personal_target-add',
         path: '/personal_target/add',
         meta: {
-          mode: 'add',
+          mode: ['add'],
         },
         component: Detail,
       },
       {
         name: 'personal_target/:id',
         path: ':id',
+        meta: {
+          mode: 'edit',
+        },
         component: Detail,
       },
     ],
@@ -83,15 +88,33 @@ const routes = [
         name: 'personal-add',
         path: '/personal/add',
         meta: {
-          mode: 'add',
+          mode: ['add'],
         },
         component: Detail,
+        children: [
+          {
+            name: 'personal-add/:id',
+            path: ':id',
+            meta: {
+              mode: ['add', 'id'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal-add-new',
+            path: '/personal/add/new',
+            meta: {
+              mode: ['add', 'new'],
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'personal-add-key',
         path: '/personal/add-key',
         meta: {
-          mode: 'add-key',
+          mode: ['add-key'],
         },
         component: Detail,
       },
@@ -154,6 +177,14 @@ const routes = [
         path: ':id',
         component: Detail,
       },
+      {
+        name: 'object-add',
+        path: '/object/add',
+        meta: {
+          mode: ['add'],
+        },
+        component: Detail,
+      },
     ],
   },
   {
@@ -186,10 +217,18 @@ const routes = [
     component: ShopRequestMagnitView,
     children: [
       {
+        name: 'shop-request-magnit/upload',
+        path: './upload',
+        meta: {
+          mode: 'upload',
+        },
+        component: Detail,
+      },
+      {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
         meta: {
-          mode: 'add',
+          mode: ['add'],
         },
         component: Detail,
       },
@@ -202,7 +241,7 @@ const routes = [
         name: 'shop-request-magnit/upload',
         path: './upload',
         meta: {
-          mode: 'upload',
+          mode: ['upload'],
         },
         component: Detail,
       },
@@ -278,6 +317,14 @@ const routes = [
         path: ':id',
         component: Detail,
       },
+      {
+        name: 'zayavka-add',
+        path: '/zayavka/add',
+        meta: {
+          mode: ['add'],
+        },
+        component: Detail,
+      },
     ],
   },
   {
@@ -333,6 +380,50 @@ const routes = [
       layout: 'blank-layout',
     },
     component: GrishaView,
+  },
+  {
+    path: '/documents',
+    name: 'documents',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: DocumentView,
+    children: [
+      {
+        name: 'documents-query',
+        path: '/documents/query',
+        meta: {
+          mode: ['query'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'documents/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+  },
+  {
+    path: '/slata-report',
+    name: 'slata-report',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: SlataReportView,
+    // children: [
+    //   {
+    //     name: 'slata',
+    //     path: '/salta',
+    //     meta: {
+    //       mode: 'blank-layout',
+    //     },
+    //     component: Detail,
+    //   },
+    // ],
   },
 ]
 

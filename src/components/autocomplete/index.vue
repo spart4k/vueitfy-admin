@@ -3,7 +3,7 @@
     <v-autocomplete
       clearable
       v-model="proxyValue"
-      :loading="field.loading"
+      :loading="loading"
       :items="field.items"
       :search-input.sync="searchProps"
       :error-messages="errorMessages"
@@ -16,10 +16,11 @@
       no-data-text="Нет объектов"
       @change="update"
       :disabled="disabled"
+      :readonly="readonly"
     >
       <template v-slot:append>
         <v-progress-circular
-          v-if="field.loading"
+          v-if="loading"
           :size="20"
           :width="2"
           color="primary"
@@ -34,7 +35,7 @@
       <template v-slot:append-item>
         <div class="fluid d-flex justify-center">
           <v-progress-circular
-            v-if="field.loading"
+            v-if="loading"
             :size="20"
             :width="2"
             color="primary"

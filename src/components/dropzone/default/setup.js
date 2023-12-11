@@ -2,7 +2,6 @@ import { ref, onMounted, watch } from 'vue'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import store from '@/store'
-import { Callbacks } from 'jquery'
 //import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -45,10 +44,7 @@ export default {
       thumbnailWidth: 150,
       maxFilesize: 0.5,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
-      addRemoveLinks:
-        props.options.removeble == true && props.options.removeble
-          ? true
-          : false,
+      addRemoveLinks: props?.options?.removeble ? true : false,
       dictDefaultMessage: 'Переместите или выберите файл',
       acceptedFiles: props.options?.acceptedFiles,
       //dictRemoveFile: 'delete',
@@ -66,7 +62,6 @@ export default {
         }
         //dropzone.value.processQueue()
       } else {
-        console.log(files)
         proxyVal.value = [...files]
         emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
@@ -93,9 +88,7 @@ export default {
       //dropzone.value.processQueue()
     }
     const removed = (file) => {
-      if (props.options.withoutSave) {
-        console.log('remove')
-      } else {
+      if (!props.options.withoutSave) {
         emit('removeFile', file)
       }
       //console.log(value)
@@ -151,7 +144,6 @@ export default {
       }
     }
     onMounted(() => {
-      console.log(dropzone.value)
       if (proxyVal.value) {
         fillPreview()
       }

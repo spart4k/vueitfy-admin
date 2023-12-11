@@ -1,7 +1,9 @@
 <template>
   <div class="detail">
     <div class="detail-tabs pa-4">
-      <p v-if="detail.name" class="text-h4 mb-4">{{ detail.name }}</p>
+      <p v-if="detail.name" class="text-h4 mb-4">
+        {{ detail.name }}
+      </p>
       <v-tabs
         style="flex: unset"
         v-model="detail.activeTab"
@@ -12,7 +14,7 @@
         <v-tab
           v-for="item in detail.tabs"
           v-if="
-            ($route.meta.mode && item.path === $route.meta.mode) ||
+            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
             (!$route.meta.mode && !item.path)
           "
           :key="item.id"
@@ -24,21 +26,21 @@
         <v-tab-item
           v-for="item in detail.tabs"
           v-if="
-            ($route.meta.mode && item.path === $route.meta.mode) ||
+            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
             (!$route.meta.mode && !item.path)
           "
           :key="item.id"
         >
-          <p></p>
           <component
             :loading="loading"
             :is="item.type"
             :tab="item"
             :options="item.config"
+            :detail="detail"
             :syncData="syncForm"
             :stages="item.stages"
             :routeParam="id"
-            @closePopup="$emit('closePopup')"
+            @closePopup="(e) => $emit('closePopup', e)"
           />
           <!--<v-progress-circular
             v-else
