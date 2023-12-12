@@ -73,7 +73,7 @@
       <v-btn
         class="mr-2"
         color="info"
-        :disabled="!isLoadImage"
+        :disabled="!isLoadImage && !comment"
         @click="sendDoneTask"
       >
         <v-icon small>mdi-content-save</v-icon>
