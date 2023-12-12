@@ -18,7 +18,9 @@
       <div class="position-relative">
         <div
           class="mb-10"
-          :class="{ 'overflow-inputs': !data.data.zayavka.status == 5 }"
+          :class="{
+            'overflow-inputs': !data.data.zayavka.status == 5 && !newString,
+          }"
         >
           <span>Приложите документы</span>
           <v-expansion-panels>

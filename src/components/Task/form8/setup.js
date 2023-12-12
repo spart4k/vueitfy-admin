@@ -38,7 +38,13 @@ const Form8 = defineComponent({
     // let getNameDoc = (docID) => {
     //   return docs_spr[docID]
     // }
-
+    let newString
+    if (typeof data.data.zayavka == 'object') {
+      newString = false
+    } else {
+      newString = true
+    }
+    // console.log(typeof newString)
     // onMounted(() => {
     //   console.log(docs_spr, getNameDoc)
     // })
@@ -301,6 +307,7 @@ const Form8 = defineComponent({
       addFilesPatent,
       disableFinishState,
       textInfo,
+      newString,
       sendTaskFinish,
     }
   },
