@@ -406,6 +406,22 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'schedule-new',
+        path: '/schedule/new',
+        meta: {
+          mode: 'new',
+        },
+        component: Detail,
+      },
+      {
+        name: 'schedule-edit',
+        path: '/schedule/edit',
+        meta: {
+          mode: 'edit',
+        },
+        component: Detail,
+      },
+      {
         name: 'schedule/:id',
         path: ':id',
         component: Detail,

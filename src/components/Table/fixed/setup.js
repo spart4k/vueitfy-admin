@@ -363,9 +363,7 @@ const table = {
           by,
         },
       })
-      console.log(props.options.data.rows)
       props.options.data.rows = data.rows
-      //props.options.data.rows = data
       if (props.options.data.rows?.length && props.options.data.rows) {
         props.options.data.totalPages = data.totalPage
         props.options.data.totalRows = data.total
@@ -456,43 +454,78 @@ const table = {
 
     }
 
-    const openRow = ($event, row, text) => {
-      console.log('clicckckekckkckeck', $event, row, text);
+    const openRow = ($event, row, cell) => {
       if (props.options.detail.type === 'popup') {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row
         const hour = '11' //Рабочие часы
+        const day = cell.value;
+        const month = currentDate.value.month
+        const year = currentDate.value.year
 
-       const dataCellForm = {
-          ...dataCell,
-          hour,
-        }
+        const date = new Date(year, month, day);
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+
+        console.log($event, row, cell);
 
         const porpsContent = {
           account_id: dataCell.account_id,
           account_name: dataCell.account_name,
-          hour: 11,
-          date: '2023-12-01',
+          hour,
+          date: formattedDate,
         }
 
-        if (routeKey) {
+       // const pattern = /^(0[1-9]|[12][0-9]|3[01])$/;
+
+       
+
+        // const keyByPattern = (pattern, obj) => {
+        //   for (let key in obj) {
+        //     if (pattern.test(key)) {
+        //       return key
+        //     }
+        //   }
+        //   return null;
+        // }
+        
+        if (dataCell.hasOwnProperty(day)) {
+          console.log('Ключ "pattern" существует в объекте regex');
+          porpsContent.id = dataCell[day][0].id
           router.push(
             {
-              name: `${route.name}/:id`,
+              name: `${route.name}-edit`,
               params: {
                 id: row.row[routeKey]
               }
             }
           )
         } else {
-          router.push(
-            {
-              name: `${route.name}/:id`,
-              params: {
-                id: row.row.id
+          console.log('Ключ "pattern" не существует в объекте regex');
+          if (routeKey) {
+            router.push(
+              {
+                name: `${route.name}-new`,
+                params: {
+                  id: row.row[routeKey]
+                }
               }
-          })
-        } 
+            )
+          } else {
+            router.push(
+              {
+                name: `${route.name}/:id`,
+                params: {
+                  id: row.row.id
+                }
+              }
+            )
+          } 
+   
+        }
+ 
+          
+         
+        
 
         popupForm.value.isShow = true
        // popupForm.value.isShowCellForm = true

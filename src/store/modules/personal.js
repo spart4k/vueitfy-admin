@@ -41,6 +41,11 @@ const personal = {
       const result = await create(url, body)
       return result
     },
+    async createData(_, { url, body }) {
+      console.log(_, url, body)
+      const result = await create(url, { data: body })
+      return result
+    },
   },
 }
 

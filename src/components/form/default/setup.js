@@ -115,16 +115,18 @@ export default {
     //       body: formData,
     //     }),
     // })
-
+    console.log('props.tabs', props.tab)
     if (props.tab.hasOwnProperty('content')) {
       props.tab.fields[0].items[0].id = props.content.account_id
       props.tab.fields[0].items[0].name = props.content.account_name
       props.tab.fields[0].value = props.content.account_id
-      props.tab.fields[2].value = props.content.hour
+      props.tab.fields[2].value = +props.content.hour
       props.tab.fields[1].value = props.content.date
+      props.tab.fields[4].value = props.content.date.slice(0, -3)
+      props.tab.fields[6].value = props.content?.id
     }
 
-    console.log('prosporsad', props.tab)
+    console.log('prosporsad', props.content)
     const {
       formData,
       validate,

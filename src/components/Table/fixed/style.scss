@@ -140,6 +140,12 @@ $tableFooterHeight: 85px;
           padding: $paddingCell;
           border: rgba(0,0,0,.1) solid 1px;
           vertical-align: top;
+
+          &:hover {
+            border: var(--v-primary-base) solid 1px;
+            background-color: rgba(139, 87, 152, 0.1);
+          }
+
           &__checkbox {
             //display: flex;
             //justify-content: center;

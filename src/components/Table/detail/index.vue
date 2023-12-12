@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
     <div class="detail-tabs pa-4">
-      <p v-if="detail.name" class="text-h4 mb-4">{{ detail.name }} {{ 2 }}</p>
+      <p v-if="detail.name" class="text-h4 mb-4">{{ detail.name }}</p>
       <v-tabs
         style="flex: unset"
         v-model="detail.activeTab"

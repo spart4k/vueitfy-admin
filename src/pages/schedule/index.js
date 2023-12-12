@@ -682,7 +682,7 @@ const consumptionConfig = {
           },
           {
             id: 1,
-            name: 'Основные1',
+            name: 'Основные',
             type: FormList,
             //detail: true,
             lists: [
@@ -925,6 +925,7 @@ const config = {
   selector: '#mainTable',
   options: {
     routeKey: 'account_id',
+    pageName: 'schedule',
     selecting: true,
     search: {
       function: searchInputing,
@@ -1054,6 +1055,7 @@ const config = {
       {
         path: 'add',
         id: 5,
+        //  content: 'super',
         name: 'Запросить документы',
         type: 'FormStage',
         detail: true,
@@ -1085,7 +1087,7 @@ const config = {
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/schedule_account_id',
+                url: 'get/pagination_list/account',
                 position: {
                   cols: 12,
                   sm: 12,
@@ -1138,7 +1140,7 @@ const config = {
         ],
       },
       {
-        id: 0,
+        id: 1,
         name: 'Основные',
         type: FormDefault,
         detail: true,
@@ -1218,8 +1220,9 @@ const config = {
         ],
       },
       {
-        id: 0,
-        content: 'super',
+        path: 'new',
+        content: '',
+        id: 2,
         name: 'Основные',
         type: FormDefault,
         detail: true,
@@ -1290,8 +1293,11 @@ const config = {
 
           //Дополнительные поля, которые скрыты но учитываются в formdata
           stringField({
-            isShow: { value: false },
-            label: 'Рабочие часы',
+            value: '1',
+            isShow: {
+              value: true,
+            },
+            label: 'Что-то type',
             name: 'type',
             placeholder: '',
             readonly: false,
@@ -1303,8 +1309,9 @@ const config = {
             bootstrapClass: [''],
           }),
           stringField({
+            value: '2023-03',
             isShow: { value: false },
-            label: 'Рабочие часы',
+            label: 'Что-то period',
             name: 'period',
             placeholder: '',
             readonly: false,
@@ -1316,8 +1323,9 @@ const config = {
             bootstrapClass: [''],
           }),
           stringField({
-            isShow: { value: false },
-            label: 'Рабочие часы',
+            value: '1',
+            isShow: { value: true },
+            label: 'Что-то shift',
             name: 'shift',
             placeholder: '',
             readonly: false,
@@ -1335,6 +1343,160 @@ const config = {
             type: 'submit',
             module: 'personal/create',
             url: 'schedule/',
+            name: 'createForm',
+            action: 'createForm',
+            color: 'primary',
+          }),
+        ],
+      },
+      {
+        path: 'edit',
+        content: '',
+        id: 2,
+        name: 'Основные',
+        type: FormDefault,
+        detail: true,
+        // lists: [
+        //   { alias: 'user_keys', filter: [] },
+        //   { alias: 'habitation_id', filter: [] },
+        //   { alias: 'account_id', filter: [] },
+        //   { alias: 'direction_id', filter: [] },
+        //   { alias: 'grajdanstvo_id', filter: [] },
+        // ],
+        alias: 'personal',
+        active: false,
+        fields: [
+          selectField({
+            label: 'Сотрудник',
+            name: 'account_id',
+            alias: 'p.account_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            disabled: true,
+            value: 0,
+            items: [
+              { id: 0, name: 'Новые' },
+              { id: 1, name: 'ЕАЭС' },
+              { id: 2, name: 'Не резиденты' },
+              { id: 3, name: 'РФ' },
+            ],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            update: {
+              module: 'selects/getList',
+              fields: ['object_id'],
+            },
+          }),
+          dateField({
+            label: ' Дата',
+            name: 'date_target',
+            subtype: 'date',
+            placeholder: '',
+            classes: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: ['changeSelect'],
+          }),
+          stringField({
+            label: 'Рабочие часы',
+            name: 'hour',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
+
+          //Дополнительные поля, которые скрыты но учитываются в formdata
+          stringField({
+            value: 1,
+            isShow: {
+              value: true,
+            },
+            label: 'Что-то type',
+            name: 'type',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            value: '2023-03',
+            isShow: { value: false },
+            label: 'Что-то period',
+            name: 'period',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            value: 1,
+            isShow: { value: true },
+            label: 'Что-то shift',
+            name: 'shift',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            value: '0',
+            isShow: {
+              value: true,
+            },
+            label: 'Что-то id',
+            name: 'id',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Отменить',
+            type: 'cancel',
+            module: '',
+            name: 'saveForm',
+            action: 'prevStage',
+            color: 'error',
+          }),
+          stringAction({
+            text: 'Обновить',
+            type: 'submit',
+            module: 'personal/createData',
+            url: 'set/data/schedule',
             name: 'createForm',
             action: 'createForm',
             color: 'primary',

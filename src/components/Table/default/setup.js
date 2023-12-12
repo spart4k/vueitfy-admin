@@ -315,7 +315,7 @@ const table = {
           },
         ]
       }
-      console.log('table get')
+
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
