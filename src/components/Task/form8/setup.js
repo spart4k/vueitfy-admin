@@ -300,6 +300,7 @@ const Form8 = defineComponent({
       listDisbledDocuments,
       addFilesPatent,
       disableFinishState,
+      textInfo,
       sendTaskFinish,
     }
   },

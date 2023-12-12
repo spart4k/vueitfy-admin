@@ -102,47 +102,51 @@ const Form6 = defineComponent({
         listRequestsForUpload.value.push(updateFileData, loadImage)
       }
     }
-    const { makeRequest: changeStatus } = useRequest({
-      context,
-      request: () =>
-        store.dispatch('taskModule/setPartTask', {
-          status: 2,
-          data: {
-            personal_id: data.entity.id,
-            process_id: data.task.process_id,
-            task_id: data.task.id,
-            parent_action: data.task.id,
-          },
-        }),
-    })
+    // const { makeRequest: changeStatus } = useRequest({
+    //   context,
+    //   request: () =>
+    //     store.dispatch('taskModule/setPartTask', {
+    //       status: 2,
+    //       data: {
+    //         personal_id: data.entity.id,
+    //         process_id: data.task.process_id,
+    //         task_id: data.task.id,
+    //         parent_action: data.task.id,
+    //       },
+    //     }),
+    // })
     let resultOnew
 
     let sendTaskFinish = () => {
-      listRequestsForUpload.value.forEach((elem, index) => {
-        elem()
-          .then((data) => {
-            console.log(data)
-            resultOnew = data.result
+      listRequestsForUpload.value
+        .at()()
+        .then((data) => {
+          console.log(data)
+          resultOnew = data.result
+        })
+        .then(() => {
+          const { makeRequest: changeStatus } = useRequest({
+            context,
+            request: () =>
+              store.dispatch('taskModule/setPartTask', {
+                status: 2,
+                data: {
+                  personal_id: data.entity.id,
+                  process_id: data.task.process_id,
+                  task_id: data.task.id,
+                  docs_id: [{ 3: resultOnew }],
+                  parent_action: data.task.id,
+                },
+              }),
           })
-          .then(() => {
-            const { makeRequest: changeStatus } = useRequest({
-              context,
-              request: () =>
-                store.dispatch('taskModule/setPartTask', {
-                  status: 2,
-                  data: {
-                    personal_id: data.entity.id,
-                    process_id: data.task.process_id,
-                    task_id: data.task.id,
-                    docs_id: { 3: resultOnew },
-                    parent_action: data.task.id,
-                  },
-                }),
+          Promise.all(listRequestsForUpload.value)
+            .then((data) => {
+              changeStatus()
             })
-            changeStatus()
-            ctx.emit('closePopup')
-          })
-      })
+            .then(() => {
+              ctx.emit('closePopup')
+            })
+        })
     }
     return {
       addFiles,
