@@ -107,30 +107,33 @@ const Form4 = defineComponent({
       pushSomeShit()
       makeRequest()
 
-      let fixData = updateFileData()
-      const { makeRequest: startTask } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/startProcess', {
-            // status: 6,
-            // data: {
-            // personal_id: <?php echo $entity['id']; ?>,
-            // docs_id: {"10": data.result},
-            // parent_action: <?php echo $task['id']; ?>,
-            // type_parent_action: 2,
+      updateFileData().then((data) => {
+        console.log(data)
+        const { makeRequest: startTask } = useRequest({
+          context,
+          request: () =>
+            store.dispatch('taskModule/startProcess', {
+              // status: 6,
+              // data: {
+              // personal_id: <?php echo $entity['id']; ?>,
+              // docs_id: {"10": data.result},
+              // parent_action: <?php echo $task['id']; ?>,
+              // type_parent_action: 2,
 
-            parent_process: data.task.process_id,
-            process_id: data.task.process_id,
-            account_id: data.task.to_account_id,
-            task_id: data.task.id,
-            docs_id: [{ 10: fixData.result }],
-            personal_id: data.entity.id,
-            parent_action: data.task.id,
-            type_parent_action: 2,
-            // },
-          }),
+              parent_process: data.task.process_id,
+              process_id: data.task.process_id,
+              account_id: data.task.to_account_id,
+              task_id: data.task.id,
+              docs_id: [data.result],
+              personal_id: data.entity.id,
+              parent_action: data.task.id,
+              type_parent_action: 2,
+              // },
+            }),
+        })
+        startTask()
       })
-      startTask()
+
       ctx.emit('closePopup')
     }
 

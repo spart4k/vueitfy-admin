@@ -131,6 +131,7 @@ const Form7 = defineComponent({
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
             ...data,
+            id: props.data.data.personal_doc_data.id,
           },
         })
       },
