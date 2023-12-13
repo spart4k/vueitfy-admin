@@ -15,11 +15,14 @@
         </div>
         <div v-else>Не приложен</div>
       </div>
-      <FormComment
-        v-model="formData.comment"
+      <v-textarea
+        rows="2"
+        clearable
         @input="() => (commentErr = '')"
-        :errors="commentErr"
-      ></FormComment>
+        label="Комментарий"
+        v-model="formData.comment"
+        :error-messages="commentErr"
+      ></v-textarea>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
