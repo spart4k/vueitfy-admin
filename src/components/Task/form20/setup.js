@@ -26,7 +26,7 @@ const Form20 = defineComponent({
       },
     }
 
-    const dopData = JSON.stringify(props.data.task.dop_data)
+    const dopData = JSON.parse(props.data.task.dop_data)
     const personal = props.data.data.personal
     const dataRojd = personal.data_rojd
     const name = personal.name
@@ -62,7 +62,7 @@ const Form20 = defineComponent({
             task_id: props.data.entity.id,
             parent_action: props.data.entity.id,
             user_key: props.data.entity.id,
-            photo_path: JSON.parse(dopData).photo_path ?? '',
+            photo_path: dopData.photo_path ?? '',
             obd_id: props.data.entity.id,
             comment: keyForm.comment,
             okk_id: props.data.task.from_account_id,
