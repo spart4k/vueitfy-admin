@@ -8,19 +8,23 @@
       <FormError v-if="data.data.dop_data" class="mb-5">
         {{ data.data.dop_data }}
       </FormError>
-      <div class="mb-3">
-        <v-icon class="mr-2" v-if="isKeyConfrmed" x-small color="green"
-          >$IconGalka</v-icon
-        >
-        <v-icon
-          class="mr-2"
-          v-else-if="!isKeyConfrmed && !isBtnDisabled"
-          x-small
-          color="red"
-          >$IconClose</v-icon
-        >
-        <span>Проверьте данные личного ключа:</span>
-      </div>
+      <v-row>
+        <v-col>
+          <div class="mb-3">
+            <v-icon class="mr-2" v-if="isKeyConfrmed" x-small color="green"
+              >$IconGalka</v-icon
+            >
+            <v-icon
+              class="mr-2"
+              v-else-if="!isKeyConfrmed && !isBtnDisabled"
+              x-small
+              color="red"
+              >$IconClose</v-icon
+            >
+            <span>Проверьте данные личного ключа:</span>
+          </div>
+        </v-col>
+      </v-row>
       <v-form>
         <v-row>
           <v-col>
