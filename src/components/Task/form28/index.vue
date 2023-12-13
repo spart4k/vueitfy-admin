@@ -5,12 +5,15 @@
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
         >&nbsp; на дату 07.02.2023
       </v-card-title>
+      <FormError v-if="JSON.parse(data.data.dop_data).comment" class="mb-5">
+        {{ JSON.parse(data.data.dop_data).comment || '' }}
+      </FormError>
       <TextInfo :infoObj="infoObj" />
       <div>
-        <div>Путевой лист:</div>
-        <div v-if="directionToMagnit">
+        <div style="font-weight: 600">Путевой лист:</div>
+        <div v-if="directionToMagnit && pathAct">
           <a download href="#">
-            <img style="width: 100%" src="/file/get/:folder/:file" alt="#" />
+            <img style="width: 100%" :src="pathAct" alt="#" />
           </a>
         </div>
         <div v-else>Не приложен</div>
