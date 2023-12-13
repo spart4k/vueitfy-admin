@@ -23,10 +23,12 @@
       </div>
       <v-form>
         <v-row>
-          <span>Скан:</span>
-          <a target="_blank" :href="'#'"
-            ><v-icon left small> $IconDocument </v-icon></a
-          >
+          <v-col>
+            <span>Скан:</span>
+            <a target="_blank" :href="'#'"
+              ><v-icon left small> $IconDocument </v-icon></a
+            >
+          </v-col>
         </v-row>
         <v-row>
           <v-col>
