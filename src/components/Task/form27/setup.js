@@ -28,6 +28,7 @@ const Form27 = defineComponent({
       },
     }
     const directionToMagnit = props.data.entity.direction_id === 5
+    const pathAct = props.data.data.shop_request_magnit.path_act
     const isFormConfirmed = ref(null)
     const infoObj = {
       creator: {
@@ -36,7 +37,7 @@ const Form27 = defineComponent({
       },
       ved_type: {
         key: 'Вид ведомости',
-        value: props.data.entity.vedomost_name,
+        value: props.data.entity.vid_vedomost_name,
       },
       employee: {
         key: 'Сотрудник',
@@ -66,7 +67,9 @@ const Form27 = defineComponent({
         key: 'Реквизиты',
         value:
           props.data.entity.bank_id !== 11
-            ? `${props.data.entity.bank_name} ${props.data.entity.fio}... ${props.data.entity.object_name} ${props.data.entity.invoice} `
+            ? `${props.data.entity.bank_name} ${
+                props.data.entity.fio
+              }...${props.data.entity.invoice.split('').splice(-4).join('')}`
             : 'Наличные',
       },
       meals: {
@@ -167,6 +170,7 @@ const Form27 = defineComponent({
       formErrors,
       directionToMagnit,
       entity: props.data.entity,
+      pathAct,
     }
   },
 })

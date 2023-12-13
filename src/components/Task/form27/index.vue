@@ -8,9 +8,9 @@
       <TextInfo :infoObj="infoObj" />
       <div>
         <div>Путевой лист:</div>
-        <div v-if="directionToMagnit">
+        <div v-if="directionToMagnit && pathAct">
           <a download href="#">
-            <img style="width: 100%" src="/file/get/:folder/:file" alt="#" />
+            <img style="width: 100%" :src="pathAct" alt="#" />
           </a>
         </div>
         <div v-else>Не приложен</div>
