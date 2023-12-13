@@ -174,11 +174,11 @@
                 @contextmenu="openContext($event, row)"
                 @click="openChildRow($event, row)"
                 class="v-table-body-row"
+                @dblclick="openRow($event, row)"
               >
                 <td
                   class="v-table-body-row-cell__checkbox"
                   align="center"
-                  v-on:dblclick="openRow($event, row)"
                   v-if="options.options.selecting"
                   :class="[
                     headerOptions.some((el) => el.fixed.value)
@@ -456,7 +456,6 @@
       <router-view
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
-        @getItems="getItems"
         @closePopup="closePopupForm"
       />
     </Popup>

@@ -425,6 +425,7 @@ const table = {
       getItems()
     }
     const openRow = ($event, row) => {
+      console.log('asdf');
       if (!props.options.detail) return
       if (props.options.detail.type === 'popup') {
         //router.push({
