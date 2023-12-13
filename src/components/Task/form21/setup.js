@@ -31,6 +31,9 @@ const Form21 = defineComponent({
     const isKeyConfrmed = ref(null)
     const formComment = ref('')
     const formCommentError = ref('')
+    const personal = props.data.personal
+    const dataRojd = personal.data_rojd
+    const name = personal.name
     const { formData: keyForm, formErrors: keyFormErrors } = useForm({
       fields: {
         key: {
@@ -119,6 +122,8 @@ const Form21 = defineComponent({
       completeTask,
       formComment,
       formCommentError,
+      dataRojd,
+      name,
     }
   },
 })

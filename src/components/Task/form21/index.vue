@@ -1,6 +1,10 @@
 <template>
   <div>
     <div style="padding-top: 20px">
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ name }}</span
+        >&nbsp;({{ dataRojd }} г.р)
+      </v-card-title>
       <FormError v-if="data.data.dop_data" class="mb-5">
         {{ data.data.dop_data }}
       </FormError>

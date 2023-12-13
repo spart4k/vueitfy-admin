@@ -27,6 +27,9 @@ const Form20 = defineComponent({
     }
 
     const dopData = JSON.stringify(props.data.task.dop_data)
+    const personal = props.data.personal
+    const dataRojd = personal.data_rojd
+    const name = personal.name
 
     const {
       formData: keyForm,
@@ -63,7 +66,7 @@ const Form20 = defineComponent({
             task_id: props.data.entity.id,
             parent_action: props.data.entity.id,
             user_key: props.data.entity.id,
-            photo_path: dopData.photo_path ?? '',
+            photo_path: JSON.parse(dopData.photo_path).photo_path ?? '',
             obd_id: props.data.entity.id,
             comment: keyForm.comment,
             okk_id: props.data.task.from_account_id,
@@ -91,7 +94,16 @@ const Form20 = defineComponent({
       success && ctx.emit('closePopup')
     }
 
-    return { keyForm, keyFormErrors, keyFormValidate, completeTask, dopData }
+    return {
+      keyForm,
+      keyFormErrors,
+      keyFormValidate,
+      completeTask,
+      dopData,
+      personal,
+      dataRojd,
+      name,
+    }
   },
 })
 export default Form20
