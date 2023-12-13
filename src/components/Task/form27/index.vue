@@ -7,7 +7,7 @@
       </v-card-title>
       <TextInfo :infoObj="infoObj" />
       <div>
-        <div>Путевой лист:</div>
+        <div style="font-weight: 600">Путевой лист:</div>
         <div v-if="directionToMagnit && pathAct">
           <a download href="#">
             <img style="width: 100%" :src="pathAct" alt="#" />
@@ -17,7 +17,8 @@
       </div>
       <FormComment
         v-model="formData.comment"
-        :errors="formErrors.comment"
+        @input="() => (commentErr = '')"
+        :errors="commentErr"
       ></FormComment>
     </div>
     <v-divider></v-divider>
