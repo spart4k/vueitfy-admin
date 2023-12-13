@@ -55,7 +55,7 @@ const Form21 = defineComponent({
         return store.dispatch('taskModule/setPartTask', {
           status: isKeyConfrmed.value ? 2 : 6,
           data: {
-            process_id: props.data.entity.process_id,
+            process_id: props.data.task.process_id,
             task_id: props.data.entity.id,
             parent_action: props.data.entity.id,
             user_key: props.data.entity.id,
