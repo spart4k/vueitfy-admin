@@ -1,6 +1,6 @@
 import { post, get } from '@/api/axios'
 
-export const login = (ctx) => post('auth/sign_in', ctx.data, ctx.params)
+export const login = (data) => post('auth/sign_in', data)
 
 export const me = (data) => get('get/me', data)
 
