@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue'
+import Vue, { ref, onMounted } from 'vue'
 import { useStore } from '@/store'
 
 import Sidebar from '@/layouts/sidebar/sidebar.vue'

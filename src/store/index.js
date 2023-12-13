@@ -26,8 +26,15 @@ const store = new Vuex.Store({
       contrast: 'light',
       theme: 'blue',
     },
+    formStorage: {},
   },
   mutations: {
+    changeFormStorage(state, obj) {
+      Vue.set(state.formStorage, obj.key, obj.value)
+    },
+    clearFormStorage(state) {
+      state.formStorage = {}
+    },
     changeMenuStatus(state, value) {
       state.openMenu = value
     },

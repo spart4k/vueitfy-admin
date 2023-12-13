@@ -1,13 +1,15 @@
-import Vue, { ref, computed, watch, unref, reactive } from 'vue'
+import Vue, { ref, computed, watch, unref, reactive, readonly } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
+import { useRoute, useRouter } from 'vue-router/composables'
 // import { required } from '@/utils/validation.js'
 // import { data } from 'jquery'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
+import { refresh } from '@/api/login'
 
 /**
  * @param loading {boolean}
@@ -31,12 +33,35 @@ export default function ({
   setFields,
   mode,
   createForm,
+  deleteFormById,
+  detail,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
   const filesBasket = ref({})
+  const router = useRouter()
   const { emit } = context.root.ctx
+  const permission = computed(() => store.state.user.permission)
+  // const validations = () => {
+  //   const formFields = {}
+  //   form.fields.forEach((el) => {
+  //     formFields[el.name] = el
+  //   })
+  //   return Object.keys(formData).reduce((obj, key) => {
+  //     if (
+  //       (typeof formFields[key].isShow === 'boolean' &&
+  //         !formFields[key].isShow) ||
+  //       (typeof formFields[key].isShow === 'object' &&
+  //         !formFields[key].isShow.value)
+  //     ) {
+  //       return obj
+  //     }
+  //     obj[key] = { ...formFields[key].validations, $autoDirty }
+  //     return obj
+  //   }, {})
+  // }
+
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       //console.log(obj[key])
@@ -44,38 +69,32 @@ export default function ({
       return obj
     }, {})
   )
+
+  const computedFormData = computed(() => formData)
+
   const validations = () => {
     const formFields = {}
-    form?.fields.forEach((el) => {
-      formFields[el.name] = el
-    })
-    if (!form) return
-    return Object.keys(formData).reduce((obj, key) => {
+    if (form) {
+      form?.fields?.forEach((el) => {
+        formFields[el.name] = el
+      })
+      if (!form) return
+    }
+    return Object.keys(formData || fields).reduce((obj, key) => {
       if (
-        (typeof formFields[key].isShow === 'boolean' &&
-          !formFields[key].isShow) ||
-        (typeof formFields[key].isShow === 'object' &&
-          !formFields[key].isShow.value)
+        (typeof formFields[key]?.isShow === 'boolean' &&
+          !formFields[key]?.isShow) ||
+        (typeof formFields[key]?.isShow === 'object' &&
+          !formFields[key]?.isShow.value)
       ) {
         return obj
       }
-      obj[key] = { ...formFields[key].validations, $autoDirty }
+      if (form) obj[key] = { ...formFields[key].validations, $autoDirty }
+      else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
-    //console.log({
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //})
-    //return {
-    //  required,
-    //  fields: {
-    //    $each: valFields,
-    //  },
-    //}
   }
 
-  const computedFormData = computed(() => formData)
   let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
@@ -83,16 +102,13 @@ export default function ({
       formData,
       reactive(
         Object.keys(setFields()).reduce((obj, key) => {
-          //console.log(obj[key])
           obj[key] = ref(formData[key])
           return obj
         }, {})
       )
     )
   }
-  // setInterval(() => {
-  //   // console.log(errors.value)
-  // }, 3000)
+
   const $errors = ref({})
   const errorsCount = () => {
     $errors.value = Object.keys(formData).reduce((obj, key) => {
@@ -105,11 +121,13 @@ export default function ({
     }, {})
   }
 
-  const validate = () => {
-    $v = useVuelidate(validations(), computedFormData.value)
+  const validate = (touch) => {
+    if (touch) $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
-    $touched.value = true
-    errorsCount()
+    if (touch) {
+      $touched.value = true
+      errorsCount()
+    }
     return !unref($v).$invalid
   }
 
@@ -135,15 +153,25 @@ export default function ({
       }
     })
   }
-  const clickHandler = async (action) => {
-    if (!validate()) return
-    const sortedData = sortData()
+  const clickHandler = async ({ action, skipValidation }) => {
+    console.log(action)
+    if (!skipValidation) if (!validate(true)) return
+    const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
+      if (action.url) {
+        const response = await stageRequest(action)
+        if (!response) return
+      }
       Vue.set(form, 'formData', formData)
+      emit('setStageData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
+      if (action.url) {
+        const response = await stageRequest(action)
+        if (!response) return
+      }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
       loading.value = true
@@ -152,7 +180,7 @@ export default function ({
           action[el.target] = el.result[formData[el.from]]
         })
         //await createForm({ url: action.url, module: action.module })
-        loadStoreFile({
+        await loadStoreFile({
           url: action.url,
           module: action.module,
           formData: sortedData,
@@ -165,23 +193,37 @@ export default function ({
         })
       }
       loading.value = false
-      //const isNextForm = true
-      //if (isNextForm) {
-      //  nextForm()
-      //}
     } else if (action.action === 'saveFormStore') {
-      loadStoreFile({
-        url: action.url,
-        module: action.module,
-        formData,
-      })
-    } else if (action.action === 'nextAwaitStage') {
       loading.value = true
-      const data = await createForm({
+      await loadStoreFile({
         url: action.url,
         module: action.module,
         formData: sortedData,
       })
+      loading.value = false
+    } else if (action.action === 'deleteFormById') {
+      loading.value = true
+      console.log('Срочно удляюсь ...')
+      console.log(router)
+      await deleteFormById({
+        url: action.url,
+        module: action.module,
+      })
+      emit('closePopup')
+      if (action.actionKey) {
+        emit('getItems')
+      }
+      loading.value = false
+    } else if (action.action === 'updateFormStore') {
+      loading.value = true
+      await loadStoreFile(
+        {
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        },
+        { update: true }
+      )
       loading.value = false
     } else if (action.action === 'createForm') {
       loading.value = true
@@ -190,21 +232,94 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
+      console.log('action', action, action.actionKey === 'schedule')
+      if (action.actionKey === 'schedule') {
+        emit('getItems')
+        emit('closePopup')
+      }
       loading.value = false
+    } else if (action.action === 'closePopup') {
+      emit('closePopup', action.to)
+    } else if (action.action === 'turnOff') {
+      action.variable = false
     }
   }
-  const sortData = () => {
+
+  const stageRequest = async (action) => {
+    const sortedData = sortData({ action })
+    loading.value = true
+    const data = await createForm({
+      url: action.url,
+      module: action.module,
+      formData: sortedData,
+    })
+    loading.value = false
+    const response = responseHandler({ action, data })
+    if (!response) return false
+    return true
+  }
+
+  const responseHandler = ({ action, data }) => {
+    const response = action?.conditionCode?.results?.find(
+      (x) => x.value === data[action.conditionCode.key]
+    )
+    if (response?.type === 'success') {
+      if (response?.toStorage) {
+        tabStorageChange(response, data)
+      }
+      if (response?.emit === 'closePopup') {
+        emit('closePopup', response?.to)
+      }
+    } else if (response?.type === 'error') {
+      store.commit('notifies/showMessage', {
+        color: 'error',
+        content: unref(response.text),
+      })
+      return false
+    }
+    return true
+  }
+
+  const tabStorageChange = (response, data) => {
+    // if (response?.toStorage) {
+    response.toStorage.forEach((item) => {
+      // detail.stageData[item] = data[item]
+      store.commit('changeFormStorage', { key: item, value: data[item] })
+    })
+    // }
+    // if (response?.fromStorage) {
+    //   response.fromStorage.forEach((item) => {
+    //     delete detail.stageData[item]
+    //   })
+    // }
+  }
+
+  const sortData = ({ action }) => {
     const newForm = {}
+    if (!form) return
     Object.keys(formData).forEach((key) => {
-      const item = form.fields.find((x) => x.name === key)
+      const item = form?.fields?.find((x) => x.name === key)
       if (
         (typeof item.isShow === 'boolean' && item.isShow) ||
         (typeof item.isShow === 'object' && item.isShow.value) ||
         !item.notSend
       ) {
-        newForm[key] = formData[key]
+        if (item.requestKey) newForm[item.requestKey] = formData[key]
+        else newForm[key] = formData[key]
       }
       if (item.notSend) delete newForm[key]
+      if (action?.useStorageKey?.length) {
+        action.useStorageKey.forEach((item) => {
+          newForm[item.requestKey] =
+            store?.state?.formStorage?.[item?.storageKey]
+        })
+      }
+      if (item.stringify) {
+        if (item.requestKey)
+          newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
+        else newForm[key] = JSON.stringify(formData[key])
+        // newForm[key] = JSON.stringify(formData[key])
+      }
     })
     return newForm
   }
@@ -221,8 +336,10 @@ export default function ({
     return await store.dispatch('storage/loadFile')
   }
 
-  const loadStoreFile = async (queryParams) => {
+  const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
+    const { update } = params
+
     const queries = []
     for (let key in filesBasket.value) {
       const name =
@@ -270,7 +387,11 @@ export default function ({
         }
       }
     }
-    const result = await createForm(queryParams)
+    if (update) {
+      const result = await changeForm(queryParams)
+    } else {
+      const result = await createForm(queryParams)
+    }
     //context.root.router.go(-1)
     emit('closePopup')
     // const
@@ -393,9 +514,14 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log(field)
+    console.log('field', field)
     field.dependence?.forEach(async (dependence) => {
-      console.log(dependence)
+      if (dependence.condition?.length) {
+        const success = dependence.condition.evert((conditionEl) => {
+          return conditionEl.value.includes(formData[conditionEl.field])
+        })
+        if (!success) return
+      }
       const depField = dependence.field
       let fieldValue, targetField, card, body
       targetField = form.fields.find((el) => el.name === depField)
@@ -419,13 +545,23 @@ export default function ({
           //}
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
+        console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
         if (targetField.type === 'autocomplete') {
-          const filter = []
+          const filters = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
               if (!formData[el.field]) return
-              filter.push({
+              filters.push({
+                field: el.field,
+                value: formData[el.field],
+              })
+            })
+          }
+          if (dependence.filter && dependence.filter.length) {
+            dependence.filter.forEach((el) => {
+              if (!formData[el.field]) return
+              filters.push({
                 field: el.field,
                 value: formData[el.field],
               })
@@ -437,7 +573,7 @@ export default function ({
             searchValue: '',
             //id: params.id ? params.id : -1,
             id: -1,
-            filter,
+            filters,
           }
         }
       }
@@ -447,7 +583,9 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
-        dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
+        if (params.item) {
+          dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
+        }
         return
       } else if (
         dependence &&
@@ -529,6 +667,7 @@ export default function ({
           const selectField = form.fields.find(
             (el) => el.name === dependence.action.field
           )
+          console.log(selectField)
           selectField.items = selectField.hideItems.filter((el) => {
             return el.id !== dependence.action.condition[data.result]
           })
@@ -559,61 +698,16 @@ export default function ({
     if (!result) formData[field.name] = ''
   }
 
+  const changeCheckbox = (field) => {
+    showField(field.type, field)
+  }
+
   const changeSelect = async ({ value, field }) => {
     if (field.dependence) {
       await getDependies({ value, field })
     }
     if (field.updateList && field.updateList.length) {
-      const listData = field?.updateList?.map((list) => {
-        let filter = list.filter.reduce((acc, el) => {
-          const source = eval(el.source)
-          if (source[el.field] !== null && source[el.field] !== undefined) {
-            acc.push({
-              alias: el.field,
-              value: Array.isArray(source[el.field])
-                ? source[el.field]
-                : [source[el.field]],
-              type: el.type,
-            })
-          }
-          return acc
-        }, [])
-
-        const element = {
-          alias: list.alias,
-          filter,
-        }
-        return element
-      })
-      field.loading = true
-      const lists = await makeRequestList(listData)
-      for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
-        if (field) {
-          console.log(field)
-          formData[field.name] = ''
-          field.hideItems = lists.data[keyList]
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value
-              )
-              lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
-              })
-            }
-          }
-          field.items = lists.data[keyList]
-          if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
-          }
-          showField(field.type, field, true)
-        }
-      }
-
-      field.loading = false
+      await queryList(field)
     }
   }
 
@@ -665,6 +759,61 @@ export default function ({
     })
     await Promise.all(queryFields)
   }
+  const putSelectItems = (lists) => {
+    for (let keyList in lists.data) {
+      const field = form?.fields.find((el) =>
+        el.alias ? el.alias === keyList : el.name === keyList
+      )
+      if (field) {
+        console.log(field)
+        field.hideItems = lists.data[keyList]
+        if (field.hiding) {
+          if (field.hiding.conditions) {
+            const condition = field.hiding.conditions.find(
+              (el) => mode === el.value
+            )
+            lists.data[keyList] = lists.data[keyList].filter((el) => {
+              return !condition.values.includes(el.id)
+            })
+          }
+        }
+        field.items = lists.data[keyList]
+        if (field.items.length === 1) {
+          formData[field.name] = field.items[0][field.selectOption.value]
+        }
+        showField(field.type, field, true)
+      }
+    }
+  }
+  const queryList = async (field, clear = true) => {
+    const listData = field?.updateList?.map((list) => {
+      let filter = list.filter.reduce((acc, el) => {
+        const source = eval(el.source)
+        if (source[el.field] !== null && source[el.field] !== undefined) {
+          acc.push({
+            alias: el.field,
+            value: Array.isArray(source[el.field])
+              ? source[el.field]
+              : [source[el.field]],
+            type: el.type,
+          })
+        }
+        return acc
+      }, [])
+
+      const element = {
+        alias: list.alias,
+        filter,
+      }
+      return element
+    })
+    console.log(field, 'field')
+    field.loading = true
+    const lists = await makeRequestList(listData)
+    putSelectItems(lists)
+    if (clear) formData[field.name] = ''
+    field.loading = false
+  }
 
   const getData = async () => {
     const [syncForm, lists] = await Promise.all(initPreRequest())
@@ -675,16 +824,22 @@ export default function ({
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+          console.log('syncForm', syncForm.data[formKey], formKey)
           formData[field.name] = syncForm.data[formKey]
+          console.log(formData.city_id)
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
             field.dependence.type === 'api'
           ) {
-            await getDependies({ value: formData[field.name], field })
+            //await getDependies({ value: formData[field.name], field })
+          }
+          if (field.updateList && field.updateList.length) {
+            await queryList(field, false)
           }
         }
       }
+      console.log(formData)
     }
     if (hasSelect()) {
       console.log(lists.data)
@@ -693,7 +848,6 @@ export default function ({
           el.alias ? el.alias === keyList : el.name === keyList
         )
 
-        window.fields = form.fields
         if (field) {
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
@@ -712,9 +866,41 @@ export default function ({
           }
         }
       }
+      putSelectItems(lists)
     }
     await loadAutocompletes()
     loading.value = false
+  }
+
+  const readonlyField = (field) => {
+    if (typeof field.readonly === 'boolean') return field.readonly
+    else if (typeof field.readonly === 'object') {
+      if (field.readonly.condition?.length) {
+        const condition = () =>
+          field.readonly.condition.some((conditionEl) => {
+            if (conditionEl.target && conditionEl.target === 'formData') {
+              return conditionEl.value.includes(formData[conditionEl.field])
+            } else if (
+              conditionEl.permissions &&
+              conditionEl.permissions.length
+            ) {
+              console.log(
+                'PERMISSIONS',
+                conditionEl.value.includes(formData[conditionEl.field]),
+                conditionEl.permissions.includes(permission.value),
+                conditionEl.type
+              )
+              return (
+                conditionEl.value.includes(formData[conditionEl.field]) &&
+                conditionEl.permissions.includes(permission.value) ===
+                  conditionEl.type
+              )
+            }
+          })
+        field.readonly.value = condition()
+        return field.readonly.value
+      }
+    }
   }
 
   const showField = (type, field, loaded) => {
@@ -743,7 +929,7 @@ export default function ({
           })
         }
       })
-    if (field.isShow.conditions) {
+    if (field.isShow.conditions && field.isShow.conditions.length) {
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
@@ -763,8 +949,6 @@ export default function ({
   const disabledField = (field) => {
     return field.requiredFields
       ? field.requiredFields.some((el) => !formData[el])
-      : field.disabled
-      ? true
       : false
   }
 
@@ -794,7 +978,7 @@ export default function ({
     () => formData,
     () => {
       console.log('change form')
-      form.fields.forEach((el) => {
+      form?.fields?.forEach((el) => {
         showField(el.type, el)
       })
       if ($touched.value) {
@@ -825,5 +1009,10 @@ export default function ({
     addFiles,
     sortData,
     rebuildFormData,
+    changeCheckbox,
+    tabStorageChange,
+    stageRequest,
+    responseHandler,
+    readonlyField,
   }
 }

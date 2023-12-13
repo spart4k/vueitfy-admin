@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, nextTick } from 'vue'
+import Vue, { onMounted, ref, computed, watch, nextTick, provide } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
@@ -388,6 +388,7 @@ const table = {
         coutingCells()
       }, 0)
     }
+
     const initHeadParams = () => {
       const { head } = props.options
       head.forEach((el) => {
@@ -450,12 +451,8 @@ const table = {
       getItems()
     }
 
-    const openCell = ($event, c) => {
-
-    }
-
-    const openRow = ($event, row, cell) => {
-      if (props.options.detail.type === 'popup') {
+    const openCell = ($event, row, cell) => {
+      if (props.options.detail.type === 'popup' && !cell.noAction) {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row
         const hour = '11' //Рабочие часы
@@ -466,7 +463,7 @@ const table = {
         const date = new Date(year, month, day);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 
-        console.log($event, row, cell);
+        
 
         const porpsContent = {
           account_id: dataCell.account_id,
@@ -474,19 +471,6 @@ const table = {
           hour,
           date: formattedDate,
         }
-
-       // const pattern = /^(0[1-9]|[12][0-9]|3[01])$/;
-
-       
-
-        // const keyByPattern = (pattern, obj) => {
-        //   for (let key in obj) {
-        //     if (pattern.test(key)) {
-        //       return key
-        //     }
-        //   }
-        //   return null;
-        // }
         
         if (dataCell.hasOwnProperty(day)) {
           console.log('Ключ "pattern" существует в объекте regex');
@@ -495,7 +479,7 @@ const table = {
             {
               name: `${route.name}-edit`,
               params: {
-                id: row.row[routeKey]
+                id: porpsContent.id
               }
             }
           )
@@ -523,15 +507,36 @@ const table = {
    
         }
  
-          
-         
-        
-
         popupForm.value.isShow = true
        // popupForm.value.isShowCellForm = true
         popupForm.value.dataCellForm = porpsContent
         //  popupForm.value.isShow = 
       } 
+    }
+
+    const openRow = ($event, row, cell) => {
+      if (!props.options.detail) return
+      if (props.options.detail.type === 'popup') {
+
+        router.push(
+          {
+            name: `${route.name}/:id`,
+            params: {
+              id: row.row.id
+            }
+        })
+        popupForm.value.isShow = true
+      }
+    }
+
+    const doubleHandler = ($event, row, cell) => {
+      if (props.options.options.doubleHandlerType === 'cell') {
+        openCell($event, row, cell)
+      }
+      if (props.options.options.doubleHandlerType === 'row') {
+        openRow($event, row, cell)
+      }
+      console.log($event, row, cell);
     } 
  
     const closePopupForm = () => {
@@ -759,6 +764,9 @@ const table = {
       },
       { deep: true }
     )
+    provide('refreshTableFixed', {
+      getItems,
+    })
     // HOOKS
     onMounted(async () => {
 
@@ -793,7 +801,8 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode === 'add')) {
+      // .includes('add')
+      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode)) {
         popupForm.value.isShow = true
       }
     })
@@ -846,7 +855,7 @@ const table = {
       rowCount,
       isElementXPercentInViewport,
       saveFilter,
-      openRow,
+      doubleHandler,
       closePopupForm,
       popupForm,
       filtersColumns,

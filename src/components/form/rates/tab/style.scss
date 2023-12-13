@@ -1,0 +1,23 @@
+.rates {
+  .search {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--v-background-base);
+    margin-top: 0;
+  }
+  &-tab {
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow: auto;
+  }
+  &-position {
+    display: flex;
+    flex-direction: column;
+    &__title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+  }
+}

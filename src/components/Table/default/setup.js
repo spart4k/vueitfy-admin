@@ -4,6 +4,9 @@ import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 
+import useForm from '@/compositions/useForm.js'
+import useRequest from '@/compositions/useRequest'
+
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import Popup from '@/components/popup/index.vue'
@@ -37,7 +40,15 @@ const table = {
       default: () => {},
       require: true,
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
     filtersConfig: {
+      type: Object,
+      default: () => {},
+    },
+    detail: {
       type: Object,
       default: () => {},
     },
@@ -306,11 +317,13 @@ const table = {
       //  }
       //})
       let by = undefined
-      if (props.routeParam) {
+      // console.log('props.filtersConfig', store.state.formStorage, props.detail?.stageData.id)
+      if (props.routeParam || store?.state?.formStorage?.id) {
         by = [
           {
             field: props.options.options.urlDetail,
-            value: +props.routeParam,
+            value: +props.routeParam || store?.state?.formStorage?.id,
+            // value: +props.routeParam,
             alias: props.options.options.alias,
           },
         ]
@@ -427,9 +440,11 @@ const table = {
         popupForm.value.isShow = true
       }
     }
-    const closePopupForm = () => {
-      router.back()
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
       popupForm.value.isShow = false
+      if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
       if (props.options.detail.type === 'popup') {
@@ -458,16 +473,14 @@ const table = {
       } else if (type === 'changeUrl') {
         changeUrl(url)
       } else if (type === 'getFilters') {
-        console.log('click inner getFilter');
-        console.log(filtersColumns.value);
-        //console.log(data);
-        console.log(post(url,  {
-          
-          filter: {},
-
-        }))
+        console.log('click inner getFilter')
+        console.log(filtersColumns.value)
+        console.log(url);
+        axios.post(url, filtersColumns.value)
+      } else if (type === 'nextStage') {
+        emit('nextStage', {})
       }
-
+      if (button.function) button.function()
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -482,7 +495,7 @@ const table = {
       return props.options.head.find((cell) => cell.type === 'actions')
     })
     //props.options.data.rows = data.rows
-    
+
     // WATCH
     watch(
       () => searchField,
@@ -505,10 +518,10 @@ const table = {
       },
       { deep: true }
     )
+
     // HOOKS
     onMounted(async () => {
       initHeadParams()
-      console.log('mount')
       await getItems()
 
       const table = document.querySelector(props.options.selector)
@@ -537,15 +550,15 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode === 'add')) {
+      if (props.options.detail && props.options.detail.type === 'popup' && route.meta.mode) {
         popupForm.value.isShow = true
       }
     })
-  
+
     const styleDate = (row, cell, innerDataCallBack) => {
       if ('conditionValue' in cell) {
         const conditionValue = innerDataCallBack(row, cell.conditionValue);
-        return conditionValue ? 'font-style: normal; font-size: 14px' : ''; 
+        return conditionValue ? 'font-style: normal; font-size: 14px' : '';
       }
       return '';
     };
@@ -564,7 +577,7 @@ const table = {
       return 'blue';
     };
     const iconType = (row, cell, innerDataCallBack) => {
-     const value = innerDataCallBack(row, cell.value); 
+     const value = innerDataCallBack(row, cell.value);
 
       if (value === 0) {
         return 'mdi-close';
@@ -573,10 +586,10 @@ const table = {
           const conditionValue = innerDataCallBack(row, cell.conditionValue);
           const dateValue = new Date(conditionValue);
           const formattedDate = `${dateValue.getDate()}.${dateValue.getMonth() + 1}.${dateValue.getFullYear()}`;
-          return conditionValue ? formattedDate : 'mdi-check'; 
-        } else { 
-          return 'mdi-check' 
-        } 
+          return conditionValue ? formattedDate : 'mdi-check';
+        } else {
+          return 'mdi-check'
+        }
       } else if (value === 2) {
         return 'mdi-minus';
       }

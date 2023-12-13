@@ -1,7 +1,8 @@
-import { ref } from 'vue'
+import Vue, { onUnmounted, onMounted, ref } from 'vue'
 import FormDefault from '@/components/form/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
-import { useRouter } from 'vue-router/composables'
+import { useRouter, useRoute } from 'vue-router/composables'
+import useStage from '@/compositions/useStage'
 
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
@@ -17,9 +18,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const router = useRouter()
+    const route = useRoute()
     const context = {
       root: {
         store,
@@ -27,9 +33,31 @@ export default {
         ctx,
       },
     }
+    const loading = ref(false)
     const activeTab = ref(null)
+
+    const { makeRequest: createForm } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: (params) => {
+        return store.dispatch(params.module, {
+          url: params.url,
+          id: store.state.formStorage.id,
+          body: params?.formData,
+        })
+      },
+    })
+
+    const { clickHandler } = useStage({
+      context,
+      loading,
+      activeTab,
+      createForm,
+      form: props.tab,
+    })
+
     const nextStage = async ({ formData, action }) => {
-      if (action.request) {
+      if (action?.request) {
         const { makeRequestStage } = useRequest({
           context,
           request: () =>
@@ -47,10 +75,23 @@ export default {
     const prevStage = () => {
       activeTab.value--
     }
+
+    const setStageData = (val) => {
+      Vue.set(props.tab, 'stageData', val)
+    }
+
+    onMounted(() => {
+      if (props?.tab?.setRoute && route.name !== props?.tab?.setRoute)
+        router.push({ name: props.tab.setRoute })
+    })
+
     return {
       activeTab,
       nextStage,
       prevStage,
+      setStageData,
+      clickHandler,
+      loading,
     }
   },
 }

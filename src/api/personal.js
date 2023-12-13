@@ -1,4 +1,4 @@
-import { get, post, del } from '@/api/axios'
+import { get, post } from '@/api/axios'
 
 export const getCard = (id) => get(`get/personal_bank/${id}`)
 
@@ -10,4 +10,6 @@ export const getObject = (url) => get(`get/objects${url}`)
 
 export const create = (url, data) => post(url, data)
 
-export const deleteRequest = (data) => del(`mail/box/${data}`)
+export const createForm = ({ url, body }) => post(url, { data: body })
+
+export const updateForm = ({ url, body }) => post(url, body)

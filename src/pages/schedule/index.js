@@ -925,6 +925,7 @@ const config = {
   selector: '#mainTable',
   options: {
     routeKey: 'account_id',
+    doubleHandlerType: 'row', //row, column
     pageName: 'schedule',
     selecting: true,
     search: {
@@ -982,6 +983,7 @@ const config = {
   head: [
     {
       id: 1,
+      noAction: true,
       title: 'ФИО',
       align: 'center',
       type: 'default',
@@ -1009,6 +1011,7 @@ const config = {
     },
     {
       id: 2,
+      noAction: true,
       title: 'Должность',
       align: 'center',
       type: 'default',
@@ -1345,6 +1348,7 @@ const config = {
             url: 'schedule/',
             name: 'createForm',
             action: 'createForm',
+            actionKey: 'schedule',
             color: 'primary',
           }),
         ],
@@ -1487,9 +1491,11 @@ const config = {
           stringAction({
             text: 'Отменить',
             type: 'cancel',
-            module: '',
-            name: 'saveForm',
-            action: 'prevStage',
+            module: 'form/del',
+            url: 'schedule',
+            name: 'deleteFormById',
+            action: 'deleteFormById',
+            actionKey: 'schedule',
             color: 'error',
           }),
           stringAction({
@@ -1499,6 +1505,7 @@ const config = {
             url: 'set/data/schedule',
             name: 'createForm',
             action: 'createForm',
+            actionKey: 'schedule',
             color: 'primary',
           }),
         ],

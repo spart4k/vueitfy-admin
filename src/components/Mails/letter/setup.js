@@ -36,6 +36,8 @@ const letter = {
     const route = useRoute()
     const { emit } = context
     const checkbox = ref(false)
+    const iframe = ref(null)
+    const style = '<style>*{overflow: hidden}</style>'
     const setActiveColorFilter = (val) => {
       if (
         !route?.query?.color?.length ||
@@ -56,8 +58,10 @@ const letter = {
     }
     onMounted(() => {
       checkbox.value = props?.selectedMails?.includes(props.data.id)
+      iframe.value.srcdoc = props?.data?.message_text + style
     })
     return {
+      iframe,
       checkbox,
       setActiveColorFilter,
     }

@@ -21,9 +21,9 @@ const container = {
       type: Array,
       default: () => [],
     },
-    tagsData: {
-      type: Array,
-      default: () => [],
+    filterData: {
+      type: Object,
+      default: () => {},
     },
   },
   setup(props, context) {
@@ -78,12 +78,12 @@ const container = {
         })
         triggerCheck()
         let responseData
-        if (route?.query?.filter === 'sent')
-          responseData = await store.dispatch('mail/getSendedMessage', val.id)
-        else responseData = await store.dispatch('mail/getMail', val.id)
+        // if (route?.query?.filter === 'sent')
+        //   responseData = await store.dispatch('mail/getSendedMessage', val.id)
+        // else responseData = await store.dispatch('mail/getMail', val.id)
         activeMail.value = val
         // activeMail.value = responseData.data[0]
-        Vue.set(activeMail.value, 'text', responseData.textfile)
+        // Vue.set(activeMail.value, 'text', responseData.textfile)
         if (
           !val.is_read &&
           route?.query?.filter !== 'sent' &&
@@ -125,6 +125,13 @@ const container = {
       ],
       () => {
         triggerCheck()
+      }
+    )
+
+    watch(
+      () => route?.query?.compose,
+      () => {
+        if (route?.query?.compose === 'new') activeMail.value = null
       }
     )
 

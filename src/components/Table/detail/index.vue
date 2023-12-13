@@ -12,7 +12,7 @@
         <v-tab
           v-for="item in detail.tabs"
           v-if="
-            ($route.meta.mode && item.path === $route.meta.mode) ||
+            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
             (!$route.meta.mode && !item.path)
           "
           :key="item.id"
@@ -24,7 +24,7 @@
         <v-tab-item
           v-for="item in detail.tabs"
           v-if="
-            ($route.meta.mode && item.path === $route.meta.mode) ||
+            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
             (!$route.meta.mode && !item.path)
           "
           :key="item.id"
@@ -35,10 +35,12 @@
             :is="item.type"
             :tab="item"
             :options="item.config"
+            :detail="detail"
             :syncData="syncForm"
             :stages="item.stages"
             :routeParam="id"
-            @closePopup="$emit('closePopup')"
+            @closePopup="(e) => $emit('closePopup', e)"
+            @getItems="(e) => $emit('getItems', e)"
           />
         </v-tab-item>
       </v-tabs-items>

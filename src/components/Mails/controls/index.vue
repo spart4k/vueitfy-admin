@@ -252,7 +252,12 @@
               label="Выберите направление"
               item-text="name"
               item-value="id"
-              @change="getItems({ val: ['otdel', 'object', 'account'] })"
+              @change="
+                getItems({
+                  val: ['otdel', 'object', 'account'],
+                  resetAcc: true,
+                })
+              "
             ></v-select>
           </v-col>
           <v-col cols="12" :sm="broadcast.path.value === 'direction' ? 6 : 12">
@@ -276,7 +281,7 @@
               deletable-chips
               item-text="name"
               item-value="id"
-              @change="getItems({ val: ['account'] })"
+              @change="getItems({ val: ['account'], resetAcc: true })"
               ><template v-slot:append-item>
                 <div id="otdel" v-intersect="endIntersect" /> </template
             ></v-autocomplete>
@@ -302,7 +307,7 @@
               "
               item-text="address"
               item-value="id"
-              @change="getItems({ val: ['account'] })"
+              @change="getItems({ val: ['account'], resetAcc: true })"
             >
               <template v-slot:append-item>
                 <div id="object" v-intersect="endIntersect" />
@@ -338,7 +343,7 @@
             >
               <template slot="item" slot-scope="{ item }">
                 <div class="d-flex flex-column">
-                  <p>{{ item.fio }}</p>
+                  <p>{{ item.fio }}{{ item.id }}</p>
                   <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
               </template>

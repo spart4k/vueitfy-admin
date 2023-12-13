@@ -106,24 +106,34 @@ export default {
           body: params.formData ? params.formData : formData,
         }),
     })
-    // const { makeRequest: createForm } = useRequest({
-    //   context,
-    //   successMessage: 'Сохранено',
-    //   request: () =>
-    //     store.dispatch('form/create', {
-    //       url: `query/${alias}`,
-    //       body: formData,
-    //     }),
-    // })
+
+    const { makeRequest: deleteFormById } = useRequest({
+      context,
+      successMessage: 'Удалено!',
+      request(params) {
+        console.log('params', params)
+        const req = store.dispatch(params.module, {
+          url: params.url,
+          id: route.params.id,
+        })
+        //const req = 'obj'
+        console.log('deleteFormById: ', req)
+        return req
+      },
+    })
+    //console.log(deleteFormById)
+
     console.log('props.tabs', props.tab)
     if (props.tab.hasOwnProperty('content')) {
       props.tab.fields[0].items[0].id = props.content.account_id
       props.tab.fields[0].items[0].name = props.content.account_name
       props.tab.fields[0].value = props.content.account_id
-      props.tab.fields[2].value = +props.content.hour
+      props.tab.fields[2].value = Number(props.content.hour)
       props.tab.fields[1].value = props.content.date
       props.tab.fields[4].value = props.content.date.slice(0, -3)
-      props.tab.fields[6].value = props.content?.id
+      if (props.content.id) {
+        props.tab.fields[6].value = props.content?.id
+      }
     }
 
     console.log('prosporsad', props.content)
@@ -142,9 +152,12 @@ export default {
       disabledField,
       hideField,
       addFiles,
+      changeCheckbox,
+      readonlyField,
     } = useForm({
       form: props.tab,
       context,
+      detail: props.detail,
       loading,
       fields: fields(),
       setFields: fields,
@@ -154,6 +167,7 @@ export default {
       changeForm,
       mode: isEdit.value,
       createForm,
+      deleteFormById,
     })
 
     onMounted(async () => {
@@ -161,6 +175,7 @@ export default {
     })
 
     return {
+      readonlyField,
       //endIntersect,
       formData,
       validate,

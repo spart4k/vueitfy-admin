@@ -14,30 +14,29 @@
         ref="containerBox"
         v-if="$route?.query?.compose !== 'new'"
       >
-        <!-- <div v-if="trigger.left" class="trigger trigger__left">
-          <v-icon
-            @click="scrollContainer(-350)"
-            color="disabled"
-            class="pl-4"
-            x-large
-            >$IconArrowLeft</v-icon
-          >
-        </div>
-        <div
-          v-if="trigger.right"
-          :class="[
-            'trigger',
-            $route.query.mail ? 'trigger__center' : 'trigger__right',
-          ]"
+        <template
+          v-if="
+            $route?.query?.filter !== 'folder' &&
+            $route?.query?.filter !== 'box'
+          "
         >
-          <v-icon
-            @click="scrollContainer(350)"
-            color="disabled"
-            class="pr-4"
-            x-large
-            >$IconArrowRight</v-icon
+          <div v-if="trigger.left" class="trigger trigger__left">
+            <v-btn @click="scrollContainer(-350)" fab small color="primary">
+              <v-icon small color="disabled"> $IconArrowLeft </v-icon>
+            </v-btn>
+          </div>
+          <div
+            v-if="trigger.right"
+            :class="[
+              'trigger',
+              $route.query.mail ? 'trigger__center' : 'trigger__right',
+            ]"
           >
-        </div> -->
+            <v-btn @click="scrollContainer(350)" fab small color="primary">
+              <v-icon small color="disabled"> $IconArrowRight </v-icon>
+            </v-btn>
+          </div>
+        </template>
         <div
           :class="[
             'v-container-box-column',
@@ -74,7 +73,7 @@
                 :active="Number($route.query.mail) === mail?.id"
                 v-for="(mail, mailIndex) in item?.mails?.rows"
                 :key="mailIndex"
-                :tagsData="$props.tagsData"
+                :tagsData="$props.filterData.tagsData"
                 :selectedMails="selectedMails"
                 @setRouterPath="
                   (add, remove, set) => $emit('setRouterPath', add, remove, set)
@@ -113,6 +112,7 @@
             (add, remove, set) => $emit('setRouterPath', add, remove, set)
           "
           @getMails="$emit('getMails')"
+          :filterData="$props.filterData"
           :data="activeMail"
         />
       </div>

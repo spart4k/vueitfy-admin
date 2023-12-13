@@ -68,6 +68,7 @@
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
         @closePopup="closePopupForm"
+        @getItems="getItems"
       />
     </Popup>
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
@@ -224,7 +225,7 @@
                     width: cell.width,
                   }"
                   :class="[
-                    'v-table-body-row--selected2',
+                    !cell.noAction ? 'v-table-body-row-cell--hover' : '',
                     cell.fixed.value ? 'v-table-body-row-cell--fixed' : '',
                     cell.weekendDate && 'v-table-body-row-cell--weekendDate',
                     cell.currentDate && 'v-table-body-row-cell--currentDate',
@@ -236,7 +237,7 @@
                   class="v-table-body-row-cell v-table-actions"
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
-                  @dblclick="openRow($event, row, cell)"
+                  @dblclick="doubleHandler($event, row, cell)"
                   :key="cellIndex"
                 >
                   <template v-if="cell.type === 'default'">

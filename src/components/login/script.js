@@ -33,6 +33,7 @@ export default {
       request: () => store.dispatch('auth/checkMe'),
     })
     const auth = async () => {
+      console.log(validate())
       if (!validate()) return
       await makeRequest()
       router.push('/')

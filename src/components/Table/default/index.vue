@@ -1,5 +1,6 @@
 <template>
   <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
+    {{ $route.name }}
     <!--<h1 class="v-table-title">{{ options.options.title }}</h1>-->
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
@@ -437,7 +438,12 @@
     <Popup
       closeButton
       @close="closePopupForm"
-      :options="{ width: options.detail.width, portal: 'table-detail' }"
+      :options="{
+        width: options.detail.width,
+        portal: `table-detail${
+          options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
+        }`,
+      }"
       v-if="
         options.detail && options.detail.type === 'popup' && popupForm.isShow
       "
@@ -450,6 +456,7 @@
       <router-view
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
+        @getItems="getItems"
         @closePopup="closePopupForm"
       />
     </Popup>
