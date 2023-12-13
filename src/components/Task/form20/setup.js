@@ -5,6 +5,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
+import moment from 'moment/moment'
 
 const Form20 = defineComponent({
   name: 'Form20',
@@ -28,7 +29,7 @@ const Form20 = defineComponent({
 
     const dopData = JSON.parse(props.data.task.dop_data)
     const personal = props.data.data.personal
-    const dataRojd = personal.data_rojd
+    const dataRojd = moment(personal.data_rojd).format('DD.MM.YYYY')
     const name = personal.name
 
     const {

@@ -6,6 +6,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
+import moment from 'moment'
 
 const Form21 = defineComponent({
   name: 'Form21',
@@ -32,7 +33,7 @@ const Form21 = defineComponent({
     const formComment = ref('')
     const formCommentError = ref('')
     const personal = props.data.data.personal
-    const dataRojd = personal.data_rojd
+    const dataRojd = moment(personal.data_rojd).format('DD.MM.YYYY')
     const name = personal.name
     const { formData: keyForm, formErrors: keyFormErrors } = useForm({
       fields: {
@@ -97,8 +98,10 @@ const Form21 = defineComponent({
         formCommentError.value = 'Заполните комментарий'
         return false
       }
-      await setUserKey()
-      await addKeyToPersonal()
+      if (isKeyConfrmed.value) {
+        await setUserKey()
+        await addKeyToPersonal()
+      }
       const { success } = await changeStatusTask()
       success && ctx.emit('closePopup')
     }
