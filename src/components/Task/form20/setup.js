@@ -48,10 +48,6 @@ const Form20 = defineComponent({
         trainee: {
           default: false,
         },
-        comment: {
-          validations: { required },
-          default: '',
-        },
       },
       context,
     })
