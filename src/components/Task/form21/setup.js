@@ -56,8 +56,8 @@ const Form21 = defineComponent({
           status: isKeyConfrmed.value ? 2 : 6,
           data: {
             process_id: props.data.task.process_id,
-            task_id: props.data.entity.id,
-            parent_action: props.data.entity.id,
+            task_id: props.data.task.id,
+            parent_action: props.data.task.id,
             user_key: props.data.entity.id,
             photo_path: JSON.parse(props.data.task.dop_data).photo_path,
             obd_id: props.data.entity.id,
