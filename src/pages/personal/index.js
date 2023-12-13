@@ -1808,9 +1808,10 @@ const defaultForm = [
             {
               permissions: [1, 16],
               field: 'direction_json',
+              target: 'formData',
               array: true,
               value: [1],
-              type: false,
+              type: true,
             },
           ],
         },

@@ -840,9 +840,15 @@ export default function ({
             ) {
               if (conditionEl.array) {
                 console.log('array')
-                return _.isEqual(conditionEl.value, formData[conditionEl.field])
+                return (
+                  _.isEqual(conditionEl.value, formData[conditionEl.field]) ===
+                  conditionEl.type
+                )
               }
-              return conditionEl.value.includes(formData[conditionEl.field])
+              return (
+                conditionEl.value.includes(formData[conditionEl.field]) ===
+                conditionEl.type
+              )
             } else if (
               conditionEl.permissions &&
               conditionEl.permissions.length &&
@@ -855,23 +861,19 @@ export default function ({
                     conditionEl.type
                 )
               } else {
-                if (conditionEl.array) {
-                  console.log('array')
-                  return _.isEqual(
-                    conditionEl.value,
-                    formData[conditionEl.field]
-                  )
-                } else {
-                  return (
-                    conditionEl.permissions.includes(permission.value) ===
-                    conditionEl.type
-                  )
-                }
+                return (
+                  conditionEl.permissions.includes(permission.value) ===
+                  conditionEl.type
+                )
               }
             } else {
               if (conditionEl.array) {
                 console.log('array')
-                return _.isEqual(conditionEl.value, formData[conditionEl.field])
+                return (
+                  _.isEqual(conditionEl.value, formData[conditionEl.field]) &&
+                  conditionEl.permissions.includes(permission.value) ===
+                    conditionEl.type
+                )
               } else {
                 return (
                   conditionEl.value.includes(formData[conditionEl.field]) &&

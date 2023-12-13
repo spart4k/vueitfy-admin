@@ -21,7 +21,7 @@ const auth = {
         data,
         params: {
           headers: {
-            'With-Credentials': true,
+            'Access-Control-Allow-Credentials': true,
           },
         },
       })
