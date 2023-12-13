@@ -925,7 +925,7 @@ const config = {
   selector: '#mainTable',
   options: {
     routeKey: 'account_id',
-    doubleHandlerType: 'row', //row, column
+    doubleHandlerType: 'cell', //row, column?, cell
     pageName: 'schedule',
     selecting: true,
     search: {
