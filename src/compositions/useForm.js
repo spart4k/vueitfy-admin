@@ -833,23 +833,52 @@ export default function ({
       if (field.readonly.condition?.length) {
         const condition = () =>
           field.readonly.condition.some((conditionEl) => {
-            if (conditionEl.target && conditionEl.target === 'formData') {
+            if (
+              conditionEl.target &&
+              conditionEl.target === 'formData' &&
+              !conditionEl.permissions
+            ) {
+              if (conditionEl.array) {
+                console.log('array')
+                return _.isEqual(conditionEl.value, formData[conditionEl.field])
+              }
               return conditionEl.value.includes(formData[conditionEl.field])
             } else if (
               conditionEl.permissions &&
-              conditionEl.permissions.length
+              conditionEl.permissions.length &&
+              !conditionEl.target
             ) {
-              console.log(
-                'PERMISSIONS',
-                conditionEl.value.includes(formData[conditionEl.field]),
-                conditionEl.permissions.includes(permission.value),
-                conditionEl.type
-              )
-              return (
-                conditionEl.value.includes(formData[conditionEl.field]) &&
-                conditionEl.permissions.includes(permission.value) ===
-                  conditionEl.type
-              )
+              if (conditionEl.field) {
+                return (
+                  conditionEl.value.includes(formData[conditionEl.field]) &&
+                  conditionEl.permissions.includes(permission.value) ===
+                    conditionEl.type
+                )
+              } else {
+                if (conditionEl.array) {
+                  console.log('array')
+                  return _.isEqual(
+                    conditionEl.value,
+                    formData[conditionEl.field]
+                  )
+                } else {
+                  return (
+                    conditionEl.permissions.includes(permission.value) ===
+                    conditionEl.type
+                  )
+                }
+              }
+            } else {
+              if (conditionEl.array) {
+                console.log('array')
+                return _.isEqual(conditionEl.value, formData[conditionEl.field])
+              } else {
+                return (
+                  conditionEl.value.includes(formData[conditionEl.field]) &&
+                  conditionEl.permissions.includes(permission.value) ===
+                    conditionEl.type
+                )
+              }
             }
           })
         field.readonly.value = condition()

@@ -40,7 +40,13 @@
             clearable
             v-model="paramsQuery.searchGlobal"
           ></v-text-field>
-          <v-btn small @click="openFilter($event)" class="ml-2" elevation="2">
+          <v-btn
+            v-if="options.filters"
+            small
+            @click="openFilter($event)"
+            class="ml-2"
+            elevation="2"
+          >
             Фильтры
           </v-btn>
         </div>

@@ -293,6 +293,258 @@ const consumptionConfig = {
   filters,
 }
 
+const debetorConfig = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/personal_debit',
+    urlDetail: 'personal_id',
+    alias: 'd.debtor_id',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+      {
+        label: 'Скачать',
+        class: ['v-table-button--custom'],
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+    ],
+  },
+  head: [
+    {
+      title: 'ID',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'id',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Дата назн',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_target',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'personal_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Объект',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'o.name',
+      value: 'object_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Часы',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'hour',
+      alias: 'p.hour',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Должность',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'd.name',
+      value: 'doljnost_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Сумма',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'p.total',
+      value: 'total',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Действия',
+      type: 'actions',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'right',
+      },
+      isShow: true,
+      width: '100',
+      value: 'actions',
+      actions: [
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleText,
+          label: 'Редактировать',
+        },
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleButton,
+          label: 'Удалить',
+        },
+      ],
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 10,
+    currentPage: 1,
+    totalPages: null,
+  },
+  detail: undefined,
+  filters,
+}
+
 const documentConfig = {
   selector: '#mainTable',
   options: {
@@ -610,7 +862,7 @@ const skanConfig = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/personal_doc',
     urlDetail: 'personal_id',
-    alias: 'p.personal_id',
+    alias: 'pd.personal_id',
     title: 'This is an about page1',
   },
   panel: {
@@ -808,6 +1060,233 @@ const skanConfig = {
       width: '150',
       alias: 'p.total',
       value: 'total',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Действия',
+      type: 'actions',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'right',
+      },
+      isShow: true,
+      width: '100',
+      value: 'actions',
+      actions: [
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleText,
+          label: 'Редактировать',
+        },
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleButton,
+          label: 'Удалить',
+        },
+      ],
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 10,
+    currentPage: 1,
+    totalPages: null,
+  },
+  detail: undefined,
+  filters,
+}
+
+const bankConfig = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/personal_bank',
+    urlDetail: 'personal_id',
+    alias: 'pb.personal_id',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+      {
+        label: 'Скачать',
+        class: ['v-table-button--custom'],
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+    ],
+  },
+  head: [
+    {
+      title: 'ID',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'id',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Приоритет',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'boolean',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_target',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Банк',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'bank_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Номер счета',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'o.name',
+      value: 'invoice',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Карта на ФИО',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'fio',
+      alias: 'p.hour',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Примечание',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'd.name',
+      value: 'comment',
       search: {
         field: '',
         isShow: true,
@@ -1106,20 +1585,21 @@ const paymentConfig = {
 const defaultForm = [
   {
     id: 0,
+    path: 'edit',
     name: 'Основные',
     type: FormDefault,
     detail: true,
     lists: [
-      // { alias: 'user_keys', filter: [] },
-      // { alias: 'habitation_id', filter: [] },
-      // { alias: 'account_id', filter: [] },
-      // { alias: 'direction_id', filter: [] },
-      // { alias: 'grajdanstvo_id', filter: [] },
-      'user_keys',
-      'habitation_id',
-      'account_id',
-      'direction_id',
-      'grajdanstvo_id',
+      { alias: 'user_keys', filter: [] },
+      { alias: 'habitation_id', filter: [] },
+      { alias: 'account_id', filter: [] },
+      { alias: 'direction_id', filter: [] },
+      { alias: 'grajdanstvo_id', filter: [] },
+      // 'user_keys',
+      // 'habitation_id',
+      // 'account_id',
+      // 'direction_id',
+      // 'grajdanstvo_id',
     ],
     alias: 'personal',
     active: false,
@@ -1128,7 +1608,6 @@ const defaultForm = [
         label: 'ФИО',
         name: 'name',
         placeholder: '',
-        readonly: false,
         class: [''],
         position: {
           cols: 12,
@@ -1137,12 +1616,26 @@ const defaultForm = [
         bootstrapClass: [''],
         //validations: { required },
         //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+            {
+              permissions: [1],
+              field: 'direction_id',
+              value: [3],
+              type: false,
+            },
+          ],
+        },
       }),
       stringField({
         label: 'Телефон',
         name: 'telefon',
         placeholder: '',
-        readonly: false,
         class: [''],
         position: {
           cols: 12,
@@ -1151,6 +1644,15 @@ const defaultForm = [
         bootstrapClass: [''],
         //validations: { required },
         //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       selectField({
         label: 'Гражданство',
@@ -1169,12 +1671,20 @@ const defaultForm = [
         },
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       stringField({
         label: 'Примечание',
         name: 'comment',
         placeholder: '',
-        readonly: false,
         class: [''],
         position: {
           cols: 12,
@@ -1183,6 +1693,15 @@ const defaultForm = [
         bootstrapClass: [''],
         //validations: { required },
         //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       dateField({
         label: ' Дата рождения',
@@ -1196,6 +1715,15 @@ const defaultForm = [
         },
         validations: { required },
         bootstrapClass: ['changeSelect'],
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       selectField({
         label: 'Личный ключ',
@@ -1214,6 +1742,15 @@ const defaultForm = [
         },
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       selectField({
         label: 'Направление',
@@ -1233,6 +1770,15 @@ const defaultForm = [
         },
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       selectField({
         label: 'Доступ',
@@ -1252,12 +1798,27 @@ const defaultForm = [
         },
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+            {
+              permissions: [1, 16],
+              field: 'direction_json',
+              array: true,
+              value: [1],
+              type: false,
+            },
+          ],
+        },
       }),
       checkboxField({
         label: 'Штатный',
         name: 'in_state',
         placeholder: '',
-        readonly: false,
         class: [''],
         position: {
           cols: 12,
@@ -1266,6 +1827,15 @@ const defaultForm = [
         bootstrapClass: [''],
         //validations: { required },
         //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       selectField({
         label: 'Проживание',
@@ -1291,6 +1861,15 @@ const defaultForm = [
         ],
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            {
+              permissions: [13],
+              type: true,
+            },
+          ],
+        },
       }),
       // autocompleteField({
       //   label: 'Линейщик',
@@ -1329,13 +1908,6 @@ const defaultForm = [
         nextForm: true,
       }),
     ],
-  },
-  {
-    id: 1,
-    name: 'Расход',
-    type: TableDefault,
-    active: false,
-    config: consumptionConfig,
   },
   {
     id: 2,
@@ -1506,11 +2078,32 @@ const defaultForm = [
     config: skanConfig,
   },
   {
+    id: 7,
+    name: 'Банковские карты',
+    type: TableDefault,
+    active: false,
+    config: bankConfig,
+  },
+  {
     id: 4,
     name: 'Начисления и выплаты',
     type: TableDefault,
     active: false,
     config: paymentConfig,
+  },
+  {
+    id: 1,
+    name: 'Расход',
+    type: TableDefault,
+    active: false,
+    config: consumptionConfig,
+  },
+  {
+    id: 6,
+    name: 'Задолженность',
+    type: TableDefault,
+    active: false,
+    config: debetorConfig,
   },
   {
     path: 'add',
@@ -3020,7 +3613,7 @@ const config = {
         },
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
-        url: 'get/pagination/personal',
+        url: 'get/pagination/personal_on_add',
         title: 'На добавлении',
       },
       type: TableDefault,
@@ -3075,6 +3668,31 @@ const config = {
           },
         },
         {
+          title: 'Сотрудник',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'string',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '150',
+          alias: 'p.name',
+          value: 'personal_name',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
           title: 'Статус',
           type: 'default',
           align: 'center',
@@ -3093,39 +3711,14 @@ const config = {
           isShow: true,
           width: '90',
           alias: 'ps.status',
-          value: 'status_name',
+          value: 'personal_status',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'ФИО',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.name',
-          value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Телефон',
+          title: 'Этап',
           type: 'default',
           align: 'center',
           fixed: {
@@ -3142,7 +3735,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'telefon',
+          value: 'task_type_name',
           alias: 'p.telefon',
           search: {
             field: '',
@@ -3150,7 +3743,7 @@ const config = {
           },
         },
         {
-          title: 'Примечание',
+          title: 'От кого',
           type: 'default',
           align: 'center',
           fixed: {
@@ -3167,38 +3760,37 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
-          alias: 'p.comment',
+          value: 'from_account_name',
+          alias: 'p.telefon',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'Действия',
-          type: 'actions',
+          title: 'У кого',
+          type: 'default',
           align: 'center',
           fixed: {
             value: false,
-            position: 'right',
+            position: undefined,
           },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
+          sorts: [
             {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
             },
           ],
+          isShow: true,
+          width: '150',
+          value: 'to_account_name',
+          alias: 'p.telefon',
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
       ],
       data: {
@@ -3449,7 +4041,6 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
     },
     {
       selector: '#mainTable',
@@ -3648,7 +4239,6 @@ const config = {
         currentPage: 1,
         totalPages: null,
       },
-      filters,
     },
     {
       selector: '#mainTable',
@@ -3968,7 +4558,6 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
     },
   ],
 }

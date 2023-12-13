@@ -17,7 +17,14 @@ const auth = {
   actions: {
     async auth({ commit }, data) {
       //try {
-      const result = await login(data)
+      const result = await login({
+        data,
+        params: {
+          headers: {
+            'With-Credentials': true,
+          },
+        },
+      })
       commit('auth/setToken', result.AccessToken, { root: true })
     },
     async checkMe() {
