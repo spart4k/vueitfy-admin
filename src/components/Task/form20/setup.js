@@ -27,7 +27,7 @@ const Form20 = defineComponent({
     }
 
     const dopData = JSON.stringify(props.data.task.dop_data)
-    const personal = props.data.personal
+    const personal = props.data.data.personal
     const dataRojd = personal.data_rojd
     const name = personal.name
 

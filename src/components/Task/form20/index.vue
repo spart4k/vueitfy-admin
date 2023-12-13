@@ -8,9 +8,13 @@
       <FormError v-if="dopData && dopData.comment" class="mb-5">
         {{ dopData.comment }}
       </FormError>
-      <div class="mb-3" style="font-weight: 600">
-        Внесите данные личного ключа:
-      </div>
+      <v-row>
+        <v-col>
+          <div class="mb-3" style="font-weight: 600">
+            Внесите данные личного ключа:
+          </div>
+        </v-col>
+      </v-row>
       <v-form>
         <v-row>
           <v-col>
