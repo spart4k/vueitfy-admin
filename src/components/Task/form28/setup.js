@@ -80,7 +80,7 @@ const Form28 = defineComponent({
             parent_action: props.data.task.id,
             payment_id: props.data.entity.id,
             manager_id: JSON.parse(props.data.task.dop_data).manager_id,
-            everyday: props.data.data.vid_vedomost_id === 1 ? 1 : 0,
+            everyday: props.data.entity.vid_vedomost_id === 1 ? 1 : 0,
           },
         })
       },
