@@ -6,6 +6,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
+import moment from 'moment'
 
 const Form21 = defineComponent({
   name: 'Form21',
@@ -31,6 +32,9 @@ const Form21 = defineComponent({
     const isKeyConfrmed = ref(null)
     const formComment = ref('')
     const formCommentError = ref('')
+    const personal = props.data.data.personal
+    const dataRojd = moment(personal.data_rojd).format('DD.MM.YYYY')
+    const name = personal.name
     const { formData: keyForm, formErrors: keyFormErrors } = useForm({
       fields: {
         key: {
@@ -52,9 +56,9 @@ const Form21 = defineComponent({
         return store.dispatch('taskModule/setPartTask', {
           status: isKeyConfrmed.value ? 2 : 6,
           data: {
-            process_id: props.data.entity.process_id,
-            task_id: props.data.entity.id,
-            parent_action: props.data.entity.id,
+            process_id: props.data.task.process_id,
+            task_id: props.data.task.id,
+            parent_action: props.data.task.id,
             user_key: props.data.entity.id,
             photo_path: JSON.parse(props.data.task.dop_data).photo_path,
             obd_id: props.data.entity.id,
@@ -94,8 +98,10 @@ const Form21 = defineComponent({
         formCommentError.value = 'Заполните комментарий'
         return false
       }
-      await setUserKey()
-      await addKeyToPersonal()
+      if (isKeyConfrmed.value) {
+        await setUserKey()
+        await addKeyToPersonal()
+      }
       const { success } = await changeStatusTask()
       success && ctx.emit('closePopup')
     }
@@ -119,6 +125,8 @@ const Form21 = defineComponent({
       completeTask,
       formComment,
       formCommentError,
+      dataRojd,
+      name,
     }
   },
 })
