@@ -14,7 +14,7 @@
           background: options.transparent && 'transparent',
         }"
       >
-        <div v-if="$props.closeButton" class="v-popup-container-close">
+        <div v-if="false" class="v-popup-container-close">
           <v-icon @click="$emit('close')" small>$IconClose</v-icon>
         </div>
         <!-- // кто удалит крестик тот гнида блядь -->

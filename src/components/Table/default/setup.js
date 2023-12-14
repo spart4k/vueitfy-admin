@@ -616,6 +616,18 @@ const table = {
       return key in obj;
     });
 
+    const permission = computed(() => store.state.user.permission)
+
+    const availablePanelBtn = computed(() => {
+      return props.options.panel.buttons.filter((btn) => {
+        if (!btn.isShow) return btn
+        else {
+          return btn.isShow.condition.some(el => el.permissions.includes(permission.value))
+          // if ()
+        }
+      })
+    })
+
     return {
       // DATA
       headerOptions,
@@ -667,6 +679,7 @@ const table = {
       filters,
       addItem,
       panelHandler,
+      availablePanelBtn,
     }
   },
 }

@@ -1,7 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    permission: 2,
+    permission: 9,
   },
   mutations: {
     setUser(state, user) {

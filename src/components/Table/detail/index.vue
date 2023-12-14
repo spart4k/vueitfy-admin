@@ -8,15 +8,9 @@
         background-color="transparent"
         color="basil"
         class="p-5"
+        v-show="availableTabs.length > 1"
       >
-        <v-tab
-          v-for="item in detail.tabs"
-          v-if="
-            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
-            (!$route.meta.mode && !item.path)
-          "
-          :key="item.id"
-        >
+        <v-tab v-for="item in availableTabs" :key="item.id">
           {{ item.name }}
         </v-tab>
       </v-tabs>

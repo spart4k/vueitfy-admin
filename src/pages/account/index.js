@@ -946,11 +946,19 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                dependence: {
+                  type: 'default',
+                  fillField: ['permissions_account', 'chief_id'],
+                },
+                update: {
+                  module: 'selects/getList',
+                  fields: ['chief_id'],
+                },
               }),
               autocompleteField({
                 label: 'Руководитель',
                 name: 'chief_id',
-                alias: 'chief_id',
+                alias: 'permission_id',
                 subtype: 'single',
                 placeholder: '',
                 class: [''],
@@ -968,33 +976,16 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+
                 filters: [
                   {
-                    field: 'permission_id',
+                    field: 'permissions_account',
                     type: 'num',
                     source: undefined,
                     value: '',
                   },
                 ],
               }),
-              // selectField({
-              //   label: 'Руководитель',
-              //   name: 'chief_id',
-              //   alias: 'chief_id',
-              //   placeholder: '',
-              //   class: [''],
-              //   selectOption: {
-              //     text: 'name',
-              //     value: 'id',
-              //   },
-              //   items: [],
-              //   position: {
-              //     cols: 12,
-              //     sm: 4,
-              //   },
-              //   validations: { required },
-              //   bootstrapClass: [''],
-              // }),
               selectField({
                 label: 'Направления',
                 name: 'direction_json',

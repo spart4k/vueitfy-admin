@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import filters from './filters'
 import { required } from '@/utils/validation.js'
 import {
@@ -8,6 +10,7 @@ import {
   checkboxField,
   textBlock,
   dropZoneField,
+  textareaField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/form/default/index.vue'
@@ -285,7 +288,7 @@ const consumptionConfig = {
   filters,
 }
 
-const skanConfig = {
+const debetorConfig = {
   selector: '#mainTable',
   options: {
     selecting: true,
@@ -294,9 +297,9 @@ const skanConfig = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/personal_doc',
+    url: 'get/pagination/personal_debit',
     urlDetail: 'personal_id',
-    alias: 'p.personal_id',
+    alias: 'd.debtor_id',
     title: 'This is an about page1',
   },
   panel: {
@@ -494,6 +497,791 @@ const skanConfig = {
       width: '150',
       alias: 'p.total',
       value: 'total',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Действия',
+      type: 'actions',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'right',
+      },
+      isShow: true,
+      width: '100',
+      value: 'actions',
+      actions: [
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleText,
+          label: 'Редактировать',
+        },
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleButton,
+          label: 'Удалить',
+        },
+      ],
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 10,
+    currentPage: 1,
+    totalPages: null,
+  },
+  detail: undefined,
+  filters,
+}
+
+const documentConfig = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/personal_doc',
+    alias: 'personal_id',
+    title: 'This is an about page1',
+  },
+  type: TableDefault,
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: 'personal-add-new',
+        type: 'changeUrl',
+        // function: addQuery,
+        // type: 'nextStage',
+        backgroundColor: '#fff',
+      },
+    ],
+  },
+  head: [
+    {
+      title: 'Тип документа',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'pds.name',
+      isShow: true,
+      width: '40',
+      value: 'doc_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Скан-копия/фото',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'path_doc',
+      alias: 'pd.path_doc',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Примечание',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pd.note',
+      value: 'comment',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 10,
+    currentPage: 1,
+    totalPages: null,
+  },
+  detail: {
+    type: 'popup', // String 'popup' or 'page'
+    popupIndex: 2,
+    getOnClose: true,
+    classes: [''], // List class
+    width: '500px',
+    method: 'get',
+    alias: 'personal_doc',
+    url: '/get/form/',
+    name: 'Персонал',
+    bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
+    activeTab: null,
+    tabs: [
+      {
+        path: 'id',
+        id: 0,
+        name: 'Основные',
+        type: FormDefault,
+        detail: true,
+        lists: [{ alias: 'documents', filter: [] }],
+        alias: 'personal_doc',
+        active: false,
+        fields: [
+          selectField({
+            label: 'Тип документа',
+            name: 'doc_id',
+            alias: 'documents',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          dropZoneField({
+            label: 'Скан-копия/фото:',
+            name: 'path_doc',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { required },
+            options: {
+              removeble: true,
+              withoutSave: false,
+              folder: 'personal_doc',
+              name: '`personal_doc_25`',
+              paramsForEmit: this,
+            },
+            value: '',
+          }),
+          textareaField({
+            label: 'Примечание:',
+            name: 'note',
+            alias: 'pd.note',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            color: 'primary',
+            module: 'form/update',
+            url: 'set/data/personal_doc',
+            useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+            name: 'updateFormStore',
+            action: 'updateFormStore',
+          }),
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'black',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal-add',
+            skipValidation: true,
+          }),
+        ],
+        formData: {},
+      },
+      {
+        path: 'new',
+        id: 1,
+        name: 'Основные',
+        type: FormDefault,
+        detail: true,
+        lists: [{ alias: 'documents', filter: [] }],
+        alias: 'personal_doc',
+        active: false,
+        fields: [
+          selectField({
+            label: 'Тип документа',
+            name: 'doc_id',
+            alias: 'documents',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          dropZoneField({
+            label: 'Скан-копия/фото:',
+            name: 'path_doc',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { required },
+            options: {
+              removeble: true,
+              withoutSave: false,
+              folder: 'personal_doc',
+              name: '`personal_doc_25`',
+              paramsForEmit: this,
+            },
+            value: '',
+          }),
+          textareaField({
+            label: 'Примечание:',
+            name: 'note',
+            alias: 'pd.note',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            color: 'primary',
+            module: 'personal/createForm',
+            url: 'set/data/personal_doc',
+            useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+            name: 'saveFormStore',
+            action: 'saveFormStore',
+          }),
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'black',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal-add',
+            skipValidation: true,
+          }),
+        ],
+        formData: {},
+      },
+    ],
+  },
+  filters,
+}
+
+const skanConfig = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/personal_doc',
+    urlDetail: 'personal_id',
+    alias: 'pd.personal_id',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+      {
+        label: 'Скачать',
+        class: ['v-table-button--custom'],
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+    ],
+  },
+  head: [
+    {
+      title: 'ID',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'id',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Дата назн',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_target',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'personal_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Объект',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'o.name',
+      value: 'object_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Часы',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'hour',
+      alias: 'p.hour',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Должность',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'd.name',
+      value: 'doljnost_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Сумма',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'p.total',
+      value: 'total',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Действия',
+      type: 'actions',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'right',
+      },
+      isShow: true,
+      width: '100',
+      value: 'actions',
+      actions: [
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleText,
+          label: 'Редактировать',
+        },
+        {
+          type: 'button',
+          url: '$IconSetting',
+          function: consoleButton,
+          label: 'Удалить',
+        },
+      ],
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 10,
+    currentPage: 1,
+    totalPages: null,
+  },
+  detail: undefined,
+  filters,
+}
+
+const bankConfig = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/personal_bank',
+    urlDetail: 'personal_id',
+    alias: 'pb.personal_id',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+      {
+        label: 'Скачать',
+        class: ['v-table-button--custom'],
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+    ],
+  },
+  head: [
+    {
+      title: 'ID',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'id',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Приоритет',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'boolean',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_target',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Банк',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'bank_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Номер счета',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'o.name',
+      value: 'invoice',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Карта на ФИО',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'fio',
+      alias: 'p.hour',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Примечание',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'd.name',
+      value: 'comment',
       search: {
         field: '',
         isShow: true,
@@ -789,9 +1577,68 @@ const paymentConfig = {
   filters,
 }
 
+const editFormPermissions = {
+  // Бригадир(id = 13) - все readonly
+  brigadir: {
+    permissions: [13],
+    type: true,
+  },
+  //  Менеджер(id = 1) - если направление логистика, то может менять доступ, остальное readonly, если направление розница, то все поля readonly
+  manager: [
+    {
+      permissions: [1],
+      field: 'direction_json',
+      target: 'formData',
+      array: true,
+      value: [1],
+      type: false,
+    },
+    {
+      permissions: [1],
+      field: 'direction_json',
+      target: 'formData',
+      array: true,
+      value: [2],
+      type: true,
+    },
+  ],
+  //  Рук. фил.(id = 15), ЦУП(id = 2), Директор(id = 3) - может менять телефон, доступ, остальное readonly
+  rukFIlCUPDirector: {
+    access: {
+      permissions: [15, 2, 3],
+      type: false,
+    },
+    denied: {
+      permissions: [15, 2, 3],
+      type: true,
+    },
+  },
+  DBA: {
+    access: {
+      permissions: [4],
+      type: false,
+    },
+    denied: {
+      permissions: [4],
+      type: true,
+    }
+  },
+  OBDandOKK: {
+    access: {
+      permissions: [7, 8],
+      type: false,
+    },
+    denied: {
+      permissions: [7, 8],
+      type: true,
+    }
+  }
+}
+
 const defaultForm = [
   {
     id: 0,
+    path: 'edit',
     name: 'Основные',
     type: FormDefault,
     detail: true,
@@ -809,29 +1656,47 @@ const defaultForm = [
         label: 'ФИО',
         name: 'name',
         placeholder: '',
-        readonly: false,
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         bootstrapClass: [''],
         //validations: { required },
         //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
       }),
       stringField({
         label: 'Телефон',
         name: 'telefon',
         placeholder: '',
-        readonly: false,
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         bootstrapClass: [''],
         //validations: { required },
         //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.access,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
       }),
       selectField({
         label: 'Гражданство',
@@ -846,24 +1711,43 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
       }),
       stringField({
         label: 'Примечание',
         name: 'comment',
         placeholder: '',
-        readonly: false,
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         bootstrapClass: [''],
         //validations: { required },
         //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
       }),
       dateField({
         label: ' Дата рождения',
@@ -873,10 +1757,20 @@ const defaultForm = [
         classes: [''],
         position: {
           cols: 12,
-          sm: 3,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: ['changeSelect'],
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
       }),
       selectField({
         label: 'Личный ключ',
@@ -891,10 +1785,20 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
       }),
       selectField({
         label: 'Направление',
@@ -910,10 +1814,20 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.denied,
+          ],
+        },
       }),
       selectField({
         label: 'Доступ',
@@ -929,24 +1843,20 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
-      }),
-      checkboxField({
-        label: 'Штатный',
-        name: 'in_state',
-        placeholder: '',
-        readonly: false,
-        class: [''],
-        position: {
-          cols: 12,
-          sm: 4,
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            ...editFormPermissions.manager,
+            editFormPermissions.rukFIlCUPDirector.access,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.denied,
+          ],
         },
-        bootstrapClass: [''],
-        //validations: { required },
-        //isShow: false,
       }),
       selectField({
         label: 'Проживание',
@@ -961,7 +1871,7 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         defaultItems: [
           {
@@ -972,6 +1882,39 @@ const defaultForm = [
         ],
         validations: { required },
         bootstrapClass: [''],
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.denied,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
+      }),
+      checkboxField({
+        label: 'Штатный',
+        name: 'in_state',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 6,
+        },
+        bootstrapClass: [''],
+        //validations: { required },
+        //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
       }),
       // autocompleteField({
       //   label: 'Линейщик',
@@ -1003,6 +1946,15 @@ const defaultForm = [
     ],
     actions: [
       stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'black',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
+      stringAction({
         text: 'Сохранить',
         type: 'submit',
         module: '',
@@ -1012,14 +1964,8 @@ const defaultForm = [
     ],
   },
   {
-    id: 1,
-    name: 'Расход',
-    type: TableDefault,
-    active: false,
-    config: consumptionConfig,
-  },
-  {
     id: 2,
+    path: 'edit',
     name: 'Данные документов',
     type: FormDocuments,
     detail: true,
@@ -1180,6 +2126,7 @@ const defaultForm = [
     ],
   },
   {
+    path: 'edit',
     id: 3,
     name: 'Сканы',
     type: TableDefault,
@@ -1187,11 +2134,36 @@ const defaultForm = [
     config: skanConfig,
   },
   {
+    path: 'edit',
+    id: 7,
+    name: 'Банковские карты',
+    type: TableDefault,
+    active: false,
+    config: bankConfig,
+  },
+  {
+    path: 'edit',
     id: 4,
     name: 'Начисления и выплаты',
     type: TableDefault,
     active: false,
     config: paymentConfig,
+  },
+  {
+    path: 'edit',
+    id: 1,
+    name: 'Расход',
+    type: TableDefault,
+    active: false,
+    config: consumptionConfig,
+  },
+  {
+    path: 'edit',
+    id: 6,
+    name: 'Задолженность',
+    type: TableDefault,
+    active: false,
+    config: debetorConfig,
   },
   {
     path: 'add',
@@ -1397,6 +2369,15 @@ const defaultForm = [
         ],
         actions: [
           stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'black',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal',
+            skipValidation: true,
+          }),
+          stringAction({
             text: 'Сохранить',
             type: 'submit',
             module: '',
@@ -1438,6 +2419,7 @@ const defaultForm = [
             //validations: { required },
             //isShow: false,
           }),
+
           autocompleteField({
             label: '',
             name: 'avatar_with_user_key_id',
@@ -1500,6 +2482,15 @@ const defaultForm = [
             },
             validations: { required },
             bootstrapClass: [''],
+          }),
+          stringAction({
+            text: 'Вернуться',
+            type: 'submit',
+            color: 'black',
+            module: 'form/del',
+            url: 'delete/unfinished_personal',
+            name: 'prevStage',
+            action: 'prevStage',
           }),
         ],
         actions: [
@@ -2134,6 +3125,14 @@ const config = {
             class: ['v-table-button--custom'],
             type: 'addItem',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1,2 , 3 , 4 , 9 , 15],
+                  type: false,
+                },
+              ]
+            }
           },
         ],
       },
@@ -3212,7 +4211,7 @@ const config = {
         },
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
-        url: 'get/pagination/personal',
+        url: 'get/pagination/personal_on_add',
         title: 'На добавлении',
       },
       type: TableDefault,
@@ -3267,6 +4266,31 @@ const config = {
           },
         },
         {
+          title: 'Сотрудник',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'string',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '150',
+          alias: 'p.name',
+          value: 'personal_name',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
           title: 'Статус',
           type: 'default',
           align: 'center',
@@ -3285,39 +4309,14 @@ const config = {
           isShow: true,
           width: '90',
           alias: 'ps.status',
-          value: 'status_name',
+          value: 'personal_status',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'ФИО',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.name',
-          value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Телефон',
+          title: 'Этап',
           type: 'default',
           align: 'center',
           fixed: {
@@ -3334,7 +4333,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'telefon',
+          value: 'task_type_name',
           alias: 'p.telefon',
           search: {
             field: '',
@@ -3342,7 +4341,7 @@ const config = {
           },
         },
         {
-          title: 'Примечание',
+          title: 'От кого',
           type: 'default',
           align: 'center',
           fixed: {
@@ -3359,38 +4358,37 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
-          alias: 'p.comment',
+          value: 'from_account_name',
+          alias: 'p.telefon',
           search: {
             field: '',
             isShow: true,
           },
         },
         {
-          title: 'Действия',
-          type: 'actions',
+          title: 'У кого',
+          type: 'default',
           align: 'center',
           fixed: {
             value: false,
-            position: 'right',
+            position: undefined,
           },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
+          sorts: [
             {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
             },
           ],
+          isShow: true,
+          width: '150',
+          value: 'to_account_name',
+          alias: 'p.telefon',
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
       ],
       data: {
@@ -3641,7 +4639,6 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
     },
     {
       selector: '#mainTable',
@@ -3840,7 +4837,6 @@ const config = {
         currentPage: 1,
         totalPages: null,
       },
-      filters,
     },
     {
       selector: '#mainTable',
@@ -3862,6 +4858,12 @@ const config = {
             class: ['v-table-button--custom'],
             type: 'changeUrl',
             url: 'personal-add-key',
+            backgroundColor: '#fff',
+          },
+          {
+            label: 'Скачать',
+            class: ['v-table-button--custom'],
+            function: consolePanel,
             backgroundColor: '#fff',
           },
         ],
@@ -4033,53 +5035,20 @@ const config = {
         method: 'get',
         alias: 'user_keys',
         url: '/get/form/',
+        name: 'Личный ключ',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
-            id: 0,
-            name: 'Основные',
+            path: 'add-key',
+            id: 8,
+            name: 'Добавить ключ',
             type: 'FormDefault',
             detail: true,
-            lists: [
-              'habitation_id',
-              'account_id',
-              'direction_id',
-              'grajdanstvo_id',
-            ],
-            alias: 'user_keys',
-            active: false,
             fields: [
-              stringField({
-                label: 'Ключ',
-                name: 'user_key',
-                placeholder: '',
-                readonly: false,
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
-              }),
-              stringField({
-                label: 'ФИО',
-                name: 'fio',
-                placeholder: '',
-                readonly: false,
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
-              }),
               autocompleteField({
-                label: 'Линейщик',
+                label: 'Сотрудник',
                 name: 'personal_id',
+                alias: 'personal_logistic_x5',
                 subtype: 'single',
                 placeholder: '',
                 class: [''],
@@ -4087,21 +5056,37 @@ const config = {
                   text: 'name',
                   value: 'id',
                 },
+                selectOptionName: '',
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/personal_logistic_x5',
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 12,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'api',
+                    module: 'personal/getObject',
+                    //url: 'object_id/avatar_with_user_key_id',
+                    field: 'object_id',
+                    url: [
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
+                  },
+                ]
               }),
-              autocompleteField({
+              selectField({
                 label: 'Объект',
                 name: 'object_id',
-                subtype: 'single',
+                // alias: 'object_id',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -4109,38 +5094,156 @@ const config = {
                   value: 'id',
                 },
                 items: [],
-                page: 1,
-                search: '',
-                url: 'get/pagination_list/object',
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 12,
                 },
                 validations: { required },
                 bootstrapClass: [''],
               }),
-              checkboxField({
-                label: 'Стажер',
-                name: 'is_stager',
+              dropZoneField({
+                label: 'Файл акта',
+                name: 'photo_path',
                 placeholder: '',
                 readonly: false,
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 12,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
+                validations: { required },
+                options: {
+                  withoutSave: false,
+                  folder: 'user_keys',
+                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
+                  paramsForEmit: this,
+                },
+                value: '',
               }),
             ],
             actions: [
               stringAction({
-                text: 'Сохранить',
+                text: 'Закрыть',
                 type: 'submit',
-                module: '',
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'personal',
+                skipValidation: true,
+              }),
+              stringAction({
+                text: 'Загрузить',
+                type: 'submit',
+                module: 'form/create',
+                url: 'query/user_key',
                 name: 'saveForm',
-                nextForm: true,
+                action: 'saveFormStore',
+              }),
+              
+            ],
+          },
+          {
+            path: 'edit',
+            id: 9,
+            name: 'Добавить ключ',
+            type: 'FormDefault',
+            detail: true,
+            fields: [
+              autocompleteField({
+                label: 'Сотрудник',
+                name: 'personal_id',
+                alias: 'personal_logistic_x5',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                selectOptionName: '',
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/personal_logistic_x5',
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'api',
+                    module: 'personal/getObject',
+                    //url: 'object_id/avatar_with_user_key_id',
+                    field: 'object_id',
+                    url: [
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
+                  },
+                ]
+              }),
+              selectField({
+                label: 'Объект',
+                name: 'object_id',
+                // alias: 'object_id',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+              dropZoneField({
+                label: 'Файл акта',
+                name: 'photo_path',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                validations: { required },
+                options: {
+                  withoutSave: false,
+                  folder: 'user_keys',
+                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
+                  paramsForEmit: this,
+                },
+                value: '',
+              }),
+            ],
+            actions: [
+              stringAction({
+                text: 'Закрыть',
+                type: 'submit',
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'personal',
+                skipValidation: true,
+              }),
+              stringAction({
+                text: 'Загрузить',
+                type: 'submit',
+                module: 'form/create',
+                url: 'query/user_key',
+                name: 'saveForm',
+                action: 'saveFormStore',
               }),
             ],
           },
@@ -4242,7 +5345,6 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
     },
   ],
 }

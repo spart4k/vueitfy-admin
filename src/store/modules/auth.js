@@ -12,6 +12,7 @@ const auth = {
     setToken(state, token) {
       //state.user = user
       state.token = token
+      localStorage.setItem('token', token)
     },
   },
   actions: {
