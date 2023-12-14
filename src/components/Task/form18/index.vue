@@ -20,46 +20,45 @@
         Отсутствует тариф: {{ rejectedPrice }}
       </FormError>
       <div>
-        <v-row v-for="(group, i) in formGroup" :key="i">
-          <v-col class="p-0" cols="5">
+        <v-row
+          v-for="(group, i) in formGroup"
+          :key="i"
+          class="px-0"
+          style="height: 50px"
+        >
+          <v-col class="px-0" cols="5">
             <v-select
               v-model="group.formData.name"
               :items="servicesDetail"
               @change="(idService) => changeServiceDetail(i, idService)"
               item-text="name"
               item-value="id"
-              dense
-              outlined
+              class="mr-1"
               label="Наименование"
               :readonly="idDirection === 6"
             ></v-select>
           </v-col>
-          <v-col>
+          <v-col class="px-0">
             <v-text-field
               :readonly="idDirection === 6"
-              dense
-              type="number"
-              outlined
               label="QTY"
+              class="mr-1"
               v-model="group.formData.qty"
               @blur="() => changeSum(i)"
             ></v-text-field>
           </v-col>
-          <v-col>
+          <v-col class="px-0">
             <v-text-field
               v-model="group.formData.price"
-              dense
-              outlined
               label="Тариф"
               disabled
+              class="mr-1"
               readonly
             ></v-text-field>
           </v-col>
-          <v-col class="p-0">
+          <v-col class="px-0">
             <v-text-field
               v-model="group.formData.sum"
-              dense
-              outlined
               label="Сумма"
               disabled
               readonly
@@ -108,11 +107,11 @@
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="rejectTask" class="mr-2" color="error">
+      <v-btn @click="rejectTask" class="mr-2" small color="error">
         <v-icon small>mdi-close</v-icon>
         Отклонить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn @click="$emit('closePopup')" small color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
