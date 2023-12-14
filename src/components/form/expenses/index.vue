@@ -11,14 +11,13 @@
       <v-container class="">
         <v-row>
           <v-col
-            v-for="field in tab.fields"
+            v-for="field in listFields"
             :key="field.id"
             :cols="field.position.cols"
             :sm="field.position.sm"
             class="field-col"
             :class="field.type"
           >
-            <!-- {{ formData[field.name] }} -->
             <div
               v-if="
                 loading &&
@@ -155,6 +154,18 @@
               :label="field.label"
               :readonly="readonlyField(field)"
             />
+            <v-row class="d-flex" v-else-if="showField('radioPanel', field)">
+              <v-btn
+                class="flex-grow-1"
+                :text="formData[field.name] !== item.value"
+                color="primary"
+                v-for="item in field.items"
+                :key="item.id"
+                @click="formData[field.name] = item.value"
+              >
+                {{ item.text }}
+              </v-btn>
+            </v-row>
           </v-col>
         </v-row>
         <v-row class="justify-end">

@@ -341,15 +341,18 @@ export default function ({
           params,
         })
       )
+      filesBasket.value[key].name = name
     }
     const data = await Promise.all(queries)
+    console.log('vdatadata', data, filesBasket.value)
     if (data.length === 1) {
       let path = ''
       for (let key in filesBasket.value) {
-        const name =
-          eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
-          '_' +
-          new Date().getTime()
+        const name = filesBasket.value[key].name
+        // const name =
+        //   eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+        //   '_' +
+        //   new Date().getTime()
         const ext = filesBasket.value[key].files[0].name.split('.').pop()
         path =
           'files/' +
@@ -903,8 +906,8 @@ export default function ({
   }
 
   const disabledField = (field) => {
-    return field.requiredFields
-      ? field.requiredFields.some((el) => !formData[el])
+    return field.disable || field.requiredFields
+      ? field?.disable || field.requiredFields.some((el) => !formData[el])
       : false
   }
 

@@ -18,6 +18,8 @@
             background-color: var(--v-background-base);
             border-radius: 10px;
             position: relative;
+            max-height: 90vh;
+            overflow: auto;
             &-close {
                 position: absolute;
                 top: 5px;
