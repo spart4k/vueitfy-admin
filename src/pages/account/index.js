@@ -74,192 +74,8 @@ const consumptionConfig = {
   head: [
     {
       title: 'ID',
-      type: 'default',
-
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-
       alias: 'p.id',
-
       value: 'id',
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'personal_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Часы',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
     },
   ],
   data: {
@@ -1019,7 +835,7 @@ const config = {
             type: FormDefault,
             detail: true,
             lists: [
-              { alias: 'permission_id', filter: [] },
+              { alias: 'permissions_account', filter: [] },
               { alias: 'chief_id', filter: [] },
               { alias: 'direction_json', filter: [] },
               { alias: 'direction_id', filter: [] },
@@ -1115,8 +931,8 @@ const config = {
               }),
               selectField({
                 label: 'Роль',
-                name: 'permission_id',
-                alias: 'permission_id',
+                name: 'permissions_account',
+                alias: 'permissions_account',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1131,10 +947,11 @@ const config = {
                 validations: { required },
                 bootstrapClass: [''],
               }),
-              selectField({
+              autocompleteField({
                 label: 'Руководитель',
                 name: 'chief_id',
                 alias: 'chief_id',
+                subtype: 'single',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1142,13 +959,42 @@ const config = {
                   value: 'id',
                 },
                 items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/chief_id',
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                filters: [
+                  {
+                    field: 'permission_id',
+                    type: 'num',
+                    source: undefined,
+                    value: '',
+                  },
+                ],
               }),
+              // selectField({
+              //   label: 'Руководитель',
+              //   name: 'chief_id',
+              //   alias: 'chief_id',
+              //   placeholder: '',
+              //   class: [''],
+              //   selectOption: {
+              //     text: 'name',
+              //     value: 'id',
+              //   },
+              //   items: [],
+              //   position: {
+              //     cols: 12,
+              //     sm: 4,
+              //   },
+              //   validations: { required },
+              //   bootstrapClass: [''],
+              // }),
               selectField({
                 label: 'Направления',
                 name: 'direction_json',
