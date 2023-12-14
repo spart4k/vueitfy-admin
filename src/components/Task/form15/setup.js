@@ -55,13 +55,6 @@ const Form15 = defineComponent({
         key: 'Объект',
         value: props.data.entity.object_name,
       },
-      details: {
-        key: 'Реквизиты',
-        value:
-          props.data.entity.bank_id !== 11
-            ? `${props.data.entity.bank_name} ${props.data.entity.fio}... ${props.data.entity.object_name} ${props.data.entity.invoice} `
-            : 'Наличные',
-      },
       meals: {
         key: 'Питание',
         value: props.data.entity.sum_nutrition,
@@ -121,7 +114,7 @@ const Form15 = defineComponent({
       context,
       request: () => {
         return store.dispatch('taskModule/setPartTask', {
-          status: 2,
+          status: isFormConfirmed.value ? 2 : 6,
           data: isFormConfirmed.value
             ? confirmData
             : {
