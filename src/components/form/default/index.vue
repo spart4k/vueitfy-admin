@@ -88,6 +88,7 @@
                   :error-messages="formErrors[field?.name]"
                   v-bind="attrs"
                   :disabled="disabledField(field)"
+                  :readonly="readonlyField(field)"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -166,6 +167,7 @@
             "
             v-for="action in tab.actions"
             :key="action.id"
+            :text="action.action === 'closePopup' ? true : false"
           >
             {{ action.text }}
           </v-btn>

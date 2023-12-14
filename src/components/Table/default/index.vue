@@ -1,6 +1,5 @@
 <template>
   <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
-    {{ $route.name }}
     <!--<h1 class="v-table-title">{{ options.options.title }}</h1>-->
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
@@ -14,7 +13,7 @@
             :key="indexButton"
           />-->
           <v-btn
-            v-for="(button, indexButton) in options.panel.buttons"
+            v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
             @click="panelHandler(button)"
             small
@@ -40,7 +39,13 @@
             clearable
             v-model="paramsQuery.searchGlobal"
           ></v-text-field>
-          <v-btn small @click="openFilter($event)" class="ml-2" elevation="2">
+          <v-btn
+            v-if="options.filters"
+            small
+            @click="openFilter($event)"
+            class="ml-2"
+            elevation="2"
+          >
             Фильтры
           </v-btn>
         </div>
