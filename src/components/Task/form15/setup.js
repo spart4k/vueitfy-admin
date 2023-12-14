@@ -67,7 +67,7 @@ const Form15 = defineComponent({
         const data = props.data
         const finalData = {
           process_id: data.task.process_id,
-          manager_id: data.entity.manager_id,
+          manager_id: JSON.parse(data.task.dop_data).manager_id,
           task_id: data.task.id,
           parent_action: data.task.id,
           personal_target_id: data.entity.id,
