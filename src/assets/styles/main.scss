@@ -212,6 +212,14 @@ $borderColor: rgba(0,0,0,.3);
       transition-delay: 0s, .25s, .25s, .45s;
     }
   }
+  &-input {
+    &--is {
+      &-readonly {
+        opacity: .5;
+        pointer-events: none;
+      }
+    }
+  }
 }
 
 

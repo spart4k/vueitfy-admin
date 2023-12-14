@@ -12,11 +12,9 @@
         class="p-5"
         v-show="availableTabs.length > 1"
       >
-        <div>
-          <v-tab v-for="item in availableTabs" :key="item.id">
-            {{ item.name }}
-          </v-tab>
-        </div>
+        <v-tab v-for="item in availableTabs" :key="item.id">
+          {{ item.name }}
+        </v-tab>
       </v-tabs>
       <v-tabs-items v-model="detail.activeTab">
         <v-tab-item

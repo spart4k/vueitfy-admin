@@ -362,6 +362,7 @@ const config = {
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',
+    name: 'Назначения',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {
@@ -643,7 +644,7 @@ const config = {
                 value: [],
                 type: 'date',
                 subtype: 'multiple',
-                readonly: true,
+                readonly: false,
                 menu: false,
                 placeholder: '',
                 class: [''],
@@ -711,6 +712,15 @@ const config = {
             ],
             actions: [
               stringAction({
+                text: 'Закрыть',
+                type: 'submit',
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'personal_target',
+                skipValidation: true,
+              }),
+              stringAction({
                 text: 'Сохранить',
                 type: 'submit',
                 module: '',
@@ -771,7 +781,7 @@ const config = {
                 //isShow: false,
               }),
               autocompleteField({
-                label: '',
+                label: 'Учетная запись',
                 name: 'avatar_with_user_key_id',
                 alias: 'personal_id',
                 subtype: 'single',
@@ -963,22 +973,7 @@ const config = {
             value: '',
             type: 'datetime',
             subtype: 'datetime',
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-              ],
-            },
+            readonly: true,
             menu: false,
             placeholder: '',
             class: [''],
@@ -1421,7 +1416,7 @@ const config = {
             bootstrapClass: [''],
           }),
           autocompleteField({
-            label: '',
+            label: 'Учетная запись',
             name: 'user_key',
             alias: 'avatar_with_user_key_id',
             subtype: 'single',
@@ -1503,7 +1498,7 @@ const config = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'disabled',
+            color: 'black',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal_target',

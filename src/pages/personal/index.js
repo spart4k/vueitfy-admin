@@ -754,7 +754,7 @@ const documentConfig = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'disabled',
+            color: 'black',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal-add',
@@ -839,7 +839,7 @@ const documentConfig = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'disabled',
+            color: 'black',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal-add',
@@ -1671,7 +1671,7 @@ const defaultForm = [
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         bootstrapClass: [''],
         //validations: { required },
@@ -1694,7 +1694,7 @@ const defaultForm = [
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         bootstrapClass: [''],
         //validations: { required },
@@ -1723,7 +1723,7 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
@@ -1745,7 +1745,7 @@ const defaultForm = [
         class: [''],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         bootstrapClass: [''],
         //validations: { required },
@@ -1769,7 +1769,7 @@ const defaultForm = [
         classes: [''],
         position: {
           cols: 12,
-          sm: 3,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: ['changeSelect'],
@@ -1797,7 +1797,7 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
@@ -1826,7 +1826,7 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
@@ -1855,7 +1855,7 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         validations: { required },
         bootstrapClass: [''],
@@ -1867,29 +1867,6 @@ const defaultForm = [
             editFormPermissions.rukFIlCUPDirector.access,
             editFormPermissions.DBA.access,
             editFormPermissions.OBDandOKK.denied,
-          ],
-        },
-      }),
-      checkboxField({
-        label: 'Штатный',
-        name: 'in_state',
-        placeholder: '',
-        class: [''],
-        position: {
-          cols: 12,
-          sm: 4,
-        },
-        bootstrapClass: [''],
-        //validations: { required },
-        //isShow: false,
-        readonly: {
-          value: false,
-          condition: [
-            editFormPermissions.brigadir,
-            editFormPermissions.manager[1],
-            editFormPermissions.rukFIlCUPDirector.denied,
-            editFormPermissions.DBA.access,
-            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1906,7 +1883,7 @@ const defaultForm = [
         items: [],
         position: {
           cols: 12,
-          sm: 4,
+          sm: 6,
         },
         defaultItems: [
           {
@@ -1924,6 +1901,29 @@ const defaultForm = [
             editFormPermissions.manager[1],
             editFormPermissions.rukFIlCUPDirector.denied,
             editFormPermissions.DBA.denied,
+            editFormPermissions.OBDandOKK.access,
+          ],
+        },
+      }),
+      checkboxField({
+        label: 'Штатный',
+        name: 'in_state',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 6,
+        },
+        bootstrapClass: [''],
+        //validations: { required },
+        //isShow: false,
+        readonly: {
+          value: false,
+          condition: [
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
             editFormPermissions.OBDandOKK.access,
           ],
         },
@@ -1960,7 +1960,7 @@ const defaultForm = [
       stringAction({
         text: 'Закрыть',
         type: 'submit',
-        color: 'disabled',
+        color: 'black',
         name: 'closePopup',
         action: 'closePopup',
         to: 'personal',
@@ -1977,6 +1977,7 @@ const defaultForm = [
   },
   {
     id: 2,
+    path: 'edit',
     name: 'Данные документов',
     type: FormDocuments,
     detail: true,
@@ -2137,6 +2138,7 @@ const defaultForm = [
     ],
   },
   {
+    path: 'edit',
     id: 3,
     name: 'Сканы',
     type: TableDefault,
@@ -2144,6 +2146,7 @@ const defaultForm = [
     config: skanConfig,
   },
   {
+    path: 'edit',
     id: 7,
     name: 'Банковские карты',
     type: TableDefault,
@@ -2151,6 +2154,7 @@ const defaultForm = [
     config: bankConfig,
   },
   {
+    path: 'edit',
     id: 4,
     name: 'Начисления и выплаты',
     type: TableDefault,
@@ -2158,6 +2162,7 @@ const defaultForm = [
     config: paymentConfig,
   },
   {
+    path: 'edit',
     id: 1,
     name: 'Расход',
     type: TableDefault,
@@ -2165,6 +2170,7 @@ const defaultForm = [
     config: consumptionConfig,
   },
   {
+    path: 'edit',
     id: 6,
     name: 'Задолженность',
     type: TableDefault,
@@ -2438,7 +2444,7 @@ const defaultForm = [
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'disabled',
+            color: 'black',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal',
@@ -2532,7 +2538,7 @@ const defaultForm = [
           stringAction({
             text: 'Вернуться',
             type: 'submit',
-            color: 'disabled',
+            color: 'black',
             module: 'form/del',
             url: 'delete/unfinished_personal',
             name: 'prevStage',
@@ -2602,7 +2608,7 @@ const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [1],
+                  permissions: [1,2 , 3 , 4 , 9 , 15],
                   type: false,
                 },
               ]
@@ -4518,6 +4524,7 @@ const config = {
         method: 'get',
         alias: 'personal',
         url: '/get/form/',
+        name: 'Личный ключ',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
@@ -4606,6 +4613,15 @@ const config = {
             ],
             actions: [
               stringAction({
+                text: 'Закрыть',
+                type: 'submit',
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'personal',
+                skipValidation: true,
+              }),
+              stringAction({
                 text: 'Загрузить',
                 type: 'submit',
                 module: 'form/create',
@@ -4613,6 +4629,7 @@ const config = {
                 name: 'saveForm',
                 action: 'saveFormStore',
               }),
+              
             ],
           },
           {
@@ -4700,6 +4717,15 @@ const config = {
               }),
             ],
             actions: [
+              stringAction({
+                text: 'Закрыть',
+                type: 'submit',
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'personal',
+                skipValidation: true,
+              }),
               stringAction({
                 text: 'Загрузить',
                 type: 'submit',
