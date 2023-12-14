@@ -131,7 +131,8 @@ const Form15 = defineComponent({
       isFormConfirmed.value = true
       console.log('confirm')
       await setPersonalTarget()
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
     }
     const reject = async () => {
       isFormConfirmed.value = false
