@@ -67,7 +67,7 @@ const Form15 = defineComponent({
         const data = props.data
         const finalData = {
           process_id: data.task.process_id,
-          manager_id: data.entity.manager_id,
+          manager_id: JSON.parse(data.task.dop_data).manager_id,
           task_id: data.task.id,
           parent_action: data.task.id,
           personal_target_id: data.entity.id,
@@ -119,7 +119,7 @@ const Form15 = defineComponent({
             ? confirmData
             : {
                 process_id: props.data.task.process_id,
-                manager_id: props.data.task.from_account_id,
+                manager_id: JSON.parse(props.data.task.dop_data).manager_id,
                 parent_action: props.data.task.id,
                 task_id: props.data.task.id,
               },
@@ -131,7 +131,8 @@ const Form15 = defineComponent({
       isFormConfirmed.value = true
       console.log('confirm')
       await setPersonalTarget()
-      await changeStatusTask()
+      const { success } = await changeStatusTask()
+      success && ctx.emit('closePopup')
     }
     const reject = async () => {
       isFormConfirmed.value = false
