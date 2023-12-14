@@ -80,6 +80,13 @@ const textBlock = (properties) => {
   }
 }
 
+const colorPicker = (properties) => {
+  return {
+    type: 'colorPicker',
+    ...defaultProperties(properties),
+  }
+}
+
 export {
   dateField,
   stringField,
@@ -90,4 +97,5 @@ export {
   checkboxField,
   dropZoneField,
   textBlock,
+  colorPicker,
 }

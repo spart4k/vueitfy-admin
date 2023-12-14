@@ -28,6 +28,7 @@
         </template>
         <MailsLetterUserEdit
           @deleteUser="deleteUser"
+          :filterData="$props.filterData"
           :data="newMessage"
           v-else
         />
@@ -45,12 +46,12 @@
           :edit="!$route?.query?.compose || $route?.query?.compose === 'answer'"
         />
       </div>
-      <div class="v-letter-expanded_btn pb-2 mt-4">
+      <div
+        v-if="$route.query.filter !== 'sent' && $route.query.filter !== 'trash'"
+        class="v-letter-expanded_btn"
+      >
         <template v-if="!loading">
           <v-btn
-            v-if="
-              $route.query.filter !== 'sent' && $route.query.filter !== 'trash'
-            "
             @click="
               $route?.query?.compose === 'new' ||
               $route?.query?.compose === 'answer'
@@ -58,6 +59,7 @@
                 : answerToMail($props.data)
             "
             color="primary"
+            :disabled="!validation"
           >
             <v-icon small class="mr-2">$IconEdit</v-icon>
             {{
@@ -66,6 +68,15 @@
                 ? 'Отправить'
                 : 'Ответить'
             }}
+          </v-btn>
+          <v-btn
+            v-if="$route?.query?.compose !== 'new'"
+            class="ml-4"
+            @click="closeLetter"
+            color="error"
+          >
+            <!-- <v-icon small class="mr-2">$IconEdit</v-icon> -->
+            Закрыть
           </v-btn>
         </template>
         <v-progress-circular

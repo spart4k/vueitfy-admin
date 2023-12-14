@@ -1,34 +1,16 @@
 <template>
   <div class="v-edit">
-    <!-- <VueEditor v-model="content" /> -->
     <div class="v-edit-item">
       <div class="v-edit-item_title mt-3">От:</div>
       <div class="v-edit-item-input">
-        <v-combobox
-          v-model="user"
-          :items="[user]"
-          chips
+        <v-select
+          v-model="$props.data.box_id"
+          :items="$props.filterData.boxData"
           item-text="name"
           item-value="id"
-          return-object
-          disabled
+          :disabled="!!$route?.query?.mail"
         >
-          <template v-slot:selection="data">
-            <v-chip
-              outlined
-              small
-              :key="JSON.stringify(data.item.name)"
-              @click:close="data.parent.selectItem(data.item.name)"
-            >
-              <v-avatar v-if="data.item.avatar" class="accent white--text" left>
-                <v-img :src="data.item.avatar"></v-img>
-              </v-avatar>
-              <div class="v-edit-item-input_name">
-                {{ data.item.name }}
-              </div>
-            </v-chip>
-          </template>
-        </v-combobox>
+        </v-select>
       </div>
     </div>
     <div class="v-edit-item">
@@ -36,49 +18,48 @@
       <div class="v-edit-item-input">
         <v-combobox
           v-model="$props.data.users"
+          :items="user.items"
+          :menu-props="{ maxHeight: '400' }"
+          no-data-text="Нет пользователей"
           hide-selected
-          :items="userArray"
+          :search-input.sync="user.search"
           multiple
-          chips
-          item-text="name"
-          item-value="id"
+          :filter="accountFilter"
           clearable
+          chips
+          deletable-chips
+          item-text="fio"
+          item-value="id"
           return-object
-          :rules="rules"
         >
-          <template v-slot:item="data">
-            <v-avatar
-              v-if="data.item.avatar"
+          <template slot="item" slot-scope="{ item }">
+            <!-- <v-avatar
+              v-if="item.avatar"
               class="ml-2 accent white--text"
               left
               width="30"
               height="30"
               min-width="30"
             >
-              <v-img :src="data.item.avatar"></v-img>
-            </v-avatar>
+              <v-img :src="item.avatar"></v-img>
+            </v-avatar> -->
             <div class="ml-2 mr-2 v-edit-item-input_name">
-              {{ data.item.name }}
+              {{ item.fio }}
             </div>
             <div class="v-edit-item-input_mail">
-              {{ data.item.email }}
+              {{ item.email }}
             </div>
           </template>
           <template v-slot:selection="data">
-            <v-chip
-              outlined
-              small
-              :key="JSON.stringify(data.item.name)"
-              @click:close="data.parent.selectItem(data.item.name)"
-            >
+            <v-chip outlined small :key="JSON.stringify(data.item.fio)">
               <v-avatar v-if="data.item.avatar" class="accent white--text" left>
                 <v-img :src="data.item.avatar"></v-img>
               </v-avatar>
               <div class="v-edit-item-input_name">
-                {{ data.item.name }}
+                {{ data.item.fio }}
               </div>
               <v-icon
-                class="ml-2"
+                class="ml-2 v-edit-item-input_btn"
                 color="disabled"
                 small
                 @click="$emit('deleteUser', data.index)"
@@ -86,6 +67,9 @@
                 $IconClose
               </v-icon>
             </v-chip>
+          </template>
+          <template v-slot:append-item>
+            <div v-intersect="endIntersect" />
           </template>
           <template v-slot:no-data></template>
         </v-combobox>

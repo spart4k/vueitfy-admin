@@ -212,6 +212,14 @@ $borderColor: rgba(0,0,0,.3);
       transition-delay: 0s, .25s, .25s, .45s;
     }
   }
+  &-input {
+    &--is {
+      &-readonly {
+        opacity: .5;
+        pointer-events: none;
+      }
+    }
+  }
 }
 
 
@@ -465,5 +473,20 @@ $borderColor: rgba(0,0,0,.3);
     .v-tabs-items {
       flex: 1;
     }
+  }
+}
+
+.v-color-picker__dot {
+  width: 25px;
+  height: 25px;
+}
+
+//.v-color-picker__controls {
+//  padding-top: 5px;
+//}
+
+.rates {
+  .v-expansion-panel-content__wrap {
+    padding: 0;
   }
 }

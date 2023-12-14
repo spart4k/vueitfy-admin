@@ -5,6 +5,7 @@
       ($route.query.filter === 'folder' || $route.query.filter === 'box') &&
         !$route.query.mail &&
         'v-upper__wide',
+      'justify-space-between',
     ]"
   >
     <div class="v-upper-user d-flex">

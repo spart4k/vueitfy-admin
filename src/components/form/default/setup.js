@@ -8,6 +8,8 @@ import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 import DropZone from '@/components/dropzone/default/index.vue'
 import Datetimepicker from '@/components/datetimepicker/index.vue'
+import ColorPicker from '@/components/colorpicker/index.vue'
+
 import store from '@/store'
 
 export default {
@@ -17,6 +19,7 @@ export default {
     Autocomplete,
     FormDefault,
     DropZone,
+    ColorPicker,
   },
   props: {
     tab: {
@@ -27,13 +30,29 @@ export default {
       type: Boolean,
       default: false,
     },
+    detail: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
+    console.log('return ', props.tab)
     //const syncForm = ref({})
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
+    // function addOrUpdateURLParam(key, value) {
+    //   const searchParams = new URLSearchParams(window.location.search)
+    //   searchParams.set(key, value)
+    //   const newRelativePathQuery =
+    //     window.location.pathname + '?' + searchParams.toString()
+    //   history.pushState(null, '', newRelativePathQuery)
+    // }
+
+    // addOrUpdateURLParam('add', 'zxczxc')
+
+    // console.log('new URL', window.location.href)
     const context = {
       root: {
         store,
@@ -72,14 +91,13 @@ export default {
     })
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () => store.dispatch('list/get', data),
+      request: (data) => store.dispatch('list/get', data),
     })
-    console.log(alias)
     const { makeRequest: changeForm } = useRequest({
       context,
       successMessage: 'Сохранено',
       request: (params) => {
-        console.log(data)
+        console.log(+route.params.id)
         return store.dispatch(params.module, {
           //url: `set/data/${alias}`,
           url: params.url,
@@ -120,9 +138,12 @@ export default {
       disabledField,
       hideField,
       addFiles,
+      changeCheckbox,
+      readonlyField,
     } = useForm({
       form: props.tab,
       context,
+      detail: props.detail,
       loading,
       fields: fields(),
       setFields: fields,
@@ -157,6 +178,8 @@ export default {
       disabledField,
       hideField,
       addFiles,
+      changeCheckbox,
+      readonlyField,
     }
   },
 }

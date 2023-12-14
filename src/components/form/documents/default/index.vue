@@ -136,7 +136,7 @@
               :color="action.color"
               class="ml-2"
               :loading="loading"
-              @click.prevent="clickHandler(action)"
+              @click.prevent="clickHandler({ action })"
               v-for="action in tab.actions"
               :key="action.id"
             >

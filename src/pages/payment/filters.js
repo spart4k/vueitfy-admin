@@ -1,4 +1,5 @@
 import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
+import { stringAction } from '@/utils/actions.js'
 
 export default {
   id: 0,
@@ -7,12 +8,20 @@ export default {
   detail: false,
   isFilter: true,
   lists: [
-    'vid_vedomost_id',
-    'status_id',
-    'direction_id',
-    'doljnost_id',
-    'st_rashod_id',
-    'account_id',
+    { alias: 'vid_vedomost_id', filter: [] },
+    { alias: 'status_id', filter: [] },
+    { alias: 'direction_id', filter: [] },
+    { alias: 'st_rashod_id', filter: [] },
+    { alias: 'account_id', filter: [] },
+  ],
+  actions: [
+    stringAction({
+      text: 'Сохранить',
+      type: 'submit',
+      action: 'saveFilter',
+      name: 'saveFilter',
+      nextForm: true,
+    }),
   ],
   alias: 'payment',
   active: false,

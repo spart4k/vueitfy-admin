@@ -44,6 +44,29 @@ import IconArrowUp from './arrow-up/arrow-up.vue'
 import IconNotificationBell from './notification/notification.vue'
 import IconMailActive from './mail-active/mail-active.vue'
 
+import IconCheckPoten from './check-poten/check-poten.vue'
+import IconDmc from './dmc/dmc.vue'
+import IconFinger from './finger/finger.vue'
+import IconHome from './home/home.vue'
+import IconInn from './inn/inn.vue'
+import IconMedOsmotr from './med-osmotr/med-osmotr.vue'
+import IconMedicalBook from './medical-book/medical-book.vue'
+import IconMigrCarta from './migr-carta/migr-carta.vue'
+import IconMigrUch from './migr-uch/migr-uch.vue'
+import IconMigrUch2 from './migr-uch/migr-uch2.vue'
+import IconPassport from './passport/passport.vue'
+import IconPassport2 from './passport/passport-2.vue'
+import IconPatent from './patent/patent.vue'
+import IconPatent2 from './patent/patent2.vue'
+import IconPen from './pen/pen.vue'
+import IconPerevod from './perevod/perevod.vue'
+import IconRekvizit from './rekvizit/rekvizit.vue'
+import IconRf from './rf/rf.vue'
+import IconRxRf from './rx-rf/rx-rf.vue'
+import IconSamolet from './samolet/samolet.vue'
+import IconSnils from './snils/snils.vue'
+import IconFinger2 from './finger/finger2.vue'
+
 export default {
   IconAdd: {
     component: IconAdd,
@@ -180,5 +203,72 @@ export default {
   },
   IconNotificationBell: {
     component: IconNotificationBell,
+  },
+
+  IconCheckPoten: {
+    component: IconCheckPoten,
+  },
+  IconDmc: {
+    component: IconDmc,
+  },
+  IconFinger2: {
+    component: IconFinger2,
+  },
+  IconFinger: {
+    component: IconFinger,
+  },
+  IconHome: {
+    component: IconHome,
+  },
+  IconInn: {
+    component: IconInn,
+  },
+  IconMedOsmotr: {
+    component: IconMedOsmotr,
+  },
+  IconMedicalBook: {
+    component: IconMedicalBook,
+  },
+  IconMigrCarta: {
+    component: IconMigrCarta,
+  },
+  IconMigrUch: {
+    component: IconMigrUch,
+  },
+  IconMigrUch2: {
+    component: IconMigrUch2,
+  },
+  IconPassport: {
+    component: IconPassport,
+  },
+  IconPassport2: {
+    component: IconPassport2,
+  },
+  IconPatent2: {
+    component: IconPatent2,
+  },
+  IconPatent: {
+    component: IconPatent,
+  },
+  IconPen: {
+    component: IconPen,
+  },
+  IconPerevod: {
+    component: IconPerevod,
+  },
+  IconRekvizit: {
+    component: IconRekvizit,
+  },
+  IconRf: {
+    component: IconRf,
+  },
+  IconRxRf: {
+    component: IconRxRf,
+  },
+  IconSamolet: {
+    component: IconSamolet,
+  },
+  IconSnils: {
+    component: IconSnils,
   },
 }
