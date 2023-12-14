@@ -35,14 +35,11 @@ const Form8 = defineComponent({
         value: data.entity.object_name,
       },
     }
-    // let getNameDoc = (docID) => {
-    //   return docs_spr[docID]
-    // }
-    let newString
+    let newString = ref(false)
     if (typeof data.data.zayavka == 'object') {
-      newString = false
+      newString.value = false
     } else {
-      newString = true
+      newString.value = true
     }
     // console.log(typeof newString)
     // onMounted(() => {

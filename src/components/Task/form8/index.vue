@@ -19,7 +19,8 @@
         <div
           class="mb-10"
           :class="{
-            'overflow-inputs': !data.data.zayavka.status == 5 && !newString,
+            'overflow-inputs':
+              !data.data.zayavka.status == 5 && typeof newString !== 'object',
           }"
         >
           <span>Приложите документы</span>
