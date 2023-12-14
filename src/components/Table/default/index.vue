@@ -14,7 +14,7 @@
             :key="indexButton"
           />-->
           <v-btn
-            v-for="(button, indexButton) in options.panel.buttons"
+            v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
             @click="panelHandler(button)"
             small

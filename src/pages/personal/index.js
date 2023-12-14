@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import filters from './filters'
 import { required, nameLength } from '@/utils/validation.js'
 import {
@@ -1582,6 +1584,64 @@ const paymentConfig = {
   filters,
 }
 
+const editFormPermissions = {
+  // Бригадир(id = 13) - все readonly
+  brigadir: {
+    permissions: [13],
+    type: true,
+  },
+  //  Менеджер(id = 1) - если направление логистика, то может менять доступ, остальное readonly, если направление розница, то все поля readonly
+  manager: [
+    {
+      permissions: [1],
+      field: 'direction_json',
+      target: 'formData',
+      array: true,
+      value: [1],
+      type: false,
+    },
+    {
+      permissions: [1],
+      field: 'direction_json',
+      target: 'formData',
+      array: true,
+      value: [2],
+      type: true,
+    },
+  ],
+  //  Рук. фил.(id = 15), ЦУП(id = 2), Директор(id = 3) - может менять телефон, доступ, остальное readonly
+  rukFIlCUPDirector: {
+    access: {
+      permissions: [15, 2, 3],
+      type: false,
+    },
+    denied: {
+      permissions: [15, 2, 3],
+      type: true,
+    },
+  },
+  DBA: {
+    access: {
+      permissions: [4],
+      type: false,
+    },
+    denied: {
+      permissions: [4],
+      type: true,
+    }
+  },
+  OBDandOKK: {
+    access: {
+      permissions: [7, 8],
+      type: false,
+    },
+    denied: {
+      permissions: [7, 8],
+      type: true,
+    }
+  }
+}
+
 const defaultForm = [
   {
     id: 0,
@@ -1619,16 +1679,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
-            {
-              permissions: [1],
-              field: 'direction_id',
-              value: [3],
-              type: false,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1647,10 +1702,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.access,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1674,10 +1730,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1696,10 +1753,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1718,10 +1776,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1745,10 +1804,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1773,10 +1833,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.denied,
           ],
         },
       }),
@@ -1801,18 +1862,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
-            {
-              permissions: [1, 16],
-              field: 'direction_json',
-              target: 'formData',
-              array: true,
-              value: [1],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            ...editFormPermissions.manager,
+            editFormPermissions.rukFIlCUPDirector.access,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.denied,
           ],
         },
       }),
@@ -1831,10 +1885,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.access,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1865,10 +1920,11 @@ const defaultForm = [
         readonly: {
           value: false,
           condition: [
-            {
-              permissions: [13],
-              type: true,
-            },
+            editFormPermissions.brigadir,
+            editFormPermissions.manager[1],
+            editFormPermissions.rukFIlCUPDirector.denied,
+            editFormPermissions.DBA.denied,
+            editFormPermissions.OBDandOKK.access,
           ],
         },
       }),
@@ -1901,6 +1957,15 @@ const defaultForm = [
       // }),
     ],
     actions: [
+      stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'disabled',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
       stringAction({
         text: 'Сохранить',
         type: 'submit',
@@ -2534,6 +2599,14 @@ const config = {
             type: 'changeUrl',
             url: 'personal-add',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1],
+                  type: false,
+                },
+              ]
+            }
           },
         ],
       },
@@ -4266,8 +4339,8 @@ const config = {
           {
             label: 'Добавить',
             class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
+            type: 'changeUrl',
+            url: 'personal-add-key',
             backgroundColor: '#fff',
           },
           {
@@ -4448,50 +4521,16 @@ const config = {
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
-            id: 0,
-            name: 'Основные',
+            path: 'add-key',
+            id: 8,
+            name: 'Добавить ключ',
             type: 'FormDefault',
             detail: true,
-            lists: [
-              'habitation_id',
-              'account_id',
-              'direction_id',
-              'grajdanstvo_id',
-            ],
-            alias: 'personal',
-            active: false,
             fields: [
-              stringField({
-                label: 'Ключ',
-                name: 'user_key',
-                placeholder: '',
-                readonly: false,
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
-              }),
-              stringField({
-                label: 'ФИО',
-                name: 'fio',
-                placeholder: '',
-                readonly: false,
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
-              }),
               autocompleteField({
-                label: 'Линейщик',
+                label: 'Сотрудник',
                 name: 'personal_id',
+                alias: 'personal_logistic_x5',
                 subtype: 'single',
                 placeholder: '',
                 class: [''],
@@ -4499,21 +4538,37 @@ const config = {
                   text: 'name',
                   value: 'id',
                 },
+                selectOptionName: '',
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/personal_logistic_x5',
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 12,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'api',
+                    module: 'personal/getObject',
+                    //url: 'object_id/avatar_with_user_key_id',
+                    field: 'object_id',
+                    url: [
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
+                  },
+                ]
               }),
-              autocompleteField({
+              selectField({
                 label: 'Объект',
                 name: 'object_id',
-                subtype: 'single',
+                // alias: 'object_id',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -4521,38 +4576,137 @@ const config = {
                   value: 'id',
                 },
                 items: [],
-                page: 1,
-                search: '',
-                url: 'get/pagination_list/object',
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 12,
                 },
                 validations: { required },
                 bootstrapClass: [''],
               }),
-              checkboxField({
-                label: 'Стажер',
-                name: 'is_stager',
+              dropZoneField({
+                label: 'Файл акта',
+                name: 'photo_path',
                 placeholder: '',
                 readonly: false,
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 12,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
+                validations: { required },
+                options: {
+                  withoutSave: false,
+                  folder: 'user_keys',
+                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
+                  paramsForEmit: this,
+                },
+                value: '',
               }),
             ],
             actions: [
               stringAction({
-                text: 'Сохранить',
+                text: 'Загрузить',
                 type: 'submit',
-                module: '',
+                module: 'form/create',
+                url: 'query/user_key',
                 name: 'saveForm',
-                nextForm: true,
+                action: 'saveFormStore',
+              }),
+            ],
+          },
+          {
+            path: 'edit',
+            id: 9,
+            name: 'Добавить ключ',
+            type: 'FormDefault',
+            detail: true,
+            fields: [
+              autocompleteField({
+                label: 'Сотрудник',
+                name: 'personal_id',
+                alias: 'personal_logistic_x5',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                selectOptionName: '',
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/personal_logistic_x5',
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                dependence: [
+                  {
+                    //fields: ['statement_card', 'cardowner'],
+                    type: 'api',
+                    module: 'personal/getObject',
+                    //url: 'object_id/avatar_with_user_key_id',
+                    field: 'object_id',
+                    url: [
+                      {
+                        source: 'formData',
+                        field: 'this',
+                      },
+                    ],
+                  },
+                ]
+              }),
+              selectField({
+                label: 'Объект',
+                name: 'object_id',
+                // alias: 'object_id',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+              dropZoneField({
+                label: 'Файл акта',
+                name: 'photo_path',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                validations: { required },
+                options: {
+                  withoutSave: false,
+                  folder: 'user_keys',
+                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
+                  paramsForEmit: this,
+                },
+                value: '',
+              }),
+            ],
+            actions: [
+              stringAction({
+                text: 'Загрузить',
+                type: 'submit',
+                module: 'form/create',
+                url: 'query/user_key',
+                name: 'saveForm',
+                action: 'saveFormStore',
               }),
             ],
           },

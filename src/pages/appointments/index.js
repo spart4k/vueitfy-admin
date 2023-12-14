@@ -1501,6 +1501,15 @@ const config = {
         ],
         actions: [
           stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'disabled',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal_target',
+            skipValidation: true,
+          }),
+          stringAction({
             text: 'Сохранить',
             type: 'submit',
             module: 'form/putForm',
