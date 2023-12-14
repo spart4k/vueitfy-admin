@@ -28,7 +28,9 @@ const Form27 = defineComponent({
       },
     }
     const directionToMagnit = props.data.entity.direction_id === 5
+    const pathAct = props.data.data.shop_request_magnit.path_act
     const isFormConfirmed = ref(null)
+    const commentErr = ref('')
     const infoObj = {
       creator: {
         key: 'Создатель',
@@ -36,7 +38,7 @@ const Form27 = defineComponent({
       },
       ved_type: {
         key: 'Вид ведомости',
-        value: props.data.entity.vedomost_name,
+        value: props.data.entity.vid_vedomost_name,
       },
       employee: {
         key: 'Сотрудник',
@@ -66,7 +68,9 @@ const Form27 = defineComponent({
         key: 'Реквизиты',
         value:
           props.data.entity.bank_id !== 11
-            ? `${props.data.entity.bank_name} ${props.data.entity.fio}... ${props.data.entity.object_name} ${props.data.entity.invoice} `
+            ? `${props.data.entity.bank_name} ${
+                props.data.entity.fio
+              }...${props.data.entity.invoice.split('').splice(-4).join('')}`
             : 'Наличные',
       },
       meals: {
@@ -83,7 +87,7 @@ const Form27 = defineComponent({
       manager_id: JSON.parse(props.data.task.dop_data).manager_id,
     }
 
-    const { formData, formErrors, validate } = useForm({
+    const { formData } = useForm({
       fields: {
         comment: {
           validations: { requiredIf: requiredIf(!isFormConfirmed.value) },
@@ -144,7 +148,7 @@ const Form27 = defineComponent({
       console.log('reject')
       isFormConfirmed.value = false
       if (!formData.comment) {
-        validate()
+        commentErr.value = 'Обязательное поле'
         return
       }
       if (window.confirm('Начисление будет не согласовано, подтвердите!')) {
@@ -164,9 +168,10 @@ const Form27 = defineComponent({
       confirm,
       reject,
       formData,
-      formErrors,
       directionToMagnit,
       entity: props.data.entity,
+      pathAct,
+      commentErr,
     }
   },
 })

@@ -68,7 +68,15 @@
         :listNames="listNames"
         :docs="docs"
       ></DocFormWithConfirm>
-      <FormComment />
+      <v-textarea
+        v-model="comment"
+        @input="commentErr = ''"
+        :error-messages="commentErr"
+        rows="2"
+        clearable
+        label="Комментарий"
+        class="mb-2"
+      ></v-textarea>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">

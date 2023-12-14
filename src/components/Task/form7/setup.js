@@ -90,6 +90,13 @@ const Form7 = defineComponent({
       const docsIdArr = [
         ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
       ]
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isHasOsnDoc)
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', docsIdArr.length)
+      console.log(
+        'ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ',
+        Object.values(data.correctedDocs).length
+      )
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isOsnDocValid.value)
       if (isHasOsnDoc) {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length &&
@@ -117,9 +124,14 @@ const Form7 = defineComponent({
     const { makeRequest: setPersonalDocData } = useRequest({
       context,
       request: () => {
+        const data = Object.values(finalData.value).reduce((acc, value) => {
+          acc = { ...acc, ...value }
+          return acc
+        }, {})
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...finalData.value,
+            ...data,
+            id: props.data.data.personal_doc_data.id,
           },
         })
       },
@@ -154,8 +166,8 @@ const Form7 = defineComponent({
             docs_id: props.data.data.docs_id.map((doc) => doc.id),
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
-            okk_id: props.data.task.entity.id,
-            bank_card_id: bankCardId.value ?? null,
+            okk_id: props.data.task.from_account_id,
+            bank_card_id: bankCardId.value ? bankCardId.value : null,
           },
         })
       },

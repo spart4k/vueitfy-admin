@@ -33,12 +33,16 @@
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <div>
-              <span>Скан:</span>
-              <a target="_blank" :href="doc.path_doc"
-                ><v-icon left small> $IconDocument </v-icon></a
-              >
-            </div>
+            <v-row>
+              <v-col>
+                <div class>
+                  <span>Скан:</span>
+                  <a target="_blank" :href="doc.path_doc"
+                    ><v-icon left small> $IconDocument </v-icon></a
+                  >
+                </div>
+              </v-col>
+            </v-row>
             <!--Паспорт-->
             <div v-if="doc.doc_id === 1">
               <v-row>

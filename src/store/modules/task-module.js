@@ -65,6 +65,12 @@ const taskModule = {
       const result = await updateDataFile('set/data/personal_doc', data)
       return result
     },
+    async updateFileDataNew(_, data) {
+      // file/save/personal_doc/personal_doc_1231412342134.jpg
+      console.log(data)
+      const result = await updateDataFile('set/data/personal', data)
+      return result
+    },
 
     // /task/start/process
 
@@ -87,13 +93,13 @@ const taskModule = {
     // =============================================================
 
     async setPersonalData(_, data) {
-      const result = await setTask('set/data/personal', data.data)
+      const result = await setTask('set/data/personal', data)
       console.log(result)
       return result
     },
 
     async setPersonalDocData(_, data) {
-      const result = await setTask('set/data/personal_doc_data', data.data)
+      const result = await setTask('set/data/personal_doc_data', data)
       console.log(result)
       return result
     },
@@ -143,7 +149,7 @@ const taskModule = {
     },
 
     async addKeyToPersonal(_, data) {
-      const result = await setTask('set/personal/add_key_to_personal', data)
+      const result = await setTask('set/personal/key', data)
       console.log(result)
       return result
     },

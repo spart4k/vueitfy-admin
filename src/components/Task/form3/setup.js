@@ -69,9 +69,11 @@ const Form3 = defineComponent({
       const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>
-          store.dispatch('taskModule/updateFileData', {
-            id: 1,
-            path_doc: `/personal_doc/${fileName}`,
+          store.dispatch('taskModule/updateFileDataNew', {
+            data: {
+              id: data.entity.personal_id,
+              ticket: `/personal_doc/${fileName}`,
+            },
           }),
       })
 
@@ -98,13 +100,17 @@ const Form3 = defineComponent({
         request: () =>
           store.dispatch('taskModule/setBid', {
             data: {
-              id: data.entity.id,
-              items: {
-                rashod_vid_id: selectName.value.id,
-                count: 1,
-                price: price.value,
-                name: '',
-                is_debit: 1,
+              data: {
+                id: data.entity.id,
+                items: JSON.stringify([
+                  {
+                    rashod_vid_id: selectName.value.id,
+                    count: 1,
+                    price: price.value,
+                    name: '',
+                    is_debit: 1,
+                  },
+                ]),
               },
             },
           }),

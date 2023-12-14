@@ -1,16 +1,28 @@
 <template>
   <div>
     <div style="padding-top: 20px">
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ name }}</span
+        >&nbsp;({{ dataRojd }} г.р)
+      </v-card-title>
       <FormError v-if="dopData && dopData.comment" class="mb-5">
         {{ dopData.comment }}
       </FormError>
-      <div class="mb-3">Внесите данные личного ключа:</div>
+      <v-row>
+        <v-col>
+          <div class="mb-3" style="font-weight: 600">
+            Внесите данные личного ключа:
+          </div>
+        </v-col>
+      </v-row>
       <v-form>
         <v-row>
-          <span>Скан:</span>
-          <a target="_blank" :href="'#'"
-            ><v-icon left small> $IconDocument </v-icon></a
-          >
+          <v-col>
+            <span>Скан:</span>
+            <a target="_blank" :href="'#'"
+              ><v-icon left small> $IconDocument </v-icon></a
+            >
+          </v-col>
         </v-row>
         <v-row>
           <v-col>
@@ -40,13 +52,6 @@
         </v-row>
       </v-form>
       <v-divider class="mb-5"></v-divider>
-      <v-textarea
-        rows="2"
-        clearable
-        label="Комментарий"
-        v-model="keyForm.comment"
-        :error-messages="keyFormErrors.comment"
-      ></v-textarea>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">

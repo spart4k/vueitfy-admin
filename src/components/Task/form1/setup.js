@@ -124,7 +124,8 @@ const Form1 = defineComponent({
       request: () =>
         store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...finalData,
+            ...finalData.value,
+            id: props.data.data.personal_doc_data.id,
           },
         }),
     })
@@ -155,10 +156,10 @@ const Form1 = defineComponent({
             process_id: task.process_id,
             task_id: task.id,
             parent_action: task.id,
-            docs_id: props.data.data.docs_id.map((doc) => doc.id),
+            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
-            bank_card_id: bankCardId.value ?? null,
+            bank_card_id: bankCardId.value ? bankCardId.value : null,
           },
         })
       },
