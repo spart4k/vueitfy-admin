@@ -25,6 +25,7 @@ const Form28 = defineComponent({
       },
     }
     const directionToMagnit = props.data.entity.direction_id === 5
+    const pathAct = props.data.data.shop_request_magnit.path_act
     const infoObj = {
       creator: {
         key: 'Создатель',
@@ -32,7 +33,7 @@ const Form28 = defineComponent({
       },
       ved_type: {
         key: 'Вид ведомости',
-        value: props.data.entity.vedomost_name,
+        value: props.data.entity.vid_vedomost_name,
       },
       employee: {
         key: 'Сотрудник',
@@ -50,7 +51,9 @@ const Form28 = defineComponent({
         key: 'Реквизиты',
         value:
           props.data.entity.bank_id !== 11
-            ? `${props.data.entity.bank_name} ${props.data.entity.fio}... ${props.data.entity.object_name} ${props.data.entity.invoice} `
+            ? `${props.data.entity.bank_name} ${
+                props.data.entity.fio
+              }...${props.data.entity.invoice.split('').splice(-4).join('')}`
             : 'Наличные',
       },
       meals: {
@@ -77,7 +80,7 @@ const Form28 = defineComponent({
             parent_action: props.data.task.id,
             payment_id: props.data.entity.id,
             manager_id: JSON.parse(props.data.task.dop_data).manager_id,
-            everyday: props.data.data.vid_vedomost_id,
+            everyday: props.data.entity.vid_vedomost_id === 1 ? 1 : 0,
           },
         })
       },
@@ -93,7 +96,13 @@ const Form28 = defineComponent({
       }
     }
 
-    return { infoObj, confirm, directionToMagnit, entity: props.data.entity }
+    return {
+      infoObj,
+      confirm,
+      directionToMagnit,
+      entity: props.data.entity,
+      pathAct,
+    }
   },
 })
 export default Form28

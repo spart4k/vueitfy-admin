@@ -3,12 +3,13 @@
     <v-card class="pa-5">
       <v-form>
         <v-container>
+          {{ vForm.password.$errors }}
           <v-row>
             <v-text-field
               v-model="formData.login"
               label="Имя пользователя"
               required
-              :error-messages="formErrors.login"
+              :error-messages="vForm.password.$errors"
             />
           </v-row>
           <v-row>
@@ -17,7 +18,7 @@
               type="password"
               label="Пароль"
               required
-              :error-messages="formErrors.password"
+              :error-messages="vForm.password.$errors"
             />
           </v-row>
         </v-container>

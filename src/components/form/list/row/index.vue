@@ -3,7 +3,7 @@
     <v-row :key="row">
       <!--{{ tab.fields }}-->
       <v-col
-        v-for="field in tab.fields"
+        v-for="field in cloneForm.fields"
         :key="field.id"
         :sm="field.position.sm"
         class="field-col"
@@ -24,7 +24,17 @@
           clearable
           :multiple="field.subtype === 'multiselect'"
           @change="changeSelect({ value: formData[field.name], field })"
-        ></v-select>
+        >
+          <template v-slot:append>
+            <v-progress-circular
+              v-if="field.loading"
+              :size="20"
+              :width="2"
+              color="primary"
+              indeterminate
+            />
+          </template>
+        </v-select>
         <Autocomplete
           v-else-if="showField('autocomplete', field)"
           :field="field"

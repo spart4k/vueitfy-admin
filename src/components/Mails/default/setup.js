@@ -304,8 +304,6 @@ const mails = {
                     ) {
                       mailsData.value[index].mails.rows.splice(mailIndex, 1)
                       hideCurrentMail(mail.id)
-                      selected.value.mails = []
-                      selected.value.mailsAll = false
                       mailsData.value[index].mails.total -= 1
                       resetAllSelectionFilter()
                     }
@@ -331,8 +329,6 @@ const mails = {
           }
         })
         if (key === 'del') {
-          selected.value.mails = []
-          selected.value.mailsAll = false
           if (selected.value.mailsAll) {
             setRouterPath(
               null,
@@ -363,6 +359,8 @@ const mails = {
             ).count = 0
         }
       }
+      selected.value.mails = []
+      selected.value.mailsAll = false
       compareFiltersCount()
     }
 

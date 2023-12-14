@@ -4,6 +4,9 @@ import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 
+import useForm from '@/compositions/useForm.js'
+import useRequest from '@/compositions/useRequest'
+
 import vContextmenu from '@/components/contextmenu/default/index.vue'
 import Sheet from '@/components/sheet/default/index.vue'
 import Popup from '@/components/popup/index.vue'
@@ -15,7 +18,7 @@ import vIconSort from '../../icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
-
+import axios from 'axios'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -37,7 +40,15 @@ const table = {
       default: () => {},
       require: true,
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
     filtersConfig: {
+      type: Object,
+      default: () => {},
+    },
+    detail: {
       type: Object,
       default: () => {},
     },
@@ -258,13 +269,15 @@ const table = {
         return undefined
       }
     }
-    const openFilter = () => {
+    const openFilter = ($event) => {
+      console.log($event)
       filter.value.isShow = true
     }
     const closeFilter = () => {
       filter.value.isShow = false
     }
     const getItems = async () => {
+      console.log('get items')
       //this.
       loading.value = true
       const { url } = props.options.options
@@ -305,15 +318,18 @@ const table = {
       //  }
       //})
       let by = undefined
-      if (props.routeParam) {
+      // console.log('props.filtersConfig', store.state.formStorage, props.detail?.stageData.id)
+      if (props.routeParam || store?.state?.formStorage?.id) {
         by = [
           {
             field: props.options.options.urlDetail,
-            value: +props.routeParam,
+            value: +props.routeParam || store?.state?.formStorage?.id,
+            // value: +props.routeParam,
             alias: props.options.options.alias,
           },
         ]
       }
+      console.log('table get')
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
@@ -401,8 +417,8 @@ const table = {
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          alias: el.alias,
-          type: el.type,
+          alias: el.filterAlias,
+          type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
         filtersColumns.value.push(obj)
@@ -425,9 +441,11 @@ const table = {
         popupForm.value.isShow = true
       }
     }
-    const closePopupForm = () => {
-      router.back()
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
       popupForm.value.isShow = false
+      if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
       if (props.options.detail.type === 'popup') {
@@ -455,8 +473,15 @@ const table = {
         addItem()
       } else if (type === 'changeUrl') {
         changeUrl(url)
+      } else if (type === 'getFilters') {
+        console.log('click inner getFilter');
+        console.log(filtersColumns.value);
+        console.log(url);
+        axios.post(url, filtersColumns.value)
+      } else if (type === 'nextStage') {
+        emit('nextStage', {})
       }
-      
+      if (button.function) button.function()
     }
     // COMPUTED PROPERTIES
     const width = computed(() => {
@@ -470,11 +495,15 @@ const table = {
     const headActions = computed(() => {
       return props.options.head.find((cell) => cell.type === 'actions')
     })
+    //props.options.data.rows = data.rows
+
     // WATCH
     watch(
       () => searchField,
       (newVal) => {
         props.options.options.search.function(newVal)
+      },
+      () => {
       }
     )
     //watch(
@@ -490,6 +519,7 @@ const table = {
       },
       { deep: true }
     )
+
     // HOOKS
     onMounted(async () => {
       initHeadParams()
@@ -498,7 +528,6 @@ const table = {
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
-      console.log(headerCells)
       headerCells.forEach((headerEl) => {
         const id = headerEl.id.split('-table-header')[0]
         if (!id) return
@@ -522,10 +551,81 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode === 'add')) {
+      if (props.options.detail && props.options.detail.type === 'popup' && route.meta.mode) {
         popupForm.value.isShow = true
       }
     })
+
+    const styleDate = (row, cell, innerDataCallBack) => {
+      if ('conditionValue' in cell) {
+        const conditionValue = innerDataCallBack(row, cell.conditionValue);
+        return conditionValue ? 'font-style: normal; font-size: 14px' : '';
+      }
+      return '';
+    };
+    const iconColor = (value, conditionValue) => {
+      if (value === 0) {
+        return 'red';
+      } else if (value === 1) {
+        if (conditionValue) {
+          return conditionValue === null ? 'red' : 'black';
+        } else {
+          return 'green';
+        }
+      } else if (value === 2) {
+        return 'orange';
+      }
+      return 'blue';
+    };
+    const iconType = (row, cell, innerDataCallBack) => {
+     const value = innerDataCallBack(row, cell.value);
+
+      if (value === 0) {
+        return 'mdi-close';
+      } else if (value === 1) {
+        if ('conditionValue' in cell) {
+          const conditionValue = innerDataCallBack(row, cell.conditionValue);
+          const dateValue = new Date(conditionValue);
+          const formattedDate = `${dateValue.getDate()}.${dateValue.getMonth() + 1}.${dateValue.getFullYear()}`;
+          return conditionValue ? formattedDate : 'mdi-check';
+        } else {
+          return 'mdi-check'
+        }
+      } else if (value === 2) {
+        return 'mdi-minus';
+      }
+
+      return 'mdi-help';
+    };
+
+    const addBackgroundClass = (cell, row, innerDataCallBack) => {
+      if ('backgroundValue' in cell) {
+        const value = innerDataCallBack(row, cell.backgroundValue);
+        return {
+          'v-table-body-row-cell--error1': value === 1,
+          'v-table-body-row-cell--error2': value === 2,
+        }
+      }
+
+      return {};
+    }
+
+    const checkFieldExist = computed((obj, key) => {
+      return key in obj;
+    });
+
+    const permission = computed(() => store.state.user.permission)
+
+    const availablePanelBtn = computed(() => {
+      return props.options.panel.buttons.filter((btn) => {
+        if (!btn.isShow) return btn
+        else {
+          return btn.isShow.condition.some(el => el.permissions.includes(permission.value))
+          // if ()
+        }
+      })
+    })
+
     return {
       // DATA
       headerOptions,
@@ -537,6 +637,10 @@ const table = {
       filter,
       isMobile,
       // METHODS
+
+      addBackgroundClass,
+      iconColor,
+      iconType,
       wrapingRow,
       openChildRow,
       checkboxInput,
@@ -553,6 +657,10 @@ const table = {
       getItems,
       watchScroll,
       // COMPUTED PROPERTIES
+      styleDate,
+      checkFieldExist,
+      iconType,
+      iconColor,
       width,
       colspanLength,
       headActions,
@@ -569,6 +677,7 @@ const table = {
       filters,
       addItem,
       panelHandler,
+      availablePanelBtn,
     }
   },
 }

@@ -468,7 +468,6 @@ const table = {
       popupForm.value.isShow = false
     }
     const addItem = () => {
-      console.log('add item')
       if (props.options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -494,7 +493,7 @@ const table = {
         getItems()
       }
     }
-    const countingDistances = () => { 
+    const countingDistances = () => {
       let left = 0
       let right = 0
       let all = 0
@@ -551,8 +550,8 @@ const table = {
             title: `${new Date(date).getDate()}`,
             align: 'center',
             type: props.options.panel.addedItemsChildrenType ? 'object' : 'default',
-            isShow: true, 
-            width: '50',  
+            isShow: true,
+            width: '50',
             added: true,
             alias: `p.${new Date(date).getDate()}`,
             value: `${new Date(date).getDate() < 10 ? '0' : ''}${new Date(date).getDate()}`,
@@ -585,8 +584,8 @@ const table = {
             title: `${dateIndex}`,
             align: 'center',
             type: 'default',
-            isShow: true, 
-            width: '50',  
+            isShow: true,
+            width: '50',
             added: true,
             alias: `p.col${dateIndex}`,
             value: `col${dateIndex < 10 ? '0' : ''}${dateIndex}`,
@@ -652,11 +651,10 @@ const table = {
         vid: acceptData.value.valueProfit.value,
       }
       const data = await store.dispatch('table/getLoadX5', requestData)
-      console.log(data)
       panel.value.buttons.find(x => x.value === 'accept').isDisabled = true
       acceptData.value.popup = false
     }
-  
+
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -696,7 +694,7 @@ const table = {
       initHeadParams()
       // await getItems()
       countingDistances()
-      
+
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
@@ -723,7 +721,7 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode === 'add')) {
+      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode.includes('add'))) {
         popupForm.value.isShow = true
       }
     })

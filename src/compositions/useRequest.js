@@ -47,7 +47,6 @@ export default function ({
   const loading = ref(false)
 
   let makeRequest = (data) => {
-    console.log(data)
     //loading.value = true
     return request(data)
       .then((responseData) =>

@@ -1,28 +1,38 @@
 <template>
   <div>
     <div style="padding-top: 20px">
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ name }}</span
+        >&nbsp;({{ dataRojd }} г.р)
+      </v-card-title>
       <FormError v-if="data.data.dop_data" class="mb-5">
         {{ data.data.dop_data }}
       </FormError>
-      <div class="mb-3">
-        <v-icon class="mr-2" v-if="isKeyConfrmed" x-small color="green"
-          >$IconGalka</v-icon
-        >
-        <v-icon
-          class="mr-2"
-          v-else-if="!isKeyConfrmed && !isBtnDisabled"
-          x-small
-          color="red"
-          >$IconClose</v-icon
-        >
-        <span>Проверьте данные личного ключа:</span>
-      </div>
+      <v-row>
+        <v-col>
+          <div class="mb-3">
+            <v-icon class="mr-2" v-if="isKeyConfrmed" x-small color="green"
+              >$IconGalka</v-icon
+            >
+            <v-icon
+              class="mr-2"
+              v-else-if="!isKeyConfrmed && !isBtnDisabled"
+              x-small
+              color="red"
+              >$IconClose</v-icon
+            >
+            <span>Проверьте данные личного ключа:</span>
+          </div>
+        </v-col>
+      </v-row>
       <v-form>
         <v-row>
-          <span>Скан:</span>
-          <a target="_blank" :href="'#'"
-            ><v-icon left small> $IconDocument </v-icon></a
-          >
+          <v-col>
+            <span>Скан:</span>
+            <a target="_blank" :href="'#'"
+              ><v-icon left small> $IconDocument </v-icon></a
+            >
+          </v-col>
         </v-row>
         <v-row>
           <v-col>

@@ -18,21 +18,23 @@ const files = {
     },
   },
   setup(props) {
-    const acceptableFormats = ref(['doc', 'pdf', 'xls'])
+    const acceptableFormats = ['.doc', '.pdf', '.xls']
     const files = computed(() => {
       const array = []
       JSON.parse(props?.data?.attachment_filename)?.forEach((item, index) => {
-        array.push({
-          name: item,
-          format: item.split('.')[item.split('.').length - 1],
+        const obj = {
+          path: item,
+          name: item.split('/').at(-1),
+        }
+        acceptableFormats.forEach((item) => {
+          if (item === obj.name.substr(obj.name.length - item.length))
+            obj.format = item.replace('.', '')
         })
-        if (acceptableFormats.value.includes(array[index].format))
-          array[index].acceptableFormats = true
+        array.push(obj)
       })
       return array
     })
     return {
-      acceptableFormats,
       files,
     }
   },

@@ -19,7 +19,6 @@ export const getBlob = (endpoint, params = {}) =>
     .then(sendData)
 
 export const post = (endpoint, data = {}, params = {}) => {
-  console.log(data)
   return instance
     .post(`${process.env.VUE_APP_API_URL}/${endpoint}`, data, params)
     .then(sendData)

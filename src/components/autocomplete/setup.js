@@ -18,14 +18,20 @@ export default {
     formData: {
       type: Object,
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
+    const loading = ref(false)
     const proxyValue = ref(props.value)
     const searchProps = ref(props.field.search)
     const querySelections = async (params, isObs = false) => {
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
+
         //setTimeout(() => {
         //  const data = field.data
         //    .field((el) => el.toLowerCase().includes(string))
@@ -34,7 +40,8 @@ export default {
         //  console.log(data)
         //  Vue.set(field, 'items', data)
         //}, 200)
-        props.field.loading = true
+
+        loading.value = true
         //const { data } = await axios.get(`
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
         //`)
@@ -49,7 +56,6 @@ export default {
             })
           })
         }
-        console.log(url)
         const data = await getList(url, {
           countRows: 10,
           currentPage: props.field.page,
@@ -57,22 +63,20 @@ export default {
           id: params.id ? params.id : -1,
           filter,
         })
-        if (data.rows && data.rows.length) {
-          //props.field.items = [...props.field.items, ...data.rows]
+        if (data?.rows?.length) {
           Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
-          //props.field.items = data.rows
         } else {
           Vue.set(props.field, 'items', [])
-          //props.field.items = []
         }
 
         //Vue.set(field, 'items', data.rows)
-        props.field.loading = false
+        loading.value = false
         //console.log(data.products, field)
       }
     }
     const endIntersect = (entries, observer, isIntersecting) => {
       if (isIntersecting) {
+        console.log(isIntersecting)
         //const dataset = entries[0].target.dataset.field
         if (props.field.items.length && !props.field.loading) {
           //field.page = field.page + 10
@@ -91,6 +95,7 @@ export default {
     }
     const update = (value) => {
       const item = props.field.items.find((el) => el.id === value)
+      emit('input', value)
       emit('change', { value, field: props.field, item })
     }
     const disabled = computed(() => {
@@ -114,7 +119,9 @@ export default {
     )
     watch(
       () => proxyValue.value,
-      (newVal) => emit('input', newVal)
+      (newVal) => {
+        emit('input', newVal)
+      }
     )
     return {
       proxyValue,
@@ -124,6 +131,7 @@ export default {
       update,
       searchProps,
       disabled,
+      loading,
     }
   },
 }

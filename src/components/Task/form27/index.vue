@@ -7,18 +7,22 @@
       </v-card-title>
       <TextInfo :infoObj="infoObj" />
       <div>
-        <div>Путевой лист:</div>
-        <div v-if="directionToMagnit">
+        <div style="font-weight: 600">Путевой лист:</div>
+        <div v-if="directionToMagnit && pathAct">
           <a download href="#">
-            <img style="width: 100%" src="/file/get/:folder/:file" alt="#" />
+            <img style="width: 100%" :src="pathAct" alt="#" />
           </a>
         </div>
         <div v-else>Не приложен</div>
       </div>
-      <FormComment
+      <v-textarea
+        rows="2"
+        clearable
+        @input="() => (commentErr = '')"
+        label="Комментарий"
         v-model="formData.comment"
-        :errors="formErrors.comment"
-      ></FormComment>
+        :error-messages="commentErr"
+      ></v-textarea>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">

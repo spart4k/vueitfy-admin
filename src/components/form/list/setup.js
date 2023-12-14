@@ -34,8 +34,10 @@ export default {
     const context = {
       root: {
         ctx,
+        store,
       },
     }
+    const { emit } = ctx
     const loading = ref(false)
     // const fields = () => {
     //   const fields = {}
@@ -61,7 +63,7 @@ export default {
     const data = params
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: () => store.dispatch('list/get', data),
+      request: (data) => store.dispatch('list/get', data),
     })
     const rows = ref([])
     const changeForm = async ({ url, module }) => {
@@ -91,7 +93,9 @@ export default {
         with_nutrition,
         sum_nutrition,
       }
+      let validate = null
       const persons = rows.value.map((el) => {
+        // validate = !el.validate()
         const person = defaultData
         person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
         if (el.formData.print_form_key) {
@@ -99,12 +103,21 @@ export default {
         }
         return person
       })
+      rows.value.forEach((el) => el.validate())
+      const isValid = rows.value.every((el) => el.validate())
       const { makeRequest } = useRequest({
         context,
-        request: () => store.dispatch(module, { url, body: { persons } }),
+        request: () =>
+          store.dispatch(module, {
+            url,
+            body: { persons },
+          }),
+        successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
+      console.log(isValid)
+      if (!isValid) return
       await makeRequest()
-      console.log(defaultData, persons)
+      emit('closePopup')
     }
     const {
       formData,

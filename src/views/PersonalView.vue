@@ -47,6 +47,7 @@ export default {
     },
   },
   setup() {
+    console.log('Я тут PerosnalView!')
     const activeTab = ref(0)
     return {
       personal,

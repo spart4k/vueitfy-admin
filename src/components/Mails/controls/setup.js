@@ -176,7 +176,8 @@ const controls = {
       })
     }
 
-    const getItems = ({ val }) => {
+    const getItems = ({ val, resetAcc }) => {
+      if (resetAcc) clearKeyValue(['account'])
       val.forEach(async (valItem) => {
         if (
           broadcast.value[valItem].total === null ||
