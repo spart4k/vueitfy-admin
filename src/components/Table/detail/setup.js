@@ -35,7 +35,7 @@ export default {
     const syncForm = ref({})
 
     const porpsContent = ref(props.content)
-
+    //emit(getItems)
     onUnmounted(() => {
       if (props?.detail?.clearStore) store.commit('clearFormStorage')
     })

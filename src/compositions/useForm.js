@@ -408,7 +408,9 @@ export default function ({
     let queries = []
     let listData
     if (hasSelect()) {
+      console.log('listData', form)
       listData = form?.lists?.map((list) => {
+        console.log('list', list)
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {

@@ -76,7 +76,11 @@ const _valuesConfigDefault = {
 const _isObject = (obj) =>
   Object.prototype.toString.call(obj) === '[object Object]'
 
-//public state
+/**
+ * Module for creating and inheriting default configuration options.
+ * @param Object options - Initial configuration options.
+ * @returns Object - An object with a method to generate general configuration.
+ */
 export default (options) => {
   const generalConfig = () => {
     // Модуль appConfig
