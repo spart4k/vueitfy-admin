@@ -13,7 +13,7 @@
         "
       >
         <!-- ($entity['doljnost_id'] == 5 || $entity['doljnost_id'] == 7 || $entity['doljnost_id'] == 32) -->
-        <span>Приложите выработку</span>
+        <b class="fw-bold">Приложите выработку:</b>
 
         <Dropzone
           :options="{
@@ -72,11 +72,12 @@
         class="mr-2"
         color="info"
         @click="completeTask"
+        small
       >
-        <v-icon left> $IconMain </v-icon>
+        <v-icon left small> $IconMain </v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey" small>
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

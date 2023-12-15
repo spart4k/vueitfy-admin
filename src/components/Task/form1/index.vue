@@ -32,6 +32,9 @@
         >
           Завершить
         </v-btn>
+        <v-btn @click="$emit('closePopup')" color="blue-grey" block>
+          Закрыть
+        </v-btn>
       </div>
       <div v-if="showNextStep">
         <v-card-title class="d-flex justify-center text-h6">
