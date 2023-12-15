@@ -277,19 +277,12 @@ const table = {
       filter.value.isShow = false
     }
     const getItems = async () => {
-      console.log('get items')
-      //this.
       loading.value = true
       const { url } = props.options.options
-      //const data = await tableApi.get(url, {
-      //  currentPage: pagination.value.currentPage,
-      //  countRows: 30,
-      //  searchGlobal: searchField.value,
-      //})
-      //body.sorts = Object.assign(target, source).sorts
+
       let sorts = []
       let searchColumns = []
-      //let filter = []
+
       paramsQuery.value.sorts.forEach((el) => {
         if (!el.value) {
           return
@@ -304,19 +297,7 @@ const table = {
           searchColumns.push(el)
         }
       })
-      //props.filtersConfig.forEach((el) => {
-      //  if (!el.value) {
-      //    return
-      //  } else {
-      //    filter.push({
-      //      field: el.name,
-      //      value: el.value,
-      //      alias: el.alias,
-      //      type: el.type,
-      //      subtype: el.subtype,
-      //    })
-      //  }
-      //})
+
       let by = undefined
       // console.log('props.filtersConfig', store.state.formStorage, props.detail?.stageData.id)
       if (props.routeParam || store?.state?.formStorage?.id) {
@@ -329,7 +310,6 @@ const table = {
           },
         ]
       }
-      console.log('table get')
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
@@ -506,25 +486,45 @@ const table = {
       () => {
       }
     )
-    //watch(
-    //  () => pagination.value.currentPage,
-    //  async () => {
-    //    await getItems()
-    //  }
-    //)
-    watch(
-      () => paramsQuery,
-      async () => {
+
+
+    // const paramsQuery = ref({
+    //   currentPage: pagination.value.currentPage,
+    //   searchGlobal: searchField.value,
+    //   countRows: pagination.value.countRows,
+    //   sorts: [],
+    //   searchColumns: [],
+    // })
+
+    
+      watch(
+        () => paramsQuery,
+        async () => {
+          await getItems()
+        },
+        {deep: true}
+      )
+
+      watch(
+        () => paramsQuery.value.sorts,
+        async () => {
+          await getItems()
+        },
+      )
+
+      
+      // HOOKS
+      onMounted(async () => {
+        initHeadParams()
         await getItems()
-      },
-      { deep: true }
-    )
 
-    // HOOKS
-    onMounted(async () => {
-      initHeadParams()
-      await getItems()
-
+        watch(
+          () => paramsQuery.value.searchColumns ,
+          async () => {
+            await getItems()
+          },
+        )
+      
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
