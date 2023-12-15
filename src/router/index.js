@@ -206,6 +206,9 @@ const routes = [
         name: 'account/:id',
         path: ':id',
         component: Detail,
+        meta: {
+          mode: ['edit'],
+        },
       },
     ],
   },

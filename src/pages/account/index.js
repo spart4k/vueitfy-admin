@@ -834,6 +834,7 @@ const config = {
             name: 'Основные',
             type: FormDefault,
             detail: true,
+            path: 'edit',
             lists: [
               { alias: 'permissions_account', filter: [] },
               { alias: 'chief_id', filter: [] },
@@ -931,7 +932,7 @@ const config = {
               }),
               selectField({
                 label: 'Роль',
-                name: 'permissions_account',
+                name: 'permission_id',
                 alias: 'permissions_account',
                 placeholder: '',
                 class: [''],
@@ -946,14 +947,14 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                dependence: {
-                  type: 'default',
-                  fillField: ['permissions_account', 'chief_id'],
-                },
-                update: {
-                  module: 'selects/getList',
-                  fields: ['chief_id'],
-                },
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'chief_id',
+                    url: 'get/pagination_list/chief_id',
+                  },
+                ],
               }),
               autocompleteField({
                 label: 'Руководитель',
@@ -979,9 +980,8 @@ const config = {
 
                 filters: [
                   {
-                    field: 'permissions_account',
+                    field: 'permission_id',
                     type: 'num',
-                    source: undefined,
                     value: '',
                   },
                 ],
@@ -1049,6 +1049,7 @@ const config = {
             id: 1,
             name: 'Банковские карты',
             type: TableDefault,
+            path: 'edit',
             active: false,
             config: consumptionConfig,
           },
@@ -1056,6 +1057,7 @@ const config = {
             id: 2,
             name: 'Сканы',
             type: FormDocuments,
+            path: 'edit',
             detail: true,
             lists: [
               'user_keys',

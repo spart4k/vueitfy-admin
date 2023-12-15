@@ -550,12 +550,13 @@ export default function ({
         console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
         if (targetField.type === 'autocomplete') {
-          const filters = []
+          const filter = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
               if (!formData[el.field]) return
-              filters.push({
-                field: el.field,
+              filter.push({
+                type: el.type,
+                alias: el.field,
                 value: formData[el.field],
               })
             })
@@ -563,8 +564,9 @@ export default function ({
           if (dependence.filter && dependence.filter.length) {
             dependence.filter.forEach((el) => {
               if (!formData[el.field]) return
-              filters.push({
-                field: el.field,
+              filter.push({
+                type: el.type,
+                alias: el.field,
                 value: formData[el.field],
               })
             })
@@ -575,7 +577,7 @@ export default function ({
             searchValue: '',
             //id: params.id ? params.id : -1,
             id: -1,
-            filters,
+            filter,
           }
         }
       }
@@ -836,12 +838,13 @@ export default function ({
           ) {
             //await getDependies({ value: formData[field.name], field })
           }
+
           if (field.updateList && field.updateList.length) {
             await queryList(field, false)
           }
         }
       }
-      console.log(formData)
+      console.log('formData', formData)
     }
     if (hasSelect()) {
       console.log(lists.data)

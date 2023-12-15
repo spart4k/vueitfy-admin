@@ -371,7 +371,6 @@ const table = {
       const { head } = options
       head.forEach((el) => {
         if (el.sorts?.length) {
-          //Vue.set(el.sorts, 'field', el.value)
           paramsQuery.value.sorts.push({
             field: el.value,
             value: el.sorts[0].default,
