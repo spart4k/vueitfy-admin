@@ -732,6 +732,22 @@ const documentConfig = {
             },
             value: '',
           }),
+          checkboxField({
+            label: '',
+            name: 'from_document_prishel',
+            value: true,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            isShow: {
+              value: true,
+            },
+            bootstrapClass: [''],
+          }),
           textareaField({
             label: 'Примечание:',
             name: 'note',
@@ -816,6 +832,22 @@ const documentConfig = {
               paramsForEmit: this,
             },
             value: '',
+          }),
+          checkboxField({
+            label: '',
+            name: 'from_document_prishel',
+            value: true,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            isShow: {
+              value: true,
+            },
+            bootstrapClass: [''],
           }),
           textareaField({
             label: 'Примечание:',
@@ -2561,7 +2593,7 @@ const defaultForm = [
           stringAction({
             text: 'Вернуться',
             type: 'submit',
-            color: 'black',
+            color: 'disabled',
             module: 'form/del',
             url: 'delete/unfinished_personal',
             name: 'prevStage',
