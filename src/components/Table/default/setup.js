@@ -512,19 +512,19 @@ const table = {
         },
       )
 
-      watch(
-        () => paramsQuery.value.searchColumns ,
-        async () => {
-          await getItems()
-        },
-      )
-    
+      
+      // HOOKS
+      onMounted(async () => {
+        initHeadParams()
+        await getItems()
 
-    // HOOKS
-    onMounted(async () => {
-      initHeadParams()
-      await getItems()
-
+        watch(
+          () => paramsQuery.value.searchColumns ,
+          async () => {
+            await getItems()
+          },
+        )
+      
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
