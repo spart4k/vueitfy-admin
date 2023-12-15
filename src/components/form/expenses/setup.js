@@ -10,6 +10,21 @@ import DropZone from '@/components/dropzone/default/index.vue'
 import Datetimepicker from '@/components/datetimepicker/index.vue'
 import ColorPicker from '@/components/colorpicker/index.vue'
 
+import { required } from '@/utils/validation.js'
+import {
+  stringField,
+  selectField,
+  autocompleteField,
+  //datetimeField,
+  textareaField,
+  checkboxField,
+  dateField,
+  textBlock,
+  radioPanel,
+} from '@/utils/fields.js'
+
+import { v4 as uuidv4 } from 'uuid'
+
 import store from '@/store'
 
 export default {
@@ -114,6 +129,86 @@ export default {
           body: params.formData ? params.formData : formData,
         }),
     })
+
+    const changeBlockCount = (val) => {
+      const index = props.tab.fields.findIndex((x) => x.id === 'btn-decrease')
+      if (val) {
+        const insertItems = [
+          selectField({
+            label: 'Наименование:',
+            name: 'name__0',
+            alias: 'direction_id',
+            placeholder: '',
+            class: [''],
+            value: '',
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'Кол-во:',
+            name: 'count__0',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 2,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'Стоимость :',
+            name: 'price__0',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 2,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          checkboxField({
+            label: 'ВДС',
+            name: 'vds__0',
+            value: false,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 2,
+            },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'Точное наименование',
+            name: 'exact_name__0',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+        ]
+        props.tab.fields.splice(index, 0, ...insertItems)
+      } else {
+        props.tab.fields.splice(index - 5, 5)
+      }
+    }
+
     // const { makeRequest: createForm } = useRequest({
     //   context,
     //   successMessage: 'Сохранено',
@@ -180,6 +275,7 @@ export default {
       addFiles,
       changeCheckbox,
       readonlyField,
+      changeBlockCount,
     }
   },
 }

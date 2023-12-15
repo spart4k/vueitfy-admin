@@ -11,7 +11,7 @@
       <v-container class="">
         <v-row>
           <v-col
-            v-for="field in listFields"
+            v-for="field in tab.fields"
             :key="field.id"
             :cols="field.position.cols"
             :sm="field.position.sm"
@@ -162,10 +162,19 @@
                 v-for="item in field.items"
                 :key="item.id"
                 @click="formData[field.name] = item.value"
+                :readonly="readonlyField(field)"
               >
                 {{ item.text }}
               </v-btn>
             </v-row>
+            <v-btn
+              v-else-if="showField('btn', field)"
+              block
+              :color="field.color"
+              @click="changeBlockCount(field.increase)"
+            >
+              {{ field.label }}
+            </v-btn>
           </v-col>
         </v-row>
         <v-row class="justify-end">

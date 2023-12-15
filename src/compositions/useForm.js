@@ -831,27 +831,38 @@ export default function ({
   }
 
   const readonlyField = (field) => {
+    const checkIncludesData = (el) => {
+      const source = eval(el.target)
+      let result
+      if (el.array) {
+        result = _.isEqual(el.value, source[el.field])
+      } else {
+        result = el.value.includes(source[el.field])
+      }
+      return result
+    }
+    const checkIncludesPermissions = (el) => {
+      return el.permissions.includes(permission.value)
+    }
     if (typeof field.readonly === 'boolean') return field.readonly
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
           field.readonly.condition.some((conditionEl) => {
-            if (conditionEl.target && conditionEl.target === 'formData') {
-              return conditionEl.value.includes(formData[conditionEl.field])
-            } else if (
-              conditionEl.permissions &&
-              conditionEl.permissions.length
-            ) {
+            if (conditionEl.target === 'formData' && !conditionEl.permissions) {
+              return checkIncludesData(conditionEl) && conditionEl.type
+            } else if (conditionEl.permissions?.length && !conditionEl.target) {
+              return checkIncludesPermissions(conditionEl) && conditionEl.type
+            } else {
+              console.log('target and perm')
               console.log(
-                'PERMISSIONS',
-                conditionEl.value.includes(formData[conditionEl.field]),
-                conditionEl.permissions.includes(permission.value),
+                checkIncludesData(conditionEl),
+                checkIncludesPermissions(conditionEl),
                 conditionEl.type
               )
               return (
-                conditionEl.value.includes(formData[conditionEl.field]) &&
-                conditionEl.permissions.includes(permission.value) ===
-                  conditionEl.type
+                checkIncludesData(conditionEl) &&
+                checkIncludesPermissions(conditionEl) === conditionEl.type
               )
             }
           })
@@ -906,7 +917,7 @@ export default function ({
   }
 
   const disabledField = (field) => {
-    return field.disable || field.requiredFields
+    return field?.disable || field.requiredFields
       ? field?.disable || field.requiredFields.some((el) => !formData[el])
       : false
   }
