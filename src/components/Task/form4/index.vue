@@ -40,11 +40,17 @@
     <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
 
     <v-row class="py-2" justify="end">
-      <v-btn color="info" class="mr-2" @click="sendData" :disabled="!isShowBtn">
+      <v-btn
+        small
+        color="info"
+        class="mr-2"
+        @click="sendData"
+        :disabled="!isShowBtn"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
