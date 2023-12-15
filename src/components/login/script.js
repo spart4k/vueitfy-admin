@@ -93,11 +93,11 @@ export default {
       if (!validate()) return
       try {
         const result = await makeRequest()
-        console.log(result.status)
-        if (result.status === 403) {
-          // vForm.password.$errors.push(result.data.message)
-          console.log(vForm)
-        }
+        // console.log(result.status)
+        // if (result.status === 403) {
+        //   // vForm.password.$errors.push(result.data.message)
+        //   console.log(vForm)
+        // }
         router.push('/')
       } catch (err) {
         console.log(err)
