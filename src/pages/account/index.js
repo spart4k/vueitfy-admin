@@ -623,7 +623,8 @@ const config = {
             label: 'Добавить',
             class: ['v-table-button--custom'],
             url: '$IconSetting',
-            function: consolePanel,
+            type: 'addItem',
+            //function: consolePanel,
             backgroundColor: '#fff',
           },
           {
@@ -988,8 +989,9 @@ const config = {
               }),
               selectField({
                 label: 'Направления',
-                name: 'direction_json',
-                alias: 'direction_json',
+                subtype: 'multiselect',
+                name: 'direction_id',
+                alias: 'direction_id',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1008,6 +1010,7 @@ const config = {
                 label: 'Объекты',
                 name: 'object_json',
                 alias: 'object_json',
+                disabled: true,
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1027,6 +1030,7 @@ const config = {
                 name: 'color',
                 placeholder: '',
                 readonly: false,
+                disabled: false,
                 class: [''],
                 position: {
                   cols: 12,

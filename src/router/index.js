@@ -210,6 +210,14 @@ const routes = [
           mode: ['edit'],
         },
       },
+      {
+        name: 'account-add',
+        path: '/account/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
     ],
   },
   {
