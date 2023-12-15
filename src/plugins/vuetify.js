@@ -25,6 +25,7 @@ export default new Vuetify({
         background: '#ffffff',
         pageBackground: '#F5F6F8',
         disabled: '#C2CFE0',
+        textDefault: '#000000',
       },
       dark: {
         primary: '#007BFF',
@@ -38,6 +39,7 @@ export default new Vuetify({
         text: '#FFFFFF',
         navbar: '#252525',
         background: '#000000',
+        textDefault: '#ffffff',
       },
       blue: {
         primary: '#07e0f8',
