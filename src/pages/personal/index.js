@@ -67,13 +67,6 @@ const consumptionConfig = {
         backgroundColor: '#ffffff',
       },
       {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
         label: 'Скачать',
         class: ['v-table-button--custom'],
         function: consolePanel,
@@ -292,7 +285,17 @@ const consumptionConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const debetorConfig = {
@@ -319,13 +322,6 @@ const debetorConfig = {
         backgroundColor: '#ffffff',
       },
       {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
         label: 'Скачать',
         class: ['v-table-button--custom'],
         function: consolePanel,
@@ -544,7 +540,17 @@ const debetorConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const documentConfig = {
@@ -1103,6 +1109,17 @@ const skanConfig = {
   },
   detail: undefined,
   filters,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const bankConfig = {
@@ -1127,13 +1144,6 @@ const bankConfig = {
         url: '$IconEdit',
         function: consolePanel,
         backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
       },
       {
         label: 'Скачать',
@@ -1329,7 +1339,17 @@ const bankConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const paymentConfig = {
@@ -1354,13 +1374,6 @@ const paymentConfig = {
         url: '$IconEdit',
         function: consolePanel,
         backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
       },
       {
         label: 'Скачать',
@@ -1581,7 +1594,17 @@ const paymentConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ],
 }
 
 const editFormPermissions = {
@@ -2587,13 +2610,6 @@ const config = {
             backgroundColor: '#ffffff',
           },
           {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
-          {
             label: 'Скачать',
             class: ['v-table-button--custom'],
             function: consolePanel,
@@ -3237,6 +3253,7 @@ const config = {
         activeTab: null,
       },
       filters,
+      
     },
     {
       selector: '#mainTable',

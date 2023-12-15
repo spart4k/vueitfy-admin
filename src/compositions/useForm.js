@@ -107,6 +107,7 @@ export default function ({
 
   const $errors = ref({})
   const errorsCount = () => {
+    console.log($errors.value)
     $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
@@ -115,6 +116,7 @@ export default function ({
       }
       return obj
     }, {})
+    console.log($errors.value)
   }
 
   const validate = (touch) => {
