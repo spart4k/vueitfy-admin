@@ -171,6 +171,7 @@
                   :disabled="!formObj[doc.doc_id].validate()"
                   @click="sendBankCard"
                   color="warning"
+                  small
                 >
                   <v-icon left> $IconMain </v-icon>
                   Завершить
@@ -744,6 +745,7 @@
                 :disabled="!formObj[doc.doc_id].validate()"
                 @click="() => confirmCorrect(doc)"
                 color="warning"
+                small
               >
                 <v-icon left> $IconMain </v-icon>
                 Исправлено
