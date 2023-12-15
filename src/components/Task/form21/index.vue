@@ -62,25 +62,27 @@
           </v-col>
         </v-row>
         <v-row class="py-2 px-2" justify="end">
-          <v-btn @click="rejectKey" class="mr-2" color="error">
-            <v-icon left> $IconClose </v-icon>
+          <v-btn @click="rejectKey" class="mr-2" color="error" small>
+            <v-icon left small> $IconClose </v-icon>
             Отклонить
           </v-btn>
-          <v-btn @click="confirmKey" color="primary">
-            <v-icon left> $IconMain </v-icon>
+          <v-btn @click="confirmKey" color="primary" small>
+            <v-icon left small> $IconMain </v-icon>
             Принять
           </v-btn>
         </v-row>
       </v-form>
       <v-divider class="mb-5"></v-divider>
-      <v-textarea
-        rows="2"
-        clearable
-        @input="formCommentError = ''"
-        label="Комментарий"
-        v-model="formComment"
-        :error-messages="formCommentError"
-      ></v-textarea>
+      <v-row class="px-2">
+        <v-textarea
+          rows="2"
+          clearable
+          @input="formCommentError = ''"
+          label="Комментарий"
+          v-model="formComment"
+          :error-messages="formCommentError"
+        ></v-textarea
+      ></v-row>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
@@ -89,11 +91,12 @@
         :disabled="isBtnDisabled"
         class="mr-2"
         color="info"
+        small
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey" small>
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

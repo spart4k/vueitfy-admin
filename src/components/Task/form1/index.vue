@@ -29,6 +29,7 @@
           color="primary"
           block
           :disabled="!isActiveBtnFirst"
+          class="mb-1"
         >
           Завершить
         </v-btn>
