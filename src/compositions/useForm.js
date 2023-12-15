@@ -37,7 +37,6 @@ export default function ({
   const $invalid = ref(false)
   const $autoDirty = true
   const filesBasket = ref({})
-  const router = useRouter()
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission)
   // const validations = () => {
