@@ -31,7 +31,7 @@ const setup = (axios) => {
         error.response.status === 403 &&
         error.response.data.message === 'invalid credentials'
       ) {
-        return
+        return Promise.reject(error.response)
         //console.log('unauthorized, logging out ...')
       }
       if (error.response.status === 401 && !originalConfig._retry) {

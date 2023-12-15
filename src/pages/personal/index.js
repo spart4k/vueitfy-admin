@@ -67,13 +67,6 @@ const consumptionConfig = {
         backgroundColor: '#ffffff',
       },
       {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
         label: 'Скачать',
         class: ['v-table-button--custom'],
         function: consolePanel,
@@ -292,7 +285,6 @@ const consumptionConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
 }
 
 const debetorConfig = {
@@ -1129,13 +1121,6 @@ const bankConfig = {
         backgroundColor: '#ffffff',
       },
       {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
         label: 'Скачать',
         class: ['v-table-button--custom'],
         function: consolePanel,
@@ -1329,7 +1314,6 @@ const bankConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
 }
 
 const paymentConfig = {
@@ -1354,13 +1338,6 @@ const paymentConfig = {
         url: '$IconEdit',
         function: consolePanel,
         backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
       },
       {
         label: 'Скачать',
@@ -1581,7 +1558,6 @@ const paymentConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
 }
 
 const editFormPermissions = {
@@ -2585,13 +2561,6 @@ const config = {
             url: '$IconEdit',
             function: consolePanel,
             backgroundColor: '#ffffff',
-          },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
           },
           {
             label: 'Скачать',
