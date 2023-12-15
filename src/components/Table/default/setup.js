@@ -428,7 +428,7 @@ const table = {
       getItems()
     }
     const openRow = ($event, row) => {
-      if (!options.detail) return
+      if (!options.detail || options.options.noTableAction) return
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
