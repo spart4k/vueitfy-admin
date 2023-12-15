@@ -626,6 +626,10 @@ const table = {
       })
     })
 
+    const clickHandler = () => {
+      emit('closePopup')
+    }
+
     return {
       // DATA
       headerOptions,
@@ -678,6 +682,7 @@ const table = {
       addItem,
       panelHandler,
       availablePanelBtn,
+      clickHandler,
     }
   },
 }

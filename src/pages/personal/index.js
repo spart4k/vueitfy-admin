@@ -285,6 +285,17 @@ const consumptionConfig = {
     totalPages: null,
   },
   detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const debetorConfig = {
@@ -309,13 +320,6 @@ const debetorConfig = {
         url: '$IconEdit',
         function: consolePanel,
         backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
       },
       {
         label: 'Скачать',
@@ -536,7 +540,17 @@ const debetorConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const documentConfig = {
@@ -1095,6 +1109,17 @@ const skanConfig = {
   },
   detail: undefined,
   filters,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const bankConfig = {
@@ -1314,6 +1339,17 @@ const bankConfig = {
     totalPages: null,
   },
   detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ]
 }
 
 const paymentConfig = {
@@ -1558,6 +1594,17 @@ const paymentConfig = {
     totalPages: null,
   },
   detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ],
 }
 
 const editFormPermissions = {
@@ -3206,6 +3253,7 @@ const config = {
         activeTab: null,
       },
       filters,
+      
     },
     {
       selector: '#mainTable',

@@ -494,6 +494,26 @@
         </div>
       </div>
     </div>
+    <v-row
+      style="flex: 0"
+      class="mt-5 justify-end"
+      v-if="options.actions && options.actions.length"
+    >
+      <v-btn
+        type="submit"
+        :color="action.color"
+        class="ml-2"
+        :loading="loading"
+        @click.prevent="
+          clickHandler({ action, skipValidation: action.skipValidation })
+        "
+        v-for="action in options.actions"
+        :key="action.id"
+        :text="action.action === 'closePopup' ? true : false"
+      >
+        {{ action.text }}
+      </v-btn>
+    </v-row>
     <v-contextmenu :options="contextmenu" />
     <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">
