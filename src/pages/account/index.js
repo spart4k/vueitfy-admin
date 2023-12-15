@@ -873,7 +873,7 @@ const config = {
               dateField({
                 label: 'Дата рождения',
                 name: 'birthday',
-                subtype: 'range',
+                subtype: 'date',
                 placeholder: '',
                 classes: [''],
                 position: {
@@ -909,7 +909,7 @@ const config = {
               }),
               stringField({
                 label: 'Логин',
-                name: 'login',
+                name: 'username',
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -989,9 +989,9 @@ const config = {
               }),
               selectField({
                 label: 'Направления',
-                subtype: 'multiselect',
                 name: 'direction_id',
                 alias: 'direction_id',
+                requestKey: 'direction_json',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1001,18 +1001,33 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 3,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                // updateList: [
+                //   {
+                //     alias: 'doljnost_id',
+                //     filter: [
+                //       {
+                //         field: 'direction_id',
+                //         value: '',
+                //         source: 'formData',
+                //         type: 'num',
+                //       },
+                //     ],
+                //   },
+                // ],
               }),
               selectField({
                 label: 'Объекты',
                 name: 'object_json',
                 alias: 'object_json',
+                stringify: true,
                 disabled: true,
                 placeholder: '',
                 class: [''],
+                value: [],
                 selectOption: {
                   text: 'name',
                   value: 'id',
@@ -1022,12 +1037,13 @@ const config = {
                   cols: 12,
                   sm: 4,
                 },
-                validations: { required },
+                validations: {},
                 bootstrapClass: [''],
               }),
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
+                value: '#ffffff',
                 placeholder: '',
                 readonly: false,
                 disabled: false,
@@ -1041,11 +1057,22 @@ const config = {
             ],
             actions: [
               stringAction({
-                text: 'Сохранить',
+                text: 'Закрыть',
                 type: 'submit',
-                module: '',
-                name: 'saveForm',
-                nextForm: true,
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'personal',
+                skipValidation: true,
+              }),
+              stringAction({
+                text: 'Создать',
+                type: 'submit',
+                module: 'account/createData',
+                url: 'set/data/sys_account',
+                name: 'createForm',
+                action: 'createForm',
+                color: 'primary',
               }),
             ],
           },
