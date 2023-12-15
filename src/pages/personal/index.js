@@ -289,7 +289,7 @@ const consumptionConfig = {
     stringAction({
       text: 'Закрыть',
       type: 'submit',
-      color: 'black',
+      color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
       to: 'personal',
@@ -544,7 +544,7 @@ const debetorConfig = {
     stringAction({
       text: 'Закрыть',
       type: 'submit',
-      color: 'black',
+      color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
       to: 'personal',
@@ -760,7 +760,7 @@ const documentConfig = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'textDefault',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal-add',
@@ -845,7 +845,7 @@ const documentConfig = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'textDefault',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal-add',
@@ -1108,12 +1108,11 @@ const skanConfig = {
     totalPages: null,
   },
   detail: undefined,
-  filters,
   actions: [
     stringAction({
       text: 'Закрыть',
       type: 'submit',
-      color: 'black',
+      color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
       to: 'personal',
@@ -1343,7 +1342,7 @@ const bankConfig = {
     stringAction({
       text: 'Закрыть',
       type: 'submit',
-      color: 'black',
+      color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
       to: 'personal',
@@ -1598,7 +1597,7 @@ const paymentConfig = {
     stringAction({
       text: 'Закрыть',
       type: 'submit',
-      color: 'black',
+      color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
       to: 'personal',
@@ -1983,7 +1982,7 @@ const defaultForm = [
       stringAction({
         text: 'Закрыть',
         type: 'submit',
-        color: 'black',
+        color: 'textDefault',
         name: 'closePopup',
         action: 'closePopup',
         to: 'personal',
@@ -2467,7 +2466,7 @@ const defaultForm = [
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'textDefault',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal',
@@ -2561,7 +2560,7 @@ const defaultForm = [
           stringAction({
             text: 'Вернуться',
             type: 'submit',
-            color: 'black',
+            color: 'textDefault',
             module: 'form/del',
             url: 'delete/unfinished_personal',
             name: 'prevStage',
@@ -4632,7 +4631,7 @@ const config = {
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'textDefault',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'personal',
@@ -4737,7 +4736,7 @@ const config = {
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'textDefault',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'personal',
