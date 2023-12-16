@@ -60,11 +60,12 @@
         @click="completeTask"
         class="mr-2"
         color="info"
+        small
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey" small>
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

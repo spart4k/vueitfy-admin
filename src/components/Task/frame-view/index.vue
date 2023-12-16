@@ -3,7 +3,7 @@
     <div
       v-if="data.code === 1"
       class="task"
-      style="overflow-y: auto; max-height: 80vh; padding-right: 15px"
+      style="overflow-y: auto; max-height: 80vh; padding: 15px"
     >
       <div class="task__loader" v-if="loading">
         <v-progress-circular indeterminate></v-progress-circular>

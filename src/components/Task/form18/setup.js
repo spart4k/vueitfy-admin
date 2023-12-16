@@ -7,6 +7,7 @@ import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
 import form from '@/store/modules/form'
 import { required } from '@/utils/validation'
+import moment from 'moment/moment'
 
 const Form18 = defineComponent({
   name: 'Form18',
@@ -33,6 +34,9 @@ const Form18 = defineComponent({
         ctx,
       },
     }
+
+    const dateTarget = moment(data.entity.date_target).format('DD.MM.YYYY')
+
     const textInfo = {
       obj: {
         key: 'Объект',
@@ -48,9 +52,9 @@ const Form18 = defineComponent({
       },
     }
     const formGroup = ref([])
+    const idDirection = data.entity.direction_id
     const fileOutput =
       data.task.dop_data && JSON.parse(data.task.dop_data).file_output
-    const idDirection = data.entity.direction_id
     const formCommentError = ref('')
     const formComment = ref('')
     const servicesDetail = data.data.services
@@ -320,6 +324,7 @@ const Form18 = defineComponent({
       changeSum,
       rejectedPrice,
       isFormValid,
+      dateTarget,
     }
   },
 })
