@@ -89,6 +89,11 @@
           @closePopup="$emit('closePopup')"
         ></Form9>
         <!--Подтверждение назначения-->
+        <Form13
+          v-if="data.task.task_type_id === 13"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
         <Form15
           v-if="data.task.task_type_id === 15"
           :data="data"
