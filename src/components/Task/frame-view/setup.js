@@ -11,6 +11,7 @@ import Form6 from '@/components/Task/form6/index.vue'
 import Form7 from '@/components/Task/form7/index.vue'
 import Form8 from '@/components/Task/form8/index.vue'
 import Form9 from '@/components/Task/form9/index.vue'
+import Form13 from '@/components/Task/form13/index.vue'
 import Form23 from '@/components/Task/form23/index.vue'
 import Form20 from '@/components/Task/form20/index.vue'
 import Form21 from '@/components/Task/form21/index.vue'
@@ -78,6 +79,7 @@ const task = defineComponent({
     Form28,
     Form17,
     Form18,
+    Form13,
   },
 
   props: {},
