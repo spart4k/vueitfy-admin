@@ -39,7 +39,7 @@ export default function ({
   const route = useRoute()
   const filesBasket = ref({})
   const { emit } = context.root.ctx
-  const permission = computed(() => store.state.user.permission)
+  const permission = computed(() => store.state.user.permission_id)
   // const validations = () => {
   //   const formFields = {}
   //   form.fields.forEach((el) => {
