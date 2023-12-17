@@ -144,7 +144,6 @@ export default {
       }
     }
 
-    console.log('prosporsad', props.content)
     const {
       formData,
       validate,

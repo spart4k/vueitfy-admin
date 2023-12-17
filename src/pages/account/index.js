@@ -6,6 +6,8 @@ import {
   autocompleteField,
   dateField,
   checkboxField,
+  textareaField,
+  colorPicker,
   // dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -13,6 +15,8 @@ import FormDefault from '@/components/form/default/index.vue'
 import FormDocuments from '@/components/form/documents/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import { userKeys } from '@/pages'
+import { stringify } from 'qs'
+import { readonly } from 'vue'
 
 function consoleText(row) {
   console.log(row, 2)
@@ -72,204 +76,8 @@ const consumptionConfig = {
   head: [
     {
       title: 'ID',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
       alias: 'p.id',
-      isShow: true,
-      width: '40',
       value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'personal_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Часы',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
     },
   ],
   data: {
@@ -788,12 +596,13 @@ const paymentConfig = {
 }
 
 const config = {
-  title: 'Персонал',
+  title: 'Добавление аккаунта',
   activeTab: 2,
   tabs: [
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -817,7 +626,8 @@ const config = {
             label: 'Добавить',
             class: ['v-table-button--custom'],
             url: '$IconSetting',
-            function: consolePanel,
+            type: 'addItem',
+            //function: consolePanel,
             backgroundColor: '#fff',
           },
           // {
@@ -1016,30 +826,360 @@ const config = {
       detail: {
         type: 'popup', // String 'popup' or 'page'
         classes: [''], // List class
-        width: '1000px',
+        width: '600px',
         method: 'get',
         alias: 'personal',
         url: '/get/form/',
-        name: 'Персонал',
+        name: 'Добавление аккаунта',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
-            id: 0,
+            path: 'add',
+            id: 2,
             name: 'Основные',
             type: FormDefault,
             detail: true,
             lists: [
-              'user_keys',
-              'habitation_id',
-              'account_id',
-              'direction_id',
-              'grajdanstvo_id',
+              { alias: 'permissions_account', filter: [] },
+              { alias: 'chief_id', filter: [] },
+              { alias: 'direction_json', filter: [] },
+              { alias: 'direction_id', filter: [] },
+              { alias: 'grajdanstvo_id', filter: [] },
+              {
+                alias: 'object_type',
+                filter: [],
+              },
             ],
             alias: 'personal',
             active: false,
             fields: [
               stringField({
                 label: 'ФИО',
+                name: 'fio',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: 'Краткое имя',
+                name: 'name',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: 'Телефон',
+                name: 'telefon',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: 'Email',
+                name: 'email',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: 'Логин',
+                name: 'username',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: 'Пароль',
+                name: 'password',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
+              dateField({
+                label: 'Дата рождения',
+                name: 'birthday',
+                subtype: 'date',
+                placeholder: '',
+                classes: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+                alias: 'p.date_status',
+              }),
+              selectField({
+                label: 'Направления',
+                name: 'direction_json',
+                subtype: 'multiselect',
+                // requestKey: 'direction_json',
+                stringify: true,
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                // updateList: [
+                //   {
+                //     alias: 'doljnost_id',
+                //     filter: [
+                //       {
+                //         field: 'direction_id',
+                //         value: '',
+                //         source: 'formData',
+                //         type: 'num',
+                //       },
+                //     ],
+                //   },
+                // ],
+                updateList: [
+                  {
+                    alias: 'object_type',
+                    filter: [
+                      {
+                        field: 'direction_json',
+                        value: '',
+                        source: 'formData',
+                        type: 'array',
+                      },
+                    ],
+                  },
+                ],
+              }),
+              selectField({
+                label: 'Тип',
+                name: 'type',
+                alias: 'object_type',
+                subtype: 'multiselect',
+                stringify: true,
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                requiredFields: ['direction_json'],
+              }),
+              selectField({
+                label: 'Роль',
+                name: 'permission_id',
+                alias: 'permissions_account',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'chief_id',
+                    url: 'get/pagination_list/chief_id',
+                    filters: [
+                      {
+                        field: 'permission_id',
+                        type: 'num',
+                        value: '',
+                      },
+                      {
+                        field: 'direction_json',
+                        type: 'array',
+                        value: '',
+                      },
+                    ],
+                  },
+                ],
+              }),
+              autocompleteField({
+                label: 'Руководитель',
+                name: 'chief_id',
+                alias: 'permission_id',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/chief_id',
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                filters: [
+                  {
+                    field: 'permission_id',
+                    type: 'num',
+                    value: '',
+                  },
+                  {
+                    field: 'direction_json',
+                    type: 'array',
+                    value: '',
+                  },
+                ],
+                requiredFields: ['direction_json', 'permission_id'],
+              }),
+              // selectField({
+              //   label: 'Объекты',
+              //   name: 'object_json',
+              //   alias: 'object_json',
+              //   stringify: true,
+              //   disabled: true,
+              //   readonly: true,
+              //   placeholder: '',
+              //   class: [''],
+              //   value: [],
+              //   selectOption: {
+              //     text: 'name',
+              //     value: 'id',
+              //   },
+              //   items: [],
+              //   position: {
+              //     cols: 12,
+              //     sm: 6,
+              //   },
+              //   validations: {},
+              //   bootstrapClass: [''],
+              // }),
+              colorPicker({
+                label: 'Цвет',
+                name: 'color',
+                value: '#ffffff',
+                placeholder: '',
+                readonly: false,
+                disabled: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
+              checkboxField({
+                label: 'Руководитель',
+                name: 'is_chief',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+                //validations: { required },
+                //isShow: false,
+              }),
+            ],
+            actions: [
+              stringAction({
+                text: 'Закрыть',
+                type: 'submit',
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'account',
+                skipValidation: true,
+              }),
+              stringAction({
+                text: 'Создать',
+                type: 'submit',
+                module: 'account/createData',
+                url: 'set/account',
+                name: 'createForm',
+                action: 'createForm',
+                color: 'primary',
+              }),
+            ],
+          },
+          {
+            id: 0,
+            name: 'Основные',
+            type: FormDefault,
+            detail: true,
+            path: 'edit',
+            lists: [
+              { alias: 'permissions_account', filter: [] },
+              { alias: 'chief_id', filter: [] },
+              { alias: 'direction_json', filter: [] },
+              { alias: 'direction_id', filter: [] },
+              { alias: 'grajdanstvo_id', filter: [] },
+            ],
+            alias: 'personal',
+            active: false,
+            fields: [
+              stringField({
+                label: 'ФИО',
+                name: 'fio',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: 'Краткое имя',
                 name: 'name',
                 placeholder: '',
                 readonly: false,
@@ -1049,8 +1189,19 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
+              }),
+              dateField({
+                label: 'Дата рождения',
+                name: 'birthday',
+                subtype: 'range',
+                placeholder: '',
+                classes: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                alias: 'p.date_status',
               }),
               stringField({
                 label: 'Телефон',
@@ -1063,30 +1214,22 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
               }),
-              selectField({
-                label: 'Гражданство',
-                name: 'status',
-                alias: 'grajdanstvo_id',
+              stringField({
+                label: 'Email',
+                name: 'email',
                 placeholder: '',
+                readonly: false,
                 class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
                 position: {
                   cols: 12,
                   sm: 4,
                 },
-                validations: { required },
                 bootstrapClass: [''],
               }),
               stringField({
-                label: 'Примечание',
-                name: 'comment',
+                label: 'Логин',
+                name: 'login',
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -1095,26 +1238,23 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
               }),
-              dateField({
-                label: ' Дата рождения',
-                name: 'data_rojd',
-                subtype: 'date',
+              stringField({
+                label: 'Пароль',
+                name: 'password',
                 placeholder: '',
-                classes: [''],
+                readonly: false,
+                class: [''],
                 position: {
                   cols: 12,
-                  sm: 3,
+                  sm: 4,
                 },
-                validations: { required },
-                bootstrapClass: ['changeSelect'],
+                bootstrapClass: [''],
               }),
               selectField({
-                label: 'Личный ключ',
-                name: 'user_key',
-                subtype: 'multiselect',
+                label: 'Роль',
+                name: 'permission_id',
+                alias: 'permissions_account',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1128,62 +1268,48 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'chief_id',
+                    url: 'get/pagination_list/chief_id',
+                  },
+                ],
+              }),
+              autocompleteField({
+                label: 'Руководитель',
+                name: 'chief_id',
+                alias: 'permission_id',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/chief_id',
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+
+                filters: [
+                  {
+                    field: 'permission_id',
+                    type: 'num',
+                    value: '',
+                  },
+                ],
               }),
               selectField({
-                label: 'Направление',
+                label: 'Направления',
                 name: 'direction_json',
-                alias: 'direction_id',
-                subtype: 'multiselect',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              selectField({
-                label: 'Доступ',
-                name: 'account_json',
-                alias: 'account_id',
-                subtype: 'multiselect',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              checkboxField({
-                label: 'Штатный',
-                name: 'in_state',
-                placeholder: '',
-                readonly: false,
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                bootstrapClass: [''],
-                //validations: { required },
-                //isShow: false,
-              }),
-              selectField({
-                label: 'Проживание',
-                name: 'habitation_id',
                 alias: 'direction_json',
                 placeholder: '',
                 class: [''],
@@ -1196,43 +1322,39 @@ const config = {
                   cols: 12,
                   sm: 4,
                 },
-                defaultItems: [
-                  {
-                    id: 11,
-                    name: '--Самостоятельное--',
-                    bank_id: 11,
-                  },
-                ],
                 validations: { required },
                 bootstrapClass: [''],
               }),
-              // autocompleteField({
-              //   label: 'Линейщик',
-              //   name: 'personal_id',
-              //   subtype: 'single',
-              //   placeholder: '',
-              //   class: [''],
-              //   selectOption: {
-              //     text: 'name',
-              //     value: 'id',
-              //   },
-              //   items: [],
-              //   page: 1,
-              //   search: '',
-              //   url: 'process.env.VUE_APP_API_URL/get/pagination_list/personal',
-              //   position: {
-              //     cols: 12,
-              //     sm: 4,
-              //   },
-              //   validations: { required },
-              //   bootstrapClass: [''],
-              //   filters: [
-              //     {
-              //       field: 'object_id',
-              //       value: '',
-              //     },
-              //   ],
-              // }),
+              selectField({
+                label: 'Объекты',
+                name: 'object_json',
+                alias: 'object_json',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+              colorPicker({
+                label: 'Цвет',
+                name: 'color',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                bootstrapClass: [''],
+              }),
             ],
             actions: [
               stringAction({
@@ -1246,15 +1368,17 @@ const config = {
           },
           {
             id: 1,
-            name: 'Расход',
+            name: 'Банковские карты',
             type: TableDefault,
+            path: 'edit',
             active: false,
             config: consumptionConfig,
           },
           {
             id: 2,
-            name: 'Данные документов',
+            name: 'Сканы',
             type: FormDocuments,
+            path: 'edit',
             detail: true,
             lists: [
               'user_keys',
@@ -1608,20 +1732,6 @@ const config = {
                 nextForm: true,
               }),
             ],
-          },
-          {
-            id: 3,
-            name: 'Сканы',
-            type: TableDefault,
-            active: false,
-            config: skanConfig,
-          },
-          {
-            id: 4,
-            name: 'Начисления и выплаты',
-            type: TableDefault,
-            active: false,
-            config: paymentConfig,
           },
         ],
         activeTab: null,

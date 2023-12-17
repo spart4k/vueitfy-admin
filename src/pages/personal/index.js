@@ -2623,6 +2623,7 @@ const defaultForm = [
                 module: 'selects/getListUpdate',
                 field: 'object_id',
                 url: 'get/pagination_list/object_logistic',
+                alias: 'object_id'
               },
             ],
           }),

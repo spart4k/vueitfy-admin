@@ -254,6 +254,17 @@ const routes = [
         name: 'account/:id',
         path: ':id',
         component: Detail,
+        meta: {
+          mode: ['edit'],
+        },
+      },
+      {
+        name: 'account-add',
+        path: '/account/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
       },
     ],
   },
