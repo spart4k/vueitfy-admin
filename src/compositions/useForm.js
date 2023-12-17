@@ -535,10 +535,12 @@ export default function ({
       } else if (dependence.url && typeof dependence.url === 'string') {
         console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
+        console.log(targetField)
         if (targetField.type === 'autocomplete') {
           const filters = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
+              console.log(formData[el.field])
               if (!formData[el.field]) return
               filters.push({
                 field: el.field,

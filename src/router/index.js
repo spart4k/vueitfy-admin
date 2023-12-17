@@ -21,11 +21,30 @@ import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
 import SlataReportView from '@/views/SlataReportView.vue'
+import MainView from '@/views/MainView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/main',
+    name: 'main',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: MainView,
+    children: [
+      {
+        name: 'main/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
   {
     path: '/payment',
     name: 'payment',
