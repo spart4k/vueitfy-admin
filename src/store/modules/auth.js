@@ -1,5 +1,5 @@
 //import
-import { login } from '@/api/login'
+import { login, logout } from '@/api/login'
 //import axios from 'axios'
 
 const auth = {
@@ -20,6 +20,11 @@ const auth = {
       //try {
       const result = await login(data)
       commit('auth/setToken', result.AccessToken, { root: true })
+    },
+    async logout({ commit }) {
+      //try {
+      const result = await logout()
+      // commit('auth/setToken', result.AccessToken, { root: true })
     },
     async checkMe() {
       //try {

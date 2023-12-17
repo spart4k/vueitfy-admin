@@ -36,6 +36,7 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  const route = useRoute()
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission)
@@ -67,6 +68,8 @@ export default function ({
   )
 
   const computedFormData = computed(() => formData)
+
+  let startFormData = formData
 
   const validations = () => {
     const formFields = {}
@@ -171,6 +174,7 @@ export default function ({
       }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
+      console.log('SAVE FORM')
       loading.value = true
       if (action.conditionAction) {
         action.conditionAction.forEach((el) => {
@@ -291,6 +295,11 @@ export default function ({
         action.useStorageKey.forEach((item) => {
           newForm[item.requestKey] =
             store?.state?.formStorage?.[item?.storageKey]
+        })
+      }
+      if (action?.useRouteKey?.length) {
+        action.useRouteKey.forEach((item) => {
+          newForm[item.requestKey] = +route.params?.[item?.storageKey]
         })
       }
       if (item.stringify) {
@@ -686,7 +695,7 @@ export default function ({
       await getDependies({ value, field })
     }
     if (field.updateList && field.updateList.length) {
-      await queryList(field)
+      await queryList(field, false)
     }
   }
 
@@ -955,6 +964,8 @@ export default function ({
       if ($touched.value) {
         errorsCount()
       }
+      startFormData = formData
+      console.log(startFormData)
     },
     { immediate: true, deep: true }
   )

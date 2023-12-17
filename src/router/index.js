@@ -125,6 +125,24 @@ const routes = [
           mode: ['edit'],
         },
         component: Detail,
+        children: [
+          {
+            name: 'personal/:id/new',
+            path: '/personal/:id/new',
+            meta: {
+              mode: ['edit', 'new'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal/:id/:object_id',
+            path: ':object_id',
+            meta: {
+              mode: ['edit', 'object_id'],
+            },
+            component: Detail,
+          },
+        ],
       },
     ],
   },
@@ -178,6 +196,9 @@ const routes = [
       {
         name: 'object/:id',
         path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
       {
@@ -185,6 +206,14 @@ const routes = [
         path: '/object/add',
         meta: {
           mode: ['add'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'object-appoint',
+        path: '/object/appoint',
+        meta: {
+          mode: ['appoint'],
         },
         component: Detail,
       },

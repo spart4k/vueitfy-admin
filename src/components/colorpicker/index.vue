@@ -1,6 +1,6 @@
 <template>
   <div class="colorpicker">
-    <v-text-field v-model="color" readonly :label="field.label">
+    <v-text-field v-model="color" :label="field.label">
       <template v-slot:append>
         <v-menu
           v-model="menu"
