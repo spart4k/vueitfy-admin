@@ -209,7 +209,7 @@ export default function ({
     } else if (action.action === 'deleteFormById') {
       loading.value = true
       console.log('Срочно удляюсь ...')
-      console.log(router)
+      // console.log(router)
       await deleteFormById({
         url: action.url,
         module: action.module,
