@@ -36,6 +36,7 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  const route = useRoute()
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission)
@@ -291,6 +292,11 @@ export default function ({
         action.useStorageKey.forEach((item) => {
           newForm[item.requestKey] =
             store?.state?.formStorage?.[item?.storageKey]
+        })
+      }
+      if (action?.useRouteKey?.length) {
+        action.useRouteKey.forEach((item) => {
+          newForm[item.requestKey] = +route.params?.[item?.storageKey]
         })
       }
       if (item.stringify) {
