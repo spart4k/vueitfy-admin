@@ -6,7 +6,6 @@
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <span>Создайте расход на документы:</span>
       <div class="position-relative">
         <div class="mb-10">
           <span class="font-weight-bold">Приложите документы: </span>
@@ -48,7 +47,7 @@
           </v-expansion-panels>
         </div>
       </div>
-      <span>Уточните работает ли сотрудник: </span>
+      <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
       <v-row class="pb-2 pt-1 px-0" justify="center">
         <v-col class="ps-0"
           ><v-btn color="error" class="" small @click="emplyeeFired">
@@ -62,6 +61,7 @@
           v-model="comment"
           placeholder="Комментарий"
           class="pt-0"
+          rows="3"
         ></v-textarea>
       </v-row>
       <v-row class="py-2" justify="end">
