@@ -16,21 +16,18 @@
             >
               <v-expansion-panel-header>
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
                 </span>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <Dropzone
-                  :options="{
-                    withoutSave: false,
-                    folder: 'tmp',
-                    removeble: false,
-                  }"
-                  :paramsForEmit="{ item: item.doc_id }"
-                  @addFiles="addFiles"
-                ></Dropzone>
+                <div v-if="item.path_doc" style="margin-top: 10px">
+                  Скан:
+                  <a
+                    :href="'https://test.api.personal-crm.ru' + item.path_doc"
+                    target="_blank"
+                    ><v-icon left width="10px"> $IconDocument </v-icon></a
+                  >
+                </div>
                 <v-row class="py-2" justify="end">
                   <v-btn
                     color="error"
@@ -40,6 +37,15 @@
                   >
                     <v-icon small>mdi-close</v-icon>
                     Отклонить
+                  </v-btn>
+                  <v-btn
+                    color="info"
+                    class=""
+                    small
+                    @click="addApprovedDocuments({ item: item.doc_id })"
+                  >
+                    <v-icon small>mdi-close</v-icon>
+                    Принять
                   </v-btn>
                 </v-row>
               </v-expansion-panel-content>
