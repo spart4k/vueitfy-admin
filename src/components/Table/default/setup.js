@@ -18,7 +18,7 @@ import vIconSort from '../../icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
-import axios from 'axios'
+import { post } from '@/api/axios'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -270,7 +270,6 @@ const table = {
       }
     }
     const openFilter = ($event) => {
-      console.log($event)
       filter.value.isShow = true
     }
     const closeFilter = () => {
@@ -397,7 +396,7 @@ const table = {
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          alias: el.filterAlias,
+          alias: el.aliasFilter,
           type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
@@ -406,6 +405,7 @@ const table = {
       getItems()
     }
     const openRow = ($event, row) => {
+      console.log('asdf');
       if (!props.options.detail) return
       if (props.options.detail.type === 'popup') {
         //router.push({
@@ -457,8 +457,8 @@ const table = {
       } else if (type === 'changeUrl') {
         changeUrl(url)
       } else if (type === 'getFilters') {
-        console.log('click inner getFilter');
-        console.log(filtersColumns.value);
+        console.log('click inner getFilter')
+        console.log(filtersColumns.value)
         console.log(url);
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {

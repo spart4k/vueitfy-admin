@@ -24,6 +24,10 @@ export default {
     ColorPicker,
   },
   props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
     tab: {
       type: Object,
       default: () => {},
@@ -32,29 +36,18 @@ export default {
       type: Boolean,
       default: false,
     },
-    detail: {
-      type: Object,
-      default: () => {},
-    },
   },
   setup(props, ctx) {
+    console.log('props.tab: ', props.tab)
     console.log('return ', props.tab)
+
+    console.log('conten', props.content)
+
     //const syncForm = ref({})
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
-    // function addOrUpdateURLParam(key, value) {
-    //   const searchParams = new URLSearchParams(window.location.search)
-    //   searchParams.set(key, value)
-    //   const newRelativePathQuery =
-    //     window.location.pathname + '?' + searchParams.toString()
-    //   history.pushState(null, '', newRelativePathQuery)
-    // }
-
-    // addOrUpdateURLParam('add', 'zxczxc')
-
-    // console.log('new URL', window.location.href)
     const context = {
       root: {
         store,
@@ -87,7 +80,8 @@ export default {
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      if (props.detail.requstId)
+      console.log(props.detail)
+      if (props.detail?.requstId)
         return _.get(route.params, props.detail.requstId)
       return route.params.id
     }
@@ -104,9 +98,6 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: (params) => {
-        console.log(+route.params.id)
-        // let body
-        // if ()
         return store.dispatch(params.module, {
           //url: `set/data/${alias}`,
           url: params.url,
@@ -123,15 +114,37 @@ export default {
           body: params.formData ? params.formData : formData,
         }),
     })
-    // const { makeRequest: createForm } = useRequest({
-    //   context,
-    //   successMessage: 'Сохранено',
-    //   request: () =>
-    //     store.dispatch('form/create', {
-    //       url: `query/${alias}`,
-    //       body: formData,
-    //     }),
-    // })
+
+    const { makeRequest: deleteFormById } = useRequest({
+      context,
+      successMessage: 'Удалено!',
+      request(params) {
+        console.log('params', params)
+        const req = store.dispatch(params.module, {
+          url: params.url,
+          id: route.params.id,
+        })
+        //const req = 'obj'
+        console.log('deleteFormById: ', req)
+        return req
+      },
+    })
+    //console.log(deleteFormById)
+
+    console.log('props.tabs', props.tab)
+    if (props.tab.hasOwnProperty('content')) {
+      props.tab.fields[0].items[0].id = props.content.account_id
+      props.tab.fields[0].items[0].name = props.content.account_name
+      props.tab.fields[0].value = props.content.account_id
+      props.tab.fields[2].value = Number(props.content.hour)
+      props.tab.fields[1].value = props.content.date
+      props.tab.fields[4].value = props.content.date.slice(0, -3)
+      if (props.content.id) {
+        props.tab.fields[6].value = props.content?.id
+      }
+    }
+
+    console.log('prosporsad', props.content)
     const {
       formData,
       validate,
@@ -162,11 +175,15 @@ export default {
       changeForm,
       mode: isEdit.value,
       createForm,
+      deleteFormById,
     })
+
     onMounted(async () => {
       await getData()
     })
+
     return {
+      readonlyField,
       //endIntersect,
       formData,
       validate,
@@ -187,8 +204,6 @@ export default {
       disabledField,
       hideField,
       addFiles,
-      changeCheckbox,
-      readonlyField,
     }
   },
 }

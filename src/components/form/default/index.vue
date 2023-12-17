@@ -52,6 +52,7 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
             />
+
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
