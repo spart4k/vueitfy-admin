@@ -280,7 +280,7 @@ const consumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -535,7 +535,7 @@ const debetorConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -667,7 +667,7 @@ const documentConfigEdit = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -987,7 +987,7 @@ const documentConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1439,7 +1439,7 @@ const skanConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1669,7 +1669,7 @@ const bankConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1924,7 +1924,7 @@ const paymentConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -3146,7 +3146,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -3188,13 +3188,13 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Добавить',
+          //   class: ['v-table-button--custom'],
+          //   url: '$IconSetting',
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -3365,7 +3365,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -3635,13 +3635,13 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Добавить',
+          //   class: ['v-table-button--custom'],
+          //   url: '$IconSetting',
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -3812,7 +3812,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -4081,13 +4081,13 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Добавить',
+          //   class: ['v-table-button--custom'],
+          //   url: '$IconSetting',
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -4251,7 +4251,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -4519,13 +4519,13 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Добавить',
+          //   class: ['v-table-button--custom'],
+          //   url: '$IconSetting',
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -4690,7 +4690,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -4888,7 +4888,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },

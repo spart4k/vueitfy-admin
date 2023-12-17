@@ -36,13 +36,6 @@ const config = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
       // {
       //   label: 'Скачать',
       //   class: ['v-table-button--custom'],
@@ -182,7 +175,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },

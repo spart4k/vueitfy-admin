@@ -211,6 +211,7 @@ const table = {
       //console.log(paramsCol)
     }
     const openContext = ($event, row) => {
+      return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
         $event.preventDefault()
       } else {
@@ -223,8 +224,9 @@ const table = {
         }, 0)
       }
       //console.log($event.clientX, $event.clientY)
-      //console.log($event, row)
-      let direction = 'left'
+      //console.log($event, row) // eslint-disable-next-line
+      // eslint-disable-next-line
+      let direction = 'left' // eslint-disable-next-line
       let clientX = $event.clientX
       if ($event.clientX + contextWidth >= window.innerWidth) {
         direction = 'right'
