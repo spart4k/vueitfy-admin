@@ -48,7 +48,15 @@
           </v-expansion-panels>
         </div>
       </div>
-
+      <span>Уточните работает ли сотрудник: </span>
+      <v-row class="pb-2 pt-1 px-0" justify="center">
+        <v-col class="ps-0"
+          ><v-btn color="error" class="" small @click="emplyeeFired">
+            <v-icon small>mdi-content-save</v-icon>
+            Уволен
+          </v-btn></v-col
+        >
+      </v-row>
       <v-row>
         <v-textarea
           v-model="comment"
@@ -61,12 +69,13 @@
           color="info"
           class="mr-3"
           @click="sendTaskFinish"
-          :disabled="!disabledDocumentsAcc && !comment"
+          small
+          :disabled="!comment && !disabledDocumentsAcc"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
-        <v-btn @click="$emit('closePopup')" color="blue-grey">
+        <v-btn @click="$emit('closePopup')" color="blue-grey" small>
           <v-icon small>mdi-close</v-icon>
           Закрыть
         </v-btn>
