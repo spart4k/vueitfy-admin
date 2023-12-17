@@ -2445,6 +2445,15 @@ const config = {
             // function: addQuery,
             // type: 'nextStage',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1, 2, 3, 4, 9, 15],
+                  direction_id: [1, 6],
+                  type: false,
+                },
+              ],
+            },
           },
         ],
       },
@@ -2871,12 +2880,6 @@ const config = {
             name: 'Назначить',
             type: FormDefault,
             detail: true,
-            lists: [
-              {
-                alias: 'assign_object_directions',
-                filter: [],
-              },
-            ],
             alias: 'object',
             active: false,
             fields: [
@@ -2894,7 +2897,7 @@ const config = {
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/object_logistic',
+                url: 'get/pagination_list/assign_objects',
                 // object
                 position: {
                   cols: 12,
@@ -2902,37 +2905,20 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                // dependence: [
-                //   {
-                //     type: 'default',
-                //     fillField: ['city_id', 'regions_id'],
-                //   },
-                //   {
-                //     type: 'api',
-                //     module: 'selects/getListUpdate',
-                //     field: 'personal_id',
-                //     url: 'get/pagination_list/personal',
-                //   },
-                // ],
-                updateList: [
+                dependence: [
                   {
-                    alias: 'assign_object_directions',
-                    filter: [
-                      {
-                        field: 'assign_objects',
-                        value: '',
-                        source: 'formData',
-                        type: 'num',
-                      },
-                    ],
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'direction_id',
+                    url: 'get/pagination_list/assign_object_directions',
                   },
                 ],
               }),
-              selectField({
+              autocompleteField({
                 label: 'Направление',
                 name: 'direction_id',
                 alias: 'assign_object_directions',
-                subtype: 'multiselect',
+                subtype: 'single',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -2940,12 +2926,40 @@ const config = {
                   value: 'id',
                 },
                 items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/assign_object_directions',
+                // object
                 position: {
                   cols: 12,
                   sm: 12,
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                filters: [
+                  {
+                    field: 'object_id',
+                    value: '',
+                  },
+                ],
+                // filters: [
+                //   {
+                //     field: 'direction_id',
+                //     value: '',
+                //   },
+                // ],
+                // dependence: [
+                //   {
+                //     type: 'api',
+                //     module: 'selects/getListUpdate',
+                //     field: 'personal_id',
+                //     url: 'get/pagination_list/personal',
+                //   },
+                // ],
+                // update: {
+                //   module: 'selects/getList',
+                //   fields: ['personal_id'],
+                // },
               }),
               autocompleteField({
                 label: 'Сотрудник',
@@ -2961,7 +2975,7 @@ const config = {
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/object_logistic',
+                url: 'get/pagination_list/assign_accounts',
                 // object
                 position: {
                   cols: 12,

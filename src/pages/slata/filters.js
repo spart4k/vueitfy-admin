@@ -12,6 +12,7 @@ const filters = {
     { alias: 'critical_document', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
     { alias: 'object_subtype', filter: [] },
+    // { alias: 'manager_slata', filter: [] },
   ],
   actions: [
     stringAction({
@@ -37,14 +38,13 @@ const filters = {
       },
       items: [],
       //   url: 'get/pagination_list/personal_logistic_document',
-      aliasFilter: 'p.id',
       typeFilter: 'select',
       position: {
         cols: 12,
         sm: 12,
       },
       bootstrapClass: [''],
-      filterAlias: 'p.personal_logistic_document',
+      aliasFilter: 'p.personal_logistic_document',
     }),
     autocompleteField({
       label: 'Объект',
@@ -58,34 +58,35 @@ const filters = {
       },
       items: [],
       url: 'get/pagination_list/object_slata',
-      aliasFilter: 'o.id',
       typeFilter: 'select',
+      page: 1,
       position: {
         cols: 12,
         sm: 12,
       },
       bootstrapClass: [''],
-      filterAlias: 'p.personal_logistic_document',
+      aliasFilter: 'p.personal_logistic_document',
     }),
-
     autocompleteField({
       label: 'Услуги',
       name: 'doljnost',
       subtype: 'single',
       placeholder: '',
       class: [''],
+      page: 1,
       selectOption: {
         text: 'name',
         value: 'id',
       },
       items: [],
       url: 'get/pagination_list/doljnost',
-      //   filterAlias: 'ob.regions_id',
+      //   aliasFilter: 'ob.regions_id',
       //   typeFilter: 'select',
       position: {
         cols: 12,
         sm: 12,
       },
+      aliasFilter: '',
       filters: [
         {
           field: 'type_json',
@@ -96,7 +97,7 @@ const filters = {
       ],
       bootstrapClass: [''],
     }),
-    autocompleteField({
+    selectField({
       label: 'Подтип',
       name: 'object_subtype',
       subtype: 'single',
@@ -106,6 +107,14 @@ const filters = {
         text: 'name',
         value: 'id',
       },
+      filters: [
+        {
+          field: 'type',
+          type: 'num',
+          source: undefined,
+          value: 3,
+        },
+      ],
       items: [],
       url: 'get/pagination_list/object_subtype',
       //   aliasFilter: 'o.subtype',
@@ -115,9 +124,9 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      filterAlias: 'o.subtype',
+      aliasFilter: 'o.subtype',
     }),
-    selectField({
+    autocompleteField({
       label: 'Менеджер',
       name: 'manager_slata',
       subtype: 'single',
@@ -127,12 +136,16 @@ const filters = {
         text: 'name',
         value: 'id',
       },
+      page: 1,
       items: [],
+      url: 'get/pagination_list/manager_slata',
+      //   aliasFilter: 'ob.regions_id',
+      //   typeFilter: 'select',
       position: {
         cols: 12,
         sm: 12,
       },
-      filterAlias: 'p.status',
+      aliasFilter: '',
       bootstrapClass: [''],
     }),
   ],

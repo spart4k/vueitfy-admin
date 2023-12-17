@@ -21,11 +21,31 @@ import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
 import SlataReportView from '@/views/SlataReportView.vue'
+import MainView from '@/views/MainView.vue'
+import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/main',
+    name: 'main',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: MainView,
+    children: [
+      {
+        name: 'main/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
   {
     path: '/payment',
     name: 'payment',
@@ -411,7 +431,7 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
-    component: GrishaView,
+    csajdomponent: GrishaView,
   },
   {
     path: '/documents',
@@ -456,6 +476,53 @@ const routes = [
     //     component: Detail,
     //   },
     // ],
+  },
+  {
+    path: '/schedule',
+    name: 'schedule',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ScheduleView,
+    children: [
+      {
+        name: 'schedule-add',
+        path: '/schedule/add',
+        meta: {
+          mode: 'add',
+        },
+        component: Detail,
+      },
+      {
+        name: 'schedule-new',
+        path: '/schedule/new',
+        meta: {
+          mode: 'new',
+        },
+        component: Detail,
+      },
+      {
+        name: 'schedule-edit',
+        path: '/schedule/edit',
+        meta: {
+          mode: 'edit',
+        },
+        component: Detail,
+      },
+      {
+        name: 'schedule/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/test',
+    name: 'test',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: TestView,
   },
 ]
 
