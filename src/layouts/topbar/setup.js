@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useStore } from '@/store'
-import { useRoute } from 'vue-router/composables'
+import { useRoute, useRouter } from 'vue-router/composables'
 import useMobile from '../Adaptive/checkMob.js'
 // import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
 
@@ -15,6 +15,7 @@ export default {
   setup(props) {
     const isMobile = useMobile()
     const route = useRoute()
+    const router = useRouter()
     const messages = ref(0)
 
     const pageName = computed(() => {
@@ -34,27 +35,33 @@ export default {
     const store = useStore()
     const openMenu = computed(() => store?.state?.openMenu)
     const miniMenu = computed(() => store?.state?.miniMenu)
-
+    const logout = async () => {
+      console.log('logout')
+      await store.dispatch('auth/logout')
+      store.commit('auth/setToken', '')
+      router.push('/login')
+    }
     const itemSecondMenu = ref({
-      edit: {
-        icon: '$IconEdit',
-        color: 'primary',
-        tooltip: 'Новое письмо',
-      },
-      phonebook: {
-        icon: '$IconGuide',
-        color: 'primary',
-        tooltip: 'Справочник',
-      },
-      tech: {
-        icon: '$IconTechSupport',
-        color: 'primary',
-        tooltip: 'Тех Поддержка',
-      },
+      // edit: {
+      //   icon: '$IconEdit',
+      //   color: 'primary',
+      //   tooltip: 'Новое письмо',
+      // },
+      // phonebook: {
+      //   icon: '$IconGuide',
+      //   color: 'primary',
+      //   tooltip: 'Справочник',
+      // },
+      // tech: {
+      //   icon: '$IconTechSupport',
+      //   color: 'primary',
+      //   tooltip: 'Тех Поддержка',
+      // },
       exit: {
         icon: '$IconExit',
         color: 'error',
         tooltip: 'Выйти',
+        action: logout,
       },
     })
 
@@ -76,6 +83,7 @@ export default {
 
       showNotification,
       setNavmenu,
+      logout,
     }
   },
 }

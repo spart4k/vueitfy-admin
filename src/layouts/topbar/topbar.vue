@@ -41,7 +41,13 @@
         >
           <v-tooltip left>
             <template #activator="{ on: tooltip }">
-              <v-btn :color="item.color" fab small v-on="!isMobile && tooltip">
+              <v-btn
+                @click="item.action"
+                :color="item.color"
+                fab
+                small
+                v-on="!isMobile && tooltip"
+              >
                 <v-icon color="navbar">
                   {{ item.icon }}
                 </v-icon>

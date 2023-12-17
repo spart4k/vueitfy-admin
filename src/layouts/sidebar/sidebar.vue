@@ -36,7 +36,7 @@
             :key="item.id"
             color="navbar"
           >
-            <template v-if="!item?.child_json">
+            <template v-if="!item?.child">
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div
@@ -51,7 +51,7 @@
                       <v-icon
                         :color="
                           $route?.path.includes(item.link) ||
-                          JSON?.parse(item?.child_json)?.some((e) =>
+                          item?.child?.some((e) =>
                             $route?.path.includes(e?.link)
                           )
                             ? 'primary'
@@ -84,9 +84,7 @@
                   <v-icon
                     :color="
                       $route?.path === item?.link ||
-                      JSON?.parse(item?.child_json).some((e) =>
-                        $route?.path.includes(e?.link)
-                      )
+                      item?.child.some((e) => $route?.path.includes(e?.link))
                         ? 'primary'
                         : ''
                     "
@@ -98,7 +96,7 @@
                   :class="[
                     'v-sidebar-container-link_name',
                     ($route?.path.includes(item.link) ||
-                      JSON?.parse(item?.child_json).some((e) =>
+                      item?.child.some((e) =>
                         $route?.path.includes(e?.link)
                       )) &&
                       'v-sidebar-container-link_name__active',
@@ -109,7 +107,7 @@
               </v-expansion-panel-header>
               <template v-if="!miniMenu">
                 <v-expansion-panel-content
-                  v-for="(link, index) in JSON?.parse(item?.child_json)"
+                  v-for="(link, index) in item?.child"
                   :key="index"
                   color="navbar"
                   :class="[
@@ -148,7 +146,7 @@
                           <v-icon
                             :color="
                               $route?.path.includes(item.link) ||
-                              JSON?.parse(item?.child_json).some((e) =>
+                              item?.child.some((e) =>
                                 $route?.path.includes(e?.link)
                               )
                                 ? 'primary'
@@ -172,7 +170,7 @@
                       !isMobileDevice && 'v-sidebar-container-link__hover'
                     "
                     @click="setRouterPath(link.link)"
-                    v-for="(link, index) in JSON?.parse(item?.child_json)"
+                    v-for="(link, index) in item?.child"
                     :key="index"
                   >
                     <div
