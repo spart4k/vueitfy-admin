@@ -74,6 +74,7 @@ const Form2 = defineComponent({
     const confirmOsnData = () => {
       isOsnDocTouched.value = true
       isOsnDocConfirmed.value = true
+      console.log('fffffffffffffffffffffffffffff', isOsnDocConfirmed.value)
     }
     const rejectOsnData = () => {
       isOsnDocTouched.value = true
@@ -147,7 +148,7 @@ const Form2 = defineComponent({
     const sendData = async () => {
       if (
         (finalData.value.rejected.length && !comment.value) ||
-        (!isOsnDocConfirmed.value && !comment.value)
+        (isHasOsnDoc.value && !isOsnDocConfirmed.value && !comment.value)
       ) {
         commentErr.value = 'Заполните комментарий'
       } else {

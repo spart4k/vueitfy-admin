@@ -34,9 +34,10 @@
       v-model="selectName"
     ></v-select>
 
-    <span style="font-size: 18px" class="font-weight-bold"
-      >Приложите миграционную карту:</span
-    >
+    <span style="font-size: 18px" class="font-weight-bold">
+      <v-icon x-small color="green" v-if="isGalkaVisible">$IconGalka</v-icon>
+      Приложите миграционную карту:
+    </span>
     <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
 
     <v-row class="py-2" justify="end">
