@@ -120,7 +120,10 @@ const Form2 = defineComponent({
       context,
       request: () => {
         newStatus.value =
-          finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2
+          finalData.value.rejected.length ||
+          (isHasOsnDoc.value && !isOsnDocConfirmed.value)
+            ? 6
+            : 2
         return store.dispatch('taskModule/setPartTask', {
           status:
             finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2,
