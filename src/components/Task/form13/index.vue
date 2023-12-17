@@ -49,7 +49,7 @@
       </div>
       <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
       <v-row class="pb-2 pt-1 px-0" justify="center">
-        <v-col class="ps-0"
+        <v-col class="ps-0" cols="2" align-self="center"
           ><v-btn color="error" class="" small @click="emplyeeFired">
             <v-icon small>mdi-content-save</v-icon>
             Уволен
@@ -61,7 +61,7 @@
           v-model="comment"
           placeholder="Комментарий"
           class="pt-0"
-          rows="3"
+          rows="2"
         ></v-textarea>
       </v-row>
       <v-row class="py-2" justify="end">
