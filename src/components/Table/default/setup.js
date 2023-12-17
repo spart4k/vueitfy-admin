@@ -431,11 +431,14 @@ const table = {
         //router.push({
         //  path: `${route.}./1`
         //})
+        let requstId = 'id'
+        if (props.options.detail.requstId)
+          requstId = props.options.detail.requstId
         router.push(
           {
-            name: `${route.name}/:id`,
+            name: `${route.name}/:${requstId}`,
             params: {
-              id: row.row.id
+              [requstId]: row.row.id
             }
         })
         popupForm.value.isShow = true
