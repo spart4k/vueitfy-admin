@@ -36,13 +36,6 @@ const config = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
       // {
       //   label: 'Скачать',
       //   class: ['v-table-button--custom'],
