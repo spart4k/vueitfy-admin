@@ -9,7 +9,7 @@
       <span>Создайте расход на документы:</span>
       <div class="position-relative">
         <div class="mb-10">
-          <span>Приложите документы</span>
+          <span class="font-weight-bold">Приложите документы: </span>
           <v-expansion-panels>
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
@@ -34,7 +34,7 @@
                 ></Dropzone>
                 <v-row class="py-2" justify="end">
                   <v-btn
-                    color="danger"
+                    color="error"
                     class="mr-3"
                     small
                     @click="addDisabledDocuments({ item: item.doc_id })"
@@ -57,7 +57,12 @@
         ></v-textarea>
       </v-row>
       <v-row class="py-2" justify="end">
-        <v-btn color="info" class="mr-3" @click="sendTaskFinish">
+        <v-btn
+          color="info"
+          class="mr-3"
+          @click="sendTaskFinish"
+          :disabled="!disabledDocumentsAcc && !comment"
+        >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>

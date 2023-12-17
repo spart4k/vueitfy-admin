@@ -151,19 +151,22 @@ const Form13 = defineComponent({
         elem()
       })
     }
-
+    let disabledDocumentsAcc = ref(0)
     let addDisabledDocuments = (elem) => {
-      console.log(elem, listDocuments.value)
-      let fwfwfw = listDocuments.value.findIndex((x) => x.item == elem.item)
-      console.log(fwfwfw)
-      listDocuments.value[fwfwfw].inProcess = true
+      console.log(listDocuments.value)
+      let keyOfObject = listDocuments.value.findIndex(
+        (x) => x.doc_id == elem.item
+      )
+      listDocuments.value[keyOfObject].inProcess = true
+      console.log(listDocuments.value)
+      disabledDocumentsAcc.value + 1
     }
 
     let sendTaskFinish = () => {
-      let wwwww = {}
+      let keyOfObjectSend = {}
       listDocuments.value.forEach((elem, index) => {
         for (const key in elem) {
-          wwwww[elem.item] = !!elem.inProcess
+          keyOfObjectSend[elem.doc_id] = !!elem.inProcess
         }
       })
 
@@ -179,11 +182,12 @@ const Form13 = defineComponent({
               parent_action: data.task.id,
               personal_id: data.entity.id,
               comment: comment.value,
-              docs_id: wwwww,
+              docs_id: keyOfObjectSend,
               account_id: data.task.from_account_id,
             },
           }),
       })
+      sendDocuments()
       changeStatus()
     }
     return {
@@ -197,6 +201,7 @@ const Form13 = defineComponent({
       comment,
       sendTaskFinish,
       addDisabledDocuments,
+      disabledDocumentsAcc,
     }
   },
 })
