@@ -105,6 +105,8 @@ export default {
       successMessage: 'Сохранено',
       request: (params) => {
         console.log(+route.params.id)
+        // let body
+        // if ()
         return store.dispatch(params.module, {
           //url: `set/data/${alias}`,
           url: params.url,

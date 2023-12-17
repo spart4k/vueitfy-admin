@@ -69,6 +69,8 @@ export default function ({
 
   const computedFormData = computed(() => formData)
 
+  let startFormData = formData
+
   const validations = () => {
     const formFields = {}
     if (form) {
@@ -172,6 +174,7 @@ export default function ({
       }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
+      console.log('SAVE FORM')
       loading.value = true
       if (action.conditionAction) {
         action.conditionAction.forEach((el) => {
@@ -692,7 +695,7 @@ export default function ({
       await getDependies({ value, field })
     }
     if (field.updateList && field.updateList.length) {
-      await queryList(field)
+      await queryList(field, false)
     }
   }
 
@@ -961,6 +964,8 @@ export default function ({
       if ($touched.value) {
         errorsCount()
       }
+      startFormData = formData
+      console.log(startFormData)
     },
     { immediate: true, deep: true }
   )
