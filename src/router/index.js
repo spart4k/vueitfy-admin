@@ -125,6 +125,24 @@ const routes = [
           mode: ['edit'],
         },
         component: Detail,
+        children: [
+          {
+            name: 'personal/:id/new',
+            path: '/personal/:id/new',
+            meta: {
+              mode: ['edit', 'new'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal/:id/:object_id',
+            path: ':object_id',
+            meta: {
+              mode: ['edit', 'object_id'],
+            },
+            component: Detail,
+          },
+        ],
       },
     ],
   },

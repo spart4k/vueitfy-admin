@@ -3,6 +3,8 @@ import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/autocomplete'
 import FormDefault from '@/components/form/default/index.vue'
 
+import _ from 'lodash'
+
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
@@ -84,10 +86,15 @@ export default {
     }
     const params = props.tab.lists
     const data = params
+    const getRequestParam = () => {
+      if (props.detail.requstId)
+        return _.get(route.params, props.detail.requstId)
+      return route.params.id
+    }
     const { makeRequest } = useRequest({
       context,
       request: () =>
-        store.dispatch('form/get', `get/form/${alias}/${route.params.id}`),
+        store.dispatch('form/get', `get/form/${alias}/${getRequestParam()}`),
     })
     const { makeRequest: makeRequestList } = useRequest({
       context,
@@ -101,7 +108,7 @@ export default {
         return store.dispatch(params.module, {
           //url: `set/data/${alias}`,
           url: params.url,
-          body: { data: { id: +route.params.id, ...formData } },
+          body: { data: { id: +route.params.id, ...params.formData } },
         })
       },
     })
