@@ -144,7 +144,6 @@ export default {
       }
     }
 
-    console.log('prosporsad', props.content)
     const {
       formData,
       validate,
@@ -204,6 +203,7 @@ export default {
       disabledField,
       hideField,
       addFiles,
+      changeCheckbox,
     }
   },
 }

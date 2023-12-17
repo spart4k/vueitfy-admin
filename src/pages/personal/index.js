@@ -2623,6 +2623,7 @@ const defaultForm = [
                 module: 'selects/getListUpdate',
                 field: 'object_id',
                 url: 'get/pagination_list/object_logistic',
+                alias: 'object_id'
               },
             ],
           }),
@@ -4497,204 +4498,204 @@ const config = {
         activeTab: null,
       },
     },
-    {
-      selector: '#mainTable',
-      options: {
-        selecting: true,
-        search: {
-          function: searchInputing,
-        },
-        headerFixed: true,
-        //url: 'https://dummyjson.com/users',
-        url: 'get/pagination/relocation',
-        title: 'Перемещения',
-      },
-      type: TableDefault,
-      panel: {
-        buttons: [
-          {
-            label: 'Обновить',
-            class: ['v-table-button--custom'],
-            url: '$IconEdit',
-            function: consolePanel,
-            backgroundColor: '#ffffff',
-          },
-          // {
-          //   label: 'Добавить',
-          //   class: ['v-table-button--custom'],
-          //   url: '$IconSetting',
-          //   function: consolePanel,
-          //   backgroundColor: '#fff',
-          // },
-          // {
-          //   label: 'Скачать',
-          //   class: ['v-table-button--custom'],
-          //   function: consolePanel,
-          //   backgroundColor: '#fff',
-          // },
-        ],
-      },
-      head: [
-        {
-          title: 'Линейщик',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          alias: 'r.personal_id',
-          isShow: true,
-          width: '40',
-          value: 'personal_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'От(объект)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'r.from_obj_id',
-          value: 'from_object_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'От(менеджер)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'r.from_account_id',
-          value: 'from_account_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'К(объект)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'to_object_name',
-          alias: 'r.to_obj_id',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'К(менеджер)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'to_account_name',
-          alias: 'r.to_account_id',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
-            },
-          ],
-        },
-      ],
-      data: {
-        rows: [],
-        totalRows: null,
-        pageLength: 20,
-        currentPage: 1,
-        totalPages: null,
-      },
-    },
+    // {
+    //   selector: '#mainTable',
+    //   options: {
+    //     selecting: true,
+    //     search: {
+    //       function: searchInputing,
+    //     },
+    //     headerFixed: true,
+    //     //url: 'https://dummyjson.com/users',
+    //     url: 'get/pagination/relocation',
+    //     title: 'Перемещения',
+    //   },
+    //   type: TableDefault,
+    //   panel: {
+    //     buttons: [
+    //       {
+    //         label: 'Обновить',
+    //         class: ['v-table-button--custom'],
+    //         url: '$IconEdit',
+    //         function: consolePanel,
+    //         backgroundColor: '#ffffff',
+    //       },
+    //       // {
+    //       //   label: 'Добавить',
+    //       //   class: ['v-table-button--custom'],
+    //       //   url: '$IconSetting',
+    //       //   function: consolePanel,
+    //       //   backgroundColor: '#fff',
+    //       // },
+    //       // {
+    //       //   label: 'Скачать',
+    //       //   class: ['v-table-button--custom'],
+    //       //   function: consolePanel,
+    //       //   backgroundColor: '#fff',
+    //       // },
+    //     ],
+    //   },
+    //   head: [
+    //     {
+    //       title: 'Линейщик',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'left',
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'string',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       alias: 'r.personal_id',
+    //       isShow: true,
+    //       width: '40',
+    //       value: 'personal_name',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'От(объект)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'left',
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'text',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '90',
+    //       alias: 'r.from_obj_id',
+    //       value: 'from_object_name',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'От(менеджер)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'left',
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'string',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '150',
+    //       alias: 'r.from_account_id',
+    //       value: 'from_account_name',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'К(объект)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: undefined,
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'text',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '150',
+    //       value: 'to_object_name',
+    //       alias: 'r.to_obj_id',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'К(менеджер)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: undefined,
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'text',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '150',
+    //       value: 'to_account_name',
+    //       alias: 'r.to_account_id',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'Действия',
+    //       type: 'actions',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'right',
+    //       },
+    //       isShow: true,
+    //       width: '100',
+    //       value: 'actions',
+    //       actions: [
+    //         {
+    //           type: 'button',
+    //           url: '$IconSetting',
+    //           function: consoleText,
+    //           label: 'Редактировать',
+    //         },
+    //         {
+    //           type: 'button',
+    //           url: '$IconSetting',
+    //           function: consoleButton,
+    //           label: 'Удалить',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   data: {
+    //     rows: [],
+    //     totalRows: null,
+    //     pageLength: 20,
+    //     currentPage: 1,
+    //     totalPages: null,
+    //   },
+    // },
     {
       selector: '#mainTable',
       options: {

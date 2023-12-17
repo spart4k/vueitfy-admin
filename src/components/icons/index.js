@@ -66,10 +66,14 @@ import IconRxRf from './rx-rf/rx-rf.vue'
 import IconSamolet from './samolet/samolet.vue'
 import IconSnils from './snils/snils.vue'
 import IconFinger2 from './finger/finger2.vue'
+import IconGroups from './groups/groups.vue'
 
 export default {
   IconAdd: {
     component: IconAdd,
+  },
+  IconGroups: {
+    component: IconGroups,
   },
   IconMailActive: {
     component: IconMailActive,

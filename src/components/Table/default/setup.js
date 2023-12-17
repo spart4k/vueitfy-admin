@@ -19,6 +19,7 @@ import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
 import { post } from '@/api/axios'
+import useTable from '@/compositions/useTable.js'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -66,8 +67,11 @@ const table = {
     const tablePosition = ref(null)
     const searchField = ref('')
     const isMobile = useMobile()
-    const detail = ref(props.options?.detail)
-    const filters = ref(props.options?.filters)
+    const { generalConfig } = useTable(props.options)
+    const options = generalConfig()
+
+    const detail = ref(options?.detail)
+    const filters = ref(options?.filters)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -85,7 +89,7 @@ const table = {
       totalRows: null,
       currentPage: 1,
       totalPages: null,
-      countRows: props.options.data.pageLength,
+      countRows: options.data.pageLength,
     })
     const filter = ref({
       isShow: false,
@@ -101,9 +105,9 @@ const table = {
       isShow: false,
     })
     const wrapingRow = () => {
-      const table = document.querySelector(props.options.selector)
+      const table = document.querySelector(options.selector)
       tablePosition.value = table.getBoundingClientRect().x
-      props.options.head.forEach((headerEl) => {
+      options.head.forEach((headerEl) => {
         const headId = headerEl.value
         const { width, x } = headerOptions.value.find((el) => el.id === headId)
         if (
@@ -146,13 +150,13 @@ const table = {
           i++
         ) {
           //console.log(i)
-          //console.log(props.options.data.rows[i].row)
-          if (!props.options.data.rows[i].row.selected) {
-            props.options.data.rows[i].row.selected = true
+          //console.log(options.data.rows[i].row)
+          if (!options.data.rows[i].row.selected) {
+            options.data.rows[i].row.selected = true
           } else {
             //console.log(i, lastSelected.value.indexRow)
-            //props.options.data[i].row.selected = false
-            //if (i === lastSelected.value.indexRow) props.options.data[i].row.selected = true
+            //options.data[i].row.selected = false
+            //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       } else {
@@ -164,13 +168,13 @@ const table = {
           i--
         ) {
           //console.log(i)
-          //console.log(props.options.data.rows[i].row)
-          if (!props.options.data.rows[i].row.selected) {
-            props.options.data.rows[i].row.selected = true
+          //console.log(options.data.rows[i].row)
+          if (!options.data.rows[i].row.selected) {
+            options.data.rows[i].row.selected = true
           } else {
             //console.log(i)
-            //props.options.data[i].row.selected = false
-            //if (i === lastSelected.value.indexRow) props.options.data[i].row.selected = true
+            //options.data[i].row.selected = false
+            //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       }
@@ -280,7 +284,7 @@ const table = {
     const getItems = async () => {
       loading.value = true
       const { url } = props.options.options
-
+      // Может быть без props. после merge cofilcts
       let sorts = []
       let searchColumns = []
 
@@ -323,14 +327,14 @@ const table = {
           by,
         },
       })
-      props.options.data.rows = data.rows
-      //props.options.data.rows = data
-      if (props.options.data.rows?.length && props.options.data.rows) {
-        props.options.data.totalPages = data.totalPage
-        props.options.data.totalRows = data.total
+      options.data.rows = data.rows
+      //options.data.rows = data
+      if (options.data.rows?.length && options.data.rows) {
+        options.data.totalPages = data.totalPage
+        options.data.totalRows = data.total
         const structuredArray = []
-        props.options.data.rows.forEach((row) => {
-          if (props.options.options.selecting) {
+        options.data.rows.forEach((row) => {
+          if (options.options.selecting) {
             Vue.set(row, 'selected', false)
           }
           structuredArray.push({
@@ -341,15 +345,14 @@ const table = {
             },
           })
         })
-        props.options.data.rows = structuredArray
+        options.data.rows = structuredArray
       }
       loading.value = false
     }
     const initHeadParams = () => {
-      const { head } = props.options
+      const { head } = options
       head.forEach((el) => {
         if (el.sorts?.length) {
-          //Vue.set(el.sorts, 'field', el.value)
           paramsQuery.value.sorts.push({
             field: el.value,
             value: el.sorts[0].default,
@@ -368,7 +371,7 @@ const table = {
     const watchScroll = () => {
       //const firstListItem = list.querySelector('.horizontal-scroll-container__list-item:first-child');
       //const lastHeadTable = header.options
-      //const table = document.querySelector(props.options.selector)
+      //const table = document.querySelector(options.selector)
     }
     const isElementXPercentInViewport = (element) => {
       /* eslint-disable */
@@ -407,9 +410,8 @@ const table = {
       getItems()
     }
     const openRow = ($event, row) => {
-      console.log('asdf');
-      if (!props.options.detail) return
-      if (props.options.detail.type === 'popup') {
+      if (!options.detail || options.options.noTableAction) return
+      if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
         //})
@@ -433,7 +435,7 @@ const table = {
       if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
-      if (props.options.detail.type === 'popup') {
+      if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
         //})
@@ -473,20 +475,19 @@ const table = {
       return window.innerWidth
     })
     const colspanLength = computed(() => {
-      return props.options.options.selecting
-        ? props.options.head.filter((el) => el.isShow).length + 1
-        : props.options.head.filter((el) => el.isShow).length
+      return options.options.selecting
+        ? options.head.filter((el) => el.isShow).length + 1
+        : options.head.filter((el) => el.isShow).length
     })
     const headActions = computed(() => {
-      return props.options.head.find((cell) => cell.type === 'actions')
+      return options.head.find((cell) => cell.type === 'actions')
     })
-    //props.options.data.rows = data.rows
-
+    
     // WATCH
     watch(
       () => searchField,
       (newVal) => {
-        props.options.options.search.function(newVal)
+        options.options.search.function(newVal)
       },
       () => {
       }
@@ -536,7 +537,7 @@ const table = {
       headerCells.forEach((headerEl) => {
         const id = headerEl.id.split('-table-header')[0]
         if (!id) return
-        const headCell = props.options.head.find((head) => head.value === id)
+        const headCell = options.head.find((head) => head.value === id)
         const { width, x } = headerEl.getBoundingClientRect()
         headerOptions.value.push({
           id,
@@ -554,9 +555,9 @@ const table = {
       window.addEventListener('resize', () => watchScroll())
       watchScroll()
       pagination.value = {
-        ...props.options.data,
+        ...options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && route.meta.mode) {
+      if (options.detail && options.detail.type === 'popup' && route.meta.mode) {
         popupForm.value.isShow = true
       }
     })

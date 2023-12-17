@@ -9,7 +9,6 @@ import { useRoute, useRouter } from 'vue-router/composables'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
-import { refresh } from '@/api/login'
 
 /**
  * @param loading {boolean}
@@ -17,7 +16,6 @@ import { refresh } from '@/api/login'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
-
 export default function ({
   fields = {},
   watcher,
@@ -33,7 +31,6 @@ export default function ({
   setFields,
   mode,
   createForm,
-  deleteFormById,
   detail,
 }) {
   const $touched = ref(false)
@@ -42,7 +39,7 @@ export default function ({
   const route = useRoute()
   const filesBasket = ref({})
   const { emit } = context.root.ctx
-  const permission = computed(() => store.state.user.permission)
+  const permission = computed(() => store.state.user.permission_id)
   // const validations = () => {
   //   const formFields = {}
   //   form.fields.forEach((el) => {
@@ -158,7 +155,6 @@ export default function ({
     })
   }
   const clickHandler = async ({ action, skipValidation }) => {
-    console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
@@ -206,19 +202,6 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-    } else if (action.action === 'deleteFormById') {
-      loading.value = true
-      console.log('Срочно удляюсь ...')
-      // console.log(router)
-      await deleteFormById({
-        url: action.url,
-        module: action.module,
-      })
-      emit('closePopup')
-      if (action.actionKey) {
-        emit('getItems')
-      }
-      loading.value = false
     } else if (action.action === 'updateFormStore') {
       loading.value = true
       await loadStoreFile(
@@ -237,11 +220,6 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
-      console.log('action', action, action.actionKey === 'schedule')
-      if (action.actionKey === 'schedule') {
-        emit('getItems')
-        emit('closePopup')
-      }
       loading.value = false
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
@@ -559,22 +537,23 @@ export default function ({
         url = dependence.url
         console.log(targetField)
         if (targetField.type === 'autocomplete') {
-          const filters = []
+          const filter = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
               console.log(formData[el.field])
               if (!formData[el.field]) return
-              filters.push({
-                field: el.field,
+              filter.push({
+                alias: el.field,
+                type: el.type,
                 value: formData[el.field],
               })
             })
-          }
-          if (dependence.filter && dependence.filter.length) {
+          } else if (dependence.filter && dependence.filter.length) {
             dependence.filter.forEach((el) => {
               if (!formData[el.field]) return
-              filters.push({
-                field: el.field,
+              filter.push({
+                alias: el.field,
+                type: el.type,
                 value: formData[el.field],
               })
             })
@@ -585,7 +564,7 @@ export default function ({
             searchValue: '',
             //id: params.id ? params.id : -1,
             id: -1,
-            filters,
+            filter,
           }
         }
       }
@@ -858,29 +837,6 @@ export default function ({
     }
     if (hasSelect()) {
       console.log(lists.data)
-      for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
-
-        if (field) {
-          field.hideItems = lists.data[keyList]
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value
-              )
-              lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
-              })
-            }
-          }
-          field.items = lists.data[keyList]
-          if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
-          }
-        }
-      }
       putSelectItems(lists)
     }
     await loadAutocompletes()
@@ -911,12 +867,6 @@ export default function ({
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) && conditionEl.type
             } else {
-              console.log('target and perm')
-              console.log(
-                checkIncludesData(conditionEl),
-                checkIncludesPermissions(conditionEl),
-                conditionEl.type
-              )
               return (
                 checkIncludesData(conditionEl) &&
                 checkIncludesPermissions(conditionEl) === conditionEl.type
@@ -930,6 +880,7 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
+    // console.log(field.name)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {

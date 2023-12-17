@@ -14,6 +14,9 @@ const auth = {
       state.token = token
       localStorage.setItem('token', token)
     },
+    setUserInfo(state, value) {
+      state.user = value
+    },
   },
   actions: {
     async auth({ commit }, data) {
@@ -26,11 +29,11 @@ const auth = {
       const result = await logout()
       // commit('auth/setToken', result.AccessToken, { root: true })
     },
-    async checkMe() {
+    async checkMe({ commit }) {
       //try {
       const result = await me()
       console.log(result)
-      //commit('auth/setToken', result.AccessToken)
+      commit('user/setUserInfo', result, { root: true })
     },
   },
 }
