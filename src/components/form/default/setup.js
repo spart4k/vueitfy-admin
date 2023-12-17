@@ -204,6 +204,7 @@ export default {
       disabledField,
       hideField,
       addFiles,
+      changeCheckbox,
     }
   },
 }
