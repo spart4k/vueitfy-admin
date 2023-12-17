@@ -66,6 +66,8 @@ export default {
       }
     )
 
+    const userInfo = computed(() => store.state.user)
+
     const openCurrentRoute = () => {
       navbarCurrentRoute.value = []
       instantNav.value = true
@@ -102,6 +104,7 @@ export default {
       changeMenuStatus,
       changeMenuSize,
       setRouterPath,
+      userInfo,
     }
   },
 }

@@ -17,8 +17,12 @@
           ></v-img>
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">
-          <div class="v-sidebar-container-user-info_name">Dasha Tsaritsa</div>
-          <div class="v-sidebar-container-user-info_email">ferz'@mail.ru</div>
+          <div class="v-sidebar-container-user-info_name">
+            {{ userInfo.name }}
+          </div>
+          <div class="v-sidebar-container-user-info_email">
+            {{ userInfo.email }}
+          </div>
           <!-- {{ openMenu }}{{ miniMenu }} -->
         </div>
       </div>
