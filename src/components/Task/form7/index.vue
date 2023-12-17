@@ -66,7 +66,7 @@
               <v-btn
                 small
                 :disabled="!isOsnDocValid"
-                @click="osnConfirmed = true"
+                @click="confirmOsnDoc"
                 color="warning"
               >
                 <v-icon left> $IconMain </v-icon>
