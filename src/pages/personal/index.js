@@ -859,6 +859,17 @@ const documentConfigEdit = {
       },
     ],
   },
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'black',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ],
   filters,
 }
 
@@ -2476,6 +2487,15 @@ const defaultForm = [
     ],
     actions: [
       stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'disabled',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
+      stringAction({
         text: 'Сохранить',
         type: 'submit',
         module: '',
@@ -2542,6 +2562,7 @@ const defaultForm = [
           // 'status_pt',
           { alias: 'direction_id_logistic', filter: [] },
           { alias: 'grajdanstvo_id', filter: [] },
+          // { alias: 'brigadirs', filter: [] },
           // 'shifts',
           // 'nutritions',
         ],
@@ -2641,16 +2662,29 @@ const defaultForm = [
                 type: 'api',
                 module: 'selects/getListUpdate',
                 field: 'personal_id',
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/brigadirs',
               },
             ],
+            // updateList: [
+            //   {
+            //     alias: 'brigadirs',
+            //     filter: [
+            //       {
+            //         field: 'object_id',
+            //         value: '',
+            //         source: 'formData',
+            //         type: 'array',
+            //       },
+            //     ],
+            //   },
+            // ],
             update: {
               module: 'selects/getList',
               fields: ['personal_id'],
             },
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [1] }],
+              conditions: [{ field: 'direction_id', value: [1, 6] }],
             },
           }),
           stringField({
@@ -2699,7 +2733,7 @@ const defaultForm = [
             items: [],
             page: 1,
             search: '',
-            url: 'get/pagination_list/personal',
+            url: 'get/pagination_list/brigadirs',
             // brigadirs
             position: {
               cols: 12,
@@ -2715,7 +2749,7 @@ const defaultForm = [
             ],
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [1] }],
+              conditions: [{ field: 'direction_id', value: [1, 6] }],
             },
           }),
           selectField({
