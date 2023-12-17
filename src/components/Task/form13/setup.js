@@ -19,10 +19,11 @@ const Form13 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }) {
+  setup({ data }, ctx) {
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     const textInfo = {
@@ -90,14 +91,14 @@ const Form13 = defineComponent({
       updateFileData()
       loadImage()
     }
-
+    let refds = ref(0)
     let addFiles = (e, options) => {
       console.log(e, options, listDocuments.value)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
       form_data.append('file', e[0])
-
+      refds.value + 1
       let currentDropzone = listDocuments.value.find((x) => x.doc_id === e.item)
       docs_ids.value.push(e.item)
       const { makeRequest: delInfoAFile } = useRequest({
@@ -189,7 +190,44 @@ const Form13 = defineComponent({
       })
       sendDocuments()
       changeStatus()
+      ctx.emit('closePopup')
     }
+
+    const { makeRequest: changeStatusNew } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setPartTask', {
+          status: 2,
+          data: {
+            id: data.task.id,
+          },
+        }),
+    })
+
+    const { makeRequest: setStartStep } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setStartStep', {
+          data: {
+            process: 5,
+            process_id: data.task['process_id'],
+            step_id: 5,
+            docs_id: JSON.parse(data.task.dop_data)['docs_id'],
+            personal_id: data.entity['id'],
+            // account_id - chief id
+            account_id: 25,
+            type_parent_action: 2,
+            parent_action: data.entity['id'],
+          },
+        }),
+    })
+
+    let emplyeeFired = () => {
+      changeStatusNew()
+      setStartStep()
+      ctx.emit('closePopup')
+    }
+
     return {
       addFiles,
       listDocuments,
@@ -202,6 +240,8 @@ const Form13 = defineComponent({
       sendTaskFinish,
       addDisabledDocuments,
       disabledDocumentsAcc,
+      emplyeeFired,
+      refds,
     }
   },
 })
