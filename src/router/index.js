@@ -178,6 +178,9 @@ const routes = [
       {
         name: 'object/:id',
         path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
       {
@@ -185,6 +188,14 @@ const routes = [
         path: '/object/add',
         meta: {
           mode: ['add'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'object-appoint',
+        path: '/object/appoint',
+        meta: {
+          mode: ['appoint'],
         },
         component: Detail,
       },

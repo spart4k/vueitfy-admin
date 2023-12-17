@@ -7,7 +7,7 @@ import {
   dateField,
   checkboxField,
   colorPicker,
-  // dropZoneField,
+  // dropZoneField,label:"label:"ФИО директора"
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/form/default/index.vue'
@@ -1975,6 +1975,15 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
+          {
+            label: 'Назначить',
+            class: ['v-table-button--custom'],
+            url: 'object-appoint',
+            type: 'changeUrl',
+            // function: addQuery,
+            // type: 'nextStage',
+            backgroundColor: '#fff',
+          },
         ],
       },
       head: [
@@ -2393,6 +2402,128 @@ const config = {
             type: TableDefault,
             active: false,
             config: consumptionConfig,
+          },
+          {
+            id: 3,
+            path: 'appoint',
+            name: 'Назначить',
+            type: FormDefault,
+            detail: true,
+            lists: [
+              {
+                alias: 'assign_object_directions',
+                filter: [],
+              },
+            ],
+            alias: 'object',
+            active: false,
+            fields: [
+              autocompleteField({
+                label: 'Объект',
+                name: 'assign_objects',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/object_logistic',
+                // object
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                // dependence: [
+                //   {
+                //     type: 'default',
+                //     fillField: ['city_id', 'regions_id'],
+                //   },
+                //   {
+                //     type: 'api',
+                //     module: 'selects/getListUpdate',
+                //     field: 'personal_id',
+                //     url: 'get/pagination_list/personal',
+                //   },
+                // ],
+                update: {
+                  module: 'selects/getList',
+                  fields: ['assign_object_directions'],
+                },
+              }),
+              selectField({
+                label: 'Направление',
+                name: 'assign_object_directions',
+                subtype: 'multiselect',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+              autocompleteField({
+                label: 'Сотрудник',
+                name: 'assign_accounts',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/object_logistic',
+                // object
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                // filters: [
+                //   {
+                //     field: 'direction_id',
+                //     value: '',
+                //   },
+                // ],
+                // dependence: [
+                //   {
+                //     type: 'api',
+                //     module: 'selects/getListUpdate',
+                //     field: 'personal_id',
+                //     url: 'get/pagination_list/personal',
+                //   },
+                // ],
+                // update: {
+                //   module: 'selects/getList',
+                //   fields: ['personal_id'],
+                // },
+              }),
+            ],
+            actions: [
+              stringAction({
+                text: 'Сохранить',
+                type: 'submit',
+                module: '',
+                name: 'saveForm',
+                nextForm: true,
+              }),
+            ],
           },
         ],
         activeTab: null,
