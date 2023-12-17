@@ -98,7 +98,7 @@ export default {
         //   // vForm.password.$errors.push(result.data.message)
         //   console.log(vForm)
         // }
-        router.push('/')
+        router.push('/main')
       } catch (err) {
         console.log(err)
       }
