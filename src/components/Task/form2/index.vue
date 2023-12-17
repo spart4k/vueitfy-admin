@@ -10,7 +10,7 @@
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">
-              <template v-if="isOsnDocTouched">
+              <template v-if="isHasOsnDoc && isOsnDocTouched">
                 <v-icon x-small color="green" v-if="isOsnDocConfirmed"
                   >$IconGalka</v-icon
                 >
