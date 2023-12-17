@@ -82,6 +82,7 @@
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
       <v-btn
+        small
         :disabled="!selectName || !price || !file"
         color="info"
         class="mr-3"
@@ -90,7 +91,7 @@
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
