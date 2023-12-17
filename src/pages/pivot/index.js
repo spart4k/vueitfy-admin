@@ -77,12 +77,12 @@ const consumptionConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
       {
         label: 'Объекты',
         class: ['v-table-button--custom'],
@@ -334,12 +334,12 @@ const config = {
         // function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        // function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   // function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
       {
         label: 'Объекты',
         class: ['v-table-button--custom'],

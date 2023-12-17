@@ -66,12 +66,12 @@ const consumptionConfig = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -321,12 +321,12 @@ const debetorConfig = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -1214,12 +1214,12 @@ const skanConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -1469,12 +1469,12 @@ const bankConfig = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -1699,12 +1699,12 @@ const paymentConfig = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -2933,12 +2933,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           {
             label: 'Добавить персонал',
             class: ['v-table-button--custom'],
@@ -3161,12 +3161,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           {
             label: 'Добавить персонал',
             class: ['v-table-button--custom'],
@@ -3608,12 +3608,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           {
             label: 'Добавить персонал',
             class: ['v-table-button--custom'],
@@ -4054,12 +4054,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
         ],
       },
       head: [
@@ -4492,12 +4492,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
         ],
       },
       head: [
@@ -4690,12 +4690,12 @@ const config = {
             url: 'personal-add-key',
             backgroundColor: '#fff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
         ],
       },
       head: [
