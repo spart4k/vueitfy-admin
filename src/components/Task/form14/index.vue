@@ -5,10 +5,10 @@
         <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
-      <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
+      <!-- <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo> -->
       <div class="position-relative">
         <div class="mb-10">
-          <span class="font-weight-bold">Приложите документы: </span>
+          <span class="font-weight-bold">Приложенные документы: </span>
           <v-expansion-panels>
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
