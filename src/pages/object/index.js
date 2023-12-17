@@ -63,12 +63,12 @@ const consumptionConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -315,12 +315,12 @@ const skanConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -567,12 +567,12 @@ const paymentConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -2634,7 +2634,7 @@ const config = {
         method: 'get',
         alias: 'object',
         url: '/get/form/',
-        name: 'Персонал',
+        name: 'Назначить',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           // {
@@ -2990,6 +2990,15 @@ const config = {
               }),
             ],
             actions: [
+              stringAction({
+                text: 'Закрыть',
+                type: 'submit',
+                color: 'textDefault',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'personal-add',
+                skipValidation: true,
+              }),
               stringAction({
                 text: 'Сохранить',
                 type: 'submit',
