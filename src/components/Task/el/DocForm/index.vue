@@ -440,7 +440,6 @@
                         "
                         label="Дата выезда"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
