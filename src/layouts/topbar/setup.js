@@ -20,11 +20,11 @@ export default {
     const pageName = computed(() => {
       let name = 'CRM'
       props.navData.forEach((item, index) => {
-        if (route.path.includes(item.link)) {
+        if (route?.matched?.[0]?.path === item.link) {
           name = item.name
-        } else if (item.child_json) {
-          JSON?.parse(item?.child_json).forEach((navItem) => {
-            if (route.path.includes(navItem.link)) name = navItem.name
+        } else if (item.child) {
+          item?.child.forEach((navItem) => {
+            if (route?.matched?.[0]?.path === navItem.link) name = navItem.name
           })
         }
       })
