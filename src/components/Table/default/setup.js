@@ -447,7 +447,7 @@ const table = {
         popupForm.value.isShow = true
       }
     }
-    const panelHandler = (button) => {
+    const panelHandler = async (button) => {
       const { type, url } = button
       const changeUrl = (url) => {
         router.push(
@@ -467,6 +467,8 @@ const table = {
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
         emit('nextStage', {})
+      } else if (button.label === 'Обновить') {
+        await getItems()
       }
       if (button.function) button.function()
     }

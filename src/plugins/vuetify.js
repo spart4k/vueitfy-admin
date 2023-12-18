@@ -38,7 +38,8 @@ export default new Vuetify({
         topbar: '#252525',
         text: '#FFFFFF',
         navbar: '#252525',
-        background: '#000000',
+        pageBackground: '#1D1D1D',
+        background: '#252525',
         textDefault: '#ffffff',
       },
       blue: {
