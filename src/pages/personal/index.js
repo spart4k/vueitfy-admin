@@ -2745,7 +2745,9 @@ const defaultForm = [
             filters: [
               {
                 field: 'object_id',
+                alias: 'object_json',
                 value: '',
+                type: 'array'
               },
             ],
             isShow: {

@@ -538,7 +538,7 @@ export default function ({
             targetField.filters.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
-                alias: el.field,
+                alias: el.alias ?? el.field,
                 type: el.type,
                 value: formData[el.field],
               })
@@ -547,7 +547,7 @@ export default function ({
             dependence.filter.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
-                alias: el.field,
+                alias: el.alias ?? el.field,
                 type: el.type,
                 value: formData[el.field],
               })
