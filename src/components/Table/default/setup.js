@@ -435,7 +435,10 @@ const table = {
       if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
-      if (props.options.detail.type === 'popup') {
+      if (options.detail.type === 'popup') {
+        //router.push({
+        //  path: `${route.}./1`
+        //})
         router.push(
           {
             name: `${route.name}-add`,
