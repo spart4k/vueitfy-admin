@@ -50,8 +50,9 @@ export default {
           props.field.filters.forEach((el) => {
             if (!props.formData[el.field]) return
             filter.push({
-              field: el.field,
+              alias: el.field,
               value: props.formData[el.field],
+              type: el.type,
             })
           })
         }
