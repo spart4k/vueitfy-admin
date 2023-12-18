@@ -852,7 +852,7 @@ const consumptionConfig = {
     ],
     activeTab: null,
   },
-  filters,
+  //filters,
 }
 
 // const fieldsAddToEdit = [
@@ -952,7 +952,7 @@ const config = {
         backgroundColor: '#fff',
       },
     ],
-    filters: true,
+    //filters: true,
     search: true,
     date: true,
     addedItemsChildrenType: 'object',

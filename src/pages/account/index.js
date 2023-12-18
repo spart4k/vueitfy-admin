@@ -847,7 +847,7 @@ const config = {
               { alias: 'direction_id', filter: [] },
               { alias: 'grajdanstvo_id', filter: [] },
               {
-                alias: 'object_type',
+                alias: 'account_object_types',
                 filter: [],
               },
             ],
@@ -973,7 +973,7 @@ const config = {
                 // ],
                 updateList: [
                   {
-                    alias: 'object_type',
+                    alias: 'account_object_types',
                     filter: [
                       {
                         field: 'direction_json',
@@ -988,7 +988,7 @@ const config = {
               selectField({
                 label: 'Тип',
                 name: 'type',
-                alias: 'object_type',
+                alias: 'account_object_types',
                 subtype: 'multiselect',
                 stringify: true,
                 placeholder: '',

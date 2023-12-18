@@ -74,7 +74,7 @@ export default {
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      // console.log(fields)
+      console.log(fields)
       return fields
     }
     const params = props.tab.lists
@@ -108,11 +108,15 @@ export default {
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: (params) =>
-        store.dispatch(params.module, {
+      request: (params) => {
+        console.log(formData, params)
+        return store.dispatch(params.module, {
           url: params.url,
-          body: params.formData ? params.formData : formData,
-        }),
+          body: {
+            data: params.formData ? params.formData : formData,
+          },
+        })
+      },
     })
 
     const { makeRequest: deleteFormById } = useRequest({
