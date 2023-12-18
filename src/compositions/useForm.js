@@ -684,7 +684,7 @@ export default function ({
   }
 
   const changeCheckbox = (field) => {
-    showField(field.type, field)
+    form?.fields.forEach((el) => showField(el.type, el))
   }
 
   const changeSelect = async ({ value, field }) => {
@@ -896,6 +896,7 @@ export default function ({
           })
         }
       })
+    console.log(field)
     if (field.isShow.conditions && field.isShow.conditions.length) {
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
