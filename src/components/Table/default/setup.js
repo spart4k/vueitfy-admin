@@ -435,10 +435,14 @@ const table = {
       if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
+<<<<<<< HEAD
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
         //})
+=======
+      if (props.options.detail.type === 'popup') {
+>>>>>>> 477c5de51d7cb32f06354ca8adf161e5857f23bc
         router.push(
           {
             name: `${route.name}-add`,
@@ -483,6 +487,7 @@ const table = {
       return options.head.find((cell) => cell.type === 'actions')
     })
 
+<<<<<<< HEAD
     // WATCH
     watch(
       () => searchField,
@@ -517,6 +522,17 @@ const table = {
           await getItems()
         },
       )
+=======
+    // // WATCH
+    // watch(
+    //   () => searchField,
+    //   (newVal) => {
+    //     props.options.options.search.function(newVal)
+    //   },
+    //   () => {
+    //   }
+    // )
+>>>>>>> 477c5de51d7cb32f06354ca8adf161e5857f23bc
 
 
       // HOOKS
@@ -525,12 +541,18 @@ const table = {
         await getItems()
 
         watch(
-          () => paramsQuery.value.searchColumns ,
+          () => paramsQuery,
           async () => {
             await getItems()
           },
+          { deep: true }
         )
+<<<<<<< HEAD
 
+=======
+  
+      
+>>>>>>> 477c5de51d7cb32f06354ca8adf161e5857f23bc
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
@@ -621,12 +643,29 @@ const table = {
     });
 
     const permission = computed(() => store.state.user.permission_id)
-
+    const directions = computed(() => JSON.parse(store.state.user.direction_json))
     const availablePanelBtn = computed(() => {
+      const checkIncludesPermissions = (el) => {
+        console.log(el.permissions.includes(permission.value))
+        return el.permissions.includes(permission.value)
+      }
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+        console.log(_.intersection(
+          el.direction_id, directions.value).length)
+        if (!el.direction_id) return true
+        else {
+          return !!_.intersection(
+            el.direction_id, directions.value).length
+        }
+      }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some(el => el.permissions.includes(permission.value))
+          return btn.isShow.condition.some(el => {
+            console.log(checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type)
+            return checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type
+          })
           // if ()
         }
       })

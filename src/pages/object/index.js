@@ -2465,7 +2465,7 @@ const config = {
                 {
                   permissions: [1, 2, 3, 4, 9, 15],
                   direction_id: [1, 6],
-                  type: false,
+                  type: true,
                 },
               ],
             },
@@ -3033,7 +3033,7 @@ const config = {
                 type: 'submit',
                 module: 'form/create',
                 name: 'saveForm',
-                url: 'create/object',
+                url: 'create/assignt',
                 action: 'saveForm',
                 color: 'primary',
               }),
