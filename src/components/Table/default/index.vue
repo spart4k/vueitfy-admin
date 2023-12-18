@@ -298,11 +298,12 @@
                       v-for="(action, indexAction) in cell.actions"
                       :key="indexAction"
                     />-->
-                    <div
+                    <!--<div
                       v-if="
                         !cell.actionCondition ||
                         (cell.actionCondition &&
-                          Object.byString(row.row, cell.value))
+                          Object.byString(row.row, cell.value) &&
+                          false)
                       "
                       class="v-table-actions-wrap"
                     >
@@ -314,7 +315,7 @@
                           {{ action.url }}
                         </v-icon>
                       </v-btn>
-                    </div>
+                    </div>-->
                   </template>
                 </td>
               </tr>

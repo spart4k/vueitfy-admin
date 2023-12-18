@@ -2983,7 +2983,7 @@ const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [1,2 , 3 , 4 , 9 , 15],
+                  permissions: [1, 2, 3, 4, 9, 15],
                   type: false,
                 },
               ]
@@ -3202,12 +3202,12 @@ const config = {
           //   function: consolePanel,
           //   backgroundColor: '#fff',
           // },
-          {
-            label: 'Добавить персонал',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          //{
+          //  label: 'Добавить персонал',
+          //  class: ['v-table-button--custom'],
+          //  function: consolePanel,
+          //  backgroundColor: '#fff',
+          //},
         ],
       },
       head: [
@@ -3612,7 +3612,7 @@ const config = {
         activeTab: null,
       },
       filters,
-      
+
     },
     {
       selector: '#mainTable',
@@ -3649,12 +3649,12 @@ const config = {
           //   function: consolePanel,
           //   backgroundColor: '#fff',
           // },
-          {
-            label: 'Добавить персонал',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          //{
+          //  label: 'Добавить персонал',
+          //  class: ['v-table-button--custom'],
+          //  function: consolePanel,
+          //  backgroundColor: '#fff',
+          //},
         ],
       },
       head: [
@@ -5005,7 +5005,7 @@ const config = {
                 name: 'saveForm',
                 action: 'saveFormStore',
               }),
-              
+
             ],
           },
           {
