@@ -103,6 +103,7 @@ const Form7 = defineComponent({
     const confirmOsnDoc = () => {
       const aidDocs = JSON.parse(props.data.task.dop_data).docs_id
       if (aidDocs.length === 1 && aidDocs[0] === 0) isFormValid.value = true
+      finalData.value = { ...finalData.value, 0: formObj.value.formData }
       osnConfirmed.value = true
     }
 
