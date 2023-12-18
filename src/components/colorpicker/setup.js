@@ -19,6 +19,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
