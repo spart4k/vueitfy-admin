@@ -348,7 +348,6 @@ const table = {
       const { head } = props.options
       head.forEach((el) => {
         if (el.sorts?.length) {
-          //Vue.set(el.sorts, 'field', el.value)
           paramsQuery.value.sorts.push({
             field: el.value,
             value: el.sorts[0].default,
@@ -429,9 +428,6 @@ const table = {
     }
     const addItem = () => {
       if (props.options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
         router.push(
           {
             name: `${route.name}-add`,
@@ -477,40 +473,15 @@ const table = {
     })
     //props.options.data.rows = data.rows
 
-    // WATCH
-    watch(
-      () => searchField,
-      (newVal) => {
-        props.options.options.search.function(newVal)
-      },
-      () => {
-      }
-    )
-
-
-    // const paramsQuery = ref({
-    //   currentPage: pagination.value.currentPage,
-    //   searchGlobal: searchField.value,
-    //   countRows: pagination.value.countRows,
-    //   sorts: [],
-    //   searchColumns: [],
-    // })
-
-    
-      watch(
-        () => paramsQuery,
-        async () => {
-          await getItems()
-        },
-        {deep: true}
-      )
-
-      watch(
-        () => paramsQuery.value.sorts,
-        async () => {
-          await getItems()
-        },
-      )
+    // // WATCH
+    // watch(
+    //   () => searchField,
+    //   (newVal) => {
+    //     props.options.options.search.function(newVal)
+    //   },
+    //   () => {
+    //   }
+    // )
 
       
       // HOOKS
@@ -519,11 +490,13 @@ const table = {
         await getItems()
 
         watch(
-          () => paramsQuery.value.searchColumns ,
+          () => paramsQuery,
           async () => {
             await getItems()
           },
+          { deep: true }
         )
+  
       
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
