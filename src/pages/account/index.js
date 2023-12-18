@@ -1086,7 +1086,6 @@ const config = {
                 value: '#ffffff',
                 placeholder: '',
                 readonly: true,
-                disabled: true,
                 class: [''],
                 position: {
                   cols: 12,
