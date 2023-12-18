@@ -1956,6 +1956,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2625,6 +2626,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2637,7 +2639,6 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -2645,6 +2646,7 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -2912,6 +2914,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2924,7 +2927,6 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -2932,6 +2934,8 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
+
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -3308,6 +3312,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -3320,7 +3325,6 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -3328,6 +3332,8 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
+
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
