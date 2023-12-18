@@ -1663,7 +1663,7 @@ const config = {
           //   ],
           // },
           {
-            id: 1,
+            id: 3,
             name: 'Банковские карты',
             type: TableDefault,
             path: 'edit',
@@ -1671,7 +1671,7 @@ const config = {
             config: consumptionConfig,
           },
           {
-            id: 2,
+            id: 4,
             name: 'Сканы',
             type: FormDocuments,
             path: 'edit',
