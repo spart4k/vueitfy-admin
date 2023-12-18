@@ -3033,7 +3033,7 @@ const config = {
                 type: 'submit',
                 module: 'form/create',
                 name: 'saveForm',
-                url: 'create/object',
+                url: 'create/assignt',
                 action: 'saveForm',
                 color: 'primary',
               }),

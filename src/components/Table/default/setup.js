@@ -621,12 +621,20 @@ const table = {
     });
 
     const permission = computed(() => store.state.user.permission_id)
-
+    const directions = computed(() => JSON.parse(store.state.user.direction_json))
     const availablePanelBtn = computed(() => {
+      const checkIncludesPermissions = (el) => {
+        return el.permissions.includes(permission.value)
+      }
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+        return _.intersection(
+          el.direction_id, directions.value)
+      }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some(el => el.permissions.includes(permission.value))
+          return btn.isShow.condition.some(el => checkIncludesPermissions(el) && checkIncludesDirections(el))
           // if ()
         }
       })
