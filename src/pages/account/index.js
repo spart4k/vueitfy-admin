@@ -831,6 +831,7 @@ const config = {
         alias: 'personal',
         url: '/get/form/',
         name: 'Добавление аккаунта',
+        getOnClose: true,
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
