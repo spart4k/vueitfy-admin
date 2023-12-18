@@ -1517,7 +1517,6 @@ const config = {
     ],
     activeTab: null,
   },
-  filters,
 }
 
 export default config

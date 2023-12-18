@@ -96,32 +96,7 @@ const config = {
       },
     },
     {
-      title: 'ФИО',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.name',
-      value: 'from_fio',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'to_fio',
+      title: 'Кому',
       type: 'default',
       align: 'center',
       fixed: {
@@ -140,6 +115,31 @@ const config = {
       width: '150',
       value: 'to_fio',
       alias: 'p.telefon',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'От кого',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'p.name',
+      value: 'from_fio',
       search: {
         field: '',
         isShow: true,

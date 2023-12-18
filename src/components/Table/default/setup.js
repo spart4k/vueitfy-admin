@@ -482,7 +482,7 @@ const table = {
     const headActions = computed(() => {
       return options.head.find((cell) => cell.type === 'actions')
     })
-    
+
     // WATCH
     watch(
       () => searchField,
@@ -502,7 +502,7 @@ const table = {
     //   searchColumns: [],
     // })
 
-    
+
       watch(
         () => paramsQuery,
         async () => {
@@ -518,7 +518,7 @@ const table = {
         },
       )
 
-      
+
       // HOOKS
       onMounted(async () => {
         initHeadParams()
@@ -530,7 +530,7 @@ const table = {
             await getItems()
           },
         )
-      
+
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
@@ -620,7 +620,7 @@ const table = {
       return key in obj;
     });
 
-    const permission = computed(() => store.state.user.permission)
+    const permission = computed(() => store.state.user.permission_id)
 
     const availablePanelBtn = computed(() => {
       return props.options.panel.buttons.filter((btn) => {
