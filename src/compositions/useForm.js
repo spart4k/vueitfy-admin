@@ -40,28 +40,9 @@ export default function ({
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
-  // const validations = () => {
-  //   const formFields = {}
-  //   form.fields.forEach((el) => {
-  //     formFields[el.name] = el
-  //   })
-  //   return Object.keys(formData).reduce((obj, key) => {
-  //     if (
-  //       (typeof formFields[key].isShow === 'boolean' &&
-  //         !formFields[key].isShow) ||
-  //       (typeof formFields[key].isShow === 'object' &&
-  //         !formFields[key].isShow.value)
-  //     ) {
-  //       return obj
-  //     }
-  //     obj[key] = { ...formFields[key].validations, $autoDirty }
-  //     return obj
-  //   }, {})
-  // }
 
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
-      //console.log(obj[key])
       obj[key] = ref(fields[key].default)
       return obj
     }, {})
@@ -714,27 +695,38 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
+
     const queryFields = fields.map(async (el) => {
       const filters = []
-      const { url } = el
+      const url = el.url
+
       if (el.filters && el.filters.length) {
-        el.filters.forEach((filter) => {
-          let value, type
-          if (filter.source === 'fromPrev') {
-            value = form?.formData[filter.field]
-          } else if (filter.source === undefined) {
-            value = filter.value
-          } else {
-            value = formData[filter.field]
+        for (const filter of Object.values(el.filters)) {
+          const getValue = () => {
+            let value = ''
+            // console.log()
+            if (filter.source === 'fromPrev') {
+              value = form?.formData[filter.field]
+            } else if (typeof filter.source === 'undefined') {
+              value = filter.value
+            } else {
+              value = formData[filter.field]
+            }
+
+            return value
           }
-          if (filter.type) type = filter.type
+
+          const value = getValue()
+          const type = filter.type ?? undefined
+
           filters.push({
-            field: filter.field,
+            alias: filter.field,
             value,
             type,
           })
-        })
+        }
       }
+
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
@@ -742,14 +734,18 @@ export default function ({
         id: formData[el.name ? el.name : el.alias],
         filters,
       })
+
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
       return data
     })
+
+    //console.log(fields, '=>', queryFields)
     await Promise.all(queryFields)
   }
+
   const putSelectItems = (lists) => {
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
@@ -776,6 +772,7 @@ export default function ({
       }
     }
   }
+
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
