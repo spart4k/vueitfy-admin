@@ -220,7 +220,7 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-      //emit('closePopup')
+      emit('closePopup')
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
