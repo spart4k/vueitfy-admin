@@ -14,9 +14,9 @@
       color="error"
       overlap
     >
-      <v-btn @click="showNotification" icon>
-        <v-icon color="text">$IconNotificationBell</v-icon>
-      </v-btn>
+      <!--<v-btn @click="showNotification" icon>-->
+      <!--<v-icon color="text">$IconNotificationBell</v-icon>-->
+      <!--</v-btn>-->
     </v-badge>
 
     <v-menu offset-y nudge-bottom="10">

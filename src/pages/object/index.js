@@ -2428,7 +2428,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      //filters,
     },
     {
       selector: '#mainTable',
@@ -3042,7 +3042,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      //filters,
     },
     {
       selector: '#mainTable',
@@ -3488,7 +3488,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      //filters,
     },
     // {
     //   selector: '#mainTable',
