@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="d-flex justify-center text-h6">
         <span class="font-weight-bold text-h6">{{ entity.name }}</span
         >&nbsp;({{ dataRojd }} г.р)
@@ -12,7 +12,7 @@
             <v-row align="center">
               <template v-if="isOsnDocTouched">
                 <v-icon x-small color="green" v-if="isOsnDocConfirmed"
-                  >$IconMain</v-icon
+                  >$IconGalka</v-icon
                 >
                 <v-icon x-small color="red" v-else>$IconClose</v-icon>
               </template>
@@ -68,13 +68,21 @@
         :listNames="listNames"
         :docs="docs"
       ></DocFormWithConfirm>
-      <FormComment />
+      <v-textarea
+        v-model="comment"
+        @input="commentErr = ''"
+        :error-messages="commentErr"
+        rows="2"
+        clearable
+        label="Комментарий"
+        class="mb-2"
+      ></v-textarea>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
       <v-btn
         class="mr-2"
-        :disabled="!isFormValid && !isOsnDocTouched"
+        :disabled="!isFormValid || !isOsnDocTouched"
         color="info"
         @click="sendData"
       >

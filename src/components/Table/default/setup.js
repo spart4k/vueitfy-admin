@@ -215,6 +215,7 @@ const table = {
       //console.log(paramsCol)
     }
     const openContext = ($event, row) => {
+      return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
         $event.preventDefault()
       } else {
@@ -227,8 +228,9 @@ const table = {
         }, 0)
       }
       //console.log($event.clientX, $event.clientY)
-      //console.log($event, row)
-      let direction = 'left'
+      //console.log($event, row) // eslint-disable-next-line
+      // eslint-disable-next-line
+      let direction = 'left' // eslint-disable-next-line
       let clientX = $event.clientX
       if ($event.clientX + contextWidth >= window.innerWidth) {
         direction = 'right'
@@ -280,19 +282,12 @@ const table = {
       filter.value.isShow = false
     }
     const getItems = async () => {
-      console.log('get items')
-      //this.
       loading.value = true
-      const { url } = options.options
-      //const data = await tableApi.get(url, {
-      //  currentPage: pagination.value.currentPage,
-      //  countRows: 30,
-      //  searchGlobal: searchField.value,
-      //})
-      //body.sorts = Object.assign(target, source).sorts
+      const { url } = props.options.options
+      // Может быть без props. после merge cofilcts
       let sorts = []
       let searchColumns = []
-      //let filter = []
+
       paramsQuery.value.sorts.forEach((el) => {
         if (!el.value) {
           return
@@ -307,19 +302,7 @@ const table = {
           searchColumns.push(el)
         }
       })
-      //props.filtersConfig.forEach((el) => {
-      //  if (!el.value) {
-      //    return
-      //  } else {
-      //    filter.push({
-      //      field: el.name,
-      //      value: el.value,
-      //      alias: el.alias,
-      //      type: el.type,
-      //      subtype: el.subtype,
-      //    })
-      //  }
-      //})
+
       let by = undefined
       // console.log('props.filtersConfig', store.state.formStorage, props.detail?.stageData.id)
       if (props.routeParam || store?.state?.formStorage?.id) {
@@ -332,7 +315,6 @@ const table = {
           },
         ]
       }
-
       const data = await store.dispatch('table/get', {
         url: url,
         data: {
@@ -433,11 +415,14 @@ const table = {
         //router.push({
         //  path: `${route.}./1`
         //})
+        let requstId = 'id'
+        if (props.options.detail.requstId)
+          requstId = props.options.detail.requstId
         router.push(
           {
-            name: `${route.name}/:id`,
+            name: `${route.name}/:${requstId}`,
             params: {
-              id: row.row.id
+              [requstId]: row.row.id
             }
         })
         popupForm.value.isShow = true
@@ -497,7 +482,7 @@ const table = {
     const headActions = computed(() => {
       return options.head.find((cell) => cell.type === 'actions')
     })
-    
+
     // WATCH
     watch(
       () => searchField,
@@ -507,26 +492,46 @@ const table = {
       () => {
       }
     )
-    //watch(
-    //  () => pagination.value.currentPage,
-    //  async () => {
-    //    await getItems()
-    //  }
-    //)
-    watch(
-      () => paramsQuery,
-      async () => {
+
+
+    // const paramsQuery = ref({
+    //   currentPage: pagination.value.currentPage,
+    //   searchGlobal: searchField.value,
+    //   countRows: pagination.value.countRows,
+    //   sorts: [],
+    //   searchColumns: [],
+    // })
+
+
+      watch(
+        () => paramsQuery,
+        async () => {
+          await getItems()
+        },
+        {deep: true}
+      )
+
+      watch(
+        () => paramsQuery.value.sorts,
+        async () => {
+          await getItems()
+        },
+      )
+
+
+      // HOOKS
+      onMounted(async () => {
+        initHeadParams()
         await getItems()
-      },
-      { deep: true }
-    )
 
-    // HOOKS
-    onMounted(async () => {
-      initHeadParams()
-      await getItems()
+        watch(
+          () => paramsQuery.value.searchColumns ,
+          async () => {
+            await getItems()
+          },
+        )
 
-      const table = document.querySelector(options.selector)
+      const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
       headerCells.forEach((headerEl) => {
@@ -615,17 +620,29 @@ const table = {
       return key in obj;
     });
 
-    const permission = computed(() => store.state.user.permission)
-
+    const permission = computed(() => store.state.user.permission_id)
+    const directions = computed(() => JSON.parse(store.state.user.direction_json))
     const availablePanelBtn = computed(() => {
+      const checkIncludesPermissions = (el) => {
+        return el.permissions.includes(permission.value)
+      }
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+        return _.intersection(
+          el.direction_id, directions.value)
+      }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some(el => el.permissions.includes(permission.value))
+          return btn.isShow.condition.some(el => checkIncludesPermissions(el) && checkIncludesDirections(el))
           // if ()
         }
       })
     })
+
+    const clickHandler = () => {
+      emit('closePopup')
+    }
 
     return {
       // DATA
@@ -679,6 +696,7 @@ const table = {
       addItem,
       panelHandler,
       availablePanelBtn,
+      clickHandler,
     }
   },
 }

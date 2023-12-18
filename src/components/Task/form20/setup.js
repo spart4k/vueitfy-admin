@@ -5,6 +5,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
+import moment from 'moment/moment'
 
 const Form20 = defineComponent({
   name: 'Form20',
@@ -26,7 +27,10 @@ const Form20 = defineComponent({
       },
     }
 
-    const dopData = JSON.stringify(props.data.task.dop_data)
+    const dopData = JSON.parse(props.data.task.dop_data)
+    const personal = props.data.data.personal
+    const dataRojd = moment(personal.data_rojd).format('DD.MM.YYYY')
+    const name = personal.name
 
     const {
       formData: keyForm,
@@ -45,10 +49,6 @@ const Form20 = defineComponent({
         trainee: {
           default: false,
         },
-        comment: {
-          validations: { required },
-          default: '',
-        },
       },
       context,
     })
@@ -59,13 +59,12 @@ const Form20 = defineComponent({
         return store.dispatch('taskModule/setPartTask', {
           status: 2,
           data: {
-            process_id: props.data.entity.process_id,
-            task_id: props.data.entity.id,
-            parent_action: props.data.entity.id,
+            process_id: props.data.task.process_id,
+            task_id: props.data.task.id,
+            parent_action: props.data.task.id,
             user_key: props.data.entity.id,
             photo_path: dopData.photo_path ?? '',
             obd_id: props.data.entity.id,
-            comment: keyForm.comment,
             okk_id: props.data.task.from_account_id,
           },
         })
@@ -91,7 +90,16 @@ const Form20 = defineComponent({
       success && ctx.emit('closePopup')
     }
 
-    return { keyForm, keyFormErrors, keyFormValidate, completeTask, dopData }
+    return {
+      keyForm,
+      keyFormErrors,
+      keyFormValidate,
+      completeTask,
+      dopData,
+      personal,
+      dataRojd,
+      name,
+    }
   },
 })
 export default Form20

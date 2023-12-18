@@ -5,12 +5,15 @@
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
         >&nbsp; на дату 07.02.2023
       </v-card-title>
+      <FormError v-if="JSON.parse(data.task.dop_data).comment" class="mb-5">
+        {{ JSON.parse(data.task.dop_data).comment || '' }}
+      </FormError>
       <TextInfo :infoObj="infoObj" />
       <div>
-        <div>Путевой лист:</div>
-        <div v-if="directionToMagnit">
+        <div style="font-weight: 600">Путевой лист:</div>
+        <div v-if="directionToMagnit && pathAct">
           <a download href="#">
-            <img style="width: 100%" src="/file/get/:folder/:file" alt="#" />
+            <img style="width: 100%" :src="pathAct" alt="#" />
           </a>
         </div>
         <div v-else>Не приложен</div>
@@ -18,11 +21,11 @@
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
-      <v-btn @click="confirm" class="mr-2" small color="info">
+      <v-btn @click="confirm" class="mr-2" color="info">
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

@@ -36,19 +36,12 @@ const config = {
         function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -103,32 +96,7 @@ const config = {
       },
     },
     {
-      title: 'ФИО',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.name',
-      value: 'from_fio',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'to_fio',
+      title: 'Кому',
       type: 'default',
       align: 'center',
       fixed: {
@@ -147,6 +115,31 @@ const config = {
       width: '150',
       value: 'to_fio',
       alias: 'p.telefon',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'От кого',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'p.name',
+      value: 'from_fio',
       search: {
         field: '',
         isShow: true,
@@ -182,7 +175,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },

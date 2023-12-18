@@ -15,6 +15,8 @@ import FormDefault from '@/components/form/default/index.vue'
 import FormDocuments from '@/components/form/documents/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import { userKeys } from '@/pages'
+import { stringify } from 'qs'
+import { readonly } from 'vue'
 
 function consoleText(row) {
   console.log(row, 2)
@@ -63,12 +65,12 @@ const consumptionConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -81,7 +83,7 @@ const consumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -119,12 +121,12 @@ const skanConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -333,7 +335,7 @@ const skanConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -371,12 +373,12 @@ const paymentConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -585,7 +587,7 @@ const paymentConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -627,12 +629,12 @@ const config = {
             //function: consolePanel,
             backgroundColor: '#fff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
         ],
       },
       head: [
@@ -816,14 +818,14 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
       detail: {
         type: 'popup', // String 'popup' or 'page'
         classes: [''], // List class
-        width: '1000px',
+        width: '600px',
         method: 'get',
         alias: 'personal',
         url: '/get/form/',
@@ -842,6 +844,10 @@ const config = {
               { alias: 'direction_json', filter: [] },
               { alias: 'direction_id', filter: [] },
               { alias: 'grajdanstvo_id', filter: [] },
+              {
+                alias: 'object_type',
+                filter: [],
+              },
             ],
             alias: 'personal',
             active: false,
@@ -854,7 +860,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
               }),
@@ -866,22 +872,9 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
-              }),
-              dateField({
-                label: 'Дата рождения',
-                name: 'birthday',
-                subtype: 'date',
-                placeholder: '',
-                classes: [''],
-                position: {
-                  cols: 12,
-                  sm: 12,
-                },
-                bootstrapClass: [''],
-                alias: 'p.date_status',
               }),
               stringField({
                 label: 'Телефон',
@@ -891,7 +884,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
               }),
@@ -903,7 +896,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
               }),
@@ -915,7 +908,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
               }),
@@ -927,9 +920,89 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
+              }),
+              dateField({
+                label: 'Дата рождения',
+                name: 'birthday',
+                subtype: 'date',
+                placeholder: '',
+                classes: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+                alias: 'p.date_status',
+              }),
+              selectField({
+                label: 'Направления',
+                name: 'direction_json',
+                subtype: 'multiselect',
+                // requestKey: 'direction_json',
+                stringify: true,
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                // updateList: [
+                //   {
+                //     alias: 'doljnost_id',
+                //     filter: [
+                //       {
+                //         field: 'direction_id',
+                //         value: '',
+                //         source: 'formData',
+                //         type: 'num',
+                //       },
+                //     ],
+                //   },
+                // ],
+                updateList: [
+                  {
+                    alias: 'object_type',
+                    filter: [
+                      {
+                        field: 'direction_json',
+                        value: '',
+                        source: 'formData',
+                        type: 'array',
+                      },
+                    ],
+                  },
+                ],
+              }),
+              selectField({
+                label: 'Тип',
+                name: 'type',
+                alias: 'object_type',
+                subtype: 'multiselect',
+                stringify: true,
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                requiredFields: ['direction_json'],
               }),
               selectField({
                 label: 'Роль',
@@ -944,7 +1017,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -954,6 +1027,18 @@ const config = {
                     module: 'selects/getListUpdate',
                     field: 'chief_id',
                     url: 'get/pagination_list/chief_id',
+                    filters: [
+                      {
+                        field: 'permission_id',
+                        type: 'num',
+                        value: '',
+                      },
+                      {
+                        field: 'direction_json',
+                        type: 'array',
+                        value: '',
+                      },
+                    ],
                   },
                 ],
               }),
@@ -978,68 +1063,42 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-
                 filters: [
                   {
                     field: 'permission_id',
                     type: 'num',
                     value: '',
                   },
+                  {
+                    field: 'direction_json',
+                    type: 'array',
+                    value: '',
+                  },
                 ],
+                requiredFields: ['direction_json', 'permission_id'],
               }),
-              selectField({
-                label: 'Направления',
-                name: 'direction_id',
-                alias: 'direction_id',
-                requestKey: 'direction_json',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 3,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-                // updateList: [
-                //   {
-                //     alias: 'doljnost_id',
-                //     filter: [
-                //       {
-                //         field: 'direction_id',
-                //         value: '',
-                //         source: 'formData',
-                //         type: 'num',
-                //       },
-                //     ],
-                //   },
-                // ],
-              }),
-              selectField({
-                label: 'Объекты',
-                name: 'object_json',
-                alias: 'object_json',
-                stringify: true,
-                disabled: true,
-                placeholder: '',
-                class: [''],
-                value: [],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 4,
-                },
-                validations: {},
-                bootstrapClass: [''],
-              }),
+              // selectField({
+              //   label: 'Объекты',
+              //   name: 'object_json',
+              //   alias: 'object_json',
+              //   stringify: true,
+              //   disabled: true,
+              //   readonly: true,
+              //   placeholder: '',
+              //   class: [''],
+              //   value: [],
+              //   selectOption: {
+              //     text: 'name',
+              //     value: 'id',
+              //   },
+              //   items: [],
+              //   position: {
+              //     cols: 12,
+              //     sm: 6,
+              //   },
+              //   validations: {},
+              //   bootstrapClass: [''],
+              // }),
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
@@ -1050,9 +1109,23 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 4,
+                  sm: 6,
                 },
                 bootstrapClass: [''],
+              }),
+              checkboxField({
+                label: 'Руководитель',
+                name: 'is_chief',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+                //validations: { required },
+                //isShow: false,
               }),
             ],
             actions: [
@@ -1062,14 +1135,14 @@ const config = {
                 color: 'black',
                 name: 'closePopup',
                 action: 'closePopup',
-                to: 'personal',
+                to: 'account',
                 skipValidation: true,
               }),
               stringAction({
                 text: 'Создать',
                 type: 'submit',
                 module: 'account/createData',
-                url: 'set/data/sys_account',
+                url: 'set/account',
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
@@ -1693,12 +1766,12 @@ const config = {
             function: consolePanel,
             backgroundColor: '#fff',
           },
-          {
-            label: 'Скачать',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Скачать',
+          //   class: ['v-table-button--custom'],
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
         ],
       },
       head: [
@@ -1882,7 +1955,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },

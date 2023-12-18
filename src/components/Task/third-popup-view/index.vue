@@ -1,7 +1,12 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <TextInfo :infoObj="textInfo" />
+      <div class="v-card__title d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span>
+        &nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
+      </div>
+
+      <TextInfo :infoObj="textInfo" class="mb-2" />
       <v-row> Проверьте документы: </v-row>
       <FormError>{{ JSON.parse(data.task.dop_data).comment }}</FormError>
       <div>
@@ -68,7 +73,7 @@
       <v-btn
         class="mr-2"
         color="info"
-        :disabled="!isFormValid"
+        :disabled="!isLoadImage && !comment"
         @click="sendDoneTask"
       >
         <v-icon small>mdi-content-save</v-icon>

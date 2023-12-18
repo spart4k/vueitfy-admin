@@ -95,13 +95,6 @@ const consumptionConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Объекты',
-        class: ['v-table-button--custom'],
-        url: '$IconEdit',
-        function: changeSort,
-        backgroundColor: '#ffffff',
-      },
     ],
   },
   head: [
@@ -310,7 +303,7 @@ const consumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -941,7 +934,6 @@ const config = {
       {
         label: 'Обновить',
         class: ['v-table-button--custom'],
-        url: '$IconEdit',
         // function: consolePanel,
         backgroundColor: '#ffffff',
       },
@@ -955,24 +947,9 @@ const config = {
       {
         label: 'Добавить',
         class: ['v-table-button--custom'],
-        url: '$IconSetting',
         type: 'addItem',
         //function: consolePanel,
         backgroundColor: '#fff',
-      },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        // function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
-        label: 'Объекты',
-        class: ['v-table-button--custom'],
-        url: '$IconUpdate',
-        function: changeSort,
-        backgroundColor: '#ffffff',
-        type: 'changeUrl',
       },
     ],
     filters: true,
@@ -1041,7 +1018,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1128,6 +1105,15 @@ const config = {
               }),
             ],
             actions: [
+              stringAction({
+                text: 'Закрыть',
+                type: 'submit',
+                color: 'black',
+                name: 'closePopup',
+                action: 'closePopup',
+                to: 'schedule',
+                skipValidation: true,
+              }),
               stringAction({
                 text: 'Создать',
                 type: 'submit',
@@ -1342,6 +1328,15 @@ const config = {
         ],
         actions: [
           stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'black',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'schedule',
+            skipValidation: true,
+          }),
+          stringAction({
             text: 'Создать',
             type: 'submit',
             module: 'personal/create',
@@ -1489,6 +1484,15 @@ const config = {
         ],
         actions: [
           stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'black',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'schedule',
+            skipValidation: true,
+          }),
+          stringAction({
             text: 'Отменить',
             type: 'cancel',
             module: 'form/del',
@@ -1513,7 +1517,6 @@ const config = {
     ],
     activeTab: null,
   },
-  filters,
 }
 
 export default config

@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
@@ -49,6 +49,8 @@ const Form7 = defineComponent({
     const finalData = ref({})
     const isFormValid = ref(false)
     const bankCardId = ref(0)
+    const osnConfirmed = ref(false)
+    const isOsnDocValid = ref(false)
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {
@@ -59,35 +61,46 @@ const Form7 = defineComponent({
       }
     )
 
-    const formObj = useForm({
-      fields: {
-        name: {
-          validations: { required },
-          default: props.data.entity.name,
+    const formObj = ref(
+      useForm({
+        fields: {
+          name: {
+            validations: { required },
+            default: props.data.entity.name,
+          },
+          data_rojd: {
+            validations: { required },
+            default: props.data.entity.data_rojd,
+          },
+          grajdanstvo_id: {
+            validations: { required },
+            default: props.data.entity.grajdanstvo_id,
+          },
         },
-        data_rojd: {
-          validations: { required },
-          default: props.data.entity.data_rojd,
-        },
-        grajdanstvo_id: {
-          validations: { required },
-          default: props.data.entity.grajdanstvo_id,
-        },
-      },
-      context,
-    })
+        context,
+      })
+    )
 
     const changeDocs = (data) => {
       console.log(data)
-      finalData.value = data.correctedDocs
+      finalData.value = isHasOsnDoc
+        ? { 0: formObj.value.formData, ...data.correctedDocs }
+        : data.correctedDocs
       bankCardId.value = data.bank_card_id
       const docsIdArr = [
         ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
       ]
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isHasOsnDoc)
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', docsIdArr.length)
+      console.log(
+        'ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ',
+        Object.values(data.correctedDocs).length
+      )
+      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isOsnDocValid.value)
       if (isHasOsnDoc) {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length &&
-          formObj.validate()
+          isOsnDocValid.value
       } else {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length
@@ -100,9 +113,9 @@ const Form7 = defineComponent({
         return store.dispatch('taskModule/setPersonalData', {
           data: {
             id: props.data.entity.id,
-            name: formObj.formData.name,
-            data_rojd: formObj.formData.data_rojd,
-            grajdanstvo_id: formObj.formData.grajdanstvo_id,
+            name: formObj.value.formData.name,
+            data_rojd: formObj.value.formData.data_rojd,
+            grajdanstvo_id: formObj.value.formData.grajdanstvo_id,
           },
         })
       },
@@ -111,9 +124,14 @@ const Form7 = defineComponent({
     const { makeRequest: setPersonalDocData } = useRequest({
       context,
       request: () => {
+        const data = Object.values(finalData.value).reduce((acc, value) => {
+          acc = { ...acc, ...value }
+          return acc
+        }, {})
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...finalData.value,
+            ...data,
+            id: props.data.data.personal_doc_data.id,
           },
         })
       },
@@ -148,8 +166,8 @@ const Form7 = defineComponent({
             docs_id: props.data.data.docs_id.map((doc) => doc.id),
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
-            okk_id: props.data.task.entity.id,
-            bank_card_id: bankCardId.value ?? null,
+            okk_id: props.data.task.from_account_id,
+            bank_card_id: bankCardId.value ? bankCardId.value : null,
           },
         })
       },
@@ -170,6 +188,16 @@ const Form7 = defineComponent({
       console.log(finalData.value)
     }
 
+    watch(
+      formObj,
+      () => {
+        isOsnDocValid.value = Object.values(formObj.value.formData).every(
+          Boolean
+        )
+      },
+      { deep: true }
+    )
+
     return {
       dataRojd,
       docsData: props.data.data.personal_doc_data,
@@ -184,6 +212,8 @@ const Form7 = defineComponent({
       formObj,
       textInfo,
       citizenItems,
+      osnConfirmed,
+      isOsnDocValid,
     }
   },
 })

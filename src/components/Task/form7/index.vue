@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="d-flex justify-center text-h6">
         <span class="font-weight-bold text-h6">{{ entity.name }}</span
         >&nbsp;({{ dataRojd }} г.р)
@@ -10,7 +10,9 @@
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">
-              <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
+              <v-icon class="mr-2" v-if="osnConfirmed" small color="green"
+                >$IconGalka</v-icon
+              >
               <span>Основные данные</span>
             </v-row>
           </v-expansion-panel-header>
@@ -63,8 +65,8 @@
             </v-row>
             <v-row class="py-2 px-2" justify="end">
               <v-btn
-                :disabled="formObj.validate()"
-                @click="() => {}"
+                :disabled="!isOsnDocValid"
+                @click="osnConfirmed = true"
                 color="warning"
               >
                 <v-icon left> $IconMain </v-icon>

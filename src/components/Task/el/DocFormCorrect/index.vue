@@ -8,7 +8,7 @@
             <div style="position: relative">
               <span class="form-status visible">
                 <v-icon x-small color="green" v-if="correctedDocs[doc.id]">
-                  $IconMain
+                  $IconGalka
                 </v-icon>
               </span>
               <span style="padding-left: 15px">{{
@@ -17,12 +17,16 @@
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <div>
-              <span>Скан:</span>
-              <a target="_blank" :href="doc.path_doc"
-                ><v-icon left small> $IconDocument </v-icon></a
-              >
-            </div>
+            <v-row>
+              <v-col>
+                <div>
+                  <span>Скан:</span>
+                  <a target="_blank" :href="doc.path_doc"
+                    ><v-icon left small> $IconDocument </v-icon></a
+                  >
+                </div>
+              </v-col>
+            </v-row>
             <!--Паспорт-->
             <div v-if="doc.doc_id === 1">
               <v-row>

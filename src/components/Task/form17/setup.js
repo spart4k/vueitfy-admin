@@ -97,19 +97,17 @@ const Form17 = defineComponent({
         context,
         request: () => {
           return store.dispatch('taskModule/setPartTask', {
+            status: 2,
             data: {
-              status: 2,
-              data: {
-                process_id: data.task.process_id,
-                manager_id: data.task.from_account_id,
-                task_id: data.task.id,
-                parent_action: data.task.id,
-                personal_target_id: data.entity.id,
-                file_output: fileName,
-                have_price: 1,
-                object_id: data.entity.object_id,
-                date_target: data.entity.date_target,
-              },
+              process_id: data.task.process_id,
+              manager_id: data.task.from_account_id,
+              task_id: data.task.id,
+              parent_action: data.task.id,
+              personal_target_id: data.entity.id,
+              file_output: fileName,
+              have_price: 1,
+              object_id: data.entity.object_id,
+              date_target: data.entity.date_target,
             },
           })
         },
@@ -230,21 +228,19 @@ const Form17 = defineComponent({
           context,
           request: () => {
             return store.dispatch('taskModule/setPartTask', {
+              status: 2,
               data: {
-                status: 2,
-                data: {
-                  process_id: data.task.process_id,
-                  manager_id: data.task.from_account_id,
-                  task_id: data.task.id,
-                  parent_action: data.task.id,
-                  personal_target_id: data.entity.id,
-                  have_price: 0,
-                  object_id: data.entity.object_id,
-                  service_id: services_spr.find(
-                    (x) => data.entity.doljnost_id
-                  )[0],
-                  date_target: data.entity.date_target,
-                },
+                process_id: data.task.process_id,
+                manager_id: data.task.from_account_id,
+                task_id: data.task.id,
+                parent_action: data.task.id,
+                personal_target_id: data.entity.id,
+                have_price: 0,
+                object_id: data.entity.object_id,
+                service_id: services_spr.find(
+                  (x) => data.entity.doljnost_id
+                )[0],
+                date_target: data.entity.date_target,
               },
             })
           },

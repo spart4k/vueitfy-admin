@@ -15,10 +15,15 @@
           @confirmed="addConfirmed"
           @unconfirmed="addUnconfirmed"
         ></FormTitle>
-        <FormComment v-model="comment" />
-        <span class="danger" v-if="commentError"
-          >Заполните поле комментарий!</span
-        >
+        <v-textarea
+          v-model="comment"
+          @input="commentError = ''"
+          :error-messages="commentError"
+          rows="2"
+          clearable
+          label="Комментарий"
+          class="mb-2"
+        ></v-textarea>
         <v-btn
           @click="clickCheckBtn"
           color="primary"
@@ -38,7 +43,9 @@
           <v-expansion-panel>
             <v-expansion-panel-header>
               <v-row align="center">
-                <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
+                <v-icon color="green" class="mr-2" v-if="osnValidate()" small
+                  >$IconGalka</v-icon
+                >
                 <span>Основные данные</span>
               </v-row>
             </v-expansion-panel-header>
@@ -93,7 +100,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
         <DocForm
-          @change="changeDocs"
+          @changeDocs="changeDocs"
           :docsData="docsData"
           :listNames="listNames"
           :docs="docs"
@@ -104,7 +111,12 @@
 
     <v-divider></v-divider>
     <v-row class="py-2" justify="end" v-if="showNextStep">
-      <v-btn :disabled="!isFormValid" color="info" @click="sendData">
+      <v-btn
+        class="mr-2"
+        :disabled="!isFormValid"
+        color="info"
+        @click="sendData"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>

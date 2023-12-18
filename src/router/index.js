@@ -21,12 +21,31 @@ import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
 import SlataReportView from '@/views/SlataReportView.vue'
+import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/main',
+    name: 'main',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: MainView,
+    children: [
+      {
+        name: 'main/:id',
+        path: ':id',
+        component: Detail,
+      },
+    ],
+  },
   {
     path: '/payment',
     name: 'payment',
@@ -126,6 +145,24 @@ const routes = [
           mode: ['edit'],
         },
         component: Detail,
+        children: [
+          {
+            name: 'personal/:id/new',
+            path: '/personal/:id/new',
+            meta: {
+              mode: ['edit', 'new'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal/:id/:object_id',
+            path: ':object_id',
+            meta: {
+              mode: ['edit', 'object_id'],
+            },
+            component: Detail,
+          },
+        ],
       },
     ],
   },
@@ -179,6 +216,9 @@ const routes = [
       {
         name: 'object/:id',
         path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
       {
@@ -186,6 +226,14 @@ const routes = [
         path: '/object/add',
         meta: {
           mode: ['add'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'object-appoint',
+        path: '/object/appoint',
+        meta: {
+          mode: ['appoint'],
         },
         component: Detail,
       },

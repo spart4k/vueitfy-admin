@@ -56,7 +56,7 @@ const _valuesConfigDefault = {
   [_keysConfigProperty.DATA]: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },

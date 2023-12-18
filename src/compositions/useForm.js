@@ -9,7 +9,6 @@ import { useRoute, useRouter } from 'vue-router/composables'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
-import { refresh } from '@/api/login'
 
 /**
  * @param loading {boolean}
@@ -17,7 +16,6 @@ import { refresh } from '@/api/login'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
-
 export default function ({
   fields = {},
   watcher,
@@ -33,16 +31,15 @@ export default function ({
   setFields,
   mode,
   createForm,
-  deleteFormById,
   detail,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  const route = useRoute()
   const filesBasket = ref({})
-  const router = useRouter()
   const { emit } = context.root.ctx
-  const permission = computed(() => store.state.user.permission)
+  const permission = computed(() => store.state.user.permission_id)
   // const validations = () => {
   //   const formFields = {}
   //   form.fields.forEach((el) => {
@@ -71,6 +68,8 @@ export default function ({
   )
 
   const computedFormData = computed(() => formData)
+
+  let startFormData = formData
 
   const validations = () => {
     const formFields = {}
@@ -111,6 +110,7 @@ export default function ({
 
   const $errors = ref({})
   const errorsCount = () => {
+    console.log($errors.value)
     $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
@@ -119,6 +119,7 @@ export default function ({
       }
       return obj
     }, {})
+    console.log($errors.value)
   }
 
   const validate = (touch) => {
@@ -154,7 +155,6 @@ export default function ({
     })
   }
   const clickHandler = async ({ action, skipValidation }) => {
-    console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
@@ -174,6 +174,7 @@ export default function ({
       }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
+      console.log('SAVE FORM')
       loading.value = true
       if (action.conditionAction) {
         action.conditionAction.forEach((el) => {
@@ -201,19 +202,6 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-    } else if (action.action === 'deleteFormById') {
-      loading.value = true
-      console.log('Срочно удляюсь ...')
-      console.log(router)
-      await deleteFormById({
-        url: action.url,
-        module: action.module,
-      })
-      emit('closePopup')
-      if (action.actionKey) {
-        emit('getItems')
-      }
-      loading.value = false
     } else if (action.action === 'updateFormStore') {
       loading.value = true
       await loadStoreFile(
@@ -232,11 +220,6 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
-      console.log('action', action, action.actionKey === 'schedule')
-      if (action.actionKey === 'schedule') {
-        emit('getItems')
-        emit('closePopup')
-      }
       loading.value = false
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
@@ -312,6 +295,11 @@ export default function ({
         action.useStorageKey.forEach((item) => {
           newForm[item.requestKey] =
             store?.state?.formStorage?.[item?.storageKey]
+        })
+      }
+      if (action?.useRouteKey?.length) {
+        action.useRouteKey.forEach((item) => {
+          newForm[item.requestKey] = +route.params?.[item?.storageKey]
         })
       }
       if (item.stringify) {
@@ -408,9 +396,7 @@ export default function ({
     let queries = []
     let listData
     if (hasSelect()) {
-      console.log('listData', form)
       listData = form?.lists?.map((list) => {
-        console.log('list', list)
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
@@ -549,24 +535,25 @@ export default function ({
       } else if (dependence.url && typeof dependence.url === 'string') {
         console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
+        console.log(targetField)
         if (targetField.type === 'autocomplete') {
           const filter = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
+              console.log(formData[el.field])
               if (!formData[el.field]) return
               filter.push({
-                type: el.type,
                 alias: el.field,
+                type: el.type,
                 value: formData[el.field],
               })
             })
-          }
-          if (dependence.filter && dependence.filter.length) {
+          } else if (dependence.filter && dependence.filter.length) {
             dependence.filter.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
-                type: el.type,
                 alias: el.field,
+                type: el.type,
                 value: formData[el.field],
               })
             })
@@ -711,7 +698,7 @@ export default function ({
       await getDependies({ value, field })
     }
     if (field.updateList && field.updateList.length) {
-      await queryList(field)
+      await queryList(field, false)
     }
   }
 
@@ -820,6 +807,9 @@ export default function ({
   }
 
   const getData = async () => {
+    if (!initPreRequest()) {
+      return false
+    }
     const [syncForm, lists] = await Promise.all(initPreRequest())
     console.log(syncForm, lists)
     if (syncForm) {
@@ -838,39 +828,15 @@ export default function ({
           ) {
             //await getDependies({ value: formData[field.name], field })
           }
-
           if (field.updateList && field.updateList.length) {
             await queryList(field, false)
           }
         }
       }
-      console.log('formData', formData)
+      console.log(formData)
     }
     if (hasSelect()) {
       console.log(lists.data)
-      for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
-
-        if (field) {
-          field.hideItems = lists.data[keyList]
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value
-              )
-              lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
-              })
-            }
-          }
-          field.items = lists.data[keyList]
-          if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
-          }
-        }
-      }
       putSelectItems(lists)
     }
     await loadAutocompletes()
@@ -901,12 +867,6 @@ export default function ({
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) && conditionEl.type
             } else {
-              console.log('target and perm')
-              console.log(
-                checkIncludesData(conditionEl),
-                checkIncludesPermissions(conditionEl),
-                conditionEl.type
-              )
               return (
                 checkIncludesData(conditionEl) &&
                 checkIncludesPermissions(conditionEl) === conditionEl.type
@@ -920,6 +880,7 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
+    // console.log(field.name)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {
@@ -963,8 +924,8 @@ export default function ({
   }
 
   const disabledField = (field) => {
-    return field.disabled || field.requiredFields
-      ? field.disabled || field.requiredFields.some((el) => !formData[el])
+    return field.requiredFields
+      ? field.requiredFields.some((el) => !formData[el])
       : false
   }
 
@@ -1000,6 +961,8 @@ export default function ({
       if ($touched.value) {
         errorsCount()
       }
+      startFormData = formData
+      console.log(startFormData)
     },
     { immediate: true, deep: true }
   )

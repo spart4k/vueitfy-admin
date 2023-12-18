@@ -66,12 +66,14 @@ export default {
       }
     )
 
+    const userInfo = computed(() => store.state.user)
+
     const openCurrentRoute = () => {
       navbarCurrentRoute.value = []
       instantNav.value = true
       props.navData.forEach((item, index) => {
-        if (item.child_json) {
-          JSON?.parse(item?.child_json).forEach((navItem) => {
+        if (item.child) {
+          item?.child.forEach((navItem) => {
             if (navItem.link === route.path)
               navbarCurrentRoute.value.push(index)
           })
@@ -102,6 +104,7 @@ export default {
       changeMenuStatus,
       changeMenuSize,
       setRouterPath,
+      userInfo,
     }
   },
 }

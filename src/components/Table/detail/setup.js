@@ -33,10 +33,6 @@ export default {
     const { id } = route?.params
     const loading = ref(false)
     const syncForm = ref({})
-
-    const porpsContent = ref(props.content)
-    //emit(getItems)
-
     const availableTabs = computed(() => {
       return props.detail.tabs.filter((item) => {
         return (
@@ -45,6 +41,8 @@ export default {
         )
       })
     })
+
+    const porpsContent = ref(props.content)
 
     onUnmounted(() => {
       if (props?.detail?.clearStore) store.commit('clearFormStorage')

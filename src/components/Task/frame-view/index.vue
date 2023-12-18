@@ -32,7 +32,9 @@
         </v-row>
         <v-row v-if="taskDeadline" class="task__info-row" align="center">
           <v-icon>mdi-timer</v-icon>
-          <span class="timer">{{ timerString }}</span>
+          <span class="timer" :class="{ 'timer-minus': timerDiff < 0 }">{{
+            timerString
+          }}</span>
         </v-row>
       </div>
       <v-divider></v-divider>
@@ -61,6 +63,16 @@
           @closePopup="$emit('closePopup')"
         ></Form4>
         <!--Исправление-->
+        <Form5
+          v-if="data.task.task_type_id === 5"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form5>
+        <Form6
+          v-if="data.task.task_type_id === 6"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        ></Form6>
         <Form7
           v-if="data.task.task_type_id === 7"
           :data="data"

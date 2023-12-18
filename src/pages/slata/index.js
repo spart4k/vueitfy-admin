@@ -40,12 +40,12 @@ const config = {
         // function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        // function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   // function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
       {
         label: 'Приложение 2',
         class: ['v-table-button--custom'],
@@ -284,7 +284,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },

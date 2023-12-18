@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
         >&nbsp; на дату 07.02.2023
@@ -70,14 +70,13 @@
         v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49"
         :disabled="!changeQTY"
         class="mr-2"
-        small
         color="info"
         @click="completeTask"
       >
         <v-icon left> $IconMain </v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

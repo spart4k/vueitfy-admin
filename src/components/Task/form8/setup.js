@@ -35,10 +35,13 @@ const Form8 = defineComponent({
         value: data.entity.object_name,
       },
     }
-    // let getNameDoc = (docID) => {
-    //   return docs_spr[docID]
-    // }
-
+    let newString = ref(false)
+    if (typeof data.data.zayavka == 'object') {
+      newString.value = false
+    } else {
+      newString.value = true
+    }
+    // console.log(typeof newString)
     // onMounted(() => {
     //   console.log(docs_spr, getNameDoc)
     // })
@@ -128,6 +131,7 @@ const Form8 = defineComponent({
     //   pushSomeShit()
     //   changeStatus()
     // }
+    let docs_ids = ref([])
     let addFilesPatent = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -170,7 +174,7 @@ const Form8 = defineComponent({
       form_data.append('file', e[0])
 
       let currentDropzone = listDocuments.value.find((x) => x.doc_id === e.item)
-
+      docs_ids.value.push(e.item)
       const { makeRequest: delInfoAFile } = useRequest({
         context,
         request: () =>
@@ -205,10 +209,13 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/startProcess', {
-            id: 1,
-            folder: 'personal_doc',
-            fileName: fileName,
-            file: form_data,
+            parent_process: data.task.process_id,
+            process_id: 1,
+            parent_action: data.task.process_id,
+            type_parent_action: 2,
+            account_id: data.task.to_account_id,
+            personal_id: data.entity.id,
+            docs_id: docs_ids.value,
           }),
         successMessage: 'Файл успешно загружен',
       })
@@ -249,14 +256,14 @@ const Form8 = defineComponent({
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
-        // if (additionalRequestFlag) {
-        //   listRequestsForUpload.value.push(createFillScanProcess)
-        // }
+        if (additionalRequestFlag) {
+          listRequestsForUpload.value.push(createFillScanProcess)
+        }
       } else {
         listRequestsForUpload.value.push(updateFileData, loadImage)
-        // if (additionalRequestFlag) {
-        //   listRequestsForUpload.value.push(createFillScanProcess)
-        // }
+        if (additionalRequestFlag) {
+          listRequestsForUpload.value.push(createFillScanProcess)
+        }
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
@@ -273,25 +280,6 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = () => {
-      //   $.ajax('/common/save/personal', {
-      //     method: "POST",
-      //     data: {id: <?php echo $entity['id']; ?>, status: 5},
-      //     success: function() {
-      //     }
-      // })
-      // $.ajax('/task/change_status_task', {
-      //     method: "POST",
-      //     data: {status: 2, data: {
-      //         process_id: <?php echo $task['process_id']; ?>,
-      //         task_id: <?php echo $task['id']; ?>,
-      //         parent_action: <?php echo $task['id']; ?>
-      //     }},
-      //     success: function (data) {
-      //         slidePopup('Задача выполнена!', 'success');
-      //         typeof dataTable['task'] != "undefined" ? dataTable['task'].ajax.reload() : dataTable[document.taskTable].ajax.reload();
-      //         hideModal();
-      //     }
-      // })
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -315,6 +303,8 @@ const Form8 = defineComponent({
       listDisbledDocuments,
       addFilesPatent,
       disableFinishState,
+      textInfo,
+      newString,
       sendTaskFinish,
     }
   },
