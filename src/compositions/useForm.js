@@ -308,7 +308,7 @@ export default function ({
         else newForm[key] = JSON.stringify(formData[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
-      if (item.type === 'checkbox' && formData[key] === 'checkbox') {
+      if (item.type === 'checkbox' && formData[key] === undefined) {
         newForm[key] = false
       }
     })
