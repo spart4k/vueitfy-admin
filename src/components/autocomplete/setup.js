@@ -67,9 +67,12 @@ export default {
 
         Object.assign(queryData, data)
         // data delete('rows')
-        console.log(queryData, data)
 
-        if (data?.rows?.length || data.page > data.totalPage) {
+        if (
+          data?.rows?.length ||
+          data.page > data.totalPage ||
+          data.totalPage === 0
+        ) {
           Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
         } else {
           Vue.set(props.field, 'items', [])
@@ -80,6 +83,7 @@ export default {
     }
 
     const endIntersect = (entries, observer, isIntersecting) => {
+      console.log('queryData', queryData)
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)
         ? true
         : queryData.totalPage > queryData.page
