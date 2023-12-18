@@ -871,7 +871,7 @@ const consumptionConfig = {
 //     // items: [
 //     //   { id: 0, name: 'Новые' },
 //     //   { id: 1, name: 'ЕАЭС' },
-//     //   { id: 2, name: 'Не резиденты' },
+//     //   { id: 2, name: 'Нерезиденты' },
 //     //   { id: 3, name: 'РФ' },
 //     // ],
 //     position: {
@@ -1158,7 +1158,7 @@ const config = {
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {
@@ -1240,7 +1240,7 @@ const config = {
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {
@@ -1380,7 +1380,7 @@ const config = {
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {
