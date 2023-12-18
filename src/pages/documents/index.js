@@ -1956,6 +1956,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2625,6 +2626,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2912,6 +2914,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -3308,6 +3311,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
