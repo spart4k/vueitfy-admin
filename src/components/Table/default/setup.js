@@ -429,6 +429,7 @@ const table = {
       }
     }
     const closePopupForm = (route) => {
+      console.log('close123123')
       if (route) router.push({ name: route })
       else router.back()
       popupForm.value.isShow = false
