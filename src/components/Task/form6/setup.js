@@ -75,7 +75,7 @@ const Form6 = defineComponent({
             data: {
               personal_id: data.entity.id,
               doc_id: data.data.dosc ? data.data.dosc[0].id : 3,
-              path_doc: `/files/personal_doc/${fileName}`,
+              path_doc: `/personal_doc/${fileName}`,
               from_task: true,
             },
           }),
