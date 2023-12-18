@@ -214,13 +214,21 @@ export default function ({
       loading.value = false
     } else if (action.action === 'createForm') {
       loading.value = true
-      await createForm({
+      const result = await createForm({
         url: action.url,
         module: action.module,
         formData: sortedData,
       })
       loading.value = false
-      emit('closePopup')
+      console.log(result)
+      //const message = action.handlingResponse[result.code].text
+      //const color = action.handlingResponse[result.code].color
+      const { text, color } = action.handlingResponse[result.code]
+      store.commit('notifies/showMessage', {
+        content: text,
+        color,
+      })
+      //emit('closePopup')
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
@@ -896,7 +904,6 @@ export default function ({
           })
         }
       })
-    console.log(field)
     if (field.isShow.conditions && field.isShow.conditions.length) {
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)

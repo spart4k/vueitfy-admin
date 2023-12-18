@@ -1942,6 +1942,19 @@ const config = {
                 url: 'set/object',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'success',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Объект с данным именем уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },

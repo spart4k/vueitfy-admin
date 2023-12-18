@@ -1,3 +1,11 @@
+.v-application.theme--dark {
+  .field-loading {
+    &.gradient {
+      background: #000000;
+      background: linear-gradient(to right, #0e0d0d 8%, rgb(37, 35, 35) 38%, #0e0d0d 54%);
+    }
+  }
+}
 .form {
   background-color: var(--v-background-base);
   .field {

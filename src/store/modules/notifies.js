@@ -12,6 +12,12 @@ const notifies = {
       state.color = color
       state.timeout = timeout
       state.isShow = true
+      const vm = this
+      if (timeout) {
+        setTimeout(() => {
+          vm.commit('notifies/hideMessage')
+        }, timeout)
+      }
     },
     hideMessage(state) {
       state.isShow = false

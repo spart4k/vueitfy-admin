@@ -44,14 +44,14 @@
         </div>
         <div :data-field="field.name" v-intersect="endIntersect" />
       </template>
-      <template v-slot:item="data">
+      <!--<template v-slot:item="data">
         <template>
           <v-list-item-content>
             <v-list-item-title v-html="data.item.name" />
             <v-list-item-subtitle v-html="data.item.id" />
           </v-list-item-content>
         </template>
-      </template>
+      </template>-->
     </v-autocomplete>
   </div>
 </template>

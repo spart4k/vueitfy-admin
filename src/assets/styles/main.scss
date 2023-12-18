@@ -74,6 +74,12 @@ $borderColor: rgba(0,0,0,.3);
 .theme--light.v-tabs-items {
   background-color: unset;
 }
+.theme--dark.v-navigation-drawer {
+  background-color: var(--v-background-base);
+}
+.theme--dark.v-expansion-panels .v-expansion-panel {
+  background-color: var(--v-background-base);
+}
 .v {
   &-table {
     &-button {
