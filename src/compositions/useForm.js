@@ -119,7 +119,6 @@ export default function ({
       }
       return obj
     }, {})
-    console.log($errors.value)
   }
 
   const validate = (touch) => {
@@ -309,6 +308,9 @@ export default function ({
         else newForm[key] = JSON.stringify(formData[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
+      if (item.type === 'checkbox' && formData[key] === 'checkbox') {
+        newForm[key] = false
+      }
     })
     return newForm
   }
@@ -363,12 +365,7 @@ export default function ({
           new Date().getTime()
         const ext = filesBasket.value[key].files[0].name.split('.').pop()
         path =
-          'files/' +
-          filesBasket.value[key].field.options.folder +
-          '/' +
-          name +
-          '.' +
-          ext
+          filesBasket.value[key].field.options.folder + '/' + name + '.' + ext
         if (queryParams && queryParams.formData) {
           queryParams.formData[filesBasket.value[key].field.name] = path
         } else {
@@ -534,14 +531,11 @@ export default function ({
           //}
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
-        console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
-        console.log(targetField)
         if (targetField.type === 'autocomplete') {
           const filter = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
-              console.log(formData[el.field])
               if (!formData[el.field]) return
               filter.push({
                 alias: el.field,
@@ -659,7 +653,6 @@ export default function ({
           const selectField = form.fields.find(
             (el) => el.name === dependence.action.field
           )
-          console.log(selectField)
           selectField.items = selectField.hideItems.filter((el) => {
             return el.id !== dependence.action.condition[data.result]
           })
@@ -740,7 +733,9 @@ export default function ({
         countRows: 10,
         currentPage: 1,
         searchValue: '',
-        id: formData[el.name ? el.name : el.alias],
+        id: formData[el.name ? el.name : el.alias]
+          ? formData[el.name ? el.name : el.alias]
+          : -1,
         filters,
       })
       if (data.rows) {
@@ -757,7 +752,6 @@ export default function ({
         el.alias ? el.alias === keyList : el.name === keyList
       )
       if (field) {
-        console.log(field)
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
           if (field.hiding.conditions) {
@@ -799,7 +793,6 @@ export default function ({
       }
       return element
     })
-    console.log(field, 'field')
     field.loading = true
     const lists = await makeRequestList(listData)
     putSelectItems(lists)
@@ -812,16 +805,13 @@ export default function ({
       return false
     }
     const [syncForm, lists] = await Promise.all(initPreRequest())
-    console.log(syncForm, lists)
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-          console.log('syncForm', syncForm.data[formKey], formKey)
           formData[field.name] = syncForm.data[formKey]
-          console.log(formData.city_id)
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
@@ -834,7 +824,6 @@ export default function ({
           }
         }
       }
-      console.log(formData)
     }
     if (hasSelect()) {
       console.log(lists.data)

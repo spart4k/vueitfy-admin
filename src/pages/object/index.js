@@ -1769,7 +1769,7 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                validations: { required },
+                //validations: { required },
                 //isShow: false,
                 isShow: {
                   value: false,
@@ -1786,7 +1786,7 @@ const config = {
                 label: 'Стоимость питания',
                 name: 'sum_nutrition',
                 placeholder: '',
-                value: 0,
+                //value: 0,
                 readonly: false,
                 class: [''],
                 position: {
@@ -1795,7 +1795,7 @@ const config = {
                 },
                 bootstrapClass: [''],
                 isShow: {
-                  value: true,
+                  value: false,
                   conditions: [
                     {
                       field: 'with_nutrition',
@@ -1808,7 +1808,7 @@ const config = {
                     },
                   ],
                 },
-                //validations: { required },
+                validations: { required },
                 //isShow: false,
               }),
               stringField({
@@ -2251,7 +2251,7 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                validations: { required },
+                //validations: { required },
                 //isShow: false,
                 isShow: {
                   value: false,
@@ -2268,7 +2268,6 @@ const config = {
                 label: 'Стоимость питания',
                 name: 'sum_nutrition',
                 placeholder: '',
-                value: 0,
                 readonly: false,
                 class: [''],
                 position: {
