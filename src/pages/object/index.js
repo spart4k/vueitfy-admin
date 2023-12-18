@@ -1761,6 +1761,7 @@ const config = {
                 label: 'Питание',
                 name: 'with_nutrition',
                 placeholder: '',
+                value: false,
                 readonly: false,
                 class: [''],
                 position: {
@@ -1807,7 +1808,7 @@ const config = {
                     },
                   ],
                 },
-                validations: { required },
+                //validations: { required },
                 //isShow: false,
               }),
               stringField({
