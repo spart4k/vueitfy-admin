@@ -63,6 +63,7 @@ $borderColor: rgba(0,0,0,.3);
 
 .v-main {
   height: calc(100% - $panelHeight);
+  background-color: var(--v-pageBackground-base);
   //overflow: auto;
   &__wrap {
     display: flex;
@@ -70,7 +71,9 @@ $borderColor: rgba(0,0,0,.3);
     height: 100%;
   }
 }
-
+.theme--light.v-tabs-items {
+  background-color: unset;
+}
 .v {
   &-table {
     &-button {

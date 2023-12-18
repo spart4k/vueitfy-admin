@@ -709,10 +709,10 @@ export default function ({
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
-      const filters = []
+      const filter = []
       const { url } = el
-      if (el.filters && el.filters.length) {
-        el.filters.forEach((filter) => {
+      if (el.filter && el.filters.length) {
+        el.filter.forEach((filter) => {
           let value, type
           if (filter.source === 'fromPrev') {
             value = form?.formData[filter.field]
@@ -722,7 +722,7 @@ export default function ({
             value = formData[filter.field]
           }
           if (filter.type) type = filter.type
-          filters.push({
+          filter.push({
             field: filter.field,
             value,
             type,
@@ -736,7 +736,7 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
-        filters,
+        filter,
       })
       if (data.rows) {
         el.items = [...el.items, ...data.rows]

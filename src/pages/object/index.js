@@ -2957,6 +2957,14 @@ const config = {
                     value: '',
                   },
                 ],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'account_id',
+                    url: 'get/pagination_list/assign_accounts',
+                  },
+                ],
                 // filters: [
                 //   {
                 //     field: 'direction_id',
@@ -2998,6 +3006,16 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                filters: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                  },
+                  {
+                    field: 'object_id',
+                    value: '',
+                  },
+                ],
                 // filters: [
                 //   {
                 //     field: 'direction_id',
