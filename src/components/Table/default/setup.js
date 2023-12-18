@@ -435,10 +435,14 @@ const table = {
       if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
+<<<<<<< HEAD
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
         //})
+=======
+      if (props.options.detail.type === 'popup') {
+>>>>>>> 477c5de51d7cb32f06354ca8adf161e5857f23bc
         router.push(
           {
             name: `${route.name}-add`,
@@ -483,6 +487,7 @@ const table = {
       return options.head.find((cell) => cell.type === 'actions')
     })
 
+<<<<<<< HEAD
     // WATCH
     watch(
       () => searchField,
@@ -517,6 +522,17 @@ const table = {
           await getItems()
         },
       )
+=======
+    // // WATCH
+    // watch(
+    //   () => searchField,
+    //   (newVal) => {
+    //     props.options.options.search.function(newVal)
+    //   },
+    //   () => {
+    //   }
+    // )
+>>>>>>> 477c5de51d7cb32f06354ca8adf161e5857f23bc
 
 
       // HOOKS
@@ -525,12 +541,18 @@ const table = {
         await getItems()
 
         watch(
-          () => paramsQuery.value.searchColumns ,
+          () => paramsQuery,
           async () => {
             await getItems()
           },
+          { deep: true }
         )
+<<<<<<< HEAD
 
+=======
+  
+      
+>>>>>>> 477c5de51d7cb32f06354ca8adf161e5857f23bc
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
