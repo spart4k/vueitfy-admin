@@ -16,8 +16,10 @@
             >
               <v-expansion-panel-header>
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  <v-icon left v-if="!item.inProcess" small>
+                    $IconGalka
+                  </v-icon>
+                  <v-icon left v-if="item.inProcess" small> $IconClose </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
                 </span>
               </v-expansion-panel-header>
@@ -49,19 +51,17 @@
       </div>
       <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
       <v-row class="pb-2 pt-1 px-0" justify="center">
-        <v-col class="ps-0"
-          ><v-btn color="error" class="" small @click="emplyeeFired">
-            <v-icon small>mdi-content-save</v-icon>
-            Уволен
-          </v-btn></v-col
-        >
+        <v-btn color="error" class="" small @click="emplyeeFired">
+          <v-icon small>mdi-content-save</v-icon>
+          Уволен
+        </v-btn>
       </v-row>
       <v-row>
         <v-textarea
           v-model="comment"
           placeholder="Комментарий"
           class="pt-0"
-          rows="3"
+          rows="2"
         ></v-textarea>
       </v-row>
       <v-row class="py-2" justify="end">
@@ -70,7 +70,7 @@
           class="mr-3"
           @click="sendTaskFinish"
           small
-          :disabled="!comment && !disabledDocumentsAcc"
+          :disabled="!refds || (!disabledDocumentsAcc && !comment)"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

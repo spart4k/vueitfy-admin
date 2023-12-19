@@ -167,8 +167,7 @@ const ThirdPopupView = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            id: 1,
-            path_doc: `/personal_doc/${fileName}`,
+            data: { id: 1, path_doc: `/personal_doc/${fileName}` },
           }),
       })
     }

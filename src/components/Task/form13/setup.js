@@ -49,9 +49,9 @@ const Form13 = defineComponent({
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
         if (pasteObject) {
-          pasteObject['inProcess'] = false
+          pasteObject['inProcess'] = true
         } else {
-          pasteObject = { doc_id: item, inProcess: true }
+          pasteObject = { doc_id: item, inProcess: false }
         }
         listDocuments.value.push(pasteObject)
       })
@@ -128,7 +128,7 @@ const Form13 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      if (!currentDropzone.inProcess) {
+      if (currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
           updateFileData,
@@ -167,7 +167,7 @@ const Form13 = defineComponent({
       let keyOfObjectSend = {}
       listDocuments.value.forEach((elem, index) => {
         for (const key in elem) {
-          keyOfObjectSend[elem.doc_id] = !!elem.inProcess
+          keyOfObjectSend[elem.doc_id] = !elem.inProcess
         }
       })
 
