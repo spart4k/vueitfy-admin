@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router/composables'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
+import { refresh } from '@/api/login'
 
 /**
  * @param loading {boolean}
@@ -16,6 +17,7 @@ import _ from 'lodash'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
+
 export default function ({
   fields = {},
   watcher,
@@ -31,6 +33,7 @@ export default function ({
   setFields,
   mode,
   createForm,
+  deleteFormById,
   detail,
 }) {
   const $touched = ref(false)
@@ -38,6 +41,7 @@ export default function ({
   const $autoDirty = true
   const route = useRoute()
   const filesBasket = ref({})
+  const router = useRouter()
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
   // const validations = () => {
@@ -68,8 +72,6 @@ export default function ({
   )
 
   const computedFormData = computed(() => formData)
-
-  let startFormData = formData
 
   const validations = () => {
     const formFields = {}
@@ -110,7 +112,6 @@ export default function ({
 
   const $errors = ref({})
   const errorsCount = () => {
-    console.log($errors.value)
     $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
@@ -154,6 +155,7 @@ export default function ({
     })
   }
   const clickHandler = async ({ action, skipValidation }) => {
+    console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
@@ -173,7 +175,6 @@ export default function ({
       }
       emit('prevStage')
     } else if (action.action === 'saveForm') {
-      console.log('SAVE FORM')
       loading.value = true
       if (action.conditionAction) {
         action.conditionAction.forEach((el) => {
@@ -201,6 +202,19 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
+    } else if (action.action === 'deleteFormById') {
+      loading.value = true
+      console.log('Срочно удляюсь ...')
+      console.log(router)
+      await deleteFormById({
+        url: action.url,
+        module: action.module,
+      })
+      emit('closePopup')
+      if (action.actionKey) {
+        emit('getItems')
+      }
+      loading.value = false
     } else if (action.action === 'updateFormStore') {
       loading.value = true
       await loadStoreFile(
@@ -219,8 +233,12 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
+      console.log('action', action, action.actionKey === 'schedule')
+      if (action.actionKey === 'schedule') {
+        emit('getItems')
+        emit('closePopup')
+      }
       loading.value = false
-      emit('closePopup')
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
@@ -653,6 +671,7 @@ export default function ({
           const selectField = form.fields.find(
             (el) => el.name === dependence.action.field
           )
+          console.log(selectField)
           selectField.items = selectField.hideItems.filter((el) => {
             return el.id !== dependence.action.condition[data.result]
           })
@@ -752,6 +771,7 @@ export default function ({
         el.alias ? el.alias === keyList : el.name === keyList
       )
       if (field) {
+        console.log(field)
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
           if (field.hiding.conditions) {
@@ -793,6 +813,7 @@ export default function ({
       }
       return element
     })
+    console.log(field, 'field')
     field.loading = true
     const lists = await makeRequestList(listData)
     putSelectItems(lists)
@@ -805,13 +826,16 @@ export default function ({
       return false
     }
     const [syncForm, lists] = await Promise.all(initPreRequest())
+    console.log(syncForm, lists)
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
+          console.log('syncForm', syncForm.data[formKey], formKey)
           formData[field.name] = syncForm.data[formKey]
+          console.log(formData.city_id)
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
@@ -824,9 +848,33 @@ export default function ({
           }
         }
       }
+      console.log(formData)
     }
     if (hasSelect()) {
       console.log(lists.data)
+      for (let keyList in lists.data) {
+        const field = form?.fields.find((el) =>
+          el.alias ? el.alias === keyList : el.name === keyList
+        )
+
+        if (field) {
+          field.hideItems = lists.data[keyList]
+          if (field.hiding) {
+            if (field.hiding.conditions) {
+              const condition = field.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          field.items = lists.data[keyList]
+          if (field.items.length === 1) {
+            formData[field.name] = field.items[0][field.selectOption.value]
+          }
+        }
+      }
       putSelectItems(lists)
     }
     await loadAutocompletes()
@@ -870,7 +918,6 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    // console.log(field.name)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {
@@ -896,7 +943,6 @@ export default function ({
           })
         }
       })
-    console.log(field)
     if (field.isShow.conditions && field.isShow.conditions.length) {
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
@@ -952,8 +998,6 @@ export default function ({
       if ($touched.value) {
         errorsCount()
       }
-      startFormData = formData
-      console.log(startFormData)
     },
     { immediate: true, deep: true }
   )
