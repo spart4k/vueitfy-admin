@@ -392,7 +392,7 @@
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
         @closePopup="closePopupForm"
-        @refreshTable="getItems"
+        @getItems="getItems"
       />
     </Popup>
   </div>
