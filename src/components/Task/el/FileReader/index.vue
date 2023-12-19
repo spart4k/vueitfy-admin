@@ -5,11 +5,11 @@
       <v-col class=""
         ><v-row
           ><v-col
-            ><v-btn elevation="2"
+            ><v-btn small elevation="2"
               ><v-icon small>$IconMain</v-icon></v-btn
             ></v-col
           ><v-col
-            ><v-btn elevation="2"
+            ><v-btn small elevation="2"
               ><v-icon small>$IconMain</v-icon></v-btn
             ></v-col
           ></v-row

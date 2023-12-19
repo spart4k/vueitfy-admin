@@ -255,6 +255,7 @@ const routes = [
         path: '/account/add',
         meta: {
           mode: 'add',
+          label: 'Добавление аккаунта',
         },
         component: Detail,
       },
@@ -264,6 +265,7 @@ const routes = [
         component: Detail,
         meta: {
           mode: ['edit'],
+          label: 'Редактирования аккаунта',
         },
       },
     ],

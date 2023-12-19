@@ -432,7 +432,6 @@ const table = {
       if (route) router.push({ name: route })
       else router.back()
       popupForm.value.isShow = false
-      if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
       if (options.detail.type === 'popup') {
@@ -508,7 +507,6 @@ const table = {
           },
           { deep: true }
         )
-
 
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')

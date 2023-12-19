@@ -90,13 +90,6 @@ const Form7 = defineComponent({
       const docsIdArr = [
         ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
       ]
-      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isHasOsnDoc)
-      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', docsIdArr.length)
-      console.log(
-        'ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ',
-        Object.values(data.correctedDocs).length
-      )
-      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isOsnDocValid.value)
       if (isHasOsnDoc) {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length &&
@@ -105,6 +98,13 @@ const Form7 = defineComponent({
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length
       }
+    }
+
+    const confirmOsnDoc = () => {
+      const aidDocs = JSON.parse(props.data.task.dop_data).docs_id
+      if (aidDocs.length === 1 && aidDocs[0] === 0) isFormValid.value = true
+      finalData.value = { ...finalData.value, 0: formObj.value.formData }
+      osnConfirmed.value = true
     }
 
     const { makeRequest: setPersonalData } = useRequest({
@@ -214,6 +214,7 @@ const Form7 = defineComponent({
       citizenItems,
       osnConfirmed,
       isOsnDocValid,
+      confirmOsnDoc,
     }
   },
 })

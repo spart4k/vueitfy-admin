@@ -1942,6 +1942,19 @@ const config = {
                 url: 'set/object',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'Объект %name% успешно создан',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Объект с именем %name% уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },
@@ -2418,10 +2431,10 @@ const config = {
               stringAction({
                 text: 'Сохранить',
                 type: 'submit',
-                module: 'form/create',
-                name: 'createForm',
+                module: 'form/putForm',
+                name: 'saveFormId',
                 url: 'set/object',
-                action: 'createForm',
+                action: 'saveFormId',
                 color: 'primary',
               }),
             ],

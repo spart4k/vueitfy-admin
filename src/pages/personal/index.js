@@ -762,7 +762,7 @@ const documentConfigEdit = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'text',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal/:id',
@@ -848,7 +848,7 @@ const documentConfigEdit = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'text',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal/:id',
@@ -863,7 +863,7 @@ const documentConfigEdit = {
     stringAction({
       text: 'Закрыть',
       type: 'submit',
-      color: 'black',
+      color: 'text',
       name: 'closePopup',
       action: 'closePopup',
       to: 'personal',

@@ -16,8 +16,8 @@
               <v-icon small>$IconMain</v-icon>
             </v-col>
             <v-col class="d-flex">
-              <v-btn depressed> Отклонить </v-btn>
-              <v-btn depressed> Принять </v-btn>
+              <v-btn small depressed> Отклонить </v-btn>
+              <v-btn small depressed> Принять </v-btn>
             </v-col>
           </v-row>
           <FormError v-else>Документы не приложены. См. комментарий</FormError>

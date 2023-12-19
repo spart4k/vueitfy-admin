@@ -32,6 +32,8 @@ export default function ({
   mode,
   createForm,
   detail,
+  deleteFormById,
+  changeFormId,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
@@ -154,9 +156,18 @@ export default function ({
         if (!response) return
       }
       emit('prevStage')
+    } else if (action.action === 'saveFormId') {
+      loading.value = true
+      const result = await changeFormId({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      console.log(result)
     } else if (action.action === 'saveForm') {
       console.log('SAVE FORM')
       loading.value = true
+      let result
       if (action.conditionAction) {
         action.conditionAction.forEach((el) => {
           action[el.target] = el.result[formData[el.from]]
@@ -168,13 +179,17 @@ export default function ({
           formData: sortedData,
         })
       } else {
-        await changeForm({
+        result = await changeForm({
           url: action.url,
           module: action.module,
           formData: sortedData,
         })
       }
+      console.log(result)
       loading.value = false
+      //emit('getItems')
+      //if (action.actionKey === 'schedule') {
+      //emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -182,6 +197,17 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
+      loading.value = false
+    } else if (action.action === 'deleteFormById') {
+      loading.value = true
+      await deleteFormById({
+        url: action.url,
+        module: action.module,
+      })
+      emit('closePopup')
+      if (action.actionKey) {
+        emit('getItems')
+      }
       loading.value = false
     } else if (action.action === 'updateFormStore') {
       loading.value = true
@@ -196,12 +222,32 @@ export default function ({
       loading.value = false
     } else if (action.action === 'createForm') {
       loading.value = true
-      await createForm({
+      const result = await createForm({
         url: action.url,
         module: action.module,
         formData: sortedData,
       })
       loading.value = false
+      console.log(result)
+      if (result.code && result.code !== 1) {
+        emit('getItems')
+        emit('closePopup')
+      } else if (!result.code) {
+        emit('getItems')
+        emit('closePopup')
+      }
+      //const message = action.handlingResponse[result.code].text
+      //const color = action.handlingResponse[result.code].color
+      if (action.handlingResponse) {
+        let { text, color } = action.handlingResponse[result.code]
+        // /%\w{n}%/
+        text = text.replace(/%name%/g, formData.name)
+        store.commit('notifies/showMessage', {
+          content: text,
+          color,
+        })
+      }
+      //emit('closePopup')
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
@@ -640,7 +686,6 @@ export default function ({
           const selectField = form.fields.find(
             (el) => el.name === dependence.action.field
           )
-          console.log(selectField)
           selectField.items = selectField.hideItems.filter((el) => {
             return el.id !== dependence.action.condition[data.result]
           })
@@ -672,7 +717,9 @@ export default function ({
   }
 
   const changeCheckbox = (field) => {
-    showField(field.type, field)
+    //showField(field.type, field)
+    //setFields()
+    rebuildFormData()
   }
 
   const changeSelect = async ({ value, field }) => {
@@ -741,7 +788,6 @@ export default function ({
         el.alias ? el.alias === keyList : el.name === keyList
       )
       if (field) {
-        console.log(field)
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
           if (field.hiding.conditions) {
@@ -787,7 +833,6 @@ export default function ({
       }
       return element
     })
-    console.log(field, 'field')
     field.loading = true
     const lists = await makeRequestList(listData)
     putSelectItems(lists)
@@ -800,16 +845,13 @@ export default function ({
       return false
     }
     const [syncForm, lists] = await Promise.all(initPreRequest())
-    console.log(syncForm, lists)
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-          console.log('syncForm', syncForm.data[formKey], formKey)
           formData[field.name] = syncForm.data[formKey]
-          console.log(formData.city_id)
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
@@ -822,10 +864,32 @@ export default function ({
           }
         }
       }
-      console.log(formData)
     }
     if (hasSelect()) {
       console.log(lists.data)
+      for (let keyList in lists.data) {
+        const field = form?.fields.find((el) =>
+          el.alias ? el.alias === keyList : el.name === keyList
+        )
+
+        if (field) {
+          field.hideItems = lists.data[keyList]
+          if (field.hiding) {
+            if (field.hiding.conditions) {
+              const condition = field.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          field.items = lists.data[keyList]
+          if (field.items.length === 1) {
+            formData[field.name] = field.items[0][field.selectOption.value]
+          }
+        }
+      }
       putSelectItems(lists)
     }
     await loadAutocompletes()

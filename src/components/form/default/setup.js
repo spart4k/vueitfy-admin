@@ -90,9 +90,21 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: (params) => {
+        console.log()
         return store.dispatch(params.module, {
           url: params.url,
           body: { data: { id: +route.params.id, ...params.formData } },
+        })
+      },
+    })
+    const { makeRequest: changeFormId } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: (params) => {
+        console.log()
+        return store.dispatch(params.module, {
+          url: params.url + '/' + route.params.id,
+          body: { data: { ...params.formData } },
         })
       },
     })
@@ -153,6 +165,7 @@ export default {
       addFiles,
       changeCheckbox,
       readonlyField,
+      refreshTable,
     } = useForm({
       form: props.tab,
       context,
@@ -167,6 +180,7 @@ export default {
       mode: isEdit.value,
       createForm,
       deleteFormById,
+      changeFormId,
     })
 
     onMounted(async () => {
@@ -196,6 +210,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
+      refreshTable,
     }
   },
 }
