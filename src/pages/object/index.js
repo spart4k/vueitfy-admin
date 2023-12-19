@@ -297,7 +297,7 @@ const objectUnAssigned = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/target_objects',
     urlDetail: 'id',
-    alias: 'p.personal_id',
+    alias: 'ot.object_id',
     title: 'This is an about page1',
   },
   panel: {
