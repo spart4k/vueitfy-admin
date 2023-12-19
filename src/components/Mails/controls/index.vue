@@ -76,16 +76,14 @@
         В папку
       </v-btn>
       <v-menu
-        v-if="
-          $props?.filterData?.folderData?.length && $props.selectedMails.length
-        "
+        v-if="intersection.foldersCount?.length && $props.selectedMails.length"
         content-class="v-controls-list_menu"
         activator="#menu-activator"
         :close-on-content-click="false"
       >
         <v-list>
           <v-list-item
-            v-for="item in $props.filterData.folderData"
+            v-for="item in intersection.foldersCount"
             :key="item.id"
             :class="[
               'v-controls-list_menu-item',

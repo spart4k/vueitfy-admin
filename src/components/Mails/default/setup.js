@@ -108,7 +108,7 @@ const mails = {
           mailsData.value = _.cloneDeep(filterData.value.boxData)
         }
         for (const item of mailsData.value) {
-          await getPagination(item)
+          getPagination(item)
         }
         // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
       }
@@ -420,6 +420,13 @@ const mails = {
       filterData.value.tagsData = await store.dispatch('mail/getTags')
       filterData.value.notReadData = await store.dispatch('mail/getNotRead')
       if (!filterData.value.folderData) filterData.value.folderData = []
+      filterData.value.boxData.forEach((item) => {
+        if (item.folders)
+          filterData.value.folderData = _.concat(
+            filterData.value.folderData,
+            item.folders
+          )
+      })
       if (!filterData.value.boxData) filterData.value.boxData = []
       if (!filterData.value.tagsData) filterData.value.tagsData = []
     }
