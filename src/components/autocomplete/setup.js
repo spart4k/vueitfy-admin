@@ -113,8 +113,9 @@ export default {
     }
 
     const disabled = computed(() => {
-      return props.field.requiredFields
-        ? props.field.requiredFields.some((el) => !props.formData[el])
+      return props.field.disabled || props.field.requiredFields
+        ? props.field.disabled ||
+            props.field.requiredFields.some((el) => !props.formData[el])
         : false
     })
     watch(
