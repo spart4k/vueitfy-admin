@@ -25,12 +25,17 @@
           class="mb-2"
         ></v-textarea>
         <v-btn
+          small
           @click="clickCheckBtn"
           color="primary"
           block
           :disabled="!isActiveBtnFirst"
+          class="mb-1"
         >
           Завершить
+        </v-btn>
+        <v-btn small @click="$emit('closePopup')" color="blue-grey" block>
+          Закрыть
         </v-btn>
       </div>
       <div v-if="showNextStep">
@@ -73,7 +78,6 @@
                         v-model="formData.data_rojd"
                         label="Дата рождения"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
@@ -112,6 +116,7 @@
     <v-divider></v-divider>
     <v-row class="py-2" justify="end" v-if="showNextStep">
       <v-btn
+        small
         class="mr-2"
         :disabled="!isFormValid"
         color="info"
@@ -120,7 +125,7 @@
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

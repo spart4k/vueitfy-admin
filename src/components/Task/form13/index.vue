@@ -6,24 +6,9 @@
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <span>Создайте расход на документы:</span>
-      <v-row>
-        <v-col cols="12">
-          <div style="display: flex; justify-content: center">
-            <v-btn small color="info"> Открыть </v-btn>
-          </div>
-        </v-col>
-      </v-row>
-      <!-- {{ getNameDoc(1) }} -->
       <div class="position-relative">
-        <div
-          class="mb-10"
-          :class="{
-            'overflow-inputs':
-              !data.data.zayavka.status == 5 && typeof newString !== 'object',
-          }"
-        >
-          <span>Приложите документы</span>
+        <div class="mb-10">
+          <span class="font-weight-bold">Приложите документы: </span>
           <v-expansion-panels>
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
@@ -46,79 +31,51 @@
                   :paramsForEmit="{ item: item.doc_id }"
                   @addFiles="addFiles"
                 ></Dropzone>
+                <v-row class="py-2" justify="end">
+                  <v-btn
+                    color="error"
+                    class="mr-3"
+                    small
+                    @click="addDisabledDocuments({ item: item.doc_id })"
+                  >
+                    <v-icon small>mdi-close</v-icon>
+                    Отклонить
+                  </v-btn>
+                </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
         </div>
       </div>
-
-      <v-row>
-        <v-col cols="12">
-          <div style="display: flex; justify-content: center">
-            <v-btn
-              small
-              color="success"
-              :disabled="listDisbledDocuments != 0"
-              @click="sendDocuments"
-            >
-              Приложить
-            </v-btn>
-          </div>
-        </v-col>
+      <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
+      <v-row class="pb-2 pt-1 px-0" justify="center">
+        <v-col class="ps-0" cols="2" align-self="center"
+          ><v-btn color="error" class="" small @click="emplyeeFired">
+            <v-icon small>mdi-content-save</v-icon>
+            Уволен
+          </v-btn></v-col
+        >
       </v-row>
-      <div>
-        <span>Патент</span>
-      </div>
       <v-row>
-        <v-col
-          cols="6"
-          :class="[
-            listDisbledDocuments > 0 && data.data.need_patent
-              ? 'overflow-inputs'
-              : '',
-          ]"
-        >
-          <Dropzone
-            :options="{
-              withoutSave: false,
-              folder: 'tmp',
-              removeble: false,
-            }"
-            :paramsForEmit="{ item: 5 }"
-            @addFiles="addFilesPatent"
-          ></Dropzone>
-        </v-col>
-        <v-col
-          cols="6"
-          :class="[
-            listDisbledDocuments > 0 && data.data.need_patent
-              ? 'overflow-inputs'
-              : '',
-          ]"
-        >
-          <Dropzone
-            :options="{
-              withoutSave: false,
-              folder: 'tmp',
-              removeble: false,
-            }"
-            :paramsForEmit="{ item: 15 }"
-            @addFiles="addFilesPatent"
-          ></Dropzone>
-        </v-col>
+        <v-textarea
+          v-model="comment"
+          placeholder="Комментарий"
+          class="pt-0"
+          rows="2"
+        ></v-textarea>
       </v-row>
       <v-row class="py-2" justify="end">
         <v-btn
-          small
           color="info"
           class="mr-3"
-          :disabled="disableFinishState !== 2"
           @click="sendTaskFinish"
+          small
+          :disabled="!comment && !disabledDocumentsAcc"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
-        <v-btn small @click="$emit('closePopup')" color="blue-grey">
+        <v-btn @click="$emit('closePopup')" color="blue-grey" small>
           <v-icon small>mdi-close</v-icon>
           Закрыть
         </v-btn>

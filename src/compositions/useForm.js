@@ -201,6 +201,17 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
+    } else if (action.action === 'deleteFormById') {
+      loading.value = true
+      await deleteFormById({
+        url: action.url,
+        module: action.module,
+      })
+      emit('closePopup')
+      if (action.actionKey) {
+        emit('getItems')
+      }
+      loading.value = false
     } else if (action.action === 'updateFormStore') {
       loading.value = true
       await loadStoreFile(
@@ -224,7 +235,7 @@ export default function ({
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
       let { text, color } = action.handlingResponse[result.code]
-      ///%\w{n}%/
+      // /%\w{n}%/
       text = text.replace(/%name%/g, formData.name)
       store.commit('notifies/showMessage', {
         content: text,
@@ -837,6 +848,29 @@ export default function ({
     }
     if (hasSelect()) {
       console.log(lists.data)
+      for (let keyList in lists.data) {
+        const field = form?.fields.find((el) =>
+          el.alias ? el.alias === keyList : el.name === keyList
+        )
+
+        if (field) {
+          field.hideItems = lists.data[keyList]
+          if (field.hiding) {
+            if (field.hiding.conditions) {
+              const condition = field.hiding.conditions.find(
+                (el) => mode === el.value
+              )
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+          }
+          field.items = lists.data[keyList]
+          if (field.items.length === 1) {
+            formData[field.name] = field.items[0][field.selectOption.value]
+          }
+        }
+      }
       putSelectItems(lists)
     }
     await loadAutocompletes()
@@ -924,8 +958,8 @@ export default function ({
   }
 
   const disabledField = (field) => {
-    return field.requiredFields
-      ? field.requiredFields.some((el) => !formData[el])
+    return field.disabled || field.requiredFields
+      ? field.disabled || field.requiredFields.some((el) => !formData[el])
       : false
   }
 

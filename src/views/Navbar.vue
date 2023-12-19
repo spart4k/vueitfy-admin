@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="">navbar</div>
-    {{ $vuetify.theme.dark }}
     <v-switch v-model="$vuetify.theme.dark" inset persistent-hint></v-switch>
     <Theme />
   </div>

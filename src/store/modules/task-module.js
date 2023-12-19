@@ -42,6 +42,15 @@ const taskModule = {
       return result
     },
 
+    //     POST /set/data/zayavka_items
+    // body: {data['items']['id'], rashod_vid_id, price}
+
+    async zayavkaItems(_, data) {
+      const result = await setBid('set/data/zayavka_items', data)
+      console.log(result)
+      return result
+    },
+
     async changeStatusTasks(_, data) {
       console.log(data)
       const result = await putTask('task/update/status', data.data) // TODO: определить формат

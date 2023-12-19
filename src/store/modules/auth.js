@@ -23,8 +23,7 @@ const auth = {
     },
     async checkMe() {
       //try {
-      const result = await me()
-      return result
+      //const result = await me()
       //commit('auth/setToken', result.AccessToken)
     },
   },

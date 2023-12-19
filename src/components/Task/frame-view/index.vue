@@ -3,7 +3,7 @@
     <div
       v-if="data.code === 1"
       class="task"
-      style="overflow-y: auto; max-height: 80vh; padding-right: 15px"
+      style="overflow-y: auto; max-height: 80vh; padding: 15px"
     >
       <div class="task__loader" v-if="loading">
         <v-progress-circular indeterminate></v-progress-circular>
@@ -89,6 +89,11 @@
           @closePopup="$emit('closePopup')"
         ></Form9>
         <!--Подтверждение назначения-->
+        <Form13
+          v-if="data.task.task_type_id === 13"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+        />
         <Form15
           v-if="data.task.task_type_id === 15"
           :data="data"

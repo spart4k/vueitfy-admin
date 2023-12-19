@@ -50,7 +50,7 @@ export default {
           props.field.filters.forEach((el) => {
             if (!props.formData[el.field]) return
             filter.push({
-              alias: el.field,
+              alias: el.alias ?? el.field,
               value: props.formData[el.field],
               type: el.type,
             })
@@ -67,9 +67,12 @@ export default {
 
         Object.assign(queryData, data)
         // data delete('rows')
-        console.log(queryData, data)
 
-        if (data?.rows?.length || data.page > data.totalPage) {
+        if (
+          data?.rows?.length ||
+          data.page > data.totalPage ||
+          data.totalPage === 0
+        ) {
           Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
         } else {
           Vue.set(props.field, 'items', [])
@@ -80,6 +83,7 @@ export default {
     }
 
     const endIntersect = (entries, observer, isIntersecting) => {
+      console.log('queryData', queryData)
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)
         ? true
         : queryData.totalPage > queryData.page
@@ -109,8 +113,9 @@ export default {
     }
 
     const disabled = computed(() => {
-      return props.field.requiredFields
-        ? props.field.requiredFields.some((el) => !props.formData[el])
+      return props.field.disabled || props.field.requiredFields
+        ? props.field.disabled ||
+            props.field.requiredFields.some((el) => !props.formData[el])
         : false
     })
     watch(

@@ -509,7 +509,6 @@ const table = {
           { deep: true }
         )
 
-
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0

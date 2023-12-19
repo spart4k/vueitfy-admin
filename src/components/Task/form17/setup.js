@@ -6,6 +6,7 @@ import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import Dropzone from '@/components/dropzone/default'
+import moment from 'moment'
 
 const Form17 = defineComponent({
   name: 'Form17',
@@ -27,6 +28,8 @@ const Form17 = defineComponent({
         ctx,
       },
     }
+
+    const dateTarget = moment(data.entity.date_target).format('DD.MM.YYYY')
 
     const getServiceInfo = async (idService) => {
       const { makeRequest } = useRequest({
@@ -291,6 +294,7 @@ const Form17 = defineComponent({
       isSetTask,
       selectName,
       changeQTY,
+      dateTarget,
     }
   },
 })

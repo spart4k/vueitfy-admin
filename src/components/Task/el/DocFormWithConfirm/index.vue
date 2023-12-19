@@ -457,11 +457,12 @@
                 @click="() => rejectDoc(doc.id)"
                 class="mr-2"
                 color="error"
+                small
               >
                 <v-icon left> $IconClose </v-icon>
                 Отклонить
               </v-btn>
-              <v-btn @click="() => confirmDoc(doc.id)" color="primary">
+              <v-btn @click="() => confirmDoc(doc.id)" color="primary" small>
                 <v-icon left> $IconMain </v-icon>
                 Подтвердить
               </v-btn>

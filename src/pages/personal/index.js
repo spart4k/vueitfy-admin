@@ -2630,6 +2630,7 @@ const defaultForm = [
           autocompleteField({
             label: 'Объект',
             name: 'object_id',
+            alias: 'object_json',
             subtype: 'single',
             placeholder: '',
             class: [''],
