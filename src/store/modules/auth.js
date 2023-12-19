@@ -1,5 +1,5 @@
 //import
-import { login, logout, me } from '@/api/login'
+import { login } from '@/api/login'
 //import axios from 'axios'
 
 const auth = {
@@ -7,15 +7,12 @@ const auth = {
   state: {
     user: {},
     token: '',
+    permision: {},
   },
   mutations: {
     setToken(state, token) {
       //state.user = user
       state.token = token
-      localStorage.setItem('token', token)
-    },
-    setUserInfo(state, value) {
-      state.user = value
     },
   },
   actions: {
@@ -24,16 +21,11 @@ const auth = {
       const result = await login(data)
       commit('auth/setToken', result.AccessToken, { root: true })
     },
-    async logout({ commit }) {
-      //try {
-      const result = await logout()
-      // commit('auth/setToken', result.AccessToken, { root: true })
-    },
-    async checkMe({ commit }) {
+    async checkMe() {
       //try {
       const result = await me()
-      console.log(result)
-      commit('user/setUserInfo', result, { root: true })
+      return result
+      //commit('auth/setToken', result.AccessToken)
     },
   },
 }

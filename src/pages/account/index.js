@@ -1113,7 +1113,7 @@ const config = {
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'text',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'account',
@@ -1430,7 +1430,7 @@ const config = {
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'text',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'account',

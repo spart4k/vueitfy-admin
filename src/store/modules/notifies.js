@@ -17,6 +17,10 @@ const notifies = {
         setTimeout(() => {
           vm.commit('notifies/hideMessage')
         }, timeout)
+      } else {
+        setTimeout(() => {
+          vm.commit('notifies/hideMessage')
+        }, 3500)
       }
     },
     hideMessage(state) {

@@ -1944,11 +1944,11 @@ const config = {
                 color: 'primary',
                 handlingResponse: {
                   1: {
-                    text: 'success',
+                    text: 'Объект %name% успешно создан',
                     color: 'success',
                   },
                   2: {
-                    text: 'Объект с данным именем уже существует',
+                    text: 'Объект с именем %name% уже существует',
                     color: 'error',
                   },
                   3: {

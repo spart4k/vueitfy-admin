@@ -223,7 +223,9 @@ export default function ({
       console.log(result)
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
-      const { text, color } = action.handlingResponse[result.code]
+      let { text, color } = action.handlingResponse[result.code]
+      ///%\w{n}%/
+      text = text.replace(/%name%/g, formData.name)
       store.commit('notifies/showMessage', {
         content: text,
         color,
