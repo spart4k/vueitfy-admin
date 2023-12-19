@@ -1,8 +1,8 @@
 import { get, post, put, del } from '@/api/axios'
 
-export const getBoxes = () => get('mail/get_box')
+export const getBoxes = () => get('mail/get_box/mail_folders')
 
-export const getFolders = () => get('mail/get_folders')
+export const getFolders = () => get('mail/get_box/account_folders')
 
 export const getTags = () => get('mail/tags')
 

@@ -7,8 +7,11 @@
         !$route.query.mail &&
         'v-letter__wide',
     ]"
-    @click="$emit('setActiveMail', $props.data)"
   >
+    <div
+      @click="$emit('setActiveMail', $props.data)"
+      class="v-letter-trigger"
+    ></div>
     <div class="v-letter-left">
       <v-icon
         v-if="$route.query.filter !== 'sent' && $route.query.filter !== 'trash'"

@@ -164,6 +164,10 @@ export default function ({
         formData: sortedData,
       })
       console.log(result)
+      loading.value = false
+      //emit('getItems')
+      //if (action.actionKey === 'schedule') {
+      //emit('closePopup')
     } else if (action.action === 'saveForm') {
       console.log('SAVE FORM')
       loading.value = true
@@ -187,9 +191,9 @@ export default function ({
       }
       console.log(result)
       loading.value = false
-      //emit('getItems')
+      emit('getItems')
       //if (action.actionKey === 'schedule') {
-      //emit('closePopup')
+      emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -513,7 +517,8 @@ export default function ({
           }
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
+            // Если массив, вставить массив
+            // formData[field.name] = field.items[0][field.selectOption.value]
           }
           showField(field.type, field, true)
         }
@@ -650,7 +655,8 @@ export default function ({
           ? [...targetField.defaultItems, ...data]
           : data
         if (targetField.items.length === 1) {
-          formData[targetField.name] = targetField.items[0].id
+          // Если массив, вставить массив
+          // formData[targetField.name] = targetField.items[0].id
         } else if (!targetField.items.length) {
           formData[targetField.name] = null
         }
@@ -801,7 +807,8 @@ export default function ({
         }
         field.items = lists.data[keyList]
         if (field.items.length === 1) {
-          formData[field.name] = field.items[0][field.selectOption.value]
+          // Если массив, вставить массив
+          // formData[field.name] = field.items[0][field.selectOption.value]
         }
         showField(field.type, field, true)
       }
@@ -886,7 +893,8 @@ export default function ({
           }
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
+            // Если массив, вставить массив
+            //formData[field.name] = field.items[0][field.selectOption.value]
           }
         }
       }

@@ -1,8 +1,7 @@
 <template>
   <div class="v-files">
-    <a
-      :target="$props.expand && '_blank'"
-      :href="$props.expand && item.path"
+    <div
+      @click="$props.expand && downloadURI(item.path, item.name)"
       :class="[
         'v-files_item',
         index > 2 && !$props.expand && 'v-files_item__hidden',
@@ -26,7 +25,7 @@
         </template>
         <span>{{ item.name }}</span>
       </v-tooltip>
-    </a>
+    </div>
     <template v-if="files.length > 3">
       <div v-if="!$props.expand" class="v-files_additional-item">
         +{{ files.length - 3 }}
