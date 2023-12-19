@@ -91,510 +91,6 @@ const consumptionConfig = {
   filters,
 }
 
-const skanConfig = {
-  selector: '#mainTable',
-  options: {
-    selecting: true,
-    search: {
-      function: searchInputing,
-    },
-    headerFixed: true,
-    //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/account_doc',
-    urlDetail: 'account_id',
-    alias: 'p.account_id',
-    title: 'This is an about page1',
-  },
-  panel: {
-    buttons: [
-      {
-        label: 'Обновить',
-        class: ['v-table-button--custom'],
-        url: '$IconEdit',
-        function: consolePanel,
-        backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
-    ],
-  },
-  head: [
-    {
-      title: 'ID',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'p.id',
-      isShow: true,
-      width: '40',
-      value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'account_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Часы',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
-    },
-  ],
-  data: {
-    rows: [],
-    totalRows: null,
-    pageLength: 20,
-    currentPage: 1,
-    totalPages: null,
-  },
-  detail: undefined,
-  filters,
-}
-
-const paymentConfig = {
-  selector: '#mainTable',
-  options: {
-    selecting: true,
-    search: {
-      function: searchInputing,
-    },
-    headerFixed: true,
-    //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/account_target_doc',
-    urlDetail: 'account_id',
-    alias: 'p.account_id',
-    title: 'This is an about page1',
-  },
-  panel: {
-    buttons: [
-      {
-        label: 'Обновить',
-        class: ['v-table-button--custom'],
-        url: '$IconEdit',
-        function: consolePanel,
-        backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
-    ],
-  },
-  head: [
-    {
-      title: 'ID',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'p.id',
-      isShow: true,
-      width: '40',
-      value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'account_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Часы',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
-    },
-  ],
-  data: {
-    rows: [],
-    totalRows: null,
-    pageLength: 20,
-    currentPage: 1,
-    totalPages: null,
-  },
-  detail: undefined,
-  filters,
-}
-
 const config = {
   title: 'Добавление аккаунта',
   activeTab: 2,
@@ -629,12 +125,6 @@ const config = {
             //function: consolePanel,
             backgroundColor: '#fff',
           },
-          // {
-          //   label: 'Скачать',
-          //   class: ['v-table-button--custom'],
-          //   function: consolePanel,
-          //   backgroundColor: '#fff',
-          // },
         ],
       },
       head: [
@@ -850,14 +340,13 @@ const config = {
                 filter: [],
               },
             ],
-            alias: 'sys_account',
+            alias: 'account',
             active: false,
             fields: [
               stringField({
                 label: 'ФИО',
                 name: 'fio',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -869,7 +358,6 @@ const config = {
                 label: 'Краткое имя',
                 name: 'name',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -881,7 +369,6 @@ const config = {
                 label: 'Телефон',
                 name: 'telefon',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -893,7 +380,6 @@ const config = {
                 label: 'Email',
                 name: 'email',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -905,7 +391,6 @@ const config = {
                 label: 'Логин',
                 name: 'username',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -917,7 +402,6 @@ const config = {
                 label: 'Пароль',
                 name: 'password',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -927,7 +411,6 @@ const config = {
               }),
               dateField({
                 label: 'Дата рождения',
-                readonly: true,
                 name: 'birthday',
                 subtype: 'date',
                 placeholder: '',
@@ -940,7 +423,6 @@ const config = {
                 alias: 'p.date_status',
               }),
               selectField({
-                readonly: true,
                 label: 'Направления',
                 name: 'direction_json',
                 subtype: 'multiselect',
@@ -990,13 +472,11 @@ const config = {
                   cols: 12,
                   sm: 6,
                 },
-                readonly: true,
                 validations: { required },
                 bootstrapClass: [''],
                 requiredFields: ['direction_json'],
               }),
               selectField({
-                readonly: true,
                 label: 'Роль',
                 name: 'permission_id',
                 alias: 'permissions_account',
@@ -1053,7 +533,6 @@ const config = {
                   cols: 12,
                   sm: 6,
                 },
-                readonly: true,
                 validations: { required },
                 bootstrapClass: [''],
                 filters: [
@@ -1075,7 +554,6 @@ const config = {
                 name: 'color',
                 value: '#ffffff',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -1097,26 +575,59 @@ const config = {
                 //validations: { required },
                 //isShow: false,
               }),
+              selectField({
+                label: 'Объекты',
+                name: 'object_json',
+                subtype: 'multiselect',
+                // requestKey: 'direction_json',
+                stringify: true,
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: {},
+                bootstrapClass: [''],
+                updateList: [
+                  {
+                    alias: 'object_type',
+                    filter: [
+                      {
+                        field: 'direction_json',
+                        value: '',
+                        source: 'formData',
+                        type: 'array',
+                      },
+                    ],
+                  },
+                ],
+              }),
             ],
             actions: [
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'text',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'account',
                 skipValidation: true,
               }),
-              // stringAction({
-              //   text: 'Создать',
-              //   type: 'submit',
-              //   module: 'account/createData',
-              //   url: 'set/account',
-              //   name: 'createForm',
-              //   action: 'createForm',
-              //   color: 'primary',
-              // }),
+              stringAction({
+                text: 'Обновить',
+                type: 'submit',
+                module: 'account/putForm',
+                url: 'set/account',
+                name: 'createForm',
+                action: 'createForm',
+                color: 'primary',
+              }),
             ],
           },
           {
@@ -1136,7 +647,7 @@ const config = {
                 filter: [],
               },
             ],
-            alias: 'account',
+            alias: '2account',
             active: false,
             fields: [
               stringField({
@@ -1399,7 +910,7 @@ const config = {
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'text',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'account',
@@ -1413,6 +924,7 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
+                actionKey: 'schedule',
               }),
             ],
           },
@@ -1641,7 +1153,7 @@ const config = {
         classes: [''], // List class
         width: '1000px',
         method: 'get',
-        alias: 'sysaccount',
+        alias: 'account3',
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
