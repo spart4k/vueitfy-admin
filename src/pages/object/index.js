@@ -1646,7 +1646,7 @@ const config = {
                   sm: 8,
                 },
                 bootstrapClass: [''],
-                required: { required }
+                required: { required },
               }),
               colorPicker({
                 label: 'Цвет',
@@ -2143,7 +2143,7 @@ const config = {
                   sm: 8,
                 },
                 bootstrapClass: [''],
-                required: { required }
+                required: { required },
               }),
               colorPicker({
                 label: 'Цвет',
@@ -3262,7 +3262,7 @@ const config = {
                   sm: 8,
                 },
                 bootstrapClass: [''],
-                required: { required }
+                required: { required },
               }),
               colorPicker({
                 label: 'Цвет',
