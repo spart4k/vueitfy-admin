@@ -1355,10 +1355,9 @@ const defaultForm = [
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'disabled',
+            color: 'textDefault',
             name: 'closePopup',
             action: 'closePopup',
-            to: 'personal',
             skipValidation: true,
           }),
           stringAction({
