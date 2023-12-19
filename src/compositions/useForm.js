@@ -176,6 +176,9 @@ export default function ({
         })
       }
       loading.value = false
+      emit('getItems')
+      //if (action.actionKey === 'schedule') {
+      emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -215,11 +218,10 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
-      console.log('action', action, action.actionKey === 'schedule')
-      if (action.actionKey === 'schedule') {
-        emit('getItems')
-        emit('closePopup')
-      }
+      emit('getItems')
+      //if (action.actionKey === 'schedule') {
+      emit('closePopup')
+      //}
       loading.value = false
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
@@ -750,7 +752,9 @@ export default function ({
         countRows: 10,
         currentPage: 1,
         searchValue: '',
-        id: formData[el.name ? el.name : el.alias],
+        id: formData[el.name ? el.name : el.alias]
+          ? formData[el.name ? el.name : el.alias]
+          : -1,
         filters,
       })
 

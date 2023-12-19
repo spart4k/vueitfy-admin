@@ -432,7 +432,6 @@ const table = {
       if (route) router.push({ name: route })
       else router.back()
       popupForm.value.isShow = false
-      if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
       if (options.detail.type === 'popup') {
