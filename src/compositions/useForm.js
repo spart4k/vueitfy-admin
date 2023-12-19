@@ -32,6 +32,7 @@ export default function ({
   mode,
   createForm,
   detail,
+  deleteFormById,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
