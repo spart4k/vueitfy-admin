@@ -166,7 +166,6 @@ export default function ({
       console.log(result)
       loading.value = false
       emit('getItems')
-      //if (action.actionKey === 'schedule') {
       emit('closePopup')
     } else if (action.action === 'saveForm') {
       console.log('SAVE FORM')
@@ -427,6 +426,7 @@ export default function ({
       listData = form?.lists?.map((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
+          console.log(source, 'source')
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
               alias: el.field,
@@ -745,38 +745,27 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
-
     const queryFields = fields.map(async (el) => {
-      const filters = []
-      const url = el.url
-
-      if (el.filters && el.filters.length) {
-        for (const filter of Object.values(el.filters)) {
-          const getValue = () => {
-            let value = ''
-            // console.log()
-            if (filter.source === 'fromPrev') {
-              value = form?.formData[filter.field]
-            } else if (filter.source) {
-              value = filter.value
-            } else {
-              value = formData[filter.field]
-            }
-
-            return value
+      const filter = []
+      const { url } = el
+      if (el.filter && el.filters.length) {
+        el.filter.forEach((filter) => {
+          let value, type
+          if (filter.source === 'fromPrev') {
+            value = form?.formData[filter.field]
+          } else if (filter.source === undefined) {
+            value = filter.value
+          } else {
+            value = formData[filter.field]
           }
-
-          const value = getValue()
-          const type = filter.type ?? undefined
-
-          filters.push({
-            alias: filter.field,
+          if (filter.type) type = filter.type
+          filter.push({
+            field: filter.field,
             value,
             type,
           })
-        }
+        })
       }
-
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
@@ -784,17 +773,14 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
-        filters,
+        filter,
       })
-
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
       return data
     })
-
-    //console.log(fields, '=>', queryFields)
     await Promise.all(queryFields)
   }
 
@@ -827,8 +813,10 @@ export default function ({
 
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
+      console.log('list', list)
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
+        console.log('source', source, source[el.field])
         if (source[el.field] !== null && source[el.field] !== undefined) {
           acc.push({
             alias: el.field,
@@ -840,6 +828,7 @@ export default function ({
         }
         return acc
       }, [])
+      console.log('filter', filter)
 
       const element = {
         alias: list.alias,
