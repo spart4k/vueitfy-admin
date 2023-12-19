@@ -224,13 +224,15 @@ export default function ({
       console.log(result)
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
-      let { text, color } = action.handlingResponse[result.code]
-      // /%\w{n}%/
-      text = text.replace(/%name%/g, formData.name)
-      store.commit('notifies/showMessage', {
-        content: text,
-        color,
-      })
+      if (action.handlingResponse) {
+        let { text, color } = action.handlingResponse[result.code]
+        // /%\w{n}%/
+        text = text.replace(/%name%/g, formData.name)
+        store.commit('notifies/showMessage', {
+          content: text,
+          color,
+        })
+      }
       //emit('closePopup')
     } else if (action.action === 'closePopup') {
       emit('closePopup', action.to)
