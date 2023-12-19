@@ -542,7 +542,14 @@ const table = {
     const closePopupForm = () => {
       router.back()
       popupForm.value.isShow = false
+      //if (props?.options?.detail?.getOnClose) getItems()
     }
+    // const closePopupForm = (route) => {
+    //   if (route) router.push({ name: route })
+    //   else router.back()
+    //   popupForm.value.isShow = false
+    //   if (props?.options?.detail?.getOnClose) getItems()
+    // }
     const addItem = () => {
       if (props.options.detail.type === 'popup') {
         //router.push({

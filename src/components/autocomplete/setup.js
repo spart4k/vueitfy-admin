@@ -65,8 +65,6 @@ export default {
         })
 
         Object.assign(queryData, data)
-        // data delete('rows')
-        console.log(queryData, data)
 
         if (data?.rows?.length || data.page > data.totalPage) {
           Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
@@ -101,6 +99,7 @@ export default {
     const removeSelected = () => {
       proxyValue.value = null
     }
+
     const update = (value) => {
       const item = props.field.items.find((el) => el.id === value)
       emit('input', value)
@@ -112,6 +111,7 @@ export default {
         ? props.field.requiredFields.some((el) => !props.formData[el])
         : false
     })
+
     watch(
       () => searchProps.value,
 
@@ -127,29 +127,16 @@ export default {
         }
       }
     )
+
     watch(
       () => proxyValue.value,
       (newVal) => {
         emit('input', newVal)
       }
     )
-    onMounted(() => {
-      // querySelections
-      // console.log(
-      //   'isAtFinalPage',
-      //   queryData.totalPage,
-      //   '>',
-      //   queryData.page,
-      //   isAtFinalPage
-      // )
-      // console.log(
-      //   'isOverLimitPage',
-      //   queryData.total,
-      //   '<=',
-      //   queryData.countRows,
-      //   isOverLimitPage
-      // )
-    })
+
+    onMounted(() => {})
+
     return {
       proxyValue,
       endIntersect,
