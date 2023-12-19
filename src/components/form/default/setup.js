@@ -38,12 +38,6 @@ export default {
     },
   },
   setup(props, ctx) {
-    console.log('props.tab: ', props.tab)
-    console.log('return ', props.tab)
-
-    console.log('conten', props.content)
-
-    //const syncForm = ref({})
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
@@ -60,7 +54,6 @@ export default {
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
-      // console.log('rebuild fields')
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
@@ -74,7 +67,6 @@ export default {
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      console.log(fields)
       return fields
     }
     const params = props.tab.lists
@@ -99,7 +91,6 @@ export default {
       successMessage: 'Сохранено',
       request: (params) => {
         return store.dispatch(params.module, {
-          //url: `set/data/${alias}`,
           url: params.url,
           body: { data: { id: +route.params.id, ...params.formData } },
         })
@@ -128,12 +119,9 @@ export default {
           url: params.url,
           id: route.params.id,
         })
-        //const req = 'obj'
-        console.log('deleteFormById: ', req)
         return req
       },
     })
-    //console.log(deleteFormById)
 
     console.log('props.tabs', props.tab)
     if (props.tab.hasOwnProperty('content')) {
@@ -165,6 +153,7 @@ export default {
       addFiles,
       changeCheckbox,
       readonlyField,
+      refreshTable,
     } = useForm({
       form: props.tab,
       context,
@@ -208,6 +197,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
+      refreshTable,
     }
   },
 }

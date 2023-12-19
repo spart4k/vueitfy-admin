@@ -485,6 +485,10 @@ $borderColor: rgba(0,0,0,.3);
   }
 }
 
+.v-window-item {
+  background-color: var(--v-background-base);
+}
+
 .v-color-picker__dot {
   width: 25px;
   height: 25px;
