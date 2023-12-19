@@ -24,7 +24,7 @@ export default {
     },
   },
   setup(props, ctx) {
-    console.log(props)
+    console.log('props: autocomplete', props)
     const { emit } = ctx
     const loading = ref(false)
     const proxyValue = ref(props.value)
@@ -66,7 +66,6 @@ export default {
         })
 
         Object.assign(queryData, data)
-        // data delete('rows')
 
         if (
           data?.rows?.length ||
@@ -106,6 +105,7 @@ export default {
     const removeSelected = () => {
       proxyValue.value = null
     }
+
     const update = (value) => {
       const item = props.field.items.find((el) => el.id === value)
       emit('input', value)
@@ -118,6 +118,7 @@ export default {
             props.field.requiredFields.some((el) => !props.formData[el])
         : false
     })
+
     watch(
       () => searchProps.value,
 
@@ -133,29 +134,16 @@ export default {
         }
       }
     )
+
     watch(
       () => proxyValue.value,
       (newVal) => {
         emit('input', newVal)
       }
     )
-    onMounted(() => {
-      // querySelections
-      // console.log(
-      //   'isAtFinalPage',
-      //   queryData.totalPage,
-      //   '>',
-      //   queryData.page,
-      //   isAtFinalPage
-      // )
-      // console.log(
-      //   'isOverLimitPage',
-      //   queryData.total,
-      //   '<=',
-      //   queryData.countRows,
-      //   isOverLimitPage
-      // )
-    })
+
+    onMounted(() => {})
+
     return {
       proxyValue,
       endIntersect,

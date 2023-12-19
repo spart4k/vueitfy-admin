@@ -44,28 +44,9 @@ export default function ({
   const router = useRouter()
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
-  // const validations = () => {
-  //   const formFields = {}
-  //   form.fields.forEach((el) => {
-  //     formFields[el.name] = el
-  //   })
-  //   return Object.keys(formData).reduce((obj, key) => {
-  //     if (
-  //       (typeof formFields[key].isShow === 'boolean' &&
-  //         !formFields[key].isShow) ||
-  //       (typeof formFields[key].isShow === 'object' &&
-  //         !formFields[key].isShow.value)
-  //     ) {
-  //       return obj
-  //     }
-  //     obj[key] = { ...formFields[key].validations, $autoDirty }
-  //     return obj
-  //   }, {})
-  // }
 
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
-      //console.log(obj[key])
       obj[key] = ref(fields[key].default)
       return obj
     }, {})
@@ -120,6 +101,7 @@ export default function ({
       }
       return obj
     }, {})
+    console.log($errors.value)
   }
 
   const validate = (touch) => {
@@ -326,9 +308,6 @@ export default function ({
         else newForm[key] = JSON.stringify(formData[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
-      if (item.type === 'checkbox' && formData[key] === undefined) {
-        newForm[key] = false
-      }
     })
     return newForm
   }
@@ -383,7 +362,12 @@ export default function ({
           new Date().getTime()
         const ext = filesBasket.value[key].files[0].name.split('.').pop()
         path =
-          filesBasket.value[key].field.options.folder + '/' + name + '.' + ext
+          'files/' +
+          filesBasket.value[key].field.options.folder +
+          '/' +
+          name +
+          '.' +
+          ext
         if (queryParams && queryParams.formData) {
           queryParams.formData[filesBasket.value[key].field.name] = path
         } else {
@@ -549,14 +533,17 @@ export default function ({
           //}
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
+        console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
+        console.log(targetField)
         if (targetField.type === 'autocomplete') {
           const filter = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
+              console.log(formData[el.field])
               if (!formData[el.field]) return
               filter.push({
-                alias: el.alias ?? el.field,
+                alias: el.field,
                 type: el.type,
                 value: formData[el.field],
               })
@@ -565,7 +552,7 @@ export default function ({
             dependence.filter.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
-                alias: el.alias ?? el.field,
+                alias: el.field,
                 type: el.type,
                 value: formData[el.field],
               })
@@ -703,7 +690,7 @@ export default function ({
   }
 
   const changeCheckbox = (field) => {
-    form?.fields.forEach((el) => showField(el.type, el))
+    showField(field.type, field)
   }
 
   const changeSelect = async ({ value, field }) => {
@@ -727,44 +714,57 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
+
     const queryFields = fields.map(async (el) => {
-      const filter = []
-      const { url } = el
-      if (el.filter && el.filters.length) {
-        el.filter.forEach((filter) => {
-          let value, type
-          if (filter.source === 'fromPrev') {
-            value = form?.formData[filter.field]
-          } else if (filter.source === undefined) {
-            value = filter.value
-          } else {
-            value = formData[filter.field]
+      const filters = []
+      const url = el.url
+
+      if (el.filters && el.filters.length) {
+        for (const filter of Object.values(el.filters)) {
+          const getValue = () => {
+            let value = ''
+            // console.log()
+            if (filter.source === 'fromPrev') {
+              value = form?.formData[filter.field]
+            } else if (filter.source) {
+              value = filter.value
+            } else {
+              value = formData[filter.field]
+            }
+
+            return value
           }
-          if (filter.type) type = filter.type
-          filter.push({
-            field: filter.field,
+
+          const value = getValue()
+          const type = filter.type ?? undefined
+
+          filters.push({
+            alias: filter.field,
             value,
             type,
           })
-        })
+        }
       }
+
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
         searchValue: '',
-        id: formData[el.name ? el.name : el.alias]
-          ? formData[el.name ? el.name : el.alias]
-          : -1,
-        filter,
+        id: formData[el.name ? el.name : el.alias],
+        filters,
       })
+
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
       return data
     })
+
+    //console.log(fields, '=>', queryFields)
     await Promise.all(queryFields)
   }
+
   const putSelectItems = (lists) => {
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
@@ -791,6 +791,7 @@ export default function ({
       }
     }
   }
+
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
@@ -961,8 +962,8 @@ export default function ({
   }
 
   const disabledField = (field) => {
-    return field.disabled || field.requiredFields
-      ? field.disabled || field.requiredFields.some((el) => !formData[el])
+    return field.requiredFields
+      ? field.requiredFields.some((el) => !formData[el])
       : false
   }
 
