@@ -72,7 +72,7 @@ const Form13 = defineComponent({
           store.dispatch('taskModule/updateFileData', {
             personal_id: data.entity.id,
             doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
+            path_doc: `/personal_doc/${fileName}`,
             from_task: true,
           }),
       })
@@ -112,7 +112,7 @@ const Form13 = defineComponent({
           store.dispatch('taskModule/updateFileData', {
             personal_id: data.entity.id,
             doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
+            path_doc: `/personal_doc/${fileName}`,
             from_task: true,
           }),
       })

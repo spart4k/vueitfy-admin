@@ -233,7 +233,7 @@ export default function ({
       })
       loading.value = false
       console.log(result)
-      if (result.code && result.code !== 1) {
+      if (result.code && result.code === 1) {
         emit('getItems')
         emit('closePopup')
       } else if (!result.code) {
@@ -393,12 +393,7 @@ export default function ({
           new Date().getTime()
         const ext = filesBasket.value[key].files[0].name.split('.').pop()
         path =
-          'files/' +
-          filesBasket.value[key].field.options.folder +
-          '/' +
-          name +
-          '.' +
-          ext
+          filesBasket.value[key].field.options.folder + '/' + name + '.' + ext
         if (queryParams && queryParams.formData) {
           queryParams.formData[filesBasket.value[key].field.name] = path
         } else {
@@ -412,6 +407,8 @@ export default function ({
       const result = await createForm(queryParams)
     }
     //context.root.router.go(-1)
+    console.log('///////////////////////////////////')
+    emit('getItems')
     emit('closePopup')
     // const
   }
