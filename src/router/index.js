@@ -234,6 +234,7 @@ const routes = [
         path: ':id',
         meta: {
           mode: ['edit'],
+          label: 'Объект - редактирование',
         },
         component: Detail,
       },

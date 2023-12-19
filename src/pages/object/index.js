@@ -326,7 +326,7 @@ const objectUnAssigned = {
   },
   head: [
     {
-      title: 'ID',
+      title: 'Сотрудник',
       type: 'default',
       align: 'center',
       fixed: {
@@ -344,7 +344,7 @@ const objectUnAssigned = {
       },
     },
     {
-      title: 'Дата назн',
+      title: 'Должность',
       type: 'default',
       align: 'center',
       fixed: {
@@ -362,7 +362,7 @@ const objectUnAssigned = {
       },
     },
     {
-      title: 'Линейщик',
+      title: 'Д назнач',
       type: 'default',
       align: 'center',
       fixed: {
@@ -380,7 +380,7 @@ const objectUnAssigned = {
       },
     },
     {
-      title: 'Линейщик',
+      title: 'Д оконч',
       type: 'default',
       align: 'center',
       fixed: {
@@ -398,7 +398,7 @@ const objectUnAssigned = {
       },
     },
     {
-      title: 'Линейщик',
+      title: 'Назначил',
       type: 'default',
       align: 'center',
       fixed: {
@@ -3698,7 +3698,7 @@ const config = {
           {
             id: 4,
             path: 'edit',
-            name: 'Расход',
+            name: 'Назначения',
             type: TableDefault,
             active: false,
             config: objectUnAssigned,
