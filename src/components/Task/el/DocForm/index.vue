@@ -44,7 +44,9 @@
           <v-expansion-panel-content>
             <div>
               <span>Скан:</span>
-              <a download :href="process.env.API_STORE + doc.path_doc"
+              <a
+                download
+                :href="'http://10.63.1.132:3000/file/get/' + doc.path_doc"
                 ><v-icon left small> $IconDocument </v-icon></a
               >
             </div>
