@@ -214,14 +214,6 @@ const routes = [
     component: ObjectView,
     children: [
       {
-        name: 'object/:id',
-        path: ':id',
-        meta: {
-          mode: ['edit'],
-        },
-        component: Detail,
-      },
-      {
         name: 'object-add',
         path: '/object/add',
         meta: {
@@ -234,6 +226,14 @@ const routes = [
         path: '/object/appoint',
         meta: {
           mode: ['appoint'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'object/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
         },
         component: Detail,
       },
@@ -251,20 +251,20 @@ const routes = [
     component: AccountView,
     children: [
       {
-        name: 'account/:id',
-        path: ':id',
-        component: Detail,
-        meta: {
-          mode: ['edit'],
-        },
-      },
-      {
         name: 'account-add',
         path: '/account/add',
         meta: {
           mode: 'add',
         },
         component: Detail,
+      },
+      {
+        name: 'account/:id',
+        path: ':id',
+        component: Detail,
+        meta: {
+          mode: ['edit'],
+        },
       },
     ],
   },

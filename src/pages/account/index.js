@@ -830,6 +830,7 @@ const config = {
         alias: 'account',
         url: '/get/form/',
         name: 'Добавление аккаунта',
+        getOnClose: true,
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
@@ -1130,7 +1131,7 @@ const config = {
               { alias: 'direction_id', filter: [] },
               { alias: 'grajdanstvo_id', filter: [] },
               {
-                alias: 'object_type',
+                alias: 'account_object_types',
                 filter: [],
               },
             ],
@@ -1256,7 +1257,7 @@ const config = {
                 // ],
                 updateList: [
                   {
-                    alias: 'object_type',
+                    alias: 'account_object_types',
                     filter: [
                       {
                         field: 'direction_json',
@@ -1271,7 +1272,7 @@ const config = {
               selectField({
                 label: 'Тип',
                 name: 'type',
-                alias: 'object_type',
+                alias: 'account_object_types',
                 subtype: 'multiselect',
                 stringify: true,
                 placeholder: '',
@@ -1417,7 +1418,6 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
     },
     {
       selector: '#mainTable',

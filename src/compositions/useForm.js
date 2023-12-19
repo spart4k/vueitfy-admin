@@ -707,7 +707,7 @@ export default function ({
             // console.log()
             if (filter.source === 'fromPrev') {
               value = form?.formData[filter.field]
-            } else if (typeof filter.source === 'undefined') {
+            } else if (filter.source) {
               value = filter.value
             } else {
               value = formData[filter.field]

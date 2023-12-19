@@ -14,9 +14,9 @@
       color="error"
       overlap
     >
-      <v-btn @click="showNotification" icon>
-        <v-icon color="text">$IconNotificationBell</v-icon>
-      </v-btn>
+      <!--<v-btn @click="showNotification" icon>-->
+      <!--<v-icon color="text">$IconNotificationBell</v-icon>-->
+      <!--</v-btn>-->
     </v-badge>
 
     <v-menu offset-y nudge-bottom="10">
@@ -34,6 +34,13 @@
         </v-btn>
       </template>
       <v-list>
+        <v-list-item style="width: 72px" class="v-topbar-menu__list-item">
+          <v-switch
+            v-model="$vuetify.theme.dark"
+            inset
+            persistent-hint
+          ></v-switch>
+        </v-list-item>
         <v-list-item
           v-for="(item, index) in itemSecondMenu"
           :key="index"

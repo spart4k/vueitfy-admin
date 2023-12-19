@@ -1249,7 +1249,7 @@ const defaultForm = [
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {
@@ -1340,7 +1340,7 @@ const defaultForm = [
             items: [
               // { id: 1, name: 'Новые' },
               // { id: 2, name: 'ЕАЭС' },
-              // { id: 3, name: 'Не резиденты' },
+              // { id: 3, name: 'Нерезиденты' },
               // { id: 4, name: 'РФ' },
             ],
             position: {
@@ -1942,7 +1942,7 @@ const buttonsMixin = [
 
 // const formQuery = ;
 
-const tabNames = ['Основные', 'ЕАЭС', 'Не резиденты', 'РФ']
+const tabNames = ['Основные', 'ЕАЭС', 'Нерезиденты', 'РФ']
 const config = {
   title: 'Персонал',
   // activeTab: activeTab,
@@ -2639,7 +2639,6 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -2647,6 +2646,7 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -2922,12 +2922,11 @@ const config = {
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/documents_dont_res',
-        title: 'Не резиденты',
+        title: 'Нерезиденты',
       },
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -2935,6 +2934,7 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -3324,7 +3324,6 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -3332,6 +3331,7 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],

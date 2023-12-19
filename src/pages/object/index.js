@@ -7,6 +7,7 @@ import {
   dateField,
   checkboxField,
   colorPicker,
+  textBlock,
   // dropZoneField,label:"label:"ФИО директора"
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -1761,6 +1762,7 @@ const config = {
                 label: 'Питание',
                 name: 'with_nutrition',
                 placeholder: '',
+                value: false,
                 readonly: false,
                 class: [''],
                 position: {
@@ -1768,7 +1770,7 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                validations: { required },
+                //validations: { required },
                 //isShow: false,
                 isShow: {
                   value: false,
@@ -1785,7 +1787,7 @@ const config = {
                 label: 'Стоимость питания',
                 name: 'sum_nutrition',
                 placeholder: '',
-                value: 0,
+                //value: 0,
                 readonly: false,
                 class: [''],
                 position: {
@@ -1794,7 +1796,7 @@ const config = {
                 },
                 bootstrapClass: [''],
                 isShow: {
-                  value: true,
+                  value: false,
                   conditions: [
                     {
                       field: 'with_nutrition',
@@ -2250,7 +2252,7 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                validations: { required },
+                //validations: { required },
                 //isShow: false,
                 isShow: {
                   value: false,
@@ -2267,7 +2269,6 @@ const config = {
                 label: 'Стоимость питания',
                 name: 'sum_nutrition',
                 placeholder: '',
-                value: 0,
                 readonly: false,
                 class: [''],
                 position: {
@@ -2428,7 +2429,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      //filters,
     },
     {
       selector: '#mainTable',
@@ -2465,7 +2466,7 @@ const config = {
                 {
                   permissions: [1, 2, 3, 4, 9, 15],
                   direction_id: [1, 6],
-                  type: false,
+                  type: true,
                 },
               ],
             },
@@ -2957,6 +2958,14 @@ const config = {
                     value: '',
                   },
                 ],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'account_id',
+                    url: 'get/pagination_list/assign_accounts',
+                  },
+                ],
                 // filters: [
                 //   {
                 //     field: 'direction_id',
@@ -2998,6 +3007,22 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                filters: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                  },
+                  {
+                    field: 'object_id',
+                    value: '',
+                  },
+                ],
+                dependence: [
+                  {
+                    type: 'default',
+                    fillField: ['permission_id'],
+                  },
+                ],
                 // filters: [
                 //   {
                 //     field: 'direction_id',
@@ -3017,6 +3042,20 @@ const config = {
                 //   fields: ['personal_id'],
                 // },
               }),
+              textBlock({
+                label: 'Создал',
+                name: 'permission_id',
+                placeholder: '',
+                readonly: true,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                //validations: { required },
+                //isShow: false,
+              }),
             ],
             actions: [
               stringAction({
@@ -3032,9 +3071,9 @@ const config = {
                 text: 'Сохранить',
                 type: 'submit',
                 module: 'form/create',
-                name: 'saveForm',
-                url: 'create/assignt',
-                action: 'saveForm',
+                name: 'createForm',
+                url: 'create/assign',
+                action: 'createForm',
                 color: 'primary',
               }),
             ],
@@ -3042,7 +3081,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      //filters,
     },
     {
       selector: '#mainTable',
@@ -3488,7 +3527,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      //filters,
     },
     // {
     //   selector: '#mainTable',

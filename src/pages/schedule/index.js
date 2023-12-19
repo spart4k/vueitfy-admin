@@ -852,7 +852,7 @@ const consumptionConfig = {
     ],
     activeTab: null,
   },
-  filters,
+  //filters,
 }
 
 // const fieldsAddToEdit = [
@@ -871,7 +871,7 @@ const consumptionConfig = {
 //     // items: [
 //     //   { id: 0, name: 'Новые' },
 //     //   { id: 1, name: 'ЕАЭС' },
-//     //   { id: 2, name: 'Не резиденты' },
+//     //   { id: 2, name: 'Нерезиденты' },
 //     //   { id: 3, name: 'РФ' },
 //     // ],
 //     position: {
@@ -952,7 +952,7 @@ const config = {
         backgroundColor: '#fff',
       },
     ],
-    filters: true,
+    //filters: true,
     search: true,
     date: true,
     addedItemsChildrenType: 'object',
@@ -1158,7 +1158,7 @@ const config = {
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {
@@ -1240,7 +1240,7 @@ const config = {
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {
@@ -1380,7 +1380,7 @@ const config = {
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {

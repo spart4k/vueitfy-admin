@@ -447,7 +447,7 @@ const table = {
         popupForm.value.isShow = true
       }
     }
-    const panelHandler = (button) => {
+    const panelHandler = async (button) => {
       const { type, url } = button
       const changeUrl = (url) => {
         router.push(
@@ -467,6 +467,8 @@ const table = {
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
         emit('nextStage', {})
+      } else if (button.label === 'Обновить') {
+        await getItems()
       }
       if (button.function) button.function()
     }
@@ -483,40 +485,15 @@ const table = {
       return options.head.find((cell) => cell.type === 'actions')
     })
 
-    // WATCH
-    watch(
-      () => searchField,
-      (newVal) => {
-        options.options.search.function(newVal)
-      },
-      () => {
-      }
-    )
-
-
-    // const paramsQuery = ref({
-    //   currentPage: pagination.value.currentPage,
-    //   searchGlobal: searchField.value,
-    //   countRows: pagination.value.countRows,
-    //   sorts: [],
-    //   searchColumns: [],
-    // })
-
-
-      watch(
-        () => paramsQuery,
-        async () => {
-          await getItems()
-        },
-        {deep: true}
-      )
-
-      watch(
-        () => paramsQuery.value.sorts,
-        async () => {
-          await getItems()
-        },
-      )
+    // // WATCH
+    // watch(
+    //   () => searchField,
+    //   (newVal) => {
+    //     props.options.options.search.function(newVal)
+    //   },
+    //   () => {
+    //   }
+    // )
 
 
       // HOOKS
@@ -525,11 +502,13 @@ const table = {
         await getItems()
 
         watch(
-          () => paramsQuery.value.searchColumns ,
+          () => paramsQuery,
           async () => {
             await getItems()
           },
+          { deep: true }
         )
+
 
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
@@ -624,17 +603,26 @@ const table = {
     const directions = computed(() => JSON.parse(store.state.user.direction_json))
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
+        console.log(el.permissions.includes(permission.value))
         return el.permissions.includes(permission.value)
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        return _.intersection(
-          el.direction_id, directions.value)
+        console.log(_.intersection(
+          el.direction_id, directions.value).length)
+        if (!el.direction_id) return true
+        else {
+          return !!_.intersection(
+            el.direction_id, directions.value).length
+        }
       }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some(el => checkIncludesPermissions(el) && checkIncludesDirections(el))
+          return btn.isShow.condition.some(el => {
+            console.log(checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type)
+            return checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type
+          })
           // if ()
         }
       })

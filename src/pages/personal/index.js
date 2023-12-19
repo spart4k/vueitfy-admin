@@ -2630,6 +2630,7 @@ const defaultForm = [
           autocompleteField({
             label: 'Объект',
             name: 'object_id',
+            alias: 'object_json',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -2745,7 +2746,9 @@ const defaultForm = [
             filters: [
               {
                 field: 'object_id',
+                alias: 'object_json',
                 value: '',
+                type: 'array'
               },
             ],
             isShow: {
@@ -2984,7 +2987,7 @@ const config = {
               condition: [
                 {
                   permissions: [1, 2, 3, 4, 9, 15],
-                  type: false,
+                  type: true,
                 },
               ]
             }

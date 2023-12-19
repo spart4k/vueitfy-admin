@@ -43,7 +43,7 @@ const account = {
     },
     async createData(_, { url, body }) {
       console.log(_, url, body)
-      const result = await create(url, { data: body })
+      const result = await create(url, body)
       return result
     },
   },
