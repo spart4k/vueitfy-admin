@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <v-card>
-      <v-card-title class="text-h5 grey lighten-2">Авторизация</v-card-title>
+      <v-card-title class="text-h5 login-header">Авторизация</v-card-title>
       <v-form class="pa-5">
         <container>
           <v-row>

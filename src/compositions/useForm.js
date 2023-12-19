@@ -33,6 +33,7 @@ export default function ({
   createForm,
   detail,
   deleteFormById,
+  changeFormId,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
@@ -155,9 +156,18 @@ export default function ({
         if (!response) return
       }
       emit('prevStage')
+    } else if (action.action === 'saveFormId') {
+      loading.value = true
+      const result = await changeFormId({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      console.log(result)
     } else if (action.action === 'saveForm') {
       console.log('SAVE FORM')
       loading.value = true
+      let result
       if (action.conditionAction) {
         action.conditionAction.forEach((el) => {
           action[el.target] = el.result[formData[el.from]]
@@ -169,16 +179,17 @@ export default function ({
           formData: sortedData,
         })
       } else {
-        await changeForm({
+        result = await changeForm({
           url: action.url,
           module: action.module,
           formData: sortedData,
         })
       }
+      console.log(result)
       loading.value = false
-      emit('getItems')
+      //emit('getItems')
       //if (action.actionKey === 'schedule') {
-      emit('closePopup')
+      //emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -216,12 +227,15 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
-      emit('getItems')
-      //if (action.actionKey === 'schedule') {
-      emit('closePopup')
-      //}
       loading.value = false
       console.log(result)
+      if (result.code && result.code !== 1) {
+        emit('getItems')
+        emit('closePopup')
+      } else if (!result.code) {
+        emit('getItems')
+        emit('closePopup')
+      }
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
       if (action.handlingResponse) {
@@ -702,7 +716,9 @@ export default function ({
   }
 
   const changeCheckbox = (field) => {
-    showField(field.type, field)
+    //showField(field.type, field)
+    //setFields()
+    rebuildFormData()
   }
 
   const changeSelect = async ({ value, field }) => {

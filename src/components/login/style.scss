@@ -2,4 +2,7 @@
   width: 400px;
   display: block;
   margin: auto;
+  &-header {
+    background-color: var(--v-background-base);
+  }
 }

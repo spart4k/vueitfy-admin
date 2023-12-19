@@ -2431,10 +2431,10 @@ const config = {
               stringAction({
                 text: 'Сохранить',
                 type: 'submit',
-                module: 'form/create',
-                name: 'createForm',
+                module: 'form/putForm',
+                name: 'saveFormId',
                 url: 'set/object',
-                action: 'createForm',
+                action: 'saveFormId',
                 color: 'primary',
               }),
             ],
