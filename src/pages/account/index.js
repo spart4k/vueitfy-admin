@@ -1053,6 +1053,7 @@ const config = {
                   cols: 12,
                   sm: 6,
                 },
+                readonly: true,
                 validations: { required },
                 bootstrapClass: [''],
                 filters: [
