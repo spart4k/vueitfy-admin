@@ -157,13 +157,14 @@ const Form7 = defineComponent({
           Date.parse(props.data.task.date_create) +
           props.data.task.time_execution * 1000 -
           Date.now()
+        console.log()
         return store.dispatch('taskModule/setPartTask', {
           status: taskDeadline > 0 ? 2 : 3,
           data: {
             process_id: task.process_id,
             task_id: task.id,
             parent_action: task.id,
-            docs_id: props.data.data.docs_id.map((doc) => doc.id),
+            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
             okk_id: props.data.task.from_account_id,
