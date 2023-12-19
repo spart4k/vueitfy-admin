@@ -83,6 +83,7 @@ const textBlock = (properties) => {
 const colorPicker = (properties) => {
   return {
     type: 'colorPicker',
+    disabled: true,
     ...defaultProperties(properties),
   }
 }

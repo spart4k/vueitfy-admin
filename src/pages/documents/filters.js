@@ -36,14 +36,14 @@ const filters = {
       },
       items: [],
       url: 'get/pagination_list/personal_logistic_document',
-      aliasFilter: 'p.id',
       typeFilter: 'select',
       position: {
         cols: 12,
         sm: 12,
       },
+      page: 1,
       bootstrapClass: [''],
-      filterAlias: 'p.personal_logistic_document',
+      aliasFilter: 'p.personal_logistic_document',
     }),
     autocompleteField({
       label: 'Регион',
@@ -56,8 +56,9 @@ const filters = {
         value: 'id',
       },
       items: [],
+      page: 1,
       url: 'get/pagination_list/regions_id',
-      filterAlias: 'ob.regions_id',
+      aliasFilter: 'ob.regions_id',
       typeFilter: 'select',
       position: {
         cols: 12,
@@ -71,6 +72,7 @@ const filters = {
       subtype: 'single',
       placeholder: '',
       class: [''],
+      page: 1,
       selectOption: {
         text: 'name',
         value: 'id',
@@ -82,7 +84,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      filterAlias: 'ob.id',
+      aliasFilter: 'ob.id',
       typeFilter: 'select',
     }),
     selectField({
@@ -100,7 +102,7 @@ const filters = {
         cols: 12,
         sm: 12,
       },
-      filterAlias: 'p.status',
+      aliasFilter: 'p.status',
       bootstrapClass: [''],
     }),
     selectField({
@@ -118,7 +120,7 @@ const filters = {
         cols: 12,
         sm: 12,
       },
-      filterAlias: 'p.grajdanstvo_id',
+      aliasFilter: 'p.grajdanstvo_id',
       bootstrapClass: [''],
     }),
     selectField({
@@ -136,7 +138,7 @@ const filters = {
         cols: 12,
         sm: 12,
       },
-      filterAlias: 'need_document',
+      aliasFilter: 'need_document',
       bootstrapClass: [''],
     }),
   ],

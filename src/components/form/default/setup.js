@@ -24,6 +24,10 @@ export default {
     ColorPicker,
   },
   props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
     tab: {
       type: Object,
       default: () => {},
@@ -32,29 +36,12 @@ export default {
       type: Boolean,
       default: false,
     },
-    detail: {
-      type: Object,
-      default: () => {},
-    },
   },
   setup(props, ctx) {
-    console.log('return ', props.tab)
-    //const syncForm = ref({})
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
-    // function addOrUpdateURLParam(key, value) {
-    //   const searchParams = new URLSearchParams(window.location.search)
-    //   searchParams.set(key, value)
-    //   const newRelativePathQuery =
-    //     window.location.pathname + '?' + searchParams.toString()
-    //   history.pushState(null, '', newRelativePathQuery)
-    // }
-
-    // addOrUpdateURLParam('add', 'zxczxc')
-
-    // console.log('new URL', window.location.href)
     const context = {
       root: {
         store,
@@ -67,7 +54,6 @@ export default {
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
-      // console.log('rebuild fields')
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
@@ -81,13 +67,13 @@ export default {
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      // console.log(fields)
       return fields
     }
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      if (props.detail.requstId)
+      console.log(props.detail)
+      if (props.detail?.requstId)
         return _.get(route.params, props.detail.requstId)
       return route.params.id
     }
@@ -104,34 +90,64 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: (params) => {
-        console.log(+route.params.id)
-        // let body
-        // if ()
+        console.log()
         return store.dispatch(params.module, {
-          //url: `set/data/${alias}`,
           url: params.url,
           body: { data: { id: +route.params.id, ...params.formData } },
+        })
+      },
+    })
+    const { makeRequest: changeFormId } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: (params) => {
+        console.log()
+        return store.dispatch(params.module, {
+          url: params.url + '/' + route.params.id,
+          body: { data: { ...params.formData } },
         })
       },
     })
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: (params) =>
-        store.dispatch(params.module, {
+      request: (params) => {
+        console.log(formData, params)
+        return store.dispatch(params.module, {
           url: params.url,
-          body: params.formData ? params.formData : formData,
-        }),
+          body: {
+            data: params.formData ? params.formData : formData,
+          },
+        })
+      },
     })
-    // const { makeRequest: createForm } = useRequest({
-    //   context,
-    //   successMessage: 'Сохранено',
-    //   request: () =>
-    //     store.dispatch('form/create', {
-    //       url: `query/${alias}`,
-    //       body: formData,
-    //     }),
-    // })
+
+    const { makeRequest: deleteFormById } = useRequest({
+      context,
+      successMessage: 'Удалено!',
+      request(params) {
+        console.log('params', params)
+        const req = store.dispatch(params.module, {
+          url: params.url,
+          id: route.params.id,
+        })
+        return req
+      },
+    })
+
+    console.log('props.tabs', props.tab)
+    if (props.tab.hasOwnProperty('content')) {
+      props.tab.fields[0].items[0].id = props.content.account_id
+      props.tab.fields[0].items[0].name = props.content.account_name
+      props.tab.fields[0].value = props.content.account_id
+      props.tab.fields[2].value = Number(props.content.hour)
+      props.tab.fields[1].value = props.content.date
+      props.tab.fields[4].value = props.content.date.slice(0, -3)
+      if (props.content.id) {
+        props.tab.fields[6].value = props.content?.id
+      }
+    }
+
     const {
       formData,
       validate,
@@ -149,6 +165,7 @@ export default {
       addFiles,
       changeCheckbox,
       readonlyField,
+      refreshTable,
     } = useForm({
       form: props.tab,
       context,
@@ -162,11 +179,16 @@ export default {
       changeForm,
       mode: isEdit.value,
       createForm,
+      deleteFormById,
+      changeFormId,
     })
+
     onMounted(async () => {
       await getData()
     })
+
     return {
+      readonlyField,
       //endIntersect,
       formData,
       validate,
@@ -188,7 +210,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
-      readonlyField,
+      refreshTable,
     }
   },
 }

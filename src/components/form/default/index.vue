@@ -52,6 +52,7 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
             />
+
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
@@ -66,7 +67,7 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
-              @change="changeCheckbox"
+              @change="changeCheckbox(field)"
               :readonly="readonlyField(field)"
             ></v-checkbox>
             <v-menu

@@ -279,7 +279,7 @@ const consumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -531,7 +531,7 @@ const skanConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -783,7 +783,7 @@ const paymentConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1249,7 +1249,7 @@ const defaultForm = [
             items: [
               { id: 0, name: 'Новые' },
               { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
+              { id: 2, name: 'Нерезиденты' },
               { id: 3, name: 'РФ' },
             ],
             position: {
@@ -1340,7 +1340,7 @@ const defaultForm = [
             items: [
               // { id: 1, name: 'Новые' },
               // { id: 2, name: 'ЕАЭС' },
-              // { id: 3, name: 'Не резиденты' },
+              // { id: 3, name: 'Нерезиденты' },
               // { id: 4, name: 'РФ' },
             ],
             position: {
@@ -1352,6 +1352,14 @@ const defaultForm = [
           }),
         ],
         actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            skipValidation: true,
+          }),
           stringAction({
             text: 'Создать',
             type: 'submit',
@@ -1940,9 +1948,7 @@ const buttonsMixin = [
   },
 ]
 
-// const formQuery = ;
-
-const tabNames = ['Основные', 'ЕАЭС', 'Не резиденты', 'РФ']
+const tabNames = ['Основные', 'ЕАЭС', 'Нерезиденты', 'РФ']
 const config = {
   title: 'Персонал',
   // activeTab: activeTab,
@@ -1956,6 +1962,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2604,7 +2611,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -2625,6 +2632,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2637,7 +2645,6 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -2645,6 +2652,7 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -2891,7 +2899,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -2912,6 +2920,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -2919,12 +2928,11 @@ const config = {
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/documents_dont_res',
-        title: 'Не резиденты',
+        title: 'Нерезиденты',
       },
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -2932,6 +2940,7 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -3287,7 +3296,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -3308,6 +3317,7 @@ const config = {
     {
       selector: '#mainTable',
       options: {
+        noTableAction: true,
         selecting: true,
         search: {
           function: searchInputing,
@@ -3320,7 +3330,6 @@ const config = {
       type: TableDefault,
       panel: {
         buttons: [
-          ...buttonsMixin,
           {
             label: 'Обновить',
             class: ['v-table-button--custom'],
@@ -3328,6 +3337,7 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          ...buttonsMixin,
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -3572,7 +3582,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },

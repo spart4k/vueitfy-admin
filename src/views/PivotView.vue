@@ -9,6 +9,8 @@
 <script>
 import { pivot } from '@/pages'
 
+console.log(pivot)
+
 import TableFixed from '@/components/Table/fixed/index.vue'
 
 //import Layout from '@/layouts/default/index'

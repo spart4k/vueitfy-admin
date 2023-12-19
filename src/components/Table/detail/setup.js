@@ -18,15 +18,16 @@ export default {
     FrameView,
   },
   props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
     detail: {
       type: Object,
       default: () => {},
     },
   },
   setup(props) {
-    //console.log(form)
-    //const route = useRoute()
-    //const { url, alias } = props.detail
     const route = useRoute()
     const router = useRouter()
     const { id } = route?.params
@@ -40,14 +41,17 @@ export default {
         )
       })
     })
+
+    const porpsContent = ref(props.content)
+
     onUnmounted(() => {
       if (props?.detail?.clearStore) store.commit('clearFormStorage')
     })
     return {
       loading,
       syncForm,
-      //getData,
       TableDefault,
+      porpsContent,
       id,
       availableTabs,
     }

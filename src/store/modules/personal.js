@@ -18,7 +18,9 @@ const personal = {
       return result
     },
     async getKeys(_, { url, wrap, body }) {
+      console.log(url)
       const result = await getKeys(url)
+      console.log(result, wrap, body)
       if (wrap) {
         return { data: { [wrap]: result } }
       } else {
@@ -47,6 +49,11 @@ const personal = {
     },
     async updateForm(_, params) {
       const result = await updateForm(params)
+      return result
+    },
+    async createData(_, { url, body }) {
+      console.log(_, url, body)
+      const result = await create(url, { data: body })
       return result
     },
   },

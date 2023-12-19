@@ -55,6 +55,22 @@
         </div>
       </div>
     </Popup>
+    <Popup
+      closeButton
+      @close="closePopupForm"
+      :options="{ width: options.detail.width, portal: 'table-detail' }"
+      v-if="
+        options.detail && options.detail.type === 'popup' && popupForm.isShow
+      "
+    >
+      <router-view
+        :content="popupForm.dataCellForm"
+        :detail="detail"
+        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
+        @closePopup="closePopupForm"
+        @getItems="getItems"
+      />
+    </Popup>
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
@@ -158,19 +174,6 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <!-- <vIconSort
-                      v-if="
-                        head.sorts &&
-                        head.sorts.length &&
-                        paramsQuery.sorts.length
-                      "
-                      class="v-table-header-row-cell-wrap__sort-icon mr-1"
-                      :state="
-                        paramsQuery.sorts.find((el) => el.field === head.value)
-                          .value
-                      "
-                      @click="sortRow(head)"
-                    /> -->
                     <span @click="!head.added && sortRow(head)">
                       {{ head.title }}
                     </span>
@@ -214,7 +217,6 @@
                 :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
                 @contextmenu="openContext($event, row)"
                 @click="openChildRow($event, row)"
-                v-on:dblclick="openRow($event, row)"
                 class="v-table-body-row"
                 ref="cellItems"
               >
@@ -223,6 +225,7 @@
                     width: cell.width,
                   }"
                   :class="[
+                    !cell.noAction ? 'v-table-body-row-cell--hover' : '',
                     cell.fixed.value ? 'v-table-body-row-cell--fixed' : '',
                     cell.weekendDate && 'v-table-body-row-cell--weekendDate',
                     cell.currentDate && 'v-table-body-row-cell--currentDate',
@@ -234,19 +237,27 @@
                   class="v-table-body-row-cell v-table-actions"
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
+                  @dblclick="doubleHandler($event, row, cell)"
                   :key="cellIndex"
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
                   </template>
                   <template v-else-if="cell.type === 'object'">
+                    <!-- <template
+                      v-if="options.options.pageName && cell.type === 'object'"
+                      >1
+                    </template> -->
                     <template
                       v-for="card in Object.byString(row.row, cell.value)"
                     >
+                      <!-- {{ card }} -->
                       <div
                         :key="card.id"
                         class="v-table-body-row-cell-item"
                         :style="{
+                          width: '50px',
+                          height: '36px',
                           background:
                             card.type_shift === 1
                               ? '#c5ffc5'
@@ -255,6 +266,9 @@
                               : '#f4d0ff',
                         }"
                       >
+                        <p class="v-table-body-row-cell-item_text">
+                          {{ card.hour }}
+                        </p>
                         <p class="v-table-body-row-cell-item_text">
                           {{ card.doljnost_name }}
                         </p>
@@ -285,7 +299,7 @@
                 </td>
               </tr>
               <tr
-                :key="row.row.id + 'child'"
+                :key="row.row.account_id + 'child'"
                 v-show="
                   row.child.isShow && options.head.some((el) => !el.isShow)
                 "

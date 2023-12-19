@@ -14,6 +14,7 @@ import taskModule from './modules/task-module'
 import selects from './modules/selects'
 import file from './modules/file'
 import storage from './modules/storage'
+import account from './modules/account'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
@@ -65,6 +66,7 @@ const store = new Vuex.Store({
     form,
     list,
     personal,
+    account,
     taskModule,
     navmenu,
     selects,

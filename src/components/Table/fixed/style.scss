@@ -136,10 +136,18 @@ $tableFooterHeight: 85px;
         p {
           display: flex;
         }
+        &-cell--hover {
+          &:hover {
+            border: var(--v-primary-base) solid 1px;
+            background-color: rgba(139, 87, 152, 0.1);
+          }
+        }
         &-cell {
           padding: $paddingCell;
           border: rgba(0,0,0,.1) solid 1px;
           vertical-align: top;
+
+
           &__checkbox {
             //display: flex;
             //justify-content: center;
@@ -331,6 +339,7 @@ $tableFooterHeight: 85px;
         display: flex;
         align-items: center;
         font-size: 22px;
+        justify-content: center;
         font-weight: 500;
         &_month {
           width: 160px;

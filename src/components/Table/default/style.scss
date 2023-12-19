@@ -11,6 +11,7 @@ $tableFooterHeight: 85px;
     min-height: 400px;
     height: calc(100% - $tableFooterHeight);
     position: relative;
+    background-color: var(--v-background-base);
     &-header {
       //border: 1px solid $borderColor;
       //box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
@@ -194,6 +195,7 @@ $tableFooterHeight: 85px;
       overflow: auto;
       //width: 2500px;
       max-width: 100%;
+      //background-color: var(--v-pageBackground-base);
       table {
         //display: flex;
         //flex-direction: column;
@@ -361,5 +363,4 @@ $tableFooterHeight: 85px;
 .v-table-body-row-cell--error2 {
  background-color: #FF7373;
 }
- 
- 
+

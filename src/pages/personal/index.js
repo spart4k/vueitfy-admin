@@ -280,7 +280,7 @@ const consumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -535,7 +535,7 @@ const debetorConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -667,7 +667,7 @@ const documentConfigEdit = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -762,10 +762,10 @@ const documentConfigEdit = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'text',
             name: 'closePopup',
             action: 'closePopup',
-            to: 'personal-add',
+            to: 'personal/:id',
             skipValidation: true,
           }),
         ],
@@ -848,10 +848,10 @@ const documentConfigEdit = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'text',
             name: 'closePopup',
             action: 'closePopup',
-            to: 'personal-add',
+            to: 'personal/:id',
             skipValidation: true,
           }),
         ],
@@ -863,7 +863,7 @@ const documentConfigEdit = {
     stringAction({
       text: 'Закрыть',
       type: 'submit',
-      color: 'black',
+      color: 'text',
       name: 'closePopup',
       action: 'closePopup',
       to: 'personal',
@@ -987,7 +987,7 @@ const documentConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1439,7 +1439,7 @@ const skanConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1669,7 +1669,7 @@ const bankConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1924,7 +1924,7 @@ const paymentConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -2623,12 +2623,14 @@ const defaultForm = [
                 module: 'selects/getListUpdate',
                 field: 'object_id',
                 url: 'get/pagination_list/object_logistic',
+                alias: 'object_id'
               },
             ],
           }),
           autocompleteField({
             label: 'Объект',
             name: 'object_id',
+            alias: 'object_json',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -2744,7 +2746,9 @@ const defaultForm = [
             filters: [
               {
                 field: 'object_id',
+                alias: 'object_json',
                 value: '',
+                type: 'array'
               },
             ],
             isShow: {
@@ -2982,8 +2986,8 @@ const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [1,2 , 3 , 4 , 9 , 15],
-                  type: false,
+                  permissions: [1, 2, 3, 4, 9, 15],
+                  type: true,
                 },
               ]
             }
@@ -3146,7 +3150,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -3188,25 +3192,25 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Добавить',
+          //   class: ['v-table-button--custom'],
+          //   url: '$IconSetting',
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
           //   function: consolePanel,
           //   backgroundColor: '#fff',
           // },
-          {
-            label: 'Добавить персонал',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          //{
+          //  label: 'Добавить персонал',
+          //  class: ['v-table-button--custom'],
+          //  function: consolePanel,
+          //  backgroundColor: '#fff',
+          //},
         ],
       },
       head: [
@@ -3365,7 +3369,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -3611,7 +3615,7 @@ const config = {
         activeTab: null,
       },
       filters,
-      
+
     },
     {
       selector: '#mainTable',
@@ -3635,25 +3639,25 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Добавить',
+          //   class: ['v-table-button--custom'],
+          //   url: '$IconSetting',
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
           //   function: consolePanel,
           //   backgroundColor: '#fff',
           // },
-          {
-            label: 'Добавить персонал',
-            class: ['v-table-button--custom'],
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          //{
+          //  label: 'Добавить персонал',
+          //  class: ['v-table-button--custom'],
+          //  function: consolePanel,
+          //  backgroundColor: '#fff',
+          //},
         ],
       },
       head: [
@@ -3812,7 +3816,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -4081,13 +4085,13 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          // {
+          //   label: 'Добавить',
+          //   class: ['v-table-button--custom'],
+          //   url: '$IconSetting',
+          //   function: consolePanel,
+          //   backgroundColor: '#fff',
+          // },
           // {
           //   label: 'Скачать',
           //   class: ['v-table-button--custom'],
@@ -4251,7 +4255,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -4497,204 +4501,204 @@ const config = {
         activeTab: null,
       },
     },
-    {
-      selector: '#mainTable',
-      options: {
-        selecting: true,
-        search: {
-          function: searchInputing,
-        },
-        headerFixed: true,
-        //url: 'https://dummyjson.com/users',
-        url: 'get/pagination/relocation',
-        title: 'Перемещения',
-      },
-      type: TableDefault,
-      panel: {
-        buttons: [
-          {
-            label: 'Обновить',
-            class: ['v-table-button--custom'],
-            url: '$IconEdit',
-            function: consolePanel,
-            backgroundColor: '#ffffff',
-          },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
-          // {
-          //   label: 'Скачать',
-          //   class: ['v-table-button--custom'],
-          //   function: consolePanel,
-          //   backgroundColor: '#fff',
-          // },
-        ],
-      },
-      head: [
-        {
-          title: 'Линейщик',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          alias: 'r.personal_id',
-          isShow: true,
-          width: '40',
-          value: 'personal_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'От(объект)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'r.from_obj_id',
-          value: 'from_object_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'От(менеджер)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'r.from_account_id',
-          value: 'from_account_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'К(объект)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'to_object_name',
-          alias: 'r.to_obj_id',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'К(менеджер)',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'to_account_name',
-          alias: 'r.to_account_id',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
-            },
-          ],
-        },
-      ],
-      data: {
-        rows: [],
-        totalRows: null,
-        pageLength: 10,
-        currentPage: 1,
-        totalPages: null,
-      },
-    },
+    // {
+    //   selector: '#mainTable',
+    //   options: {
+    //     selecting: true,
+    //     search: {
+    //       function: searchInputing,
+    //     },
+    //     headerFixed: true,
+    //     //url: 'https://dummyjson.com/users',
+    //     url: 'get/pagination/relocation',
+    //     title: 'Перемещения',
+    //   },
+    //   type: TableDefault,
+    //   panel: {
+    //     buttons: [
+    //       {
+    //         label: 'Обновить',
+    //         class: ['v-table-button--custom'],
+    //         url: '$IconEdit',
+    //         function: consolePanel,
+    //         backgroundColor: '#ffffff',
+    //       },
+    //       // {
+    //       //   label: 'Добавить',
+    //       //   class: ['v-table-button--custom'],
+    //       //   url: '$IconSetting',
+    //       //   function: consolePanel,
+    //       //   backgroundColor: '#fff',
+    //       // },
+    //       // {
+    //       //   label: 'Скачать',
+    //       //   class: ['v-table-button--custom'],
+    //       //   function: consolePanel,
+    //       //   backgroundColor: '#fff',
+    //       // },
+    //     ],
+    //   },
+    //   head: [
+    //     {
+    //       title: 'Линейщик',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'left',
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'string',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       alias: 'r.personal_id',
+    //       isShow: true,
+    //       width: '40',
+    //       value: 'personal_name',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'От(объект)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'left',
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'text',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '90',
+    //       alias: 'r.from_obj_id',
+    //       value: 'from_object_name',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'От(менеджер)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'left',
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'string',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '150',
+    //       alias: 'r.from_account_id',
+    //       value: 'from_account_name',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'К(объект)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: undefined,
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'text',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '150',
+    //       value: 'to_object_name',
+    //       alias: 'r.to_obj_id',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'К(менеджер)',
+    //       type: 'default',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: undefined,
+    //       },
+    //       sorts: [
+    //         {
+    //           type: 'text',
+    //           default: '',
+    //           value: '',
+    //           isShow: false,
+    //         },
+    //       ],
+    //       isShow: true,
+    //       width: '150',
+    //       value: 'to_account_name',
+    //       alias: 'r.to_account_id',
+    //       search: {
+    //         field: '',
+    //         isShow: true,
+    //       },
+    //     },
+    //     {
+    //       title: 'Действия',
+    //       type: 'actions',
+    //       align: 'center',
+    //       fixed: {
+    //         value: false,
+    //         position: 'right',
+    //       },
+    //       isShow: true,
+    //       width: '100',
+    //       value: 'actions',
+    //       actions: [
+    //         {
+    //           type: 'button',
+    //           url: '$IconSetting',
+    //           function: consoleText,
+    //           label: 'Редактировать',
+    //         },
+    //         {
+    //           type: 'button',
+    //           url: '$IconSetting',
+    //           function: consoleButton,
+    //           label: 'Удалить',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   data: {
+    //     rows: [],
+    //     totalRows: null,
+    //     pageLength: 20,
+    //     currentPage: 1,
+    //     totalPages: null,
+    //   },
+    // },
     {
       selector: '#mainTable',
       options: {
@@ -4888,7 +4892,7 @@ const config = {
       data: {
         rows: [],
         totalRows: null,
-        pageLength: 10,
+        pageLength: 20,
         currentPage: 1,
         totalPages: null,
       },
@@ -5004,7 +5008,7 @@ const config = {
                 name: 'saveForm',
                 action: 'saveFormStore',
               }),
-              
+
             ],
           },
           {
