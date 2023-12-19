@@ -51,10 +51,12 @@
       </div>
       <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
       <v-row class="pb-2 pt-1 px-0" justify="center">
-        <v-btn color="error" class="" small @click="emplyeeFired">
-          <v-icon small>mdi-content-save</v-icon>
-          Уволен
-        </v-btn>
+        <v-col class="ps-0" cols="2" align-self="center"
+          ><v-btn color="error" class="" small @click="emplyeeFired">
+            <v-icon small>mdi-content-save</v-icon>
+            Уволен
+          </v-btn></v-col
+        >
       </v-row>
       <v-row>
         <v-textarea
