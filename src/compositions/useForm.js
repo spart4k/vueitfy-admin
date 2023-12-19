@@ -896,7 +896,7 @@ export default function ({
           }
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
+            //formData[field.name] = field.items[0][field.selectOption.value]
           }
         }
       }
