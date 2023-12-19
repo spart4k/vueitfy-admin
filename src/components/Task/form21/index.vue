@@ -29,7 +29,7 @@
         <v-row>
           <v-col>
             <span>Скан:</span>
-            <a target="_blank" :href="'#'"
+            <a download :href="process.env.API_STORE + doc.path_doc"
               ><v-icon left small> $IconDocument </v-icon></a
             >
           </v-col>
