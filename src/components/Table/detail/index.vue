@@ -2,7 +2,10 @@
   <div class="detail">
     <div class="detail-tabs">
       <div class="pa-4 detail-header">
-        <p v-if="detail.name" class="text-h4 mb-4">
+        <p v-if="$route.meta.label" class="text-h4 mb-4">
+          {{ $route.meta.label }}
+        </p>
+        <p v-else-if="detail.name" class="text-h4 mb-4">
           {{ detail.name }}
         </p>
         <v-tabs
