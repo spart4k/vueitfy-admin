@@ -7,6 +7,7 @@ import CustomIcons from '@/components/icons/index'
 Vue.use(Vuetify)
 export default new Vuetify({
   theme: {
+    dark: false,
     options: {
       customProperties: true,
     },
