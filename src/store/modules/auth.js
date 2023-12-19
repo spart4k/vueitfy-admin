@@ -30,10 +30,12 @@ const auth = {
       // commit('auth/setToken', result.AccessToken, { root: true })
     },
     async checkMe({ commit }) {
-      //try {
-      const result = await me()
-      console.log(result)
-      commit('user/setUserInfo', result, { root: true })
+      try {
+        const result = await me()
+        commit('user/setUserInfo', result, { root: true })
+      } catch (e) {
+        return e
+      }
     },
   },
 }
