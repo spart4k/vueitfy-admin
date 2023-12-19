@@ -164,6 +164,10 @@ export default function ({
         formData: sortedData,
       })
       console.log(result)
+      loading.value = false
+      emit('getItems')
+      //if (action.actionKey === 'schedule') {
+      emit('closePopup')
     } else if (action.action === 'saveForm') {
       console.log('SAVE FORM')
       loading.value = true
@@ -187,9 +191,9 @@ export default function ({
       }
       console.log(result)
       loading.value = false
-      //emit('getItems')
+      emit('getItems')
       //if (action.actionKey === 'schedule') {
-      //emit('closePopup')
+      emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
