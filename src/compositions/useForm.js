@@ -925,8 +925,8 @@ export default function ({
   }
 
   const disabledField = (field) => {
-    return field.requiredFields
-      ? field.requiredFields.some((el) => !formData[el])
+    return field.disabled || field.requiredFields
+      ? field.disabled || field.requiredFields.some((el) => !formData[el])
       : false
   }
 
