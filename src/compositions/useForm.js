@@ -165,9 +165,8 @@ export default function ({
       })
       console.log(result)
       loading.value = false
-      //emit('getItems')
-      //if (action.actionKey === 'schedule') {
-      //emit('closePopup')
+      emit('getItems')
+      emit('closePopup')
     } else if (action.action === 'saveForm') {
       console.log('SAVE FORM')
       loading.value = true
