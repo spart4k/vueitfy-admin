@@ -1353,6 +1353,15 @@ const defaultForm = [
         ],
         actions: [
           stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'disabled',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal',
+            skipValidation: true,
+          }),
+          stringAction({
             text: 'Создать',
             type: 'submit',
             module: 'personal/create',
@@ -1939,8 +1948,6 @@ const buttonsMixin = [
     backgroundColor: '#fff',
   },
 ]
-
-// const formQuery = ;
 
 const tabNames = ['Основные', 'ЕАЭС', 'Нерезиденты', 'РФ']
 const config = {
