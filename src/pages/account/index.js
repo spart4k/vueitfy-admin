@@ -339,6 +339,10 @@ const config = {
                 alias: 'object_type',
                 filter: [],
               },
+              {
+                alias: 'account_objects',
+                filter: [],
+              },
             ],
             alias: 'account',
             active: false,
@@ -565,7 +569,7 @@ const config = {
                 label: 'Руководитель',
                 name: 'is_chief',
                 placeholder: '',
-                readonly: true,
+                // readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -579,6 +583,7 @@ const config = {
                 label: 'Объекты',
                 name: 'object_json',
                 subtype: 'multiselect',
+                readonly: true,
                 // requestKey: 'direction_json',
                 stringify: true,
                 placeholder: '',
@@ -594,19 +599,19 @@ const config = {
                 },
                 validations: {},
                 bootstrapClass: [''],
-                updateList: [
-                  {
-                    alias: 'object_type',
-                    filter: [
-                      {
-                        field: 'direction_json',
-                        value: '',
-                        source: 'formData',
-                        type: 'array',
-                      },
-                    ],
-                  },
-                ],
+                // updateList: [
+                //   {
+                //     alias: 'account_id',
+                //     filter: [
+                //       {
+                //         field: 'direction_json',
+                //         value: '',
+                //         source: 'formData',
+                //         type: 'num',
+                //       },
+                //     ],
+                //   },
+                // ],
               }),
             ],
             actions: [
