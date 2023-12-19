@@ -92,6 +92,7 @@ const Form6 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
+      loadImage()
       if (data.data.dosc) {
         listRequestsForUpload.value.push(
           updateFileData,
