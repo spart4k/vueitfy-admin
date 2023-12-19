@@ -286,6 +286,146 @@ const consumptionConfig = {
   filters,
 }
 
+const objectUnAssigned = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/object_unassigned',
+    urlDetail: 'id',
+    alias: 'p.personal_id',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Добавить',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        function: consolePanel,
+        backgroundColor: '#fff',
+      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
+    ],
+  },
+  head: [
+    {
+      title: 'ID',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      sorts: [],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'account_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Дата назн',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [],
+      isShow: true,
+      width: '150',
+      value: 'permission_name',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'date_target_start',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'date_target_end',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'target_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 20,
+    currentPage: 1,
+    totalPages: null,
+  },
+  detail: undefined,
+}
+
 const skanConfig = {
   selector: '#mainTable',
   options: {
@@ -2901,13 +3041,6 @@ const config = {
           //   ],
           // },
           {
-            id: 1,
-            name: 'Расход',
-            type: TableDefault,
-            active: false,
-            config: consumptionConfig,
-          },
-          {
             id: 3,
             path: 'appoint',
             name: 'Назначить',
@@ -3561,6 +3694,14 @@ const config = {
                 color: 'primary',
               }),
             ],
+          },
+          {
+            id: 4,
+            path: 'edit',
+            name: 'Расход',
+            type: TableDefault,
+            active: false,
+            config: objectUnAssigned,
           },
         ],
         activeTab: null,
