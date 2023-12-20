@@ -929,7 +929,6 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
-                actionKey: 'schedule',
               }),
             ],
           },
