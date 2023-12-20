@@ -426,7 +426,7 @@ const objectUnAssigned = {
       color: 'text',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'account',
+      to: 'object',
       skipValidation: true,
     }),
   ],
