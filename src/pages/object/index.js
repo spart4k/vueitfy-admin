@@ -419,6 +419,17 @@ const objectUnAssigned = {
     totalPages: null,
   },
   detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'text',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'account',
+      skipValidation: true,
+    }),
+  ],
 }
 
 const skanConfig = {
