@@ -50,7 +50,7 @@
           x-small
           >$IconCheckoutMessage</v-icon
         >
-        {{
+        <!-- {{
           $props.selectedAllMails && !$props.allMails.loadAll
             ? $props.allSelectionFilter.is_read.value
               ? 'Прочитано'
@@ -58,7 +58,8 @@
             : intersection.read.length >= $props.selectedMails.length
             ? 'Не прочитаны'
             : 'Прочитано'
-        }}
+        }} -->
+        Не прочитаны
       </v-btn>
       <v-btn
         class="v-controls-list_item"
