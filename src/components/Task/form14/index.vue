@@ -24,7 +24,7 @@
                   Скан:
                   <a
                     download
-                    :href="'http://10.63.1.132:3000/file/get/' + item.path_doc"
+                    :href="'http://10.63.1.132:3000/file/get' + item.path_doc"
                     ><v-icon left width="10px"> $IconDocument </v-icon></a
                   >
                 </div>

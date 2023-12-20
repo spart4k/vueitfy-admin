@@ -12,7 +12,7 @@
       <div>
         <div style="font-weight: 600">Путевой лист:</div>
         <div v-if="directionToMagnit && pathAct">
-          <a download :href="'http://10.63.1.132:3000/file/get/' + pathAct">
+          <a download :href="'http://10.63.1.132:3000/file/get' + pathAct">
             <img style="width: 100%" :src="pathAct" alt="#" />
           </a>
         </div>
