@@ -49,7 +49,9 @@ export default {
       }
     )
     onMounted(() => {
-      color.value = proxyVal.value
+      if (proxyVal.value) {
+        color.value = proxyVal.value
+      }
     })
     return {
       menu,
