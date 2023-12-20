@@ -55,6 +55,12 @@ const filters = {
         number: 0,
         query: 'trash',
       },
+      {
+        label: 'Транслируемые',
+        url: '$IconBroadcast',
+        number: 0,
+        query: 'broadcast',
+      },
       // {
       //   label: 'Черновики',
       //   url: '$IconDocument',

@@ -14,10 +14,12 @@
         src="https://cdn.vuetifyjs.com/images/john.png"
       ></v-img> -->
       <div class="v-upper-user-content">
-        <div class="v-upper-user-content_name">Kira Zamorevich</div>
-        <div class="v-upper-user-content_email">
+        <div class="v-upper-user-content_name">
           {{ $props?.data?.message_from }}
         </div>
+        <!-- <div class="v-upper-user-content_email">
+          {{ $props?.data?.message_from }}
+        </div> -->
       </div>
     </div>
     <div class="v-upper-container" v-if="!$props.expanded">

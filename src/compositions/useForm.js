@@ -93,7 +93,6 @@ export default function ({
 
   const $errors = ref({})
   const errorsCount = () => {
-    console.log($errors.value)
     $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
         obj[key] = $v.value[key].$errors.map(({ $message }) => $message)
@@ -102,7 +101,6 @@ export default function ({
       }
       return obj
     }, {})
-    console.log($errors.value)
   }
 
   const validate = (touch) => {
@@ -163,12 +161,10 @@ export default function ({
         module: action.module,
         formData: sortedData,
       })
-      console.log(result)
       loading.value = false
       emit('getItems')
       emit('closePopup')
     } else if (action.action === 'saveForm') {
-      console.log('SAVE FORM')
       loading.value = true
       let result
       if (action.conditionAction) {
@@ -188,7 +184,6 @@ export default function ({
           formData: sortedData,
         })
       }
-      console.log(result)
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
@@ -231,7 +226,6 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-      console.log(result)
       if (result.code && result.code === 1) {
         emit('getItems')
         emit('closePopup')
@@ -338,6 +332,11 @@ export default function ({
         else newForm[key] = JSON.stringify(formData[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
+      if (item.type === 'checkbox') {
+        if (newForm[key] === 'undefined') {
+          newForm[key] = false
+        }
+      }
     })
     return newForm
   }
@@ -406,7 +405,6 @@ export default function ({
       const result = await createForm(queryParams)
     }
     //context.root.router.go(-1)
-    console.log('///////////////////////////////////')
     emit('getItems')
     emit('closePopup')
     // const
@@ -426,7 +424,6 @@ export default function ({
       listData = form?.lists?.map((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
-          console.log(source, 'source')
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
               alias: el.alias ?? el.field,
@@ -448,7 +445,9 @@ export default function ({
     }
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
+      console.log('preList')
       const lists = makeRequestList(listData)
+      console.log('last preList')
       queries = [syncForm, lists]
       return queries
     } else if (getDetail() && !hasSelect()) {
@@ -498,7 +497,6 @@ export default function ({
           el.alias ? el.alias === keyList : el.name === keyList
         )
         if (field) {
-          console.log(field)
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
@@ -531,7 +529,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log('field', field)
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
         const success = dependence.condition.evert((conditionEl) => {
@@ -562,14 +559,11 @@ export default function ({
           //}
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
-        console.log('LOG DEPENDE', targetField.type)
         url = dependence.url
-        console.log(targetField)
         if (targetField.type === 'autocomplete') {
           const filter = []
           if (targetField.filters && targetField.filters.length) {
             targetField.filters.forEach((el) => {
-              console.log(formData[el.field])
               if (!formData[el.field]) return
               filter.push({
                 alias: el.alias ?? el.field,
@@ -745,7 +739,6 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
-    console.log(JSON.stringify(formData), 'FORMDARA')
     const queryFields = fields.map(async (el) => {
       const filters = []
       const { url } = el
@@ -786,6 +779,7 @@ export default function ({
   }
 
   const putSelectItems = (lists) => {
+    console.log(lists)
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
         el.alias ? el.alias === keyList : el.name === keyList
@@ -814,10 +808,8 @@ export default function ({
 
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
-      console.log('list', list)
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
-        console.log('source', source, source[el.field])
         if (source[el.field] !== null && source[el.field] !== undefined) {
           acc.push({
             alias: el.alias ?? el.field,
@@ -829,7 +821,6 @@ export default function ({
         }
         return acc
       }, [])
-      console.log('filter', filter)
 
       const element = {
         alias: list.alias,
@@ -870,7 +861,7 @@ export default function ({
       }
     }
     if (hasSelect()) {
-      console.log(lists.data)
+      console.log('list 1')
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
@@ -982,8 +973,8 @@ export default function ({
   }
 
   const disabledField = (field) => {
-    return field.requiredFields
-      ? field.requiredFields.some((el) => !formData[el])
+    return field.disabled || field.requiredFields
+      ? field.disabled || field.requiredFields.some((el) => !formData[el])
       : false
   }
 
@@ -1012,7 +1003,6 @@ export default function ({
   watch(
     () => formData,
     () => {
-      console.log('change form')
       form?.fields?.forEach((el) => {
         showField(el.type, el)
       })
@@ -1020,7 +1010,6 @@ export default function ({
         errorsCount()
       }
       startFormData = formData
-      console.log(startFormData)
     },
     { immediate: true, deep: true }
   )
