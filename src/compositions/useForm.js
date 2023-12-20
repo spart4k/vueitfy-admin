@@ -859,6 +859,7 @@ export default function ({
       }
     }
     if (hasSelect()) {
+      console.log('list 1')
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
