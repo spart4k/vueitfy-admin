@@ -600,6 +600,7 @@ const config = {
               selectField({
                 label: 'Объекты',
                 name: 'object_json',
+                alias: 'account_objects',
                 subtype: 'multiselect',
                 readonly: true,
                 // requestKey: 'direction_json',
