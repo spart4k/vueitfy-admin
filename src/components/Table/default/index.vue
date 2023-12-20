@@ -119,7 +119,9 @@
                   </span>
                   <transition name="accordion">
                     <div
-                      v-if="head.sorts && head.sorts[0].isShow"
+                      v-if="
+                        head.sorts && head.sorts.length && head.sorts[0].isShow
+                      "
                       class="v-table-header-row-cell-sort"
                     >
                       <v-text-field
@@ -390,7 +392,7 @@
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
         @closePopup="closePopupForm"
-        @refreshTable="getItems"
+        @getItems="getItems"
       />
     </Popup>
   </div>

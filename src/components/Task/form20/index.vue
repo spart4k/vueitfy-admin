@@ -19,7 +19,9 @@
         <v-row>
           <v-col>
             <span>Скан:</span>
-            <a target="_blank" :href="'#'"
+            <a
+              download
+              :href="'http://10.63.1.132:3000/file/get/' + doc.path_doc"
               ><v-icon left small> $IconDocument </v-icon></a
             >
           </v-col>

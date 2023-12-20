@@ -16,8 +16,10 @@
             >
               <v-expansion-panel-header>
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  <v-icon left v-if="!item.inProcess" small>
+                    $IconGalka
+                  </v-icon>
+                  <v-icon left v-if="item.inProcess" small> $IconClose </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
                 </span>
               </v-expansion-panel-header>
@@ -70,7 +72,7 @@
           class="mr-3"
           @click="sendTaskFinish"
           small
-          :disabled="!comment && !disabledDocumentsAcc"
+          :disabled="!refds || (!disabledDocumentsAcc && !comment)"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

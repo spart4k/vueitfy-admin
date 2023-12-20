@@ -166,7 +166,6 @@ export default function ({
       console.log(result)
       loading.value = false
       emit('getItems')
-      //if (action.actionKey === 'schedule') {
       emit('closePopup')
     } else if (action.action === 'saveForm') {
       console.log('SAVE FORM')
@@ -233,7 +232,7 @@ export default function ({
       })
       loading.value = false
       console.log(result)
-      if (result.code && result.code !== 1) {
+      if (result.code && result.code === 1) {
         emit('getItems')
         emit('closePopup')
       } else if (!result.code) {
@@ -393,12 +392,7 @@ export default function ({
           new Date().getTime()
         const ext = filesBasket.value[key].files[0].name.split('.').pop()
         path =
-          'files/' +
-          filesBasket.value[key].field.options.folder +
-          '/' +
-          name +
-          '.' +
-          ext
+          filesBasket.value[key].field.options.folder + '/' + name + '.' + ext
         if (queryParams && queryParams.formData) {
           queryParams.formData[filesBasket.value[key].field.name] = path
         } else {
@@ -412,6 +406,8 @@ export default function ({
       const result = await createForm(queryParams)
     }
     //context.root.router.go(-1)
+    console.log('///////////////////////////////////')
+    emit('getItems')
     emit('closePopup')
     // const
   }
@@ -430,6 +426,7 @@ export default function ({
       listData = form?.lists?.map((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
+          console.log(source, 'source')
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
               alias: el.field,
@@ -516,7 +513,8 @@ export default function ({
           }
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
-            formData[field.name] = field.items[0][field.selectOption.value]
+            // Если массив, вставить массив
+            // formData[field.name] = field.items[0][field.selectOption.value]
           }
           showField(field.type, field, true)
         }
@@ -653,7 +651,8 @@ export default function ({
           ? [...targetField.defaultItems, ...data]
           : data
         if (targetField.items.length === 1) {
-          formData[targetField.name] = targetField.items[0].id
+          // Если массив, вставить массив
+          // formData[targetField.name] = targetField.items[0].id
         } else if (!targetField.items.length) {
           formData[targetField.name] = null
         }
@@ -746,38 +745,27 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
-
     const queryFields = fields.map(async (el) => {
-      const filters = []
-      const url = el.url
-
-      if (el.filters && el.filters.length) {
-        for (const filter of Object.values(el.filters)) {
-          const getValue = () => {
-            let value = ''
-            // console.log()
-            if (filter.source === 'fromPrev') {
-              value = form?.formData[filter.field]
-            } else if (filter.source) {
-              value = filter.value
-            } else {
-              value = formData[filter.field]
-            }
-
-            return value
+      const filter = []
+      const { url } = el
+      if (el.filter && el.filters.length) {
+        el.filter.forEach((filter) => {
+          let value, type
+          if (filter.source === 'fromPrev') {
+            value = form?.formData[filter.field]
+          } else if (filter.source === undefined) {
+            value = filter.value
+          } else {
+            value = formData[filter.field]
           }
-
-          const value = getValue()
-          const type = filter.type ?? undefined
-
-          filters.push({
-            alias: filter.field,
+          if (filter.type) type = filter.type
+          filter.push({
+            field: filter.field,
             value,
             type,
           })
-        }
+        })
       }
-
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
@@ -785,17 +773,14 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
-        filters,
+        filter,
       })
-
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
       return data
     })
-
-    //console.log(fields, '=>', queryFields)
     await Promise.all(queryFields)
   }
 
@@ -818,7 +803,8 @@ export default function ({
         }
         field.items = lists.data[keyList]
         if (field.items.length === 1) {
-          formData[field.name] = field.items[0][field.selectOption.value]
+          // Если массив, вставить массив
+          // formData[field.name] = field.items[0][field.selectOption.value]
         }
         showField(field.type, field, true)
       }
@@ -827,8 +813,10 @@ export default function ({
 
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
+      console.log('list', list)
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
+        console.log('source', source, source[el.field])
         if (source[el.field] !== null && source[el.field] !== undefined) {
           acc.push({
             alias: el.field,
@@ -840,6 +828,7 @@ export default function ({
         }
         return acc
       }, [])
+      console.log('filter', filter)
 
       const element = {
         alias: list.alias,
@@ -900,6 +889,7 @@ export default function ({
           }
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
+            // Если массив, вставить массив
             //formData[field.name] = field.items[0][field.selectOption.value]
           }
         }

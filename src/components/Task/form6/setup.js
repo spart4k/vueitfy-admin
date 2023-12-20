@@ -92,6 +92,7 @@ const Form6 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
+      loadImage()
       if (data.data.dosc) {
         listRequestsForUpload.value.push(
           updateFileData,
@@ -134,7 +135,7 @@ const Form6 = defineComponent({
                   personal_id: data.entity.id,
                   process_id: data.task.process_id,
                   task_id: data.task.id,
-                  docs_id: [{ 3: resultOnew }],
+                  docs_id: [3],
                   parent_action: data.task.id,
                 },
               }),
@@ -145,6 +146,7 @@ const Form6 = defineComponent({
             })
             .then(() => {
               ctx.emit('closePopup')
+              ctx.emit('getItems')
             })
         })
     }

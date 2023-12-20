@@ -72,13 +72,20 @@ const Form2 = defineComponent({
     }
 
     const confirmOsnData = () => {
+      const doscId = JSON.parse(props.data.task.dop_data).docs_id
       isOsnDocTouched.value = true
       isOsnDocConfirmed.value = true
-      console.log('fffffffffffffffffffffffffffff', isOsnDocConfirmed.value)
+      if (doscId.length === 1 && doscId[0] === 0) {
+        isFormValid.value = true
+      }
     }
     const rejectOsnData = () => {
+      const doscId = JSON.parse(props.data.task.dop_data).docs_id
       isOsnDocTouched.value = true
       isOsnDocConfirmed.value = false
+      if (doscId.length === 1 && doscId[0] === 0) {
+        isFormValid.value = true
+      }
     }
 
     const { makeRequest: setPersonalData } = useRequest({
@@ -119,6 +126,9 @@ const Form2 = defineComponent({
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: () => {
+        if (!finalData.value.rejected) {
+          finalData.value.rejected = []
+        }
         newStatus.value =
           finalData.value.rejected.length ||
           (isHasOsnDoc.value && !isOsnDocConfirmed.value)
@@ -150,7 +160,9 @@ const Form2 = defineComponent({
 
     const sendData = async () => {
       if (
-        (finalData.value.rejected.length && !comment.value) ||
+        (finalData.value.rejected &&
+          finalData.value.rejected.length &&
+          !comment.value) ||
         (isHasOsnDoc.value && !isOsnDocConfirmed.value && !comment.value)
       ) {
         commentErr.value = 'Заполните комментарий'
@@ -159,7 +171,10 @@ const Form2 = defineComponent({
         console.log(setPersonalData)
 
         const { success } = await changeStatusTask()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
         console.log(changeStatusTask)
         if (
           props.data.entity.grajdanstvo_id === 1 &&

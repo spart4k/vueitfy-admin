@@ -104,10 +104,9 @@ const Form4 = defineComponent({
           },
         }),
     })
-    let sendData = () => {
-      doneTask()
-      pushSomeShit()
-      makeRequest()
+    let sendData = async () => {
+      await pushSomeShit()
+      await makeRequest()
 
       updateFileData().then((data) => {
         console.log(data)
@@ -135,8 +134,11 @@ const Form4 = defineComponent({
         })
         startTask()
       })
-
-      ctx.emit('closePopup')
+      const { success } = await doneTask()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     // let widthTrasfer = ref('')

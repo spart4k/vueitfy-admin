@@ -136,14 +136,20 @@ const Form15 = defineComponent({
       console.log('confirm')
       await setPersonalTarget()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     const reject = async () => {
       isFormConfirmed.value = false
       console.log('confirm')
       await setPersonalTarget()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     return { infoObj, confirm, reject, entity: props.data.entity, dateTarget }
   },

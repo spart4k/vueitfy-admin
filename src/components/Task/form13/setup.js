@@ -49,9 +49,9 @@ const Form13 = defineComponent({
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
         if (pasteObject) {
-          pasteObject['inProcess'] = false
+          pasteObject['inProcess'] = true
         } else {
-          pasteObject = { doc_id: item, inProcess: true }
+          pasteObject = { doc_id: item, inProcess: false }
         }
         listDocuments.value.push(pasteObject)
       })
@@ -72,7 +72,7 @@ const Form13 = defineComponent({
           store.dispatch('taskModule/updateFileData', {
             personal_id: data.entity.id,
             doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
+            path_doc: `/personal_doc/${fileName}`,
             from_task: true,
           }),
       })
@@ -112,7 +112,7 @@ const Form13 = defineComponent({
           store.dispatch('taskModule/updateFileData', {
             personal_id: data.entity.id,
             doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
+            path_doc: `/personal_doc/${fileName}`,
             from_task: true,
           }),
       })
@@ -128,7 +128,7 @@ const Form13 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      if (!currentDropzone.inProcess) {
+      if (currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
           updateFileData,
@@ -163,11 +163,11 @@ const Form13 = defineComponent({
       disabledDocumentsAcc.value + 1
     }
 
-    let sendTaskFinish = () => {
+    let sendTaskFinish = async () => {
       let keyOfObjectSend = {}
       listDocuments.value.forEach((elem, index) => {
         for (const key in elem) {
-          keyOfObjectSend[elem.doc_id] = !!elem.inProcess
+          keyOfObjectSend[elem.doc_id] = !elem.inProcess
         }
       })
 
@@ -189,8 +189,11 @@ const Form13 = defineComponent({
           }),
       })
       sendDocuments()
-      changeStatus()
-      ctx.emit('closePopup')
+      const { success } = await changeStatus()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     const { makeRequest: changeStatusNew } = useRequest({

@@ -48,7 +48,7 @@ const Form3 = defineComponent({
     let addFiles = (e) => {
       file.value = e[0]
     }
-
+    console.log(this.baseUrl)
     const sendData = async () => {
       console.log(selectName.value, file.value)
       let fileExt = file.value.type.split('/')[1]
@@ -115,7 +115,10 @@ const Form3 = defineComponent({
       await updateFileData()
       await pushSomeShit()
       const { success } = await changeStatus()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     return {
       options,

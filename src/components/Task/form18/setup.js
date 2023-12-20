@@ -219,7 +219,10 @@ const Form18 = defineComponent({
 
       await setPersonalTarget()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     const rejectTask = async () => {
       formCommentError.value = ''
@@ -249,7 +252,10 @@ const Form18 = defineComponent({
           },
         })
         const { success } = await changeStatusTask()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
       }
     }
 

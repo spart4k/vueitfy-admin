@@ -36,6 +36,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    detail: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -72,7 +76,6 @@ export default {
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      console.log(props.detail)
       if (props.detail?.requstId)
         return _.get(route.params, props.detail.requstId)
       return route.params.id
