@@ -745,10 +745,11 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
+    console.log(JSON.stringify(formData), 'FORMDARA')
     const queryFields = fields.map(async (el) => {
-      const filter = []
+      const filters = []
       const { url } = el
-      if (el.filter && el.filters.length) {
+      if (el.filter && el.filter.length) {
         el.filter.forEach((filter) => {
           let value, type
           if (filter.source === 'fromPrev') {
@@ -759,7 +760,7 @@ export default function ({
             value = formData[filter.field]
           }
           if (filter.type) type = filter.type
-          filter.push({
+          filters.push({
             field: filter.field,
             value,
             type,
@@ -773,7 +774,7 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
-        filter,
+        filter: filters,
       })
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
