@@ -20,7 +20,7 @@
           </template>
           <v-card>
             <v-card-text class="pa-0">
-              <v-color-picker class="picker" v-model="color" flat />
+              <v-color-picker class="picker" v-model="proxyVal" flat />
             </v-card-text>
           </v-card>
         </v-menu>

@@ -295,7 +295,7 @@ const objectUnAssigned = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/target_objects',
+    url: 'get/pagination/object_target',
     urlDetail: 'id',
     alias: 'ot.object_id',
     title: 'This is an about page1',
@@ -1913,6 +1913,7 @@ const config = {
                 placeholder: '',
                 value: false,
                 readonly: false,
+                sendOnlyTrue: true,
                 class: [''],
                 position: {
                   cols: 12,
