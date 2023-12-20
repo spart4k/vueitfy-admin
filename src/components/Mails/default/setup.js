@@ -92,7 +92,7 @@ const mails = {
       selected.value.mailsAll = false
       selected.value.mails = []
       if (route?.query?.filter) {
-        if (route?.query?.filter === 'broadcast') {
+        if (route?.query?.filter === 'trans') {
           mailsData.value = [{}]
         } else if (route?.query?.id) {
           if (route?.query?.filter === 'folder') {
@@ -151,7 +151,7 @@ const mails = {
         } else if (route?.query?.filter === 'trash') {
           ;['tags', 'props'].forEach((e) => delete requestData.content[e])
           data = await store.dispatch('mail/getDeletedMessages', requestData)
-        } else if (route?.query?.filter === 'broadcast') {
+        } else if (route?.query?.filter === 'trans') {
           data = await store.dispatch('mail/getBroadcastMails', requestData)
         } else {
           data = await store.dispatch('mail/getBoxMails', requestData)

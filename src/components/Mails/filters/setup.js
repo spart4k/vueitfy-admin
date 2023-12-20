@@ -59,7 +59,7 @@ const filters = {
         label: 'Транслируемые',
         url: '$IconBroadcast',
         number: 0,
-        query: 'broadcast',
+        query: 'trans',
       },
       // {
       //   label: 'Черновики',
