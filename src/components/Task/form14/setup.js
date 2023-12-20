@@ -40,6 +40,8 @@ const Form14 = defineComponent({
     // onMounted(() => {
     //   console.log(docs_spr, getNameDoc)
     // })
+    const account_id = computed(() => store.state.user.account_id)
+    const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
@@ -178,7 +180,7 @@ const Form14 = defineComponent({
             status: 2,
             data: {
               process_id: data.task.process_id,
-              manager_id: 25,
+              manager_id: account_id,
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_id: data.entity.id,
@@ -215,7 +217,7 @@ const Form14 = defineComponent({
             docs_id: JSON.parse(data.task.dop_data)['docs_id'],
             personal_id: data.entity['id'],
             // account_id - chief id
-            account_id: 25,
+            account_id: chied_id,
             type_parent_action: 2,
             parent_action: data.entity['id'],
           },
