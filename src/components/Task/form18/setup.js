@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import store from '@/store'
@@ -51,6 +51,7 @@ const Form18 = defineComponent({
         value: data.entity.doljnost_name,
       },
     }
+    const account_id = computed(() => store.state.user.account_id)
     const formGroup = ref([])
     const idDirection = data.entity.direction_id
     const fileOutput =
@@ -144,7 +145,7 @@ const Form18 = defineComponent({
               account_id: data.entity.manager,
               personal_bank_id: data.entity.personal_bank_id,
               status_id: 2,
-              status_account_id: 25,
+              status_account_id: account_id,
               personal_id: data.entity.personal_id,
               vid_vedomost_id: 1,
               direction_id: data.entity.direction_id,
@@ -219,7 +220,10 @@ const Form18 = defineComponent({
 
       await setPersonalTarget()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     const rejectTask = async () => {
       formCommentError.value = ''
@@ -249,7 +253,10 @@ const Form18 = defineComponent({
           },
         })
         const { success } = await changeStatusTask()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
       }
     }
 

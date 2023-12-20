@@ -199,7 +199,9 @@ const Form5 = defineComponent({
         successMessage: 'Файл успешно загружен',
       })
       createFillScanProcess()
+
       ctx.emit('closePopup')
+      ctx.emit('getItems')
     }
     let spr = {
       1: 'Паспорт',

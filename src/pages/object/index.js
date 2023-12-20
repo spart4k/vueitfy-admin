@@ -962,6 +962,14 @@ const config = {
             url: '$IconSetting',
             type: 'addItem',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [15, 2, 4, 3],
+                  type: true,
+                },
+              ],
+            },
           },
         ],
       },
@@ -975,21 +983,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           alias: 'p.name',
           isShow: true,
           width: '40',
           value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Адрес',
@@ -1000,21 +1008,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '90',
           alias: 'ps.address',
           value: 'address',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Направление',
@@ -1025,21 +1033,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          value: 'directions',
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         //{
         //  title: 'Менеджер',
@@ -1075,21 +1083,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'tel_director',
           alias: 'p.tel_director',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Площадь',
@@ -1100,21 +1108,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'square',
           alias: 'p.square',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Действия',
@@ -2582,6 +2590,14 @@ const config = {
                 color: 'primary',
               }),
             ],
+          },
+          {
+            id: 4,
+            path: 'edit',
+            name: 'Назначения',
+            type: TableDefault,
+            active: false,
+            config: objectUnAssigned,
           },
         ],
         activeTab: null,

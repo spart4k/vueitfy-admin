@@ -40,6 +40,8 @@ const Form13 = defineComponent({
     // onMounted(() => {
     //   console.log(docs_spr, getNameDoc)
     // })
+    const account_id = computed(() => store.state.user.account_id)
+    const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
@@ -163,7 +165,7 @@ const Form13 = defineComponent({
       disabledDocumentsAcc.value + 1
     }
 
-    let sendTaskFinish = () => {
+    let sendTaskFinish = async () => {
       let keyOfObjectSend = {}
       listDocuments.value.forEach((elem, index) => {
         for (const key in elem) {
@@ -178,7 +180,7 @@ const Form13 = defineComponent({
             status: 2,
             data: {
               process_id: data.task.process_id,
-              manager_id: 25,
+              manager_id: account_id,
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_id: data.entity.id,
@@ -189,8 +191,11 @@ const Form13 = defineComponent({
           }),
       })
       sendDocuments()
-      changeStatus()
-      ctx.emit('closePopup')
+      const { success } = await changeStatus()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
@@ -215,7 +220,7 @@ const Form13 = defineComponent({
             docs_id: JSON.parse(data.task.dop_data)['docs_id'],
             personal_id: data.entity['id'],
             // account_id - chief id
-            account_id: 25,
+            account_id: chied_id,
             type_parent_action: 2,
             parent_action: data.entity['id'],
           },

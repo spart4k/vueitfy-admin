@@ -429,7 +429,7 @@ export default function ({
           console.log(source, 'source')
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
-              alias: el.field,
+              alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
@@ -475,7 +475,7 @@ export default function ({
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
-              alias: el.field,
+              alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
@@ -572,7 +572,7 @@ export default function ({
               console.log(formData[el.field])
               if (!formData[el.field]) return
               filter.push({
-                alias: el.field,
+                alias: el.alias ?? el.field,
                 type: el.type,
                 value: formData[el.field],
               })
@@ -581,7 +581,7 @@ export default function ({
             dependence.filter.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
-                alias: el.field,
+                alias: el.alias ?? el.field,
                 type: el.type,
                 value: formData[el.field],
               })
@@ -745,10 +745,11 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
+    console.log(JSON.stringify(formData), 'FORMDARA')
     const queryFields = fields.map(async (el) => {
-      const filter = []
+      const filters = []
       const { url } = el
-      if (el.filter && el.filters.length) {
+      if (el.filter && el.filter.length) {
         el.filter.forEach((filter) => {
           let value, type
           if (filter.source === 'fromPrev') {
@@ -759,8 +760,8 @@ export default function ({
             value = formData[filter.field]
           }
           if (filter.type) type = filter.type
-          filter.push({
-            field: filter.field,
+          filters.push({
+            alias: filter.field,
             value,
             type,
           })
@@ -773,7 +774,7 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
-        filter,
+        filter: filters,
       })
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
@@ -819,7 +820,7 @@ export default function ({
         console.log('source', source, source[el.field])
         if (source[el.field] !== null && source[el.field] !== undefined) {
           acc.push({
-            alias: el.field,
+            alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
               ? source[el.field]
               : [source[el.field]],
