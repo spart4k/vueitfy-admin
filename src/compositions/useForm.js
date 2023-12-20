@@ -380,18 +380,26 @@ export default function ({
           params,
         })
       )
+      filesBasket.value[key].name = name
     }
     const data = await Promise.all(queries)
+    console.log('vdatadata', data, filesBasket.value)
     if (data.length === 1) {
       let path = ''
       for (let key in filesBasket.value) {
-        const name =
-          eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
-          '_' +
-          new Date().getTime()
+        const name = filesBasket.value[key].name
+        // const name =
+        //   eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+        //   '_' +
+        //   new Date().getTime()
         const ext = filesBasket.value[key].files[0].name.split('.').pop()
         path =
-          filesBasket.value[key].field.options.folder + '/' + name + '.' + ext
+          '/' +
+          filesBasket.value[key].field.options.folder +
+          '/' +
+          name +
+          '.' +
+          ext
         if (queryParams && queryParams.formData) {
           queryParams.formData[filesBasket.value[key].field.name] = path
         } else {
@@ -417,73 +425,72 @@ export default function ({
     )
   }
 
-  const initPreRequest = () => {
-    let queries = []
-    let listData
-    if (hasSelect()) {
-      console.log('form.lists: ', form?.lists)
-      listData = form?.lists?.map((list) => {
-        let filter = list.filter.reduce((acc, el) => {
-          const source = eval(el.source)
+  //const initPreRequest = async () => {
+  //  //if (hasSelect()) {
+  //  //  listData = form?.lists?.map((list) => {
+  //  //    let filter = list.filter.reduce((acc, el) => {
+  //  //      const source = eval(el.source)
+  //  //      if (source[el.field] !== null && source[el.field] !== undefined) {
+  //  //        acc.push({
+  //  //          alias: el.alias ?? el.field,
+  //  //          value: Array.isArray(source[el.field])
+  //  //            ? source[el.field]
+  //  //            : [source[el.field]],
+  //  //          type: el.type,
+  //  //        })
+  //  //      }
+  //  //      return acc
+  //  //    }, [])
 
-          console.log('sourse sdf', source, el.source)
+  //  //    const element = {
+  //  //      alias: list.alias,
+  //  //      filter,
+  //  //    }
+  //  //    return element
+  //  //  })
+  //  //}
+  //  //const getListData = () => {
+  //  //  listData = form?.lists?.map((list) => {
+  //  //    let filter = list.filter.reduce((acc, el) => {
+  //  //      const source = eval(el.source)
+  //  //      if (source[el.field] !== null && source[el.field] !== undefined) {
+  //  //        acc.push({
+  //  //          alias: el.alias ?? el.field,
+  //  //          value: Array.isArray(source[el.field])
+  //  //            ? source[el.field]
+  //  //            : [source[el.field]],
+  //  //          type: el.type,
+  //  //        })
+  //  //      }
+  //  //      return acc
+  //  //    }, [])
 
-          if (source[el.field] !== null && source[el.field] !== undefined) {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: Array.isArray(source[el.field])
-                ? source[el.field]
-                : [source[el.field]],
-              type: el.type,
-            })
-          }
-          if (source) {
-            console.log(
-              'source: ',
-              JSON.stringify(source),
-              'el: ',
-              el,
-              'el.field: ',
-              el.field,
-              'soursce[el.field]: ',
-              source[`${el.field}`]
-            )
-            console.log('id: ', source[el.field])
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: Array.isArray(source[el.field])
-                ? source[el.field]
-                : [source[el.field]],
-              type: el.type,
-            })
-          }
-          return acc
-        }, [])
+  //  //    const element = {
+  //  //      alias: list.alias,
+  //  //      filter,
+  //  //    }
+  //  //    return element
+  //  //  })
+  //  //}
+  //  //if (hasSelect() && getDetail()) {
 
-        const element = {
-          alias: list.alias,
-          filter,
-        }
-        return element
-      })
-    }
-    if (hasSelect() && getDetail()) {
-      const syncForm = makeRequest()
-      console.log('preList')
-      const lists = makeRequestList(listData)
-      console.log('last preList')
-      queries = [syncForm, lists]
-      return queries
-    } else if (getDetail() && !hasSelect()) {
-      const syncForm = makeRequest()
-      queries = [syncForm, undefined]
-      return queries
-    } else if (!getDetail() && hasSelect()) {
-      const lists = makeRequestList(listData)
-      queries = [undefined, lists]
-      return queries
-    } else return [undefined, undefined]
-  }
+  //  //  console.log('preList')
+  //  //  getListData()
+  //  //  const lists = await makeRequestList(listData)
+  //  //  console.log('last preList')
+  //  //  queries = [syncForm, lists]
+  //  //  return queries
+  //  //} else if (getDetail() && !hasSelect()) {
+  //  //  const syncForm = makeRequest()
+  //  //  queries = [syncForm, undefined]
+  //  //  return queries
+  //  //} else if (!getDetail() && hasSelect()) {
+  //  //  const lists = makeRequestList(listData)
+  //  //  queries = [undefined, lists]
+  //  //  return queries
+  //  //} else return [undefined, undefined]
+  //  const syncForm = await makeRequest()
+  //}
 
   const changeAutocomplete = async (params) => {
     await getDependies(params)
@@ -860,10 +867,16 @@ export default function ({
   }
 
   const getData = async () => {
-    if (!initPreRequest()) {
-      return false
+    //if (!initPreRequest()) {
+    //  return false
+    //}
+    //const [syncForm] = await initPreRequest()
+    //let listQuery = undefined
+    let syncForm = undefined
+    let lists = undefined
+    if (getDetail()) {
+      syncForm = await makeRequest()
     }
-    const [syncForm, lists] = await Promise.all(initPreRequest())
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
@@ -879,13 +892,39 @@ export default function ({
             //await getDependies({ value: formData[field.name], field })
           }
           if (field.updateList && field.updateList.length) {
-            await queryList(field, false)
+            //await queryList(field, false)
           }
         }
       }
     }
     if (hasSelect()) {
-      console.log('list 1')
+      const listQuery = form?.lists?.map((list) => {
+        let filter = list.filter.reduce((acc, el) => {
+          const source = eval(el.source)
+          console.log(JSON.stringify(source))
+          if (
+            source[el.field] !== null &&
+            source[el.field] !== undefined &&
+            source[el.field] !== ''
+          ) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
+              type: el.type,
+            })
+          }
+          return acc
+        }, [])
+
+        const element = {
+          alias: list.alias,
+          filter,
+        }
+        return element
+      })
+      lists = await makeRequestList(listQuery)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList

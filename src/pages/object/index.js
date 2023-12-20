@@ -329,91 +329,86 @@ const objectUnAssigned = {
       title: 'Сотрудник',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
       sorts: [],
       alias: 'p.id',
       isShow: true,
       width: '40',
       value: 'account_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
+    },
+    {
+      title: 'Направление',
+      type: 'default',
+      align: 'center',
+
+      sorts: [],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'direction_name',
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Должность',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
       sorts: [],
       isShow: true,
       width: '150',
       value: 'permission_name',
       alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Д назнач',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
       sorts: [],
       isShow: true,
       width: '90',
       alias: 'pers.name',
       value: 'date_target_start',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Д оконч',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
       sorts: [],
       isShow: true,
       width: '90',
       alias: 'pers.name',
       value: 'date_target_end',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Назначил',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
       sorts: [],
       isShow: true,
       width: '90',
       alias: 'pers.name',
       value: 'target_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
   ],
   data: {
@@ -1644,11 +1639,23 @@ const config = {
               },
               {
                 alias: 'object_type',
-                filter: [],
+                filter: [
+                  {
+                    field: 'direction_json',
+                    source: 'formData',
+                    type: 'array',
+                  },
+                ],
               },
               {
                 alias: 'object_subtype',
-                filter: [],
+                filter: [
+                  {
+                    field: 'type',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
               {
                 alias: 'filial_id',
@@ -2142,11 +2149,23 @@ const config = {
               },
               {
                 alias: 'object_type',
-                filter: [],
+                filter: [
+                  {
+                    field: 'direction_json',
+                    source: 'formData',
+                    type: 'array',
+                  },
+                ],
               },
               {
                 alias: 'object_subtype',
-                filter: [],
+                filter: [
+                  {
+                    field: 'type',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
               {
                 alias: 'filial_id',
