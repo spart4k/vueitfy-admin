@@ -618,7 +618,7 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some(el => {
-            console.log(checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type)
+            //console.log(checkIncludesPermissions(el), checkIncludesDirections(el), el.type)
             return checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type
           })
           // if ()
