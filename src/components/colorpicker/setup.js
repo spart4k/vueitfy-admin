@@ -44,16 +44,20 @@ export default {
     watch(
       () => proxyVal.value,
       (newValue) => {
+        color.value = newValue
         emit('input', newValue)
       }
     )
-    onMounted(() => {})
+    onMounted(() => {
+      color.value = proxyVal.value
+    })
     return {
       menu,
       menuRef,
       swatchStyle,
       color,
       mask,
+      proxyVal,
     }
   },
 }
