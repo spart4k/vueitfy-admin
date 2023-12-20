@@ -8,6 +8,7 @@ import {
   checkboxField,
   textareaField,
   colorPicker,
+  textBlock,
   // dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -341,12 +342,27 @@ const config = {
               },
               {
                 alias: 'account_objects',
-                filter: [],
+                filter: [
+                  { source: 'formData', type: 'num', value: 'id', field: 'id' },
+                ],
               },
             ],
             alias: 'account',
             active: false,
             fields: [
+              textBlock({
+                label: 'Создал',
+                name: 'id',
+                placeholder: '',
+                notSend: true,
+                readonly: true,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+              }),
               stringField({
                 label: 'ФИО',
                 name: 'fio',

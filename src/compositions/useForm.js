@@ -421,10 +421,34 @@ export default function ({
     let queries = []
     let listData
     if (hasSelect()) {
+      console.log('form.lists: ', form?.lists)
       listData = form?.lists?.map((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
+
+          console.log('sourse sdf', source, el.source)
+
           if (source[el.field] !== null && source[el.field] !== undefined) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
+              type: el.type,
+            })
+          }
+          if (source) {
+            console.log(
+              'source: ',
+              JSON.stringify(source),
+              'el: ',
+              el,
+              'el.field: ',
+              el.field,
+              'soursce[el.field]: ',
+              source[`${el.field}`]
+            )
+            console.log('id: ', source[el.field])
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
