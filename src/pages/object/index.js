@@ -962,6 +962,14 @@ const config = {
             url: '$IconSetting',
             type: 'addItem',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [15, 2, 4, 3],
+                  type: true,
+                },
+              ],
+            },
           },
         ],
       },
@@ -2582,6 +2590,14 @@ const config = {
                 color: 'primary',
               }),
             ],
+          },
+          {
+            id: 4,
+            path: 'edit',
+            name: 'Назначения',
+            type: TableDefault,
+            active: false,
+            config: objectUnAssigned,
           },
         ],
         activeTab: null,
