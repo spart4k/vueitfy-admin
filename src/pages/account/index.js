@@ -832,7 +832,7 @@ const config = {
                     module: 'selects/getListUpdate',
                     field: 'chief_id',
                     url: 'get/pagination_list/chief_id',
-                    filters: [
+                    filter: [
                       {
                         field: 'permission_id',
                         type: 'num',
