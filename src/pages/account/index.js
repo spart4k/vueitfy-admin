@@ -137,96 +137,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           alias: 'p.fio',
           isShow: true,
           width: '40',
           value: 'fio',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Телефон',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'p.telefon',
-          value: 'telefon',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Стац.',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.landline_phone',
-          value: 'landline_phone',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Направление',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'direction_json',
-          alias: 'p.direction_json',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Роль',
@@ -237,22 +162,97 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'permission_name',
           alias: 'p.permission_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
+        {
+          title: 'Телефон',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.telefon',
+          value: 'telefon',
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
+        },
+        {
+          title: 'Стац.',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
+          ],
+          isShow: true,
+          width: '150',
+          alias: 'p.landline_phone',
+          value: 'landline_phone',
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
+        },
+        //{
+        //  title: 'Направление',
+        //  type: 'default',
+        //  align: 'center',
+        //  fixed: {
+        //    value: false,
+        //    position: undefined,
+        //  },
+        //  sorts: [
+        //    {
+        //      type: 'text',
+        //      default: '',
+        //      value: '',
+        //      isShow: false,
+        //    },
+        //  ],
+        //  isShow: true,
+        //  width: '150',
+        //  value: 'direction_json',
+        //  alias: 'p.direction_json',
+        //  search: {
+        //    field: '',
+        //    isShow: true,
+        //  },
+        //},
         {
           title: 'Примечание',
           type: 'default',
@@ -262,21 +262,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'comment',
           alias: 'p.comment',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Действия',
@@ -503,7 +503,7 @@ const config = {
                     module: 'selects/getListUpdate',
                     field: 'chief_id',
                     url: 'get/pagination_list/chief_id',
-                    filters: [
+                    filter: [
                       {
                         field: 'permission_id',
                         type: 'num',
@@ -539,15 +539,17 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'permission_id',
                     type: 'num',
+                    source: 'formData',
                     value: '',
                   },
                   {
                     field: 'direction_json',
                     type: 'array',
+                    source: 'formData',
                     value: '',
                   },
                 ],
@@ -830,7 +832,7 @@ const config = {
                     module: 'selects/getListUpdate',
                     field: 'chief_id',
                     url: 'get/pagination_list/chief_id',
-                    filters: [
+                    filter: [
                       {
                         field: 'permission_id',
                         type: 'num',
@@ -929,7 +931,6 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
-                actionKey: 'schedule',
               }),
             ],
           },

@@ -24,7 +24,6 @@ export default {
     },
   },
   setup(props, ctx) {
-    console.log('props: autocomplete', props)
     const { emit } = ctx
     const loading = ref(false)
     const proxyValue = ref(props.value)

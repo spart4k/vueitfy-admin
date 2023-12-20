@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
@@ -27,6 +27,7 @@ const Form27 = defineComponent({
         ctx,
       },
     }
+    const account_id = computed(() => store.state.user.account_id)
     const directionToMagnit = props.data.entity.direction_id === 5
     const pathAct = props.data.data.shop_request_magnit.path_act
     const isFormConfirmed = ref(null)
@@ -113,7 +114,7 @@ const Form27 = defineComponent({
           data: {
             id: props.data.entity.id,
             status_id: isFormConfirmed.value ? 2 : 3,
-            status_account_id: 25, // TODO: Поменять, когда появится авторизация
+            status_account_id: account_id, // TODO: Поменять, когда появится авторизация
           },
         })
       },
