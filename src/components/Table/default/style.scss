@@ -100,7 +100,8 @@ $tableFooterHeight: 85px;
           }
           &--fixed {
             position: sticky;
-            background-color: #fff;
+            //background-color: #fff;
+            background-color: var(--v-background-base);
             z-index: 1;
             left: 0;
           }
@@ -141,7 +142,8 @@ $tableFooterHeight: 85px;
           }
           &--fixed {
             position: sticky;
-            background-color: #fff;
+            //background-color: #fff;
+            background-color: var(--v-background-base);
             z-index: 1;
             left: 0;
           }
