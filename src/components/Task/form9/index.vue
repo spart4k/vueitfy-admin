@@ -31,6 +31,7 @@
                 <div v-if="item.path_doc" style="margin-top: 10px">
                   Скан:
                   <a
+                    download
                     :href="'https://test.api.personal-crm.ru' + item.path_doc"
                     target="_blank"
                     ><v-icon left width="10px"> $IconDocument </v-icon></a
