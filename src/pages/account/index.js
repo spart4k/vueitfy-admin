@@ -558,7 +558,7 @@ const config = {
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
-                value: '#ffffff',
+                //value: '#ffffff',
                 placeholder: '',
                 class: [''],
                 position: {
@@ -887,7 +887,7 @@ const config = {
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
-                value: '#ffffff',
+                //value: '#000000',
                 placeholder: '',
                 readonly: false,
                 disabled: false,
@@ -960,13 +960,13 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            url: '$IconSetting',
-            function: consolePanel,
-            backgroundColor: '#fff',
-          },
+          //{
+          //  label: 'Добавить',
+          //  class: ['v-table-button--custom'],
+          //  url: '$IconSetting',
+          //  function: consolePanel,
+          //  backgroundColor: '#fff',
+          //},
         ],
       },
       head: [
