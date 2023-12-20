@@ -44,7 +44,7 @@ const ThirdPopupView = defineComponent({
         value: data.entity.object_name,
       },
     }
-
+    const account_id = computed(() => store.state.user.account_id)
     const isShowBtnArray = ref([])
     const isFormValid = ref(false)
     const isImgPopupOpen = ref(false)
@@ -99,7 +99,7 @@ const ThirdPopupView = defineComponent({
             status: 2,
             data: {
               process_id: data.task.process_id,
-              account_id: 25,
+              account_id: account_id,
               task_id: data.task.id,
               parent_action: data.task.parent_action,
               personal_id: data.entity.id,
