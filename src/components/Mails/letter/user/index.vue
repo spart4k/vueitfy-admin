@@ -17,9 +17,7 @@
         <div class="v-upper-user-content_name">
           {{ $props?.data?.message_from }}
         </div>
-        <!-- <div class="v-upper-user-content_email">
-          {{ $props?.data?.message_from }}
-        </div> -->
+        <div class="v-upper-user-content_email"></div>
       </div>
     </div>
     <div class="v-upper-container" v-if="!$props.expanded">
