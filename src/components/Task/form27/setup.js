@@ -141,7 +141,10 @@ const Form27 = defineComponent({
       } else {
         await setPaymentData()
         const { success } = await changeStatusConfirm()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
       }
     }
     const reject = async () => {
@@ -155,11 +158,17 @@ const Form27 = defineComponent({
         const statusId = props.data.entity.status_id
         if (statusId === 4 || statusId === 5) {
           const { success } = await changeStatusReject()
-          success && ctx.emit('closePopup')
+          if (success) {
+            ctx.emit('closePopup')
+            ctx.emit('getItems')
+          }
         } else {
           await setPaymentData()
           const { success } = await changeStatusReject()
-          success && ctx.emit('closePopup')
+          if (success) {
+            ctx.emit('closePopup')
+            ctx.emit('getItems')
+          }
         }
       }
     }

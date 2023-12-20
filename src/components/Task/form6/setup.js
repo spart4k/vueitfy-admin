@@ -146,6 +146,7 @@ const Form6 = defineComponent({
             })
             .then(() => {
               ctx.emit('closePopup')
+              ctx.emit('getItems')
             })
         })
     }

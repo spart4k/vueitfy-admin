@@ -112,7 +112,10 @@ const ThirdPopupView = defineComponent({
     })
     let sendDoneTask = async () => {
       const { success } = await doneRequest()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     console.log(imagePreview.value)
     let isLoadImage = ref(false)

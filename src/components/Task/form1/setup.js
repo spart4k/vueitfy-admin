@@ -174,7 +174,11 @@ const Form1 = defineComponent({
           commentError.value = ''
           const dataFrom = await makeRequest()
           console.log(dataFrom)
-          dataFrom.success && ctx.emit('closePopup')
+          if (dataFrom.success) {
+            ctx.emit('closePopup')
+            ctx.emit('getItems')
+          }
+          // dataFrom.success && ctx.emit('closePopup')
         } else {
           commentError.value = 'Заполните комментарий'
         }
@@ -255,7 +259,10 @@ const Form1 = defineComponent({
       await sendPersonalDoc()
       await setSaveDocs()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     return {

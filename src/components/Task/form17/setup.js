@@ -279,6 +279,7 @@ const Form17 = defineComponent({
         // })
       }
       ctx.emit('closePopup')
+      ctx.emit('getItems')
     }
 
     return {

@@ -103,7 +103,10 @@ const Form21 = defineComponent({
         await addKeyToPersonal()
       }
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     const confirmKey = () => {

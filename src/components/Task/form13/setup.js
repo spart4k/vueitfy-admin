@@ -163,7 +163,7 @@ const Form13 = defineComponent({
       disabledDocumentsAcc.value + 1
     }
 
-    let sendTaskFinish = () => {
+    let sendTaskFinish = async () => {
       let keyOfObjectSend = {}
       listDocuments.value.forEach((elem, index) => {
         for (const key in elem) {
@@ -189,8 +189,11 @@ const Form13 = defineComponent({
           }),
       })
       sendDocuments()
-      changeStatus()
-      ctx.emit('closePopup')
+      const { success } = await changeStatus()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
