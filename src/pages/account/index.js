@@ -887,7 +887,7 @@ const config = {
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
-                //value: '#000000',
+                value: '#000000',
                 placeholder: '',
                 readonly: false,
                 disabled: false,
