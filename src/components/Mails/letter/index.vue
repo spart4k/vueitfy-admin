@@ -28,7 +28,6 @@
         "
         >$IconBookmark</v-icon
       >
-      {{ $props.data.id }}
       <v-checkbox
         v-if="$route.query.filter !== 'sent' && $route.query.filter !== 'trash'"
         color="primary"
