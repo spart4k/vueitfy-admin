@@ -429,7 +429,7 @@ export default function ({
           console.log(source, 'source')
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
-              alias: el.field,
+              alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
@@ -475,7 +475,7 @@ export default function ({
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
-              alias: el.field,
+              alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
@@ -572,7 +572,7 @@ export default function ({
               console.log(formData[el.field])
               if (!formData[el.field]) return
               filter.push({
-                alias: el.field,
+                alias: el.alias ?? el.field,
                 type: el.type,
                 value: formData[el.field],
               })
@@ -581,7 +581,7 @@ export default function ({
             dependence.filter.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
-                alias: el.field,
+                alias: el.alias ?? el.field,
                 type: el.type,
                 value: formData[el.field],
               })
@@ -820,7 +820,7 @@ export default function ({
         console.log('source', source, source[el.field])
         if (source[el.field] !== null && source[el.field] !== undefined) {
           acc.push({
-            alias: el.field,
+            alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
               ? source[el.field]
               : [source[el.field]],
