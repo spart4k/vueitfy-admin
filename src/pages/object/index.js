@@ -2736,7 +2736,7 @@ const config = {
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
+          value: 'directions',
           search: {
             field: '',
             isShow: true,
@@ -3838,7 +3838,7 @@ const config = {
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
+          value: 'directions',
           search: {
             field: '',
             isShow: true,
