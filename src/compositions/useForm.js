@@ -761,7 +761,7 @@ export default function ({
           }
           if (filter.type) type = filter.type
           filters.push({
-            field: filter.field,
+            alias: filter.field,
             value,
             type,
           })
