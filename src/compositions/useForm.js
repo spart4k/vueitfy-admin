@@ -332,6 +332,11 @@ export default function ({
         else newForm[key] = JSON.stringify(formData[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
+      if (item.type === 'checkbox') {
+        if (item.sendOnlyTrue && !newForm[key]) {
+          delete newForm[key]
+        }
+      }
     })
     return newForm
   }
@@ -772,6 +777,7 @@ export default function ({
   }
 
   const putSelectItems = (lists) => {
+    console.log(lists)
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
         el.alias ? el.alias === keyList : el.name === keyList
