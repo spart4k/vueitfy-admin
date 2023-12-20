@@ -2157,18 +2157,19 @@ const defaultForm = [
           cols: 12,
           sm: 6,
         },
-        validations: { required },
+        //validations: { required },
         bootstrapClass: [''],
-        readonly: {
-          value: false,
-          condition: [
-            editFormPermissions.brigadir,
-            editFormPermissions.manager[1],
-            editFormPermissions.rukFIlCUPDirector.denied,
-            editFormPermissions.DBA.access,
-            editFormPermissions.OBDandOKK.access,
-          ],
-        },
+        readonly: true,
+        //readonly: {
+        //  value: false,
+        //  condition: [
+        //    editFormPermissions.brigadir,
+        //    editFormPermissions.manager[1],
+        //    editFormPermissions.rukFIlCUPDirector.denied,
+        //    editFormPermissions.DBA.access,
+        //    editFormPermissions.OBDandOKK.access,
+        //  ],
+        //},
       }),
       selectField({
         label: 'Направление',

@@ -103,9 +103,13 @@
                             <span class="mr-2" @click="sortRow(head)">
                               {{ head.title }}
                             </span>
-                            <v-icon @click="openSort(head)" small
-                              >$IconSearch</v-icon
+                            <v-icon
+                              v-if="head.search"
+                              @click="openSort(head)"
+                              small
                             >
+                              $IconSearch
+                            </v-icon>
                           </div>
                           <div v-if="head.type === 'icon'">
                             <span class="mr-2" @click="sortRow(head)">
