@@ -299,6 +299,19 @@ const objectUnAssigned = {
     urlDetail: 'id',
     alias: 'ot.object_id',
     title: 'This is an about page1',
+    styleRow: [
+      {
+        targetKey: 'is_active',
+        result: {
+          1: {
+            backgroundColor: 'green',
+          },
+          0: {
+            backgroundColor: 'unset',
+          },
+        },
+      },
+    ],
   },
   panel: {
     buttons: [
