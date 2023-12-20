@@ -6,7 +6,7 @@
         <a
           download
           :href="
-            'https://test.api.personal-crm.ru' + data.data.doc_ident.path_doc
+            'http://10.63.1.132:3000/file/get' + data.data.doc_ident.path_doc
           "
           ><v-icon left> $IconDocument </v-icon></a
         >
