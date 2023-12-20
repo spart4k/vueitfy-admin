@@ -2750,6 +2750,12 @@ const defaultForm = [
                 value: '',
                 type: 'array'
               },
+              {
+                field: 'direction_id',
+                alias: 'direction_json',
+                value: '',
+                type: 'array'
+              },
             ],
             isShow: {
               value: false,
