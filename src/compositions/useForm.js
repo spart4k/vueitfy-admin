@@ -333,8 +333,8 @@ export default function ({
         // newForm[key] = JSON.stringify(formData[key])
       }
       if (item.type === 'checkbox') {
-        if (item.sendOnlyTrue && !newForm[key]) {
-          delete newForm[key]
+        if (newForm[key] === 'undefined') {
+          newForm[key] = false
         }
       }
     })
@@ -445,7 +445,9 @@ export default function ({
     }
     if (hasSelect() && getDetail()) {
       const syncForm = makeRequest()
+      console.log('preList')
       const lists = makeRequestList(listData)
+      console.log('last preList')
       queries = [syncForm, lists]
       return queries
     } else if (getDetail() && !hasSelect()) {
@@ -859,6 +861,7 @@ export default function ({
       }
     }
     if (hasSelect()) {
+      console.log('list 1')
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
