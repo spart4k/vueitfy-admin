@@ -24,8 +24,7 @@
                   Скан:
                   <a
                     download
-                    :href="'https://test.api.personal-crm.ru' + item.path_doc"
-                    target="_blank"
+                    :href="'http://10.63.1.132:3000/file/get/' + item.path_doc"
                     ><v-icon left width="10px"> $IconDocument </v-icon></a
                   >
                 </div>
