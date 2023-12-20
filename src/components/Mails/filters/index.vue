@@ -304,18 +304,17 @@
             ></v-text-field>
           </div>
           <template v-if="!openPicker">
-            <v-btn
-              v-if="!newCase.loading"
-              @click="editFolder"
-              tonal
-              color="success"
-              class="mt-4"
-            >
-              <v-icon small class="mr-2">{{
-                newCase.id ? '$IconEdit' : '$IconAdd'
-              }}</v-icon>
-              {{ newCase.id ? 'Изменить' : 'Создать' }}
-            </v-btn>
+            <div v-if="!newCase.loading" class="d-flex mt-4">
+              <v-btn @click="editFolder" tonal color="success">
+                <v-icon small class="mr-2">{{
+                  newCase.id ? '$IconEdit' : '$IconAdd'
+                }}</v-icon>
+                {{ newCase.id ? 'Изменить' : 'Создать' }}
+              </v-btn>
+              <v-btn @click="closePopup" tonal color="error" class="ml-4">
+                Закрыть
+              </v-btn>
+            </div>
             <v-progress-circular
               indeterminate
               v-else

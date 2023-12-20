@@ -3,6 +3,7 @@
         height: 53px;
         width: 100%;
         display: flex;
+        align-items: center;
         &-user {
             // margin-top: auto;
             &_image {
@@ -35,7 +36,7 @@
             }
         }
         &-container {
-            margin: 20px 8px 0;
+            margin: 0 8px 0;
             width: 9px;
             &-viewed {
                 width: 100%;
