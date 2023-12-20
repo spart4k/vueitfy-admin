@@ -355,7 +355,7 @@ export default function ({
         //   new Date().getTime()
         const ext = filesBasket.value[key].files[0].name.split('.').pop()
         path =
-          'files/' +
+          '/' +
           filesBasket.value[key].field.options.folder +
           '/' +
           name +
