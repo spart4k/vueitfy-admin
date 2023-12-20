@@ -50,7 +50,7 @@
           x-small
           >$IconCheckoutMessage</v-icon
         >
-        {{
+        <!-- {{
           $props.selectedAllMails && !$props.allMails.loadAll
             ? $props.allSelectionFilter.is_read.value
               ? 'Прочитано'
@@ -58,7 +58,8 @@
             : intersection.read.length >= $props.selectedMails.length
             ? 'Не прочитаны'
             : 'Прочитано'
-        }}
+        }} -->
+        Не прочитаны
       </v-btn>
       <v-btn
         class="v-controls-list_item"
@@ -341,7 +342,7 @@
             >
               <template slot="item" slot-scope="{ item }">
                 <div class="d-flex flex-column">
-                  <p>{{ item.fio }}{{ item.id }}</p>
+                  <p>{{ item.fio }}</p>
                   <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
               </template>
