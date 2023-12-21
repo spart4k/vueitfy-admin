@@ -50,6 +50,11 @@ export default function ({
     }, {})
   )
 
+  setTimeout(() => {
+    console.log('formData', formData)
+    console.log('fields', fields)
+  }, 4000)
+
   const computedFormData = computed(() => formData)
 
   let startFormData = formData
@@ -104,6 +109,7 @@ export default function ({
   }
 
   const validate = (touch) => {
+    console.log('computedFormData.value', computedFormData.value)
     if (touch) $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
     if (touch) {

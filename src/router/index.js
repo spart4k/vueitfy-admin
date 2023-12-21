@@ -379,16 +379,16 @@ const routes = [
     component: ZayavkaView,
     children: [
       {
-        name: 'zayavka/:id',
-        path: ':id',
-        component: Detail,
-      },
-      {
         name: 'zayavka-add',
         path: '/zayavka/add',
         meta: {
           mode: ['add'],
         },
+        component: Detail,
+      },
+      {
+        name: 'zayavka/:id',
+        path: ':id',
         component: Detail,
       },
     ],
