@@ -2650,7 +2650,7 @@ const defaultForm = [
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'direction_id',
                 value: '',
@@ -2744,7 +2744,7 @@ const defaultForm = [
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'object_id',
                 alias: 'object_json',
@@ -3218,6 +3218,21 @@ const config = {
           //  function: consolePanel,
           //  backgroundColor: '#fff',
           //},
+          {
+            label: 'Добавить персонал',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'personal-add',
+            backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1],
+                  type: true,
+                },
+              ]
+            }
+          },
         ],
       },
       head: [

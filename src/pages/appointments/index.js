@@ -1133,10 +1133,11 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'direction_id',
                 value: '',
+                source: 'formData',
               },
             ],
             dependence: [
@@ -1193,7 +1194,7 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'object_id',
                 value: '',
@@ -1452,28 +1453,28 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'object_id',
                 value: '',
                 source: 'fromPrev',
               },
             ],
-            dependence: [
+            updateList: [
               {
-                //fields: ['statement_card', 'cardowner'],
-                type: 'api',
-                module: 'personal/getKeys',
-                //url: 'object_id/avatar_with_user_key_id',
-                field: 'print_form_key',
-                url: [
+                alias: 'print_form_key',
+                filter: [
                   {
-                    source: 'props',
                     field: 'object_id',
+                    value: '',
+                    source: 'form.formData',
+                    type: 'num',
                   },
                   {
-                    source: 'formData',
-                    field: 'this',
+                    field: 'personal_id',
+                    value: '',
+                    source: 'form.formData',
+                    type: 'num',
                   },
                 ],
               },
@@ -1507,7 +1508,7 @@ const config = {
             items: [],
             position: {
               cols: 12,
-              sm: 3,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -1533,17 +1534,14 @@ const config = {
                 {
                   field: 'type',
                   value: [11],
-                  source: 'form.formData',
                 },
                 {
                   field: 'direction_id',
                   value: [1],
-                  source: 'form.formData',
                 },
                 {
                   field: 'doljnost_id',
                   value: [5, 7],
-                  source: 'form.formData',
                 },
               ],
             },

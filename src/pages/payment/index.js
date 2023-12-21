@@ -1289,7 +1289,7 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'direction_id',
                 value: '',

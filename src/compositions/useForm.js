@@ -1004,7 +1004,7 @@ export default function ({
               console.log(field.name, el)
               return _.isEqual(ai, formData[el.field])
             } else {
-              console.log(field.name, el, ai, eval(el.source))
+              console.log(field.name, el.field, ai, formData)
               return [ai].includes(
                 el.source ? eval(el.source) : formData[el.field]
               )
@@ -1013,6 +1013,9 @@ export default function ({
         }
       })
     if (field.isShow.conditions && field.isShow.conditions.length) {
+      if (field.name === 'print_form_key') {
+        console.log(condition())
+      }
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
