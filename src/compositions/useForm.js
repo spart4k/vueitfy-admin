@@ -593,8 +593,8 @@ export default function ({
         url = dependence.url
         if (targetField.type === 'autocomplete') {
           const filter = []
-          if (targetField.filters && targetField.filters.length) {
-            targetField.filters.forEach((el) => {
+          if (targetField.filter && targetField.filter.length) {
+            targetField.filter.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
                 alias: el.alias ?? el.field,
