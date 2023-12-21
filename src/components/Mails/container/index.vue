@@ -59,7 +59,15 @@
             "
             class="v-container-box-column-title"
           >
-            {{ item.name }}
+            <div>
+              {{ item.name }}
+            </div>
+            <v-divider></v-divider>
+            <v-text-field
+              v-model="$props.data[index].search"
+              clearable
+              @input="$emit('changeSearch', item.id)"
+            ></v-text-field>
           </div>
           <div class="v-container-box-column-items">
             <template v-if="item?.mails?.rows && !item?.mails?.rows?.length">

@@ -125,6 +125,7 @@ const mails = {
         content: {
           count: 20,
           tags: colorTags,
+          search: val.search,
           props: route?.query?.id
             ? {
                 all: true,
@@ -160,6 +161,7 @@ const mails = {
           if (val?.mails) {
             for (const item of data?.rows) {
               if (selected.value.mailsAll) selected.value.mails.push(item.id)
+              if (!val?.mails?.rows) val.mails.rows = []
               val?.mails?.rows.push(item)
             }
           } else {
@@ -430,6 +432,8 @@ const mails = {
             filterData.value.folderData,
             item.folders
           )
+        Vue.set(item, 'search', '')
+        Vue.set(item, 'debounce', null)
       })
       if (!filterData.value.boxData) filterData.value.boxData = []
       if (!filterData.value.tagsData) filterData.value.tagsData = []
@@ -490,6 +494,17 @@ const mails = {
       filterData.value.notReadData--
     }
 
+    const changeSearch = (val) => {
+      const searchBox = mailsData.value.find((x) => x.id === val)
+      clearTimeout(searchBox.debounce)
+      searchBox.debounce = setTimeout(() => {
+        searchBox.mails.page = 0
+        searchBox.mails.rows = null
+        // getItems()
+        getPagination(searchBox)
+      }, 250)
+    }
+
     onMounted(async () => {
       if (!route?.query?.filter) {
         setRouterPath(null, null, { filter: 'all' })
@@ -509,6 +524,7 @@ const mails = {
 
       setRouterPath,
 
+      changeSearch,
       compareFiltersCount,
       resetAllSelectionFilter,
       decreaseUnreadMailsCount,
