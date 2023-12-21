@@ -29,6 +29,7 @@
           @getPagination="getPagination"
           @getMails="getMails"
           @setRouterPath="setRouterPath"
+          @changeSearch="changeSearch"
           :filterData="filterData"
           :selectedMails="selected.mails"
           :data="mailsData"

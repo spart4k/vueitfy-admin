@@ -245,7 +245,7 @@ const mail = {
 
     async getBroadcastMails(_, data) {
       try {
-        const response = await getBroadcastMails(data)
+        const response = await getBroadcastMails(data.content)
         return response
       } catch (e) {
         console.log(e)
