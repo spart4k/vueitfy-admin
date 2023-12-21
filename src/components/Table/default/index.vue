@@ -156,6 +156,7 @@
                 @click="openChildRow($event, row)"
                 class="v-table-body-row"
                 @dblclick="openRow($event, row)"
+                :style="insertStyle(row.row)"
               >
                 <td
                   class="v-table-body-row-cell__checkbox"

@@ -2,7 +2,9 @@
   <div
     :class="[
       'v-upper',
-      ($route.query.filter === 'folder' || $route.query.filter === 'box') &&
+      ($route.query.filter === 'folder' ||
+        $route.query.filter === 'box' ||
+        $route.query.filter === 'trans') &&
         !$route.query.mail &&
         'v-upper__wide',
       'justify-space-between',

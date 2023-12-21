@@ -110,7 +110,11 @@ const container = {
         (x) => x.id === val[0].target.__vue__.data.id
       )
       if (rowItem?.mails?.rows?.length === mailIndex + 1) {
-        if (route?.query?.filter === 'folder' || route?.query?.filter === 'box')
+        if (
+          route?.query?.filter === 'folder' ||
+          route?.query?.filter === 'box' ||
+          route?.query?.filter === 'trans'
+        )
           rowItem = props.data[0]
         if (val[0].isIntersecting) {
           emit('getPagination', rowItem)

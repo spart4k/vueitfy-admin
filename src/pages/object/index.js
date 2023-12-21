@@ -299,6 +299,19 @@ const objectUnAssigned = {
     urlDetail: 'id',
     alias: 'ot.object_id',
     title: 'This is an about page1',
+    styleRow: [
+      {
+        targetKey: 'is_active',
+        result: {
+          1: {
+            backgroundColor: 'green',
+          },
+          0: {
+            backgroundColor: 'unset',
+          },
+        },
+      },
+    ],
   },
   panel: {
     buttons: [
@@ -419,6 +432,17 @@ const objectUnAssigned = {
     totalPages: null,
   },
   detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'text',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'object',
+      skipValidation: true,
+    }),
+  ],
 }
 
 const skanConfig = {
@@ -1661,6 +1685,17 @@ const config = {
                 alias: 'filial_id',
                 filter: [],
               },
+              {
+                alias: 'city_id',
+                filter: [
+                  {
+                    field: 'regions_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
             ],
             alias: 'object',
             active: false,
@@ -2170,6 +2205,17 @@ const config = {
               {
                 alias: 'filial_id',
                 filter: [],
+              },
+              {
+                alias: 'city_id',
+                filter: [
+                  {
+                    field: 'regions_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
             ],
             alias: 'object',
@@ -2736,7 +2782,7 @@ const config = {
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
+          value: 'directions',
           search: {
             field: '',
             isShow: true,
@@ -3838,7 +3884,7 @@ const config = {
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
+          value: 'directions',
           search: {
             field: '',
             isShow: true,

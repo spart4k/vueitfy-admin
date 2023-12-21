@@ -1253,7 +1253,7 @@ const config = {
           },
           {
             id: 1,
-            name: 'Основные1',
+            name: 'Основные',
             type: FormList,
             //detail: true,
             lists: ['avatar_with_user_key_id'],

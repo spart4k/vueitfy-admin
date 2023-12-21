@@ -626,6 +626,24 @@ const table = {
       })
     })
 
+    const insertStyle = (row) => {
+      let styles = {}
+      if (props.options.options.styleRow) {
+        props.options.options.styleRow.forEach((el) => {
+          console.log(el.result, row)
+          const style = el.result[row[el.targetKey]]
+          for (let key in style) {
+            console.log(style, key)
+            styles = {
+              ...style
+            }
+          }
+        })
+      }
+      console.log(styles)
+      return styles
+    }
+
     const clickHandler = () => {
       emit('closePopup')
     }
@@ -683,6 +701,7 @@ const table = {
       panelHandler,
       availablePanelBtn,
       clickHandler,
+      insertStyle,
     }
   },
 }

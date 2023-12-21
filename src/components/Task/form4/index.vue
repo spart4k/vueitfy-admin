@@ -12,7 +12,7 @@
       </div>
       <div class="d-flex align-center">
         <span class="mr-1">Билет:</span>
-        <a :href="data.data.ticket" target="_blank">
+        <a download :href="data.data.ticket">
           <v-icon small>mdi-ticket</v-icon>
         </a>
       </div>
