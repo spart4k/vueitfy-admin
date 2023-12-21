@@ -50,11 +50,6 @@ export default function ({
     }, {})
   )
 
-  setTimeout(() => {
-    console.log('formData', formData)
-    console.log('fields', fields)
-  }, 4000)
-
   const computedFormData = computed(() => formData)
 
   let startFormData = formData

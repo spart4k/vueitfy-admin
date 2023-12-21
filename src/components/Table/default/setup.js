@@ -429,6 +429,7 @@ const table = {
       }
     }
     const closePopupForm = (route) => {
+      console.log('routerouteroute', route)
       if (route) router.push({ name: route })
       else router.back()
       popupForm.value.isShow = false
@@ -644,8 +645,8 @@ const table = {
       return styles
     }
 
-    const clickHandler = () => {
-      emit('closePopup')
+    const clickHandler = ({ action }) => {
+      emit('closePopup', action.to)
     }
 
     return {
