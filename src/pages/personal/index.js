@@ -752,6 +752,7 @@ const documentConfigEdit = {
           dropZoneField({
             label: 'Скан-копия/фото:',
             name: 'path_doc',
+            notPut: true,
             placeholder: '',
             readonly: false,
             class: [''],
@@ -1080,6 +1081,7 @@ const documentConfig = {
             label: 'Скан-копия/фото:',
             name: 'path_doc',
             placeholder: '',
+            notPut: true,
             readonly: false,
             class: [''],
             position: {
