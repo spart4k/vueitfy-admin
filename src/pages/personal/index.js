@@ -35,6 +35,15 @@ function consolePanel() {
   console.log('panel,button')
 }
 
+function downloadFile(val) {
+  const link = document.createElement('a')
+  link.download = val
+  link.href = process.env.VUE_APP_STORE + val
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
 // function addQuery() {
 //   // addOrUpdateURLParam('target_id', 'add')
 // }
@@ -615,7 +624,7 @@ const documentConfigEdit = {
     },
     {
       title: 'Скан-копия/фото',
-      type: 'default',
+      type: 'actions',
       align: 'center',
       fixed: {
         value: false,
@@ -637,7 +646,35 @@ const documentConfigEdit = {
         field: '',
         isShow: true,
       },
+      actions: [
+        {
+          type: 'button',
+          url: '$IconDownload',
+          function: downloadFile,
+          label: 'Скачать',
+        },
+      ],
     },
+    // {
+    //   title: 'Действия',
+    //   type: 'actions',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'right',
+    //   },
+    //   isShow: true,
+    //   width: '100',
+    //   value: 'actions',
+    //   actions: [
+    //     {
+    //       type: 'button',
+    //       url: '$IconDownload',
+    //       function: consoleButton,
+    //       label: 'Скачать',
+    //     },
+    //   ],
+    // },
     {
       title: 'Примечание',
       type: 'default',
@@ -935,7 +972,7 @@ const documentConfig = {
     },
     {
       title: 'Скан-копия/фото',
-      type: 'default',
+      type: 'actions',
       align: 'center',
       fixed: {
         value: false,
@@ -957,6 +994,14 @@ const documentConfig = {
         field: '',
         isShow: true,
       },
+      actions: [
+        {
+          type: 'button',
+          url: '$IconDownload',
+          function: downloadFile,
+          label: 'Скачать',
+        },
+      ],
     },
     {
       title: 'Примечание',
