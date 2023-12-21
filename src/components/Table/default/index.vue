@@ -116,6 +116,11 @@
                               <v-icon> {{ head.icon }}</v-icon>
                             </span>
                           </div>
+                          <div v-if="head.type === 'actions'">
+                            <span class="mr-2">
+                              {{ head.title }}
+                            </span>
+                          </div>
                         </div>
                       </template>
                       <span>{{ head.title }}</span>
@@ -230,7 +235,7 @@
                       v-for="(action, indexAction) in cell.actions"
                       :key="indexAction"
                     />-->
-                    <!--<div
+                    <div
                       v-if="
                         !cell.actionCondition ||
                         (cell.actionCondition &&
@@ -242,12 +247,15 @@
                       <v-btn
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
+                        @click="
+                          action.function(Object.byString(row.row, cell.value))
+                        "
                       >
                         <v-icon small>
                           {{ action.url }}
                         </v-icon>
                       </v-btn>
-                    </div>-->
+                    </div>
                   </template>
                 </td>
               </tr>
