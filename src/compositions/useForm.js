@@ -1001,8 +1001,10 @@ export default function ({
             if (Array.isArray(ai)) {
               //return ai.includes(el.source ? eval(el.source) : 1)
               //return JSON.stringify(ai) === JSON.stringify(formData[el.field])
+              console.log(field.name, el)
               return _.isEqual(ai, formData[el.field])
             } else {
+              console.log(field.name, el, ai, eval(el.source))
               return [ai].includes(
                 el.source ? eval(el.source) : formData[el.field]
               )

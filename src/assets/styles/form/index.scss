@@ -16,6 +16,10 @@
         height: auto;
         border: unset;
         padding: 20px 10px;
+        background-color: var(--v-background-base);
+        .vue-dropzone {
+          border-color: var(--v-textDefault-base);
+        }
       }
       &.textBlock {
         //height: 80px;
