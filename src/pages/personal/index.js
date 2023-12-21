@@ -3621,7 +3621,7 @@ const config = {
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_on_add',
-        title: 'На добавлении1',
+        title: 'На добавлении',
         noTableAction: true,
       },
       type: TableDefault,
