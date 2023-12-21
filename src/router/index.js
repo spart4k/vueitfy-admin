@@ -520,6 +520,7 @@ const routes = [
         path: '/schedule/edit',
         meta: {
           mode: 'edit',
+          label: 'Редактирование',
         },
         component: Detail,
       },

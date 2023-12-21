@@ -33,6 +33,24 @@
           }
         }
       }
+      .v-autocomplete {
+        &.v-input--is-readonly {
+          .v-select__selections {
+            flex-wrap: wrap;
+          }
+        }
+      }
+      .v-select__selections {
+        overflow: auto;
+        max-width: unset;
+        flex: unset;
+        //pointer-events: none;
+      }
+      .v-select .v-chip  {
+        flex: unset;
+        min-width: fit-content;
+        //min-width: 100px;
+      }
     }
   }
   .field-loading {

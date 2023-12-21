@@ -2145,7 +2145,7 @@ const defaultForm = [
       selectField({
         label: 'Личный ключ',
         name: 'user_key',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -2175,7 +2175,7 @@ const defaultForm = [
         label: 'Направление',
         name: 'direction_json',
         alias: 'direction_id',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -2204,7 +2204,7 @@ const defaultForm = [
         label: 'Доступ',
         name: 'account_json',
         alias: 'account_id',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -2700,8 +2700,7 @@ const defaultForm = [
               sm: 6,
             },
             isShow: {
-              value: false,
-              // hide: true,
+              value: true,
             },
             bootstrapClass: [''],
           }),
@@ -2715,7 +2714,7 @@ const defaultForm = [
               sm: 6,
             },
             isShow: {
-              value: false,
+              value: true,
               // hide: true,
             },
             bootstrapClass: [''],
@@ -3637,7 +3636,7 @@ const config = {
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_on_add',
-        title: 'На добавлении1',
+        title: 'На добавлении',
         noTableAction: true,
       },
       type: TableDefault,

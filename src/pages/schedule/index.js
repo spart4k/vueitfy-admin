@@ -869,6 +869,8 @@ const consumptionConfig = {
 //     disabled: false,
 //     value: 0,
 //     // items: [
+//     //   { id: 0, name: '' },
+
 //     // ],
 //     position: {
 //       cols: 12,
@@ -1148,7 +1150,7 @@ const config = {
             },
             disabled: false,
             value: 0,
-            items: [],
+            items: [{ id: 0, name: '' }],
             position: {
               cols: 12,
               sm: 12,
@@ -1225,7 +1227,7 @@ const config = {
             },
             disabled: true,
             value: 0,
-            items: [],
+            items: [{ id: 0, name: '' }],
             position: {
               cols: 12,
               sm: 12,
@@ -1360,7 +1362,7 @@ const config = {
             },
             disabled: true,
             value: 0,
-            items: [],
+            items: [{ id: 0, name: '' }],
             position: {
               cols: 12,
               sm: 12,

@@ -8,6 +8,7 @@ import {
   checkboxField,
   textareaField,
   colorPicker,
+  textBlock,
   // dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -341,12 +342,27 @@ const config = {
               },
               {
                 alias: 'account_objects',
-                filter: [],
+                filter: [
+                  { source: 'formData', type: 'num', value: 'id', field: 'id' },
+                ],
               },
             ],
             alias: 'account',
             active: false,
             fields: [
+              textBlock({
+                label: 'Создал',
+                name: 'id',
+                placeholder: '',
+                notSend: true,
+                readonly: true,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+              }),
               stringField({
                 label: 'ФИО',
                 name: 'fio',
@@ -429,7 +445,7 @@ const config = {
               selectField({
                 label: 'Направления',
                 name: 'direction_json',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 // requestKey: 'direction_json',
                 stringify: true,
                 placeholder: '',
@@ -458,12 +474,32 @@ const config = {
                     ],
                   },
                 ],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'chief_id',
+                    url: 'get/pagination_list/chief_id',
+                    filter: [
+                      {
+                        field: 'permission_id',
+                        type: 'num',
+                        value: '',
+                      },
+                      {
+                        field: 'direction_json',
+                        type: 'array',
+                        value: '',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Тип',
                 name: 'object_types',
                 alias: 'object_type',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
                 class: [''],
@@ -584,7 +620,8 @@ const config = {
               selectField({
                 label: 'Объекты',
                 name: 'object_json',
-                subtype: 'multiselect',
+                alias: 'account_objects',
+                subtype: 'multiple',
                 readonly: true,
                 // requestKey: 'direction_json',
                 stringify: true,
@@ -745,7 +782,7 @@ const config = {
               selectField({
                 label: 'Направления',
                 name: 'direction_json',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 // requestKey: 'direction_json',
                 stringify: true,
                 placeholder: '',
@@ -792,7 +829,7 @@ const config = {
                 label: 'Тип',
                 name: 'type',
                 alias: 'account_object_types',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
                 class: [''],
@@ -887,7 +924,7 @@ const config = {
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
-                //value: '#000000',
+                value: '#000000',
                 placeholder: '',
                 readonly: false,
                 disabled: false,
@@ -1255,7 +1292,7 @@ const config = {
               selectField({
                 label: 'Личный ключ',
                 name: 'user_key',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1274,7 +1311,7 @@ const config = {
                 label: 'Направление',
                 name: 'direction_json',
                 alias: 'direction_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1293,7 +1330,7 @@ const config = {
                 label: 'Доступ',
                 name: 'account_json',
                 alias: 'account_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {

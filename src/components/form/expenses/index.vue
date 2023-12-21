@@ -18,7 +18,6 @@
             class="field-col"
             :class="field.type"
           >
-            <!-- {{ formData[field.name] }} -->
             <div
               v-if="
                 loading &&
@@ -28,7 +27,7 @@
               "
               class="field-loading gradient"
             ></div>
-            <!--<v-select
+            <v-select
               v-else-if="showField('select', field)"
               :items="field.items"
               :item-text="field.selectOption.text"
@@ -42,17 +41,7 @@
               @change="changeSelect({ value: formData[field.name], field })"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
-            ></v-select>-->
-            <Autocomplete
-              v-else-if="showField('select', field)"
-              :field="field"
-              v-model="formData[field.name]"
-              :error-messages="formErrors[field?.name]"
-              :formData="formData"
-              ref="autocompleteRef"
-              @change="changeAutocomplete"
-              :readonly="readonlyField(field)"
-            />
+            ></v-select>
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
               :field="field"
@@ -63,7 +52,6 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
             />
-
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
@@ -78,7 +66,7 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
-              @change="changeCheckbox(field)"
+              @change="changeCheckbox"
               :readonly="readonlyField(field)"
             ></v-checkbox>
             <v-menu
@@ -100,7 +88,7 @@
                   :error-messages="formErrors[field?.name]"
                   v-bind="attrs"
                   :disabled="disabledField(field)"
-                  :readonly="readonlyField(field)"
+                  readonly
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -166,6 +154,27 @@
               :label="field.label"
               :readonly="readonlyField(field)"
             />
+            <v-row class="d-flex" v-else-if="showField('radioPanel', field)">
+              <v-btn
+                class="flex-grow-1"
+                :text="formData[field.name] !== item.value"
+                color="primary"
+                v-for="item in field.items"
+                :key="item.id"
+                @click="formData[field.name] = item.value"
+                :readonly="readonlyField(field)"
+              >
+                {{ item.text }}
+              </v-btn>
+            </v-row>
+            <v-btn
+              v-else-if="showField('btn', field)"
+              block
+              :color="field.color"
+              @click="changeBlockCount(field.increase)"
+            >
+              {{ field.label }}
+            </v-btn>
           </v-col>
         </v-row>
         <v-row class="justify-end">
@@ -179,7 +188,6 @@
             "
             v-for="action in tab.actions"
             :key="action.id"
-            :text="action.action === 'closePopup' ? true : false"
           >
             {{ action.text }}
           </v-btn>

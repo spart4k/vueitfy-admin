@@ -35,8 +35,11 @@ export default {
       totalPage: null,
       countRows: null,
     }
-
+    const toggle = () => {
+      console.log('toggle')
+    }
     const querySelections = async (params, isObs = false) => {
+      if (props.field.type === 'select') return
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
 
@@ -152,6 +155,7 @@ export default {
       searchProps,
       disabled,
       loading,
+      toggle,
     }
   },
 }

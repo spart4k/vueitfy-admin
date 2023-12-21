@@ -103,13 +103,13 @@
                             <span class="mr-2" @click="sortRow(head)">
                               {{ head.title }}
                             </span>
-                            <!--<v-icon
+                            <v-icon
                               v-if="head.search"
                               @click="openSort(head)"
                               small
                             >
                               $IconSearch
-                            </v-icon>-->
+                            </v-icon>
                           </div>
                           <div v-if="head.type === 'icon'">
                             <span class="mr-2" @click="sortRow(head)">
@@ -156,6 +156,7 @@
                 @click="openChildRow($event, row)"
                 class="v-table-body-row"
                 @dblclick="openRow($event, row)"
+                :style="insertStyle(row.row)"
               >
                 <td
                   class="v-table-body-row-cell__checkbox"

@@ -2,7 +2,9 @@
   <div
     :class="[
       'v-upper',
-      ($route.query.filter === 'folder' || $route.query.filter === 'box') &&
+      ($route.query.filter === 'folder' ||
+        $route.query.filter === 'box' ||
+        $route.query.filter === 'trans') &&
         !$route.query.mail &&
         'v-upper__wide',
       'justify-space-between',
@@ -14,10 +16,10 @@
         src="https://cdn.vuetifyjs.com/images/john.png"
       ></v-img> -->
       <div class="v-upper-user-content">
-        <div class="v-upper-user-content_name">Kira Zamorevich</div>
-        <div class="v-upper-user-content_email">
+        <div class="v-upper-user-content_name">
           {{ $props?.data?.message_from }}
         </div>
+        <div class="v-upper-user-content_email"></div>
       </div>
     </div>
     <div class="v-upper-container" v-if="!$props.expanded">

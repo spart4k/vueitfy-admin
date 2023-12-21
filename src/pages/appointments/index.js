@@ -733,7 +733,7 @@ const config = {
           },
           {
             id: 1,
-            name: 'Основные1',
+            name: 'Основные',
             type: FormList,
             //detail: true,
             lists: [

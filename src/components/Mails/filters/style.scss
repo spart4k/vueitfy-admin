@@ -139,6 +139,9 @@ $filtersHeight: calc(100% - 19px);
             }
         }
         &-popup {
+            background-color: var(--v-background-base);
+            border-radius: 10px;
+            padding: 20px 30px;
             &_icon {
                 // margin-top: auto;
             }
