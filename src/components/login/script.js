@@ -39,7 +39,7 @@ export default {
         subtype: 'text',
         name: 'login',
         placeholder: '',
-        value: 'domnin',
+        value: '',
         readonly: false,
         class: [''],
         position: {
@@ -54,7 +54,7 @@ export default {
         subtype: 'password',
         name: 'password',
         placeholder: '',
-        value: '19920626',
+        value: '',
         readonly: false,
         class: [''],
         position: {
