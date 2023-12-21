@@ -3331,11 +3331,29 @@ const config = {
               },
               {
                 alias: 'object_subtype',
-                filter: [],
+                filter: [
+                  {
+                    field: 'type',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
               {
                 alias: 'filial_id',
                 filter: [],
+              },
+              {
+                alias: 'city_id',
+                filter: [
+                  {
+                    field: 'regions_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
             ],
             alias: 'object',
