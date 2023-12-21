@@ -17,7 +17,8 @@
         <template
           v-if="
             $route?.query?.filter !== 'folder' &&
-            $route?.query?.filter !== 'box'
+            $route?.query?.filter !== 'box' &&
+            $route?.query?.filter !== 'trans'
           "
         >
           <div v-if="trigger.left" class="trigger trigger__left">
@@ -43,7 +44,8 @@
             'd-flex',
             'flex-column',
             ($route?.query?.filter === 'folder' ||
-              $route?.query?.filter === 'box') &&
+              $route?.query?.filter === 'box' ||
+              $route?.query?.filter === 'trans') &&
               'v-container-box-column__horizontal',
           ]"
           v-for="(item, index) in $props.data"
@@ -54,7 +56,8 @@
             v-if="
               !(
                 $route?.query?.filter === 'folder' ||
-                $route?.query?.filter === 'box'
+                $route?.query?.filter === 'box' ||
+                $route?.query?.filter === 'trans'
               )
             "
             class="v-container-box-column-title"
@@ -65,6 +68,7 @@
             <v-divider></v-divider>
             <v-text-field
               v-model="$props.data[index].search"
+              placeholder="Поиск"
               clearable
               @input="$emit('changeSearch', item.id)"
             ></v-text-field>

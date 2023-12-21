@@ -46,10 +46,10 @@ const mails = {
       const arrayFull = []
       let mailsCount = 0
       let load = false
-      mailsData.value.forEach((item) => {
+      mailsData.value?.forEach((item) => {
         if (item.mails) {
           mailsCount += item.mails.total
-          item.mails.rows.forEach((mail) => {
+          item.mails.rows?.forEach((mail) => {
             arrayId.push(mail.id)
             arrayFull.push(mail)
           })
@@ -159,10 +159,11 @@ const mails = {
         }
         if (data?.rows) {
           if (val?.mails) {
+            if (!val?.mails?.rows) val.mails.rows = []
             for (const item of data?.rows) {
               if (selected.value.mailsAll) selected.value.mails.push(item.id)
-              if (!val?.mails?.rows) val.mails.rows = []
-              val?.mails?.rows.push(item)
+              if (!val.mails.rows.some((x) => x.id === item.id))
+                val?.mails?.rows.push(item)
             }
           } else {
             Vue.set(val, 'mails', data)
@@ -285,8 +286,8 @@ const mails = {
         requestData.id = selected.value.mails.toString()
       }
       await store.dispatch('mail/filterMail', requestData)
-      selected.value.mails.forEach((select) => {
-        mailsData.value.forEach((row, index) => {
+      selected.value?.mails?.forEach((select) => {
+        mailsData.value?.forEach((row, index) => {
           if (row?.mails?.rows?.length) {
             row?.mails?.rows?.forEach((mail, mailIndex) => {
               if (mail.id === select) {
@@ -426,7 +427,7 @@ const mails = {
       filterData.value.tagsData = await store.dispatch('mail/getTags')
       filterData.value.notReadData = await store.dispatch('mail/getNotRead')
       if (!filterData.value.folderData) filterData.value.folderData = []
-      filterData.value.boxData.forEach((item) => {
+      filterData.value?.boxData?.forEach((item) => {
         if (item.folders)
           filterData.value.folderData = _.concat(
             filterData.value.folderData,
@@ -456,14 +457,14 @@ const mails = {
           folders: [],
           tags: [],
         }
-        filterData.value.folderData.forEach((item) => {
+        filterData.value?.folderData?.forEach((item) => {
           selected.value.filterAll.folders.push({
             id: item.id,
             count: folders[item.id],
             value: false,
           })
         })
-        filterData.value.tagsData.forEach((item) => {
+        filterData.value?.tagsData?.forEach((item) => {
           selected.value.filterAll.tags.push({
             id: item.id,
             count: tags[item.id],
@@ -480,11 +481,11 @@ const mails = {
       } else {
         selected.value.filterAll.is_read.value = true
       }
-      selected.value.filterAll.folders.forEach((item) => {
+      selected.value.filterAll?.folders?.forEach((item) => {
         if (item.count === allMails.value.count) item.value = true
         else item.value = false
       })
-      selected.value.filterAll.tags.forEach((item) => {
+      selected.value.filterAll?.tags?.forEach((item) => {
         if (item.count === allMails.value.count) item.value = true
         else item.value = false
       })

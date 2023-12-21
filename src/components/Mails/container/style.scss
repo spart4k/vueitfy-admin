@@ -81,6 +81,9 @@ $expandedLetterWidth: calc(100% - 343px - 13px);
                         padding: 0 !important;
                         input {
                             padding: 4px 10px;
+                            &::placeholder {
+                                text-align: center; 
+                            }
                         }
                     }
                 }
