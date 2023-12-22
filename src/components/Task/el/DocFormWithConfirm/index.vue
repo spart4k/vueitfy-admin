@@ -37,7 +37,9 @@
               <v-col>
                 <div class>
                   <span>Скан:</span>
-                  <a target="_blank" :href="doc.path_doc"
+                  <a
+                    download
+                    :href="'http://10.63.2.100:3003/file/get' + doc.path_doc"
                     ><v-icon left small> $IconDocument </v-icon></a
                   >
                 </div>
@@ -457,11 +459,12 @@
                 @click="() => rejectDoc(doc.id)"
                 class="mr-2"
                 color="error"
+                small
               >
                 <v-icon left> $IconClose </v-icon>
                 Отклонить
               </v-btn>
-              <v-btn @click="() => confirmDoc(doc.id)" color="primary">
+              <v-btn @click="() => confirmDoc(doc.id)" color="primary" small>
                 <v-icon left> $IconMain </v-icon>
                 Подтвердить
               </v-btn>

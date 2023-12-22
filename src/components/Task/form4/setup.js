@@ -28,6 +28,7 @@ const Form4 = defineComponent({
       },
     }
     let selectName = ref('')
+    const isGalkaVisible = ref(false)
     let options = {
       withoutSave: false,
       folder: 'tmp',
@@ -55,6 +56,7 @@ const Form4 = defineComponent({
       form_data.append('file', e[0])
       console.log(fileExt, fileName, form_data, e[0])
       isShowBtn.value = true
+      isGalkaVisible.value = true
     }
 
     const { makeRequest: pushSomeShit } = useRequest({
@@ -102,10 +104,9 @@ const Form4 = defineComponent({
           },
         }),
     })
-    let sendData = () => {
-      doneTask()
-      pushSomeShit()
-      makeRequest()
+    let sendData = async () => {
+      await pushSomeShit()
+      await makeRequest()
 
       updateFileData().then((data) => {
         console.log(data)
@@ -133,8 +134,11 @@ const Form4 = defineComponent({
         })
         startTask()
       })
-
-      ctx.emit('closePopup')
+      const { success } = await doneTask()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     // let widthTrasfer = ref('')
@@ -147,6 +151,7 @@ const Form4 = defineComponent({
       addFiles,
       ticket: data.ticket,
       widthTrasfer: JSON.parse(data.task.dop_data).transfer,
+      isGalkaVisible,
     }
   },
 })

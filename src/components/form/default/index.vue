@@ -1,12 +1,5 @@
 <template>
   <div class="form">
-    <!--<v-progress-circular
-      v-if="loading"
-      :size="20"
-      :width="2"
-      color="primary"
-      indeterminate
-    />-->
     <v-form class="form-default">
       <v-container class="">
         <v-row>
@@ -18,6 +11,7 @@
             class="field-col"
             :class="field.type"
           >
+            <!-- {{ formData[field.name] }} -->
             <div
               v-if="
                 loading &&
@@ -67,7 +61,7 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
-              @change="changeCheckbox"
+              @change="changeCheckbox(field)"
               :readonly="readonlyField(field)"
             ></v-checkbox>
             <v-menu

@@ -21,7 +21,8 @@ export default {
     const navData = ref()
 
     onMounted(async () => {
-      const account = store.dispatch('auth/checkMe')
+      const account = await store.dispatch('auth/checkMe')
+      console.log(account)
       navData.value = await store.dispatch('navmenu/getNavmenu')
       console.log(navData.value)
     })

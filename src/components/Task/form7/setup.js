@@ -90,13 +90,6 @@ const Form7 = defineComponent({
       const docsIdArr = [
         ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
       ]
-      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isHasOsnDoc)
-      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', docsIdArr.length)
-      console.log(
-        'ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ',
-        Object.values(data.correctedDocs).length
-      )
-      console.log('ГДЕБЛЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ', isOsnDocValid.value)
       if (isHasOsnDoc) {
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length &&
@@ -105,6 +98,13 @@ const Form7 = defineComponent({
         isFormValid.value =
           docsIdArr.length === Object.values(data.correctedDocs).length
       }
+    }
+
+    const confirmOsnDoc = () => {
+      const aidDocs = JSON.parse(props.data.task.dop_data).docs_id
+      if (aidDocs.length === 1 && aidDocs[0] === 0) isFormValid.value = true
+      finalData.value = { ...finalData.value, 0: formObj.value.formData }
+      osnConfirmed.value = true
     }
 
     const { makeRequest: setPersonalData } = useRequest({
@@ -157,13 +157,14 @@ const Form7 = defineComponent({
           Date.parse(props.data.task.date_create) +
           props.data.task.time_execution * 1000 -
           Date.now()
+        console.log()
         return store.dispatch('taskModule/setPartTask', {
           status: taskDeadline > 0 ? 2 : 3,
           data: {
             process_id: task.process_id,
             task_id: task.id,
             parent_action: task.id,
-            docs_id: props.data.data.docs_id.map((doc) => doc.id),
+            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
             okk_id: props.data.task.from_account_id,
@@ -184,7 +185,10 @@ const Form7 = defineComponent({
       await setSaveDocs()
       console.log(changeStatusTask)
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
       console.log(finalData.value)
     }
 
@@ -214,6 +218,7 @@ const Form7 = defineComponent({
       citizenItems,
       osnConfirmed,
       isOsnDocValid,
+      confirmOsnDoc,
     }
   },
 })

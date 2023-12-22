@@ -852,7 +852,7 @@ const consumptionConfig = {
     ],
     activeTab: null,
   },
-  filters,
+  //filters,
 }
 
 // const fieldsAddToEdit = [
@@ -869,10 +869,8 @@ const consumptionConfig = {
 //     disabled: false,
 //     value: 0,
 //     // items: [
-//     //   { id: 0, name: 'Новые' },
-//     //   { id: 1, name: 'ЕАЭС' },
-//     //   { id: 2, name: 'Не резиденты' },
-//     //   { id: 3, name: 'РФ' },
+//     //   { id: 0, name: '' },
+
 //     // ],
 //     position: {
 //       cols: 12,
@@ -952,7 +950,7 @@ const config = {
         backgroundColor: '#fff',
       },
     ],
-    filters: true,
+    //filters: true,
     search: true,
     date: true,
     addedItemsChildrenType: 'object',
@@ -1108,7 +1106,7 @@ const config = {
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'text',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'schedule',
@@ -1134,11 +1132,8 @@ const config = {
         type: FormDefault,
         detail: true,
         lists: [
-          { alias: 'user_keys', filter: [] },
-          { alias: 'habitation_id', filter: [] },
           { alias: 'account_id', filter: [] },
           { alias: 'direction_id', filter: [] },
-          { alias: 'grajdanstvo_id', filter: [] },
         ],
         alias: 'personal',
         active: false,
@@ -1155,12 +1150,7 @@ const config = {
             },
             disabled: false,
             value: 0,
-            items: [
-              { id: 0, name: 'Новые' },
-              { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
-              { id: 3, name: 'РФ' },
-            ],
+            items: [{ id: 0, name: '' }],
             position: {
               cols: 12,
               sm: 12,
@@ -1216,11 +1206,11 @@ const config = {
         type: FormDefault,
         detail: true,
         lists: [
-          { alias: 'user_keys', filter: [] },
-          { alias: 'habitation_id', filter: [] },
+          // { alias: 'user_keys', filter: [] },
+          // { alias: 'habitation_id', filter: [] },
           { alias: 'account_id', filter: [] },
           { alias: 'direction_id', filter: [] },
-          { alias: 'grajdanstvo_id', filter: [] },
+          // { alias: 'grajdanstvo_id', filter: [] },
         ],
         alias: 'personal',
         active: false,
@@ -1237,12 +1227,7 @@ const config = {
             },
             disabled: true,
             value: 0,
-            items: [
-              { id: 0, name: 'Новые' },
-              { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
-              { id: 3, name: 'РФ' },
-            ],
+            items: [{ id: 0, name: '' }],
             position: {
               cols: 12,
               sm: 12,
@@ -1330,7 +1315,7 @@ const config = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'text',
             name: 'closePopup',
             action: 'closePopup',
             to: 'schedule',
@@ -1377,12 +1362,7 @@ const config = {
             },
             disabled: true,
             value: 0,
-            items: [
-              { id: 0, name: 'Новые' },
-              { id: 1, name: 'ЕАЭС' },
-              { id: 2, name: 'Не резиденты' },
-              { id: 3, name: 'РФ' },
-            ],
+            items: [{ id: 0, name: '' }],
             position: {
               cols: 12,
               sm: 12,
@@ -1486,7 +1466,7 @@ const config = {
           stringAction({
             text: 'Закрыть',
             type: 'submit',
-            color: 'black',
+            color: 'text',
             name: 'closePopup',
             action: 'closePopup',
             to: 'schedule',

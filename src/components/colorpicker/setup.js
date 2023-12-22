@@ -19,6 +19,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -40,16 +44,22 @@ export default {
     watch(
       () => proxyVal.value,
       (newValue) => {
+        color.value = newValue
         emit('input', newValue)
       }
     )
-    onMounted(() => {})
+    onMounted(() => {
+      if (proxyVal.value) {
+        color.value = proxyVal.value
+      }
+    })
     return {
       menu,
       menuRef,
       swatchStyle,
       color,
       mask,
+      proxyVal,
     }
   },
 }

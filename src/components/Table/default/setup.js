@@ -20,6 +20,7 @@ import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
 import { post } from '@/api/axios'
 import useTable from '@/compositions/useTable.js'
+import { personal } from '@/pages/index.js'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -409,8 +410,27 @@ const table = {
       })
       getItems()
     }
-    const openRow = ($event, row) => {
+
+    const doubleHandler = ($event, row, cell, indexRow = null, indexCell, activeIndexCells) => {
       if (!options.detail || options.options.noTableAction) return
+      
+      //проверка на существование ключа, если ключа нету тогда выставляет по умолчанию row
+      // по хорошему этот функционал нужно вынести в момент создание ключей, ПО УМОЛЧАНИЮ
+      if (!props.options.options.hasOwnProperty('doubleHandlerType')) {
+        props.options.options.doubleHandlerType = 'row'
+      }
+
+      if (props.options.options.doubleHandlerType === 'cell') {
+        openCell($event, row, cell, indexRow, indexCell, activeIndexCells)
+      }
+
+      if (props.options.options.doubleHandlerType === 'row') {
+        openRow($event, row, cell)
+      }
+    } 
+
+    const openRow = ($event, row) => {
+      console.log('row');
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -422,17 +442,56 @@ const table = {
           {
             name: `${route.name}/:${requstId}`,
             params: {
-              [requstId]: row.row.id
+              [requstId]: row.id
             }
         })
         popupForm.value.isShow = true
       }
     }
+
+    const openCell = ($event, row, cell, indexRow, indexCell, activeIndexCells) => {
+      if (options.detail.type === 'popup') {
+        console.log('cell')
+        console.log($event, row, cell,indexRow, indexCell);
+
+        if (activeIndexCells.includes(indexCell)) {
+          // let requstId = 'id'
+          // if (props.options.detail.requstId)
+          //   requstId = props.options.detail.requstId
+          //documents/personal/id
+
+          const name = `documents-personal-id`
+          
+          router.push(
+            {
+              name,
+              params: {
+                id: row.personal_id
+              }
+            }
+          )
+
+          //console.log(url);
+          //console.log(route.name);
+          //documents/personal/id
+          // router.push(
+          //   {
+          //     name: `${route.name}/:id`,
+          //     params: {
+          //       id: row.row.id
+          //     }
+          // })
+
+          popupForm.value.isShow = true
+        }
+    
+      }
+    }
+
     const closePopupForm = (route) => {
       if (route) router.push({ name: route })
       else router.back()
       popupForm.value.isShow = false
-      if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
       if (options.detail.type === 'popup') {
@@ -447,15 +506,15 @@ const table = {
         popupForm.value.isShow = true
       }
     }
-    const panelHandler = (button) => {
+    const changeUrl = (url) => {
+      router.push(
+        {
+          name: url,
+        })
+      popupForm.value.isShow = true
+    }
+    const panelHandler = async (button) => {
       const { type, url } = button
-      const changeUrl = (url) => {
-        router.push(
-          {
-            name: url,
-          })
-        popupForm.value.isShow = true
-      }
       if (type === 'addItem') {
         addItem()
       } else if (type === 'changeUrl') {
@@ -467,6 +526,8 @@ const table = {
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
         emit('nextStage', {})
+      } else if (button.label === 'Обновить') {
+        await getItems()
       }
       if (button.function) button.function()
     }
@@ -482,6 +543,17 @@ const table = {
     const headActions = computed(() => {
       return options.head.find((cell) => cell.type === 'actions')
     })
+
+    // // WATCH
+    // watch(
+    //   () => searchField,
+    //   (newVal) => {
+    //     props.options.options.search.function(newVal)
+    //   },
+    //   () => {
+    //   }
+    // )
+
 
       // HOOKS
       onMounted(async () => {
@@ -533,6 +605,7 @@ const table = {
       }
       return '';
     };
+
     const iconColor = (value, conditionValue) => {
       if (value === 0) {
         return 'red';
@@ -605,7 +678,7 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some(el => {
-            console.log(checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type)
+            //console.log(checkIncludesPermissions(el), checkIncludesDirections(el), el.type)
             return checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type
           })
           // if ()
@@ -660,7 +733,7 @@ const table = {
       rowCount,
       isElementXPercentInViewport,
       saveFilter,
-      openRow,
+      doubleHandler,
       closePopupForm,
       popupForm,
       filtersColumns,

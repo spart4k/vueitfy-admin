@@ -214,14 +214,6 @@ const routes = [
     component: ObjectView,
     children: [
       {
-        name: 'object/:id',
-        path: ':id',
-        meta: {
-          mode: ['edit'],
-        },
-        component: Detail,
-      },
-      {
         name: 'object-add',
         path: '/object/add',
         meta: {
@@ -234,6 +226,15 @@ const routes = [
         path: '/object/appoint',
         meta: {
           mode: ['appoint'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'object/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Объект - редактирование',
         },
         component: Detail,
       },
@@ -251,20 +252,22 @@ const routes = [
     component: AccountView,
     children: [
       {
+        name: 'account-add',
+        path: '/account/add',
+        meta: {
+          mode: 'add',
+          label: 'Добавление аккаунта',
+        },
+        component: Detail,
+      },
+      {
         name: 'account/:id',
         path: ':id',
         component: Detail,
         meta: {
           mode: ['edit'],
+          label: 'Редактирования аккаунта',
         },
-      },
-      {
-        name: 'account-add',
-        path: '/account/add',
-        meta: {
-          mode: 'add',
-        },
-        component: Detail,
       },
     ],
   },
@@ -461,14 +464,45 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'documents-personal-id',
+        path: '/documents/personal/:id',
+        meta: {
+          mode: ['persanalById'],
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'documents-personal-id-new',
+            path: '/documents/personal/:id/new',
+            meta: {
+              mode: ['persanalById', 'new'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents-personal-id-object_id',
+            path: ':object_id',
+            meta: {
+              mode: ['persanalById', 'object_id'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents-personal-id-new',
+            path: 'documents/personal/:id/new',
+            meta: {
+              mode: ['persanalById', 'object_id'],
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
         name: 'documents/:id',
         path: ':id',
         component: Detail,
       },
     ],
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
   },
   {
     path: '/slata-report',
@@ -517,6 +551,7 @@ const routes = [
         path: '/schedule/edit',
         meta: {
           mode: 'edit',
+          label: 'Редактирование',
         },
         component: Detail,
       },

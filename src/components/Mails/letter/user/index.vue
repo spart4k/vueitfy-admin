@@ -9,15 +9,15 @@
     ]"
   >
     <div class="v-upper-user d-flex">
-      <v-img
+      <!-- <v-img
         class="v-upper-user_image"
         src="https://cdn.vuetifyjs.com/images/john.png"
-      ></v-img>
+      ></v-img> -->
       <div class="v-upper-user-content">
-        <div class="v-upper-user-content_name">Kira Zamorevich</div>
-        <div class="v-upper-user-content_email">
+        <div class="v-upper-user-content_name">
           {{ $props?.data?.message_from }}
         </div>
+        <div class="v-upper-user-content_email"></div>
       </div>
     </div>
     <div class="v-upper-container" v-if="!$props.expanded">

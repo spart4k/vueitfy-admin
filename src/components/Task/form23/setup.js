@@ -84,12 +84,20 @@ const form23 = defineComponent({
           isShow.value = false
           commentError.value = false
           const dataFrom = await makeRequest()
+          if (dataFrom.success) {
+            emit('closePopup')
+            emit('getItems')
+          }
           console.log(dataFrom)
         } else {
           commentError.value = true
         }
       } else {
         const dataFrom = await makeRequest()
+        if (dataFrom.success) {
+          emit('closePopup')
+          emit('getItems')
+        }
         console.log(dataFrom)
       }
     }

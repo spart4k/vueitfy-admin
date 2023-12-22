@@ -21,7 +21,9 @@
               <v-col>
                 <div>
                   <span>Скан:</span>
-                  <a target="_blank" :href="doc.path_doc"
+                  <a
+                    download
+                    :href="'http://10.63.2.100:3003/file/get' + doc.path_doc"
                     ><v-icon left small> $IconDocument </v-icon></a
                   >
                 </div>
@@ -72,7 +74,6 @@
                         v-model="formObj[doc.doc_id].formData.pasp_data_vid"
                         label="Дата выдачи"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -171,6 +172,7 @@
                   :disabled="!formObj[doc.doc_id].validate()"
                   @click="sendBankCard"
                   color="warning"
+                  small
                 >
                   <v-icon left> $IconMain </v-icon>
                   Завершить
@@ -250,7 +252,6 @@
                         v-model="formObj[doc.doc_id].formData.med_book_date"
                         label="Дата выдачи"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -320,7 +321,6 @@
                         "
                         label="Дата выдачи"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -389,7 +389,6 @@
                         v-model="formObj[doc.doc_id].formData.migr_card_data_in"
                         label="Дата въезда"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -422,7 +421,6 @@
                         "
                         label="Дата выезда"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -460,7 +458,6 @@
                         "
                         label="Дата оплаты"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -501,7 +498,6 @@
                         "
                         label="Дата с"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -539,7 +535,6 @@
                         "
                         label="Дата с"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -591,7 +586,6 @@
                         "
                         label="Дата оплаты"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -655,7 +649,6 @@
                         "
                         label="Дата оплаты"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -708,7 +701,6 @@
                         v-model="formObj[doc.doc_id].formData.med_view_docs_in"
                         label="Дата"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -744,6 +736,7 @@
                 :disabled="!formObj[doc.doc_id].validate()"
                 @click="() => confirmCorrect(doc)"
                 color="warning"
+                small
               >
                 <v-icon left> $IconMain </v-icon>
                 Исправлено

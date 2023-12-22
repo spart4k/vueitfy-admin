@@ -1,17 +1,11 @@
 <template>
   <div class="v-table d-flex flex-column flex-grow-1 justify-space-between">
-    <!--<h1 class="v-table-title">{{ options.options.title }}</h1>-->
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
         class="v-table-panel"
       >
         <div class="v-table-panel__actions flex-wrap">
-          <!--<v-button
-            :option="button"
-            v-for="(button, indexButton) in options.panel.buttons"
-            :key="indexButton"
-          />-->
           <v-btn
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
@@ -26,13 +20,6 @@
         </div>
 
         <div class="v-table-panel__search">
-          <!--<v-input
-            @clearfield="clearField('searchField')"
-            clearing
-            type="search"
-            placeholder="Поиск"
-            v-model="searchField"
-          />-->
           <v-text-field
             label="Поиск"
             hide-details="auto"
@@ -67,9 +54,7 @@
                 width="40"
                 v-if="options.options.selecting"
                 class="v-table-header-row-cell"
-              >
-                <!--s-->
-              </th>
+              ></th>
               <th
                 :align="head.align"
                 :class="[
@@ -98,19 +83,6 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <!--<v-icon
-                      v-if="head.sorts && head.sorts.length"
-                      @click="openSort(head)"
-                      color="yellow"
-                      :class="
-                        paramsQuery.sorts.find((el) => el.field === head.value)
-                          .value
-                      "
-                      class="v-table-header-row-cell-wrap__sort-icon"
-                      small
-                    >
-                      $IconSort
-                    </v-icon>-->
                     <vIconSort
                       v-if="
                         head.sorts &&
@@ -131,9 +103,13 @@
                             <span class="mr-2" @click="sortRow(head)">
                               {{ head.title }}
                             </span>
-                            <v-icon @click="openSort(head)" small
-                              >$IconSearch</v-icon
+                            <!--<v-icon
+                              v-if="head.search"
+                              @click="openSort(head)"
+                              small
                             >
+                              $IconSearch
+                            </v-icon>-->
                           </div>
                           <div v-if="head.type === 'icon'">
                             <span class="mr-2" @click="sortRow(head)">
@@ -147,7 +123,9 @@
                   </span>
                   <transition name="accordion">
                     <div
-                      v-if="head.sorts && head.sorts[0].isShow"
+                      v-if="
+                        head.sorts && head.sorts.length && head.sorts[0].isShow
+                      "
                       class="v-table-header-row-cell-sort"
                     >
                       <v-text-field
@@ -167,19 +145,17 @@
                   </transition>
                 </div>
               </th>
-              <!--<th class='v-table-header-row-cell' v-for='(head, index) in options.head'>{{ head.title }}</th>-->
             </tr>
           </thead>
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
-            <!--<tbody v-if="!loading" class="v-table-body">-->
             <template v-for="(row, indexRow) in options.data.rows">
+              <!-- {{ row.row.id + indexRow }} -->
               <tr
-                :key="row.row.id"
+                :key="row.row.id + indexRow"
                 :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
                 @contextmenu="openContext($event, row)"
                 @click="openChildRow($event, row)"
                 class="v-table-body-row"
-                @dblclick="openRow($event, row)"
               >
                 <td
                   class="v-table-body-row-cell__checkbox"
@@ -194,8 +170,6 @@
                 >
                   <div @click.stop class="v-table-checkbox">
                     <label>
-                      <!--{{ indexRow }}-->
-                      <!--{{ row.row.selected }}-->
                       <input
                         @change="saveLastSelected({ row, indexRow })"
                         @click.stop.shift="checkboxInput(row, indexRow)"
@@ -211,7 +185,6 @@
                     width: cell.width,
                   }"
                   :class="{
-                    'red-1': true,
                     ...addBackgroundClass(cell, row.row, Object.byString),
                   }"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
@@ -220,54 +193,16 @@
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
                   :key="cellIndex"
+                  @dblclick="
+                    doubleHandler($event, row.row, cell, indexRow, cellIndex, [
+                      0,
+                    ])
+                  "
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
                   </template>
                   <template v-if="cell.type === 'icon'">
-                    <!-- <slot #name="icons"></slot> -->
-                    <!-- <v-icon :color="iconColor">{{ iconType }}</v-icon>  -->
-                    <!-- :class="{
-                        'red-1': true,
-                        'v-table-body-row-cell--error':
-                          Object.byString(
-                            row.row,
-                            'backgroundValue' in cell
-                              ? cell.backgroundValue
-                              : null
-                          ) == 0,
-                        'v-table-body-row-cell--error1':
-                          Object.byString(
-                            row.row,
-                            'backgroundValue' in cell
-                              ? cell.backgroundValue
-                              : null
-                          ) == 1,
-                      }" -->
-                    <!-- <template v-if="Object.byString(row.row, cell.value) == 0">
-                      <v-icon color="red">mdi-close</v-icon>
-                    </template>
-                    <template v-if="Object.byString(row.row, cell.value) == 1">
-                      <template v-if="cell.conditionValue">
-                        <template
-                          v-if="
-                            Object.byString(row.row, cell.conditionValue) ===
-                            null
-                          "
-                        >
-                          <v-icon color="red">mdi-close</v-icon>
-                        </template>
-                        <template v-esle>
-                          {{ Object.byString(row.row, cell.conditionValue) }}
-                        </template>
-                      </template>
-                      <template v-else>
-                        <v-icon color="green">mdi-check</v-icon>
-                      </template>
-                    </template>
-                    <template v-if="Object.byString(row.row, cell.value) == 2">
-                      <v-icon color="yellow">mdi-minus</v-icon>
-                    </template> -->
                     <v-icon
                       :style="styleDate(row.row, cell, Object.byString)"
                       :color="
@@ -319,8 +254,9 @@
                   </template>
                 </td>
               </tr>
+              <!-- {{ row.row.id + 'child' + indexRow }} -->
               <tr
-                :key="row.row.id + 'child'"
+                :key="row.row.id + 'child' + indexRow"
                 v-show="
                   row.child.isShow && options.head.some((el) => !el.isShow)
                 "
@@ -349,12 +285,6 @@
                         class="v-table-body-row-paragraph v-table-actions"
                         :key="cellIndex"
                       >
-                        <!--<v-table-button
-                          :row="row.row"
-                          :option="action"
-                          v-for="(action, indexAction) in cell.actions"
-                          :key="indexAction"
-                        />-->
                         <v-btn
                           v-for="(action, indexAction) in cell.actions"
                           :key="indexAction"
@@ -400,18 +330,6 @@
       </div>
       <div class="v-table-footer-pagination">
         <div class="v-table-footer-pagination-length">
-          <!--<span>
-            10
-          </span>-->
-          <!--<select name="" id="">
-            <option
-              v-for="(option, optionIndex) in 5"
-              value=""
-              :key="optionIndex"
-            >
-              10
-            </option>
-          </select>-->
           <v-select
             :items="rowCount"
             label="Количество на странице:"
@@ -483,6 +401,7 @@
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
         @closePopup="closePopupForm"
+        @getItems="getItems"
       />
     </Popup>
   </div>

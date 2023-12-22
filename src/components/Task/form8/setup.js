@@ -19,7 +19,7 @@ const Form8 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }) {
+  setup({ data }, ctx) {
     const context = {
       root: {
         store,
@@ -144,7 +144,7 @@ const Form8 = defineComponent({
           store.dispatch('taskModule/updateFileData', {
             personal_id: data.entity.id,
             doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
+            path_doc: `/personal_doc/${fileName}`,
             from_task: true,
           }),
       })
@@ -186,7 +186,7 @@ const Form8 = defineComponent({
           store.dispatch('taskModule/updateFileData', {
             personal_id: data.entity.id,
             doc_id: e.item,
-            path_doc: `/files/personal_doc/${fileName}`,
+            path_doc: `/personal_doc/${fileName}`,
             from_task: true,
           }),
       })
@@ -279,7 +279,7 @@ const Form8 = defineComponent({
       listRequestsForUpload.value = []
     }
 
-    let sendTaskFinish = () => {
+    let sendTaskFinish = async () => {
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -292,8 +292,11 @@ const Form8 = defineComponent({
             },
           }),
       })
-
-      changeStatus()
+      const { success } = await changeStatus()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     return {
       addFiles,

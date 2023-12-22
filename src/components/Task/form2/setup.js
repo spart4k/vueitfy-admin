@@ -41,9 +41,11 @@ const Form2 = defineComponent({
     const finalData = ref({})
     const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
-    const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const isHasOsnDoc = ref(
+      JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    )
     const isOsnDocConfirmed = ref(false)
-    const isOsnDocTouched = ref(false)
+    const isOsnDocTouched = ref(isHasOsnDoc.value ? false : true)
     const commentErr = ref('')
     const comment = ref('')
     const newStatus = ref(0)
@@ -70,12 +72,20 @@ const Form2 = defineComponent({
     }
 
     const confirmOsnData = () => {
+      const doscId = JSON.parse(props.data.task.dop_data).docs_id
       isOsnDocTouched.value = true
       isOsnDocConfirmed.value = true
+      if (doscId.length === 1 && doscId[0] === 0) {
+        isFormValid.value = true
+      }
     }
     const rejectOsnData = () => {
+      const doscId = JSON.parse(props.data.task.dop_data).docs_id
       isOsnDocTouched.value = true
       isOsnDocConfirmed.value = false
+      if (doscId.length === 1 && doscId[0] === 0) {
+        isFormValid.value = true
+      }
     }
 
     const { makeRequest: setPersonalData } = useRequest({
@@ -116,8 +126,14 @@ const Form2 = defineComponent({
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: () => {
+        if (!finalData.value.rejected) {
+          finalData.value.rejected = []
+        }
         newStatus.value =
-          finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2
+          finalData.value.rejected.length ||
+          (isHasOsnDoc.value && !isOsnDocConfirmed.value)
+            ? 6
+            : 2
         return store.dispatch('taskModule/setPartTask', {
           status:
             finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2,
@@ -144,8 +160,10 @@ const Form2 = defineComponent({
 
     const sendData = async () => {
       if (
-        (finalData.value.rejected.length && !comment.value) ||
-        (!isOsnDocConfirmed.value && !comment.value)
+        (finalData.value.rejected &&
+          finalData.value.rejected.length &&
+          !comment.value) ||
+        (isHasOsnDoc.value && !isOsnDocConfirmed.value && !comment.value)
       ) {
         commentErr.value = 'Заполните комментарий'
       } else {
@@ -153,7 +171,10 @@ const Form2 = defineComponent({
         console.log(setPersonalData)
 
         const { success } = await changeStatusTask()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
         console.log(changeStatusTask)
         if (
           props.data.entity.grajdanstvo_id === 1 &&

@@ -101,6 +101,9 @@
             }
         }
         &-popup {
+            background-color: var(--v-background-base);
+            border-radius: 10px;
+            padding: 20px 30px;
             &_title {
                 color: var(--v-text-base);
                 font-size: 20px;

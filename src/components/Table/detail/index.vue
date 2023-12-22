@@ -2,7 +2,10 @@
   <div class="detail">
     <div class="detail-tabs">
       <div class="pa-4 detail-header">
-        <p v-if="detail.name" class="text-h4 mb-4">
+        <p v-if="$route.meta.label" class="text-h4 mb-4">
+          {{ $route.meta.label }}
+        </p>
+        <p v-else-if="detail.name" class="text-h4 mb-4">
           {{ detail.name }}
         </p>
         <v-tabs
@@ -18,6 +21,7 @@
           </v-tab>
         </v-tabs>
       </div>
+      <!-- <pre> {{ detail.tabs }}</pre> -->
       <v-tabs-items v-model="detail.activeTab">
         <v-tab-item
           v-for="item in detail.tabs"

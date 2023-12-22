@@ -87,7 +87,10 @@ const Form20 = defineComponent({
     const completeTask = async () => {
       await setUserKey()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     return {

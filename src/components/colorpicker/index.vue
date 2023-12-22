@@ -1,6 +1,12 @@
 <template>
   <div class="colorpicker">
-    <v-text-field v-model="color" :label="field.label">
+    <v-text-field
+      v-model="color"
+      :readonly="readonly"
+      :disabled="true"
+      variant="underlined"
+      :label="field.label"
+    >
       <template v-slot:append>
         <v-menu
           v-model="menu"
@@ -14,7 +20,7 @@
           </template>
           <v-card>
             <v-card-text class="pa-0">
-              <v-color-picker class="picker" v-model="color" flat />
+              <v-color-picker class="picker" v-model="proxyVal" flat />
             </v-card-text>
           </v-card>
         </v-menu>

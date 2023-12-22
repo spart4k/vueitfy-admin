@@ -12,7 +12,7 @@
       </div>
       <div class="d-flex align-center">
         <span class="mr-1">Билет:</span>
-        <a :href="data.data.ticket" target="_blank">
+        <a download :href="data.data.ticket">
           <v-icon small>mdi-ticket</v-icon>
         </a>
       </div>
@@ -34,17 +34,24 @@
       v-model="selectName"
     ></v-select>
 
-    <span style="font-size: 18px" class="font-weight-bold"
-      >Приложите миграционную карту:</span
-    >
+    <span style="font-size: 18px" class="font-weight-bold">
+      <v-icon x-small color="green" v-if="isGalkaVisible">$IconGalka</v-icon>
+      Приложите миграционную карту:
+    </span>
     <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
 
     <v-row class="py-2" justify="end">
-      <v-btn color="info" class="mr-2" @click="sendData" :disabled="!isShowBtn">
+      <v-btn
+        small
+        color="info"
+        class="mr-2"
+        @click="sendData"
+        :disabled="!isShowBtn"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

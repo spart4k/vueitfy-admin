@@ -1,6 +1,16 @@
+
 .colorpicker {
   //padding-top: 12px;
   //margin-top: 4px;
   display: flex;
   justify-content: center;
+
+}
+
+.v-text-field {
+  &::v-deep .v-input__slot::before {
+    border-image: none !important;
+    // background-color: red !important;
+  }
+  /* Ваши кастомные стили для отключенного состояния v-text-field */
 }

@@ -9,7 +9,7 @@
       <v-row>
         <v-col cols="12">
           <!-- <div style="display: flex; justify-content: center">
-            <v-btn color="info"> Открыть </v-btn>
+            <v-btn small color="info"> Открыть </v-btn>
           </div> -->
         </v-col>
       </v-row>
@@ -31,8 +31,8 @@
                 <div v-if="item.path_doc" style="margin-top: 10px">
                   Скан:
                   <a
+                    download
                     :href="'https://test.api.personal-crm.ru' + item.path_doc"
-                    target="_blank"
                     ><v-icon left width="10px"> $IconDocument </v-icon></a
                   >
                 </div>
@@ -58,6 +58,7 @@
         <v-col cols="12">
           <div style="display: flex; justify-content: center">
             <v-btn
+              small
               color="success"
               :disabled="listDisbledDocuments != 0"
               @click="sendDocuments"
@@ -87,6 +88,7 @@
         <v-col cols="12">
           <div style="display: flex; justify-content: center">
             <v-btn
+              small
               color="success"
               :disabled="!isSetFilesCloseSchet"
               @click="sendCloseDocsSchet"
@@ -94,6 +96,7 @@
               Приложить
             </v-btn>
             <!-- <v-btn
+              small
               color="success"
               :disabled="listDisbledDocuments != 0"
               @click="sendDocuments"
@@ -105,6 +108,7 @@
       </v-row>
       <v-row class="py-2" justify="end">
         <v-btn
+          small
           color="info"
           class="mr-3"
           :disabled="listDisbledDocuments !== 0 && !listNewChet.length"
@@ -113,7 +117,7 @@
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
-        <v-btn @click="$emit('closePopup')" color="blue-grey">
+        <v-btn small @click="$emit('closePopup')" color="blue-grey">
           <v-icon small>mdi-close</v-icon>
           Закрыть
         </v-btn>

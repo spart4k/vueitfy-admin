@@ -5,6 +5,7 @@ import {
   checkEveryDayPayment,
   getObject,
   create,
+  putForm,
 } from '@/api/personal'
 //import axios from 'axios'
 
@@ -43,7 +44,12 @@ const account = {
     },
     async createData(_, { url, body }) {
       console.log(_, url, body)
-      const result = await create(url, { data: body })
+      const result = await create(url, body)
+      return result
+    },
+
+    async putForm(_, params) {
+      const result = await putForm(params)
       return result
     },
   },

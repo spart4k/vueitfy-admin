@@ -13,7 +13,7 @@ import DatetimePicker from 'vuetify-datetime-picker'
 import './plugins'
 Vue.use(DatetimePicker)
 // import VueCompositionApi from '@vue/composition-api'
-console.log('test commit');
+console.log('test commit')
 //import mainJS from '@/trash/main.js'
 
 Vue.config.productionTip = false
@@ -33,7 +33,7 @@ Object.byString = function (o, s) {
   s = s.replace(/\[(\w+)\]/g, '.$1') // convert indexes to properties
   s = s.replace(/^\./, '') // strip a leading dot
   var a = s.split('.')
-  for (var i = 0, n = a.length;  i < n;  ++i) {
+  for (var i = 0, n = a.length; i < n; ++i) {
     var k = a[i]
     if (k in o) {
       o = o[k]
@@ -44,26 +44,16 @@ Object.byString = function (o, s) {
   return o
 }
 
-let remove = [
-  /\s+/g,
-  /'(\\.|[^'])*'/g,
-  /"(\\.|[^"])*"/g,
-  /\d+/g,
-] 
+let remove = [/\s+/g, /'(\\.|[^'])*'/g, /"(\\.|[^"])*"/g, /\d+/g]
 
-let emptyArray = /\[,*\]/g 
+let emptyArray = /\[,*\]/g
 
 String.isArray = function (str) {
+  for (let r of remove) str = str.replace(r, '')
 
-  for (let r of remove)
-    str = str.replace(r, '') 
+  if (str[0] !== '[') return false
 
-  if (str[0] !== '[')
-    return false 
+  while (str.match(emptyArray)) str = str.replace(emptyArray, '')
 
-  while (str.match(emptyArray))
-    str = str.replace(emptyArray, '') 
-
-  return str.length === 0 
+  return str.length === 0
 }
-

@@ -36,14 +36,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    detail: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
-    console.log('props.tab: ', props.tab)
-    console.log('return ', props.tab)
-
-    console.log('conten', props.content)
-
-    //const syncForm = ref({})
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
@@ -60,7 +58,6 @@ export default {
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
-      // console.log('rebuild fields')
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
@@ -74,13 +71,11 @@ export default {
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      // console.log(fields)
       return fields
     }
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      console.log(props.detail)
       if (props.detail?.requstId)
         return _.get(route.params, props.detail.requstId)
       return route.params.id
@@ -98,21 +93,36 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: (params) => {
+        console.log()
         return store.dispatch(params.module, {
-          //url: `set/data/${alias}`,
           url: params.url,
           body: { data: { id: +route.params.id, ...params.formData } },
+        })
+      },
+    })
+    const { makeRequest: changeFormId } = useRequest({
+      context,
+      successMessage: 'Сохранено',
+      request: (params) => {
+        console.log()
+        return store.dispatch(params.module, {
+          url: params.url + '/' + route.params.id,
+          body: { data: { ...params.formData } },
         })
       },
     })
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: (params) =>
-        store.dispatch(params.module, {
+      request: (params) => {
+        console.log(formData, params)
+        return store.dispatch(params.module, {
           url: params.url,
-          body: params.formData ? params.formData : formData,
-        }),
+          body: {
+            data: params.formData ? params.formData : formData,
+          },
+        })
+      },
     })
 
     const { makeRequest: deleteFormById } = useRequest({
@@ -124,12 +134,9 @@ export default {
           url: params.url,
           id: route.params.id,
         })
-        //const req = 'obj'
-        console.log('deleteFormById: ', req)
         return req
       },
     })
-    //console.log(deleteFormById)
 
     console.log('props.tabs', props.tab)
     if (props.tab.hasOwnProperty('content')) {
@@ -161,6 +168,7 @@ export default {
       addFiles,
       changeCheckbox,
       readonlyField,
+      refreshTable,
     } = useForm({
       form: props.tab,
       context,
@@ -175,6 +183,7 @@ export default {
       mode: isEdit.value,
       createForm,
       deleteFormById,
+      changeFormId,
     })
 
     onMounted(async () => {
@@ -204,6 +213,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
+      refreshTable,
     }
   },
 }

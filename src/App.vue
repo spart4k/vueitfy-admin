@@ -30,15 +30,10 @@ export default {
   },
   setup() {
     const { $vuetify } = getCurrentInstance().proxy
-    const themeValue = ref($vuetify.theme.dark)
     const initTheme = () => {
-      let darkTheme = localStorage.getItem('darkTheme')
-      if (darkTheme) {
-        $vuetify.theme.dark = darkTheme
-      }
+      $vuetify.theme.dark = JSON.parse(localStorage.getItem('darkTheme'))
     }
     onMounted(() => {
-      console.log(themeValue.value)
       initTheme()
     })
   },
