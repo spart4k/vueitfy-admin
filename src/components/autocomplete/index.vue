@@ -18,14 +18,17 @@
       :disabled="disabled"
       :readonly="readonly"
     >
-      <!--<template v-slot:prepend-item>
-        <v-list-tile ripple @click="toggle">
-          <v-list-tile-action>
-            <v-icon>$IconDocument</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Select All</v-list-tile-title>
-        </v-list-tile>
-      </template>-->
+      <template
+        v-if="field.subtype === 'multiple' && field.type === 'select'"
+        v-slot:prepend-item
+      >
+        <v-list-item ripple @click="selectAll">
+          <v-list-item-action>
+            <v-checkbox v-model="checkedAll"></v-checkbox>
+          </v-list-item-action>
+          <v-list-item-content>Выбрать все</v-list-item-content>
+        </v-list-item>
+      </template>
       <template v-slot:append>
         <v-progress-circular
           v-if="loading"
