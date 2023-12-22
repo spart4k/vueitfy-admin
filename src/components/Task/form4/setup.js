@@ -59,6 +59,15 @@ const Form4 = defineComponent({
       isGalkaVisible.value = true
     }
 
+    const { makeRequest: delInfoAFile } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/updateFileData', {
+          id: data.data.migr_card.id,
+          del: 1,
+        }),
+    })
+
     const { makeRequest: pushSomeShit } = useRequest({
       context,
       request: () =>
@@ -107,8 +116,10 @@ const Form4 = defineComponent({
     let sendData = async () => {
       await pushSomeShit()
       await makeRequest()
-
-      updateFileData().then((data) => {
+      if (typeof data.data.migr_card == 'object') {
+        await delInfoAFile()
+      }
+      updateFileData().then((str) => {
         console.log(data)
         const { makeRequest: startTask } = useRequest({
           context,
@@ -125,7 +136,7 @@ const Form4 = defineComponent({
               process_id: data.task.process_id,
               account_id: data.task.to_account_id,
               task_id: data.task.id,
-              docs_id: [data.result],
+              docs_id: [str.result],
               personal_id: data.entity.id,
               parent_action: data.task.id,
               type_parent_action: 2,
