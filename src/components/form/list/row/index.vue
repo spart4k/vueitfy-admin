@@ -91,7 +91,7 @@
           </template>
           <v-date-picker
             v-model="formData[field.name]"
-            min="1950-01-01"
+            min="1940-01-01"
             color="primary"
             locale="ru-RU"
             :type="field.subtype === 'period' ? 'month' : undefined"

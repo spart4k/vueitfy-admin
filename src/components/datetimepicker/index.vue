@@ -28,7 +28,7 @@
         <v-tab-item>
           <v-date-picker
             v-model="tabs.date.value"
-            min="1950-01-01"
+            min="1940-01-01"
             color="primary"
             locale="ru-RU"
             append-icon="mdi-calendar"

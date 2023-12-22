@@ -105,7 +105,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.pasp_data_vid"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -283,7 +283,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.med_book_date"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -352,7 +352,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.view_home_data_vid"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -420,7 +420,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.migr_card_data_in"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -452,7 +452,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.migr_card_data_out"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -491,7 +491,7 @@
                       v-model="
                         formObj[doc.doc_id].formData.check_patent_date_pay
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -533,7 +533,7 @@
                         formObj[doc.doc_id].formData
                           .registration_date_do_docs_in
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -569,7 +569,7 @@
                       v-model="
                         formObj[doc.doc_id].formData.registration_date_c_docs_in
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -617,7 +617,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.patent_date_docs_in"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -683,7 +683,7 @@
                       v-model="
                         formObj[doc.doc_id].formData.check_patent_date_pay_now
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -732,7 +732,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.med_view_docs_in"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>

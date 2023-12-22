@@ -85,7 +85,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formData.data_rojd"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
