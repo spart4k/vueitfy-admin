@@ -2151,23 +2151,6 @@ const config = {
             ],
           },
           {
-            id: 1,
-            name: 'Тарифы',
-            type: Rates,
-            detail: true,
-            alias: 'object',
-            active: false,
-            actions: [
-              stringAction({
-                text: 'Сохранить',
-                type: 'submit',
-                module: '',
-                name: 'saveForm',
-                nextForm: true,
-              }),
-            ],
-          },
-          {
             id: 0,
             name: 'Основные',
             type: FormDefault,
@@ -2664,6 +2647,24 @@ const config = {
             type: TableDefault,
             active: false,
             config: objectUnAssigned,
+          },
+          {
+            id: 1,
+            // path: 'edit',
+            name: 'Тарифы',
+            type: Rates,
+            detail: true,
+            alias: 'object',
+            active: false,
+            actions: [
+              stringAction({
+                text: 'Сохранить',
+                type: 'submit',
+                module: '',
+                name: 'saveForm',
+                nextForm: true,
+              }),
+            ],
           },
         ],
         activeTab: null,
