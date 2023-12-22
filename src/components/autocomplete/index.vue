@@ -18,10 +18,7 @@
       :disabled="disabled"
       :readonly="readonly"
     >
-      <template
-        v-if="field.subtype === 'multiple' && field.type === 'select'"
-        v-slot:prepend-item
-      >
+      <template v-if="false" v-slot:prepend-item>
         <v-list-item ripple @click="selectAll">
           <v-list-item-action>
             <v-checkbox v-model="checkedAll"></v-checkbox>
