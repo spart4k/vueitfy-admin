@@ -2117,7 +2117,7 @@ const defaultForm = [
       }),
       selectField({
         label: 'Гражданство',
-        name: 'status',
+        name: 'grajdanstvo_id',
         alias: 'grajdanstvo_id',
         placeholder: '',
         class: [''],
