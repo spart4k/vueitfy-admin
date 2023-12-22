@@ -401,7 +401,8 @@ const table = {
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          alias: el.aliasFilter,
+          // alias: el.aliasFilter,
+          alias: el.name,
           type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
