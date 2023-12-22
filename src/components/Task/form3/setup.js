@@ -115,7 +115,10 @@ const Form3 = defineComponent({
       await updateFileData()
       await pushSomeShit()
       const { success } = await changeStatus()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     return {
       options,

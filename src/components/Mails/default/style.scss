@@ -4,8 +4,8 @@ $containerHeight: calc(100vh - 50px - 64px);
 .v {
     &-mails {
         flex-grow: 1;
-        overflow: hidden;
-        padding: 15px 26px 0 16px;
+        // overflow: hidden;
+        // padding: 5px 16px -10px 6px;
         background-color: var(--v-pageBackground-base);
         position: relative;
         &-group {

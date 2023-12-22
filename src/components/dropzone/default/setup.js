@@ -42,7 +42,7 @@ export default {
       //url: 'http://localhost:3031',
       autoDiscover: false,
       thumbnailWidth: 150,
-      maxFilesize: 0.5,
+      maxFilesize: 10,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
       addRemoveLinks: props?.options?.removeble ? true : false,
       dictDefaultMessage: 'Переместите или выберите файл',
@@ -89,7 +89,13 @@ export default {
     }
     const removed = (file) => {
       if (!props.options.withoutSave) {
-        emit('removeFile', file)
+        console.log('file', file)
+        // emit('removeFile', file)
+        const index = proxyVal.value.findIndex(
+          (x) => x.upload.uuid === file.upload.uuid
+        )
+        proxyVal.value.splice(index, 1)
+        // proxyVal.value = {}
       }
       //console.log(value)
       //const { uuid } = file.upload

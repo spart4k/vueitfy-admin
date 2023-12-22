@@ -68,10 +68,10 @@ const letterExpanded = {
     }
 
     const removeFile = (val) => {
-      const index = newMessage.value.files.findIndex(
-        (x) => x.upload.uuid === val.upload.uuid
-      )
-      newMessage.value.files.splice(index, 1)
+      // const index = newMessage.value.files.findIndex(
+      //   (x) => x.upload.uuid === val.upload.uuid
+      // )
+      // newMessage.value.files.splice(index, 1)
     }
 
     const createMail = async () => {

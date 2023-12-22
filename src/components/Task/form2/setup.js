@@ -171,7 +171,10 @@ const Form2 = defineComponent({
         console.log(setPersonalData)
 
         const { success } = await changeStatusTask()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
         console.log(changeStatusTask)
         if (
           props.data.entity.grajdanstvo_id === 1 &&

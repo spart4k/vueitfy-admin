@@ -76,6 +76,16 @@ $expandedLetterWidth: calc(100% - 343px - 13px);
                     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
                     margin-bottom: 15px;
                     text-align: center;
+                    &::v-deep .v-text-field{
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        input {
+                            padding: 4px 10px;
+                            &::placeholder {
+                                text-align: center; 
+                            }
+                        }
+                    }
                 }
                 &-items {
                     // display: flex;

@@ -31,6 +31,8 @@ export const getBoxMails = (data, params) =>
 export const getFolderMails = (data, params) =>
   post(`mail/get_messages/folder/${params}`, data)
 
+export const getBroadcastMails = (data) => post(`mail/get_broadcast`, data)
+
 export const filterMail = (data) => post('mail/update_messages', data)
 
 export const countFilter = (data, type) => post(`mail/count/${type}`, data)

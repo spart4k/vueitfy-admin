@@ -295,10 +295,23 @@ const objectUnAssigned = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/target_objects',
+    url: 'get/pagination/object_target',
     urlDetail: 'id',
     alias: 'ot.object_id',
     title: 'This is an about page1',
+    styleRow: [
+      {
+        targetKey: 'is_active',
+        result: {
+          1: {
+            backgroundColor: 'green',
+          },
+          0: {
+            backgroundColor: 'unset',
+          },
+        },
+      },
+    ],
   },
   panel: {
     buttons: [
@@ -329,91 +342,86 @@ const objectUnAssigned = {
       title: 'Сотрудник',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
       sorts: [],
       alias: 'p.id',
       isShow: true,
       width: '40',
       value: 'account_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
+    },
+    {
+      title: 'Направление',
+      type: 'default',
+      align: 'center',
+
+      sorts: [],
+      alias: 'p.id',
+      isShow: true,
+      width: '40',
+      value: 'direction_name',
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Должность',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
       sorts: [],
       isShow: true,
       width: '150',
       value: 'permission_name',
       alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Д назнач',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
       sorts: [],
       isShow: true,
       width: '90',
       alias: 'pers.name',
       value: 'date_target_start',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Д оконч',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
       sorts: [],
       isShow: true,
       width: '90',
       alias: 'pers.name',
       value: 'date_target_end',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
     {
       title: 'Назначил',
       type: 'default',
       align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
       sorts: [],
       isShow: true,
       width: '90',
       alias: 'pers.name',
       value: 'target_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
+      //search: {
+      //  field: '',
+      //  isShow: true,
+      //},
     },
   ],
   data: {
@@ -424,6 +432,17 @@ const objectUnAssigned = {
     totalPages: null,
   },
   detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'text',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'object',
+      skipValidation: true,
+    }),
+  ],
 }
 
 const skanConfig = {
@@ -962,6 +981,14 @@ const config = {
             url: '$IconSetting',
             type: 'addItem',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [15, 2, 4, 3],
+                  type: true,
+                },
+              ],
+            },
           },
         ],
       },
@@ -975,21 +1002,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           alias: 'p.name',
           isShow: true,
           width: '40',
           value: 'name',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Адрес',
@@ -1000,21 +1027,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '90',
           alias: 'ps.address',
           value: 'address',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Направление',
@@ -1025,21 +1052,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          value: 'directions',
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         //{
         //  title: 'Менеджер',
@@ -1075,21 +1102,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'tel_director',
           alias: 'p.tel_director',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Площадь',
@@ -1100,21 +1127,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'square',
           alias: 'p.square',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Действия',
@@ -1189,7 +1216,7 @@ const config = {
           //       label: 'Направление',
           //       name: 'direction_json',
           //       alias: 'direction_object',
-          //       subtype: 'multiselect',
+          //       subtype: 'multiple',
           //       placeholder: '',
           //       stringify: true,
           //       class: [''],
@@ -1636,15 +1663,38 @@ const config = {
               },
               {
                 alias: 'object_type',
-                filter: [],
+                filter: [
+                  {
+                    field: 'direction_json',
+                    source: 'formData',
+                    type: 'array',
+                  },
+                ],
               },
               {
                 alias: 'object_subtype',
-                filter: [],
+                filter: [
+                  {
+                    field: 'type',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
               {
                 alias: 'filial_id',
                 filter: [],
+              },
+              {
+                alias: 'city_id',
+                filter: [
+                  {
+                    field: 'regions_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
             ],
             alias: 'object',
@@ -1654,7 +1704,7 @@ const config = {
                 label: 'Направление',
                 name: 'direction_json',
                 alias: 'direction_object',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 stringify: true,
                 class: [''],
@@ -1905,6 +1955,7 @@ const config = {
                 placeholder: '',
                 value: false,
                 readonly: false,
+                sendOnlyTrue: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -2133,15 +2184,38 @@ const config = {
               },
               {
                 alias: 'object_type',
-                filter: [],
+                filter: [
+                  {
+                    field: 'direction_json',
+                    source: 'formData',
+                    type: 'array',
+                  },
+                ],
               },
               {
                 alias: 'object_subtype',
-                filter: [],
+                filter: [
+                  {
+                    field: 'type',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
               {
                 alias: 'filial_id',
                 filter: [],
+              },
+              {
+                alias: 'city_id',
+                filter: [
+                  {
+                    field: 'regions_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
             ],
             alias: 'object',
@@ -2151,7 +2225,7 @@ const config = {
                 label: 'Направление',
                 name: 'direction_json',
                 alias: 'direction_object',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 stringify: true,
                 class: [''],
@@ -2708,7 +2782,7 @@ const config = {
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
+          value: 'directions',
           search: {
             field: '',
             isShow: true,
@@ -2918,7 +2992,7 @@ const config = {
           //     selectField({
           //       label: 'Личный ключ',
           //       name: 'user_key',
-          //       subtype: 'multiselect',
+          //       subtype: 'multiple',
           //       placeholder: '',
           //       class: [''],
           //       selectOption: {
@@ -2937,7 +3011,7 @@ const config = {
           //       label: 'Направление',
           //       name: 'direction_json',
           //       alias: 'direction_id',
-          //       subtype: 'multiselect',
+          //       subtype: 'multiple',
           //       placeholder: '',
           //       class: [''],
           //       selectOption: {
@@ -2956,7 +3030,7 @@ const config = {
           //       label: 'Доступ',
           //       name: 'account_json',
           //       alias: 'account_id',
-          //       subtype: 'multiselect',
+          //       subtype: 'multiple',
           //       placeholder: '',
           //       class: [''],
           //       selectOption: {
@@ -3257,11 +3331,29 @@ const config = {
               },
               {
                 alias: 'object_subtype',
-                filter: [],
+                filter: [
+                  {
+                    field: 'type',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
               {
                 alias: 'filial_id',
                 filter: [],
+              },
+              {
+                alias: 'city_id',
+                filter: [
+                  {
+                    field: 'regions_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
               },
             ],
             alias: 'object',
@@ -3271,7 +3363,7 @@ const config = {
                 label: 'Направление',
                 name: 'direction_json',
                 alias: 'direction_object',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 stringify: true,
                 class: [''],
@@ -3810,7 +3902,7 @@ const config = {
           isShow: true,
           width: '150',
           alias: 'p.direction_json',
-          value: 'direction_json',
+          value: 'directions',
           search: {
             field: '',
             isShow: true,
@@ -4020,7 +4112,7 @@ const config = {
               selectField({
                 label: 'Личный ключ',
                 name: 'user_key',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -4039,7 +4131,7 @@ const config = {
                 label: 'Направление',
                 name: 'direction_json',
                 alias: 'direction_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -4058,7 +4150,7 @@ const config = {
                 label: 'Доступ',
                 name: 'account_json',
                 alias: 'account_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -4504,7 +4596,7 @@ const config = {
     //           selectField({
     //             label: 'Личный ключ',
     //             name: 'user_key',
-    //             subtype: 'multiselect',
+    //             subtype: 'multiple',
     //             placeholder: '',
     //             class: [''],
     //             selectOption: {
@@ -4523,7 +4615,7 @@ const config = {
     //             label: 'Направление',
     //             name: 'direction_json',
     //             alias: 'direction_id',
-    //             subtype: 'multiselect',
+    //             subtype: 'multiple',
     //             placeholder: '',
     //             class: [''],
     //             selectOption: {
@@ -4542,7 +4634,7 @@ const config = {
     //             label: 'Доступ',
     //             name: 'account_json',
     //             alias: 'account_id',
-    //             subtype: 'multiselect',
+    //             subtype: 'multiple',
     //             placeholder: '',
     //             class: [''],
     //             selectOption: {
