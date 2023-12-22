@@ -284,7 +284,7 @@
                         <span>{{ cell.title }}: </span>
                         <span>{{ row.child.data[cell.value] }}</span>
                       </li>
-                      <li
+                      <!-- <li
                         v-else-if="cell.type === 'actions'"
                         class="v-table-body-row-paragraph v-table-actions"
                         :key="cellIndex"
@@ -299,7 +299,7 @@
                             {{ action.url }}
                           </v-icon>
                         </v-btn>
-                      </li>
+                      </li> -->
                     </template>
                   </transition-group>
                 </td>

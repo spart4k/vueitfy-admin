@@ -35,8 +35,16 @@ export default {
       totalPage: null,
       countRows: null,
     }
-    const toggle = () => {
-      console.log('toggle')
+    const checkedAll = computed(
+      () => proxyValue.value.length === props.field.items.length
+    )
+    const selectAll = () => {
+      // console.log('selectAll')
+      if (checkedAll.value) {
+        proxyValue.value = []
+      } else {
+        proxyValue.value = props.field.items.slice()
+      }
     }
     const querySelections = async (params, isObs = false) => {
       if (props.field.type === 'select') return
@@ -103,7 +111,9 @@ export default {
         }
       }
     }
-
+    const icon = computed(() =>
+      selectAll.value ? 'mdi-close-box' : 'mdi-minus-box'
+    )
     const removeSelected = () => {
       proxyValue.value = null
     }
@@ -155,7 +165,9 @@ export default {
       searchProps,
       disabled,
       loading,
-      toggle,
+      selectAll,
+      checkedAll,
+      icon,
     }
   },
 }

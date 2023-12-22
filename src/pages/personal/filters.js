@@ -59,7 +59,7 @@ const filters = {
       page: 1,
       search: '',
       url: 'get/pagination_list/object',
-      filters: [
+      filter: [
         {
           field: 'direction_id',
           value: '',
