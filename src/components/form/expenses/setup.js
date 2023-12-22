@@ -137,10 +137,28 @@ export default {
       const itemIndex = +props.tab.fields[btnIndex - 1].name.split('__')[1]
       if (val) {
         const insertItems = [
+          // selectField({
+          //   label: 'Наименование:',
+          //   name: `name__${itemIndex + 1}`,
+          //   alias: 'direction_id',
+          //   placeholder: '',
+          //   class: [''],
+          //   value: '',
+          //   selectOption: {
+          //     text: 'name',
+          //     value: 'id',
+          //   },
+          //   items: [],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
           selectField({
             label: 'Наименование:',
-            name: `name__${itemIndex + 1}`,
-            alias: 'direction_id',
+            name: `rashod_vid__${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             value: '',
