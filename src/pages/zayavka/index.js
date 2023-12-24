@@ -1390,83 +1390,82 @@ const config = {
         alias: 'personal_target',
         active: false,
         fields: [
-          // selectField({
-          //   label: 'Статус:',
-          //   name: 'status_zr',
-          //   alias: 'status_zr',
-          //   placeholder: '',
-          //   class: [''],
-          //   value: '',
-          //   selectOption: {
-          //     text: 'name',
-          //     value: 'id',
-          //   },
-          //   items: [],
-          //   position: {
-          //     cols: 12,
-          //     sm: 6,
-          //   },
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          // }),
-          // stringField({
-          //   label: 'От:',
-          //   name: 'fio',
-          //   placeholder: '',
-          //   value: '',
-          //   class: [''],
-          //   position: {
-          //     cols: 12,
-          //     sm: 6,
-          //   },
-          //   disable: true,
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          // }),
-          // dateField({
-          //   label: 'Дата статус:',
-          //   name: 'date_rojd',
-          //   type: 'date',
-          //   value: '',
-          //   menu: false,
-          //   placeholder: '',
-          //   class: [''],
-          //   position: {
-          //     cols: 12,
-          //     sm: 6,
-          //   },
-          //   disable: true,
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          //   //mode: 'edit',
-          // }),
-          // stringField({
-          //   label: 'Создана:',
-          //   name: 'fio',
-          //   placeholder: '',
-          //   value: '',
-          //   class: [''],
-          //   position: {
-          //     cols: 12,
-          //     sm: 6,
-          //   },
-          //   disable: true,
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          // }),
-          // checkboxField({
-          //   label: 'На себя',
-          //   name: 'transfer',
-          //   value: false,
-          //   placeholder: '',
-          //   readonly: false,
-          //   class: [''],
-          //   position: {
-          //     cols: 12,
-          //     sm: 12,
-          //   },
-          //   bootstrapClass: [''],
-          // }),
+          selectField({
+            label: 'Статус:',
+            name: 'status_zr',
+            alias: 'status_zr',
+            placeholder: '',
+            class: [''],
+            value: '',
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'От:',
+            name: 'fio_from',
+            placeholder: '',
+            value: '',
+            class: [''],
+            disabled: true,
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            disable: true,
+            bootstrapClass: [''],
+          }),
+          dateField({
+            label: 'Дата статус:',
+            name: 'date_rojd',
+            type: 'date',
+            value: '',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            disabled: true,
+            bootstrapClass: [''],
+            // mode: 'edit',
+          }),
+          stringField({
+            label: 'Создана:',
+            name: 'create_date',
+            placeholder: '',
+            value: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            disabled: true,
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          checkboxField({
+            label: 'На себя',
+            name: 'on_yourself',
+            value: false,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
           selectField({
             label: 'Направление',
             name: 'direction_id',
@@ -1487,8 +1486,8 @@ const config = {
             bootstrapClass: [''],
           }),
           radioPanel({
-            name: 'zcxxczxc',
-            alias: 'zcxxczxc',
+            name: 'vector',
+            alias: 'vector',
             class: [''],
             bootstrapClass: [''],
             position: {
@@ -1496,6 +1495,7 @@ const config = {
               sm: 12,
             },
             value: 1,
+            default: 1,
             items: [
               {
                 text: 'Персонал',
@@ -1513,6 +1513,10 @@ const config = {
                 id: 3,
               },
             ],
+            isShow: {
+              value: false,
+              conditions: [{ field: 'on_yourself', value: [false] }],
+            },
           }),
           selectField({
             label: 'Категория:',
@@ -1567,7 +1571,7 @@ const config = {
           }),
           stringField({
             label: 'Кол-во:',
-            name: 'count__0',
+            name: 'count',
             placeholder: '',
             class: [''],
             position: {
@@ -1579,7 +1583,7 @@ const config = {
           }),
           stringField({
             label: 'Стоимость :',
-            name: 'price__0',
+            name: 'price',
             placeholder: '',
             class: [''],
             position: {
@@ -1591,7 +1595,7 @@ const config = {
           }),
           checkboxField({
             label: 'ВДС',
-            name: 'vds__0',
+            name: 'vds',
             value: false,
             placeholder: '',
             readonly: false,
@@ -1604,7 +1608,7 @@ const config = {
           }),
           stringField({
             label: 'Точное наименование',
-            name: 'exact_name__0',
+            name: 'exact_name',
             placeholder: '',
             class: [''],
             position: {

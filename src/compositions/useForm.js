@@ -494,6 +494,7 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
+    console.log(params)
     await getDependies(params)
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
