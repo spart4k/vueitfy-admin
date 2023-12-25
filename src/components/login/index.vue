@@ -20,6 +20,7 @@
                 v-model="formData[field.name]"
                 :label="field.label"
                 :readonly="field.readonly"
+                :name="field.name"
                 :error-messages="
                   vForm[field?.name].$errors.map((el) => el.$message)
                 "
@@ -30,9 +31,10 @@
         <v-btn
           class="mt-2"
           :loading="loading"
-          @click="auth"
+          @click.prevent="auth"
           color="primary"
           block
+          type="submit"
         >
           Войти
         </v-btn>

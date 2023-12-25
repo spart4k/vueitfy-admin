@@ -39,6 +39,17 @@
             flex-wrap: wrap;
           }
         }
+        .v-input__append-inner {
+          //margin-left: 0;
+
+          //display: none;
+          &:has(.v-input__icon--append) {
+            margin-left: 0;
+          }
+          .v-input__icon--append {
+            margin-left: 0;
+          }
+        }
       }
       .v-select__selections {
         overflow: auto;

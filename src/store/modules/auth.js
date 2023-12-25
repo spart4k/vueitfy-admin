@@ -22,6 +22,7 @@ const auth = {
       const result = await login(data)
       console.log(result)
       commit('auth/setToken', result.AccessToken, { root: true })
+      return result
     },
     async checkMe({ commit }) {
       try {
