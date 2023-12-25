@@ -2222,6 +2222,7 @@ const defaultForm = [
         label: 'Направление',
         name: 'direction_json',
         alias: 'direction_id',
+        subtype: 'miltiple',
         subtype: 'multiple',
         placeholder: '',
         class: [''],
@@ -2649,6 +2650,7 @@ const defaultForm = [
           }),
           selectField({
             label: 'Направления',
+            subtype: 'multiple',
             name: 'direction_id',
             alias: 'direction_id_logistic',
             placeholder: '',
@@ -2677,6 +2679,7 @@ const defaultForm = [
           }),
           autocompleteField({
             label: 'Объект',
+            subtype: 'multiple',
             name: 'object_id',
             alias: 'object_json',
             subtype: 'single',
@@ -2734,7 +2737,7 @@ const defaultForm = [
             },
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [1, 6] }],
+              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
             },
           }),
           stringField({
