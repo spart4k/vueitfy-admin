@@ -1484,6 +1484,22 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
           }),
+          stringField({
+            label: '',
+            name: 'myself',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            disabled: true,
+            isShow: {
+              value: false,
+              conditions: [{ field: 'on_yourself', value: [true] }],
+            },
+            bootstrapClass: [''],
+          }),
           radioPanel({
             name: 'vector',
             alias: 'vector',
