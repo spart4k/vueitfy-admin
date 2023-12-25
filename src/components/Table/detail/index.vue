@@ -1,8 +1,9 @@
 <template>
   <div class="detail">
-    <div class="detail-tabs">
+    <div class="detail-tabs 1">
+      <!--{{ $route.meta.mode && $route.meta.mode.includes(item.path) }} 1-->
       <div
-        v-if="$route.meta.label || detail.name || availableTabs.length > 1"
+        v-show="$route.meta.label || detail.name || availableTabs.length > 1"
         class="pa-4 detail-header"
       >
         <p v-if="$route.meta.label" class="text-h4 mb-4">
@@ -25,14 +26,8 @@
         </v-tabs>
       </div>
       <v-tabs-items v-model="detail.activeTab">
-        <v-tab-item
-          v-for="item in detail.tabs"
-          v-if="
-            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
-            (!$route.meta.mode && !item.path)
-          "
-          :key="item.id"
-        >
+        <v-tab-item v-for="item in availableTabs" :key="item.id">
+          <!--{{ item.type }}-->
           <component
             :content="porpsContent"
             :loading="loading"
