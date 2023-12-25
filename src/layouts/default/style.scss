@@ -1,6 +1,13 @@
 .layout {
   &-default {
     height: 100%;
+    .loading {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    background-color: var(--v-pageBackground-base);
   }
 }
 .navbar {
