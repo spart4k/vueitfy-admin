@@ -15,6 +15,8 @@ function searchInputing(field) {
   console.log(field)
 }
 
+import FrameView from '@/components/Task/frame-view/index.vue'
+
 const config = {
   selector: '#mainTable',
   options: {
@@ -186,13 +188,15 @@ const config = {
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
+    name: '',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {
         id: 0,
-        name: 'Основные',
-        type: 'FrameView',
+        //name: 'Основные',
+        type: FrameView,
         detail: true,
+        path: 'edit',
         // path: 'edit',
       },
     ],

@@ -18,7 +18,8 @@
         padding: 20px 10px;
         background-color: var(--v-background-base);
         .vue-dropzone {
-          border-color: var(--v-textDefault-base);
+          border-color: var(--v-borderDefault-base);
+          border-width: 1px;
         }
       }
       &.textBlock {
@@ -37,6 +38,17 @@
         &.v-input--is-readonly {
           .v-select__selections {
             flex-wrap: wrap;
+          }
+        }
+        .v-input__append-inner {
+          //margin-left: 0;
+
+          //display: none;
+          &:has(.v-input__icon--append) {
+            margin-left: 0;
+          }
+          .v-input__icon--append {
+            margin-left: 0;
           }
         }
       }

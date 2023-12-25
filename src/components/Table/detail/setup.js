@@ -33,6 +33,7 @@ export default {
     const { id } = route?.params
     const loading = ref(false)
     const syncForm = ref({})
+    const activeTab = ref(0)
     const availableTabs = computed(() => {
       return props.detail.tabs.filter((item) => {
         return (
@@ -54,6 +55,7 @@ export default {
       porpsContent,
       id,
       availableTabs,
+      activeTab,
     }
   },
 }

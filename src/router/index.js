@@ -363,7 +363,10 @@ const routes = [
       {
         name: 'tasks/:id',
         path: ':id',
-        // mode: ['edit'],
+        //mode: ['edit'],
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
     ],

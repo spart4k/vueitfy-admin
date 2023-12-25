@@ -116,7 +116,12 @@
                               <v-icon> {{ head.icon }}</v-icon>
                             </span>
                           </div>
-                          <div v-if="head.type === 'actions'">
+                          <!--<div v-if="head.type === 'actions'">
+                            <span class="mr-2">
+                              {{ head.title }}
+                            </span>
+                          </div>-->
+                          <div v-if="head.type === 'download'">
                             <span class="mr-2">
                               {{ head.title }}
                             </span>
@@ -228,7 +233,30 @@
                       ></v-checkbox>
                     </v-row>
                   </template>
-                  <template v-else-if="cell.type === 'actions'">
+                  <!--<template v-else-if="cell.type === 'actions'">
+                    <div
+                      v-if="
+                        !cell.actionCondition ||
+                        (cell.actionCondition &&
+                          Object.byString(row.row, cell.value) &&
+                          false)
+                      "
+                      class="v-table-actions-wrap"
+                    >
+                      <v-btn
+                        v-for="(action, indexAction) in cell.actions"
+                        :key="indexAction"
+                        @click="
+                          action.function(Object.byString(row.row, cell.value))
+                        "
+                      >
+                        <v-icon small>
+                          {{ action.url }}
+                        </v-icon>
+                      </v-btn>
+                    </div>
+                  </template>-->
+                  <template v-else-if="cell.type === 'download'">
                     <!--<v-table-button
                       :row="row.row"
                       :option="action"
