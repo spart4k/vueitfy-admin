@@ -2,7 +2,8 @@
   <div>
     <div style="padding: 10px">
       <v-card-title class="py-1 justify-center">
-        Назначение <a href="#">&nbsp;№234234&nbsp;</a> на дату 07.02.2023
+        Назначение <a href="#">&nbsp;№{{ entity.id }}&nbsp;</a> на дату
+        {{ dateTarget }}
       </v-card-title>
       <TextInfo :infoObj="infoObj" />
     </div>

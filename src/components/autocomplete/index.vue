@@ -16,7 +16,16 @@
       no-data-text="Нет объектов"
       @change="update"
       :disabled="disabled"
+      :readonly="readonly"
     >
+      <template v-if="false" v-slot:prepend-item>
+        <v-list-item ripple @click="selectAll">
+          <v-list-item-action>
+            <v-checkbox v-model="checkedAll"></v-checkbox>
+          </v-list-item-action>
+          <v-list-item-content>Выбрать все</v-list-item-content>
+        </v-list-item>
+      </template>
       <template v-slot:append>
         <v-progress-circular
           v-if="loading"
@@ -43,14 +52,14 @@
         </div>
         <div :data-field="field.name" v-intersect="endIntersect" />
       </template>
-      <template v-slot:item="data">
+      <!--<template v-slot:item="data">
         <template>
           <v-list-item-content>
             <v-list-item-title v-html="data.item.name" />
             <v-list-item-subtitle v-html="data.item.id" />
           </v-list-item-content>
         </template>
-      </template>
+      </template>-->
     </v-autocomplete>
   </div>
 </template>

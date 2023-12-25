@@ -30,7 +30,7 @@
 <script>
 import { ref, toRefs, watch } from 'vue'
 import { documents } from '@/pages'
-import { warn } from '@vue/composition-api'
+// import { warn } from '@vue/composition-api'
 
 console.log(documents)
 //import TableDefault from '@/components/Table/default/index.vue'

@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, unref } from 'vue'
 import FormTitle from '@/components/Task/el/FormTitle/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -44,10 +44,19 @@ const form23 = defineComponent({
     let unConfirmed = ref([])
 
     const addConfirmed = (data) => {
-      console.log(data)
+      console.log(data, 11111111)
       confirmed.value.push(data)
       unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
       console.log(confirmed)
+
+      store.commit(
+        'notifies/showMessage',
+        {
+          color: 'orange darken-2',
+          content: 'Файл будет возвращен, необходимо указать комментарий!',
+        },
+        1000
+      )
     }
     const addUnconfirmed = (data) => {
       unConfirmed.value.push(data)
@@ -75,12 +84,20 @@ const form23 = defineComponent({
           isShow.value = false
           commentError.value = false
           const dataFrom = await makeRequest()
+          if (dataFrom.success) {
+            emit('closePopup')
+            emit('getItems')
+          }
           console.log(dataFrom)
         } else {
           commentError.value = true
         }
       } else {
         const dataFrom = await makeRequest()
+        if (dataFrom.success) {
+          emit('closePopup')
+          emit('getItems')
+        }
         console.log(dataFrom)
       }
     }

@@ -7,7 +7,7 @@
           :options="{ width: '600px', portal: 'table-detail' }"
           v-if="true"
         >
-          <div style="padding: 20px">
+          <div style="padding-top: 20px">
             <v-row>
               <v-col cols="12">
                 <div style="display: flex; justify-content: center">
@@ -20,7 +20,7 @@
               <v-col>
                 <div class="mb-10">
                   <span style="font-size: 20px">Приложите документы</span>
-                  <v-expansion-panels>
+                  <v-expansion-panels multiple>
                     <v-expansion-panel>
                       <v-expansion-panel-header>
                         <v-row align="center">

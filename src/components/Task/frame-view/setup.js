@@ -6,9 +6,13 @@ import Form15 from '@/components/Task/form15/index.vue'
 import Form2 from '@/components/Task/form2/index.vue'
 import Form3 from '@/components/Task/form3/index.vue'
 import Form4 from '@/components/Task/form4/index.vue'
+import Form5 from '@/components/Task/form5/index.vue'
+import Form6 from '@/components/Task/form6/index.vue'
 import Form7 from '@/components/Task/form7/index.vue'
 import Form8 from '@/components/Task/form8/index.vue'
 import Form9 from '@/components/Task/form9/index.vue'
+import Form13 from '@/components/Task/form13/index.vue'
+import Form14 from '@/components/Task/form14/index.vue'
 import Form23 from '@/components/Task/form23/index.vue'
 import Form20 from '@/components/Task/form20/index.vue'
 import Form21 from '@/components/Task/form21/index.vue'
@@ -64,6 +68,8 @@ const task = defineComponent({
     Form2,
     Form3,
     Form4,
+    Form5,
+    Form6,
     Form7,
     Form8,
     Form9,
@@ -74,6 +80,8 @@ const task = defineComponent({
     Form28,
     Form17,
     Form18,
+    Form13,
+    Form14,
   },
 
   props: {},
@@ -90,19 +98,19 @@ const task = defineComponent({
     const data = ref({})
     const taskDeadline = ref(0)
     const timerString = ref('')
+    const timerDiff = ref(0)
     const countdownTimerIntervalId = ref(null)
 
     const countdownTimer = () => {
       const diff = taskDeadline.value - new Date()
-      console.log(diff)
-      if (diff <= 0) {
-        clearInterval(countdownTimerIntervalId.value)
-      }
-
-      const minutes = diff > 0 ? Math.floor(diff / 1000 / 60) : 0
-      const seconds = diff > 0 ? Math.floor(diff / 1000) % 60 : 0
+      const minutes = Math.floor(diff / 1000 / 60)
+      const seconds =
+        Math.floor(diff / 1000) % 60 > 0
+          ? Math.floor(diff / 1000) % 60
+          : -Math.floor(diff / 1000) % 60
 
       timerString.value = `${minutes}:${seconds}`
+      timerDiff.value = diff
     }
 
     const { makeRequest, loading } = useRequest({
@@ -138,7 +146,15 @@ const task = defineComponent({
       clearInterval(countdownTimerIntervalId.value)
     })
 
-    return { loading, data, formatDate, taskName, timerString, taskDeadline }
+    return {
+      loading,
+      data,
+      formatDate,
+      taskName,
+      timerString,
+      taskDeadline,
+      timerDiff,
+    }
   },
 })
 export default task

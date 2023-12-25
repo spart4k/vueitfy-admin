@@ -41,7 +41,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: $table-background;
+  background-color: var(--v-pageBackground-base);
 }
 
 $paddingCell: 5px;
@@ -63,14 +63,24 @@ $borderColor: rgba(0,0,0,.3);
 
 .v-main {
   height: calc(100% - $panelHeight);
+  background-color: var(--v-pageBackground-base);
   //overflow: auto;
   &__wrap {
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 10px;
   }
 }
-
+.theme--light.v-tabs-items {
+  background-color: unset;
+}
+.theme--dark.v-navigation-drawer {
+  background-color: var(--v-background-base);
+}
+.theme--dark.v-expansion-panels .v-expansion-panel {
+  background-color: var(--v-background-base);
+}
 .v {
   &-table {
     &-button {
@@ -210,6 +220,14 @@ $borderColor: rgba(0,0,0,.3);
       padding: 0;
       transition: max-height .15s, width .15s, border-color .15s, padding .075s;
       transition-delay: 0s, .25s, .25s, .45s;
+    }
+  }
+  &-input {
+    &--is {
+      &-readonly {
+        opacity: .5;
+        pointer-events: none;
+      }
     }
   }
 }
@@ -468,6 +486,10 @@ $borderColor: rgba(0,0,0,.3);
   }
 }
 
+.v-window-item {
+  background-color: var(--v-background-base);
+}
+
 .v-color-picker__dot {
   width: 25px;
   height: 25px;
@@ -476,3 +498,16 @@ $borderColor: rgba(0,0,0,.3);
 //.v-color-picker__controls {
 //  padding-top: 5px;
 //}
+
+.rates {
+  .v-expansion-panel-content__wrap {
+    padding: 0;
+  }
+}
+
+.v-popup {
+  .detail {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+}

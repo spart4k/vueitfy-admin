@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
-        >&nbsp; на дату 07.02.2023
+        >&nbsp; на дату {{ dateTarget }}
       </v-card-title>
       <div
         v-if="
@@ -13,7 +13,7 @@
         "
       >
         <!-- ($entity['doljnost_id'] == 5 || $entity['doljnost_id'] == 7 || $entity['doljnost_id'] == 32) -->
-        <span>Приложите выработку</span>
+        <b class="fw-bold">Приложите выработку:</b>
 
         <Dropzone
           :options="{
@@ -70,14 +70,14 @@
         v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49"
         :disabled="!changeQTY"
         class="mr-2"
-        small
         color="info"
         @click="completeTask"
+        small
       >
-        <v-icon left> $IconMain </v-icon>
+        <v-icon left small> $IconMain </v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey" small>
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

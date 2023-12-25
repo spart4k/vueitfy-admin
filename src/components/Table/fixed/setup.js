@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, nextTick } from 'vue'
+import Vue, { onMounted, ref, computed, watch, nextTick, provide } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
@@ -21,7 +21,7 @@ import useMobile from '@/layouts/Adaptive/checkMob.js'
 //import { tableApi } from '@/api'
 
 const table = {
-  name: 'TableDefault',
+  name: 'TableFixed',
   components: {
     vTableButton,
     vButton,
@@ -93,6 +93,8 @@ const table = {
     })
     const popupForm = ref({
       isShow: false,
+      isShowCellForm: true,
+      dataCellForm: {},
     })
     const currentDate = ref({
       month: new Date().getMonth(),
@@ -362,7 +364,6 @@ const table = {
         },
       })
       props.options.data.rows = data.rows
-      //props.options.data.rows = data
       if (props.options.data.rows?.length && props.options.data.rows) {
         props.options.data.totalPages = data.totalPage
         props.options.data.totalRows = data.total
@@ -387,6 +388,7 @@ const table = {
         coutingCells()
       }, 0)
     }
+
     const initHeadParams = () => {
       const { head } = props.options
       head.forEach((el) => {
@@ -448,11 +450,73 @@ const table = {
       })
       getItems()
     }
-    const openRow = ($event, row) => {
+
+    const openCell = ($event, row, cell) => {
+      if (props.options.detail.type === 'popup' && !cell.noAction) {
+        const routeKey = props.options.options.routeKey
+        const dataCell = row.row
+        const hour = '11' //Рабочие часы
+        const day = cell.value;
+        const month = currentDate.value.month
+        const year = currentDate.value.year
+
+        const date = new Date(year, month, day);
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+
+        const porpsContent = {
+          account_id: dataCell.account_id,
+          account_name: dataCell.account_name,
+          hour,
+          date: formattedDate,
+        }
+
+
+        if (dataCell.hasOwnProperty(day)) {
+          console.log('Ключ "pattern" существует в объекте regex');
+          porpsContent.id = dataCell[day][0].id
+          router.push(
+            {
+              name: `${route.name}-edit`,
+              params: {
+                id: porpsContent.id
+              }
+            }
+          )
+        } else {
+          console.log('Ключ "pattern" не существует в объекте regex');
+          if (routeKey) {
+            router.push(
+              {
+                name: `${route.name}-new`,
+                params: {
+                  id: row.row[routeKey]
+                }
+              }
+            )
+          } else {
+            router.push(
+              {
+                name: `${route.name}/:id`,
+                params: {
+                  id: row.row.id
+                }
+              }
+            )
+          } 
+   
+        }
+ 
+        popupForm.value.isShow = true
+       // popupForm.value.isShowCellForm = true
+        popupForm.value.dataCellForm = porpsContent
+        //  popupForm.value.isShow = 
+      } 
+    }
+
+    const openRow = ($event, row, cell) => {
+      if (!props.options.detail) return
       if (props.options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
+
         router.push(
           {
             name: `${route.name}/:id`,
@@ -463,10 +527,28 @@ const table = {
         popupForm.value.isShow = true
       }
     }
+
+    const doubleHandler = ($event, row, cell) => {
+      if (props.options.options.doubleHandlerType === 'cell') {
+        openCell($event, row, cell)
+      }
+      if (props.options.options.doubleHandlerType === 'row') {
+        openRow($event, row, cell)
+      }
+      console.log($event, row, cell);
+    } 
+ 
     const closePopupForm = () => {
       router.back()
       popupForm.value.isShow = false
+      //if (props?.options?.detail?.getOnClose) getItems()
     }
+    // const closePopupForm = (route) => {
+    //   if (route) router.push({ name: route })
+    //   else router.back()
+    //   popupForm.value.isShow = false
+    //   if (props?.options?.detail?.getOnClose) getItems()
+    // }
     const addItem = () => {
       if (props.options.detail.type === 'popup') {
         //router.push({
@@ -480,7 +562,7 @@ const table = {
         popupForm.value.isShow = true
       }
     }
-    const panelHandler = (button) => {
+    const panelHandler = async (button) => {
       const { type } = button
       if (button.function) button.function()
       if (type === 'addItem') {
@@ -491,6 +573,8 @@ const table = {
         acceptData.value.popup = true
       } else if (type === 'changeUrl') {
         getItems()
+      }  else if (button.label === 'Обновить') {
+        await getItems()
       }
     }
     const countingDistances = () => {
@@ -518,6 +602,7 @@ const table = {
     const coutingCells = () => {
       let left = 0
       let right = 0
+
       cells?.value?.forEach((item, index) => {
         if (props?.options?.head[index]?.fixed?.position === 'left') {
           cellItems?.value?.forEach(element => {
@@ -687,6 +772,9 @@ const table = {
       },
       { deep: true }
     )
+    provide('refreshTableFixed', {
+      getItems,
+    })
     // HOOKS
     onMounted(async () => {
 
@@ -721,7 +809,8 @@ const table = {
       pagination.value = {
         ...props.options.data,
       }
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode.includes('add'))) {
+      // .includes('add')
+      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode)) {
         popupForm.value.isShow = true
       }
     })
@@ -774,7 +863,7 @@ const table = {
       rowCount,
       isElementXPercentInViewport,
       saveFilter,
-      openRow,
+      doubleHandler,
       closePopupForm,
       popupForm,
       filtersColumns,

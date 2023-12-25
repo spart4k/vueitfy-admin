@@ -54,12 +54,12 @@ const tableConsumptionConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   //head: [
@@ -486,7 +486,7 @@ const tableConsumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -520,12 +520,12 @@ const config = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   //head: [
@@ -1002,7 +1002,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -1020,21 +1020,36 @@ const config = {
         name: 'Основные',
         type: 'FormDefault',
         detail: true,
+        //lists: [],
         lists: [
-          { alias: 'vid_vedomost_id', filter: [] },
-          { alias: 'status_id', filter: [] },
-          { alias: 'direction_id', filter: [] },
-          { alias: 'doljnost_id', filter: [] },
-          { alias: 'st_rashod_id', filter: [] },
-          { alias: 'account_id', filter: [] },
-          { alias: 'status_account_id', filter: [] },
-          // 'vid_vedomost_id',
-          // 'status_id',
-          // 'direction_id',
-          // 'doljnost_id',
-          // 'st_rashod_id',
-          // 'account_id',
-          // 'status_account_id',
+          {
+            alias: 'vid_vedomost_id',
+            filter: [],
+          },
+          {
+            alias: 'status_id',
+            filter: [],
+          },
+          {
+            alias: 'direction_id',
+            filter: [],
+          },
+          {
+            alias: 'doljnost_id',
+            filter: [],
+          },
+          {
+            alias: 'st_rashod_id',
+            filter: [],
+          },
+          {
+            alias: 'account_id',
+            filter: [],
+          },
+          {
+            alias: 'status_account_id',
+            filter: [],
+          },
         ],
         alias: 'payment',
         active: false,
@@ -1072,6 +1087,7 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           datetimeField({
             label: 'Смена статуса',
@@ -1079,7 +1095,6 @@ const config = {
             value: '',
             type: 'datetime',
             subtype: 'datetime',
-            readonly: true,
             menu: false,
             placeholder: '',
             class: [''],
@@ -1090,10 +1105,11 @@ const config = {
             validations: { hasDate, hasTime },
             bootstrapClass: [''],
             disable: false,
+            readonly: true,
           }),
           dateField({
             label: 'Дата начисл:',
-            name: 'date_add',
+            name: 'date_create',
             subtype: 'datetime',
             placeholder: '',
             classes: [''],
@@ -1103,6 +1119,7 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           selectField({
             label: 'Менеджер',
@@ -1121,10 +1138,24 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            updateList: [
+              {
+                alias: 'direction_json',
+                filter: [
+                  {
+                    field: 'account_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
           }),
           selectField({
             label: 'Направления',
             name: 'direction_id',
+            alias: 'direction_json',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -1138,6 +1169,75 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            updateList: [
+              {
+                alias: 'doljnost_id',
+                filter: [
+                  {
+                    field: 'direction_json',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            dependence: [
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'object_id',
+                //filter: [
+                //  {
+                //    field: 'direction_id',
+                //    value: '',
+                //  },
+                //],
+                condition: [
+                  {
+                    field: 'direction_id',
+                    value: [2],
+                  },
+                ],
+                url: 'get/pagination_list/object',
+              },
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'personal_id',
+                //filter: [
+                //  {
+                //    field: 'direction_id',
+                //    value: '',
+                //  },
+                //],
+                condition: [
+                  {
+                    field: 'direction_id',
+                    value: [2],
+                  },
+                ],
+                url: 'get/pagination_list/personal',
+              },
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'object_id',
+                //filter: [
+                //  {
+                //    field: 'direction_id',
+                //    value: '',
+                //  },
+                //],
+                condition: [
+                  {
+                    field: 'direction_id',
+                    value: [1],
+                  },
+                ],
+                url: 'get/pagination_list/object',
+              },
+            ],
           }),
           autocompleteField({
             label: 'Линейщик',
@@ -1189,6 +1289,45 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+              },
+            ],
+            dependence: [
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'personal_id',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                  },
+                ],
+                url: 'get/pagination_list/personal',
+              },
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'object_id',
+                filter: [
+                  {
+                    field: 'object_json',
+                    type: 'array',
+                    value: '',
+                  },
+                ],
+                condition: [
+                  {
+                    field: 'direction_id',
+                    value: [1],
+                  },
+                ],
+                url: 'get/pagination_list/object',
+              },
+            ],
           }),
           selectField({
             label: 'Должность:',
@@ -1223,40 +1362,54 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Статья расхода:',
-            name: 'st_rashod_id',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
+            hiding: {
+              conditions: [
+                {
+                  target: 'mode',
+                  value: 'edit',
+                  values: [1],
+                },
+                {
+                  target: 'mode',
+                  value: 'add',
+                  values: [1],
+                },
+              ],
             },
-            items: [
-              {
-                id: 0,
-                label: 'Продавец',
-                value: 'Абдуллина Ирина',
-              },
-              {
-                id: 1,
-                label: 'Приемщик',
-                value: 'Адылова Ильмира',
-              },
-              {
-                id: 2,
-                label: 'Погрузчик',
-                value: 'Азаров Михаил',
-              },
-            ],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
           }),
+          //selectField({
+          //  label: 'Статья расхода:',
+          //  name: 'st_rashod_id',
+          //  placeholder: '',
+          //  class: [''],
+          //  selectOption: {
+          //    text: 'name',
+          //    value: 'id',
+          //  },
+          //  items: [
+          //    {
+          //      id: 0,
+          //      label: 'Продавец',
+          //      value: 'Абдуллина Ирина',
+          //    },
+          //    {
+          //      id: 1,
+          //      label: 'Приемщик',
+          //      value: 'Адылова Ильмира',
+          //    },
+          //    {
+          //      id: 2,
+          //      label: 'Погрузчик',
+          //      value: 'Азаров Михаил',
+          //    },
+          //  ],
+          //  position: {
+          //    cols: 12,
+          //    sm: 6,
+          //  },
+          //  validations: { required },
+          //  bootstrapClass: [''],
+          //}),
           stringField({
             label: 'Часы (план):',
             name: 'hour_plan',
@@ -1298,7 +1451,7 @@ const config = {
           }),
           stringField({
             label: 'Тариф:',
-            name: 'object_price_price',
+            name: 'price',
             placeholder: '',
             class: [''],
             position: {
@@ -1306,6 +1459,44 @@ const config = {
               sm: 2,
             },
             bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'Удержано',
+            name: 'debit_percent',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            isShow: false,
+          }),
+          stringField({
+            label: 'Сумма:',
+            name: 'sum',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 2,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: '% удержаня',
+            name: 'debit_percent',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            isShow: false,
           }),
           stringField({
             label: 'Сумма:',
@@ -1332,23 +1523,10 @@ const config = {
           //  bootstrapClass: [''],
           //  isShow: false,
           //}),
-          //stringField({
-          //  label: 'Удержано',
-          //  name: 'minus_nal',
-          //  placeholder: '',
-          //  class: [''],
-          //  position: {
-          //    cols: 12,
-          //    sm: 3,
-          //  },
-          //  validations: { required },
-          //  bootstrapClass: [''],
-          //  isShow: false,
-          //}),
           dateField({
             label: 'Назначение на даты:',
             name: 'date_target',
-            subtype: 'date',
+            subtype: 'multiple',
             placeholder: '',
             classes: [''],
             position: {
@@ -1358,32 +1536,6 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
           }),
-          //stringField({
-          //  label: '% удержания:',
-          //  name: 'detention',
-          //  placeholder: '',
-          //  class: [''],
-          //  position: {
-          //    cols: 12,
-          //    sm: 3,
-          //  },
-          //  validations: { required },
-          //  bootstrapClass: [''],
-          //  isShow: false,
-          //}),
-          //stringField({
-          //  label: 'Назначение на даты',
-          //  name: 'detention',
-          //  placeholder: '',
-          //  class: [''],
-          //  position: {
-          //    cols: 12,
-          //    sm: 3,
-          //  },
-          //  validations: { required },
-          //  bootstrapClass: [''],
-          //  isShow: false,
-          //}),
           selectField({
             label: 'Банки.карта/нал:',
             name: 'personal_bank_id',
@@ -1455,6 +1607,18 @@ const config = {
           textareaField({
             label: 'Примечание',
             name: 'comment',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            //validations: { required },
+            bootstrapClass: [''],
+          }),
+          textareaField({
+            label: 'Примечание',
+            name: 'comment_okk',
             placeholder: '',
             class: [''],
             position: {

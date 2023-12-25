@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -9,9 +9,9 @@ import DocForm from '@/components/Task/el/DocForm/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
-
 import store from '@/store'
 import moment from 'moment'
+
 const Form1 = defineComponent({
   name: 'Form1',
   components: {
@@ -47,6 +47,9 @@ const Form1 = defineComponent({
     const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const comment = ref('')
+    let isShow = ref(true)
+    let commentError = ref('')
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -81,12 +84,6 @@ const Form1 = defineComponent({
         isActiveBtnFirst.value = true
       }
     }
-
-    // let computedValue = computed(() => {
-    //   console.log(12312123213)
-    //   checkAllowDisable()
-    //   return comment.value
-    // })
     watchEffect(() => {
       const arr = comment.value
       console.log(arr)
@@ -95,18 +92,16 @@ const Form1 = defineComponent({
       context,
       request: () =>
         store.dispatch('taskModule/setPartTask', {
+          status: 6,
           data: {
-            status: 6,
-            data: {
-              process_id: props.data.task.process_id,
-              task_id: props.data.task.id,
-              personal_id: props.data.entity.id,
-              parent_action: props.data.task.id,
-              comment: comment.value,
-              cancel_close: Object.values(unConfirmed.value).map((x) => x.id),
-              manager_id: props.data.task.from_account_id,
-              docs_id: JSON.parse(props.data.task.dop_data).docs_id,
-            },
+            process_id: props.data.task.process_id,
+            task_id: props.data.task.id,
+            personal_id: props.data.entity.id,
+            parent_action: props.data.task.id,
+            comment: comment.value,
+            cancel_close: Object.values(unConfirmed.value).map((x) => x.id),
+            manager_id: props.data.task.from_account_id,
+            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
           },
         }),
     })
@@ -129,7 +124,8 @@ const Form1 = defineComponent({
       request: () =>
         store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...finalData,
+            ...finalData.value,
+            id: props.data.data.personal_doc_data.id,
           },
         }),
     })
@@ -155,17 +151,15 @@ const Form1 = defineComponent({
           props.data.task.time_execution * 1000 -
           Date.now()
         return store.dispatch('taskModule/setPartTask', {
+          status: taskDeadline > 0 ? 2 : 3,
           data: {
-            status: taskDeadline > 0 ? 2 : 3,
-            data: {
-              process_id: task.process_id,
-              task_id: task.id,
-              parent_action: task.id,
-              docs_id: props.data.data.docs_id.map((doc) => doc.id),
-              account_id: task.to_account_id,
-              personal_id: props.data.entity.id,
-              bank_card_id: bankCardId.value ?? null,
-            },
+            process_id: task.process_id,
+            task_id: task.id,
+            parent_action: task.id,
+            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+            account_id: task.to_account_id,
+            personal_id: props.data.entity.id,
+            bank_card_id: bankCardId.value ? bankCardId.value : null,
           },
         })
       },
@@ -177,12 +171,16 @@ const Form1 = defineComponent({
         if (comment.value.trim()) {
           console.log([...confirmed.value, ...unConfirmed.value], 'is push')
           isShow.value = false
-          commentError.value = false
+          commentError.value = ''
           const dataFrom = await makeRequest()
           console.log(dataFrom)
-          dataFrom.success && ctx.emit('closePopup')
+          if (dataFrom.success) {
+            ctx.emit('closePopup')
+            ctx.emit('getItems')
+          }
+          // dataFrom.success && ctx.emit('closePopup')
         } else {
-          commentError.value = true
+          commentError.value = 'Заполните комментарий'
         }
       } else {
         showNextStep.value = true
@@ -199,10 +197,6 @@ const Form1 = defineComponent({
     const getDocName = (id) => {
       return props.data.data.docs_spr[id]
     }
-
-    const comment = ref('')
-    let isShow = ref(true)
-    let commentError = ref(false)
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {
@@ -265,7 +259,10 @@ const Form1 = defineComponent({
       await sendPersonalDoc()
       await setSaveDocs()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     return {

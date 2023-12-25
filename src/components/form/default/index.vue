@@ -18,11 +18,17 @@
             class="field-col"
             :class="field.type"
           >
+            <!-- {{ formData[field.name] }} -->
             <div
-              v-if="loading && field.isShow"
+              v-if="
+                loading &&
+                field.isShow &&
+                ((typeof field.isShow === 'boolean' && field.isShow) ||
+                  (typeof field.isShow === 'object' && field.isShow.value))
+              "
               class="field-loading gradient"
             ></div>
-            <v-select
+            <!--<v-select
               v-else-if="showField('select', field)"
               :items="field.items"
               :item-text="field.selectOption.text"
@@ -35,7 +41,18 @@
               :multiple="field.subtype === 'multiselect'"
               @change="changeSelect({ value: formData[field.name], field })"
               :disabled="disabledField(field)"
-            ></v-select>
+              :readonly="readonlyField(field)"
+            ></v-select>-->
+            <Autocomplete
+              v-else-if="showField('select', field)"
+              :field="field"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field?.name]"
+              :formData="formData"
+              ref="autocompleteRef"
+              @change="changeAutocomplete"
+              :readonly="readonlyField(field)"
+            />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
               :field="field"
@@ -44,14 +61,16 @@
               :formData="formData"
               ref="autocompleteRef"
               @change="changeAutocomplete"
+              :readonly="readonlyField(field)"
             />
+
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
               :error-messages="formErrors[field?.name]"
               clearable
-              :readonly="field.readonly"
+              :readonly="readonlyField(field)"
               :disabled="disabledField(field)"
             />
             <v-checkbox
@@ -59,7 +78,8 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
-              @change="changeCheckbox"
+              @change="changeCheckbox(field)"
+              :readonly="readonlyField(field)"
             ></v-checkbox>
             <v-menu
               v-else-if="showField('date', field)"
@@ -80,16 +100,18 @@
                   :error-messages="formErrors[field?.name]"
                   v-bind="attrs"
                   :disabled="disabledField(field)"
+                  :readonly="readonlyField(field)"
                 ></v-text-field>
               </template>
               <v-date-picker
                 v-model="formData[field.name]"
-                min="1950-01-01"
+                min="1940-01-01"
                 color="primary"
                 locale="ru-RU"
                 :type="field.subtype === 'period' ? 'month' : undefined"
                 :range="field.subtype === 'range'"
                 :multiple="field.subtype === 'multiple'"
+                :readonly="readonlyField(field)"
                 @input="
                   field.subtype !== 'multiple'
                     ? (field.menu = false)
@@ -113,6 +135,7 @@
               clearable
               rows="1"
               :disabled="disabledField(field)"
+              :readonly="readonlyField(field)"
             />
             <Datetimepicker
               v-else-if="showField('datetime', field)"
@@ -120,6 +143,7 @@
               v-model="formData[field.name]"
               clearable
               :error-messages="formErrors[field?.name]"
+              :readonly="readonlyField(field)"
             />
             <DropZone
               v-else-if="showField('dropzone', field)"
@@ -130,6 +154,7 @@
               :field="field"
               @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
+              :readonly="readonlyField(field)"
             />
             <ColorPicker
               v-else-if="showField('colorPicker', field)"
@@ -139,6 +164,7 @@
               :field="field"
               :error-messages="formErrors[field?.name]"
               :label="field.label"
+              :readonly="readonlyField(field)"
             />
           </v-col>
         </v-row>
@@ -153,6 +179,7 @@
             "
             v-for="action in tab.actions"
             :key="action.id"
+            :text="action.action === 'closePopup' ? true : false"
           >
             {{ action.text }}
           </v-btn>

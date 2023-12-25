@@ -16,6 +16,7 @@
       <v-icon small class="mr-2">$IconEdit</v-icon>
       Написать
     </v-btn>
+
     <div class="v-filters-mail-types-list pl-4 pr-4 mb-4">
       <div
         :class="[
@@ -48,10 +49,63 @@
         </div>
       </div>
     </div>
+
     <div class="v-filters-expansion">
       <v-expansion-panels
-        v-model="folderPanel"
+        accordion
         class="v-filters-expansion-folder"
+        v-for="item in $props.filterData?.boxData"
+        :key="item.id"
+      >
+        <v-expansion-panel>
+          <v-expansion-panel-header class="v-filters-expansion-folder-title"
+            ><v-icon :color="item.color" small class="mr-2">$IconSystem</v-icon>
+            {{ item.name }}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content
+            class="v-filters-expansion-folder-container"
+            v-if="item.folders"
+          >
+            <div
+              class="v-filters-expansion-folder-container_item ml-4"
+              v-for="folder in item.folders"
+              :key="folder.id"
+              @click="
+                Number($route.query.id) !== folder.id &&
+                  $emit(
+                    'setRouterPath',
+                    null,
+                    null,
+                    {
+                      filter: 'folder',
+                      id: folder.id,
+                    },
+                    ['color'],
+                    true
+                  )
+              "
+            >
+              <v-icon :color="folder.color" small class="mr-2"
+                >$IconSystem</v-icon
+              >
+              <span
+                :class="[
+                  $route.query.filter === 'folder' &&
+                    Number($route.query.id) === folder.id &&
+                    'v-filters-expansion-folder-container_item__active',
+                  'v-filters-expansion-folder-container_text',
+                ]"
+              >
+                {{ folder.name }}
+              </span>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+
+      <v-expansion-panels
+        v-model="folderPanel"
+        class="v-filters-expansion-folder mb-3"
       >
         <v-expansion-panel>
           <v-expansion-panel-header class="v-filters-expansion-folder-title"
@@ -64,6 +118,7 @@
             <div
               class="v-filters-expansion-folder-container_item ml-4"
               v-for="(item, index) in $props.filterData.folderData"
+              v-if="item.box_id === 0"
               :key="index"
               @click="
                 Number($route.query.id) !== item.id &&
@@ -116,61 +171,6 @@
             >
               <v-icon small class="mr-2">$IconSystem</v-icon> Добавить папку
             </div>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-      <v-expansion-panels
-        v-model="boxPanel"
-        accordion
-        class="v-filters-expansion-folder mb-3"
-      >
-        <v-expansion-panel>
-          <v-expansion-panel-header class="v-filters-expansion-folder-title"
-            ><v-icon small class="mr-2">$IconSystem</v-icon> Мои
-            ящики</v-expansion-panel-header
-          >
-          <v-expansion-panel-content
-            class="v-filters-expansion-folder-container"
-          >
-            <div
-              class="v-filters-expansion-folder-container_item ml-4"
-              v-for="(item, index) in $props.filterData.boxData"
-              :key="index"
-              @click="
-                Number($route.query.id) !== item.id &&
-                  $emit(
-                    'setRouterPath',
-                    null,
-                    null,
-                    {
-                      filter: 'box',
-                      id: item.id,
-                    },
-                    ['color'],
-                    true
-                  )
-              "
-            >
-              <v-icon :color="item.color" small class="mr-2"
-                >$IconSystem</v-icon
-              >
-              <span
-                :class="[
-                  $route.query.filter === 'box' &&
-                    Number($route.query.id) === item.id &&
-                    'v-filters-expansion-folder-container_item__active',
-                  'v-filters-expansion-folder-container_text',
-                ]"
-              >
-                {{ item.name }}
-              </span>
-            </div>
-            <!-- <div
-              @click="openCreatePopup('box')"
-              class="v-filters-expansion-folder-container_item v-filters-expansion-folder-container_item__disabled ml-4"
-            >
-              <v-icon small class="mr-2">$IconSystem</v-icon> Добавить ящик
-            </div> -->
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -304,18 +304,17 @@
             ></v-text-field>
           </div>
           <template v-if="!openPicker">
-            <v-btn
-              v-if="!newCase.loading"
-              @click="editFolder"
-              tonal
-              color="success"
-              class="mt-4"
-            >
-              <v-icon small class="mr-2">{{
-                newCase.id ? '$IconEdit' : '$IconAdd'
-              }}</v-icon>
-              {{ newCase.id ? 'Изменить' : 'Создать' }}
-            </v-btn>
+            <div v-if="!newCase.loading" class="d-flex mt-4">
+              <v-btn @click="editFolder" tonal color="success">
+                <v-icon small class="mr-2">{{
+                  newCase.id ? '$IconEdit' : '$IconAdd'
+                }}</v-icon>
+                {{ newCase.id ? 'Изменить' : 'Создать' }}
+              </v-btn>
+              <v-btn @click="closePopup" tonal color="error" class="ml-4">
+                Закрыть
+              </v-btn>
+            </div>
             <v-progress-circular
               indeterminate
               v-else

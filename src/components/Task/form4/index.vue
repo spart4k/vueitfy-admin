@@ -1,39 +1,57 @@
 <template>
-  <div style="padding: 20px">
-    <v-row>
-      <v-col cols="12">
-        <div>
-          <span style="font-weight: 700; font-size: 20px"
-            >{{ data.entity.name }} {{ data.entity.data_rojd }}</span
-          >
-          <!-- <span>(28.08.1998 г.р.)</span> -->
-        </div>
-        <span style="">Заселите:</span>
-        <v-select
-          label="Выберите проживание"
-          :items="[
-            ...data.data.habitations,
-            { id: 0, name: '-Самостоятельное-' },
-          ]"
-          item-text="name"
-          item-value="id"
-          v-model="selectName"
-        ></v-select
-      ></v-col>
-    </v-row>
+  <div style="padding-top: 10px">
+    <div style="text-align: center">
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
+        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
+      </v-card-title>
+    </div>
+    <div v-if="widthTrasfer" class="mb-2">
+      <div style="font-size: 18px" class="font-weight-bold">
+        Встретьте линейщика:
+      </div>
+      <div class="d-flex align-center">
+        <span class="mr-1">Билет:</span>
+        <a download :href="data.data.ticket">
+          <v-icon small>mdi-ticket</v-icon>
+        </a>
+      </div>
+    </div>
+    <div
+      style="font-size: 18px"
+      class="d-flex align-center font-weight-bold mb-2"
+    >
+      <v-icon class="mr-1" v-if="selectName !== ''" x-small color="green"
+        >$IconGalka</v-icon
+      >
+      Заселите:
+    </div>
+    <v-select
+      label="Выберите проживание"
+      :items="[...data.data.habitations, { id: 0, name: '-Самостоятельное-' }]"
+      item-text="name"
+      item-value="id"
+      v-model="selectName"
+    ></v-select>
 
-    <v-row>
-      <v-col>
-        <span style="">Приложите миграционную карту:</span>
-        <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
-      </v-col>
-    </v-row>
+    <span style="font-size: 18px" class="font-weight-bold">
+      <v-icon x-small color="green" v-if="isGalkaVisible">$IconGalka</v-icon>
+      Приложите миграционную карту:
+    </span>
+    <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
+
     <v-row class="py-2" justify="end">
-      <v-btn color="info" class="mr-3" @click="sendData" :disabled="!isShowBtn">
+      <v-btn
+        small
+        color="info"
+        class="mr-2"
+        @click="sendData"
+        :disabled="!isShowBtn"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

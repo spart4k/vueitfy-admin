@@ -1,28 +1,29 @@
 <template>
   <div class="detail">
-    <div class="detail-tabs pa-4">
-      {{ $route.meta.mode }}
-      <p v-if="detail.name" class="text-h4 mb-4">
-        {{ detail.name }}
-      </p>
-      <v-tabs
-        style="flex: unset"
-        v-model="detail.activeTab"
-        background-color="transparent"
-        color="basil"
-        class="p-5"
+    <div class="detail-tabs">
+      <div
+        v-if="$route.meta.label || detail.name || availableTabs.length > 1"
+        class="pa-4 detail-header"
       >
-        <v-tab
-          v-for="item in detail.tabs"
-          v-if="
-            ($route.meta.mode && $route.meta.mode.includes(item.path)) ||
-            (!$route.meta.mode && !item.path)
-          "
-          :key="item.id"
+        <p v-if="$route.meta.label" class="text-h4 mb-4">
+          {{ $route.meta.label }}
+        </p>
+        <p v-else-if="detail.name" class="text-h4 mb-4">
+          {{ detail.name }}
+        </p>
+        <v-tabs
+          style="flex: unset"
+          v-model="detail.activeTab"
+          background-color="transparent"
+          color="basil"
+          class="p-5"
+          v-show="availableTabs.length > 1"
         >
-          {{ item.name }}
-        </v-tab>
-      </v-tabs>
+          <v-tab v-for="item in availableTabs" :key="item.id">
+            {{ item.name }}
+          </v-tab>
+        </v-tabs>
+      </div>
       <v-tabs-items v-model="detail.activeTab">
         <v-tab-item
           v-for="item in detail.tabs"
@@ -33,6 +34,7 @@
           :key="item.id"
         >
           <component
+            :content="porpsContent"
             :loading="loading"
             :is="item.type"
             :tab="item"
@@ -42,14 +44,8 @@
             :stages="item.stages"
             :routeParam="id"
             @closePopup="(e) => $emit('closePopup', e)"
+            @getItems="(e) => $emit('getItems', e)"
           />
-          <!--<v-progress-circular
-            v-else
-            :size="20"
-            :width="2"
-            color="primary"
-            indeterminate
-          />-->
         </v-tab-item>
       </v-tabs-items>
       <!--<TableDefault :options="detail.tabs[1].config"></TableDefault>-->

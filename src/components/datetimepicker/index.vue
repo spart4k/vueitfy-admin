@@ -28,10 +28,11 @@
         <v-tab-item>
           <v-date-picker
             v-model="tabs.date.value"
-            min="1950-01-01"
+            min="1940-01-01"
             color="primary"
             locale="ru-RU"
             append-icon="mdi-calendar"
+            readonly
           ></v-date-picker>
         </v-tab-item>
         <v-tab-item>
@@ -39,6 +40,7 @@
             ref="menuTime"
             v-model="tabs.time.value"
             format="ampm"
+            readonly
             @click:minute="menuRef.save(tabs.time.value)"
           />
         </v-tab-item>

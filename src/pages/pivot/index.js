@@ -77,12 +77,12 @@ const consumptionConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
       {
         label: 'Объекты',
         class: ['v-table-button--custom'],
@@ -298,7 +298,7 @@ const consumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -334,12 +334,12 @@ const config = {
         // function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        // function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   // function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
       {
         label: 'Объекты',
         class: ['v-table-button--custom'],
@@ -386,7 +386,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -491,7 +491,7 @@ const config = {
           selectField({
             label: 'Личный ключ',
             name: 'user_key',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -510,7 +510,7 @@ const config = {
             label: 'Направление',
             name: 'direction_json',
             alias: 'direction_id',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -529,7 +529,7 @@ const config = {
             label: 'Доступ',
             name: 'account_json',
             alias: 'account_id',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {

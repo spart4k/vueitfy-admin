@@ -1,7 +1,7 @@
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, readonly } from 'vue'
 
 export default {
-  name: 'date-time-picker',
+  name: 'color-field',
   props: {
     'error-messages': {
       type: Array,
@@ -14,6 +14,14 @@ export default {
     field: {
       type: Object,
       default: () => {},
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, ctx) {
@@ -36,16 +44,22 @@ export default {
     watch(
       () => proxyVal.value,
       (newValue) => {
+        color.value = newValue
         emit('input', newValue)
       }
     )
-    onMounted(() => {})
+    onMounted(() => {
+      if (proxyVal.value) {
+        color.value = proxyVal.value
+      }
+    })
     return {
       menu,
       menuRef,
       swatchStyle,
       color,
       mask,
+      proxyVal,
     }
   },
 }

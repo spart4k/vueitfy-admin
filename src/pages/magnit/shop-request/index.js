@@ -57,12 +57,12 @@ const tableConsumptionConfig = {
         function: consolePanel,
         backgroundColor: '#fff',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
@@ -221,7 +221,7 @@ const tableConsumptionConfig = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },
@@ -256,12 +256,12 @@ const config = {
         backgroundColor: '#fff',
         type: 'addItem',
       },
-      {
-        label: 'Скачать',
-        class: ['v-table-button--custom'],
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
       {
         label: 'Загрузить',
         class: ['v-table-button--custom'],
@@ -528,7 +528,7 @@ const config = {
   data: {
     rows: [],
     totalRows: null,
-    pageLength: 10,
+    pageLength: 20,
     currentPage: 1,
     totalPages: null,
   },

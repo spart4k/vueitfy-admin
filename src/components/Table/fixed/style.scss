@@ -101,6 +101,7 @@ $tableFooterHeight: 85px;
           &--fixed {
             position: sticky;
             background-color: #fff;
+            background-color: var(--v-background-base);
             // min-width: 150px;
             // right: 0;
             // top: 0;
@@ -136,10 +137,18 @@ $tableFooterHeight: 85px;
         p {
           display: flex;
         }
+        &-cell--hover {
+          &:hover {
+            border: var(--v-primary-base) solid 1px;
+            background-color: rgba(139, 87, 152, 0.1);
+          }
+        }
         &-cell {
           padding: $paddingCell;
           border: rgba(0,0,0,.1) solid 1px;
           vertical-align: top;
+
+
           &__checkbox {
             //display: flex;
             //justify-content: center;
@@ -183,6 +192,7 @@ $tableFooterHeight: 85px;
           &--fixed {
             position: sticky;
             background-color: #fff;
+            background-color: var(--v-background-base);
             z-index: 1;
             // left: 0;
           }
@@ -297,7 +307,7 @@ $tableFooterHeight: 85px;
         justify-content: space-between;
         flex-wrap: wrap;
         &__search {
-          display: flex; 
+          display: flex;
           align-items: baseline;
           @media (max-width: $mobileWidth) {
             justify-content: space-between;
@@ -331,6 +341,7 @@ $tableFooterHeight: 85px;
         display: flex;
         align-items: center;
         font-size: 22px;
+        justify-content: center;
         font-weight: 500;
         &_month {
           width: 160px;

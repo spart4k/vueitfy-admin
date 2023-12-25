@@ -72,19 +72,20 @@ export default {
     //    //console.log(data.products, filter)
     //  }
     //}
-    const initData = () => {
-      props.filtersConfig.map((el) => {
-        //el.loading = false
-        Vue.set(el, 'loading', false)
-        //Vue.set(el, 'items', [])
-        //el.search = 12331
-        Vue.set(el, 'search', '')
-        Vue.set(el, 'select', null)
-        Vue.set(el, 'page', 1)
-        el.component =
-          el.type === 'select' ? (el.component = 'v-autocomplete') : ''
-      })
-    }
+    // const initData = () => {
+    //   console.log('initData')
+    //   props.filtersConfig.map((el) => {
+    //     //el.loading = false
+    //     Vue.set(el, 'loading', false)
+    //     //Vue.set(el, 'items', [])
+    //     //el.search = 12331
+    //     Vue.set(el, 'search', '')
+    //     Vue.set(el, 'select', null)
+    //     Vue.set(el, 'page', 1)
+    //     el.component =
+    //       el.type === 'select' ? (el.component = 'v-autocomplete') : ''
+    //   })
+    // }
     const searchFields = computed(() =>
       props.filtersConfig.map((filter) => filter.search)
     )
@@ -140,7 +141,7 @@ export default {
       //initData()
     })
     return {
-      initData,
+      // initData,
       searchFields,
       //querySelections,
       //endIntersect,

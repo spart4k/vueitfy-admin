@@ -11,8 +11,10 @@ import object from './object'
 import account from './account'
 import zayavka from './zayavka'
 import documents from './documents'
+import schedule from './schedule'
 
 export {
+  schedule,
   documents,
   payment,
   appointments,

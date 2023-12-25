@@ -3,8 +3,9 @@
         height: 53px;
         width: 100%;
         display: flex;
+        align-items: center;
         &-user {
-            margin-top: auto;
+            // margin-top: auto;
             &_image {
                 border-radius: 50%;
                 width: 40px;
@@ -18,7 +19,7 @@
                     font-size: 14px;
                     font-weight: 500;
                     color: var(--v-text-base);
-                    max-width: 125px;
+                    max-width: 170px;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -35,7 +36,7 @@
             }
         }
         &-container {
-            margin: 20px 8px 0;
+            margin: 0 8px 0;
             width: 9px;
             &-viewed {
                 width: 100%;

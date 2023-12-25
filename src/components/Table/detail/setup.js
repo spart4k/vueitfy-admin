@@ -1,4 +1,4 @@
-import { ref, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 
 import FormDefault from '@/components/form/default/index.vue'
@@ -18,29 +18,42 @@ export default {
     FrameView,
   },
   props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
     detail: {
       type: Object,
       default: () => {},
     },
   },
   setup(props) {
-    //console.log(form)
-    //const route = useRoute()
-    //const { url, alias } = props.detail
     const route = useRoute()
     const router = useRouter()
     const { id } = route?.params
     const loading = ref(false)
     const syncForm = ref({})
+    const availableTabs = computed(() => {
+      return props.detail.tabs.filter((item) => {
+        return (
+          (route.meta.mode && route.meta.mode.includes(item.path)) ||
+          (!route.meta.mode && !item.path)
+        )
+      })
+    })
+
+    const porpsContent = ref(props.content)
+
     onUnmounted(() => {
       if (props?.detail?.clearStore) store.commit('clearFormStorage')
     })
     return {
       loading,
       syncForm,
-      //getData,
       TableDefault,
+      porpsContent,
       id,
+      availableTabs,
     }
   },
 }

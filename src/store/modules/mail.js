@@ -18,6 +18,7 @@ import {
   getSendedMessages,
   getSendedMessage,
   getDeletedMessages,
+  getBroadcastMails,
   filterMail,
   countFilter,
   getDirections,
@@ -237,6 +238,15 @@ const mail = {
       try {
         const response = await getDeletedMessages(data.content, data.id)
         return response.data
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async getBroadcastMails(_, data) {
+      try {
+        const response = await getBroadcastMails(data.content)
+        return response
       } catch (e) {
         console.log(e)
       }

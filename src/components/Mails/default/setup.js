@@ -46,10 +46,10 @@ const mails = {
       const arrayFull = []
       let mailsCount = 0
       let load = false
-      mailsData.value.forEach((item) => {
+      mailsData.value?.forEach((item) => {
         if (item.mails) {
           mailsCount += item.mails.total
-          item.mails.rows.forEach((mail) => {
+          item.mails.rows?.forEach((mail) => {
             arrayId.push(mail.id)
             arrayFull.push(mail)
           })
@@ -92,7 +92,9 @@ const mails = {
       selected.value.mailsAll = false
       selected.value.mails = []
       if (route?.query?.filter) {
-        if (route?.query?.id) {
+        if (route?.query?.filter === 'trans') {
+          mailsData.value = [{}]
+        } else if (route?.query?.id) {
           if (route?.query?.filter === 'folder') {
             mailsData.value = [{ id: Number(route?.query?.id) }]
           } else {
@@ -108,7 +110,7 @@ const mails = {
           mailsData.value = _.cloneDeep(filterData.value.boxData)
         }
         for (const item of mailsData.value) {
-          await getPagination(item)
+          getPagination(item)
         }
         // mailsData.value.sort((a, b) => b?.mails?.total - a?.mails?.total)
       }
@@ -123,6 +125,7 @@ const mails = {
         content: {
           count: 20,
           tags: colorTags,
+          search: val.search,
           props: route?.query?.id
             ? {
                 all: true,
@@ -149,14 +152,18 @@ const mails = {
         } else if (route?.query?.filter === 'trash') {
           ;['tags', 'props'].forEach((e) => delete requestData.content[e])
           data = await store.dispatch('mail/getDeletedMessages', requestData)
+        } else if (route?.query?.filter === 'trans') {
+          data = await store.dispatch('mail/getBroadcastMails', requestData)
         } else {
           data = await store.dispatch('mail/getBoxMails', requestData)
         }
         if (data?.rows) {
           if (val?.mails) {
+            if (!val?.mails?.rows) val.mails.rows = []
             for (const item of data?.rows) {
               if (selected.value.mailsAll) selected.value.mails.push(item.id)
-              val?.mails?.rows.push(item)
+              if (!val.mails.rows.some((x) => x.id === item.id))
+                val?.mails?.rows.push(item)
             }
           } else {
             Vue.set(val, 'mails', data)
@@ -279,8 +286,8 @@ const mails = {
         requestData.id = selected.value.mails.toString()
       }
       await store.dispatch('mail/filterMail', requestData)
-      selected.value.mails.forEach((select) => {
-        mailsData.value.forEach((row, index) => {
+      selected.value?.mails?.forEach((select) => {
+        mailsData.value?.forEach((row, index) => {
           if (row?.mails?.rows?.length) {
             row?.mails?.rows?.forEach((mail, mailIndex) => {
               if (mail.id === select) {
@@ -420,6 +427,15 @@ const mails = {
       filterData.value.tagsData = await store.dispatch('mail/getTags')
       filterData.value.notReadData = await store.dispatch('mail/getNotRead')
       if (!filterData.value.folderData) filterData.value.folderData = []
+      filterData.value?.boxData?.forEach((item) => {
+        if (item.folders)
+          filterData.value.folderData = _.concat(
+            filterData.value.folderData,
+            item.folders
+          )
+        Vue.set(item, 'search', '')
+        Vue.set(item, 'debounce', null)
+      })
       if (!filterData.value.boxData) filterData.value.boxData = []
       if (!filterData.value.tagsData) filterData.value.tagsData = []
     }
@@ -441,14 +457,14 @@ const mails = {
           folders: [],
           tags: [],
         }
-        filterData.value.folderData.forEach((item) => {
+        filterData.value?.folderData?.forEach((item) => {
           selected.value.filterAll.folders.push({
             id: item.id,
             count: folders[item.id],
             value: false,
           })
         })
-        filterData.value.tagsData.forEach((item) => {
+        filterData.value?.tagsData?.forEach((item) => {
           selected.value.filterAll.tags.push({
             id: item.id,
             count: tags[item.id],
@@ -465,11 +481,11 @@ const mails = {
       } else {
         selected.value.filterAll.is_read.value = true
       }
-      selected.value.filterAll.folders.forEach((item) => {
+      selected.value.filterAll?.folders?.forEach((item) => {
         if (item.count === allMails.value.count) item.value = true
         else item.value = false
       })
-      selected.value.filterAll.tags.forEach((item) => {
+      selected.value.filterAll?.tags?.forEach((item) => {
         if (item.count === allMails.value.count) item.value = true
         else item.value = false
       })
@@ -477,6 +493,17 @@ const mails = {
 
     const decreaseUnreadMailsCount = () => {
       filterData.value.notReadData--
+    }
+
+    const changeSearch = (val) => {
+      const searchBox = mailsData.value.find((x) => x.id === val)
+      clearTimeout(searchBox.debounce)
+      searchBox.debounce = setTimeout(() => {
+        searchBox.mails.page = 0
+        searchBox.mails.rows = null
+        // getItems()
+        getPagination(searchBox)
+      }, 250)
     }
 
     onMounted(async () => {
@@ -498,6 +525,7 @@ const mails = {
 
       setRouterPath,
 
+      changeSearch,
       compareFiltersCount,
       resetAllSelectionFilter,
       decreaseUnreadMailsCount,

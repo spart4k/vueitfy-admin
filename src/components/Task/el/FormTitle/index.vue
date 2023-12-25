@@ -10,7 +10,10 @@
         @click="() => (isImgPopupOpen = true)"
         class="docs-required__inner-image"
       >
-        <img :src="docs.path_doc" class="docs-required__image" />
+        <img
+          :src="'http://10.63.2.100:3003/file/get' + docs.path_doc"
+          class="docs-required__image"
+        />
       </div>
       <div class="docs-required__name-container">
         <span>{{ docName }}</span>

@@ -32,7 +32,7 @@ const Form3 = defineComponent({
     }
     let selectName = ref('')
     let price = ref('')
-    let nameComp = JSON.parse(data.entity.items)[0].name
+    let nameComp = data.data.items[0].name
 
     let landPhone = computed(() =>
       data.data.account.landline_phone
@@ -48,7 +48,7 @@ const Form3 = defineComponent({
     let addFiles = (e) => {
       file.value = e[0]
     }
-
+    console.log(this.baseUrl)
     const sendData = async () => {
       console.log(selectName.value, file.value)
       let fileExt = file.value.type.split('/')[1]
@@ -69,9 +69,11 @@ const Form3 = defineComponent({
       const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>
-          store.dispatch('taskModule/updateFileData', {
-            id: 1,
-            path_doc: `/personal_doc/${fileName}`,
+          store.dispatch('taskModule/updateFileDataNew', {
+            data: {
+              id: data.entity.personal_id,
+              ticket: `/personal_doc/${fileName}`,
+            },
           }),
       })
 
@@ -96,16 +98,16 @@ const Form3 = defineComponent({
       const { makeRequest: pushSomeShit } = useRequest({
         context,
         request: () =>
-          store.dispatch('taskModule/setBid', {
+          store.dispatch('taskModule/zayavkaItems', {
             data: {
-              id: data.entity.id,
-              items: {
-                rashod_vid_id: selectName.value.id,
-                count: 1,
-                price: price.value,
-                name: '',
-                is_debit: 1,
-              },
+              // body: {data['items']['id'], rashod_vid_id, price}
+              id: data.data.items[0].id,
+
+              rashod_vid_id: selectName.value,
+              // count: 1,
+              price: Number(price.value),
+              // name: '',
+              // is_debit: 1,
             },
           }),
       })
@@ -113,7 +115,10 @@ const Form3 = defineComponent({
       await updateFileData()
       await pushSomeShit()
       const { success } = await changeStatus()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     return {
       options,

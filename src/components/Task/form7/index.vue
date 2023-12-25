@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="d-flex justify-center text-h6">
         <span class="font-weight-bold text-h6">{{ entity.name }}</span
         >&nbsp;({{ dataRojd }} г.р)
@@ -10,7 +10,9 @@
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">
-              <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
+              <v-icon class="mr-2" v-if="osnConfirmed" small color="green"
+                >$IconGalka</v-icon
+              >
               <span>Основные данные</span>
             </v-row>
           </v-expansion-panel-header>
@@ -38,7 +40,6 @@
                       v-model="formObj.formData.data_rojd"
                       label="Дата рождения"
                       prepend-icon="mdi-calendar"
-                      readonly
                       v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
@@ -46,7 +47,7 @@
                   <v-date-picker
                     class="z-index"
                     v-model="formObj.formData.data_rojd"
-                    min="1950-01-01"
+                    min="1940-01-01"
                     color="primary"
                     locale="ru-RU"
                   ></v-date-picker>
@@ -63,8 +64,9 @@
             </v-row>
             <v-row class="py-2 px-2" justify="end">
               <v-btn
-                :disabled="formObj.validate()"
-                @click="() => {}"
+                small
+                :disabled="!isOsnDocValid"
+                @click="confirmOsnDoc"
                 color="warning"
               >
                 <v-icon left> $IconMain </v-icon>
@@ -87,6 +89,7 @@
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
       <v-btn
+        small
         :disabled="!isFormValid"
         class="mr-2"
         color="info"
@@ -95,7 +98,7 @@
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

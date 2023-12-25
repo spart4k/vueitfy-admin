@@ -12,13 +12,20 @@
     >
       <div class="v-sidebar-container-user">
         <div class="v-sidebar-container-user_image">
-          <v-img
+          <!-- <v-img
             src="https://media.tenor.com/Q-gxepiJHagAAAAM/nono.gif"
-          ></v-img>
+          ></v-img> -->
+          <v-avatar>
+            <v-icon x-large> mdi-account-circle </v-icon>
+          </v-avatar>
         </div>
         <div class="v-sidebar-container-user-info" v-if="!miniMenu">
-          <div class="v-sidebar-container-user-info_name">Dasha Tsaritsa</div>
-          <div class="v-sidebar-container-user-info_email">ferz'@mail.ru</div>
+          <div class="v-sidebar-container-user-info_name">
+            {{ userInfo.name }}
+          </div>
+          <div class="v-sidebar-container-user-info_email">
+            {{ userInfo.email }}
+          </div>
           <!-- {{ openMenu }}{{ miniMenu }} -->
         </div>
       </div>
@@ -36,7 +43,7 @@
             :key="item.id"
             color="navbar"
           >
-            <template v-if="!item?.child_json">
+            <template v-if="!item?.child">
               <v-tooltip right>
                 <template v-slot:activator="{ on }">
                   <div
@@ -50,9 +57,9 @@
                     <div class="v-sidebar-container-link_icon">
                       <v-icon
                         :color="
-                          $route?.path.includes(item.link) ||
-                          JSON?.parse(item?.child_json)?.some((e) =>
-                            $route?.path.includes(e?.link)
+                          $route?.matched?.[0]?.path === item.link ||
+                          item?.child?.some(
+                            (e) => $route?.matched?.[0]?.path === e.link
                           )
                             ? 'primary'
                             : ''
@@ -64,7 +71,7 @@
                       v-if="!miniMenu"
                       :class="[
                         'v-sidebar-container-link_name',
-                        $route?.path.includes(item.link) &&
+                        $route?.matched?.[0]?.path === item.link &&
                           'v-sidebar-container-link_name__active',
                       ]"
                     >
@@ -84,8 +91,8 @@
                   <v-icon
                     :color="
                       $route?.path === item?.link ||
-                      JSON?.parse(item?.child_json).some((e) =>
-                        $route?.path.includes(e?.link)
+                      item?.child.some(
+                        (e) => $route?.matched?.[0]?.path === e.link
                       )
                         ? 'primary'
                         : ''
@@ -97,9 +104,9 @@
                   v-if="!miniMenu"
                   :class="[
                     'v-sidebar-container-link_name',
-                    ($route?.path.includes(item.link) ||
-                      JSON?.parse(item?.child_json).some((e) =>
-                        $route?.path.includes(e?.link)
+                    ($route?.matched?.[0]?.path === item.link ||
+                      item?.child.some(
+                        (e) => $route?.matched?.[0]?.path === e.link
                       )) &&
                       'v-sidebar-container-link_name__active',
                   ]"
@@ -109,7 +116,7 @@
               </v-expansion-panel-header>
               <template v-if="!miniMenu">
                 <v-expansion-panel-content
-                  v-for="(link, index) in JSON?.parse(item?.child_json)"
+                  v-for="(link, index) in item?.child"
                   :key="index"
                   color="navbar"
                   :class="[
@@ -117,13 +124,13 @@
                     instantNav && 'v-sidebar-container-link__instant',
                     !isMobileDevice && 'v-sidebar-container-link__hover',
                   ]"
+                  @click.native="setRouterPath(link.link)"
                 >
                   <div
-                    @click="setRouterPath(link.link)"
                     :class="[
                       'v-sidebar-container-link_name',
                       'v-sidebar-container-link_name__shifted',
-                      $route?.path.includes(link.link) &&
+                      $route?.matched?.[0]?.path === link.link &&
                         'v-sidebar-container-link_name__active',
                     ]"
                   >
@@ -147,9 +154,9 @@
                         <div class="v-sidebar-container-link_icon">
                           <v-icon
                             :color="
-                              $route?.path.includes(item.link) ||
-                              JSON?.parse(item?.child_json).some((e) =>
-                                $route?.path.includes(e?.link)
+                              $route?.matched?.[0]?.path === item.link ||
+                              item?.child.some(
+                                (e) => $route?.matched?.[0]?.path === e.link
                               )
                                 ? 'primary'
                                 : ''
@@ -172,13 +179,13 @@
                       !isMobileDevice && 'v-sidebar-container-link__hover'
                     "
                     @click="setRouterPath(link.link)"
-                    v-for="(link, index) in JSON?.parse(item?.child_json)"
+                    v-for="(link, index) in item?.child"
                     :key="index"
                   >
                     <div
                       :class="[
                         'v-sidebar-container-link_name',
-                        $route?.path.includes(link.link) &&
+                        $route?.matched?.[0]?.path === link.link &&
                           'v-sidebar-container-link_name__active',
                       ]"
                     >

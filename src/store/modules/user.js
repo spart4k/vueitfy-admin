@@ -1,15 +1,14 @@
-const user = {
+export default {
   namespaced: true,
-  state: {
-    user: {
-      id: 25,
-    },
-  },
+  state: {},
   mutations: {
     setUser(state, user) {
       state.user = user
     },
+    setUserInfo(state, user) {
+      for (let key in user) {
+        state[key] = user[key]
+      }
+    },
   },
 }
-
-export default user

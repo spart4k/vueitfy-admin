@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="d-flex justify-center text-h6">
         <span class="font-weight-bold text-h6">{{ entity.name }}</span
         >&nbsp;({{ dataRojd }} г.р)
@@ -10,9 +10,9 @@
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">
-              <template v-if="isOsnDocTouched">
+              <template v-if="isHasOsnDoc && isOsnDocTouched">
                 <v-icon x-small color="green" v-if="isOsnDocConfirmed"
-                  >$IconMain</v-icon
+                  >$IconGalka</v-icon
                 >
                 <v-icon x-small color="red" v-else>$IconClose</v-icon>
               </template>
@@ -49,11 +49,11 @@
               </v-col>
             </v-row>
             <v-row class="py-2 px-2" justify="end">
-              <v-btn @click="rejectOsnData" class="mr-2" color="error">
+              <v-btn small @click="rejectOsnData" class="mr-2" color="error">
                 <v-icon left> $IconClose </v-icon>
                 Отклонить
               </v-btn>
-              <v-btn @click="confirmOsnData" color="primary">
+              <v-btn small @click="confirmOsnData" color="primary">
                 <v-icon left> $IconMain </v-icon>
                 Подтвердить
               </v-btn>
@@ -68,20 +68,29 @@
         :listNames="listNames"
         :docs="docs"
       ></DocFormWithConfirm>
-      <FormComment />
+      <v-textarea
+        v-model="comment"
+        @input="commentErr = ''"
+        :error-messages="commentErr"
+        rows="2"
+        clearable
+        label="Комментарий"
+        class="mb-2"
+      ></v-textarea>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
       <v-btn
+        small
         class="mr-2"
-        :disabled="!isFormValid && !isOsnDocTouched"
+        :disabled="!isFormValid || !isOsnDocTouched"
         color="info"
         @click="sendData"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

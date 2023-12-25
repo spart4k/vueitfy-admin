@@ -1,8 +1,8 @@
 import { get, post, put, del } from '@/api/axios'
 
-export const getBoxes = () => get('mail/get_box')
+export const getBoxes = () => get('mail/get_box/mail_folders')
 
-export const getFolders = () => get('mail/get_folders')
+export const getFolders = () => get('mail/get_box/account_folders')
 
 export const getTags = () => get('mail/tags')
 
@@ -30,6 +30,8 @@ export const getBoxMails = (data, params) =>
 
 export const getFolderMails = (data, params) =>
   post(`mail/get_messages/folder/${params}`, data)
+
+export const getBroadcastMails = (data) => post(`mail/get_broadcast`, data)
 
 export const filterMail = (data) => post('mail/update_messages', data)
 

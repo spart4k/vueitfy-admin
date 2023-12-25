@@ -51,6 +51,7 @@ const controls = {
           {
             name: 'Направление',
             value: 'direction',
+            disabled: true,
           },
           {
             name: 'Подразделение',
@@ -276,16 +277,16 @@ const controls = {
       })
       emit('broadcast', data)
       clearKeyValue(['otdel', 'object', 'account'])
-      broadcast.value.direction.value = null
+      // broadcast.value.direction.value = null
       broadcast.value.path.value = 'account'
       popupBroadcast.value = false
     }
 
     onMounted(async () => {
       getItems({ val: ['account'] })
-      broadcast.value.direction.items = await store.dispatch(
-        'mail/getDirections'
-      )
+      // broadcast.value.direction.items = await store.dispatch(
+      //   'mail/getDirections'
+      // )
     })
 
     watch(

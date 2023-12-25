@@ -1,12 +1,12 @@
 <template>
-  <div style="padding: 10px">
+  <div style="padding-top: 10px">
     <v-row>
-      <v-col class="d-flex align-center mb-1">
-        <span style="font-size: 18px">Паспорт:</span>
+      <v-col class="d-flex align-center">
+        <span class="font-weight-medium" style="font-size: 18px">Паспорт:</span>
         <a
           download
           :href="
-            'https://test.api.personal-crm.ru' + data.data.doc_ident.path_doc
+            'http://10.63.1.132:3000/file/get' + data.data.doc_ident.path_doc
           "
           ><v-icon left> $IconDocument </v-icon></a
         >
@@ -17,10 +17,10 @@
         <v-icon v-if="selectName && price" small color="green"
           >$IconGalka</v-icon
         >
-        Заполните данные заявки:
+        <span class="font-weight-medium">Заполните данные заявки:</span>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="mt-0">
       <v-col cols="6">
         <v-select
           label="Наименование"
@@ -41,44 +41,48 @@
         <v-text-field v-model="price" label="Цена"></v-text-field
       ></v-col>
     </v-row>
-    <v-row>
+    <v-row class="pt-0 mt-0">
       <v-col cols="12">
-        <div
-          style="
-            padding: 5px;
-            background-color: rgb(128, 128, 128);
-            color: white;
-            font-weight: 600;
-            margin-bottom: 20px;
-          "
-        >
-          {{ nameComp }}
-        </div>
+        <v-text-field
+          :value="nameComp"
+          disabled
+          hide-details
+          class="pt-0"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
         <span>
           <v-icon v-if="file" small color="green">$IconGalka</v-icon>
-          Приложите билет(ы):
+          <span class="font-weight-medium" style="font-size: 18px"
+            >Приложите билет(ы):</span
+          >
         </span>
         <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="mt-0">
       <v-col cols="12"
-        ><span style="font-weight: 600">Контактная информация</span></v-col
+        ><span class="font-weight-medium" style="font-size: 18px"
+          >Контактная информация:</span
+        ></v-col
       >
 
       <v-col cols="12"
-        ><span>Заказчик:</span> <span>{{ data.data.account.name }}</span></v-col
-      ><v-col cols="12"
-        ><span>Моб. {{ mobilePhone }} Стац. {{ landPhone }}</span></v-col
+        ><span class="font-weight-bold">Заказчик: </span>
+        <span>{{ data.data.account.name }}</span></v-col
+      ><v-col cols="12 mb-4"
+        ><span
+          ><span class="">Моб.</span> {{ mobilePhone }}
+          <span class="font-weight-bold">Стац.</span> {{ landPhone }}</span
+        ></v-col
       >
     </v-row>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
       <v-btn
+        small
         :disabled="!selectName || !price || !file"
         color="info"
         class="mr-3"
@@ -87,7 +91,7 @@
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
@@ -97,4 +101,8 @@
 
 <script src="./setup.js"></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.col::v-deep {
+  padding-left: 8px;
+}
+</style>

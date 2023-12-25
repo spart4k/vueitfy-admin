@@ -24,9 +24,11 @@ const Form4 = defineComponent({
     const context = {
       root: {
         store,
+        ctx,
       },
     }
     let selectName = ref('')
+    const isGalkaVisible = ref(false)
     let options = {
       withoutSave: false,
       folder: 'tmp',
@@ -54,12 +56,13 @@ const Form4 = defineComponent({
       form_data.append('file', e[0])
       console.log(fileExt, fileName, form_data, e[0])
       isShowBtn.value = true
+      isGalkaVisible.value = true
     }
 
     const { makeRequest: pushSomeShit } = useRequest({
       context,
       request: () =>
-        store.dispatch('taskModule/setBid', {
+        store.dispatch('taskModule/updateFileDataNew', {
           data: {
             id: data.entity.id,
             habitation_id: selectName.value,
@@ -81,21 +84,74 @@ const Form4 = defineComponent({
       context,
       request: () =>
         store.dispatch('taskModule/updateFileData', {
-          id: 1,
-          path_doc: `/personal_doc/${fileName}`,
+          data: {
+            doc_id: 10,
+            personal_id: data.entity.id,
+            path_doc: `/personal_doc/${fileName}`,
+          },
         }),
     })
-    let sendData = () => {
-      pushSomeShit()
-      makeRequest()
-      updateFileData()
+    const { makeRequest: doneTask } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setPartTask', {
+          status: 2,
+          data: {
+            process_id: data.task.process_id,
+            task_id: data.task.id,
+            personal_id: data.entity.id,
+            parent_action: data.task.id,
+          },
+        }),
+    })
+    let sendData = async () => {
+      await pushSomeShit()
+      await makeRequest()
+
+      updateFileData().then((data) => {
+        console.log(data)
+        const { makeRequest: startTask } = useRequest({
+          context,
+          request: () =>
+            store.dispatch('taskModule/startProcess', {
+              // status: 6,
+              // data: {
+              // personal_id: <?php echo $entity['id']; ?>,
+              // docs_id: {"10": data.result},
+              // parent_action: <?php echo $task['id']; ?>,
+              // type_parent_action: 2,
+
+              parent_process: data.task.process_id,
+              process_id: data.task.process_id,
+              account_id: data.task.to_account_id,
+              task_id: data.task.id,
+              docs_id: [data.result],
+              personal_id: data.entity.id,
+              parent_action: data.task.id,
+              type_parent_action: 2,
+              // },
+            }),
+        })
+        startTask()
+      })
+      const { success } = await doneTask()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
+
+    // let widthTrasfer = ref('')
+    // widthTrasfer.value = JSON.parse(data.task.dop_data).transfer
     return {
       sendData,
       options,
       selectName,
       isShowBtn,
       addFiles,
+      ticket: data.ticket,
+      widthTrasfer: JSON.parse(data.task.dop_data).transfer,
+      isGalkaVisible,
     }
   },
 })

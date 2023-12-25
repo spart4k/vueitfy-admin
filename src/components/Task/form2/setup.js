@@ -41,9 +41,14 @@ const Form2 = defineComponent({
     const finalData = ref({})
     const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
-    const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const isHasOsnDoc = ref(
+      JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    )
     const isOsnDocConfirmed = ref(false)
-    const isOsnDocTouched = ref(false)
+    const isOsnDocTouched = ref(isHasOsnDoc.value ? false : true)
+    const commentErr = ref('')
+    const comment = ref('')
+    const newStatus = ref(0)
     const changeDocs = (data) => {
       finalData.value = data
       console.log(data)
@@ -67,12 +72,20 @@ const Form2 = defineComponent({
     }
 
     const confirmOsnData = () => {
+      const doscId = JSON.parse(props.data.task.dop_data).docs_id
       isOsnDocTouched.value = true
       isOsnDocConfirmed.value = true
+      if (doscId.length === 1 && doscId[0] === 0) {
+        isFormValid.value = true
+      }
     }
     const rejectOsnData = () => {
+      const doscId = JSON.parse(props.data.task.dop_data).docs_id
       isOsnDocTouched.value = true
       isOsnDocConfirmed.value = false
+      if (doscId.length === 1 && doscId[0] === 0) {
+        isFormValid.value = true
+      }
     }
 
     const { makeRequest: setPersonalData } = useRequest({
@@ -104,7 +117,7 @@ const Form2 = defineComponent({
             process_id: props.data.task.process_id,
             step_id: 13,
             personal_id: props.data.entity.id,
-            manager_id: props.data.entity.manager_id,
+            manager_id: props.data.entity.account_id,
           },
         })
       },
@@ -113,25 +126,26 @@ const Form2 = defineComponent({
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: () => {
-        const taskDeadline =
-          Date.parse(props.data.task.date_create) +
-          props.data.task.time_execution * 1000 -
-          Date.now()
-        return store.dispatch('taskModule/setPartTask', {
-          status: finalData.value.rejectedDocs.length
+        if (!finalData.value.rejected) {
+          finalData.value.rejected = []
+        }
+        newStatus.value =
+          finalData.value.rejected.length ||
+          (isHasOsnDoc.value && !isOsnDocConfirmed.value)
             ? 6
-            : taskDeadline > 0
-            ? 2
-            : 3,
+            : 2
+        return store.dispatch('taskModule/setPartTask', {
+          status:
+            finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2,
           data: {
             process_id: props.data.task.process_id,
             personal_id: props.data.entity.id,
-            task: props.data.task.id,
+            task_id: props.data.task.id,
             parent_action: props.data.task.id,
             docs_id:
-              isHasOsnDoc && !isOsnDocConfirmed
-                ? [0, ...finalData.value.rejectedDocs]
-                : finalData.value.rejectedDocs,
+              isHasOsnDoc && !isOsnDocConfirmed.value
+                ? [0, ...finalData.value.rejected]
+                : finalData.value.rejected,
             account_id: props.data.task.to_account_id,
             obd_id: props.data.task.from_account_id,
             comment: 'comment',
@@ -145,14 +159,33 @@ const Form2 = defineComponent({
     })
 
     const sendData = async () => {
-      await setPersonalData()
-      console.log(setPersonalData)
-      await setStartStep()
-      console.log(setStartStep)
-      const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
-      console.log(changeStatusTask)
-      console.log(finalData.value)
+      if (
+        (finalData.value.rejected &&
+          finalData.value.rejected.length &&
+          !comment.value) ||
+        (isHasOsnDoc.value && !isOsnDocConfirmed.value && !comment.value)
+      ) {
+        commentErr.value = 'Заполните комментарий'
+      } else {
+        await setPersonalData()
+        console.log(setPersonalData)
+
+        const { success } = await changeStatusTask()
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
+        console.log(changeStatusTask)
+        if (
+          props.data.entity.grajdanstvo_id === 1 &&
+          newStatus.value === 2 &&
+          props.data.entity.unfinished === 1
+        ) {
+          await setStartStep()
+          console.log(setStartStep)
+        }
+        console.log(finalData.value)
+      }
     }
 
     return {
@@ -173,6 +206,8 @@ const Form2 = defineComponent({
       rejectOsnData,
       isOsnDocConfirmed,
       isOsnDocTouched,
+      commentErr,
+      comment,
     }
   },
 })

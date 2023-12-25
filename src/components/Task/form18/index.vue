@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div style="padding: 20px">
+    <div style="padding-top: 20px">
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
-        >&nbsp; на дату 07.02.2023
+        >&nbsp; на дату {{ dateTarget }}
         <v-icon v-if="typeShift == 2" color="#8f8e77"
           >mdi-moon-waning-crescent</v-icon
         >
@@ -11,7 +11,7 @@
       </v-card-title>
       <div v-if="fileOutput">
         <span>Скан:</span>
-        <a target="_blank" :href="fileOutput"
+        <a download :href="'http://10.63.1.132:3000/file/get' + fileOutput"
           ><v-icon left small> $IconDocument </v-icon></a
         >
       </div>
@@ -20,46 +20,45 @@
         Отсутствует тариф: {{ rejectedPrice }}
       </FormError>
       <div>
-        <v-row v-for="(group, i) in formGroup" :key="i">
-          <v-col class="p-0" cols="5">
+        <v-row
+          v-for="(group, i) in formGroup"
+          :key="i"
+          class="px-0"
+          style="height: 50px"
+        >
+          <v-col class="px-0" cols="5">
             <v-select
               v-model="group.formData.name"
               :items="servicesDetail"
               @change="(idService) => changeServiceDetail(i, idService)"
               item-text="name"
               item-value="id"
-              dense
-              outlined
+              class="mr-1"
               label="Наименование"
               :readonly="idDirection === 6"
             ></v-select>
           </v-col>
-          <v-col>
+          <v-col class="px-0">
             <v-text-field
               :readonly="idDirection === 6"
-              dense
-              type="number"
-              outlined
               label="QTY"
+              class="mr-1"
               v-model="group.formData.qty"
               @blur="() => changeSum(i)"
             ></v-text-field>
           </v-col>
-          <v-col>
+          <v-col class="px-0">
             <v-text-field
               v-model="group.formData.price"
-              dense
-              outlined
               label="Тариф"
               disabled
+              class="mr-1"
               readonly
             ></v-text-field>
           </v-col>
-          <v-col class="p-0">
+          <v-col class="px-0">
             <v-text-field
               v-model="group.formData.sum"
-              dense
-              outlined
               label="Сумма"
               disabled
               readonly

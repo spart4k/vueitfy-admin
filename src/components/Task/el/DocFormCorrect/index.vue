@@ -8,7 +8,7 @@
             <div style="position: relative">
               <span class="form-status visible">
                 <v-icon x-small color="green" v-if="correctedDocs[doc.id]">
-                  $IconMain
+                  $IconGalka
                 </v-icon>
               </span>
               <span style="padding-left: 15px">{{
@@ -17,12 +17,18 @@
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <div>
-              <span>Скан:</span>
-              <a target="_blank" :href="doc.path_doc"
-                ><v-icon left small> $IconDocument </v-icon></a
-              >
-            </div>
+            <v-row>
+              <v-col>
+                <div>
+                  <span>Скан:</span>
+                  <a
+                    download
+                    :href="'http://10.63.2.100:3003/file/get' + doc.path_doc"
+                    ><v-icon left small> $IconDocument </v-icon></a
+                  >
+                </div>
+              </v-col>
+            </v-row>
             <!--Паспорт-->
             <div v-if="doc.doc_id === 1">
               <v-row>
@@ -68,7 +74,6 @@
                         v-model="formObj[doc.doc_id].formData.pasp_data_vid"
                         label="Дата выдачи"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -79,7 +84,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.pasp_data_vid"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -167,6 +172,7 @@
                   :disabled="!formObj[doc.doc_id].validate()"
                   @click="sendBankCard"
                   color="warning"
+                  small
                 >
                   <v-icon left> $IconMain </v-icon>
                   Завершить
@@ -246,7 +252,6 @@
                         v-model="formObj[doc.doc_id].formData.med_book_date"
                         label="Дата выдачи"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -257,7 +262,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.med_book_date"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -316,7 +321,6 @@
                         "
                         label="Дата выдачи"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -327,7 +331,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.view_home_data_vid"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -385,7 +389,6 @@
                         v-model="formObj[doc.doc_id].formData.migr_card_data_in"
                         label="Дата въезда"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -396,7 +399,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.migr_card_data_in"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -418,7 +421,6 @@
                         "
                         label="Дата выезда"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -429,7 +431,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.migr_card_data_out"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -456,7 +458,6 @@
                         "
                         label="Дата оплаты"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -469,7 +470,7 @@
                       v-model="
                         formObj[doc.doc_id].formData.check_patent_date_pay
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -497,7 +498,6 @@
                         "
                         label="Дата с"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -512,7 +512,7 @@
                         formObj[doc.doc_id].formData
                           .registration_date_do_docs_in
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -535,7 +535,6 @@
                         "
                         label="Дата с"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -549,7 +548,7 @@
                       v-model="
                         formObj[doc.doc_id].formData.registration_date_c_docs_in
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -587,7 +586,6 @@
                         "
                         label="Дата оплаты"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -598,7 +596,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.patent_date_docs_in"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -651,7 +649,6 @@
                         "
                         label="Дата оплаты"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -665,7 +662,7 @@
                       v-model="
                         formObj[doc.doc_id].formData.check_patent_date_pay_now
                       "
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -704,7 +701,6 @@
                         v-model="formObj[doc.doc_id].formData.med_view_docs_in"
                         label="Дата"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                         :error-messages="
@@ -715,7 +711,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formObj[doc.doc_id].formData.med_view_docs_in"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -740,6 +736,7 @@
                 :disabled="!formObj[doc.doc_id].validate()"
                 @click="() => confirmCorrect(doc)"
                 color="warning"
+                small
               >
                 <v-icon left> $IconMain </v-icon>
                 Исправлено

@@ -15,17 +15,27 @@
           @confirmed="addConfirmed"
           @unconfirmed="addUnconfirmed"
         ></FormTitle>
-        <FormComment v-model="comment" />
-        <span class="danger" v-if="commentError"
-          >Заполните поле комментарий!</span
-        >
+        <v-textarea
+          v-model="comment"
+          @input="commentError = ''"
+          :error-messages="commentError"
+          rows="2"
+          clearable
+          label="Комментарий"
+          class="mb-2"
+        ></v-textarea>
         <v-btn
+          small
           @click="clickCheckBtn"
           color="primary"
           block
           :disabled="!isActiveBtnFirst"
+          class="mb-1"
         >
           Завершить
+        </v-btn>
+        <v-btn small @click="$emit('closePopup')" color="blue-grey" block>
+          Закрыть
         </v-btn>
       </div>
       <div v-if="showNextStep">
@@ -38,7 +48,9 @@
           <v-expansion-panel>
             <v-expansion-panel-header>
               <v-row align="center">
-                <v-icon class="mr-2" v-if="true" small>$IconMain</v-icon>
+                <v-icon color="green" class="mr-2" v-if="osnValidate()" small
+                  >$IconGalka</v-icon
+                >
                 <span>Основные данные</span>
               </v-row>
             </v-expansion-panel-header>
@@ -66,7 +78,6 @@
                         v-model="formData.data_rojd"
                         label="Дата рождения"
                         prepend-icon="mdi-calendar"
-                        readonly
                         v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
@@ -74,7 +85,7 @@
                     <v-date-picker
                       class="z-index"
                       v-model="formData.data_rojd"
-                      min="1950-01-01"
+                      min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                     ></v-date-picker>
@@ -93,7 +104,7 @@
           </v-expansion-panel>
         </v-expansion-panels>
         <DocForm
-          @change="changeDocs"
+          @changeDocs="changeDocs"
           :docsData="docsData"
           :listNames="listNames"
           :docs="docs"
@@ -104,11 +115,17 @@
 
     <v-divider></v-divider>
     <v-row class="py-2" justify="end" v-if="showNextStep">
-      <v-btn :disabled="!isFormValid" color="info" @click="sendData">
+      <v-btn
+        small
+        class="mr-2"
+        :disabled="!isFormValid"
+        color="info"
+        @click="sendData"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

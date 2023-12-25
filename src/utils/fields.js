@@ -83,6 +83,14 @@ const textBlock = (properties) => {
 const colorPicker = (properties) => {
   return {
     type: 'colorPicker',
+    disabled: true,
+    ...defaultProperties(properties),
+  }
+}
+
+const radioPanel = (properties) => {
+  return {
+    type: 'radioPanel',
     ...defaultProperties(properties),
   }
 }
@@ -98,4 +106,5 @@ export {
   dropZoneField,
   textBlock,
   colorPicker,
+  radioPanel,
 }
