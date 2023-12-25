@@ -2682,7 +2682,7 @@ const defaultForm = [
             subtype: 'multiple',
             name: 'object_id',
             alias: 'object_json',
-            subtype: 'single',
+            //subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {

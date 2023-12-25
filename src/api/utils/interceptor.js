@@ -27,10 +27,17 @@ const setup = (axios) => {
     async (error) => {
       const originalConfig = error.config
       // Do something with response error
+      console.log(error)
       if (
         error.response.status === 403 &&
         error.response.data.message === 'invalid credentials'
       ) {
+        console.log('login invalid')
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Не верный логин или пароль',
+          timeout: 1000,
+        })
         return Promise.reject(error.response)
         //console.log('unauthorized, logging out ...')
       }
@@ -52,7 +59,7 @@ const setup = (axios) => {
         // return axios(originalConfig)
         //console.log('unauthorized, logging out ...')
       }
-      return Promise.reject(error.response)
+      return Promise.reject(error)
     }
   )
 
