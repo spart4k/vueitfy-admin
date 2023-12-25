@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import store from '@/store'
@@ -7,6 +7,7 @@ import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
 import form from '@/store/modules/form'
 import { required } from '@/utils/validation'
+import moment from 'moment/moment'
 
 const Form18 = defineComponent({
   name: 'Form18',
@@ -33,6 +34,9 @@ const Form18 = defineComponent({
         ctx,
       },
     }
+
+    const dateTarget = moment(data.entity.date_target).format('DD.MM.YYYY')
+
     const textInfo = {
       obj: {
         key: 'Объект',
@@ -47,10 +51,11 @@ const Form18 = defineComponent({
         value: data.entity.doljnost_name,
       },
     }
+    const account_id = computed(() => store.state.user.account_id)
     const formGroup = ref([])
+    const idDirection = data.entity.direction_id
     const fileOutput =
       data.task.dop_data && JSON.parse(data.task.dop_data).file_output
-    const idDirection = data.entity.direction_id
     const formCommentError = ref('')
     const formComment = ref('')
     const servicesDetail = data.data.services
@@ -140,7 +145,7 @@ const Form18 = defineComponent({
               account_id: data.entity.manager,
               personal_bank_id: data.entity.personal_bank_id,
               status_id: 2,
-              status_account_id: 25,
+              status_account_id: account_id,
               personal_id: data.entity.personal_id,
               vid_vedomost_id: 1,
               direction_id: data.entity.direction_id,
@@ -215,7 +220,10 @@ const Form18 = defineComponent({
 
       await setPersonalTarget()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     const rejectTask = async () => {
       formCommentError.value = ''
@@ -245,7 +253,10 @@ const Form18 = defineComponent({
           },
         })
         const { success } = await changeStatusTask()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
       }
     }
 
@@ -320,6 +331,7 @@ const Form18 = defineComponent({
       changeSum,
       rejectedPrice,
       isFormValid,
+      dateTarget,
     }
   },
 })

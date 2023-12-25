@@ -1,6 +1,6 @@
 <template>
-  <div class="layout-default d-flex flex-grow-1">
-    <v-main class="d-flex flex-column flex-grow-1">
+  <div class="layout-login d-flex flex-grow-1">
+    <v-main class="main d-flex flex-column flex-grow-1">
       <slot></slot>
       <!--<Alert />-->
     </v-main>

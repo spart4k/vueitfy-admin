@@ -1,5 +1,5 @@
 // import Alert from '@/components/Alert'
-import Vue, { ref, onMounted, onUnmounted } from 'vue'
+import Vue, { ref } from 'vue'
 import { useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
@@ -39,6 +39,7 @@ export default {
         subtype: 'text',
         name: 'login',
         placeholder: '',
+        value: '',
         readonly: false,
         class: [''],
         position: {
@@ -53,6 +54,7 @@ export default {
         subtype: 'password',
         name: 'password',
         placeholder: '',
+        value: '',
         readonly: false,
         class: [''],
         position: {
@@ -81,35 +83,23 @@ export default {
       // console.log(fields)
       return fields
     }
-    const handlerEnter = (event) => {
-      const key = event.key
-      console.log(key)
-      if (key === 'Enter') {
-        auth()
-      }
-    }
     const auth = async () => {
       console.log(validate())
       if (!validate()) return
       try {
         const result = await makeRequest()
-        // console.log(result.status)
-        // if (result.status === 403) {
-        //   // vForm.password.$errors.push(result.data.message)
-        //   console.log(vForm)
-        // }
+        console.log(result.status)
+        if (result.status === 403) {
+          // vForm.password.$errors.push(result.data.message)
+          console.log(vForm)
+        }
+        console.log(result)
         router.push('/main')
       } catch (err) {
         console.log(err)
       }
       // await makeRequestMe()
     }
-    onMounted(() => {
-      document.addEventListener('keydown', handlerEnter)
-    })
-    onUnmounted(() => {
-      document.removeEventListener('keydown', handlerEnter)
-    })
     const {
       formData,
       showField,

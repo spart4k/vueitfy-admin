@@ -8,6 +8,7 @@ import {
   checkboxField,
   textareaField,
   colorPicker,
+  textBlock,
   // dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -45,8 +46,8 @@ const consumptionConfig = {
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/payment',
-    urlDetail: 'personal_id',
-    alias: 'p.personal_id',
+    urlDetail: 'account_id',
+    alias: 'p.account_id',
     title: 'This is an about page1',
   },
   panel: {
@@ -78,510 +79,6 @@ const consumptionConfig = {
       title: 'ID',
       alias: 'p.id',
       value: 'id',
-    },
-  ],
-  data: {
-    rows: [],
-    totalRows: null,
-    pageLength: 20,
-    currentPage: 1,
-    totalPages: null,
-  },
-  detail: undefined,
-  filters,
-}
-
-const skanConfig = {
-  selector: '#mainTable',
-  options: {
-    selecting: true,
-    search: {
-      function: searchInputing,
-    },
-    headerFixed: true,
-    //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/personal_doc',
-    urlDetail: 'personal_id',
-    alias: 'p.personal_id',
-    title: 'This is an about page1',
-  },
-  panel: {
-    buttons: [
-      {
-        label: 'Обновить',
-        class: ['v-table-button--custom'],
-        url: '$IconEdit',
-        function: consolePanel,
-        backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
-    ],
-  },
-  head: [
-    {
-      title: 'ID',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'p.id',
-      isShow: true,
-      width: '40',
-      value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'personal_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Часы',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
-    },
-  ],
-  data: {
-    rows: [],
-    totalRows: null,
-    pageLength: 20,
-    currentPage: 1,
-    totalPages: null,
-  },
-  detail: undefined,
-  filters,
-}
-
-const paymentConfig = {
-  selector: '#mainTable',
-  options: {
-    selecting: true,
-    search: {
-      function: searchInputing,
-    },
-    headerFixed: true,
-    //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/personal_target_doc',
-    urlDetail: 'personal_id',
-    alias: 'p.personal_id',
-    title: 'This is an about page1',
-  },
-  panel: {
-    buttons: [
-      {
-        label: 'Обновить',
-        class: ['v-table-button--custom'],
-        url: '$IconEdit',
-        function: consolePanel,
-        backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
-    ],
-  },
-  head: [
-    {
-      title: 'ID',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'p.id',
-      isShow: true,
-      width: '40',
-      value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'personal_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Часы',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
     },
   ],
   data: {
@@ -629,12 +126,6 @@ const config = {
             //function: consolePanel,
             backgroundColor: '#fff',
           },
-          // {
-          //   label: 'Скачать',
-          //   class: ['v-table-button--custom'],
-          //   function: consolePanel,
-          //   backgroundColor: '#fff',
-          // },
         ],
       },
       head: [
@@ -647,96 +138,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           alias: 'p.fio',
           isShow: true,
           width: '40',
           value: 'fio',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Телефон',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'p.telefon',
-          value: 'telefon',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Стац.',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'string',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          alias: 'p.landline_phone',
-          value: 'landline_phone',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
-        {
-          title: 'Направление',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'direction_json',
-          alias: 'p.direction_json',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Роль',
@@ -747,22 +163,97 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'permission_name',
           alias: 'p.permission_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
+        {
+          title: 'Телефон',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
+          ],
+          isShow: true,
+          width: '90',
+          alias: 'p.telefon',
+          value: 'telefon',
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
+        },
+        {
+          title: 'Стац.',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            //{
+            //  type: 'string',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
+          ],
+          isShow: true,
+          width: '150',
+          alias: 'p.landline_phone',
+          value: 'landline_phone',
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
+        },
+        //{
+        //  title: 'Направление',
+        //  type: 'default',
+        //  align: 'center',
+        //  fixed: {
+        //    value: false,
+        //    position: undefined,
+        //  },
+        //  sorts: [
+        //    {
+        //      type: 'text',
+        //      default: '',
+        //      value: '',
+        //      isShow: false,
+        //    },
+        //  ],
+        //  isShow: true,
+        //  width: '150',
+        //  value: 'direction_json',
+        //  alias: 'p.direction_json',
+        //  search: {
+        //    field: '',
+        //    isShow: true,
+        //  },
+        //},
         {
           title: 'Примечание',
           type: 'default',
@@ -772,21 +263,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
+            //{
+            //  type: 'text',
+            //  default: '',
+            //  value: '',
+            //  isShow: false,
+            //},
           ],
           isShow: true,
           width: '150',
           value: 'comment',
           alias: 'p.comment',
-          search: {
-            field: '',
-            isShow: true,
-          },
+          //search: {
+          //  field: '',
+          //  isShow: true,
+          //},
         },
         {
           title: 'Действия',
@@ -827,7 +318,7 @@ const config = {
         classes: [''], // List class
         width: '600px',
         method: 'get',
-        alias: 'personal',
+        alias: 'account',
         url: '/get/form/',
         name: 'Добавление аккаунта',
         getOnClose: true,
@@ -849,15 +340,33 @@ const config = {
                 alias: 'object_type',
                 filter: [],
               },
+              {
+                alias: 'account_objects',
+                filter: [
+                  { source: 'formData', type: 'num', value: 'id', field: 'id' },
+                ],
+              },
             ],
-            alias: 'personal',
+            alias: 'account',
             active: false,
             fields: [
+              textBlock({
+                label: 'Создал',
+                name: 'id',
+                placeholder: '',
+                notSend: true,
+                readonly: true,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+              }),
               stringField({
                 label: 'ФИО',
                 name: 'fio',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -869,7 +378,6 @@ const config = {
                 label: 'Краткое имя',
                 name: 'name',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -881,7 +389,6 @@ const config = {
                 label: 'Телефон',
                 name: 'telefon',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -893,7 +400,6 @@ const config = {
                 label: 'Email',
                 name: 'email',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -905,7 +411,6 @@ const config = {
                 label: 'Логин',
                 name: 'username',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -917,7 +422,6 @@ const config = {
                 label: 'Пароль',
                 name: 'password',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -927,7 +431,6 @@ const config = {
               }),
               dateField({
                 label: 'Дата рождения',
-                readonly: true,
                 name: 'birthday',
                 subtype: 'date',
                 placeholder: '',
@@ -940,10 +443,9 @@ const config = {
                 alias: 'p.date_status',
               }),
               selectField({
-                readonly: true,
                 label: 'Направления',
                 name: 'direction_json',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 // requestKey: 'direction_json',
                 stringify: true,
                 placeholder: '',
@@ -959,19 +461,6 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                // updateList: [
-                //   {
-                //     alias: 'doljnost_id',
-                //     filter: [
-                //       {
-                //         field: 'direction_id',
-                //         value: '',
-                //         source: 'formData',
-                //         type: 'num',
-                //       },
-                //     ],
-                //   },
-                // ],
                 updateList: [
                   {
                     alias: 'object_type',
@@ -985,12 +474,32 @@ const config = {
                     ],
                   },
                 ],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'chief_id',
+                    url: 'get/pagination_list/chief_id',
+                    filter: [
+                      {
+                        field: 'permission_id',
+                        type: 'num',
+                        value: '',
+                      },
+                      {
+                        field: 'direction_json',
+                        type: 'array',
+                        value: '',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Тип',
-                name: 'type',
+                name: 'object_types',
                 alias: 'object_type',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
                 class: [''],
@@ -1008,7 +517,6 @@ const config = {
                 requiredFields: ['direction_json'],
               }),
               selectField({
-                readonly: true,
                 label: 'Роль',
                 name: 'permission_id',
                 alias: 'permissions_account',
@@ -1031,7 +539,7 @@ const config = {
                     module: 'selects/getListUpdate',
                     field: 'chief_id',
                     url: 'get/pagination_list/chief_id',
-                    filters: [
+                    filter: [
                       {
                         field: 'permission_id',
                         type: 'num',
@@ -1067,15 +575,17 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'permission_id',
                     type: 'num',
+                    source: 'formData',
                     value: '',
                   },
                   {
                     field: 'direction_json',
                     type: 'array',
+                    source: 'formData',
                     value: '',
                   },
                 ],
@@ -1084,9 +594,8 @@ const config = {
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
-                value: '#ffffff',
+                //value: '#ffffff',
                 placeholder: '',
-                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -1098,7 +607,7 @@ const config = {
                 label: 'Руководитель',
                 name: 'is_chief',
                 placeholder: '',
-                readonly: true,
+                // readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
@@ -1108,24 +617,59 @@ const config = {
                 //validations: { required },
                 //isShow: false,
               }),
+              selectField({
+                label: 'Объекты',
+                name: 'object_json',
+                alias: 'account_objects',
+                subtype: 'multiple',
+                readonly: true,
+                // requestKey: 'direction_json',
+                stringify: true,
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: {},
+                bootstrapClass: [''],
+                // updateList: [
+                //   {
+                //     alias: 'account_id',
+                //     filter: [
+                //       {
+                //         field: 'direction_json',
+                //         value: '',
+                //         source: 'formData',
+                //         type: 'num',
+                //       },
+                //     ],
+                //   },
+                // ],
+              }),
             ],
             actions: [
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'text',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'account',
                 skipValidation: true,
               }),
               stringAction({
-                text: 'Создать',
+                text: 'Сохранить',
                 type: 'submit',
-                module: 'account/createData',
+                module: 'form/putForm',
+                name: 'saveFormId',
                 url: 'set/account',
-                name: 'createForm',
-                action: 'createForm',
+                action: 'saveFormId',
                 color: 'primary',
               }),
             ],
@@ -1147,7 +691,7 @@ const config = {
                 filter: [],
               },
             ],
-            alias: 'personal',
+            alias: '2account',
             active: false,
             fields: [
               stringField({
@@ -1238,7 +782,7 @@ const config = {
               selectField({
                 label: 'Направления',
                 name: 'direction_json',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 // requestKey: 'direction_json',
                 stringify: true,
                 placeholder: '',
@@ -1285,7 +829,7 @@ const config = {
                 label: 'Тип',
                 name: 'type',
                 alias: 'account_object_types',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
                 class: [''],
@@ -1325,7 +869,7 @@ const config = {
                     module: 'selects/getListUpdate',
                     field: 'chief_id',
                     url: 'get/pagination_list/chief_id',
-                    filters: [
+                    filter: [
                       {
                         field: 'permission_id',
                         type: 'num',
@@ -1343,7 +887,7 @@ const config = {
               autocompleteField({
                 label: 'Руководитель',
                 name: 'chief_id',
-                alias: 'permission_id',
+                // alias: 'permission_id',
                 subtype: 'single',
                 placeholder: '',
                 class: [''],
@@ -1365,42 +909,22 @@ const config = {
                   {
                     field: 'permission_id',
                     type: 'num',
+                    source: null,
                     value: '',
                   },
                   {
                     field: 'direction_json',
                     type: 'array',
+                    source: null,
                     value: '',
                   },
                 ],
                 requiredFields: ['direction_json', 'permission_id'],
               }),
-              // selectField({
-              //   label: 'Объекты',
-              //   name: 'object_json',
-              //   alias: 'object_json',
-              //   stringify: true,
-              //   disabled: true,
-              //   readonly: true,
-              //   placeholder: '',
-              //   class: [''],
-              //   value: [],
-              //   selectOption: {
-              //     text: 'name',
-              //     value: 'id',
-              //   },
-              //   items: [],
-              //   position: {
-              //     cols: 12,
-              //     sm: 6,
-              //   },
-              //   validations: {},
-              //   bootstrapClass: [''],
-              // }),
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
-                value: '#ffffff',
+                value: '#000000',
                 placeholder: '',
                 readonly: false,
                 disabled: false,
@@ -1430,7 +954,7 @@ const config = {
               stringAction({
                 text: 'Закрыть',
                 type: 'submit',
-                color: 'black',
+                color: 'text',
                 name: 'closePopup',
                 action: 'closePopup',
                 to: 'account',
@@ -1444,589 +968,6 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
-              }),
-            ],
-          },
-          // {
-          //   id: 0,
-          //   name: 'Основные',
-          //   type: FormDefault,
-          //   detail: true,
-          //   path: 'edit',
-          //   lists: [
-          //     { alias: 'permissions_account', filter: [] },
-          //     { alias: 'chief_id', filter: [] },
-          //     { alias: 'direction_json', filter: [] },
-          //     { alias: 'direction_id', filter: [] },
-          //     { alias: 'grajdanstvo_id', filter: [] },
-          //   ],
-          //   alias: 'personal',
-          //   active: false,
-          //   fields: [
-          //     stringField({
-          //       label: 'ФИО',
-          //       name: 'fio',
-          //       placeholder: '',
-          //       readonly: false,
-          //       class: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       bootstrapClass: [''],
-          //     }),
-          //     stringField({
-          //       label: 'Краткое имя',
-          //       name: 'name',
-          //       placeholder: '',
-          //       readonly: false,
-          //       class: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       bootstrapClass: [''],
-          //     }),
-          //     dateField({
-          //       label: 'Дата рождения',
-          //       name: 'birthday',
-          //       subtype: 'range',
-          //       placeholder: '',
-          //       classes: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 12,
-          //       },
-          //       bootstrapClass: [''],
-          //       alias: 'p.date_status',
-          //     }),
-          //     stringField({
-          //       label: 'Телефон',
-          //       name: 'telefon',
-          //       placeholder: '',
-          //       readonly: false,
-          //       class: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       bootstrapClass: [''],
-          //     }),
-          //     stringField({
-          //       label: 'Email',
-          //       name: 'email',
-          //       placeholder: '',
-          //       readonly: false,
-          //       class: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       bootstrapClass: [''],
-          //     }),
-          //     stringField({
-          //       label: 'Логин',
-          //       name: 'login',
-          //       placeholder: '',
-          //       readonly: false,
-          //       class: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       bootstrapClass: [''],
-          //     }),
-          //     stringField({
-          //       label: 'Пароль',
-          //       name: 'password',
-          //       placeholder: '',
-          //       readonly: false,
-          //       class: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       bootstrapClass: [''],
-          //     }),
-          //     selectField({
-          //       label: 'Роль',
-          //       name: 'permission_id',
-          //       alias: 'permissions_account',
-          //       placeholder: '',
-          //       class: [''],
-          //       selectOption: {
-          //         text: 'name',
-          //         value: 'id',
-          //       },
-          //       items: [],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       validations: { required },
-          //       bootstrapClass: [''],
-          //       dependence: [
-          //         {
-          //           type: 'api',
-          //           module: 'selects/getListUpdate',
-          //           field: 'chief_id',
-          //           url: 'get/pagination_list/chief_id',
-          //         },
-          //       ],
-          //     }),
-          //     autocompleteField({
-          //       label: 'Руководитель',
-          //       name: 'chief_id',
-          //       alias: 'permission_id',
-          //       subtype: 'single',
-          //       placeholder: '',
-          //       class: [''],
-          //       selectOption: {
-          //         text: 'name',
-          //         value: 'id',
-          //       },
-          //       items: [],
-          //       page: 1,
-          //       search: '',
-          //       url: 'get/pagination_list/chief_id',
-          //       position: {
-          //         cols: 12,
-          //         sm: 6,
-          //       },
-          //       validations: { required },
-          //       bootstrapClass: [''],
-
-          //       filters: [
-          //         {
-          //           field: 'permission_id',
-          //           type: 'num',
-          //           value: '',
-          //         },
-          //       ],
-          //     }),
-          //     selectField({
-          //       label: 'Направления',
-          //       name: 'direction_json',
-          //       alias: 'direction_json',
-          //       placeholder: '',
-          //       class: [''],
-          //       selectOption: {
-          //         text: 'name',
-          //         value: 'id',
-          //       },
-          //       items: [],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       validations: { required },
-          //       bootstrapClass: [''],
-          //     }),
-          //     selectField({
-          //       label: 'Объекты',
-          //       name: 'object_json',
-          //       alias: 'object_json',
-          //       placeholder: '',
-          //       class: [''],
-          //       selectOption: {
-          //         text: 'name',
-          //         value: 'id',
-          //       },
-          //       items: [],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       validations: { required },
-          //       bootstrapClass: [''],
-          //     }),
-          //     colorPicker({
-          //       label: 'Цвет',
-          //       name: 'color',
-          //       placeholder: '',
-          //       readonly: false,
-          //       class: [''],
-          //       position: {
-          //         cols: 12,
-          //         sm: 4,
-          //       },
-          //       bootstrapClass: [''],
-          //     }),
-          //   ],
-          //   actions: [
-          //     stringAction({
-          //       text: 'Сохранить',
-          //       type: 'submit',
-          //       module: '',
-          //       name: 'saveForm',
-          //       nextForm: true,
-          //     }),
-          //   ],
-          // },
-          {
-            id: 1,
-            name: 'Банковские карты',
-            type: TableDefault,
-            path: 'edit',
-            active: false,
-            config: consumptionConfig,
-          },
-          {
-            id: 2,
-            name: 'Сканы',
-            type: FormDocuments,
-            path: 'edit',
-            detail: true,
-            lists: [
-              'user_keys',
-              'habitation_id',
-              'account_id',
-              'direction_id',
-              'grajdanstvo_id',
-            ],
-            alias: 'personal',
-            active: false,
-            //fields: [
-            //  stringField({
-            //    label: 'ФИО',
-            //    name: 'name',
-            //    placeholder: '',
-            //    readonly: false,
-            //    class: [''],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    bootstrapClass: [''],
-            //    //validations: { required },
-            //    //isShow: false,
-            //  }),
-            //  stringField({
-            //    label: 'Телефон',
-            //    name: 'telefon',
-            //    placeholder: '',
-            //    readonly: false,
-            //    class: [''],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    bootstrapClass: [''],
-            //    //validations: { required },
-            //    //isShow: false,
-            //  }),
-            //  selectField({
-            //    label: 'Гражданство',
-            //    name: 'status',
-            //    alias: 'grajdanstvo_id',
-            //    placeholder: '',
-            //    class: [''],
-            //    selectOption: {
-            //      text: 'name',
-            //      value: 'id',
-            //    },
-            //    items: [],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    validations: { required },
-            //    bootstrapClass: [''],
-            //  }),
-            //  stringField({
-            //    label: 'Примечание',
-            //    name: 'comment',
-            //    placeholder: '',
-            //    readonly: false,
-            //    class: [''],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    bootstrapClass: [''],
-            //    //validations: { required },
-            //    //isShow: false,
-            //  }),
-            //  dateField({
-            //    label: ' Дата рождения',
-            //    name: 'data_rojd',
-            //    subtype: 'date',
-            //    placeholder: '',
-            //    classes: [''],
-            //    position: {
-            //      cols: 12,
-            //      sm: 3,
-            //    },
-            //    validations: { required },
-            //    bootstrapClass: ['changeSelect'],
-            //  }),
-            //  selectField({
-            //    label: 'Личный ключ',
-            //    name: 'user_key',
-            //    subtype: 'multiselect',
-            //    placeholder: '',
-            //    class: [''],
-            //    selectOption: {
-            //      text: 'name',
-            //      value: 'id',
-            //    },
-            //    items: [],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    validations: { required },
-            //    bootstrapClass: [''],
-            //  }),
-            //  selectField({
-            //    label: 'Направление',
-            //    name: 'direction_json',
-            //    alias: 'direction_id',
-            //    subtype: 'multiselect',
-            //    placeholder: '',
-            //    class: [''],
-            //    selectOption: {
-            //      text: 'name',
-            //      value: 'id',
-            //    },
-            //    items: [],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    validations: { required },
-            //    bootstrapClass: [''],
-            //  }),
-            //  selectField({
-            //    label: 'Доступ',
-            //    name: 'account_json',
-            //    alias: 'account_id',
-            //    subtype: 'multiselect',
-            //    placeholder: '',
-            //    class: [''],
-            //    selectOption: {
-            //      text: 'name',
-            //      value: 'id',
-            //    },
-            //    items: [],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    validations: { required },
-            //    bootstrapClass: [''],
-            //  }),
-            //  checkboxField({
-            //    label: 'Штатный',
-            //    name: 'in_state',
-            //    placeholder: '',
-            //    readonly: false,
-            //    class: [''],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    bootstrapClass: [''],
-            //    //validations: { required },
-            //    //isShow: false,
-            //  }),
-            //  selectField({
-            //    label: 'Проживание',
-            //    name: 'habitation_id',
-            //    alias: 'direction_json',
-            //    placeholder: '',
-            //    class: [''],
-            //    selectOption: {
-            //      text: 'name',
-            //      value: 'id',
-            //    },
-            //    items: [],
-            //    position: {
-            //      cols: 12,
-            //      sm: 4,
-            //    },
-            //    defaultItems: [
-            //      {
-            //        id: 11,
-            //        name: '--Самостоятельное--',
-            //        bank_id: 11,
-            //      },
-            //    ],
-            //    validations: { required },
-            //    bootstrapClass: [''],
-            //  }),
-            //  // autocompleteField({
-            //  //   label: 'Линейщик',
-            //  //   name: 'personal_id',
-            //  //   subtype: 'single',
-            //  //   placeholder: '',
-            //  //   class: [''],
-            //  //   selectOption: {
-            //  //     text: 'name',
-            //  //     value: 'id',
-            //  //   },
-            //  //   items: [],
-            //  //   page: 1,
-            //  //   search: '',
-            //  //   url: 'process.env.VUE_APP_API_URL/get/pagination_list/personal',
-            //  //   position: {
-            //  //     cols: 12,
-            //  //     sm: 4,
-            //  //   },
-            //  //   validations: { required },
-            //  //   bootstrapClass: [''],
-            //  //   filters: [
-            //  //     {
-            //  //       field: 'object_id',
-            //  //       value: '',
-            //  //     },
-            //  //   ],
-            //  // }),
-            //],
-            documents: [
-              {
-                type: 'passport',
-                name: 'Паспорт',
-                fields: [
-                  stringField({
-                    label: 'Серия',
-                    name: 'seriya',
-                    placeholder: '',
-                    readonly: false,
-                    class: [''],
-                    position: {
-                      cols: 12,
-                      sm: 4,
-                    },
-                    bootstrapClass: [''],
-                    //validations: { required },
-                    //isShow: false,
-                  }),
-                  stringField({
-                    label: 'Номер',
-                    name: 'number',
-                    placeholder: '',
-                    readonly: false,
-                    class: [''],
-                    position: {
-                      cols: 12,
-                      sm: 4,
-                    },
-                    bootstrapClass: [''],
-                    //validations: { required },
-                    //isShow: false,
-                  }),
-                  stringField({
-                    label: 'К/П',
-                    name: 'code',
-                    placeholder: '',
-                    readonly: false,
-                    class: [''],
-                    position: {
-                      cols: 12,
-                      sm: 4,
-                    },
-                    bootstrapClass: [''],
-                    //validations: { required },
-                    //isShow: false,
-                  }),
-                  dateField({
-                    label: 'Дата выдачи',
-                    name: 'date_issue',
-                    subtype: 'date',
-                    placeholder: '',
-                    classes: [''],
-                    position: {
-                      cols: 12,
-                      sm: 6,
-                    },
-                    validations: { required },
-                    bootstrapClass: ['changeSelect'],
-                  }),
-                  stringField({
-                    label: 'Кем выдан',
-                    name: 'issued_by',
-                    placeholder: '',
-                    readonly: false,
-                    class: [''],
-                    position: {
-                      cols: 12,
-                      sm: 12,
-                    },
-                    bootstrapClass: [''],
-                    //validations: { required },
-                    //isShow: false,
-                  }),
-                ],
-              },
-              {
-                type: 'Snils',
-                name: 'Снилс',
-                fields: [
-                  stringField({
-                    label: 'Номер',
-                    name: 'name',
-                    placeholder: '',
-                    readonly: false,
-                    class: [''],
-                    position: {
-                      cols: 12,
-                      sm: 12,
-                    },
-                    bootstrapClass: [''],
-                    //validations: { required },
-                    //isShow: false,
-                  }),
-                ],
-              },
-              {
-                type: 'passport_page_2',
-                name: 'Паспорт стр.2',
-                fields: [
-                  stringField({
-                    label: 'Адрес регистрации',
-                    name: 'issued_by',
-                    placeholder: '',
-                    readonly: false,
-                    class: [''],
-                    position: {
-                      cols: 12,
-                      sm: 12,
-                    },
-                    bootstrapClass: [''],
-                    //validations: { required },
-                    //isShow: false,
-                  }),
-                ],
-              },
-              {
-                type: 'inn',
-                name: 'ИНН',
-                fields: [
-                  stringField({
-                    label: 'Адрес регистрации',
-                    name: 'issued_by',
-                    placeholder: '',
-                    readonly: false,
-                    class: [''],
-                    position: {
-                      cols: 12,
-                      sm: 12,
-                    },
-                    bootstrapClass: [''],
-                    //validations: { required },
-                    //isShow: false,
-                  }),
-                ],
-              },
-            ],
-            actions: [
-              stringAction({
-                text: 'Сохранить',
-                type: 'submit',
-                module: '',
-                name: 'saveForm',
-                nextForm: true,
               }),
             ],
           },
@@ -2056,12 +997,13 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          // {
-          //   label: 'Скачать',
-          //   class: ['v-table-button--custom'],
-          //   function: consolePanel,
-          //   backgroundColor: '#fff',
-          // },
+          //{
+          //  label: 'Добавить',
+          //  class: ['v-table-button--custom'],
+          //  url: '$IconSetting',
+          //  function: consolePanel,
+          //  backgroundColor: '#fff',
+          //},
         ],
       },
       head: [
@@ -2254,7 +1196,7 @@ const config = {
         classes: [''], // List class
         width: '1000px',
         method: 'get',
-        alias: 'personal',
+        alias: 'account3',
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
@@ -2271,7 +1213,7 @@ const config = {
               'direction_id',
               'grajdanstvo_id',
             ],
-            alias: 'personal',
+            alias: 'sysaccount',
             active: false,
             fields: [
               stringField({
@@ -2350,7 +1292,7 @@ const config = {
               selectField({
                 label: 'Личный ключ',
                 name: 'user_key',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -2369,7 +1311,7 @@ const config = {
                 label: 'Направление',
                 name: 'direction_json',
                 alias: 'direction_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -2388,7 +1330,7 @@ const config = {
                 label: 'Доступ',
                 name: 'account_json',
                 alias: 'account_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -2442,33 +1384,6 @@ const config = {
                 validations: { required },
                 bootstrapClass: [''],
               }),
-              // autocompleteField({
-              //   label: 'Линейщик',
-              //   name: 'personal_id',
-              //   subtype: 'single',
-              //   placeholder: '',
-              //   class: [''],
-              //   selectOption: {
-              //     text: 'name',
-              //     value: 'id',
-              //   },
-              //   items: [],
-              //   page: 1,
-              //   search: '',
-              //   url: 'process.env.VUE_APP_API_URL/get/pagination_list/personal',
-              //   position: {
-              //     cols: 12,
-              //     sm: 4,
-              //   },
-              //   validations: { required },
-              //   bootstrapClass: [''],
-              //   filters: [
-              //     {
-              //       field: 'object_id',
-              //       value: '',
-              //     },
-              //   ],
-              // }),
             ],
             actions: [
               stringAction({

@@ -401,7 +401,8 @@ const table = {
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          alias: el.aliasFilter,
+          // alias: el.aliasFilter,
+          alias: el.name,
           type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
@@ -429,10 +430,10 @@ const table = {
       }
     }
     const closePopupForm = (route) => {
+      console.log('routerouteroute', route)
       if (route) router.push({ name: route })
       else router.back()
       popupForm.value.isShow = false
-      if (props?.options?.detail?.getOnClose) getItems()
     }
     const addItem = () => {
       if (options.detail.type === 'popup') {
@@ -508,7 +509,6 @@ const table = {
           },
           { deep: true }
         )
-
 
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
@@ -620,7 +620,8 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some(el => {
-            console.log(checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type)
+            console.log('condition1')
+            console.log(checkIncludesPermissions(el), checkIncludesDirections(el), el.type)
             return checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type
           })
           // if ()
@@ -628,8 +629,26 @@ const table = {
       })
     })
 
-    const clickHandler = () => {
-      emit('closePopup')
+    const insertStyle = (row) => {
+      let styles = {}
+      if (props.options.options.styleRow) {
+        props.options.options.styleRow.forEach((el) => {
+          console.log(el.result, row)
+          const style = el.result[row[el.targetKey]]
+          for (let key in style) {
+            console.log(style, key)
+            styles = {
+              ...style
+            }
+          }
+        })
+      }
+      console.log(styles)
+      return styles
+    }
+
+    const clickHandler = ({ action }) => {
+      emit('closePopup', action.to)
     }
 
     return {
@@ -685,6 +704,7 @@ const table = {
       panelHandler,
       availablePanelBtn,
       clickHandler,
+      insertStyle,
     }
   },
 }

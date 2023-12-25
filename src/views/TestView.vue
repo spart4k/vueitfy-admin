@@ -355,7 +355,7 @@ export default {
           selectField({
             label: 'Личный ключ',
             name: 'user_key',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -374,7 +374,7 @@ export default {
             label: 'Направление',
             name: 'direction_json',
             alias: 'direction_id',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -393,7 +393,7 @@ export default {
             label: 'Доступ',
             name: 'account_json',
             alias: 'account_id',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -856,7 +856,7 @@ export default {
           },
           {
             id: 1,
-            name: 'Основные1',
+            name: 'Основные',
             type: () => {},
             //detail: true,
             lists: ['avatar_with_user_key_id'],

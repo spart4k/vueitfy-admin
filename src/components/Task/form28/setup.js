@@ -92,7 +92,10 @@ const Form28 = defineComponent({
       if ((() => true)()) {
         // TODO: Сюда закинуть data из строки выше
         const { success } = await changeStatustask()
-        success && ctx.emit('closePopup')
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
       }
     }
 

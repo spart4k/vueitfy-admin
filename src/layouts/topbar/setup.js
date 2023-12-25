@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch, getCurrentInstance } from 'vue'
 import { useStore } from '@/store'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useMobile from '../Adaptive/checkMob.js'
@@ -17,6 +17,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const messages = ref(0)
+    const { $vuetify } = getCurrentInstance().proxy
 
     const pageName = computed(() => {
       let name = 'CRM'
@@ -72,6 +73,13 @@ export default {
     const setNavmenu = () => {
       store.commit('changeMenuStatus', !openMenu.value)
     }
+
+    watch(
+      () => $vuetify.theme.dark,
+      () => {
+        localStorage.setItem('darkTheme', $vuetify.theme.dark)
+      }
+    )
 
     return {
       isMobile,

@@ -234,6 +234,7 @@ const routes = [
         path: ':id',
         meta: {
           mode: ['edit'],
+          label: 'Объект - редактирование',
         },
         component: Detail,
       },
@@ -255,6 +256,7 @@ const routes = [
         path: '/account/add',
         meta: {
           mode: 'add',
+          label: 'Добавление аккаунта',
         },
         component: Detail,
       },
@@ -264,6 +266,7 @@ const routes = [
         component: Detail,
         meta: {
           mode: ['edit'],
+          label: 'Редактирования аккаунта',
         },
       },
     ],
@@ -360,6 +363,10 @@ const routes = [
       {
         name: 'tasks/:id',
         path: ':id',
+        //mode: ['edit'],
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
     ],
@@ -376,16 +383,16 @@ const routes = [
     component: ZayavkaView,
     children: [
       {
-        name: 'zayavka/:id',
-        path: ':id',
-        component: Detail,
-      },
-      {
         name: 'zayavka-add',
         path: '/zayavka/add',
         meta: {
           mode: ['add'],
         },
+        component: Detail,
+      },
+      {
+        name: 'zayavka/:id',
+        path: ':id',
         component: Detail,
       },
     ],
@@ -517,6 +524,7 @@ const routes = [
         path: '/schedule/edit',
         meta: {
           mode: 'edit',
+          label: 'Редактирование',
         },
         component: Detail,
       },

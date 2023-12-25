@@ -462,16 +462,15 @@ const table = {
 
         const date = new Date(year, month, day);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
-
-        
-
+        //console.log(dataCell);
         const porpsContent = {
           account_id: dataCell.account_id,
           account_name: dataCell.account_name,
           hour,
           date: formattedDate,
         }
-        
+
+
         if (dataCell.hasOwnProperty(day)) {
           console.log('Ключ "pattern" существует в объекте regex');
           porpsContent.id = dataCell[day][0].id
@@ -489,9 +488,9 @@ const table = {
             router.push(
               {
                 name: `${route.name}-new`,
-                params: {
-                  id: row.row[routeKey]
-                }
+                // params: {
+                //   id: row.row[routeKey]
+                // }
               }
             )
           } else {
@@ -542,7 +541,14 @@ const table = {
     const closePopupForm = () => {
       router.back()
       popupForm.value.isShow = false
+      //if (props?.options?.detail?.getOnClose) getItems()
     }
+    // const closePopupForm = (route) => {
+    //   if (route) router.push({ name: route })
+    //   else router.back()
+    //   popupForm.value.isShow = false
+    //   if (props?.options?.detail?.getOnClose) getItems()
+    // }
     const addItem = () => {
       if (props.options.detail.type === 'popup') {
         //router.push({
@@ -556,7 +562,7 @@ const table = {
         popupForm.value.isShow = true
       }
     }
-    const panelHandler = (button) => {
+    const panelHandler = async (button) => {
       const { type } = button
       if (button.function) button.function()
       if (type === 'addItem') {
@@ -567,6 +573,8 @@ const table = {
         acceptData.value.popup = true
       } else if (type === 'changeUrl') {
         getItems()
+      }  else if (button.label === 'Обновить') {
+        await getItems()
       }
     }
     const countingDistances = () => {

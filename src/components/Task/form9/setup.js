@@ -19,7 +19,7 @@ const Form8 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }) {
+  setup({ data }, ctx) {
     const context = {
       root: {
         store,
@@ -284,7 +284,7 @@ const Form8 = defineComponent({
       console.log(newArray)
     }
 
-    let sendTaskFinish = () => {
+    let sendTaskFinish = async () => {
       //   $.ajax('/common/save/personal', {
       //     method: "POST",
       //     data: {id: <?php echo $entity['id']; ?>, status: 5},
@@ -317,7 +317,11 @@ const Form8 = defineComponent({
           }),
       })
 
-      changeStatus()
+      const { success } = await changeStatus()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     return {
       addFiles,

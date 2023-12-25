@@ -44,7 +44,7 @@ const ThirdPopupView = defineComponent({
         value: data.entity.object_name,
       },
     }
-
+    const account_id = computed(() => store.state.user.account_id)
     const isShowBtnArray = ref([])
     const isFormValid = ref(false)
     const isImgPopupOpen = ref(false)
@@ -99,7 +99,7 @@ const ThirdPopupView = defineComponent({
             status: 2,
             data: {
               process_id: data.task.process_id,
-              account_id: 25,
+              account_id: account_id,
               task_id: data.task.id,
               parent_action: data.task.parent_action,
               personal_id: data.entity.id,
@@ -112,7 +112,10 @@ const ThirdPopupView = defineComponent({
     })
     let sendDoneTask = async () => {
       const { success } = await doneRequest()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     console.log(imagePreview.value)
     let isLoadImage = ref(false)
@@ -167,8 +170,7 @@ const ThirdPopupView = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            id: 1,
-            path_doc: `/personal_doc/${fileName}`,
+            data: { id: 1, path_doc: `/personal_doc/${fileName}` },
           }),
       })
     }

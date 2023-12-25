@@ -50,7 +50,7 @@
           x-small
           >$IconCheckoutMessage</v-icon
         >
-        {{
+        <!-- {{
           $props.selectedAllMails && !$props.allMails.loadAll
             ? $props.allSelectionFilter.is_read.value
               ? 'Прочитано'
@@ -58,7 +58,8 @@
             : intersection.read.length >= $props.selectedMails.length
             ? 'Не прочитаны'
             : 'Прочитано'
-        }}
+        }} -->
+        Не прочитаны
       </v-btn>
       <v-btn
         class="v-controls-list_item"
@@ -76,16 +77,14 @@
         В папку
       </v-btn>
       <v-menu
-        v-if="
-          $props?.filterData?.folderData?.length && $props.selectedMails.length
-        "
+        v-if="intersection.foldersCount?.length && $props.selectedMails.length"
         content-class="v-controls-list_menu"
         activator="#menu-activator"
         :close-on-content-click="false"
       >
         <v-list>
           <v-list-item
-            v-for="item in $props.filterData.folderData"
+            v-for="item in intersection.foldersCount"
             :key="item.id"
             :class="[
               'v-controls-list_menu-item',
@@ -343,7 +342,7 @@
             >
               <template slot="item" slot-scope="{ item }">
                 <div class="d-flex flex-column">
-                  <p>{{ item.fio }}{{ item.id }}</p>
+                  <p>{{ item.fio }}</p>
                   <p class="v-controls-popup_subtitle">{{ item.doljnost }}</p>
                 </div>
               </template>

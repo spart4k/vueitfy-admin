@@ -41,7 +41,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: $table-background;
+  background-color: var(--v-pageBackground-base);
 }
 
 $paddingCell: 5px;
@@ -69,10 +69,17 @@ $borderColor: rgba(0,0,0,.3);
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 10px;
   }
 }
 .theme--light.v-tabs-items {
   background-color: unset;
+}
+.theme--dark.v-navigation-drawer {
+  background-color: var(--v-background-base);
+}
+.theme--dark.v-expansion-panels .v-expansion-panel {
+  background-color: var(--v-background-base);
 }
 .v {
   &-table {
@@ -477,6 +484,10 @@ $borderColor: rgba(0,0,0,.3);
       flex: 1;
     }
   }
+}
+
+.v-window-item {
+  background-color: var(--v-background-base);
 }
 
 .v-color-picker__dot {

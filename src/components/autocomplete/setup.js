@@ -24,7 +24,6 @@ export default {
     },
   },
   setup(props, ctx) {
-    console.log(props)
     const { emit } = ctx
     const loading = ref(false)
     const proxyValue = ref(props.value)
@@ -36,8 +35,19 @@ export default {
       totalPage: null,
       countRows: null,
     }
-
+    const checkedAll = computed(
+      () => proxyValue.value.length === props.field.items.length
+    )
+    const selectAll = () => {
+      // console.log('selectAll')
+      if (checkedAll.value) {
+        proxyValue.value = []
+      } else {
+        proxyValue.value = props.field.items.slice()
+      }
+    }
     const querySelections = async (params, isObs = false) => {
+      if (props.field.type === 'select') return
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
 
@@ -66,7 +76,6 @@ export default {
         })
 
         Object.assign(queryData, data)
-        // data delete('rows')
 
         if (
           data?.rows?.length ||
@@ -102,10 +111,13 @@ export default {
         }
       }
     }
-
+    const icon = computed(() =>
+      selectAll.value ? 'mdi-close-box' : 'mdi-minus-box'
+    )
     const removeSelected = () => {
       proxyValue.value = null
     }
+
     const update = (value) => {
       const item = props.field.items.find((el) => el.id === value)
       emit('input', value)
@@ -113,10 +125,14 @@ export default {
     }
 
     const disabled = computed(() => {
-      return props.field.requiredFields
-        ? props.field.requiredFields.some((el) => !props.formData[el])
+      return props.field.disabled || props.field.requiredFields
+        ? props.field.disabled ||
+            props.field.requiredFields.some((el) => !props.formData[el])
         : false
     })
+
+    //const styleChip = computed(() =>)
+
     watch(
       () => searchProps.value,
 
@@ -132,29 +148,16 @@ export default {
         }
       }
     )
+
     watch(
       () => proxyValue.value,
       (newVal) => {
         emit('input', newVal)
       }
     )
-    onMounted(() => {
-      // querySelections
-      // console.log(
-      //   'isAtFinalPage',
-      //   queryData.totalPage,
-      //   '>',
-      //   queryData.page,
-      //   isAtFinalPage
-      // )
-      // console.log(
-      //   'isOverLimitPage',
-      //   queryData.total,
-      //   '<=',
-      //   queryData.countRows,
-      //   isOverLimitPage
-      // )
-    })
+
+    onMounted(() => {})
+
     return {
       proxyValue,
       endIntersect,
@@ -164,6 +167,9 @@ export default {
       searchProps,
       disabled,
       loading,
+      selectAll,
+      checkedAll,
+      icon,
     }
   },
 }

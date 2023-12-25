@@ -4,6 +4,7 @@ import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import moment from 'moment/moment'
 
 const Form15 = defineComponent({
   name: 'Form15',
@@ -24,6 +25,9 @@ const Form15 = defineComponent({
         store,
       },
     }
+    const dateTarget = moment(props.data.entity.date_target).format(
+      'DD.MM.YYYY'
+    )
     const isFormConfirmed = ref(null)
     let confirmData = null
     const infoObj = {
@@ -132,16 +136,22 @@ const Form15 = defineComponent({
       console.log('confirm')
       await setPersonalTarget()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
     const reject = async () => {
       isFormConfirmed.value = false
       console.log('confirm')
       await setPersonalTarget()
       const { success } = await changeStatusTask()
-      success && ctx.emit('closePopup')
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
-    return { infoObj, confirm, reject }
+    return { infoObj, confirm, reject, entity: props.data.entity, dateTarget }
   },
 })
 export default Form15

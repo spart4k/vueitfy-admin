@@ -6,7 +6,7 @@
         <a
           download
           :href="
-            'https://test.api.personal-crm.ru' + data.data.doc_ident.path_doc
+            'http://10.63.1.132:3000/file/get' + data.data.doc_ident.path_doc
           "
           ><v-icon left> $IconDocument </v-icon></a
         >
@@ -70,18 +70,19 @@
       >
 
       <v-col cols="12"
-        ><span class="font-weight-bold">Заказчик:</span>
+        ><span class="font-weight-bold">Заказчик: </span>
         <span>{{ data.data.account.name }}</span></v-col
       ><v-col cols="12 mb-4"
         ><span
-          ><span class="font-weight-bold">Моб.</span> {{ mobilePhone }} Стац.
-          {{ landPhone }}</span
+          ><span class="">Моб.</span> {{ mobilePhone }}
+          <span class="font-weight-bold">Стац.</span> {{ landPhone }}</span
         ></v-col
       >
     </v-row>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
       <v-btn
+        small
         :disabled="!selectName || !price || !file"
         color="info"
         class="mr-3"
@@ -90,7 +91,7 @@
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

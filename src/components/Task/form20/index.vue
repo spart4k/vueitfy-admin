@@ -19,7 +19,9 @@
         <v-row>
           <v-col>
             <span>Скан:</span>
-            <a target="_blank" :href="'#'"
+            <a
+              download
+              :href="'http://10.63.2.100:3003/file/get' + doc.path_doc"
               ><v-icon left small> $IconDocument </v-icon></a
             >
           </v-col>
@@ -60,11 +62,12 @@
         @click="completeTask"
         class="mr-2"
         color="info"
+        small
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey">
+      <v-btn @click="$emit('closePopup')" color="blue-grey" small>
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>

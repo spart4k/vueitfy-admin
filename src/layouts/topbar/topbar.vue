@@ -34,6 +34,13 @@
         </v-btn>
       </template>
       <v-list>
+        <v-list-item style="width: 72px" class="v-topbar-menu__list-item">
+          <v-switch
+            v-model="$vuetify.theme.dark"
+            inset
+            persistent-hint
+          ></v-switch>
+        </v-list-item>
         <v-list-item
           v-for="(item, index) in itemSecondMenu"
           :key="index"
