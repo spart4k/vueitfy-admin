@@ -155,7 +155,6 @@
               :readonly="readonlyField(field)"
             />
             <v-row class="d-flex" v-else-if="showField('radioPanel', field)">
-              {{ formData[field.name] }}
               <v-btn
                 class="flex-grow-1"
                 :text="formData[field.name] !== item.value"
@@ -165,7 +164,7 @@
                 @click="formData[field.name] = item.value"
                 :readonly="readonlyField(field)"
               >
-                {{ item.text }}/{{ formData[field.name] }}/{{ item.value }}
+                {{ item.text }}
               </v-btn>
             </v-row>
             <v-btn
