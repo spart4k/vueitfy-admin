@@ -14,7 +14,7 @@
         </p>
         <v-tabs
           style="flex: unset"
-          v-model="detail.activeTab"
+          v-model="activeTab"
           background-color="transparent"
           color="basil"
           class="p-5"
@@ -25,7 +25,7 @@
           </v-tab>
         </v-tabs>
       </div>
-      <v-tabs-items v-model="detail.activeTab">
+      <v-tabs-items v-model="activeTab">
         <v-tab-item v-for="item in availableTabs" :key="item.id">
           <!--{{ item.type }}-->
           <component

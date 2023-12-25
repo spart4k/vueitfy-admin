@@ -624,7 +624,7 @@ const documentConfigEdit = {
     },
     {
       title: 'Скан-копия/фото',
-      type: 'actions',
+      type: 'download',
       align: 'center',
       fixed: {
         value: false,
@@ -973,7 +973,7 @@ const documentConfig = {
     },
     {
       title: 'Скан-копия/фото',
-      type: 'actions',
+      type: 'download',
       align: 'center',
       fixed: {
         value: false,
@@ -2669,6 +2669,7 @@ const defaultForm = [
             subtype: 'multiple',
             name: 'direction_id',
             alias: 'direction_id_logistic',
+            requestKey: 'direction_json',
             placeholder: '',
             class: [''],
             value: '',
@@ -2718,6 +2719,7 @@ const defaultForm = [
             subtype: 'multiple',
             name: 'object_id',
             alias: 'object_json',
+            requestKey: 'object_json',
             //subtype: 'single',
             placeholder: '',
             class: [''],
@@ -3338,21 +3340,21 @@ const config = {
           //  function: consolePanel,
           //  backgroundColor: '#fff',
           //},
-          {
-            label: 'Добавить персонал',
-            class: ['v-table-button--custom'],
-            type: 'changeUrl',
-            url: 'personal-add',
-            backgroundColor: '#fff',
-            isShow: {
-              condition: [
-                {
-                  permissions: [1],
-                  type: true,
-                },
-              ]
-            }
-          },
+          //{
+          //  label: 'Добавить персонал',
+          //  class: ['v-table-button--custom'],
+          //  type: 'changeUrl',
+          //  url: 'personal-add',
+          //  backgroundColor: '#fff',
+          //  isShow: {
+          //    condition: [
+          //      {
+          //        permissions: [1],
+          //        type: true,
+          //      },
+          //    ]
+          //  }
+          //},
         ],
       },
       head: [
