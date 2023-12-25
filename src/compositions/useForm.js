@@ -746,6 +746,7 @@ export default function ({
   }
 
   const changeCheckbox = (field) => {
+    console.log('change checkbox')
     //showField(field.type, field)
     //setFields()
     rebuildFormData()
@@ -1023,9 +1024,9 @@ export default function ({
         }
       })
     if (field.isShow.conditions && field.isShow.conditions.length) {
-      if (field.name === 'print_form_key') {
-        console.log(condition())
-      }
+      //if (field.name === 'print_form_key') {
+      //  console.log(condition())
+      //}
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
@@ -1073,6 +1074,7 @@ export default function ({
   watch(
     () => formData,
     () => {
+      console.log('change formData')
       form?.fields?.forEach((el) => {
         showField(el.type, el)
       })

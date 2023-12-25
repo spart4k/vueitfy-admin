@@ -2692,6 +2692,26 @@ const defaultForm = [
                 alias: 'object_id'
               },
             ],
+            updateList: [
+              {
+                alias: 'brigadirs',
+                filter: [
+                  {
+                    field: 'object_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'array',
+                  },
+                  {
+                  field: 'direction_id',
+                  //alias: 'direction_json',
+                  value: '',
+                  source: 'formData',
+                  type: 'array'
+                },
+                ],
+              },
+            ],
           }),
           autocompleteField({
             label: 'Объект',
@@ -2734,26 +2754,26 @@ const defaultForm = [
               //  url: 'get/pagination_list/brigadirs',
               //},
             ],
-             updateList: [
-               {
-                 alias: 'brigadirs',
-                 filter: [
-                   {
-                     field: 'object_id',
-                     value: '',
-                     source: 'formData',
-                     type: 'array',
-                   },
-                   {
-                    field: 'direction_id',
-                    //alias: 'direction_json',
+            updateList: [
+              {
+                alias: 'brigadirs',
+                filter: [
+                  {
+                    field: 'object_id',
                     value: '',
                     source: 'formData',
-                    type: 'array'
+                    type: 'array',
                   },
-                 ],
-               },
-             ],
+                  {
+                  field: 'direction_id',
+                  //alias: 'direction_json',
+                  value: '',
+                  source: 'formData',
+                  type: 'array'
+                },
+                ],
+              },
+            ],
             update: {
               module: 'selects/getList',
               fields: ['personal_id'],
