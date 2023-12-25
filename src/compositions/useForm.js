@@ -104,6 +104,7 @@ export default function ({
   }
 
   const validate = (touch) => {
+    console.log('computedFormData.value', computedFormData.value)
     if (touch) $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
     if (touch) {
@@ -593,8 +594,8 @@ export default function ({
         url = dependence.url
         if (targetField.type === 'autocomplete') {
           const filter = []
-          if (targetField.filters && targetField.filters.length) {
-            targetField.filters.forEach((el) => {
+          if (targetField.filter && targetField.filter.length) {
+            targetField.filter.forEach((el) => {
               if (!formData[el.field]) return
               filter.push({
                 alias: el.alias ?? el.field,
@@ -883,7 +884,7 @@ export default function ({
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-          formData[field.name] = syncForm.data[formKey]
+          if (!field.notPut) formData[field.name] = syncForm.data[formKey]
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
@@ -1009,8 +1010,10 @@ export default function ({
             if (Array.isArray(ai)) {
               //return ai.includes(el.source ? eval(el.source) : 1)
               //return JSON.stringify(ai) === JSON.stringify(formData[el.field])
+              console.log(field.name, el)
               return _.isEqual(ai, formData[el.field])
             } else {
+              console.log(field.name, el.field, ai, formData)
               return [ai].includes(
                 el.source ? eval(el.source) : formData[el.field]
               )
@@ -1019,6 +1022,9 @@ export default function ({
         }
       })
     if (field.isShow.conditions && field.isShow.conditions.length) {
+      if (field.name === 'print_form_key') {
+        console.log(condition())
+      }
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()

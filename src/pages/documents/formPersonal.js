@@ -18,8 +18,8 @@ import FormDocuments from '@/components/form/documents/default/index.vue'
 import FormList from '@/components/form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 // import useNavigation from '@/compositions/useNavigation'
-import { userKeys } from '@/pages'
 
+import { headDocumentConfigEdit, fieldsBaseDocumentConfigEdit, fieldsTypeDocsDocumentConfigEdit, fieldsBaseDefaulrForm, fieldsDocumentDefaultForm} from '@/pages/personal/index' 
 // const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {
@@ -292,7 +292,7 @@ const consumptionConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ]
@@ -547,7 +547,7 @@ const debetorConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ]
@@ -579,89 +579,13 @@ const documentConfigEdit = {
       {
         label: 'Добавить',
         class: ['v-table-button--custom'],
-        url: 'documents/personal/:id/new',
+        url: 'documents-personal-id-new',
         type: 'changeUrl',
         backgroundColor: '#fff',
       },
     ],
   },
-  head: [
-    {
-      title: 'Тип документа',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'pds.name',
-      isShow: true,
-      width: '40',
-      value: 'doc_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Скан-копия/фото',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'path_doc',
-      alias: 'pd.path_doc',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Примечание',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pd.note',
-      value: 'comment',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-  ],
+  head: headDocumentConfigEdit,
   data: {
     rows: [],
     totalRows: null,
@@ -692,59 +616,7 @@ const documentConfigEdit = {
         lists: [{ alias: 'documents', filter: [] }],
         alias: 'personal_doc',
         active: false,
-        fields: [
-          selectField({
-            label: 'Тип документа',
-            name: 'doc_id',
-            alias: 'documents',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dropZoneField({
-            label: 'Скан-копия/фото:',
-            name: 'path_doc',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            validations: { required },
-            options: {
-              removeble: true,
-              withoutSave: false,
-              folder: 'personal_doc',
-              name: '`personal_doc_25`',
-              paramsForEmit: this,
-            },
-            value: '',
-          }),
-          textareaField({
-            label: 'Примечание:',
-            name: 'note',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
+        fields: fieldsBaseDocumentConfigEdit,
         actions: [
           stringAction({
             text: 'Сохранить',
@@ -778,59 +650,7 @@ const documentConfigEdit = {
         lists: [{ alias: 'documents', filter: [] }],
         alias: 'personal_doc',
         active: false,
-        fields: [
-          selectField({
-            label: 'Тип документа',
-            name: 'doc_id',
-            alias: 'documents',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dropZoneField({
-            label: 'Скан-копия/фото:',
-            name: 'path_doc',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            validations: { required },
-            options: {
-              removeble: true,
-              withoutSave: false,
-              folder: 'personal_doc',
-              name: '`personal_doc_25`',
-              paramsForEmit: this,
-            },
-            value: '',
-          }),
-          textareaField({
-            label: 'Примечание:',
-            name: 'note',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
+        fields: fieldsTypeDocsDocumentConfigEdit,
         actions: [
           stringAction({
             text: 'Сохранить',
@@ -849,7 +669,7 @@ const documentConfigEdit = {
             color: 'text',
             name: 'closePopup',
             action: 'closePopup',
-            to: 'personal/:id',
+            to: 'documents-personal-id',
             skipValidation: true,
           }),
         ],
@@ -864,7 +684,7 @@ const documentConfigEdit = {
       color: 'text',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ],
@@ -1011,59 +831,7 @@ const documentConfig = {
         lists: [{ alias: 'documents', filter: [] }],
         alias: 'personal_doc',
         active: false,
-        fields: [
-          selectField({
-            label: 'Тип документа',
-            name: 'doc_id',
-            alias: 'documents',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dropZoneField({
-            label: 'Скан-копия/фото:',
-            name: 'path_doc',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            validations: { required },
-            options: {
-              removeble: true,
-              withoutSave: false,
-              folder: 'personal_doc',
-              name: '`personal_doc_25`',
-              paramsForEmit: this,
-            },
-            value: '',
-          }),
-          textareaField({
-            label: 'Примечание:',
-            name: 'note',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
+        fields: fieldsBaseDefaulrForm,
         actions: [
           stringAction({
             text: 'Сохранить',
@@ -1679,7 +1447,7 @@ const bankConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ]
@@ -1934,7 +1702,7 @@ const paymentConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ],
@@ -2014,7 +1782,7 @@ const defaultForm = [
     ],
     alias: 'personal',
     active: false,
-    fields:[],
+    fields: fieldsBaseDefaulrForm,
     actions: [
       stringAction({
         text: 'Закрыть',
@@ -2049,143 +1817,7 @@ const defaultForm = [
     ],
     alias: 'personal',
     active: false,
-    documents: [
-      {
-        type: 'passport',
-        name: 'Паспорт',
-        fields: [
-          stringField({
-            label: 'Серия',
-            name: 'seriya',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          stringField({
-            label: 'Номер',
-            name: 'number',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          stringField({
-            label: 'К/П',
-            name: 'code',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          dateField({
-            label: 'Дата выдачи',
-            name: 'date_issue',
-            subtype: 'date',
-            placeholder: '',
-            classes: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: ['changeSelect'],
-          }),
-          stringField({
-            label: 'Кем выдан',
-            name: 'issued_by',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-        ],
-      },
-      {
-        type: 'Snils',
-        name: 'Снилс',
-        fields: [
-          stringField({
-            label: 'Номер',
-            name: 'name',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-        ],
-      },
-      {
-        type: 'passport_page_2',
-        name: 'Паспорт стр.2',
-        fields: [
-          stringField({
-            label: 'Адрес регистрации',
-            name: 'issued_by',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-        ],
-      },
-      {
-        type: 'inn',
-        name: 'ИНН',
-        fields: [
-          stringField({
-            label: 'Адрес регистрации',
-            name: 'issued_by',
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-        ],
-      },
-    ],
+    documents: fieldsDocumentDefaultForm,
     actions: [
       stringAction({
         text: 'Закрыть',
@@ -2193,7 +1825,7 @@ const defaultForm = [
         color: 'disabled',
         name: 'closePopup',
         action: 'closePopup',
-        to: 'personal',
+        to: 'documents',
         skipValidation: true,
       }),
       stringAction({
@@ -3908,4 +3540,4 @@ const config = {
 }
 
 
-export default config
+export default defaultForm

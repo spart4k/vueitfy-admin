@@ -363,6 +363,7 @@ const routes = [
       {
         name: 'tasks/:id',
         path: ':id',
+        // mode: ['edit'],
         component: Detail,
       },
     ],
@@ -379,16 +380,16 @@ const routes = [
     component: ZayavkaView,
     children: [
       {
-        name: 'zayavka/:id',
-        path: ':id',
-        component: Detail,
-      },
-      {
         name: 'zayavka-add',
         path: '/zayavka/add',
         meta: {
           mode: ['add'],
         },
+        component: Detail,
+      },
+      {
+        name: 'zayavka/:id',
+        path: ':id',
         component: Detail,
       },
     ],
@@ -487,14 +488,14 @@ const routes = [
             },
             component: Detail,
           },
-          {
-            name: 'documents-personal-id-new',
-            path: 'documents/personal/:id/new',
-            meta: {
-              mode: ['persanalById', 'object_id'],
-            },
-            component: Detail,
-          },
+          // {
+          //   name: 'documents-personal-id-new',
+          //   path: 'documents/personal/:id/new',
+          //   meta: {
+          //     mode: ['persanalById', 'object_id'],
+          //   },
+          //   component: Detail,
+          // },
         ],
       },
       {

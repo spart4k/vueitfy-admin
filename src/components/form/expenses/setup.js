@@ -131,13 +131,34 @@ export default {
     })
 
     const changeBlockCount = (val) => {
-      const index = props.tab.fields.findIndex((x) => x.id === 'btn-decrease')
+      const btnIndex = props.tab.fields.findIndex(
+        (x) => x.id === 'btn-decrease'
+      )
+      const itemIndex = +props.tab.fields[btnIndex - 1].name.split('__')[1]
       if (val) {
         const insertItems = [
+          // selectField({
+          //   label: 'Наименование:',
+          //   name: `name__${itemIndex + 1}`,
+          //   alias: 'direction_id',
+          //   placeholder: '',
+          //   class: [''],
+          //   value: '',
+          //   selectOption: {
+          //     text: 'name',
+          //     value: 'id',
+          //   },
+          //   items: [],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
           selectField({
             label: 'Наименование:',
-            name: 'name__0',
-            alias: 'direction_id',
+            name: `rashod_vid__${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             value: '',
@@ -155,7 +176,7 @@ export default {
           }),
           stringField({
             label: 'Кол-во:',
-            name: 'count__0',
+            name: `count__${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             position: {
@@ -167,7 +188,7 @@ export default {
           }),
           stringField({
             label: 'Стоимость :',
-            name: 'price__0',
+            name: `price__${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             position: {
@@ -179,7 +200,7 @@ export default {
           }),
           checkboxField({
             label: 'ВДС',
-            name: 'vds__0',
+            name: `vds__${itemIndex + 1}`,
             value: false,
             placeholder: '',
             readonly: false,
@@ -192,22 +213,26 @@ export default {
           }),
           stringField({
             label: 'Точное наименование',
-            name: 'exact_name__0',
+            name: `exact_name__${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
               sm: 12,
             },
-            validations: { required },
             bootstrapClass: [''],
           }),
         ]
-        props.tab.fields.splice(index, 0, ...insertItems)
+        props.tab.fields.splice(btnIndex, 0, ...insertItems)
       } else {
-        props.tab.fields.splice(index - 5, 5)
+        if (itemIndex) props.tab.fields.splice(btnIndex - 5, 5)
       }
+      rebuildFormData()
     }
+
+    // setInterval(() => {
+    //   console.log('fields(jukghjghjgh)', fields())
+    // }, 2000)
 
     // const { makeRequest: createForm } = useRequest({
     //   context,
@@ -234,6 +259,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
+      rebuildFormData,
       readonlyField,
     } = useForm({
       form: props.tab,

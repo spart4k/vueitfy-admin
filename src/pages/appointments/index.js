@@ -536,7 +536,7 @@ const config = {
                 dependence: [
                   {
                     type: 'default',
-                    fillField: ['sum_nutrition', 'with_nutrition', 'subtype'],
+                    fillField: ['sum_nutrition', 'with_nutrition', 'type'],
                   },
                   {
                     type: 'api',
@@ -697,7 +697,7 @@ const config = {
               }),
               textBlock({
                 label: 'Создал',
-                name: 'subtype',
+                name: 'type',
                 placeholder: '',
                 readonly: true,
                 class: [''],
@@ -733,7 +733,7 @@ const config = {
           },
           {
             id: 1,
-            name: 'Основные1',
+            name: 'Основные',
             type: FormList,
             //detail: true,
             lists: [
@@ -808,21 +808,21 @@ const config = {
                     source: 'fromPrev',
                   },
                 ],
-                dependence: [
+                updateList: [
                   {
-                    //fields: ['statement_card', 'cardowner'],
-                    type: 'api',
-                    module: 'personal/getKeys',
-                    //url: 'object_id/avatar_with_user_key_id',
-                    field: 'print_form_key',
-                    url: [
+                    alias: 'print_form_key',
+                    filter: [
                       {
-                        source: 'props',
                         field: 'object_id',
+                        value: '',
+                        source: 'form.formData',
+                        type: 'num',
                       },
                       {
-                        source: 'formData',
-                        field: 'this',
+                        field: 'personal_id',
+                        value: '',
+                        source: 'form.formData',
+                        type: 'num',
                       },
                     ],
                   },
@@ -866,8 +866,8 @@ const config = {
                   value: false,
                   conditions: [
                     {
-                      field: 'subtype',
-                      value: [9],
+                      field: 'type',
+                      value: [11],
                       source: 'form.formData[el.field]',
                     },
                     {
@@ -1133,16 +1133,17 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'direction_id',
                 value: '',
+                source: 'formData',
               },
             ],
             dependence: [
               {
                 type: 'default',
-                fillField: ['sum_nutrition', 'with_nutrition', 'subtype'],
+                fillField: ['sum_nutrition', 'with_nutrition', 'type'],
               },
               {
                 type: 'api',
@@ -1193,7 +1194,7 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'object_id',
                 value: '',
@@ -1452,32 +1453,98 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'object_id',
                 value: '',
                 source: 'fromPrev',
               },
             ],
-            dependence: [
+            updateList: [
               {
-                //fields: ['statement_card', 'cardowner'],
-                type: 'api',
-                module: 'personal/getKeys',
-                //url: 'object_id/avatar_with_user_key_id',
-                field: 'print_form_key',
-                url: [
+                alias: 'print_form_key',
+                filter: [
                   {
-                    source: 'props',
                     field: 'object_id',
+                    value: '',
+                    source: 'form.formData',
+                    type: 'num',
                   },
                   {
-                    source: 'formData',
-                    field: 'this',
+                    field: 'personal_id',
+                    value: '',
+                    source: 'form.formData',
+                    type: 'num',
                   },
                 ],
               },
             ],
+          }),
+          textBlock({
+            label: 'Создал',
+            name: 'type',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
+          selectField({
+            label: 'Ключ',
+            name: 'print_form_key',
+            //withoutList: true,
+            //alias: 'direction_id_logistic',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            customList: {
+              type: 'api',
+              module: 'personal/getKeys',
+              //url: 'object_id/avatar_with_user_key_id',
+              field: 'print_form_key',
+              url: [
+                {
+                  source: 'formData',
+                  field: 'object_id',
+                },
+                {
+                  source: 'formData',
+                  field: 'this',
+                },
+              ],
+            },
+            isShow: {
+              value: false,
+              conditions: [
+                {
+                  field: 'type',
+                  value: [11],
+                },
+                {
+                  field: 'direction_id',
+                  value: [1],
+                },
+                {
+                  field: 'doljnost_id',
+                  value: [5, 7],
+                },
+              ],
+            },
           }),
           //textBlock({
           //  label: 'Создал',

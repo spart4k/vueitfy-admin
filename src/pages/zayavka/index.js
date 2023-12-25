@@ -1253,7 +1253,7 @@ const config = {
           },
           {
             id: 1,
-            name: 'Основные1',
+            name: 'Основные',
             type: FormList,
             //detail: true,
             lists: ['avatar_with_user_key_id'],
@@ -1487,8 +1487,8 @@ const config = {
             bootstrapClass: [''],
           }),
           radioPanel({
-            name: 'direction_id12',
-            alias: 'direction_id12',
+            name: 'zcxxczxc',
+            alias: 'zcxxczxc',
             class: [''],
             bootstrapClass: [''],
             position: {
@@ -1515,9 +1515,41 @@ const config = {
             ],
           }),
           selectField({
+            label: 'Категория:',
+            name: 'category_zr',
+            // alias: 'rashod_category_id',
+            placeholder: '',
+            class: [''],
+            value: '',
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            updateList: [
+              {
+                alias: 'rashod_vid',
+                filter: [
+                  {
+                    field: 'category_zr',
+                    alias: 'rashod_category_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          selectField({
             label: 'Наименование:',
-            name: 'name__0',
-            alias: 'direction_id',
+            name: 'rashod_vid',
             placeholder: '',
             class: [''],
             value: '',
@@ -1579,7 +1611,6 @@ const config = {
               cols: 12,
               sm: 12,
             },
-            validations: { required },
             bootstrapClass: [''],
           }),
           {
@@ -1592,6 +1623,7 @@ const config = {
             placeholder: '',
             class: [''],
             position: { cols: 12, sm: 6 },
+            notSend: true,
             // validations: { required: { $params: { type: 'required' } } },
             bootstrapClass: [''],
             label: '-',
@@ -1608,6 +1640,7 @@ const config = {
             placeholder: '',
             class: [''],
             position: { cols: 12, sm: 6 },
+            notSend: true,
             // validations: { required: { $params: { type: 'required' } } },
             bootstrapClass: [''],
             label: '+',
@@ -1728,25 +1761,6 @@ const config = {
           //   search: '',
           //   url: 'get/pagination_list/personal',
           //   // brigadirs
-          //   position: {
-          //     cols: 12,
-          //     sm: 12,
-          //   },
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          // }),
-          // selectField({
-          //   label: 'Категория:',
-          //   name: 'category_zr',
-          //   alias: 'category_zr',
-          //   placeholder: '',
-          //   class: [''],
-          //   value: '',
-          //   selectOption: {
-          //     text: 'name',
-          //     value: 'id',
-          //   },
-          //   items: [],
           //   position: {
           //     cols: 12,
           //     sm: 12,

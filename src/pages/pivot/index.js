@@ -491,7 +491,7 @@ const config = {
           selectField({
             label: 'Личный ключ',
             name: 'user_key',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -510,7 +510,7 @@ const config = {
             label: 'Направление',
             name: 'direction_json',
             alias: 'direction_id',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -529,7 +529,7 @@ const config = {
             label: 'Доступ',
             name: 'account_json',
             alias: 'account_id',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {

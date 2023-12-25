@@ -103,17 +103,22 @@
                             <span class="mr-2" @click="sortRow(head)">
                               {{ head.title }}
                             </span>
-                            <!--<v-icon
+                            <v-icon
                               v-if="head.search"
                               @click="openSort(head)"
                               small
                             >
                               $IconSearch
-                            </v-icon>-->
+                            </v-icon>
                           </div>
                           <div v-if="head.type === 'icon'">
                             <span class="mr-2" @click="sortRow(head)">
                               <v-icon> {{ head.icon }}</v-icon>
+                            </span>
+                          </div>
+                          <div v-if="head.type === 'actions'">
+                            <span class="mr-2">
+                              {{ head.title }}
                             </span>
                           </div>
                         </div>
@@ -156,6 +161,7 @@
                 @contextmenu="openContext($event, row)"
                 @click="openChildRow($event, row)"
                 class="v-table-body-row"
+                :style="insertStyle(row.row)"
               >
                 <td
                   class="v-table-body-row-cell__checkbox"
@@ -233,7 +239,7 @@
                       v-for="(action, indexAction) in cell.actions"
                       :key="indexAction"
                     />-->
-                    <!--<div
+                    <div
                       v-if="
                         !cell.actionCondition ||
                         (cell.actionCondition &&
@@ -245,12 +251,15 @@
                       <v-btn
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
+                        @click="
+                          action.function(Object.byString(row.row, cell.value))
+                        "
                       >
                         <v-icon small>
                           {{ action.url }}
                         </v-icon>
                       </v-btn>
-                    </div>-->
+                    </div>
                   </template>
                 </td>
               </tr>
@@ -280,7 +289,7 @@
                         <span>{{ cell.title }}: </span>
                         <span>{{ row.child.data[cell.value] }}</span>
                       </li>
-                      <li
+                      <!-- <li
                         v-else-if="cell.type === 'actions'"
                         class="v-table-body-row-paragraph v-table-actions"
                         :key="cellIndex"
@@ -295,7 +304,7 @@
                             {{ action.url }}
                           </v-icon>
                         </v-btn>
-                      </li>
+                      </li> -->
                     </template>
                   </transition-group>
                 </td>

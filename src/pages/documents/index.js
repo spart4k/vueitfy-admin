@@ -17,16 +17,18 @@ import TableDefault from '@/components/Table/default/index.vue'
 import { documents, userKeys } from '@/pages'
 import { ref } from 'vue'
 import _, { functionsIn } from 'lodash'
-import personalPage from '@/pages/personal/index'
+// import personalPage from '@/pages/personal/index'
 
 import personalPage2 from './formPersonal'
 
-console.log('personalPage2', personalPage2.tabs[0].detail)
-console.log('personalPage', personalPage.tabs[0])
+console.log('personalPage2: ', personalPage2)
+
+// console.log('personalPage2', personalPage2.tabs[0].detail)
+// console.log('personalPage', personalPage.tabs[0])
 
 //const form = personalPage2.tabs[0].detail.tabs[0]
 
-const configPersonalPage = _.cloneDeep(personalPage)
+//const configPersonalPage = _.cloneDeep(personalPage)
 
 // const personalForm = personalPage.tabs[0].detail.tabs[0]
 // const personalForm2 = personalPage.tabs[0].detail.tabs[1]
@@ -35,58 +37,58 @@ const configPersonalPage = _.cloneDeep(personalPage)
 // personalForm.path = 'persanalById'
 // personalForm2.path = 'persanalById'
 
-const personalForms = () => {
-  const personalForms = []
-  const dataContent = []
-  const dataContentEnum = {
-    fields: 'fields',
-    documents: 'documents',
-    config: 'config',
-  }
-  // const dataContentList = ['fields', 'documents']
-  const tabsPersonal = configPersonalPage.tabs[0].detail.tabs
-  for (const personalForm of tabsPersonal) {
-    // docs: value = dataContentEnum.fields |documents | config...
-    // todo: вынести этот циклл в функцию для более читаемости
+// const personalForms = () => {
+//   const personalForms = []
+//   const dataContent = []
+//   const dataContentEnum = {
+//     fields: 'fields',
+//     documents: 'documents',
+//     config: 'config',
+//   }
+//   // const dataContentList = ['fields', 'documents']
+//   const tabsPersonal = configPersonalPage.tabs[0].detail.tabs
+//   for (const personalForm of tabsPersonal) {
+//     // docs: value = dataContentEnum.fields |documents | config...
+//     // todo: вынести этот циклл в функцию для более читаемости
 
-    for (const [key, value] of Object.entries(dataContentEnum)) {
-      if (personalForm.hasOwnProperty(value)) {
-        dataContent.push({
-          id: personalForm.id,
-          [value]: personalForm[value],
-        })
-      }
-    }
-  }
-  // =====================
+//     for (const [key, value] of Object.entries(dataContentEnum)) {
+//       if (personalForm.hasOwnProperty(value)) {
+//         dataContent.push({
+//           id: personalForm.id,
+//           [value]: personalForm[value],
+//         })
+//       }
+//     }
+//   }
+//   // =====================
 
-  //Скейлка этих переменных с общим конфигом
-  //.богоподобный код с 3 циклами и условиями
-  const tabsDocuments = personalPage2.tabs[0].detail.tabs
-  for (const el of tabsDocuments) {
-    for (const el2 of dataContent) {
-      if (el.id === el2.id) {
-        for (const [key, value] of Object.entries(dataContentEnum)) {
-          if (el.hasOwnProperty(value)) {
-            el[value] = el2[value]
-            personalForms.push(el)
-          }
-        }
+//   //Скейлка этих переменных с общим конфигом
+//   //.богоподобный код с 3 циклами и условиями
+//   const tabsDocuments = personalPage2.tabs[0].detail.tabs
+//   for (const el of tabsDocuments) {
+//     for (const el2 of dataContent) {
+//       if (el.id === el2.id) {
+//         for (const [key, value] of Object.entries(dataContentEnum)) {
+//           if (el.hasOwnProperty(value)) {
+//             el[value] = el2[value]
+//             personalForms.push(el)
+//           }
+//         }
 
-        // el[dataContentEnum.fields] = el2[dataContentEnum.fields]
-        // personalForms.push(el)
-      }
-    }
-  }
+//         // el[dataContentEnum.fields] = el2[dataContentEnum.fields]
+//         // personalForms.push(el)
+//       }
+//     }
+//   }
 
-  // personalPage2.tabs[0].detail.tabs[0].fields = dataContent[0].fields
-  // console.log(personalPage2.tabs[0].detail.tabs[0])
-  return personalForms
-}
+//   // personalPage2.tabs[0].detail.tabs[0].fields = dataContent[0].fields
+//   // console.log(personalPage2.tabs[0].detail.tabs[0])
+//   return personalForms
+// }
 
-console.log('personalForms', personalForms())
+// console.log('personalForms', personalForms())
 
-console.log('pers:', personalPage2.tabs[0].detail.tabs)
+// console.log('pers:', personalPage2.tabs[0].detail.tabs)
 
 function consoleText(row) {
   console.log(row, 2)
@@ -958,7 +960,7 @@ const defaultForm = [
       selectField({
         label: 'Личный ключ',
         name: 'user_key',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -977,7 +979,7 @@ const defaultForm = [
         label: 'Направление',
         name: 'direction_json',
         alias: 'direction_id',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -996,7 +998,7 @@ const defaultForm = [
         label: 'Доступ',
         name: 'account_json',
         alias: 'account_id',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -1395,7 +1397,7 @@ const defaultForm = [
             name: 'docs_id',
             alias: 'personal_missing_documents',
             // url: 'get/pagination_list/personal_logistic_document',
-            subtype: 'multiselect',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -1444,7 +1446,7 @@ const defaultForm = [
       },
     ],
   },
-  ...personalForms(),
+  ...personalPage2,
   // {
   //   path: 'personalById',
   //   id: 6,
@@ -1642,7 +1644,7 @@ const keysForm = [
       selectField({
         label: 'Личный ключ',
         name: 'user_key',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -1661,7 +1663,7 @@ const keysForm = [
         label: 'Направление',
         name: 'direction_json',
         alias: 'direction_id',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -1680,7 +1682,7 @@ const keysForm = [
         label: 'Доступ',
         name: 'account_json',
         alias: 'account_id',
-        subtype: 'multiselect',
+        subtype: 'multiple',
         placeholder: '',
         class: [''],
         selectOption: {
@@ -1864,7 +1866,7 @@ const keysForm = [
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'direction_id',
                 value: '',
@@ -1900,7 +1902,7 @@ const keysForm = [
             },
             // validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'object_id',
                 value: '',
@@ -1988,7 +1990,7 @@ const keysForm = [
       },
       {
         id: 1,
-        name: 'Основные1',
+        name: 'Основные',
         type: FormList,
         //detail: true,
         lists: ['avatar_with_user_key_id'],
@@ -2038,7 +2040,7 @@ const keysForm = [
             },
             validations: { required },
             bootstrapClass: [''],
-            filters: [
+            filter: [
               {
                 field: 'object_id',
                 value: '',

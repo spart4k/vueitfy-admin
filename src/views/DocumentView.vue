@@ -31,9 +31,13 @@
 import { ref, toRefs, watch } from 'vue'
 //import formPersonal from '@/pages/personal/formPersonal'
 import { documents } from '@/pages'
-import { warn } from '@vue/composition-api'
-//import {} from '@/'
-//const load(fjs ,sadf, asdf)
+// import { warn } from '@vue/composition-api'
+
+console.log(documents)
+//import TableDefault from '@/components/Table/default/index.vue'
+//import Layout from '@/layouts/default/indedx'
+//import Axios from 'axios'
+
 export default {
   name: 'Documents-View',
   components: {

@@ -445,7 +445,7 @@ const config = {
               selectField({
                 label: 'Направления',
                 name: 'direction_json',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 // requestKey: 'direction_json',
                 stringify: true,
                 placeholder: '',
@@ -474,12 +474,32 @@ const config = {
                     ],
                   },
                 ],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'chief_id',
+                    url: 'get/pagination_list/chief_id',
+                    filter: [
+                      {
+                        field: 'permission_id',
+                        type: 'num',
+                        value: '',
+                      },
+                      {
+                        field: 'direction_json',
+                        type: 'array',
+                        value: '',
+                      },
+                    ],
+                  },
+                ],
               }),
               selectField({
                 label: 'Тип',
                 name: 'object_types',
                 alias: 'object_type',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
                 class: [''],
@@ -601,7 +621,7 @@ const config = {
                 label: 'Объекты',
                 name: 'object_json',
                 alias: 'account_objects',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 readonly: true,
                 // requestKey: 'direction_json',
                 stringify: true,
@@ -762,7 +782,7 @@ const config = {
               selectField({
                 label: 'Направления',
                 name: 'direction_json',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 // requestKey: 'direction_json',
                 stringify: true,
                 placeholder: '',
@@ -809,7 +829,7 @@ const config = {
                 label: 'Тип',
                 name: 'type',
                 alias: 'account_object_types',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
                 class: [''],
@@ -1272,7 +1292,7 @@ const config = {
               selectField({
                 label: 'Личный ключ',
                 name: 'user_key',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1291,7 +1311,7 @@ const config = {
                 label: 'Направление',
                 name: 'direction_json',
                 alias: 'direction_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1310,7 +1330,7 @@ const config = {
                 label: 'Доступ',
                 name: 'account_json',
                 alias: 'account_id',
-                subtype: 'multiselect',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {

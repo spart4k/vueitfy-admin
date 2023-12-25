@@ -193,6 +193,7 @@ const config = {
         name: 'Основные',
         type: 'FrameView',
         detail: true,
+        // path: 'edit',
       },
     ],
     activeTab: null,

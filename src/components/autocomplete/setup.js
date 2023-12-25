@@ -35,8 +35,19 @@ export default {
       totalPage: null,
       countRows: null,
     }
-
+    const checkedAll = computed(
+      () => proxyValue.value.length === props.field.items.length
+    )
+    const selectAll = () => {
+      // console.log('selectAll')
+      if (checkedAll.value) {
+        proxyValue.value = []
+      } else {
+        proxyValue.value = props.field.items.slice()
+      }
+    }
     const querySelections = async (params, isObs = false) => {
+      if (props.field.type === 'select') return
       if (params.search || params.id || isObs) {
         if (params.search) params.search = params.search.toLowerCase()
 
@@ -100,7 +111,9 @@ export default {
         }
       }
     }
-
+    const icon = computed(() =>
+      selectAll.value ? 'mdi-close-box' : 'mdi-minus-box'
+    )
     const removeSelected = () => {
       proxyValue.value = null
     }
@@ -152,6 +165,9 @@ export default {
       searchProps,
       disabled,
       loading,
+      selectAll,
+      checkedAll,
+      icon,
     }
   },
 }

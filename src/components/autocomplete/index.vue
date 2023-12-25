@@ -18,6 +18,14 @@
       :disabled="disabled"
       :readonly="readonly"
     >
+      <template v-if="false" v-slot:prepend-item>
+        <v-list-item ripple @click="selectAll">
+          <v-list-item-action>
+            <v-checkbox v-model="checkedAll"></v-checkbox>
+          </v-list-item-action>
+          <v-list-item-content>Выбрать все</v-list-item-content>
+        </v-list-item>
+      </template>
       <template v-slot:append>
         <v-progress-circular
           v-if="loading"

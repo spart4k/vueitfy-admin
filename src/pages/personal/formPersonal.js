@@ -1382,7 +1382,7 @@ function searchInputing(field) {
   console.log(field)
 }
 
-const formPersonal = [
+export const formPersonal = [
   {
     id: 0,
     path: 'edit',
@@ -1395,11 +1395,6 @@ const formPersonal = [
       { alias: 'account_id', filter: [] },
       { alias: 'direction_id', filter: [] },
       { alias: 'grajdanstvo_id', filter: [] },
-      // 'user_keys',
-      // 'habitation_id',
-      // 'account_id',
-      // 'direction_id',
-      // 'grajdanstvo_id',
     ],
     alias: 'personal',
     active: false,
@@ -1901,5 +1896,3 @@ const formPersonal = [
     config: debetorConfig,
   },
 ]
-
-export default formPersonal

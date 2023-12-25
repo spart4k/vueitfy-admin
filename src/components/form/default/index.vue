@@ -21,7 +21,7 @@
               "
               class="field-loading gradient"
             ></div>
-            <v-select
+            <!--<v-select
               v-else-if="showField('select', field)"
               :items="field.items"
               :item-text="field.selectOption.text"
@@ -35,7 +35,17 @@
               @change="changeSelect({ value: formData[field.name], field })"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
-            ></v-select>
+            ></v-select>-->
+            <Autocomplete
+              v-else-if="showField('select', field)"
+              :field="field"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field?.name]"
+              :formData="formData"
+              ref="autocompleteRef"
+              @change="changeAutocomplete"
+              :readonly="readonlyField(field)"
+            />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
               :field="field"
@@ -88,7 +98,7 @@
               </template>
               <v-date-picker
                 v-model="formData[field.name]"
-                min="1950-01-01"
+                min="1940-01-01"
                 color="primary"
                 locale="ru-RU"
                 :type="field.subtype === 'period' ? 'month' : undefined"

@@ -93,7 +93,7 @@
           </template>
           <v-date-picker
             v-model="filter.value"
-            min="1950-01-01"
+            min="1940-01-01"
             color="primary"
             locale="ru-RU"
             :type="filter.subtype === 'period' ? 'month' : undefined"
