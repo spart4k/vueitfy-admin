@@ -2682,7 +2682,7 @@ const defaultForm = [
             subtype: 'multiple',
             name: 'object_id',
             alias: 'object_json',
-            subtype: 'single',
+            //subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -2809,7 +2809,7 @@ const defaultForm = [
             ],
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [1, 6] }],
+              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
             },
           }),
           selectField({
