@@ -529,6 +529,7 @@ export default function ({
           el.alias ? el.alias === keyList : el.name === keyList
         )
         if (field) {
+          console.log(field)
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
           if (field.hiding) {

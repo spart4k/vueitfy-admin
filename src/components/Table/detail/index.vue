@@ -1,7 +1,10 @@
 <template>
   <div class="detail">
     <div class="detail-tabs">
-      <div class="pa-4 detail-header">
+      <div
+        v-if="$route.meta.label || detail.name || availableTabs.length > 1"
+        class="pa-4 detail-header"
+      >
         <p v-if="$route.meta.label" class="text-h4 mb-4">
           {{ $route.meta.label }}
         </p>

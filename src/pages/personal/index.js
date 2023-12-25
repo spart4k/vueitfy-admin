@@ -2838,7 +2838,7 @@ const defaultForm = [
           selectField({
             label: 'Бригадир',
             name: 'personal_id',
-            alias: 'account_json',
+            alias: 'brigadirs',
             requestKey: 'account_json',
             placeholder: '',
             class: [''],
