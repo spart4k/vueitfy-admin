@@ -2611,6 +2611,22 @@ const defaultForm = [
           // 'status_pt',
           { alias: 'direction_id_logistic', filter: [] },
           { alias: 'grajdanstvo_id', filter: [] },
+          { alias: 'brigadirs', filter: [
+            {
+              field: 'object_id',
+              //alias: 'object_json',
+              value: '',
+              source: 'formData',
+              type: 'array'
+            },
+            {
+              field: 'direction_id',
+              //alias: 'direction_json',
+              value: '',
+              source: 'formData',
+              type: 'array'
+            },
+          ] },
           // { alias: 'brigadirs', filter: [] },
           // 'shifts',
           // 'nutritions',
@@ -2711,26 +2727,33 @@ const defaultForm = [
                 type: 'default',
                 fillField: ['city_id', 'regions_id'],
               },
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'personal_id',
-                url: 'get/pagination_list/brigadirs',
-              },
+              //{
+              //  type: 'api',
+              //  module: 'selects/getListUpdate',
+              //  field: 'personal_id',
+              //  url: 'get/pagination_list/brigadirs',
+              //},
             ],
-            // updateList: [
-            //   {
-            //     alias: 'brigadirs',
-            //     filter: [
-            //       {
-            //         field: 'object_id',
-            //         value: '',
-            //         source: 'formData',
-            //         type: 'array',
-            //       },
-            //     ],
-            //   },
-            // ],
+             updateList: [
+               {
+                 alias: 'brigadirs',
+                 filter: [
+                   {
+                     field: 'object_id',
+                     value: '',
+                     source: 'formData',
+                     type: 'array',
+                   },
+                   {
+                    field: 'direction_id',
+                    //alias: 'direction_json',
+                    value: '',
+                    source: 'formData',
+                    type: 'array'
+                  },
+                 ],
+               },
+             ],
             update: {
               module: 'selects/getList',
               fields: ['personal_id'],
@@ -2769,47 +2792,75 @@ const defaultForm = [
             },
             bootstrapClass: [''],
           }),
-          autocompleteField({
+          //autocompleteField({
+          //  label: 'Бригадир',
+          //  name: 'personal_id',
+          //  requestKey: 'account_json',
+          //  // subtype: 'single',
+          //  subtype: 'multiple',
+          //  stringify: true,
+          //  placeholder: '',
+          //  class: [''],
+          //  selectOption: {
+          //    text: 'name',
+          //    value: 'id',
+          //  },
+          //  items: [],
+          //  page: 1,
+          //  search: '',
+          //  url: 'get/pagination_list/brigadirs',
+          //  // brigadirs
+          //  position: {
+          //    cols: 12,
+          //    sm: 12,
+          //  },
+          //  validations: { required },
+          //  bootstrapClass: [''],
+          //  filter: [
+          //    {
+          //      field: 'object_id',
+          //      alias: 'object_json',
+          //      value: '',
+          //      type: 'array'
+          //    },
+          //    {
+          //      field: 'direction_id',
+          //      alias: 'direction_json',
+          //      value: '',
+          //      type: 'array'
+          //    },
+          //  ],
+          //  isShow: {
+          //    value: false,
+          //    conditions: [{ field: 'direction_id', value: [1, 6] }],
+          //  },
+          //}),
+          selectField({
             label: 'Бригадир',
             name: 'personal_id',
+            alias: 'account_json',
             requestKey: 'account_json',
-            // subtype: 'single',
-            subtype: 'multiple',
-            stringify: true,
             placeholder: '',
             class: [''],
+            value: '',
             selectOption: {
               text: 'name',
               value: 'id',
             },
             items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/brigadirs',
-            // brigadirs
             position: {
               cols: 12,
               sm: 12,
             },
             validations: { required },
             bootstrapClass: [''],
-            filter: [
-              {
-                field: 'object_id',
-                alias: 'object_json',
-                value: '',
-                type: 'array'
-              },
-              {
-                field: 'direction_id',
-                alias: 'direction_json',
-                value: '',
-                type: 'array'
-              },
-            ],
+            update: {
+              module: 'selects/getList',
+              fields: ['object_id'],
+            },
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [1, 6] }],
+              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
             },
           }),
           selectField({
