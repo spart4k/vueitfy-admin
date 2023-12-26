@@ -2455,6 +2455,182 @@ const defaultForm = [
     ],
   },
   {
+    id: 0,
+    path: 'bind',
+    name: 'Основные',
+    type: FormDefault,
+    detail: true,
+    lists: [
+      { alias: 'bind_directions',
+        filter: [
+          {
+            field: 'bind_objects',
+            alias: 'object_id',
+            value: '',
+            source: 'formData',
+            type: 'array'
+          },
+        ]
+      },
+      // 'user_keys',
+      // 'habitation_id',
+      // 'account_id',
+      // 'direction_id',
+      // 'grajdanstvo_id',
+    ],
+    alias: 'personal',
+    active: false,
+    fields: [
+      autocompleteField({
+        label: 'Объект',
+        subtype: 'multiple',
+        name: 'bind_objects',
+        //subtype: 'single',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        readonly: true,
+        items: [],
+        page: 1,
+        search: '',
+        url: 'get/pagination_list/object_logistic',
+        // object
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        validations: { required },
+        bootstrapClass: [''],
+        filter: [
+          {
+            field: 'direction_json',
+            value: '',
+          },
+        ],
+        dependence: [
+          {
+            type: 'default',
+            fillField: ['city_id', 'regions_id'],
+          },
+          //{
+          //  type: 'api',
+          //  module: 'selects/getListUpdate',
+          //  field: 'personal_id',
+          //  url: 'get/pagination_list/brigadirs',
+          //},
+        ],
+        //updateList: [
+        //  {
+        //    alias: 'brigadirs',
+        //    filter: [
+        //      {
+        //        field: 'object_id',
+        //        value: '',
+        //        source: 'formData',
+        //        type: 'array',
+        //      },
+        //      {
+        //      field: 'direction_id',
+        //      //alias: 'direction_json',
+        //      value: '',
+        //      source: 'formData',
+        //      type: 'array'
+        //    },
+        //    ],
+        //  },
+        //],
+        update: {
+          module: 'selects/getList',
+          fields: ['personal_id'],
+        },
+        //isShow: {
+        //  value: false,
+        //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
+        //},
+      }),
+      selectField({
+        label: 'Направление',
+        name: 'bind_directions',
+        subtype: 'multiple',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [],
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        //validations: { required },
+        bootstrapClass: [''],
+        readonly: true,
+        //readonly: {
+        //  value: false,
+        //  condition: [
+        //    editFormPermissions.brigadir,
+        //    editFormPermissions.manager[1],
+        //    editFormPermissions.rukFIlCUPDirector.denied,
+        //    editFormPermissions.DBA.access,
+        //    editFormPermissions.OBDandOKK.access,
+        //  ],
+        //},
+      }),
+      autocompleteField({
+        label: 'Объект',
+        //subtype: 'multiple',
+        subtype: 'multiple',
+        name: 'bind_accounts',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        readonly: true,
+        items: [],
+        page: 1,
+        search: '',
+        url: 'get/pagination_list/object_logistic',
+        // object
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        validations: { required },
+        bootstrapClass: [''],
+        filter: [
+          {
+            field: 'direction_json',
+            value: '',
+          },
+        ],
+      }),
+    ],
+    actions: [
+      stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'textDefault',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
+      stringAction({
+        text: 'Сохранить',
+        type: 'submit',
+        module: '',
+        name: 'saveForm',
+        nextForm: true,
+      }),
+    ],
+  },
+  {
     id: 2,
     path: 'edit',
     name: 'Данные документов',
@@ -3219,6 +3395,8 @@ const defaultForm = [
   },
 ]
 
+
+
 const config = {
   title: 'Персонал',
   activeTab: 2,
@@ -3234,6 +3412,27 @@ const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_active',
         title: 'Основные',
+        contextMenu: {
+          actions: [
+            {
+              icon: 'mdi-plus',
+              label: 'Привязать объект',
+              isShow: {
+                value: true,
+                condition: [],
+              },
+              readonly: {
+                value: true,
+                condition: [],
+              },
+              action: {
+                type: 'changeUrl',
+                target: 'id',
+                url: 'personal/bind'
+              }
+            }
+          ]
+        }
       },
       type: TableDefault,
       panel: {

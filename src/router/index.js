@@ -128,6 +128,15 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal-bind/:id',
+            path: '/personal/bind/:id',
+            meta: {
+              mode: ['bind'],
+              label: 'Привязать объект',
+            },
+            component: Detail,
+          },
         ],
       },
       {

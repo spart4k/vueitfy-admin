@@ -243,7 +243,7 @@ const table = {
           contextmenu.value.y = $event.clientY
           ;(contextmenu.value.row = row),
             (contextmenu.value.direction = direction)
-          contextmenu.value.actions = headActions
+          contextmenu.value.actions = props.options.options.contextMenu
         },
         contextmenu.value.isShow ? 450 : 0
       )
@@ -273,6 +273,15 @@ const table = {
         }
       } else {
         return undefined
+      }
+    }
+    const handlerContext = ({ action, row }) => {
+      console.log(action, row)
+      if (action.action.type === 'changeUrl') {
+        console.log(action.action.url)
+        changeUrlPath(action.action.url + '/' + row.row.id)
+      } else {
+        openRow(undefined, row)
       }
     }
     const openFilter = ($event) => {
@@ -448,15 +457,22 @@ const table = {
         popupForm.value.isShow = true
       }
     }
+    const changeUrl = (url) => {
+      router.push(
+        {
+          name: url,
+        })
+      popupForm.value.isShow = true
+    }
+    const changeUrlPath = (url) => {
+      router.push(
+        {
+          path: url,
+        })
+      popupForm.value.isShow = true
+    }
     const panelHandler = async (button) => {
       const { type, url } = button
-      const changeUrl = (url) => {
-        router.push(
-          {
-            name: url,
-          })
-        popupForm.value.isShow = true
-      }
       if (type === 'addItem') {
         addItem()
       } else if (type === 'changeUrl') {
@@ -681,6 +697,7 @@ const table = {
       closeFilter,
       getItems,
       watchScroll,
+      handlerContext,
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,

@@ -35,6 +35,19 @@ export default {
       }
     },
   },
+  setup(props, ctx) {
+    const { emit } = ctx
+    const handlerClick = (action) => {
+      //if (props.options.)
+      //const event = action.type
+      console.log(action)
+      emit('handlerContext', { action, row: props.options.row })
+      console.log('handlerClick')
+    }
+    return {
+      handlerClick,
+    }
+  },
 }
 
 // Vue.component('message', message)

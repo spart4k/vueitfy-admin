@@ -399,7 +399,7 @@
         {{ action.text }}
       </v-btn>
     </v-row>
-    <v-contextmenu :options="contextmenu" />
+    <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
     <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">
         <keep-alive>
