@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router/composables'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
+import router from '@/router'
 
 /**
  * @param loading {boolean}
@@ -418,7 +419,7 @@ export default function ({
     emit('closePopup')
     // const
   }
-  const getDetail = () => form?.detail
+  const getDetail = () => form?.detail && route.params.id
 
   const hasSelect = () => {
     return form?.fields.some(
