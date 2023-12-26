@@ -2698,7 +2698,18 @@ const defaultForm = [
               source: 'formData',
               type: 'array'
             },
-          ] },
+          ]},
+          {
+            alias: 'city_id',
+            filter: [
+              {
+                field: 'regions_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
           // { alias: 'brigadirs', filter: [] },
           // 'shifts',
           // 'nutritions',
@@ -2816,18 +2827,18 @@ const defaultForm = [
                 value: '',
               },
             ],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['city_id', 'regions_id'],
-              },
-              //{
-              //  type: 'api',
-              //  module: 'selects/getListUpdate',
-              //  field: 'personal_id',
-              //  url: 'get/pagination_list/brigadirs',
-              //},
-            ],
+            // dependence: [
+            //   // {
+            //   //   type: 'default',
+            //   //   fillField: ['city_id', 'regions_id'],
+            //   // },
+            //   //{
+            //   //  type: 'api',
+            //   //  module: 'selects/getListUpdate',
+            //   //  field: 'personal_id',
+            //   //  url: 'get/pagination_list/brigadirs',
+            //   //},
+            // ],
             updateList: [
               {
                 alias: 'brigadirs',
@@ -2857,36 +2868,36 @@ const defaultForm = [
               conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
             },
           }),
-          stringField({
-            label: '',
-            name: 'city_id',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            isShow: {
-              value: true,
-            },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: '',
-            name: 'regions_id',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            isShow: {
-              value: true,
-              // hide: true,
-            },
-            bootstrapClass: [''],
-          }),
-          //AutocompleteField({
+          // stringField({
+          //   label: '',
+          //   name: 'city_id',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   isShow: {
+          //     value: true,
+          //   },
+          //   bootstrapClass: [''],
+          // }),
+          // stringField({
+          //   label: '',
+          //   name: 'regions_id',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   isShow: {
+          //     value: true,
+          //     // hide: true,
+          //   },
+          //   bootstrapClass: [''],
+          // }),
+          //autocompleteField({
           //  label: 'Бригадир',
           //  name: 'personal_id',
           //  requestKey: 'account_json',
@@ -3009,6 +3020,68 @@ const defaultForm = [
               conditions: [{ field: 'transfer', value: [true] }],
             },
           }),
+          autocompleteField({
+            label: 'Регион',
+            name: 'regions_id',
+            alias: 'regions_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/regions_id',
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            updateList: [
+              {
+                alias: 'city_id',
+                filter: [
+                  {
+                    field: 'regions_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            isShow: {
+              value: false,
+              conditions: [{ field: 'transfer', value: [true] }],
+            },
+          }),
+          selectField({
+            label: 'Город',
+            name: 'city_id',
+            //alias: 'city_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            isShow: {
+              value: false,
+              conditions: [{ field: 'transfer', value: [true] }],
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            // requiredFields: ['regions_id'],
+          }),
           stringField({
             label: 'Адрес Б',
             name: 'end_point',
@@ -3016,7 +3089,7 @@ const defaultForm = [
             class: [''],
             position: {
               cols: 12,
-              sm: 12,
+              sm: 4,
             },
             validations: { required, nameLength },
             bootstrapClass: [''],
