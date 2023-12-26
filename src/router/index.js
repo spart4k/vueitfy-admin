@@ -468,14 +468,45 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'documents-personal-id',
+        path: '/documents/personal/:id',
+        meta: {
+          mode: ['persanalById'],
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'documents-personal-id-new',
+            path: '/documents/personal/:id/new',
+            meta: {
+              mode: ['persanalById', 'new'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents-personal-id-object_id',
+            path: ':object_id',
+            meta: {
+              mode: ['persanalById', 'object_id'],
+            },
+            component: Detail,
+          },
+          // {
+          //   name: 'documents-personal-id-new',
+          //   path: 'documents/personal/:id/new',
+          //   meta: {
+          //     mode: ['persanalById', 'object_id'],
+          //   },
+          //   component: Detail,
+          // },
+        ],
+      },
+      {
         name: 'documents/:id',
         path: ':id',
         component: Detail,
       },
     ],
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
   },
   {
     path: '/slata-report',

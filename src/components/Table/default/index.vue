@@ -159,13 +159,13 @@
           </thead>
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
             <template v-for="(row, indexRow) in options.data.rows">
+              <!-- {{ row.row.id + indexRow }} -->
               <tr
-                :key="row.row.id"
+                :key="row.row.id + indexRow"
                 :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
                 @contextmenu="openContext($event, row)"
                 @click="openChildRow($event, row)"
                 class="v-table-body-row"
-                @dblclick="openRow($event, row)"
                 :style="insertStyle(row.row)"
               >
                 <td
@@ -196,7 +196,6 @@
                     width: cell.width,
                   }"
                   :class="{
-                    'red-1': true,
                     ...addBackgroundClass(cell, row.row, Object.byString),
                   }"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
@@ -205,6 +204,11 @@
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
                   :key="cellIndex"
+                  @dblclick="
+                    doubleHandler($event, row.row, cell, indexRow, cellIndex, [
+                      0,
+                    ])
+                  "
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
@@ -287,8 +291,9 @@
                   </template>
                 </td>
               </tr>
+              <!-- {{ row.row.id + 'child' + indexRow }} -->
               <tr
-                :key="row.row.id + 'child'"
+                :key="row.row.id + 'child' + indexRow"
                 v-show="
                   row.child.isShow && options.head.some((el) => !el.isShow)
                 "
