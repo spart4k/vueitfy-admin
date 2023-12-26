@@ -1,4 +1,4 @@
-import Vue, { watch, ref, computed, onMounted } from 'vue'
+import Vue, { watch, ref, computed, onMounted, toRef } from 'vue'
 import { getList } from '@/api/selects'
 
 export default {
@@ -26,7 +26,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const loading = ref(false)
-    const proxyValue = ref(props.value)
+    const proxyValue = toRef(props, 'value')
     const searchProps = ref(props.field.search)
 
     const queryData = {
@@ -114,8 +114,13 @@ export default {
     const icon = computed(() =>
       selectAll.value ? 'mdi-close-box' : 'mdi-minus-box'
     )
-    const removeSelected = () => {
-      proxyValue.value = null
+    const removeSelected = (data) => {
+      // console.log(proxyValue.value, data)
+      if (Array.isArray(proxyValue.value))
+        proxyValue.value.splice(data.index, 1)
+      else proxyValue.value = null
+      // proxyValue.value.splice(data.index, 1)
+      update(proxyValue.value)
     }
 
     const update = (value) => {

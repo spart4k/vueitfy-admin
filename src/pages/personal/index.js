@@ -2749,6 +2749,7 @@ const defaultForm = [
             },
             validations: { required },
             bootstrapClass: [''],
+            putValueInItems: 'object_transfer_id',
             filter: [
               {
                 field: 'direction_id',
@@ -2756,10 +2757,10 @@ const defaultForm = [
               },
             ],
             // dependence: [
-            //   // {
-            //   //   type: 'default',
-            //   //   fillField: ['city_id', 'regions_id'],
-            //   // },
+            //   {
+            //     type: 'default',
+            //     fillField: ['city_id', 'regions_id'],
+            //   },
             //   //{
             //   //  type: 'api',
             //   //  module: 'selects/getListUpdate',
@@ -2793,7 +2794,7 @@ const defaultForm = [
             },
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
+              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] }],
             },
           }),
           // stringField({
@@ -2893,7 +2894,7 @@ const defaultForm = [
             },
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
+              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] }],
             },
           }),
           selectField({
@@ -2948,6 +2949,42 @@ const defaultForm = [
               conditions: [{ field: 'transfer', value: [true] }],
             },
           }),
+          selectField({
+            label: 'Объект',
+            subtype: 'single',
+            name: 'object_transfer_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            // object
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['city_id', 'regions_id', 'region_name', 'city_name'],
+              },
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'regions_id',
+                url: 'get/pagination_list/regions_id',
+              },
+            ],
+            isShow: {
+              value: false,
+              conditions: [{ field: 'transfer', value: [true] }],
+            },
+          }),
           autocompleteField({
             label: 'Регион',
             name: 'regions_id',
@@ -2965,7 +3002,7 @@ const defaultForm = [
             url: 'get/pagination_list/regions_id',
             position: {
               cols: 12,
-              sm: 4,
+              sm: 3,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -2982,13 +3019,19 @@ const defaultForm = [
                 ],
               },
             ],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['region_name'],
+              },
+            ],
             isShow: {
               value: false,
               conditions: [{ field: 'transfer', value: [true] }],
             },
           }),
           selectField({
-            label: 'Город',
+            label: 'Населённый пункт',
             name: 'city_id',
             //alias: 'city_id',
             placeholder: '',
@@ -3000,8 +3043,14 @@ const defaultForm = [
             items: [],
             position: {
               cols: 12,
-              sm: 4,
+              sm: 3,
             },
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['city_name'],
+              },
+            ],
             isShow: {
               value: false,
               conditions: [{ field: 'transfer', value: [true] }],
@@ -3013,11 +3062,11 @@ const defaultForm = [
           stringField({
             label: 'Адрес Б',
             name: 'end_point',
-            placeholder: '',
+            placeholder: 'ул., д.',
             class: [''],
             position: {
               cols: 12,
-              sm: 4,
+              sm: 3,
             },
             validations: { required, nameLength },
             bootstrapClass: [''],
@@ -3025,6 +3074,38 @@ const defaultForm = [
               value: false,
               conditions: [{ field: 'transfer', value: [true] }],
             },
+          }),
+          stringField({
+            label: 'Имя региона',
+            name: 'region_name',
+            placeholder: '',
+            notSend: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            isShow: {
+              value: true,
+            },
+            // validations: { required, nameLength },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'Имя города',
+            name: 'city_name',
+            placeholder: '',
+            notSend: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            isShow: {
+              value: true,
+            },
+            // validations: { required, nameLength },
+            bootstrapClass: [''],
           }),
         ],
         actions: [
@@ -3094,14 +3175,17 @@ const defaultForm = [
               ],
               static: { type_parent_action: 3, parent_action: 1 },
               formData: [
-                'direction_id',
-                'object_id',
+                { requestKey: 'direction_json', formKey: 'direction_id' },
+                { requestKey: 'object_json', formKey: 'object_id' },
                 'grajdanstvo_id',
                 'transfer',
                 'start_point',
                 'end_point',
                 'city_id',
                 'regions_id',
+                'object_transfer_id',
+                'region_name',
+                'city_name',
               ],
             },
             conditionCode: {
