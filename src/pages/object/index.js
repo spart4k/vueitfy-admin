@@ -11,10 +11,10 @@ import {
   // dropZoneField,label:"label:"ФИО директора"
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import FormDefault from '@/components/form/default/index.vue'
-import FormDocuments from '@/components/form/documents/default/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
+import FormDocuments from '@/components/Form/documents/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
-import Rates from '@/components/form/rates/default/index.vue'
+import Rates from '@/components/Form/rates/default/index.vue'
 import { userKeys } from '@/pages'
 
 function consoleText(row) {

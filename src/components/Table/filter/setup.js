@@ -3,7 +3,7 @@ import Vue, { onMounted, computed, ref } from 'vue'
 
 //import { selectsApi } from '@/api'
 //import autocomplete from '@/compositions/useAutocomplete'
-import FormDefault from '@/components/form/default'
+import FormDefault from '@/components/Form/default'
 
 export default {
   name: 'Table-Filter',

@@ -3,7 +3,7 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
-import Autocomplete from '@/components/autocomplete'
+import Autocomplete from '@/components/Autocomplete'
 import Row from '../row/index.vue'
 
 export default {

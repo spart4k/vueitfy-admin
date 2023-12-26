@@ -5,7 +5,7 @@
 // import vButton from '@/components/button/index.vue'
 import { useRoute } from 'vue-router/composables'
 import { ref, onMounted, unref } from 'vue'
-import Popup from '../../popup/index.vue'
+import Popup from '@/components/Popup/index.vue'
 import { useStore } from '@/store'
 
 const filters = {

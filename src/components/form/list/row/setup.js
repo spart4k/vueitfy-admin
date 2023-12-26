@@ -1,7 +1,7 @@
 import Vue, { onMounted, ref, watch, toRef } from 'vue'
 import useForm from '@/compositions/useForm.js'
 
-import Autocomplete from '@/components/autocomplete'
+import Autocomplete from '@/components/Autocomplete'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'

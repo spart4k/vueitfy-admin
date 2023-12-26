@@ -5,7 +5,7 @@ import Vue, { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from '@/store'
 import _ from 'lodash'
 // import { tableApi } from '@/api'
-import Popup from '../../popup/index.vue'
+import Popup from '@/components/Popup/index.vue'
 const controls = {
   name: 'Controls',
   components: {

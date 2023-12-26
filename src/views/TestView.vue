@@ -11,7 +11,7 @@
 <script>
 import { ref } from 'vue'
 import filters from '@/pages/documents/filters'
-import FormDefault from '@/components/form/default/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import useTable from '@/compositions/useTable'
 import {

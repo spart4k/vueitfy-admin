@@ -9,7 +9,7 @@ import {
   // dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import FormDefault from '@/components/form/default/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 
 function consoleText(row) {

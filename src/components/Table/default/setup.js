@@ -7,14 +7,14 @@ import store from '@/store'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
-import vContextmenu from '@/components/contextmenu/default/index.vue'
-import Sheet from '@/components/sheet/default/index.vue'
-import Popup from '@/components/popup/index.vue'
+import vContextmenu from '@/components/Contextmenu/default/index.vue'
+import Sheet from '@/components/Sheet/default/index.vue'
+import Popup from '@/components/Popup/index.vue'
 
-import vTableButton from '../button/index.js'
-import vButton from '../../button/index.js'
-import vInput from '../../input/default/index.js'
-import vIconSort from '../../icons/sort/index.vue'
+//import vTableButton from '../button/index.js'
+//import vButton from '../../button/index.js'
+//import vInput from '../../input/default/index.js'
+import vIconSort from '../../Icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
@@ -25,9 +25,9 @@ import useTable from '@/compositions/useTable.js'
 const table = {
   name: 'TableDefault',
   components: {
-    vTableButton,
-    vButton,
-    vInput,
+    //vTableButton,
+    //vButton,
+    //vInput,
     vIconSort,
     vContextmenu,
     Sheet,
@@ -215,7 +215,7 @@ const table = {
       //console.log(paramsCol)
     }
     const openContext = ($event, row) => {
-      return // eslint-disable-next-line
+      //return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
         $event.preventDefault()
       } else {
