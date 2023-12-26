@@ -215,7 +215,7 @@ const table = {
       //console.log(paramsCol)
     }
     const openContext = ($event, row) => {
-      return // eslint-disable-next-line
+      //return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
         $event.preventDefault()
       } else {
