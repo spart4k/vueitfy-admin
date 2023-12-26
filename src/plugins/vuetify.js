@@ -28,6 +28,7 @@ export default new Vuetify({
         disabled: '#C2CFE0',
         textDefault: '#000000',
         borderDefault: 'rgba(0, 0, 0, 0.42)',
+        cardBackground: '#FFFFFF',
       },
       dark: {
         primary: '#007BFF',
@@ -44,6 +45,7 @@ export default new Vuetify({
         background: '#252525',
         textDefault: '#ffffff',
         borderDefault: 'rgba(255, 255, 255, 0.7)',
+        cardBackground: '#1E1E1E',
       },
       blue: {
         primary: '#07e0f8',

@@ -2312,6 +2312,78 @@ const defaultForm = [
           ],
         },
       }),
+      autocompleteField({
+        label: 'Объект',
+        subtype: 'multiple',
+        name: 'object_id',
+        alias: 'object_json',
+        requestKey: 'object_json',
+        //subtype: 'single',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        readonly: true,
+        items: [],
+        page: 1,
+        search: '',
+        url: 'get/pagination_list/object_logistic',
+        // object
+        position: {
+          cols: 12,
+          sm: 6,
+        },
+        validations: { required },
+        bootstrapClass: [''],
+        filter: [
+          {
+            field: 'direction_json',
+            value: '',
+          },
+        ],
+        dependence: [
+          {
+            type: 'default',
+            fillField: ['city_id', 'regions_id'],
+          },
+          //{
+          //  type: 'api',
+          //  module: 'selects/getListUpdate',
+          //  field: 'personal_id',
+          //  url: 'get/pagination_list/brigadirs',
+          //},
+        ],
+        //updateList: [
+        //  {
+        //    alias: 'brigadirs',
+        //    filter: [
+        //      {
+        //        field: 'object_id',
+        //        value: '',
+        //        source: 'formData',
+        //        type: 'array',
+        //      },
+        //      {
+        //      field: 'direction_id',
+        //      //alias: 'direction_json',
+        //      value: '',
+        //      source: 'formData',
+        //      type: 'array'
+        //    },
+        //    ],
+        //  },
+        //],
+        update: {
+          module: 'selects/getList',
+          fields: ['personal_id'],
+        },
+        //isShow: {
+        //  value: false,
+        //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
+        //},
+      }),
       checkboxField({
         label: 'Штатный',
         name: 'in_state',
