@@ -5,15 +5,15 @@ import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 
-import vContextmenu from '@/components/contextmenu/default/index.vue'
-import Sheet from '@/components/sheet/default/index.vue'
-import Popup from '@/components/popup/index.vue'
-import DropZone from '@/components/dropzone/default/index.vue'
+import vContextmenu from '@/components/Contextmenu/default/index.vue'
+import Sheet from '@/components/Sheet/default/index.vue'
+import Popup from '@/components/Popup/index.vue'
+import DropZone from '@/components/Dropzone/default/index.vue'
 
-import vTableButton from '../button/index.js'
-import vButton from '../../button/index.js'
-import vInput from '../../input/default/index.js'
-import vIconSort from '../../icons/sort/index.vue'
+//import vTableButton from '../button/index.js'
+//import vButton from '../../button/index.js'
+//import vInput from '../../input/default/index.js'
+import vIconSort from '../../Icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
@@ -23,9 +23,9 @@ import useMobile from '@/layouts/Adaptive/checkMob.js'
 const table = {
   name: 'TableFixed',
   components: {
-    vTableButton,
-    vButton,
-    vInput,
+    //vTableButton,
+    //vButton,
+    //vInput,
     vIconSort,
     vContextmenu,
     Sheet,
@@ -502,15 +502,15 @@ const table = {
                 }
               }
             )
-          } 
-   
+          }
+
         }
- 
+
         popupForm.value.isShow = true
        // popupForm.value.isShowCellForm = true
         popupForm.value.dataCellForm = porpsContent
-        //  popupForm.value.isShow = 
-      } 
+        //  popupForm.value.isShow =
+      }
     }
 
     const openRow = ($event, row, cell) => {
@@ -536,8 +536,8 @@ const table = {
         openRow($event, row, cell)
       }
       console.log($event, row, cell);
-    } 
- 
+    }
+
     const closePopupForm = () => {
       router.back()
       popupForm.value.isShow = false

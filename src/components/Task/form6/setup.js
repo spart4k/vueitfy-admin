@@ -1,5 +1,5 @@
 import { defineComponent, ref, computed, onMounted, emit } from 'vue'
-import Dropzone from '@/components/dropzone/default'
+import Dropzone from '@/components/Dropzone/default'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'

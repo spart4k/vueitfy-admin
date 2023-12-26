@@ -2,7 +2,7 @@ import { defineComponent, ref, watch } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
-import DateTimePicker from '@/components/datetimepicker/index.vue'
+import DateTimePicker from '@/components/Datetimepicker/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 

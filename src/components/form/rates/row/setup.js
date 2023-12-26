@@ -1,5 +1,5 @@
 import Vue, { onMounted, reactive, ref } from 'vue'
-import row from '../row/index.vue'
+import row from './index.vue'
 import { useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm.js'
 

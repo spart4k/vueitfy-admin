@@ -1,7 +1,7 @@
 import { defineComponent, ref } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
-import DateTimePicker from '@/components/datetimepicker/index.vue'
+import DateTimePicker from '@/components/Datetimepicker/index.vue'
 import store from '@/store'
 
 const DocFormWithConfirm = defineComponent({

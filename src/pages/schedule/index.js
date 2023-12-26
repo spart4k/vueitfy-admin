@@ -1,8 +1,8 @@
 import filters from './filters'
 import { required } from '@/utils/validation.js'
-import FormStage from '@/components/form/stage/index.vue'
+import FormStage from '@/components/Form/stage/index.vue'
 import { stringAction } from '@/utils/actions'
-import FormDefault from '@/components/form/default/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
 //import TableDefault from '@/components/Table/default/index.vue'
 import {
   stringField,
@@ -13,7 +13,7 @@ import {
   dateField,
   textBlock,
 } from '@/utils/fields.js'
-import FormList from '@/components/form/list/index.vue'
+import FormList from '@/components/Form/list/index.vue'
 
 function consoleText(row) {
   console.log(row, 2)

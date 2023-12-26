@@ -1,5 +1,5 @@
 import { defineComponent, ref, computed } from 'vue'
-import Dropzone from '@/components/dropzone/default'
+import Dropzone from '@/components/Dropzone/default'
 // import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 // import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'

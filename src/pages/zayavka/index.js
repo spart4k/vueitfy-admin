@@ -1,8 +1,8 @@
 import filters from './filters'
 import TableDefault from '@/components/Table/default/index.vue'
-import FormDefault from '@/components/form/default/index.vue'
-import FormList from '@/components/form/list/index.vue'
-import Expenses from '@/components/form/expenses/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
+import FormList from '@/components/Form/list/index.vue'
+import Expenses from '@/components/Form/expenses/index.vue'
 
 import { required } from '@/utils/validation.js'
 import {

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
-import CustomIcons from '@/components/icons/index'
+import CustomIcons from '@/components/Icons/index'
 
 Vue.use(Vuetify)
 export default new Vuetify({

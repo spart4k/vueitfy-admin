@@ -1,14 +1,14 @@
 import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
-import Autocomplete from '@/components/autocomplete'
-import FormDefault from '@/components/form/default/index.vue'
+import Autocomplete from '@/components/Autocomplete'
+import FormDefault from '@/components/Form/default/index.vue'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
-import DropZone from '@/components/dropzone/default/index.vue'
-import Datetimepicker from '@/components/datetimepicker/index.vue'
-import ColorPicker from '@/components/colorpicker/index.vue'
+import DropZone from '@/components/Dropzone/default/index.vue'
+import Datetimepicker from '@/components/Datetimepicker/index.vue'
+import ColorPicker from '@/components/Colorpicker/index.vue'
 
 import { required } from '@/utils/validation.js'
 import {
