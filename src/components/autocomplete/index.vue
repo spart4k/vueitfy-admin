@@ -41,7 +41,7 @@
           close
           v-bind="data.attrs"
           small
-          @click:close="removeSelected"
+          @click:close="removeSelected(data)"
         >
           <p>{{ data.item.name }}</p>
         </v-chip>

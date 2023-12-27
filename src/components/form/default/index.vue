@@ -11,7 +11,6 @@
             class="field-col"
             :class="field.type"
           >
-            <!-- {{ formData[field.name] }} -->
             <div
               v-if="
                 loading &&
@@ -61,6 +60,7 @@
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
+              :placeholder="field?.placeholder"
               :error-messages="formErrors[field?.name]"
               clearable
               :readonly="readonlyField(field)"
