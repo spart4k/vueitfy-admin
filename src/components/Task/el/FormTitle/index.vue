@@ -11,7 +11,7 @@
         class="docs-required__inner-image"
       >
         <img
-          :src="process.env.VUE_APP_STORE + docs.path_doc"
+          :src="$root.env.VUE_APP_STORE + docs.path_doc"
           class="docs-required__image"
         />
       </div>

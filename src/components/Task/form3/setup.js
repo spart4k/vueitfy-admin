@@ -48,7 +48,7 @@ const Form3 = defineComponent({
     let addFiles = (e) => {
       file.value = e[0]
     }
-    console.log(this.baseUrl)
+
     const sendData = async () => {
       console.log(selectName.value, file.value)
       let fileExt = file.value.type.split('/')[1]

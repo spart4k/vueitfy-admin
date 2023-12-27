@@ -9,7 +9,7 @@
       <div>
         <div style="font-weight: 600">Путевой лист:</div>
         <div v-if="directionToMagnit && pathAct">
-          <a download :href="process.env.VUE_APP_STORE + pathAct">
+          <a download :href="$root.env.VUE_APP_STORE + pathAct">
             <img style="width: 100%" :src="pathAct" alt="#" />
           </a>
         </div>

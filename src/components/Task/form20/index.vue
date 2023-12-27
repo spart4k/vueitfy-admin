@@ -19,7 +19,7 @@
         <v-row>
           <v-col>
             <span>Скан:</span>
-            <a download :href="process.env.VUE_APP_STORE + doc.path_doc"
+            <a download :href="$root.env.VUE_APP_STORE + doc.path_doc"
               ><v-icon left small> $IconDocument </v-icon></a
             >
           </v-col>
