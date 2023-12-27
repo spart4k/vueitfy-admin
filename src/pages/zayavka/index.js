@@ -1388,18 +1388,18 @@ const config = {
           { alias: 'type_pay', filter: [] },
           { alias: 'me', filter: [] },
           { alias: 'type_objects', filter: [] },
-          {
-            alias: 'permissions_zr',
-            filter: [
-              {
-                field: 'direction_id',
-                //alias: 'direction_json',
-                value: '',
-                source: 'formData',
-                type: 'array',
-              },
-            ],
-          },
+          // {
+          //   alias: 'permissions_zr',
+          //   filter: [
+          //     {
+          //       field: 'direction_id',
+          //       //alias: 'direction_json',
+          //       value: '',
+          //       source: 'formData',
+          //       type: 'array',
+          //     },
+          //   ],
+          // },
         ],
         alias: 'personal_target',
         active: false,
@@ -1513,6 +1513,19 @@ const config = {
             //   module: 'selects/getList',
             //   fields: ['permissions_zr'],
             // },
+            updateList: [
+              {
+                alias: 'permissions_zr',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
             // updateList: [
             //   {
             //     alias: 'permissions_zr',

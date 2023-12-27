@@ -86,7 +86,7 @@ export default function ({
     //   reactive(
     //     Object.keys(setFields()).reduce((obj, key) => {
     //       if (formData[key]) obj[key] = ref(formData[key])
-    //       else obj[key] = ref(setFields()[key].default)
+    //       else obj[key] = Vue.set(formData, key, ref(fields[key].default))
     //       return obj
     //     }, {})
     //   )
@@ -94,9 +94,7 @@ export default function ({
     const fields = setFields()
     for (let key in fields) {
       if (formData.hasOwnProperty(key)) continue
-      else {
-        Vue.set(formData, key, ref(fields[key].default))
-      }
+      Vue.set(formData, key, ref(fields[key].default))
     }
   }
 
