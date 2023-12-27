@@ -2489,8 +2489,9 @@ const defaultForm = [
     fields: [
       autocompleteField({
         label: 'Объект',
-        subtype: 'multiple',
+        //subtype: 'multiple',
         name: 'bind_objects',
+        requestKey: 'object_id',
         //subtype: 'single',
         placeholder: '',
         class: [''],
@@ -2498,7 +2499,7 @@ const defaultForm = [
           text: 'name',
           value: 'id',
         },
-        readonly: true,
+        //readonly: true,
         items: [],
         page: 1,
         search: '',
@@ -2519,66 +2520,49 @@ const defaultForm = [
         ],
         dependence: [
           {
-            type: 'default',
-            fillField: ['city_id', 'regions_id'],
+            type: 'api',
+            module: 'selects/getListUpdate',
+            field: 'bind_directions',
+            url: 'get/pagination_list/bind_directions',
+            filter: [
+              {
+                field: 'bind_objects',
+                alias: 'object_id',
+                value: '',
+                type: 'num',
+              },
+              {
+                field: 'personal_id',
+                value: '',
+                source: '+route.params.id',
+                type: 'num',
+              },
+            ],
           },
-          //{
-          //  type: 'api',
-          //  module: 'selects/getListUpdate',
-          //  field: 'personal_id',
-          //  url: 'get/pagination_list/brigadirs',
-          //},
         ],
         //isShow: {
         //  value: false,
         //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
         //},
       }),
-      selectField({
-        label: 'Направление',
-        name: 'bind_directions',
-        subtype: 'multiple',
-        placeholder: '',
-        class: [''],
-        selectOption: {
-          text: 'name',
-          value: 'id',
-        },
-        items: [],
-        position: {
-          cols: 12,
-          sm: 12,
-        },
-        //validations: { required },
-        bootstrapClass: [''],
-        readonly: true,
-        //readonly: {
-        //  value: false,
-        //  condition: [
-        //    editFormPermissions.brigadir,
-        //    editFormPermissions.manager[1],
-        //    editFormPermissions.rukFIlCUPDirector.denied,
-        //    editFormPermissions.DBA.access,
-        //    editFormPermissions.OBDandOKK.access,
-        //  ],
-        //},
-      }),
       autocompleteField({
-        label: 'Объект',
-        //subtype: 'multiple',
+        label: 'Направления',
         subtype: 'multiple',
-        name: 'bind_accounts',
+        name: 'bind_directions',
+        alias: '',
+        notSend: true,
+        //subtype: 'single',
         placeholder: '',
         class: [''],
         selectOption: {
           text: 'name',
           value: 'id',
         },
-        readonly: true,
+        //readonly: true,
         items: [],
         page: 1,
         search: '',
-        url: 'get/pagination_list/bind_accounts',
+        url: 'get/pagination_list/bind_objects',
         // object
         position: {
           cols: 12,
@@ -2586,12 +2570,76 @@ const defaultForm = [
         },
         validations: { required },
         bootstrapClass: [''],
-        filter: [
+        updateList: [
           {
-            field: 'direction_json',
-            value: '',
+            alias: 'bind_accounts',
+            filter: [
+              {
+                field: 'bind_objects',
+                alias: 'object_id',
+                source: 'formData',
+                value: '',
+                type: 'num',
+              },
+              {
+                field: 'bind_directions',
+                alias: 'direction_json',
+                source: 'formData',
+                value: '',
+                type: 'array',
+              },
+              {
+                field: 'personal_id',
+                value: '',
+                source: '+route.params.id',
+                type: 'num',
+              },
+            ],
           },
         ],
+        filter: [
+          {
+            field: 'bind_objects',
+            alias: 'object_id',
+            value: '',
+            type: 'num',
+          },
+          {
+            field: 'bind_directions',
+            alias: 'direction_json',
+            value: '',
+            type: 'array',
+          },
+          {
+            field: 'personal_id',
+            value: '',
+            source: '+route.params.id',
+            type: 'num',
+          },
+        ],
+        //isShow: {
+        //  value: false,
+        //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
+        //},
+      }),
+      selectField({
+        label: 'Сотрудники',
+        name: 'account_json',
+        alias: 'bind_accounts',
+        subtype: 'multiple',
+        placeholder: '',
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [],
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        validations: { required },
+        bootstrapClass: [''],
       }),
     ],
     actions: [
@@ -2607,9 +2655,24 @@ const defaultForm = [
       stringAction({
         text: 'Сохранить',
         type: 'submit',
-        module: '',
+        module: 'form/putForm',
         name: 'saveForm',
-        nextForm: true,
+        url: 'update/personal/object',
+        action: 'saveForm',
+        color: 'primary',
+        handlingResponse: {
+          1: {
+            text: 'Объект привязан',
+            color: 'success',
+          },
+          2: {
+            text: 'Сотрудник удален',
+            color: 'error',
+          },
+          3: {
+            text: '',
+          },
+        },
       }),
     ],
   },

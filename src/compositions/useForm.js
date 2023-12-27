@@ -81,15 +81,25 @@ export default function ({
   let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
-    Object.assign(
-      formData,
-      reactive(
-        Object.keys(fields).reduce((obj, key) => {
-          obj[key] = ref(formData[key])
-          return obj
-        }, {})
-      )
-    )
+    // Object.assign(
+    //   formData,
+    //   reactive(
+    //     Object.keys(setFields()).reduce((obj, key) => {
+    //       if (formData[key]) obj[key] = ref(formData[key])
+    //       else obj[key] = ref(setFields()[key].default)
+    //       return obj
+    //     }, {})
+    //   )
+    // )
+    const fields = setFields()
+    console.log(fields)
+    for (let key in fields) {
+      if (formData.hasOwnProperty(key)) continue
+      //if (fields)
+      else {
+        Vue.set(formData, key, ref(fields[key].default))
+      }
+    }
   }
 
   const $errors = ref({})
@@ -346,6 +356,10 @@ export default function ({
           newForm[key] = false
         }
       }
+      if (item.name === 'subtype' && formData[key] === '') {
+        delete newForm[key]
+      }
+      console.log(newForm)
     })
     return newForm
   }
@@ -525,6 +539,12 @@ export default function ({
                 : [source[el.field]],
               type: el.type,
             })
+          } else if (source) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source) ? source : [source],
+              type: el.type,
+            })
           }
           return acc
         }, [])
@@ -609,21 +629,38 @@ export default function ({
           const filter = []
           if (targetField.filter && targetField.filter.length) {
             targetField.filter.forEach((el) => {
-              if (!formData[el.field]) return
-              filter.push({
-                alias: el.alias ?? el.field,
-                type: el.type,
-                value: formData[el.field],
-              })
+              console.log(el.field, formData, formData[el.field])
+              if (!formData[el.field] && !el.source) return
+              if (el.source)
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: el.source ? eval(el.source) : formData[el.field],
+                })
+              else {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: formData[el.field],
+                })
+              }
             })
           } else if (dependence.filter && dependence.filter.length) {
             dependence.filter.forEach((el) => {
-              if (!formData[el.field]) return
-              filter.push({
-                alias: el.alias ?? el.field,
-                type: el.type,
-                value: formData[el.field],
-              })
+              if (!formData[el.field] && !el.source) return
+              if (el.source)
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: el.source ? eval(el.source) : formData[el.field],
+                })
+              else {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: formData[el.field],
+                })
+              }
             })
           }
           body = {
@@ -762,12 +799,6 @@ export default function ({
   const checkInvalidSelect = (field) => {
     const result = field.items.find((el) => el.id === formData[field.name])
     if (!result) formData[field.name] = ''
-  }
-
-  const changeCheckbox = (field) => {
-    //showField(field.type, field)
-    //setFields()
-    rebuildFormData()
   }
 
   const changeSelect = async ({ value, field }) => {
@@ -1123,7 +1154,6 @@ export default function ({
     addFiles,
     sortData,
     rebuildFormData,
-    changeCheckbox,
     tabStorageChange,
     stageRequest,
     responseHandler,

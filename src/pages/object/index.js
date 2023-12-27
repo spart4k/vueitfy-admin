@@ -1848,6 +1848,7 @@ const config = {
                   cols: 12,
                   sm: 4,
                 },
+                value: '#000000',
                 bootstrapClass: [''],
                 //validations: { required },
                 //isShow: false,

@@ -55,7 +55,7 @@ export default {
     const stage = ref(null)
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
-    const fields = computed(() => {
+    const fields = () => {
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
@@ -74,7 +74,7 @@ export default {
         Vue.set(fields[el.name], 'default', el.value)
       })
       return fields
-    })
+    }
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
@@ -179,7 +179,7 @@ export default {
       context,
       detail: props.detail,
       loading,
-      fields: fields.value,
+      fields: fields(),
       setFields: fields,
       makeRequest,
       makeRequestList,
