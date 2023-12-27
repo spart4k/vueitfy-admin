@@ -43,6 +43,8 @@ export default function ({ context, loading, activeTab, createForm, form }) {
       }
       action?.requestBody?.formData?.forEach((item) => {
         if (item in form.stageData) obj[item] = form.stageData[item]
+        else if (item.formKey in form.stageData)
+          obj[item.requestKey] = form.stageData[item.formKey]
       })
       const data = await createForm({
         url: action.url,

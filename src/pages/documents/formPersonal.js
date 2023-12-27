@@ -18,8 +18,8 @@ import FormDocuments from '@/components/Form/documents/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 // import useNavigation from '@/compositions/useNavigation'
-import { userKeys } from '@/pages'
 
+import { headDocumentConfigEdit, fieldsBaseDocumentConfigEdit, fieldsTypeDocsDocumentConfigEdit, fieldsBaseDefaulrForm, fieldsDocumentDefaultForm} from '@/pages/personal/index' 
 // const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {
@@ -35,22 +35,13 @@ function consolePanel() {
   console.log('panel,button')
 }
 
-function downloadFile(val) {
-  const link = document.createElement('a')
-  link.download = val
-  link.href = process.env.VUE_APP_STORE + val
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-}
-
-
+// function addQuery() {
+//   // addOrUpdateURLParam('target_id', 'add')
+// }
 
 function searchInputing(field) {
   console.log(field)
 }
-
-
 
 const consumptionConfig = {
   selector: '#mainTable',
@@ -301,7 +292,7 @@ const consumptionConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ]
@@ -556,207 +547,11 @@ const debetorConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ]
 }
-
-export const headDocumentConfigEdit = [
-  {
-    title: 'Тип документа',
-    type: 'default',
-    align: 'center',
-    fixed: {
-      value: true,
-      position: 'left',
-    },
-    sorts: [
-      {
-        type: 'string',
-        default: '',
-        value: '',
-        isShow: false,
-      },
-    ],
-    alias: 'pds.name',
-    isShow: true,
-    width: '40',
-    value: 'doc_name',
-    search: {
-      field: '',
-      isShow: true,
-    },
-  },
-  {
-    title: 'Скан-копия/фото',
-    type: 'actions',
-    align: 'center',
-    fixed: {
-      value: false,
-      position: undefined,
-    },
-    sorts: [
-      {
-        type: 'number',
-        default: '',
-        value: '',
-        isShow: false,
-      },
-    ],
-    isShow: true,
-    width: '150',
-    value: 'path_doc',
-    alias: 'pd.path_doc',
-    search: {
-      field: '',
-      isShow: true,
-    },
-    actions: [
-      {
-        type: 'button',
-        url: '$IconDownload',
-        function: downloadFile,
-        label: 'Скачать',
-      },
-    ],
-  },
-
-  {
-    title: 'Примечание',
-    type: 'default',
-    align: 'center',
-    fixed: {
-      value: false,
-      position: 'left',
-    },
-    sorts: [
-      {
-        type: 'string',
-        default: '',
-        value: '',
-        isShow: false,
-      },
-    ],
-    isShow: true,
-    width: '90',
-    alias: 'pd.note',
-    value: 'comment',
-    search: {
-      field: '',
-      isShow: true,
-    },
-  },
-]
-
-export const fieldsBaseDocumentConfigEdit = [
-  selectField({
-    label: 'Тип документа',
-    name: 'doc_id',
-    alias: 'documents',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    validations: { required },
-    bootstrapClass: [''],
-  }),
-  dropZoneField({
-    label: 'Скан-копия/фото:',
-    name: 'path_doc',
-    notPut: true,
-    placeholder: '',
-    readonly: false,
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    bootstrapClass: [''],
-    validations: { required },
-    options: {
-      removeble: true,
-      withoutSave: false,
-      folder: 'personal_doc',
-      name: '`personal_doc_25`',
-      paramsForEmit: this,
-    },
-    value: '',
-  }),
-  textareaField({
-    label: 'Примечание:',
-    name: 'note',
-    alias: 'pd.note',
-    placeholder: '',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
-]
-
-export const fieldsTypeDocsDocumentConfigEdit = [
-  selectField({
-    label: 'Тип документа',
-    name: 'doc_id',
-    alias: 'documents',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    validations: { required },
-    bootstrapClass: [''],
-  }),
-  dropZoneField({
-    label: 'Скан-копия/фото:',
-    name: 'path_doc',
-    placeholder: '',
-    readonly: false,
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    bootstrapClass: [''],
-    validations: { required },
-    options: {
-      removeble: true,
-      withoutSave: false,
-      folder: 'personal_doc',
-      name: '`personal_doc_25`',
-      paramsForEmit: this,
-    },
-    value: '',
-  }),
-  textareaField({
-    label: 'Примечание:',
-    name: 'note',
-    alias: 'pd.note',
-    placeholder: '',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
-]
 
 const documentConfigEdit = {
   selector: '#mainTable',
@@ -784,10 +579,8 @@ const documentConfigEdit = {
       {
         label: 'Добавить',
         class: ['v-table-button--custom'],
-        url: 'personal/:id/new',
+        url: 'documents-personal-id-new',
         type: 'changeUrl',
-        // function: addQuery,
-        // type: 'nextStage',
         backgroundColor: '#fff',
       },
     ],
@@ -823,60 +616,7 @@ const documentConfigEdit = {
         lists: [{ alias: 'documents', filter: [] }],
         alias: 'personal_doc',
         active: false,
-        fields: [
-          selectField({
-            label: 'Тип документа',
-            name: 'doc_id',
-            alias: 'documents',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dropZoneField({
-            label: 'Скан-копия/фото:',
-            name: 'path_doc',
-            notPut: true,
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            validations: { required },
-            options: {
-              removeble: true,
-              withoutSave: false,
-              folder: 'personal_doc',
-              name: '`personal_doc_25`',
-              paramsForEmit: this,
-            },
-            value: '',
-          }),
-          textareaField({
-            label: 'Примечание:',
-            name: 'note',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
+        fields: fieldsBaseDocumentConfigEdit,
         actions: [
           stringAction({
             text: 'Сохранить',
@@ -929,7 +669,7 @@ const documentConfigEdit = {
             color: 'text',
             name: 'closePopup',
             action: 'closePopup',
-            to: 'personal/:id',
+            to: 'documents-personal-id',
             skipValidation: true,
           }),
         ],
@@ -944,7 +684,7 @@ const documentConfigEdit = {
       color: 'text',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ],
@@ -1013,7 +753,7 @@ const documentConfig = {
     },
     {
       title: 'Скан-копия/фото',
-      type: 'download',
+      type: 'default',
       align: 'center',
       fixed: {
         value: false,
@@ -1035,14 +775,6 @@ const documentConfig = {
         field: '',
         isShow: true,
       },
-      actions: [
-        {
-          type: 'button',
-          url: '$IconDownload',
-          function: downloadFile,
-          label: 'Скачать',
-        },
-      ],
     },
     {
       title: 'Примечание',
@@ -1099,60 +831,7 @@ const documentConfig = {
         lists: [{ alias: 'documents', filter: [] }],
         alias: 'personal_doc',
         active: false,
-        fields: [
-          selectField({
-            label: 'Тип документа',
-            name: 'doc_id',
-            alias: 'documents',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dropZoneField({
-            label: 'Скан-копия/фото:',
-            name: 'path_doc',
-            placeholder: '',
-            notPut: true,
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            validations: { required },
-            options: {
-              removeble: true,
-              withoutSave: false,
-              folder: 'personal_doc',
-              name: '`personal_doc_25`',
-              paramsForEmit: this,
-            },
-            value: '',
-          }),
-          textareaField({
-            label: 'Примечание:',
-            name: 'note',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
+        fields: fieldsBaseDefaulrForm,
         actions: [
           stringAction({
             text: 'Сохранить',
@@ -1768,7 +1447,7 @@ const bankConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ]
@@ -2023,7 +1702,7 @@ const paymentConfig = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
+      to: 'documents',
       skipValidation: true,
     }),
   ],
@@ -2087,347 +1766,10 @@ const editFormPermissions = {
   }
 }
 
-
-export const fieldsBaseDefaulrForm = [
-  stringField({
-    label: 'ФИО',
-    name: 'name',
-    placeholder: '',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    bootstrapClass: [''],
-    //validations: { required },
-    //isShow: false,
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
-      ],
-    },
-  }),
-  stringField({
-    label: 'Телефон',
-    name: 'telefon',
-    placeholder: '',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    bootstrapClass: [''],
-    //validations: { required },
-    //isShow: false,
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.access,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
-      ],
-    },
-  }),
-  selectField({
-    label: 'Гражданство',
-    name: 'grajdanstvo_id',
-    alias: 'grajdanstvo_id',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    items: [],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    validations: { required },
-    bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
-      ],
-    },
-  }),
-  stringField({
-    label: 'Примечание',
-    name: 'comment',
-    placeholder: '',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    bootstrapClass: [''],
-    //validations: { required },
-    //isShow: false,
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
-      ],
-    },
-  }),
-  dateField({
-    label: ' Дата рождения',
-    name: 'data_rojd',
-    subtype: 'date',
-    placeholder: '',
-    classes: [''],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    validations: { required },
-    bootstrapClass: ['changeSelect'],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
-      ],
-    },
-  }),
-  selectField({
-    label: 'Личный ключ',
-    name: 'user_key',
-    subtype: 'multiple',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    items: [],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    //validations: { required },
-    bootstrapClass: [''],
-    readonly: true,
-    //readonly: {
-    //  value: false,
-    //  condition: [
-    //    editFormPermissions.brigadir,
-    //    editFormPermissions.manager[1],
-    //    editFormPermissions.rukFIlCUPDirector.denied,
-    //    editFormPermissions.DBA.access,
-    //    editFormPermissions.OBDandOKK.access,
-    //  ],
-    //},
-  }),
-  selectField({
-    label: 'Направление',
-    name: 'direction_json',
-    alias: 'direction_id',
-    subtype: 'miltiple',
-    subtype: 'multiple',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    items: [],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    validations: { required },
-    bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.denied,
-      ],
-    },
-  }),
-  selectField({
-    label: 'Доступ',
-    name: 'account_json',
-    alias: 'account_id',
-    subtype: 'multiple',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    items: [],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    validations: { required },
-    bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        ...editFormPermissions.manager,
-        editFormPermissions.rukFIlCUPDirector.access,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.denied,
-      ],
-    },
-  }),
-  selectField({
-    label: 'Проживание',
-    name: 'habitation_id',
-    alias: 'direction_json',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    items: [],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    defaultItems: [
-      {
-        id: 11,
-        name: '--Самостоятельное--',
-        bank_id: 11,
-      },
-    ],
-    validations: { required },
-    bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.denied,
-        editFormPermissions.OBDandOKK.access,
-      ],
-    },
-  }),
-  checkboxField({
-    label: 'Штатный',
-    name: 'in_state',
-    placeholder: '',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 6,
-    },
-    bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
-      ],
-    },
-  }),
-]
-
-export const fieldsDocumentDefaultForm = [
-  {
-    type: 'passport',
-    name: 'Паспорт',
-    fields: [],
-  },
-  {
-    type: 'Snils',
-    name: 'Снилс',
-    fields: [
-      stringField({
-        label: 'Номер',
-        name: 'name',
-        placeholder: '',
-        readonly: false,
-        class: [''],
-        position: {
-          cols: 12,
-          sm: 12,
-        },
-        bootstrapClass: [''],
-        //validations: { required },
-        //isShow: false,
-      }),
-    ],
-  },
-  {
-    type: 'passport_page_2',
-    name: 'Паспорт стр.2',
-    fields: [
-      stringField({
-        label: 'Адрес регистрации',
-        name: 'issued_by',
-        placeholder: '',
-        readonly: false,
-        class: [''],
-        position: {
-          cols: 12,
-          sm: 12,
-        },
-        bootstrapClass: [''],
-        //validations: { required },
-        //isShow: false,
-      }),
-    ],
-  },
-  {
-    type: 'inn',
-    name: 'ИНН',
-    fields: [
-      stringField({
-        label: 'Адрес регистрации',
-        name: 'issued_by',
-        placeholder: '',
-        readonly: false,
-        class: [''],
-        position: {
-          cols: 12,
-          sm: 12,
-        },
-        bootstrapClass: [''],
-        //validations: { required },
-        //isShow: false,
-      }),
-    ],
-  },
-]
-
-
 const defaultForm = [
   {
     id: 0,
-    path: 'edit',
+    path: 'persanalById',
     name: 'Основные',
     type: FormDefault,
     detail: true,
@@ -2448,160 +1790,7 @@ const defaultForm = [
         color: 'textDefault',
         name: 'closePopup',
         action: 'closePopup',
-        to: 'personal',
-        skipValidation: true,
-      }),
-      stringAction({
-        text: 'Сохранить',
-        type: 'submit',
-        module: '',
-        name: 'saveForm',
-        nextForm: true,
-      }),
-    ],
-  },
-  {
-    id: 0,
-    path: 'bind',
-    name: 'Основные',
-    type: FormDefault,
-    detail: true,
-    lists: [
-      { alias: 'bind_directions',
-        filter: [
-          {
-            field: 'bind_objects',
-            alias: 'object_id',
-            value: '',
-            source: 'formData',
-            type: 'array'
-          },
-        ]
-      },
-      // 'user_keys',
-      // 'habitation_id',
-      // 'account_id',
-      // 'direction_id',
-      // 'grajdanstvo_id',
-    ],
-    alias: 'personal',
-    active: false,
-    fields: [
-      autocompleteField({
-        label: 'Объект',
-        subtype: 'multiple',
-        name: 'bind_objects',
-        //subtype: 'single',
-        placeholder: '',
-        class: [''],
-        selectOption: {
-          text: 'name',
-          value: 'id',
-        },
-        readonly: true,
-        items: [],
-        page: 1,
-        search: '',
-        url: 'get/pagination_list/bind_objects',
-        // object
-        position: {
-          cols: 12,
-          sm: 12,
-        },
-        validations: { required },
-        bootstrapClass: [''],
-        filter: [
-          {
-            field: 'personal_id',
-            value: '',
-            source: '+route.params.id'
-          },
-        ],
-        dependence: [
-          {
-            type: 'default',
-            fillField: ['city_id', 'regions_id'],
-          },
-          //{
-          //  type: 'api',
-          //  module: 'selects/getListUpdate',
-          //  field: 'personal_id',
-          //  url: 'get/pagination_list/brigadirs',
-          //},
-        ],
-        //isShow: {
-        //  value: false,
-        //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
-        //},
-      }),
-      selectField({
-        label: 'Направление',
-        name: 'bind_directions',
-        subtype: 'multiple',
-        placeholder: '',
-        class: [''],
-        selectOption: {
-          text: 'name',
-          value: 'id',
-        },
-        items: [],
-        position: {
-          cols: 12,
-          sm: 12,
-        },
-        //validations: { required },
-        bootstrapClass: [''],
-        readonly: true,
-        //readonly: {
-        //  value: false,
-        //  condition: [
-        //    editFormPermissions.brigadir,
-        //    editFormPermissions.manager[1],
-        //    editFormPermissions.rukFIlCUPDirector.denied,
-        //    editFormPermissions.DBA.access,
-        //    editFormPermissions.OBDandOKK.access,
-        //  ],
-        //},
-      }),
-      autocompleteField({
-        label: 'Объект',
-        //subtype: 'multiple',
-        subtype: 'multiple',
-        name: 'bind_accounts',
-        placeholder: '',
-        class: [''],
-        selectOption: {
-          text: 'name',
-          value: 'id',
-        },
-        readonly: true,
-        items: [],
-        page: 1,
-        search: '',
-        url: 'get/pagination_list/bind_accounts',
-        // object
-        position: {
-          cols: 12,
-          sm: 12,
-        },
-        validations: { required },
-        bootstrapClass: [''],
-        filter: [
-          {
-            field: 'direction_json',
-            value: '',
-          },
-        ],
-      }),
-    ],
-    actions: [
-      stringAction({
-        text: 'Закрыть',
-        type: 'submit',
-        color: 'textDefault',
-        name: 'closePopup',
-        action: 'closePopup',
-        to: 'personal',
+        to: 'documents',
         skipValidation: true,
       }),
       stringAction({
@@ -2615,7 +1804,7 @@ const defaultForm = [
   },
   {
     id: 2,
-    path: 'edit',
+    path: 'persanalById',
     name: 'Данные документов',
     type: FormDocuments,
     detail: true,
@@ -2636,7 +1825,7 @@ const defaultForm = [
         color: 'disabled',
         name: 'closePopup',
         action: 'closePopup',
-        to: 'personal',
+        to: 'documents',
         skipValidation: true,
       }),
       stringAction({
@@ -2649,7 +1838,7 @@ const defaultForm = [
     ],
   },
   {
-    path: 'edit',
+    path: 'persanalById',
     id: 3,
     name: 'Сканы',
     type: TableDefault,
@@ -2657,7 +1846,7 @@ const defaultForm = [
     config: documentConfigEdit,
   },
   {
-    path: 'edit',
+    path: 'persanalById',
     id: 7,
     name: 'Банковские карты',
     type: TableDefault,
@@ -2665,7 +1854,7 @@ const defaultForm = [
     config: bankConfig,
   },
   {
-    path: 'edit',
+    path: 'persanalById',
     id: 4,
     name: 'Начисления и выплаты',
     type: TableDefault,
@@ -2673,7 +1862,7 @@ const defaultForm = [
     config: paymentConfig,
   },
   {
-    path: 'edit',
+    path: 'persanalById',
     id: 1,
     name: 'Расход',
     type: TableDefault,
@@ -2681,656 +1870,420 @@ const defaultForm = [
     config: consumptionConfig,
   },
   {
-    path: 'edit',
+    path: 'persanalById',
     id: 6,
     name: 'Задолженность',
     type: TableDefault,
     active: false,
     config: debetorConfig,
   },
-  {
-    path: 'add',
-    id: 5,
-    name: 'Заявка на персонал',
-    type: 'FormStage',
-    detail: true,
-    setRoute: 'personal-add',
-    stages: [
-      {
-        id: 0,
-        name: 'Основные0',
-        type: FormDefault,
-        detail: true,
-        lists: [
-          // 'vid_vedomost_id',
-          // 'status_pt',
-          { alias: 'direction_id_logistic', filter: [] },
-          { alias: 'grajdanstvo_id', filter: [] },
-          { alias: 'brigadirs', filter: [
-            {
-              field: 'object_id',
-              //alias: 'object_json',
-              value: '',
-              source: 'formData',
-              type: 'array'
-            },
-            {
-              field: 'direction_id',
-              //alias: 'direction_json',
-              value: '',
-              source: 'formData',
-              type: 'array'
-            },
-          ]},
-          {
-            alias: 'city_id',
-            filter: [
-              {
-                field: 'regions_id',
-                value: '',
-                source: 'formData',
-                type: 'num',
-              },
-            ],
-          },
-          // { alias: 'brigadirs', filter: [] },
-          // 'shifts',
-          // 'nutritions',
-        ],
-        alias: 'personal_target',
-        active: false,
-        fields: [
-          stringField({
-            label: 'ФИО',
-            name: 'fio',
-            placeholder: '',
-            value: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dateField({
-            label: 'Дата рождения',
-            name: 'date_rojd',
-            type: 'date',
-            value: '',
-            menu: false,
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            disable: false,
-            //mode: 'edit',
-          }),
-          selectField({
-            label: 'Направления',
-            subtype: 'multiple',
-            name: 'direction_id',
-            alias: 'direction_id_logistic',
-            requestKey: 'direction_json',
-            placeholder: '',
-            class: [''],
-            value: '',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            dependence: [
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'object_id',
-                url: 'get/pagination_list/object_logistic',
-                alias: 'object_id'
-              },
-            ],
-            updateList: [
-              {
-                alias: 'brigadirs',
-                filter: [
-                  {
-                    field: 'object_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'array',
-                  },
-                  {
-                  field: 'direction_id',
-                  //alias: 'direction_json',
-                  value: '',
-                  source: 'formData',
-                  type: 'array'
-                },
-                ],
-              },
-            ],
-          }),
-          autocompleteField({
-            label: 'Объект',
-            subtype: 'multiple',
-            name: 'object_id',
-            alias: 'object_json',
-            requestKey: 'object_json',
-            //subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/object_logistic',
-            // object
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            putValueInItems: 'object_transfer_id',
-            filter: [
-              {
-                field: 'direction_id',
-                value: '',
-              },
-            ],
-            // dependence: [
-            //   {
-            //     type: 'default',
-            //     fillField: ['city_id', 'regions_id'],
-            //   },
-            //   //{
-            //   //  type: 'api',
-            //   //  module: 'selects/getListUpdate',
-            //   //  field: 'personal_id',
-            //   //  url: 'get/pagination_list/brigadirs',
-            //   //},
-            // ],
-            updateList: [
-              {
-                alias: 'brigadirs',
-                filter: [
-                  {
-                    field: 'object_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'array',
-                  },
-                  {
-                  field: 'direction_id',
-                  //alias: 'direction_json',
-                  value: '',
-                  source: 'formData',
-                  type: 'array'
-                },
-                ],
-              },
-            ],
-            update: {
-              module: 'selects/getList',
-              fields: ['personal_id'],
-            },
-            isShow: {
-              value: false,
-              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] }],
-            },
-          }),
-          // stringField({
-          //   label: '',
-          //   name: 'city_id',
-          //   placeholder: '',
-          //   class: [''],
-          //   position: {
-          //     cols: 12,
-          //     sm: 6,
-          //   },
-          //   isShow: {
-          //     value: true,
-          //   },
-          //   bootstrapClass: [''],
-          // }),
-          // stringField({
-          //   label: '',
-          //   name: 'regions_id',
-          //   placeholder: '',
-          //   class: [''],
-          //   position: {
-          //     cols: 12,
-          //     sm: 6,
-          //   },
-          //   isShow: {
-          //     value: true,
-          //     // hide: true,
-          //   },
-          //   bootstrapClass: [''],
-          // }),
-          //autocompleteField({
-          //  label: 'Бригадир',
-          //  name: 'personal_id',
-          //  requestKey: 'account_json',
-          //  // subtype: 'single',
-          //  subtype: 'multiple',
-          //  stringify: true,
-          //  placeholder: '',
-          //  class: [''],
-          //  selectOption: {
-          //    text: 'name',
-          //    value: 'id',
-          //  },
-          //  items: [],
-          //  page: 1,
-          //  search: '',
-          //  url: 'get/pagination_list/brigadirs',
-          //  // brigadirs
-          //  position: {
-          //    cols: 12,
-          //    sm: 12,
-          //  },
-          //  validations: { required },
-          //  bootstrapClass: [''],
-          //  filter: [
-          //    {
-          //      field: 'object_id',
-          //      alias: 'object_json',
-          //      value: '',
-          //      type: 'array'
-          //    },
-          //    {
-          //      field: 'direction_id',
-          //      alias: 'direction_json',
-          //      value: '',
-          //      type: 'array'
-          //    },
-          //  ],
-          //  isShow: {
-          //    value: false,
-          //    conditions: [{ field: 'direction_id', value: [1, 6] }],
-          //  },
-          //}),
-          selectField({
-            label: 'Бригадир',
-            name: 'personal_id',
-            alias: 'brigadirs',
-            requestKey: 'account_json',
-            subtype: 'multiple',
-            placeholder: '',
-            class: [''],
-            value: '',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            update: {
-              module: 'selects/getList',
-              fields: ['object_id'],
-            },
-            isShow: {
-              value: false,
-              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] }],
-            },
-          }),
-          selectField({
-            label: 'Гражданство',
-            name: 'grajdanstvo_id',
-            alias: 'grajdanstvo_id',
-            placeholder: '',
-            class: [''],
-            value: '',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            update: {
-              module: 'selects/getList',
-              fields: ['object_id'],
-            },
-          }),
-          checkboxField({
-            label: 'Трансфер',
-            name: 'transfer',
-            value: false,
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'Адрес А',
-            name: 'start_point',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required, nameLength },
-            bootstrapClass: [''],
-            isShow: {
-              value: false,
-              conditions: [{ field: 'transfer', value: [true] }],
-            },
-          }),
-          selectField({
-            label: 'Объект',
-            subtype: 'single',
-            name: 'object_transfer_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            // object
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['city_id', 'regions_id', 'region_name', 'city_name'],
-              },
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'regions_id',
-                url: 'get/pagination_list/regions_id',
-              },
-            ],
-            isShow: {
-              value: false,
-              conditions: [{ field: 'transfer', value: [true] }],
-            },
-          }),
-          autocompleteField({
-            label: 'Регион',
-            name: 'regions_id',
-            alias: 'regions_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/regions_id',
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            updateList: [
-              {
-                alias: 'city_id',
-                filter: [
-                  {
-                    field: 'regions_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['region_name'],
-              },
-            ],
-            isShow: {
-              value: false,
-              conditions: [{ field: 'transfer', value: [true] }],
-            },
-          }),
-          selectField({
-            label: 'Населённый пункт',
-            name: 'city_id',
-            //alias: 'city_id',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['city_name'],
-              },
-            ],
-            isShow: {
-              value: false,
-              conditions: [{ field: 'transfer', value: [true] }],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            // requiredFields: ['regions_id'],
-          }),
-          stringField({
-            label: 'Адрес Б',
-            name: 'end_point',
-            placeholder: 'ул., д.',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            validations: { required, nameLength },
-            bootstrapClass: [''],
-            isShow: {
-              value: false,
-              conditions: [{ field: 'transfer', value: [true] }],
-            },
-          }),
-          stringField({
-            label: 'Имя региона',
-            name: 'region_name',
-            placeholder: '',
-            notSend: true,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            isShow: {
-              value: true,
-            },
-            // validations: { required, nameLength },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'Имя города',
-            name: 'city_name',
-            placeholder: '',
-            notSend: true,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            isShow: {
-              value: true,
-            },
-            // validations: { required, nameLength },
-            bootstrapClass: [''],
-          }),
-        ],
-        actions: [
-          stringAction({
-            text: 'Закрыть',
-            type: 'submit',
-            color: 'textDefault',
-            name: 'closePopup',
-            action: 'closePopup',
-            to: 'personal',
-            skipValidation: true,
-          }),
-          stringAction({
-            text: 'Сохранить',
-            type: 'submit',
-            color: 'primary',
-            // action: 'nextStage',
-            module: 'form/create',
-            url: 'create/unfinished_personal',
-            name: 'nextStage',
-            action: 'nextStage',
-            conditionCode: {
-              key: 'code',
-              results: [
-                {
-                  value: 1,
-                  type: 'success',
-                  toStorage: ['id'],
-                },
-                {
-                  value: 2,
-                  type: 'error',
-                  text: 'Error: value 2',
-                },
-                {
-                  value: 3,
-                  type: 'error',
-                  text: 'Error: value 3',
-                },
-              ],
-            },
-          }),
-        ],
-        formData: {},
-      },
-      {
-        id: 1,
-        name: 'Документы',
-        type: TableDefault,
-        active: false,
-        config: documentConfig,
-        actions: [
-          stringAction({
-            text: 'Оставить заявку',
-            type: 'submit',
-            color: 'primary',
-            module: 'form/create',
-            url: 'query/personal',
-            to: 'personal',
-            name: 'createForm',
-            action: 'createForm',
-            skipValidation: true,
-            requestBody: {
-              store: [
-                { requestKey: 'manager_id', storageKey: 'user.user.id' },
-                { requestKey: 'personal_id', storageKey: 'formStorage.id' },
-              ],
-              static: { type_parent_action: 3, parent_action: 1 },
-              formData: [
-                { requestKey: 'direction_json', formKey: 'direction_id' },
-                { requestKey: 'object_json', formKey: 'object_id' },
-                'grajdanstvo_id',
-                'transfer',
-                'start_point',
-                'end_point',
-                'city_id',
-                'regions_id',
-                'object_transfer_id',
-                'region_name',
-                'city_name',
-              ],
-            },
-            conditionCode: {
-              key: 'code',
-              results: [
-                {
-                  value: 1,
-                  type: 'success',
-                  emit: 'closePopup',
-                  to: 'personal',
-                },
-                {
-                  value: 2,
-                  type: 'error',
-                  text: 'Необходимо приложить паспорт',
-                },
-              ],
-            },
-            // nextForm: true,
-          }),
-          stringAction({
-            text: 'Вернуться',
-            type: 'submit',
-            color: 'disabled',
-            module: 'form/del',
-            url: 'delete/unfinished_personal',
-            name: 'prevStage',
-            action: 'prevStage',
-            // conditionCode: {
-            //   key: 'code',
-            //   results: [
-            //     {
-            //       value: 1,
-            //       type: 'success',
-            //       fromStorage: ['id'],
-            //     },
-            //   ],
-            // },
-          }),
-        ],
-      },
-    ],
-  },
+//   {
+//     path: 'add',
+//     id: 5,
+//     name: 'Заявка на персонал',
+//     type: 'FormStage',
+//     detail: true,
+//     setRoute: 'personal-add',
+//     stages: [
+//       {
+//         id: 0,
+//         name: 'Основные0',
+//         type: FormDefault,
+//         detail: true,
+//         lists: [
+//           // 'vid_vedomost_id',
+//           // 'status_pt',
+//           { alias: 'direction_id_logistic', filter: [] },
+//           { alias: 'grajdanstvo_id', filter: [] },
+//           // { alias: 'brigadirs', filter: [] },
+//           // 'shifts',
+//           // 'nutritions',
+//         ],
+//         alias: 'personal_target',
+//         active: false,
+//         fields: [
+//           stringField({
+//             label: 'ФИО',
+//             name: 'fio',
+//             placeholder: '',
+//             value: '',
+//             class: [''],
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required },
+//             bootstrapClass: [''],
+//           }),
+//           dateField({
+//             label: 'Дата рождения',
+//             name: 'date_rojd',
+//             type: 'date',
+//             value: '',
+//             menu: false,
+//             placeholder: '',
+//             class: [''],
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required },
+//             bootstrapClass: [''],
+//             disable: false,
+//             //mode: 'edit',
+//           }),
+//           selectField({
+//             label: 'Направления',
+//             name: 'direction_id',
+//             alias: 'direction_id_logistic',
+//             placeholder: '',
+//             class: [''],
+//             value: '',
+//             selectOption: {
+//               text: 'name',
+//               value: 'id',
+//             },
+//             items: [],
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required },
+//             bootstrapClass: [''],
+//             dependence: [
+//               {
+//                 type: 'api',
+//                 module: 'selects/getListUpdate',
+//                 field: 'object_id',
+//                 url: 'get/pagination_list/object_logistic',
+//                 alias: 'object_id'
+//               },
+//             ],
+//           }),
+//           autocompleteField({
+//             label: 'Объект',
+//             name: 'object_id',
+//             alias: 'object_json',
+//             subtype: 'single',
+//             placeholder: '',
+//             class: [''],
+//             selectOption: {
+//               text: 'name',
+//               value: 'id',
+//             },
+//             items: [],
+//             page: 1,
+//             search: '',
+//             url: 'get/pagination_list/object_logistic',
+//             // object
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required },
+//             bootstrapClass: [''],
+//             filters: [
+//               {
+//                 field: 'direction_id',
+//                 value: '',
+//               },
+//             ],
+//             dependence: [
+//               {
+//                 type: 'default',
+//                 fillField: ['city_id', 'regions_id'],
+//               },
+//               {
+//                 type: 'api',
+//                 module: 'selects/getListUpdate',
+//                 field: 'personal_id',
+//                 url: 'get/pagination_list/brigadirs',
+//               },
+//             ],
+//             // updateList: [
+//             //   {
+//             //     alias: 'brigadirs',
+//             //     filter: [
+//             //       {
+//             //         field: 'object_id',
+//             //         value: '',
+//             //         source: 'formData',
+//             //         type: 'array',
+//             //       },
+//             //     ],
+//             //   },
+//             // ],
+//             update: {
+//               module: 'selects/getList',
+//               fields: ['personal_id'],
+//             },
+//             isShow: {
+//               value: false,
+//               conditions: [{ field: 'direction_id', value: [1, 6] }],
+//             },
+//           }),
+//           stringField({
+//             label: '',
+//             name: 'city_id',
+//             placeholder: '',
+//             class: [''],
+//             position: {
+//               cols: 12,
+//               sm: 6,
+//             },
+//             isShow: {
+//               value: true,
+//             },
+//             bootstrapClass: [''],
+//           }),
+//           stringField({
+//             label: '',
+//             name: 'regions_id',
+//             placeholder: '',
+//             class: [''],
+//             position: {
+//               cols: 12,
+//               sm: 6,
+//             },
+//             isShow: {
+//               value: true,
+//               // hide: true,
+//             },
+//             bootstrapClass: [''],
+//           }),
+//           autocompleteField({
+//             label: 'Бригадир',
+//             name: 'personal_id',
+//             requestKey: 'account_json',
+//             // subtype: 'single',
+//             subtype: 'multiple',
+//             stringify: true,
+//             placeholder: '',
+//             class: [''],
+//             selectOption: {
+//               text: 'name',
+//               value: 'id',
+//             },
+//             items: [],
+//             page: 1,
+//             search: '',
+//             url: 'get/pagination_list/brigadirs',
+//             // brigadirs
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required },
+//             bootstrapClass: [''],
+//             filters: [
+//               {
+//                 field: 'object_id',
+//                 alias: 'object_json',
+//                 value: '',
+//                 type: 'array'
+//               },
+//               {
+//                 field: 'direction_id',
+//                 alias: 'direction_json',
+//                 value: '',
+//                 type: 'array'
+//               },
+//             ],
+//             isShow: {
+//               value: false,
+//               conditions: [{ field: 'direction_id', value: [1, 6] }],
+//             },
+//           }),
+//           selectField({
+//             label: 'Гражданство',
+//             name: 'grajdanstvo_id',
+//             alias: 'grajdanstvo_id',
+//             placeholder: '',
+//             class: [''],
+//             value: '',
+//             selectOption: {
+//               text: 'name',
+//               value: 'id',
+//             },
+//             items: [],
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required },
+//             bootstrapClass: [''],
+//             update: {
+//               module: 'selects/getList',
+//               fields: ['object_id'],
+//             },
+//           }),
+//           checkboxField({
+//             label: 'Трансфер',
+//             name: 'transfer',
+//             value: false,
+//             placeholder: '',
+//             readonly: false,
+//             class: [''],
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             bootstrapClass: [''],
+//           }),
+//           stringField({
+//             label: 'Адрес А',
+//             name: 'start_point',
+//             placeholder: '',
+//             class: [''],
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required, nameLength },
+//             bootstrapClass: [''],
+//             isShow: {
+//               value: false,
+//               conditions: [{ field: 'transfer', value: [true] }],
+//             },
+//           }),
+//           stringField({
+//             label: 'Адрес Б',
+//             name: 'end_point',
+//             placeholder: '',
+//             class: [''],
+//             position: {
+//               cols: 12,
+//               sm: 12,
+//             },
+//             validations: { required, nameLength },
+//             bootstrapClass: [''],
+//             isShow: {
+//               value: false,
+//               conditions: [{ field: 'transfer', value: [true] }],
+//             },
+//           }),
+//         ],
+//         actions: [
+//           stringAction({
+//             text: 'Закрыть',
+//             type: 'submit',
+//             color: 'textDefault',
+//             name: 'closePopup',
+//             action: 'closePopup',
+//             to: 'personal',
+//             skipValidation: true,
+//           }),
+//           stringAction({
+//             text: 'Сохранить',
+//             type: 'submit',
+//             color: 'primary',
+//             // action: 'nextStage',
+//             module: 'form/create',
+//             url: 'create/unfinished_personal',
+//             name: 'nextStage',
+//             action: 'nextStage',
+//             conditionCode: {
+//               key: 'code',
+//               results: [
+//                 {
+//                   value: 1,
+//                   type: 'success',
+//                   toStorage: ['id'],
+//                 },
+//                 {
+//                   value: 2,
+//                   type: 'error',
+//                   text: 'Error: value 2',
+//                 },
+//                 {
+//                   value: 3,
+//                   type: 'error',
+//                   text: 'Error: value 3',
+//                 },
+//               ],
+//             },
+//           }),
+//         ],
+//         formData: {},
+//       },
+//       {
+//         id: 1,
+//         name: 'Документы',
+//         type: TableDefault,
+//         active: false,
+//         config: documentConfig,
+//         actions: [
+//           stringAction({
+//             text: 'Оставить заявку',
+//             type: 'submit',
+//             color: 'primary',
+//             module: 'form/create',
+//             url: 'query/personal',
+//             to: 'personal',
+//             name: 'createForm',
+//             action: 'createForm',
+//             skipValidation: true,
+//             requestBody: {
+//               store: [
+//                 { requestKey: 'manager_id', storageKey: 'user.user.id' },
+//                 { requestKey: 'personal_id', storageKey: 'formStorage.id' },
+//               ],
+//               static: { type_parent_action: 3, parent_action: 1 },
+//               formData: [
+//                 'direction_id',
+//                 'object_id',
+//                 'grajdanstvo_id',
+//                 'transfer',
+//                 'start_point',
+//                 'end_point',
+//                 'city_id',
+//                 'regions_id',
+//               ],
+//             },
+//             conditionCode: {
+//               key: 'code',
+//               results: [
+//                 {
+//                   value: 1,
+//                   type: 'success',
+//                   emit: 'closePopup',
+//                   to: 'personal',
+//                 },
+//                 {
+//                   value: 2,
+//                   type: 'error',
+//                   text: 'Необходимо приложить паспорт',
+//                 },
+//               ],
+//             },
+//             // nextForm: true,
+//           }),
+//           stringAction({
+//             text: 'Вернуться',
+//             type: 'submit',
+//             color: 'disabled',
+//             module: 'form/del',
+//             url: 'delete/unfinished_personal',
+//             name: 'prevStage',
+//             action: 'prevStage',
+//             // conditionCode: {
+//             //   key: 'code',
+//             //   results: [
+//             //     {
+//             //       value: 1,
+//             //       type: 'success',
+//             //       fromStorage: ['id'],
+//             //     },
+//             //   ],
+//             // },
+//           }),
+//         ],
+//       },
+//     ],
+//   },
 ]
 
-
-
-
-export const config = {
+const config = {
   title: 'Персонал',
   activeTab: 2,
   tabs: [
@@ -3344,40 +2297,6 @@ export const config = {
         headerFixed: true,
         url: 'get/pagination/personal_active',
         title: 'Основные',
-        contextMenu: {
-          actions: [
-            {
-              icon: 'mdi-plus',
-              label: 'Привязать объект',
-              isShow: {
-                condition: [
-                  {
-                    direction_id: [1, 6],
-                    type: true,
-                  },
-                ]
-              },
-              readonly: {
-                value: true,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [4],
-                    type: false,
-                  },
-                ]
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/bind'
-              }
-            }
-          ]
-        }
       },
       type: TableDefault,
       panel: {
@@ -3622,21 +2541,6 @@ export const config = {
           //  class: ['v-table-button--custom'],
           //  function: consolePanel,
           //  backgroundColor: '#fff',
-          //},
-          //{
-          //  label: 'Добавить персонал',
-          //  class: ['v-table-button--custom'],
-          //  type: 'changeUrl',
-          //  url: 'personal-add',
-          //  backgroundColor: '#fff',
-          //  isShow: {
-          //    condition: [
-          //      {
-          //        permissions: [1],
-          //        type: true,
-          //      },
-          //    ]
-          //  }
           //},
         ],
       },
@@ -4636,3 +3540,4 @@ export const config = {
 }
 
 
+export default defaultForm

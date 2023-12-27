@@ -462,7 +462,7 @@ const table = {
 
         const date = new Date(year, month, day);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
-
+        //console.log(dataCell);
         const porpsContent = {
           account_id: dataCell.account_id,
           account_name: dataCell.account_name,
@@ -488,9 +488,9 @@ const table = {
             router.push(
               {
                 name: `${route.name}-new`,
-                params: {
-                  id: row.row[routeKey]
-                }
+                // params: {
+                //   id: row.row[routeKey]
+                // }
               }
             )
           } else {

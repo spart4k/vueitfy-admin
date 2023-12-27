@@ -55,7 +55,7 @@ export default {
     const stage = ref(null)
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
-    const fields = () => {
+    const fields = computed(() => {
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
@@ -63,20 +63,27 @@ export default {
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
           // console.log('CONDITION TRUE', el.name)
+          console.log(el.name)
           Vue.set(fields, el.name, {})
-        } else return
+        } else {
+          console.log(el.name)
+          return
+        }
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
       return fields
-    }
+    })
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      if (props.detail?.requstId)
+      console.log('route.params.id', route.params.id)
+      if (props.detail?.requstId) {
         return _.get(route.params, props.detail.requstId)
-      return route.params.id
+      } else if (route.params.id) {
+        return route.params.id
+      }
     }
     const { makeRequest } = useRequest({
       context,
@@ -172,7 +179,7 @@ export default {
       context,
       detail: props.detail,
       loading,
-      fields: fields(),
+      fields: fields.value,
       setFields: fields,
       makeRequest,
       makeRequestList,
