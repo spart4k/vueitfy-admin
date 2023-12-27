@@ -42,6 +42,9 @@ const routes = [
       {
         name: 'main/:id',
         path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
     ],
