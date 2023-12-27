@@ -11,7 +11,7 @@
         class="docs-required__inner-image"
       >
         <img
-          :src="'http://10.63.2.100:3003/file/get' + docs.path_doc"
+          :src="process.env.VUE_APP_STORE + docs.path_doc"
           class="docs-required__image"
         />
       </div>
