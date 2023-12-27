@@ -23,6 +23,7 @@
           class="v-contextmenu-item d-flex justify-start"
           block
           @click="handlerClick(action)"
+          :disabled="isReadonly(action)"
         >
           <v-icon left>
             {{ action.icon }}

@@ -784,6 +784,9 @@ export default function ({
             value = form?.formData[filter.field]
           } else if (filter.source === undefined) {
             value = filter.value
+          } else if (filter.source) {
+            const source = eval(filter.source)
+            value = source
           } else {
             value = formData[filter.field]
           }

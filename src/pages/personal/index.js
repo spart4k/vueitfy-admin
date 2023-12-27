@@ -2496,7 +2496,7 @@ const defaultForm = [
         items: [],
         page: 1,
         search: '',
-        url: 'get/pagination_list/object_logistic',
+        url: 'get/pagination_list/bind_objects',
         // object
         position: {
           cols: 12,
@@ -2506,8 +2506,9 @@ const defaultForm = [
         bootstrapClass: [''],
         filter: [
           {
-            field: 'direction_json',
+            field: 'personal_id',
             value: '',
+            source: '+route.params.id'
           },
         ],
         dependence: [
@@ -2522,30 +2523,6 @@ const defaultForm = [
           //  url: 'get/pagination_list/brigadirs',
           //},
         ],
-        //updateList: [
-        //  {
-        //    alias: 'brigadirs',
-        //    filter: [
-        //      {
-        //        field: 'object_id',
-        //        value: '',
-        //        source: 'formData',
-        //        type: 'array',
-        //      },
-        //      {
-        //      field: 'direction_id',
-        //      //alias: 'direction_json',
-        //      value: '',
-        //      source: 'formData',
-        //      type: 'array'
-        //    },
-        //    ],
-        //  },
-        //],
-        update: {
-          module: 'selects/getList',
-          fields: ['personal_id'],
-        },
         //isShow: {
         //  value: false,
         //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
@@ -2595,7 +2572,7 @@ const defaultForm = [
         items: [],
         page: 1,
         search: '',
-        url: 'get/pagination_list/object_logistic',
+        url: 'get/pagination_list/bind_accounts',
         // object
         position: {
           cols: 12,
@@ -3418,12 +3395,25 @@ const config = {
               icon: 'mdi-plus',
               label: 'Привязать объект',
               isShow: {
-                value: true,
-                condition: [],
+                condition: [
+                  {
+                    direction_id: [1, 6],
+                    type: true,
+                  },
+                ]
               },
               readonly: {
                 value: true,
-                condition: [],
+                condition: [
+                  {
+                    is_personal_vertical: [true],
+                    type: true,
+                  },
+                  {
+                    permission_id: [4],
+                    type: false,
+                  },
+                ]
               },
               action: {
                 type: 'changeUrl',
