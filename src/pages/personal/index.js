@@ -2816,6 +2816,7 @@ const defaultForm = [
             name: 'personal_id',
             alias: 'brigadirs',
             requestKey: 'account_json',
+            subtype: 'multiple',
             placeholder: '',
             class: [''],
             value: '',
