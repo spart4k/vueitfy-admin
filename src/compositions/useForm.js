@@ -81,16 +81,23 @@ export default function ({
   let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
-    Object.assign(
-      formData,
-      reactive(
-        Object.keys(setFields()).reduce((obj, key) => {
-          if (formData[key]) obj[key] = ref(formData[key])
-          else obj[key] = ref(setFields()[key].default)
-          return obj
-        }, {})
-      )
-    )
+    // Object.assign(
+    //   formData,
+    //   reactive(
+    //     Object.keys(setFields()).reduce((obj, key) => {
+    //       if (formData[key]) obj[key] = ref(formData[key])
+    //       else obj[key] = ref(setFields()[key].default)
+    //       return obj
+    //     }, {})
+    //   )
+    // )
+    const fields = setFields()
+    for (let key in fields) {
+      if (formData.hasOwnProperty(key)) continue
+      else {
+        Vue.set(formData, key, ref(fields[key].default))
+      }
+    }
   }
 
   const $errors = ref({})
@@ -765,15 +772,6 @@ export default function ({
     if (!result) formData[field.name] = ''
   }
 
-  const changeCheckbox = (field) => {
-    //showField(field.type, field)
-    //setFields()
-    rebuildFormData()
-    // form?.fields?.forEach((el) => {
-    //   showField(el.type, el)
-    // })
-  }
-
   const changeSelect = async ({ value, field }) => {
     if (field.dependence) {
       await getDependies({ value, field })
@@ -1015,7 +1013,6 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    if (field.name === 'sum_nutrition') console.log('field', field)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {
@@ -1093,9 +1090,6 @@ export default function ({
     () => formData,
     () => {
       form?.fields?.forEach((el) => {
-        console.log(formData)
-        // if (el.name === 'sum_nutrition') {
-        // }
         showField(el.type, el)
       })
       if ($touched.value) {
@@ -1127,7 +1121,6 @@ export default function ({
     addFiles,
     sortData,
     rebuildFormData,
-    changeCheckbox,
     tabStorageChange,
     stageRequest,
     responseHandler,

@@ -62,7 +62,6 @@ export default {
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
-          // console.log('CONDITION TRUE', el.name)
           Vue.set(fields, el.name, {})
         } else return
         Vue.set(fields, el.name, {})

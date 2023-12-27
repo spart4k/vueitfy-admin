@@ -71,7 +71,6 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
-              @change="changeCheckbox(field)"
               :readonly="readonlyField(field)"
             ></v-checkbox>
             <v-menu
