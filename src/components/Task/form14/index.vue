@@ -22,7 +22,7 @@
               <v-expansion-panel-content>
                 <div v-if="item.path_doc" style="margin-top: 10px">
                   Скан:
-                  <a download :href="process.env.VUE_APP_STORE + item.path_doc"
+                  <a download :href="$root.env.VUE_APP_STORE + item.path_doc"
                     ><v-icon left width="10px"> $IconDocument </v-icon></a
                   >
                 </div>

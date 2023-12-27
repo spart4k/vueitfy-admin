@@ -5,7 +5,7 @@
         <span class="font-weight-medium" style="font-size: 18px">Паспорт:</span>
         <a
           download
-          :href="process.env.VUE_APP_STORE + data.data.doc_ident.path_doc"
+          :href="$root.env.VUE_APP_STORE + data.data.doc_ident.path_doc"
           ><v-icon left> $IconDocument </v-icon></a
         >
       </v-col>
