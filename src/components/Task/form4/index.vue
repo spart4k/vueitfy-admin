@@ -6,6 +6,7 @@
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
     </div>
+    <!-- data.migr_card -->
     <div v-if="widthTrasfer" class="mb-2">
       <div style="font-size: 18px" class="font-weight-bold">
         Встретьте линейщика:
@@ -17,6 +18,7 @@
         </a>
       </div>
     </div>
+
     <div
       style="font-size: 18px"
       class="d-flex align-center font-weight-bold mb-2"
@@ -35,7 +37,12 @@
     ></v-select>
 
     <span style="font-size: 18px" class="font-weight-bold">
-      <v-icon x-small color="green" v-if="isGalkaVisible">$IconGalka</v-icon>
+      <v-icon
+        x-small
+        color="green"
+        v-if="isGalkaVisible || typeof data.data.migr_card == 'object'"
+        >$IconGalka</v-icon
+      >
       Приложите миграционную карту:
     </span>
     <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
@@ -46,7 +53,7 @@
         color="info"
         class="mr-2"
         @click="sendData"
-        :disabled="!isShowBtn"
+        :disabled="!selectName && data.data.migr_card == 'object'"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

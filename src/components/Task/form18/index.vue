@@ -11,7 +11,7 @@
       </v-card-title>
       <div v-if="fileOutput">
         <span>Скан:</span>
-        <a download :href="'http://10.63.1.132:3000/file/get' + fileOutput"
+        <a download :href="process.env.VUE_APP_STORE + fileOutput"
           ><v-icon left small> $IconDocument </v-icon></a
         >
       </div>

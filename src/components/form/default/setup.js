@@ -74,9 +74,12 @@ export default {
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      if (props.detail?.requstId)
+      console.log('route.params.id', route.params.id)
+      if (props.detail?.requstId) {
         return _.get(route.params, props.detail.requstId)
-      return route.params.id
+      } else if (route.params.id) {
+        return route.params.id
+      }
     }
     const { makeRequest } = useRequest({
       context,

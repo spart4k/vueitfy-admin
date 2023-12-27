@@ -1135,7 +1135,7 @@ const config = {
           { alias: 'account_id', filter: [] },
           { alias: 'direction_id', filter: [] },
         ],
-        alias: 'personal',
+        alias: 'account',
         active: false,
         fields: [
           selectField({
@@ -1212,33 +1212,55 @@ const config = {
           { alias: 'direction_id', filter: [] },
           // { alias: 'grajdanstvo_id', filter: [] },
         ],
-        alias: 'personal',
+        alias: 'schedule',
         active: false,
         fields: [
-          selectField({
+          autocompleteField({
             label: 'Сотрудник',
             name: 'account_id',
-            alias: 'p.account_id',
+            disabled: true,
+            subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
               text: 'name',
               value: 'id',
             },
-            disabled: true,
-            value: 0,
             items: [{ id: 0, name: '' }],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/account',
             position: {
               cols: 12,
               sm: 12,
             },
-            validations: { required },
             bootstrapClass: [''],
-            update: {
-              module: 'selects/getList',
-              fields: ['object_id'],
-            },
+            alias: 'p.account_id',
           }),
+          // selectField({
+          //   label: 'Сотрудник',
+          //   name: 'account_id',
+          //   alias: 'p.account_id',
+          //   placeholder: '',
+          //   class: [''],
+          //   selectOption: {
+          //     text: 'name',
+          //     value: 'id',
+          //   },
+          //   disabled: true,
+          //   value: 0,
+          //   items: [{ id: 0, name: '' }],
+          //   position: {
+          //     cols: 12,
+          //     sm: 12,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          //   update: {
+          //     module: 'selects/getList',
+          //     fields: ['object_id'],
+          //   },
+          // }),
           dateField({
             label: ' Дата',
             name: 'date_target',
@@ -1347,32 +1369,30 @@ const config = {
         //   { alias: 'direction_id', filter: [] },
         //   { alias: 'grajdanstvo_id', filter: [] },
         // ],
-        alias: 'personal',
+        alias: 'schedule',
         active: false,
         fields: [
-          selectField({
+          autocompleteField({
             label: 'Сотрудник',
             name: 'account_id',
-            alias: 'p.account_id',
+            disabled: true,
+            subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
               text: 'name',
               value: 'id',
             },
-            disabled: true,
-            value: 0,
             items: [{ id: 0, name: '' }],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/account',
             position: {
               cols: 12,
               sm: 12,
             },
-            validations: { required },
             bootstrapClass: [''],
-            update: {
-              module: 'selects/getList',
-              fields: ['object_id'],
-            },
+            alias: 'p.account_id',
           }),
           dateField({
             label: ' Дата',

@@ -113,7 +113,7 @@ export default {
       if (typeof proxyVal.value === 'string') {
         let url = proxyVal.value
         //url = 'https://personal-crm.ru' + url
-        url = 'http://10.63.1.132:5000' + '/file/get' + url
+        url = process.env.VUE_APP_STORE + url
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
 

@@ -1,12 +1,5 @@
 <template>
   <div class="form">
-    <!--<v-progress-circular
-      v-if="loading"
-      :size="20"
-      :width="2"
-      color="primary"
-      indeterminate
-    />-->
     <v-form class="form-default">
       <v-container class="">
         <v-row>
@@ -18,7 +11,6 @@
             class="field-col"
             :class="field.type"
           >
-            <!-- {{ formData[field.name] }} -->
             <div
               v-if="
                 loading &&
@@ -68,6 +60,7 @@
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
+              :placeholder="field?.placeholder"
               :error-messages="formErrors[field?.name]"
               clearable
               :readonly="readonlyField(field)"

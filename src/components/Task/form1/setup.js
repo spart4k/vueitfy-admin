@@ -156,7 +156,7 @@ const Form1 = defineComponent({
             process_id: task.process_id,
             task_id: task.id,
             parent_action: task.id,
-            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+            docs_id: JSON.parse(task.dop_data).docs_id,
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
             bank_card_id: bankCardId.value ? bankCardId.value : null,
