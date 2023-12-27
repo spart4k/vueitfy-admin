@@ -811,6 +811,26 @@ const config = {
                 //     ],
                 //   },
                 // ],
+                dependence: [
+                  {
+                    type: 'api',
+                    module: 'selects/getListUpdate',
+                    field: 'chief_id',
+                    url: 'get/pagination_list/chief_id',
+                    filter: [
+                      {
+                        field: 'permission_id',
+                        type: 'num',
+                        value: '',
+                      },
+                      {
+                        field: 'direction_json',
+                        type: 'array',
+                        value: '',
+                      },
+                    ],
+                  },
+                ],
                 updateList: [
                   {
                     alias: 'account_object_types',
