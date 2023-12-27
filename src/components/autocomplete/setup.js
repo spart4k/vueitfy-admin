@@ -56,8 +56,9 @@ export default {
         const { url } = props.field
         const filter = []
 
-        if (props.field.filters && props.field.filters.length) {
-          props.field.filters.forEach((el) => {
+        console.log('props.field.props.field.', props.field)
+        if (props.field.filter && props.field.filter.length) {
+          props.field.filter.forEach((el) => {
             if (!props.formData[el.field]) return
             filter.push({
               alias: el.alias ?? el.field,
@@ -124,6 +125,8 @@ export default {
     }
 
     const update = (value) => {
+      if (Array.isArray(proxyValue.value) && props.field.valueLength)
+        if (value.length > props.field.valueLength) proxyValue.value.shift()
       const item = props.field.items.find((el) => el.id === value)
       emit('input', value)
       emit('change', { value, field: props.field, item })
