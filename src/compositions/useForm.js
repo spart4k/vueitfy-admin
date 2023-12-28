@@ -1036,31 +1036,34 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    const condition = () =>
-      (typeof field.isShow === 'boolean' && field.isShow) ||
-      field.isShow.conditions?.every((el) => {
-        if (el.target === 'items') {
-          if (el.value === 'notEmpty') {
-            return field.items.length
-          }
-        } else if (el.target === 'value') {
-          if (el.value === 'notEmpty') {
-            return formData[el.field]
-          }
-        } else {
-          return el.value.some((ai) => {
-            if (Array.isArray(ai)) {
-              //return ai.includes(el.source ? eval(el.source) : 1)
-              //return JSON.stringify(ai) === JSON.stringify(formData[el.field])
-              return _.isEqual(ai, formData[el.field])
-            } else {
-              return [ai].includes(
-                el.source ? eval(el.source) : formData[el.field]
-              )
+    const condition = () => {
+      return (
+        (typeof field.isShow === 'boolean' && field.isShow) ||
+        field.isShow.conditions?.every((el) => {
+          if (el.target === 'items') {
+            if (el.value === 'notEmpty') {
+              return field.items.length
             }
-          })
-        }
-      })
+          } else if (el.target === 'value') {
+            if (el.value === 'notEmpty') {
+              return formData[el.field]
+            }
+          } else {
+            return el.value.some((ai) => {
+              if (Array.isArray(ai)) {
+                const cloneAi = [...ai]
+                const cloneFieldEl = [...formData[el.field]]
+                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+              } else {
+                return [ai].includes(
+                  el.source ? eval(el.source) : formData[el.field]
+                )
+              }
+            })
+          }
+        })
+      )
+    }
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
       //  console.log(condition())
