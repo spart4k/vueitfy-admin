@@ -71,13 +71,17 @@
         ></v-textarea>
       </v-row>
       <v-row class="py-2" justify="end">
-        <v-btn @click="$emit('closePopup')" color="blue-grey" small>
+        <v-btn
+          class="mr-3"
+          @click="$emit('closePopup')"
+          color="blue-grey"
+          small
+        >
           <v-icon small>mdi-close</v-icon>
           Закрыть
         </v-btn>
         <v-btn
           color="info"
-          class="mr-3"
           @click="sendTaskFinish"
           small
           :disabled="!comment && !disabledDocumentsAcc"

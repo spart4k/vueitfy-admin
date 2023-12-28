@@ -48,14 +48,13 @@
     <Dropzone :options="options" @addFiles="addFiles"></Dropzone>
 
     <v-row class="py-2" justify="end">
-      <v-btn small @click="$emit('closePopup')" color="blue-grey">
+      <v-btn class="mr-2" small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
       <v-btn
         small
         color="info"
-        class="mr-2"
         @click="sendData"
         :disabled="!selectName && data.data.migr_card == 'object'"
       >
