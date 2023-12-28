@@ -1,4 +1,4 @@
-import Vue, { watch, ref, computed, onMounted } from 'vue'
+import Vue, { watch, ref, computed, onMounted, toRef } from 'vue'
 import { getList } from '@/api/selects'
 
 export default {
@@ -26,7 +26,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const loading = ref(false)
-    const proxyValue = ref(props.value)
+    const proxyValue = toRef(props, 'value')
     const searchProps = ref(props.field.search)
 
     const queryData = {
@@ -56,8 +56,9 @@ export default {
         const { url } = props.field
         const filter = []
 
-        if (props.field.filters && props.field.filters.length) {
-          props.field.filters.forEach((el) => {
+        console.log('props.field.props.field.', props.field)
+        if (props.field.filter && props.field.filter.length) {
+          props.field.filter.forEach((el) => {
             if (!props.formData[el.field]) return
             filter.push({
               alias: el.alias ?? el.field,
@@ -114,11 +115,18 @@ export default {
     const icon = computed(() =>
       selectAll.value ? 'mdi-close-box' : 'mdi-minus-box'
     )
-    const removeSelected = () => {
-      proxyValue.value = null
+    const removeSelected = (data) => {
+      // console.log(proxyValue.value, data)
+      if (Array.isArray(proxyValue.value))
+        proxyValue.value.splice(data.index, 1)
+      else proxyValue.value = null
+      // proxyValue.value.splice(data.index, 1)
+      update(proxyValue.value)
     }
 
     const update = (value) => {
+      if (Array.isArray(proxyValue.value) && props.field.valueLength)
+        if (value.length > props.field.valueLength) proxyValue.value.shift()
       const item = props.field.items.find((el) => el.id === value)
       emit('input', value)
       emit('change', { value, field: props.field, item })
@@ -130,6 +138,8 @@ export default {
             props.field.requiredFields.some((el) => !props.formData[el])
         : false
     })
+
+    //const styleChip = computed(() =>)
 
     watch(
       () => searchProps.value,

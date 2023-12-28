@@ -36,7 +36,13 @@
         />
       </template>
       <template v-slot:selection="data">
-        <v-chip close v-bind="data.attrs" small @click:close="removeSelected">
+        <v-chip
+          :style="{ backgroundColor: data.item.color }"
+          close
+          v-bind="data.attrs"
+          small
+          @click:close="removeSelected(data)"
+        >
           <p>{{ data.item.name }}</p>
         </v-chip>
       </template>

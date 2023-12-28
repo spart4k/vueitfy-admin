@@ -116,7 +116,12 @@
                               <v-icon> {{ head.icon }}</v-icon>
                             </span>
                           </div>
-                          <div v-if="head.type === 'actions'">
+                          <!--<div v-if="head.type === 'actions'">
+                            <span class="mr-2">
+                              {{ head.title }}
+                            </span>
+                          </div>-->
+                          <div v-if="head.type === 'download'">
                             <span class="mr-2">
                               {{ head.title }}
                             </span>
@@ -154,13 +159,13 @@
           </thead>
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
             <template v-for="(row, indexRow) in options.data.rows">
+              <!-- {{ row.row.id + indexRow }} -->
               <tr
-                :key="row.row.id"
+                :key="row.row.id + indexRow"
                 :class="[row.row.selected ? 'v-table-body-row--selected' : '']"
                 @contextmenu="openContext($event, row)"
                 @click="openChildRow($event, row)"
                 class="v-table-body-row"
-                @dblclick="openRow($event, row)"
                 :style="insertStyle(row.row)"
               >
                 <td
@@ -191,7 +196,6 @@
                     width: cell.width,
                   }"
                   :class="{
-                    'red-1': true,
                     ...addBackgroundClass(cell, row.row, Object.byString),
                   }"
                   :id="cell.value + '-table-cell' + '_id' + row.row.id"
@@ -200,6 +204,11 @@
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
                   :key="cellIndex"
+                  @dblclick="
+                    doubleHandler($event, row.row, cell, indexRow, cellIndex, [
+                      0,
+                    ])
+                  "
                 >
                   <template v-if="cell.type === 'default'">
                     {{ Object.byString(row.row, cell.value) }}
@@ -228,7 +237,30 @@
                       ></v-checkbox>
                     </v-row>
                   </template>
-                  <template v-else-if="cell.type === 'actions'">
+                  <!--<template v-else-if="cell.type === 'actions'">
+                    <div
+                      v-if="
+                        !cell.actionCondition ||
+                        (cell.actionCondition &&
+                          Object.byString(row.row, cell.value) &&
+                          false)
+                      "
+                      class="v-table-actions-wrap"
+                    >
+                      <v-btn
+                        v-for="(action, indexAction) in cell.actions"
+                        :key="indexAction"
+                        @click="
+                          action.function(Object.byString(row.row, cell.value))
+                        "
+                      >
+                        <v-icon small>
+                          {{ action.url }}
+                        </v-icon>
+                      </v-btn>
+                    </div>
+                  </template>-->
+                  <template v-else-if="cell.type === 'download'">
                     <!--<v-table-button
                       :row="row.row"
                       :option="action"
@@ -259,8 +291,9 @@
                   </template>
                 </td>
               </tr>
+              <!-- {{ row.row.id + 'child' + indexRow }} -->
               <tr
-                :key="row.row.id + 'child'"
+                :key="row.row.id + 'child' + indexRow"
                 v-show="
                   row.child.isShow && options.head.some((el) => !el.isShow)
                 "
@@ -371,7 +404,7 @@
         {{ action.text }}
       </v-btn>
     </v-row>
-    <v-contextmenu :options="contextmenu" />
+    <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
     <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">
         <keep-alive>

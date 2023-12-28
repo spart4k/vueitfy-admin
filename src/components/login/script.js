@@ -83,6 +83,7 @@ export default {
       // console.log(fields)
       return fields
     }
+    const tryLoading = ref(false)
     const auth = async () => {
       console.log(validate())
       if (!validate()) return
@@ -100,9 +101,10 @@ export default {
       }
       // await makeRequestMe()
     }
+    const showField = (type, field) => field.type === type
     const {
       formData,
-      showField,
+      //showField,
       validate,
       formErrors,
       vForm,
@@ -133,6 +135,7 @@ export default {
       fields,
       listFields,
       showField,
+      tryLoading,
     }
   },
 }

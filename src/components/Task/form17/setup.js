@@ -5,7 +5,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
-import Dropzone from '@/components/dropzone/default'
+import Dropzone from '@/components/Dropzone/default'
 import moment from 'moment'
 
 const Form17 = defineComponent({

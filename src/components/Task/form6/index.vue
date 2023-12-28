@@ -7,7 +7,7 @@
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <span
-        ><v-icon small v-if="isLoadedImage || data.data.docs.lenght"
+        ><v-icon small v-if="isLoadedImage || data.data.docs.length"
           >$IconGalka</v-icon
         >Прикрепите реквизиты</span
       >
@@ -19,7 +19,6 @@
         }"
         @addFiles="addFiles"
       ></Dropzone>
-
       <v-row class="py-2" justify="end">
         <v-btn
           small

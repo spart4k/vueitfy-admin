@@ -14,7 +14,7 @@
 import { getCurrentInstance, onMounted, ref } from 'vue'
 import BlankLayout from '@/layouts/default/index.vue'
 import LoginLayout from '@/layouts/login'
-import Notifier from '@/components/notifies'
+import Notifier from '@/components/Notifies'
 
 export default {
   name: 'App',

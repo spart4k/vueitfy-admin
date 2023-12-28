@@ -4,7 +4,7 @@ import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import FormTitle from '@/components/Task/el/FormTitle/index.vue'
 import FormError from '@/components/Task/el/FormError/setup'
-import DateTimePicker from '@/components/datetimepicker/index.vue'
+import DateTimePicker from '@/components/Datetimepicker/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -156,7 +156,7 @@ const Form1 = defineComponent({
             process_id: task.process_id,
             task_id: task.id,
             parent_action: task.id,
-            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+            docs_id: JSON.parse(task.dop_data).docs_id,
             account_id: task.to_account_id,
             personal_id: props.data.entity.id,
             bank_card_id: bankCardId.value ? bankCardId.value : null,

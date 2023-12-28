@@ -22,9 +22,11 @@
           :key="actionsIndex"
           class="v-contextmenu-item d-flex justify-start"
           block
+          @click="handlerClick(action)"
+          :disabled="isReadonly(action)"
         >
           <v-icon left>
-            {{ action.url }}
+            {{ action.icon }}
           </v-icon>
           <p>{{ action.label }}</p>
         </v-btn>

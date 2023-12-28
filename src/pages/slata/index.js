@@ -10,9 +10,9 @@ import {
   dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import FormDefault from '@/components/form/default/index.vue'
-import FormDocuments from '@/components/form/documents/default/index.vue'
-import FormList from '@/components/form/list/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
+import FormDocuments from '@/components/Form/documents/default/index.vue'
+import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import { userKeys } from '@/pages'
 import { ref } from 'vue'

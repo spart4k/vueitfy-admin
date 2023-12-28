@@ -3,8 +3,8 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
-import Autocomplete from '@/components/autocomplete'
-import DropZone from '@/components/dropzone/default/index.vue'
+import Autocomplete from '@/components/Autocomplete'
+import DropZone from '@/components/Dropzone/default/index.vue'
 
 export default {
   name: 'Form-Documents-Row',

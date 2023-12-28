@@ -26,6 +26,9 @@
             // background: transparent;
             max-width: 100%;
             // margin: 200px 0 200px 0;
+            @media (max-width: $mobileWidth) {
+              width: unset !important;
+            }
             &-close {
                 position: absolute;
                 top: 5px;

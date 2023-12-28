@@ -1,5 +1,5 @@
 import { defineComponent, ref, computed } from 'vue'
-import Dropzone from '@/components/dropzone/default'
+import Dropzone from '@/components/Dropzone/default'
 // import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 // import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
@@ -48,7 +48,7 @@ const Form3 = defineComponent({
     let addFiles = (e) => {
       file.value = e[0]
     }
-    console.log(this.baseUrl)
+
     const sendData = async () => {
       console.log(selectName.value, file.value)
       let fileExt = file.value.type.split('/')[1]

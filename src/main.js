@@ -18,6 +18,7 @@ console.log('test commit')
 
 Vue.config.productionTip = false
 Vue.use(PortalVue)
+Vue.prototype.env = process.env
 // Vue.use(VueCompositionApi)
 
 new Vue({

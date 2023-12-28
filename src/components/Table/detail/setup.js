@@ -1,8 +1,8 @@
 import { ref, computed, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 
-import FormDefault from '@/components/form/default/index.vue'
-import FormStage from '@/components/form/stage/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
+import FormStage from '@/components/Form/stage/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import FrameView from '@/components/Task/frame-view/index.vue'
 
@@ -33,6 +33,7 @@ export default {
     const { id } = route?.params
     const loading = ref(false)
     const syncForm = ref({})
+    const activeTab = ref(0)
     const availableTabs = computed(() => {
       return props.detail.tabs.filter((item) => {
         return (
@@ -54,6 +55,7 @@ export default {
       porpsContent,
       id,
       availableTabs,
+      activeTab,
     }
   },
 }

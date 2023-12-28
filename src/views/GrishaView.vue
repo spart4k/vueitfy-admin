@@ -103,8 +103,8 @@
 // import { ref } from 'vue'
 // import { required } from '@/utils/validation.js'
 // import { stringField, textareaField } from '@/utils/fields.js'
-import Popup from '@/components/popup'
-import Dropzone from '@/components/dropzone/default'
+import Popup from '@/components/Popup'
+import Dropzone from '@/components/Dropzone/default'
 export default {
   name: 'Grisha',
   components: {

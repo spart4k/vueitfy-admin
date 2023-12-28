@@ -1,6 +1,6 @@
 import Vue, { onUnmounted, onMounted, ref } from 'vue'
-import FormDefault from '@/components/form/default/index.vue'
-import FormList from '@/components/form/list/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
+import FormList from '@/components/Form/list/index.vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import useStage from '@/compositions/useStage'
 

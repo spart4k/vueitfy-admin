@@ -7,27 +7,28 @@ import store from '@/store'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
-import vContextmenu from '@/components/contextmenu/default/index.vue'
-import Sheet from '@/components/sheet/default/index.vue'
-import Popup from '@/components/popup/index.vue'
+import vContextmenu from '@/components/Contextmenu/default/index.vue'
+import Sheet from '@/components/Sheet/default/index.vue'
+import Popup from '@/components/Popup/index.vue'
 
-import vTableButton from '../button/index.js'
-import vButton from '../../button/index.js'
-import vInput from '../../input/default/index.js'
-import vIconSort from '../../icons/sort/index.vue'
+//import vTableButton from '../button/index.js'
+//import vButton from '../../button/index.js'
+//import vInput from '../../input/default/index.js'
+import vIconSort from '../../Icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
 import { post } from '@/api/axios'
 import useTable from '@/compositions/useTable.js'
+import { personal } from '@/pages/index.js'
 //import { tableApi } from '@/api'
 
 const table = {
   name: 'TableDefault',
   components: {
-    vTableButton,
-    vButton,
-    vInput,
+    //vTableButton,
+    //vButton,
+    //vInput,
     vIconSort,
     vContextmenu,
     Sheet,
@@ -215,7 +216,7 @@ const table = {
       //console.log(paramsCol)
     }
     const openContext = ($event, row) => {
-      return // eslint-disable-next-line
+      //return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
         $event.preventDefault()
       } else {
@@ -243,7 +244,7 @@ const table = {
           contextmenu.value.y = $event.clientY
           ;(contextmenu.value.row = row),
             (contextmenu.value.direction = direction)
-          contextmenu.value.actions = headActions
+          contextmenu.value.actions = props.options.options.contextMenu
         },
         contextmenu.value.isShow ? 450 : 0
       )
@@ -273,6 +274,15 @@ const table = {
         }
       } else {
         return undefined
+      }
+    }
+    const handlerContext = ({ action, row }) => {
+      console.log(action, row)
+      if (action.action.type === 'changeUrl') {
+        console.log(action.action.url)
+        changeUrlPath(action.action.url + '/' + row.row.id)
+      } else {
+        openRow(undefined, row)
       }
     }
     const openFilter = ($event) => {
@@ -410,8 +420,27 @@ const table = {
       })
       getItems()
     }
-    const openRow = ($event, row) => {
+
+    const doubleHandler = ($event, row, cell, indexRow = null, indexCell, activeIndexCells) => {
       if (!options.detail || options.options.noTableAction) return
+
+      //проверка на существование ключа, если ключа нету тогда выставляет по умолчанию row
+      // по хорошему этот функционал нужно вынести в момент создание ключей, ПО УМОЛЧАНИЮ
+      if (!props.options.options.hasOwnProperty('doubleHandlerType')) {
+        props.options.options.doubleHandlerType = 'row'
+      }
+
+      if (props.options.options.doubleHandlerType === 'cell') {
+        openCell($event, row, cell, indexRow, indexCell, activeIndexCells)
+      }
+
+      if (props.options.options.doubleHandlerType === 'row') {
+        openRow($event, row, cell)
+      }
+    }
+
+    const openRow = ($event, row) => {
+      console.log('row');
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -423,12 +452,52 @@ const table = {
           {
             name: `${route.name}/:${requstId}`,
             params: {
-              [requstId]: row.row.id
+              [requstId]: row.id
             }
         })
         popupForm.value.isShow = true
       }
     }
+
+    const openCell = ($event, row, cell, indexRow, indexCell, activeIndexCells) => {
+      if (options.detail.type === 'popup') {
+        console.log('cell')
+        console.log($event, row, cell,indexRow, indexCell);
+
+        if (activeIndexCells.includes(indexCell)) {
+          // let requstId = 'id'
+          // if (props.options.detail.requstId)
+          //   requstId = props.options.detail.requstId
+          //documents/personal/id
+
+          const name = `documents-personal-id`
+
+          router.push(
+            {
+              name,
+              params: {
+                id: row.personal_id
+              }
+            }
+          )
+
+          //console.log(url);
+          //console.log(route.name);
+          //documents/personal/id
+          // router.push(
+          //   {
+          //     name: `${route.name}/:id`,
+          //     params: {
+          //       id: row.row.id
+          //     }
+          // })
+
+          popupForm.value.isShow = true
+        }
+
+      }
+    }
+
     const closePopupForm = (route) => {
       console.log('routerouteroute', route)
       if (route) router.push({ name: route })
@@ -448,15 +517,22 @@ const table = {
         popupForm.value.isShow = true
       }
     }
+    const changeUrl = (url) => {
+      router.push(
+        {
+          name: url,
+        })
+      popupForm.value.isShow = true
+    }
+    const changeUrlPath = (url) => {
+      router.push(
+        {
+          path: url,
+        })
+      popupForm.value.isShow = true
+    }
     const panelHandler = async (button) => {
       const { type, url } = button
-      const changeUrl = (url) => {
-        router.push(
-          {
-            name: url,
-          })
-        popupForm.value.isShow = true
-      }
       if (type === 'addItem') {
         addItem()
       } else if (type === 'changeUrl') {
@@ -509,7 +585,6 @@ const table = {
           },
           { deep: true }
         )
-
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
@@ -548,6 +623,7 @@ const table = {
       }
       return '';
     };
+
     const iconColor = (value, conditionValue) => {
       if (value === 0) {
         return 'red';
@@ -681,6 +757,7 @@ const table = {
       closeFilter,
       getItems,
       watchScroll,
+      handlerContext,
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,
@@ -694,7 +771,7 @@ const table = {
       rowCount,
       isElementXPercentInViewport,
       saveFilter,
-      openRow,
+      doubleHandler,
       closePopupForm,
       popupForm,
       filtersColumns,

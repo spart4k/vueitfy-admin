@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router/composables'
 // import { filter } from 'lodash'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
+import router from '@/router'
 
 /**
  * @param loading {boolean}
@@ -80,15 +81,25 @@ export default function ({
   let $v = useVuelidate(validations(), computedFormData.value)
 
   const rebuildFormData = () => {
-    Object.assign(
-      formData,
-      reactive(
-        Object.keys(setFields()).reduce((obj, key) => {
-          obj[key] = ref(formData[key])
-          return obj
-        }, {})
-      )
-    )
+    // Object.assign(
+    //   formData,
+    //   reactive(
+    //     Object.keys(setFields()).reduce((obj, key) => {
+    //       if (formData[key]) obj[key] = ref(formData[key])
+    //       else obj[key] = ref(setFields()[key].default)
+    //       return obj
+    //     }, {})
+    //   )
+    // )
+    const fields = setFields()
+    console.log(fields)
+    for (let key in fields) {
+      if (formData.hasOwnProperty(key)) continue
+      //if (fields)
+      else {
+        Vue.set(formData, key, ref(fields[key].default))
+      }
+    }
   }
 
   const $errors = ref({})
@@ -104,7 +115,6 @@ export default function ({
   }
 
   const validate = (touch) => {
-    console.log('computedFormData.value', computedFormData.value)
     if (touch) $v = useVuelidate(validations(), computedFormData.value)
     unref($v).$touch()
     if (touch) {
@@ -139,6 +149,7 @@ export default function ({
   const clickHandler = async ({ action, skipValidation }) => {
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
+    console.log('sortedData', sortedData)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -306,7 +317,9 @@ export default function ({
     const newForm = {}
     if (!form) return
     Object.keys(formData).forEach((key) => {
+      console.log(key)
       const item = form?.fields?.find((x) => x.name === key)
+
       if (
         (typeof item.isShow === 'boolean' && item.isShow) ||
         (typeof item.isShow === 'object' && item.isShow.value) ||
@@ -315,29 +328,38 @@ export default function ({
         if (item.requestKey) newForm[item.requestKey] = formData[key]
         else newForm[key] = formData[key]
       }
+
       if (item.notSend) delete newForm[key]
+
       if (action?.useStorageKey?.length) {
         action.useStorageKey.forEach((item) => {
           newForm[item.requestKey] =
             store?.state?.formStorage?.[item?.storageKey]
         })
       }
+
       if (action?.useRouteKey?.length) {
         action.useRouteKey.forEach((item) => {
           newForm[item.requestKey] = +route.params?.[item?.storageKey]
         })
       }
+
       if (item.stringify) {
         if (item.requestKey)
           newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
         else newForm[key] = JSON.stringify(formData[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
+
       if (item.type === 'checkbox') {
         if (newForm[key] === 'undefined') {
           newForm[key] = false
         }
       }
+      if (item.name === 'subtype' && formData[key] === '') {
+        delete newForm[key]
+      }
+      console.log(newForm)
     })
     return newForm
   }
@@ -384,7 +406,6 @@ export default function ({
       filesBasket.value[key].name = name
     }
     const data = await Promise.all(queries)
-    console.log('vdatadata', data, filesBasket.value)
     if (data.length === 1) {
       let path = ''
       for (let key in filesBasket.value) {
@@ -418,7 +439,7 @@ export default function ({
     emit('closePopup')
     // const
   }
-  const getDetail = () => form?.detail
+  const getDetail = () => form?.detail && route.params.id
 
   const hasSelect = () => {
     return form?.fields.some(
@@ -475,10 +496,8 @@ export default function ({
   //  //}
   //  //if (hasSelect() && getDetail()) {
 
-  //  //  console.log('preList')
   //  //  getListData()
   //  //  const lists = await makeRequestList(listData)
-  //  //  console.log('last preList')
   //  //  queries = [syncForm, lists]
   //  //  return queries
   //  //} else if (getDetail() && !hasSelect()) {
@@ -499,6 +518,14 @@ export default function ({
       const item = params.field.items.find((el) => el.id === params.value)
       params.field.selectOptionName = item[params.field.selectOption.text]
     }
+    if (params.field.hasOwnProperty('putValueInItems')) {
+      const array = []
+      params.value?.forEach((item) => {
+        array.push(params.field.items.find((x) => x.id === item))
+      })
+      form.fields.find((x) => x.name === params.field.putValueInItems).items =
+        array
+    }
     const { field } = params
     if (field.updateList && field.updateList.length) {
       const listData = field?.updateList?.map((list) => {
@@ -510,6 +537,12 @@ export default function ({
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
+              type: el.type,
+            })
+          } else if (source) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source) ? source : [source],
               type: el.type,
             })
           }
@@ -529,7 +562,6 @@ export default function ({
           el.alias ? el.alias === keyList : el.name === keyList
         )
         if (field) {
-          console.log(field)
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
@@ -597,21 +629,38 @@ export default function ({
           const filter = []
           if (targetField.filter && targetField.filter.length) {
             targetField.filter.forEach((el) => {
-              if (!formData[el.field]) return
-              filter.push({
-                alias: el.alias ?? el.field,
-                type: el.type,
-                value: formData[el.field],
-              })
+              console.log(el.field, formData, formData[el.field])
+              if (!formData[el.field] && !el.source) return
+              if (el.source)
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: el.source ? eval(el.source) : formData[el.field],
+                })
+              else {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: formData[el.field],
+                })
+              }
             })
           } else if (dependence.filter && dependence.filter.length) {
             dependence.filter.forEach((el) => {
-              if (!formData[el.field]) return
-              filter.push({
-                alias: el.alias ?? el.field,
-                type: el.type,
-                value: formData[el.field],
-              })
+              if (!formData[el.field] && !el.source) return
+              if (el.source)
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: el.source ? eval(el.source) : formData[el.field],
+                })
+              else {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  type: el.type,
+                  value: formData[el.field],
+                })
+              }
             })
           }
           body = {
@@ -619,7 +668,13 @@ export default function ({
             currentPage: 1,
             searchValue: '',
             //id: params.id ? params.id : -1,
-            id: -1,
+            id: formData[
+              targetField.name ? targetField.name : targetField.alias
+            ]
+              ? formData[
+                  targetField.name ? targetField.name : targetField.alias
+                ]
+              : -1,
             filter,
           }
         }
@@ -660,6 +715,7 @@ export default function ({
         //selectField.items = selectField.hideItems.filter((el) => {
 
         //})
+
         return
       }
       field.loading = true
@@ -745,12 +801,6 @@ export default function ({
     if (!result) formData[field.name] = ''
   }
 
-  const changeCheckbox = (field) => {
-    //showField(field.type, field)
-    //setFields()
-    rebuildFormData()
-  }
-
   const changeSelect = async ({ value, field }) => {
     if (field.dependence) {
       await getDependies({ value, field })
@@ -782,6 +832,9 @@ export default function ({
             value = form?.formData[filter.field]
           } else if (filter.source === undefined) {
             value = filter.value
+          } else if (filter.source) {
+            const source = eval(filter.source)
+            value = source
           } else {
             value = formData[filter.field]
           }
@@ -812,7 +865,6 @@ export default function ({
   }
 
   const putSelectItems = (lists) => {
-    console.log(lists)
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
         el.alias ? el.alias === keyList : el.name === keyList
@@ -903,7 +955,6 @@ export default function ({
       const listQuery = form?.lists?.map((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
-          console.log(JSON.stringify(source))
           if (
             source[el.field] !== null &&
             source[el.field] !== undefined &&
@@ -994,7 +1045,6 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    // console.log(field.name)
     const condition = () =>
       (typeof field.isShow === 'boolean' && field.isShow) ||
       field.isShow.conditions?.every((el) => {
@@ -1011,10 +1061,8 @@ export default function ({
             if (Array.isArray(ai)) {
               //return ai.includes(el.source ? eval(el.source) : 1)
               //return JSON.stringify(ai) === JSON.stringify(formData[el.field])
-              console.log(field.name, el)
               return _.isEqual(ai, formData[el.field])
             } else {
-              console.log(field.name, el.field, ai, formData)
               return [ai].includes(
                 el.source ? eval(el.source) : formData[el.field]
               )
@@ -1023,9 +1071,9 @@ export default function ({
         }
       })
     if (field.isShow.conditions && field.isShow.conditions.length) {
-      if (field.name === 'print_form_key') {
-        console.log(condition())
-      }
+      //if (field.name === 'print_form_key') {
+      //  console.log(condition())
+      //}
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
       rebuildFormData()
@@ -1069,10 +1117,11 @@ export default function ({
     },
     { immediate: true, deep: true }
   )
-
+  const wrapFormData = ref(formData)
   watch(
-    () => formData,
+    () => wrapFormData,
     () => {
+      console.log('change')
       form?.fields?.forEach((el) => {
         showField(el.type, el)
       })
@@ -1105,7 +1154,6 @@ export default function ({
     addFiles,
     sortData,
     rebuildFormData,
-    changeCheckbox,
     tabStorageChange,
     stageRequest,
     responseHandler,

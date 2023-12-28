@@ -1,5 +1,5 @@
 import { defineComponent, ref, computed, onMounted, emit } from 'vue'
-import Dropzone from '@/components/dropzone/default'
+import Dropzone from '@/components/Dropzone/default'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
@@ -46,7 +46,11 @@ const Form6 = defineComponent({
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
     let isLoadedImage = ref(false)
-    onMounted(() => {})
+    onMounted(() => {
+      data.data.docs
+        ? (isLoadedImage.value = true)
+        : (isLoadedImage.value = false)
+    })
 
     let listRequestsForUpload = ref([])
     let file = ref('')
@@ -59,14 +63,6 @@ const Form6 = defineComponent({
       let form_data = new FormData()
       form_data.append('file', e[0])
       isLoadedImage.value = true
-      const { makeRequest: delInfoAFile } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/updateFileData', {
-            id: data.data.dosc ? data.data.dosc[0].id : 1,
-            del: 1,
-          }),
-      })
 
       const { makeRequest: updateFileData } = useRequest({
         context,
@@ -117,8 +113,18 @@ const Form6 = defineComponent({
     //     }),
     // })
     let resultOnew
-
-    let sendTaskFinish = () => {
+    const { makeRequest: delInfoAFile } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/updateFileData', {
+          id: data.data.dosc ? data.data.dosc[0].id : 1,
+          del: 1,
+        }),
+    })
+    let sendTaskFinish = async () => {
+      if (data.data.dosc.lenght) {
+        delInfoAFile()
+      }
       listRequestsForUpload.value
         .at()()
         .then((data) => {

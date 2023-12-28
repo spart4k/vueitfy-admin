@@ -1,16 +1,15 @@
 import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
-import Autocomplete from '@/components/autocomplete'
-import FormDefault from '@/components/form/default/index.vue'
+import Autocomplete from '@/components/Autocomplete'
 
 import _ from 'lodash'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
-import DropZone from '@/components/dropzone/default/index.vue'
-import Datetimepicker from '@/components/datetimepicker/index.vue'
-import ColorPicker from '@/components/colorpicker/index.vue'
+import DropZone from '@/components/Dropzone/default/index.vue'
+import Datetimepicker from '@/components/Datetimepicker/index.vue'
+import ColorPicker from '@/components/Colorpicker/index.vue'
 
 import store from '@/store'
 
@@ -19,7 +18,6 @@ export default {
   components: {
     Datetimepicker,
     Autocomplete,
-    FormDefault,
     DropZone,
     ColorPicker,
   },
@@ -65,8 +63,12 @@ export default {
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
           // console.log('CONDITION TRUE', el.name)
+          console.log(el.name)
           Vue.set(fields, el.name, {})
-        } else return
+        } else {
+          console.log(el.name)
+          return
+        }
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
@@ -76,9 +78,12 @@ export default {
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      if (props.detail?.requstId)
+      console.log('route.params.id', route.params.id)
+      if (props.detail?.requstId) {
         return _.get(route.params, props.detail.requstId)
-      return route.params.id
+      } else if (route.params.id) {
+        return route.params.id
+      }
     }
     const { makeRequest } = useRequest({
       context,

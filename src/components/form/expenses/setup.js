@@ -1,14 +1,14 @@
-import Vue, { computed, ref, onMounted } from 'vue'
+import Vue, { computed, ref, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
-import Autocomplete from '@/components/autocomplete'
-import FormDefault from '@/components/form/default/index.vue'
+import Autocomplete from '@/components/Autocomplete'
+import FormDefault from '@/components/Form/default/index.vue'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
-import DropZone from '@/components/dropzone/default/index.vue'
-import Datetimepicker from '@/components/datetimepicker/index.vue'
-import ColorPicker from '@/components/colorpicker/index.vue'
+import DropZone from '@/components/Dropzone/default/index.vue'
+import Datetimepicker from '@/components/Datetimepicker/index.vue'
+import ColorPicker from '@/components/Colorpicker/index.vue'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -90,6 +90,7 @@ export default {
           // console.log('CONDITION TRUE', el.name)
           Vue.set(fields, el.name, {})
         } else return
+        // if (el.name === 'vector') return
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
@@ -134,39 +135,24 @@ export default {
       const btnIndex = props.tab.fields.findIndex(
         (x) => x.id === 'btn-decrease'
       )
-      const itemIndex = +props.tab.fields[btnIndex - 1].name.split('__')[1]
+      const categoryItems = props.tab.fields.find(
+        (x) => x.name === 'rashod_vid'
+      ).items
+      let itemIndex = +props.tab.fields[btnIndex - 1].name.split('%')[1]
+      if (!itemIndex) itemIndex = 0
       if (val) {
         const insertItems = [
-          // selectField({
-          //   label: 'Наименование:',
-          //   name: `name__${itemIndex + 1}`,
-          //   alias: 'direction_id',
-          //   placeholder: '',
-          //   class: [''],
-          //   value: '',
-          //   selectOption: {
-          //     text: 'name',
-          //     value: 'id',
-          //   },
-          //   items: [],
-          //   position: {
-          //     cols: 12,
-          //     sm: 6,
-          //   },
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          // }),
           selectField({
             label: 'Наименование:',
-            name: `rashod_vid__${itemIndex + 1}`,
+            name: `rashod_vid%${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             value: '',
+            items: categoryItems,
             selectOption: {
               text: 'name',
               value: 'id',
             },
-            items: [],
             position: {
               cols: 12,
               sm: 6,
@@ -176,7 +162,7 @@ export default {
           }),
           stringField({
             label: 'Кол-во:',
-            name: `count__${itemIndex + 1}`,
+            name: `count%${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             position: {
@@ -188,7 +174,7 @@ export default {
           }),
           stringField({
             label: 'Стоимость :',
-            name: `price__${itemIndex + 1}`,
+            name: `price%${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             position: {
@@ -200,7 +186,7 @@ export default {
           }),
           checkboxField({
             label: 'ВДС',
-            name: `vds__${itemIndex + 1}`,
+            name: `vds%${itemIndex + 1}`,
             value: false,
             placeholder: '',
             readonly: false,
@@ -213,7 +199,7 @@ export default {
           }),
           stringField({
             label: 'Точное наименование',
-            name: `exact_name__${itemIndex + 1}`,
+            name: `exact_name%${itemIndex + 1}`,
             placeholder: '',
             class: [''],
             position: {
@@ -229,6 +215,19 @@ export default {
       }
       rebuildFormData()
     }
+
+    watch(
+      () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
+      () => {
+        const categoryItems = props.tab.fields.find(
+          (x) => x.name === 'rashod_vid'
+        ).items
+        props.tab.fields.map((x) =>
+          x?.name?.includes('rashod_vid%') ? (x.items = categoryItems) : x
+        )
+      },
+      { deep: true }
+    )
 
     // setInterval(() => {
     //   console.log('fields(jukghjghjgh)', fields())

@@ -10,12 +10,86 @@ import {
   dropZoneField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import FormDefault from '@/components/form/default/index.vue'
-import FormDocuments from '@/components/form/documents/default/index.vue'
-import FormList from '@/components/form/list/index.vue'
+import FormDefault from '@/components/Form/default/index.vue'
+import FormDocuments from '@/components/Form/documents/default/index.vue'
+import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
-import { userKeys } from '@/pages'
+import { documents, userKeys } from '@/pages'
 import { ref } from 'vue'
+import _, { functionsIn } from 'lodash'
+// import personalPage from '@/pages/personal/index'
+
+import personalPage2 from './formPersonal'
+
+console.log('personalPage2: ', personalPage2)
+
+// console.log('personalPage2', personalPage2.tabs[0].detail)
+// console.log('personalPage', personalPage.tabs[0])
+
+//const form = personalPage2.tabs[0].detail.tabs[0]
+
+//const configPersonalPage = _.cloneDeep(personalPage)
+
+// const personalForm = personalPage.tabs[0].detail.tabs[0]
+// const personalForm2 = personalPage.tabs[0].detail.tabs[1]
+
+// console.log('personalForm', personalForm)
+// personalForm.path = 'persanalById'
+// personalForm2.path = 'persanalById'
+
+// const personalForms = () => {
+//   const personalForms = []
+//   const dataContent = []
+//   const dataContentEnum = {
+//     fields: 'fields',
+//     documents: 'documents',
+//     config: 'config',
+//   }
+//   // const dataContentList = ['fields', 'documents']
+//   const tabsPersonal = configPersonalPage.tabs[0].detail.tabs
+//   for (const personalForm of tabsPersonal) {
+//     // docs: value = dataContentEnum.fields |documents | config...
+//     // todo: вынести этот циклл в функцию для более читаемости
+
+//     for (const [key, value] of Object.entries(dataContentEnum)) {
+//       if (personalForm.hasOwnProperty(value)) {
+//         dataContent.push({
+//           id: personalForm.id,
+//           [value]: personalForm[value],
+//         })
+//       }
+//     }
+//   }
+//   // =====================
+
+//   //Скейлка этих переменных с общим конфигом
+//   //.богоподобный код с 3 циклами и условиями
+//   const tabsDocuments = personalPage2.tabs[0].detail.tabs
+//   for (const el of tabsDocuments) {
+//     for (const el2 of dataContent) {
+//       if (el.id === el2.id) {
+//         for (const [key, value] of Object.entries(dataContentEnum)) {
+//           if (el.hasOwnProperty(value)) {
+//             el[value] = el2[value]
+//             personalForms.push(el)
+//           }
+//         }
+
+//         // el[dataContentEnum.fields] = el2[dataContentEnum.fields]
+//         // personalForms.push(el)
+//       }
+//     }
+//   }
+
+//   // personalPage2.tabs[0].detail.tabs[0].fields = dataContent[0].fields
+//   // console.log(personalPage2.tabs[0].detail.tabs[0])
+//   return personalForms
+// }
+
+// console.log('personalForms', personalForms())
+
+// console.log('pers:', personalPage2.tabs[0].detail.tabs)
+
 function consoleText(row) {
   console.log(row, 2)
   //return 'test'
@@ -32,8 +106,6 @@ function consolePanel() {
 function searchInputing(field) {
   console.log(field)
 }
-
-// const activeTab = ref(0)
 
 const consumptionConfig = {
   selector: '#mainTable',
@@ -1374,7 +1446,113 @@ const defaultForm = [
       },
     ],
   },
+  ...personalPage2,
+  // {
+  //   path: 'personalById',
+  //   id: 6,
+  //   name: 'Добавить ключ',
+  //   type: 'FormDefault',
+  //   detail: true,
+  //   fields: [
+  //     autocompleteField({
+  //       label: 'Сотрудник',
+  //       name: 'personal_id',
+  //       alias: 'personal_logistic_x5',
+  //       subtype: 'single',
+  //       placeholder: '',
+  //       class: [''],
+  //       selectOption: {
+  //         text: 'name',
+  //         value: 'id',
+  //       },
+  //       selectOptionName: '',
+  //       items: [],
+  //       page: 1,
+  //       search: '',
+  //       url: 'get/pagination_list/personal_logistic_x5',
+  //       position: {
+  //         cols: 12,
+  //         sm: 12,
+  //       },
+  //       validations: { required },
+  //       bootstrapClass: [''],
+  //       dependence: [
+  //         {
+  //           //fields: ['statement_card', 'cardowner'],
+  //           type: 'api',
+  //           module: 'personal/getObject',
+  //           //url: 'object_id/avatar_with_user_key_id',
+  //           field: 'object_id',
+  //           url: [
+  //             {
+  //               source: 'formData',
+  //               field: 'this',
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     }),
+  //     selectField({
+  //       label: 'Объект',
+  //       name: 'object_id',
+  //       // alias: 'object_id',
+  //       placeholder: '',
+  //       class: [''],
+  //       selectOption: {
+  //         text: 'name',
+  //         value: 'id',
+  //       },
+  //       items: [],
+  //       position: {
+  //         cols: 12,
+  //         sm: 12,
+  //       },
+  //       validations: { required },
+  //       bootstrapClass: [''],
+  //     }),
+  //     dropZoneField({
+  //       label: 'Файл акта',
+  //       name: 'photo_path',
+  //       placeholder: '',
+  //       readonly: false,
+  //       class: [''],
+  //       position: {
+  //         cols: 12,
+  //         sm: 12,
+  //       },
+  //       bootstrapClass: [''],
+  //       validations: { required },
+  //       options: {
+  //         withoutSave: false,
+  //         folder: 'user_keys',
+  //         name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
+  //         paramsForEmit: this,
+  //       },
+  //       value: '',
+  //     }),
+  //   ],
+  //   actions: [
+  //     stringAction({
+  //       text: 'Закрыть',
+  //       type: 'submit',
+  //       color: 'textDefault',
+  //       name: 'closePopup',
+  //       action: 'closePopup',
+  //       to: 'personal',
+  //       skipValidation: true,
+  //     }),
+  //     stringAction({
+  //       text: 'Загрузить',
+  //       type: 'submit',
+  //       module: 'form/create',
+  //       url: 'query/user_key',
+  //       name: 'saveForm',
+  //       action: 'saveFormStore',
+  //     }),
+  //   ],
+  // },
 ]
+console.log('defaultForm', defaultForm)
 
 const keysForm = [
   {
@@ -1383,16 +1561,11 @@ const keysForm = [
     type: FormDefault,
     detail: true,
     lists: [
-      // { alias: 'user_keys', filter: [] },
-      // { alias: 'habitation_id', filter: [] },
-      // { alias: 'account_id', filter: [] },
-      // { alias: 'direction_id', filter: [] },
-      // { alias: 'grajdanstvo_id', filter: [] },
-      'user_keys',
-      'habitation_id',
-      'account_id',
-      'direction_id',
-      'grajdanstvo_id',
+      { alias: 'user_keys', filter: [] },
+      { alias: 'habitation_id', filter: [] },
+      { alias: 'account_id', filter: [] },
+      { alias: 'direction_id', filter: [] },
+      { alias: 'grajdanstvo_id', filter: [] },
     ],
     alias: 'personal',
     active: false,
@@ -1408,8 +1581,6 @@ const keysForm = [
           sm: 4,
         },
         bootstrapClass: [''],
-        //validations: { required },
-        //isShow: false,
       }),
       stringField({
         label: 'Телефон',
@@ -1968,7 +2139,6 @@ const config = {
           function: searchInputing,
         },
         headerFixed: true,
-        //url: 'https://dummyjson.com/users',
         url: 'get/pagination/documents_new',
         title: 'Новое',
       },
@@ -1982,41 +2152,9 @@ const config = {
             function: consolePanel,
             backgroundColor: '#ffffff',
           },
-          // {
-          //   label: 'Скачать',
-          //   class: ['v-table-button--custom'],
-          //   function: consolePanel,
-          //   backgroundColor: '#fff',
-          // },
         ],
       },
       head: [
-        // {
-        //   title: 'id',
-        //   type: 'default',
-        //   align: 'center',
-        //   fixed: {
-        //     value: false,
-        //     position: 'left',
-        //   },
-        //   sorts: [
-        //     {
-        //       type: 'string',
-        //       default: '',
-        //       value: '',
-        //       isShow: false,
-        //     },
-        //   ],
-        //   alias: 'p.id',
-        //   isShow: true,
-        //   width: '40',
-        //   value: 'id',
-        //   search: {
-        //     field: '',
-        //     isShow: true,
-        //   },
-        // },
-
         {
           title: 'ФИО',
           type: 'default',
@@ -2920,7 +3058,8 @@ const config = {
     {
       selector: '#mainTable',
       options: {
-        noTableAction: true,
+        // noTableAction: true,
+        doubleHandlerType: 'cell',
         selecting: true,
         search: {
           function: searchInputing,
@@ -2954,6 +3093,7 @@ const config = {
           title: 'ФИО',
           type: 'default',
           align: 'center',
+          wrapLink: true,
           fixed: {
             value: false,
             position: 'left',
