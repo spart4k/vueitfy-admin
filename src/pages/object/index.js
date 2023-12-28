@@ -1994,11 +1994,6 @@ const config = {
                       field: 'with_nutrition',
                       value: [true],
                     },
-                    {
-                      field: 'direction_json',
-                      type: 'array',
-                      value: [[1], [6], [1, 6]],
-                    },
                   ],
                 },
                 validations: { required },
@@ -2496,11 +2491,6 @@ const config = {
                     {
                       field: 'with_nutrition',
                       value: [true],
-                    },
-                    {
-                      field: 'direction_json',
-                      type: 'array',
-                      value: [[1], [6], [1, 6]],
                     },
                   ],
                 },
@@ -3652,11 +3642,6 @@ const config = {
                     {
                       field: 'with_nutrition',
                       value: [true],
-                    },
-                    {
-                      field: 'direction_json',
-                      type: 'array',
-                      value: [[1], [6], [1, 6]],
                     },
                   ],
                 },

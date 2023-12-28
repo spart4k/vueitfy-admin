@@ -903,7 +903,13 @@ export default function ({
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-          if (!field.notPut) formData[field.name] = syncForm.data[formKey]
+          if (!field.notPut) {
+            Vue.set(formData, field.name, syncForm.data[formKey])
+            if (field.type === 'checkbox') {
+              if (syncForm.data[formKey]) formData[field.name] = true
+              else formData[field.name] = false
+            }
+          }
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
