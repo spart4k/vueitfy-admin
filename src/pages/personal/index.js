@@ -2353,6 +2353,26 @@ export const fieldsBaseDefaulrForm = [
       ],
     },
   }),
+  selectField({
+    label: 'Объекты',
+    name: 'object_id',
+    alias: 'objects_personal',
+    subtype: 'multiple',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    readonly: true,
+  }),
 ]
 
 export const fieldsDocumentDefaultForm = [
@@ -2437,6 +2457,15 @@ const defaultForm = [
       { alias: 'account_id', filter: [] },
       { alias: 'direction_id', filter: [] },
       { alias: 'grajdanstvo_id', filter: [] },
+      { alias: 'objects_personal', filter: [
+        {
+          field: 'object_id',
+          alias: 'personal_id',
+          value: '',
+          source: '+route.params.id',
+          type: 'num'
+        },
+      ] },
     ],
     alias: 'personal',
     active: false,

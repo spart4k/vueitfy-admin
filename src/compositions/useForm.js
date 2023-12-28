@@ -969,11 +969,18 @@ export default function ({
             source[el.field] !== undefined &&
             source[el.field] !== ''
           ) {
+            console.log(el.source)
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
+              type: el.type,
+            })
+          } else if (el.source === '+route.params.id') {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: +route.params.id,
               type: el.type,
             })
           }
