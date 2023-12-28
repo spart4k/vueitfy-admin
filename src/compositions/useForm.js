@@ -515,6 +515,7 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
+    console.log('UPDATE COPLETE', params.field.name)
     await getDependies(params)
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
@@ -539,6 +540,12 @@ export default function ({
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
+              type: el.type,
+            })
+          } else if (source !== 'formData') {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source) ? source : [source],
               type: el.type,
             })
           } else if (source) {
@@ -734,7 +741,10 @@ export default function ({
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
       }
-      //if (data.length === 1) formData[depField] = card.id
+      if (data.length === 1) {
+        // console.log(card)
+        // formData[depField] = card.id
+      }
       if (card) {
         if (dependence.fillField) {
           dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -886,6 +896,7 @@ export default function ({
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
         if (source[el.field] !== null && source[el.field] !== undefined) {
+          console.log(JSON.stringify(source), el.field)
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
