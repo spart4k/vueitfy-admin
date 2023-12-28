@@ -732,7 +732,7 @@ export default {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'direction_id',
                     value: '',
@@ -768,7 +768,7 @@ export default {
                 },
                 // validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'object_id',
                     value: '',
@@ -906,7 +906,7 @@ export default {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'object_id',
                     value: '',

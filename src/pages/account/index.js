@@ -905,7 +905,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'permission_id',
                     type: 'num',

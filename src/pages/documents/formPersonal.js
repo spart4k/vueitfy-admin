@@ -19,7 +19,7 @@ import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 // import useNavigation from '@/compositions/useNavigation'
 
-import { headDocumentConfigEdit, fieldsBaseDocumentConfigEdit, fieldsTypeDocsDocumentConfigEdit, fieldsBaseDefaulrForm, fieldsDocumentDefaultForm} from '@/pages/personal/index' 
+import { headDocumentConfigEdit, fieldsBaseDocumentConfigEdit, fieldsTypeDocsDocumentConfigEdit, fieldsBaseDefaulrForm, fieldsDocumentDefaultForm} from '@/pages/personal/index'
 // const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {
@@ -1982,7 +1982,7 @@ const defaultForm = [
 //             },
 //             validations: { required },
 //             bootstrapClass: [''],
-//             filters: [
+//             filter: [
 //               {
 //                 field: 'direction_id',
 //                 value: '',
@@ -2075,7 +2075,7 @@ const defaultForm = [
 //             },
 //             validations: { required },
 //             bootstrapClass: [''],
-//             filters: [
+//             filter: [
 //               {
 //                 field: 'object_id',
 //                 alias: 'object_json',

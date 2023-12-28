@@ -527,7 +527,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'direction_id',
                     value: '',
@@ -571,7 +571,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'object_id',
                     value: '',
@@ -801,7 +801,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'object_id',
                     value: '',

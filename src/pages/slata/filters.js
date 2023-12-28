@@ -87,7 +87,7 @@ const filters = {
         sm: 12,
       },
       aliasFilter: '',
-      filters: [
+      filter: [
         {
           field: 'type_json',
           type: 'array',
@@ -107,7 +107,7 @@ const filters = {
         text: 'name',
         value: 'id',
       },
-      filters: [
+      filter: [
         {
           field: 'type',
           type: 'num',

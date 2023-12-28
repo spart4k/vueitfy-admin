@@ -603,7 +603,7 @@ const config = {
           //   },
           //   validations: { required },
           //   bootstrapClass: [''],
-          //   filters: [
+          //   filter: [
           //     {
           //       field: 'object_id',
           //       value: '',

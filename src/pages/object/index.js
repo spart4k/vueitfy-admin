@@ -3106,7 +3106,7 @@ const config = {
           //     //   },
           //     //   validations: { required },
           //     //   bootstrapClass: [''],
-          //     //   filters: [
+          //     //   filter: [
           //     //     {
           //     //       field: 'object_id',
           //     //       value: '',
@@ -3186,7 +3186,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'object_id',
                     value: '',
@@ -3200,7 +3200,7 @@ const config = {
                     url: 'get/pagination_list/assign_accounts',
                   },
                 ],
-                // filters: [
+                // filter: [
                 //   {
                 //     field: 'direction_id',
                 //     value: '',
@@ -3241,7 +3241,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'direction_id',
                     value: '',
@@ -3257,7 +3257,7 @@ const config = {
                     fillField: ['permission_id'],
                   },
                 ],
-                // filters: [
+                // filter: [
                 //   {
                 //     field: 'direction_id',
                 //     value: '',
@@ -4226,7 +4226,7 @@ const config = {
               //   },
               //   validations: { required },
               //   bootstrapClass: [''],
-              //   filters: [
+              //   filter: [
               //     {
               //       field: 'object_id',
               //       value: '',
@@ -4710,7 +4710,7 @@ const config = {
     //           //   },
     //           //   validations: { required },
     //           //   bootstrapClass: [''],
-    //           //   filters: [
+    //           //   filter: [
     //           //     {
     //           //       field: 'object_id',
     //           //       value: '',
