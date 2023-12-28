@@ -727,7 +727,7 @@ export default function ({
           : data
         if (targetField.items.length === 1) {
           // Если массив, вставить массив
-          formData[targetField.name] = targetField.items[0].id
+          // formData[targetField.name] = targetField.items[0].id
         } else if (!targetField.items.length) {
           formData[targetField.name] = null
         }
