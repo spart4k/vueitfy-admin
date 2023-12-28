@@ -55,10 +55,10 @@ const Form1 = defineComponent({
         key: 'Менеджер',
         value: props.data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: props.data.entity.object_name,
-      },
+      // obj: {
+      //   key: 'Объект',
+      //   value: props.data.entity.object_name,
+      // },
     }
     let confirmed = ref([])
     let unConfirmed = ref([])

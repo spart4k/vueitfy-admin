@@ -39,10 +39,10 @@ const ThirdPopupView = defineComponent({
         key: 'Менеджер',
         value: data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: data.entity.object_name,
-      },
+      // obj: {
+      //   key: 'Объект',
+      //   value: data.entity.object_name,
+      // },
     }
     const account_id = computed(() => store.state.user.account_id)
     const isShowBtnArray = ref([])
@@ -95,17 +95,15 @@ const ThirdPopupView = defineComponent({
       context,
       request: () =>
         store.dispatch('taskModule/changeStatusTasks', {
+          status: 2,
           data: {
-            status: 2,
-            data: {
-              process_id: data.task.process_id,
-              account_id: account_id,
-              task_id: data.task.id,
-              parent_action: data.task.parent_action,
-              personal_id: data.entity.id,
-              docs_id: JSON.parse(data.task.dop_data).docs_id,
-              comment: comment.value,
-            },
+            process_id: data.task.process_id,
+            account_id: account_id,
+            task_id: data.task.id,
+            parent_action: data.task.parent_action,
+            personal_id: data.entity.id,
+            docs_id: JSON.parse(data.task.dop_data).docs_id,
+            comment: comment.value,
           },
         }),
       successMessage: 'Файл успешно загружен',

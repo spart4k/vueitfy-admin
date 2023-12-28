@@ -39,10 +39,10 @@ const Form7 = defineComponent({
         key: 'Менеджер',
         value: props.data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: props.data.entity.object_name,
-      },
+      // obj: {
+      //   key: 'Объект',
+      //   value: props.data.entity.object_name,
+      // },
     }
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
     console.log(JSON.parse(props.data.task.dop_data))

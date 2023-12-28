@@ -31,10 +31,10 @@ const Form6 = defineComponent({
         key: 'Менеджер',
         value: data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: data.entity.object_name,
-      },
+      // obj: {
+      //   key: 'Объект',
+      //   value: data.entity.object_name,
+      // },
     }
     // let getNameDoc = (docID) => {
     //   return docs_spr[docID]
@@ -122,7 +122,7 @@ const Form6 = defineComponent({
         }),
     })
     let sendTaskFinish = async () => {
-      if (data.data.dosc.lenght) {
+      if (data.data.dosc.length) {
         delInfoAFile()
       }
       listRequestsForUpload.value
