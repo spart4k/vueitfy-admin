@@ -122,7 +122,7 @@ const Form6 = defineComponent({
         }),
     })
     let sendTaskFinish = async () => {
-      if (data.data.dosc.length) {
+      if (data.data.docs.length) {
         delInfoAFile()
       }
       listRequestsForUpload.value
