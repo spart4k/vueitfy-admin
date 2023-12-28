@@ -3,6 +3,7 @@ import TableDefault from '@/components/Table/default/index.vue'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import Expenses from '@/components/Form/expenses/index.vue'
+import store from '@/store/index.js'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -34,6 +35,10 @@ function consolePanel() {
 function searchInputing(field) {
   console.log(field)
 }
+
+console.log('storestore', store)
+
+// const store = useStore()
 
 const tableConsumptionConfig = {
   selector: '#mainTable',
@@ -1388,18 +1393,18 @@ const config = {
           { alias: 'type_pay', filter: [] },
           { alias: 'me', filter: [] },
           { alias: 'type_objects', filter: [] },
-          {
-            alias: 'permissions_zr',
-            filter: [
-              {
-                field: 'direction_id',
-                //alias: 'direction_json',
-                value: '',
-                source: 'formData',
-                type: 'array',
-              },
-            ],
-          },
+          // {
+          //   alias: 'permissions_zr',
+          //   filter: [
+          //     {
+          //       field: 'direction_id',
+          //       //alias: 'direction_json',
+          //       value: '',
+          //       source: 'formData',
+          //       type: 'array',
+          //     },
+          //   ],
+          // },
         ],
         alias: 'personal_target',
         active: false,
@@ -1513,6 +1518,19 @@ const config = {
             //   module: 'selects/getList',
             //   fields: ['permissions_zr'],
             // },
+            updateList: [
+              {
+                alias: 'permissions_zr',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
             // updateList: [
             //   {
             //     alias: 'permissions_zr',
@@ -1981,6 +1999,24 @@ const config = {
           //   // validations: { required },
           //   bootstrapClass: [''],
           // }),
+          checkboxField({
+            name: 'is_migr',
+            value:
+              store?.state?.user.permission_id === 16 ||
+              store?.state?.user.permission_id === 19,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            disabled: true,
+            isShow: {
+              value: true,
+            },
+            bootstrapClass: [''],
+          }),
         ],
         actions: [
           stringAction({

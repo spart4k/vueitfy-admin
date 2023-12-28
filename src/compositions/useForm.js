@@ -86,7 +86,7 @@ export default function ({
     //   reactive(
     //     Object.keys(setFields()).reduce((obj, key) => {
     //       if (formData[key]) obj[key] = ref(formData[key])
-    //       else obj[key] = ref(setFields()[key].default)
+    //       else obj[key] = Vue.set(formData, key, ref(fields[key].default))
     //       return obj
     //     }, {})
     //   )
@@ -95,10 +95,7 @@ export default function ({
     console.log(fields)
     for (let key in fields) {
       if (formData.hasOwnProperty(key)) continue
-      //if (fields)
-      else {
-        Vue.set(formData, key, ref(fields[key].default))
-      }
+      Vue.set(formData, key, ref(fields[key].default))
     }
   }
 
@@ -925,7 +922,13 @@ export default function ({
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
-          if (!field.notPut) formData[field.name] = syncForm.data[formKey]
+          if (!field.notPut) {
+            Vue.set(formData, field.name, syncForm.data[formKey])
+            if (field.type === 'checkbox') {
+              if (syncForm.data[formKey]) formData[field.name] = true
+              else formData[field.name] = false
+            }
+          }
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
             field.hasOwnProperty('dependence') &&
