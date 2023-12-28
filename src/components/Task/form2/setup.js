@@ -143,7 +143,7 @@ const Form2 = defineComponent({
             task_id: props.data.task.id,
             parent_action: props.data.task.id,
             docs_id:
-              isHasOsnDoc && !isOsnDocConfirmed.value
+              isHasOsnDoc && isOsnDocConfirmed.value
                 ? [0, ...finalData.value.rejected]
                 : finalData.value.rejected,
             account_id: props.data.task.to_account_id,
