@@ -73,13 +73,12 @@
     />
     <v-divider></v-divider>
     <v-row class="py-2 px-5" justify="end">
-      <v-btn small @click="$emit('closePopup')" color="blue-grey">
+      <v-btn class="mr-2" small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
       <v-btn
         small
-        class="mr-2"
         color="info"
         :disabled="!isLoadImage && !comment"
         @click="sendDoneTask"
