@@ -50,7 +50,7 @@ const Form7 = defineComponent({
     const isFormValid = ref(false)
     const bankCardId = ref(0)
     const osnConfirmed = ref(false)
-    const isOsnDocValid = ref(false)
+    const isOsnDocValid = ref(true)
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {
