@@ -542,16 +542,18 @@ export default function ({
                 : [source[el.field]],
               type: el.type,
             })
-          } else if (source !== 'formData') {
+          } else if (el.source !== 'formData') {
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source) ? source : [source],
               type: el.type,
             })
-          } else if (source) {
+          } else if (el.source === 'formData') {
             acc.push({
               alias: el.alias ?? el.field,
-              value: Array.isArray(source) ? source : [source],
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
               type: el.type,
             })
           }
