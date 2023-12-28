@@ -247,7 +247,12 @@ export default function ({
       if (action.handlingResponse) {
         let { text, color } = action.handlingResponse[result.code]
         // /%\w{n}%/
-        text = text.replace(/%name%/g, formData.name)
+        //const text = 'Объект с именем %name% уже существует'
+        // eslint-disable-next-line
+        const key = text.match(/\%\w{1,}\%/g)
+        const keyFormated = key[0].split('%')[1]
+        console.log(key)
+        text = text.replace(key, formData[keyFormated])
         store.commit('notifies/showMessage', {
           content: text,
           color,
