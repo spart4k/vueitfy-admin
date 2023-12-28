@@ -38,15 +38,10 @@
               </div>
             </v-col>
             <v-col cols="auto" class="d-flex align-center">
-              <v-btn
-                class="mr-3"
-                fab
-                x-small
-                v-if="isShowBtnArray[index]"
-                @click="addToDenied(index)"
-                icon
-              >
-                <v-icon x-small>$IconGalka</v-icon>
+              <v-btn class="mr-3" fab x-small @click="addToDenied(index)" icon>
+                <v-icon :color="isShowBtnArray[index] ? 'green' : ''" x-small
+                  >$IconGalka</v-icon
+                >
               </v-btn>
               <v-btn icon fab x-small tag="label">
                 <input
@@ -57,7 +52,7 @@
                   accept="image/*"
                   @change="handleFileUpload($event, index)"
                 />
-                <v-icon x-small>$IconEdit</v-icon>
+                <v-icon color="orange" x-small>$IconEdit</v-icon>
               </v-btn>
             </v-col>
           </v-row>
