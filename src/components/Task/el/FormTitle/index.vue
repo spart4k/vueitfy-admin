@@ -3,7 +3,7 @@
     class="docs-required"
     :class="{
       'is-unconfirmed': !isShowCansel,
-      'is-confirmed': isShowCansel,
+      'is-confirmed': !isShowAdd,
     }"
   >
     <div class="docs-required__container-layout">
