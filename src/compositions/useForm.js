@@ -627,8 +627,8 @@ export default function ({
         url = dependence.url
         if (targetField.type === 'autocomplete') {
           const filter = []
-          if (targetField.filter && targetField.filter.length) {
-            targetField.filter.forEach((el) => {
+          const query = (target) => {
+            target.filter.forEach((el) => {
               console.log(el.field, formData, formData[el.field])
               if (!formData[el.field] && !el.source) return
               if (el.source)
@@ -645,23 +645,11 @@ export default function ({
                 })
               }
             })
+          }
+          if (targetField.filter && targetField.filter.length) {
+            query(targetField)
           } else if (dependence.filter && dependence.filter.length) {
-            dependence.filter.forEach((el) => {
-              if (!formData[el.field] && !el.source) return
-              if (el.source)
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  type: el.type,
-                  value: el.source ? eval(el.source) : formData[el.field],
-                })
-              else {
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  type: el.type,
-                  value: formData[el.field],
-                })
-              }
-            })
+            query(dependence)
           }
           body = {
             countRows: 10,
@@ -832,7 +820,7 @@ export default function ({
             value = form?.formData[filter.field]
           } else if (filter.source === undefined) {
             value = filter.value
-          } else if (filter.source) {
+          } else if (filter.source !== 'formData') {
             const source = eval(filter.source)
             value = source
           } else {
