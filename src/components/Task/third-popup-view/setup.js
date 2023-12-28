@@ -94,7 +94,7 @@ const ThirdPopupView = defineComponent({
     const { makeRequest: doneRequest } = useRequest({
       context,
       request: () =>
-        store.dispatch('taskModule/changeStatusTasks', {
+        store.dispatch('taskModule/setPartTask', {
           status: 2,
           data: {
             process_id: data.task.process_id,
