@@ -3685,6 +3685,40 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_passive',
         title: 'Пассив',
+        contextMenu: {
+          actions: [
+            {
+              icon: 'mdi-plus',
+              label: 'Привязать объект',
+              isShow: {
+                condition: [
+                  {
+                    direction_id: [1, 6],
+                    type: true,
+                  },
+                ]
+              },
+              readonly: {
+                value: true,
+                condition: [
+                  {
+                    is_personal_vertical: [true],
+                    type: true,
+                  },
+                  {
+                    permission_id: [4],
+                    type: false,
+                  },
+                ]
+              },
+              action: {
+                type: 'changeUrl',
+                target: 'id',
+                url: 'personal/bind'
+              }
+            }
+          ]
+        }
       },
       type: TableDefault,
       panel: {
