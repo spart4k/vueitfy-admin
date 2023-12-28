@@ -14,6 +14,9 @@
           <v-row
             justify="space-between"
             class="py-3"
+            :class="{
+              confirmed: !isShowBtnArray[index],
+            }"
             v-for="(item, index) in data.data.docs"
             :key="index"
           >
@@ -70,6 +73,10 @@
     />
     <v-divider></v-divider>
     <v-row class="py-2 px-5" justify="end">
+      <v-btn small @click="$emit('closePopup')" color="blue-grey">
+        <v-icon small>mdi-close</v-icon>
+        Закрыть
+      </v-btn>
       <v-btn
         small
         class="mr-2"
@@ -79,10 +86,6 @@
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
-      </v-btn>
-      <v-btn small @click="$emit('closePopup')" color="blue-grey">
-        <v-icon small>mdi-close</v-icon>
-        Закрыть
       </v-btn>
     </v-row>
   </div>

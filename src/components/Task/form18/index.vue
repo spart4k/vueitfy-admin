@@ -97,6 +97,10 @@
     </div>
     <v-divider></v-divider>
     <v-row class="pb-0 pt-3" justify="end">
+      <v-btn @click="$emit('closePopup')" small color="blue-grey">
+        <v-icon small>mdi-close</v-icon>
+        Закрыть
+      </v-btn>
       <v-btn
         :disabled="!isFormValid"
         @click="confirmTask"
@@ -110,10 +114,6 @@
       <v-btn @click="rejectTask" class="mr-2" small color="error">
         <v-icon small>mdi-close</v-icon>
         Отклонить
-      </v-btn>
-      <v-btn @click="$emit('closePopup')" small color="blue-grey">
-        <v-icon small>mdi-close</v-icon>
-        Закрыть
       </v-btn>
     </v-row>
   </div>

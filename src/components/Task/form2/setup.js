@@ -33,10 +33,10 @@ const Form2 = defineComponent({
         key: 'Менеджер',
         value: props.data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: props.data.entity.object_name,
-      },
+      // obj: {
+      //   key: 'Объект',
+      //   value: props.data.entity.object_name,
+      // },
     }
     const finalData = ref({})
     const isFormValid = ref(false)
