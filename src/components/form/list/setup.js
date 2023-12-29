@@ -67,6 +67,11 @@ export default {
     })
     const rows = ref([])
     const changeForm = async ({ url, module }) => {
+      rows.value.forEach((el) => el.validate(true))
+      console.log(rows.value)
+      const isValid = rows.value.every((el) => el.validate(true))
+      console.log(isValid, 'isValid')
+      if (!isValid) return
       const {
         object_id,
         personal_id,
@@ -81,7 +86,7 @@ export default {
       const defaultData = {
         object_id,
         personal_id,
-        account_id: 25, // ?
+        account_id: store.state.user.id, // ?
         doljnost_id,
         date_target: date_target[0],
         status,
@@ -103,8 +108,6 @@ export default {
         }
         return person
       })
-      rows.value.forEach((el) => el.validate())
-      const isValid = rows.value.every((el) => el.validate())
       const { makeRequest } = useRequest({
         context,
         request: () =>
@@ -115,8 +118,8 @@ export default {
         successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
       console.log(isValid)
-      if (!isValid) return
       await makeRequest()
+      emit('getItems')
       emit('closePopup')
     }
     const {

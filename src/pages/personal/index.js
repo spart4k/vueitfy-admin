@@ -4551,6 +4551,9 @@ export const config = {
             name: 'Добавить ключ',
             type: 'FormDefault',
             detail: true,
+            lists: [
+              { alias: 'objects_personal', filter: [] },
+            ],
             fields: [
               autocompleteField({
                 label: 'Сотрудник',
@@ -4574,26 +4577,25 @@ export const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                dependence: [
+                updateList: [
                   {
-                    //fields: ['statement_card', 'cardowner'],
-                    type: 'api',
-                    module: 'personal/getObject',
-                    //url: 'object_id/avatar_with_user_key_id',
-                    field: 'object_id',
-                    url: [
+                    alias: 'objects_personal',
+                    filter: [
                       {
+                        field: 'personal_id',
+                        value: '',
                         source: 'formData',
-                        field: 'this',
+                        type: 'num',
                       },
                     ],
                   },
-                ]
+                ],
               }),
               selectField({
-                label: 'Объект',
+                label: 'Объекты',
                 name: 'object_id',
-                // alias: 'object_id',
+                alias: 'objects_personal',
+                //subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -4607,6 +4609,7 @@ export const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                //readonly: true,
               }),
               dropZoneField({
                 label: 'Файл акта',

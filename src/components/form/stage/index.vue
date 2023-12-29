@@ -24,6 +24,7 @@
           @prevStage="prevStage"
           @setStageData="setStageData"
           @closePopup="(e) => $emit('closePopup', e)"
+          @getItems="(e) => $emit('getItems', e)"
         />
         <!--<v-progress-circular
           v-else

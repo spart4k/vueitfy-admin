@@ -196,7 +196,7 @@ export default function ({
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
-      emit('closePopup')
+      //emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -263,6 +263,14 @@ export default function ({
       emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
       action.variable = false
+    } else if (action.action === 'custom') {
+      loading.value = true
+      const result = await changeForm({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      loading.value = false
     }
   }
 
@@ -861,6 +869,8 @@ export default function ({
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
+      //console.log(el)
+      //getDependies({ field: el })
       return data
     })
     await Promise.all(queryFields)

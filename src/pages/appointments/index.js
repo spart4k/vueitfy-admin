@@ -12,6 +12,7 @@ import {
   //datetimeField,
   dateField,
   textBlock,
+  checkboxField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
@@ -470,10 +471,24 @@ const config = {
                     type: 'api',
                     module: 'selects/getListUpdate',
                     field: 'object_id',
-                    url: 'get/pagination_list/object_logistic',
+                    url: 'get/pagination_list/target_object',
+                  },
+                ],
+                updateList: [
+                  {
+                    alias: 'doljnost_id_logistic',
+                    filter: [
+                      {
+                        field: 'direction_id',
+                        value: '',
+                        source: 'formData',
+                        type: 'array',
+                      },
+                    ],
                   },
                 ],
               }),
+
               selectField({
                 label: 'Вид ведомости:',
                 name: 'vid_vedomost_id_logistic',
@@ -520,7 +535,7 @@ const config = {
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/object_logistic',
+                url: 'get/pagination_list/target_object',
                 position: {
                   cols: 12,
                   sm: 6,
@@ -542,13 +557,9 @@ const config = {
                     type: 'api',
                     module: 'selects/getListUpdate',
                     field: 'personal_id',
-                    url: 'get/pagination_list/personal',
+                    url: 'get/pagination_list/target_personal',
                   },
                 ],
-                update: {
-                  module: 'selects/getList',
-                  fields: ['personal_id'],
-                },
                 requiredFields: ['direction_id'],
               }),
               autocompleteField({
@@ -564,7 +575,7 @@ const config = {
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/target_personal',
                 position: {
                   cols: 12,
                   sm: 6,
@@ -619,6 +630,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                requiredFields: ['direction_id'],
               }),
               selectField({
                 label: 'Тип смены',
@@ -658,43 +670,82 @@ const config = {
                 //mode: 'edit',
                 isShow: true,
               }),
-              selectField({
+              checkboxField({
                 label: 'Питание',
                 name: 'with_nutrition',
-                alias: 'nutritions',
                 placeholder: '',
+                value: false,
+                readonly: false,
                 class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
-                validations: { required },
                 bootstrapClass: [''],
-                defaultItems: [
-                  {
-                    id: 0,
-                    name: '--Без питания--',
-                  },
-                ],
+                //validations: { required },
+                //isShow: false,
               }),
               stringField({
-                label: 'Стоимость питания:',
+                label: 'Стоимость питания',
                 name: 'sum_nutrition',
                 placeholder: '',
+                //value: 0,
+                readonly: true,
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      field: 'with_nutrition',
+                      value: [1, true],
+                    },
+                  ],
                 },
                 validations: { required },
-                bootstrapClass: [''],
-                requiredFields: ['with_nutrition', 'sum_nutrition'],
+                //isShow: false,
               }),
+              //selectField({
+              //  label: 'Питание',
+              //  name: 'with_nutrition',
+              //  alias: 'nutritions',
+              //  placeholder: '',
+              //  class: [''],
+              //  selectOption: {
+              //    text: 'name',
+              //    value: 'id',
+              //  },
+              //  items: [],
+              //  position: {
+              //    cols: 12,
+              //    sm: 6,
+              //  },
+              //  validations: { required },
+              //  bootstrapClass: [''],
+              //  defaultItems: [
+              //    {
+              //      id: 0,
+              //      name: '--Без питания--',
+              //    },
+              //  ],
+              //}),
+              //stringField({
+              //  label: 'Стоимость питания:',
+              //  name: 'sum_nutrition',
+              //  placeholder: '',
+              //  class: [''],
+              //  position: {
+              //    cols: 12,
+              //    sm: 6,
+              //  },
+              //  validations: { required },
+              //  bootstrapClass: [''],
+              //  requiredFields: ['with_nutrition', 'sum_nutrition'],
+              //}),
               textBlock({
                 label: 'Создал',
                 name: 'type',
@@ -898,8 +949,8 @@ const config = {
                 type: 'submit',
                 module: 'form/create',
                 url: 'create/multiple_target',
-                name: 'saveForm',
-                action: 'saveForm',
+                name: 'custom',
+                action: 'custom',
                 color: 'primary',
               }),
             ],
@@ -919,13 +970,23 @@ const config = {
           // { alias: 'object_id_logistic', filter: [] },
           // { alias: 'account_id_logistic', filter: [] },
           { alias: 'direction_id_logistic', filter: [] },
-          { alias: 'doljnost_id_logistic', filter: [] },
+          {
+            alias: 'doljnost_id_logistic',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'array',
+              },
+            ],
+          },
           { alias: 'shifts', filter: [] },
           { alias: 'nutritions', filter: [] },
-          {
-            alias: 'account_id',
-            filter: [],
-          },
+          //{
+          //  alias: 'account_id',
+          //  filter: [],
+          //},
           {
             alias: 'print_form_key',
             filter: [
@@ -1043,7 +1104,20 @@ const config = {
                 type: 'api',
                 module: 'selects/getListUpdate',
                 field: 'object_id',
-                url: 'get/pagination_list/object_logistic',
+                url: 'get/pagination_list/target_object',
+              },
+            ],
+            updateList: [
+              {
+                alias: 'doljnost_id_logistic',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'array',
+                  },
+                ],
               },
             ],
           }),
@@ -1110,7 +1184,7 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'get/pagination_list/object_logistic',
+            url: 'get/pagination_list/target_object',
             position: {
               cols: 12,
               sm: 6,
@@ -1149,7 +1223,14 @@ const config = {
                 type: 'api',
                 module: 'selects/getListUpdate',
                 field: 'personal_id',
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/target_personal',
+                filter: [
+                  {
+                    field: 'object_id',
+                    value: '',
+                    source: 'formData',
+                  },
+                ],
               },
             ],
             update: {
@@ -1171,7 +1252,7 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'get/pagination_list/personal',
+            url: 'get/pagination_list/target_personal',
             position: {
               cols: 12,
               sm: 6,
@@ -1198,6 +1279,7 @@ const config = {
               {
                 field: 'object_id',
                 value: '',
+                source: 'formData',
               },
             ],
             requiredFields: ['object_id'],
@@ -1382,40 +1464,40 @@ const config = {
             bootstrapClass: [''],
             requiredFields: ['with_nutrition', 'sum_nutrition'],
           }),
-          selectField({
-            label: 'Менеджер',
-            name: 'account_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-              ],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
+          //selectField({
+          //  label: 'Менеджер',
+          //  name: 'account_id',
+          //  subtype: 'single',
+          //  placeholder: '',
+          //  class: [''],
+          //  selectOption: {
+          //    text: 'name',
+          //    value: 'id',
+          //  },
+          //  items: [],
+          //  position: {
+          //    cols: 12,
+          //    sm: 6,
+          //  },
+          //  readonly: {
+          //    value: false,
+          //    condition: [
+          //      {
+          //        target: 'formData',
+          //        field: 'status',
+          //        value: [4],
+          //      },
+          //      {
+          //        permissions: [3, 15],
+          //        field: 'status',
+          //        value: [3],
+          //        type: false,
+          //      },
+          //    ],
+          //  },
+          //  validations: { required },
+          //  bootstrapClass: [''],
+          //}),
           autocompleteField({
             label: 'Учетная запись',
             name: 'user_key',
