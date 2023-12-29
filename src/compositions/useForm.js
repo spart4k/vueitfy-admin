@@ -92,7 +92,6 @@ export default function ({
     //   )
     // )
     const fields = setFields()
-    console.log(fields)
     for (let key in fields) {
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].default))
@@ -143,10 +142,10 @@ export default function ({
       }
     })
   }
+
   const clickHandler = async ({ action, skipValidation }) => {
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
-    console.log('sortedData', sortedData)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -314,8 +313,16 @@ export default function ({
     const newForm = {}
     if (!form) return
     Object.keys(formData).forEach((key) => {
-      console.log(key)
       const item = form?.fields?.find((x) => x.name === key)
+
+      if (item.prescription) {
+        if (!newForm[item.prescription]) newForm[item.prescription] = []
+        let itemIndex = item.name.split('%')[1]
+        if (!itemIndex) itemIndex = 0
+        if (!newForm[item.prescription][itemIndex])
+          newForm[item.prescription][itemIndex] = {}
+        newForm[item.prescription][itemIndex][key.split('%')[0]] = formData[key]
+      }
 
       if (
         (typeof item.isShow === 'boolean' && item.isShow) ||
@@ -326,7 +333,7 @@ export default function ({
         else newForm[key] = formData[key]
       }
 
-      if (item.notSend) delete newForm[key]
+      if (item.notSend || item.prescription) delete newForm[key]
 
       if (action?.useStorageKey?.length) {
         action.useStorageKey.forEach((item) => {
@@ -348,16 +355,11 @@ export default function ({
         // newForm[key] = JSON.stringify(formData[key])
       }
 
-      if (item.type === 'checkbox') {
-        if (newForm[key] === 'undefined') {
-          newForm[key] = false
-        }
-      }
       if (item.name === 'subtype' && formData[key] === '') {
         delete newForm[key]
       }
-      console.log(newForm)
     })
+    console.log('newForm', newForm)
     return newForm
   }
   const addFiles = (files, field) => {
@@ -616,7 +618,6 @@ export default function ({
           //if (el.source === 'props') {
           //  url = url + '/' + form?.formData[fieldValue]
           //} else if (el.source === 'formData') {
-          //  console.log(JSON.stringify(formData))
           //  url = url + '/' + formData[fieldValue]
           //}
         })
@@ -626,7 +627,6 @@ export default function ({
           const filter = []
           const query = (target) => {
             target.filter.forEach((el) => {
-              console.log(el.field, formData, formData[el.field])
               if (!formData[el.field] && !el.source) return
               if (el.source)
                 filter.push({
@@ -680,26 +680,24 @@ export default function ({
         dependence.action.type === 'hideOptions'
       ) {
         const selectField = form.fields.find(
-          (el) => el.name === dependence.action.field
+          (el) =>
+            el.name === dependence.action.targetField ||
+            el.name === dependence.action.field
         )
-        dependence.action.condition.forEach((condition) => {
-          if (
-            JSON.stringify(condition.value) ===
-            JSON.stringify(formData[dependence.action.field])
-          ) {
-            selectField.items = selectField.hideItems.filter((item) => {
-              return !condition.options.includes(item.id)
-            })
-          } else if (
-            !formData[dependence.action.field] ||
-            !formData[dependence.action.field].length
-          ) {
-            selectField.items = selectField.hideItems
-          }
-        })
-        //selectField.items = selectField.hideItems.filter((el) => {
 
-        //})
+        const dep = dependence.action.condition.find((condition) => {
+          const cloneAi = [...condition.value]
+          const cloneFieldEl = [...formData[dependence.action.field]]
+          return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+        })
+
+        if (dep) {
+          selectField.items = selectField.hideItems.filter((item) => {
+            return !dep.options.includes(item.id)
+          })
+        } else {
+          selectField.items = selectField.hideItems
+        }
 
         return
       }
@@ -924,10 +922,8 @@ export default function ({
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
           if (!field.notPut) {
             Vue.set(formData, field.name, syncForm.data[formKey])
-            if (field.type === 'checkbox') {
-              if (syncForm.data[formKey]) formData[field.name] = true
-              else formData[field.name] = false
-            }
+            if (field.type === 'checkbox')
+              formData[field.name] = !!syncForm.data[formKey]
           }
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
           if (
@@ -989,7 +985,8 @@ export default function ({
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
-            //formData[field.name] = field.items[0][field.selectOption.value]
+            if (field.putFirst)
+              formData[field.name] = field.items[0][field.selectOption.value]
           }
         }
       }
@@ -1063,7 +1060,6 @@ export default function ({
       })
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
-      //  console.log(condition())
       //}
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
@@ -1112,7 +1108,6 @@ export default function ({
   watch(
     () => wrapFormData,
     () => {
-      console.log('change')
       form?.fields?.forEach((el) => {
         showField(el.type, el)
       })

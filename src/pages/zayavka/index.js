@@ -1390,21 +1390,9 @@ const config = {
           { alias: 'status_zr', filter: [] },
           { alias: 'direction_id', filter: [] },
           { alias: 'category_zr', filter: [] },
-          { alias: 'type_pay', filter: [] },
           { alias: 'me', filter: [] },
           { alias: 'type_objects', filter: [] },
-          // {
-          //   alias: 'permissions_zr',
-          //   filter: [
-          //     {
-          //       field: 'direction_id',
-          //       //alias: 'direction_json',
-          //       value: '',
-          //       source: 'formData',
-          //       type: 'array',
-          //     },
-          //   ],
-          // },
+          { alias: 'type_pay', filter: [] },
         ],
         alias: 'personal_target',
         active: false,
@@ -1558,13 +1546,15 @@ const config = {
               cols: 12,
               sm: 12,
             },
-            // disabled: true,
+            putFirst: true,
+            disabled: true,
             isShow: {
               value: false,
               conditions: [{ field: 'on_yourself', value: [true] }],
             },
             bootstrapClass: [''],
           }),
+
           radioPanel({
             name: 'vector',
             alias: 'vector',
@@ -1591,6 +1581,26 @@ const config = {
                 text: 'Аккаунт',
                 value: 3,
                 id: 3,
+              },
+            ],
+            dependence: [
+              {
+                type: 'default',
+                action: {
+                  type: 'hideOptions',
+                  field: 'vector',
+                  targetField: 'type_pay',
+                  condition: [
+                    {
+                      value: 2,
+                      options: [1],
+                    },
+                    {
+                      value: 3,
+                      options: [1],
+                    },
+                  ],
+                },
               },
             ],
             isShow: {
@@ -1623,6 +1633,25 @@ const config = {
                 value: '',
               },
             ],
+            updateList: [
+              {
+                alias: 'personal_object_zr',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                  {
+                    field: 'personal_zr',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
             validations: { required },
             bootstrapClass: [''],
             isShow: {
@@ -1633,6 +1662,108 @@ const config = {
               ],
             },
           }),
+          selectField({
+            label: 'Объект',
+            name: 'personal_object_zr',
+            // subtype: 'single',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            // filter: [
+            //   {
+            //     field: 'direction_id',
+            //     value: '',
+            //   },
+            //   {
+            //     field: 'personal_zr',
+            //     value: '',
+            //   },
+            // ],
+            updateList: [
+              {
+                alias: 'personal_account_zr',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                  {
+                    field: 'personal_zr',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                  {
+                    field: 'personal_object_zr',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            validations: { required },
+            bootstrapClass: [''],
+            isShow: {
+              value: true,
+              conditions: [
+                { field: 'vector', value: [1] },
+                { field: 'on_yourself', value: [false] },
+              ],
+            },
+          }),
+          selectField({
+            label: 'Руководитель',
+            name: 'personal_account_zr',
+            // subtype: 'single',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            // filter: [
+            //   {
+            //     field: 'direction_id',
+            //     value: '',
+            //   },
+            //   {
+            //     field: 'personal_zr',
+            //     value: '',
+            //   },
+            //   {
+            //     field: 'personal_object_zr',
+            //     value: '',
+            //   },
+            // ],
+            bootstrapClass: [''],
+            isShow: {
+              value: true,
+              conditions: [
+                { field: 'vector', value: [1] },
+                { field: 'on_yourself', value: [false] },
+              ],
+            },
+          }),
+
           selectField({
             label: 'Тип объекта',
             name: 'type_objects',
@@ -1701,37 +1832,12 @@ const config = {
             isShow: {
               value: true,
               conditions: [
-                { field: 'vector', value: [1, 2] },
+                { field: 'vector', value: [2] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
           }),
-          selectField({
-            label: 'Руководитель',
-            name: 'rukovod',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            isShow: {
-              value: true,
-              conditions: [
-                { field: 'vector', value: [1] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
+
           selectField({
             label: 'Должность',
             name: 'permissions_zr',
@@ -1797,6 +1903,7 @@ const config = {
               ],
             },
           }),
+
           selectField({
             label: 'Категория:',
             name: 'category_zr',
@@ -1841,6 +1948,7 @@ const config = {
               value: 'id',
             },
             items: [],
+            prescription: 'rate',
             position: {
               cols: 12,
               sm: 6,
@@ -1853,6 +1961,7 @@ const config = {
             name: 'count',
             placeholder: '',
             class: [''],
+            prescription: 'rate',
             position: {
               cols: 12,
               sm: 2,
@@ -1865,6 +1974,7 @@ const config = {
             name: 'price',
             placeholder: '',
             class: [''],
+            prescription: 'rate',
             position: {
               cols: 12,
               sm: 2,
@@ -1879,6 +1989,7 @@ const config = {
             placeholder: '',
             readonly: false,
             class: [''],
+            prescription: 'rate',
             position: {
               cols: 12,
               sm: 2,
@@ -1890,6 +2001,7 @@ const config = {
             name: 'exact_name',
             placeholder: '',
             class: [''],
+            prescription: 'rate',
             position: {
               cols: 12,
               sm: 12,
@@ -1898,6 +2010,7 @@ const config = {
           }),
           {
             type: 'btn',
+            name: 'btn-decrease',
             id: 'btn-decrease',
             readonly: false,
             disable: false,
@@ -1907,7 +2020,6 @@ const config = {
             class: [''],
             position: { cols: 12, sm: 6 },
             notSend: true,
-            // validations: { required: { $params: { type: 'required' } } },
             bootstrapClass: [''],
             label: '-',
             color: 'primary',
@@ -1915,6 +2027,7 @@ const config = {
           },
           {
             type: 'btn',
+            name: 'btn-increase',
             id: 'btn-increase',
             readonly: false,
             disable: false,
@@ -1924,31 +2037,31 @@ const config = {
             class: [''],
             position: { cols: 12, sm: 6 },
             notSend: true,
-            // validations: { required: { $params: { type: 'required' } } },
             bootstrapClass: [''],
             label: '+',
             color: 'success',
             increase: true,
           },
-          // selectField({
-          //   label: 'Тип оплаты:',
-          //   name: 'type_pay',
-          //   alias: 'type_pay',
-          //   placeholder: '',
-          //   class: [''],
-          //   value: '',
-          //   selectOption: {
-          //     text: 'name',
-          //     value: 'id',
-          //   },
-          //   items: [],
-          //   position: {
-          //     cols: 12,
-          //     sm: 12,
-          //   },
-          //   validations: { required },
-          //   bootstrapClass: [''],
-          // }),
+
+          selectField({
+            label: 'Тип оплаты:',
+            name: 'type_pay',
+            alias: 'type_pay',
+            placeholder: '',
+            class: [''],
+            value: '',
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
           // selectField({
           //   label: 'Реквизит для оплаты:',
           //   name: 'item_pay',
@@ -1999,24 +2112,24 @@ const config = {
           //   // validations: { required },
           //   bootstrapClass: [''],
           // }),
-          checkboxField({
-            name: 'is_migr',
-            value:
-              store?.state?.user.permission_id === 16 ||
-              store?.state?.user.permission_id === 19,
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            bootstrapClass: [''],
-          }),
+          // checkboxField({
+          //   name: 'is_migr',
+          //   value:
+          //     store?.state?.user.permission_id === 16 ||
+          //     store?.state?.user.permission_id === 19,
+          //   placeholder: '',
+          //   readonly: false,
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 12,
+          //   },
+          //   disabled: true,
+          //   isShow: {
+          //     value: true,
+          //   },
+          //   bootstrapClass: [''],
+          // }),
         ],
         actions: [
           stringAction({

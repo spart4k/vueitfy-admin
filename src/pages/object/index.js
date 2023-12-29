@@ -1753,6 +1753,10 @@ const config = {
                           value: [1],
                           options: [2],
                         },
+                        {
+                          value: [1, 6],
+                          options: [2],
+                        },
                       ],
                     },
                     //url: 'object_id/avatar_with_user_key_id',
@@ -2251,6 +2255,10 @@ const config = {
                         },
                         {
                           value: [1],
+                          options: [2],
+                        },
+                        {
+                          value: [1, 6],
                           options: [2],
                         },
                       ],
@@ -3402,6 +3410,10 @@ const config = {
                         },
                         {
                           value: [1],
+                          options: [2],
+                        },
+                        {
+                          value: [1, 6],
                           options: [2],
                         },
                       ],

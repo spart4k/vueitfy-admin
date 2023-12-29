@@ -65,7 +65,7 @@ export default {
     //   history.pushState(null, '', newRelativePathQuery)
     // }
 
-    // addOrUpdateURLParam('add', 'zxczxc')
+    // addOrUpdateURLParam('add', 'raterate')
 
     // console.log('new URL', window.location.href)
     const context = {
@@ -80,14 +80,12 @@ export default {
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
-      // console.log('rebuild fields')
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
-          // console.log('CONDITION TRUE', el.name)
           Vue.set(fields, el.name, {})
         } else return
         // if (el.name === 'vector') return
@@ -95,7 +93,6 @@ export default {
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      // console.log(fields)
       return fields
     }
     const params = props.tab.lists
@@ -146,6 +143,7 @@ export default {
             label: 'Наименование:',
             name: `rashod_vid%${itemIndex + 1}`,
             placeholder: '',
+            prescription: 'rate',
             class: [''],
             value: '',
             items: categoryItems,
@@ -164,6 +162,7 @@ export default {
             label: 'Кол-во:',
             name: `count%${itemIndex + 1}`,
             placeholder: '',
+            prescription: 'rate',
             class: [''],
             position: {
               cols: 12,
@@ -176,6 +175,7 @@ export default {
             label: 'Стоимость :',
             name: `price%${itemIndex + 1}`,
             placeholder: '',
+            prescription: 'rate',
             class: [''],
             position: {
               cols: 12,
@@ -188,6 +188,7 @@ export default {
             label: 'ВДС',
             name: `vds%${itemIndex + 1}`,
             value: false,
+            prescription: 'rate',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -201,6 +202,7 @@ export default {
             label: 'Точное наименование',
             name: `exact_name%${itemIndex + 1}`,
             placeholder: '',
+            prescription: 'rate',
             class: [''],
             position: {
               cols: 12,
@@ -211,7 +213,12 @@ export default {
         ]
         props.tab.fields.splice(btnIndex, 0, ...insertItems)
       } else {
-        if (itemIndex) props.tab.fields.splice(btnIndex - 5, 5)
+        if (itemIndex) {
+          props.tab.fields.splice(btnIndex - 5, 5)
+          Object.keys(formData).map((x) => {
+            if (x.includes(`%${itemIndex}`)) delete formData[x]
+          })
+        }
       }
       rebuildFormData()
     }
@@ -228,10 +235,6 @@ export default {
       },
       { deep: true }
     )
-
-    // setInterval(() => {
-    //   console.log('fields(jukghjghjgh)', fields())
-    // }, 2000)
 
     // const { makeRequest: createForm } = useRequest({
     //   context,
@@ -260,6 +263,7 @@ export default {
       changeCheckbox,
       rebuildFormData,
       readonlyField,
+      getDependies,
     } = useForm({
       form: props.tab,
       context,
@@ -301,6 +305,7 @@ export default {
       changeCheckbox,
       readonlyField,
       changeBlockCount,
+      getDependies,
     }
   },
 }
