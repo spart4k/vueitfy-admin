@@ -195,7 +195,7 @@ export default function ({
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
-      emit('closePopup')
+      //emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -246,7 +246,12 @@ export default function ({
       if (action.handlingResponse) {
         let { text, color } = action.handlingResponse[result.code]
         // /%\w{n}%/
-        text = text.replace(/%name%/g, formData.name)
+        //const text = 'Объект с именем %name% уже существует'
+        // eslint-disable-next-line
+        const key = text.match(/\%\w{1,}\%/g)
+        const keyFormated = key[0].split('%')[1]
+        console.log(key)
+        text = text.replace(key, formData[keyFormated])
         store.commit('notifies/showMessage', {
           content: text,
           color,
@@ -257,6 +262,14 @@ export default function ({
       emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
       action.variable = false
+    } else if (action.action === 'custom') {
+      loading.value = true
+      const result = await changeForm({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      loading.value = false
     }
   }
 
@@ -512,6 +525,7 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
+    console.log('UPDATE COPLETE', params.field.name)
     await getDependies(params)
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
@@ -538,10 +552,18 @@ export default function ({
                 : [source[el.field]],
               type: el.type,
             })
-          } else if (source) {
+          } else if (el.source !== 'formData') {
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source) ? source : [source],
+              type: el.type,
+            })
+          } else if (el.source === 'formData') {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
               type: el.type,
             })
           }
@@ -727,7 +749,10 @@ export default function ({
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
       }
-      //if (data.length === 1) formData[depField] = card.id
+      if (data.length === 1) {
+        // console.log(card)
+        // formData[depField] = card.id
+      }
       if (card) {
         if (dependence.fillField) {
           dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -842,6 +867,8 @@ export default function ({
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
+      //console.log(el)
+      //getDependies({ field: el })
       return data
     })
     await Promise.all(queryFields)
@@ -879,6 +906,7 @@ export default function ({
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
         if (source[el.field] !== null && source[el.field] !== undefined) {
+          console.log(JSON.stringify(source), el.field)
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
@@ -947,11 +975,18 @@ export default function ({
             source[el.field] !== undefined &&
             source[el.field] !== ''
           ) {
+            console.log(el.source)
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
+              type: el.type,
+            })
+          } else if (el.source === '+route.params.id') {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: +route.params.id,
               type: el.type,
             })
           }
@@ -1033,31 +1068,34 @@ export default function ({
   }
 
   const showField = (type, field, loaded) => {
-    const condition = () =>
-      (typeof field.isShow === 'boolean' && field.isShow) ||
-      field.isShow.conditions?.every((el) => {
-        if (el.target === 'items') {
-          if (el.value === 'notEmpty') {
-            return field.items.length
-          }
-        } else if (el.target === 'value') {
-          if (el.value === 'notEmpty') {
-            return formData[el.field]
-          }
-        } else {
-          return el.value.some((ai) => {
-            if (Array.isArray(ai)) {
-              //return ai.includes(el.source ? eval(el.source) : 1)
-              //return JSON.stringify(ai) === JSON.stringify(formData[el.field])
-              return _.isEqual(ai, formData[el.field])
-            } else {
-              return [ai].includes(
-                el.source ? eval(el.source) : formData[el.field]
-              )
+    const condition = () => {
+      return (
+        (typeof field.isShow === 'boolean' && field.isShow) ||
+        field.isShow.conditions?.every((el) => {
+          if (el.target === 'items') {
+            if (el.value === 'notEmpty') {
+              return field.items.length
             }
-          })
-        }
-      })
+          } else if (el.target === 'value') {
+            if (el.value === 'notEmpty') {
+              return formData[el.field]
+            }
+          } else {
+            return el.value.some((ai) => {
+              if (Array.isArray(ai)) {
+                const cloneAi = [...ai]
+                const cloneFieldEl = [...formData[el.field]]
+                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+              } else {
+                return [ai].includes(
+                  el.source ? eval(el.source) : formData[el.field]
+                )
+              }
+            })
+          }
+        })
+      )
+    }
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
       //}

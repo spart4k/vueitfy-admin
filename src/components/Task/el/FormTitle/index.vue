@@ -3,6 +3,7 @@
     class="docs-required"
     :class="{
       'is-unconfirmed': !isShowCansel,
+      'is-confirmed': !isShowAdd,
     }"
   >
     <div class="docs-required__container-layout">
@@ -13,6 +14,8 @@
         <img
           :src="$root.env.VUE_APP_STORE + docs.path_doc"
           class="docs-required__image"
+          width="50"
+          height="50"
         />
       </div>
       <div class="docs-required__name-container">

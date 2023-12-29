@@ -39,10 +39,10 @@ const Form7 = defineComponent({
         key: 'Менеджер',
         value: props.data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: props.data.entity.object_name,
-      },
+      // obj: {
+      //   key: 'Объект',
+      //   value: props.data.entity.object_name,
+      // },
     }
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
     console.log(JSON.parse(props.data.task.dop_data))
@@ -50,7 +50,7 @@ const Form7 = defineComponent({
     const isFormValid = ref(false)
     const bankCardId = ref(0)
     const osnConfirmed = ref(false)
-    const isOsnDocValid = ref(false)
+    const isOsnDocValid = ref(true)
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
       (citizen) => {

@@ -3307,6 +3307,19 @@ const config = {
                 url: 'create/assign',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'Объект успешно назначен',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Объект с именем %name% уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },
