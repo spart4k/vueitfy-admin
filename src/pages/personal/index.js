@@ -590,7 +590,7 @@ export const headDocumentConfigEdit = [
   },
   {
     title: 'Скан-копия/фото',
-    type: 'actions',
+    type: 'download',
     align: 'center',
     fixed: {
       value: false,
