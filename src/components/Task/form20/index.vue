@@ -55,19 +55,18 @@
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
+      <v-btn class="mr-2" @click="$emit('closePopup')" color="blue-grey" small>
+        <v-icon small>mdi-close</v-icon>
+        Закрыть
+      </v-btn>
       <v-btn
         :disabled="!keyFormValidate()"
         @click="completeTask"
-        class="mr-2"
         color="info"
         small
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
-      </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey" small>
-        <v-icon small>mdi-close</v-icon>
-        Закрыть
       </v-btn>
     </v-row>
   </div>

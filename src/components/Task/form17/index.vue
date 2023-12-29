@@ -51,6 +51,10 @@
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
+      <v-btn class="mr-2" @click="$emit('closePopup')" color="blue-grey" small>
+        <v-icon small>mdi-close</v-icon>
+        Закрыть
+      </v-btn>
       <v-btn
         v-if="
           data.entity.doljnost_id == 5 ||
@@ -69,17 +73,12 @@
       <v-btn
         v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49"
         :disabled="!changeQTY"
-        class="mr-2"
         color="info"
         @click="completeTask"
         small
       >
         <v-icon left small> $IconMain </v-icon>
         Завершить
-      </v-btn>
-      <v-btn @click="$emit('closePopup')" color="blue-grey" small>
-        <v-icon small>mdi-close</v-icon>
-        Закрыть
       </v-btn>
     </v-row>
   </div>
