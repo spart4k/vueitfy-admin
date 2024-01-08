@@ -701,15 +701,27 @@ export default function ({
         dependence.type === 'default' &&
         dependence.action.type === 'hideOptions'
       ) {
-        const selectField = form.fields.find(
-          (el) =>
-            el.name === dependence.action.targetField ||
-            el.name === dependence.action.field
-        )
+        let selectField
+        if (dependence.action.targetField)
+          selectField = form.fields.find(
+            (el) => el.name === dependence.action.targetField
+          )
+        else
+          selectField = form.fields.find(
+            (el) => el.name === dependence.action.field
+          )
 
         const dep = dependence.action.condition.find((condition) => {
-          const cloneAi = [...condition.value]
-          const cloneFieldEl = [...formData[dependence.action.field]]
+          let cloneAi
+          let cloneFieldEl
+
+          if (Array.isArray(condition.value)) cloneAi = [...condition.value]
+          else cloneAi = [condition.value]
+
+          if (Array.isArray(condition.value))
+            cloneFieldEl = [...formData[dependence.action.field]]
+          else cloneFieldEl = [formData[dependence.action.field]]
+
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
 
