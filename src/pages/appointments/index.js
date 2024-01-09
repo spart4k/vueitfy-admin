@@ -1515,7 +1515,7 @@ const config = {
             url: 'get/pagination_list/avatar_with_user_key_id',
             position: {
               cols: 12,
-              sm: 6,
+              sm: 12,
             },
             readonly: {
               value: false,
@@ -1648,6 +1648,15 @@ const config = {
             text: 'Закрыть',
             type: 'submit',
             color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal_target',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Удалить',
+            type: 'submit',
+            color: 'red',
             name: 'closePopup',
             action: 'closePopup',
             to: 'personal_target',

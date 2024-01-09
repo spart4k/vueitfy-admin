@@ -1,10 +1,11 @@
-import Vue, { ref, onMounted } from 'vue'
+import Vue, { ref, onMounted, computed } from 'vue'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
 import Autocomplete from '@/components/Autocomplete'
 import Row from './row/index.vue'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'Form-Rows',
@@ -66,6 +67,7 @@ export default {
       request: (data) => store.dispatch('list/get', data),
     })
     const rows = ref([])
+    const targets = ref([])
     const changeForm = async ({ url, module }) => {
       rows.value.forEach((el) => el.validate(true))
       console.log(rows.value)
@@ -88,7 +90,7 @@ export default {
         personal_id,
         account_id: store.state.user.id, // ?
         doljnost_id,
-        date_target: date_target[0],
+        //date_target: date_target[0],
         status,
         direction_id,
         comment: null,
@@ -99,13 +101,17 @@ export default {
         sum_nutrition,
       }
       let validate = null
-      const persons = rows.value.map((el) => {
+      const persons = rows.value.map((el, index) => {
         // validate = !el.validate()
-        const person = defaultData
+        const person = { ...defaultData }
         person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
+        person.tid = targets.value[index].id
+        console.log(props.tab.formData.date_target[index], 'root')
+        person.date_target = targets.value[index].date
         if (el.formData.print_form_key) {
           person.print_form_key = el.formData.print_form_key
         }
+        console.log(person, 'person')
         return person
       })
       const { makeRequest } = useRequest({
@@ -118,9 +124,27 @@ export default {
         successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
       console.log(isValid)
-      await makeRequest()
+      const result = await makeRequest()
+      console.log(result, 'RESULT')
+      if (result?.data?.length) {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Некорректные назначения:',
+          timeout: 1000,
+        })
+        result.data.forEach((el) => {
+          const findedIndex = targets.value.findIndex(
+            (target) => target.id === el.tid
+          )
+          console.log(findedIndex)
+          if (el.code === 2) {
+            targets.value[findedIndex].error =
+              'На данную дату уже создано назначение'
+          }
+        })
+      }
       emit('getItems')
-      emit('closePopup')
+      //emit('closePopup')
     }
     const {
       formData,
@@ -173,6 +197,14 @@ export default {
     onMounted(async () => {
       // if (props.tabs && props.activeTab) getDataFromPrevTav()
       //await getData()
+      props.tab.formData.date_target.forEach((el) => {
+        const target = {
+          date: el,
+          error: '',
+          id: el + '_' + props.tab.formData.personal_id,
+        }
+        targets.value.push(target)
+      })
     })
     return {
       clickHandler,
@@ -188,6 +220,7 @@ export default {
       changeSelect,
       prevTab,
       rows,
+      targets,
     }
   },
 }

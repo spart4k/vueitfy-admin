@@ -131,9 +131,17 @@
         />
         <div v-else-if="showField('textBlock', field)">
           <p>{{ formData[field.name] }}</p>
-          <p>{{ row }}</p>
+          <p>{{ formatedRow }}</p>
         </div>
       </v-col>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <div v-bind="attrs" v-on="on">
+            <v-icon color="red">mdi-alert</v-icon>
+          </div>
+        </template>
+        <span>фывфывфыв</span>
+      </v-tooltip>
     </v-row>
   </div>
 </template>

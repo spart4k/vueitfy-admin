@@ -519,6 +519,7 @@ const config = {
         url: '$IconSetting',
         function: consolePanel,
         backgroundColor: '#fff',
+        type: 'addItem',
       },
       // {
       //   label: 'Скачать',
@@ -1053,6 +1054,7 @@ const config = {
         ],
         alias: 'payment',
         active: false,
+        path: 'add',
         fields: [
           selectField({
             label: 'Статус',
