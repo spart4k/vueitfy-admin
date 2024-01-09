@@ -12,6 +12,12 @@
     &-col {
       // height: 70px;
       height: fit-content;
+      &.flexFlow {
+        display: flex;
+        flex-flow: row wrap;
+        max-width: unset;
+        flex: 1;
+      }
       &.dropzone {
         height: auto;
         border: unset;

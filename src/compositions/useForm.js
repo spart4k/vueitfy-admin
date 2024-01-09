@@ -1043,6 +1043,49 @@ export default function ({
     loading.value = false
   }
 
+  const isShowBtn = (field) => {
+    console.log(typeof field.isShow)
+    const checkIncludesData = (el) => {
+      const source = eval(el.target)
+      let result
+      if (el.array) {
+        result = _.isEqual(el.value, source[el.field])
+      } else {
+        console.log(el.value, source[el.field])
+        result = el.value.includes(source[el.field])
+      }
+      return result
+    }
+    const checkIncludesPermissions = (el) => {
+      return el.permissions.includes(permission.value)
+    }
+    if (typeof field.isShow === 'boolean') return field.isShow
+    else if (typeof field.isShow === 'object') {
+      if (field.isShow.condition?.length) {
+        const condition = () =>
+          field.isShow.condition.some((conditionEl) => {
+            if (conditionEl.target === 'formData' && !conditionEl.permissions) {
+              console.log(
+                conditionEl,
+                checkIncludesData(conditionEl),
+                conditionEl.type
+              )
+              return checkIncludesData(conditionEl) && conditionEl.type
+            } else if (conditionEl.permissions?.length && !conditionEl.target) {
+              return checkIncludesPermissions(conditionEl) && conditionEl.type
+            } else {
+              return (
+                checkIncludesData(conditionEl) &&
+                checkIncludesPermissions(conditionEl) === conditionEl.type
+              )
+            }
+          })
+        field.isShow.value = condition()
+        return field.isShow.value
+      }
+    } else if (typeof field.isShow === 'undefined') return true
+  }
+
   const readonlyField = (field) => {
     const checkIncludesData = (el) => {
       const source = eval(el.target)
@@ -1050,6 +1093,7 @@ export default function ({
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])
       } else {
+        console.log(el.value, source[el.field], 'SOURCE')
         result = el.value.includes(source[el.field])
       }
       return result
@@ -1063,6 +1107,11 @@ export default function ({
         const condition = () =>
           field.readonly.condition.some((conditionEl) => {
             if (conditionEl.target === 'formData' && !conditionEl.permissions) {
+              console.log(
+                conditionEl,
+                checkIncludesData(conditionEl),
+                conditionEl.type
+              )
               return checkIncludesData(conditionEl) && conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) && conditionEl.type
@@ -1194,5 +1243,6 @@ export default function ({
     stageRequest,
     responseHandler,
     readonlyField,
+    isShowBtn,
   }
 }

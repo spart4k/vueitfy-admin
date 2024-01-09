@@ -2271,7 +2271,7 @@ export const fieldsBaseDefaulrForm = [
   selectField({
     label: 'Доступ',
     name: 'account_json',
-    alias: 'account_id',
+    alias: 'personal_account_id',
     subtype: 'multiple',
     placeholder: '',
     class: [''],
@@ -2286,16 +2286,7 @@ export const fieldsBaseDefaulrForm = [
     },
     validations: { required },
     bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        ...editFormPermissions.manager,
-        editFormPermissions.rukFIlCUPDirector.access,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.denied,
-      ],
-    },
+    readonly: true,
   }),
   selectField({
     label: 'Проживание',
@@ -2454,7 +2445,15 @@ const defaultForm = [
     lists: [
       { alias: 'user_keys', filter: [] },
       { alias: 'habitation_id', filter: [] },
-      { alias: 'account_id', filter: [] },
+      { alias: 'personal_account_id', filter: [
+        {
+          field: 'account_json',
+          source: 'formData',
+          //alias: 'personal_account_id',
+          value: '',
+          type: 'num'
+        },
+      ] },
       { alias: 'direction_id', filter: [] },
       { alias: 'grajdanstvo_id', filter: [] },
       { alias: 'objects_personal', filter: [

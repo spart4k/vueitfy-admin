@@ -44,6 +44,9 @@ export default {
       type: Number,
       default: null,
     },
+    target: {
+      type: [String, Object],
+    },
   },
   components: {
     Autocomplete,
@@ -98,7 +101,7 @@ export default {
     const cloneForm = ref(_.cloneDeep(props.tab))
     const formatedRow = computed(() => {
       const splited = props.row.split('-')
-      return `${splited[1]}.${splited[2]}.${splited[0]}`
+      return `${splited[2]}.${splited[1]}.${splited[0]}`
     })
     const {
       formData,
@@ -147,6 +150,7 @@ export default {
       propsActiveTab,
       loading,
       formatedRow,
+      error: props.error,
     }
   },
 }

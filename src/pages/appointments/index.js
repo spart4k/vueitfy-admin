@@ -837,7 +837,7 @@ const config = {
                 alias: 'personal_id',
                 subtype: 'single',
                 placeholder: '',
-                class: [''],
+                class: ['flexFlow'],
                 selectOption: {
                   text: 'name',
                   value: 'id',
@@ -850,6 +850,7 @@ const config = {
                   cols: 12,
                   sm: 4,
                 },
+                //: true,
                 validations: { required },
                 bootstrapClass: [''],
                 filter: [
@@ -1027,6 +1028,17 @@ const config = {
             disable: true,
             validations: { required },
             bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
           dateField({
             label: 'Дата статуса',
@@ -1097,6 +1109,12 @@ const config = {
                   value: [3],
                   type: false,
                 },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
             dependence: [
@@ -1152,6 +1170,12 @@ const config = {
                   value: [3],
                   type: false,
                 },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
             // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
@@ -1202,6 +1226,12 @@ const config = {
                   field: 'status',
                   value: [3],
                   type: false,
+                },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
                 },
               ],
             },
@@ -1271,6 +1301,12 @@ const config = {
                   value: [3],
                   type: false,
                 },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
             validations: { required },
@@ -1336,6 +1372,12 @@ const config = {
                   value: [3],
                   type: false,
                 },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
             validations: { required },
@@ -1370,6 +1412,12 @@ const config = {
                   value: [3],
                   type: false,
                 },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
             validations: { required },
@@ -1388,7 +1436,17 @@ const config = {
               cols: 12,
               sm: 12,
             },
-            readonly: true,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
             validations: { required },
             bootstrapClass: [''],
             disable: false,
@@ -1424,6 +1482,12 @@ const config = {
                   value: [3],
                   type: false,
                 },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
             validations: { required },
@@ -1444,22 +1508,7 @@ const config = {
               cols: 12,
               sm: 6,
             },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-              ],
-            },
+            readonly: true,
             validations: { required },
             bootstrapClass: [''],
             requiredFields: ['with_nutrition', 'sum_nutrition'],
@@ -1531,6 +1580,12 @@ const config = {
                   value: [3],
                   type: false,
                 },
+                {
+                  target: 'formData',
+                  field: 'readonly',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
             validations: { required },
@@ -1549,13 +1604,13 @@ const config = {
                   {
                     field: 'object_id',
                     value: '',
-                    source: 'form.formData',
+                    source: 'formData',
                     type: 'num',
                   },
                   {
                     field: 'personal_id',
                     value: '',
-                    source: 'form.formData',
+                    source: 'formData',
                     type: 'num',
                   },
                 ],
@@ -1642,6 +1697,34 @@ const config = {
           //  //validations: { required },
           //  //isShow: false,
           //}),
+          textBlock({
+            label: 'Создал',
+            name: 'is_close',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
+          textBlock({
+            label: 'Создал',
+            name: 'readonly',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
         ],
         actions: [
           stringAction({
@@ -1656,11 +1739,35 @@ const config = {
           stringAction({
             text: 'Удалить',
             type: 'submit',
-            color: 'red',
-            name: 'closePopup',
-            action: 'closePopup',
-            to: 'personal_target',
-            skipValidation: true,
+            module: 'form/del',
+            color: 'error',
+            url: 'delete/personal_target',
+            name: 'deleteFormById',
+            action: 'deleteFormById',
+            isShow: {
+              value: false,
+              condition: [
+                {
+                  field: 'is_close',
+                  target: 'formData',
+                  value: [0],
+                  type: true,
+                },
+                {
+                  field: 'status_pt',
+                  target: 'formData',
+                  value: [1],
+                  type: true,
+                },
+                {
+                  permissions: [3, 15],
+                  field: 'status_pt',
+                  target: 'formData',
+                  value: [3],
+                  type: true,
+                },
+              ],
+            },
           }),
           stringAction({
             text: 'Сохранить',

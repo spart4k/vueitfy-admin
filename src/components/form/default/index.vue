@@ -172,6 +172,7 @@
             v-for="action in tab.actions"
             :key="action.id"
             :text="action.action === 'closePopup' ? true : false"
+            v-show="isShowBtn(action)"
           >
             {{ action.text }}
           </v-btn>

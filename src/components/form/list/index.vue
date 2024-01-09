@@ -20,6 +20,7 @@
               '_' +
               tab.formData.subtypr
             "
+            :target="row"
             :row="row.date"
             :error="row.error"
             :formData="tab.formData"
