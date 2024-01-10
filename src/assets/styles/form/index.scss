@@ -70,6 +70,12 @@
         min-width: fit-content;
         //min-width: 100px;
       }
+      &.readonly {
+        pointer-events: none;
+        label {
+          pointer-events: none;
+        }
+      }
     }
   }
   .field-loading {

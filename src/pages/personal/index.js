@@ -2087,7 +2087,6 @@ const editFormPermissions = {
   }
 }
 
-
 export const fieldsBaseDefaulrForm = [
   stringField({
     label: 'ФИО',
@@ -2271,7 +2270,7 @@ export const fieldsBaseDefaulrForm = [
   selectField({
     label: 'Доступ',
     name: 'account_json',
-    alias: 'personal_account_id',
+    alias: 'account_id',
     subtype: 'multiple',
     placeholder: '',
     class: [''],
@@ -2286,7 +2285,16 @@ export const fieldsBaseDefaulrForm = [
     },
     validations: { required },
     bootstrapClass: [''],
-    readonly: true,
+    readonly: {
+      value: false,
+      condition: [
+        editFormPermissions.brigadir,
+        ...editFormPermissions.manager,
+        editFormPermissions.rukFIlCUPDirector.access,
+        editFormPermissions.DBA.access,
+        editFormPermissions.OBDandOKK.denied,
+      ],
+    },
   }),
   selectField({
     label: 'Проживание',
@@ -2310,7 +2318,7 @@ export const fieldsBaseDefaulrForm = [
         bank_id: 11,
       },
     ],
-    validations: { required },
+    //validations: { required },
     bootstrapClass: [''],
     readonly: {
       value: false,
@@ -2434,7 +2442,6 @@ export const fieldsDocumentDefaultForm = [
   },
 ]
 
-
 const defaultForm = [
   {
     id: 0,
@@ -2445,15 +2452,7 @@ const defaultForm = [
     lists: [
       { alias: 'user_keys', filter: [] },
       { alias: 'habitation_id', filter: [] },
-      { alias: 'personal_account_id', filter: [
-        {
-          field: 'account_json',
-          source: 'formData',
-          //alias: 'personal_account_id',
-          value: '',
-          type: 'num'
-        },
-      ] },
+      { alias: 'account_id', filter: [] },
       { alias: 'direction_id', filter: [] },
       { alias: 'grajdanstvo_id', filter: [] },
       { alias: 'objects_personal', filter: [
@@ -2479,13 +2478,14 @@ const defaultForm = [
         to: 'personal',
         skipValidation: true,
       }),
-      stringAction({
-        text: 'Сохранить',
-        type: 'submit',
-        module: '',
-        name: 'saveForm',
-        nextForm: true,
-      }),
+      //stringAction({
+      //  text: 'Сохранить',
+      //  type: 'submit',
+      //  module: '',
+      //  name: 'saveForm',
+      //  //action: 'saveForm',
+      //  nextForm: true,
+      //}),
     ],
   },
   {
@@ -3417,9 +3417,6 @@ const defaultForm = [
     ],
   },
 ]
-
-
-
 
 export const config = {
   title: 'Персонал',

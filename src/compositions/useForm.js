@@ -190,12 +190,16 @@ export default function ({
           url: action.url,
           module: action.module,
           formData: sortedData,
+          action,
         })
       }
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
-      //emit('closePopup')
+      console.log(result)
+      if (result.code === 1) {
+        emit('closePopup')
+      }
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -336,14 +340,17 @@ export default function ({
           newForm[item.prescription][itemIndex] = {}
         newForm[item.prescription][itemIndex][key.split('%')[0]] = formData[key]
       }
-
+      console.log('ISSHOW', item.name, item.isShow.value)
       if (
-        (typeof item.isShow === 'boolean' && item.isShow) ||
-        (typeof item.isShow === 'object' && item.isShow.value) ||
+        ((typeof item.isShow === 'boolean' && item.isShow) ||
+          (typeof item.isShow === 'object' && item.isShow.value)) &&
         !item.notSend
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
-        else newForm[key] = formData[key]
+        else {
+          console.log('ISSHOWFIELD', item.name)
+          newForm[key] = formData[key]
+        }
       }
 
       if (item.notSend || item.prescription) delete newForm[key]
@@ -371,6 +378,7 @@ export default function ({
       if (item.name === 'subtype' && formData[key] === '') {
         delete newForm[key]
       }
+      //console.log()
     })
     console.log('newForm', newForm)
     return newForm

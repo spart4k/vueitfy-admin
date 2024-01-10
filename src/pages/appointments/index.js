@@ -694,7 +694,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 12,
+                  sm: 8,
                 },
                 bootstrapClass: [''],
                 isShow: {
@@ -1426,9 +1426,9 @@ const config = {
           dateField({
             label: 'На дату',
             name: 'date_target',
-            value: [],
+            value: '',
             type: 'date',
-            subtype: 'multiple',
+            //subtype: 'single',
             menu: false,
             placeholder: '',
             class: [''],
@@ -1453,17 +1453,12 @@ const config = {
             //mode: 'edit',
             isShow: true,
           }),
-          selectField({
+          checkboxField({
             label: 'Питание',
             name: 'with_nutrition',
-            alias: 'nutritions',
             placeholder: '',
+            value: false,
             class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
             position: {
               cols: 12,
               sm: 6,
@@ -1490,14 +1485,9 @@ const config = {
                 },
               ],
             },
-            validations: { required },
             bootstrapClass: [''],
-            defaultItems: [
-              {
-                id: 0,
-                name: '--Без питания--',
-              },
-            ],
+            //validations: { required },
+            //isShow: false,
           }),
           stringField({
             label: 'Стоимость питания:',
@@ -1512,6 +1502,15 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
             requiredFields: ['with_nutrition', 'sum_nutrition'],
+            isShow: {
+              value: false,
+              conditions: [
+                {
+                  field: 'with_nutrition',
+                  value: [1, true],
+                },
+              ],
+            },
           }),
           //selectField({
           //  label: 'Менеджер',
@@ -1551,6 +1550,7 @@ const config = {
             label: 'Учетная запись',
             name: 'user_key',
             alias: 'avatar_with_user_key_id',
+            requestKey: 'avatar_with_user_key_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -1755,12 +1755,6 @@ const config = {
                   type: true,
                 },
                 {
-                  field: 'readonlyAll',
-                  target: 'environment',
-                  value: [1],
-                  type: true,
-                },
-                {
                   field: 'status',
                   target: 'formData',
                   value: [1],
@@ -1779,11 +1773,24 @@ const config = {
           stringAction({
             text: 'Сохранить',
             type: 'submit',
-            module: 'form/putForm',
+            module: 'personal_target/update',
             name: 'saveForm',
             url: 'update/target',
             action: 'saveForm',
             color: 'primary',
+            successMessage: false,
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'readonlyAll',
+                  target: 'environment',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
         ],
         formData: {},

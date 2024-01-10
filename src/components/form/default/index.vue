@@ -9,7 +9,7 @@
             :cols="field.position.cols"
             :sm="field.position.sm"
             class="field-col"
-            :class="field.type"
+            :class="[field.type, readonlyField(field) ? 'readonly' : '']"
           >
             <div
               v-if="
