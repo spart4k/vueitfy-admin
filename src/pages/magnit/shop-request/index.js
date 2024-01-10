@@ -848,11 +848,11 @@ const config = {
             options: {
               withoutSave: false,
               folder: 'parser_magnit',
-              name: '`parser_magnit_25`',
+              name: '`parser_magnit`',
               paramsForEmit: this,
               acceptedFiles: '.xlsx',
             },
-            value: '',
+            value: [],
           }),
           textBlock({
             label: 'Создал',

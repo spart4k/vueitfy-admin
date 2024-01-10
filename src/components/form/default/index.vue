@@ -144,9 +144,9 @@
               :formData="formData"
               :disabled="disabledField(field)"
               :field="field"
+              @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
               :readonly="readonlyField(field)"
-              @addFiles="addFiles($event, field)"
             />
             <ColorPicker
               v-else-if="showField('colorPicker', field)"

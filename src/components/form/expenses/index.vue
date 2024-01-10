@@ -16,6 +16,13 @@
             :cols="field.position.cols"
             :sm="field.position.sm"
             class="field-col"
+            :class="
+              !loading &&
+              field.isShow &&
+              ((typeof field.isShow === 'boolean' && field.isShow) ||
+                (typeof field.isShow === 'object' && field.isShow.value)) &&
+              field.class
+            "
           >
             <div
               v-if="

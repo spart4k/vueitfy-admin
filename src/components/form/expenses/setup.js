@@ -57,15 +57,6 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
-    // function addOrUpdateURLParam(key, value) {
-    //   const searchParams = new URLSearchParams(window.location.search)
-    //   searchParams.set(key, value)
-    //   const newRelativePathQuery =
-    //     window.location.pathname + '?' + searchParams.toString()
-    //   history.pushState(null, '', newRelativePathQuery)
-    // }
-
-    // addOrUpdateURLParam('add', 'raterate')
 
     // console.log('new URL', window.location.href)
     const context = {
@@ -140,10 +131,10 @@ export default {
       if (val) {
         const insertItems = [
           selectField({
-            label: 'Наименование:',
+            label: 'Наименование',
             name: `rashod_vid%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             value: '',
             items: categoryItems,
@@ -159,10 +150,10 @@ export default {
             bootstrapClass: [''],
           }),
           stringField({
-            label: 'Кол-во:',
+            label: 'Кол-во',
             name: `count%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             position: {
               cols: 12,
@@ -172,10 +163,10 @@ export default {
             bootstrapClass: [''],
           }),
           stringField({
-            label: 'Стоимость :',
+            label: 'Стоимость',
             name: `price%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             position: {
               cols: 12,
@@ -188,7 +179,7 @@ export default {
             label: 'ВДС',
             name: `vds%${itemIndex + 1}`,
             value: false,
-            prescription: 'rate',
+            prescription: 'items',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -202,7 +193,7 @@ export default {
             label: 'Точное наименование',
             name: `exact_name%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             position: {
               cols: 12,

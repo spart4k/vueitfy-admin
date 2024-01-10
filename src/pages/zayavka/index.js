@@ -972,7 +972,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '800px',
+    width: '600px',
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',
@@ -1401,7 +1401,7 @@ const config = {
           selectField({
             label: 'Статус',
             name: 'status_zr',
-            alias: 'status_zr',
+            requestKey: 'status_id',
             placeholder: '',
             class: [''],
             value: 1,
@@ -1420,7 +1420,7 @@ const config = {
           }),
           stringField({
             label: 'От',
-            name: 'fio_from',
+            name: 'status_account_id',
             placeholder: '',
             value: '',
             class: [''],
@@ -1433,7 +1433,7 @@ const config = {
           }),
           dateField({
             label: 'Дата статус',
-            name: 'date_rojd',
+            name: 'date_status',
             type: 'date',
             value: '',
             menu: false,
@@ -1449,7 +1449,7 @@ const config = {
           }),
           stringField({
             label: 'Создана',
-            name: 'create_date',
+            name: 'date_create',
             placeholder: '',
             value: '',
             class: [''],
@@ -1787,6 +1787,7 @@ const config = {
             name: 'me',
             placeholder: '',
             class: [''],
+            notSend: true,
             selectOption: {
               text: 'name',
               value: 'id',
@@ -1807,7 +1808,7 @@ const config = {
           radioPanel({
             name: 'vector_id',
             alias: 'vector_id',
-            class: [''],
+            class: ['background-upper'],
             bootstrapClass: [''],
             position: {
               cols: 12,
@@ -2013,13 +2014,15 @@ const config = {
               conditions: [{ field: 'on_yourself', value: [false] }],
             },
           }),
+
           autocompleteField({
             label: 'Персонаж',
             name: 'personal_zr',
+            requestKey: 'personal_id',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['background-middle'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2038,6 +2041,12 @@ const config = {
                 value: '',
               },
             ],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['name'],
+              },
+            ],
             updateList: [
               {
                 alias: 'personal_object_zr',
@@ -2050,6 +2059,29 @@ const config = {
                   },
                   {
                     field: 'personal_zr',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+              {
+                alias: 'personal_account_zr',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                  {
+                    field: 'personal_zr',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                  {
+                    field: 'personal_object_zr',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2109,10 +2141,11 @@ const config = {
           selectField({
             label: 'Объект',
             name: 'personal_object_zr',
+            requestKey: 'object_id',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['background-middle'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2157,6 +2190,12 @@ const config = {
                 ],
               },
             ],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['regions_id', 'city_id'],
+              },
+            ],
             validations: { required },
             bootstrapClass: [''],
             isShow: {
@@ -2170,10 +2209,11 @@ const config = {
           selectField({
             label: 'Руководитель',
             name: 'personal_account_zr',
+            requestKey: 'account_id',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['background-down'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2252,10 +2292,11 @@ const config = {
           selectField({
             label: 'Тип объекта',
             name: 'type_objects',
+            requestKey: 'type_object',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['background-middle'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2286,10 +2327,11 @@ const config = {
           autocompleteField({
             label: 'Объект',
             name: 'object_zr',
+            requestKey: 'object_id',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['background-down'],
             page: 1,
             search: '',
             url: 'get/pagination_list/object_zr',
@@ -2357,6 +2399,12 @@ const config = {
                 ],
               },
             ],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['name', 'regions_id', 'city_id'],
+              },
+            ],
             isShow: {
               value: true,
               conditions: [
@@ -2369,10 +2417,11 @@ const config = {
           selectField({
             label: 'Должность',
             name: 'permissions_zr',
+            requestKey: 'permission_id',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['background-middle'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2414,10 +2463,11 @@ const config = {
           selectField({
             label: 'ФИО',
             name: 'permission_accounts_zr',
+            requestKey: 'account_id',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['background-down'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2466,6 +2516,12 @@ const config = {
                 ],
               },
             ],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['name'],
+              },
+            ],
             isShow: {
               value: true,
               conditions: [
@@ -2476,8 +2532,9 @@ const config = {
           }),
 
           selectField({
-            label: 'Категория:',
+            label: 'Категория',
             name: 'category_zr',
+            requestKey: 'category_id',
             // alias: 'rashod_category_id',
             placeholder: '',
             class: [''],
@@ -2509,7 +2566,7 @@ const config = {
             bootstrapClass: [''],
           }),
           selectField({
-            label: 'Наименование:',
+            label: 'Наименование',
             name: 'rashod_vid',
             placeholder: '',
             class: [''],
@@ -2519,7 +2576,7 @@ const config = {
               value: 'id',
             },
             items: [],
-            prescription: 'rate',
+            prescription: 'items',
             position: {
               cols: 12,
               sm: 6,
@@ -2528,11 +2585,11 @@ const config = {
             bootstrapClass: [''],
           }),
           stringField({
-            label: 'Кол-во:',
+            label: 'Кол-во',
             name: 'count',
             placeholder: '',
             class: [''],
-            prescription: 'rate',
+            prescription: 'items',
             position: {
               cols: 12,
               sm: 2,
@@ -2541,11 +2598,11 @@ const config = {
             bootstrapClass: [''],
           }),
           stringField({
-            label: 'Стоимость :',
+            label: 'Стоимость',
             name: 'price',
             placeholder: '',
             class: [''],
-            prescription: 'rate',
+            prescription: 'items',
             position: {
               cols: 12,
               sm: 2,
@@ -2560,7 +2617,7 @@ const config = {
             placeholder: '',
             readonly: false,
             class: [''],
-            prescription: 'rate',
+            prescription: 'items',
             position: {
               cols: 12,
               sm: 2,
@@ -2572,7 +2629,7 @@ const config = {
             name: 'exact_name',
             placeholder: '',
             class: [''],
-            prescription: 'rate',
+            prescription: 'items',
             position: {
               cols: 12,
               sm: 12,
@@ -2615,7 +2672,7 @@ const config = {
           },
 
           selectField({
-            label: 'Тип оплаты:',
+            label: 'Тип оплаты',
             name: 'type_pay',
             alias: 'type_pay',
             placeholder: '',
@@ -2825,9 +2882,9 @@ const config = {
             bootstrapClass: [''],
           }),
           selectField({
-            label: 'Реквизит для оплаты:',
+            label: 'Реквизит для оплаты',
             name: 'req_zr_id',
-            alias: 'req_zr_id',
+            requestKey: 'rek_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -2843,13 +2900,19 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            dependence: [
+              {
+                type: 'default',
+                fillField: ['rek1', 'rek2', 'bank_id'],
+              },
+            ],
             isShow: {
               value: true,
               conditions: [{ field: 'type_pay', value: [1, 2, 3] }],
             },
           }),
           dropZoneField({
-            label: 'Скан-копия/фото:',
+            label: 'Скан-копия/фото',
             name: 'check_docs',
             notPut: true,
             placeholder: '',
@@ -2877,7 +2940,7 @@ const config = {
             value: [],
           }),
           textareaField({
-            label: 'Ошибка:',
+            label: 'Ошибка',
             name: 'note',
             alias: 'pd.note',
             placeholder: '',
@@ -2890,7 +2953,7 @@ const config = {
             bootstrapClass: [''],
           }),
           textareaField({
-            label: 'Примечание:',
+            label: 'Примечание',
             name: 'note',
             alias: 'pd.note',
             placeholder: '',
@@ -2920,6 +2983,106 @@ const config = {
             },
             bootstrapClass: [''],
           }),
+          stringField({
+            label: 'rek1',
+            name: 'rek1',
+            placeholder: '',
+            class: [''],
+            disabled: true,
+            isShow: {
+              value: false,
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'rek2',
+            name: 'rek2',
+            placeholder: '',
+            class: [''],
+            disabled: true,
+            isShow: {
+              value: false,
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'name',
+            name: 'name',
+            requestKey: 'to_name',
+            placeholder: '',
+            class: [''],
+            disabled: true,
+            isShow: {
+              value: false,
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'regions_id',
+            name: 'regions_id',
+            requestType: 'number',
+            placeholder: '',
+            class: [''],
+            disabled: true,
+            isShow: {
+              value: false,
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'city_id',
+            name: 'city_id',
+            requestType: 'number',
+            placeholder: '',
+            class: [''],
+            disabled: true,
+            isShow: {
+              value: false,
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'bank_id',
+            name: 'bank_id',
+            requestType: 'number',
+            placeholder: '',
+            class: [''],
+            disabled: true,
+            isShow: {
+              value: false,
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
         ],
         actions: [
           stringAction({
@@ -2935,7 +3098,7 @@ const config = {
             type: 'submit',
             color: 'primary',
             module: 'form/create',
-            url: 'set/data/personal_doc1',
+            url: 'create/zayavka',
             // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
             name: 'saveFormStore',
             action: 'saveFormStore',

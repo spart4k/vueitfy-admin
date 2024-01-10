@@ -144,8 +144,7 @@ export default function ({
   }
 
   const clickHandler = async ({ action, skipValidation }) => {
-    // if (!skipValidation) if (!validate(true)) return
-    console.log(form, formData)
+    if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
@@ -343,6 +342,8 @@ export default function ({
         !item.notSend
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
+        else if (item.requestType === 'number')
+          newForm[key] = Number(formData[key])
         else newForm[key] = formData[key]
       }
 
