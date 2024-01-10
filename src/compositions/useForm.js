@@ -942,7 +942,10 @@ export default function ({
     if (clear) formData[field.name] = ''
     field.loading = false
   }
-
+  //const readonlyAll = ref(false)
+  const environment = reactive({
+    readonlyAll: false,
+  })
   const getData = async () => {
     //if (!initPreRequest()) {
     //  return false
@@ -976,6 +979,10 @@ export default function ({
             //await queryList(field, false)
           }
         }
+      }
+      console.log(syncForm)
+      if (syncForm.hasOwnProperty('readonly')) {
+        environment.readonlyAll = syncForm.readonly
       }
     }
     if (hasSelect()) {
@@ -1043,8 +1050,8 @@ export default function ({
     loading.value = false
   }
 
-  const isShowBtn = (field) => {
-    console.log(typeof field.isShow)
+  const isHideBtn = (button) => {
+    console.log(typeof button.isHide)
     const checkIncludesData = (el) => {
       const source = eval(el.target)
       let result
@@ -1059,12 +1066,16 @@ export default function ({
     const checkIncludesPermissions = (el) => {
       return el.permissions.includes(permission.value)
     }
-    if (typeof field.isShow === 'boolean') return field.isShow
-    else if (typeof field.isShow === 'object') {
-      if (field.isShow.condition?.length) {
+    if (typeof button.isHide === 'boolean') return button.isHide
+    else if (typeof button.isHide === 'object') {
+      if (button.isHide.condition?.length) {
         const condition = () =>
-          field.isShow.condition.some((conditionEl) => {
-            if (conditionEl.target === 'formData' && !conditionEl.permissions) {
+          button.isHide.condition.some((conditionEl) => {
+            if (
+              (conditionEl.target === 'formData' ||
+                conditionEl.target === 'environment') &&
+              !conditionEl.permissions
+            ) {
               console.log(
                 conditionEl,
                 checkIncludesData(conditionEl),
@@ -1080,13 +1091,14 @@ export default function ({
               )
             }
           })
-        field.isShow.value = condition()
-        return field.isShow.value
+        button.isHide.value = condition()
+        return button.isHide.value
       }
-    } else if (typeof field.isShow === 'undefined') return true
+    } else if (typeof button.isHide === 'undefined') return false
   }
 
   const readonlyField = (field) => {
+    console.log(this)
     const checkIncludesData = (el) => {
       const source = eval(el.target)
       let result
@@ -1106,7 +1118,12 @@ export default function ({
       if (field.readonly.condition?.length) {
         const condition = () =>
           field.readonly.condition.some((conditionEl) => {
-            if (conditionEl.target === 'formData' && !conditionEl.permissions) {
+            console.log(conditionEl.target)
+            if (
+              (conditionEl.target === 'formData' ||
+                conditionEl.target === 'environment') &&
+              !conditionEl.permissions
+            ) {
               console.log(
                 conditionEl,
                 checkIncludesData(conditionEl),
@@ -1123,7 +1140,7 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        return field.readonly.value
+        return environment.readonlyAll ? true : field.readonly.value
       }
     }
   }
@@ -1243,6 +1260,6 @@ export default function ({
     stageRequest,
     responseHandler,
     readonlyField,
-    isShowBtn,
+    isHideBtn,
   }
 }

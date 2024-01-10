@@ -1744,27 +1744,34 @@ const config = {
             url: 'delete/personal_target',
             name: 'deleteFormById',
             action: 'deleteFormById',
-            isShow: {
+            isHide: {
               value: false,
+              type: 'every',
               condition: [
                 {
                   field: 'is_close',
-                  target: 'formData',
-                  value: [0],
-                  type: true,
-                },
-                {
-                  field: 'status_pt',
                   target: 'formData',
                   value: [1],
                   type: true,
                 },
                 {
-                  permissions: [3, 15],
-                  field: 'status_pt',
+                  field: 'readonlyAll',
+                  target: 'environment',
+                  value: [1],
+                  type: true,
+                },
+                {
+                  field: 'status',
+                  target: 'formData',
+                  value: [1],
+                  type: false,
+                },
+                {
+                  permissions: [3, 15, 4],
+                  field: 'status',
                   target: 'formData',
                   value: [3],
-                  type: true,
+                  type: false,
                 },
               ],
             },

@@ -174,7 +174,7 @@ export default {
       changeCheckbox,
       readonlyField,
       refreshTable,
-      isShowBtn,
+      isHideBtn,
     } = useForm({
       form: props.tab,
       context,
@@ -220,7 +220,7 @@ export default {
       addFiles,
       changeCheckbox,
       refreshTable,
-      isShowBtn,
+      isHideBtn,
     }
   },
 }
