@@ -144,7 +144,8 @@ export default function ({
   }
 
   const clickHandler = async ({ action, skipValidation }) => {
-    if (!skipValidation) if (!validate(true)) return
+    // if (!skipValidation) if (!validate(true)) return
+    console.log(form, formData)
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
@@ -250,7 +251,6 @@ export default function ({
         // eslint-disable-next-line
         const key = text.match(/\%\w{1,}\%/g)
         const keyFormated = key[0].split('%')[1]
-        console.log(key)
         text = text.replace(key, formData[keyFormated])
         store.commit('notifies/showMessage', {
           content: text,
@@ -372,15 +372,14 @@ export default function ({
         delete newForm[key]
       }
     })
-    console.log('newForm', newForm)
     return newForm
   }
   const addFiles = (files, field) => {
-    if (field.options.countFiles?.length > 1) {
-      // Vue.set(filesBasket.value, field.name, files)
-    } else {
-      filesBasket.value[field.name] = { name: '', files, field }
-    }
+    // if (field.options.countFiles?.length > 1) {
+    //   // Vue.set(filesBasket.value, field.name, files)
+    // } else {
+    //   filesBasket.value[field.name] = { name: '', files, field }
+    // }
     // filesBasket.value.push(files)
   }
 
@@ -393,54 +392,121 @@ export default function ({
     const { update } = params
 
     const queries = []
-    for (let key in filesBasket.value) {
-      const name =
-        eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
-        '_' +
-        new Date().getTime()
-      const ext = filesBasket.value[key].files[0].name.split('.').pop()
-      //getStoreQueris(filesBasket.value[key]., name)
-      const storeForm = new FormData()
-      storeForm.append('name', name + '.' + ext)
-      storeForm.append('file', filesBasket.value[key].files[0])
-      const params = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-      queries.push(
-        store.dispatch('file/create', {
-          data: storeForm,
-          folder: `${filesBasket.value[key].field.options.folder}/${name}.${ext}`,
-          params,
-        })
-      )
-      filesBasket.value[key].name = name
-    }
-    const data = await Promise.all(queries)
-    if (data.length === 1) {
-      let path = ''
-      for (let key in filesBasket.value) {
-        const name = filesBasket.value[key].name
-        // const name =
-        //   eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
-        //   '_' +
-        //   new Date().getTime()
-        const ext = filesBasket.value[key].files[0].name.split('.').pop()
-        path =
-          '/' +
-          filesBasket.value[key].field.options.folder +
-          '/' +
-          name +
-          '.' +
-          ext
-        if (queryParams && queryParams.formData) {
-          queryParams.formData[filesBasket.value[key].field.name] = path
-        } else {
-          formData[filesBasket.value[key].field.name] = path
+
+    for (let i = 0; i < form.fields.length; i++) {
+      const item = form.fields[i]
+      const isShow =
+        (typeof item.isShow === 'boolean' && item.isShow) ||
+        (typeof item.isShow === 'object' && item.isShow.value)
+      if (item.type === 'dropzone' && isShow) {
+        const dropzone = item
+
+        const setFormData = (val) => {
+          if (queryParams && queryParams.formData) {
+            queryParams.formData[dropzone.name] = val
+          } else {
+            formData[dropzone.name] = val
+          }
+        }
+
+        let fileIndex = 1
+        if (dropzone.value.length) {
+          for (let l = 0; l < dropzone.value.length; l++) {
+            const file = dropzone.value[l][0]
+            if (file.accepted) {
+              const name =
+                eval(dropzone.options.name).split(' ').join('_') +
+                '_' +
+                store?.state?.user.id +
+                '_' +
+                new Date().getTime()
+              const ext = file.name.split('.').pop()
+              const storeForm = new FormData()
+              storeForm.append('name', name + '.' + ext)
+              storeForm.append('file', file)
+              const params = {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+              queries.push({
+                request: store.dispatch('file/create', {
+                  data: storeForm,
+                  folder: `${dropzone.options.folder}/${name}.${ext}`,
+                  params,
+                }),
+                path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
+                index: fileIndex,
+              })
+              if (dropzone.grouping) {
+                fileIndex += 1
+              } else {
+                break
+              }
+            }
+          }
+          const data = await Promise.all(queries)
+          if (dropzone.grouping) {
+            const fileArray = [...data]
+            fileArray.forEach((file) => {
+              delete file.request
+            })
+            setFormData(fileArray)
+          } else {
+            setFormData(data[0].path)
+          }
         }
       }
     }
+
+    // for (let key in filesBasket.value) {
+    //   const name =
+    //     eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+    //     '_' +
+    //     new Date().getTime()
+    //   const ext = filesBasket.value[key].files[0].name.split('.').pop()
+    //   //getStoreQueris(filesBasket.value[key]., name)
+    //   const storeForm = new FormData()
+    //   storeForm.append('name', name + '.' + ext)
+    //   storeForm.append('file', filesBasket.value[key].files[0])
+    //   const params = {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   }
+    //   queries.push(
+    //     store.dispatch('file/create', {
+    //       data: storeForm,
+    //       folder: `${filesBasket.value[key].field.options.folder}/${name}.${ext}`,
+    //       params,
+    //     })
+    //   )
+    //   filesBasket.value[key].name = name
+    // }
+    // const data = await Promise.all(queries)
+    // if (data.length === 1) {
+    //   let path = ''
+    //   for (let key in filesBasket.value) {
+    //     const name = filesBasket.value[key].name
+    //     // const name =
+    //     //   eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
+    //     //   '_' +
+    //     //   new Date().getTime()
+    //     const ext = filesBasket.value[key].files[0].name.split('.').pop()
+    //     path =
+    //       '/' +
+    //       filesBasket.value[key].field.options.folder +
+    //       '/' +
+    //       name +
+    //       '.' +
+    //       ext
+    //     if (queryParams && queryParams.formData) {
+    //       queryParams.formData[filesBasket.value[key].field.name] = path
+    //     } else {
+    //       formData[filesBasket.value[key].field.name] = path
+    //     }
+    //   }
+    // }
     if (update) {
       const result = await changeForm(queryParams)
     } else {
@@ -525,7 +591,6 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
-    console.log('UPDATE COPLETE', params.field.name)
     await getDependies(params)
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
@@ -541,7 +606,15 @@ export default function ({
     }
     const { field } = params
     if (field.updateList && field.updateList.length) {
-      const listData = field?.updateList?.map((list) => {
+      const listData = field?.updateList?.flatMap((list) => {
+        if (list.condition) {
+          for (let i = 0; i < list.condition.length; i++) {
+            let item = list.condition[i]
+            if (!item.value.includes(formData[item.key])) return []
+          }
+        }
+
+        // if (list.condition) return []
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
@@ -576,6 +649,7 @@ export default function ({
         }
         return element
       })
+
       field.loading = true
       const lists = await makeRequestList(listData)
       for (let keyList in lists.data) {
@@ -762,7 +836,6 @@ export default function ({
         card = targetField.items.find((el) => el.id === formData[depField])
       }
       if (data.length === 1) {
-        // console.log(card)
         // formData[depField] = card.id
       }
       if (card) {
@@ -879,7 +952,6 @@ export default function ({
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
-      //console.log(el)
       //getDependies({ field: el })
       return data
     })
@@ -918,7 +990,6 @@ export default function ({
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
         if (source[el.field] !== null && source[el.field] !== undefined) {
-          console.log(JSON.stringify(source), el.field)
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
@@ -987,7 +1058,6 @@ export default function ({
             source[el.field] !== undefined &&
             source[el.field] !== ''
           ) {
-            console.log(el.source)
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
