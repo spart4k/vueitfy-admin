@@ -1753,6 +1753,10 @@ const config = {
                           value: [1],
                           options: [2],
                         },
+                        {
+                          value: [1, 6],
+                          options: [2],
+                        },
                       ],
                     },
                     //url: 'object_id/avatar_with_user_key_id',
@@ -1994,11 +1998,6 @@ const config = {
                     {
                       field: 'with_nutrition',
                       value: [true],
-                    },
-                    {
-                      field: 'direction_json',
-                      type: 'array',
-                      value: [[1], [6], [1, 6]],
                     },
                   ],
                 },
@@ -2258,6 +2257,10 @@ const config = {
                           value: [1],
                           options: [2],
                         },
+                        {
+                          value: [1, 6],
+                          options: [2],
+                        },
                       ],
                     },
                     //url: 'object_id/avatar_with_user_key_id',
@@ -2497,11 +2500,6 @@ const config = {
                     {
                       field: 'with_nutrition',
                       value: [true],
-                    },
-                    {
-                      field: 'direction_json',
-                      type: 'array',
-                      value: [[1], [6], [1, 6]],
                     },
                   ],
                 },
@@ -3106,7 +3104,7 @@ const config = {
           //     //   },
           //     //   validations: { required },
           //     //   bootstrapClass: [''],
-          //     //   filters: [
+          //     //   filter: [
           //     //     {
           //     //       field: 'object_id',
           //     //       value: '',
@@ -3186,7 +3184,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'object_id',
                     value: '',
@@ -3200,7 +3198,7 @@ const config = {
                     url: 'get/pagination_list/assign_accounts',
                   },
                 ],
-                // filters: [
+                // filter: [
                 //   {
                 //     field: 'direction_id',
                 //     value: '',
@@ -3241,7 +3239,7 @@ const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                filters: [
+                filter: [
                   {
                     field: 'direction_id',
                     value: '',
@@ -3257,7 +3255,7 @@ const config = {
                     fillField: ['permission_id'],
                   },
                 ],
-                // filters: [
+                // filter: [
                 //   {
                 //     field: 'direction_id',
                 //     value: '',
@@ -3309,6 +3307,19 @@ const config = {
                 url: 'create/assign',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'Объект успешно назначен',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Объект с именем %name% уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },
@@ -3412,6 +3423,10 @@ const config = {
                         },
                         {
                           value: [1],
+                          options: [2],
+                        },
+                        {
+                          value: [1, 6],
                           options: [2],
                         },
                       ],
@@ -3653,11 +3668,6 @@ const config = {
                     {
                       field: 'with_nutrition',
                       value: [true],
-                    },
-                    {
-                      field: 'direction_json',
-                      type: 'array',
-                      value: [[1], [6], [1, 6]],
                     },
                   ],
                 },
@@ -4226,7 +4236,7 @@ const config = {
               //   },
               //   validations: { required },
               //   bootstrapClass: [''],
-              //   filters: [
+              //   filter: [
               //     {
               //       field: 'object_id',
               //       value: '',
@@ -4710,7 +4720,7 @@ const config = {
     //           //   },
     //           //   validations: { required },
     //           //   bootstrapClass: [''],
-    //           //   filters: [
+    //           //   filter: [
     //           //     {
     //           //       field: 'object_id',
     //           //       value: '',

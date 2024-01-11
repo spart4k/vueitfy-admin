@@ -96,7 +96,7 @@ export default {
     })
     const { makeRequest: changeForm } = useRequest({
       context,
-      successMessage: 'Сохранено',
+      successMessage: params.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         console.log()
         return store.dispatch(params.module, {
@@ -107,7 +107,7 @@ export default {
     })
     const { makeRequest: changeFormId } = useRequest({
       context,
-      successMessage: 'Сохранено',
+      successMessage: params.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         console.log()
         return store.dispatch(params.module, {
@@ -174,6 +174,7 @@ export default {
       changeCheckbox,
       readonlyField,
       refreshTable,
+      isHideBtn,
     } = useForm({
       form: props.tab,
       context,
@@ -219,6 +220,7 @@ export default {
       addFiles,
       changeCheckbox,
       refreshTable,
+      isHideBtn,
     }
   },
 }

@@ -7,7 +7,7 @@
         :key="field.id"
         :sm="field.position.sm"
         class="field-col"
-        :class="field.type"
+        :class="[field.type, ...field.class]"
       >
         <div v-if="loading && field.isShow" class="field-loading gradient">
           <!--<p>loading</p>-->
@@ -131,9 +131,23 @@
         />
         <div v-else-if="showField('textBlock', field)">
           <p>{{ formData[field.name] }}</p>
-          <p>{{ row }}</p>
+          <p>{{ formatedRow }}</p>
         </div>
       </v-col>
+      {{ error }}
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+          <div
+            v-show="target.error"
+            class="form-tooltip"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon size="20" color="red">mdi-alert</v-icon>
+          </div>
+        </template>
+        <span>{{ target.error }}</span>
+      </v-tooltip>
     </v-row>
   </div>
 </template>

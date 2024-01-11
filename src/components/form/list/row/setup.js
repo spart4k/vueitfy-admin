@@ -1,4 +1,4 @@
-import Vue, { onMounted, ref, watch, toRef } from 'vue'
+import Vue, { onMounted, ref, watch, toRef, computed } from 'vue'
 import useForm from '@/compositions/useForm.js'
 
 import Autocomplete from '@/components/Autocomplete'
@@ -32,6 +32,10 @@ export default {
     row: {
       type: [String, Object],
     },
+    error: {
+      type: String,
+      default: '',
+    },
     //loading: {
     //  type: Boolean,
     //  default: false,
@@ -39,6 +43,9 @@ export default {
     activeTab: {
       type: Number,
       default: null,
+    },
+    target: {
+      type: [String, Object],
     },
   },
   components: {
@@ -92,6 +99,10 @@ export default {
       request: (listdata) => store.dispatch('list/get', listdata),
     })
     const cloneForm = ref(_.cloneDeep(props.tab))
+    const formatedRow = computed(() => {
+      const splited = props.row.split('-')
+      return `${splited[2]}.${splited[1]}.${splited[0]}`
+    })
     const {
       formData,
       validate,
@@ -138,6 +149,8 @@ export default {
       cloneForm,
       propsActiveTab,
       loading,
+      formatedRow,
+      error: props.error,
     }
   },
 }

@@ -1072,7 +1072,7 @@ const defaultForm = [
       //   },
       //   validations: { required },
       //   bootstrapClass: [''],
-      //   filters: [
+      //   filter: [
       //     {
       //       field: 'object_id',
       //       value: '',
@@ -1756,7 +1756,7 @@ const keysForm = [
       //   },
       //   validations: { required },
       //   bootstrapClass: [''],
-      //   filters: [
+      //   filter: [
       //     {
       //       field: 'object_id',
       //       value: '',

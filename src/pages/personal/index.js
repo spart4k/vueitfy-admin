@@ -590,7 +590,7 @@ export const headDocumentConfigEdit = [
   },
   {
     title: 'Скан-копия/фото',
-    type: 'actions',
+    type: 'download',
     align: 'center',
     fixed: {
       value: false,
@@ -2087,7 +2087,6 @@ const editFormPermissions = {
   }
 }
 
-
 export const fieldsBaseDefaulrForm = [
   stringField({
     label: 'ФИО',
@@ -2319,7 +2318,7 @@ export const fieldsBaseDefaulrForm = [
         bank_id: 11,
       },
     ],
-    validations: { required },
+    //validations: { required },
     bootstrapClass: [''],
     readonly: {
       value: false,
@@ -2352,6 +2351,26 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.OBDandOKK.access,
       ],
     },
+  }),
+  selectField({
+    label: 'Объекты',
+    name: 'object_id',
+    alias: 'objects_personal',
+    subtype: 'multiple',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    readonly: true,
   }),
 ]
 
@@ -2423,7 +2442,6 @@ export const fieldsDocumentDefaultForm = [
   },
 ]
 
-
 const defaultForm = [
   {
     id: 0,
@@ -2437,6 +2455,15 @@ const defaultForm = [
       { alias: 'account_id', filter: [] },
       { alias: 'direction_id', filter: [] },
       { alias: 'grajdanstvo_id', filter: [] },
+      { alias: 'objects_personal', filter: [
+        {
+          field: 'object_id',
+          alias: 'personal_id',
+          value: '',
+          source: '+route.params.id',
+          type: 'num'
+        },
+      ] },
     ],
     alias: 'personal',
     active: false,
@@ -2451,13 +2478,14 @@ const defaultForm = [
         to: 'personal',
         skipValidation: true,
       }),
-      stringAction({
-        text: 'Сохранить',
-        type: 'submit',
-        module: '',
-        name: 'saveForm',
-        nextForm: true,
-      }),
+      //stringAction({
+      //  text: 'Сохранить',
+      //  type: 'submit',
+      //  module: '',
+      //  name: 'saveForm',
+      //  //action: 'saveForm',
+      //  nextForm: true,
+      //}),
     ],
   },
   {
@@ -3390,9 +3418,6 @@ const defaultForm = [
   },
 ]
 
-
-
-
 export const config = {
   title: 'Персонал',
   activeTab: 2,
@@ -3656,6 +3681,40 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_passive',
         title: 'Пассив',
+        contextMenu: {
+          actions: [
+            {
+              icon: 'mdi-plus',
+              label: 'Привязать объект',
+              isShow: {
+                condition: [
+                  {
+                    direction_id: [1, 6],
+                    type: true,
+                  },
+                ]
+              },
+              readonly: {
+                value: true,
+                condition: [
+                  {
+                    is_personal_vertical: [true],
+                    type: true,
+                  },
+                  {
+                    permission_id: [4],
+                    type: false,
+                  },
+                ]
+              },
+              action: {
+                type: 'changeUrl',
+                target: 'id',
+                url: 'personal/bind'
+              }
+            }
+          ]
+        }
       },
       type: TableDefault,
       panel: {
@@ -4488,6 +4547,9 @@ export const config = {
             name: 'Добавить ключ',
             type: 'FormDefault',
             detail: true,
+            lists: [
+              { alias: 'objects_personal', filter: [] },
+            ],
             fields: [
               autocompleteField({
                 label: 'Сотрудник',
@@ -4511,26 +4573,25 @@ export const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                dependence: [
+                updateList: [
                   {
-                    //fields: ['statement_card', 'cardowner'],
-                    type: 'api',
-                    module: 'personal/getObject',
-                    //url: 'object_id/avatar_with_user_key_id',
-                    field: 'object_id',
-                    url: [
+                    alias: 'objects_personal',
+                    filter: [
                       {
+                        field: 'personal_id',
+                        value: '',
                         source: 'formData',
-                        field: 'this',
+                        type: 'num',
                       },
                     ],
                   },
-                ]
+                ],
               }),
               selectField({
-                label: 'Объект',
+                label: 'Объекты',
                 name: 'object_id',
-                // alias: 'object_id',
+                alias: 'objects_personal',
+                //subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -4544,6 +4605,7 @@ export const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                //readonly: true,
               }),
               dropZoneField({
                 label: 'Файл акта',

@@ -14,6 +14,9 @@
           <v-row
             justify="space-between"
             class="py-3"
+            :class="{
+              confirmed: !isShowBtnArray[index],
+            }"
             v-for="(item, index) in data.data.docs"
             :key="index"
           >
@@ -35,15 +38,10 @@
               </div>
             </v-col>
             <v-col cols="auto" class="d-flex align-center">
-              <v-btn
-                class="mr-3"
-                fab
-                x-small
-                v-if="isShowBtnArray[index]"
-                @click="addToDenied(index)"
-                icon
-              >
-                <v-icon x-small>$IconGalka</v-icon>
+              <v-btn class="mr-3" fab x-small @click="addToDenied(index)" icon>
+                <v-icon :color="isShowBtnArray[index] ? 'green' : ''" x-small
+                  >$IconGalka</v-icon
+                >
               </v-btn>
               <v-btn icon fab x-small tag="label">
                 <input
@@ -54,7 +52,7 @@
                   accept="image/*"
                   @change="handleFileUpload($event, index)"
                 />
-                <v-icon x-small>$IconEdit</v-icon>
+                <v-icon color="orange" x-small>$IconEdit</v-icon>
               </v-btn>
             </v-col>
           </v-row>
@@ -70,19 +68,18 @@
     />
     <v-divider></v-divider>
     <v-row class="py-2 px-5" justify="end">
+      <v-btn class="mr-2" small @click="$emit('closePopup')" color="blue-grey">
+        <v-icon small>mdi-close</v-icon>
+        Закрыть
+      </v-btn>
       <v-btn
         small
-        class="mr-2"
         color="info"
         :disabled="!isLoadImage && !comment"
         @click="sendDoneTask"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
-      </v-btn>
-      <v-btn small @click="$emit('closePopup')" color="blue-grey">
-        <v-icon small>mdi-close</v-icon>
-        Закрыть
       </v-btn>
     </v-row>
   </div>

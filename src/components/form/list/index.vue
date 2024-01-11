@@ -4,11 +4,11 @@
       <v-form>
         <v-container>
           <Row
-            v-for="row in tab.formData.date_target"
+            v-for="row in targets"
             :tab="tab"
             :tabs="tabs"
             :key="
-              row +
+              row.date +
               '_' +
               tab.formData.personal_id +
               '_' +
@@ -20,7 +20,9 @@
               '_' +
               tab.formData.subtypr
             "
-            :row="row"
+            :target="row"
+            :row="row.date"
+            :error="row.error"
             :formData="tab.formData"
             :formErrors="formErrors"
             :loading="loading"

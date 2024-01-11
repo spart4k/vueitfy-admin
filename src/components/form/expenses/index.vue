@@ -161,7 +161,10 @@
                 color="primary"
                 v-for="item in field.items"
                 :key="item.id"
-                @click="formData[field.name] = item.value"
+                @click="
+                  formData[field.name] = item.value
+                  getDependies({ value: formData[field.name], field })
+                "
                 :readonly="readonlyField(field)"
               >
                 {{ item.text }}

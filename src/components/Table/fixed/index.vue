@@ -256,8 +256,8 @@
                         :key="card.id"
                         class="v-table-body-row-cell-item"
                         :style="{
-                          width: '50px',
-                          height: '36px',
+                          width: '150px',
+                          height: '60px',
                           background:
                             card.type_shift === 1
                               ? '#c5ffc5'

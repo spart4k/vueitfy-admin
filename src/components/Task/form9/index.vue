@@ -108,18 +108,22 @@
       </v-row>
       <v-row class="py-2" justify="end">
         <v-btn
+          class="mr-3"
+          small
+          @click="$emit('closePopup')"
+          color="blue-grey"
+        >
+          <v-icon small>mdi-close</v-icon>
+          Закрыть
+        </v-btn>
+        <v-btn
           small
           color="info"
-          class="mr-3"
           :disabled="listDisbledDocuments !== 0 && !listNewChet.length"
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
-        </v-btn>
-        <v-btn small @click="$emit('closePopup')" color="blue-grey">
-          <v-icon small>mdi-close</v-icon>
-          Закрыть
         </v-btn>
       </v-row>
     </div>
