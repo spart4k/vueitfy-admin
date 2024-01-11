@@ -301,6 +301,26 @@ const routes = [
           mode: ['edit'],
           label: 'Редактирования аккаунта',
         },
+        children: [
+          {
+            name: 'account/:id/new_card',
+            path: '/account/:id/new_card',
+            meta: {
+              mode: ['edit', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'account/:id/:card_id',
+            path: '/account/:id/:card_id',
+            meta: {
+              mode: ['edit', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+        ],
       },
     ],
   },

@@ -195,7 +195,7 @@ export default function ({
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
-      //emit('closePopup')
+      emit('closePopup')
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
