@@ -15,6 +15,7 @@ import selects from './modules/selects'
 import file from './modules/file'
 import storage from './modules/storage'
 import account from './modules/account'
+import personal_target from './modules/personal_target'
 // import states from './modules/navmenu.js'
 
 Vue.use(Vuex)
@@ -72,6 +73,7 @@ const store = new Vuex.Store({
     selects,
     file,
     storage,
+    personal_target,
   },
 })
 

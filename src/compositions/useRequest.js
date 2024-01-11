@@ -52,7 +52,8 @@ export default function ({
       .then((responseData) =>
       {
         //if (successMessage) $notifier.showMessage({ content: unref(successMessage), color: 'success' })
-        if (successMessage) store.commit(
+        console.log(data)
+        if (successMessage && data?.action?.successMessage !== false) store.commit(
           'notifies/showMessage',
           {
             color: 'success',

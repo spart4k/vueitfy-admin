@@ -284,6 +284,7 @@ const bankConfig = {
         lists: [{ alias: 'bank_id_without_nal', filter: [] }],
         alias: 'account_bank',
         active: false,
+        routeParam: 'card_id',
         fields: [
           selectField({
             label: 'Банк',
@@ -394,6 +395,41 @@ const bankConfig = {
             // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
             name: 'saveForm',
             action: 'saveForm',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'mode',
+                  target: 'environment',
+                  value: ['edit'],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            color: 'primary',
+            module: 'form/putForm',
+            url: 'update/account_card',
+            useRouteKey: [{ requestKey: 'account_id', storageKey: 'id' }],
+            // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+            name: 'saveFormId',
+            action: 'saveFormId',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'mode',
+                  target: 'environment',
+                  value: ['add'],
+                  type: true,
+                },
+              ],
+            },
           }),
           stringAction({
             text: 'Закрыть',

@@ -54,7 +54,15 @@ export default {
     const loading = ref(true)
     const stage = ref(null)
     const { alias } = props.tab
-    const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
+    console.log(route.params)
+    const isEdit = computed(() => {
+      if (props.tab.routeParam) {
+        return route.params[props.tab.routeParam] ? 'edit' : 'add'
+        // return 'add'
+      } else {
+        return route.params.id ? 'edit' : 'add'
+      }
+    })
     const fields = () => {
       const fields = {}
       props.tab.fields.forEach((el) => {
@@ -96,7 +104,7 @@ export default {
     })
     const { makeRequest: changeForm } = useRequest({
       context,
-      successMessage: 'Сохранено',
+      successMessage: params.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         console.log()
         return store.dispatch(params.module, {
@@ -107,11 +115,17 @@ export default {
     })
     const { makeRequest: changeFormId } = useRequest({
       context,
-      successMessage: 'Сохранено',
+      successMessage: params.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         console.log()
+        let id
+        if (props.tab.routeParam) {
+          id = route.params[props.tab.routeParam]
+        } else {
+          id = route.params.id
+        }
         return store.dispatch(params.module, {
-          url: params.url + '/' + route.params.id,
+          url: params.url + '/' + id,
           body: { data: { ...params.formData } },
         })
       },
@@ -174,6 +188,7 @@ export default {
       changeCheckbox,
       readonlyField,
       refreshTable,
+      isHideBtn,
     } = useForm({
       form: props.tab,
       context,
@@ -193,6 +208,7 @@ export default {
 
     onMounted(async () => {
       await getData()
+      console.log(props.tab.routeParam)
     })
 
     return {
@@ -219,6 +235,8 @@ export default {
       addFiles,
       changeCheckbox,
       refreshTable,
+      isHideBtn,
+      route,
     }
   },
 }
