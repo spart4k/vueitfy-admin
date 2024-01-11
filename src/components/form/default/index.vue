@@ -9,7 +9,7 @@
             :cols="field.position.cols"
             :sm="field.position.sm"
             class="field-col"
-            :class="field.type"
+            :class="[field.type, readonlyField(field) ? 'readonly' : '']"
           >
             <div
               v-if="
@@ -172,6 +172,7 @@
             v-for="action in tab.actions"
             :key="action.id"
             :text="action.action === 'closePopup' ? true : false"
+            v-show="!isHideBtn(action)"
           >
             {{ action.text }}
           </v-btn>

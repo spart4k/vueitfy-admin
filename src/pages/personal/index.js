@@ -2087,7 +2087,6 @@ const editFormPermissions = {
   }
 }
 
-
 export const fieldsBaseDefaulrForm = [
   stringField({
     label: 'ФИО',
@@ -2319,7 +2318,7 @@ export const fieldsBaseDefaulrForm = [
         bank_id: 11,
       },
     ],
-    validations: { required },
+    //validations: { required },
     bootstrapClass: [''],
     readonly: {
       value: false,
@@ -2443,7 +2442,6 @@ export const fieldsDocumentDefaultForm = [
   },
 ]
 
-
 const defaultForm = [
   {
     id: 0,
@@ -2480,13 +2478,14 @@ const defaultForm = [
         to: 'personal',
         skipValidation: true,
       }),
-      stringAction({
-        text: 'Сохранить',
-        type: 'submit',
-        module: '',
-        name: 'saveForm',
-        nextForm: true,
-      }),
+      //stringAction({
+      //  text: 'Сохранить',
+      //  type: 'submit',
+      //  module: '',
+      //  name: 'saveForm',
+      //  //action: 'saveForm',
+      //  nextForm: true,
+      //}),
     ],
   },
   {
@@ -3418,9 +3417,6 @@ const defaultForm = [
     ],
   },
 ]
-
-
-
 
 export const config = {
   title: 'Персонал',

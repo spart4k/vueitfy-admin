@@ -7,7 +7,7 @@
         :key="field.id"
         :sm="field.position.sm"
         class="field-col"
-        :class="field.type"
+        :class="[field.type, ...field.class]"
       >
         <div v-if="loading && field.isShow" class="field-loading gradient">
           <!--<p>loading</p>-->
@@ -134,13 +134,19 @@
           <p>{{ formatedRow }}</p>
         </div>
       </v-col>
-      <v-tooltip bottom>
+      {{ error }}
+      <v-tooltip left>
         <template v-slot:activator="{ on, attrs }">
-          <div v-bind="attrs" v-on="on">
-            <v-icon color="red">mdi-alert</v-icon>
+          <div
+            v-show="target.error"
+            class="form-tooltip"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon size="20" color="red">mdi-alert</v-icon>
           </div>
         </template>
-        <span>фывфывфыв</span>
+        <span>{{ target.error }}</span>
       </v-tooltip>
     </v-row>
   </div>

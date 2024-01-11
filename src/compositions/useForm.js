@@ -190,12 +190,16 @@ export default function ({
           url: action.url,
           module: action.module,
           formData: sortedData,
+          action,
         })
       }
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
-      //emit('closePopup')
+      console.log(result)
+      if (result.code === 1) {
+        emit('closePopup')
+      }
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -335,10 +339,10 @@ export default function ({
           newForm[item.prescription][itemIndex] = {}
         newForm[item.prescription][itemIndex][key.split('%')[0]] = formData[key]
       }
-
+      console.log('ISSHOW', item.name, item.isShow.value)
       if (
-        (typeof item.isShow === 'boolean' && item.isShow) ||
-        (typeof item.isShow === 'object' && item.isShow.value) ||
+        ((typeof item.isShow === 'boolean' && item.isShow) ||
+          (typeof item.isShow === 'object' && item.isShow.value)) &&
         !item.notSend
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
@@ -372,6 +376,7 @@ export default function ({
       if (item.name === 'subtype' && formData[key] === '') {
         delete newForm[key]
       }
+      //console.log()
     })
     return newForm
   }
@@ -1014,7 +1019,10 @@ export default function ({
     if (clear) formData[field.name] = ''
     field.loading = false
   }
-
+  //const readonlyAll = ref(false)
+  const environment = reactive({
+    readonlyAll: false,
+  })
   const getData = async () => {
     //if (!initPreRequest()) {
     //  return false
@@ -1048,6 +1056,10 @@ export default function ({
             //await queryList(field, false)
           }
         }
+      }
+      console.log(syncForm)
+      if (syncForm.hasOwnProperty('readonly')) {
+        environment.readonlyAll = syncForm.readonly
       }
     }
     if (hasSelect()) {
@@ -1114,13 +1126,62 @@ export default function ({
     loading.value = false
   }
 
-  const readonlyField = (field) => {
+  const isHideBtn = (button) => {
+    console.log(typeof button.isHide)
     const checkIncludesData = (el) => {
       const source = eval(el.target)
       let result
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])
       } else {
+        console.log(el.value, source[el.field])
+        result = el.value.includes(source[el.field])
+      }
+      return result
+    }
+    const checkIncludesPermissions = (el) => {
+      return el.permissions.includes(permission.value)
+    }
+    if (typeof button.isHide === 'boolean') return button.isHide
+    else if (typeof button.isHide === 'object') {
+      if (button.isHide.condition?.length) {
+        const condition = () =>
+          button.isHide.condition.some((conditionEl) => {
+            if (
+              (conditionEl.target === 'formData' ||
+                conditionEl.target === 'environment') &&
+              !conditionEl.permissions
+            ) {
+              console.log(
+                conditionEl,
+                checkIncludesData(conditionEl),
+                conditionEl.type
+              )
+              return checkIncludesData(conditionEl) && conditionEl.type
+            } else if (conditionEl.permissions?.length && !conditionEl.target) {
+              return checkIncludesPermissions(conditionEl) && conditionEl.type
+            } else {
+              return (
+                checkIncludesData(conditionEl) &&
+                checkIncludesPermissions(conditionEl) === conditionEl.type
+              )
+            }
+          })
+        button.isHide.value = condition()
+        return button.isHide.value
+      }
+    } else if (typeof button.isHide === 'undefined') return false
+  }
+
+  const readonlyField = (field) => {
+    console.log(this)
+    const checkIncludesData = (el) => {
+      const source = eval(el.target)
+      let result
+      if (el.array) {
+        result = _.isEqual(el.value, source[el.field])
+      } else {
+        console.log(el.value, source[el.field], 'SOURCE')
         result = el.value.includes(source[el.field])
       }
       return result
@@ -1133,7 +1194,17 @@ export default function ({
       if (field.readonly.condition?.length) {
         const condition = () =>
           field.readonly.condition.some((conditionEl) => {
-            if (conditionEl.target === 'formData' && !conditionEl.permissions) {
+            console.log(conditionEl.target)
+            if (
+              (conditionEl.target === 'formData' ||
+                conditionEl.target === 'environment') &&
+              !conditionEl.permissions
+            ) {
+              console.log(
+                conditionEl,
+                checkIncludesData(conditionEl),
+                conditionEl.type
+              )
               return checkIncludesData(conditionEl) && conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) && conditionEl.type
@@ -1145,7 +1216,7 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        return field.readonly.value
+        return environment.readonlyAll ? true : field.readonly.value
       }
     }
   }
@@ -1265,5 +1336,6 @@ export default function ({
     stageRequest,
     responseHandler,
     readonlyField,
+    isHideBtn,
   }
 }

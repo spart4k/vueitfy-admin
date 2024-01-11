@@ -137,14 +137,35 @@ export default {
             (target) => target.id === el.tid
           )
           console.log(findedIndex)
-          if (el.code === 2) {
-            targets.value[findedIndex].error =
-              'На данную дату уже создано назначение'
+          const objectItems = props.tabs[0].fields.find(
+            (field) => field.name === 'object_id'
+          ).items
+          const { name } = objectItems.find(
+            (object) => object.id === props.tab.formData.object_id
+          )
+          const date = el.tid.split('_')[0]
+          const dateFormated =
+            date.split('-')[2] +
+            '.' +
+            date.split('-')[1] +
+            '.' +
+            date.split('-')[0]
+          if (el.code === 1) {
+            targets.value[
+              findedIndex
+            ].error = `На объект ${name} на дату ${dateFormated} выбранная учётная запись уже назначена`
           }
+          if (el.code === 2) {
+            targets.value[
+              findedIndex
+            ].error = `На объект ${name} на выбранную смену  ${dateFormated} числа выбранный сотрудник уже назначен`
+          }
+          emit('getItems')
         })
+      } else {
+        emit('getItems')
+        emit('closePopup')
       }
-      emit('getItems')
-      //emit('closePopup')
     }
     const {
       formData,
