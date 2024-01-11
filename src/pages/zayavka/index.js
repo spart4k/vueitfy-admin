@@ -2317,7 +2317,7 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
             isShow: {
-              value: true,
+              value: false,
               conditions: [
                 { field: 'vector_id', value: [2] },
                 { field: 'on_yourself', value: [false] },
@@ -2327,7 +2327,7 @@ const config = {
           autocompleteField({
             label: 'Объект',
             name: 'object_zr',
-            requestKey: 'object_id',
+            // requestKey: 'object_id',
             // subtype: 'single',
             subtype: 'single',
             placeholder: '',
@@ -2406,7 +2406,7 @@ const config = {
               },
             ],
             isShow: {
-              value: true,
+              value: false,
               conditions: [
                 { field: 'vector_id', value: [2] },
                 { field: 'on_yourself', value: [false] },
@@ -2453,7 +2453,7 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
             isShow: {
-              value: true,
+              value: false,
               conditions: [
                 { field: 'vector_id', value: [3] },
                 { field: 'on_yourself', value: [false] },
@@ -2523,7 +2523,7 @@ const config = {
               },
             ],
             isShow: {
-              value: true,
+              value: false,
               conditions: [
                 { field: 'vector_id', value: [3] },
                 { field: 'on_yourself', value: [false] },
