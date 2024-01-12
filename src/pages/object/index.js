@@ -2649,7 +2649,7 @@ const config = {
           },
           {
             id: 1,
-            // path: 'edit',
+            path: 'edit',
             name: 'Тарифы',
             type: Rates,
             detail: true,

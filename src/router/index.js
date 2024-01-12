@@ -61,28 +61,18 @@ const routes = [
     component: PaymentView,
     children: [
       {
-        name: 'payment/:id',
-        path: ':id',
-        component: Detail,
-      },
-    ],
-  },
-  {
-    path: '/payment',
-    name: 'payment',
-    meta: {
-      layout: 'blank-layout',
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: PaymentView,
-    children: [
-      {
         name: 'payment-add',
         path: 'payment/add',
+        // meta: {
+        //   mode: ['add'],
+        // },
+        component: Detail,
+      },
+      {
+        name: 'payment/:id',
+        path: ':id',
         meta: {
-          mode: ['add'],
+          mode: ['edit'],
         },
         component: Detail,
       },
@@ -301,6 +291,26 @@ const routes = [
           mode: ['edit'],
           label: 'Редактирования аккаунта',
         },
+        children: [
+          {
+            name: 'account/:id/new_card',
+            path: '/account/:id/new_card',
+            meta: {
+              mode: ['edit', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'account/:id/:card_id',
+            path: '/account/:id/:card_id',
+            meta: {
+              mode: ['edit', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+        ],
       },
     ],
   },
@@ -426,6 +436,9 @@ const routes = [
       {
         name: 'zayavka/:id',
         path: ':id',
+        meta: {
+          mode: ['id'],
+        },
         component: Detail,
       },
     ],

@@ -1,5 +1,6 @@
 import filters from './filters'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { stringAction } from '@/utils/actions'
 import {
   dateField,
   stringField,
@@ -1040,8 +1041,16 @@ const config = {
             filter: [],
           },
           {
-            alias: 'st_rashod_id',
-            filter: [],
+            alias: 'personal_bank_id',
+            filter: [
+              {
+                field: 'personal_id',
+                // alias: 'pb.id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
           },
           {
             alias: 'account_id',
@@ -1054,7 +1063,7 @@ const config = {
         ],
         alias: 'payment',
         active: false,
-        path: 'add',
+        path: 'edit',
         fields: [
           selectField({
             label: 'Статус',
@@ -1072,6 +1081,33 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            // readonly: {
+            //   value: false,
+            //   conditions: [
+
+            //   ]
+            // }
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [6],
+                  type: true,
+                },
+              ],
+            },
+            hiding: {
+              conditions: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3],
+                  values: [2, 3],
+                },
+              ],
+            },
           }),
           selectField({
             label: 'Статус от',
@@ -1110,7 +1146,7 @@ const config = {
             readonly: true,
           }),
           dateField({
-            label: 'Дата начисл:',
+            label: 'Дата начисл',
             name: 'date_create',
             subtype: 'datetime',
             placeholder: '',
@@ -1153,11 +1189,22 @@ const config = {
                 ],
               },
             ],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
           }),
           selectField({
-            label: 'Направления',
+            label: 'Направление',
             name: 'direction_id',
-            alias: 'direction_json',
+            // alias: 'direction_json',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -1240,36 +1287,17 @@ const config = {
                 url: 'get/pagination_list/object',
               },
             ],
-          }),
-          autocompleteField({
-            label: 'Линейщик',
-            name: 'personal_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
             },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/personal',
-            position: {
-              cols: 12,
-              sm: 4,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            dependence: [
-              {
-                //fields: ['statement_card', 'cardowner'],
-                fillField: ['fio', 'invoice'],
-                type: 'api',
-                module: 'personal/getCard',
-                field: 'personal_bank_id',
-              },
-            ],
           }),
           autocompleteField({
             label: 'Объект',
@@ -1284,7 +1312,7 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'get/pagination_list/object',
+            url: 'get/pagination_list/payment_object_id',
             position: {
               cols: 12,
               sm: 4,
@@ -1293,7 +1321,15 @@ const config = {
             bootstrapClass: [''],
             filter: [
               {
+                field: 'account_id',
+                source: 'formData',
+                type: 'array',
+                value: '',
+              },
+              {
                 field: 'direction_id',
+                source: 'formData',
+                type: 'array',
                 value: '',
               },
             ],
@@ -1302,13 +1338,13 @@ const config = {
                 type: 'api',
                 module: 'selects/getListUpdate',
                 field: 'personal_id',
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                  },
-                ],
-                url: 'get/pagination_list/personal',
+                // filter: [
+                //   {
+                //     field: 'direction_id',
+                //     value: '',
+                //   },
+                // ],
+                url: 'get/pagination_list/payment_personal_id',
               },
               {
                 type: 'api',
@@ -1330,9 +1366,81 @@ const config = {
                 url: 'get/pagination_list/object',
               },
             ],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          autocompleteField({
+            label: 'Линейщик',
+            name: 'personal_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/payment_personal_id',
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            filter: [
+              {
+                field: 'account_id',
+                source: 'formData',
+                type: 'array',
+                value: '',
+              },
+              {
+                field: 'direction_id',
+                source: 'formData',
+                type: 'array',
+                value: '',
+              },
+              {
+                field: 'object_id',
+                source: 'formData',
+                type: 'array',
+                value: '',
+              },
+            ],
+            dependence: [
+              {
+                //fields: ['statement_card', 'cardowner'],
+                fillField: ['fio', 'invoice'],
+                type: 'api',
+                module: 'personal/getCard',
+                field: 'personal_bank_id',
+              },
+            ],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
           }),
           selectField({
-            label: 'Должность:',
+            label: 'Должность',
             name: 'doljnost_id',
             placeholder: '',
             class: [''],
@@ -1347,9 +1455,20 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
           }),
           selectField({
-            label: 'Вид ведомости:',
+            label: 'Вид ведомости',
             name: 'vid_vedomost_id',
             placeholder: '',
             class: [''],
@@ -1378,9 +1497,20 @@ const config = {
                 },
               ],
             },
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
           }),
           //selectField({
-          //  label: 'Статья расхода:',
+          //  label: 'Статья расхода',
           //  name: 'st_rashod_id',
           //  placeholder: '',
           //  class: [''],
@@ -1412,108 +1542,154 @@ const config = {
           //  validations: { required },
           //  bootstrapClass: [''],
           //}),
-          stringField({
-            label: 'Часы (план):',
-            name: 'hour_plan',
+          // stringField({
+          //   label: 'Часы (план)',
+          //   name: 'hour_plan',
+          //   placeholder: '',
+          //   readonly: true,
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   bootstrapClass: [''],
+          //   //validations: { required },
+          //   //isShow: false,
+          // }),
+          // stringField({
+          //   label: 'Часы(факт)',
+          //   name: 'hour_fact',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   bootstrapClass: [''],
+          //   //validations: { required },
+          //   //isShow: false,
+          // }),
+          // stringField({
+          //   label: 'Часы',
+          //   name: 'hour',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
+          // stringField({
+          //   label: 'Тариф',
+          //   name: 'price',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   bootstrapClass: [''],
+          // }),
+          // stringField({
+          //   label: 'Удержано',
+          //   name: 'debit_percent',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 3,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          //   isShow: true,
+          // }),
+          dateField({
+            label: 'Назначение на дату',
+            name: 'date_target',
+            // subtype: 'multiple',
             placeholder: '',
-            readonly: true,
-            class: [''],
+            classes: [''],
             position: {
               cols: 12,
-              sm: 2,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          stringField({
-            label: 'Часы(факт):',
-            name: 'hour_fact',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 2,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          stringField({
-            label: 'Часы:',
-            name: 'hour',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 2,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'Тариф:',
-            name: 'price',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 2,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
             },
-            bootstrapClass: [''],
           }),
           stringField({
-            label: 'Удержано',
-            name: 'debit_percent',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            isShow: false,
-          }),
-          stringField({
-            label: 'Сумма:',
+            label: 'Сумма',
             name: 'sum',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 2,
+              sm: 6,
             },
-            validations: { required },
+            // validations: { required },
             bootstrapClass: [''],
-          }),
-          stringField({
-            label: '% удержаня',
-            name: 'debit_percent',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 3,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
             },
-            validations: { required },
-            bootstrapClass: [''],
-            isShow: false,
           }),
+          // stringField({
+          //   label: '% удержания',
+          //   name: 'debit_percent',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 3,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          //   isShow: true,
+          // }),
           stringField({
-            label: 'Сумма:',
+            label: 'Итог',
             name: 'total',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 2,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
           }),
           //stringField({
-          //  label: 'Минус нал:',
+          //  label: 'Минус нал',
           //  name: 'minus_nal',
           //  placeholder: '',
           //  class: [''],
@@ -1525,21 +1701,8 @@ const config = {
           //  bootstrapClass: [''],
           //  isShow: false,
           //}),
-          dateField({
-            label: 'Назначение на даты:',
-            name: 'date_target',
-            subtype: 'multiple',
-            placeholder: '',
-            classes: [''],
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
           selectField({
-            label: 'Банки.карта/нал:',
+            label: 'Банки.карта/нал',
             name: 'personal_bank_id',
             placeholder: '',
             class: [''],
@@ -1550,7 +1713,7 @@ const config = {
             items: [],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 5,
             },
             defaultItems: [
               {
@@ -1567,28 +1730,39 @@ const config = {
                 fields: ['fio', 'invoice'],
               },
             ],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3],
+                  type: true,
+                },
+              ],
+            },
           }),
           stringField({
-            label: 'Р/С:',
+            label: 'Р/С',
             name: 'invoice',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 3,
             },
             validations: { required },
             bootstrapClass: [''],
             readonly: true,
           }),
           stringField({
-            label: 'Карта на имя:',
+            label: 'Карта на имя',
             name: 'fio',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 4,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -1605,6 +1779,50 @@ const config = {
             },
             //validations: { required },
             bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  permissions: [12],
+                  type: false,
+                },
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          textareaField({
+            label: 'Комментарий ОКК',
+            name: 'comment_okk',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            //validations: { required },
+            bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+                {
+                  permissions: [8],
+                  // field: 'status_id',
+                  // value: [8],
+                  type: false,
+                },
+              ],
+            },
           }),
           textareaField({
             label: 'Примечание',
@@ -1617,18 +1835,76 @@ const config = {
             },
             //validations: { required },
             bootstrapClass: [''],
-          }),
-          textareaField({
-            label: 'Примечание',
-            name: 'comment_okk',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
             },
-            //validations: { required },
-            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'payment',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Исправлено',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'correct/payment',
+            action: 'saveFormId',
+            color: 'primary',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'status_id',
+                  target: 'formData',
+                  value: [6],
+                  type: false,
+                },
+              ],
+            },
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'update/payment',
+            action: 'saveFormId',
+            color: 'primary',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'status_id',
+                  target: 'formData',
+                  value: [6],
+                  type: true,
+                },
+                {
+                  field: 'status_id',
+                  target: 'formData',
+                  value: [2, 3],
+                  type: false,
+                },
+              ],
+            },
           }),
         ],
       },

@@ -898,10 +898,10 @@ const documentConfig = {
               removeble: true,
               withoutSave: false,
               folder: 'personal_doc',
-              name: '`personal_doc_25`',
+              name: '`personal_doc`',
               paramsForEmit: this,
             },
-            value: '',
+            value: [],
           }),
           checkboxField({
             label: '',
@@ -3404,7 +3404,7 @@ const config = {
                   name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
                   paramsForEmit: this,
                 },
-                value: '',
+                value: [],
               }),
             ],
             actions: [
@@ -3509,7 +3509,7 @@ const config = {
                   name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
                   paramsForEmit: this,
                 },
-                value: '',
+                value: [],
               }),
             ],
             actions: [

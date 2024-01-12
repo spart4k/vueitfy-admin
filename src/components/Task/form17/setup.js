@@ -68,21 +68,22 @@ const Form17 = defineComponent({
     let isSetTask = ref(false)
     const dopData = JSON.stringify(data.task.dop_data)
     const addFiles = (e) => {
+      console.log(e)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `workout_25_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
       form_data.append('file', e[0])
       isSetTask.value = true
-      updateFileData = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
-            doc_id: e.item,
-            path_doc: `/workout/${fileName}`,
-            from_task: true,
-          }),
-      })
+      // updateFileData = useRequest({
+      //   context,
+      //   request: () =>
+      //     store.dispatch('taskModule/updateFileData', {
+      //       personal_id: data.entity.id,
+      //       doc_id: e.item,
+      //       path_doc: `/workout/${fileName}`,
+      //       from_task: true,
+      //     }),
+      // })
 
       loadImage = useRequest({
         context,
@@ -192,7 +193,7 @@ const Form17 = defineComponent({
         data.entity.doljnost_id == 7 ||
         data.entity.doljnost_id == 32
       ) {
-        updateFileData.makeRequest()
+        // updateFileData.makeRequest()
         loadImage.makeRequest()
         changeStatusTask.makeRequest()
       } else if (

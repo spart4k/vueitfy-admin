@@ -180,6 +180,7 @@ const Form8 = defineComponent({
         request: () =>
           store.dispatch('taskModule/updateFileData', { id: e.item, del: 1 }),
       })
+
       const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>

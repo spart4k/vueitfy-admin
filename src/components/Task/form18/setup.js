@@ -55,7 +55,8 @@ const Form18 = defineComponent({
     const formGroup = ref([])
     const idDirection = data.entity.direction_id
     const fileOutput =
-      data.task.dop_data && JSON.parse(data.task.dop_data).file_output
+      data.task.dop_data &&
+      'personal_doc/' + JSON.parse(data.task.dop_data).file_output
     const formCommentError = ref('')
     const formComment = ref('')
     const servicesDetail = data.data.services

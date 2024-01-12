@@ -8,7 +8,6 @@
       :search-input.sync="searchProps"
       :error-messages="errorMessages"
       :label="field.label"
-      chips
       :multiple="field.subtype === 'multiple'"
       class="mb-4"
       :item-text="field.selectOption.text"

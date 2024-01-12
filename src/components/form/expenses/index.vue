@@ -16,7 +16,13 @@
             :cols="field.position.cols"
             :sm="field.position.sm"
             class="field-col"
-            :class="field.type"
+            :class="
+              !loading &&
+              field.isShow &&
+              ((typeof field.isShow === 'boolean' && field.isShow) ||
+                (typeof field.isShow === 'object' && field.isShow.value)) &&
+              field.class
+            "
           >
             <div
               v-if="
@@ -27,7 +33,7 @@
               "
               class="field-loading gradient"
             ></div>
-            <v-select
+            <!-- <v-select
               v-else-if="showField('select', field)"
               :items="field.items"
               :item-text="field.selectOption.text"
@@ -41,7 +47,17 @@
               @change="changeSelect({ value: formData[field.name], field })"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
-            ></v-select>
+            ></v-select> -->
+            <Autocomplete
+              v-else-if="showField('select', field)"
+              :field="field"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field?.name]"
+              :formData="formData"
+              ref="autocompleteRef"
+              @change="changeAutocomplete"
+              :readonly="readonlyField(field)"
+            />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
               :field="field"
@@ -66,7 +82,9 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
-              @change="changeCheckbox"
+              @change="
+                changeAutocomplete({ value: formData[field.name], field })
+              "
               :readonly="readonlyField(field)"
             ></v-checkbox>
             <v-menu
@@ -163,7 +181,8 @@
                 :key="item.id"
                 @click="
                   formData[field.name] = item.value
-                  getDependies({ value: formData[field.name], field })
+                  // getDependies({ value: formData[field.name], field })
+                  changeAutocomplete({ value: formData[field.name], field })
                 "
                 :readonly="readonlyField(field)"
               >

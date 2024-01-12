@@ -1,4 +1,4 @@
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, toRef } from 'vue'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import store from '@/store'
@@ -53,7 +53,7 @@ export default {
       // headers: { "My-Awesome-Header": "header value" }
     })
     //const value = ref([]
-    const proxyVal = ref(props.value)
+    const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
       if (props.options.withoutSave) {
         await loadFile(files)
@@ -62,8 +62,9 @@ export default {
         }
         //dropzone.value.processQueue()
       } else {
-        proxyVal.value = [...files]
-        emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
+        proxyVal.value.push(files)
+        // console.log(files, proxyVal.value)
+        // emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
@@ -89,19 +90,11 @@ export default {
     }
     const removed = (file) => {
       if (!props.options.withoutSave) {
-        console.log('file', file)
-        // emit('removeFile', file)
         const index = proxyVal.value.findIndex(
-          (x) => x.upload.uuid === file.upload.uuid
+          (x) => x[0].upload.uuid === file.upload.uuid
         )
         proxyVal.value.splice(index, 1)
-        // proxyVal.value = {}
       }
-      //console.log(value)
-      //const { uuid } = file.upload
-      //console.log(uuid)
-      //const index = value.value.indexOf(file)
-      //value.value.splice(0, index)
     }
     watch(
       () => proxyVal.value,

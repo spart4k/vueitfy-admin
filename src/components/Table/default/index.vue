@@ -99,12 +99,17 @@
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <div v-bind="attrs" v-on="on">
-                          <div v-if="head.type === 'default'">
+                          <div
+                            v-if="
+                              head.type === 'default' ||
+                              head.type === 'checkbox'
+                            "
+                          >
                             <span class="mr-2" @click="sortRow(head)">
                               {{ head.title }}
                             </span>
                             <v-icon
-                              v-if="head.search"
+                              v-if="head.search.isShow"
                               @click="openSort(head)"
                               small
                             >
