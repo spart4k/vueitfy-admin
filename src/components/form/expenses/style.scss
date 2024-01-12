@@ -47,15 +47,15 @@
         padding-top: 20px;
         border-top-right-radius: 20px;
         border-top-left-radius: 20px;
-        background: var(--v-pageBackground-base);
+        background: var(--v-disabled-base);
     }
     &-middle {
-        background: var(--v-pageBackground-base);
+        background: var(--v-disabled-base);
     }
     &-down {
         border-bottom-right-radius: 20px;
         border-bottom-left-radius: 20px;
-        background: var(--v-pageBackground-base);
+        background: var(--v-disabled-base);
         margin-bottom: 20px;
     }
 }

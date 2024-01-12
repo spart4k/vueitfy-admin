@@ -426,6 +426,9 @@ const routes = [
       {
         name: 'zayavka/:id',
         path: ':id',
+        meta: {
+          mode: ['id'],
+        },
         component: Detail,
       },
     ],

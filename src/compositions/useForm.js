@@ -465,63 +465,13 @@ export default function ({
       }
     }
 
-    // for (let key in filesBasket.value) {
-    //   const name =
-    //     eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
-    //     '_' +
-    //     new Date().getTime()
-    //   const ext = filesBasket.value[key].files[0].name.split('.').pop()
-    //   //getStoreQueris(filesBasket.value[key]., name)
-    //   const storeForm = new FormData()
-    //   storeForm.append('name', name + '.' + ext)
-    //   storeForm.append('file', filesBasket.value[key].files[0])
-    //   const params = {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   }
-    //   queries.push(
-    //     store.dispatch('file/create', {
-    //       data: storeForm,
-    //       folder: `${filesBasket.value[key].field.options.folder}/${name}.${ext}`,
-    //       params,
-    //     })
-    //   )
-    //   filesBasket.value[key].name = name
-    // }
-    // const data = await Promise.all(queries)
-    // if (data.length === 1) {
-    //   let path = ''
-    //   for (let key in filesBasket.value) {
-    //     const name = filesBasket.value[key].name
-    //     // const name =
-    //     //   eval(filesBasket.value[key].field.options.name).split(' ').join('_') +
-    //     //   '_' +
-    //     //   new Date().getTime()
-    //     const ext = filesBasket.value[key].files[0].name.split('.').pop()
-    //     path =
-    //       '/' +
-    //       filesBasket.value[key].field.options.folder +
-    //       '/' +
-    //       name +
-    //       '.' +
-    //       ext
-    //     if (queryParams && queryParams.formData) {
-    //       queryParams.formData[filesBasket.value[key].field.name] = path
-    //     } else {
-    //       formData[filesBasket.value[key].field.name] = path
-    //     }
-    //   }
-    // }
     if (update) {
       const result = await changeForm(queryParams)
     } else {
       const result = await createForm(queryParams)
     }
-    //context.root.router.go(-1)
     emit('getItems')
     emit('closePopup')
-    // const
   }
   const getDetail = () => form?.detail && route.params.id
 
@@ -1057,7 +1007,27 @@ export default function ({
           }
         }
       }
-      console.log(syncForm)
+
+      // setInterval(() => {
+      //   console.log('////////////', formData)
+      // }, 4000)
+
+      const prescription = form?.fields.find((x) => x.prescription).prescription
+      if (prescription) {
+        syncForm.data[prescription].forEach((item, index) => {
+          Object.keys(item).forEach((key) => {
+            const obj = form?.fields.find((x) => x.prescription_name === key)
+            if (obj) {
+              Vue.set(
+                formData,
+                obj.name + (index ? `%${index}` : ''),
+                item[obj.prescription_name]
+              )
+            }
+          })
+        })
+      }
+
       if (syncForm.hasOwnProperty('readonly')) {
         environment.readonlyAll = syncForm.readonly
       }
@@ -1174,7 +1144,6 @@ export default function ({
   }
 
   const readonlyField = (field) => {
-    console.log(this)
     const checkIncludesData = (el) => {
       const source = eval(el.target)
       let result
