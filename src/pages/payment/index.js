@@ -1146,7 +1146,7 @@ const config = {
             readonly: true,
           }),
           dateField({
-            label: 'Дата начисл:',
+            label: 'Дата начисл',
             name: 'date_create',
             subtype: 'datetime',
             placeholder: '',
@@ -1202,7 +1202,7 @@ const config = {
             },
           }),
           selectField({
-            label: 'Направления',
+            label: 'Направление',
             name: 'direction_id',
             // alias: 'direction_json',
             placeholder: '',
@@ -1440,7 +1440,7 @@ const config = {
             },
           }),
           selectField({
-            label: 'Должность:',
+            label: 'Должность',
             name: 'doljnost_id',
             placeholder: '',
             class: [''],
@@ -1468,7 +1468,7 @@ const config = {
             },
           }),
           selectField({
-            label: 'Вид ведомости:',
+            label: 'Вид ведомости',
             name: 'vid_vedomost_id',
             placeholder: '',
             class: [''],
@@ -1510,7 +1510,7 @@ const config = {
             },
           }),
           //selectField({
-          //  label: 'Статья расхода:',
+          //  label: 'Статья расхода',
           //  name: 'st_rashod_id',
           //  placeholder: '',
           //  class: [''],
@@ -1543,7 +1543,7 @@ const config = {
           //  bootstrapClass: [''],
           //}),
           // stringField({
-          //   label: 'Часы (план):',
+          //   label: 'Часы (план)',
           //   name: 'hour_plan',
           //   placeholder: '',
           //   readonly: true,
@@ -1557,7 +1557,7 @@ const config = {
           //   //isShow: false,
           // }),
           // stringField({
-          //   label: 'Часы(факт):',
+          //   label: 'Часы(факт)',
           //   name: 'hour_fact',
           //   placeholder: '',
           //   class: [''],
@@ -1570,7 +1570,7 @@ const config = {
           //   //isShow: false,
           // }),
           // stringField({
-          //   label: 'Часы:',
+          //   label: 'Часы',
           //   name: 'hour',
           //   placeholder: '',
           //   class: [''],
@@ -1582,7 +1582,7 @@ const config = {
           //   bootstrapClass: [''],
           // }),
           // stringField({
-          //   label: 'Тариф:',
+          //   label: 'Тариф',
           //   name: 'price',
           //   placeholder: '',
           //   class: [''],
@@ -1605,16 +1605,40 @@ const config = {
           //   bootstrapClass: [''],
           //   isShow: true,
           // }),
+          dateField({
+            label: 'Назначение на дату',
+            name: 'date_target',
+            // subtype: 'multiple',
+            placeholder: '',
+            classes: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
+          }),
           stringField({
-            label: 'Сумма:',
+            label: 'Сумма',
             name: 'sum',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 2,
+              sm: 6,
             },
-            validations: { required },
+            // validations: { required },
             bootstrapClass: [''],
             readonly: {
               value: false,
@@ -1648,7 +1672,7 @@ const config = {
             class: [''],
             position: {
               cols: 12,
-              sm: 2,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -1665,7 +1689,7 @@ const config = {
             },
           }),
           //stringField({
-          //  label: 'Минус нал:',
+          //  label: 'Минус нал',
           //  name: 'minus_nal',
           //  placeholder: '',
           //  class: [''],
@@ -1677,32 +1701,8 @@ const config = {
           //  bootstrapClass: [''],
           //  isShow: false,
           //}),
-          dateField({
-            label: 'Назначение на даты:',
-            name: 'date_target',
-            // subtype: 'multiple',
-            placeholder: '',
-            classes: [''],
-            position: {
-              cols: 12,
-              sm: 3,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status_id',
-                  value: [2, 3, 6],
-                  type: true,
-                },
-              ],
-            },
-          }),
           selectField({
-            label: 'Банки.карта/нал:',
+            label: 'Банки.карта/нал',
             name: 'personal_bank_id',
             placeholder: '',
             class: [''],
@@ -1713,7 +1713,7 @@ const config = {
             items: [],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 5,
             },
             defaultItems: [
               {
@@ -1743,26 +1743,26 @@ const config = {
             },
           }),
           stringField({
-            label: 'Р/С:',
+            label: 'Р/С',
             name: 'invoice',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 3,
             },
             validations: { required },
             bootstrapClass: [''],
             readonly: true,
           }),
           stringField({
-            label: 'Карта на имя:',
+            label: 'Карта на имя',
             name: 'fio',
             placeholder: '',
             class: [''],
             position: {
               cols: 12,
-              sm: 6,
+              sm: 4,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -1796,8 +1796,8 @@ const config = {
             },
           }),
           textareaField({
-            label: 'Примечание',
-            name: 'comment',
+            label: 'Комментарий ОКК',
+            name: 'comment_okk',
             placeholder: '',
             class: [''],
             position: {
@@ -1815,12 +1815,18 @@ const config = {
                   value: [2, 3, 6],
                   type: true,
                 },
+                {
+                  permissions: [8],
+                  // field: 'status_id',
+                  // value: [8],
+                  type: false,
+                },
               ],
             },
           }),
           textareaField({
             label: 'Примечание',
-            name: 'comment_okk',
+            name: 'comment',
             placeholder: '',
             class: [''],
             position: {
@@ -1855,10 +1861,10 @@ const config = {
           stringAction({
             text: 'Исправлено',
             type: 'submit',
-            module: 'form/create',
-            name: 'createForm',
-            url: 'create/assign',
-            action: 'createForm',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'correct/payment',
+            action: 'saveFormId',
             color: 'primary',
             isHide: {
               value: false,
@@ -1876,10 +1882,10 @@ const config = {
           stringAction({
             text: 'Сохранить',
             type: 'submit',
-            module: 'form/create',
-            name: 'createForm',
-            url: 'create/assign',
-            action: 'createForm',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'update/payment',
+            action: 'saveFormId',
             color: 'primary',
             isHide: {
               value: false,

@@ -1,4 +1,4 @@
-import Vue, { ref, onMounted, computed } from 'vue'
+import Vue, { ref, onMounted, computed, toRef, watch } from 'vue'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
@@ -84,6 +84,8 @@ export default {
         with_nutrition,
         direction_id,
         sum_nutrition,
+        vid_vedomost_id_logistic,
+        manager_id,
       } = props.tab.formData
       const defaultData = {
         object_id,
@@ -94,8 +96,9 @@ export default {
         status,
         direction_id,
         comment: null,
-        manager: 25, // ? миша отправит с объектом
+        manager: manager_id, // ? миша отправит с объектом
         avatar_with_user_key_id: null,
+        vid_vedomost_id: vid_vedomost_id_logistic,
         type_shift,
         with_nutrition,
         sum_nutrition,
@@ -215,9 +218,7 @@ export default {
     //     })
     //   }
     // }
-    onMounted(async () => {
-      // if (props.tabs && props.activeTab) getDataFromPrevTav()
-      //await getData()
+    const buildTargets = () => {
       props.tab.formData.date_target.forEach((el) => {
         const target = {
           date: el,
@@ -226,7 +227,20 @@ export default {
         }
         targets.value.push(target)
       })
+    }
+    onMounted(async () => {
+      // if (props.tabs && props.activeTab) getDataFromPrevTav()
+      //await getData()
+      buildTargets()
     })
+    const activeTab = toRef(props, 'activeTab')
+    watch(
+      () => activeTab.value,
+      () => {
+        targets.value = []
+        buildTargets()
+      }
+    )
     return {
       clickHandler,
       loading,
@@ -242,6 +256,7 @@ export default {
       prevTab,
       rows,
       targets,
+      activeTab,
     }
   },
 }

@@ -551,7 +551,12 @@ const config = {
                 dependence: [
                   {
                     type: 'default',
-                    fillField: ['sum_nutrition', 'with_nutrition', 'type'],
+                    fillField: [
+                      'sum_nutrition',
+                      'with_nutrition',
+                      'type',
+                      'manager_id',
+                    ],
                   },
                   {
                     type: 'api',
@@ -746,6 +751,20 @@ const config = {
               //  bootstrapClass: [''],
               //  requiredFields: ['with_nutrition', 'sum_nutrition'],
               //}),
+              textBlock({
+                label: 'Создал',
+                name: 'manager_id',
+                placeholder: '',
+                readonly: true,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                bootstrapClass: [''],
+                //validations: { required },
+                //isShow: false,
+              }),
               textBlock({
                 label: 'Создал',
                 name: 'type',

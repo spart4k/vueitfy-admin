@@ -1119,7 +1119,7 @@ export default function ({
               )
               return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
-              return checkIncludesPermissions(conditionEl) && conditionEl.type
+              return checkIncludesPermissions(conditionEl) === conditionEl.type
             } else {
               return (
                 checkIncludesData(conditionEl) &&
@@ -1167,10 +1167,10 @@ export default function ({
               )
               return checkIncludesData(conditionEl) && conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
-              console.log(
-                checkIncludesPermissions(conditionEl),
-                conditionEl.type
-              )
+              // console.log(
+              //   checkIncludesPermissions(conditionEl),
+              //   conditionEl.type
+              // )
               return checkIncludesPermissions(conditionEl) === conditionEl.type
             } else {
               return (
