@@ -1,4 +1,4 @@
-import Vue, { computed, ref, onMounted, watch } from 'vue'
+import Vue, { computed, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/Autocomplete'
 import FormDefault from '@/components/Form/default/index.vue'
@@ -9,6 +9,8 @@ import useRequest from '@/compositions/useRequest'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import Datetimepicker from '@/components/Datetimepicker/index.vue'
 import ColorPicker from '@/components/Colorpicker/index.vue'
+
+import _ from 'lodash'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -51,21 +53,11 @@ export default {
     },
   },
   setup(props, ctx) {
-    console.log('return ', props.tab)
-    //const syncForm = ref({})
+    const proxyTab = {}
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
-    // function addOrUpdateURLParam(key, value) {
-    //   const searchParams = new URLSearchParams(window.location.search)
-    //   searchParams.set(key, value)
-    //   const newRelativePathQuery =
-    //     window.location.pathname + '?' + searchParams.toString()
-    //   history.pushState(null, '', newRelativePathQuery)
-    // }
-
-    // addOrUpdateURLParam('add', 'raterate')
 
     // console.log('new URL', window.location.href)
     const context = {
@@ -76,6 +68,7 @@ export default {
       },
     }
     const loading = ref(true)
+    const zayavkaFirstLoad = ref(true)
     const stage = ref(null)
     const { alias } = props.tab
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
@@ -124,7 +117,7 @@ export default {
       request: (params) =>
         store.dispatch(params.module, {
           url: params.url,
-          body: params.formData ? params.formData : formData,
+          body: { data: params.formData ? params.formData : formData },
         }),
     })
 
@@ -140,10 +133,10 @@ export default {
       if (val) {
         const insertItems = [
           selectField({
-            label: 'Наименование:',
+            label: 'Наименование',
             name: `rashod_vid%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             value: '',
             items: categoryItems,
@@ -159,10 +152,10 @@ export default {
             bootstrapClass: [''],
           }),
           stringField({
-            label: 'Кол-во:',
+            label: 'Кол-во',
             name: `count%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             position: {
               cols: 12,
@@ -172,10 +165,10 @@ export default {
             bootstrapClass: [''],
           }),
           stringField({
-            label: 'Стоимость :',
+            label: 'Стоимость',
             name: `price%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             position: {
               cols: 12,
@@ -188,7 +181,7 @@ export default {
             label: 'ВДС',
             name: `vds%${itemIndex + 1}`,
             value: false,
-            prescription: 'rate',
+            prescription: 'items',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -202,7 +195,7 @@ export default {
             label: 'Точное наименование',
             name: `exact_name%${itemIndex + 1}`,
             placeholder: '',
-            prescription: 'rate',
+            prescription: 'items',
             class: [''],
             position: {
               cols: 12,
@@ -223,6 +216,30 @@ export default {
       rebuildFormData()
     }
 
+    const compareBlockCount = () => {
+      let formCount
+      let fieldCount
+      formCount = Object.keys(formData).findLast((x) =>
+        x.includes('rashod_vid%')
+      )
+      fieldCount = props.tab.fields.findLast((x) =>
+        x.name.includes('rashod_vid%')
+      )
+      if (formCount) formCount = +formCount.split('%')[1]
+      else formCount = 0
+      if (fieldCount) fieldCount = +fieldCount.name.split('%')[1]
+      else fieldCount = 0
+      while (formCount !== fieldCount) {
+        if (fieldCount > formCount) {
+          changeBlockCount()
+          fieldCount -= 1
+        } else if (fieldCount < formCount) {
+          changeBlockCount(true)
+          fieldCount += 1
+        }
+      }
+    }
+
     watch(
       () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
       () => {
@@ -232,19 +249,22 @@ export default {
         props.tab.fields.map((x) =>
           x?.name?.includes('rashod_vid%') ? (x.items = categoryItems) : x
         )
+        if (zayavkaFirstLoad.value) {
+          zayavkaFirstLoad.value = false
+          compareBlockCount()
+        }
       },
       { deep: true }
     )
 
-    // const { makeRequest: createForm } = useRequest({
-    //   context,
-    //   successMessage: 'Сохранено',
-    //   request: () =>
-    //     store.dispatch('form/create', {
-    //       url: `query/${alias}`,
-    //       body: formData,
-    //     }),
-    // })
+    onMounted(() => {
+      proxyTab.value = _.cloneDeep(props.tab.fields)
+    })
+
+    onUnmounted(() => {
+      props.tab.fields = _.cloneDeep(proxyTab.value)
+    })
+
     const {
       formData,
       validate,
