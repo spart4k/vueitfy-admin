@@ -12,9 +12,10 @@ const required = Object.assign({}, vueRequired, {
   $message: () => 'Обязательное поле',
 })
 
-const minLength = Object.assign({}, vueMinLength, {
-  $message: () => 'Недостаточно символов',
-})
+const minLength = (value) =>
+  Object.assign({}, vueMinLength(value), {
+    $message: () => `Недостаточно символов (${value})`,
+  })
 
 const requiredIf = (needValidation) => ({
   ...required,

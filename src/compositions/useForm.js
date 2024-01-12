@@ -979,6 +979,7 @@ export default function ({
   //const readonlyAll = ref(false)
   const environment = reactive({
     readonlyAll: false,
+    mode,
   })
   const getData = async () => {
     //if (!initPreRequest()) {
