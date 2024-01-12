@@ -61,28 +61,18 @@ const routes = [
     component: PaymentView,
     children: [
       {
-        name: 'payment/:id',
-        path: ':id',
-        component: Detail,
-      },
-    ],
-  },
-  {
-    path: '/payment',
-    name: 'payment',
-    meta: {
-      layout: 'blank-layout',
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: PaymentView,
-    children: [
-      {
         name: 'payment-add',
         path: 'payment/add',
+        // meta: {
+        //   mode: ['add'],
+        // },
+        component: Detail,
+      },
+      {
+        name: 'payment/:id',
+        path: ':id',
         meta: {
-          mode: ['add'],
+          mode: ['edit'],
         },
         component: Detail,
       },

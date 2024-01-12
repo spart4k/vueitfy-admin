@@ -625,7 +625,7 @@ export default function ({
     const { value, field } = params
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
-        const success = dependence.condition.evert((conditionEl) => {
+        const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
         })
         if (!success) return
@@ -863,6 +863,8 @@ export default function ({
           } else if (filter.source !== 'formData') {
             const source = eval(filter.source)
             value = source
+          } else if (filter.source === 'formData') {
+            value = formData[filter.field]
           } else {
             value = formData[filter.field]
           }
@@ -903,12 +905,36 @@ export default function ({
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
           if (field.hiding.conditions) {
+            // const condition = field.hiding.conditions.find(
+            //   (el) => mode === el.value
+            // )
+            // lists.data[keyList] = lists.data[keyList].filter((el) => {
+            //   return !condition.values.includes(el.id)
+            // })
             const condition = field.hiding.conditions.find(
-              (el) => mode === el.value
+              (el) => mode === el.value && el.target !== 'formData'
             )
-            lists.data[keyList] = lists.data[keyList].filter((el) => {
-              return !condition.values.includes(el.id)
-            })
+            if (condition) {
+              lists.data[keyList] = lists.data[keyList].filter((el) => {
+                return !condition.values.includes(el.id)
+              })
+            }
+            // Условие для скрытие по значению из формы
+            const formTargets = field.hiding.conditions.filter(
+              (el) => el.target === 'formData'
+            )
+            if (formTargets?.length) {
+              console.log('FORMTARGET')
+              formTargets.forEach((formTarget) => {
+                if (formTarget.value.includes(formData[formTarget.field])) {
+                  console.log(lists.data[keyList])
+                  lists.data[keyList] = lists.data[keyList].filter((el) => {
+                    return formTarget.values.includes(el.id)
+                  })
+                }
+              })
+            }
+            console.log(formTargets, 'formTargets')
           }
         }
         field.items = lists.data[keyList]
@@ -1037,11 +1063,13 @@ export default function ({
           if (field.hiding) {
             if (field.hiding.conditions) {
               const condition = field.hiding.conditions.find(
-                (el) => mode === el.value
+                (el) => mode === el.value && el.target !== 'formData'
               )
-              lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
-              })
+              if (condition) {
+                lists.data[keyList] = lists.data[keyList].filter((el) => {
+                  return !condition.values.includes(el.id)
+                })
+              }
             }
           }
           field.items = lists.data[keyList]
@@ -1089,7 +1117,7 @@ export default function ({
                 checkIncludesData(conditionEl),
                 conditionEl.type
               )
-              return checkIncludesData(conditionEl) && conditionEl.type
+              return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) && conditionEl.type
             } else {
@@ -1139,7 +1167,11 @@ export default function ({
               )
               return checkIncludesData(conditionEl) && conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
-              return checkIncludesPermissions(conditionEl) && conditionEl.type
+              console.log(
+                checkIncludesPermissions(conditionEl),
+                conditionEl.type
+              )
+              return checkIncludesPermissions(conditionEl) === conditionEl.type
             } else {
               return (
                 checkIncludesData(conditionEl) &&
