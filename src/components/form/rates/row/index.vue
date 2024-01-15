@@ -7,7 +7,7 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <div v-for="item in row.items" :key="item.id" class="rates-row-wrap">
-            <div class="fields">
+            <div v-if="tab.type !== 'unassigned'" class="fields">
               <v-row>
                 <v-col
                   v-for="field in listFields"
@@ -19,7 +19,7 @@
                 >
                   <v-text-field
                     v-if="showField('string', field)"
-                    v-model="formData[field.name]"
+                    v-model="item[field.name]"
                     :label="field.label"
                     clearable
                     :readonly="field.readonly"
@@ -37,14 +37,14 @@
                     <template v-slot:activator="{ attrs }">
                       <v-text-field
                         @click:append="openMenu(field)"
-                        v-model="formData[field.name]"
+                        v-model="item[field.name]"
                         :label="field.label"
                         append-icon="mdi-calendar"
                         v-bind="attrs"
                       ></v-text-field>
                     </template>
                     <v-date-picker
-                      v-model="formData[field.name]"
+                      v-model="item[field.name]"
                       min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
@@ -67,7 +67,7 @@
                     :item-text="field.selectOption.text"
                     :item-value="field.selectOption.value"
                     :label="field.label"
-                    v-model="formData[field.name]"
+                    v-model="item[field.name]"
                     persistent-hint
                     clearable
                     :multiple="field.subtype === 'multiselect'"
@@ -76,7 +76,13 @@
               </v-row>
             </div>
           </div>
-          <div @click="openDialog" class="action">+</div>
+          <div
+            v-if="tab.type !== 'not_active'"
+            @click="openDialog"
+            class="action"
+          >
+            +
+          </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>

@@ -16,6 +16,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -26,9 +30,48 @@ export default {
       date_active_po: '',
     })
     const listFields = ref([
+      // selectField({
+      //   label: 'E',
+      //   name: 'status_id',
+      //   subtype: 'single',
+      //   placeholder: '',
+      //   class: [''],
+      //   selectOption: {
+      //     text: 'name',
+      //     value: 'id',
+      //   },
+      //   items: [
+      //     {
+      //       id: 1,
+      //       name: '1',
+      //     },
+      //     {
+      //       id: 2,
+      //       name: '2',
+      //     },
+      //   ],
+      //   position: {
+      //     cols: 12,
+      //     sm: 2,
+      //   },
+      //   bootstrapClass: [''],
+      //   alias: 'p.status_id',
+      // }),
+      stringField({
+        label: 'Сумма',
+        name: 'price',
+        placeholder: '',
+        readonly: false,
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 3,
+        },
+        bootstrapClass: [''],
+      }),
       selectField({
-        label: 'E',
-        name: 'status_id',
+        label: 'Категория',
+        name: 'category',
         subtype: 'single',
         placeholder: '',
         class: [''],
@@ -48,34 +91,10 @@ export default {
         ],
         position: {
           cols: 12,
-          sm: 2,
+          sm: 3,
         },
         bootstrapClass: [''],
         alias: 'p.status_id',
-      }),
-      stringField({
-        label: 'Сумма',
-        name: 'price',
-        placeholder: '',
-        readonly: false,
-        class: [''],
-        position: {
-          cols: 12,
-          sm: 2,
-        },
-        bootstrapClass: [''],
-      }),
-      stringField({
-        label: 'Категория',
-        name: 'category',
-        placeholder: '',
-        readonly: false,
-        class: [''],
-        position: {
-          cols: 12,
-          sm: 2,
-        },
-        bootstrapClass: [''],
       }),
       dateField({
         label: 'Дата ',
@@ -109,7 +128,8 @@ export default {
       field.menu = true
     }
     const openDialog = () => {
-      emit('openDialog', props.row.name)
+      const { id, name } = props.row
+      emit('openDialog', { id, name })
     }
     onMounted(() => {
       for (let key in formData) {
