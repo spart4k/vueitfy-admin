@@ -1039,7 +1039,9 @@ export default function ({
       //   console.log('////////////', formData)
       // }, 4000)
 
-      const prescription = form?.fields.find((x) => x.prescription)?.prescription
+      const prescription = form?.fields.find(
+        (x) => x.prescription
+      )?.prescription
       if (prescription) {
         syncForm.data[prescription].forEach((item, index) => {
           Object.keys(item).forEach((key) => {
