@@ -69,6 +69,14 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'payment-load',
+        path: 'load',
+        meta: {
+          mode: ['load'],
+        },
+        component: Detail,
+      },
+      {
         name: 'payment/:id',
         path: ':id',
         meta: {
