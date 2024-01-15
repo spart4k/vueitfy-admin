@@ -516,1723 +516,6 @@ const config = {
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {
-        path: 'add',
-        id: 0,
-        name: 'Заявка на расход',
-        type: Expenses,
-        detail: true,
-        lists: [
-          { alias: 'status_zr', filter: [] },
-          { alias: 'direction_id', filter: [] },
-          { alias: 'category_zr', filter: [] },
-          { alias: 'me', filter: [] },
-          { alias: 'type_objects', filter: [] },
-          { alias: 'type_pay', filter: [] },
-        ],
-        alias: 'zayavka',
-        active: false,
-        fields: [
-          selectField({
-            label: 'Статус',
-            name: 'status_zr',
-            requestKey: 'status_id',
-            placeholder: '',
-            class: [''],
-            value: 1,
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            disabled: true,
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'От',
-            name: 'status_account_id',
-            placeholder: '',
-            value: '',
-            class: [''],
-            disabled: true,
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            bootstrapClass: [''],
-          }),
-          dateField({
-            label: 'Дата статус',
-            name: 'date_status',
-            type: 'date',
-            value: '',
-            menu: false,
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            disabled: true,
-            bootstrapClass: [''],
-            // mode: 'edit',
-          }),
-          stringField({
-            label: 'Создана',
-            name: 'date_create',
-            placeholder: '',
-            value: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            disabled: true,
-            bootstrapClass: [''],
-          }),
-          checkboxField({
-            label: 'На себя',
-            name: 'on_yourself',
-            value: false,
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            updateList: [
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'on_yourself',
-                    value: [true],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'me',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'on_yourself',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [1],
-                  },
-                  {
-                    key: 'on_yourself',
-                    value: [false],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [2, 3],
-                  },
-                  {
-                    key: 'on_yourself',
-                    value: [false],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_account_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [2],
-                  },
-                  {
-                    key: 'on_yourself',
-                    value: [false],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'object_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [3],
-                  },
-                  {
-                    key: 'on_yourself',
-                    value: [false],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'permission_accounts_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Направление',
-            name: 'direction_id',
-            alias: 'direction_id',
-            placeholder: '',
-            class: [''],
-            value: '',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            dependence: [
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'personal_zr',
-                url: 'get/pagination_list/personal_zr',
-              },
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'object_zr',
-                url: 'get/pagination_list/object_zr',
-              },
-            ],
-            // update: {
-            //   module: 'selects/getList',
-            //   fields: ['permissions_zr'],
-            // },
-            updateList: [
-              {
-                alias: 'permissions_zr',
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [2],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'object_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            // updateList: [
-            //   {
-            //     alias: 'req_zr_id',
-            //     filter: [
-            //       {
-            //         field: 'direction_id',
-            //         value: '',
-            //       },
-            //     ],
-            //   },
-            // ],
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'ФИО',
-            name: 'me',
-            placeholder: '',
-            class: [''],
-            notSend: true,
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            putFirst: true,
-            disabled: true,
-            isShow: {
-              value: false,
-              conditions: [{ field: 'on_yourself', value: [true] }],
-            },
-            bootstrapClass: [''],
-          }),
-
-          radioPanel({
-            name: 'vector_id',
-            alias: 'vector_id',
-            class: ['background-upper'],
-            bootstrapClass: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            value: 1,
-            default: 1,
-            items: [
-              {
-                text: 'Персонал',
-                value: 1,
-                id: 1,
-              },
-              {
-                text: 'Объект',
-                value: 2,
-                id: 2,
-              },
-              {
-                text: 'Аккаунт',
-                value: 3,
-                id: 3,
-              },
-            ],
-            dependence: [
-              {
-                type: 'default',
-                action: {
-                  type: 'hideOptions',
-                  field: 'vector_id',
-                  targetField: 'type_pay',
-                  condition: [
-                    {
-                      value: 2,
-                      options: [1],
-                    },
-                    {
-                      value: 3,
-                      options: [1],
-                    },
-                  ],
-                },
-              },
-            ],
-            updateList: [
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [1],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [2, 3],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_account_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [2],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'object_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [3],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'permission_accounts_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            isShow: {
-              value: true,
-              conditions: [{ field: 'on_yourself', value: [false] }],
-            },
-          }),
-
-          autocompleteField({
-            label: 'Персонаж',
-            name: 'personal_zr',
-            requestKey: 'personal_id',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: ['background-middle'],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/personal_zr',
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            filter: [
-              {
-                field: 'direction_id',
-                value: '',
-              },
-            ],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['name'],
-              },
-            ],
-            updateList: [
-              {
-                alias: 'personal_object_zr',
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'personal_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'personal_account_zr',
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'personal_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'personal_object_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [1],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-            isShow: {
-              value: true,
-              conditions: [
-                { field: 'vector_id', value: [1] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
-          selectField({
-            label: 'Объект',
-            name: 'personal_object_zr',
-            requestKey: 'object_id',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: ['background-middle'],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            updateList: [
-              {
-                alias: 'personal_account_zr',
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'personal_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'personal_object_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['regions_id', 'city_id'],
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-            isShow: {
-              value: true,
-              conditions: [
-                { field: 'vector_id', value: [1] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
-          selectField({
-            label: 'Руководитель',
-            name: 'personal_account_zr',
-            requestKey: 'account_id',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: ['background-down'],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            // filter: [
-            //   {
-            //     field: 'direction_id',
-            //     value: '',
-            //   },
-            //   {
-            //     field: 'personal_zr',
-            //     value: '',
-            //   },
-            //   {
-            //     field: 'personal_object_zr',
-            //     value: '',
-            //   },
-            // ],
-            bootstrapClass: [''],
-            updateList: [
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [2, 3],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_account_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            isShow: {
-              value: true,
-              conditions: [
-                { field: 'vector_id', value: [1] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
-
-          selectField({
-            label: 'Тип объекта',
-            name: 'type_objects',
-            requestKey: 'type_object',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: ['background-middle'],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            dependence: [
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'object_zr',
-                url: 'get/pagination_list/object_zr',
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-            isShow: {
-              value: false,
-              conditions: [
-                { field: 'vector_id', value: [2] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
-          autocompleteField({
-            label: 'Объект',
-            name: 'object_zr',
-            requestKey: 'object_id',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: ['background-down'],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/object_zr',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            filter: [
-              {
-                field: 'direction_id',
-                value: '',
-              },
-              {
-                field: 'type_objects',
-                value: '',
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-            updateList: [
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [2],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'object_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['name', 'regions_id', 'city_id'],
-              },
-            ],
-            isShow: {
-              value: false,
-              conditions: [
-                { field: 'vector_id', value: [2] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
-
-          selectField({
-            label: 'Должность',
-            name: 'permissions_zr',
-            requestKey: 'permission_id',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: ['background-middle'],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            updateList: [
-              {
-                alias: 'permission_accounts_zr',
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'permissions_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-            isShow: {
-              value: false,
-              conditions: [
-                { field: 'vector_id', value: [3] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
-          selectField({
-            label: 'ФИО',
-            name: 'permission_accounts_zr',
-            requestKey: 'account_id',
-            // subtype: 'single',
-            subtype: 'single',
-            placeholder: '',
-            class: ['background-down'],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            updateList: [
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [3],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'permission_accounts_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['name'],
-              },
-            ],
-            isShow: {
-              value: false,
-              conditions: [
-                { field: 'vector_id', value: [3] },
-                { field: 'on_yourself', value: [false] },
-              ],
-            },
-          }),
-
-          selectField({
-            label: 'Категория',
-            name: 'category_zr',
-            requestKey: 'category_id',
-            // alias: 'rashod_category_id',
-            placeholder: '',
-            class: [''],
-            value: '',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            updateList: [
-              {
-                alias: 'rashod_vid',
-                filter: [
-                  {
-                    field: 'category_zr',
-                    alias: 'rashod_category_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-
-          selectField({
-            label: 'Наименование',
-            name: 'rashod_vid',
-            placeholder: '',
-            class: [''],
-            value: '',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            prescription: 'items',
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'Кол-во',
-            name: 'count',
-            placeholder: '',
-            class: [''],
-            prescription: 'items',
-            position: {
-              cols: 12,
-              sm: 2,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'Стоимость',
-            name: 'price',
-            placeholder: '',
-            class: [''],
-            prescription: 'items',
-            position: {
-              cols: 12,
-              sm: 2,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          checkboxField({
-            label: 'ВДС',
-            name: 'vds',
-            value: false,
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            prescription: 'items',
-            position: {
-              cols: 12,
-              sm: 2,
-            },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'Точное наименование',
-            name: 'exact_name',
-            placeholder: '',
-            class: [''],
-            prescription: 'items',
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-          }),
-          {
-            type: 'btn',
-            name: 'btn-decrease',
-            id: 'btn-decrease',
-            readonly: false,
-            disable: false,
-            isShow: true,
-            mode: 'all',
-            placeholder: '',
-            class: [''],
-            position: { cols: 12, sm: 6 },
-            notSend: true,
-            bootstrapClass: [''],
-            label: '-',
-            color: 'primary',
-            increase: false,
-          },
-          {
-            type: 'btn',
-            name: 'btn-increase',
-            id: 'btn-increase',
-            readonly: false,
-            disable: false,
-            isShow: true,
-            mode: 'all',
-            placeholder: '',
-            class: [''],
-            position: { cols: 12, sm: 6 },
-            notSend: true,
-            bootstrapClass: [''],
-            label: '+',
-            color: 'success',
-            increase: true,
-          },
-
-          selectField({
-            label: 'Тип оплаты',
-            name: 'type_pay',
-            alias: 'type_pay',
-            placeholder: '',
-            class: [''],
-            value: '',
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            updateList: [
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [1],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [1],
-                  },
-                  {
-                    key: 'type_pay',
-                    value: [2, 3],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'personal_account_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [2],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'object_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'vector_id',
-                    value: [3],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'permission_accounts_zr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'vector_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-              {
-                alias: 'req_zr_id',
-                condition: [
-                  {
-                    key: 'on_yourself',
-                    value: [true],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'me',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'is_migr',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'type_pay',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'on_yourself',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Реквизит для оплаты',
-            name: 'req_zr_id',
-            requestKey: 'rek_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            // brigadirs
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['rek1', 'rek2', 'bank_id'],
-              },
-            ],
-            isShow: {
-              value: true,
-              conditions: [{ field: 'type_pay', value: [1, 2, 3] }],
-            },
-          }),
-          dropZoneField({
-            label: 'Скан-копия/фото',
-            name: 'check_docs',
-            notPut: true,
-            placeholder: '',
-            grouping: 'multiple',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            validations: { required },
-            options: {
-              removeble: true,
-              withoutSave: false,
-              folder: 'schet',
-              name: '`zayavka_schet`',
-              paramsForEmit: this,
-              countFiles: 10,
-            },
-            isShow: {
-              value: false,
-              conditions: [{ field: 'type_pay', value: [4] }],
-            },
-            value: [],
-          }),
-          textareaField({
-            label: 'Ошибка',
-            name: 'error_text',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-          textareaField({
-            label: 'Примечание',
-            name: 'note',
-            alias: 'pd.note',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-
-          checkboxField({
-            name: 'is_migr',
-            value:
-              store?.state?.user.permission_id === 16 ||
-              store?.state?.user.permission_id === 19,
-            placeholder: '',
-            readonly: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'rek1',
-            name: 'rek1',
-            placeholder: '',
-            class: [''],
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'rek2',
-            name: 'rek2',
-            placeholder: '',
-            class: [''],
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'name',
-            name: 'name',
-            requestKey: 'to_name',
-            placeholder: '',
-            class: [''],
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'regions_id',
-            name: 'regions_id',
-            requestType: 'number',
-            placeholder: '',
-            class: [''],
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'city_id',
-            name: 'city_id',
-            requestType: 'number',
-            placeholder: '',
-            class: [''],
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-          stringField({
-            label: 'bank_id',
-            name: 'bank_id',
-            requestType: 'number',
-            placeholder: '',
-            class: [''],
-            disabled: true,
-            isShow: {
-              value: true,
-            },
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            // validations: { required },
-            bootstrapClass: [''],
-          }),
-        ],
-        actions: [
-          stringAction({
-            text: 'Закрыть',
-            type: 'submit',
-            color: 'disabled',
-            name: 'closePopup',
-            action: 'closePopup',
-            skipValidation: true,
-          }),
-          stringAction({
-            text: 'Сохранить',
-            type: 'submit',
-            color: 'primary',
-            module: 'form/create',
-            url: 'create/zayavka',
-            // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
-            name: 'saveFormStore',
-            action: 'saveFormStore',
-          }),
-        ],
-        formData: {},
-      },
-      {
         path: 'id',
         id: 1,
         name: 'Заявка на расход',
@@ -2242,7 +525,7 @@ const config = {
           { alias: 'status_zr', filter: [] },
           { alias: 'direction_id', filter: [] },
           { alias: 'category_zr', filter: [] },
-          { alias: 'me', filter: [] },
+          { alias: 'account_id', filter: [] },
           { alias: 'type_objects', filter: [] },
           { alias: 'type_pay', filter: [] },
           { alias: 'status_account_id', filter: [] },
@@ -2258,13 +541,283 @@ const config = {
               },
             ],
           },
+
+          {
+            alias: 'personal_object_zr',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'personal_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'personal_account_zr',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'personal_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'personal_object_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+
+          {
+            alias: 'permissions_zr',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'permission_accounts_zr',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'permissions_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+
+          {
+            alias: 'req_zr_id',
+            condition: [
+              {
+                key: 'type_zayavka',
+                value: [1],
+              },
+              {
+                key: 'payment_type',
+                value: [1],
+              },
+            ],
+            filter: [
+              {
+                field: 'personal_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'is_migr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'payment_type',
+                alias: 'type_pay',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'type_zayavka',
+                alias: 'vector_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'req_zr_id',
+            condition: [
+              {
+                key: 'type_zayavka',
+                value: [1],
+              },
+              {
+                key: 'payment_type',
+                value: [2, 3],
+              },
+            ],
+            filter: [
+              {
+                field: 'personal_account_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'is_migr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'payment_type',
+                alias: 'type_pay',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'type_zayavka',
+                alias: 'vector_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'req_zr_id',
+            condition: [
+              {
+                key: 'type_zayavka',
+                value: [2],
+              },
+            ],
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'object_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'is_migr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'payment_type',
+                alias: 'type_pay',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'type_zayavka',
+                alias: 'vector_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'req_zr_id',
+            condition: [
+              {
+                key: 'type_zayavka',
+                value: [3],
+              },
+            ],
+            filter: [
+              {
+                field: 'permission_accounts_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'is_migr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'payment_type',
+                alias: 'type_pay',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'type_zayavka',
+                alias: 'vector_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'req_zr_id',
+            condition: [
+              {
+                key: 'on_yourself',
+                value: [true],
+              },
+            ],
+            filter: [
+              {
+                field: 'me',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'is_migr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'payment_type',
+                alias: 'type_pay',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'on_yourself',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
         ],
         alias: 'zayavka',
         active: false,
         fields: [
           selectField({
             label: 'Статус',
-            name: 'status_zr',
+            name: 'status',
+            alias: 'status_zr',
             requestKey: 'status_id',
             placeholder: '',
             class: [''],
@@ -2359,7 +912,8 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2376,11 +930,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'payment_type',
                     value: [1],
                   },
                   {
@@ -2402,13 +956,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2419,11 +975,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'payment_type',
                     value: [2, 3],
                   },
                   {
@@ -2445,13 +1001,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2462,7 +1020,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [2],
                   },
                   {
@@ -2490,13 +1048,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2507,7 +1067,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [3],
                   },
                   {
@@ -2529,13 +1089,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2552,7 +1114,6 @@ const config = {
           selectField({
             label: 'Направление',
             name: 'direction_id',
-            alias: 'direction_id',
             placeholder: '',
             class: [''],
             value: '',
@@ -2579,10 +1140,6 @@ const config = {
                 url: 'get/pagination_list/object_zr',
               },
             ],
-            // update: {
-            //   module: 'selects/getList',
-            //   fields: ['permissions_zr'],
-            // },
             updateList: [
               {
                 alias: 'permissions_zr',
@@ -2599,7 +1156,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [2],
                   },
                 ],
@@ -2623,13 +1180,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2637,23 +1196,13 @@ const config = {
                 ],
               },
             ],
-            // updateList: [
-            //   {
-            //     alias: 'req_zr_id',
-            //     filter: [
-            //       {
-            //         field: 'direction_id',
-            //         value: '',
-            //       },
-            //     ],
-            //   },
-            // ],
             validations: { required },
             bootstrapClass: [''],
           }),
           selectField({
             label: 'ФИО',
-            name: 'me',
+            name: 'account_id',
+            requestKey: 'me',
             placeholder: '',
             class: [''],
             notSend: true,
@@ -2675,8 +1224,9 @@ const config = {
           }),
 
           radioPanel({
-            name: 'vector_id',
+            name: 'type_zayavka',
             alias: 'vector_id',
+            requestKey: 'vector_id',
             class: ['background-upper'],
             bootstrapClass: [''],
             position: {
@@ -2707,8 +1257,8 @@ const config = {
                 type: 'default',
                 action: {
                   type: 'hideOptions',
-                  field: 'vector_id',
-                  targetField: 'type_pay',
+                  field: 'type_zayavka',
+                  targetField: 'payment_type',
                   condition: [
                     {
                       value: 2,
@@ -2727,11 +1277,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                 ],
@@ -2749,13 +1299,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2766,11 +1318,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'payment_type',
                     value: [2, 3],
                   },
                 ],
@@ -2788,13 +1340,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2805,7 +1359,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [2],
                   },
                 ],
@@ -2829,13 +1383,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2846,7 +1402,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [3],
                   },
                 ],
@@ -2864,13 +1420,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2961,11 +1519,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'payment_type',
                     value: [1],
                   },
                 ],
@@ -2983,13 +1541,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3002,7 +1562,7 @@ const config = {
             isShow: {
               value: true,
               conditions: [
-                { field: 'vector_id', value: [1] },
+                { field: 'type_zayavka', value: [1] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
@@ -3060,7 +1620,7 @@ const config = {
             isShow: {
               value: true,
               conditions: [
-                { field: 'vector_id', value: [1] },
+                { field: 'type_zayavka', value: [1] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
@@ -3103,11 +1663,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'payment_type',
                     value: [2, 3],
                   },
                 ],
@@ -3125,13 +1685,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3142,7 +1704,7 @@ const config = {
             isShow: {
               value: true,
               conditions: [
-                { field: 'vector_id', value: [1] },
+                { field: 'type_zayavka', value: [1] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
@@ -3178,7 +1740,7 @@ const config = {
             isShow: {
               value: false,
               conditions: [
-                { field: 'vector_id', value: [2] },
+                { field: 'type_zayavka', value: [2] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
@@ -3220,7 +1782,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [2],
                   },
                 ],
@@ -3244,13 +1806,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3267,7 +1831,7 @@ const config = {
             isShow: {
               value: false,
               conditions: [
-                { field: 'vector_id', value: [2] },
+                { field: 'type_zayavka', value: [2] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
@@ -3314,7 +1878,7 @@ const config = {
             isShow: {
               value: false,
               conditions: [
-                { field: 'vector_id', value: [3] },
+                { field: 'type_zayavka', value: [3] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
@@ -3343,7 +1907,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [3],
                   },
                 ],
@@ -3361,13 +1925,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3384,7 +1950,7 @@ const config = {
             isShow: {
               value: false,
               conditions: [
-                { field: 'vector_id', value: [3] },
+                { field: 'type_zayavka', value: [3] },
                 { field: 'on_yourself', value: [false] },
               ],
             },
@@ -3559,11 +2125,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'payment_type',
                     value: [1],
                   },
                 ],
@@ -3581,13 +2147,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3598,11 +2166,11 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [1],
                   },
                   {
-                    key: 'type_pay',
+                    key: 'payment_type',
                     value: [2, 3],
                   },
                 ],
@@ -3620,13 +2188,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3637,7 +2207,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [2],
                   },
                 ],
@@ -3661,13 +2231,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3678,7 +2250,7 @@ const config = {
                 alias: 'req_zr_id',
                 condition: [
                   {
-                    key: 'vector_id',
+                    key: 'type_zayavka',
                     value: [3],
                   },
                 ],
@@ -3696,13 +2268,15 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
                   },
                   {
-                    field: 'vector_id',
+                    field: 'type_zayavka',
+                    alias: 'vector_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3731,7 +2305,8 @@ const config = {
                     type: 'num',
                   },
                   {
-                    field: 'type_pay',
+                    field: 'payment_type',
+                    alias: 'type_pay',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -3750,8 +2325,8 @@ const config = {
           }),
           selectField({
             label: 'Реквизит для оплаты',
-            name: 'req_zr_id',
-            requestKey: 'rek_id',
+            name: 'rek_id',
+            alias: 'req_zr_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -3784,6 +2359,7 @@ const config = {
             notPut: true,
             placeholder: '',
             grouping: 'multiple',
+            stash: 'schet',
             readonly: false,
             class: [''],
             position: {
@@ -3806,6 +2382,20 @@ const config = {
             },
             value: [],
           }),
+          {
+            type: 'schet',
+            name: 'schet',
+            id: 'schet',
+            readonly: false,
+            disable: false,
+            isShow: true,
+            mode: 'all',
+            placeholder: '',
+            class: [''],
+            position: { cols: 12, sm: 12 },
+            notSend: true,
+            bootstrapClass: [''],
+          },
           textareaField({
             label: 'Ошибка',
             name: 'error_text',

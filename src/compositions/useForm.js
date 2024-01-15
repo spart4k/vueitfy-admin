@@ -331,7 +331,7 @@ export default function ({
     Object.keys(formData).forEach((key) => {
       const item = form?.fields?.find((x) => x.name === key)
 
-      if (item.prescription) {
+      if (item?.prescription) {
         if (!newForm[item.prescription]) newForm[item.prescription] = []
         let itemIndex = item.name.split('%')[1]
         if (!itemIndex) itemIndex = 0
@@ -461,6 +461,15 @@ export default function ({
           } else {
             setFormData(data[0].path)
           }
+        }
+
+        if (dropzone.stash) {
+          formData[dropzone.stash].forEach((file, index) => {
+            formData[dropzone.name].push({
+              name: file.name,
+              index: formData[dropzone.name].length + index,
+            })
+          })
         }
       }
     }
@@ -877,11 +886,10 @@ export default function ({
       if (el.filter && el.filter.length) {
         el.filter.forEach((filter) => {
           let value, type
+          console.log('filter.source', filter.source)
           if (filter.source === 'fromPrev') {
             value = form?.formData[filter.field]
-          } else if (filter.source === undefined) {
-            value = filter.value
-          } else if (filter.source !== 'formData') {
+          } else if (filter.source && filter.source !== 'formData') {
             const source = eval(filter.source)
             value = source
           } else if (filter.source === 'formData') {
@@ -897,6 +905,7 @@ export default function ({
           })
         })
       }
+      console.log('filters', filters)
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
@@ -1060,7 +1069,13 @@ export default function ({
       }
     }
     if (hasSelect()) {
-      const listQuery = form?.lists?.map((list) => {
+      const listQuery = form?.lists?.flatMap((list) => {
+        if (list.condition) {
+          for (let i = 0; i < list.condition.length; i++) {
+            let item = list.condition[i]
+            if (!item.value.includes(formData[item.key])) return []
+          }
+        }
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (

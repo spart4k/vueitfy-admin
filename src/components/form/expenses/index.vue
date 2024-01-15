@@ -83,6 +83,7 @@
               :label="field.label"
               :disabled="disabledField(field)"
               @change="
+                checkVector()
                 changeAutocomplete({ value: formData[field.name], field })
               "
               :readonly="readonlyField(field)"
@@ -158,6 +159,7 @@
               :formData="formData"
               :disabled="disabledField(field)"
               :field="field"
+              ref="dropzone"
               @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
               :readonly="readonlyField(field)"
@@ -181,7 +183,6 @@
                 :key="item.id"
                 @click="
                   formData[field.name] = item.value
-                  // getDependies({ value: formData[field.name], field })
                   changeAutocomplete({ value: formData[field.name], field })
                 "
                 :readonly="readonlyField(field)"
@@ -197,6 +198,53 @@
             >
               {{ field.label }}
             </v-btn>
+            <v-card
+              max-height="230"
+              class="overflow-auto"
+              outlined
+              v-else-if="showField('schet', field)"
+            >
+              <v-list>
+                <template v-if="formData[field.name]?.length">
+                  <v-list-item
+                    v-for="(item, index) in formData[field.name]"
+                    :key="index"
+                    :class="index && 'mt-4'"
+                  >
+                    <v-btn @click="downloadFile({ item })" class="mr-4" icon>
+                      <v-icon small> $IconDownload </v-icon>
+                    </v-btn>
+                    <v-avatar tile size="60">
+                      <v-img :src="$root.env.VUE_APP_STORE + item.name"></v-img>
+                    </v-avatar>
+                    <v-list-item-content class="d-flex ml-4">
+                      <v-list-item-title>
+                        {{ item.num }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                    <v-btn
+                      @click="
+                        editFile({ index, formItem: formData[field.name] })
+                      "
+                      icon
+                    >
+                      <v-icon small> $IconEdit </v-icon>
+                    </v-btn>
+                    <v-btn
+                      @click="
+                        deleteFile({ index, formItem: formData[field.name] })
+                      "
+                      icon
+                    >
+                      <v-icon small> $IconDelete </v-icon>
+                    </v-btn>
+                  </v-list-item>
+                </template>
+                <v-subheader class="justify-center" v-else
+                  >Нет приложенных документов</v-subheader
+                >
+              </v-list>
+            </v-card>
           </v-col>
         </v-row>
         <v-row class="justify-end">

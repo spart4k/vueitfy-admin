@@ -1,0 +1,17 @@
+.dropzone {
+  margin-bottom: 8px;
+  background-color: var(--v-background-base);
+}
+
+.dropzone-wrap {
+  width: 100%;
+}
+
+.dropzone-wrap.without-api .dz-progress {
+  /* progress bar covers file name */
+  display: none !important;
+}
+
+.dropzone--error {
+  border-color: var(--v-error-base);
+}

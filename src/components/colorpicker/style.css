@@ -1,0 +1,18 @@
+@charset "UTF-8";
+.colorpicker {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.v-text-field {
+  /* Ваши кастомные стили для отключенного состояния v-text-field */
+}
+
+.v-text-field::v-deep .v-input__slot::before {
+  -o-border-image: none !important;
+     border-image: none !important;
+}

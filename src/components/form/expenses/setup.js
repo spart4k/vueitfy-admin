@@ -71,6 +71,7 @@ export default {
     const zayavkaFirstLoad = ref(true)
     const stage = ref(null)
     const { alias } = props.tab
+    const dropzone = ref()
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
       const fields = {}
@@ -240,6 +241,29 @@ export default {
       }
     }
 
+    const downloadFile = ({ item }) => {
+      const link = document.createElement('a')
+      link.download = item.name
+      link.href = process.env.VUE_APP_STORE + item.name
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+
+    const editFile = ({ index, formItem }) => {
+      deleteFile({ index, formItem })
+      dropzone.value[0].$children[0].$el.click()
+    }
+
+    const deleteFile = ({ index, formItem }) => {
+      formItem.splice(index, 1)
+    }
+
+    const checkVector = () => {
+      const item = Object.keys(formData).find((x) => x === 'type_zayavka')
+      if (formData[item] === 4) formData[item] = 1
+    }
+
     watch(
       () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
       () => {
@@ -326,6 +350,11 @@ export default {
       readonlyField,
       changeBlockCount,
       getDependies,
+      downloadFile,
+      editFile,
+      deleteFile,
+      dropzone,
+      checkVector,
     }
   },
 }

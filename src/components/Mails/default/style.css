@@ -1,0 +1,20 @@
+.v-mails {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  background-color: var(--v-pageBackground-base);
+  position: relative;
+}
+
+.v-mails-group {
+  width: calc(100vw - 256px - 214px - 16px - 16px - 22px);
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.v-mails-group-container {
+  height: calc(100vh - 50px - 64px);
+}

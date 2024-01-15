@@ -1,0 +1,53 @@
+.rates-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.rates-row .v-expansion-panel-header {
+  padding: 0 10px;
+  min-height: 45px;
+}
+
+.rates-row .v-expansion-panel-content__wrap {
+  padding: 0;
+}
+
+.rates-row__title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rates-row-wrap {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+}
+
+.rates-row .action {
+  background-color: #269926;
+  color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: .2rem;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.rates-row .action:hover {
+  -webkit-transform: scale(1.01);
+          transform: scale(1.01);
+  cursor: pointer;
+}
