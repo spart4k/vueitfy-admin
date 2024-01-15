@@ -1,4 +1,4 @@
-import Vue, { onMounted, ref } from 'vue'
+import Vue, { onMounted, ref, watch } from 'vue'
 import row from '../row/index.vue'
 //import useRequest from '@/compositions/useRequest.js'
 import { useRoute } from 'vue-router/composables'
@@ -16,6 +16,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    tab: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const route = useRoute()
@@ -27,14 +31,47 @@ export default {
     //  },
     //}
     const { emit } = ctx
+    // const items = ref([
+    //   {
+    //     id: 12,
+    //     items: [
+    //       {
+    //         category: 2,
+    //         date_active_po: '2023-08-31',
+    //         date_active_s: '2023-05-30',
+    //         doljnost_name: 'Размещ в ячей хран «Фреш/Заморозка»',
+    //         id: 96,
+    //         price: 10,
+    //         service_id: 12,
+    //       },
+    //     ],
+    //     name: 'Размещ в ячей хран «Фреш/Заморозка»',
+    //   },
+    //   {
+    //     id: 63,
+    //     items: [
+    //       {
+    //         category: 2,
+    //         date_active_po: '2023-04-30',
+    //         date_active_s: '2023-01-01',
+    //         doljnost_name: 'Усиление',
+    //         id: 14,
+    //         price: 1500,
+    //         service_id: 63,
+    //       },
+    //     ],
+    //     name: 'Усиление',
+    //   },
+    // ])
     const items = ref([])
     const search = ref('')
-    const openDialog = (name) => {
-      emit('openDialog', name)
+    const openDialog = (params) => {
+      emit('openDialog', params)
     }
-    const loading = ref(false)
+    const loading = ref(true)
     const queryOptions = ref({
       page: 1,
+      totalPage: null,
     })
     const querySelections = async (isObs = false) => {
       if (search.value || isObs) {
@@ -54,7 +91,7 @@ export default {
         //  https://dummyjson.com/products/search?q=${string}&limit=${field.page}
         //`)
         //const { url } = props.field
-        const url = 'get/pagination/object_price_unassigned'
+        const url = `get/pagination/${props.tab.url}`
         //const filter = []
         console.log(props.objectInfo.id)
         const data = await getList(url, {
@@ -67,10 +104,16 @@ export default {
           filter: [],
           by: [{ alias: 'object_id', value: +route.params.id }],
         })
+        // Object.assign(queryOptions, data)
+        queryOptions.value.totalPage = data.totalPage
         if (data.rows && data.rows.length) {
           //props.field.items = [...props.field.items, ...data.rows]
           //Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
-          items.value = [...items.value, ...data.rows]
+          if (queryOptions.value.page === 1) {
+            items.value = [...data.rows]
+          } else {
+            items.value = [...items.value, ...data.rows]
+          }
           //props.field.items = data.rows
         } else {
           //Vue.set(props.field, 'items', [])
@@ -90,13 +133,18 @@ export default {
         if (items.value.length && !loading.value) {
           //field.page = field.page + 10
           //Vue.set(field, 'page', field.page + 1)
-          queryOptions.value.page = queryOptions.value.page + 1
-          const params = {
-            search: search.value,
+          if (
+            queryOptions.value.totalPage !== null &&
+            queryOptions.value.page !== queryOptions.value.totalPage
+          ) {
+            queryOptions.value.page = queryOptions.value.page + 1
+            const params = {
+              search: search.value,
+            }
+            loading.value = true
+            await querySelections(params, true)
           }
-          loading.value = true
-          await querySelections(params, true)
-          loading.value = true
+          // loading.value = true
         }
       }
     }
@@ -106,8 +154,16 @@ export default {
     //    //store.dispatch('form/get', `get/form/${props.tab.alias}/${id}`),
     //})
     //get/pagination/object_price_active
+    watch(
+      () => search.value,
+      () => {
+        queryOptions.value.page = 1
+        querySelections(true)
+      }
+    )
     onMounted(async () => {
       console.log('mount')
+      // queryOptions.value.page = 1
       await querySelections(true)
     })
     return {
@@ -116,6 +172,8 @@ export default {
       openDialog,
       endIntersect,
       loading,
+      querySelections,
+      queryOptions,
     }
   },
 }

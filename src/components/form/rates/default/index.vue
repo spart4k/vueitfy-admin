@@ -13,7 +13,12 @@
     </v-tabs>
     <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="item in tabs" :key="item.id">
-        <tab :objectInfo="objectInfo" @openDialog="openDialog" />
+        <tab
+          ref="tabRef"
+          :objectInfo="objectInfo"
+          :tab="item"
+          @openDialog="openDialog"
+        />
       </v-tab-item>
     </v-tabs-items>
     <v-row class="mt-5 justify-end">
@@ -22,18 +27,24 @@
         :color="action.color"
         class="ml-2"
         :loading="loading"
-        @click.prevent="clickHandler(action)"
+        @click.prevent="
+          clickHandler({
+            action,
+            skipValidation: action.skipValidation,
+            // notClose: true,
+          })
+        "
         v-for="action in actions"
         :key="action.id"
       >
         {{ action.text }}
       </v-btn>
-      <v-dialog v-model="dialog" width="500">
+      <v-dialog v-model="dialog" width="600">
         <v-card>
           <!--<v-card-title class="text-h5 grey lighten-2">
             Privacy Policy
           </v-card-title>-->
-          <v-card-title class="text-h5">{{ dialogName }}</v-card-title>
+          <v-card-title class="text-h5">{{ dialogParams.name }}</v-card-title>
           <v-card-text>
             <v-row>
               <v-col
@@ -86,7 +97,8 @@
                   </template>
                   <v-date-picker
                     v-model="formData[field.name]"
-                    min="1940-01-01"
+                    :min="field.min ? formData[field.min] : undefined"
+                    :max="field.max ? formData[field.max] : undefined"
                     color="primary"
                     locale="ru-RU"
                     :type="field.subtype === 'period' ? 'month' : undefined"
@@ -120,6 +132,7 @@
                   clickHandler({
                     action,
                     skipValidation: action.skipValidation,
+                    notClose: true,
                   })
                 "
                 v-for="action in actionsDialog"

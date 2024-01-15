@@ -40,8 +40,8 @@ export default {
     }
 
     window.addEventListener('click', ($event) => {
-      if ($event.target.className === 'v-overlay__scrim') {
-        store.commit('changeMenuStatus', false)
+      if ($event.target.className === 'v-overlay__scrim' && openMenu.value) {
+        // store.commit('changeMenuStatus', false)
       }
     })
 

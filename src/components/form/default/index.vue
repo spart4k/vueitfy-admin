@@ -160,6 +160,7 @@
             />
           </v-col>
         </v-row>
+        <v-divider class="mt-0 mb-3" v-if="tab.actions.length"></v-divider>
         <v-row class="justify-end">
           <v-btn
             type="submit"

@@ -4,30 +4,30 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
-    'eslint:recommended',
-    'prettier',
+    "plugin:vue/essential",
+    "eslint:recommended",
+    "prettier",
     // "plugin:prettier/recommended",
   ],
   parserOptions: {
-    parser: '@babel/eslint-parser',
+    parser: "@babel/eslint-parser",
   },
-  plugins: ['prettier'],
+  plugins: ["prettier"],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'vue/multi-word-component-names': 'off',
-    'vue/no-use-v-if-with-v-for': 'off',
-    'vue/valid-v-for': 'off',
-    'no-unused-vars': 'off',
-    'no-prototype-builtins': 'off',
-    'prettier/prettier': [
-      'error',
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "vue/multi-word-component-names": "off",
+    "vue/no-use-v-if-with-v-for": "off",
+    "vue/valid-v-for": "off",
+    "no-unused-vars": "off",
+    "no-prototype-builtins": "off",
+    "prettier/prettier": [
+      "error",
       {
-        endOfLine: 'auto',
+        endOfLine: "auto",
         semi: false,
         singleQuote: true,
       },
     ],
   },
-}
+};

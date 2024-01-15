@@ -58,6 +58,7 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
+      console.log(form.fields)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -143,7 +144,8 @@ export default function ({
     })
   }
 
-  const clickHandler = async ({ action, skipValidation }) => {
+  const clickHandler = async ({ action, skipValidation, notClose = false }) => {
+    console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
@@ -239,11 +241,15 @@ export default function ({
       })
       loading.value = false
       if (result.code && result.code === 1) {
-        emit('getItems')
-        emit('closePopup')
+        if (!notClose) {
+          emit('getItems')
+          emit('closePopup')
+        }
       } else if (!result.code) {
-        emit('getItems')
-        emit('closePopup')
+        if (!notClose) {
+          emit('getItems')
+          emit('closePopup')
+        }
       }
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
@@ -262,7 +268,8 @@ export default function ({
       }
       //emit('closePopup')
     } else if (action.action === 'closePopup') {
-      emit('closePopup', action.to)
+      console.log('close popup', notClose)
+      if (!notClose) emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
       action.variable = false
     } else if (action.action === 'custom') {
