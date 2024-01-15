@@ -524,14 +524,14 @@ const config = {
         backgroundColor: '#fff',
         type: 'addItem',
       },
-      {
-        label: 'Бухгалтерия excel',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        function: consolePanel,
-        backgroundColor: '#fff',
-        type: 'addItem',
-      },
+      // {
+      //   label: 'Бухгалтерия excel',
+      //   class: ['v-table-button--custom'],
+      //   url: '$IconSetting',
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      //   type: 'addItem',
+      // },
       // {
       //   label: 'Загрузить',
       //   class: ['v-table-button--custom'],
