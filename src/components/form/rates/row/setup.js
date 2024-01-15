@@ -5,6 +5,7 @@ import useForm from '@/compositions/useForm.js'
 
 import store from '@/store'
 import { stringField, dateField, selectField } from '@/utils/fields'
+import useRequest from '@/compositions/useRequest'
 
 export default {
   name: 'Row',
@@ -23,6 +24,28 @@ export default {
   },
   setup(props, ctx) {
     const { emit } = ctx
+    const confirm = ref(false)
+    const price_id = ref(null)
+    const confirmClick = async (value) => {
+      confirm.value = false
+      if (value) {
+        const result = await remove({
+          url: 'delete/service_price',
+          id: price_id.value,
+        })
+        console.log(result)
+        if (result.code === 1) {
+          const index = props.row.items.findIndex((el) => el.id === price_id)
+          props.row.items.splice(index, 1)
+        }
+      }
+    }
+    const context = {
+      root: {
+        store,
+        ctx,
+      },
+    }
     const formData = reactive({
       price: '',
       category: '',
@@ -131,6 +154,19 @@ export default {
       const { id, name } = props.row
       emit('openDialog', { id, name })
     }
+    const removeRow = (id) => {
+      confirm.value = true
+      price_id.value = id
+    }
+    const { makeRequest: remove } = useRequest({
+      context,
+      // successMessage: 'Сохранено',
+      request: (params) => {
+        // console.log(url)
+        const result = store.dispatch('form/del', params)
+        return result
+      },
+    })
     onMounted(() => {
       for (let key in formData) {
         formData[key] = props.row[key]
@@ -142,6 +178,10 @@ export default {
       showField,
       formData,
       openDialog,
+      removeRow,
+      confirm,
+      confirmClick,
+      price_id,
     }
   },
 }
