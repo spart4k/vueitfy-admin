@@ -420,6 +420,7 @@ export default function ({
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
             if (file.accepted) {
+              // console.log(store)
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
