@@ -3,6 +3,7 @@ import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 import store from '@/store'
+import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 import useForm from '@/compositions/useForm'
 import { requiredIf } from '@/utils/validation'
@@ -21,6 +22,8 @@ const Form27 = defineComponent({
     },
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,

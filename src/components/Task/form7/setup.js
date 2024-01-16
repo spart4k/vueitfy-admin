@@ -6,6 +6,7 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment'
+import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 
 const Form7 = defineComponent({
@@ -27,6 +28,8 @@ const Form7 = defineComponent({
     }
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const context = {
       root: {
