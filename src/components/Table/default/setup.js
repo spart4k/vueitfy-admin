@@ -546,6 +546,20 @@ const table = {
         emit('nextStage', {})
       } else if (button.label === 'Обновить') {
         await getItems()
+      } else if (type === 'sendPage') {
+        console.log(type)
+        const path = await store.dispatch('table/sendPage', {
+          filter: filtersColumns.value,
+        })
+        const link = document.createElement('a')
+        link.download = path.url
+        link.setAttribute('target', '_blank');
+        console.log(process.env.VUE_APP_STORE)
+        link.href = process.env.VUE_APP_STORE + path.url
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        console.log(path)
       }
       if (button.function) button.function()
     }

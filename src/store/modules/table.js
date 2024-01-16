@@ -1,5 +1,11 @@
 //import
-import { getList, getDetail, getImportX5, getLoadX5 } from '@/api/table'
+import {
+  getList,
+  getDetail,
+  getImportX5,
+  getLoadX5,
+  sendPage,
+} from '@/api/table'
 //import axios from 'axios'
 
 const auth = {
@@ -19,6 +25,10 @@ const auth = {
     },
     async getLoadX5(_, data) {
       const result = await getLoadX5(data)
+      return result
+    },
+    async sendPage(_, data) {
+      const result = await sendPage(data)
       return result
     },
   },

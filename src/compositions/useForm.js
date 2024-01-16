@@ -282,6 +282,14 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
+    } else if (action.action === 'sendPage') {
+      loading.value = true
+      const result = await changeForm({
+        url: action.url,
+        module: action.module,
+        formData: sortedData,
+      })
+      loading.value = false
     }
   }
 
@@ -764,7 +772,7 @@ export default function ({
 
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
-
+        console.log('dep1', dep)
         if (dep) {
           selectField.items = selectField.hideItems.filter((item) => {
             return !dep.options.includes(item.id)
@@ -776,15 +784,17 @@ export default function ({
         return
       }
       field.loading = true
-
       if (depField) targetField.loading = true
-
-      const data = await store.dispatch(dependence.module, {
-        value,
-        field,
-        url,
-        body,
-      })
+      let data
+      if (dependence.module) {
+        data = await store.dispatch(dependence.module, {
+          value,
+          field,
+          url,
+          body,
+        })
+      }
+      console.log('PARAMS EDIT', targetField)
       if (targetField) {
         //if (typeof data === 'object') data = [data]
         targetField.items = targetField.defaultItems
@@ -800,10 +810,24 @@ export default function ({
           ? [...targetField.defaultItems, ...data]
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
+        console.log('PARAMS EDIT 2')
+        if (targetField.hasOwnProperty('objectData')) {
+          if (data.length) {
+            targetField.objectData = data
+          } else {
+            const findedDep = targetField.dependence.find(
+              (depTarget) => depTarget.type === 'update'
+            )
+            findedDep.fields.forEach((el) => (formData[el] = ''))
+          }
+          console.log(data)
+        }
       }
-      if (data.length === 1) {
+      if (data?.length === 1) {
         // formData[depField] = card.id
       }
+      console.log('PARAMS EDIT 1')
+      console.log(card)
       if (card) {
         if (dependence.fillField) {
           dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -824,7 +848,8 @@ export default function ({
           }
         }
       }
-
+      console.log(params)
+      console.log(dependence.type)
       if (dependence.action) {
         if (dependence.action.type === 'hideOptions') {
           const selectField = form.fields.find(
@@ -846,6 +871,24 @@ export default function ({
             }
           }
           // говно чтобы прятать option после обновления
+        }
+      }
+      if (dependence.type === 'update') {
+        console.log(field)
+        // dependence
+        if (field.hasOwnProperty('objectData')) {
+          if (field.objectData?.length) {
+            const findedEl = field.objectData?.find((el) => el.id === value)
+            if (findedEl) {
+              dependence.fields.forEach((el) => {
+                formData[el] = findedEl[el]
+              })
+            }
+          } else {
+            dependence.fields.forEach((el) => {
+              formData[el] = ''
+            })
+          }
         }
       }
       field.loading = false
@@ -889,9 +932,7 @@ export default function ({
           let value, type
           if (filter.source === 'fromPrev') {
             value = form?.formData[filter.field]
-          } else if (filter.source === undefined) {
-            value = filter.value
-          } else if (filter.source !== 'formData') {
+          } else if (filter.source && filter.source !== 'formData') {
             const source = eval(filter.source)
             value = source
           } else if (filter.source === 'formData') {
@@ -1199,7 +1240,8 @@ export default function ({
     const checkIncludesPermissions = (el) => {
       return el.permissions.includes(permission.value)
     }
-    if (typeof field.readonly === 'boolean') return field.readonly
+    if (typeof field.readonly === 'boolean')
+      return environment.readonlyAll ? true : field.readonly
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
@@ -1222,6 +1264,16 @@ export default function ({
               //   conditionEl.type
               // )
               return checkIncludesPermissions(conditionEl) === conditionEl.type
+            } else if (conditionEl.hasOwnProperty('funcCondition')) {
+              const conditionContext = {
+                store,
+                formData,
+                environment,
+              }
+              console.log(conditionEl.funcCondition(conditionContext))
+              return (
+                conditionEl.funcCondition(conditionContext) === conditionEl.type
+              )
             } else {
               return (
                 checkIncludesData(conditionEl) &&
@@ -1230,8 +1282,11 @@ export default function ({
             }
           })
         field.readonly.value = condition()
+        console.log(environment)
         return environment.readonlyAll ? true : field.readonly.value
       }
+    } else if (typeof field.readonly === 'undefined') {
+      return environment.readonlyAll
     }
   }
 
