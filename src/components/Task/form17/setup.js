@@ -3,6 +3,7 @@ import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+import { useRouter, useRoute } from 'vue-router/composables'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import Dropzone from '@/components/Dropzone/default'
@@ -22,10 +23,14 @@ const Form17 = defineComponent({
     },
   },
   setup({ data }, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
 

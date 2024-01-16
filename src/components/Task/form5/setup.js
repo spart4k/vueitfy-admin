@@ -23,7 +23,9 @@ const Form5 = defineComponent({
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const textInfo = {

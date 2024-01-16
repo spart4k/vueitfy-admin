@@ -4,6 +4,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import DateTimePicker from '@/components/Datetimepicker/index.vue'
 import useRequest from '@/compositions/useRequest'
+import { useRouter, useRoute } from 'vue-router/composables'
 import store from '@/store'
 
 const bankItemsSpr = {
@@ -88,10 +89,14 @@ const docForm = defineComponent({
     }
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
         ctx,
+        route,
+        router,
       },
     }
     const bankItems = Object.values(bankItemsSpr)

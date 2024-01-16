@@ -1,6 +1,7 @@
 import { defineComponent, ref } from 'vue'
 import DocFormWithConfirm from '@/components/Task/el/DocFormWithConfirm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
+import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment/moment'
@@ -22,10 +23,14 @@ const Form2 = defineComponent({
     },
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const textInfo = {

@@ -34,7 +34,9 @@ const DocFormWithConfirm = defineComponent({
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const formObj = ref({

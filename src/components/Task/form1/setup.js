@@ -11,6 +11,7 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment'
+import { useRouter, useRoute } from 'vue-router/composables'
 
 const Form1 = defineComponent({
   name: 'Form1',
@@ -36,10 +37,14 @@ const Form1 = defineComponent({
     }
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const finalData = ref({})

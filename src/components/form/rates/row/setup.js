@@ -43,7 +43,9 @@ export default {
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const formData = reactive({

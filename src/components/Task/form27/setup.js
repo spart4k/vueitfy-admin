@@ -24,7 +24,9 @@ const Form27 = defineComponent({
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const account_id = computed(() => store.state.user.account_id)

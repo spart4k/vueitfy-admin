@@ -23,7 +23,9 @@ const Form20 = defineComponent({
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
 
