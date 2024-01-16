@@ -64,7 +64,7 @@ const routes = [
         name: 'payment-add',
         path: 'add',
         meta: {
-          mode: ['add'],
+          mode: ['add-edit-logistic'],
           label: 'Добавить начисление',
         },
         component: Detail,
@@ -74,6 +74,15 @@ const routes = [
         path: 'load',
         meta: {
           mode: ['load'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'payment/:id',
+        path: ':id',
+        meta: {
+          mode: ['add-edit-logistic'],
+          label: 'Редактировать начисление',
         },
         component: Detail,
       },

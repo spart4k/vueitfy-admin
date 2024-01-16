@@ -1950,8 +1950,20 @@ const config = {
             filter: [],
           },
           {
-            alias: 'direction_id',
+            alias: 'payment_account_id',
             filter: [],
+          },
+          {
+            alias: 'payment_direction_id',
+            filter: [
+              {
+                field: 'account_id',
+                // alias: 'account_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
           },
           {
             alias: 'doljnost_id',
@@ -1980,7 +1992,7 @@ const config = {
         ],
         alias: 'payment',
         active: false,
-        path: 'add',
+        path: 'add-edit-logistic',
         fields: [
           selectField({
             label: 'Статус',
@@ -1999,13 +2011,32 @@ const config = {
             value: +1,
             validations: { required },
             bootstrapClass: [''],
-            // readonly: {
-            //   value: false,
-            //   conditions: [
-
-            //   ]
-            // }
-            readonly: true,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  funcCondition: (context) =>
+                    context.formData.account_id !==
+                      context.store.state.user.id &&
+                    context.store.state.user.is_personal_vertical &&
+                    (context.formData.status_id === 2 ||
+                      context.formData.status_id === 1 ||
+                      context.formData.status_id === 3),
+                  type: false,
+                },
+              ],
+            },
+            hiding: {
+              conditions: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [1, 2, 3],
+                  values: [2, 3],
+                },
+              ],
+            },
+            // readonly: true,
           }),
           selectField({
             label: 'Статус от',
@@ -2021,7 +2052,7 @@ const config = {
               cols: 12,
               sm: 6,
             },
-            validations: { required },
+            // validations: { required },
             bootstrapClass: [''],
             readonly: true,
           }),
@@ -2038,7 +2069,7 @@ const config = {
               cols: 12,
               sm: 3,
             },
-            validations: { hasDate, hasTime },
+            // validations: { hasDate, hasTime },
             bootstrapClass: [''],
             disable: false,
             readonly: true,
@@ -2053,13 +2084,14 @@ const config = {
               cols: 12,
               sm: 3,
             },
-            validations: { required },
+            // validations: { required },
             bootstrapClass: [''],
             readonly: true,
           }),
           selectField({
             label: 'Менеджер',
             name: 'account_id',
+            alias: 'payment_account_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -2076,10 +2108,11 @@ const config = {
             bootstrapClass: [''],
             updateList: [
               {
-                alias: 'direction_id',
+                alias: 'payment_direction_id',
                 filter: [
                   {
                     field: 'account_id',
+                    // alias: 'account_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -2091,7 +2124,7 @@ const config = {
           selectField({
             label: 'Направление',
             name: 'direction_id',
-            // alias: 'direction_json',
+            alias: 'payment_direction_id',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -2105,6 +2138,15 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            hiding: {
+              conditions: [
+                {
+                  target: 'mode',
+                  value: 'add',
+                  values: [2],
+                },
+              ],
+            },
             dependence: [
               {
                 type: 'api',
@@ -2116,7 +2158,7 @@ const config = {
                 //    value: '',
                 //  },
                 //],
-                url: 'get/pagination_list/object',
+                url: 'get/pagination_list/payment_object_id',
               },
               {
                 type: 'api',
@@ -2137,24 +2179,54 @@ const config = {
                 url: 'get/pagination_list/personal',
               },
               {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'object_id',
-                //filter: [
-                //  {
-                //    field: 'direction_id',
-                //    value: '',
-                //  },
-                //],
-                condition: [
-                  {
-                    field: 'direction_id',
-                    value: [1],
-                  },
-                ],
-                url: 'get/pagination_list/object',
+                //fields: ['statement_card', 'cardowner'],
+                type: 'default',
+                action: {
+                  type: 'hideOptions',
+                  //values: [8],
+                  field: 'direction_id',
+                  targetField: 'vid_vedomost_id',
+                  condition: [
+                    {
+                      value: 1,
+                      options: [1, 3, 5, 8],
+                    },
+                    {
+                      value: [6],
+                      options: [2],
+                    },
+                    {
+                      value: [1],
+                      options: [2],
+                    },
+                    {
+                      value: [1, 6],
+                      options: [2],
+                    },
+                  ],
+                },
+                //url: 'object_id/avatar_with_user_key_id',
               },
+              // {
+              //   type: 'api',
+              //   module: 'selects/getListUpdate',
+              //   field: 'object_id',
+              //   //filter: [
+              //   //  {
+              //   //    field: 'direction_id',
+              //   //    value: '',
+              //   //  },
+              //   //],
+              //   condition: [
+              //     {
+              //       field: 'direction_id',
+              //       value: [1],
+              //     },
+              //   ],
+              //   url: 'get/pagination_list/object',
+              // },
             ],
+            requiredFields: ['account_id'],
           }),
           autocompleteField({
             label: 'Объект',
@@ -2172,14 +2244,14 @@ const config = {
             url: 'get/pagination_list/payment_object_id',
             position: {
               cols: 12,
-              sm: 4,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
             filter: [
               {
                 field: 'account_id',
-                source: 'formData',
+                // source: 'formData',
                 type: 'array',
                 value: '',
               },
@@ -2203,26 +2275,21 @@ const config = {
                 // ],
                 url: 'get/pagination_list/payment_personal_id',
               },
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'object_id',
-                filter: [
-                  {
-                    field: 'object_json',
-                    type: 'array',
-                    value: '',
-                  },
-                ],
-                condition: [
-                  {
-                    field: 'direction_id',
-                    value: [1],
-                  },
-                ],
-                url: 'get/pagination_list/object',
-              },
+              // {
+              //   type: 'api',
+              //   module: 'selects/getListUpdate',
+              //   field: 'object_id',
+              //   filter: [
+              //     {
+              //       field: 'object_json',
+              //       type: 'array',
+              //       value: '',
+              //     },
+              //   ],
+              //   url: 'get/pagination_list/payment_object_id',
+              // },
             ],
+            requiredFields: ['direction_id'],
           }),
           autocompleteField({
             label: 'Линейщик',
@@ -2240,26 +2307,26 @@ const config = {
             url: 'get/pagination_list/payment_personal_id',
             position: {
               cols: 12,
-              sm: 4,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
             filter: [
               {
                 field: 'account_id',
-                source: 'formData',
+                // source: 'formData',
                 type: 'array',
                 value: '',
               },
               {
                 field: 'direction_id',
-                source: 'formData',
+                // source: 'formData',
                 type: 'array',
                 value: '',
               },
               {
                 field: 'object_id',
-                source: 'formData',
+                // source: 'formData',
                 type: 'array',
                 value: '',
               },
@@ -2273,6 +2340,7 @@ const config = {
                 field: 'personal_bank_id',
               },
             ],
+            requiredFields: ['object_id'],
           }),
           selectField({
             label: 'Вид ведомости',
@@ -2290,26 +2358,7 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
-            hiding: {
-              conditions: [
-                // {
-                //   target: 'mode',
-                //   value: 'edit',
-                //   values: [1],
-                // },
-                {
-                  target: 'formData',
-                  field: 'direction_id',
-                  value: [1, 6],
-                  values: [9],
-                },
-                {
-                  target: 'mode',
-                  value: 'add',
-                  values: [1],
-                },
-              ],
-            },
+            requiredFields: ['direction_id'],
           }),
           //selectField({
           //  label: 'Статья расхода',
@@ -2407,22 +2456,22 @@ const config = {
           //   bootstrapClass: [''],
           //   isShow: true,
           // }),
-          dateField({
-            label: 'Назначение на дату',
-            name: 'date_target',
-            // subtype: 'multiple',
-            placeholder: '',
-            classes: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
+          // dateField({
+          //   label: 'Назначение на дату',
+          //   name: 'date_target',
+          //   // subtype: 'multiple',
+          //   placeholder: '',
+          //   classes: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
           stringField({
             label: 'Сумма',
-            name: 'sum',
+            name: 'total',
             placeholder: '',
             class: [''],
             position: {
@@ -2445,18 +2494,18 @@ const config = {
           //   bootstrapClass: [''],
           //   isShow: true,
           // }),
-          stringField({
-            label: 'Итог',
-            name: 'total',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
+          // stringField({
+          //   label: 'Итог',
+          //   name: 'total',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
           //stringField({
           //  label: 'Минус нал',
           //  name: 'minus_nal',
@@ -2482,8 +2531,9 @@ const config = {
             items: [],
             position: {
               cols: 12,
-              sm: 5,
+              sm: 4,
             },
+            objectData: undefined,
             defaultItems: [
               {
                 id: 11,
@@ -2496,9 +2546,10 @@ const config = {
             dependence: [
               {
                 type: 'update',
-                fields: ['fio', 'invoice'],
+                fields: ['fio', 'invoice', 'bank_id'],
               },
             ],
+            requiredFields: ['personal_id'],
           }),
           stringField({
             label: 'Р/С',
@@ -2507,7 +2558,7 @@ const config = {
             class: [''],
             position: {
               cols: 12,
-              sm: 3,
+              sm: 4,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -2537,6 +2588,7 @@ const config = {
             },
             //validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           textareaField({
             label: 'Комментарий ОКК',
@@ -2549,6 +2601,7 @@ const config = {
             },
             //validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           textareaField({
             label: 'Примечание',
@@ -2577,6 +2630,21 @@ const config = {
             //validations: { required },
             //isShow: false,
           }),
+          textBlock({
+            label: 'Должность',
+            name: 'bank_id',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            value: 0,
+            //validations: { required },
+            //isShow: false,
+          }),
         ],
         actions: [
           stringAction({
@@ -2591,11 +2659,44 @@ const config = {
           stringAction({
             text: 'Сохранить',
             type: 'submit',
+            module: 'form/create',
+            name: 'createForm',
+            url: 'create/payment',
+            action: 'createForm',
+            color: 'primary',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'mode',
+                  target: 'environment',
+                  value: ['edit'],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
             module: 'form/putForm',
             name: 'saveFormId',
             url: 'update/payment',
             action: 'saveFormId',
             color: 'primary',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'mode',
+                  target: 'environment',
+                  value: ['add'],
+                  type: true,
+                },
+              ],
+            },
           }),
         ],
       },
