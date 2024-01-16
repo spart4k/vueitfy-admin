@@ -17,7 +17,7 @@ import router from '@/router'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
-export default function ({
+export default function zxc({
   fields = {},
   watcher,
   context,
@@ -150,6 +150,7 @@ export default function ({
     console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
+    console.log('sortedData', sortedData)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -232,6 +233,17 @@ export default function ({
           formData: sortedData,
         },
         { update: true }
+      )
+      loading.value = false
+    } else if (action.action === 'customFormStore') {
+      loading.value = true
+      await loadStoreFile(
+        {
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        },
+        { change: true }
       )
       loading.value = false
     } else if (action.action === 'createForm') {
@@ -336,7 +348,9 @@ export default function ({
 
   const sortData = ({ action }) => {
     const newForm = {}
+
     if (!form) return
+    console.log('formData', formData)
     Object.keys(formData).forEach((key) => {
       const item = form?.fields?.find((x) => x.name === key)
 
@@ -348,19 +362,17 @@ export default function ({
           newForm[item.prescription][itemIndex] = {}
         newForm[item.prescription][itemIndex][key.split('%')[0]] = formData[key]
       }
-      console.log('ISSHOW', item.name, item.isShow.value)
+
       if (
         ((typeof item.isShow === 'boolean' && item.isShow) ||
           (typeof item.isShow === 'object' && item.isShow.value)) &&
         !item.notSend
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
-        else if (item.requestType === 'number')
-          newForm[key] = Number(formData[key])
         else newForm[key] = formData[key]
       }
 
-      if (item.notSend || item.prescription) delete newForm[key]
+      // if (item.notSend || item.prescription) delete newForm[key]
 
       if (action?.useStorageKey?.length) {
         action.useStorageKey.forEach((item) => {
@@ -375,10 +387,16 @@ export default function ({
         })
       }
 
+      if (item.requestType === 'number') {
+        if (item.requestKey)
+          newForm[item.requestKey] = Number(newForm[item.requestKey])
+        else newForm[key] = Number(newForm[key])
+      }
+
       if (item.stringify) {
         if (item.requestKey)
           newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
-        else newForm[key] = JSON.stringify(formData[key])
+        else newForm[key] = JSON.stringify(newForm[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
 
@@ -405,6 +423,7 @@ export default function ({
   const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
     const { update } = params
+    const { change } = params
 
     const queries = []
 
@@ -465,7 +484,9 @@ export default function ({
           if (dropzone.grouping) {
             const fileArray = [...data]
             fileArray.forEach((file) => {
+              // file.name = file.path
               delete file.request
+              // delete file.path
             })
             setFormData(fileArray)
           } else {
@@ -475,9 +496,9 @@ export default function ({
 
         if (dropzone.stash) {
           formData[dropzone.stash].forEach((file, index) => {
-            formData[dropzone.name].push({
-              name: file.name,
-              index: formData[dropzone.name].length + index,
+            queryParams.formData[dropzone.name].push({
+              path: file.name,
+              index: queryParams.formData[dropzone.name].length + 1,
             })
           })
         }
@@ -486,6 +507,9 @@ export default function ({
 
     if (update) {
       const result = await changeForm(queryParams)
+    } else if (change) {
+      console.log('TRIGGER CHANGE')
+      const result = await changeFormId(queryParams)
     } else {
       const result = await createForm(queryParams)
     }
@@ -663,6 +687,7 @@ export default function ({
     )
 
   const getDependies = async (params) => {
+    console.log('/////////////////////////////')
     const { value, field } = params
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
@@ -787,7 +812,6 @@ export default function ({
       field.loading = true
 
       if (depField) targetField.loading = true
-
       const data = await store.dispatch(dependence.module, {
         value,
         field,
@@ -915,7 +939,6 @@ export default function ({
           })
         })
       }
-      console.log('filters', filters)
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
@@ -1052,10 +1075,6 @@ export default function ({
           }
         }
       }
-
-      // setInterval(() => {
-      //   console.log('////////////', formData)
-      // }, 4000)
 
       const prescription = form?.fields.find(
         (x) => x.prescription
@@ -1205,7 +1224,6 @@ export default function ({
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])
       } else {
-        console.log(el.value, source[el.field], 'SOURCE')
         result = el.value.includes(source[el.field])
       }
       return result
@@ -1213,33 +1231,24 @@ export default function ({
     const checkIncludesPermissions = (el) => {
       return el.permissions.includes(permission.value)
     }
-    if (typeof field.readonly === 'boolean') return field.readonly
+    if (typeof field.readonly === 'boolean')
+      return environment.readonlyAll ? true : field.readonly
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
           field.readonly.condition.some((conditionEl) => {
-            console.log(conditionEl.target)
             if (
               (conditionEl.target === 'formData' ||
                 conditionEl.target === 'environment') &&
               !conditionEl.permissions
             ) {
-              console.log(
-                conditionEl,
-                checkIncludesData(conditionEl),
-                conditionEl.type
-              )
-              return checkIncludesData(conditionEl) && conditionEl.type
+              return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
-              // console.log(
-              //   checkIncludesPermissions(conditionEl),
-              //   conditionEl.type
-              // )
               return checkIncludesPermissions(conditionEl) === conditionEl.type
             } else {
               return (
-                checkIncludesData(conditionEl) &&
-                checkIncludesPermissions(conditionEl) === conditionEl.type
+                (checkIncludesData(conditionEl) &&
+                  checkIncludesPermissions(conditionEl)) === conditionEl.type
               )
             }
           })

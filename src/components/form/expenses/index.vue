@@ -33,21 +33,6 @@
               "
               class="field-loading gradient"
             ></div>
-            <!-- <v-select
-              v-else-if="showField('select', field)"
-              :items="field.items"
-              :item-text="field.selectOption.text"
-              :item-value="field.selectOption.value"
-              :label="field.label"
-              v-model="formData[field.name]"
-              :error-messages="formErrors[field?.name]"
-              persistent-hint
-              clearable
-              :multiple="field.subtype === 'multiselect'"
-              @change="changeSelect({ value: formData[field.name], field })"
-              :disabled="disabledField(field)"
-              :readonly="readonlyField(field)"
-            ></v-select> -->
             <Autocomplete
               v-else-if="showField('select', field)"
               :field="field"
@@ -185,7 +170,7 @@
                   formData[field.name] = item.value
                   changeAutocomplete({ value: formData[field.name], field })
                 "
-                :readonly="readonlyField(field)"
+                :disabled="readonlyField(field)"
               >
                 {{ item.text }}
               </v-btn>
@@ -195,6 +180,7 @@
               block
               :color="field.color"
               @click="changeBlockCount(field.increase)"
+              :disabled="readonlyField(field)"
             >
               {{ field.label }}
             </v-btn>
@@ -232,6 +218,7 @@
                       @click="
                         editFile({ index, formItem: formData[field.name] })
                       "
+                      v-if="!readonlyField(field)"
                       icon
                     >
                       <v-icon small> $IconEdit </v-icon>
@@ -240,6 +227,7 @@
                       @click="
                         deleteFile({ index, formItem: formData[field.name] })
                       "
+                      v-if="!readonlyField(field)"
                       icon
                     >
                       <v-icon small> $IconDelete </v-icon>

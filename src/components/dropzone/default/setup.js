@@ -29,6 +29,9 @@ export default {
       type: Array,
       default: () => [],
     },
+    readonly: {
+      type: Boolean,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -45,8 +48,9 @@ export default {
       maxFilesize: 10,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
       addRemoveLinks: props?.options?.removeble ? true : false,
-      dictDefaultMessage: 'Переместите или выберите файл',
+      dictDefaultMessage: props.readonly ? '' : 'Переместите или выберите файл',
       acceptedFiles: props.options?.acceptedFiles,
+      clickable: props.readonly ? false : true,
       //dictRemoveFile: 'delete',
       //clickable: true,
       //previewsContainer: false,

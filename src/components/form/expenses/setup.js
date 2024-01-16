@@ -113,6 +113,23 @@ export default {
         })
       },
     })
+    const { makeRequest: changeFormId } = useRequest({
+      context,
+      successMessage: params?.successMessage === false ? false : 'Сохранено',
+      request: (params) => {
+        console.log()
+        let id
+        if (props.tab.routeParam) {
+          id = route.params[props.tab.routeParam]
+        } else {
+          id = route.params.id
+        }
+        return store.dispatch(params.module, {
+          url: params.url + '/' + id,
+          body: { data: { ...params.formData } },
+        })
+      },
+    })
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
@@ -137,10 +154,22 @@ export default {
           selectField({
             label: 'Наименование',
             name: `rashod_vid%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
             prescription: 'items',
             class: [''],
             value: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             items: categoryItems,
             selectOption: {
               text: 'name',
@@ -156,7 +185,19 @@ export default {
           stringField({
             label: 'Кол-во',
             name: `count%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             prescription: 'items',
             class: [''],
             position: {
@@ -169,7 +210,19 @@ export default {
           stringField({
             label: 'Стоимость',
             name: `price%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             prescription: 'items',
             class: [''],
             position: {
@@ -182,10 +235,21 @@ export default {
           checkboxField({
             label: 'ВДС',
             name: `vds%${itemIndex + 1}`,
+            notSend: true,
             value: false,
             prescription: 'items',
             placeholder: '',
-            readonly: false,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             class: [''],
             position: {
               cols: 12,
@@ -196,7 +260,19 @@ export default {
           stringField({
             label: 'Точное наименование',
             name: `exact_name%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             prescription: 'items',
             class: [''],
             position: {
@@ -330,6 +406,7 @@ export default {
       changeForm,
       mode: isEdit.value,
       createForm,
+      changeFormId,
     })
     onMounted(async () => {
       await getData()

@@ -599,7 +599,6 @@ const config = {
             name: 'on_yourself',
             value: false,
             placeholder: '',
-            readonly: false,
             class: [''],
             updateList: [
               {
@@ -1702,6 +1701,7 @@ const config = {
             },
             items: [],
             prescription: 'items',
+            notSend: true,
             position: {
               cols: 12,
               sm: 6,
@@ -1715,6 +1715,7 @@ const config = {
             placeholder: '',
             class: [''],
             prescription: 'items',
+            notSend: true,
             position: {
               cols: 12,
               sm: 2,
@@ -1728,6 +1729,7 @@ const config = {
             placeholder: '',
             class: [''],
             prescription: 'items',
+            notSend: true,
             position: {
               cols: 12,
               sm: 2,
@@ -1740,9 +1742,9 @@ const config = {
             name: 'vds',
             value: false,
             placeholder: '',
-            readonly: false,
             class: [''],
             prescription: 'items',
+            notSend: true,
             position: {
               cols: 12,
               sm: 2,
@@ -1755,6 +1757,7 @@ const config = {
             placeholder: '',
             class: [''],
             prescription: 'items',
+            notSend: true,
             position: {
               cols: 12,
               sm: 12,
@@ -1765,7 +1768,6 @@ const config = {
             type: 'btn',
             name: 'btn-decrease',
             id: 'btn-decrease',
-            readonly: false,
             disable: false,
             isShow: true,
             mode: 'all',
@@ -1782,7 +1784,6 @@ const config = {
             type: 'btn',
             name: 'btn-increase',
             id: 'btn-increase',
-            readonly: false,
             disable: false,
             isShow: true,
             mode: 'all',
@@ -2042,7 +2043,6 @@ const config = {
             notPut: true,
             placeholder: '',
             grouping: 'multiple',
-            readonly: false,
             class: [''],
             position: {
               cols: 12,
@@ -2097,7 +2097,6 @@ const config = {
               store?.state?.user.permission_id === 16 ||
               store?.state?.user.permission_id === 19,
             placeholder: '',
-            readonly: false,
             class: [''],
             position: {
               cols: 12,
@@ -2535,7 +2534,6 @@ const config = {
             label: 'Статус',
             name: 'status',
             alias: 'status_zr',
-            requestKey: 'status_id',
             placeholder: '',
             class: [''],
             value: '',
@@ -2557,6 +2555,7 @@ const config = {
             placeholder: '',
             value: '',
             class: [''],
+            readonly: true,
             disabled: true,
             selectOption: {
               text: 'name',
@@ -2603,8 +2602,18 @@ const config = {
             name: 'on_yourself',
             value: false,
             placeholder: '',
-            readonly: false,
             class: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             updateList: [
               {
                 alias: 'req_zr_id',
@@ -2833,6 +2842,17 @@ const config = {
             placeholder: '',
             class: [''],
             value: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2922,6 +2942,17 @@ const config = {
             placeholder: '',
             class: [''],
             notSend: true,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             selectOption: {
               text: 'name',
               value: 'id',
@@ -2948,6 +2979,17 @@ const config = {
             position: {
               cols: 12,
               sm: 12,
+            },
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
             },
             value: 1,
             default: 1,
@@ -3166,6 +3208,17 @@ const config = {
             subtype: 'single',
             placeholder: '',
             class: ['background-middle'],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             selectOption: {
               text: 'name',
               value: 'id',
@@ -3291,6 +3344,17 @@ const config = {
             subtype: 'single',
             placeholder: '',
             class: ['background-middle'],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             selectOption: {
               text: 'name',
               value: 'id',
@@ -3347,6 +3411,17 @@ const config = {
             requestKey: 'account_id',
             // subtype: 'single',
             subtype: 'single',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             placeholder: '',
             class: ['background-down'],
             selectOption: {
@@ -3359,20 +3434,6 @@ const config = {
               sm: 12,
             },
             validations: { required },
-            // filter: [
-            //   {
-            //     field: 'direction_id',
-            //     value: '',
-            //   },
-            //   {
-            //     field: 'personal_zr',
-            //     value: '',
-            //   },
-            //   {
-            //     field: 'personal_object_zr',
-            //     value: '',
-            //   },
-            // ],
             bootstrapClass: [''],
             updateList: [
               {
@@ -3432,6 +3493,17 @@ const config = {
             requestKey: 'type_object',
             // subtype: 'single',
             subtype: 'single',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             placeholder: '',
             class: ['background-middle'],
             selectOption: {
@@ -3467,6 +3539,17 @@ const config = {
             requestKey: 'object_id',
             // subtype: 'single',
             subtype: 'single',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             placeholder: '',
             class: ['background-down'],
             page: 1,
@@ -3559,6 +3642,17 @@ const config = {
             requestKey: 'permission_id',
             // subtype: 'single',
             subtype: 'single',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             placeholder: '',
             class: ['background-middle'],
             selectOption: {
@@ -3605,6 +3699,17 @@ const config = {
             requestKey: 'account_id',
             // subtype: 'single',
             subtype: 'single',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             placeholder: '',
             class: ['background-down'],
             selectOption: {
@@ -3679,6 +3784,17 @@ const config = {
             // name: 'rashod_category_id',
             requestKey: 'category_id',
             placeholder: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             class: [''],
             value: '',
             selectOption: {
@@ -3713,6 +3829,17 @@ const config = {
             name: 'rashod_vid',
             prescription_name: 'rashod_vid_id',
             placeholder: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             class: [''],
             value: '',
             selectOption: {
@@ -3721,6 +3848,7 @@ const config = {
             },
             items: [],
             prescription: 'items',
+            notSend: true,
             position: {
               cols: 12,
               sm: 6,
@@ -3735,6 +3863,18 @@ const config = {
             placeholder: '',
             class: [''],
             prescription: 'items',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
+            notSend: true,
             position: {
               cols: 12,
               sm: 2,
@@ -3749,6 +3889,18 @@ const config = {
             placeholder: '',
             class: [''],
             prescription: 'items',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
+            notSend: true,
             position: {
               cols: 12,
               sm: 2,
@@ -3762,9 +3914,20 @@ const config = {
             prescription_name: 'is_debit',
             value: false,
             placeholder: '',
-            readonly: false,
             class: [''],
             prescription: 'items',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
+            notSend: true,
             position: {
               cols: 12,
               sm: 2,
@@ -3778,6 +3941,18 @@ const config = {
             placeholder: '',
             class: [''],
             prescription: 'items',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
+            notSend: true,
             position: {
               cols: 12,
               sm: 12,
@@ -3788,7 +3963,6 @@ const config = {
             type: 'btn',
             name: 'btn-decrease',
             id: 'btn-decrease',
-            readonly: false,
             disable: false,
             isShow: true,
             mode: 'all',
@@ -3796,6 +3970,17 @@ const config = {
             class: [''],
             position: { cols: 12, sm: 6 },
             notSend: true,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             bootstrapClass: [''],
             label: '-',
             color: 'primary',
@@ -3805,7 +3990,6 @@ const config = {
             type: 'btn',
             name: 'btn-increase',
             id: 'btn-increase',
-            readonly: false,
             disable: false,
             isShow: true,
             mode: 'all',
@@ -3813,6 +3997,17 @@ const config = {
             class: [''],
             position: { cols: 12, sm: 6 },
             notSend: true,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             bootstrapClass: [''],
             label: '+',
             color: 'success',
@@ -3827,6 +4022,17 @@ const config = {
             placeholder: '',
             class: [''],
             value: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1, 6],
+                  type: false,
+                },
+              ],
+            },
             selectOption: {
               text: 'name',
               value: 'id',
@@ -4046,6 +4252,17 @@ const config = {
             subtype: 'single',
             placeholder: '',
             class: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1, 6],
+                  type: false,
+                },
+              ],
+            },
             selectOption: {
               text: 'name',
               value: 'id',
@@ -4076,14 +4293,24 @@ const config = {
             placeholder: '',
             grouping: 'multiple',
             stash: 'schet',
-            readonly: false,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1, 6],
+                  type: false,
+                },
+              ],
+            },
             class: [''],
             position: {
               cols: 12,
               sm: 12,
             },
             bootstrapClass: [''],
-            validations: { required },
+            // validations: { required },
             options: {
               removeble: true,
               withoutSave: false,
@@ -4102,13 +4329,23 @@ const config = {
             type: 'schet',
             name: 'schet',
             id: 'schet',
-            readonly: false,
             disable: false,
             mode: 'all',
             placeholder: '',
             class: [''],
             position: { cols: 12, sm: 12 },
             notSend: true,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1, 6],
+                  type: false,
+                },
+              ],
+            },
             isShow: {
               value: false,
               conditions: [{ field: 'payment_type', value: [4] }],
@@ -4121,6 +4358,18 @@ const config = {
             alias: 'pd.note',
             placeholder: '',
             class: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  permissions: [12],
+                  value: [5],
+                  type: false,
+                },
+              ],
+            },
             position: {
               cols: 12,
               sm: 12,
@@ -4133,6 +4382,17 @@ const config = {
             name: 'note',
             alias: 'pd.note',
             placeholder: '',
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1],
+                  type: false,
+                },
+              ],
+            },
             class: [''],
             position: {
               cols: 12,
@@ -4148,7 +4408,6 @@ const config = {
               store?.state?.user.permission_id === 16 ||
               store?.state?.user.permission_id === 19,
             placeholder: '',
-            readonly: false,
             class: [''],
             position: {
               cols: 12,
@@ -4193,7 +4452,7 @@ const config = {
             bootstrapClass: [''],
           }),
           stringField({
-            label: 'to_name',
+            label: 'name',
             name: 'to_name',
             placeholder: '',
             class: [''],
@@ -4211,6 +4470,7 @@ const config = {
           stringField({
             label: 'region_id',
             name: 'region_id',
+            requestKey: 'regions_id',
             requestType: 'number',
             placeholder: '',
             class: [''],
@@ -4273,11 +4533,11 @@ const config = {
             text: 'Сохранить',
             type: 'submit',
             color: 'primary',
-            module: 'form/create',
-            url: 'create/zayavka',
+            module: 'form/putForm',
+            url: 'update/zayavka',
             // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
-            name: 'saveFormStore',
-            action: 'saveFormStore',
+            name: 'customFormStore',
+            action: 'customFormStore',
           }),
         ],
         formData: {},
