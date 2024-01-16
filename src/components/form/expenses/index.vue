@@ -199,7 +199,7 @@
               {{ field.label }}
             </v-btn>
             <v-card
-              max-height="230"
+              max-height="206"
               class="overflow-auto"
               outlined
               v-else-if="showField('schet', field)"
@@ -211,12 +211,18 @@
                     :key="index"
                     :class="index && 'mt-4'"
                   >
-                    <v-btn @click="downloadFile({ item })" class="mr-4" icon>
-                      <v-icon small> $IconDownload </v-icon>
-                    </v-btn>
-                    <v-avatar tile size="60">
+                    <v-avatar
+                      @click="downloadFile({ item })"
+                      class="pointer"
+                      tile
+                      size="52"
+                      v-if="imageFormat(item)"
+                    >
                       <v-img :src="$root.env.VUE_APP_STORE + item.name"></v-img>
                     </v-avatar>
+                    <v-btn x-large v-else @click="downloadFile({ item })" icon>
+                      <v-icon small> $IconDownload </v-icon>
+                    </v-btn>
                     <v-list-item-content class="d-flex ml-4">
                       <v-list-item-title>
                         {{ item.num }}

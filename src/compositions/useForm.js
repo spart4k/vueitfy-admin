@@ -953,7 +953,6 @@ export default function ({
               (el) => el.target === 'formData'
             )
             if (formTargets?.length) {
-              console.log('FORMTARGET')
               formTargets.forEach((formTarget) => {
                 if (formTarget.value.includes(formData[formTarget.field])) {
                   console.log(lists.data[keyList])

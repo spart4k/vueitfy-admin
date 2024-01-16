@@ -264,6 +264,14 @@ export default {
       if (formData[item] === 4) formData[item] = 1
     }
 
+    const imageFormat = (val) => {
+      const allowedFormats = ['jpg', 'png', 'jpeg']
+      const splitedName = val.name.split('.')
+      const format = splitedName[splitedName.length - 1]
+      if (allowedFormats.includes(format)) return true
+      return false
+    }
+
     watch(
       () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
       () => {
@@ -355,6 +363,7 @@ export default {
       deleteFile,
       dropzone,
       checkVector,
+      imageFormat,
     }
   },
 }
