@@ -532,15 +532,15 @@ const config = {
       //   backgroundColor: '#fff',
       //   type: 'addItem',
       // },
-      // {
-      //   label: 'Загрузить',
-      //   class: ['v-table-button--custom'],
-      //   // url: '$IconSetting',
-      //   // function: consolePanel,
-      //   backgroundColor: '#fff',
-      //   type: 'changeUrl',
-      //   url: 'payment-load',
-      // },
+      {
+        label: 'Загрузить статус',
+        class: ['v-table-button--custom'],
+        // url: '$IconSetting',
+        // function: consolePanel,
+        backgroundColor: '#fff',
+        type: 'changeUrl',
+        url: 'payment-load',
+      },
       // {
       //   label: 'Скачать',
       //   class: ['v-table-button--custom'],
@@ -1504,11 +1504,11 @@ const config = {
             bootstrapClass: [''],
             hiding: {
               conditions: [
-                {
-                  target: 'mode',
-                  value: 'edit',
-                  values: [1],
-                },
+                // {
+                //   target: 'mode',
+                //   value: 'edit',
+                //   values: [1],
+                // },
                 {
                   target: 'mode',
                   value: 'add',
@@ -1922,6 +1922,12 @@ const config = {
                   value: [2, 3],
                   type: false,
                 },
+                {
+                  field: 'readonlyAll',
+                  target: 'environment',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
           }),
@@ -1977,8 +1983,8 @@ const config = {
           stringAction({
             text: 'Загрузить',
             type: 'submit',
-            module: 'form/create',
-            url: 'accounting/payment/export',
+            module: 'form/putForm',
+            url: 'accounting/payment/import',
             name: 'saveForm',
             action: 'saveFormStore',
           }),

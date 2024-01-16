@@ -3,7 +3,7 @@ import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
-import { useRoute, useRouter } from 'vue-router/composables'
+// import { useRoute } from 'vue-router/composables'
 // import { required } from '@/utils/validation.js'
 // import { data } from 'jquery'
 // import { filter } from 'lodash'
@@ -39,7 +39,9 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
-  const route = useRoute()
+  // const route = useRoute()
+  const { route } = context.root
+  console.log(route, context)
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)

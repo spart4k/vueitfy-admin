@@ -5,6 +5,8 @@ import store from '@/store'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
+import { useRoute } from 'vue-router/composables'
+import { useRouter } from 'vue-router/composables'
 import form from '@/store/modules/form'
 import { required } from '@/utils/validation'
 import moment from 'moment/moment'
@@ -27,16 +29,18 @@ const Form18 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }, ctx) {
+  setup(props, ctx) {
+    const { data } = props
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
         ctx,
+        router,
       },
     }
-
     const dateTarget = moment(data.entity.date_target).format('DD.MM.YYYY')
-
     const textInfo = {
       obj: {
         key: 'Объект',
@@ -51,11 +55,14 @@ const Form18 = defineComponent({
         value: data.entity.doljnost_name,
       },
     }
-    const account_id = computed(() => store.state.user.account_id)
+    const account_id = computed(() => store.state.user.id)
     const formGroup = ref([])
     const idDirection = data.entity.direction_id
+    // const fileOutput =
+    //   data.task.dop_data &&
+    //   'personal_doc/' + JSON.parse(data.task.dop_data).file_output
     const fileOutput =
-      data.task.dop_data &&
+      JSON.parse(data.task.dop_data).file_output &&
       'personal_doc/' + JSON.parse(data.task.dop_data).file_output
     const formCommentError = ref('')
     const formComment = ref('')
@@ -63,6 +70,7 @@ const Form18 = defineComponent({
     const rejectedPrice = ref('')
     const isFormValid = ref(false)
     const addGroup = async () => {
+      console.log('addGroup')
       let qty
       let serviceId
       let dataForService
@@ -76,12 +84,44 @@ const Form18 = defineComponent({
           55: 70,
           51: 78,
         }
-
+        console.log('getService')
         qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
         serviceId = dolToService[data.entity.doljnost_id]
+        console.log(serviceId)
         dataForService = await getServiceInfo(serviceId)
       }
       console.log(qty, serviceId, dataForService)
+      console.log(
+        useForm({
+          fields: {
+            name: {
+              validations: { required },
+              default:
+                dataForService && dataForService.length ? serviceId : undefined,
+            },
+            qty: {
+              validations: { required },
+              default:
+                dataForService && dataForService.length ? qty : undefined,
+            },
+            price: {
+              validations: { required },
+              default:
+                dataForService && dataForService.length
+                  ? dataForService[0].price
+                  : undefined,
+            },
+            sum: {
+              validations: { required },
+              default:
+                dataForService && dataForService.length
+                  ? qty * dataForService[0].price
+                  : undefined,
+            },
+          },
+          context,
+        })
+      )
       formGroup.value = [
         ...formGroup.value,
         useForm({
@@ -131,7 +171,7 @@ const Form18 = defineComponent({
         const formData = group.formData
         total += formData.sum ?? 0
         return {
-          service_id: i,
+          service_id: formData.name,
           qty: formData.qty,
           price: formData.price,
           sum: formData.sum,
@@ -141,23 +181,29 @@ const Form18 = defineComponent({
       const { makeRequest: setDataPayment } = useRequest({
         context,
         request: () => {
+          console.log('useRequest 144')
           return store.dispatch('taskModule/setDataPayment', {
             data: {
               account_id: data.entity.manager,
-              personal_bank_id: data.entity.personal_bank_id,
+              personal_bank_id: data.data.rek.id,
               status_id: 2,
-              status_account_id: account_id,
+              status_account_id: account_id.value,
               personal_id: data.entity.personal_id,
               vid_vedomost_id: 1,
               direction_id: data.entity.direction_id,
               object_id: data.entity.object_id,
-              bank_id: data.entity.bank_id,
-              invoice: data.entity.invoice,
+              bank_id: data.data.rek.bank_id,
+              invoice: data.data.rek.invoice,
               total: total,
-              fio: data.entity.fio,
+              fio: data.data.rek.fio,
               doljnost_id: data.entity.doljnost_id,
               date_target: data.entity.date_target,
               personal_target_id: data.entity.id,
+              date_status: moment(
+                new Date().toLocaleString('en-US', {
+                  timeZone: 'Europe/Moscow',
+                })
+              ).format('YYYY-MM-DD HH:mm:ss'),
             },
           })
         },
@@ -193,10 +239,11 @@ const Form18 = defineComponent({
       const { makeRequest: setPersonalTarget } = useRequest({
         context,
         request: () => {
+          console.log('useRequest 197')
           return store.dispatch('taskModule/setPersonalData', {
             data: {
               id: data.entity.id,
-              services: targetServices,
+              services: JSON.stringify(targetServices),
               payment_id: paymentData.result,
             },
           })
@@ -206,14 +253,15 @@ const Form18 = defineComponent({
       const { makeRequest: changeStatusTask } = useRequest({
         context,
         request: () => {
+          console.log('useRequest 211')
           return store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
               process_id: data.task.process_id,
               manager_id: data.task.from_account_id,
-              task_id: data.task.task_id,
-              parent_action: data.task.task_id,
-              personal_target_id: data.entity.id,
+              task_id: data.task.id,
+              parent_action: data.task.id,
+              personal_target_id: data.task.entity.id,
             },
           })
         },
@@ -237,6 +285,7 @@ const Form18 = defineComponent({
         const { makeRequest: changeStatusTask } = useRequest({
           context,
           request: () => {
+            console.log('useRequest 243')
             return store.dispatch('taskModule/setPartTask', {
               status: 6,
               data: {
@@ -265,6 +314,7 @@ const Form18 = defineComponent({
       const { makeRequest } = useRequest({
         context,
         request: () => {
+          console.log('useRequest 272')
           return store.dispatch(
             'taskModule/getServicePrice',
             `object_id=${data.entity.object_id}&service_id=${idService}&date_target=${data.entity.date_target}`
@@ -278,13 +328,17 @@ const Form18 = defineComponent({
       rejectedPrice.value = ''
       console.log(i, idService)
       const data = await getServiceInfo(idService)
+      console.log(data)
       if (!data.length) {
         rejectedPrice.value = servicesDetail.find(
           (item) => item.id == idService
         ).name
+        formGroup.value[i].formData.price = 0
         return false
+      } else {
+        formGroup.value[i].formData.price = data[0]?.price ?? ''
       }
-      formGroup.value[i].formData.price = data[0].price
+      console.log(formGroup.value[i].formData.price, data[0].price)
       changeSum(i)
     }
 

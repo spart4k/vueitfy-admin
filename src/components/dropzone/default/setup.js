@@ -55,6 +55,7 @@ export default {
     //const value = ref([]
     const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
+      console.log(files)
       if (props.options.withoutSave) {
         await loadFile(files)
         if (props.options.callbacks) {
@@ -62,9 +63,13 @@ export default {
         }
         //dropzone.value.processQueue()
       } else {
+        if (proxyVal.value === undefined) {
+          proxyVal.value = []
+        }
+        console.log(proxyVal)
         proxyVal.value.push(files)
         // console.log(files, proxyVal.value)
-        // emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
+        emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //console.log(dropzone.value)
       ////const progress = document.querySelector('.dz-progress')
