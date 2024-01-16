@@ -35,3 +35,7 @@
 .pointer {
     cursor: pointer;
 }
+
+.clickless {
+    pointer-events: none;
+}

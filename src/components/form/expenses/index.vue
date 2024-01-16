@@ -147,7 +147,7 @@
               ref="dropzone"
               @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
-              :readonly="readonlyField(field)"
+              :class="readonlyField(field) && 'clickless'"
             />
             <ColorPicker
               v-else-if="showField('colorPicker', field)"
