@@ -282,14 +282,6 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-    } else if (action.action === 'sendPage') {
-      loading.value = true
-      const result = await changeForm({
-        url: action.url,
-        module: action.module,
-        formData: sortedData,
-      })
-      loading.value = false
     }
   }
 
@@ -454,7 +446,7 @@ export default function ({
                 },
               }
               queries.push({
-                request: store.dispatch('file/create', {
+                request: await store.dispatch('file/create', {
                   data: storeForm,
                   folder: `${dropzone.options.folder}/${name}.${ext}`,
                   params,
@@ -477,6 +469,7 @@ export default function ({
             })
             setFormData(fileArray)
           } else {
+            console.log(JSON.stringify(data))
             setFormData(data[0].path)
           }
         }

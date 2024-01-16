@@ -894,6 +894,31 @@ const config = {
       },
     },
     {
+      title: 'Статус',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'status_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
       title: 'Объект',
       type: 'default',
       align: 'center',
@@ -2031,7 +2056,7 @@ const config = {
                   target: 'formData',
                   field: 'status_id',
                   value: [1, 2, 3],
-                  values: [2, 3],
+                  values: [1, 2, 3],
                 },
               ],
             },
@@ -2717,7 +2742,7 @@ const config = {
         fields: [
           dropZoneField({
             label: 'Файл',
-            name: 'photo_path',
+            name: 'file_path',
             placeholder: '',
             readonly: false,
             class: [''],
