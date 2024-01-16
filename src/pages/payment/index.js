@@ -1,5 +1,6 @@
 import filters from './filters'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
+import FormDefault from '@/components/Form/default/index.vue'
 import { stringAction } from '@/utils/actions'
 import {
   dateField,
@@ -8,6 +9,7 @@ import {
   autocompleteField,
   textareaField,
   datetimeField,
+  dropZoneField,
 } from '@/utils/fields.js'
 
 function consoleText(row) {
@@ -521,6 +523,23 @@ const config = {
         function: consolePanel,
         backgroundColor: '#fff',
         type: 'addItem',
+      },
+      // {
+      //   label: 'Бухгалтерия excel',
+      //   class: ['v-table-button--custom'],
+      //   url: '$IconSetting',
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      //   type: 'addItem',
+      // },
+      {
+        label: 'Загрузить статус',
+        class: ['v-table-button--custom'],
+        // url: '$IconSetting',
+        // function: consolePanel,
+        backgroundColor: '#fff',
+        type: 'changeUrl',
+        url: 'payment-load',
       },
       // {
       //   label: 'Скачать',
@@ -1485,11 +1504,11 @@ const config = {
             bootstrapClass: [''],
             hiding: {
               conditions: [
-                {
-                  target: 'mode',
-                  value: 'edit',
-                  values: [1],
-                },
+                // {
+                //   target: 'mode',
+                //   value: 'edit',
+                //   values: [1],
+                // },
                 {
                   target: 'mode',
                   value: 'add',
@@ -1903,6 +1922,12 @@ const config = {
                   value: [2, 3],
                   type: false,
                 },
+                {
+                  field: 'readonlyAll',
+                  target: 'environment',
+                  value: [1],
+                  type: true,
+                },
               ],
             },
           }),
@@ -1914,6 +1939,64 @@ const config = {
         type: 'TableDefault',
         active: false,
         config: tableConsumptionConfig,
+      },
+      {
+        id: 7,
+        path: 'load',
+        name: 'load',
+        type: FormDefault,
+        detail: true,
+        alias: 'personal',
+        active: false,
+        fields: [
+          dropZoneField({
+            label: 'Файл',
+            name: 'photo_path',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { required },
+            options: {
+              withoutSave: false,
+              folder: 'accounting',
+              name: '`accounting_payment`',
+              paramsForEmit: this,
+            },
+            value: [],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'payment',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Загрузить',
+            type: 'submit',
+            module: 'form/putForm',
+            url: 'accounting/payment/import',
+            name: 'saveForm',
+            action: 'saveFormStore',
+          }),
+          //stringAction({
+          //  text: 'Сохранить',
+          //  type: 'submit',
+          //  module: '',
+          //  name: 'saveForm',
+          //  //action: 'saveForm',
+          //  nextForm: true,
+          //}),
+        ],
       },
     ],
     activeTab: null,

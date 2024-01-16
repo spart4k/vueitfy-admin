@@ -102,7 +102,7 @@ const taskModule = {
     // =============================================================
 
     async setPersonalData(_, data) {
-      const result = await setTask('set/data/personal', data)
+      const result = await setTask('set/data/personal_target', data)
       console.log(result)
       return result
     },
@@ -140,6 +140,7 @@ const taskModule = {
     },
 
     async setDataPayment(_, data) {
+      console.log(data)
       const result = await setTask('set/data/payment', data)
       console.log(result)
       return result

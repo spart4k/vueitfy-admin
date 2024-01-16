@@ -49,6 +49,7 @@ export default {
         store,
         router,
         ctx,
+        route,
       },
     }
     const loading = ref(true)
@@ -104,7 +105,7 @@ export default {
     })
     const { makeRequest: changeForm } = useRequest({
       context,
-      successMessage: params.successMessage === false ? false : 'Сохранено',
+      successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         console.log()
         return store.dispatch(params.module, {
@@ -115,7 +116,7 @@ export default {
     })
     const { makeRequest: changeFormId } = useRequest({
       context,
-      successMessage: params.successMessage === false ? false : 'Сохранено',
+      successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         console.log()
         let id

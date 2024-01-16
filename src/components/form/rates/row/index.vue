@@ -7,7 +7,7 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <div v-for="item in row.items" :key="item.id" class="rates-row-wrap">
-            <div class="fields">
+            <div v-if="tab.type !== 'unassigned'" class="fields">
               <v-row>
                 <v-col
                   v-for="field in listFields"
@@ -19,10 +19,10 @@
                 >
                   <v-text-field
                     v-if="showField('string', field)"
-                    v-model="formData[field.name]"
+                    v-model="item[field.name]"
                     :label="field.label"
                     clearable
-                    :readonly="field.readonly"
+                    :readonly="true"
                   />
                   <v-menu
                     v-if="showField('date', field)"
@@ -33,24 +33,27 @@
                     transition="scale-transition"
                     offset-y
                     min-width="auto"
+                    :readonly="true"
                   >
                     <template v-slot:activator="{ attrs }">
                       <v-text-field
                         @click:append="openMenu(field)"
-                        v-model="formData[field.name]"
+                        v-model="item[field.name]"
                         :label="field.label"
                         append-icon="mdi-calendar"
                         v-bind="attrs"
+                        :readonly="true"
                       ></v-text-field>
                     </template>
                     <v-date-picker
-                      v-model="formData[field.name]"
+                      v-model="item[field.name]"
                       min="1940-01-01"
                       color="primary"
                       locale="ru-RU"
                       :type="field.subtype === 'period' ? 'month' : undefined"
                       :range="field.subtype === 'range'"
                       :multiple="field.subtype === 'multiple'"
+                      :readonly="true"
                     >
                       <v-spacer></v-spacer>
                       <v-btn text color="primary" @click="field.menu = false">
@@ -67,19 +70,68 @@
                     :item-text="field.selectOption.text"
                     :item-value="field.selectOption.value"
                     :label="field.label"
-                    v-model="formData[field.name]"
+                    v-model="item[field.name]"
                     persistent-hint
                     clearable
                     :multiple="field.subtype === 'multiselect'"
+                    :readonly="true"
                   ></v-select>
                 </v-col>
               </v-row>
+              <v-icon
+                class="rates-row-wrap__close"
+                small
+                @click="removeRow(item.id)"
+              >
+                $IconClose
+              </v-icon>
             </div>
           </div>
-          <div @click="openDialog" class="action">+</div>
+          <div
+            v-if="tab.type !== 'not_active'"
+            @click="openDialog"
+            class="action"
+          >
+            +
+          </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-dialog v-model="confirm" width="600">
+      <v-card>
+        <!--<v-card-title class="text-h5 grey lighten-2">
+            Privacy Policy
+          </v-card-title>-->
+        <v-card-title class="text-h5"
+          >Вы действительно хотите удалить тариф?
+        </v-card-title>
+        <!-- <v-card-text> Вы действительно хотите удалить тариф? </v-card-text> -->
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-row class="justify-end">
+            <v-btn
+              type="submit"
+              color="transparent"
+              class="ml-2"
+              @click="confirmClick(false)"
+            >
+              Нет
+            </v-btn>
+            <v-btn
+              type="submit"
+              color="primary"
+              class="ml-2"
+              @click="confirmClick(true)"
+            >
+              Да
+            </v-btn>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <!--<div class="rates-row title">{{ info.name }}</div>
     <div class="rates-row-wrap">
       <div class="fields">

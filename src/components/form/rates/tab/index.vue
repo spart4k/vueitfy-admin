@@ -7,10 +7,21 @@
       clearable
       class="search"
     />
-    <div v-for="position in items" :key="position.id" class="rates-position">
-      <!--<div class="rates-position__title">{{ position.key }}</div>-->
-      <row @openDialog="openDialog" :row="position" />
-    </div>
+    <template v-if="loading">
+      <div v-for="(position, index) in 10" :key="index" class="rates-position">
+        <!--<div class="rates-position__title">{{ position.key }}</div>-->
+        <!-- <row @openDialog="openDialog" :tab="tab" :row="position" /> -->
+        <!-- <p>loading</p> -->
+        <div class="field-loading gradient"></div>
+      </div>
+    </template>
+    <template v-else>
+      <div v-for="position in items" :key="position.id" class="rates-position">
+        <!--<div class="rates-position__title">{{ position.key }}</div>-->
+        <row @openDialog="openDialog" :tab="tab" :row="position" />
+      </div>
+      <div v-intersect="endIntersect" />
+    </template>
     <v-progress-circular
       v-if="loading"
       :size="20"
@@ -18,7 +29,6 @@
       color="primary"
       indeterminate
     />
-    <div v-intersect="endIntersect" />
   </div>
 </template>
 <script src="./setup.js"></script>

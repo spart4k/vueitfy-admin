@@ -3,7 +3,7 @@ import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
 import store from '@/store'
 import { getList } from '@/api/selects'
-import { useRoute, useRouter } from 'vue-router/composables'
+// import { useRoute } from 'vue-router/composables'
 // import { required } from '@/utils/validation.js'
 // import { data } from 'jquery'
 // import { filter } from 'lodash'
@@ -39,7 +39,9 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
-  const route = useRoute()
+  // const route = useRoute()
+  const { route } = context.root
+  console.log(route, context)
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
@@ -58,6 +60,7 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
+      console.log(form.fields)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -143,7 +146,8 @@ export default function ({
     })
   }
 
-  const clickHandler = async ({ action, skipValidation }) => {
+  const clickHandler = async ({ action, skipValidation, notClose = false }) => {
+    console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
@@ -239,11 +243,15 @@ export default function ({
       })
       loading.value = false
       if (result.code && result.code === 1) {
-        emit('getItems')
-        emit('closePopup')
+        if (!notClose) {
+          emit('getItems')
+          emit('closePopup')
+        }
       } else if (!result.code) {
-        emit('getItems')
-        emit('closePopup')
+        if (!notClose) {
+          emit('getItems')
+          emit('closePopup')
+        }
       }
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
@@ -262,7 +270,8 @@ export default function ({
       }
       //emit('closePopup')
     } else if (action.action === 'closePopup') {
-      emit('closePopup', action.to)
+      console.log('close popup', notClose)
+      if (!notClose) emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
       action.variable = false
     } else if (action.action === 'custom') {
@@ -420,6 +429,7 @@ export default function ({
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
             if (file.accepted) {
+              // console.log(store)
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
@@ -1047,7 +1057,9 @@ export default function ({
       //   console.log('////////////', formData)
       // }, 4000)
 
-      const prescription = form?.fields.find((x) => x.prescription).prescription
+      const prescription = form?.fields.find(
+        (x) => x.prescription
+      )?.prescription
       if (prescription) {
         syncForm.data[prescription].forEach((item, index) => {
           Object.keys(item).forEach((key) => {

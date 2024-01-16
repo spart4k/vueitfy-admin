@@ -65,12 +65,12 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row v-if="idDirection === 1">
+        <v-row class="justify-space-between" v-if="idDirection === 1">
           <v-col style="padding: 0" cols="6">
             <v-btn
               @click="removeGroup"
               class="form-btn form-btn--remove"
-              color="error"
+              color="primary"
               block
               >-</v-btn
             >
@@ -79,7 +79,7 @@
             <v-btn
               @click="addGroup"
               class="form-btn form-btn--add"
-              color="primary"
+              color="success"
               block
               >+</v-btn
             >

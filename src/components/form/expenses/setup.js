@@ -65,6 +65,7 @@ export default {
         store,
         router,
         ctx,
+        route,
       },
     }
     const loading = ref(true)
