@@ -2526,6 +2526,16 @@ const config = {
               },
             ],
           },
+          {
+            alias: 'me',
+            condition: [
+              {
+                key: 'on_yourself',
+                value: [true],
+              },
+            ],
+            filter: [],
+          },
         ],
         alias: 'zayavka',
         active: false,
@@ -2545,6 +2555,21 @@ const config = {
             position: {
               cols: 12,
               sm: 6,
+            },
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  funcCondition: (context) =>
+                    context.formData.account_id !==
+                      context.store.state.user.id &&
+                    context.store.state.user.is_personal_vertical &&
+                    (context.formData.status_id === 1 ||
+                      context.formData.status_id === 2 ||
+                      context.formData.status_id === 3),
+                  type: false,
+                },
+              ],
             },
             validations: { required },
             bootstrapClass: [''],
@@ -2607,9 +2632,8 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
-                  field: 'status',
-                  value: [1],
+                  funcCondition: (context) =>
+                    context.formData.account_id !== context.store.state.user.id,
                   type: false,
                 },
               ],
@@ -2829,6 +2853,16 @@ const config = {
                   },
                 ],
               },
+              {
+                alias: 'me',
+                condition: [
+                  {
+                    key: 'on_yourself',
+                    value: [true],
+                  },
+                ],
+                filter: [],
+              },
             ],
             position: {
               cols: 12,
@@ -2938,6 +2972,7 @@ const config = {
           selectField({
             label: 'ФИО',
             name: 'account_id',
+            alias: 'me',
             requestKey: 'me',
             placeholder: '',
             class: [''],

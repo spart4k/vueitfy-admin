@@ -675,7 +675,8 @@ export default function zxc({
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
-            // formData[field.name] = field.items[0][field.selectOption.value]
+            if (field.putFirst)
+              formData[field.name] = field.items[0][field.selectOption.value]
           }
           showField(field.type, field, true)
         }
