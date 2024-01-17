@@ -39,7 +39,7 @@ const auth = {
         commit(
           'notifies/showMessage',
           {
-            color: 'error',
+            color: 'success',
             content: `
                 Успешно обновлено: ${result.count_update}
                 Обработано ошибок: ${result.count_error}

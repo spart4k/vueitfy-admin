@@ -135,7 +135,7 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('changeForm1', params.successMessage)
+        console.log('changeForm1', params)
         console.log(formData, params)
         return store.dispatch(params.module, {
           url: params.url,

@@ -210,6 +210,7 @@ export default function ({
         url: action.url,
         module: action.module,
         formData: sortedData,
+        action,
       })
       loading.value = false
     } else if (action.action === 'deleteFormById') {
@@ -240,6 +241,7 @@ export default function ({
         url: action.url,
         module: action.module,
         formData: sortedData,
+        params: action,
       })
       loading.value = false
       if (result.code && result.code === 1) {
@@ -479,7 +481,8 @@ export default function ({
     if (update) {
       const result = await changeForm(queryParams)
     } else {
-      const result = await createForm(queryParams)
+      console.log(queryParams, 'queryParams')
+      const result = await createForm(queryParams, params)
     }
     emit('getItems')
     emit('closePopup')
