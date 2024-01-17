@@ -40,6 +40,7 @@ const Form21 = defineComponent({
     const personal = props.data.data.personal
     const dataRojd = moment(personal.data_rojd).format('DD.MM.YYYY')
     const name = personal.name
+    const dopData = JSON.parse(props.data.task.dop_data)
     const { formData: keyForm, formErrors: keyFormErrors } = useForm({
       fields: {
         key: {
@@ -135,6 +136,7 @@ const Form21 = defineComponent({
       formCommentError,
       dataRojd,
       name,
+      dopData,
     }
   },
 })
