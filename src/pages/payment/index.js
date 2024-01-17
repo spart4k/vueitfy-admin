@@ -1280,6 +1280,903 @@ const config = {
     url: '/get/form/',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
+      // {
+      //   id: 0,
+      //   name: 'Основные',
+      //   type: 'FormDefault',
+      //   detail: true,
+      //   //lists: [],
+      //   lists: [
+      //     {
+      //       alias: 'vid_vedomost_id',
+      //       filter: [],
+      //     },
+      //     {
+      //       alias: 'status_id',
+      //       filter: [],
+      //     },
+      //     {
+      //       alias: 'direction_id',
+      //       filter: [],
+      //     },
+      //     {
+      //       alias: 'doljnost_id',
+      //       filter: [],
+      //     },
+      //     {
+      //       alias: 'personal_bank_id',
+      //       filter: [
+      //         {
+      //           field: 'personal_id',
+      //           // alias: 'pb.id',
+      //           value: '',
+      //           source: 'formData',
+      //           type: 'num',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       alias: 'account_id',
+      //       filter: [],
+      //     },
+      //     {
+      //       alias: 'status_account_id',
+      //       filter: [],
+      //     },
+      //   ],
+      //   alias: 'payment',
+      //   active: false,
+      //   path: 'edit',
+      //   fields: [
+      //     selectField({
+      //       label: 'Статус',
+      //       name: 'status_id',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       position: {
+      //         cols: 12,
+      //         sm: 3,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       // readonly: {
+      //       //   value: false,
+      //       //   conditions: [
+
+      //       //   ]
+      //       // }
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //       hiding: {
+      //         conditions: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3],
+      //             values: [2, 3],
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     selectField({
+      //       label: 'Статус от',
+      //       name: 'status_account_id',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       position: {
+      //         cols: 12,
+      //         sm: 6,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: true,
+      //     }),
+      //     datetimeField({
+      //       label: 'Смена статуса',
+      //       name: 'date_status',
+      //       value: '',
+      //       type: 'datetime',
+      //       subtype: 'datetime',
+      //       menu: false,
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 3,
+      //       },
+      //       validations: { hasDate, hasTime },
+      //       bootstrapClass: [''],
+      //       disable: false,
+      //       readonly: true,
+      //     }),
+      //     dateField({
+      //       label: 'Дата начисл',
+      //       name: 'date_create',
+      //       subtype: 'datetime',
+      //       placeholder: '',
+      //       classes: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 3,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: true,
+      //     }),
+      //     selectField({
+      //       label: 'Менеджер',
+      //       name: 'account_id',
+      //       subtype: 'single',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       position: {
+      //         cols: 12,
+      //         sm: 6,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       updateList: [
+      //         {
+      //           alias: 'direction_json',
+      //           filter: [
+      //             {
+      //               field: 'account_id',
+      //               value: '',
+      //               source: 'formData',
+      //               type: 'num',
+      //             },
+      //           ],
+      //         },
+      //       ],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     selectField({
+      //       label: 'Направление',
+      //       name: 'direction_id',
+      //       // alias: 'direction_json',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       position: {
+      //         cols: 12,
+      //         sm: 3,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       updateList: [
+      //         {
+      //           alias: 'doljnost_id',
+      //           filter: [
+      //             {
+      //               field: 'direction_json',
+      //               value: '',
+      //               source: 'formData',
+      //               type: 'num',
+      //             },
+      //           ],
+      //         },
+      //       ],
+      //       dependence: [
+      //         {
+      //           type: 'api',
+      //           module: 'selects/getListUpdate',
+      //           field: 'object_id',
+      //           //filter: [
+      //           //  {
+      //           //    field: 'direction_id',
+      //           //    value: '',
+      //           //  },
+      //           //],
+      //           condition: [
+      //             {
+      //               field: 'direction_id',
+      //               value: [2],
+      //             },
+      //           ],
+      //           url: 'get/pagination_list/object',
+      //         },
+      //         {
+      //           type: 'api',
+      //           module: 'selects/getListUpdate',
+      //           field: 'personal_id',
+      //           //filter: [
+      //           //  {
+      //           //    field: 'direction_id',
+      //           //    value: '',
+      //           //  },
+      //           //],
+      //           condition: [
+      //             {
+      //               field: 'direction_id',
+      //               value: [2],
+      //             },
+      //           ],
+      //           url: 'get/pagination_list/personal',
+      //         },
+      //         {
+      //           type: 'api',
+      //           module: 'selects/getListUpdate',
+      //           field: 'object_id',
+      //           //filter: [
+      //           //  {
+      //           //    field: 'direction_id',
+      //           //    value: '',
+      //           //  },
+      //           //],
+      //           condition: [
+      //             {
+      //               field: 'direction_id',
+      //               value: [1],
+      //             },
+      //           ],
+      //           url: 'get/pagination_list/object',
+      //         },
+      //       ],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     autocompleteField({
+      //       label: 'Объект',
+      //       name: 'object_id',
+      //       subtype: 'single',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       page: 1,
+      //       search: '',
+      //       url: 'get/pagination_list/payment_object_id',
+      //       position: {
+      //         cols: 12,
+      //         sm: 4,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       filter: [
+      //         {
+      //           field: 'account_id',
+      //           source: 'formData',
+      //           type: 'array',
+      //           value: '',
+      //         },
+      //         {
+      //           field: 'direction_id',
+      //           source: 'formData',
+      //           type: 'array',
+      //           value: '',
+      //         },
+      //       ],
+      //       dependence: [
+      //         {
+      //           type: 'api',
+      //           module: 'selects/getListUpdate',
+      //           field: 'personal_id',
+      //           // filter: [
+      //           //   {
+      //           //     field: 'direction_id',
+      //           //     value: '',
+      //           //   },
+      //           // ],
+      //           url: 'get/pagination_list/payment_personal_id',
+      //         },
+      //         {
+      //           type: 'api',
+      //           module: 'selects/getListUpdate',
+      //           field: 'object_id',
+      //           filter: [
+      //             {
+      //               field: 'object_json',
+      //               type: 'array',
+      //               value: '',
+      //             },
+      //           ],
+      //           condition: [
+      //             {
+      //               field: 'direction_id',
+      //               value: [1],
+      //             },
+      //           ],
+      //           url: 'get/pagination_list/object',
+      //         },
+      //       ],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     autocompleteField({
+      //       label: 'Линейщик',
+      //       name: 'personal_id',
+      //       subtype: 'single',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       page: 1,
+      //       search: '',
+      //       url: 'get/pagination_list/payment_personal_id',
+      //       position: {
+      //         cols: 12,
+      //         sm: 4,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       filter: [
+      //         {
+      //           field: 'account_id',
+      //           source: 'formData',
+      //           type: 'array',
+      //           value: '',
+      //         },
+      //         {
+      //           field: 'direction_id',
+      //           source: 'formData',
+      //           type: 'array',
+      //           value: '',
+      //         },
+      //         {
+      //           field: 'object_id',
+      //           source: 'formData',
+      //           type: 'array',
+      //           value: '',
+      //         },
+      //       ],
+      //       dependence: [
+      //         {
+      //           //fields: ['statement_card', 'cardowner'],
+      //           fillField: ['fio', 'invoice'],
+      //           type: 'api',
+      //           module: 'personal/getCard',
+      //           field: 'personal_bank_id',
+      //         },
+      //       ],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     selectField({
+      //       label: 'Должность',
+      //       name: 'doljnost_id',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       position: {
+      //         cols: 12,
+      //         sm: 4,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     selectField({
+      //       label: 'Вид ведомости',
+      //       name: 'vid_vedomost_id',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       position: {
+      //         cols: 12,
+      //         sm: 6,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       hiding: {
+      //         conditions: [
+      //           // {
+      //           //   target: 'mode',
+      //           //   value: 'edit',
+      //           //   values: [1],
+      //           // },
+      //           {
+      //             target: 'mode',
+      //             value: 'add',
+      //             values: [1],
+      //           },
+      //         ],
+      //       },
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     //selectField({
+      //     //  label: 'Статья расхода',
+      //     //  name: 'st_rashod_id',
+      //     //  placeholder: '',
+      //     //  class: [''],
+      //     //  selectOption: {
+      //     //    text: 'name',
+      //     //    value: 'id',
+      //     //  },
+      //     //  items: [
+      //     //    {
+      //     //      id: 0,
+      //     //      label: 'Продавец',
+      //     //      value: 'Абдуллина Ирина',
+      //     //    },
+      //     //    {
+      //     //      id: 1,
+      //     //      label: 'Приемщик',
+      //     //      value: 'Адылова Ильмира',
+      //     //    },
+      //     //    {
+      //     //      id: 2,
+      //     //      label: 'Погрузчик',
+      //     //      value: 'Азаров Михаил',
+      //     //    },
+      //     //  ],
+      //     //  position: {
+      //     //    cols: 12,
+      //     //    sm: 6,
+      //     //  },
+      //     //  validations: { required },
+      //     //  bootstrapClass: [''],
+      //     //}),
+      //     // stringField({
+      //     //   label: 'Часы (план)',
+      //     //   name: 'hour_plan',
+      //     //   placeholder: '',
+      //     //   readonly: true,
+      //     //   class: [''],
+      //     //   position: {
+      //     //     cols: 12,
+      //     //     sm: 2,
+      //     //   },
+      //     //   bootstrapClass: [''],
+      //     //   //validations: { required },
+      //     //   //isShow: false,
+      //     // }),
+      //     // stringField({
+      //     //   label: 'Часы(факт)',
+      //     //   name: 'hour_fact',
+      //     //   placeholder: '',
+      //     //   class: [''],
+      //     //   position: {
+      //     //     cols: 12,
+      //     //     sm: 2,
+      //     //   },
+      //     //   bootstrapClass: [''],
+      //     //   //validations: { required },
+      //     //   //isShow: false,
+      //     // }),
+      //     // stringField({
+      //     //   label: 'Часы',
+      //     //   name: 'hour',
+      //     //   placeholder: '',
+      //     //   class: [''],
+      //     //   position: {
+      //     //     cols: 12,
+      //     //     sm: 2,
+      //     //   },
+      //     //   validations: { required },
+      //     //   bootstrapClass: [''],
+      //     // }),
+      //     // stringField({
+      //     //   label: 'Тариф',
+      //     //   name: 'price',
+      //     //   placeholder: '',
+      //     //   class: [''],
+      //     //   position: {
+      //     //     cols: 12,
+      //     //     sm: 2,
+      //     //   },
+      //     //   bootstrapClass: [''],
+      //     // }),
+      //     // stringField({
+      //     //   label: 'Удержано',
+      //     //   name: 'debit_percent',
+      //     //   placeholder: '',
+      //     //   class: [''],
+      //     //   position: {
+      //     //     cols: 12,
+      //     //     sm: 3,
+      //     //   },
+      //     //   validations: { required },
+      //     //   bootstrapClass: [''],
+      //     //   isShow: true,
+      //     // }),
+      //     dateField({
+      //       label: 'Назначение на дату',
+      //       name: 'date_target',
+      //       // subtype: 'multiple',
+      //       placeholder: '',
+      //       classes: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 6,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     stringField({
+      //       label: 'Сумма',
+      //       name: 'sum',
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 6,
+      //       },
+      //       // validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     // stringField({
+      //     //   label: '% удержания',
+      //     //   name: 'debit_percent',
+      //     //   placeholder: '',
+      //     //   class: [''],
+      //     //   position: {
+      //     //     cols: 12,
+      //     //     sm: 3,
+      //     //   },
+      //     //   validations: { required },
+      //     //   bootstrapClass: [''],
+      //     //   isShow: true,
+      //     // }),
+      //     stringField({
+      //       label: 'Итог',
+      //       name: 'total',
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 6,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     //stringField({
+      //     //  label: 'Минус нал',
+      //     //  name: 'minus_nal',
+      //     //  placeholder: '',
+      //     //  class: [''],
+      //     //  position: {
+      //     //    cols: 12,
+      //     //    sm: 2,
+      //     //  },
+      //     //  validations: { required },
+      //     //  bootstrapClass: [''],
+      //     //  isShow: false,
+      //     //}),
+      //     selectField({
+      //       label: 'Банки.карта/нал',
+      //       name: 'personal_bank_id',
+      //       placeholder: '',
+      //       class: [''],
+      //       selectOption: {
+      //         text: 'name',
+      //         value: 'id',
+      //       },
+      //       items: [],
+      //       position: {
+      //         cols: 12,
+      //         sm: 5,
+      //       },
+      //       defaultItems: [
+      //         {
+      //           id: 11,
+      //           name: '--Наличные--',
+      //           bank_id: 11,
+      //         },
+      //       ],
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       dependence: [
+      //         {
+      //           type: 'update',
+      //           fields: ['fio', 'invoice'],
+      //         },
+      //       ],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     stringField({
+      //       label: 'Р/С',
+      //       name: 'invoice',
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 3,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: true,
+      //     }),
+      //     stringField({
+      //       label: 'Карта на имя',
+      //       name: 'fio',
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 4,
+      //       },
+      //       validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: true,
+      //     }),
+      //     textareaField({
+      //       label: 'Текст ошибки',
+      //       name: 'error_text',
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 12,
+      //       },
+      //       //validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             permissions: [12],
+      //             type: false,
+      //           },
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     textareaField({
+      //       label: 'Комментарий ОКК',
+      //       name: 'comment_okk',
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 12,
+      //       },
+      //       //validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //           {
+      //             permissions: [8],
+      //             // field: 'status_id',
+      //             // value: [8],
+      //             type: false,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     textareaField({
+      //       label: 'Примечание',
+      //       name: 'comment',
+      //       placeholder: '',
+      //       class: [''],
+      //       position: {
+      //         cols: 12,
+      //         sm: 12,
+      //       },
+      //       //validations: { required },
+      //       bootstrapClass: [''],
+      //       readonly: {
+      //         value: false,
+      //         condition: [
+      //           {
+      //             target: 'formData',
+      //             field: 'status_id',
+      //             value: [2, 3, 6],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //   ],
+      //   actions: [
+      //     stringAction({
+      //       text: 'Закрыть',
+      //       type: 'submit',
+      //       color: 'textDefault',
+      //       name: 'closePopup',
+      //       action: 'closePopup',
+      //       to: 'payment',
+      //       skipValidation: true,
+      //     }),
+      //     stringAction({
+      //       text: 'Исправлено',
+      //       type: 'submit',
+      //       module: 'form/putForm',
+      //       name: 'saveFormId',
+      //       url: 'correct/payment',
+      //       action: 'saveFormId',
+      //       color: 'primary',
+      //       isHide: {
+      //         value: false,
+      //         type: 'every',
+      //         condition: [
+      //           {
+      //             field: 'status_id',
+      //             target: 'formData',
+      //             value: [6],
+      //             type: false,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //     stringAction({
+      //       text: 'Сохранить',
+      //       type: 'submit',
+      //       module: 'form/putForm',
+      //       name: 'saveFormId',
+      //       url: 'update/payment',
+      //       action: 'saveFormId',
+      //       color: 'primary',
+      //       isHide: {
+      //         value: false,
+      //         type: 'every',
+      //         condition: [
+      //           {
+      //             field: 'status_id',
+      //             target: 'formData',
+      //             value: [6],
+      //             type: true,
+      //           },
+      //           {
+      //             field: 'status_id',
+      //             target: 'formData',
+      //             value: [2, 3],
+      //             type: false,
+      //           },
+      //           {
+      //             field: 'readonlyAll',
+      //             target: 'environment',
+      //             value: [1],
+      //             type: true,
+      //           },
+      //         ],
+      //       },
+      //     }),
+      //   ],
+      // },
       {
         id: 0,
         name: 'Основные',
@@ -1358,6 +2255,16 @@ const config = {
                   field: 'status_id',
                   value: [6],
                   type: true,
+                },
+                {
+                  funcCondition: (context) =>
+                    context.formData.account_id !==
+                      context.store.state.user.id &&
+                    context.store.state.user.is_personal_vertical &&
+                    (context.formData.status_id === 2 ||
+                      context.formData.status_id === 1 ||
+                      context.formData.status_id === 3),
+                  type: false,
                 },
               ],
             },
@@ -2363,6 +3270,17 @@ const config = {
                 ],
               },
             ],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'vid_vedomost_id',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
           selectField({
             label: 'Направление',
@@ -2470,6 +3388,17 @@ const config = {
               // },
             ],
             requiredFields: ['account_id'],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'vid_vedomost_id',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
           autocompleteField({
             label: 'Объект',
@@ -2487,7 +3416,7 @@ const config = {
             url: 'get/pagination_list/payment_object_id',
             position: {
               cols: 12,
-              sm: 6,
+              sm: 4,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -2533,6 +3462,17 @@ const config = {
               // },
             ],
             requiredFields: ['direction_id'],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'vid_vedomost_id',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
           autocompleteField({
             label: 'Линейщик',
@@ -2550,7 +3490,7 @@ const config = {
             url: 'get/pagination_list/payment_personal_id',
             position: {
               cols: 12,
-              sm: 6,
+              sm: 4,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -2584,6 +3524,54 @@ const config = {
               },
             ],
             requiredFields: ['object_id'],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          selectField({
+            label: 'Должность',
+            name: 'doljnost_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [2, 3, 6],
+                  type: true,
+                },
+              ],
+            },
+            isShow: {
+              value: false,
+              conditions: [
+                {
+                  field: 'vid_vedomost_id',
+                  value: [1],
+                },
+              ],
+            },
           }),
           selectField({
             label: 'Вид ведомости',
@@ -2602,6 +3590,17 @@ const config = {
             validations: { required },
             bootstrapClass: [''],
             requiredFields: ['direction_id'],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'vid_vedomost_id',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
           //selectField({
           //  label: 'Статья расхода',
@@ -2723,6 +3722,17 @@ const config = {
             },
             // validations: { required },
             bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  target: 'formData',
+                  field: 'vid_vedomost_id',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
           // stringField({
           //   label: '% удержания',
@@ -2803,7 +3813,7 @@ const config = {
               cols: 12,
               sm: 4,
             },
-            validations: { required },
+            // validations: { required },
             bootstrapClass: [''],
             readonly: true,
           }),
@@ -2816,7 +3826,7 @@ const config = {
               cols: 12,
               sm: 4,
             },
-            validations: { required },
+            // validations: { required },
             bootstrapClass: [''],
             readonly: true,
           }),
@@ -2860,7 +3870,8 @@ const config = {
           }),
           textBlock({
             label: 'Должность',
-            name: 'doljnost_id',
+            name: 'doljnost_id_clone',
+            requestKey: 'doljnost_id',
             placeholder: '',
             readonly: true,
             class: [''],
@@ -2872,6 +3883,15 @@ const config = {
             value: 0,
             //validations: { required },
             //isShow: false,
+            isShow: {
+              value: false,
+              conditions: [
+                {
+                  field: 'vid_vedomost_id',
+                  value: [9],
+                },
+              ],
+            },
           }),
           textBlock({
             label: 'Должность',
@@ -2917,6 +3937,39 @@ const config = {
                   value: ['edit'],
                   type: true,
                 },
+                {
+                  field: 'status_id',
+                  target: 'formData',
+                  value: [6],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          stringAction({
+            text: 'Исправлено',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'correct/payment',
+            action: 'saveFormId',
+            color: 'primary',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'status_id',
+                  target: 'formData',
+                  value: [6],
+                  type: false,
+                },
+                {
+                  funcCondition: (context) =>
+                    context.formData.status_id === 6 &&
+                    !context.environment.readonlyAll,
+                  type: false,
+                },
               ],
             },
           }),
@@ -2937,6 +3990,12 @@ const config = {
                   target: 'environment',
                   value: ['add'],
                   type: true,
+                },
+                {
+                  funcCondition: (context) =>
+                    !context.environment.readonlyAll &&
+                    context.formData.status_id !== 6,
+                  type: false,
                 },
               ],
             },

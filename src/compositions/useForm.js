@@ -1210,6 +1210,16 @@ export default function ({
               return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) === conditionEl.type
+            } else if (conditionEl.hasOwnProperty('funcCondition')) {
+              const conditionContext = {
+                store,
+                formData,
+                environment,
+              }
+              console.log(conditionEl.funcCondition(conditionContext))
+              return (
+                conditionEl.funcCondition(conditionContext) === conditionEl.type
+              )
             } else {
               return (
                 checkIncludesData(conditionEl) &&
