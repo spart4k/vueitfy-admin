@@ -2774,8 +2774,9 @@ const config = {
           stringAction({
             text: 'Загрузить',
             type: 'submit',
-            module: 'form/putForm',
+            module: 'table/loadStatus',
             url: 'accounting/payment/import',
+            successMessage: false,
             name: 'saveForm',
             action: 'saveFormStore',
           }),

@@ -107,7 +107,7 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log()
+        console.log('changeForm3')
         return store.dispatch(params.module, {
           url: params.url,
           body: { data: { id: +route.params.id, ...params.formData } },
@@ -118,7 +118,7 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log()
+        console.log('changeForm2')
         let id
         if (props.tab.routeParam) {
           id = route.params[props.tab.routeParam]
@@ -133,8 +133,9 @@ export default {
     })
     const { makeRequest: createForm } = useRequest({
       context,
-      successMessage: 'Сохранено',
+      successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
+        console.log('changeForm1', params.successMessage)
         console.log(formData, params)
         return store.dispatch(params.module, {
           url: params.url,

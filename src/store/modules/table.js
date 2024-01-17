@@ -6,6 +6,7 @@ import {
   getLoadX5,
   sendPage,
 } from '@/api/table'
+import { putForm } from '@/api/form'
 //import axios from 'axios'
 
 const auth = {
@@ -29,6 +30,27 @@ const auth = {
     },
     async sendPage(_, data) {
       const result = await sendPage(data)
+      return result
+    },
+    async loadStatus({ commit }, data) {
+      const result = await putForm(data)
+      console.log(result)
+      if (result.code === 1) {
+        commit(
+          'notifies/showMessage',
+          {
+            color: 'error',
+            content: `
+                Успешно обновлено: ${result.count_update}
+                Обработано ошибок: ${result.count_error}
+              `,
+            timeout: 2000,
+          },
+          {
+            root: true,
+          }
+        )
+      }
       return result
     },
   },
