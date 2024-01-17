@@ -62,10 +62,11 @@ const routes = [
     children: [
       {
         name: 'payment-add',
-        path: 'payment/add',
-        // meta: {
-        //   mode: ['add'],
-        // },
+        path: 'add',
+        meta: {
+          mode: ['add-edit-logistic'],
+          label: 'Добавить начисление',
+        },
         component: Detail,
       },
       {
@@ -80,7 +81,17 @@ const routes = [
         name: 'payment/:id',
         path: ':id',
         meta: {
+          mode: ['add-edit-logistic'],
+          label: 'Редактировать начисление',
+        },
+        component: Detail,
+      },
+      {
+        name: 'payment/:id',
+        path: ':id',
+        meta: {
           mode: ['edit'],
+          label: 'Редактировать начисление',
         },
         component: Detail,
       },

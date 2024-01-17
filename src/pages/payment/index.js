@@ -10,6 +10,7 @@ import {
   textareaField,
   datetimeField,
   dropZoneField,
+  textBlock,
 } from '@/utils/fields.js'
 
 function consoleText(row) {
@@ -524,14 +525,13 @@ const config = {
         backgroundColor: '#fff',
         type: 'addItem',
       },
-      // {
-      //   label: 'Бухгалтерия excel',
-      //   class: ['v-table-button--custom'],
-      //   url: '$IconSetting',
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      //   type: 'addItem',
-      // },
+      {
+        label: 'Бухгалтерия excel',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        backgroundColor: '#fff',
+        type: 'sendPage',
+      },
       {
         label: 'Загрузить статус',
         class: ['v-table-button--custom'],
@@ -888,6 +888,31 @@ const config = {
       width: '90',
       alias: 'pers.name',
       value: 'personal_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Статус',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'status_name',
       search: {
         field: '',
         isShow: true,
@@ -1934,6 +1959,772 @@ const config = {
         ],
       },
       {
+        id: 0,
+        name: 'Добавить начисление',
+        type: 'FormDefault',
+        detail: true,
+        //lists: [],
+        lists: [
+          {
+            alias: 'vid_vedomost_id',
+            filter: [],
+          },
+          {
+            alias: 'status_id',
+            filter: [],
+          },
+          {
+            alias: 'payment_account_id',
+            filter: [],
+          },
+          {
+            alias: 'payment_direction_id',
+            filter: [
+              {
+                field: 'account_id',
+                // alias: 'account_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'doljnost_id',
+            filter: [],
+          },
+          {
+            alias: 'personal_bank_id',
+            filter: [
+              {
+                field: 'personal_id',
+                // alias: 'pb.id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'account_id',
+            filter: [],
+          },
+          {
+            alias: 'status_account_id',
+            filter: [],
+          },
+        ],
+        alias: 'payment',
+        active: false,
+        path: 'add-edit-logistic',
+        fields: [
+          selectField({
+            label: 'Статус',
+            name: 'status_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            value: +1,
+            validations: { required },
+            bootstrapClass: [''],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  funcCondition: (context) =>
+                    context.formData.account_id !==
+                      context.store.state.user.id &&
+                    context.store.state.user.is_personal_vertical &&
+                    (context.formData.status_id === 2 ||
+                      context.formData.status_id === 1 ||
+                      context.formData.status_id === 3),
+                  type: false,
+                },
+              ],
+            },
+            hiding: {
+              conditions: [
+                {
+                  target: 'formData',
+                  field: 'status_id',
+                  value: [1, 2, 3],
+                  values: [1, 2, 3],
+                },
+              ],
+            },
+            // readonly: true,
+          }),
+          selectField({
+            label: 'Статус от',
+            name: 'status_account_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+          }),
+          datetimeField({
+            label: 'Смена статуса',
+            name: 'date_status',
+            value: '',
+            type: 'datetime',
+            subtype: 'datetime',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            // validations: { hasDate, hasTime },
+            bootstrapClass: [''],
+            disable: false,
+            readonly: true,
+          }),
+          dateField({
+            label: 'Дата начисл',
+            name: 'date_create',
+            subtype: 'datetime',
+            placeholder: '',
+            classes: [''],
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+          }),
+          selectField({
+            label: 'Менеджер',
+            name: 'account_id',
+            alias: 'payment_account_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            updateList: [
+              {
+                alias: 'payment_direction_id',
+                filter: [
+                  {
+                    field: 'account_id',
+                    // alias: 'account_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+          }),
+          selectField({
+            label: 'Направление',
+            name: 'direction_id',
+            alias: 'payment_direction_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            hiding: {
+              conditions: [
+                {
+                  target: 'mode',
+                  value: 'add',
+                  values: [2],
+                },
+              ],
+            },
+            dependence: [
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'object_id',
+                //filter: [
+                //  {
+                //    field: 'direction_id',
+                //    value: '',
+                //  },
+                //],
+                url: 'get/pagination_list/payment_object_id',
+              },
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'personal_id',
+                //filter: [
+                //  {
+                //    field: 'direction_id',
+                //    value: '',
+                //  },
+                //],
+                condition: [
+                  {
+                    field: 'direction_id',
+                    value: [2],
+                  },
+                ],
+                url: 'get/pagination_list/personal',
+              },
+              {
+                //fields: ['statement_card', 'cardowner'],
+                type: 'default',
+                action: {
+                  type: 'hideOptions',
+                  //values: [8],
+                  field: 'direction_id',
+                  targetField: 'vid_vedomost_id',
+                  condition: [
+                    {
+                      value: 1,
+                      options: [1, 3, 5, 8],
+                    },
+                    {
+                      value: [6],
+                      options: [2],
+                    },
+                    {
+                      value: [1],
+                      options: [2],
+                    },
+                    {
+                      value: [1, 6],
+                      options: [2],
+                    },
+                  ],
+                },
+                //url: 'object_id/avatar_with_user_key_id',
+              },
+              // {
+              //   type: 'api',
+              //   module: 'selects/getListUpdate',
+              //   field: 'object_id',
+              //   //filter: [
+              //   //  {
+              //   //    field: 'direction_id',
+              //   //    value: '',
+              //   //  },
+              //   //],
+              //   condition: [
+              //     {
+              //       field: 'direction_id',
+              //       value: [1],
+              //     },
+              //   ],
+              //   url: 'get/pagination_list/object',
+              // },
+            ],
+            requiredFields: ['account_id'],
+          }),
+          autocompleteField({
+            label: 'Объект',
+            name: 'object_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/payment_object_id',
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            filter: [
+              {
+                field: 'account_id',
+                // source: 'formData',
+                type: 'array',
+                value: '',
+              },
+              {
+                field: 'direction_id',
+                source: 'formData',
+                type: 'array',
+                value: '',
+              },
+            ],
+            dependence: [
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'personal_id',
+                // filter: [
+                //   {
+                //     field: 'direction_id',
+                //     value: '',
+                //   },
+                // ],
+                url: 'get/pagination_list/payment_personal_id',
+              },
+              // {
+              //   type: 'api',
+              //   module: 'selects/getListUpdate',
+              //   field: 'object_id',
+              //   filter: [
+              //     {
+              //       field: 'object_json',
+              //       type: 'array',
+              //       value: '',
+              //     },
+              //   ],
+              //   url: 'get/pagination_list/payment_object_id',
+              // },
+            ],
+            requiredFields: ['direction_id'],
+          }),
+          autocompleteField({
+            label: 'Линейщик',
+            name: 'personal_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/payment_personal_id',
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            filter: [
+              {
+                field: 'account_id',
+                // source: 'formData',
+                type: 'array',
+                value: '',
+              },
+              {
+                field: 'direction_id',
+                // source: 'formData',
+                type: 'array',
+                value: '',
+              },
+              {
+                field: 'object_id',
+                // source: 'formData',
+                type: 'array',
+                value: '',
+              },
+            ],
+            dependence: [
+              {
+                //fields: ['statement_card', 'cardowner'],
+                fillField: ['fio', 'invoice'],
+                type: 'api',
+                module: 'personal/getCard',
+                field: 'personal_bank_id',
+              },
+            ],
+            requiredFields: ['object_id'],
+          }),
+          selectField({
+            label: 'Вид ведомости',
+            name: 'vid_vedomost_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            requiredFields: ['direction_id'],
+          }),
+          //selectField({
+          //  label: 'Статья расхода',
+          //  name: 'st_rashod_id',
+          //  placeholder: '',
+          //  class: [''],
+          //  selectOption: {
+          //    text: 'name',
+          //    value: 'id',
+          //  },
+          //  items: [
+          //    {
+          //      id: 0,
+          //      label: 'Продавец',
+          //      value: 'Абдуллина Ирина',
+          //    },
+          //    {
+          //      id: 1,
+          //      label: 'Приемщик',
+          //      value: 'Адылова Ильмира',
+          //    },
+          //    {
+          //      id: 2,
+          //      label: 'Погрузчик',
+          //      value: 'Азаров Михаил',
+          //    },
+          //  ],
+          //  position: {
+          //    cols: 12,
+          //    sm: 6,
+          //  },
+          //  validations: { required },
+          //  bootstrapClass: [''],
+          //}),
+          // stringField({
+          //   label: 'Часы (план)',
+          //   name: 'hour_plan',
+          //   placeholder: '',
+          //   readonly: true,
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   bootstrapClass: [''],
+          //   //validations: { required },
+          //   //isShow: false,
+          // }),
+          // stringField({
+          //   label: 'Часы(факт)',
+          //   name: 'hour_fact',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   bootstrapClass: [''],
+          //   //validations: { required },
+          //   //isShow: false,
+          // }),
+          // stringField({
+          //   label: 'Часы',
+          //   name: 'hour',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
+          // stringField({
+          //   label: 'Тариф',
+          //   name: 'price',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 2,
+          //   },
+          //   bootstrapClass: [''],
+          // }),
+          // stringField({
+          //   label: 'Удержано',
+          //   name: 'debit_percent',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 3,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          //   isShow: true,
+          // }),
+          // dateField({
+          //   label: 'Назначение на дату',
+          //   name: 'date_target',
+          //   // subtype: 'multiple',
+          //   placeholder: '',
+          //   classes: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
+          stringField({
+            label: 'Сумма',
+            name: 'total',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+          }),
+          // stringField({
+          //   label: '% удержания',
+          //   name: 'debit_percent',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 3,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          //   isShow: true,
+          // }),
+          // stringField({
+          //   label: 'Итог',
+          //   name: 'total',
+          //   placeholder: '',
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 6,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
+          //stringField({
+          //  label: 'Минус нал',
+          //  name: 'minus_nal',
+          //  placeholder: '',
+          //  class: [''],
+          //  position: {
+          //    cols: 12,
+          //    sm: 2,
+          //  },
+          //  validations: { required },
+          //  bootstrapClass: [''],
+          //  isShow: false,
+          //}),
+          selectField({
+            label: 'Банки.карта/нал',
+            name: 'personal_bank_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            objectData: undefined,
+            defaultItems: [
+              {
+                id: 11,
+                name: '--Наличные--',
+                bank_id: 11,
+              },
+            ],
+            validations: { required },
+            bootstrapClass: [''],
+            dependence: [
+              {
+                type: 'update',
+                fields: ['fio', 'invoice', 'bank_id'],
+              },
+            ],
+            requiredFields: ['personal_id'],
+          }),
+          stringField({
+            label: 'Р/С',
+            name: 'invoice',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+          }),
+          stringField({
+            label: 'Карта на имя',
+            name: 'fio',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+          }),
+          textareaField({
+            label: 'Текст ошибки',
+            name: 'error_text',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            //validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+          }),
+          textareaField({
+            label: 'Комментарий ОКК',
+            name: 'comment_okk',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            //validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+          }),
+          textareaField({
+            label: 'Примечание',
+            name: 'comment',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            //validations: { required },
+            bootstrapClass: [''],
+          }),
+          textBlock({
+            label: 'Должность',
+            name: 'doljnost_id',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            value: 0,
+            //validations: { required },
+            //isShow: false,
+          }),
+          textBlock({
+            label: 'Должность',
+            name: 'bank_id',
+            placeholder: '',
+            readonly: true,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            value: 0,
+            //validations: { required },
+            //isShow: false,
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'payment',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/create',
+            name: 'createForm',
+            url: 'create/payment',
+            action: 'createForm',
+            color: 'primary',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'mode',
+                  target: 'environment',
+                  value: ['edit'],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'update/payment',
+            action: 'saveFormId',
+            color: 'primary',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'mode',
+                  target: 'environment',
+                  value: ['add'],
+                  type: true,
+                },
+              ],
+            },
+          }),
+        ],
+      },
+      {
         id: 1,
         name: 'Расход',
         type: 'TableDefault',
@@ -1951,7 +2742,7 @@ const config = {
         fields: [
           dropZoneField({
             label: 'Файл',
-            name: 'photo_path',
+            name: 'file_path',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -1983,8 +2774,9 @@ const config = {
           stringAction({
             text: 'Загрузить',
             type: 'submit',
-            module: 'form/putForm',
+            module: 'table/loadStatus',
             url: 'accounting/payment/import',
+            successMessage: false,
             name: 'saveForm',
             action: 'saveFormStore',
           }),
