@@ -52,6 +52,7 @@ export default function zxc({
       return obj
     }, {})
   )
+  const originalData = ref({})
 
   const computedFormData = computed(() => formData)
 
@@ -1138,6 +1139,8 @@ export default function zxc({
       if (syncForm.hasOwnProperty('readonly')) {
         environment.readonlyAll = syncForm.readonly
       }
+
+      originalData.value = _.cloneDeep(formData)
     }
     if (hasSelect()) {
       const listQuery = form?.lists?.flatMap((list) => {
@@ -1290,6 +1293,7 @@ export default function zxc({
               const conditionContext = {
                 store,
                 formData,
+                originalData,
                 environment,
               }
               console.log(conditionEl.funcCondition(conditionContext))

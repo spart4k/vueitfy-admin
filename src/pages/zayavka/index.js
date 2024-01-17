@@ -931,6 +931,7 @@ const config = {
             },
             putFirst: true,
             disabled: true,
+            readonly: true,
             isShow: {
               value: false,
               conditions: [{ field: 'on_yourself', value: [true] }],
@@ -2561,12 +2562,12 @@ const config = {
               condition: [
                 {
                   funcCondition: (context) =>
-                    context.formData.account_id !==
+                    context.originalData.from_account_id !==
                       context.store.state.user.id &&
                     context.store.state.user.is_personal_vertical &&
-                    (context.formData.status_id === 1 ||
-                      context.formData.status_id === 2 ||
-                      context.formData.status_id === 3),
+                    (context.originalData.status_id === 1 ||
+                      context.originalData.status_id === 2 ||
+                      context.originalData.status_id === 3),
                   type: false,
                 },
               ],
@@ -2633,7 +2634,8 @@ const config = {
               condition: [
                 {
                   funcCondition: (context) =>
-                    context.formData.account_id !== context.store.state.user.id,
+                    context.originalData.account_id !==
+                    context.store.state.user.id,
                   type: false,
                 },
               ],
@@ -2977,17 +2979,7 @@ const config = {
             placeholder: '',
             class: [''],
             notSend: true,
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [1],
-                  type: false,
-                },
-              ],
-            },
+            readonly: true,
             selectOption: {
               text: 'name',
               value: 'id',
