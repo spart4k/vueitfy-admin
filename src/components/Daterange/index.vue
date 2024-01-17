@@ -1,6 +1,8 @@
 <template>
   <div class="">
-    <v-subheader class="pl-0" style="height: unset">Label here</v-subheader>
+    <v-subheader class="pl-0" style="height: unset">{{
+      field.label
+    }}</v-subheader>
     <v-row>
       <v-col class="pl-0" cols="12" sm="6">
         <v-menu

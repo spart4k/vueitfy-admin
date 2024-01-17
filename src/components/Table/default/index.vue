@@ -199,6 +199,9 @@
                   :style="{
                     //...getFixedStyle(cell),
                     width: cell.width,
+                    backgroundColor: cell.backgroundColorKey
+                      ? row.row[cell.backgroundColorKey]
+                      : undefined,
                   }"
                   :class="{
                     ...addBackgroundClass(cell, row.row, Object.byString),

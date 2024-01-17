@@ -834,8 +834,33 @@ const config = {
   //  },
   //],
   head: [
+    // {
+    //   title: 'ID',
+    //   type: 'default',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    //   sorts: [
+    //     {
+    //       type: 'string',
+    //       default: '',
+    //       value: '',
+    //       isShow: false,
+    //     },
+    //   ],
+    //   alias: 'p.id',
+    //   isShow: true,
+    //   width: '40',
+    //   value: 'id',
+    //   search: {
+    //     field: '',
+    //     isShow: true,
+    //   },
+    // },
     {
-      title: 'ID',
+      title: 'В/В',
       type: 'default',
       align: 'center',
       fixed: {
@@ -850,10 +875,62 @@ const config = {
           isShow: false,
         },
       ],
-      alias: 'p.id',
       isShow: true,
-      width: '40',
-      value: 'id',
+      width: '90',
+      alias: 'pers.name',
+      value: 'vid_vedomost_name',
+      backgroundColorKey: 'vv_color',
+      spliceValue: 1,
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Дата нач',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_add',
+      alias: 'p.date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Обн.Стат',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'date_status',
+      alias: 'p.date_target',
       search: {
         field: '',
         isShow: true,
@@ -885,7 +962,7 @@ const config = {
       },
     },
     {
-      title: 'Линейщик',
+      title: 'Менеджер',
       type: 'default',
       align: 'center',
       fixed: {
@@ -903,14 +980,14 @@ const config = {
       isShow: true,
       width: '90',
       alias: 'pers.name',
-      value: 'personal_name',
+      value: 'account_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Статус',
+      title: 'Напр',
       type: 'default',
       align: 'center',
       fixed: {
@@ -928,7 +1005,7 @@ const config = {
       isShow: true,
       width: '90',
       alias: 'pers.name',
-      value: 'status_name',
+      value: 'direction_name',
       search: {
         field: '',
         isShow: true,
@@ -960,16 +1037,16 @@ const config = {
       },
     },
     {
-      title: 'Часы',
+      title: 'Карта ФИО',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: undefined,
+        position: 'left',
       },
       sorts: [
         {
-          type: 'number',
+          type: 'string',
           default: '',
           value: '',
           isShow: false,
@@ -977,8 +1054,33 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      value: 'hour',
-      alias: 'p.hour',
+      alias: 'o.name',
+      value: 'bank_fio',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Линейщик',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'personal_name',
       search: {
         field: '',
         isShow: true,
@@ -1010,6 +1112,56 @@ const config = {
       },
     },
     {
+      title: 'Банк',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'date',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      alias: 'd.name',
+      value: 'bank_name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Часы',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'number',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'hour',
+      alias: 'p.hour',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
       title: 'Сумма',
       type: 'default',
       align: 'center',
@@ -1029,6 +1181,57 @@ const config = {
       width: '150',
       alias: 'p.total',
       value: 'total',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Статус',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'status_name',
+      backgroundColorKey: 'status_color',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Примечание',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'pers.name',
+      value: 'comment',
       search: {
         field: '',
         isShow: true,
@@ -1978,6 +2181,7 @@ const config = {
         id: 0,
         name: 'Добавить начисление',
         type: 'FormDefault',
+        path: 'add-edit-logistic',
         detail: true,
         //lists: [],
         lists: [
@@ -2032,7 +2236,6 @@ const config = {
         ],
         alias: 'payment',
         active: false,
-        path: 'add-edit-logistic',
         fields: [
           selectField({
             label: 'Статус',
