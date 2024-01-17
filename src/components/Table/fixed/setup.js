@@ -628,6 +628,10 @@ const table = {
       const date = new Date(currentDate.value.year, currentDate.value.month, 1)
       const dateNow = new Date()
       let lastLeftIndex = props.options.head.findLastIndex((x) => x.fixed.position === 'left')
+      const pushDay = () => {
+        
+      }
+      
       if (props.options.panel.date) {
         while (date.getMonth() === currentDate.value.month) {
           props.options.head.splice(lastLeftIndex + 1, 0, {

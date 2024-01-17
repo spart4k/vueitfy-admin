@@ -811,6 +811,51 @@ const config = {
               cols: 12,
               sm: 12,
             },
+            dependence: [
+              {
+                type: 'default',
+                action: {
+                  type: 'hideOptions',
+                  field: 'on_yourself',
+                  targetField: 'type_pay',
+                  condition: [
+                    {
+                      value: true,
+                      options: [1],
+                    },
+                  ],
+                },
+              },
+              {
+                type: 'default',
+                fillField: [
+                  {
+                    formKey: 'me',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'name',
+                  },
+                  {
+                    formKey: 'personal_zr',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'name',
+                  },
+                  {
+                    formKey: 'object_zr',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'name',
+                  },
+                  {
+                    formKey: 'permission_accounts_zr',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'name',
+                  },
+                ],
+              },
+            ],
             bootstrapClass: [''],
           }),
           selectField({
@@ -2155,7 +2200,7 @@ const config = {
               cols: 12,
               sm: 12,
             },
-            // validations: { required },
+            validations: { required },
             bootstrapClass: [''],
           }),
           stringField({
@@ -2535,7 +2580,14 @@ const config = {
                 value: [true],
               },
             ],
-            filter: [],
+            filter: [
+              {
+                field: 'account_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
           },
         ],
         alias: 'zayavka',
@@ -2565,10 +2617,20 @@ const config = {
                     context.originalData.from_account_id !==
                       context.store.state.user.id &&
                     context.store.state.user.is_personal_vertical &&
-                    (context.originalData.status_id === 1 ||
-                      context.originalData.status_id === 2 ||
-                      context.originalData.status_id === 3),
-                  type: false,
+                    (context.originalData.status === 1 ||
+                      context.originalData.status === 2 ||
+                      context.originalData.status === 3),
+                  type: true,
+                },
+              ],
+            },
+            hiding: {
+              conditions: [
+                {
+                  target: 'formData',
+                  field: 'status',
+                  value: [1, 2, 3],
+                  values: [1, 2, 3],
                 },
               ],
             },
@@ -2863,7 +2925,59 @@ const config = {
                     value: [true],
                   },
                 ],
-                filter: [],
+                filter: [
+                  {
+                    field: 'account_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            dependence: [
+              {
+                type: 'default',
+                action: {
+                  type: 'hideOptions',
+                  field: 'on_yourself',
+                  targetField: 'type_pay',
+                  condition: [
+                    {
+                      value: true,
+                      options: [1],
+                    },
+                  ],
+                },
+              },
+              {
+                type: 'default',
+                fillField: [
+                  {
+                    formKey: 'account_id',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'to_name',
+                  },
+                  {
+                    formKey: 'personal_zr',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'to_name',
+                  },
+                  {
+                    formKey: 'object_zr',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'to_name',
+                  },
+                  {
+                    formKey: 'permission_accounts_zr',
+                    compareKey: 'id',
+                    objectKey: 'name',
+                    targetKey: 'to_name',
+                  },
+                ],
               },
             ],
             position: {
@@ -2882,7 +2996,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3011,7 +3125,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3239,7 +3353,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3375,7 +3489,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3442,7 +3556,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3524,7 +3638,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3570,7 +3684,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3673,7 +3787,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3730,7 +3844,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3815,7 +3929,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3860,7 +3974,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3894,7 +4008,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3920,7 +4034,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3947,7 +4061,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -3972,7 +4086,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -4001,7 +4115,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -4028,7 +4142,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -4053,7 +4167,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1, 6],
                   type: false,
@@ -4283,7 +4397,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1, 6],
                   type: false,
@@ -4324,7 +4438,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1, 6],
                   type: false,
@@ -4366,7 +4480,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1, 6],
                   type: false,
@@ -4389,7 +4503,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   permissions: [12],
                   value: [5],
@@ -4413,7 +4527,7 @@ const config = {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -4491,7 +4605,7 @@ const config = {
               cols: 12,
               sm: 12,
             },
-            // validations: { required },
+            validations: { required },
             bootstrapClass: [''],
           }),
           stringField({

@@ -163,7 +163,7 @@ export default {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -191,7 +191,7 @@ export default {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -216,7 +216,7 @@ export default {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -243,7 +243,7 @@ export default {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,
@@ -266,7 +266,7 @@ export default {
               value: false,
               condition: [
                 {
-                  target: 'formData',
+                  target: 'originalData',
                   field: 'status',
                   value: [1],
                   type: false,

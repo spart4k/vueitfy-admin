@@ -41,7 +41,6 @@ export default function zxc({
   const $autoDirty = true
   // const route = useRoute()
   const { route } = context.root
-  console.log(route, context)
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
@@ -61,7 +60,6 @@ export default function zxc({
   const validations = () => {
     const formFields = {}
     if (form) {
-      console.log(form.fields)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -148,10 +146,8 @@ export default function zxc({
   }
 
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
-    console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
-    console.log('sortedData', sortedData)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -202,7 +198,6 @@ export default function zxc({
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
-      console.log(result)
       if (result.code === 1) {
         emit('closePopup')
       }
@@ -285,7 +280,6 @@ export default function zxc({
       }
       //emit('closePopup')
     } else if (action.action === 'closePopup') {
-      console.log('close popup', notClose)
       if (!notClose) emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
       action.variable = false
@@ -353,7 +347,6 @@ export default function zxc({
     const newForm = {}
 
     if (!form) return
-    console.log('formData', formData)
     Object.keys(formData).forEach((key) => {
       const item = form?.fields?.find((x) => x.name === key)
 
@@ -406,7 +399,6 @@ export default function zxc({
       if (item.name === 'subtype' && formData[key] === '') {
         delete newForm[key]
       }
-      //console.log()
     })
     return newForm
   }
@@ -451,7 +443,6 @@ export default function zxc({
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
             if (file.accepted) {
-              // console.log(store)
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
@@ -493,7 +484,6 @@ export default function zxc({
             })
             setFormData(fileArray)
           } else {
-            console.log(JSON.stringify(data))
             setFormData(data[0].path)
           }
         }
@@ -512,10 +502,8 @@ export default function zxc({
     if (update) {
       const result = await changeForm(queryParams)
     } else if (change) {
-      console.log('TRIGGER CHANGE')
       const result = await changeFormId(queryParams)
     } else {
-      console.log(queryParams, 'queryParams')
       const result = await createForm(queryParams, params)
     }
     emit('getItems')
@@ -595,7 +583,9 @@ export default function zxc({
   //}
 
   const changeAutocomplete = async (params) => {
-    await getDependies(params)
+    queueMicrotask(async () => {
+      await getDependies(params)
+    })
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
       params.field.selectOptionName = item[params.field.selectOption.text]
@@ -693,7 +683,6 @@ export default function zxc({
     )
 
   const getDependies = async (params) => {
-    console.log('/////////////////////////////')
     const { value, field } = params
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
@@ -772,9 +761,24 @@ export default function zxc({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
-        if (params.item) {
-          dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
-        }
+        dependence.fillField.forEach((el) => {
+          if (typeof el === 'string') formData[el] = params?.item[el]
+          else if (typeof el === 'object') {
+            const targetObject = form.fields.find(
+              (item) => item.name === el.formKey
+            )
+            if (
+              (typeof targetObject.isShow === 'boolean' &&
+                targetObject.isShow) ||
+              (typeof targetObject.isShow === 'object' &&
+                targetObject.isShow.value)
+            ) {
+              formData[el.targetKey] = targetObject.items?.find(
+                (item) => item[el.compareKey] === formData[el.formKey]
+              )?.[el.objectKey]
+            }
+          }
+        })
         return
       } else if (
         dependence &&
@@ -804,7 +808,6 @@ export default function zxc({
 
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
-        console.log('dep1', dep)
         if (dep) {
           selectField.items = selectField.hideItems.filter((item) => {
             return !dep.options.includes(item.id)
@@ -826,7 +829,6 @@ export default function zxc({
           body,
         })
       }
-      console.log('PARAMS EDIT', targetField)
       if (targetField) {
         //if (typeof data === 'object') data = [data]
         targetField.items = targetField.defaultItems
@@ -842,7 +844,6 @@ export default function zxc({
           ? [...targetField.defaultItems, ...data]
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
-        console.log('PARAMS EDIT 2')
         if (targetField.hasOwnProperty('objectData')) {
           if (data.length) {
             targetField.objectData = data
@@ -852,14 +853,12 @@ export default function zxc({
             )
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
-          console.log(data)
         }
       }
       if (data?.length === 1) {
         // formData[depField] = card.id
       }
-      console.log('PARAMS EDIT 1')
-      console.log(card)
+
       if (card) {
         if (dependence.fillField) {
           dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -880,8 +879,7 @@ export default function zxc({
           }
         }
       }
-      console.log(params)
-      console.log(dependence.type)
+
       if (dependence.action) {
         if (dependence.action.type === 'hideOptions') {
           const selectField = form.fields.find(
@@ -896,7 +894,6 @@ export default function zxc({
               const condition = selectField.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              //selectField.hideItems = lists.data[keyList]
               selectField.items = selectField.items.filter((el) => {
                 return !condition.values.includes(el.id)
               })
@@ -906,7 +903,6 @@ export default function zxc({
         }
       }
       if (dependence.type === 'update') {
-        console.log(field)
         // dependence
         if (field.hasOwnProperty('objectData')) {
           if (field.objectData?.length) {
@@ -962,7 +958,6 @@ export default function zxc({
       if (el.filter && el.filter.length) {
         el.filter.forEach((filter) => {
           let value, type
-          console.log('filter.source', filter.source)
           if (filter.source === 'fromPrev') {
             value = form?.formData[filter.field]
           } else if (filter.source && filter.source !== 'formData') {
@@ -1009,12 +1004,6 @@ export default function zxc({
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
           if (field.hiding.conditions) {
-            // const condition = field.hiding.conditions.find(
-            //   (el) => mode === el.value
-            // )
-            // lists.data[keyList] = lists.data[keyList].filter((el) => {
-            //   return !condition.values.includes(el.id)
-            // })
             const condition = field.hiding.conditions.find(
               (el) => mode === el.value && el.target !== 'formData'
             )
@@ -1030,14 +1019,12 @@ export default function zxc({
             if (formTargets?.length) {
               formTargets.forEach((formTarget) => {
                 if (formTarget.value.includes(formData[formTarget.field])) {
-                  console.log(lists.data[keyList])
                   lists.data[keyList] = lists.data[keyList].filter((el) => {
                     return formTarget.values.includes(el.id)
                   })
                 }
               })
             }
-            console.log(formTargets, 'formTargets')
           }
         }
         field.items = lists.data[keyList]
@@ -1106,12 +1093,12 @@ export default function zxc({
               formData[field.name] = !!syncForm.data[formKey]
           }
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
-          if (
-            field.hasOwnProperty('dependence') &&
-            field.dependence.type === 'api'
-          ) {
-            //await getDependies({ value: formData[field.name], field })
-          }
+          // if (field.hasOwnProperty('dependence')) {
+          //   await getDependies({
+          //     value: formData[field.name],
+          //     field,
+          //   })
+          // }
           if (field.updateList && field.updateList.length) {
             //await queryList(field, false)
           }
@@ -1215,14 +1202,12 @@ export default function zxc({
   }
 
   const isHideBtn = (button) => {
-    console.log(typeof button.isHide)
     const checkIncludesData = (el) => {
       const source = eval(el.target)
       let result
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])
       } else {
-        console.log(el.value, source[el.field])
         result = el.value.includes(source[el.field])
       }
       return result
@@ -1240,11 +1225,6 @@ export default function zxc({
                 conditionEl.target === 'environment') &&
               !conditionEl.permissions
             ) {
-              console.log(
-                conditionEl,
-                checkIncludesData(conditionEl),
-                conditionEl.type
-              )
               return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) === conditionEl.type
@@ -1263,7 +1243,8 @@ export default function zxc({
 
   const readonlyField = (field) => {
     const checkIncludesData = (el) => {
-      const source = eval(el.target)
+      let source = eval(el.target)
+      if (el.target !== 'formData') source = source.value
       let result
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])
@@ -1283,7 +1264,8 @@ export default function zxc({
           field.readonly.condition.some((conditionEl) => {
             if (
               (conditionEl.target === 'formData' ||
-                conditionEl.target === 'environment') &&
+                conditionEl.target === 'environment' ||
+                conditionEl.target === 'originalData') &&
               !conditionEl.permissions
             ) {
               return checkIncludesData(conditionEl) === conditionEl.type
@@ -1296,7 +1278,6 @@ export default function zxc({
                 originalData,
                 environment,
               }
-              console.log(conditionEl.funcCondition(conditionContext))
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1308,7 +1289,6 @@ export default function zxc({
             }
           })
         field.readonly.value = condition()
-        console.log(environment)
         return environment.readonlyAll ? true : field.readonly.value
       }
     } else if (typeof field.readonly === 'undefined') {
