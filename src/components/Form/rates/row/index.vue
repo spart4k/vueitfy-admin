@@ -54,6 +54,7 @@
                       :range="field.subtype === 'range'"
                       :multiple="field.subtype === 'multiple'"
                       :readonly="true"
+                      :first-day-of-week="1"
                     >
                       <v-spacer></v-spacer>
                       <v-btn text color="primary" @click="field.menu = false">

@@ -1,4 +1,9 @@
-import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
+import {
+  dateField,
+  selectField,
+  autocompleteField,
+  dateRangeField,
+} from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 
 export default {
@@ -27,45 +32,45 @@ export default {
   alias: 'payment',
   active: false,
   fields: [
-    dateField({
-      label: 'Дата начисления:',
-      name: 'date_add',
-      subtype: 'range',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'p.date_add',
-    }),
-    dateField({
-      label: 'Дата обновления статуса:',
-      name: 'date_status',
-      subtype: 'range',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'p.date_status',
-    }),
-    dateField({
-      label: 'Дата назначения:',
-      name: 'date_target',
-      subtype: 'range',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'p.date_target',
-    }),
+    // dateRangeField({
+    //   label: 'Дата начисления:',
+    //   name: 'date_add',
+    //   subtype: 'range',
+    //   placeholder: '',
+    //   classes: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 12,
+    //   },
+    //   bootstrapClass: [''],
+    //   aliasFilter: 'p.date_add',
+    // }),
+    // dateRangeField({
+    //   label: 'Дата обновления статуса:',
+    //   name: 'date_status',
+    //   subtype: 'range',
+    //   placeholder: '',
+    //   classes: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 12,
+    //   },
+    //   bootstrapClass: [''],
+    //   aliasFilter: 'p.date_status',
+    // }),
+    // dateRangeField({
+    //   label: 'Дата назначения:',
+    //   name: 'date_target',
+    //   subtype: 'range',
+    //   placeholder: '',
+    //   classes: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 12,
+    //   },
+    //   bootstrapClass: [''],
+    //   aliasFilter: 'p.date_target',
+    // }),
     selectField({
       label: 'Статус',
       name: 'status_id',

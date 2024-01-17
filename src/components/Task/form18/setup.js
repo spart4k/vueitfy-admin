@@ -63,7 +63,7 @@ const Form18 = defineComponent({
     //   'personal_doc/' + JSON.parse(data.task.dop_data).file_output
     const fileOutput =
       JSON.parse(data.task.dop_data).file_output &&
-      'personal_doc/' + JSON.parse(data.task.dop_data).file_output
+      '/personal_doc/' + JSON.parse(data.task.dop_data).file_output
     const formCommentError = ref('')
     const formComment = ref('')
     const servicesDetail = data.data.services
@@ -199,6 +199,11 @@ const Form18 = defineComponent({
               doljnost_id: data.entity.doljnost_id,
               date_target: data.entity.date_target,
               personal_target_id: data.entity.id,
+              date_add: moment(
+                new Date().toLocaleString('en-US', {
+                  timeZone: 'Europe/Moscow',
+                })
+              ).format('YYYY-MM-DD'),
               date_status: moment(
                 new Date().toLocaleString('en-US', {
                   timeZone: 'Europe/Moscow',

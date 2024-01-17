@@ -1,6 +1,7 @@
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
+import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import { useRouter, useRoute } from 'vue-router/composables'
@@ -15,6 +16,7 @@ const Form17 = defineComponent({
     FormError,
     FormComment,
     Dropzone,
+    TextInfo,
   },
   props: {
     data: {
@@ -57,6 +59,28 @@ const Form17 = defineComponent({
       }
       return false
     })
+    const infoObj = {
+      employee: {
+        key: 'Сотрудник',
+        value: data.entity.personal_name,
+      },
+      avatar: {
+        key: 'Аватар',
+        value: data.entity.avatar_name,
+      },
+      position: {
+        key: 'Должность',
+        value: data.entity.doljnost_name,
+      },
+      personal_key: {
+        key: 'Личный ключ',
+        value: data.entity.print_form_key,
+      },
+      object: {
+        key: 'Объект',
+        value: data.entity.object_name,
+      },
+    }
     onMounted(() => {
       tariff = getServiceInfo(data.entity.doljnost_id)
     })
@@ -302,6 +326,7 @@ const Form17 = defineComponent({
       selectName,
       changeQTY,
       dateTarget,
+      infoObj,
     }
   },
 })

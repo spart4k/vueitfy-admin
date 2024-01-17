@@ -19,6 +19,13 @@ const dateField = (properties) => {
     ...defaultProperties(properties),
   }
 }
+const dateRangeField = (properties) => {
+  return {
+    menu: false,
+    type: 'dateRange',
+    ...defaultProperties(properties),
+  }
+}
 
 const stringField = (properties) => {
   return {
@@ -107,4 +114,5 @@ export {
   textBlock,
   colorPicker,
   radioPanel,
+  dateRangeField,
 }
