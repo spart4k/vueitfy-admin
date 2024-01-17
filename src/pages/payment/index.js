@@ -2909,6 +2909,15 @@ const config = {
                   value: [2, 3],
                   type: true,
                 },
+                {
+                  funcCondition: (context) =>
+                    context.formData.status_id === 2 ||
+                    (context.formData.status_id === 3 &&
+                      context.formData.account_id !==
+                        context.store.state.user.account_id &&
+                      !context.environment.readonlyAll),
+                  type: false,
+                },
               ],
             },
           }),
