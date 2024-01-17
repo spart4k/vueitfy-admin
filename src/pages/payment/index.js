@@ -531,6 +531,14 @@ const config = {
         url: '$IconSetting',
         backgroundColor: '#fff',
         type: 'sendPage',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 12],
+              type: true,
+            },
+          ],
+        },
       },
       {
         label: 'Загрузить статус',
@@ -540,6 +548,14 @@ const config = {
         backgroundColor: '#fff',
         type: 'changeUrl',
         url: 'payment-load',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 12],
+              type: true,
+            },
+          ],
+        },
       },
       // {
       //   label: 'Скачать',
