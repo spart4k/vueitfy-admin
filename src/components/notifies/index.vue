@@ -1,6 +1,6 @@
 <template>
   <v-snackbar :color="notifies?.color" :value="notifies?.isShow">
-    <p>{{ notifies?.content }}</p>
+    <p v-html="notifies?.content"></p>
     <template v-slot:action="{ attrs }">
       <v-icon class="mr-2" small v-bind="attrs" @click="hideMessage">
         $IconClose

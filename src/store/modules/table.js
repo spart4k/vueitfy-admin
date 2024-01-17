@@ -41,9 +41,22 @@ const auth = {
           {
             color: 'success',
             content: `
-                Успешно обновлено: ${result.count_update}
-                Обработано ошибок: ${result.count_error}
+                <p>Успешно обновлено: ${result.count_update}<br/>
+                Обработано ошибок: ${result.count_error}<p>
               `,
+            timeout: 100000,
+            style: 'width: 100px',
+          },
+          {
+            root: true,
+          }
+        )
+      } else if (!result) {
+        commit(
+          'notifies/showMessage',
+          {
+            color: 'error',
+            content: `Ошибка`,
             timeout: 2000,
           },
           {
