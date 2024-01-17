@@ -275,6 +275,12 @@ $tableFooterHeight: 85px;
         z-index: 2;
       }
     }
+    &-filter {
+      max-height: 100%;
+      &-sheet {
+        max-height: 100%;
+      }
+    }
     &-footer {
       //display: flex;
       padding: $paddingCell;

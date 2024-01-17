@@ -1127,7 +1127,7 @@ export default function ({
           } else if (el.source === '+route.params.id') {
             acc.push({
               alias: el.alias ?? el.field,
-              value: +route.params.id,
+              value: [+route.params.id],
               type: el.type,
             })
           }
@@ -1142,10 +1142,11 @@ export default function ({
       })
       lists = await makeRequestList(listQuery)
       for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
-
+        const field = form?.fields.find((el) => {
+          console.log(el)
+          return el.alias ? el.alias === keyList : el.name === keyList
+        })
+        console.log(lists.data, 'FIELD_ITEMS')
         if (field) {
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
@@ -1160,6 +1161,7 @@ export default function ({
               }
             }
           }
+          console.log(field, 'FIELD_ITEMS')
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив

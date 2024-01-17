@@ -1,5 +1,11 @@
 .v-table-filter {
   //background-color: var(--v-background-base);
+  display: flex;
+  flex-direction: column;
+  &-form {
+    flex: 1;
+    overflow: auto;
+  }
   .v-list-item__content {
     padding-inline: 10px;
   }

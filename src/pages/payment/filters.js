@@ -13,6 +13,7 @@ export default {
     { alias: 'direction_id', filter: [] },
     { alias: 'st_rashod_id', filter: [] },
     { alias: 'account_id', filter: [] },
+    { alias: 'bank_id', filter: [] },
   ],
   actions: [
     stringAction({
@@ -37,7 +38,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.date_add',
+      aliasFilter: 'p.date_add',
     }),
     dateField({
       label: 'Дата обновления статуса:',
@@ -50,7 +51,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.date_status',
+      aliasFilter: 'p.date_status',
     }),
     dateField({
       label: 'Дата назначения:',
@@ -63,7 +64,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.date_target',
+      aliasFilter: 'p.date_target',
     }),
     selectField({
       label: 'Статус',
@@ -81,7 +82,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.status_id',
+      aliasFilter: 'p.status_id',
     }),
     selectField({
       label: 'Вид ведомости:',
@@ -99,25 +100,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.vid_vedomost_id',
-    }),
-    selectField({
-      label: 'Статья расхода:',
-      name: 'st_rashod_id',
-      subtype: 'single',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      alias: 'p.st_rashod_id',
+      aliasFilter: 'p.vid_vedomost_id',
     }),
     selectField({
       label: 'Вид оплаты',
@@ -135,7 +118,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.bank_id',
+      aliasFilter: 'p.bank_id',
     }),
     selectField({
       label: 'Менеджеры',
@@ -153,7 +136,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.account_id',
+      aliasFilter: 'p.account_id',
     }),
     selectField({
       label: 'Направления',
@@ -171,7 +154,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.direction_id',
+      aliasFilter: 'p.direction_id',
     }),
     autocompleteField({
       label: 'Объект',
@@ -192,7 +175,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.object_id',
+      aliasFilter: 'p.object_id',
     }),
     selectField({
       label: 'Должность:',
@@ -210,7 +193,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      alias: 'p.doljnost_id',
+      aliasFilter: 'p.doljnost_id',
     }),
     //selectField({
     //  id: 0,
