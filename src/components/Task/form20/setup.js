@@ -3,7 +3,6 @@ import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
-import { useRouter, useRoute } from 'vue-router/composables'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import moment from 'moment/moment'
@@ -21,14 +20,10 @@ const Form20 = defineComponent({
     },
   },
   setup(props, ctx) {
-    const route = useRoute()
-    const router = useRouter()
     const context = {
       root: {
         store,
-        router,
         ctx,
-        route,
       },
     }
 
@@ -61,17 +56,20 @@ const Form20 = defineComponent({
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: () => {
+        const dataRequest = {
+          process_id: props.data.task.process_id,
+          task_id: props.data.task.id,
+          parent_action: props.data.task.id,
+          user_key: props.data.entity.id,
+          photo_path: dopData.photo_path ?? '',
+          obd_id: props.data.entity.id,
+        }
+        if (dopData.comment) {
+          dataRequest.okk_id = props.data.task.from_account_id
+        }
         return store.dispatch('taskModule/setPartTask', {
           status: 2,
-          data: {
-            process_id: props.data.task.process_id,
-            task_id: props.data.task.id,
-            parent_action: props.data.task.id,
-            user_key: props.data.entity.id,
-            photo_path: dopData.photo_path ?? '',
-            obd_id: props.data.entity.id,
-            okk_id: props.data.task.from_account_id,
-          },
+          data: dataRequest,
         })
       },
     })

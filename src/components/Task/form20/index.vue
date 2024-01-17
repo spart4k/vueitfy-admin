@@ -42,6 +42,17 @@
             ></v-text-field>
           </v-col>
         </v-row>
+        <!-- <v-row>
+          <v-col>
+            <v-textarea
+              v-model="comment"
+              rows="2"
+              clearable
+              label="Комментарий"
+              class="mb-2"
+            ></v-textarea>
+          </v-col>
+        </v-row> -->
         <v-row>
           <v-col>
             <v-checkbox
