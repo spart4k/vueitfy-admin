@@ -1,4 +1,9 @@
-import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
+import {
+  dateField,
+  selectField,
+  autocompleteField,
+  dateRangeField,
+} from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 
 export default {
@@ -27,7 +32,7 @@ export default {
   alias: 'payment',
   active: false,
   fields: [
-    dateField({
+    dateRangeField({
       label: 'Дата начисления:',
       name: 'date_add',
       subtype: 'range',
@@ -40,7 +45,7 @@ export default {
       bootstrapClass: [''],
       aliasFilter: 'p.date_add',
     }),
-    dateField({
+    dateRangeField({
       label: 'Дата обновления статуса:',
       name: 'date_status',
       subtype: 'range',
@@ -53,7 +58,7 @@ export default {
       bootstrapClass: [''],
       aliasFilter: 'p.date_status',
     }),
-    dateField({
+    dateRangeField({
       label: 'Дата назначения:',
       name: 'date_target',
       subtype: 'range',
