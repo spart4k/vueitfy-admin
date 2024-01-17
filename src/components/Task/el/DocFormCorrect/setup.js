@@ -2,6 +2,7 @@ import { defineComponent, ref } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+import { useRouter, useRoute } from 'vue-router/composables'
 import DateTimePicker from '@/components/Datetimepicker/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
@@ -88,10 +89,14 @@ const DocFormCorrect = defineComponent({
     }
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const bankItems = Object.values(bankItemsSpr)

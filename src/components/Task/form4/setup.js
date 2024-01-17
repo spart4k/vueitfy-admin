@@ -1,5 +1,6 @@
 import { defineComponent, ref } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
+import { useRouter, useRoute } from 'vue-router/composables'
 // import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 // import FormComment from '@/components/Task/el/FormComment/index.vue'
 // import useForm from '@/compositions/useForm'
@@ -21,10 +22,14 @@ const Form4 = defineComponent({
   },
 
   setup({ data }, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     let selectName = ref('')

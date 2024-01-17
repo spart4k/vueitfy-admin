@@ -4,6 +4,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 
 const Form6 = defineComponent({
@@ -20,10 +21,14 @@ const Form6 = defineComponent({
     },
   },
   setup({ data }, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const textInfo = {

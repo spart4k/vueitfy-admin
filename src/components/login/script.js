@@ -1,6 +1,6 @@
 // import Alert from '@/components/Alert'
 import Vue, { ref } from 'vue'
-import { useRouter } from 'vue-router/composables'
+import { useRouter, useRoute } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import useRequest from '@/compositions/useRequest'
 import { required } from '@/utils/validation'
@@ -14,12 +14,14 @@ export default {
   components: {},
   setup(_, ctx) {
     //const root = getCurrentInstance()
+    const route = useRoute()
     const router = useRouter()
     const context = {
       root: {
         store,
         router,
         ctx,
+        route,
       },
     }
     //const loading = ref(null)

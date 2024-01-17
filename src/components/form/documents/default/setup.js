@@ -1,5 +1,6 @@
 import Vue, { ref, onMounted } from 'vue'
 import useForm from '@/compositions/useForm.js'
+import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
@@ -31,9 +32,14 @@ export default {
     Row,
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
+        store,
+        router,
         ctx,
+        route,
       },
     }
     const loading = ref(false)

@@ -1,6 +1,6 @@
 import Vue, { onMounted, reactive, ref } from 'vue'
 import row from './index.vue'
-import { useRouter } from 'vue-router/composables'
+import { useRouter, useRoute } from 'vue-router/composables'
 import useForm from '@/compositions/useForm.js'
 
 import store from '@/store'
@@ -26,6 +26,8 @@ export default {
     const { emit } = ctx
     const confirm = ref(false)
     const price_id = ref(null)
+    const route = useRoute()
+    const router = useRouter()
     const confirmClick = async (value) => {
       confirm.value = false
       if (value) {
@@ -43,7 +45,9 @@ export default {
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
     const formData = reactive({

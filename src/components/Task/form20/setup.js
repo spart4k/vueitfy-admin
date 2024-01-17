@@ -3,6 +3,7 @@ import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+import { useRouter, useRoute } from 'vue-router/composables'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import moment from 'moment/moment'
@@ -20,10 +21,14 @@ const Form20 = defineComponent({
     },
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
         ctx,
+        route,
       },
     }
 
