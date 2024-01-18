@@ -71,7 +71,10 @@ export default {
       { deep: true }
     )
 
-    onMounted(() => {})
+    onMounted(() => {
+      date.start = proxyValue.value[0]
+      date.end = proxyValue.value[1]
+    })
 
     return {
       proxyValue,
