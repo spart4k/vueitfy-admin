@@ -531,6 +531,7 @@ const config = {
         url: '$IconSetting',
         backgroundColor: '#fff',
         type: 'sendPage',
+        requestPage: 'payment',
         isShow: {
           condition: [
             {

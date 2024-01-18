@@ -547,9 +547,12 @@ const table = {
       } else if (button.label === 'Обновить') {
         await getItems()
       } else if (type === 'sendPage') {
-        console.log(type)
+        console.log(button)
         const path = await store.dispatch('table/sendPage', {
-          filter: filtersColumns.value,
+          page: button.requestPage,
+          content: {
+            filter: filtersColumns.value,
+          },
         })
         const link = document.createElement('a')
         link.download = path.url

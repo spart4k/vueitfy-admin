@@ -29,7 +29,7 @@ const auth = {
       return result
     },
     async sendPage(_, data) {
-      const result = await sendPage(data)
+      const result = await sendPage(data.page, data.content)
       return result
     },
     async loadStatus({ commit }, data) {
