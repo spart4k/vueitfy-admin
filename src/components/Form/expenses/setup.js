@@ -159,17 +159,20 @@ export default {
             prescription: 'items',
             class: [''],
             value: '',
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'originalData',
-                  field: 'status',
-                  value: [1],
-                  type: false,
-                },
-              ],
-            },
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             items: categoryItems,
             selectOption: {
               text: 'name',
@@ -187,17 +190,20 @@ export default {
             name: `count%${itemIndex + 1}`,
             notSend: true,
             placeholder: '',
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'originalData',
-                  field: 'status',
-                  value: [1],
-                  type: false,
-                },
-              ],
-            },
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             prescription: 'items',
             class: [''],
             position: {
@@ -212,17 +218,20 @@ export default {
             name: `price%${itemIndex + 1}`,
             notSend: true,
             placeholder: '',
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'originalData',
-                  field: 'status',
-                  value: [1],
-                  type: false,
-                },
-              ],
-            },
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             prescription: 'items',
             class: [''],
             position: {
@@ -239,17 +248,20 @@ export default {
             value: false,
             prescription: 'items',
             placeholder: '',
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'originalData',
-                  field: 'status',
-                  value: [1],
-                  type: false,
-                },
-              ],
-            },
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             class: [''],
             position: {
               cols: 12,
@@ -262,17 +274,20 @@ export default {
             name: `exact_name%${itemIndex + 1}`,
             notSend: true,
             placeholder: '',
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'originalData',
-                  field: 'status',
-                  value: [1],
-                  type: false,
-                },
-              ],
-            },
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             prescription: 'items',
             class: [''],
             position: {

@@ -130,6 +130,7 @@ const config = {
       isShow: true,
       width: '40',
       value: 'status_name',
+      backgroundColorKey: 'status_color',
       search: {
         field: '',
         isShow: true,
@@ -2651,7 +2652,7 @@ const config = {
                     (context.originalData.status === 1 ||
                       context.originalData.status === 2 ||
                       context.originalData.status === 3),
-                  type: true,
+                  type: false,
                 },
               ],
             },

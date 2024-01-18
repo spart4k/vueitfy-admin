@@ -538,16 +538,12 @@ const table = {
       } else if (type === 'changeUrl') {
         changeUrl(url)
       } else if (type === 'getFilters') {
-        console.log('click inner getFilter')
-        console.log(filtersColumns.value)
-        console.log(url);
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
         emit('nextStage', {})
       } else if (button.label === 'Обновить') {
         await getItems()
       } else if (type === 'sendPage') {
-        console.log(button)
         const path = await store.dispatch('table/sendPage', {
           page: button.requestPage,
           content: {
@@ -562,7 +558,7 @@ const table = {
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-        console.log(path)
+        getItems()
       }
       if (button.function) button.function()
     }
