@@ -2056,7 +2056,8 @@ const config = {
                 ],
                 filter: [
                   {
-                    field: 'account_id',
+                    field: 'permission_accounts_zr',
+                    alias: 'account_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
