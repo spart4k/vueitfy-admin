@@ -39,6 +39,7 @@ export default {
       label: 'Дата начисления:',
       name: 'date_add',
       subtype: 'range',
+      typeFilter: 'date',
       placeholder: '',
       classes: [''],
       position: {
@@ -48,23 +49,24 @@ export default {
       bootstrapClass: [''],
       aliasFilter: 'p.date_add',
     }),
-    dateRangeField({
-      label: 'Дата обновления статуса:',
-      name: 'date_status',
-      subtype: 'range',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'p.date_status',
-    }),
+    // dateRangeField({
+    //   label: 'Дата обновления статуса:',
+    //   name: 'date_status',
+    //   subtype: 'range',
+    //   placeholder: '',
+    //   classes: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 12,
+    //   },
+    //   bootstrapClass: [''],
+    //   aliasFilter: 'p.date_status',
+    // }),
     dateRangeField({
       label: 'Дата назначения:',
       name: 'date_target',
       subtype: 'range',
+      typeFilter: 'date',
       placeholder: '',
       classes: [''],
       position: {
