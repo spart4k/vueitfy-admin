@@ -1,0 +1,29 @@
+.v-edit {
+  padding: 0 23px;
+  word-break: break-word;
+  margin-bottom: 20px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+::v-deep .dropzone {
+  min-height: 56px !important;
+  border-color: var(--v-disabled-base) !important;
+  border-radius: 6px;
+}
+
+::v-deep .dropzone .dz-default {
+  margin: 0 !important;
+  color: var(--v-disabled-base) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+}

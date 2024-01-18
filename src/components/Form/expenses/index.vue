@@ -33,21 +33,6 @@
               "
               class="field-loading gradient"
             ></div>
-            <!-- <v-select
-              v-else-if="showField('select', field)"
-              :items="field.items"
-              :item-text="field.selectOption.text"
-              :item-value="field.selectOption.value"
-              :label="field.label"
-              v-model="formData[field.name]"
-              :error-messages="formErrors[field?.name]"
-              persistent-hint
-              clearable
-              :multiple="field.subtype === 'multiselect'"
-              @change="changeSelect({ value: formData[field.name], field })"
-              :disabled="disabledField(field)"
-              :readonly="readonlyField(field)"
-            ></v-select> -->
             <Autocomplete
               v-else-if="showField('select', field)"
               :field="field"
@@ -83,6 +68,7 @@
               :label="field.label"
               :disabled="disabledField(field)"
               @change="
+                checkVector()
                 changeAutocomplete({ value: formData[field.name], field })
               "
               :readonly="readonlyField(field)"
@@ -158,9 +144,10 @@
               :formData="formData"
               :disabled="disabledField(field)"
               :field="field"
+              ref="dropzone"
               @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
-              :readonly="readonlyField(field)"
+              :class="readonlyField(field) && 'clickless'"
             />
             <ColorPicker
               v-else-if="showField('colorPicker', field)"
@@ -181,10 +168,9 @@
                 :key="item.id"
                 @click="
                   formData[field.name] = item.value
-                  // getDependies({ value: formData[field.name], field })
                   changeAutocomplete({ value: formData[field.name], field })
                 "
-                :readonly="readonlyField(field)"
+                :disabled="readonlyField(field)"
               >
                 {{ item.text }}
               </v-btn>
@@ -194,9 +180,65 @@
               block
               :color="field.color"
               @click="changeBlockCount(field.increase)"
+              :disabled="readonlyField(field)"
             >
               {{ field.label }}
             </v-btn>
+            <v-card
+              max-height="206"
+              class="overflow-auto"
+              outlined
+              v-else-if="showField('schet', field)"
+            >
+              <v-list>
+                <template v-if="formData[field.name]?.length">
+                  <v-list-item
+                    v-for="(item, index) in formData[field.name]"
+                    :key="index"
+                    :class="index && 'mt-4'"
+                  >
+                    <v-avatar
+                      @click="downloadFile({ item })"
+                      class="pointer"
+                      tile
+                      size="52"
+                      v-if="imageFormat(item)"
+                    >
+                      <v-img :src="$root.env.VUE_APP_STORE + item.name"></v-img>
+                    </v-avatar>
+                    <v-btn x-large v-else @click="downloadFile({ item })" icon>
+                      <v-icon small> $IconDownload </v-icon>
+                    </v-btn>
+                    <v-list-item-content class="d-flex ml-4">
+                      <v-list-item-title>
+                        {{ item.num }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                    <v-btn
+                      @click="
+                        editFile({ index, formItem: formData[field.name] })
+                      "
+                      v-if="!readonlyField(field)"
+                      icon
+                    >
+                      <v-icon small> $IconEdit </v-icon>
+                    </v-btn>
+                    <v-btn
+                      @click="
+                        deleteFile({ index, formItem: formData[field.name] })
+                      "
+                      v-if="!readonlyField(field)"
+                      icon
+                    >
+                      <v-icon small> $IconDelete </v-icon>
+                    </v-btn>
+                  </v-list-item>
+                </template>
+                <v-subheader class="justify-center" v-else
+                  >Нет приложенных документов</v-subheader
+                >
+              </v-list>
+            </v-card>
           </v-col>
         </v-row>
         <v-row class="justify-end">
@@ -210,6 +252,7 @@
             "
             v-for="action in tab.actions"
             :key="action.id"
+            v-show="!isHideBtn(action)"
           >
             {{ action.text }}
           </v-btn>

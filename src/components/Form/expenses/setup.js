@@ -72,6 +72,7 @@ export default {
     const zayavkaFirstLoad = ref(true)
     const stage = ref(null)
     const { alias } = props.tab
+    const dropzone = ref()
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
       const fields = {}
@@ -112,6 +113,23 @@ export default {
         })
       },
     })
+    const { makeRequest: changeFormId } = useRequest({
+      context,
+      successMessage: params?.successMessage === false ? false : 'Сохранено',
+      request: (params) => {
+        console.log()
+        let id
+        if (props.tab.routeParam) {
+          id = route.params[props.tab.routeParam]
+        } else {
+          id = route.params.id
+        }
+        return store.dispatch(params.module, {
+          url: params.url + '/' + id,
+          body: { data: { ...params.formData } },
+        })
+      },
+    })
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
@@ -136,10 +154,25 @@ export default {
           selectField({
             label: 'Наименование',
             name: `rashod_vid%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
             prescription: 'items',
             class: [''],
             value: '',
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             items: categoryItems,
             selectOption: {
               text: 'name',
@@ -155,7 +188,22 @@ export default {
           stringField({
             label: 'Кол-во',
             name: `count%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             prescription: 'items',
             class: [''],
             position: {
@@ -168,7 +216,22 @@ export default {
           stringField({
             label: 'Стоимость',
             name: `price%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             prescription: 'items',
             class: [''],
             position: {
@@ -181,10 +244,24 @@ export default {
           checkboxField({
             label: 'ВДС',
             name: `vds%${itemIndex + 1}`,
+            notSend: true,
             value: false,
             prescription: 'items',
             placeholder: '',
-            readonly: false,
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             class: [''],
             position: {
               cols: 12,
@@ -195,7 +272,22 @@ export default {
           stringField({
             label: 'Точное наименование',
             name: `exact_name%${itemIndex + 1}`,
+            notSend: true,
             placeholder: '',
+            readonly:
+              isEdit.value === 'edit'
+                ? {
+                    value: false,
+                    condition: [
+                      {
+                        target: 'originalData',
+                        field: 'status',
+                        value: [1],
+                        type: false,
+                      },
+                    ],
+                  }
+                : undefined,
             prescription: 'items',
             class: [''],
             position: {
@@ -241,6 +333,37 @@ export default {
       }
     }
 
+    const downloadFile = ({ item }) => {
+      const link = document.createElement('a')
+      link.download = item.name
+      link.href = process.env.VUE_APP_STORE + item.name
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+
+    const editFile = ({ index, formItem }) => {
+      deleteFile({ index, formItem })
+      dropzone.value[0].$children[0].$el.click()
+    }
+
+    const deleteFile = ({ index, formItem }) => {
+      formItem.splice(index, 1)
+    }
+
+    const checkVector = () => {
+      const item = Object.keys(formData).find((x) => x === 'type_zayavka')
+      if (formData[item] === 4) formData[item] = 1
+    }
+
+    const imageFormat = (val) => {
+      const allowedFormats = ['jpg', 'png', 'jpeg']
+      const splitedName = val.name.split('.')
+      const format = splitedName[splitedName.length - 1]
+      if (allowedFormats.includes(format)) return true
+      return false
+    }
+
     watch(
       () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
       () => {
@@ -284,6 +407,7 @@ export default {
       changeCheckbox,
       rebuildFormData,
       readonlyField,
+      isHideBtn,
       getDependies,
     } = useForm({
       form: props.tab,
@@ -298,6 +422,7 @@ export default {
       changeForm,
       mode: isEdit.value,
       createForm,
+      changeFormId,
     })
     onMounted(async () => {
       await getData()
@@ -327,6 +452,13 @@ export default {
       readonlyField,
       changeBlockCount,
       getDependies,
+      downloadFile,
+      editFile,
+      deleteFile,
+      dropzone,
+      checkVector,
+      imageFormat,
+      isHideBtn,
     }
   },
 }

@@ -47,6 +47,7 @@ export default {
       addRemoveLinks: props?.options?.removeble ? true : false,
       dictDefaultMessage: 'Переместите или выберите файл',
       acceptedFiles: props.options?.acceptedFiles,
+      // clickable: props.readonly ? false : true,
       //dictRemoveFile: 'delete',
       //clickable: true,
       //previewsContainer: false,

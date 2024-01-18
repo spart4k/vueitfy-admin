@@ -1,0 +1,138 @@
+.v-application.theme--dark .field-loading.gradient {
+  background: #1D1D1D;
+  background: -webkit-gradient(linear, left top, right top, color-stop(8%, #1D1D1D), color-stop(38%, #252323), color-stop(54%, #1D1D1D));
+  background: linear-gradient(to right, #1D1D1D 8%, #252323 38%, #1D1D1D 54%);
+}
+
+.form {
+  background-color: var(--v-background-base);
+}
+
+.form .field-col {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.form .field-col.flexFlow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  max-width: unset;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.form .field-col.dropzone {
+  height: auto;
+  border: unset;
+  padding: 20px 10px;
+  background-color: var(--v-background-base);
+}
+
+.form .field-col.dropzone .vue-dropzone {
+  border-color: rgba(var(--v-textDefault-base), 0.6);
+  border-width: 1px;
+}
+
+.form .field-col.textBlock {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: var(--v-textDefault-base);
+}
+
+.form .field-col .v-autocomplete.v-input--is-readonly .v-select__selections {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.form .field-col .v-autocomplete .v-input__append-inner:has(.v-input__icon--append) {
+  margin-left: 0;
+}
+
+.form .field-col .v-autocomplete .v-input__append-inner .v-input__icon--append {
+  margin-left: 0;
+}
+
+.form .field-col .v-select__selections {
+  overflow: auto;
+  max-width: unset;
+  -webkit-box-flex: unset;
+      -ms-flex: unset;
+          flex: unset;
+}
+
+.form .field-col .v-select .v-chip {
+  -webkit-box-flex: unset;
+      -ms-flex: unset;
+          flex: unset;
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+
+.form .field-col.readonly {
+  pointer-events: none;
+}
+
+.form .field-col.readonly label {
+  pointer-events: none;
+}
+
+.form .field-loading {
+  height: 100%;
+  width: 100%;
+  height: 60px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.form .field-loading.gradient {
+  -webkit-animation-duration: 1.8s;
+          animation-duration: 1.8s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-name: placeHolderShimmer;
+          animation-name: placeHolderShimmer;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+  background: #f6f7f8;
+  background: -webkit-gradient(linear, left top, right top, color-stop(8%, #fafafa), color-stop(38%, #ededed), color-stop(54%, #fafafa));
+  background: linear-gradient(to right, #fafafa 8%, #ededed 38%, #fafafa 54%);
+  background-size: 1000px 640px;
+  position: relative;
+}
+
+@-webkit-keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}

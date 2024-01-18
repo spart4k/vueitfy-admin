@@ -453,6 +453,14 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'zayavka-load',
+        path: 'load',
+        meta: {
+          mode: ['load'],
+        },
+        component: Detail,
+      },
+      {
         name: 'zayavka/:id',
         path: ':id',
         meta: {
