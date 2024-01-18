@@ -1936,11 +1936,16 @@ const config = {
                 condition: [
                   {
                     key: 'vector_id',
-                    value: [1],
+                    funcCondition: (context) =>
+                      context.formData.vector_id === 1 &&
+                      !context.formData.on_yourself,
                   },
                   {
                     key: 'type_pay',
-                    value: [2, 3],
+                    // value: [2, 3],
+                    funcCondition: (context) =>
+                      [2, 3].includes(context.formData.type_pay) &&
+                      !context.formData.on_yourself,
                   },
                 ],
                 filter: [
@@ -2056,10 +2061,10 @@ const config = {
                 ],
                 filter: [
                   {
-                    field: 'permission_accounts_zr',
+                    field: 'id',
                     alias: 'account_id',
                     value: '',
-                    source: 'formData',
+                    source: 'environment',
                     type: 'num',
                   },
                   {
@@ -2542,9 +2547,9 @@ const config = {
             ],
             filter: [
               {
-                field: 'permission_accounts_zr',
-                value: '',
-                source: 'formData',
+                field: 'account_id',
+                value: 'id',
+                source: '',
                 type: 'num',
               },
               {
