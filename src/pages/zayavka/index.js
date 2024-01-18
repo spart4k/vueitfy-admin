@@ -2056,7 +2056,7 @@ const config = {
                 ],
                 filter: [
                   {
-                    field: 'me',
+                    field: 'account_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
