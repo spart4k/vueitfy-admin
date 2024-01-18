@@ -4671,6 +4671,28 @@ const config = {
             skipValidation: true,
           }),
           stringAction({
+            text: 'Исправлено',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'correct/payment',
+            action: 'saveFormId',
+            color: 'primary',
+            // isHide: false,
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'status',
+                  target: 'formData',
+                  value: [6],
+                  type: false,
+                },
+              ],
+            },
+          }),
+          stringAction({
             text: 'Сохранить',
             type: 'submit',
             color: 'primary',

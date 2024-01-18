@@ -252,6 +252,7 @@
             "
             v-for="action in tab.actions"
             :key="action.id"
+            v-show="!isHideBtn(action)"
           >
             {{ action.text }}
           </v-btn>

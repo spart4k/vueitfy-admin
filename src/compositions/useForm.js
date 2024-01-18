@@ -51,7 +51,7 @@ export default function zxc({
       return obj
     }, {})
   )
-  const originalData = ref({})
+  let originalData
 
   const computedFormData = computed(() => formData)
 
@@ -1127,7 +1127,7 @@ export default function zxc({
         environment.readonlyAll = syncForm.readonly
       }
 
-      originalData.value = _.cloneDeep(formData)
+      originalData = _.cloneDeep(formData)
     }
     if (hasSelect()) {
       const listQuery = form?.lists?.flatMap((list) => {
@@ -1244,7 +1244,6 @@ export default function zxc({
   const readonlyField = (field) => {
     const checkIncludesData = (el) => {
       let source = eval(el.target)
-      if (el.target !== 'formData') source = source.value
       let result
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])

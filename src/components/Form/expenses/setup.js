@@ -392,6 +392,7 @@ export default {
       changeCheckbox,
       rebuildFormData,
       readonlyField,
+      isHideBtn,
       getDependies,
     } = useForm({
       form: props.tab,
@@ -442,6 +443,7 @@ export default {
       dropzone,
       checkVector,
       imageFormat,
+      isHideBtn,
     }
   },
 }
