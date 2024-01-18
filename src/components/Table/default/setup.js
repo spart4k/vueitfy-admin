@@ -387,17 +387,18 @@ const table = {
       /* eslint-disable */
       const { x } = element.getBoundingClientRect()
       /* eslint-disable */
-      if(
-          /* eslint-disable */
-        element.offsetLeft + element.offsetWidth + x
-          /* eslint-disable */
-        && element.offsetLeft<window.innerWidth){
-          /* eslint-disable */
-        return true;
-          /* eslint-disable */
+      if (
+        /* eslint-disable */
+        element.offsetLeft + element.offsetWidth + x &&
+        /* eslint-disable */
+        element.offsetLeft < window.innerWidth
+      ) {
+        /* eslint-disable */
+        return true
+        /* eslint-disable */
       } else {
-          /* eslint-disable */
-        return false;
+        /* eslint-disable */
+        return false
       }
     }
     const saveFilter = (filterData) => {
@@ -411,8 +412,8 @@ const table = {
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          // alias: el.aliasFilter,
-          alias: el.name,
+          alias: el.aliasFilter,
+          // alias: el.name,
           type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
@@ -421,7 +422,14 @@ const table = {
       getItems()
     }
 
-    const doubleHandler = ($event, row, cell, indexRow = null, indexCell, activeIndexCells) => {
+    const doubleHandler = (
+      $event,
+      row,
+      cell,
+      indexRow = null,
+      indexCell,
+      activeIndexCells
+    ) => {
       if (!options.detail || options.options.noTableAction) return
 
       //проверка на существование ключа, если ключа нету тогда выставляет по умолчанию row
@@ -440,7 +448,7 @@ const table = {
     }
 
     const openRow = ($event, row) => {
-      console.log('row');
+      console.log('row')
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -448,21 +456,27 @@ const table = {
         let requstId = 'id'
         if (props.options.detail.requstId)
           requstId = props.options.detail.requstId
-        router.push(
-          {
-            name: `${route.name}/:${requstId}`,
-            params: {
-              [requstId]: row.id
-            }
+        router.push({
+          name: `${route.name}/:${requstId}`,
+          params: {
+            [requstId]: row.id,
+          },
         })
         popupForm.value.isShow = true
       }
     }
 
-    const openCell = ($event, row, cell, indexRow, indexCell, activeIndexCells) => {
+    const openCell = (
+      $event,
+      row,
+      cell,
+      indexRow,
+      indexCell,
+      activeIndexCells
+    ) => {
       if (options.detail.type === 'popup') {
         console.log('cell')
-        console.log($event, row, cell,indexRow, indexCell);
+        console.log($event, row, cell, indexRow, indexCell)
 
         if (activeIndexCells.includes(indexCell)) {
           // let requstId = 'id'
@@ -472,14 +486,12 @@ const table = {
 
           const name = `documents-personal-id`
 
-          router.push(
-            {
-              name,
-              params: {
-                id: row.personal_id
-              }
-            }
-          )
+          router.push({
+            name,
+            params: {
+              id: row.personal_id,
+            },
+          })
 
           //console.log(url);
           //console.log(route.name);
@@ -494,7 +506,6 @@ const table = {
 
           popupForm.value.isShow = true
         }
-
       }
     }
 
@@ -509,26 +520,22 @@ const table = {
         //router.push({
         //  path: `${route.}./1`
         //})
-        router.push(
-          {
-            name: `${route.name}-add`,
-          }
-        )
+        router.push({
+          name: `${route.name}-add`,
+        })
         popupForm.value.isShow = true
       }
     }
     const changeUrl = (url) => {
-      router.push(
-        {
-          name: url,
-        })
+      router.push({
+        name: url,
+      })
       popupForm.value.isShow = true
     }
     const changeUrlPath = (url) => {
-      router.push(
-        {
-          path: url,
-        })
+      router.push({
+        path: url,
+      })
       popupForm.value.isShow = true
     }
     const panelHandler = async (button) => {
@@ -540,7 +547,7 @@ const table = {
       } else if (type === 'getFilters') {
         console.log('click inner getFilter')
         console.log(filtersColumns.value)
-        console.log(url);
+        console.log(url)
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
         emit('nextStage', {})
@@ -553,7 +560,7 @@ const table = {
         })
         const link = document.createElement('a')
         link.download = path.url
-        link.setAttribute('target', '_blank');
+        link.setAttribute('target', '_blank')
         console.log(process.env.VUE_APP_STORE)
         link.href = process.env.VUE_APP_STORE + path.url
         document.body.appendChild(link)
@@ -586,19 +593,18 @@ const table = {
     //   }
     // )
 
+    // HOOKS
+    onMounted(async () => {
+      initHeadParams()
+      await getItems()
 
-      // HOOKS
-      onMounted(async () => {
-        initHeadParams()
-        await getItems()
-
-        watch(
-          () => paramsQuery,
-          async () => {
-            await getItems()
-          },
-          { deep: true }
-        )
+      watch(
+        () => paramsQuery,
+        async () => {
+          await getItems()
+        },
+        { deep: true }
+      )
       const table = document.querySelector(props.options.selector)
       const headerCells = table.querySelectorAll('.v-table-header-row-cell')
       let acumWidth = 0
@@ -625,72 +631,80 @@ const table = {
       pagination.value = {
         ...options.data,
       }
-      if (options.detail && options.detail.type === 'popup' && route.meta.mode) {
+      if (
+        options.detail &&
+        options.detail.type === 'popup' &&
+        route.meta.mode
+      ) {
         popupForm.value.isShow = true
       }
     })
 
     const styleDate = (row, cell, innerDataCallBack) => {
       if ('conditionValue' in cell) {
-        const conditionValue = innerDataCallBack(row, cell.conditionValue);
-        return conditionValue ? 'font-style: normal; font-size: 14px' : '';
+        const conditionValue = innerDataCallBack(row, cell.conditionValue)
+        return conditionValue ? 'font-style: normal; font-size: 14px' : ''
       }
-      return '';
-    };
+      return ''
+    }
 
     const iconColor = (value, conditionValue) => {
       if (value === 0) {
-        return 'red';
+        return 'red'
       } else if (value === 1) {
         if (conditionValue) {
-          return conditionValue === null ? 'red' : 'black';
+          return conditionValue === null ? 'red' : 'black'
         } else {
-          return 'green';
+          return 'green'
         }
       } else if (value === 2) {
-        return 'orange';
+        return 'orange'
       }
-      return 'blue';
-    };
+      return 'blue'
+    }
     const iconType = (row, cell, innerDataCallBack) => {
-     const value = innerDataCallBack(row, cell.value);
+      const value = innerDataCallBack(row, cell.value)
 
       if (value === 0) {
-        return 'mdi-close';
+        return 'mdi-close'
       } else if (value === 1) {
         if ('conditionValue' in cell) {
-          const conditionValue = innerDataCallBack(row, cell.conditionValue);
-          const dateValue = new Date(conditionValue);
-          const formattedDate = `${dateValue.getDate()}.${dateValue.getMonth() + 1}.${dateValue.getFullYear()}`;
-          return conditionValue ? formattedDate : 'mdi-check';
+          const conditionValue = innerDataCallBack(row, cell.conditionValue)
+          const dateValue = new Date(conditionValue)
+          const formattedDate = `${dateValue.getDate()}.${
+            dateValue.getMonth() + 1
+          }.${dateValue.getFullYear()}`
+          return conditionValue ? formattedDate : 'mdi-check'
         } else {
           return 'mdi-check'
         }
       } else if (value === 2) {
-        return 'mdi-minus';
+        return 'mdi-minus'
       }
 
-      return 'mdi-help';
-    };
+      return 'mdi-help'
+    }
 
     const addBackgroundClass = (cell, row, innerDataCallBack) => {
       if ('backgroundValue' in cell) {
-        const value = innerDataCallBack(row, cell.backgroundValue);
+        const value = innerDataCallBack(row, cell.backgroundValue)
         return {
           'v-table-body-row-cell--error1': value === 1,
           'v-table-body-row-cell--error2': value === 2,
         }
       }
 
-      return {};
+      return {}
     }
 
     const checkFieldExist = computed((obj, key) => {
-      return key in obj;
-    });
+      return key in obj
+    })
 
     const permission = computed(() => store.state.user.permission_id)
-    const directions = computed(() => JSON.parse(store.state.user.direction_json))
+    const directions = computed(() =>
+      JSON.parse(store.state.user.direction_json)
+    )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
         console.log(el.permissions.includes(permission.value))
@@ -698,21 +712,26 @@ const table = {
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        console.log(_.intersection(
-          el.direction_id, directions.value).length)
+        console.log(_.intersection(el.direction_id, directions.value).length)
         if (!el.direction_id) return true
         else {
-          return !!_.intersection(
-            el.direction_id, directions.value).length
+          return !!_.intersection(el.direction_id, directions.value).length
         }
       }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some(el => {
+          return btn.isShow.condition.some((el) => {
             console.log('condition1')
-            console.log(checkIncludesPermissions(el), checkIncludesDirections(el), el.type)
-            return checkIncludesPermissions(el) && checkIncludesDirections(el) === el.type
+            console.log(
+              checkIncludesPermissions(el),
+              checkIncludesDirections(el),
+              el.type
+            )
+            return (
+              checkIncludesPermissions(el) &&
+              checkIncludesDirections(el) === el.type
+            )
           })
           // if ()
         }
@@ -728,7 +747,7 @@ const table = {
           for (let key in style) {
             console.log(style, key)
             styles = {
-              ...style
+              ...style,
             }
           }
         })

@@ -1,9 +1,12 @@
 <template>
   <div class="">
-    <v-subheader class="pl-0" style="height: unset">{{
-      field.label
-    }}</v-subheader>
-    <v-row>
+    <v-row class="d-flex align-start justify-space-between">
+      <v-subheader class="pl-0" style="height: unset">{{
+        field.label
+      }}</v-subheader>
+      <v-icon class="mt-1 mr-1" x-small>$IconClose</v-icon>
+    </v-row>
+    <v-row class="mt-0">
       <v-col class="pl-0" cols="12" sm="6">
         <v-menu
           :key="field.id"
@@ -41,11 +44,7 @@
           </v-date-picker>
         </v-menu>
       </v-col>
-      <v-col
-        class="pr-0 d-flex align-start justify-space-between"
-        cols="12"
-        sm="6"
-      >
+      <v-col class="pr-0" cols="12" sm="6">
         <v-menu
           :key="field.id"
           :ref="`menuRef_${field.id}`"
@@ -70,7 +69,6 @@
                 class="mt-0 pt-0"
                 clearable
               ></v-text-field>
-              <v-icon class="mt-3 ml-2" x-small>$IconClose</v-icon>
             </template>
           </template>
           <v-date-picker
