@@ -2158,6 +2158,7 @@ const config = {
               cols: 12,
               sm: 12,
             },
+            disabled: true,
             // validations: { required },
             bootstrapClass: [''],
           }),
@@ -2584,7 +2585,7 @@ const config = {
             ],
             filter: [
               {
-                field: 'me',
+                field: 'account_id',
                 value: '',
                 source: 'formData',
                 type: 'num',
@@ -2742,6 +2743,24 @@ const config = {
             },
             updateList: [
               {
+                alias: 'me',
+                condition: [
+                  {
+                    key: 'on_yourself',
+                    value: [true],
+                  },
+                ],
+                filter: [
+                  {
+                    field: 'id',
+                    alias: 'account_id',
+                    value: '',
+                    source: 'environment',
+                    type: 'num',
+                  },
+                ],
+              },
+              {
                 alias: 'req_zr_id',
                 condition: [
                   {
@@ -2751,9 +2770,10 @@ const config = {
                 ],
                 filter: [
                   {
-                    field: 'me',
+                    field: 'id',
+                    alias: 'account_id',
                     value: '',
-                    source: 'formData',
+                    source: 'environment',
                     type: 'num',
                   },
                   {
@@ -2955,23 +2975,6 @@ const config = {
                   },
                 ],
               },
-              {
-                alias: 'me',
-                condition: [
-                  {
-                    key: 'on_yourself',
-                    value: [true],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'account_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
             ],
             dependence: [
               {
@@ -2979,7 +2982,7 @@ const config = {
                 action: {
                   type: 'hideOptions',
                   field: 'on_yourself',
-                  targetField: 'type_pay',
+                  targetField: 'payment_type',
                   condition: [
                     {
                       value: true,
