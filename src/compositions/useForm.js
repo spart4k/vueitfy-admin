@@ -1146,7 +1146,17 @@ export default function zxc({
         if (list.condition) {
           for (let i = 0; i < list.condition.length; i++) {
             let item = list.condition[i]
-            if (!item.value.includes(formData[item.key])) return []
+            if (item.hasOwnProperty('funcCondition')) {
+              const conditionContext = {
+                store,
+                formData,
+                originalData,
+                environment,
+              }
+              if (item.funcCondition(conditionContext) === item.type) return []
+            } else {
+              if (!item.value.includes(formData[item.key])) return []
+            }
           }
         }
         let filter = list.filter.reduce((acc, el) => {
