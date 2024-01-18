@@ -9,7 +9,8 @@ export default {
       default: () => {},
     },
     value: {
-      type: [String, Number, Object, Array],
+      type: [Array, String],
+      default: () => [null, null],
     },
     errorMessages: {
       type: Array,
@@ -42,11 +43,32 @@ export default {
     const closeMenu = (property) => {
       dateMenu[property] = false
     }
+    const isEmpty = computed(() => !date.start && !date.end)
+    const resetDate = () => {
+      for (let key in date) {
+        date[key] = ''
+      }
+    }
+    const onFocus = () => (focused.value = true)
+    const unFocus = () => (focused.value = false)
+    const focused = ref(false)
+
+    watch(
+      () => date,
+      (newVal) => {
+        console.log('date change', newVal)
+        proxyValue.value = [date.start, date.end]
+      },
+      { deep: true }
+    )
+
     watch(
       () => proxyValue.value,
       (newVal) => {
+        console.log(newVal)
         emit('input', newVal)
-      }
+      },
+      { deep: true }
     )
 
     onMounted(() => {})
@@ -57,6 +79,11 @@ export default {
       dateMenu,
       openMenu,
       closeMenu,
+      isEmpty,
+      resetDate,
+      onFocus,
+      focused,
+      unFocus,
     }
   },
 }

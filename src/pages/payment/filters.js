@@ -3,6 +3,7 @@ import {
   selectField,
   autocompleteField,
   dateRangeField,
+  checkboxField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 
@@ -200,6 +201,21 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.doljnost_id',
+    }),
+    checkboxField({
+      label: 'Группировка',
+      name: 'is_group',
+      placeholder: '',
+      readonly: false,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'is_group',
+      //validations: { required },
+      //isShow: false,
     }),
     //selectField({
     //  id: 0,

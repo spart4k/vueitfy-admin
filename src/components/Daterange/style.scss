@@ -1,0 +1,13 @@
+.date-range {
+  &-label {
+    transition: 0.1s;
+    font-size: calc(16px * 0.75);
+    &.isFocus {
+      color: var(--v-primary-base);
+    }
+  }
+  .rightDate {
+    right: 0;
+    left: unset;
+  }
+}
