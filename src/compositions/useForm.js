@@ -689,7 +689,7 @@ export default function ({
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
         url = dependence.url
-        if (targetField.type === 'autocomplete') {
+        if (targetField?.type === 'autocomplete') {
           const filter = []
           const query = (target) => {
             target.filter.forEach((el) => {

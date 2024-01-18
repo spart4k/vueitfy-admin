@@ -409,6 +409,8 @@ const table = {
           return
         }
         el.value = filterData[el.name]
+        let type = el.typeFilter ? el.typeFilter : el.type
+        type = type === 'autocomplete' ? 'select' : type
         const obj = {
           //field: el.name,
           value: filterData[el.name],
