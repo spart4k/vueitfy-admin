@@ -97,6 +97,7 @@
             :type="field.subtype === 'period' ? 'month' : undefined"
             :range="field.subtype === 'range'"
             :multiple="field.subtype === 'multiple'"
+            :first-day-of-week="1"
             @input="
               field.subtype !== 'multiple' ? (field.menu = false) : undefined
             "

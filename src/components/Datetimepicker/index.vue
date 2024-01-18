@@ -33,6 +33,7 @@
             locale="ru-RU"
             append-icon="mdi-calendar"
             readonly
+            :first-day-of-week="1"
           ></v-date-picker>
         </v-tab-item>
         <v-tab-item>

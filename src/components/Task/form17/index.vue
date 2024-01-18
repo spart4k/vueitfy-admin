@@ -12,6 +12,7 @@
           data.entity.doljnost_id == 32
         "
       >
+        <TextInfo :infoObj="infoObj" class="mb-5" />
         <!-- ($entity['doljnost_id'] == 5 || $entity['doljnost_id'] == 7 || $entity['doljnost_id'] == 32) -->
         <b class="fw-bold">Приложите выработку:</b>
 

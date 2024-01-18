@@ -199,6 +199,9 @@
                   :style="{
                     //...getFixedStyle(cell),
                     width: cell.width,
+                    backgroundColor: cell.backgroundColorKey
+                      ? row.row[cell.backgroundColorKey]
+                      : undefined,
                   }"
                   :class="{
                     ...addBackgroundClass(cell, row.row, Object.byString),
@@ -411,9 +414,10 @@
     </v-row>
     <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
     <portal v-if="filters" to="filter">
-      <Sheet :isShow="filter.isShow">
+      <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
         <keep-alive>
           <TableFilter
+            class="v-table-filter"
             @closeFilter="closeFilter"
             @saveFilter="saveFilter"
             :filtersConfig="filters"

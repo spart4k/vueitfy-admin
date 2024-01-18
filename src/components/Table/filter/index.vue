@@ -105,7 +105,11 @@
         <p>Принять</p>
       </v-btn>
     </v-form>-->
-    <FormDefault @sendFilter="sendFilter" :tab="filtersConfig" />
+    <FormDefault
+      class="v-table-filter-form"
+      @sendFilter="sendFilter"
+      :tab="filtersConfig"
+    />
   </div>
 </template>
 

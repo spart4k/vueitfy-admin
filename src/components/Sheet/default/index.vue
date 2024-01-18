@@ -2,7 +2,7 @@
   <div :class="$props.isShow ? 'sheet--show' : 'sheet--hide'" class="sheet">
     <transition name="sheet-open">
       <div v-if="$props.isShow" class="sheet-body">
-        <v-container fluid>
+        <v-container class="sheet-body-container" fluid>
           <slot></slot>
         </v-container>
       </div>

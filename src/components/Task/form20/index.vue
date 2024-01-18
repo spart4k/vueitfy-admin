@@ -19,7 +19,7 @@
         <v-row>
           <v-col>
             <span>Скан:</span>
-            <a download :href="$root.env.VUE_APP_STORE + doc.path_doc"
+            <a download :href="$root.env.VUE_APP_STORE + dopData.photo_path"
               ><v-icon left small> $IconDocument </v-icon></a
             >
           </v-col>
@@ -42,6 +42,17 @@
             ></v-text-field>
           </v-col>
         </v-row>
+        <!-- <v-row>
+          <v-col>
+            <v-textarea
+              v-model="comment"
+              rows="2"
+              clearable
+              label="Комментарий"
+              class="mb-2"
+            ></v-textarea>
+          </v-col>
+        </v-row> -->
         <v-row>
           <v-col>
             <v-checkbox

@@ -10,7 +10,7 @@ import useRequest from '@/compositions/useRequest'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import Datetimepicker from '@/components/Datetimepicker/index.vue'
 import ColorPicker from '@/components/Colorpicker/index.vue'
-
+import DateRange from '@/components/Daterange/index.vue'
 import store from '@/store'
 
 export default {
@@ -20,6 +20,7 @@ export default {
     Autocomplete,
     DropZone,
     ColorPicker,
+    DateRange,
   },
   props: {
     content: {

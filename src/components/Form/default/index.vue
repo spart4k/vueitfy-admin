@@ -104,6 +104,7 @@
                 :range="field.subtype === 'range'"
                 :multiple="field.subtype === 'multiple'"
                 :readonly="readonlyField(field)"
+                :first-day-of-week="1"
                 @input="
                   field.subtype !== 'multiple'
                     ? (field.menu = false)
@@ -150,6 +151,16 @@
             />
             <ColorPicker
               v-else-if="showField('colorPicker', field)"
+              v-model="formData[field.name]"
+              :formData="formData"
+              :disabled="disabledField(field)"
+              :field="field"
+              :error-messages="formErrors[field?.name]"
+              :label="field.label"
+              :readonly="readonlyField(field)"
+            />
+            <DateRange
+              v-else-if="showField('dateRange', field)"
               v-model="formData[field.name]"
               :formData="formData"
               :disabled="disabledField(field)"
