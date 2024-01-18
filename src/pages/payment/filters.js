@@ -20,6 +20,8 @@ export default {
     { alias: 'st_rashod_id', filter: [] },
     { alias: 'payment_account_id', filter: [] },
     { alias: 'bank_id', filter: [] },
+    { alias: 'bank_id', filter: [] },
+    { alias: 'doljnost_id', filter: [] },
   ],
   actions: [
     stringAction({
@@ -37,6 +39,7 @@ export default {
       label: 'Дата начисления:',
       name: 'date_add',
       subtype: 'range',
+      typeFilter: 'date',
       placeholder: '',
       classes: [''],
       position: {
@@ -46,23 +49,24 @@ export default {
       bootstrapClass: [''],
       aliasFilter: 'p.date_add',
     }),
-    dateRangeField({
-      label: 'Дата обновления статуса:',
-      name: 'date_status',
-      subtype: 'range',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'p.date_status',
-    }),
+    // dateRangeField({
+    //   label: 'Дата обновления статуса:',
+    //   name: 'date_status',
+    //   subtype: 'range',
+    //   placeholder: '',
+    //   classes: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 12,
+    //   },
+    //   bootstrapClass: [''],
+    //   aliasFilter: 'p.date_status',
+    // }),
     dateRangeField({
       label: 'Дата назначения:',
       name: 'date_target',
       subtype: 'range',
+      typeFilter: 'date',
       placeholder: '',
       classes: [''],
       position: {
@@ -162,6 +166,42 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.direction_id',
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+            },
+            {
+              field: 'account_id',
+              value: '',
+            },
+          ],
+          url: 'get/pagination_list/payment_object_id',
+        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'object_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [1],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/object',
+        // },
+      ],
     }),
     autocompleteField({
       label: 'Объект',
@@ -176,7 +216,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/payment_object',
+      url: 'get/pagination_list/payment_object_id',
       position: {
         cols: 12,
         sm: 12,
