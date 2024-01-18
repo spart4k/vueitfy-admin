@@ -1,10 +1,20 @@
 <template>
-  <div class="">
-    <v-subheader class="pl-0" style="height: unset">{{
-      field.label
-    }}</v-subheader>
-    <v-row>
-      <v-col class="pl-0" cols="12" sm="6">
+  <div id="attachMenu" style="position: relative" class="date-range">
+    <v-row class="d-flex align-start justify-space-between">
+      <v-subheader
+        :class="focused && 'isFocus'"
+        class="pl-0 date-range-label"
+        style="height: unset"
+        >{{ field.label }}</v-subheader
+      >
+    </v-row>
+    <v-row style="flex-wrap: nowrap" class="mt-0">
+      <v-col
+        style="transition: 0.2s"
+        class="pl-0"
+        cols="12"
+        :sm="!isEmpty ? 6 : 6"
+      >
         <v-menu
           :key="field.id"
           :ref="`menuRef_${field.id}`"
@@ -24,6 +34,8 @@
               :readonly="readonly"
               class="mt-0 pt-0"
               clearable
+              @focus="onFocus"
+              @blur="unFocus"
             ></v-text-field>
           </template>
           <v-date-picker
@@ -32,6 +44,7 @@
             locale="ru-RU"
             :readonly="readonly"
             :first-day-of-week="1"
+            :max="date.end"
             @input="
               field.subtype !== 'multiple' ? closeMenu('start') : undefined
             "
@@ -42,9 +55,10 @@
         </v-menu>
       </v-col>
       <v-col
-        class="pr-0 d-flex align-start justify-space-between"
+        style="transition: 0.2s"
+        class="pr-0"
         cols="12"
-        sm="6"
+        :sm="!isEmpty ? 5 : 6"
       >
         <v-menu
           :key="field.id"
@@ -54,9 +68,11 @@
           transition="scale-transition"
           offset-y
           min-width="auto"
-          location="start"
-          rounded
-          internal-activator
+          content-class="rightDate"
+          location="top start"
+          attach="#attachMenu"
+          :right="true"
+          style="right: 0"
         >
           <template v-slot:activator="{ attrs }">
             <template>
@@ -69,8 +85,9 @@
                 placeholder="По"
                 class="mt-0 pt-0"
                 clearable
+                @focus="onFocus"
+                @blur="unFocus"
               ></v-text-field>
-              <v-icon class="mt-3 ml-2" x-small>$IconClose</v-icon>
             </template>
           </template>
           <v-date-picker
@@ -79,6 +96,7 @@
             locale="ru-RU"
             :readonly="readonly"
             :first-day-of-week="1"
+            :min="date.start"
             @input="field.subtype !== 'multiple' ? closeMenu('end') : undefined"
           >
             <v-spacer></v-spacer>
@@ -86,7 +104,11 @@
           </v-date-picker>
         </v-menu>
       </v-col>
+      <v-col v-if="!isEmpty" class="pr-0" :sm="!isEmpty ? 1 : 0">
+        <v-icon @click="resetDate" class="mt-1 mr-1" x-small>$IconClose</v-icon>
+      </v-col>
     </v-row>
   </div>
 </template>
 <script src="./setup.js"></script>
+<style lang="scss" scoped src="./style.scss"></style>

@@ -3,6 +3,7 @@ import {
   selectField,
   autocompleteField,
   dateRangeField,
+  checkboxField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 
@@ -17,7 +18,7 @@ export default {
     { alias: 'status_id', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'st_rashod_id', filter: [] },
-    { alias: 'account_id', filter: [] },
+    { alias: 'payment_account_id', filter: [] },
     { alias: 'bank_id', filter: [] },
   ],
   actions: [
@@ -32,45 +33,45 @@ export default {
   alias: 'payment',
   active: false,
   fields: [
-    // dateRangeField({
-    //   label: 'Дата начисления:',
-    //   name: 'date_add',
-    //   subtype: 'range',
-    //   placeholder: '',
-    //   classes: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 12,
-    //   },
-    //   bootstrapClass: [''],
-    //   aliasFilter: 'p.date_add',
-    // }),
-    // dateRangeField({
-    //   label: 'Дата обновления статуса:',
-    //   name: 'date_status',
-    //   subtype: 'range',
-    //   placeholder: '',
-    //   classes: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 12,
-    //   },
-    //   bootstrapClass: [''],
-    //   aliasFilter: 'p.date_status',
-    // }),
-    // dateRangeField({
-    //   label: 'Дата назначения:',
-    //   name: 'date_target',
-    //   subtype: 'range',
-    //   placeholder: '',
-    //   classes: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 12,
-    //   },
-    //   bootstrapClass: [''],
-    //   aliasFilter: 'p.date_target',
-    // }),
+    dateRangeField({
+      label: 'Дата начисления:',
+      name: 'date_add',
+      subtype: 'range',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'p.date_add',
+    }),
+    dateRangeField({
+      label: 'Дата обновления статуса:',
+      name: 'date_status',
+      subtype: 'range',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'p.date_status',
+    }),
+    dateRangeField({
+      label: 'Дата назначения:',
+      name: 'date_target',
+      subtype: 'range',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'p.date_target',
+    }),
     selectField({
       label: 'Статус',
       name: 'status_id',
@@ -128,6 +129,7 @@ export default {
     selectField({
       label: 'Менеджеры',
       name: 'account_id',
+      alias: 'payment_account_id',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -174,7 +176,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/object',
+      url: 'get/pagination_list/payment_object',
       position: {
         cols: 12,
         sm: 12,
@@ -199,6 +201,21 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.doljnost_id',
+    }),
+    checkboxField({
+      label: 'Группировка',
+      name: 'is_group',
+      placeholder: '',
+      readonly: false,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'is_group',
+      //validations: { required },
+      //isShow: false,
     }),
     //selectField({
     //  id: 0,
