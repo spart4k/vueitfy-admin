@@ -558,18 +558,17 @@ const table = {
       } else if (type === 'changeUrl') {
         changeUrl(url)
       } else if (type === 'getFilters') {
-        console.log('click inner getFilter')
-        console.log(filtersColumns.value)
-        console.log(url)
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
         emit('nextStage', {})
       } else if (button.label === 'Обновить') {
         await getItems()
       } else if (type === 'sendPage') {
-        console.log(type)
         const path = await store.dispatch('table/sendPage', {
-          filter: filtersColumns.value,
+          page: button.requestPage,
+          content: {
+            filter: filtersColumns.value,
+          },
         })
         const link = document.createElement('a')
         link.download = path.url
@@ -579,7 +578,7 @@ const table = {
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
-        console.log(path)
+        getItems()
       }
       if (button.function) button.function()
     }

@@ -1,0 +1,10 @@
+.form-status {
+  position: absolute;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.form-status .visible {
+  opacity: 1;
+  left: 0;
+}

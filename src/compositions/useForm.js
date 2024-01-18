@@ -17,7 +17,7 @@ import router from '@/router'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
-export default function ({
+export default function zxc({
   fields = {},
   watcher,
   context,
@@ -41,7 +41,6 @@ export default function ({
   const $autoDirty = true
   // const route = useRoute()
   const { route } = context.root
-  console.log(route, context)
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
@@ -52,6 +51,7 @@ export default function ({
       return obj
     }, {})
   )
+  let originalData
 
   const computedFormData = computed(() => formData)
 
@@ -60,7 +60,6 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
-      console.log(form.fields)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -147,7 +146,6 @@ export default function ({
   }
 
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
-    console.log(action)
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
     if (action.action === 'saveFilter') {
@@ -200,7 +198,6 @@ export default function ({
       loading.value = false
       emit('getItems')
       //if (action.actionKey === 'schedule') {
-      console.log(result)
       if (result.code === 1) {
         emit('closePopup')
       }
@@ -233,6 +230,17 @@ export default function ({
           formData: sortedData,
         },
         { update: true }
+      )
+      loading.value = false
+    } else if (action.action === 'customFormStore') {
+      loading.value = true
+      await loadStoreFile(
+        {
+          url: action.url,
+          module: action.module,
+          formData: sortedData,
+        },
+        { change: true }
       )
       loading.value = false
     } else if (action.action === 'createForm') {
@@ -272,7 +280,6 @@ export default function ({
       }
       //emit('closePopup')
     } else if (action.action === 'closePopup') {
-      console.log('close popup', notClose)
       if (!notClose) emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
       action.variable = false
@@ -338,11 +345,12 @@ export default function ({
 
   const sortData = ({ action }) => {
     const newForm = {}
+
     if (!form) return
     Object.keys(formData).forEach((key) => {
       const item = form?.fields?.find((x) => x.name === key)
 
-      if (item.prescription) {
+      if (item?.prescription) {
         if (!newForm[item.prescription]) newForm[item.prescription] = []
         let itemIndex = item.name.split('%')[1]
         if (!itemIndex) itemIndex = 0
@@ -350,19 +358,17 @@ export default function ({
           newForm[item.prescription][itemIndex] = {}
         newForm[item.prescription][itemIndex][key.split('%')[0]] = formData[key]
       }
-      console.log('ISSHOW', item.name, item.isShow.value)
+
       if (
         ((typeof item.isShow === 'boolean' && item.isShow) ||
           (typeof item.isShow === 'object' && item.isShow.value)) &&
         !item.notSend
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
-        else if (item.requestType === 'number')
-          newForm[key] = Number(formData[key])
         else newForm[key] = formData[key]
       }
 
-      if (item.notSend || item.prescription) delete newForm[key]
+      // if (item.notSend || item.prescription) delete newForm[key]
 
       if (action?.useStorageKey?.length) {
         action.useStorageKey.forEach((item) => {
@@ -377,17 +383,22 @@ export default function ({
         })
       }
 
+      if (item.requestType === 'number') {
+        if (item.requestKey)
+          newForm[item.requestKey] = Number(newForm[item.requestKey])
+        else newForm[key] = Number(newForm[key])
+      }
+
       if (item.stringify) {
         if (item.requestKey)
           newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
-        else newForm[key] = JSON.stringify(formData[key])
+        else newForm[key] = JSON.stringify(newForm[key])
         // newForm[key] = JSON.stringify(formData[key])
       }
 
       if (item.name === 'subtype' && formData[key] === '') {
         delete newForm[key]
       }
-      //console.log()
     })
     return newForm
   }
@@ -407,6 +418,7 @@ export default function ({
   const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
     const { update } = params
+    const { change } = params
 
     const queries = []
 
@@ -431,7 +443,6 @@ export default function ({
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
             if (file.accepted) {
-              // console.log(store)
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
@@ -467,21 +478,32 @@ export default function ({
           if (dropzone.grouping) {
             const fileArray = [...data]
             fileArray.forEach((file) => {
+              // file.name = file.path
               delete file.request
+              // delete file.path
             })
             setFormData(fileArray)
           } else {
-            console.log(JSON.stringify(data))
             setFormData(data[0].path)
           }
+        }
+
+        if (dropzone.stash) {
+          formData[dropzone.stash].forEach((file, index) => {
+            queryParams.formData[dropzone.name].push({
+              path: file.name,
+              index: queryParams.formData[dropzone.name].length + 1,
+            })
+          })
         }
       }
     }
 
     if (update) {
       const result = await changeForm(queryParams)
+    } else if (change) {
+      const result = await changeFormId(queryParams)
     } else {
-      console.log(queryParams, 'queryParams')
       const result = await createForm(queryParams, params)
     }
     emit('getItems')
@@ -561,7 +583,9 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
-    await getDependies(params)
+    queueMicrotask(async () => {
+      await getDependies(params)
+    })
     if (params.field.hasOwnProperty('selectOptionName')) {
       const item = params.field.items.find((el) => el.id === params.value)
       params.field.selectOptionName = item[params.field.selectOption.text]
@@ -642,7 +666,8 @@ export default function ({
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
-            // formData[field.name] = field.items[0][field.selectOption.value]
+            if (field.putFirst)
+              formData[field.name] = field.items[0][field.selectOption.value]
           }
           showField(field.type, field, true)
         }
@@ -736,9 +761,24 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
-        if (params.item) {
-          dependence.fillField.forEach((el) => (formData[el] = params.item[el]))
-        }
+        dependence.fillField.forEach((el) => {
+          if (typeof el === 'string') formData[el] = params?.item[el]
+          else if (typeof el === 'object') {
+            const targetObject = form.fields.find(
+              (item) => item.name === el.formKey
+            )
+            if (
+              (typeof targetObject.isShow === 'boolean' &&
+                targetObject.isShow) ||
+              (typeof targetObject.isShow === 'object' &&
+                targetObject.isShow.value)
+            ) {
+              formData[el.targetKey] = targetObject.items?.find(
+                (item) => item[el.compareKey] === formData[el.formKey]
+              )?.[el.objectKey]
+            }
+          }
+        })
         return
       } else if (
         dependence &&
@@ -768,7 +808,6 @@ export default function ({
 
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
-        console.log('dep1', dep)
         if (dep) {
           selectField.items = selectField.hideItems.filter((item) => {
             return !dep.options.includes(item.id)
@@ -790,7 +829,6 @@ export default function ({
           body,
         })
       }
-      console.log('PARAMS EDIT', targetField)
       if (targetField) {
         //if (typeof data === 'object') data = [data]
         targetField.items = targetField.defaultItems
@@ -806,7 +844,6 @@ export default function ({
           ? [...targetField.defaultItems, ...data]
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
-        console.log('PARAMS EDIT 2')
         if (targetField.hasOwnProperty('objectData')) {
           if (data.length) {
             targetField.objectData = data
@@ -816,14 +853,12 @@ export default function ({
             )
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
-          console.log(data)
         }
       }
       if (data?.length === 1) {
         // formData[depField] = card.id
       }
-      console.log('PARAMS EDIT 1')
-      console.log(card)
+
       if (card) {
         if (dependence.fillField) {
           dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -844,8 +879,7 @@ export default function ({
           }
         }
       }
-      console.log(params)
-      console.log(dependence.type)
+
       if (dependence.action) {
         if (dependence.action.type === 'hideOptions') {
           const selectField = form.fields.find(
@@ -860,7 +894,6 @@ export default function ({
               const condition = selectField.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              //selectField.hideItems = lists.data[keyList]
               selectField.items = selectField.items.filter((el) => {
                 return !condition.values.includes(el.id)
               })
@@ -870,7 +903,6 @@ export default function ({
         }
       }
       if (dependence.type === 'update') {
-        console.log(field)
         // dependence
         if (field.hasOwnProperty('objectData')) {
           if (field.objectData?.length) {
@@ -972,12 +1004,6 @@ export default function ({
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
           if (field.hiding.conditions) {
-            // const condition = field.hiding.conditions.find(
-            //   (el) => mode === el.value
-            // )
-            // lists.data[keyList] = lists.data[keyList].filter((el) => {
-            //   return !condition.values.includes(el.id)
-            // })
             const condition = field.hiding.conditions.find(
               (el) => mode === el.value && el.target !== 'formData'
             )
@@ -991,17 +1017,14 @@ export default function ({
               (el) => el.target === 'formData'
             )
             if (formTargets?.length) {
-              console.log('FORMTARGET')
               formTargets.forEach((formTarget) => {
                 if (formTarget.value.includes(formData[formTarget.field])) {
-                  console.log(lists.data[keyList])
                   lists.data[keyList] = lists.data[keyList].filter((el) => {
                     return formTarget.values.includes(el.id)
                   })
                 }
               })
             }
-            console.log(formTargets, 'formTargets')
           }
         }
         field.items = lists.data[keyList]
@@ -1070,21 +1093,17 @@ export default function ({
               formData[field.name] = !!syncForm.data[formKey]
           }
           // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
-          if (
-            field.hasOwnProperty('dependence') &&
-            field.dependence.type === 'api'
-          ) {
-            //await getDependies({ value: formData[field.name], field })
-          }
+          // if (field.hasOwnProperty('dependence')) {
+          //   await getDependies({
+          //     value: formData[field.name],
+          //     field,
+          //   })
+          // }
           if (field.updateList && field.updateList.length) {
             //await queryList(field, false)
           }
         }
       }
-
-      // setInterval(() => {
-      //   console.log('////////////', formData)
-      // }, 4000)
 
       const prescription = form?.fields.find(
         (x) => x.prescription
@@ -1107,9 +1126,17 @@ export default function ({
       if (syncForm.hasOwnProperty('readonly')) {
         environment.readonlyAll = syncForm.readonly
       }
+
+      originalData = _.cloneDeep(formData)
     }
     if (hasSelect()) {
-      const listQuery = form?.lists?.map((list) => {
+      const listQuery = form?.lists?.flatMap((list) => {
+        if (list.condition) {
+          for (let i = 0; i < list.condition.length; i++) {
+            let item = list.condition[i]
+            if (!item.value.includes(formData[item.key])) return []
+          }
+        }
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (
@@ -1177,14 +1204,12 @@ export default function ({
   }
 
   const isHideBtn = (button) => {
-    console.log(typeof button.isHide)
     const checkIncludesData = (el) => {
       const source = eval(el.target)
       let result
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])
       } else {
-        console.log(el.value, source[el.field])
         result = el.value.includes(source[el.field])
       }
       return result
@@ -1202,11 +1227,6 @@ export default function ({
                 conditionEl.target === 'environment') &&
               !conditionEl.permissions
             ) {
-              console.log(
-                conditionEl,
-                checkIncludesData(conditionEl),
-                conditionEl.type
-              )
               return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
               return checkIncludesPermissions(conditionEl) === conditionEl.type
@@ -1235,12 +1255,11 @@ export default function ({
 
   const readonlyField = (field) => {
     const checkIncludesData = (el) => {
-      const source = eval(el.target)
+      let source = eval(el.target)
       let result
       if (el.array) {
         result = _.isEqual(el.value, source[el.field])
       } else {
-        console.log(el.value, source[el.field], 'SOURCE')
         result = el.value.includes(source[el.field])
       }
       return result
@@ -1254,43 +1273,33 @@ export default function ({
       if (field.readonly.condition?.length) {
         const condition = () =>
           field.readonly.condition.some((conditionEl) => {
-            console.log(conditionEl.target)
             if (
               (conditionEl.target === 'formData' ||
-                conditionEl.target === 'environment') &&
+                conditionEl.target === 'environment' ||
+                conditionEl.target === 'originalData') &&
               !conditionEl.permissions
             ) {
-              console.log(
-                conditionEl,
-                checkIncludesData(conditionEl),
-                conditionEl.type
-              )
-              return checkIncludesData(conditionEl) && conditionEl.type
+              return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
-              // console.log(
-              //   checkIncludesPermissions(conditionEl),
-              //   conditionEl.type
-              // )
               return checkIncludesPermissions(conditionEl) === conditionEl.type
             } else if (conditionEl.hasOwnProperty('funcCondition')) {
               const conditionContext = {
                 store,
                 formData,
+                originalData,
                 environment,
               }
-              console.log(conditionEl.funcCondition(conditionContext))
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
             } else {
               return (
-                checkIncludesData(conditionEl) &&
-                checkIncludesPermissions(conditionEl) === conditionEl.type
+                (checkIncludesData(conditionEl) &&
+                  checkIncludesPermissions(conditionEl)) === conditionEl.type
               )
             }
           })
         field.readonly.value = condition()
-        console.log(environment)
         return environment.readonlyAll ? true : field.readonly.value
       }
     } else if (typeof field.readonly === 'undefined') {

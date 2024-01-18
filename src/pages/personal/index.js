@@ -3375,12 +3375,12 @@ const defaultForm = [
                 {
                   value: 2,
                   type: 'error',
-                  text: 'Error: value 2',
+                  text: 'На объект не назначен менеджер',
                 },
                 {
                   value: 3,
                   type: 'error',
-                  text: 'Error: value 3',
+                  text: 'Сотрудник уже есть в системе',
                 },
               ],
             },
