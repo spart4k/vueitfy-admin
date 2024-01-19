@@ -2,7 +2,7 @@
   <div id="attachMenu" style="position: relative" class="date-range">
     <v-row class="d-flex align-start justify-space-between">
       <v-subheader
-        :class="focused && 'isFocus'"
+        :class="[focused && 'isFocus', hasError && 'isError']"
         class="pl-0 date-range-label"
         style="height: unset"
         >{{ field.label }}</v-subheader
@@ -36,6 +36,7 @@
               clearable
               @focus="onFocus"
               @blur="unFocus"
+              :error-messages="errorMessages.length ? errorMessages[0][0] : ''"
             ></v-text-field>
           </template>
           <v-date-picker
@@ -87,6 +88,9 @@
                 clearable
                 @focus="onFocus"
                 @blur="unFocus"
+                :error-messages="
+                  errorMessages.length ? errorMessages[0][1] : ''
+                "
               ></v-text-field>
             </template>
           </template>

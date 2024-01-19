@@ -47,6 +47,32 @@ const hasTime = {
   },
   $message: () => 'Выберите время',
 }
+const hasBothDateMessage = ['', '']
+const hasBothDate = {
+  $validator: (val) => {
+    // const splitedValue = val.split(' ')
+    console.log(
+      val,
+      'validation',
+      val.every((el) => !el)
+    )
+    if (val.every((el) => !el)) {
+      return true
+    } else if (val.every((el) => el)) {
+      return true
+    } else {
+      return val.some((el, index) => {
+        if (!el) {
+          hasBothDateMessage[index] = 'Выберите дату'
+          return false
+        }
+      })
+    }
+
+    // return splitedValue[0] !== null && splitedValue[1] !== null
+  },
+  $message: () => hasBothDateMessage,
+}
 
 const nameLength = {
   $validator: (val) => val.length > 4,
@@ -88,5 +114,6 @@ export {
   hasTime,
   minLength,
   numeric,
+  hasBothDate,
   // strongPassword
 }

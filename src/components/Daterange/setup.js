@@ -52,7 +52,11 @@ export default {
     const onFocus = () => (focused.value = true)
     const unFocus = () => (focused.value = false)
     const focused = ref(false)
-
+    const hasError = computed(() => {
+      if (props.errorMessages.length) {
+        return props.errorMessages[0].some((el) => el)
+      } else return false
+    })
     watch(
       () => date,
       (newVal) => {
@@ -87,6 +91,7 @@ export default {
       onFocus,
       focused,
       unFocus,
+      hasError,
     }
   },
 }
