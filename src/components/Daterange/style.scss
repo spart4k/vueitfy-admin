@@ -5,6 +5,9 @@
     &.isFocus {
       color: var(--v-primary-base);
     }
+    &.isError {
+      color: var(--v-error-base);
+    }
   }
   .rightDate {
     right: 0;

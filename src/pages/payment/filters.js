@@ -6,6 +6,7 @@ import {
   checkboxField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
+import { required } from '@/utils/validation.js'
 
 export default {
   id: 0,
@@ -29,7 +30,7 @@ export default {
       type: 'submit',
       action: 'saveFilter',
       name: 'saveFilter',
-      nextForm: true,
+      // nextForm: true,
     }),
   ],
   alias: 'payment',
@@ -48,6 +49,7 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.date_add',
+      validations: { required },
     }),
     // dateRangeField({
     //   label: 'Дата обновления статуса:',
