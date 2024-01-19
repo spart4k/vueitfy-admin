@@ -127,25 +127,39 @@
           Завершить
         </v-btn>
       </v-row>
+      <component
+        :is="Popup"
+        :options="{
+          width: config.detail.width,
+          portal: `table-detail${
+            config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
+          }`,
+        }"
+      >
+        <router-view
+          :detail="config.detail"
+          :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+        />
+      </component>
+      <!-- <Popup
+        :options="{
+          width: config.detail.width,
+          portal: `table-detail${
+            config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
+          }`,
+        }"
+        v-if="
+          config.detail && config.detail.type === 'popup' && popupForm.isShow
+        "
+      >
+        <router-view
+          :detail="config.detail"
+          :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+          @closePopup="closePopupForm"
+          @getItems="getItems"
+        />
+      </Popup> -->
     </div>
-    <!-- <Popup
-      closeButton
-      @close="closePopupForm"
-      :options="{
-        width: config.detail.width,
-        portal: `table-detail${
-          config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
-        }`,
-      }"
-      v-if="config.detail && config.detail.type === 'popup' && popupForm.isShow"
-    >
-      <router-view
-        :detail="config.detail"
-        :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
-        @closePopup="closePopupForm"
-        @getItems="getItems"
-      />
-    </Popup> -->
   </div>
 </template>
 

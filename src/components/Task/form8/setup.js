@@ -1,5 +1,6 @@
 import { defineComponent, ref, computed, onMounted } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
+import { useRoute, useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
@@ -39,6 +40,7 @@ const Form8 = defineComponent({
         value: data.entity.object_name,
       },
     }
+    const router = useRouter()
     let newString = ref(false)
     if (typeof data.data.zayavka == 'object') {
       newString.value = false
@@ -52,7 +54,7 @@ const Form8 = defineComponent({
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
 
-    console.log('config', config.detail)
+    console.log('config', Popup, config.detail)
 
     const popupForm = ref({
       isShow: true,
@@ -290,6 +292,12 @@ const Form8 = defineComponent({
       listRequestsForUpload.value = []
     }
 
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
+      popupForm.value.isShow = false
+    }
+
     let sendTaskFinish = async () => {
       const { makeRequest: changeStatus } = useRequest({
         context,
@@ -322,6 +330,8 @@ const Form8 = defineComponent({
       sendTaskFinish,
       config,
       popupForm,
+      Popup,
+      closePopupForm,
     }
   },
 })
