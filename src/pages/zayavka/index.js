@@ -1936,11 +1936,16 @@ const config = {
                 condition: [
                   {
                     key: 'vector_id',
-                    value: [1],
+                    funcCondition: (context) =>
+                      context.formData.vector_id === 1 &&
+                      !context.formData.on_yourself,
                   },
                   {
                     key: 'type_pay',
-                    value: [2, 3],
+                    // value: [2, 3],
+                    funcCondition: (context) =>
+                      [2, 3].includes(context.formData.type_pay) &&
+                      !context.formData.on_yourself,
                   },
                 ],
                 filter: [
@@ -2056,9 +2061,10 @@ const config = {
                 ],
                 filter: [
                   {
-                    field: 'me',
+                    field: 'id',
+                    alias: 'account_id',
                     value: '',
-                    source: 'formData',
+                    source: 'environment',
                     type: 'num',
                   },
                   {
@@ -2152,6 +2158,7 @@ const config = {
               cols: 12,
               sm: 12,
             },
+            disabled: true,
             // validations: { required },
             bootstrapClass: [''],
           }),
@@ -2541,9 +2548,9 @@ const config = {
             ],
             filter: [
               {
-                field: 'permission_accounts_zr',
-                value: '',
-                source: 'formData',
+                field: 'account_id',
+                value: 'id',
+                source: '',
                 type: 'num',
               },
               {
@@ -2578,7 +2585,7 @@ const config = {
             ],
             filter: [
               {
-                field: 'me',
+                field: 'account_id',
                 value: '',
                 source: 'formData',
                 type: 'num',
@@ -2606,17 +2613,12 @@ const config = {
           },
           {
             alias: 'me',
-            condition: [
-              {
-                key: 'on_yourself',
-                value: [true],
-              },
-            ],
             filter: [
               {
-                field: 'account_id',
+                field: 'from_account_id',
+                alias: 'account_id',
                 value: '',
-                source: 'formData',
+                source: 'originalData',
                 type: 'num',
               },
             ],
@@ -2728,8 +2730,9 @@ const config = {
               condition: [
                 {
                   funcCondition: (context) =>
-                    context.originalData.account_id !==
-                    context.store.state.user.id,
+                    context.originalData.from_account_id ===
+                      context.store.state.user.id &&
+                    context.originalData.status === 1,
                   type: false,
                 },
               ],
@@ -2745,9 +2748,10 @@ const config = {
                 ],
                 filter: [
                   {
-                    field: 'me',
+                    field: 'id',
+                    alias: 'account_id',
                     value: '',
-                    source: 'formData',
+                    source: 'environment',
                     type: 'num',
                   },
                   {
@@ -2949,23 +2953,6 @@ const config = {
                   },
                 ],
               },
-              {
-                alias: 'me',
-                condition: [
-                  {
-                    key: 'on_yourself',
-                    value: [true],
-                  },
-                ],
-                filter: [
-                  {
-                    field: 'account_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
             ],
             dependence: [
               {
@@ -2973,7 +2960,7 @@ const config = {
                 action: {
                   type: 'hideOptions',
                   field: 'on_yourself',
-                  targetField: 'type_pay',
+                  targetField: 'payment_type',
                   condition: [
                     {
                       value: true,
@@ -4227,6 +4214,10 @@ const config = {
                     key: 'payment_type',
                     value: [1],
                   },
+                  {
+                    key: 'on_yourself',
+                    value: [false],
+                  },
                 ],
                 filter: [
                   {
@@ -4268,6 +4259,10 @@ const config = {
                     key: 'payment_type',
                     value: [2, 3],
                   },
+                  {
+                    key: 'on_yourself',
+                    value: [false],
+                  },
                 ],
                 filter: [
                   {
@@ -4304,6 +4299,10 @@ const config = {
                   {
                     key: 'type_zayavka',
                     value: [2],
+                  },
+                  {
+                    key: 'on_yourself',
+                    value: [false],
                   },
                 ],
                 filter: [
@@ -4348,6 +4347,10 @@ const config = {
                     key: 'type_zayavka',
                     value: [3],
                   },
+                  {
+                    key: 'on_yourself',
+                    value: [false],
+                  },
                 ],
                 filter: [
                   {
@@ -4388,7 +4391,7 @@ const config = {
                 ],
                 filter: [
                   {
-                    field: 'me',
+                    field: 'account_id',
                     value: '',
                     source: 'formData',
                     type: 'num',
@@ -4690,6 +4693,28 @@ const config = {
               sm: 12,
             },
             // validations: { required },
+            bootstrapClass: [''],
+          }),
+          selectField({
+            label: 'from_account_id',
+            name: 'from_account_id',
+            placeholder: '',
+            class: [''],
+            notSend: true,
+            readonly: true,
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            putFirst: true,
+            disabled: true,
+            isShow: {
+              value: false,
+            },
             bootstrapClass: [''],
           }),
         ],
