@@ -101,7 +101,7 @@ const Form2 = defineComponent({
         //   props.data.entity.unfinished === 1 &&
         //   !finalData.value.rejected.length
         // ) {
-        return store.dispatch('taskModule/setPersonalData', {
+        return store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
             unfinished: 0,
@@ -173,7 +173,6 @@ const Form2 = defineComponent({
       ) {
         commentErr.value = 'Заполните комментарий'
       } else {
-        await setPersonalData()
         console.log(setPersonalData)
 
         const { success } = await changeStatusTask()
@@ -187,7 +186,8 @@ const Form2 = defineComponent({
           newStatus.value === 2 &&
           props.data.entity.unfinished === 1
         ) {
-          await setStartStep()
+          // await setStartStep()
+          await setPersonalData()
           console.log(setStartStep)
         }
         console.log(finalData.value)

@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import { useRouter, useRoute } from 'vue-router/composables'
 // import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
@@ -118,38 +118,44 @@ const Form4 = defineComponent({
           },
         }),
     })
+    const hasMigr = computed(() => {
+      return (
+        data.data.migr_card.hasOwnProperty('doc_id') || isGalkaVisible.value
+      )
+    })
     let sendData = async () => {
+      // console.log(hasMigr.value &&,= 'HASMIG')
       await pushSomeShit()
-      await makeRequest()
-      if (typeof data.data.migr_card == 'object') {
+      if (hasMigr.value && isGalkaVisible.value) {
+        await makeRequest()
         await delInfoAFile()
-      }
-      updateFileData().then((str) => {
-        console.log(data)
-        const { makeRequest: startTask } = useRequest({
-          context,
-          request: () =>
-            store.dispatch('taskModule/startProcess', {
-              // status: 6,
-              // data: {
-              // personal_id: <?php echo $entity['id']; ?>,
-              // docs_id: {"10": data.result},
-              // parent_action: <?php echo $task['id']; ?>,
-              // type_parent_action: 2,
+        await updateFileData().then((str) => {
+          console.log(data)
+          const { makeRequest: startTask } = useRequest({
+            context,
+            request: () =>
+              store.dispatch('taskModule/startProcess', {
+                // status: 6,
+                // data: {
+                // personal_id: <?php echo $entity['id']; ?>,
+                // docs_id: {"10": data.result},
+                // parent_action: <?php echo $task['id']; ?>,
+                // type_parent_action: 2,
 
-              parent_process: data.task.process_id,
-              process_id: data.task.process_id,
-              account_id: data.task.to_account_id,
-              task_id: data.task.id,
-              docs_id: [str.result],
-              personal_id: data.entity.id,
-              parent_action: data.task.id,
-              type_parent_action: 2,
-              // },
-            }),
+                parent_process: data.task.process_id,
+                process_id: data.task.process_id,
+                account_id: data.task.to_account_id,
+                task_id: data.task.id,
+                docs_id: [str.result],
+                personal_id: data.entity.id,
+                parent_action: data.task.id,
+                type_parent_action: 2,
+                // },
+              }),
+          })
+          startTask()
         })
-        startTask()
-      })
+      }
       const { success } = await doneTask()
       if (success) {
         ctx.emit('closePopup')
@@ -168,6 +174,7 @@ const Form4 = defineComponent({
       ticket: data.ticket,
       widthTrasfer: JSON.parse(data.task.dop_data).transfer,
       isGalkaVisible,
+      hasMigr,
     }
   },
 })

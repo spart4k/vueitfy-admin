@@ -35,12 +35,8 @@
       item-value="id"
       v-model="selectName"
     ></v-select>
-
     <span style="font-size: 18px" class="font-weight-bold">
-      <v-icon
-        x-small
-        color="green"
-        v-if="isGalkaVisible || typeof data.data.migr_card == 'object'"
+      <v-icon x-small color="green" v-if="isGalkaVisible || hasMigr"
         >$IconGalka</v-icon
       >
       Приложите миграционную карту:
@@ -56,7 +52,7 @@
         small
         color="info"
         @click="sendData"
-        :disabled="!selectName && data.data.migr_card == 'object'"
+        :disabled="(!selectName && selectName !== 0) || !hasMigr"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

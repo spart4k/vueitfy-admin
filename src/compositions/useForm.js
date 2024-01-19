@@ -858,10 +858,12 @@ export default function zxc({
         if (targetField.hasOwnProperty('objectData')) {
           if (data.length) {
             targetField.objectData = data
+            console.log('CHANGE UPDATE FILL')
           } else {
             const findedDep = targetField.dependence.find(
               (depTarget) => depTarget.type === 'update'
             )
+            console.log('CHANGE UPDATE FILL')
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
         }

@@ -52,7 +52,7 @@ const Form6 = defineComponent({
     let listDisbledDocuments = ref(0)
     let isLoadedImage = ref(false)
     onMounted(() => {
-      data.data.docs
+      data.data.docs.length
         ? (isLoadedImage.value = true)
         : (isLoadedImage.value = false)
     })
