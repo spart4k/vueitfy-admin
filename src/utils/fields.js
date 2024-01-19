@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import { hasBothDate } from './validation'
 
 const defaultProperties = (properties) => {
   return {
@@ -24,6 +25,7 @@ const dateRangeField = (properties) => {
     menu: false,
     type: 'dateRange',
     ...defaultProperties(properties),
+    validations: { hasBothDate, ...properties.validations },
   }
 }
 
