@@ -17,7 +17,7 @@ import router from '@/router'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
-export default function zxc({
+export default function ({
   fields = {},
   watcher,
   context,

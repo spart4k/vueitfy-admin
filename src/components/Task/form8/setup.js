@@ -4,13 +4,17 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import Popup from '@/components/Popup/index.vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+
+import config from '@/components/Task/form8/form.js'
 
 const Form8 = defineComponent({
   name: 'Form8',
   components: {
     Dropzone,
     TextInfo,
+    Popup,
   },
 
   props: {
@@ -47,6 +51,12 @@ const Form8 = defineComponent({
     // })
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
+
+    console.log('config', config.detail)
+
+    const popupForm = ref({
+      isShow: true,
+    })
 
     onMounted(() => {
       data.data.docs_grajdanstvo.forEach((item, index) => {
@@ -310,6 +320,8 @@ const Form8 = defineComponent({
       textInfo,
       newString,
       sendTaskFinish,
+      config,
+      popupForm,
     }
   },
 })
