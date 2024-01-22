@@ -270,7 +270,7 @@ const bankConfig = {
     method: 'get',
     alias: 'account_bank',
     url: '/get/form/',
-    requstId: 'card_id',
+    requestId: 'card_id',
     name: 'Банковская карта',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     activeTab: null,

@@ -92,10 +92,21 @@ export default {
     }
     const params = props.tab.lists
     const data = params
+    const getRequestParam = () => {
+      if (props.detail?.requestId) {
+        return _.get(route.params, props.detail.requestId)
+      } else if (route.params.id) {
+        return route.params.id
+      }
+    }
     const { makeRequest } = useRequest({
       context,
-      request: () =>
-        store.dispatch('form/get', `get/form/${alias}/${route.params.id}`),
+      request: () => {
+        return store.dispatch(
+          'form/get',
+          `get/form/${alias}/${getRequestParam()}`
+        )
+      },
     })
     const { makeRequest: makeRequestList } = useRequest({
       context,

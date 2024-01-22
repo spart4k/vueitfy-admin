@@ -466,13 +466,13 @@ const table = {
         //router.push({
         //  path: `${route.}./1`
         //})
-        let requstId = 'id'
-        if (props.options.detail.requstId)
-          requstId = props.options.detail.requstId
+        let requestId = 'id'
+        if (props.options.detail.requestId)
+          requestId = props.options.detail.requestId
         router.push({
-          name: `${route.name}/:${requstId}`,
+          name: `${route.name}/:${requestId}`,
           params: {
-            [requstId]: row.id,
+            [requestId]: row.id,
           },
         })
         popupForm.value.isShow = true
@@ -492,9 +492,9 @@ const table = {
         console.log($event, row, cell, indexRow, indexCell)
 
         if (activeIndexCells.includes(indexCell)) {
-          // let requstId = 'id'
-          // if (props.options.detail.requstId)
-          //   requstId = props.options.detail.requstId
+          // let requestId = 'id'
+          // if (props.options.detail.requestId)
+          //   requestId = props.options.detail.requestId
           //documents/personal/id
 
           const name = `documents-personal-id`

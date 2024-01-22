@@ -10,11 +10,10 @@
       <v-row>
         <v-col cols="12">
           <div style="display: flex; justify-content: center">
-            <v-btn small color="info"> Открыть </v-btn>
+            <v-btn small color="info" @click="pushToZayavka"> Открыть </v-btn>
           </div>
         </v-col>
       </v-row>
-      <!-- {{ getNameDoc(1) }} -->
       <div class="position-relative">
         <div
           class="mb-10"
@@ -127,25 +126,43 @@
           Завершить
         </v-btn>
       </v-row>
+      <component
+        :is="Popup"
+        :options="{
+          width: config.detail.width,
+          portal: `table-detail${
+            config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
+          }`,
+        }"
+        v-if="
+          config.detail && config.detail.type === 'popup' && popupForm.isShow
+        "
+      >
+        <router-view
+          :detail="config.detail"
+          :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+          @closePopup="closePopupForm"
+        />
+      </component>
+      <!-- <Popup
+        :options="{
+          width: config.detail.width,
+          portal: `table-detail${
+            config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
+          }`,
+        }"
+        v-if="
+          config.detail && config.detail.type === 'popup' && popupForm.isShow
+        "
+      >
+        <router-view
+          :detail="config.detail"
+          :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+          @closePopup="closePopupForm"
+          @getItems="getItems"
+        />
+      </Popup> -->
     </div>
-    <!-- <Popup
-      closeButton
-      @close="closePopupForm"
-      :options="{
-        width: config.detail.width,
-        portal: `table-detail${
-          config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
-        }`,
-      }"
-      v-if="config.detail && config.detail.type === 'popup' && popupForm.isShow"
-    >
-      <router-view
-        :detail="config.detail"
-        :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
-        @closePopup="closePopupForm"
-        @getItems="getItems"
-      />
-    </Popup> -->
   </div>
 </template>
 

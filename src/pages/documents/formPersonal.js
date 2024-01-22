@@ -602,7 +602,7 @@ const documentConfigEdit = {
     method: 'get',
     alias: 'personal_doc',
     url: '/get/form/',
-    requstId: 'object_id',
+    requestId: 'object_id',
     name: 'Персонал',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     activeTab: null,
