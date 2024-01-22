@@ -139,9 +139,10 @@ const Form2 = defineComponent({
           (isHasOsnDoc.value && !isOsnDocConfirmed.value)
             ? 6
             : 2
+        // let status
+        // if ()
         return store.dispatch('taskModule/setPartTask', {
-          status:
-            finalData.value.rejected.length || !isOsnDocConfirmed.value ? 6 : 2,
+          status: newStatus.value,
           data: {
             process_id: props.data.task.process_id,
             personal_id: props.data.entity.id,

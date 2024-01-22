@@ -88,9 +88,8 @@ export default {
     const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
-      console.log('route.params.id', route.params.id)
-      if (props.detail?.requstId) {
-        return _.get(route.params, props.detail.requstId)
+      if (props.detail?.requestId) {
+        return _.get(route.params, props.detail.requestId)
       } else if (route.params.id) {
         return route.params.id
       }
