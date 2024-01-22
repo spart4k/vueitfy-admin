@@ -509,7 +509,13 @@ export default function ({
     emit('getItems')
     emit('closePopup')
   }
-  const getDetail = () => form?.detail && route.params.id
+  const getDetail = () => {
+    if (detail?.requestId) {
+      return form?.detail && route.params[detail.requestId]
+    } else {
+      return form?.detail && route.params.id
+    }
+  }
 
   const hasSelect = () => {
     return form?.fields.some(
@@ -1192,10 +1198,8 @@ export default function ({
       lists = await makeRequestList(listQuery)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) => {
-          console.log(el)
           return el.alias ? el.alias === keyList : el.name === keyList
         })
-        console.log(lists.data, 'FIELD_ITEMS')
         if (field) {
           field.hideItems = lists.data[keyList]
           if (field.hiding) {

@@ -246,6 +246,7 @@ export default {
       label: 'Группировка',
       name: 'is_group',
       placeholder: '',
+      subtype: 'single',
       readonly: false,
       class: [''],
       position: {

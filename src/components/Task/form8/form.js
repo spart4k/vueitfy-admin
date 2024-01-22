@@ -14,6 +14,7 @@ const config = {
     alias: 'zayavka',
     popupIndex: 2,
     url: '/get/form/',
+    requestId: 'form-id',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {

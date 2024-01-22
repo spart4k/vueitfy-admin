@@ -41,6 +41,7 @@ const Form8 = defineComponent({
       },
     }
     const router = useRouter()
+    const route = useRoute()
     let newString = ref(false)
     if (typeof data.data.zayavka == 'object') {
       newString.value = false
@@ -57,21 +58,7 @@ const Form8 = defineComponent({
     console.log('config', Popup, config.detail)
 
     const popupForm = ref({
-      isShow: true,
-    })
-
-    onMounted(() => {
-      data.data.docs_grajdanstvo.forEach((item, index) => {
-        let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
-        if (pasteObject) {
-          pasteObject['inProcess'] = false
-        } else {
-          pasteObject = { doc_id: item }
-          pasteObject['inProcess'] = true
-          listDisbledDocuments.value = listDisbledDocuments.value + 1
-        }
-        listDocuments.value.push(pasteObject)
-      })
+      isShow: false,
     })
 
     let listRequestsForUpload = ref([])
@@ -143,6 +130,7 @@ const Form8 = defineComponent({
     //   pushSomeShit()
     //   changeStatus()
     // }
+
     let docs_ids = ref([])
     let addFilesPatent = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
@@ -177,9 +165,25 @@ const Form8 = defineComponent({
       disableFinishState.value = disableFinishState.value + 1
     }
 
-    let addFiles = (e, options) => {
-      console.log(e, options, listDocuments.value)
+    const setZayavkaItems = () => {
+      const arr = listDocuments.value.filter((x) => x.inProcess)
+      const category = config.detail.tabs[0].fields.find(
+        (x) => x.name === 'category_zr'
+      )
+      category.value = 8
+      category.readonly = true
+      // console.log('asdasd', config.detail.tabs[0].fields)
+    }
 
+    const pushToZayavka = () => {
+      router.push({
+        name: 'main/:id/add',
+      })
+      setZayavkaItems()
+      popupForm.value.isShow = true
+    }
+
+    let addFiles = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -233,19 +237,6 @@ const Form8 = defineComponent({
         successMessage: 'Файл успешно загружен',
       })
 
-      // $.ajax('/personal/create_fill_scan_process', {
-      //   method: "POST",
-      //   data: { parent_process: <?php echo $task['process_id']; ?>,
-      //           process_id: 1,
-      //           account_id: <?php echo $task['to_account_id']; ?>,
-      //           personal_id: <?php echo $entity['id']; ?>,
-      //           docs_id: docs_id,
-      //           parent_action: <?php echo $task['id']; ?>,
-      //           type_parent_action: 2
-      //   },
-      //   success: function() {
-
-      //   }
       let additionalRequestFlag
       if (
         e.item != 7 &&
@@ -259,7 +250,6 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
-      console.log(listDocuments.value)
       if (!currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
@@ -317,6 +307,28 @@ const Form8 = defineComponent({
         ctx.emit('getItems')
       }
     }
+
+    onMounted(() => {
+      data.data.docs_grajdanstvo.forEach((item, index) => {
+        let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
+        if (pasteObject) {
+          pasteObject['inProcess'] = false
+        } else {
+          pasteObject = { doc_id: item }
+          pasteObject['inProcess'] = true
+          listDisbledDocuments.value = listDisbledDocuments.value + 1
+        }
+        listDocuments.value.push(pasteObject)
+      })
+      if (
+        config.detail &&
+        config.detail.type === 'popup' &&
+        route.meta?.mode?.length === 2
+      ) {
+        popupForm.value.isShow = true
+      }
+    })
+
     return {
       addFiles,
       listDocuments,
@@ -332,6 +344,7 @@ const Form8 = defineComponent({
       popupForm,
       Popup,
       closePopupForm,
+      pushToZayavka,
     }
   },
 })
