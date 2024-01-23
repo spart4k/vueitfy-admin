@@ -187,6 +187,7 @@ export default {
       label: 'ВДС',
       name: 'vds',
       value: false,
+      subtype: 'single',
       placeholder: '',
       class: [''],
       notSend: true,
@@ -199,6 +200,7 @@ export default {
     checkboxField({
       label: 'Сгруппировать',
       name: 'is_group',
+      subtype: 'single',
       value: false,
       placeholder: '',
       class: [''],

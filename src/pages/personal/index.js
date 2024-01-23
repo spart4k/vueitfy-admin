@@ -44,13 +44,9 @@ function downloadFile(val) {
   document.body.removeChild(link)
 }
 
-
-
 function searchInputing(field) {
   console.log(field)
 }
-
-
 
 const consumptionConfig = {
   selector: '#mainTable',
@@ -304,7 +300,7 @@ const consumptionConfig = {
       to: 'personal',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 const debetorConfig = {
@@ -559,7 +555,7 @@ const debetorConfig = {
       to: 'personal',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 export const headDocumentConfigEdit = [
@@ -809,7 +805,7 @@ const documentConfigEdit = {
     method: 'get',
     alias: 'personal_doc',
     url: '/get/form/',
-    requstId: 'object_id',
+    requestId: 'object_id',
     name: 'Персонал',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     activeTab: null,
@@ -884,7 +880,10 @@ const documentConfigEdit = {
             color: 'primary',
             module: 'form/update',
             url: 'set/data/personal_doc',
-            useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }, { requestKey: 'id', storageKey: 'object_id' }],
+            useRouteKey: [
+              { requestKey: 'personal_id', storageKey: 'id' },
+              { requestKey: 'id', storageKey: 'object_id' },
+            ],
             // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
             name: 'updateFormStore',
             action: 'updateFormStore',
@@ -1541,7 +1540,7 @@ const skanConfig = {
       to: 'personal',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 const bankConfig = {
@@ -1771,7 +1770,7 @@ const bankConfig = {
       to: 'personal',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 const paymentConfig = {
@@ -2073,7 +2072,7 @@ const editFormPermissions = {
     denied: {
       permissions: [4],
       type: true,
-    }
+    },
   },
   OBDandOKK: {
     access: {
@@ -2083,8 +2082,8 @@ const editFormPermissions = {
     denied: {
       permissions: [7, 8],
       type: true,
-    }
-  }
+    },
+  },
 }
 
 export const fieldsBaseDefaulrForm = [
@@ -2455,15 +2454,18 @@ const defaultForm = [
       { alias: 'account_id', filter: [] },
       { alias: 'direction_id', filter: [] },
       { alias: 'grajdanstvo_id', filter: [] },
-      { alias: 'objects_personal', filter: [
-        {
-          field: 'object_id',
-          alias: 'personal_id',
-          value: '',
-          source: '+route.params.id',
-          type: 'num'
-        },
-      ] },
+      {
+        alias: 'objects_personal',
+        filter: [
+          {
+            field: 'object_id',
+            alias: 'personal_id',
+            value: '',
+            source: '+route.params.id',
+            type: 'num',
+          },
+        ],
+      },
     ],
     alias: 'personal',
     active: false,
@@ -2495,16 +2497,17 @@ const defaultForm = [
     type: FormDefault,
     detail: true,
     lists: [
-      { alias: 'bind_directions',
+      {
+        alias: 'bind_directions',
         filter: [
           {
             field: 'bind_objects',
             alias: 'object_id',
             value: '',
             source: 'formData',
-            type: 'array'
+            type: 'array',
           },
-        ]
+        ],
       },
       // 'user_keys',
       // 'habitation_id',
@@ -2543,7 +2546,7 @@ const defaultForm = [
           {
             field: 'personal_id',
             value: '',
-            source: '+route.params.id'
+            source: '+route.params.id',
           },
         ],
         dependence: [
@@ -2847,22 +2850,25 @@ const defaultForm = [
           // 'status_pt',
           { alias: 'direction_id_logistic', filter: [] },
           { alias: 'grajdanstvo_id', filter: [] },
-          { alias: 'brigadirs', filter: [
-            {
-              field: 'object_id',
-              //alias: 'object_json',
-              value: '',
-              source: 'formData',
-              type: 'array'
-            },
-            {
-              field: 'direction_id',
-              //alias: 'direction_json',
-              value: '',
-              source: 'formData',
-              type: 'array'
-            },
-          ]},
+          {
+            alias: 'brigadirs',
+            filter: [
+              {
+                field: 'object_id',
+                //alias: 'object_json',
+                value: '',
+                source: 'formData',
+                type: 'array',
+              },
+              {
+                field: 'direction_id',
+                //alias: 'direction_json',
+                value: '',
+                source: 'formData',
+                type: 'array',
+              },
+            ],
+          },
           {
             alias: 'city_id',
             filter: [
@@ -2937,7 +2943,7 @@ const defaultForm = [
                 module: 'selects/getListUpdate',
                 field: 'object_id',
                 url: 'get/pagination_list/object_logistic',
-                alias: 'object_id'
+                alias: 'object_id',
               },
             ],
             updateList: [
@@ -2951,12 +2957,12 @@ const defaultForm = [
                     type: 'array',
                   },
                   {
-                  field: 'direction_id',
-                  //alias: 'direction_json',
-                  value: '',
-                  source: 'formData',
-                  type: 'array'
-                },
+                    field: 'direction_id',
+                    //alias: 'direction_json',
+                    value: '',
+                    source: 'formData',
+                    type: 'array',
+                  },
                 ],
               },
             ],
@@ -3015,12 +3021,12 @@ const defaultForm = [
                     type: 'array',
                   },
                   {
-                  field: 'direction_id',
-                  //alias: 'direction_json',
-                  value: '',
-                  source: 'formData',
-                  type: 'array'
-                },
+                    field: 'direction_id',
+                    //alias: 'direction_json',
+                    value: '',
+                    source: 'formData',
+                    type: 'array',
+                  },
                 ],
               },
             ],
@@ -3030,7 +3036,9 @@ const defaultForm = [
             },
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] }],
+              conditions: [
+                { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+              ],
             },
           }),
           // stringField({
@@ -3131,7 +3139,9 @@ const defaultForm = [
             },
             isShow: {
               value: false,
-              conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] }],
+              conditions: [
+                { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+              ],
             },
           }),
           selectField({
@@ -3208,7 +3218,12 @@ const defaultForm = [
             dependence: [
               {
                 type: 'default',
-                fillField: ['city_id', 'regions_id', 'region_name', 'city_name'],
+                fillField: [
+                  'city_id',
+                  'regions_id',
+                  'region_name',
+                  'city_name',
+                ],
               },
               {
                 type: 'api',
@@ -3493,7 +3508,7 @@ export const config = {
                     direction_id: [1, 6],
                     type: true,
                   },
-                ]
+                ],
               },
               readonly: {
                 value: true,
@@ -3506,16 +3521,16 @@ export const config = {
                     permission_id: [4],
                     type: false,
                   },
-                ]
+                ],
               },
               action: {
                 type: 'changeUrl',
                 target: 'id',
-                url: 'personal/bind'
-              }
-            }
-          ]
-        }
+                url: 'personal/bind',
+              },
+            },
+          ],
+        },
       },
       type: TableDefault,
       panel: {
@@ -3539,8 +3554,8 @@ export const config = {
                   permissions: [1],
                   type: true,
                 },
-              ]
-            }
+              ],
+            },
           },
         ],
       },
@@ -3742,7 +3757,7 @@ export const config = {
                     direction_id: [1, 6],
                     type: true,
                   },
-                ]
+                ],
               },
               readonly: {
                 value: true,
@@ -3755,16 +3770,16 @@ export const config = {
                     permission_id: [4],
                     type: false,
                   },
-                ]
+                ],
               },
               action: {
                 type: 'changeUrl',
                 target: 'id',
-                url: 'personal/bind'
-              }
-            }
-          ]
-        }
+                url: 'personal/bind',
+              },
+            },
+          ],
+        },
       },
       type: TableDefault,
       panel: {
@@ -3985,7 +4000,6 @@ export const config = {
         activeTab: null,
       },
       filters,
-
     },
     {
       selector: '#mainTable',
@@ -4597,9 +4611,7 @@ export const config = {
             name: 'Добавить ключ',
             type: 'FormDefault',
             detail: true,
-            lists: [
-              { alias: 'objects_personal', filter: [] },
-            ],
+            lists: [{ alias: 'objects_personal', filter: [] }],
             fields: [
               autocompleteField({
                 label: 'Сотрудник',
@@ -4696,7 +4708,6 @@ export const config = {
                 name: 'saveForm',
                 action: 'saveFormStore',
               }),
-
             ],
           },
           {
@@ -4742,7 +4753,7 @@ export const config = {
                       },
                     ],
                   },
-                ]
+                ],
               }),
               selectField({
                 label: 'Объект',
@@ -4809,5 +4820,3 @@ export const config = {
     },
   ],
 }
-
-

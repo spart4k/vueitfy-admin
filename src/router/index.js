@@ -45,6 +45,24 @@ const routes = [
         meta: {
           mode: ['edit'],
         },
+        children: [
+          {
+            name: 'main/:id/add',
+            path: 'add',
+            meta: {
+              mode: ['edit', 'zayavka-add'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'main/:id/:form-id',
+            path: ':form-id',
+            meta: {
+              mode: ['edit', 'zayavka-edit'],
+            },
+            component: Detail,
+          },
+        ],
         component: Detail,
       },
     ],
