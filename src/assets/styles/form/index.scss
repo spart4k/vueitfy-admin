@@ -1,8 +1,13 @@
 .v-application.theme--dark {
   .field-loading {
     &.gradient {
-      background: #1D1D1D;
-      background: linear-gradient(to right, #1D1D1D 8%, rgb(37, 35, 35) 38%, #1D1D1D 54%);
+      background: #1d1d1d;
+      background: linear-gradient(
+        to right,
+        #1d1d1d 8%,
+        rgb(37, 35, 35) 38%,
+        #1d1d1d 54%
+      );
     }
   }
 }
@@ -28,6 +33,9 @@
           border-width: 1px;
         }
       }
+      &.isHide {
+        display: none;
+      }
       &.textBlock {
         //height: 80px;
         display: flex;
@@ -39,6 +47,11 @@
           &:first-child {
             //font-weight: 600;
           }
+        }
+      }
+      .noWrap {
+        .v-select__selections {
+          flex-wrap: unset !important;
         }
       }
       .v-autocomplete {
@@ -65,7 +78,7 @@
         flex: unset;
         //pointer-events: none;
       }
-      .v-select .v-chip  {
+      .v-select .v-chip {
         flex: unset;
         min-width: fit-content;
         //min-width: 100px;
@@ -93,17 +106,22 @@
       animation-name: placeHolderShimmer;
       animation-timing-function: linear;
       background: #f6f7f8;
-      background: linear-gradient(to right, #fafafa 8%, #ededed 38%, #fafafa 54%);
+      background: linear-gradient(
+        to right,
+        #fafafa 8%,
+        #ededed 38%,
+        #fafafa 54%
+      );
       background-size: 1000px 640px;
       position: relative;
+    }
+    @keyframes placeHolderShimmer {
+      0% {
+        background-position: -468px 0;
       }
-      @keyframes placeHolderShimmer{
-          0%{
-              background-position: -468px 0
-          }
-          100%{
-              background-position: 468px 0
-          }
+      100% {
+        background-position: 468px 0;
       }
+    }
   }
 }

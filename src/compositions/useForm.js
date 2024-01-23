@@ -1389,6 +1389,32 @@ export default function ({
       : false
   }
 
+  const colsField = (field) => {
+    if (typeof field.position?.sm === 'object') {
+      const conditionContext = {
+        store,
+        formData,
+        environment,
+      }
+      let value = null
+      console.log(field.position.sm, 'ЕЖЕДНЕВКА2 !!')
+      field.position.sm.condiiton.forEach((el) => {
+        console.log('FOR EACH')
+        const resultFuncCondition = el.funcCondition(conditionContext)
+        console.log(conditionContext)
+        console.log(resultFuncCondition, 'ЕЖЕДНЕВКА2 !!')
+        if (resultFuncCondition) {
+          console.log('ЕЖЕДНЕВКА !!')
+          value = el.value[resultFuncCondition]
+        } else {
+          value = el.value[false]
+        }
+      })
+      console.log(value, 'ЕЖЕДНЕВКА !!')
+      return value
+    } else return field.position.sm
+  }
+
   watch(
     () => watcher,
     (wtch) => {
@@ -1451,5 +1477,6 @@ export default function ({
     responseHandler,
     readonlyField,
     isHideBtn,
+    colsField,
   }
 }

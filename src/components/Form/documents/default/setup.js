@@ -6,6 +6,7 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import Autocomplete from '@/components/Autocomplete'
 import Row from '../row/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
 
 export default {
   name: 'Form-Documents',
@@ -30,6 +31,7 @@ export default {
   components: {
     Autocomplete,
     Row,
+    DocForm,
   },
   setup(props, ctx) {
     const route = useRoute()

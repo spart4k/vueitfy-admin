@@ -191,6 +191,7 @@ export default {
       readonlyField,
       refreshTable,
       isHideBtn,
+      colsField,
     } = useForm({
       form: props.tab,
       context,
@@ -239,6 +240,7 @@ export default {
       refreshTable,
       isHideBtn,
       route,
+      colsField,
     }
   },
 }

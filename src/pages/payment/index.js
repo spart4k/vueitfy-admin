@@ -3248,13 +3248,36 @@ const config = {
             bootstrapClass: [''],
             readonly: true,
           }),
+          dateField({
+            label: 'Дата назн',
+            name: 'date_target',
+            subtype: 'datetime',
+            placeholder: '',
+            classes: [''],
+            position: {
+              cols: 12,
+              sm: 3,
+            },
+            // validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+            isShow: {
+              value: false,
+              conditions: [
+                {
+                  field: 'vid_vedomost_id',
+                  value: [1],
+                },
+              ],
+            },
+          }),
           selectField({
             label: 'Менеджер',
             name: 'account_id',
             alias: 'payment_account_id',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['noWrap'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -3262,7 +3285,21 @@ const config = {
             items: [],
             position: {
               cols: 12,
-              sm: 6,
+              // sm: 6,
+              // condition: []
+              sm: {
+                condiiton: [
+                  {
+                    funcCondition: (context) =>
+                      context.formData.vid_vedomost_id === 1,
+                    value: {
+                      true: 3,
+                      false: 6,
+                    },
+                    // type: false,
+                  },
+                ],
+              },
             },
             validations: { required },
             bootstrapClass: [''],

@@ -7,9 +7,15 @@
             v-for="field in tab.fields"
             :key="field.id"
             :cols="field.position.cols"
-            :sm="field.position.sm"
+            :sm="colsField(field)"
             class="field-col"
-            :class="[field.type, readonlyField(field) ? 'readonly' : '']"
+            :class="[
+              field.type,
+              readonlyField(field) ? 'readonly' : '',
+              typeof field.isShow === 'object' && !field.isShow.value
+                ? 'isHide'
+                : '',
+            ]"
           >
             <div
               v-if="
@@ -44,6 +50,7 @@
               ref="autocompleteRef"
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
+              :class="[...field.class]"
             />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
