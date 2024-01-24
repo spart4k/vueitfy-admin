@@ -356,14 +356,14 @@ const config = {
         backgroundColor: '#fff',
         // type: 'sendPage',
         // requestPage: 'payment',
-        // isShow: {
-        //   condition: [
-        //     {
-        //       permissions: [4, 12],
-        //       type: true,
-        //     },
-        //   ],
-        // },
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 8],
+              type: true,
+            },
+          ],
+        },
       },
     ],
     filters: true,
