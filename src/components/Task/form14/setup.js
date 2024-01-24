@@ -229,9 +229,9 @@ const Form14 = defineComponent({
         }),
     })
 
-    let emplyeeFired = () => {
-      changeStatusNew()
-      setStartStep()
+    let emplyeeFired = async () => {
+      await changeStatusNew()
+      await setStartStep()
       ctx.emit('closePopup')
     }
 

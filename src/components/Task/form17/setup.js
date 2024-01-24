@@ -278,8 +278,8 @@ const Form17 = defineComponent({
             })
           },
         })
-        setPersonalTarget()
-        changeStatus()
+        await setPersonalTarget()
+        await changeStatus()
         //   $.ajax('/common/save/personal_target', {
         //     method: "POST",
         // //     data: {id: <?php echo $entity['id']; ?>, services: `{"3": {"services": [{"service_id": <?php echo $services_spr[$entity['doljnost_id']]; ?>,

@@ -158,7 +158,7 @@ const Form5 = defineComponent({
       console.log(listRequestsForUpload.value.length)
     }
 
-    let sendTaskFinish = () => {
+    let sendTaskFinish = async () => {
       listRequestsForUpload.value.forEach((elem, index) => {
         elem()
       })
@@ -188,9 +188,9 @@ const Form5 = defineComponent({
         //           x5: getListValueByNameField('objects_all', <?php echo $entity['object_id']; ?>, 'subtype') == 9 ? 1 : 0
       })
 
-      changeStatus()
+      await changeStatus()
       if (listRequestsForUpload.value.length) {
-        createFillScanProcess()
+        await createFillScanProcess()
       }
       listRequestsForUpload.value = []
       const { makeRequest: createFillScanProcess } = useRequest({
