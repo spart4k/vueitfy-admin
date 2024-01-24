@@ -11,7 +11,7 @@
       <v-container class="">
         <v-row>
           <v-col
-            v-for="field in tab.fields"
+            v-for="field in proxyTab.fields"
             :key="field.id"
             :cols="field.position.cols"
             :sm="field.position.sm"
@@ -250,7 +250,7 @@
             @click.prevent="
               clickHandler({ action, skipValidation: action.skipValidation })
             "
-            v-for="action in tab.actions"
+            v-for="action in proxyTab.actions"
             :key="action.id"
             v-show="!isHideBtn(action)"
           >

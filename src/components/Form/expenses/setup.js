@@ -30,7 +30,7 @@ import { v4 as uuidv4 } from 'uuid'
 import store from '@/store'
 
 export default {
-  name: 'Form-Default',
+  name: 'Form-Expenses',
   components: {
     Datetimepicker,
     Autocomplete,
@@ -53,7 +53,7 @@ export default {
     },
   },
   setup(props, ctx) {
-    const proxyTab = {}
+    const proxyTab = ref(props.tab)
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
@@ -71,12 +71,12 @@ export default {
     const loading = ref(true)
     const zayavkaFirstLoad = ref(true)
     const stage = ref(null)
-    const { alias } = props.tab
+    const { alias } = proxyTab.value
     const dropzone = ref()
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
     const fields = () => {
       const fields = {}
-      props.tab.fields.forEach((el) => {
+      proxyTab.value.fields.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
@@ -90,7 +90,7 @@ export default {
       })
       return fields
     }
-    const params = props.tab.lists
+    const params = proxyTab.value.lists
     const data = params
     const getRequestParam = () => {
       if (props.detail?.requestId) {
@@ -130,8 +130,8 @@ export default {
       request: (params) => {
         console.log()
         let id
-        if (props.tab.routeParam) {
-          id = route.params[props.tab.routeParam]
+        if (proxyTab.value.routeParam) {
+          id = route.params[proxyTab.value.routeParam]
         } else {
           id = route.params.id
         }
@@ -152,13 +152,13 @@ export default {
     })
 
     const changeBlockCount = (val) => {
-      const btnIndex = props.tab.fields.findIndex(
+      const btnIndex = proxyTab.value.fields.findIndex(
         (x) => x.id === 'btn-decrease'
       )
-      const categoryItems = props.tab.fields.find(
+      const categoryItems = proxyTab.value.fields.find(
         (x) => x.name === 'rashod_vid'
       ).items
-      let itemIndex = +props.tab.fields[btnIndex - 1].name.split('%')[1]
+      let itemIndex = +proxyTab.value.fields[btnIndex - 1].name.split('%')[1]
       if (!itemIndex) itemIndex = 0
       if (val) {
         const insertItems = [
@@ -308,10 +308,10 @@ export default {
             bootstrapClass: [''],
           }),
         ]
-        props.tab.fields.splice(btnIndex, 0, ...insertItems)
+        proxyTab.value.fields.splice(btnIndex, 0, ...insertItems)
       } else {
         if (itemIndex) {
-          props.tab.fields.splice(btnIndex - 5, 5)
+          proxyTab.value.fields.splice(btnIndex - 5, 5)
           Object.keys(formData).map((x) => {
             if (x.includes(`%${itemIndex}`)) delete formData[x]
           })
@@ -326,7 +326,7 @@ export default {
       formCount = Object.keys(formData).findLast((x) =>
         x.includes('rashod_vid%')
       )
-      fieldCount = props.tab.fields.findLast((x) =>
+      fieldCount = proxyTab.value.fields.findLast((x) =>
         x.name.includes('rashod_vid%')
       )
       if (formCount) formCount = +formCount.split('%')[1]
@@ -375,15 +375,20 @@ export default {
       return false
     }
 
+    const shareItems = () => {
+      const categoryItems = proxyTab.value.fields.find(
+        (x) => x.name === 'rashod_vid'
+      ).items
+      proxyTab.value.fields.map((x) =>
+        x?.name?.includes('rashod_vid%') ? (x.items = categoryItems) : x
+      )
+    }
+
     watch(
       () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
       () => {
-        const categoryItems = props.tab.fields.find(
-          (x) => x.name === 'rashod_vid'
-        ).items
-        props.tab.fields.map((x) =>
-          x?.name?.includes('rashod_vid%') ? (x.items = categoryItems) : x
-        )
+        console.log('//////////////////')
+        shareItems()
         if (zayavkaFirstLoad.value) {
           zayavkaFirstLoad.value = false
           compareBlockCount()
@@ -393,11 +398,12 @@ export default {
     )
 
     onMounted(() => {
-      proxyTab.value = _.cloneDeep(props.tab.fields)
+      shareItems()
+      // proxyTab.value = _.cloneDeep(proxyTab.value.fields)
     })
 
     onUnmounted(() => {
-      props.tab.fields = _.cloneDeep(proxyTab.value)
+      // proxyTab.value.fields = _.cloneDeep(proxyTab.value)
     })
 
     const {
@@ -421,7 +427,7 @@ export default {
       isHideBtn,
       getDependies,
     } = useForm({
-      form: props.tab,
+      form: proxyTab.value,
       context,
       detail: props.detail,
       loading,
@@ -470,6 +476,7 @@ export default {
       checkVector,
       imageFormat,
       isHideBtn,
+      proxyTab,
     }
   },
 }

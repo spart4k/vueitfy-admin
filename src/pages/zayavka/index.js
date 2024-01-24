@@ -58,6 +58,7 @@ export const addFields = [
       sm: 6,
     },
     disabled: true,
+    readonly: true,
     validations: { required },
     bootstrapClass: [''],
   }),

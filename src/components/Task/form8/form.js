@@ -1,9 +1,9 @@
 import Expenses from '@/components/Form/expenses/index.vue'
 import { stringAction } from '@/utils/actions'
-import { addFields, editFields } from '@/pages/zayavka/index.js'
-import _ from 'lodash'
-const addConfig = _.cloneDeep(addFields)
-const editConfig = _.cloneDeep(editFields)
+// import { addFields, editFields } from '@/pages/zayavka/index.js'
+// import _ from 'lodash'
+// const addConfig = _.cloneDeep(addFields)
+// const editConfig = _.cloneDeep(editFields)
 
 const config = {
   detail: {
@@ -30,10 +30,50 @@ const config = {
           { alias: 'me', filter: [] },
           { alias: 'type_objects', filter: [] },
           { alias: 'type_pay', filter: [] },
+          {
+            alias: 'rashod_vid',
+            filter: [
+              {
+                field: 'category_zr',
+                alias: 'rashod_category_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'permissions_zr',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'personal_object_zr',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'personal_zr',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
         ],
         alias: 'zayavka',
         active: false,
-        fields: addConfig,
+        fields: null,
         actions: [
           stringAction({
             text: 'Закрыть',
@@ -366,7 +406,7 @@ const config = {
         ],
         alias: 'zayavka',
         active: false,
-        fields: editConfig,
+        fields: null,
         actions: [
           stringAction({
             text: 'Закрыть',
