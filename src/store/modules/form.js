@@ -1,5 +1,12 @@
 //import
-import { getForm, update, create, remove, putForm } from '@/api/form'
+import {
+  getForm,
+  update,
+  create,
+  remove,
+  putForm,
+  bindZayavka,
+} from '@/api/form'
 //import axios from 'axios'
 
 const form = {
@@ -23,6 +30,10 @@ const form = {
     },
     async del(_, params) {
       const result = await remove(params)
+      return result
+    },
+    async bindZayavka(_, params) {
+      const result = await bindZayavka(params.body)
       return result
     },
   },

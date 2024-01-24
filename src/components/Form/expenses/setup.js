@@ -128,7 +128,7 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log()
+        console.log('proxyTab.value', proxyTab.value)
         let id
         if (proxyTab.value.routeParam) {
           id = route.params[proxyTab.value.routeParam]
@@ -144,11 +144,19 @@ export default {
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
-      request: (params) =>
-        store.dispatch(params.module, {
+      request: async (params) => {
+        const zayavka = await store.dispatch(params.module, {
           url: params.url,
           body: { data: params.formData ? params.formData : formData },
-        }),
+        })
+        if (route.meta.mode.length === 2) {
+          await store.dispatch('form/bindZayavka', {
+            body: { id: +route.params.id, dop: { rashod_id: zayavka.id } },
+          })
+        }
+        // console.log('zayavkazayavka', zayavka.id)
+        return zayavka
+      },
     })
 
     const changeBlockCount = (val) => {
