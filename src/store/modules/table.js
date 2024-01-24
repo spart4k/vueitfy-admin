@@ -5,6 +5,7 @@ import {
   getImportX5,
   getLoadX5,
   sendPage,
+  createPrepayment,
 } from '@/api/table'
 import { putForm } from '@/api/form'
 //import axios from 'axios'
@@ -26,6 +27,10 @@ const auth = {
     },
     async getLoadX5(_, data) {
       const result = await getLoadX5(data)
+      return result
+    },
+    async createPrepayment(_, data) {
+      const result = await createPrepayment(data)
       return result
     },
     async sendPage(_, data) {

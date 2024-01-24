@@ -7,6 +7,9 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import Popup from '@/components/Popup/index.vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import { stringField, selectField, checkboxField } from '@/utils/fields.js'
+import { addFields, editFields } from '@/pages/zayavka/index.js'
+import _ from 'lodash'
 
 import config from '@/components/Task/form8/form.js'
 
@@ -25,6 +28,9 @@ const Form8 = defineComponent({
     },
   },
   setup({ data }, ctx) {
+    const router = useRouter()
+    const route = useRoute()
+    const proxyConfig = ref(_.cloneDeep(config))
     const context = {
       root: {
         store,
@@ -40,22 +46,16 @@ const Form8 = defineComponent({
         value: data.entity.object_name,
       },
     }
-    const router = useRouter()
-    const route = useRoute()
+    const expensesForm = ref(null)
     let newString = ref(false)
     if (typeof data.data.zayavka == 'object') {
       newString.value = false
     } else {
       newString.value = true
     }
-    // console.log(typeof newString)
-    // onMounted(() => {
-    //   console.log(docs_spr, getNameDoc)
-    // })
+
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
-
-    console.log('config', Popup, config.detail)
 
     const popupForm = ref({
       isShow: false,
@@ -166,21 +166,166 @@ const Form8 = defineComponent({
     }
 
     const setZayavkaItems = () => {
-      const arr = listDocuments.value.filter((x) => x.inProcess)
-      const category = config.detail.tabs[0].fields.find(
-        (x) => x.name === 'category_zr'
-      )
+      const addFieldsProxy = _.cloneDeep(addFields)
+      const editFieldsProxy = _.cloneDeep(editFields)
+
+      const addConfig = proxyConfig.value.detail.tabs[0]
+      const editConfig = proxyConfig.value.detail.tabs[1]
+      addConfig.fields = addFieldsProxy
+      editConfig.fields = editFieldsProxy
+
+      const category = addConfig.fields.find((x) => x.name === 'category_zr')
       category.value = 8
       category.readonly = true
-      // console.log('asdasd', config.detail.tabs[0].fields)
+
+      const direction = addConfig.fields.find((x) => x.name === 'direction_id')
+      direction.value = JSON.parse(data.entity.direction_json)[0]
+      direction.readonly = true
+
+      const vector = addConfig.fields.find((x) => x.name === 'vector_id')
+      vector.readonly = true
+
+      const personal = addConfig.fields.find((x) => x.name === 'personal_zr')
+      personal.readonly = true
+      personal.value = data.entity.id
+
+      const yourself = addConfig.fields.find((x) => x.name === 'on_yourself')
+      yourself.readonly = true
+
+      const name = addConfig.fields.find((x) => x.name === 'name')
+      name.value = data.entity.name
+
+      const is_migr = addConfig.fields.find((x) => x.name === 'is_migr')
+      is_migr.value = true
+
+      const docsSpr = { 7: 51, 8: 52, 11: 55, 16: 54, 18: 43, 19: 50, 23: 44 }
+
+      const arr = listDocuments.value.filter((x) => x.inProcess)
+      const filterArray = arr.reduce((acc, item) => {
+        if (docsSpr[item.doc_id]) acc.push(docsSpr[item.doc_id])
+        return acc
+      }, [])
+
+      const btnIndex = addConfig.fields.findIndex(
+        (x) => x.id === 'btn-decrease'
+      )
+
+      filterArray?.forEach((item, index) => {
+        if (!index) {
+          const rashod_vid = addConfig.fields.find(
+            (x) => x.name === 'rashod_vid'
+          )
+          const count = addConfig.fields.find((x) => x.name === 'count')
+          const vds = addConfig.fields.find((x) => x.name === 'vds')
+          const btnDecrease = addConfig.fields.find(
+            (x) => x.name === 'btn-decrease'
+          )
+          const btnIncrease = addConfig.fields.find(
+            (x) => x.name === 'btn-increase'
+          )
+          btnDecrease.readonly = true
+          btnIncrease.readonly = true
+          rashod_vid.value = item
+          rashod_vid.readonly = true
+          count.value = '1'
+          count.readonly = true
+          vds.value = true
+          vds.readonly = true
+        } else {
+          const insertItems = [
+            selectField({
+              label: 'Наименование',
+              name: `rashod_vid%${index}`,
+              notSend: true,
+              placeholder: '',
+              prescription: 'items',
+              class: [''],
+              value: item,
+              readonly: true,
+              items: [],
+              selectOption: {
+                text: 'name',
+                value: 'id',
+              },
+              position: {
+                cols: 12,
+                sm: 6,
+              },
+              validations: { required },
+              bootstrapClass: [''],
+            }),
+            stringField({
+              label: 'Кол-во',
+              name: `count%${index}`,
+              notSend: true,
+              placeholder: '',
+              readonly: true,
+              prescription: 'items',
+              value: '1',
+              class: [''],
+              position: {
+                cols: 12,
+                sm: 2,
+              },
+              validations: { required },
+              bootstrapClass: [''],
+            }),
+            stringField({
+              label: 'Стоимость',
+              name: `price%${index}`,
+              notSend: true,
+              placeholder: '',
+              readonly: undefined,
+              prescription: 'items',
+              class: [''],
+              position: {
+                cols: 12,
+                sm: 2,
+              },
+              validations: { required },
+              bootstrapClass: [''],
+            }),
+            checkboxField({
+              label: 'ВДС',
+              name: `vds%${index}`,
+              notSend: true,
+              value: true,
+              prescription: 'items',
+              placeholder: '',
+              readonly: true,
+              class: [''],
+              position: {
+                cols: 12,
+                sm: 2,
+              },
+              bootstrapClass: [''],
+            }),
+            stringField({
+              label: 'Точное наименование',
+              name: `exact_name%${index}`,
+              notSend: true,
+              placeholder: '',
+              readonly: undefined,
+              prescription: 'items',
+              class: [''],
+              position: {
+                cols: 12,
+                sm: 12,
+              },
+              bootstrapClass: [''],
+            }),
+          ]
+          addConfig.fields.splice(btnIndex + 5 * (index - 1), 0, ...insertItems)
+        }
+      })
     }
 
     const pushToZayavka = () => {
       router.push({
         name: 'main/:id/add',
       })
-      setZayavkaItems()
       popupForm.value.isShow = true
+      setZayavkaItems()
     }
 
     let addFiles = (e, options) => {
@@ -321,11 +466,12 @@ const Form8 = defineComponent({
         listDocuments.value.push(pasteObject)
       })
       if (
-        config.detail &&
-        config.detail.type === 'popup' &&
+        proxyConfig.value.detail &&
+        proxyConfig.value.detail.type === 'popup' &&
         route.meta?.mode?.length === 2
       ) {
         popupForm.value.isShow = true
+        setZayavkaItems()
       }
     })
 
@@ -340,11 +486,12 @@ const Form8 = defineComponent({
       textInfo,
       newString,
       sendTaskFinish,
-      config,
       popupForm,
       Popup,
       closePopupForm,
       pushToZayavka,
+      expensesForm,
+      proxyConfig,
     }
   },
 })

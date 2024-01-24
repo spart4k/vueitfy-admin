@@ -62,6 +62,7 @@ const table = {
     const detail = ref(props.options?.detail)
     const filters = ref(props.options?.filters)
     const panel = ref(props.options?.panel)
+    const confirmPayment = ref(false)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -418,17 +419,18 @@ const table = {
       /* eslint-disable */
       const { x } = element.getBoundingClientRect()
       /* eslint-disable */
-      if(
-          /* eslint-disable */
-        element.offsetLeft + element.offsetWidth + x
-          /* eslint-disable */
-        && element.offsetLeft<window.innerWidth){
-          /* eslint-disable */
-        return true;
-          /* eslint-disable */
+      if (
+        /* eslint-disable */
+        element.offsetLeft + element.offsetWidth + x &&
+        /* eslint-disable */
+        element.offsetLeft < window.innerWidth
+      ) {
+        /* eslint-disable */
+        return true
+        /* eslint-disable */
       } else {
-          /* eslint-disable */
-        return false;
+        /* eslint-disable */
+        return false
       }
     }
     const saveFilter = (filterData) => {
@@ -456,12 +458,14 @@ const table = {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row
         const hour = '11' //Рабочие часы
-        const day = cell.value;
+        const day = cell.value
         const month = currentDate.value.month
         const year = currentDate.value.year
 
-        const date = new Date(year, month, day);
-        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+        const date = new Date(year, month, day)
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
+          .toString()
+          .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
         //console.log(dataCell);
         const porpsContent = {
           account_id: dataCell.account_id,
@@ -470,44 +474,36 @@ const table = {
           date: formattedDate,
         }
 
-
         if (dataCell.hasOwnProperty(day)) {
-          console.log('Ключ "pattern" существует в объекте regex');
+          console.log('Ключ "pattern" существует в объекте regex')
           porpsContent.id = dataCell[day][0].id
-          router.push(
-            {
-              name: `${route.name}-edit`,
-              params: {
-                id: porpsContent.id
-              }
-            }
-          )
+          router.push({
+            name: `${route.name}-edit`,
+            params: {
+              id: porpsContent.id,
+            },
+          })
         } else {
-          console.log('Ключ "pattern" не существует в объекте regex');
+          console.log('Ключ "pattern" не существует в объекте regex')
           if (routeKey) {
-            router.push(
-              {
-                name: `${route.name}-new`,
-                // params: {
-                //   id: row.row[routeKey]
-                // }
-              }
-            )
+            router.push({
+              name: `${route.name}-new`,
+              // params: {
+              //   id: row.row[routeKey]
+              // }
+            })
           } else {
-            router.push(
-              {
-                name: `${route.name}/:id`,
-                params: {
-                  id: row.row.id
-                }
-              }
-            )
+            router.push({
+              name: `${route.name}/:id`,
+              params: {
+                id: row.row.id,
+              },
+            })
           }
-
         }
 
         popupForm.value.isShow = true
-       // popupForm.value.isShowCellForm = true
+        // popupForm.value.isShowCellForm = true
         popupForm.value.dataCellForm = porpsContent
         //  popupForm.value.isShow =
       }
@@ -516,13 +512,11 @@ const table = {
     const openRow = ($event, row, cell) => {
       if (!props.options.detail) return
       if (props.options.detail.type === 'popup') {
-
-        router.push(
-          {
-            name: `${route.name}/:id`,
-            params: {
-              id: row.row.id
-            }
+        router.push({
+          name: `${route.name}/:id`,
+          params: {
+            id: row.row.id,
+          },
         })
         popupForm.value.isShow = true
       }
@@ -535,7 +529,7 @@ const table = {
       if (props.options.options.doubleHandlerType === 'row') {
         openRow($event, row, cell)
       }
-      console.log($event, row, cell);
+      console.log($event, row, cell)
     }
 
     const closePopupForm = () => {
@@ -554,11 +548,9 @@ const table = {
         //router.push({
         //  path: `${route.}./1`
         //})
-        router.push(
-          {
-            name: `${route.name}-add`,
-          }
-        )
+        router.push({
+          name: `${route.name}-add`,
+        })
         popupForm.value.isShow = true
       }
     }
@@ -573,7 +565,9 @@ const table = {
         acceptData.value.popup = true
       } else if (type === 'changeUrl') {
         getItems()
-      }  else if (button.label === 'Обновить') {
+      } else if (type === 'confirmPayment') {
+        confirmPayment.value = true
+      } else if (button.label === 'Обновить') {
         await getItems()
       }
     }
@@ -591,7 +585,9 @@ const table = {
 
       for (let index = props?.options?.head.length - 1; index >= 0; index--) {
         if (props?.options?.head[index]?.fixed?.position === 'right') {
-          const item = cells.value.find(x => x.innerText === props?.options?.head[index]?.title)
+          const item = cells.value.find(
+            (x) => x.innerText === props?.options?.head[index]?.title
+          )
           item.style.right = `${right}px`
           right += Number(getComputedStyle(item).width.replace('px', ''))
         }
@@ -605,7 +601,7 @@ const table = {
 
       cells?.value?.forEach((item, index) => {
         if (props?.options?.head[index]?.fixed?.position === 'left') {
-          cellItems?.value?.forEach(element => {
+          cellItems?.value?.forEach((element) => {
             element.children[index].style.left = `${left}px`
           })
           left += Number(getComputedStyle(item).width.replace('px', ''))
@@ -614,8 +610,10 @@ const table = {
 
       for (let index = props?.options?.head.length - 1; index >= 0; index--) {
         if (props?.options?.head[index]?.fixed?.position === 'right') {
-          const item = cells.value.find(x => x.innerText === props?.options?.head[index]?.title)
-          cellItems?.value?.forEach(element => {
+          const item = cells.value.find(
+            (x) => x.innerText === props?.options?.head[index]?.title
+          )
+          cellItems?.value?.forEach((element) => {
             element.children[index].style.right = `${right}px`
           })
           right += Number(getComputedStyle(item).width.replace('px', ''))
@@ -627,24 +625,31 @@ const table = {
       props.options.head = props.options.head.filter((item) => !item.added)
       const date = new Date(currentDate.value.year, currentDate.value.month, 1)
       const dateNow = new Date()
-      let lastLeftIndex = props.options.head.findLastIndex((x) => x.fixed.position === 'left')
-      const pushDay = () => {
-        
-      }
-      
+      let lastLeftIndex = props.options.head.findLastIndex(
+        (x) => x.fixed.position === 'left'
+      )
+      const pushDay = () => {}
+
       if (props.options.panel.date) {
         while (date.getMonth() === currentDate.value.month) {
           props.options.head.splice(lastLeftIndex + 1, 0, {
             id: uuidv4(),
             title: `${new Date(date).getDate()}`,
             align: 'center',
-            type: props.options.panel.addedItemsChildrenType ? 'object' : 'default',
+            type: props.options.panel.addedItemsChildrenType
+              ? 'object'
+              : 'default',
             isShow: true,
             width: '75',
             added: true,
             alias: `p.${new Date(date).getDate()}`,
-            value: `${new Date(date).getDate() < 10 ? '0' : ''}${new Date(date).getDate()}`,
-            currentDate: dateNow.getDate() === date.getDate() && dateNow.getMonth() === date.getMonth() && dateNow.getFullYear() === date.getFullYear(),
+            value: `${new Date(date).getDate() < 10 ? '0' : ''}${new Date(
+              date
+            ).getDate()}`,
+            currentDate:
+              dateNow.getDate() === date.getDate() &&
+              dateNow.getMonth() === date.getMonth() &&
+              dateNow.getFullYear() === date.getFullYear(),
             weekendDate: date.getDay() === 0 || date.getDay() === 6,
             fixed: {
               value: false,
@@ -715,7 +720,9 @@ const table = {
         currentDate.value.month = 0
         currentDate.value.year += 1
       }
-      acceptData.value.valueDate = `${currentDate.value.year}-${currentDate.value.month < 10 ? '0' : ''}${currentDate.value.month + 1}`
+      acceptData.value.valueDate = `${currentDate.value.year}-${
+        currentDate.value.month < 10 ? '0' : ''
+      }${currentDate.value.month + 1}`
       // acceptData.value.valueDate
       // setTimeout(() => {
       //   countingDistances()
@@ -730,7 +737,7 @@ const table = {
       globalLoading.value = true
       const data = await store.dispatch('table/getImportX5', requestData)
       globalLoading.value = false
-      panel.value.buttons.find(x => x.value === 'accept').isDisabled = false
+      panel.value.buttons.find((x) => x.value === 'accept').isDisabled = false
       getItems()
     }
 
@@ -740,8 +747,21 @@ const table = {
         vid: acceptData.value.valueProfit.value,
       }
       const data = await store.dispatch('table/getLoadX5', requestData)
-      panel.value.buttons.find(x => x.value === 'accept').isDisabled = true
+      panel.value.buttons.find((x) => x.value === 'accept').isDisabled = true
       acceptData.value.popup = false
+    }
+
+    const createPayment = async () => {
+      const date = `${currentDate.value.year}-${
+        currentDate.value.month < 10 ? '0' : ''
+      }${currentDate.value.month + 1}`
+      console.log(date)
+      await store.dispatch('table/createPrepayment', {
+        data: {
+          period: date,
+        },
+      })
+      confirmPayment.value = false
     }
 
     // COMPUTED PROPERTIES
@@ -781,7 +801,6 @@ const table = {
     })
     // HOOKS
     onMounted(async () => {
-
       addDayOfMonth()
       initHeadParams()
       // await getItems()
@@ -814,7 +833,11 @@ const table = {
         ...props.options.data,
       }
       // .includes('add')
-      if (props.options.detail && props.options.detail.type === 'popup' && (route.params.id || route.meta.mode)) {
+      if (
+        props.options.detail &&
+        props.options.detail.type === 'popup' &&
+        (route.params.id || route.meta.mode)
+      ) {
         popupForm.value.isShow = true
       }
     })
@@ -875,6 +898,8 @@ const table = {
       filters,
       addItem,
       panelHandler,
+      confirmPayment,
+      createPayment,
     }
   },
 }

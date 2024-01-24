@@ -667,6 +667,7 @@ export default function ({
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
         )
+        console.log('field', field)
         if (field) {
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
@@ -779,11 +780,13 @@ export default function ({
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
         dependence.fillField.forEach((el) => {
-          if (typeof el === 'string') formData[el] = params?.item[el]
-          else if (typeof el === 'object') {
-            const targetObject = form.fields.find(
-              (item) => item.name === el.formKey
-            )
+          if (typeof el === 'string') {
+            if (params?.item) formData[el] = params?.item[el]
+            else formData[el] = null
+          } else if (typeof el === 'object') {
+            const targetObject = form.fields.find((item) => {
+              return item.name === el.formKey
+            })
             if (
               (typeof targetObject.isShow === 'boolean' &&
                 targetObject.isShow) ||

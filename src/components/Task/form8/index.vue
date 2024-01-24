@@ -129,39 +129,29 @@
       <component
         :is="Popup"
         :options="{
-          width: config.detail.width,
+          width: proxyConfig.detail.width,
           portal: `table-detail${
-            config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
+            proxyConfig?.detail?.popupIndex
+              ? proxyConfig?.detail?.popupIndex
+              : ''
           }`,
         }"
         v-if="
-          config.detail && config.detail.type === 'popup' && popupForm.isShow
+          proxyConfig.detail &&
+          proxyConfig.detail.type === 'popup' &&
+          popupForm.isShow
         "
       >
         <router-view
-          :detail="config.detail"
-          :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+          :detail="proxyConfig.detail"
+          ref="expensesForm"
+          :class="[
+            ...proxyConfig.detail.bootstrapClass,
+            ...proxyConfig.detail.classes,
+          ]"
           @closePopup="closePopupForm"
         />
       </component>
-      <!-- <Popup
-        :options="{
-          width: config.detail.width,
-          portal: `table-detail${
-            config?.detail?.popupIndex ? config?.detail?.popupIndex : ''
-          }`,
-        }"
-        v-if="
-          config.detail && config.detail.type === 'popup' && popupForm.isShow
-        "
-      >
-        <router-view
-          :detail="config.detail"
-          :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
-          @closePopup="closePopupForm"
-          @getItems="getItems"
-        />
-      </Popup> -->
     </div>
   </div>
 </template>
