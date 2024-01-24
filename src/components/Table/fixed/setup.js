@@ -433,6 +433,42 @@ const table = {
         return false
       }
     }
+    const permission = computed(() => store.state.user.permission_id)
+    const directions = computed(() =>
+      JSON.parse(store.state.user.direction_json)
+    )
+    const availablePanelBtn = computed(() => {
+      const checkIncludesPermissions = (el) => {
+        console.log(el.permissions.includes(permission.value))
+        return el.permissions.includes(permission.value)
+      }
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+        console.log(_.intersection(el.direction_id, directions.value).length)
+        if (!el.direction_id) return true
+        else {
+          return !!_.intersection(el.direction_id, directions.value).length
+        }
+      }
+      return props.options.panel.buttons.filter((btn) => {
+        if (!btn.isShow) return btn
+        else {
+          return btn.isShow.condition.some((el) => {
+            console.log('condition1')
+            console.log(
+              checkIncludesPermissions(el),
+              checkIncludesDirections(el),
+              el.type
+            )
+            return (
+              checkIncludesPermissions(el) &&
+              checkIncludesDirections(el) === el.type
+            )
+          })
+          // if ()
+        }
+      })
+    })
     const saveFilter = (filterData) => {
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
@@ -905,6 +941,7 @@ const table = {
       panelHandler,
       confirmPayment,
       createPayment,
+      availablePanelBtn,
     }
   },
 }

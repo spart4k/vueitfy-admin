@@ -359,7 +359,7 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [4, 8],
+              permissions: [4, 8, 17],
               type: true,
             },
           ],

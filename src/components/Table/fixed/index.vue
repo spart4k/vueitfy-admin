@@ -107,7 +107,7 @@
         <div class="v-table-panel-items">
           <div class="v-table-panel-items__actions flex-wrap">
             <v-btn
-              v-for="(button, indexButton) in panel.buttons"
+              v-for="(button, indexButton) in availablePanelBtn"
               :key="indexButton"
               @click="panelHandler(button)"
               :disabled="button.isDisabled"
