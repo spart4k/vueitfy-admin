@@ -3266,7 +3266,7 @@ const config = {
               conditions: [
                 {
                   field: 'vid_vedomost_id',
-                  value: [1],
+                  value: [1, 5],
                 },
               ],
             },
@@ -3298,6 +3298,15 @@ const config = {
                     },
                     // type: false,
                   },
+                  {
+                    funcCondition: (context) =>
+                      context.formData.vid_vedomost_id === 5,
+                    value: {
+                      true: 3,
+                      false: 6,
+                    },
+                    // type: false,
+                  },
                 ],
               },
             },
@@ -3323,7 +3332,7 @@ const config = {
                 {
                   target: 'formData',
                   field: 'vid_vedomost_id',
-                  value: [1],
+                  value: [1, 5],
                   type: true,
                 },
               ],
@@ -3400,11 +3409,19 @@ const config = {
                       options: [1, 3, 5, 8],
                     },
                     {
+                      value: 5,
+                      options: [1, 3, 5, 8],
+                    },
+                    {
                       value: [6],
                       options: [2],
                     },
                     {
                       value: [1],
+                      options: [2],
+                    },
+                    {
+                      value: [5],
                       options: [2],
                     },
                     {
@@ -3441,7 +3458,7 @@ const config = {
                 {
                   target: 'formData',
                   field: 'vid_vedomost_id',
-                  value: [1],
+                  value: [1, 5],
                   type: true,
                 },
               ],
@@ -3515,7 +3532,7 @@ const config = {
                 {
                   target: 'formData',
                   field: 'vid_vedomost_id',
-                  value: [1],
+                  value: [1, 5],
                   type: true,
                 },
               ],
@@ -3526,7 +3543,7 @@ const config = {
             name: 'personal_id',
             subtype: 'single',
             placeholder: '',
-            class: [''],
+            class: ['noWrap'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -3580,6 +3597,12 @@ const config = {
                   value: [2, 3, 6],
                   type: true,
                 },
+                {
+                  target: 'formData',
+                  field: 'vid_vedomost_id',
+                  value: [1, 5],
+                  type: true,
+                },
               ],
             },
           }),
@@ -3608,6 +3631,12 @@ const config = {
                   value: [2, 3, 6],
                   type: true,
                 },
+                {
+                  target: 'formData',
+                  field: 'vid_vedomost_id',
+                  value: [1, 5],
+                  type: true,
+                },
               ],
             },
             isShow: {
@@ -3615,7 +3644,7 @@ const config = {
               conditions: [
                 {
                   field: 'vid_vedomost_id',
-                  value: [1],
+                  value: [1, 5],
                 },
               ],
             },
@@ -3643,7 +3672,7 @@ const config = {
                 {
                   target: 'formData',
                   field: 'vid_vedomost_id',
-                  value: [1],
+                  value: [1, 5],
                   type: true,
                 },
               ],
@@ -3775,7 +3804,7 @@ const config = {
                 {
                   target: 'formData',
                   field: 'vid_vedomost_id',
-                  value: [1],
+                  value: [1, 5],
                   type: true,
                 },
               ],
@@ -3823,7 +3852,7 @@ const config = {
             label: 'Банки.карта/нал',
             name: 'personal_bank_id',
             placeholder: '',
-            class: [''],
+            class: ['noWrap'],
             selectOption: {
               text: 'name',
               value: 'id',
@@ -3850,6 +3879,21 @@ const config = {
               },
             ],
             requiredFields: ['personal_id'],
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  funcCondition: (context) =>
+                    ((context.formData.status_id === 3 ||
+                      context.formData.status_id === 2 ||
+                      context.formData.status_id === 6) &&
+                      context.formData.vid_vedomost_id === 5) ||
+                    (context.formData.vid_vedomost_id === 1 &&
+                      !context.environment.readonlyAll),
+                  type: false,
+                },
+              ],
+            },
           }),
           stringField({
             label: 'Р/С',

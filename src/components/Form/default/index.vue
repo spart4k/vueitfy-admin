@@ -61,6 +61,7 @@
               ref="autocompleteRef"
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
+              :class="[...field.class]"
             />
 
             <v-text-field
