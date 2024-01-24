@@ -55,6 +55,7 @@ const table = {
     const route = useRoute()
     const loading = ref(false)
     const globalLoading = ref(false)
+    const prepaymentLoading = ref(false)
     const headerOptions = ref([])
     const tablePosition = ref(null)
     const searchField = ref('')
@@ -752,6 +753,7 @@ const table = {
     }
 
     const createPayment = async () => {
+      prepaymentLoading.value = true
       const date = `${currentDate.value.year}-${
         currentDate.value.month < 10 ? '0' : ''
       }${currentDate.value.month + 1}`
@@ -765,8 +767,8 @@ const table = {
         color: 'success',
         timeout: 5000,
       })
-      console.log('request', request)
       confirmPayment.value = false
+      prepaymentLoading.value = false
     }
 
     // COMPUTED PROPERTIES
@@ -905,6 +907,7 @@ const table = {
       panelHandler,
       confirmPayment,
       createPayment,
+      prepaymentLoading,
     }
   },
 }

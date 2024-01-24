@@ -165,14 +165,16 @@ const Form8 = defineComponent({
       disableFinishState.value = disableFinishState.value + 1
     }
 
+    const setZayavkaEdit = () => {
+      const editFieldsProxy = _.cloneDeep(editFields)
+      const editConfig = proxyConfig.value.detail.tabs[1]
+      editConfig.fields = editFieldsProxy
+    }
+
     const setZayavkaItems = () => {
       const addFieldsProxy = _.cloneDeep(addFields)
-      const editFieldsProxy = _.cloneDeep(editFields)
-
       const addConfig = proxyConfig.value.detail.tabs[0]
-      const editConfig = proxyConfig.value.detail.tabs[1]
       addConfig.fields = addFieldsProxy
-      editConfig.fields = editFieldsProxy
 
       const category = addConfig.fields.find((x) => x.name === 'category_zr')
       category.value = 8
@@ -321,11 +323,22 @@ const Form8 = defineComponent({
     }
 
     const pushToZayavka = () => {
-      // router.push({
-      //   name: 'main/:id/add',
-      // })
-      // popupForm.value.isShow = true
-      // setZayavkaItems()
+      if (data.data?.zayavka?.id) {
+        router.push({
+          name: 'main/:id/:form_id',
+          params: {
+            id: route.params.id,
+            form_id: data.data?.zayavka?.id,
+          },
+        })
+        setZayavkaEdit()
+      } else {
+        router.push({
+          name: 'main/:id/add',
+        })
+        setZayavkaItems()
+      }
+      popupForm.value.isShow = true
     }
 
     let addFiles = (e, options) => {
@@ -470,8 +483,9 @@ const Form8 = defineComponent({
         proxyConfig.value.detail.type === 'popup' &&
         route.meta?.mode?.length === 2
       ) {
+        if (route.params.form_id) setZayavkaEdit()
+        else setZayavkaItems()
         popupForm.value.isShow = true
-        setZayavkaItems()
       }
     })
 

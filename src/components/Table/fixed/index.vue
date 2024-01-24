@@ -20,10 +20,28 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="error" @click="confirmPayment = false">
+          <v-btn
+            v-if="!prepaymentLoading"
+            text
+            color="error"
+            @click="confirmPayment = false"
+          >
             Отменить
           </v-btn>
-          <v-btn text color="primary" @click="createPayment"> Принять </v-btn>
+          <v-btn
+            v-if="!prepaymentLoading"
+            text
+            color="primary"
+            @click="createPayment"
+          >
+            Принять
+          </v-btn>
+          <v-progress-circular
+            v-if="prepaymentLoading"
+            color="primary"
+            :size="30"
+            indeterminate
+          />
         </v-card-actions>
       </v-card>
     </v-dialog>
