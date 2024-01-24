@@ -755,12 +755,17 @@ const table = {
       const date = `${currentDate.value.year}-${
         currentDate.value.month < 10 ? '0' : ''
       }${currentDate.value.month + 1}`
-      console.log(date)
-      await store.dispatch('table/createPrepayment', {
+      const response = await store.dispatch('table/createPrepayment', {
         data: {
           period: date,
         },
       })
+      store.commit('notifies/showMessage', {
+        content: `<div>Создано начислений: ${response.count} </div><div>Ошибок: ${response.count_error} </div><div>Пропущено: ${response.count_fall} </div>`,
+        color: 'success',
+        timeout: 5000,
+      })
+      console.log('request', request)
       confirmPayment.value = false
     }
 

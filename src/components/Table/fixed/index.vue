@@ -14,14 +14,14 @@
     <v-dialog persistent v-model="confirmPayment" width="400">
       <v-card>
         <v-card-title class="text-h5 text-center">
-          Вы подтверждаете начисления на
+          Вы подтверждаете начисление аванса за
           {{ currentDate.monthArray[currentDate.month] }}
           {{ currentDate.year }}
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text color="error" @click="confirmPayment = false">
-            Назад
+            Отменить
           </v-btn>
           <v-btn text color="primary" @click="createPayment"> Принять </v-btn>
         </v-card-actions>

@@ -348,23 +348,23 @@ const config = {
         backgroundColor: '#ffffff',
         type: 'changeUrl',
       },
-      // {
-      //   label: 'Начислить',
-      //   class: ['v-table-button--custom'],
-      //   url: '$IconSetting',
-      //   type: 'confirmPayment',
-      //   backgroundColor: '#fff',
-      //   // type: 'sendPage',
-      //   // requestPage: 'payment',
-      //   // isShow: {
-      //   //   condition: [
-      //   //     {
-      //   //       permissions: [4, 12],
-      //   //       type: true,
-      //   //     },
-      //   //   ],
-      //   // },
-      // },
+      {
+        label: 'Аванс',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        type: 'confirmPayment',
+        backgroundColor: '#fff',
+        // type: 'sendPage',
+        // requestPage: 'payment',
+        // isShow: {
+        //   condition: [
+        //     {
+        //       permissions: [4, 12],
+        //       type: true,
+        //     },
+        //   ],
+        // },
+      },
     ],
     filters: true,
     search: true,

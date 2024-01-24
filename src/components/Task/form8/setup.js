@@ -321,11 +321,11 @@ const Form8 = defineComponent({
     }
 
     const pushToZayavka = () => {
-      router.push({
-        name: 'main/:id/add',
-      })
-      popupForm.value.isShow = true
-      setZayavkaItems()
+      // router.push({
+      //   name: 'main/:id/add',
+      // })
+      // popupForm.value.isShow = true
+      // setZayavkaItems()
     }
 
     let addFiles = (e, options) => {
