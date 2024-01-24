@@ -21,6 +21,7 @@ import useMobile from '@/layouts/Adaptive/checkMob.js'
 import { post } from '@/api/axios'
 import useTable from '@/compositions/useTable.js'
 import { personal } from '@/pages/index.js'
+import moment from 'moment/moment'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -683,17 +684,18 @@ const table = {
         if ('conditionValue' in cell) {
           const conditionValue = innerDataCallBack(row, cell.conditionValue)
           const dateValue = new Date(conditionValue)
-          const formattedDate = `${dateValue.getDate()}.${
+          const formattedDateMax = `${dateValue.getDate()}.${
             dateValue.getMonth() + 1
           }.${dateValue.getFullYear()}`
-          return conditionValue ? formattedDate : 'mdi-check'
+          return conditionValue
+            ? moment(dateValue).format('DD.MM.YYYY')
+            : 'mdi-check'
         } else {
           return 'mdi-check'
         }
       } else if (value === 2) {
         return 'mdi-minus'
       }
-
       return 'mdi-help'
     }
 
