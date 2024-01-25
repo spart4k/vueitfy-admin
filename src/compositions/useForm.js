@@ -1322,6 +1322,12 @@ export default function ({
                 originalData,
                 environment,
               }
+              console.log(
+                'ENVIRMENT',
+                conditionEl.funcCondition(conditionContext) ===
+                  conditionEl.type,
+                conditionContext.environment.mode
+              )
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )

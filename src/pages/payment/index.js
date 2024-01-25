@@ -3884,16 +3884,18 @@ const config = {
               condition: [
                 {
                   funcCondition: (context) =>
-                    ((context.formData.status_id === 3 ||
+                    (context.formData.status_id === 3 ||
                       context.formData.status_id === 2 ||
                       context.formData.status_id === 1 ||
                       context.formData.status_id === 6) &&
-                      context.formData.vid_vedomost_id === 5) ||
-                    context.formData.vid_vedomost_id === 9 ||
-                    (context.formData.vid_vedomost_id === 1 &&
-                      !context.environment.readonlyAll),
+                    context.store.state.user.is_personal_vertical,
                   type: false,
                 },
+                // {
+                //   funcCondition: (context) =>
+                //     context.environment.mode === 'add',
+                //   type: false,
+                // },
               ],
             },
           }),
