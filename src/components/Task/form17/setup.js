@@ -216,7 +216,7 @@ const Form17 = defineComponent({
     const completeTask = async () => {
       // await setUserKey()
       // const { success } = await changeStatusTask()
-
+      let result
       if (
         data.entity.doljnost_id == 5 ||
         data.entity.doljnost_id == 7 ||
@@ -224,11 +224,8 @@ const Form17 = defineComponent({
       ) {
         // updateFileData.makeRequest()
         await loadImage.makeRequest()
-        await changeStatusTask.makeRequest()
-      } else if (
-        data.entity.doljnost_id == 6 ||
-        data.entity.doljnost_id == 49
-      ) {
+        result = await changeStatusTask.makeRequest()
+      } else if (data.entity.direction_id == 6) {
         const { makeRequest: setPersonalTarget } = useRequest({
           context,
           request: () => {
@@ -240,8 +237,8 @@ const Form17 = defineComponent({
                     services: [
                       {
                         service_id: services_spr.find(
-                          (x) => data.entity.doljnost_id
-                        )[0],
+                          (x) => x === data.entity.doljnost_id
+                        ),
                         qty: qty.value,
                         price: '',
                         sum: 0,
@@ -279,7 +276,7 @@ const Form17 = defineComponent({
           },
         })
         await setPersonalTarget()
-        await changeStatus()
+        result = await changeStatus()
         //   $.ajax('/common/save/personal_target', {
         //     method: "POST",
         // //     data: {id: <?php echo $entity['id']; ?>, services: `{"3": {"services": [{"service_id": <?php echo $services_spr[$entity['doljnost_id']]; ?>,
@@ -308,8 +305,17 @@ const Form17 = defineComponent({
         //     }
         // })
       }
-      ctx.emit('closePopup')
-      ctx.emit('getItems')
+      let { status } = result
+      if (status) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      } else {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Ошибка',
+          timeout: 1000,
+        })
+      }
     }
 
     return {
@@ -327,6 +333,7 @@ const Form17 = defineComponent({
       changeQTY,
       dateTarget,
       infoObj,
+      tariff,
     }
   },
 })

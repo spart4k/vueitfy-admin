@@ -203,7 +203,7 @@ export default function ({
       }
     } else if (action.action === 'saveFormStore') {
       loading.value = true
-      const zxc = await loadStoreFile({
+      await loadStoreFile({
         url: action.url,
         module: action.module,
         formData: sortedData,
@@ -822,9 +822,11 @@ export default function ({
           if (Array.isArray(condition.value)) cloneAi = [...condition.value]
           else cloneAi = [condition.value]
 
-          if (Array.isArray(condition.value))
+          if (Array.isArray(condition.value)) {
+            console.log(dependence.action)
+            console.log(formData[dependence.action.field])
             cloneFieldEl = [...formData[dependence.action.field]]
-          else cloneFieldEl = [formData[dependence.action.field]]
+          } else cloneFieldEl = [formData[dependence.action.field]]
 
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
