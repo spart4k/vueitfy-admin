@@ -73,7 +73,7 @@
         Завершить
       </v-btn>
       <v-btn
-        v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49"
+        v-if="data.entity.direction_id == 6"
         :disabled="!changeQTY"
         color="info"
         @click="completeTask"

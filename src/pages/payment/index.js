@@ -3413,15 +3413,15 @@ const config = {
                       options: [1, 3, 5, 8],
                     },
                     {
-                      value: [6],
+                      value: 6,
                       options: [2],
                     },
                     {
-                      value: [1],
+                      value: 1,
                       options: [2],
                     },
                     {
-                      value: [5],
+                      value: 5,
                       options: [2],
                     },
                     {
@@ -3493,7 +3493,7 @@ const config = {
               },
               {
                 field: 'direction_id',
-                source: 'formData',
+                // source: 'formData',
                 type: 'array',
                 value: '',
               },
@@ -3884,14 +3884,18 @@ const config = {
               condition: [
                 {
                   funcCondition: (context) =>
-                    ((context.formData.status_id === 3 ||
+                    (context.formData.status_id === 3 ||
                       context.formData.status_id === 2 ||
+                      context.formData.status_id === 1 ||
                       context.formData.status_id === 6) &&
-                      context.formData.vid_vedomost_id === 5) ||
-                    (context.formData.vid_vedomost_id === 1 &&
-                      !context.environment.readonlyAll),
+                    context.store.state.user.is_personal_vertical,
                   type: false,
                 },
+                // {
+                //   funcCondition: (context) =>
+                //     context.environment.mode === 'add',
+                //   type: false,
+                // },
               ],
             },
           }),

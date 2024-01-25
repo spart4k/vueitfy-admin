@@ -822,9 +822,11 @@ export default function ({
           if (Array.isArray(condition.value)) cloneAi = [...condition.value]
           else cloneAi = [condition.value]
 
-          if (Array.isArray(condition.value))
+          if (Array.isArray(condition.value)) {
+            console.log(dependence.action)
+            console.log(formData[dependence.action.field])
             cloneFieldEl = [...formData[dependence.action.field]]
-          else cloneFieldEl = [formData[dependence.action.field]]
+          } else cloneFieldEl = [formData[dependence.action.field]]
 
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
@@ -1320,6 +1322,12 @@ export default function ({
                 originalData,
                 environment,
               }
+              console.log(
+                'ENVIRMENT',
+                conditionEl.funcCondition(conditionContext) ===
+                  conditionEl.type,
+                conditionContext.environment.mode
+              )
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
