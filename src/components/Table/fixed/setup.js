@@ -383,7 +383,6 @@ const table = {
           })
         })
         props.options.data.rows = structuredArray
-        // console.log('zxc', props.options.data)
       }
       loading.value = false
       setTimeout(() => {
