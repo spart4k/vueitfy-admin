@@ -12,6 +12,7 @@ const config = {
     width: '600px',
     method: 'get',
     alias: 'zayavka',
+    name: 'Заявка',
     popupIndex: 2,
     url: '/get/form/',
     requestId: 'form_id',

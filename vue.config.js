@@ -10,7 +10,7 @@ module.exports = {
     sourceMap: process.env.NODE_ENV === 'development',
   },
   transpileDependencies: ['vuetify'],
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.module
       .rule('html')
       .test(/\.html$/)
@@ -18,4 +18,13 @@ module.exports = {
       .loader('html-loader')
   },
   runtimeCompiler: true,
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      config.output.filename = 'js/[name].[contenthash:8].min.js'
+      config.output.chunkFilename = 'js/[name].[contenthash:8].min.js'
+    } else {
+      config.output.filename = 'js/[name].js'
+      config.output.chunkFilename = 'js/[name].js'
+    }
+  },
 }

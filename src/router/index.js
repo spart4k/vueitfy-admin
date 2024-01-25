@@ -68,6 +68,46 @@ const routes = [
     ],
   },
   {
+    path: '/tasks',
+    name: 'tasks',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: TasksView,
+    children: [
+      {
+        name: 'tasks/:id',
+        path: ':id',
+        //mode: ['edit'],
+        meta: {
+          mode: ['edit'],
+        },
+        children: [
+          {
+            name: 'tasks/:id/add',
+            path: 'add',
+            meta: {
+              mode: ['edit', 'zayavka-add'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'tasks/:id/:form_id',
+            path: ':form_id',
+            meta: {
+              mode: ['edit', 'zayavka-edit'],
+            },
+            component: Detail,
+          },
+        ],
+        component: Detail,
+      },
+    ],
+  },
+  {
     path: '/payment',
     name: 'payment',
     meta: {
@@ -425,28 +465,6 @@ const routes = [
       {
         name: 'user-keys/:id',
         path: ':id',
-        component: Detail,
-      },
-    ],
-  },
-  {
-    path: '/tasks',
-    name: 'tasks',
-    meta: {
-      layout: 'blank-layout',
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: TasksView,
-    children: [
-      {
-        name: 'tasks/:id',
-        path: ':id',
-        //mode: ['edit'],
-        meta: {
-          mode: ['edit'],
-        },
         component: Detail,
       },
     ],

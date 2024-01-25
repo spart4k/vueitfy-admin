@@ -40,6 +40,7 @@
             :routeParam="id"
             @closePopup="(e) => $emit('closePopup', e)"
             @getItems="(e) => $emit('getItems', e)"
+            @refreshData="$emit('refreshData')"
           />
         </v-tab-item>
       </v-tabs-items>
