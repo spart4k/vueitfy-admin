@@ -204,15 +204,24 @@ const Form17 = defineComponent({
     //     })
     //   },
     // })
-    let services_spr = [
-      { 24: 61 },
-      { 25: 62 },
-      { 26: 63 },
-      { 27: 64 },
-      { 49: 70 },
-      { 50: 77 },
-      { 51: 78 },
-    ]
+    // let services_spr = [
+    //   { 24: 61 },
+    //   { 25: 62 },
+    //   { 26: 63 },
+    //   { 27: 64 },
+    //   { 49: 70 },
+    //   { 50: 77 },
+    //   { 51: 78 },
+    // ]
+    let services_spr = {
+      24: 61,
+      25: 62,
+      26: 63,
+      27: 64,
+      49: 70,
+      50: 77,
+      51: 78,
+    }
     const completeTask = async () => {
       // await setUserKey()
       // const { success } = await changeStatusTask()
@@ -232,13 +241,11 @@ const Form17 = defineComponent({
             return store.dispatch('taskModule/setPersonalData', {
               data: {
                 id: data.entity.id,
-                services: {
+                services: JSON.stringify({
                   3: {
                     services: [
                       {
-                        service_id: services_spr.find(
-                          (x) => x === data.entity.doljnost_id
-                        ),
+                        service_id: services_spr[data.entity.doljnost_id],
                         qty: qty.value,
                         price: '',
                         sum: 0,
@@ -248,7 +255,7 @@ const Form17 = defineComponent({
                     is_pay: false,
                     sum: 0,
                   },
-                },
+                }),
                 // payment_id: paymentData.result,
               },
             })
@@ -265,11 +272,9 @@ const Form17 = defineComponent({
                 task_id: data.task.id,
                 parent_action: data.task.id,
                 personal_target_id: data.entity.id,
-                have_price: 0,
+                have_price: tariff && tariff.length ? 1 : 0,
                 object_id: data.entity.object_id,
-                service_id: services_spr.find(
-                  (x) => data.entity.doljnost_id
-                )[0],
+                service_id: services_spr[data.entity.doljnost_id],
                 date_target: data.entity.date_target,
               },
             })
@@ -305,17 +310,19 @@ const Form17 = defineComponent({
         //     }
         // })
       }
-      let { status } = result
-      if (status) {
-        ctx.emit('closePopup')
-        ctx.emit('getItems')
-      } else {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Ошибка',
-          timeout: 1000,
-        })
-      }
+      console.log(result)
+      // let { status } = result
+      // if (status) {
+      ctx.emit('closePopup')
+      ctx.emit('getItems')
+      // }
+      // else {
+      //   store.commit('notifies/showMessage', {
+      //     color: 'error',
+      //     content: 'Ошибка',
+      //     timeout: 1000,
+      //   })
+      // }
     }
 
     return {
