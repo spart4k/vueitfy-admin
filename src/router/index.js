@@ -55,8 +55,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'main/:id/:form-id',
-            path: ':form-id',
+            name: 'main/:id/:form_id',
+            path: ':form_id',
             meta: {
               mode: ['edit', 'zayavka-edit'],
             },

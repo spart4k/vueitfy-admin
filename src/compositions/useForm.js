@@ -203,7 +203,7 @@ export default function ({
       }
     } else if (action.action === 'saveFormStore') {
       loading.value = true
-      await loadStoreFile({
+      const zxc = await loadStoreFile({
         url: action.url,
         module: action.module,
         formData: sortedData,
