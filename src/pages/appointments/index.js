@@ -1776,7 +1776,7 @@ const config = {
                 {
                   field: 'status',
                   target: 'formData',
-                  value: [1],
+                  value: [1, 2],
                   type: false,
                 },
                 {

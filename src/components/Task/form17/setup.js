@@ -223,8 +223,8 @@ const Form17 = defineComponent({
         data.entity.doljnost_id == 32
       ) {
         // updateFileData.makeRequest()
-        loadImage.makeRequest()
-        changeStatusTask.makeRequest()
+        await loadImage.makeRequest()
+        await changeStatusTask.makeRequest()
       } else if (
         data.entity.doljnost_id == 6 ||
         data.entity.doljnost_id == 49
