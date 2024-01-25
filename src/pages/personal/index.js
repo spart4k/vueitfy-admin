@@ -2084,6 +2084,7 @@ const editFormPermissions = {
       type: true,
     },
   },
+  // Убрать ОКК
 }
 
 export const fieldsBaseDefaulrForm = [
@@ -2102,9 +2103,9 @@ export const fieldsBaseDefaulrForm = [
     readonly: {
       value: false,
       condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
+        // editFormPermissions.brigadir,
+        // editFormPermissions.manager[1],
+        // editFormPermissions.rukFIlCUPDirector.denied,
         editFormPermissions.DBA.access,
         editFormPermissions.OBDandOKK.access,
       ],
@@ -2125,11 +2126,11 @@ export const fieldsBaseDefaulrForm = [
     readonly: {
       value: false,
       condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.access,
+        // editFormPermissions.brigadir,
+        // editFormPermissions.manager[1],
+        // editFormPermissions.rukFIlCUPDirector.access,
         editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),

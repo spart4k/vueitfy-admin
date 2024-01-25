@@ -150,6 +150,42 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.account_id',
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+            },
+            {
+              field: 'account_id',
+              value: '',
+            },
+          ],
+          url: 'get/pagination_list/payment_object_id',
+        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'object_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [1],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/object',
+        // },
+      ],
     }),
     selectField({
       label: 'Направления',

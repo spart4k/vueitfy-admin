@@ -1298,6 +1298,14 @@ export default function ({
       return result
     }
     const checkIncludesPermissions = (el) => {
+      console.log(
+        field.name,
+        el.permissions.includes(permission.value),
+        permission.value,
+        el.permissions,
+        [4].includes(4),
+        el
+      )
       return el.permissions.includes(permission.value)
     }
     if (typeof field.readonly === 'boolean')
@@ -1322,12 +1330,6 @@ export default function ({
                 originalData,
                 environment,
               }
-              console.log(
-                'ENVIRMENT',
-                conditionEl.funcCondition(conditionContext) ===
-                  conditionEl.type,
-                conditionContext.environment.mode
-              )
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
