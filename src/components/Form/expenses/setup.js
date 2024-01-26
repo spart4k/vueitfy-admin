@@ -153,8 +153,8 @@ export default {
           await store.dispatch('form/bindZayavka', {
             body: { id: +route.params.id, dop: { rashod_id: zayavka.id } },
           })
+          emit('refreshData')
         }
-        // console.log('zayavkazayavka', zayavka.id)
         return zayavka
       },
     })

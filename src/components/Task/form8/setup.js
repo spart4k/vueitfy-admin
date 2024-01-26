@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed, onMounted } from 'vue'
+import { defineComponent, ref, computed, onMounted, toRef } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
@@ -27,10 +27,11 @@ const Form8 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }, ctx) {
+  setup(props, ctx) {
     const router = useRouter()
     const route = useRoute()
     const proxyConfig = ref(_.cloneDeep(config))
+
     const context = {
       root: {
         store,
@@ -39,20 +40,14 @@ const Form8 = defineComponent({
     const textInfo = {
       manager: {
         key: 'Менеджер',
-        value: data.entity.account_name,
+        value: props.data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: data.entity.object_name,
-      },
+      // obj: {
+      //   key: 'Объект',
+      //   value: props.data.entity.object_name,
+      // },
     }
     const expensesForm = ref(null)
-    let newString = ref(false)
-    if (typeof data.data.zayavka == 'object') {
-      newString.value = false
-    } else {
-      newString.value = true
-    }
 
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
@@ -97,14 +92,14 @@ const Form8 = defineComponent({
     //       store.dispatch('taskModule/setPartTask', {
     //         status: 2,
     //         data: {
-    //           process_id: data.task.process_id,
-    //           task_id: data.task.id,
-    //           parent_action: data.task.id,
+    //           process_id: props.data.task.process_id,
+    //           task_id: props.data.task.id,
+    //           parent_action: props.data.task.id,
     //           transfer: true,
-    //           manager_id: JSON.parse(data.entity.data_subvision)['leader'],
-    //           personal_id: data.entity.personal_id,
-    //           next: JSON.parse(data.task.dop_data).after_return
-    //             ? JSON.parse(data.task.dop_data).after_return
+    //           manager_id: JSON.parse(props.data.entity.data_subvision)['leader'],
+    //           personal_id: props.data.entity.personal_id,
+    //           next: JSON.parse(props.data.task.dop_data).after_return
+    //             ? JSON.parse(props.data.task.dop_data).after_return
     //             : true,
     //         },
     //       }),
@@ -114,7 +109,7 @@ const Form8 = defineComponent({
     //     request: () =>
     //       store.dispatch('taskModule/setBid', {
     //         data: {
-    //           id: data.entity.id,
+    //           id: props.data.entity.id,
     //           items: {
     //             rashod_vid_id: selectName.value.id,
     //             count: 1,
@@ -142,7 +137,7 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
+            personal_id: props.data.entity.id,
             doc_id: e.item,
             path_doc: `/personal_doc/${fileName}`,
             from_task: true,
@@ -181,7 +176,7 @@ const Form8 = defineComponent({
       category.readonly = true
 
       const direction = addConfig.fields.find((x) => x.name === 'direction_id')
-      direction.value = JSON.parse(data.entity.direction_json)[0]
+      direction.value = JSON.parse(props.data.entity.direction_json)[0]
       direction.readonly = true
 
       const vector = addConfig.fields.find((x) => x.name === 'vector_id')
@@ -189,13 +184,13 @@ const Form8 = defineComponent({
 
       const personal = addConfig.fields.find((x) => x.name === 'personal_zr')
       personal.readonly = true
-      personal.value = data.entity.id
+      personal.value = props.data.entity.id
 
       const yourself = addConfig.fields.find((x) => x.name === 'on_yourself')
       yourself.readonly = true
 
       const name = addConfig.fields.find((x) => x.name === 'name')
-      name.value = data.entity.name
+      name.value = props.data.entity.name
 
       const is_migr = addConfig.fields.find((x) => x.name === 'is_migr')
       is_migr.value = true
@@ -323,12 +318,13 @@ const Form8 = defineComponent({
     }
 
     const pushToZayavka = () => {
-      if (data.data?.zayavka?.id) {
+      console.log('data.data?.zayavka?.id', props.data)
+      if (props.data.data?.zayavka?.id) {
         router.push({
           name: 'main/:id/:form_id',
           params: {
             id: route.params.id,
-            form_id: data.data?.zayavka?.id,
+            form_id: props.data.data?.zayavka?.id,
           },
         })
         setZayavkaEdit()
@@ -359,7 +355,7 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
+            personal_id: props.data.entity.id,
             doc_id: e.item,
             path_doc: `/personal_doc/${fileName}`,
             from_task: true,
@@ -384,12 +380,12 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/startProcess', {
-            parent_process: data.task.process_id,
+            parent_process: props.data.task.process_id,
             process_id: 1,
-            parent_action: data.task.process_id,
+            parent_action: props.data.task.process_id,
             type_parent_action: 2,
-            account_id: data.task.to_account_id,
-            personal_id: data.entity.id,
+            account_id: props.data.task.to_account_id,
+            personal_id: props.data.entity.id,
             docs_id: docs_ids.value,
           }),
         successMessage: 'Файл успешно загружен',
@@ -453,9 +449,9 @@ const Form8 = defineComponent({
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
-              process_id: data.task.process_id,
-              task_id: data.task.id,
-              parent_action: data.task.id,
+              process_id: props.data.task.process_id,
+              task_id: props.data.task.id,
+              parent_action: props.data.task.id,
             },
           }),
       })
@@ -467,8 +463,10 @@ const Form8 = defineComponent({
     }
 
     onMounted(() => {
-      data.data.docs_grajdanstvo.forEach((item, index) => {
-        let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
+      props.data.data.docs_grajdanstvo.forEach((item, index) => {
+        let pasteObject = props.data.data.docs.find(
+          (doc) => doc.doc_id === item
+        )
         if (pasteObject) {
           pasteObject['inProcess'] = false
         } else {
@@ -498,7 +496,6 @@ const Form8 = defineComponent({
       addFilesPatent,
       disableFinishState,
       textInfo,
-      newString,
       sendTaskFinish,
       popupForm,
       Popup,

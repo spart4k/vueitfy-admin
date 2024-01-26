@@ -6,26 +6,20 @@
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <span>Создайте расход на документы:</span>
+      <span class="font-weight-bold">Создайте расход на документы:</span>
       <v-row>
         <v-col cols="12">
           <div style="display: flex; justify-content: center">
             <v-btn small color="info" @click="pushToZayavka">
-              {{ data.data?.zayavka?.id ? 'Изменить' : 'Открыть' }}
+              {{ data.data?.zayavka?.id ? 'Изменить' : 'Создать' }}
             </v-btn>
           </div>
         </v-col>
       </v-row>
       <div class="position-relative">
-        <div
-          class="mb-10"
-          :class="{
-            'overflow-inputs':
-              !data.data.zayavka.status == 5 && typeof newString !== 'object',
-          }"
-        >
-          <span>Приложите документы</span>
-          <v-expansion-panels>
+        <div class="mb-10">
+          <span class="font-weight-bold">Приложите документы:</span>
+          <v-expansion-panels :disabled="+data.data?.zayavka?.status !== 5">
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
               :key="index"
@@ -68,7 +62,7 @@
         </v-col>
       </v-row>
       <div>
-        <span>Патент</span>
+        <span class="font-weight-bold">Патент:</span>
       </div>
       <v-row>
         <v-col
@@ -152,6 +146,7 @@
             ...proxyConfig.detail.classes,
           ]"
           @closePopup="closePopupForm"
+          @refreshData="$emit('refreshData')"
         />
       </component>
     </div>
