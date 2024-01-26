@@ -1,5 +1,5 @@
 import filters from './filters'
-import TableDefault from '@/components/Table/default/index.vue'
+// import TableDefault from '@/components/Table/default/index.vue'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
@@ -16,9 +16,727 @@ import {
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
+export const editFields = [
+  selectField({
+    label: 'Статус',
+    name: 'status',
+    alias: 'status_pt',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    value: 1,
+    disable: true,
+    validations: { required },
+    bootstrapClass: [''],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+  }),
+  dateField({
+    label: 'Дата статуса',
+    name: 'date_create',
+    value: '',
+    type: 'datetime',
+    subtype: 'datetime',
+    readonly: true,
+    menu: false,
+    placeholder: '',
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    bootstrapClass: [''],
+    disable: true,
+    //mode: 'edit',
+    isShow: true,
+  }),
+  //stringField({
+  //  label: 'Создал',
+  //  name: 'account_name',
+  //  placeholder: '',
+  //  readonly: false,
+  //  class: [''],
+  //  position: {
+  //    cols: 12,
+  //    sm: 6,
+  //  },
+  //  bootstrapClass: [''],
+  //  mode: 'edit',
+  //  //validations: { required },
+  //  //isShow: false,
+  //}),
+  selectField({
+    label: 'Направления',
+    name: 'direction_id',
+    alias: 'direction_id_logistic',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    //update: {
+    //  module: 'selects/getList',
+    //  fields: ['object_id'],
+    //},
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    dependence: [
+      {
+        type: 'api',
+        module: 'selects/getListUpdate',
+        field: 'object_id',
+        url: 'get/pagination_list/target_object',
+      },
+    ],
+    updateList: [
+      {
+        alias: 'doljnost_id_logistic',
+        filter: [
+          {
+            field: 'direction_id',
+            value: '',
+            source: 'formData',
+            type: 'array',
+          },
+        ],
+      },
+    ],
+  }),
+  selectField({
+    label: 'Вид ведомости:',
+    name: 'vid_vedomost_id',
+    alias: 'vid_vedomost_id_logistic',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
+    hiding: {
+      conditions: [
+        {
+          target: 'mode',
+          value: 'edit',
+          values: [8],
+        },
+        {
+          target: 'mode',
+          value: 'add',
+          values: [2, 3, 4, 5, 6, 7],
+        },
+      ],
+    },
+    requiredFields: ['personal_id'],
+  }),
+  autocompleteField({
+    label: 'Объект',
+    name: 'object_id',
+    subtype: 'single',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    page: 1,
+    search: '',
+    url: 'get/pagination_list/target_object',
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    filter: [
+      {
+        field: 'direction_id',
+        value: '',
+        source: 'formData',
+      },
+    ],
+    dependence: [
+      {
+        type: 'default',
+        fillField: ['sum_nutrition', 'with_nutrition', 'type'],
+      },
+      {
+        type: 'api',
+        module: 'selects/getListUpdate',
+        field: 'personal_id',
+        url: 'get/pagination_list/target_personal',
+        filter: [
+          {
+            field: 'object_id',
+            value: '',
+            source: 'formData',
+          },
+        ],
+      },
+    ],
+    update: {
+      module: 'selects/getList',
+      fields: ['personal_id'],
+    },
+    requiredFields: ['direction_id'],
+  }),
+  autocompleteField({
+    label: 'Линейщик',
+    name: 'personal_id',
+    subtype: 'single',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    page: 1,
+    search: '',
+    url: 'get/pagination_list/target_personal',
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    filter: [
+      {
+        field: 'object_id',
+        value: '',
+        source: 'formData',
+      },
+    ],
+    requiredFields: ['object_id'],
+    dependence: [
+      {
+        //fields: ['statement_card', 'cardowner'],
+        type: 'api',
+        module: 'personal/checkEveryDayPayment',
+        action: {
+          type: 'hideOptions',
+          //values: [8],
+          field: 'vid_vedomost_id',
+          condition: {
+            true: [],
+            false: 1,
+          },
+        },
+        //url: 'object_id/avatar_with_user_key_id',
+        url: [
+          {
+            source: 'formData',
+            field: 'this',
+          },
+        ],
+      },
+    ],
+  }),
+  selectField({
+    label: 'Должность',
+    name: 'doljnost_id',
+    alias: 'doljnost_id_logistic',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    validations: { required },
+    bootstrapClass: [''],
+  }),
+  selectField({
+    label: 'Тип смены',
+    name: 'type_shift',
+    alias: 'shifts',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    validations: { required },
+    bootstrapClass: [''],
+  }),
+  dateField({
+    label: 'На дату',
+    name: 'date_target',
+    value: '',
+    type: 'date',
+    //subtype: 'single',
+    menu: false,
+    placeholder: '',
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    disable: false,
+    //mode: 'edit',
+    isShow: true,
+  }),
+  checkboxField({
+    label: 'Питание',
+    name: 'with_nutrition',
+    placeholder: '',
+    value: false,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
+  }),
+  stringField({
+    label: 'Стоимость питания:',
+    name: 'sum_nutrition',
+    placeholder: '',
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    readonly: true,
+    validations: { required },
+    bootstrapClass: [''],
+    requiredFields: ['with_nutrition', 'sum_nutrition'],
+    isShow: {
+      value: false,
+      conditions: [
+        {
+          field: 'with_nutrition',
+          value: [1, true],
+        },
+      ],
+    },
+  }),
+  //selectField({
+  //  label: 'Менеджер',
+  //  name: 'account_id',
+  //  subtype: 'single',
+  //  placeholder: '',
+  //  class: [''],
+  //  selectOption: {
+  //    text: 'name',
+  //    value: 'id',
+  //  },
+  //  items: [],
+  //  position: {
+  //    cols: 12,
+  //    sm: 6,
+  //  },
+  //  readonly: {
+  //    value: false,
+  //    condition: [
+  //      {
+  //        target: 'formData',
+  //        field: 'status',
+  //        value: [4],
+  //      },
+  //      {
+  //        permissions: [3, 15],
+  //        field: 'status',
+  //        value: [3],
+  //        type: false,
+  //      },
+  //    ],
+  //  },
+  //  validations: { required },
+  //  bootstrapClass: [''],
+  //}),
+  autocompleteField({
+    label: 'Учетная запись',
+    name: 'user_key',
+    alias: 'avatar_with_user_key_id',
+    requestKey: 'avatar_with_user_key_id',
+    subtype: 'single',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    page: 1,
+    search: '',
+    url: 'get/pagination_list/avatar_with_user_key_id',
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+        },
+        {
+          permissions: [3, 15],
+          field: 'status',
+          value: [3],
+          type: false,
+        },
+        {
+          target: 'formData',
+          field: 'readonly',
+          value: [1],
+          type: true,
+        },
+      ],
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    filter: [
+      {
+        field: 'object_id',
+        value: '',
+        source: 'fromPrev',
+      },
+    ],
+    updateList: [
+      {
+        alias: 'print_form_key',
+        filter: [
+          {
+            field: 'object_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'personal_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+        ],
+      },
+    ],
+  }),
+  textBlock({
+    label: 'Создал',
+    name: 'type',
+    placeholder: '',
+    readonly: true,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
+  }),
+  selectField({
+    label: 'Ключ',
+    name: 'print_form_key',
+    //withoutList: true,
+    //alias: 'direction_id_logistic',
+    placeholder: '',
+    class: [''],
+    selectOption: {
+      text: 'name',
+      value: 'id',
+    },
+    items: [],
+    position: {
+      cols: 12,
+      sm: 6,
+    },
+    validations: { required },
+    bootstrapClass: [''],
+    customList: {
+      type: 'api',
+      module: 'personal/getKeys',
+      //url: 'object_id/avatar_with_user_key_id',
+      field: 'print_form_key',
+      url: [
+        {
+          source: 'formData',
+          field: 'object_id',
+        },
+        {
+          source: 'formData',
+          field: 'this',
+        },
+      ],
+    },
+    isShow: {
+      value: false,
+      conditions: [
+        {
+          field: 'type',
+          value: [11],
+        },
+        {
+          field: 'direction_id',
+          value: [1],
+        },
+        {
+          field: 'doljnost_id',
+          value: [5, 7],
+        },
+      ],
+    },
+  }),
+  //textBlock({
+  //  label: 'Создал',
+  //  name: 'account_id',
+  //  placeholder: '',
+  //  readonly: true,
+  //  class: [''],
+  //  position: {
+  //    cols: 12,
+  //    sm: 12,
+  //  },
+  //  bootstrapClass: [''],
+  //  //validations: { required },
+  //  //isShow: false,
+  //}),
+  textBlock({
+    label: 'Создал',
+    name: 'is_close',
+    placeholder: '',
+    readonly: true,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
+  }),
+  textBlock({
+    label: 'Создал',
+    name: 'readonly',
+    placeholder: '',
+    readonly: true,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
+  }),
+]
+
 function consoleText(row) {
   console.log(row, 2)
-  //return 'test'
 }
 
 function consoleButton(row) {
@@ -41,7 +759,6 @@ const config = {
       function: searchInputing,
     },
     headerFixed: true,
-    //url: 'https://dummyjson.com/users',
     url: 'get/pagination/personal_target',
     title: 'This is an about page1',
   },
@@ -1027,724 +1744,7 @@ const config = {
         ],
         alias: 'personal_target',
         active: false,
-        fields: [
-          selectField({
-            label: 'Статус',
-            name: 'status',
-            alias: 'status_pt',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            value: 1,
-            disable: true,
-            validations: { required },
-            bootstrapClass: [''],
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-          }),
-          dateField({
-            label: 'Дата статуса',
-            name: 'date_create',
-            value: '',
-            type: 'datetime',
-            subtype: 'datetime',
-            readonly: true,
-            menu: false,
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            bootstrapClass: [''],
-            disable: true,
-            //mode: 'edit',
-            isShow: true,
-          }),
-          //stringField({
-          //  label: 'Создал',
-          //  name: 'account_name',
-          //  placeholder: '',
-          //  readonly: false,
-          //  class: [''],
-          //  position: {
-          //    cols: 12,
-          //    sm: 6,
-          //  },
-          //  bootstrapClass: [''],
-          //  mode: 'edit',
-          //  //validations: { required },
-          //  //isShow: false,
-          //}),
-          selectField({
-            label: 'Направления',
-            name: 'direction_id',
-            alias: 'direction_id_logistic',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            //update: {
-            //  module: 'selects/getList',
-            //  fields: ['object_id'],
-            //},
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            dependence: [
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'object_id',
-                url: 'get/pagination_list/target_object',
-              },
-            ],
-            updateList: [
-              {
-                alias: 'doljnost_id_logistic',
-                filter: [
-                  {
-                    field: 'direction_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'array',
-                  },
-                ],
-              },
-            ],
-          }),
-          selectField({
-            label: 'Вид ведомости:',
-            name: 'vid_vedomost_id',
-            alias: 'vid_vedomost_id_logistic',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
-            hiding: {
-              conditions: [
-                {
-                  target: 'mode',
-                  value: 'edit',
-                  values: [8],
-                },
-                {
-                  target: 'mode',
-                  value: 'add',
-                  values: [2, 3, 4, 5, 6, 7],
-                },
-              ],
-            },
-            requiredFields: ['personal_id'],
-          }),
-          autocompleteField({
-            label: 'Объект',
-            name: 'object_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/target_object',
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            filter: [
-              {
-                field: 'direction_id',
-                value: '',
-                source: 'formData',
-              },
-            ],
-            dependence: [
-              {
-                type: 'default',
-                fillField: ['sum_nutrition', 'with_nutrition', 'type'],
-              },
-              {
-                type: 'api',
-                module: 'selects/getListUpdate',
-                field: 'personal_id',
-                url: 'get/pagination_list/target_personal',
-                filter: [
-                  {
-                    field: 'object_id',
-                    value: '',
-                    source: 'formData',
-                  },
-                ],
-              },
-            ],
-            update: {
-              module: 'selects/getList',
-              fields: ['personal_id'],
-            },
-            requiredFields: ['direction_id'],
-          }),
-          autocompleteField({
-            label: 'Линейщик',
-            name: 'personal_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/target_personal',
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            filter: [
-              {
-                field: 'object_id',
-                value: '',
-                source: 'formData',
-              },
-            ],
-            requiredFields: ['object_id'],
-            dependence: [
-              {
-                //fields: ['statement_card', 'cardowner'],
-                type: 'api',
-                module: 'personal/checkEveryDayPayment',
-                action: {
-                  type: 'hideOptions',
-                  //values: [8],
-                  field: 'vid_vedomost_id',
-                  condition: {
-                    true: [],
-                    false: 1,
-                  },
-                },
-                //url: 'object_id/avatar_with_user_key_id',
-                url: [
-                  {
-                    source: 'formData',
-                    field: 'this',
-                  },
-                ],
-              },
-            ],
-          }),
-          selectField({
-            label: 'Должность',
-            name: 'doljnost_id',
-            alias: 'doljnost_id_logistic',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Тип смены',
-            name: 'type_shift',
-            alias: 'shifts',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          dateField({
-            label: 'На дату',
-            name: 'date_target',
-            value: '',
-            type: 'date',
-            //subtype: 'single',
-            menu: false,
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            disable: false,
-            //mode: 'edit',
-            isShow: true,
-          }),
-          checkboxField({
-            label: 'Питание',
-            name: 'with_nutrition',
-            placeholder: '',
-            value: false,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          stringField({
-            label: 'Стоимость питания:',
-            name: 'sum_nutrition',
-            placeholder: '',
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            readonly: true,
-            validations: { required },
-            bootstrapClass: [''],
-            requiredFields: ['with_nutrition', 'sum_nutrition'],
-            isShow: {
-              value: false,
-              conditions: [
-                {
-                  field: 'with_nutrition',
-                  value: [1, true],
-                },
-              ],
-            },
-          }),
-          //selectField({
-          //  label: 'Менеджер',
-          //  name: 'account_id',
-          //  subtype: 'single',
-          //  placeholder: '',
-          //  class: [''],
-          //  selectOption: {
-          //    text: 'name',
-          //    value: 'id',
-          //  },
-          //  items: [],
-          //  position: {
-          //    cols: 12,
-          //    sm: 6,
-          //  },
-          //  readonly: {
-          //    value: false,
-          //    condition: [
-          //      {
-          //        target: 'formData',
-          //        field: 'status',
-          //        value: [4],
-          //      },
-          //      {
-          //        permissions: [3, 15],
-          //        field: 'status',
-          //        value: [3],
-          //        type: false,
-          //      },
-          //    ],
-          //  },
-          //  validations: { required },
-          //  bootstrapClass: [''],
-          //}),
-          autocompleteField({
-            label: 'Учетная запись',
-            name: 'user_key',
-            alias: 'avatar_with_user_key_id',
-            requestKey: 'avatar_with_user_key_id',
-            subtype: 'single',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            page: 1,
-            search: '',
-            url: 'get/pagination_list/avatar_with_user_key_id',
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            readonly: {
-              value: false,
-              condition: [
-                {
-                  target: 'formData',
-                  field: 'status',
-                  value: [4],
-                },
-                {
-                  permissions: [3, 15],
-                  field: 'status',
-                  value: [3],
-                  type: false,
-                },
-                {
-                  target: 'formData',
-                  field: 'readonly',
-                  value: [1],
-                  type: true,
-                },
-              ],
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            filter: [
-              {
-                field: 'object_id',
-                value: '',
-                source: 'fromPrev',
-              },
-            ],
-            updateList: [
-              {
-                alias: 'print_form_key',
-                filter: [
-                  {
-                    field: 'object_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                  {
-                    field: 'personal_id',
-                    value: '',
-                    source: 'formData',
-                    type: 'num',
-                  },
-                ],
-              },
-            ],
-          }),
-          textBlock({
-            label: 'Создал',
-            name: 'type',
-            placeholder: '',
-            readonly: true,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          selectField({
-            label: 'Ключ',
-            name: 'print_form_key',
-            //withoutList: true,
-            //alias: 'direction_id_logistic',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-            customList: {
-              type: 'api',
-              module: 'personal/getKeys',
-              //url: 'object_id/avatar_with_user_key_id',
-              field: 'print_form_key',
-              url: [
-                {
-                  source: 'formData',
-                  field: 'object_id',
-                },
-                {
-                  source: 'formData',
-                  field: 'this',
-                },
-              ],
-            },
-            isShow: {
-              value: false,
-              conditions: [
-                {
-                  field: 'type',
-                  value: [11],
-                },
-                {
-                  field: 'direction_id',
-                  value: [1],
-                },
-                {
-                  field: 'doljnost_id',
-                  value: [5, 7],
-                },
-              ],
-            },
-          }),
-          //textBlock({
-          //  label: 'Создал',
-          //  name: 'account_id',
-          //  placeholder: '',
-          //  readonly: true,
-          //  class: [''],
-          //  position: {
-          //    cols: 12,
-          //    sm: 12,
-          //  },
-          //  bootstrapClass: [''],
-          //  //validations: { required },
-          //  //isShow: false,
-          //}),
-          textBlock({
-            label: 'Создал',
-            name: 'is_close',
-            placeholder: '',
-            readonly: true,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-          textBlock({
-            label: 'Создал',
-            name: 'readonly',
-            placeholder: '',
-            readonly: true,
-            class: [''],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            bootstrapClass: [''],
-            //validations: { required },
-            //isShow: false,
-          }),
-        ],
+        fields: editFields,
         actions: [
           stringAction({
             text: 'Закрыть',
