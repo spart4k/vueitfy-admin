@@ -24,6 +24,7 @@ import moment from 'moment'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import { useRouter } from 'vue-router/composables'
+import _ from 'lodash'
 
 const taskNameSpr = {
   1: 'Внесение',
@@ -85,11 +86,11 @@ const task = defineComponent({
   },
 
   props: {},
-  setup(_) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
-        _,
+        ctx,
       },
     }
     const router = useRouter()
@@ -128,18 +129,29 @@ const task = defineComponent({
       return moment(date).locale('ru').format('D MMMM, HH:mm')
     }
 
-    onMounted(async () => {
+    const refreshData = async () => {
+      console.log('refreshData')
+      if (countdownTimerIntervalId.value)
+        clearInterval(countdownTimerIntervalId.value)
+      await getData()
+      console.log('data', data.value)
+    }
+
+    const getData = async () => {
       const dataFrom = await makeRequest()
-      data.value = dataFrom
+      data.value = _.cloneDeep(dataFrom)
       taskName.value = taskNameSpr[data.value.task.task_type_id]
       if (Number(data.value.task.time_execution) > 0) {
         taskDeadline.value =
           Date.parse(data.value.task.date_create) +
           data.value.task.time_execution * 1000
-        console.log(taskDeadline.value)
         countdownTimer()
         countdownTimerIntervalId.value = setInterval(countdownTimer, 1000)
       }
+    }
+
+    onMounted(async () => {
+      getData()
     })
 
     onUnmounted(() => {
@@ -154,6 +166,7 @@ const task = defineComponent({
       timerString,
       taskDeadline,
       timerDiff,
+      refreshData,
     }
   },
 })
