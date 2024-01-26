@@ -150,6 +150,42 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.account_id',
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+            },
+            {
+              field: 'account_id',
+              value: '',
+            },
+          ],
+          url: 'get/pagination_list/payment_object_id',
+        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'object_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [1],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/object',
+        // },
+      ],
     }),
     selectField({
       label: 'Направления',
@@ -225,6 +261,101 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.object_id',
+      filter: [
+        {
+          field: 'account_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+        {
+          field: 'direction_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+      ],
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'personal_id',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+            },
+            {
+              field: 'account_id',
+              value: '',
+            },
+            {
+              field: 'object_id',
+              value: '',
+            },
+          ],
+          url: 'get/pagination_list/payment_personal_id',
+        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'object_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [1],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/object',
+        // },
+      ],
+    }),
+    autocompleteField({
+      label: 'Персонал',
+      name: 'personal_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      filter: [
+        {
+          field: 'account_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+        {
+          field: 'direction_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+        {
+          field: 'object_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+      ],
+      url: 'get/pagination_list/payment_personal_id',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'p.personal_id',
     }),
     selectField({
       label: 'Должность:',

@@ -412,7 +412,15 @@ const table = {
         el.value = filterData[el.name]
         if (
           el.type === 'dateRange' &&
-          filterData[el.name].every((el) => el === null || el === undefined)
+          filterData[el.name].every(
+            (el) =>
+              el === null ||
+              el === undefined ||
+              el === '' ||
+              el === '' ||
+              el === null ||
+              el === null
+          )
         ) {
           return
         }
@@ -433,6 +441,7 @@ const table = {
         }
         filtersColumns.value.push(obj)
       })
+      paramsQuery.value.currentPage = 1
       getItems()
     }
 
