@@ -328,9 +328,10 @@ const Form18 = defineComponent({
       })
       return await makeRequest()
     }
-
+    const isReject = ref(false)
     const changeServiceDetail = async (i, idService) => {
       rejectedPrice.value = ''
+      isReject.value = false
       console.log(i, idService)
       const data = await getServiceInfo(idService)
       console.log(data)
@@ -338,6 +339,7 @@ const Form18 = defineComponent({
         rejectedPrice.value = servicesDetail.find(
           (item) => item.id == idService
         ).name
+        rejectedPrice.value ? (isReject.value = true) : (isReject.value = false)
         formGroup.value[i].formData.price = 0
         return false
       } else {
@@ -364,9 +366,7 @@ const Form18 = defineComponent({
       formGroup,
       () => {
         if (formGroup) {
-          isFormValid.value = formGroup.value.every(
-            (group) => group.validate && group.validate()
-          )
+          isFormValid.value = formGroup.value.every((group) => group.validate())
           console.log(isFormValid, formGroup.value)
         }
       },
@@ -392,6 +392,7 @@ const Form18 = defineComponent({
       rejectedPrice,
       isFormValid,
       dateTarget,
+      isReject,
     }
   },
 })

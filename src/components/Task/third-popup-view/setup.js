@@ -44,7 +44,7 @@ const ThirdPopupView = defineComponent({
       //   value: data.entity.object_name,
       // },
     }
-    const account_id = computed(() => store.state.user.account_id)
+    const account_id = computed(() => store.state.user.id)
     const isShowBtnArray = ref([])
     const isFormValid = ref(false)
     const isImgPopupOpen = ref(false)
@@ -60,7 +60,7 @@ const ThirdPopupView = defineComponent({
     }
     // let sendFile
     data.data.docs.forEach((element, index) => {
-      imagePreview.value.push('https://api.personal-crm.ru' + element.path_doc)
+      imagePreview.value.push(process.env.VUE_APP_STORE + element.path_doc)
       console.log(index)
       isShowBtnArray.value.push(true)
     })
@@ -93,19 +93,21 @@ const ThirdPopupView = defineComponent({
     }
     const { makeRequest: doneRequest } = useRequest({
       context,
-      request: () =>
-        store.dispatch('taskModule/setPartTask', {
+      request: () => {
+        const docs_id = JSON.parse(data.task.dop_data).docs_id
+        return store.dispatch('taskModule/setPartTask', {
           status: 2,
           data: {
             process_id: data.task.process_id,
-            account_id: account_id,
+            account_id: account_id.value,
             task_id: data.task.id,
             parent_action: data.task.parent_action,
             personal_id: data.entity.id,
-            docs_id: JSON.parse(data.task.dop_data).docs_id,
+            docs_id,
             comment: comment.value,
           },
-        }),
+        })
+      },
       successMessage: 'Файл успешно загружен',
     })
     let sendDoneTask = async () => {
@@ -192,6 +194,7 @@ const ThirdPopupView = defineComponent({
       sendDoneTask,
       watchForComment,
       isLoadImage,
+      account_id,
     }
   },
 })

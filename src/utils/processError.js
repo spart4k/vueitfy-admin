@@ -8,14 +8,14 @@ const processError = (err) => {
     array: [],
     object: {},
   }
-  if (err.response.data.length) {
+  if (err?.response?.data?.length) {
     const { data } = err.response
     //if (err.response.status === 500) {
     //  error.text =
     //} else {
-      error.text = data.type
-      error.array = [data.type]
-      error.object = { error: data.type }
+    error.text = data.type
+    error.array = [data.type]
+    error.object = { error: data.type }
     //}
     // else if (data.errors) {
     //   error.array = Object

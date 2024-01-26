@@ -101,7 +101,12 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn :disabled="!isFormValid" @click="confirmTask" small color="info">
+      <v-btn
+        :disabled="!isFormValid || isReject"
+        @click="confirmTask"
+        small
+        color="info"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
