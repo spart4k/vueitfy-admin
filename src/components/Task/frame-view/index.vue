@@ -86,6 +86,7 @@
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
+          @refreshData="refreshData"
         ></Form8>
         <Form9
           v-if="data.task.task_type_id === 9"

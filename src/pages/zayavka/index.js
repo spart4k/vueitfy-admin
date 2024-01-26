@@ -4367,6 +4367,7 @@ const config = {
     classes: [''], // List class
     width: '600px',
     method: 'get',
+    name: 'Заявка',
     alias: 'zayavka',
     url: '/get/form/',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
