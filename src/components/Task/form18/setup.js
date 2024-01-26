@@ -10,6 +10,10 @@ import { useRouter } from 'vue-router/composables'
 import form from '@/store/modules/form'
 import { required } from '@/utils/validation'
 import moment from 'moment/moment'
+import Popup from '@/components/Popup/index.vue'
+import _ from 'lodash'
+
+import config from '@/components/Task/form15/form.js'
 
 const Form18 = defineComponent({
   name: 'Form18',
@@ -22,6 +26,7 @@ const Form18 = defineComponent({
     TextInfo,
     FormError,
     FormComment,
+    Popup,
   },
   props: {
     data: {
@@ -33,6 +38,10 @@ const Form18 = defineComponent({
     const { data } = props
     const route = useRoute()
     const router = useRouter()
+    const proxyConfig = ref(_.cloneDeep(config))
+    const popupForm = ref({
+      isShow: false,
+    })
     const context = {
       root: {
         store,
@@ -360,6 +369,33 @@ const Form18 = defineComponent({
       }
     }
 
+    const pushToForm = (val) => {
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          id: route.params.id,
+          form_id: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
+      popupForm.value.isShow = false
+    }
+
+    onMounted(() => {
+      if (
+        proxyConfig.value.detail &&
+        proxyConfig.value.detail.type === 'popup' &&
+        route.meta?.mode?.length > 1
+      ) {
+        popupForm.value.isShow = true
+      }
+    })
+
     watch(
       formGroup,
       () => {
@@ -392,6 +428,12 @@ const Form18 = defineComponent({
       rejectedPrice,
       isFormValid,
       dateTarget,
+
+      pushToForm,
+      popupForm,
+      proxyConfig,
+      closePopupForm,
+      Popup,
     }
   },
 })
