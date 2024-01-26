@@ -702,6 +702,7 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
+    console.log('GET DEP')
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
@@ -732,6 +733,7 @@ export default function ({
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
         url = dependence.url
+        console.log('745')
         if (targetField?.type === 'autocomplete') {
           const filter = []
           const query = (target) => {
@@ -843,6 +845,8 @@ export default function ({
       field.loading = true
       if (depField) targetField.loading = true
       let data
+      console.log('DATA 847', dependence.module, url, value)
+
       if (dependence.module) {
         data = await store.dispatch(dependence.module, {
           value,
@@ -928,6 +932,7 @@ export default function ({
       }
       if (dependence.type === 'update') {
         // dependence
+        console.log('FILL FIELD', field)
         if (field.hasOwnProperty('objectData')) {
           if (field.objectData?.length) {
             const findedEl = field.objectData?.find((el) => el.id === value)
@@ -941,6 +946,15 @@ export default function ({
               formData[el] = ''
             })
           }
+        }
+        if (
+          formData[field.name] === '' ||
+          formData[field.name] === null ||
+          formData[field.name] === undefined
+        ) {
+          dependence.fields.forEach((el) => {
+            formData[el] = ''
+          })
         }
       }
       field.loading = false
@@ -1013,7 +1027,10 @@ export default function ({
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
-      //getDependies({ field: el })
+      console.log('LOAD AUTOCOMPLETE ', formData[el.name])
+      if (mode === 'edit') {
+        await getDependies({ field: el, value: formData[el.name] })
+      }
       return data
     })
     await Promise.all(queryFields)
@@ -1298,6 +1315,14 @@ export default function ({
       return result
     }
     const checkIncludesPermissions = (el) => {
+      console.log(
+        field.name,
+        el.permissions.includes(permission.value),
+        permission.value,
+        el.permissions,
+        [4].includes(4),
+        el
+      )
       return el.permissions.includes(permission.value)
     }
     if (typeof field.readonly === 'boolean')
@@ -1314,6 +1339,9 @@ export default function ({
             ) {
               return checkIncludesData(conditionEl) === conditionEl.type
             } else if (conditionEl.permissions?.length && !conditionEl.target) {
+              const result = checkIncludesPermissions(conditionEl)
+              // if (!result && !conditionEl.type) {
+              // }
               return checkIncludesPermissions(conditionEl) === conditionEl.type
             } else if (conditionEl.hasOwnProperty('funcCondition')) {
               const conditionContext = {
@@ -1322,12 +1350,6 @@ export default function ({
                 originalData,
                 environment,
               }
-              console.log(
-                'ENVIRMENT',
-                conditionEl.funcCondition(conditionContext) ===
-                  conditionEl.type,
-                conditionContext.environment.mode
-              )
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
