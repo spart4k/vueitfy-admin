@@ -29,8 +29,8 @@ const setup = (axios) => {
       // Do something with response error
       console.log(error)
       if (
-        error.response.status === 403 &&
-        error.response.data.message === 'invalid credentials'
+        error?.response?.status === 403 &&
+        error?.response?.data?.message === 'invalid credentials'
       ) {
         console.log('login invalid')
         store.commit('notifies/showMessage', {
@@ -41,7 +41,7 @@ const setup = (axios) => {
         return Promise.reject(error.response)
         //console.log('unauthorized, logging out ...')
       }
-      if (error.response.status === 401 && !originalConfig._retry) {
+      if (error?.response?.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true
         // await refresh()
         // console.log($route)

@@ -24,10 +24,12 @@ export const post = (endpoint, data = {}, params = {}) => {
     .then(sendData)
 }
 
-export const put = (endpoint, data = {}) =>
-  instance
+export const put = (endpoint, data = {}) => {
+  console.log(endpoint, data)
+  return instance
     .put(`${process.env.VUE_APP_API_URL}/${endpoint}`, data)
     .then(sendData)
+}
 
 export const del = (endpoint, data = {}) =>
   instance

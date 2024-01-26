@@ -31,7 +31,11 @@
         <v-icon small>$IconClose</v-icon>
       </div>
     </div>
-    <FormPopupPhoto v-if="isImgPopupOpen" @close="isImgPopupOpen = false" />
+    <FormPopupPhoto
+      v-if="isImgPopupOpen"
+      :src="$root.env.VUE_APP_STORE + docs.path_doc"
+      @close="isImgPopupOpen = false"
+    />
   </div>
 </template>
 
