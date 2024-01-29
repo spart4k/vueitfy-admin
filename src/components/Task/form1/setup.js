@@ -155,17 +155,21 @@ const Form1 = defineComponent({
           Date.parse(props.data.task.date_create) +
           props.data.task.time_execution * 1000 -
           Date.now()
+        let data = {}
+        data = {
+          process_id: task.process_id,
+          task_id: task.id,
+          parent_action: task.id,
+          docs_id: JSON.parse(task.dop_data).docs_id,
+          account_id: task.to_account_id,
+          personal_id: props.data.entity.id,
+        }
+        if (bankCardId.value) {
+          data.bank_card_id = bankCardId.value
+        }
         return store.dispatch('taskModule/setPartTask', {
           status: taskDeadline > 0 ? 2 : 3,
-          data: {
-            process_id: task.process_id,
-            task_id: task.id,
-            parent_action: task.id,
-            docs_id: JSON.parse(task.dop_data).docs_id,
-            account_id: task.to_account_id,
-            personal_id: props.data.entity.id,
-            bank_card_id: bankCardId.value ? bankCardId.value : null,
-          },
+          data,
         })
       },
     })

@@ -81,9 +81,11 @@
         class="mb-10"
         @change="changeDocs"
         :docsData="docsData"
+        :bankData="bankData"
         :listNames="listNames"
         :docs="docs"
         :entity="entity"
+        :task="JSON.parse(data.task.dop_data)"
       ></DocFormCorrect>
       <FormComment />
     </div>
