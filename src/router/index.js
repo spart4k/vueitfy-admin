@@ -228,6 +228,24 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/new_card',
+            path: '/personal/:id/new_card',
+            meta: {
+              mode: ['edit', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal/:id/:card_id',
+            path: '/personal/:id/:card_id',
+            meta: {
+              mode: ['edit', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
         ],
       },
       {
