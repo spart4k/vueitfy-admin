@@ -18,6 +18,7 @@ Vue.use(DatetimePicker)
 
 Vue.config.devtools = true
 Vue.config.productionTip = false
+Vue.config.silent = true
 Vue.use(PortalVue)
 Vue.prototype.env = process.env
 // Vue.use(VueCompositionApi)

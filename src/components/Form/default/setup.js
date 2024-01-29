@@ -8,9 +8,10 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 import DropZone from '@/components/Dropzone/default/index.vue'
-import Datetimepicker from '@/components/Datetimepicker/index.vue'
+import Datetimepicker from '@/components/Date/Datetimepicker/index.vue'
+import Datepicker from '@/components/Date/Default/index.vue'
 import ColorPicker from '@/components/Colorpicker/index.vue'
-import DateRange from '@/components/Daterange/index.vue'
+import DateRange from '@/components/Date/Daterange/index.vue'
 import store from '@/store'
 
 export default {
@@ -21,6 +22,7 @@ export default {
     DropZone,
     ColorPicker,
     DateRange,
+    Datepicker,
   },
   props: {
     content: {
@@ -73,10 +75,8 @@ export default {
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
           // console.log('CONDITION TRUE', el.name)
-          console.log(el.name)
           Vue.set(fields, el.name, {})
         } else {
-          console.log(el.name)
           return
         }
         Vue.set(fields, el.name, {})
@@ -159,7 +159,6 @@ export default {
       },
     })
 
-    console.log('props.tabs', props.tab)
     if (props.tab.hasOwnProperty('content')) {
       props.tab.fields[0].items[0].id = props.content.account_id
       props.tab.fields[0].items[0].name = props.content.account_name
