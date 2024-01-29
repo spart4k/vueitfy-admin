@@ -7,6 +7,7 @@ import { getList } from '@/api/selects'
 // import { required } from '@/utils/validation.js'
 // import { data } from 'jquery'
 // import { filter } from 'lodash'
+import moment from 'moment'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
 import router from '@/router'
@@ -399,6 +400,10 @@ export default function ({
       if (item.name === 'subtype' && formData[key] === '') {
         delete newForm[key]
       }
+
+      if (item.type === 'date') {
+        newForm[key] = moment(newForm[key]).format('YYYY-MM-DD')
+      }
     })
     return newForm
   }
@@ -617,7 +622,6 @@ export default function ({
             let item = list.condition[i]
             if (item.hasOwnProperty('funcCondition')) {
               if (!item.funcCondition(conditionContext)) {
-                console.log('condition')
                 return []
               }
             } else if (!item.value.includes(formData[item.key])) return []
@@ -626,7 +630,6 @@ export default function ({
 
         // if (list.condition) return []
         let filter = list.filter.reduce((acc, el) => {
-          console.log(store)
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
             acc.push({
@@ -667,7 +670,6 @@ export default function ({
         const field = form?.fields.find((el) =>
           el.alias ? el.alias === keyList : el.name === keyList
         )
-        console.log('field', field)
         if (field) {
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
@@ -825,8 +827,6 @@ export default function ({
           else cloneAi = [condition.value]
 
           if (Array.isArray(condition.value)) {
-            console.log(dependence.action)
-            console.log(formData[dependence.action.field])
             cloneFieldEl = [...formData[dependence.action.field]]
           } else cloneFieldEl = [formData[dependence.action.field]]
 
@@ -873,12 +873,10 @@ export default function ({
         if (targetField.hasOwnProperty('objectData')) {
           if (data.length) {
             targetField.objectData = data
-            console.log('CHANGE UPDATE FILL')
           } else {
             const findedDep = targetField.dependence.find(
               (depTarget) => depTarget.type === 'update'
             )
-            console.log('CHANGE UPDATE FILL')
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
         }
@@ -1238,7 +1236,6 @@ export default function ({
               }
             }
           }
-          console.log(field, 'FIELD_ITEMS')
           field.items = lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
@@ -1286,7 +1283,6 @@ export default function ({
                 formData,
                 environment,
               }
-              console.log(conditionEl.funcCondition(conditionContext))
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1430,20 +1426,14 @@ export default function ({
         environment,
       }
       let value = null
-      console.log(field.position.sm, 'ЕЖЕДНЕВКА2 !!')
       field.position.sm.condiiton.forEach((el) => {
-        console.log('FOR EACH')
         const resultFuncCondition = el.funcCondition(conditionContext)
-        console.log(conditionContext)
-        console.log(resultFuncCondition, 'ЕЖЕДНЕВКА2 !!')
         if (resultFuncCondition) {
-          console.log('ЕЖЕДНЕВКА !!')
           value = el.value[resultFuncCondition]
         } else {
           value = el.value[false]
         }
       })
-      console.log(value, 'ЕЖЕДНЕВКА !!')
       return value
     } else return field.position.sm
   }

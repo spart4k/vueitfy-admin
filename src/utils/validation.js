@@ -3,6 +3,7 @@ import {
   minLength as vueMinLength,
   numeric as vueNumeric,
 } from '@vuelidate/validators'
+import moment from 'moment'
 
 const numeric = Object.assign({}, vueNumeric, {
   $message: () => 'Только числа',
@@ -38,6 +39,14 @@ const hasDate = {
     return splitedValue[0]
   },
   $message: () => 'Выберите дату',
+}
+
+const validDate = {
+  $validator: (val) => {
+    const date = moment(val)
+    return date.isValid()
+  },
+  $message: () => 'Указанная дата не существует',
 }
 
 const hasTime = {
@@ -111,6 +120,7 @@ export {
   onlyNumeric,
   nameLength,
   hasDate,
+  validDate,
   hasTime,
   minLength,
   numeric,
