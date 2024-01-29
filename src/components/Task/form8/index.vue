@@ -140,7 +140,6 @@
       >
         <router-view
           :detail="proxyConfig.detail"
-          ref="expensesForm"
           :class="[
             ...proxyConfig.detail.bootstrapClass,
             ...proxyConfig.detail.classes,
@@ -154,20 +153,4 @@
 </template>
 
 <script src="./setup.js"></script>
-
-<style lang="scss" scoped>
-.overflow-inputs {
-  position: relative;
-  &::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: rgba($color: #000000, $alpha: 0.1);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-  }
-}
-</style>
+<style lang="scss" scoped src="./style.scss"></style>

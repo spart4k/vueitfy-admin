@@ -199,7 +199,7 @@ export default {
             },
             position: {
               cols: 12,
-              sm: 6,
+              sm: 5,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -255,7 +255,7 @@ export default {
             class: [''],
             position: {
               cols: 12,
-              sm: 2,
+              sm: 3,
             },
             validations: { required },
             bootstrapClass: [''],

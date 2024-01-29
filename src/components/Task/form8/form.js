@@ -1,9 +1,5 @@
 import Expenses from '@/components/Form/expenses/index.vue'
 import { stringAction } from '@/utils/actions'
-// import { addFields, editFields } from '@/pages/zayavka/index.js'
-// import _ from 'lodash'
-// const addConfig = _.cloneDeep(addFields)
-// const editConfig = _.cloneDeep(editFields)
 
 const config = {
   detail: {

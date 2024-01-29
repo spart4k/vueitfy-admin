@@ -2,7 +2,11 @@
   <div>
     <div style="padding: 10px">
       <v-card-title class="py-1 justify-center">
-        Назначение <a href="#">&nbsp;№{{ entity.id }}&nbsp;</a> на дату
+        Назначение
+        <span @click="pushToForm(entity.id)" class="col-btn form-link"
+          >&nbsp;№{{ entity.id }}&nbsp;</span
+        >
+        на дату
         {{ dateTarget }}
       </v-card-title>
       <TextInfo :infoObj="infoObj" />
@@ -22,6 +26,29 @@
         Отклонить
       </v-btn>
     </v-row>
+    <component
+      :is="Popup"
+      :options="{
+        width: proxyConfig.detail.width,
+        portal: `table-detail${
+          proxyConfig?.detail?.popupIndex ? proxyConfig?.detail?.popupIndex : ''
+        }`,
+      }"
+      v-if="
+        proxyConfig.detail &&
+        proxyConfig.detail.type === 'popup' &&
+        popupForm.isShow
+      "
+    >
+      <router-view
+        :detail="proxyConfig.detail"
+        :class="[
+          ...proxyConfig.detail.bootstrapClass,
+          ...proxyConfig.detail.classes,
+        ]"
+        @closePopup="closePopupForm"
+      />
+    </component>
   </div>
 </template>
 

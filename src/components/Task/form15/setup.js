@@ -1,10 +1,15 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router/composables'
 import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment/moment'
+import Popup from '@/components/Popup/index.vue'
+import _ from 'lodash'
+
+import config from '@/components/Task/form15/form.js'
 
 const Form15 = defineComponent({
   name: 'Form15',
@@ -12,6 +17,7 @@ const Form15 = defineComponent({
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
+    Popup,
   },
   props: {
     data: {
@@ -20,11 +26,17 @@ const Form15 = defineComponent({
     },
   },
   setup(props, ctx) {
+    const router = useRouter()
+    const route = useRoute()
+    const proxyConfig = ref(_.cloneDeep(config))
     const context = {
       root: {
         store,
       },
     }
+    const popupForm = ref({
+      isShow: false,
+    })
     const dateTarget = moment(props.data.entity.date_target).format(
       'DD.MM.YYYY'
     )
@@ -151,7 +163,47 @@ const Form15 = defineComponent({
         ctx.emit('getItems')
       }
     }
-    return { infoObj, confirm, reject, entity: props.data.entity, dateTarget }
+
+    const pushToForm = (val) => {
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          id: route.params.id,
+          form_id: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
+      popupForm.value.isShow = false
+    }
+
+    onMounted(() => {
+      if (
+        proxyConfig.value.detail &&
+        proxyConfig.value.detail.type === 'popup' &&
+        route.meta?.mode?.length > 1
+      ) {
+        popupForm.value.isShow = true
+      }
+    })
+
+    return {
+      infoObj,
+      confirm,
+      reject,
+      entity: props.data.entity,
+      dateTarget,
+
+      pushToForm,
+      popupForm,
+      proxyConfig,
+      closePopupForm,
+      Popup,
+    }
   },
 })
 export default Form15
