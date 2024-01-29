@@ -50,7 +50,9 @@ const Form7 = defineComponent({
       // },
     }
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
-    const isHasCard = JSON.parse(props.data.task.dop_data).docs_id.includes(3)
+    const isHasCard = props.data.data.docs_id.filter(
+      (el) => el.doc_id === 3
+    ).length
     const isHasOnlyCard =
       JSON.parse(props.data.task.dop_data).docs_id.length === 1 && isHasCard
     console.log(JSON.parse(props.data.task.dop_data))
@@ -197,7 +199,7 @@ const Form7 = defineComponent({
       }
       console.log(setPersonalDocData)
       // if ()
-      if (isHasOnlyCard) {
+      if (!isHasOnlyCard) {
         await setPersonalDocData()
       }
       console.log(setSaveDocs)
@@ -240,6 +242,7 @@ const Form7 = defineComponent({
       confirmOsnDoc,
       bankData: props.data.data.bank_card,
       isHasCard,
+      isHasOnlyCard,
     }
   },
 })

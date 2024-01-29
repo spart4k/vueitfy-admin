@@ -52,6 +52,12 @@ const Form1 = defineComponent({
     const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const isHasCard = props.data.data.docs_id.filter(
+      (el) => el.doc_id === 3
+    ).length
+    const isHasOnlyCard =
+      JSON.parse(props.data.task.dop_data).docs_id.length === 1 && isHasCard
+    console.log(JSON.parse(props.data.task.dop_data))
     const comment = ref('')
     let isShow = ref(true)
     let commentError = ref('')
@@ -265,7 +271,10 @@ const Form1 = defineComponent({
       if (isHasOsnDoc) {
         await sendPersonalData()
       }
-      await sendPersonalDoc()
+      if (!isHasOnlyCard) {
+        await sendPersonalDoc()
+      }
+      // await sendPersonalDoc()
       await setSaveDocs()
       const { success } = await changeStatusTask()
       if (success) {
@@ -300,6 +309,8 @@ const Form1 = defineComponent({
       isHasOsnDoc,
       showNextStep,
       isActiveBtnFirst,
+      isHasOnlyCard,
+      isHasCard,
     }
   },
 })
