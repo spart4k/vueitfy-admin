@@ -71,6 +71,13 @@ const DocFormCorrect = defineComponent({
     entity: {
       type: Object,
     },
+    bankData: {
+      type: Object,
+    },
+    task: {
+      type: Object,
+      default: () => {},
+    },
   },
   data: function () {
     return {
@@ -142,20 +149,21 @@ const DocFormCorrect = defineComponent({
         fields: {
           invoice: {
             validations: { required },
-            default: '',
+            default: props.bankData.invoice,
           },
           priority: {
-            default: false,
+            default: props.bankData.priority,
           },
           bank_id: {
             validations: { required },
+            default: props.bankData.bank_id,
           },
           fio: {
             validations: { required },
-            default: '',
+            default: props.bankData.fio,
           },
           comment: {
-            default: '',
+            default: props.bankData.comment,
           },
         },
         context,
@@ -355,11 +363,12 @@ const DocFormCorrect = defineComponent({
 
     const { makeRequest } = useRequest({
       context,
-      request: () => {
+      request: (doc_id) => {
         const bankData = formObj.value['3'].formData
         return store.dispatch('taskModule/setBankData', {
           data: {
             data: {
+              id: props.task.bank_card_id,
               bank_id: bankData.bank_id,
               fio: bankData.fio,
               invoice: bankData.invoice,
@@ -372,8 +381,8 @@ const DocFormCorrect = defineComponent({
       successMessage: 'Банковские реквизиты успешно добавлены',
     })
 
-    const sendBankCard = async () => {
-      const { result } = await makeRequest()
+    const sendBankCard = async (doc_id) => {
+      const { result } = await makeRequest(doc_id)
       bankCardId.value = result
       ctx.emit('change', {
         bank_card_id: bankCardId.value,
@@ -381,8 +390,10 @@ const DocFormCorrect = defineComponent({
       })
     }
 
-    const confirmCorrect = (doc) => {
+    const confirmCorrect = async (doc) => {
       // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
+      const { result } = await makeRequest(doc.id)
+      bankCardId.value = result
       correctedDocs.value = {
         ...correctedDocs.value,
         [doc.id]: formObj.value[doc.doc_id].formData,

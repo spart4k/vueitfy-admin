@@ -156,6 +156,7 @@
                     readonly
                     v-model="formObj[doc.doc_id].formData.prim"
                     :error-messages="formObj[doc.doc_id].formErrors.prim"
+                    rows="1"
                     label="Примечание"
                   >
                   </v-textarea>

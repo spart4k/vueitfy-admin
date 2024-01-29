@@ -23,6 +23,9 @@ const DocFormWithConfirm = defineComponent({
     docsData: {
       type: Object,
     },
+    bankData: {
+      type: Object,
+    },
   },
   data: function () {
     return {
@@ -77,19 +80,19 @@ const DocFormWithConfirm = defineComponent({
       3: useForm({
         fields: {
           number: {
-            default: props.docsData.pasp_ser,
+            default: props.bankData.invoice,
           },
           priority: {
-            default: props.docsData.pasp_num,
+            default: props.bankData.priority,
           },
           bank_id: {
-            default: props.docsData.pasp_kod_podr,
+            default: props.bankData.bank_id,
           },
           cart_on_fio: {
-            default: props.docsData.pasp_data_vid,
+            default: props.bankData.fio,
           },
           prim: {
-            default: props.docsData.pasp_kem,
+            default: props.bankData.comment,
           },
         },
         context,

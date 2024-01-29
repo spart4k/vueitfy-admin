@@ -50,6 +50,9 @@ const Form7 = defineComponent({
       // },
     }
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const isHasCard = JSON.parse(props.data.task.dop_data).docs_id.includes(3)
+    const isHasOnlyCard =
+      JSON.parse(props.data.task.dop_data).docs_id.length === 1 && isHasCard
     console.log(JSON.parse(props.data.task.dop_data))
     const finalData = ref({})
     const isFormValid = ref(false)
@@ -130,9 +133,13 @@ const Form7 = defineComponent({
       context,
       request: () => {
         const data = Object.values(finalData.value).reduce((acc, value) => {
+          if (value.hasOwnProperty('bank_id')) {
+            return
+          }
           acc = { ...acc, ...value }
           return acc
         }, {})
+        console.log(data)
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
             ...data,
@@ -163,18 +170,22 @@ const Form7 = defineComponent({
           props.data.task.time_execution * 1000 -
           Date.now()
         console.log()
+        let data = {}
+        data = {
+          process_id: task.process_id,
+          task_id: task.id,
+          parent_action: task.id,
+          docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+          account_id: task.to_account_id,
+          personal_id: props.data.entity.id,
+          okk_id: props.data.task.from_account_id,
+        }
+        if (bankCardId.value) {
+          data.bank_card_id = bankCardId.value
+        }
         return store.dispatch('taskModule/setPartTask', {
           status: taskDeadline > 0 ? 2 : 3,
-          data: {
-            process_id: task.process_id,
-            task_id: task.id,
-            parent_action: task.id,
-            docs_id: JSON.parse(props.data.task.dop_data).docs_id,
-            account_id: task.to_account_id,
-            personal_id: props.data.entity.id,
-            okk_id: props.data.task.from_account_id,
-            bank_card_id: bankCardId.value ? bankCardId.value : null,
-          },
+          data,
         })
       },
     })
@@ -185,7 +196,10 @@ const Form7 = defineComponent({
         await setPersonalData()
       }
       console.log(setPersonalDocData)
-      await setPersonalDocData()
+      // if ()
+      if (isHasOnlyCard) {
+        await setPersonalDocData()
+      }
       console.log(setSaveDocs)
       await setSaveDocs()
       console.log(changeStatusTask)
@@ -224,6 +238,8 @@ const Form7 = defineComponent({
       osnConfirmed,
       isOsnDocValid,
       confirmOsnDoc,
+      bankData: props.data.data.bank_card,
+      isHasCard,
     }
   },
 })
