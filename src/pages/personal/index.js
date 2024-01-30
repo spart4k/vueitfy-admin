@@ -2912,7 +2912,7 @@ const defaultForm = [
               cols: 12,
               sm: 12,
             },
-            validations: { required, validDate },
+            validations: { required },
             bootstrapClass: [''],
             disable: false,
             //mode: 'edit',
