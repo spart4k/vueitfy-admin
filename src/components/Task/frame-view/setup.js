@@ -20,6 +20,7 @@ import Form27 from '@/components/Task/form27/index.vue'
 import Form28 from '@/components/Task/form28/index.vue'
 import Form17 from '@/components/Task/form17/index.vue'
 import Form18 from '@/components/Task/form18/index.vue'
+import Form31 from '@/components/Task/form31/index.vue'
 import moment from 'moment'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
@@ -62,10 +63,9 @@ const taskNameSpr = {
 const task = defineComponent({
   name: 'Task',
   components: {
-    Form1,
     SecondPopupView,
     ThirdPopupView,
-    Form15,
+    Form1,
     Form2,
     Form3,
     Form4,
@@ -74,15 +74,17 @@ const task = defineComponent({
     Form7,
     Form8,
     Form9,
-    Form23,
-    Form20,
-    Form21,
-    Form27,
-    Form28,
-    Form17,
-    Form18,
     Form13,
     Form14,
+    Form15,
+    Form17,
+    Form18,
+    Form20,
+    Form21,
+    Form23,
+    Form27,
+    Form28,
+    Form31,
   },
 
   props: {},
