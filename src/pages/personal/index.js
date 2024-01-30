@@ -1,7 +1,13 @@
 /* eslint-disable */
 
 import filters from './filters'
-import { required, nameLength, validDate } from '@/utils/validation.js'
+import {
+  required,
+  nameLength,
+  minLength,
+  numeric,
+  validDate,
+} from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -1759,7 +1765,198 @@ const bankConfig = {
     currentPage: 1,
     totalPages: null,
   },
-  detail: undefined,
+  detail: {
+    type: 'popup', // String 'popup' or 'page'
+    popupIndex: 2,
+    getOnClose: true,
+    classes: [''], // List class
+    width: '500px',
+    method: 'get',
+    alias: 'personal_bank',
+    url: '/get/form/',
+    requestId: 'card_id',
+    name: 'Банковская карта',
+    bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
+    activeTab: null,
+    tabs: [
+      {
+        path: 'new_card',
+        id: 1,
+        name: 'Основные',
+        type: FormDefault,
+        detail: true,
+        lists: [{ alias: 'bank_id_without_nal', filter: [] }],
+        alias: 'personal_bank',
+        active: false,
+        routeParam: 'card_id',
+        fields: [
+          selectField({
+            label: 'Банк',
+            name: 'bank_id',
+            alias: 'bank_id_without_nal',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            value: '',
+            disable: true,
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          stringField({
+            label: 'ФИО',
+            name: 'fio',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { required },
+          }),
+          stringField({
+            label: 'БИК',
+            name: 'bik',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { minLength: minLength(8), numeric, required },
+          }),
+          stringField({
+            label: 'Номер счета',
+            name: 'invoice',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            validations: { minLength: minLength(20), numeric, required },
+          }),
+          stringField({
+            label: 'Примечание',
+            name: 'comment',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
+          checkboxField({
+            label: 'Приоритет',
+            name: `priority`,
+            value: false,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          }),
+          // textBlock({
+          //   label: 'Создал',
+          //   name: 'id',
+          //   placeholder: '',
+          //   notSend: true,
+          //   readonly: true,
+          //   class: [''],
+          //   position: {
+          //     cols: 12,
+          //     sm: 12,
+          //   },
+          //   bootstrapClass: [''],
+          // }),
+        ],
+        actions: [
+          // stringAction({
+          //   text: 'Сохранить',
+          //   type: 'submit',
+          //   color: 'primary',
+          //   module: 'form/create',
+          //   url: 'set/data/personal_bank',
+          //   useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+          //   // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+          //   useRouteParam: 'card_id',
+          //   name: 'saveForm',
+          //   action: 'saveForm',
+          //   isHide: {
+          //     value: false,
+          //     type: 'every',
+          //     condition: [
+          //       {
+          //         field: 'mode',
+          //         target: 'environment',
+          //         value: ['edit'],
+          //         type: true,
+          //       },
+          //     ],
+          //   },
+          // }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            color: 'primary',
+            module: 'form/update',
+            url: 'set/data/personal_bank',
+            useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+            // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+            name: 'saveForm',
+            useRouteParam: 'card_id',
+            action: 'saveForm',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'mode',
+                  target: 'environment',
+                  value: ['add'],
+                  type: true,
+                },
+                {
+                  field: 'readonlyAll',
+                  target: 'environment',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
+          }),
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'text',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal/:id',
+            skipValidation: true,
+          }),
+        ],
+        formData: {},
+      },
+    ],
+  },
   actions: [
     stringAction({
       text: 'Закрыть',
@@ -2084,6 +2281,7 @@ const editFormPermissions = {
       type: true,
     },
   },
+  // Убрать ОКК
 }
 
 export const fieldsBaseDefaulrForm = [
@@ -2102,11 +2300,11 @@ export const fieldsBaseDefaulrForm = [
     readonly: {
       value: false,
       condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.brigadir,
+        // editFormPermissions.manager[1],
+        // editFormPermissions.rukFIlCUPDirector.denied,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2125,11 +2323,11 @@ export const fieldsBaseDefaulrForm = [
     readonly: {
       value: false,
       condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.access,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.brigadir,
+        // editFormPermissions.manager[1],
+        // editFormPermissions.rukFIlCUPDirector.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2156,8 +2354,8 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2179,8 +2377,8 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2202,8 +2400,8 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2261,7 +2459,7 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
+        // editFormPermissions.DBA.access,
         editFormPermissions.OBDandOKK.denied,
       ],
     },
