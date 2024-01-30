@@ -45,6 +45,49 @@ const DocFormWithConfirm = defineComponent({
         route,
       },
     }
+    const bankItemsSpr = {
+      1: {
+        text: 'СБЕРБАНК',
+        value: 1,
+      },
+      2: {
+        text: 'Почта Банк',
+        value: 2,
+      },
+      3: {
+        text: 'Пром Связь',
+        value: 3,
+      },
+      4: {
+        text: 'Альфабанк',
+        value: 4,
+      },
+      5: {
+        text: 'Тинькофф',
+        value: 5,
+      },
+      7: {
+        text: 'ВТБ',
+        value: 7,
+      },
+      11: {
+        text: '-НАЛИЧНЫЕ-',
+        value: 11,
+      },
+      12: {
+        text: 'УБРИР',
+        value: 12,
+      },
+      13: {
+        text: 'Открытие',
+        value: 13,
+      },
+      14: {
+        text: 'МТС Банк',
+        value: 14,
+      },
+    }
+    const bankItems = Object.values(bankItemsSpr)
     const formObj = ref({
       // Паспорт
       1: useForm({
@@ -292,7 +335,15 @@ const DocFormWithConfirm = defineComponent({
       })
     }
 
-    return { formObj, confirmedDocs, rejectedDocs, confirmDoc, rejectDoc }
+    return {
+      formObj,
+      confirmedDocs,
+      rejectedDocs,
+      confirmDoc,
+      rejectDoc,
+      bankItemsSpr,
+      bankItems,
+    }
   },
 })
 export default DocFormWithConfirm

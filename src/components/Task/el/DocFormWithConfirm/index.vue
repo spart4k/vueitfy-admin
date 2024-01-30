@@ -130,13 +130,14 @@
               </v-row>
               <v-row>
                 <v-col>
-                  <v-text-field
+                  <v-select
                     readonly
                     v-model="formObj[doc.doc_id].formData.bank_id"
                     :error-messages="formObj[doc.doc_id].formErrors.bank_id"
+                    persistent-hint
+                    :items="bankItems"
                     label="Банк"
-                  >
-                  </v-text-field>
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-row>
