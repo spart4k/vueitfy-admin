@@ -8,9 +8,8 @@
       transition="scale-transition"
       offset-y
       min-width="auto"
-      :contentClass="edge === 'right' ? 'rightDate' : ''"
-      :location="edge === 'right' ? 'top start' : ''"
-      :attach="edge === 'right' ? '#attachMenu' : ''"
+      :contentClass="edge === 'right' ? 'rightDate' : undefined"
+      :attach="edge === 'right' ? '#attachMenu' : false"
       :right="edge === 'right' ? true : false"
       :style="edge === 'right' ? 'right: 0' : ''"
     >
