@@ -77,10 +77,10 @@
               v-else-if="showField('date', field)"
               v-model="formData[field.name]"
               :field="field"
+              :label="field.label"
               :error-messages="formErrors[field?.name]"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
-              @openMenu="openMenu"
             ></Datepicker>
             <v-textarea
               v-else-if="showField('textarea', field)"

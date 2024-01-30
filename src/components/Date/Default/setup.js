@@ -14,6 +14,18 @@ export default {
     value: {
       type: [String, Number, Object, Array],
     },
+    label: {
+      type: String,
+      default: '',
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    edge: {
+      type: String,
+      default: '',
+    },
     readonly: {
       type: Boolean,
       default: false,
@@ -44,16 +56,22 @@ export default {
     }
 
     const changeDate = () => {
-      proxyValue.value = dateValue.value.replaceAll('-', '.')
+      if (dateValue.value?.includes('-'))
+        proxyValue.value = dateValue.value.replaceAll('-', '.')
     }
 
     onMounted(() => {
-      dateValue.value = proxyValue.value.replaceAll('.', '-')
+      if (proxyValue.value?.includes('-'))
+        proxyValue.value = proxyValue.value.replaceAll('-', '.')
+      if (proxyValue.value?.includes('.'))
+        dateValue.value = proxyValue.value.replaceAll('.', '-')
     })
 
     watch(
       () => proxyValue.value,
       (newVal) => {
+        if (proxyValue.value?.includes('-'))
+          proxyValue.value = proxyValue.value.replaceAll('-', '.')
         emit('input', newVal)
       }
     )
