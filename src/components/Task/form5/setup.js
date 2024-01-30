@@ -189,10 +189,6 @@ const Form5 = defineComponent({
       })
 
       await changeStatus()
-      if (listRequestsForUpload.value.length) {
-        await createFillScanProcess()
-      }
-      listRequestsForUpload.value = []
       const { makeRequest: createFillScanProcess } = useRequest({
         context,
         request: () =>
@@ -207,6 +203,11 @@ const Form5 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
+      if (listRequestsForUpload.value.length) {
+        await createFillScanProcess()
+      }
+      listRequestsForUpload.value = []
+
       // createFillScanProcess()
 
       ctx.emit('closePopup')
