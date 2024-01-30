@@ -200,6 +200,8 @@ export default function ({
       //if (action.actionKey === 'schedule') {
       if (result.code === 1) {
         emit('closePopup')
+      } else if (result.result === 1) {
+        emit('closePopup')
       }
     } else if (action.action === 'saveFormStore') {
       loading.value = true
@@ -857,6 +859,7 @@ export default function ({
       }
       if (targetField) {
         //if (typeof data === 'object') data = [data]
+        console.log('DEFAULT ITEMS', targetField, targetField.defaultItems)
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data

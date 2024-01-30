@@ -108,9 +108,15 @@ export default {
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         console.log('changeForm3')
+        let routeParam
+        if (params.action.useRouteParam) {
+          routeParam = params.action.useRouteParam
+        } else {
+          routeParam = 'id'
+        }
         return store.dispatch(params.module, {
           url: params.url,
-          body: { data: { id: +route.params.id, ...params.formData } },
+          body: { data: { id: +route.params[routeParam], ...params.formData } },
         })
       },
     })
