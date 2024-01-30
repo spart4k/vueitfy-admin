@@ -80,19 +80,19 @@ const DocFormWithConfirm = defineComponent({
       3: useForm({
         fields: {
           number: {
-            default: props.bankData.invoice,
+            default: props?.bankData?.invoice,
           },
           priority: {
-            default: props.bankData.priority,
+            default: props?.bankData?.priority,
           },
           bank_id: {
-            default: props.bankData.bank_id,
+            default: props?.bankData?.bank_id,
           },
           cart_on_fio: {
-            default: props.bankData.fio,
+            default: props?.bankData?.fio,
           },
           prim: {
-            default: props.bankData.comment,
+            default: props?.bankData?.comment,
           },
         },
         context,

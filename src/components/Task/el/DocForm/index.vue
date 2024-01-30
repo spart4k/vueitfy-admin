@@ -182,6 +182,7 @@
                     v-model="formObj[doc.doc_id].formData.comment"
                     :error-messages="formObj[doc.doc_id].formErrors.comment"
                     label="Примечание"
+                    rows="1"
                   >
                   </v-textarea>
                 </v-col>

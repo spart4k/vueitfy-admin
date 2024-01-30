@@ -149,21 +149,21 @@ const DocFormCorrect = defineComponent({
         fields: {
           invoice: {
             validations: { required },
-            default: props.bankData.invoice,
+            default: props?.bankData?.invoice,
           },
           priority: {
-            default: props.bankData.priority,
+            default: props?.bankData?.priority,
           },
           bank_id: {
             validations: { required },
-            default: props.bankData.bank_id,
+            default: props?.bankData?.bank_id,
           },
           fio: {
             validations: { required },
-            default: props.bankData.fio,
+            default: props?.bankData?.fio,
           },
           comment: {
-            default: props.bankData.comment,
+            default: props?.bankData?.comment,
           },
         },
         context,
