@@ -403,7 +403,13 @@ export default function ({
       }
 
       if (item.type === 'date') {
-        newForm[key] = moment(newForm[key]).format('YYYY-MM-DD')
+        if (item.subtype === 'multiple') {
+          newForm[key].forEach((item, index) => {
+            newForm[key][index] = moment(item).format('YYYY-MM-DD')
+          })
+        } else {
+          newForm[key] = moment(newForm[key]).format('YYYY-MM-DD')
+        }
       } else if (item.type === 'dateRange') {
         newForm[key].forEach((item, index) => {
           if (item) newForm[key][index] = moment(item).format('YYYY-MM-DD')
