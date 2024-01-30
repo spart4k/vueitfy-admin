@@ -3578,15 +3578,15 @@ const config = {
                 value: '',
               },
             ],
-            // dependence: [
-            //   {
-            //     //fields: ['statement_card', 'cardowner'],
-            //     fillField: ['fio', 'invoice'],
-            //     type: 'api',
-            //     module: 'personal/getCard',
-            //     field: 'personal_bank_id',
-            //   },
-            // ],
+            dependence: [
+              {
+                //fields: ['statement_card', 'cardowner'],
+                fillField: ['fio', 'invoice'],
+                type: 'api',
+                module: 'personal/getCard',
+                field: 'personal_bank_id',
+              },
+            ],
             requiredFields: ['object_id'],
             readonly: {
               value: false,
@@ -3872,12 +3872,12 @@ const config = {
             ],
             validations: { required },
             bootstrapClass: [''],
-            // dependence: [
-            //   {
-            //     type: 'update',
-            //     fields: ['fio', 'invoice', 'bank_id'],
-            //   },
-            // ],
+            dependence: [
+              {
+                type: 'update',
+                fields: ['fio', 'invoice', 'bank_id'],
+              },
+            ],
             requiredFields: ['personal_id'],
             readonly: {
               value: false,
