@@ -15,7 +15,16 @@
         cols="12"
         :sm="!isEmpty ? 6 : 6"
       >
-        <v-menu
+        <Datepicker
+          v-model="date.start"
+          :field="field"
+          :error-messages="errorMessages.length ? errorMessages[0][0] : ''"
+          :readonly="readonly"
+          :placeholder="'От'"
+          @focus="onFocus"
+          @blur="unFocus"
+        ></Datepicker>
+        <!-- <v-menu
           :key="field.id"
           :ref="`menuRef_${field.id}`"
           v-model="dateMenu.start"
@@ -53,7 +62,7 @@
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="closeMenu('start')"> OK </v-btn>
           </v-date-picker>
-        </v-menu>
+        </v-menu> -->
       </v-col>
       <v-col
         style="transition: 0.2s"
@@ -61,7 +70,17 @@
         cols="12"
         :sm="!isEmpty ? 5 : 6"
       >
-        <v-menu
+        <Datepicker
+          v-model="date.end"
+          :field="field"
+          :error-messages="errorMessages.length ? errorMessages[0][1] : ''"
+          :readonly="readonly"
+          :placeholder="'По'"
+          @focus="onFocus"
+          @blur="unFocus"
+          edge="right"
+        ></Datepicker>
+        <!-- <v-menu
           :key="field.id"
           :ref="`menuRef_${field.id}`"
           v-model="dateMenu.end"
@@ -69,6 +88,7 @@
           transition="scale-transition"
           offset-y
           min-width="auto"
+
           content-class="rightDate"
           location="top start"
           attach="#attachMenu"
@@ -106,7 +126,7 @@
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="closeMenu('end')"> OK </v-btn>
           </v-date-picker>
-        </v-menu>
+        </v-menu> -->
       </v-col>
       <v-col v-if="!isEmpty" class="pr-0" :sm="!isEmpty ? 1 : 0">
         <v-icon @click="resetDate" class="mt-1 mr-1" x-small>$IconClose</v-icon>

@@ -352,7 +352,6 @@ export default function ({
     if (!form) return
     Object.keys(formData).forEach((key) => {
       const item = form?.fields?.find((x) => x.name === key)
-
       if (item?.prescription) {
         if (!newForm[item.prescription]) newForm[item.prescription] = []
         let itemIndex = item.name.split('%')[1]
@@ -405,6 +404,10 @@ export default function ({
 
       if (item.type === 'date') {
         newForm[key] = moment(newForm[key]).format('YYYY-MM-DD')
+      } else if (item.type === 'dateRange') {
+        newForm[key].forEach((item, index) => {
+          if (item) newForm[key][index] = moment(item).format('YYYY-MM-DD')
+        })
       }
     })
     return newForm
@@ -788,7 +791,7 @@ export default function ({
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
-            else formData[el] = null
+            else if (formData[el]) formData[el] = null
           } else if (typeof el === 'object') {
             const targetObject = form.fields.find((item) => {
               return item.name === el.formKey
