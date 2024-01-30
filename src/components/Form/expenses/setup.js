@@ -7,8 +7,9 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 import DropZone from '@/components/Dropzone/default/index.vue'
-import Datetimepicker from '@/components/Datetimepicker/index.vue'
+import Datetimepicker from '@/components/Date/Datetimepicker/index.vue'
 import ColorPicker from '@/components/Colorpicker/index.vue'
+import Datepicker from '@/components/Date/Default/index.vue'
 
 import _ from 'lodash'
 
@@ -37,6 +38,7 @@ export default {
     FormDefault,
     DropZone,
     ColorPicker,
+    Datepicker,
   },
   props: {
     tab: {
@@ -199,7 +201,7 @@ export default {
             },
             position: {
               cols: 12,
-              sm: 6,
+              sm: 5,
             },
             validations: { required },
             bootstrapClass: [''],
@@ -255,7 +257,7 @@ export default {
             class: [''],
             position: {
               cols: 12,
-              sm: 2,
+              sm: 3,
             },
             validations: { required },
             bootstrapClass: [''],

@@ -1,7 +1,13 @@
 /* eslint-disable */
 
 import filters from './filters'
-import { required, nameLength, minLength, numeric } from '@/utils/validation.js'
+import {
+  required,
+  nameLength,
+  minLength,
+  numeric,
+  validDate,
+} from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -3104,7 +3110,7 @@ const defaultForm = [
               cols: 12,
               sm: 12,
             },
-            validations: { required },
+            validations: { required, validDate },
             bootstrapClass: [''],
             disable: false,
             //mode: 'edit',

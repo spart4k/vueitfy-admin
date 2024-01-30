@@ -246,7 +246,7 @@ const Form8 = defineComponent({
               },
               position: {
                 cols: 12,
-                sm: 6,
+                sm: 5,
               },
               validations: { required },
               bootstrapClass: [''],
@@ -277,7 +277,7 @@ const Form8 = defineComponent({
               class: [''],
               position: {
                 cols: 12,
-                sm: 2,
+                sm: 3,
               },
               validations: { required },
               bootstrapClass: [''],

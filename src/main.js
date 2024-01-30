@@ -14,10 +14,11 @@ import './plugins'
 
 Vue.use(DatetimePicker)
 // import VueCompositionApi from '@vue/composition-api'
-console.log('test commit')
 //import mainJS from '@/trash/main.js'
 
+Vue.config.devtools = true
 Vue.config.productionTip = false
+Vue.config.silent = true
 Vue.use(PortalVue)
 Vue.prototype.env = process.env
 // Vue.use(VueCompositionApi)

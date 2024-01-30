@@ -81,53 +81,15 @@
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
             ></v-checkbox>
-            <v-menu
+            <Datepicker
               v-else-if="showField('date', field)"
-              :key="field.id"
-              :ref="`menuRef_${field.id}`"
-              v-model="field.menu"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-            >
-              <template v-slot:activator="{ attrs }">
-                <v-text-field
-                  @click:append="openMenu(field)"
-                  v-model="formData[field.name]"
-                  :label="field.label"
-                  append-icon="mdi-calendar"
-                  :error-messages="formErrors[field?.name]"
-                  v-bind="attrs"
-                  :disabled="disabledField(field)"
-                  :readonly="readonlyField(field)"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="formData[field.name]"
-                min="1940-01-01"
-                color="primary"
-                locale="ru-RU"
-                :type="field.subtype === 'period' ? 'month' : undefined"
-                :range="field.subtype === 'range'"
-                :multiple="field.subtype === 'multiple'"
-                :readonly="readonlyField(field)"
-                :first-day-of-week="1"
-                @input="
-                  field.subtype !== 'multiple'
-                    ? (field.menu = false)
-                    : undefined
-                "
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="field.menu = false">
-                  Cancel
-                </v-btn>
-                <v-btn text color="primary" @click="field.menu = false">
-                  OK
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
+              v-model="formData[field.name]"
+              :field="field"
+              :error-messages="formErrors[field?.name]"
+              :disabled="disabledField(field)"
+              :readonly="readonlyField(field)"
+              @openMenu="openMenu"
+            ></Datepicker>
             <v-textarea
               v-else-if="showField('textarea', field)"
               v-model="formData[field.name]"

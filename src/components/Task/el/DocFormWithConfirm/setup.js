@@ -2,7 +2,7 @@ import { defineComponent, ref } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { useRouter, useRoute } from 'vue-router/composables'
-import DateTimePicker from '@/components/Datetimepicker/index.vue'
+import DateTimePicker from '@/components/Date/Datetimepicker/index.vue'
 import store from '@/store'
 
 const DocFormWithConfirm = defineComponent({

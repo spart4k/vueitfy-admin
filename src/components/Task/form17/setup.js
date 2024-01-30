@@ -9,6 +9,10 @@ import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import Dropzone from '@/components/Dropzone/default'
 import moment from 'moment'
+import Popup from '@/components/Popup/index.vue'
+import _ from 'lodash'
+
+import config from '@/components/Task/form17/form.js'
 
 const Form17 = defineComponent({
   name: 'Form17',
@@ -17,6 +21,7 @@ const Form17 = defineComponent({
     FormComment,
     Dropzone,
     TextInfo,
+    Popup,
   },
   props: {
     data: {
@@ -27,6 +32,10 @@ const Form17 = defineComponent({
   setup({ data }, ctx) {
     const route = useRoute()
     const router = useRouter()
+    const proxyConfig = ref(_.cloneDeep(config))
+    const popupForm = ref({
+      isShow: false,
+    })
     const context = {
       root: {
         store,
@@ -325,6 +334,33 @@ const Form17 = defineComponent({
       // }
     }
 
+    const pushToForm = (val) => {
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          id: route.params.id,
+          form_id: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
+      popupForm.value.isShow = false
+    }
+
+    onMounted(() => {
+      if (
+        proxyConfig.value.detail &&
+        proxyConfig.value.detail.type === 'popup' &&
+        route.meta?.mode?.length > 1
+      ) {
+        popupForm.value.isShow = true
+      }
+    })
+
     return {
       // keyForm,
       // keyFormErrors,
@@ -341,6 +377,12 @@ const Form17 = defineComponent({
       dateTarget,
       infoObj,
       tariff,
+
+      pushToForm,
+      popupForm,
+      proxyConfig,
+      closePopupForm,
+      Popup,
     }
   },
 })

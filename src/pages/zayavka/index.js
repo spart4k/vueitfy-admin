@@ -1,5 +1,5 @@
 import filters from './filters'
-import TableDefault from '@/components/Table/default/index.vue'
+// import TableDefault from '@/components/Table/default/index.vue'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import Expenses from '@/components/Form/expenses/index.vue'
@@ -1260,7 +1260,7 @@ export const addFields = [
     notSend: true,
     position: {
       cols: 12,
-      sm: 6,
+      sm: 5,
     },
     validations: { required },
     bootstrapClass: [''],
@@ -1288,7 +1288,7 @@ export const addFields = [
     notSend: true,
     position: {
       cols: 12,
-      sm: 2,
+      sm: 3,
     },
     validations: { required },
     bootstrapClass: [''],
@@ -3156,7 +3156,7 @@ export const editFields = [
     notSend: true,
     position: {
       cols: 12,
-      sm: 6,
+      sm: 5,
     },
     validations: { required },
     bootstrapClass: [''],
@@ -3208,7 +3208,7 @@ export const editFields = [
     notSend: true,
     position: {
       cols: 12,
-      sm: 2,
+      sm: 3,
     },
     validations: { required },
     bootstrapClass: [''],
