@@ -1,7 +1,13 @@
 /* eslint-disable */
 
 import filters from './filters'
-import { required, nameLength, minLength, numeric } from '@/utils/validation.js'
+import {
+  required,
+  nameLength,
+  minLength,
+  numeric,
+  validDate,
+} from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -2275,6 +2281,7 @@ const editFormPermissions = {
       type: true,
     },
   },
+  // Убрать ОКК
 }
 
 export const fieldsBaseDefaulrForm = [
@@ -2293,11 +2300,11 @@ export const fieldsBaseDefaulrForm = [
     readonly: {
       value: false,
       condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.brigadir,
+        // editFormPermissions.manager[1],
+        // editFormPermissions.rukFIlCUPDirector.denied,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2316,11 +2323,11 @@ export const fieldsBaseDefaulrForm = [
     readonly: {
       value: false,
       condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.access,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.brigadir,
+        // editFormPermissions.manager[1],
+        // editFormPermissions.rukFIlCUPDirector.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2347,8 +2354,8 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2370,8 +2377,8 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2393,8 +2400,8 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2452,7 +2459,7 @@ export const fieldsBaseDefaulrForm = [
         editFormPermissions.brigadir,
         editFormPermissions.manager[1],
         editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
+        // editFormPermissions.DBA.access,
         editFormPermissions.OBDandOKK.denied,
       ],
     },
@@ -3103,7 +3110,7 @@ const defaultForm = [
               cols: 12,
               sm: 12,
             },
-            validations: { required },
+            validations: { required, validDate },
             bootstrapClass: [''],
             disable: false,
             //mode: 'edit',
