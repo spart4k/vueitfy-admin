@@ -67,6 +67,7 @@ export default function ({
       if (!form) return
     }
     return Object.keys(formData || fields).reduce((obj, key) => {
+      console.log(key)
       if (
         (typeof formFields[key]?.isShow === 'boolean' &&
           !formFields[key]?.isShow) ||
@@ -458,7 +459,7 @@ export default function ({
         if (dropzone.value.length) {
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
-            if (file.accepted) {
+            if (file?.accepted) {
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
