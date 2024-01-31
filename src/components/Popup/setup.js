@@ -23,10 +23,10 @@ const popup = {
   },
   setup(_, ctx) {
     const { emit } = ctx
-    const route = useRoute()
-    const closexcz = () => {
-      emit('close')
-    }
+    // const route = useRoute()
+    // const closexcz = () => {
+    //   emit('close')
+    // }
     const handlerEscape = (event) => {
       const key = event.key
       if (key === 'Escape') {
@@ -43,7 +43,7 @@ const popup = {
     onUnmounted(() => {
       document.removeEventListener('keydown', handlerEscape)
     })
-    return { closexcz }
+    return {}
   },
 }
 export default popup
