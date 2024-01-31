@@ -55,7 +55,7 @@ export default {
     },
   },
   setup(props, ctx) {
-    const proxyTab = ref(props.tab)
+    const proxyTab = ref(_.cloneDeep(props.tab))
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
@@ -395,9 +395,8 @@ export default {
     }
 
     watch(
-      () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
+      () => proxyTab.value.fields?.find((x) => x?.name === 'rashod_vid')?.items,
       () => {
-        console.log('//////////////////')
         shareItems()
         if (zayavkaFirstLoad.value) {
           zayavkaFirstLoad.value = false
