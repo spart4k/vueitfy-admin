@@ -3893,8 +3893,8 @@ export const editFields = [
     bootstrapClass: [''],
   }),
   stringField({
-    label: 'region_id',
-    name: 'region_id',
+    label: 'regions_id',
+    name: 'regions_id',
     requestKey: 'regions_id',
     requestType: 'number',
     placeholder: '',
