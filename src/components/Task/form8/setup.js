@@ -189,8 +189,8 @@ const Form8 = defineComponent({
       const yourself = addConfig.fields.find((x) => x.name === 'on_yourself')
       yourself.readonly = true
 
-      const name = addConfig.fields.find((x) => x.name === 'name')
-      name.value = props.data.entity.name
+      // const name = addConfig.fields.find((x) => x.name === 'name')
+      // name.value = props.data.entity.name
 
       const is_migr = addConfig.fields.find((x) => x.name === 'is_migr')
       is_migr.value = true
