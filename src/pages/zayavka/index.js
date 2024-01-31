@@ -541,6 +541,35 @@ export const addFields = [
           ],
         },
       },
+      {
+        type: 'default',
+        fillField: [
+          {
+            formKey: 'me',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+        ],
+      },
     ],
     updateList: [
       {
@@ -733,7 +762,14 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+        ],
       },
     ],
     updateList: [
@@ -1081,7 +1117,16 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name', 'regions_id', 'city_id'],
+        fillField: [
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          'regions_id',
+          'city_id',
+        ],
       },
     ],
     isShow: {
@@ -1198,7 +1243,14 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+        ],
       },
     ],
     isShow: {
@@ -2334,6 +2386,35 @@ export const editFields = [
           ],
         },
       },
+      {
+        type: 'default',
+        fillField: [
+          {
+            formKey: 'account_id',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+        ],
+      },
     ],
     updateList: [
       {
@@ -2545,7 +2626,14 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+        ],
       },
     ],
     updateList: [
@@ -2929,7 +3017,16 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name', 'regions_id', 'city_id'],
+        fillField: [
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          'regions_id',
+          'city_id',
+        ],
       },
     ],
     isShow: {
@@ -3070,7 +3167,14 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+        ],
       },
     ],
     isShow: {
