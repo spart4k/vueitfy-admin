@@ -425,11 +425,9 @@ const table = {
           return
         }
         let type = el.typeFilter ? el.typeFilter : el.type
-        console.log('filterDATA', filterData[el.name])
-        console.log(type)
-        type = type === 'autocomplete' ? 'select' : type
-        type = type === 'dateRange' && 'date'
-        type = type === 'datetime' ? 'date' : type
+        type = (type === 'autocomplete' ? 'select' : type)
+        type = (type === 'dateRange' && 'date')
+        type = (type === 'datetime' ? 'date' : type)
 
         const obj = {
           //field: el.name,
