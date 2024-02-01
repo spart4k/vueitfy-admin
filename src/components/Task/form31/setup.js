@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
@@ -24,6 +24,9 @@ const Form28 = defineComponent({
         store,
       },
     }
+
+    const isWorking = ref(null)
+    const obj = ref()
 
     const textInfo = {
       manager: {
@@ -72,6 +75,8 @@ const Form28 = defineComponent({
     return {
       textInfo,
       confirm,
+      isWorking,
+      obj,
       // directionToMagnit,
       entity: props.data.entity,
       // pathAct,
