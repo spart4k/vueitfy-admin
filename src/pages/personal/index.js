@@ -3363,7 +3363,6 @@ const defaultForm = [
         actions: [
           stringAction({
             text: 'Закрыть',
-            type: 'submit',
             color: 'textDefault',
             name: 'closePopup',
             action: 'closePopup',
@@ -3603,7 +3602,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.status',
+          alias: 'status_name',
           value: 'status_name',
           search: {
             field: '',

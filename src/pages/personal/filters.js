@@ -21,6 +21,25 @@ const filters = {
   active: false,
   fields: [
     selectField({
+      label: 'Аккаунты',
+      name: 'p.personal_accounts',
+      alias: 'personal_accounts',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'p.account_id',
+    }),
+    selectField({
       label: 'Направления',
       name: 'direction_id',
       alias: 'direction_id',
@@ -46,25 +65,6 @@ const filters = {
         },
       ],
       aliasFilter: 'p.direction_json',
-    }),
-    selectField({
-      label: 'Аккаунты',
-      name: 'p.personal_accounts',
-      alias: 'personal_accounts',
-      subtype: 'single',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'p.account_id',
     }),
     autocompleteField({
       label: 'Объект',
