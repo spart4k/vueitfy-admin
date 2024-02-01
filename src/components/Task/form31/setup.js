@@ -24,41 +24,11 @@ const Form28 = defineComponent({
         store,
       },
     }
-    const directionToMagnit = props.data.entity.direction_id === 5
-    const pathAct = props.data.data.shop_request_magnit.path_act
-    const infoObj = {
-      creator: {
-        key: 'Создатель',
+
+    const textInfo = {
+      manager: {
+        key: 'Менеджер',
         value: props.data.entity.account_name,
-      },
-      ved_type: {
-        key: 'Вид ведомости',
-        value: props.data.entity.vid_vedomost_name,
-      },
-      employee: {
-        key: 'Сотрудник',
-        value: props.data.entity.personal_name,
-      },
-      object: {
-        key: 'Объект',
-        value: props.data.entity.object_name,
-      },
-      position: {
-        key: 'Должность',
-        value: props.data.entity.doljnost_name,
-      },
-      details: {
-        key: 'Реквизиты',
-        value:
-          props.data.entity.bank_id !== 11
-            ? `${props.data.entity.bank_name} ${
-                props.data.entity.fio
-              }...${props.data.entity.invoice.split('').splice(-4).join('')}`
-            : 'Наличные',
-      },
-      meals: {
-        key: 'Питание',
-        value: props.data.entity.sum_nutrition,
       },
     }
 
@@ -100,11 +70,11 @@ const Form28 = defineComponent({
     }
 
     return {
-      infoObj,
+      textInfo,
       confirm,
-      directionToMagnit,
+      // directionToMagnit,
       entity: props.data.entity,
-      pathAct,
+      // pathAct,
     }
   },
 })

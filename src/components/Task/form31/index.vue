@@ -1,7 +1,12 @@
 <template>
   <div>
     <div style="padding: 10px">
-      <v-card-title class="py-1 justify-center font-weight-bold text-h6">
+      <v-card-title class="d-flex justify-center text-h6">
+        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
+        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
+      </v-card-title>
+      <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
+      <!-- <v-card-title class="py-1 justify-center font-weight-bold text-h6">
         Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
         >&nbsp; на дату 07.02.2023
       </v-card-title>
@@ -17,7 +22,7 @@
           </a>
         </div>
         <div v-else>Не приложен</div>
-      </div>
+      </div> -->
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
