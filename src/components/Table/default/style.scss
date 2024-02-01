@@ -111,7 +111,7 @@ $tableFooterHeight: 85px;
       }
       &--fixed {
         //top: calc($tablePanelHeight - 1px);
-        top: 0;
+        top: 61px;
         position: sticky;
         z-index: 2;
         background-color: var(--v-background-base);
@@ -185,13 +185,14 @@ $tableFooterHeight: 85px;
       }
       &-wrap {
         height: calc(100% - $tableFooterHeight);
+        overflow: auto;
       }
     }
     &-wrap {
       display: flex;
       // flex: 1;
       //height: calc(100% - $tablePanelHeight - $tableFooterHeight);
-      overflow: auto;
+      // overflow: auto;
       //width: 2500px;
       max-width: 100%;
       // min-height: 115px;
