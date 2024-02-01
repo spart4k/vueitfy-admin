@@ -13,7 +13,7 @@ const defaultProperties = (properties) => {
 
 const stringAction = (properties) => {
   return {
-    type: 'string',
+    type: 'button',
     ...defaultProperties(properties),
   }
 }

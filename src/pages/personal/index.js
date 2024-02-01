@@ -2842,7 +2842,7 @@ const defaultForm = [
     stages: [
       {
         id: 0,
-        name: 'Основные0',
+        name: 'Основные',
         type: FormDefault,
         detail: true,
         lists: [
@@ -3677,7 +3677,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -3945,7 +3945,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -4143,7 +4143,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
