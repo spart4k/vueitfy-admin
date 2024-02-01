@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import filters from './filters'
+import filtersKey from './filtersKey'
 import {
   required,
   nameLength,
@@ -3040,7 +3041,7 @@ const defaultForm = [
     stages: [
       {
         id: 0,
-        name: 'Основные0',
+        name: 'Основные',
         type: FormDefault,
         detail: true,
         lists: [
@@ -3561,7 +3562,6 @@ const defaultForm = [
         actions: [
           stringAction({
             text: 'Закрыть',
-            type: 'submit',
             color: 'textDefault',
             name: 'closePopup',
             action: 'closePopup',
@@ -3876,7 +3876,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -4144,7 +4144,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -4342,7 +4342,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -5015,6 +5015,7 @@ export const config = {
         ],
         activeTab: null,
       },
+      filters: filtersKey
     },
   ],
 }

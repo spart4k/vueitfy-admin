@@ -406,10 +406,12 @@ export default function ({
       if (item.type === 'date') {
         if (item.subtype === 'multiple') {
           newForm[key].forEach((item, index) => {
-            newForm[key][index] = moment(item).format('YYYY-MM-DD')
+            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
           })
         } else {
-          newForm[key] = moment(newForm[key]).format('YYYY-MM-DD')
+          newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
         }
       } else if (item.type === 'dateRange') {
         newForm[key].forEach((item, index) => {
@@ -1203,6 +1205,7 @@ export default function ({
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (
+            source &&
             source[el.field] !== null &&
             source[el.field] !== undefined &&
             source[el.field] !== ''
@@ -1218,6 +1221,12 @@ export default function ({
             acc.push({
               alias: el.alias ?? el.field,
               value: [+route.params.id],
+              type: el.type,
+            })
+          } else {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: el.value,
               type: el.type,
             })
           }
