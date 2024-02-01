@@ -191,7 +191,7 @@ $tableFooterHeight: 85px;
       display: flex;
       // flex: 1;
       //height: calc(100% - $tablePanelHeight - $tableFooterHeight);
-      // overflow: auto;
+      overflow: auto;
       //width: 2500px;
       max-width: 100%;
       // min-height: 115px;

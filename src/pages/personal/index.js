@@ -5014,6 +5014,7 @@ export const config = {
         ],
         activeTab: null,
       },
+      filters
     },
   ],
 }
