@@ -3602,7 +3602,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'status_name',
+          alias: 'ps.status',
           value: 'status_name',
           search: {
             field: '',
