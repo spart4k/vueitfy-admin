@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import filters from './filters'
+import filtersKey from './filtersKey'
 import {
   required,
   nameLength,
@@ -5014,7 +5015,7 @@ export const config = {
         ],
         activeTab: null,
       },
-      filters
+      filters: filtersKey
     },
   ],
 }

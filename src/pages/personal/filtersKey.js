@@ -1,23 +1,23 @@
 import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 
-const filters = {
+const filtersKey = {
   id: 0,
   name: 'Основные',
   type: 'FormDefault',
   detail: false,
   isFilter: true,
   lists: [
-    {
-      alias: 'direction_id',
-      filter: [],
-    },
+    // {
+    //   alias: 'direction_id',
+    //   filter: [],
+    // },
     {
       alias: 'personal_accounts',
       filter: [
         {
           field: 'custom_key',
-          value: true,
+          value: false,
           type: 'num',
         },
       ],
@@ -46,7 +46,7 @@ const filters = {
       aliasFilter: 'p.account_id',
     }),
     selectField({
-      label: 'Направления',
+      label: 'Линейщик',
       name: 'direction_id',
       alias: 'direction_id',
       subtype: 'array',
@@ -113,4 +113,4 @@ const filters = {
   ],
 }
 
-export default filters
+export default filtersKey
