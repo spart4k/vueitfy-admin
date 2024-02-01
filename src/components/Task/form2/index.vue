@@ -66,6 +66,7 @@
         class="mb-10"
         @change="changeDocs"
         :docsData="docsData"
+        :bankData="bankData"
         :listNames="listNames"
         :docs="docs"
       ></DocFormWithConfirm>

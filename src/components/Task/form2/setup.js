@@ -141,25 +141,27 @@ const Form2 = defineComponent({
             : 2
         // let status
         // if ()
+        let data = {
+          process_id: props.data.task.process_id,
+          personal_id: props.data.entity.id,
+          task_id: props.data.task.id,
+          parent_action: props.data.task.id,
+          docs_id:
+            isHasOsnDoc && isOsnDocConfirmed.value
+              ? [0, ...finalData.value.rejected]
+              : finalData.value.rejected,
+          account_id: props.data.task.to_account_id,
+          obd_id: props.data.task.from_account_id,
+          comment: comment.value,
+        }
+        // console.log(props.data.data.dop_data)
+        const dopData = JSON.parse(props.data.task.dop_data)
+        if (dopData.bank_card_id) {
+          data.bank_card_id = dopData.bank_card_id
+        }
         return store.dispatch('taskModule/setPartTask', {
           status: newStatus.value,
-          data: {
-            process_id: props.data.task.process_id,
-            personal_id: props.data.entity.id,
-            task_id: props.data.task.id,
-            parent_action: props.data.task.id,
-            docs_id:
-              isHasOsnDoc && isOsnDocConfirmed.value
-                ? [0, ...finalData.value.rejected]
-                : finalData.value.rejected,
-            account_id: props.data.task.to_account_id,
-            obd_id: props.data.task.from_account_id,
-            comment: 'comment',
-            bank_card_id:
-              props.data.data.dop_data && props.data.data.dop_data.bank_card_id
-                ? props.data.data.dop_data.bank_card_id
-                : null,
-          },
+          data,
         })
       },
     })
@@ -197,6 +199,7 @@ const Form2 = defineComponent({
     return {
       dataRojd,
       entity: props.data.entity,
+      bankData: props.data.data.bank_card,
       docsData: props.data.data.personal_doc_data,
       docs: props.data.data.docs_id,
       listNames: props.data.data.docs_spr,

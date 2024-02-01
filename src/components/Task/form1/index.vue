@@ -122,7 +122,7 @@
       </v-btn>
       <v-btn small :disabled="!isFormValid" color="info" @click="sendData">
         <v-icon small>mdi-content-save</v-icon>
-        Завершить
+        Сохранить
       </v-btn>
     </v-row>
   </div>

@@ -161,21 +161,22 @@
                     v-model="formObj[doc.doc_id].formData.comment"
                     :error-messages="formObj[doc.doc_id].formErrors.comment"
                     label="Примечание"
+                    rows="1"
                   >
                   </v-textarea>
                 </v-col>
               </v-row>
-              <v-row justify="end">
+              <!-- <v-row justify="end">
                 <v-btn
                   :disabled="!formObj[doc.doc_id].validate()"
-                  @click="sendBankCard"
+                  @click="sendBankCard(doc.doc_id)"
                   color="warning"
                   small
                 >
                   <v-icon left> $IconMain </v-icon>
                   Завершить
                 </v-btn>
-              </v-row>
+              </v-row> -->
             </div>
             <!--Адрес регистрации-->
             <div v-else-if="doc.doc_id === 4">
