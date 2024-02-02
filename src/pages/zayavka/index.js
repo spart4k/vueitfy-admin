@@ -3,7 +3,6 @@ import filters from './filters'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import Expenses from '@/components/Form/expenses/index.vue'
-import store from '@/store/index.js'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -1707,9 +1706,7 @@ export const addFields = [
 
   checkboxField({
     name: 'is_migr',
-    value:
-      store?.state?.user.permission_id === 16 ||
-      store?.state?.user.permission_id === 19,
+    value: false,
     placeholder: '',
     class: [''],
     position: {
@@ -3829,9 +3826,7 @@ export const editFields = [
 
   checkboxField({
     name: 'is_migr',
-    value:
-      store?.state?.user.permission_id === 16 ||
-      store?.state?.user.permission_id === 19,
+    value: false,
     placeholder: '',
     class: [''],
     position: {

@@ -1223,7 +1223,7 @@ export default function ({
               value: [+route.params.id],
               type: el.type,
             })
-          } else {
+          } else if (el.sendEmpty) {
             acc.push({
               alias: el.alias ?? el.field,
               value: el.value,
