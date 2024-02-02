@@ -2,11 +2,8 @@
   <div>
     <div style="padding-top: 20px">
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
-        Назначение
-        <span @click="pushToForm(entity.id)" class="col-btn form-link"
-          >&nbsp;№{{ entity.id }}&nbsp;</span
-        >
-        на дату {{ dateTarget }}
+        Назначение &nbsp;<a href="#" class="text-h6">№{{ entity.id }}</a
+        >&nbsp; на дату {{ dateTarget }}
         <v-icon v-if="typeShift == 2" color="#8f8e77"
           >mdi-moon-waning-crescent</v-icon
         >
@@ -43,7 +40,6 @@
           </v-col>
           <v-col class="px-0">
             <v-text-field
-              :readonly="idDirection === 6"
               label="QTY"
               class="mr-1"
               v-model="group.formData.qty"
@@ -118,32 +114,8 @@
         Отклонить
       </v-btn>
     </v-row>
-    <component
-      :is="Popup"
-      :options="{
-        width: proxyConfig.detail.width,
-        portal: `table-detail${
-          proxyConfig?.detail?.popupIndex ? proxyConfig?.detail?.popupIndex : ''
-        }`,
-      }"
-      v-if="
-        proxyConfig.detail &&
-        proxyConfig.detail.type === 'popup' &&
-        popupForm.isShow
-      "
-    >
-      <router-view
-        :detail="proxyConfig.detail"
-        :class="[
-          ...proxyConfig.detail.bootstrapClass,
-          ...proxyConfig.detail.classes,
-        ]"
-        @closePopup="closePopupForm"
-      />
-    </component>
   </div>
 </template>
 
 <script src="./setup.js"></script>
-
 <style lang="scss" scoped src="./style.scss"></style>
