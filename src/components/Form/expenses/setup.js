@@ -408,7 +408,15 @@ export default {
 
     onMounted(() => {
       shareItems()
-      // proxyTab.value = _.cloneDeep(proxyTab.value.fields)
+      if (proxyTab.value.path === 'add') {
+        if (
+          store.state.user.permission_id === 16 ||
+          store.state.user.permission_id === 19
+        ) {
+          const item = Object.keys(formData).find((x) => x === 'is_migr')
+          formData[item] = true
+        }
+      }
     })
 
     onUnmounted(() => {
