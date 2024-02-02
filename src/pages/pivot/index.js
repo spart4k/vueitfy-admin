@@ -656,7 +656,7 @@ const config = {
         path: 'add',
         id: 3,
         name: 'Выработка X5',
-        type: 'FormStage',
+        type: 'FormOutput',
         detail: true,
         stages: [],
       },
