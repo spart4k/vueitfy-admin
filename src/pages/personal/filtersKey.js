@@ -17,6 +17,7 @@ const filtersKey = {
       filter: [
         {
           field: 'custom_key',
+          sendEmpty: true,
           value: false,
           type: 'num',
         },
