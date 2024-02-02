@@ -3,17 +3,19 @@
     <div class="form-row">
       <v-form>
         <v-container>
-          <DocForm></DocForm>
-          <!-- <Row
-            v-for="document in tab.documents"
-            :tab="tab"
-            :key="document.title"
-            :formData="formData"
-            :formErrors="formErrors"
-            :loading="loading"
-            :document="document"
-          >
-          </Row> -->
+          <!-- <DocForm :docsData="docsData"></DocForm> -->
+          <template v-if="docsData">
+            <Row
+              v-for="document in docsData"
+              :tab="tab"
+              :key="document.title"
+              :formData="formData"
+              :formErrors="formErrors"
+              :loading="loading"
+              :document="document"
+            >
+            </Row>
+          </template>
           <v-row class="justify-end">
             <v-btn
               type="submit"

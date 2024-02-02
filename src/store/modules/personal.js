@@ -7,6 +7,7 @@ import {
   create,
   createForm,
   updateForm,
+  getDocuments,
 } from '@/api/personal'
 //import axios from 'axios'
 
@@ -15,6 +16,10 @@ const personal = {
   actions: {
     async getCard(_, { value: id }) {
       const result = await getCard(id)
+      return result
+    },
+    async getDocuments(_, id) {
+      const result = await getDocuments(id)
       return result
     },
     async getKeys(_, { url, wrap, body }) {

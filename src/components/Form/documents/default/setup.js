@@ -44,11 +44,16 @@ export default {
         route,
       },
     }
-    const loading = ref(false)
+    const docsData = ref(null)
+    // const loading = ref(false)
     const fields = () => {
       const fields = {}
       return fields
     }
+    const { makeRequest, loading } = useRequest({
+      context,
+      request: () => store.dispatch('personal/getDocuments', +route.params.id),
+    })
     const prevTab = ref({})
     //const params = props.tab.lists
     //const queryString = '?lists=' + [...params]
@@ -75,7 +80,7 @@ export default {
       //makeRequestList,
     })
     onMounted(async () => {
-      await getData()
+      docsData.value = await makeRequest()
     })
     return {
       clickHandler,
@@ -90,6 +95,7 @@ export default {
       getData,
       changeSelect,
       prevTab,
+      docsData,
     }
   },
 }
