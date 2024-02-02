@@ -251,19 +251,21 @@ const Form17 = defineComponent({
               data: {
                 id: data.entity.id,
                 services: JSON.stringify({
-                  3: {
-                    services: [
-                      {
-                        service_id: services_spr[data.entity.doljnost_id],
-                        qty: qty.value,
-                        price: '',
-                        sum: 0,
-                      },
-                    ],
-                    payment_id: false,
-                    is_pay: false,
-                    sum: 0,
-                  },
+                  3: [
+                    {
+                      services: [
+                        {
+                          service_id: services_spr[data.entity.doljnost_id],
+                          qty: qty.value,
+                          price: '',
+                          sum: 0,
+                        },
+                      ],
+                      payment_id: false,
+                      is_pay: false,
+                      sum: 0,
+                    },
+                  ],
                 }),
                 // payment_id: paymentData.result,
               },
