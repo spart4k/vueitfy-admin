@@ -29,8 +29,8 @@ const filtersKey = {
   fields: [
     selectField({
       label: 'Аккаунты',
-      name: 'p.personal_accounts',
-      alias: 'personal_accounts',
+      name: 'personal_accounts',
+      alias: 'p.account_json',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -44,15 +44,19 @@ const filtersKey = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.account_id',
+      aliasFilter: 'p.account_json',
     }),
-    selectField({
+    autocompleteField({
       label: 'Линейщик',
-      name: 'direction_id',
-      alias: 'direction_id',
-      subtype: 'array',
+      name: 'personal_id',
+      alias: 'uk.personal_id',
+      subtype: 'single',
       placeholder: '',
       class: [''],
+      typeFilter: 'select',
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/personals',
       selectOption: {
         text: 'name',
         value: 'id',
@@ -63,20 +67,13 @@ const filtersKey = {
         sm: 12,
       },
       bootstrapClass: [''],
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'object_id',
-          url: 'get/pagination_list/object',
-        },
-      ],
-      aliasFilter: 'p.direction_json',
+      dependence: [],
+      aliasFilter: 'uk.personal_id',
     }),
     autocompleteField({
       label: 'Объект',
       name: 'object_id',
-      alias: 'p.object_id',
+      alias: 'uk.object_id',
       subtype: 'single',
       placeholder: '',
       typeFilter: 'select',
@@ -91,7 +88,7 @@ const filtersKey = {
       url: 'get/pagination_list/object',
       filter: [
         {
-          field: 'direction_id',
+          field: 'personal_accounts',
           value: '',
         },
       ],
@@ -100,7 +97,7 @@ const filtersKey = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.object_id',
+      aliasFilter: 'uk.object_id',
     }),
   ],
   actions: [
