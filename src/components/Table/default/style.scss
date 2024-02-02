@@ -270,7 +270,8 @@ $tableFooterHeight: 85px;
       }
       &--fixed {
         top: 0;
-        position: sticky;
+        width: 100%;
+        position: absolute;
         z-index: 2;
       }
     }
