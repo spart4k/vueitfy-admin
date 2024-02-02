@@ -133,7 +133,9 @@
                   formData[field.name] = item.value
                   changeAutocomplete({ value: formData[field.name], field })
                 "
-                :disabled="readonlyField(field)"
+                :disabled="
+                  readonlyField(field) || (item.value === 2 && formData.is_migr)
+                "
               >
                 {{ item.text }}
               </v-btn>
