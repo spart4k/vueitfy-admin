@@ -281,7 +281,7 @@ const Form17 = defineComponent({
                 task_id: data.task.id,
                 parent_action: data.task.id,
                 personal_target_id: data.entity.id,
-                have_price: tariff && tariff.length ? 1 : 0,
+                have_price: 1,
                 object_id: data.entity.object_id,
                 service_id: services_spr[data.entity.doljnost_id],
                 date_target: data.entity.date_target,

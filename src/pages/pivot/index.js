@@ -334,6 +334,13 @@ const config = {
         // function: consolePanel,
         backgroundColor: '#fff',
       },
+      {
+        label: 'Выработка',
+        class: ['v-table-button--custom'],
+        url: 'pivot-add',
+        type: 'changeUrl',
+        backgroundColor: '#fff',
+      },
       // {
       //   label: 'Скачать',
       //   class: ['v-table-button--custom'],
@@ -414,7 +421,7 @@ const config = {
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
-    name: 'Персонал',
+    name: 'Выработка X5',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {
@@ -644,6 +651,14 @@ const config = {
         type: TableDefault,
         active: false,
         config: consumptionConfig,
+      },
+      {
+        path: 'add',
+        id: 3,
+        name: 'Выработка X5',
+        type: 'FormOutput',
+        detail: true,
+        stages: [],
       },
     ],
     activeTab: null,

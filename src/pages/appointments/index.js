@@ -1076,7 +1076,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '600px',
+    width: '650px',
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',

@@ -590,8 +590,15 @@ const table = {
         popupForm.value.isShow = true
       }
     }
+    const changeUrl = (url) => {
+      console.log('changeUrl', url)
+      router.push({
+        name: url,
+      })
+      popupForm.value.isShow = true
+    }
     const panelHandler = async (button) => {
-      const { type } = button
+      const { type, url } = button
       if (button.function) button.function()
       if (type === 'addItem') {
         addItem()
@@ -600,7 +607,7 @@ const table = {
       } else if (type === 'acceptPeriod') {
         acceptData.value.popup = true
       } else if (type === 'changeUrl') {
-        getItems()
+        changeUrl(url)
       } else if (type === 'confirmPayment') {
         confirmPayment.value = true
       } else if (button.label === 'Обновить') {
