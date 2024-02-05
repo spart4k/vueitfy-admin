@@ -55,7 +55,7 @@ export default {
     },
   },
   setup(props, ctx) {
-    const proxyTab = ref(props.tab)
+    const proxyTab = ref(_.cloneDeep(props.tab))
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
@@ -395,9 +395,8 @@ export default {
     }
 
     watch(
-      () => props?.tab?.fields?.find((x) => x?.name === 'rashod_vid')?.items,
+      () => proxyTab.value.fields?.find((x) => x?.name === 'rashod_vid')?.items,
       () => {
-        console.log('//////////////////')
         shareItems()
         if (zayavkaFirstLoad.value) {
           zayavkaFirstLoad.value = false
@@ -409,7 +408,15 @@ export default {
 
     onMounted(() => {
       shareItems()
-      // proxyTab.value = _.cloneDeep(proxyTab.value.fields)
+      if (proxyTab.value.path === 'add') {
+        if (
+          store.state.user.permission_id === 16 ||
+          store.state.user.permission_id === 19
+        ) {
+          const item = Object.keys(formData).find((x) => x === 'is_migr')
+          formData[item] = true
+        }
+      }
     })
 
     onUnmounted(() => {

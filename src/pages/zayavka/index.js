@@ -3,7 +3,6 @@ import filters from './filters'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import Expenses from '@/components/Form/expenses/index.vue'
-import store from '@/store/index.js'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -541,6 +540,35 @@ export const addFields = [
           ],
         },
       },
+      {
+        type: 'default',
+        fillField: [
+          {
+            formKey: 'me',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+        ],
+      },
     ],
     updateList: [
       {
@@ -733,7 +761,14 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+        ],
       },
     ],
     updateList: [
@@ -1081,7 +1116,16 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name', 'regions_id', 'city_id'],
+        fillField: [
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+          'regions_id',
+          'city_id',
+        ],
       },
     ],
     isShow: {
@@ -1198,7 +1242,14 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'name',
+          },
+        ],
       },
     ],
     isShow: {
@@ -1655,9 +1706,7 @@ export const addFields = [
 
   checkboxField({
     name: 'is_migr',
-    value:
-      store?.state?.user.permission_id === 16 ||
-      store?.state?.user.permission_id === 19,
+    value: false,
     placeholder: '',
     class: [''],
     position: {
@@ -2334,6 +2383,35 @@ export const editFields = [
           ],
         },
       },
+      {
+        type: 'default',
+        fillField: [
+          {
+            formKey: 'account_id',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+        ],
+      },
     ],
     updateList: [
       {
@@ -2545,7 +2623,14 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'personal_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+        ],
       },
     ],
     updateList: [
@@ -2929,7 +3014,16 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name', 'regions_id', 'city_id'],
+        fillField: [
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+          'regions_id',
+          'city_id',
+        ],
       },
     ],
     isShow: {
@@ -3070,7 +3164,14 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['name'],
+        fillField: [
+          {
+            formKey: 'permission_accounts_zr',
+            compareKey: 'id',
+            objectKey: 'name',
+            targetKey: 'to_name',
+          },
+        ],
       },
     ],
     isShow: {
@@ -3725,9 +3826,7 @@ export const editFields = [
 
   checkboxField({
     name: 'is_migr',
-    value:
-      store?.state?.user.permission_id === 16 ||
-      store?.state?.user.permission_id === 19,
+    value: false,
     placeholder: '',
     class: [''],
     position: {
@@ -3789,8 +3888,8 @@ export const editFields = [
     bootstrapClass: [''],
   }),
   stringField({
-    label: 'region_id',
-    name: 'region_id',
+    label: 'regions_id',
+    name: 'regions_id',
     requestKey: 'regions_id',
     requestType: 'number',
     placeholder: '',

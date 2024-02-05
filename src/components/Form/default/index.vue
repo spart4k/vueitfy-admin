@@ -85,10 +85,10 @@
               v-else-if="showField('date', field)"
               v-model="formData[field.name]"
               :field="field"
+              :label="field.label"
               :error-messages="formErrors[field?.name]"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
-              @openMenu="openMenu"
             ></Datepicker>
             <v-textarea
               v-else-if="showField('textarea', field)"
@@ -144,7 +144,7 @@
         <v-divider class="mt-0 mb-3" v-if="tab.actions.length"></v-divider>
         <v-row class="justify-end">
           <v-btn
-            type="submit"
+            :type="action.type"
             :color="action.color"
             class="ml-2"
             :loading="loading"

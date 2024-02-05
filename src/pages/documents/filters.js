@@ -11,6 +11,17 @@ const filters = {
     { alias: 'personal_status_id', filter: [] },
     { alias: 'critical_document', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
+    {
+      alias: 'personal_accounts',
+      filter: [
+        {
+          field: 'custom_key',
+          sendEmpty: true,
+          value: true,
+          type: 'num',
+        },
+      ],
+    },
   ],
   actions: [
     stringAction({
@@ -24,6 +35,25 @@ const filters = {
   alias: 'documents',
   active: true,
   fields: [
+    selectField({
+      label: 'Аккаунт',
+      name: 'personal_accounts',
+      alias: 'p.account_json',
+      subtype: 'array',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'p.account_json',
+    }),
     autocompleteField({
       label: 'ФИО:',
       name: 'personal_logistic_document',

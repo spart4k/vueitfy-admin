@@ -300,6 +300,14 @@ const routes = [
         path: ':id',
         component: Detail,
       },
+      {
+        name: 'pivot-add',
+        path: '/pivot/add',
+        meta: {
+          mode: ['add'],
+        },
+        component: Detail,
+      },
     ],
   },
   {

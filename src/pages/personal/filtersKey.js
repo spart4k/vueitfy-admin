@@ -1,24 +1,24 @@
 import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 
-const filters = {
+const filtersKey = {
   id: 0,
   name: 'Основные',
   type: 'FormDefault',
   detail: false,
   isFilter: true,
   lists: [
-    {
-      alias: 'direction_id',
-      filter: [],
-    },
+    // {
+    //   alias: 'direction_id',
+    //   filter: [],
+    // },
     {
       alias: 'personal_accounts',
       filter: [
         {
           field: 'custom_key',
           sendEmpty: true,
-          value: true,
+          value: false,
           type: 'num',
         },
       ],
@@ -29,27 +29,8 @@ const filters = {
   fields: [
     selectField({
       label: 'Аккаунты',
-      name: 'p.personal_accounts',
-      alias: 'personal_accounts',
-      subtype: 'single',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'p.account_id',
-    }),
-    selectField({
-      label: 'Направления',
-      name: 'direction_id',
-      alias: 'direction_id',
+      name: 'personal_accounts',
+      alias: 'p.account_json',
       subtype: 'array',
       placeholder: '',
       class: [''],
@@ -63,20 +44,36 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'object_id',
-          url: 'get/pagination_list/object',
-        },
-      ],
-      aliasFilter: 'p.direction_json',
+      aliasFilter: 'p.account_json',
+    }),
+    autocompleteField({
+      label: 'Линейщик',
+      name: 'personal_id',
+      alias: 'uk.personal_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      typeFilter: 'select',
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/personals',
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      dependence: [],
+      aliasFilter: 'uk.personal_id',
     }),
     autocompleteField({
       label: 'Объект',
       name: 'object_id',
-      alias: 'p.object_id',
+      alias: 'uk.object_id',
       subtype: 'single',
       placeholder: '',
       typeFilter: 'select',
@@ -91,7 +88,7 @@ const filters = {
       url: 'get/pagination_list/object',
       filter: [
         {
-          field: 'direction_id',
+          field: 'personal_accounts',
           value: '',
         },
       ],
@@ -100,7 +97,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.object_id',
+      aliasFilter: 'uk.object_id',
     }),
   ],
   actions: [
@@ -114,4 +111,4 @@ const filters = {
   ],
 }
 
-export default filters
+export default filtersKey

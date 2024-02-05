@@ -12,6 +12,9 @@ import { putForm } from '@/api/form'
 
 const auth = {
   namespaced: true,
+  state: {
+    popup: [],
+  },
   actions: {
     async get(_, { url, data }) {
       const result = await getList(url, data)

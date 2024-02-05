@@ -1,8 +1,12 @@
 import Vue, { watch, ref, computed, onMounted, toRef, reactive } from 'vue'
 import { getList } from '@/api/selects'
+import Datepicker from '@/components/Date/Default/index.vue'
 
 export default {
   name: 'Date-Range',
+  components: {
+    Datepicker,
+  },
   props: {
     field: {
       type: Object,

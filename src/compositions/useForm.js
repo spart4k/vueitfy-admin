@@ -67,6 +67,7 @@ export default function ({
       if (!form) return
     }
     return Object.keys(formData || fields).reduce((obj, key) => {
+      console.log(key)
       if (
         (typeof formFields[key]?.isShow === 'boolean' &&
           !formFields[key]?.isShow) ||
@@ -352,7 +353,6 @@ export default function ({
     if (!form) return
     Object.keys(formData).forEach((key) => {
       const item = form?.fields?.find((x) => x.name === key)
-
       if (item?.prescription) {
         if (!newForm[item.prescription]) newForm[item.prescription] = []
         let itemIndex = item.name.split('%')[1]
@@ -404,7 +404,19 @@ export default function ({
       }
 
       if (item.type === 'date') {
-        newForm[key] = moment(newForm[key]).format('YYYY-MM-DD')
+        if (item.subtype === 'multiple') {
+          newForm[key].forEach((item, index) => {
+            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
+          })
+        } else {
+          newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
+        }
+      } else if (item.type === 'dateRange') {
+        newForm[key].forEach((item, index) => {
+          if (item) newForm[key][index] = moment(item).format('YYYY-MM-DD')
+        })
       }
     })
     return newForm
@@ -449,7 +461,7 @@ export default function ({
         if (dropzone.value.length) {
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
-            if (file.accepted) {
+            if (file?.accepted) {
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
@@ -788,7 +800,7 @@ export default function ({
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
-            else formData[el] = null
+            else if (formData[el]) formData[el] = null
           } else if (typeof el === 'object') {
             const targetObject = form.fields.find((item) => {
               return item.name === el.formKey
@@ -1193,6 +1205,7 @@ export default function ({
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (
+            source &&
             source[el.field] !== null &&
             source[el.field] !== undefined &&
             source[el.field] !== ''
@@ -1208,6 +1221,12 @@ export default function ({
             acc.push({
               alias: el.alias ?? el.field,
               value: [+route.params.id],
+              type: el.type,
+            })
+          } else if (el.sendEmpty) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: el.value,
               type: el.type,
             })
           }

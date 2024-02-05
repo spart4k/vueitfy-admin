@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import filters from './filters'
+import filtersKey from './filtersKey'
 import {
   required,
   nameLength,
@@ -3042,7 +3043,7 @@ const defaultForm = [
     stages: [
       {
         id: 0,
-        name: 'Основные0',
+        name: 'Основные',
         type: FormDefault,
         detail: true,
         lists: [
@@ -3112,7 +3113,7 @@ const defaultForm = [
               cols: 12,
               sm: 12,
             },
-            validations: { required, validDate },
+            validations: { required },
             bootstrapClass: [''],
             disable: false,
             //mode: 'edit',
@@ -3563,7 +3564,6 @@ const defaultForm = [
         actions: [
           stringAction({
             text: 'Закрыть',
-            type: 'submit',
             color: 'textDefault',
             name: 'closePopup',
             action: 'closePopup',
@@ -3878,7 +3878,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -4146,7 +4146,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -4344,7 +4344,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          value: 'doljnost_name',
+          value: 'comment',
           alias: 'p.comment',
           search: {
             field: '',
@@ -4800,7 +4800,7 @@ export const config = {
         classes: [''], // List class
         width: '900px',
         method: 'get',
-        alias: 'personal',
+        alias: 'user_keys',
         url: '/get/form/',
         name: 'Личный ключ',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
@@ -4915,7 +4915,21 @@ export const config = {
             id: 9,
             name: 'Добавить ключ',
             type: 'FormDefault',
+            alias: 'user_keys',
             detail: true,
+            lists: [
+              {
+                alias: 'objects_personal',
+                filter: [
+                  {
+                    field: 'personal_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ]
+              }
+            ],
             fields: [
               autocompleteField({
                 label: 'Сотрудник',
@@ -4939,26 +4953,26 @@ export const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
-                dependence: [
-                  {
-                    //fields: ['statement_card', 'cardowner'],
-                    type: 'api',
-                    module: 'personal/getObject',
-                    //url: 'object_id/avatar_with_user_key_id',
-                    field: 'object_id',
-                    url: [
-                      {
-                        source: 'formData',
-                        field: 'this',
-                      },
-                    ],
-                  },
-                ],
+                // dependence: [
+                //   {
+                //     //fields: ['statement_card', 'cardowner'],
+                //     type: 'api',
+                //     module: 'personal/getObject',
+                //     //url: 'object_id/avatar_with_user_key_id',
+                //     field: 'object_id',
+                //     url: [
+                //       {
+                //         source: 'formData',
+                //         field: 'this',
+                //       },
+                //     ],
+                //   },
+                // ],
               }),
               selectField({
                 label: 'Объект',
                 name: 'object_id',
-                // alias: 'object_id',
+                alias: 'objects_personal',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -5017,6 +5031,7 @@ export const config = {
         ],
         activeTab: null,
       },
+      filters: filtersKey
     },
   ],
 }
