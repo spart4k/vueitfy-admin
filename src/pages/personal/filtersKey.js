@@ -31,7 +31,7 @@ const filtersKey = {
       label: 'Аккаунты',
       name: 'personal_accounts',
       alias: 'p.account_json',
-      subtype: 'single',
+      subtype: 'array',
       placeholder: '',
       class: [''],
       selectOption: {
