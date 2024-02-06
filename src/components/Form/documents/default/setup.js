@@ -51,6 +51,7 @@ export default {
       return fields
     }
     const personal_id = +route.params.id
+    const canEdit = [4, 7, 8].includes(store.state.user.permission_id)
     const { makeRequest, loading } = useRequest({
       context,
       request: () => store.dispatch('personal/getDocuments', personal_id),
@@ -185,6 +186,7 @@ export default {
       docsData,
       rows,
       sendDocuments,
+      canEdit,
     }
   },
 }

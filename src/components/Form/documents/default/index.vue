@@ -32,6 +32,7 @@
               class="ml-2"
               :loading="loading"
               @click.prevent="sendDocuments"
+              v-if="canEdit"
             >
               Сохранить
             </v-btn>
