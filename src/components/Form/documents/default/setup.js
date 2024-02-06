@@ -66,7 +66,7 @@ export default {
       context,
       request: () =>
         store.dispatch('taskModule/updateFileData', {
-          id: data.data.migr_card.id,
+          // id: data.data.migr_card.id,
           del: 1,
         }),
     })
@@ -76,8 +76,8 @@ export default {
         store.dispatch('taskModule/loadImage', {
           id: 1,
           folder: 'personal_doc',
-          fileName: fileName,
-          file: form_data,
+          // fileName: fileName,
+          // file: form_data,
         }),
       successMessage: 'Файл успешно загружен',
     })
