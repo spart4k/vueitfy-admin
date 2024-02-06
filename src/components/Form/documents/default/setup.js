@@ -62,17 +62,19 @@ export default {
     //  context,
     //  request: () => store.dispatch('list/get', `get/lists${queryString}`),
     //})
+
     const { makeRequest: delInfoAFile } = useRequest({
       context,
-      request: () =>
+      request: (row) =>
         store.dispatch('taskModule/updateFileData', {
           // id: data.data.migr_card.id,
           del: 1,
         }),
     })
+
     const { makeRequest: loadImage } = useRequest({
       context,
-      request: () =>
+      request: (row) =>
         store.dispatch('taskModule/loadImage', {
           id: 1,
           folder: 'personal_doc',
@@ -81,6 +83,7 @@ export default {
         }),
       successMessage: 'Файл успешно загружен',
     })
+
     const {
       formData,
       validate,
@@ -99,7 +102,14 @@ export default {
       loading,
       //makeRequestList,
     })
-    const sendDocuments = async () => {}
+    const sendDocuments = async () => {
+      let stack = {}
+      rows.value.forEach((row) => {
+        console.log(row.formData)
+        stack = { ...stack, ...row.formData }
+      })
+      console.log(stack, 'stack')
+    }
     onMounted(async () => {
       docsData.value = await makeRequest()
     })
@@ -118,6 +128,7 @@ export default {
       prevTab,
       docsData,
       rows,
+      sendDocuments,
     }
   },
 }
