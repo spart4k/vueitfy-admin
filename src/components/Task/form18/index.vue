@@ -35,7 +35,6 @@
               item-value="id"
               class="mr-1"
               label="Наименование"
-              :readonly="idDirection === 6"
             ></v-select>
           </v-col>
           <v-col class="px-0">
@@ -64,7 +63,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row class="justify-space-between" v-if="idDirection === 1">
+        <v-row class="justify-space-between">
           <v-col style="padding: 0" cols="6">
             <v-btn
               @click="removeGroup"

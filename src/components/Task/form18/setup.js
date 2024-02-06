@@ -95,7 +95,7 @@ const Form18 = defineComponent({
           51: 78,
         }
         console.log('getService')
-        qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
+        // qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
         serviceId = dolToService[data.entity.doljnost_id]
         console.log(serviceId)
         dataForService = await getServiceInfo(serviceId)
@@ -230,11 +230,7 @@ const Form18 = defineComponent({
 
       if (data.entity.direction_id === 1) {
         targetServicesKey =
-          [6, 9, 10, 11, 20, 21, 22, 28].indexOf(
-            Number(data.entity.doljnost_id)
-          ) === -1
-            ? 1
-            : 2
+          [5, 7, 6, 32].indexOf(Number(data.entity.doljnost_id)) === -1 ? 2 : 1
       } else if (data.entity.direction_id === 6) {
         targetServicesKey = 3
       }
@@ -276,7 +272,7 @@ const Form18 = defineComponent({
               manager_id: data.task.from_account_id,
               task_id: data.task.id,
               parent_action: data.task.id,
-              personal_target_id: data.task.entity.id,
+              personal_target_id: data.entity.id,
             },
           })
         },
