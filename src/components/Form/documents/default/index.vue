@@ -3,28 +3,38 @@
     <div class="form-row">
       <v-form>
         <v-container>
-          <DocForm></DocForm>
-          <!-- <Row
-            v-for="document in tab.documents"
-            :tab="tab"
-            :key="document.title"
-            :formData="formData"
-            :formErrors="formErrors"
-            :loading="loading"
-            :document="document"
-          >
-          </Row> -->
+          <!-- <DocForm :docsData="docsData"></DocForm> -->
+          <template v-if="docsData">
+            <Row
+              v-for="document in docsData"
+              :tab="tab"
+              :key="document.title"
+              :formData="formData"
+              :formErrors="formErrors"
+              :loading="loading"
+              :document="document"
+              ref="rows"
+            >
+            </Row>
+          </template>
           <v-row class="justify-end">
             <v-btn
               type="submit"
-              :color="action.color"
               class="ml-2"
               :loading="loading"
-              @click.prevent="clickHandler({ action })"
-              v-for="action in tab.actions"
-              :key="action.id"
+              @click.prevent="$emit('closePopup', 'personal')"
             >
-              {{ action.text }}
+              Назад
+            </v-btn>
+            <v-btn
+              type="submit"
+              color="primary"
+              class="ml-2"
+              :loading="loading"
+              @click.prevent="sendDocuments"
+              v-if="canEdit"
+            >
+              Сохранить
             </v-btn>
           </v-row>
         </v-container>
