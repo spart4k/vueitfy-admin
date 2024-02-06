@@ -42,7 +42,7 @@
           </v-row>
         </v-col>
 
-        <v-col v-if="document.path_doc" cols="12" sm="5">
+        <v-col v-if="true" cols="12" sm="5">
           <!-- {{ $root.env.VUE_APP_STORE + document.path_doc }}
           {{ pathDock }} -->
           <!-- <img :src="$root.env.VUE_APP_STORE + document.path_doc" alt="" /> -->
@@ -68,7 +68,15 @@
               v-if="document.path_doc && !isEdit"
               class="document-scan-preview"
             >
-              <img :src="$root.env.VUE_APP_STORE + document.path_doc" alt="" />
+              <a
+                target="_blank"
+                :href="$root.env.VUE_APP_STORE + document.path_doc"
+              >
+                <img
+                  :src="$root.env.VUE_APP_STORE + document.path_doc"
+                  alt=""
+                />
+              </a>
             </div>
             <DropZone
               v-else

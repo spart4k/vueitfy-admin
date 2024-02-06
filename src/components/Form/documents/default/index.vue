@@ -20,14 +20,20 @@
           <v-row class="justify-end">
             <v-btn
               type="submit"
-              :color="action.color"
+              class="ml-2"
+              :loading="loading"
+              @click.prevent="$emit('closePopup', 'personal')"
+            >
+              Назад
+            </v-btn>
+            <v-btn
+              type="submit"
+              color="primary"
               class="ml-2"
               :loading="loading"
               @click.prevent="sendDocuments"
-              v-for="action in tab.actions"
-              :key="action.id"
             >
-              {{ action.text }}
+              Сохранить
             </v-btn>
           </v-row>
         </v-container>

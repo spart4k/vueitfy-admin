@@ -43,7 +43,7 @@ export default {
     const loading = ref(false)
     const dropZoneOptions = {
       withoutSave: true,
-      folder: 'tmp',
+      folder: 'personal_doc',
     }
     // const documentData = computed(() => {
     //   let result = []
@@ -148,6 +148,33 @@ export default {
         case 'view_home_num':
           result = 'Номер'
           break
+        case 'migr_card_ser':
+          result = 'Серия'
+          break
+        case 'migr_card_num':
+          result = 'Номер'
+          break
+        case 'migr_card_data_in':
+          result = 'С'
+          break
+        case 'migr_card_data_out':
+          result = 'До'
+          break
+        case 'registration_date_c_docs_in':
+          result = 'C'
+          break
+        case 'registration_date_do_docs_in':
+          result = 'По'
+          break
+        case 'check_patent_date_pay':
+          result = 'Дата оплаты'
+          break
+        case 'check_patent_date_pay_now':
+          result = 'Дата оплаты'
+          break
+        case 'med_view_docs_in':
+          result = 'Период'
+          break
         default:
           result = key
       }
@@ -184,7 +211,9 @@ export default {
       // if (props.document.path_doc) {
       //   isEdit.value = false
       // }
-      pathDock.value = [props.document.path_doc]
+      if (props.document.path_doc) {
+        pathDock.value = [props.document.path_doc]
+      }
     })
     return {
       loading,

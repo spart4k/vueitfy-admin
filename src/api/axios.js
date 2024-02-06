@@ -24,6 +24,12 @@ export const post = (endpoint, data = {}, params = {}) => {
     .then(sendData)
 }
 
+export const putFile = (endpoint, data = {}, params = {}) => {
+  return instance
+    .post(`${process.env.VUE_APP_STORE_LOAD}/${endpoint}`, data, params)
+    .then(sendData)
+}
+
 export const put = (endpoint, data = {}) => {
   console.log(endpoint, data)
   return instance

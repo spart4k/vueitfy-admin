@@ -8,6 +8,7 @@ import {
   createForm,
   updateForm,
   getDocuments,
+  updateDocumentsFields,
 } from '@/api/personal'
 //import axios from 'axios'
 
@@ -20,6 +21,10 @@ const personal = {
     },
     async getDocuments(_, id) {
       const result = await getDocuments(id)
+      return result
+    },
+    async updateDocumentsFields(_, { url, body }) {
+      const result = await updateDocumentsFields(url, body)
       return result
     },
     async getKeys(_, { url, wrap, body }) {
