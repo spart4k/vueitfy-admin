@@ -56,6 +56,7 @@ export default {
     //const value = ref([]
     const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
+      // dropzone.value.removeAllFiles()
       console.log(files)
       if (props.options.withoutSave) {
         await loadFile(files)

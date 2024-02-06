@@ -57,6 +57,7 @@ export default {
     //   return result
     // })
     const documentName = computed(() => Object.keys(props.document)[0])
+
     const fields = () => {
       const fields = {}
       props.document.docs_data.forEach((el) => {
@@ -155,9 +156,16 @@ export default {
     let fileExt
     let fileName
     let form_data
+    const isEdit = ref(false)
     let file = ref('')
     const basketFiles = ref({})
     const pathDock = ref('')
+    const toEdit = () => {
+      isEdit.value = true
+    }
+    const toPreview = () => {
+      isEdit.value = false
+    }
     let addFiles = (e) => {
       file.value = e[0]
       fileExt = file.value.type.split('/')[1]
@@ -173,6 +181,9 @@ export default {
       }
     }
     onMounted(async () => {
+      // if (props.document.path_doc) {
+      //   isEdit.value = false
+      // }
       pathDock.value = [props.document.path_doc]
     })
     return {
@@ -190,6 +201,9 @@ export default {
       basketFiles,
       pathDock,
       addFiles,
+      isEdit,
+      toEdit,
+      toPreview,
       // documentData,
     }
   },

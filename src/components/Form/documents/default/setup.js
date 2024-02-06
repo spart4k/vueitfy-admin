@@ -55,12 +55,32 @@ export default {
       request: () => store.dispatch('personal/getDocuments', +route.params.id),
     })
     const prevTab = ref({})
+    const rows = ref([])
     //const params = props.tab.lists
     //const queryString = '?lists=' + [...params]
     //const { makeRequest: makeRequestList } = useRequest({
     //  context,
     //  request: () => store.dispatch('list/get', `get/lists${queryString}`),
     //})
+    const { makeRequest: delInfoAFile } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/updateFileData', {
+          id: data.data.migr_card.id,
+          del: 1,
+        }),
+    })
+    const { makeRequest: loadImage } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/loadImage', {
+          id: 1,
+          folder: 'personal_doc',
+          fileName: fileName,
+          file: form_data,
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
     const {
       formData,
       validate,
@@ -79,6 +99,7 @@ export default {
       loading,
       //makeRequestList,
     })
+    const sendDocuments = async () => {}
     onMounted(async () => {
       docsData.value = await makeRequest()
     })
@@ -96,6 +117,7 @@ export default {
       changeSelect,
       prevTab,
       docsData,
+      rows,
     }
   },
 }

@@ -13,6 +13,7 @@
               :formErrors="formErrors"
               :loading="loading"
               :document="document"
+              ref="rows"
             >
             </Row>
           </template>
@@ -22,7 +23,7 @@
               :color="action.color"
               class="ml-2"
               :loading="loading"
-              @click.prevent="clickHandler({ action })"
+              @click.prevent="sendDocuments"
               v-for="action in tab.actions"
               :key="action.id"
             >
