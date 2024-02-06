@@ -93,7 +93,7 @@ const Form6 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      loadImage()
+      // loadImage()
       if (data.data.dosc) {
         listRequestsForUpload.value.push(
           updateFileData,
@@ -127,39 +127,46 @@ const Form6 = defineComponent({
         }),
     })
     let sendTaskFinish = async () => {
-      if (data.data.docs.length) {
+      const { makeRequest: changeStatus } = useRequest({
+        context,
+        successMessage: 'Успешно',
+        request: () =>
+          store.dispatch('taskModule/setPartTask', {
+            status: 2,
+            data: {
+              personal_id: data.entity.id,
+              process_id: data.task.process_id,
+              task_id: data.task.id,
+              docs_id: [3],
+              parent_action: data.task.id,
+            },
+          }),
+      })
+      if (!data.data.docs.length) {
         delInfoAFile()
-      }
-      listRequestsForUpload.value
-        .at()()
-        .then((data) => {
-          console.log(data)
-          resultOnew = data.result
-        })
-        .then(() => {
-          const { makeRequest: changeStatus } = useRequest({
-            context,
-            request: () =>
-              store.dispatch('taskModule/setPartTask', {
-                status: 2,
-                data: {
-                  personal_id: data.entity.id,
-                  process_id: data.task.process_id,
-                  task_id: data.task.id,
-                  docs_id: [3],
-                  parent_action: data.task.id,
-                },
-              }),
+        listRequestsForUpload.value
+          .at()()
+          .then((data) => {
+            console.log(data)
+            resultOnew = data.result
           })
-          Promise.all(listRequestsForUpload.value)
-            .then((data) => {
-              changeStatus()
-            })
-            .then(() => {
-              ctx.emit('closePopup')
-              ctx.emit('getItems')
-            })
-        })
+          .then(() => {
+            Promise.all(listRequestsForUpload.value)
+              .then((data) => {
+                return changeStatus()
+              })
+              .then(() => {
+                ctx.emit('closePopup')
+                ctx.emit('getItems')
+              })
+          })
+      } else {
+        const { success } = await changeStatus()
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
+      }
     }
     return {
       addFiles,
