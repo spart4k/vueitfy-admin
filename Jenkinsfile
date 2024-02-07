@@ -23,13 +23,13 @@ pipeline {{
         skipDefaultCheckout(true)(true)
     }}
  
-    stages {{
-        stage('Checkout SCM') {('Checkout SCM') {
-            steps {{
-                echo '> Checking out the source control ...''> Checking out the source control ...'
-                checkout scm
-            }}
-        }}
+    // stages {{
+    //     stage('Checkout SCM') {('Checkout SCM') {
+    //         steps {{
+    //             echo '> Checking out the source control ...''> Checking out the source control ...'
+    //             checkout scm
+    //         }}
+    //     }}
         stage('CD') {('cd') {
             steps {{
                 echo '> cd /home/god/crm-front'
