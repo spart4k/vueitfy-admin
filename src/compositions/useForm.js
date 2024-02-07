@@ -410,12 +410,17 @@ export default function ({
               'YYYY-MM-DD'
             )
           })
+        } else if (item.subtype === 'period') {
+          newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
         } else {
           newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
         }
       } else if (item.type === 'dateRange') {
         newForm[key].forEach((item, index) => {
-          if (item) newForm[key][index] = moment(item).format('YYYY-MM-DD')
+          if (item)
+            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
         })
       }
     })

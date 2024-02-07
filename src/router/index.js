@@ -296,16 +296,16 @@ const routes = [
     component: PivotView,
     children: [
       {
-        name: 'pivot/:id',
-        path: ':id',
-        component: Detail,
-      },
-      {
         name: 'pivot-add',
         path: '/pivot/add',
         meta: {
           mode: ['add'],
         },
+        component: Detail,
+      },
+      {
+        name: 'pivot/:id',
+        path: ':id',
         component: Detail,
       },
     ],

@@ -1,3 +1,11 @@
-.rates {
-  padding: 10px 10px 10px 10px;
+.title {
+  color: var(--v-disabled-base);
+}
+
+.completed {
+  color: var(--v-success-base);
+}
+
+.current {
+  color: var(--v-text-base);
 }

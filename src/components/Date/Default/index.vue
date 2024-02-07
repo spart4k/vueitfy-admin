@@ -21,7 +21,7 @@
           :placeholder="placeholder"
           append-icon="mdi-calendar"
           v-bind="attrs"
-          v-mask="field.subtype !== 'multiple' && '####.##.##'"
+          v-mask="mask"
           :disabled="disabled"
           :readonly="readonly"
           :class="field.subtype === 'range' && 'mt-0 pt-0'"
