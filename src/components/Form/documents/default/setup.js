@@ -78,6 +78,7 @@ export default {
 
     const { makeRequest: updateFields } = useRequest({
       context,
+      successMessage: 'Сохранено',
       request: (body) =>
         store.dispatch('personal/updateDocumentsFields', {
           url: personal_id,
@@ -135,28 +136,6 @@ export default {
       rows.value.forEach(async (row) => {
         console.log(row.formData)
         stack = { ...stack, ...row.formData }
-        console.log(row, 'row')
-        console.log(row.pathDock, 'pathDock')
-        if (row.pathDock.length && row.basketFiles.hasOwnProperty('file')) {
-          console.log('DEL')
-          await delInfoAFile(row._props.document.id)
-          const result = await loadImage(row.basketFiles)
-          const path_doc = `/personal_doc/${row.basketFiles.fileName}`
-          console.log('FOLDER')
-          const resultLoadImage = await updateFileData({
-            doc_id: row._props.document.doc_id,
-            path_doc,
-          })
-          console.log(result, resultLoadImage, 'result file')
-        } else if (!row.pathDock && row.basketFiles.hasOwnProperty('file')) {
-          console.log('LOAD')
-          const path_doc = `/personal_doc/${row.basketFiles.fileName}`
-          const result = await loadImage(row.basketFiles)
-          const resultLoadImage = await updateFileData({
-            doc_id: row._props.document.doc_id,
-            path_doc,
-          })
-        }
       })
       console.log(stack, 'stack')
       const data = {
@@ -187,6 +166,7 @@ export default {
       rows,
       sendDocuments,
       canEdit,
+      personal_id,
     }
   },
 }
