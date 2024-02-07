@@ -56,7 +56,6 @@ export default {
       },
     }
     const loading = ref(true)
-    const stage = ref(null)
     const { alias } = props.tab
     console.log(route.params)
     const isEdit = computed(() => {
@@ -235,7 +234,6 @@ export default {
       changeAutocomplete,
       changeSelect,
       openMenu,
-      stage,
       clickHandler,
       isEdit,
       disabledField,

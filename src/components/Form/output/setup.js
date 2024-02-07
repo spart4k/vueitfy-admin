@@ -44,9 +44,7 @@ export default {
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
-    const autocompleteRef = ref(null)
 
-    // console.log('new URL', window.location.href)
     const context = {
       root: {
         store,
@@ -56,14 +54,31 @@ export default {
       },
     }
     const loading = ref(true)
-    const zayavkaFirstLoad = ref(true)
-    const stage = ref(null)
+    const stageRef = ref(null)
+    const stage = ref({
+      value: 0,
+      items: [
+        {
+          name: 'Загрузка',
+          value: 50,
+        },
+        {
+          name: 'Корректировка',
+          value: 0,
+        },
+        {
+          name: 'Начисление',
+          value: 0,
+        },
+      ],
+    })
     const { alias } = proxyTab.value
-    const dropzone = ref()
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
+
     const fields = () => {
       const fields = {}
-      proxyTab.value.fields.forEach((el) => {
+      console.log('proxyTab.value', proxyTab.value)
+      proxyTab.value.fields?.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
@@ -77,8 +92,8 @@ export default {
       })
       return fields
     }
+
     const params = proxyTab.value.lists
-    const data = params
     const getRequestParam = () => {
       if (props.detail?.requestId) {
         return _.get(route.params, props.detail.requestId)
@@ -146,11 +161,24 @@ export default {
       },
     })
 
-    onMounted(() => {})
-
-    onUnmounted(() => {
-      // proxyTab.value.fields = _.cloneDeep(proxyTab.value)
-    })
+    watch(
+      () => stage.value.value,
+      (newVal, oldVal) => {
+        if (newVal > oldVal) {
+          stage.value.items[stage.value.value - 1].value = 100
+          stageRef.value[stage.value.value - 1].children[1].ontransitionend =
+            () => {
+              stage.value.items[stage.value.value].value = 50
+            }
+        } else {
+          stage.value.items[stage.value.value + 1].value = 0
+          stageRef.value[stage.value.value + 1].children[1].ontransitionend =
+            () => {
+              stage.value.items[stage.value.value].value = 50
+            }
+        }
+      }
+    )
 
     const {
       formData,
@@ -168,7 +196,6 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
-      rebuildFormData,
       readonlyField,
       isHideBtn,
       getDependies,
@@ -191,21 +218,17 @@ export default {
       await getData()
     })
     return {
-      //endIntersect,
       formData,
       validate,
-      //$errors,
       vForm,
       touchedForm,
       formErrors,
       getData,
       loading,
       showField,
-      autocompleteRef,
       changeAutocomplete,
       changeSelect,
       openMenu,
-      stage,
       clickHandler,
       isEdit,
       disabledField,
@@ -214,9 +237,10 @@ export default {
       changeCheckbox,
       readonlyField,
       getDependies,
-      dropzone,
       isHideBtn,
       proxyTab,
+      stage,
+      stageRef,
     }
   },
 }

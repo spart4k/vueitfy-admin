@@ -7,6 +7,31 @@
       color="primary"
       indeterminate
     />-->
+    <v-row>
+      <v-col
+        class="mt-4 mb-4"
+        ref="stageRef"
+        v-for="(item, index) in stage.items"
+        :key="index"
+      >
+        <v-app-bar-title
+          :class="[
+            'title',
+            stage.value === index && 'current',
+            stage.value > index && 'completed',
+          ]"
+          >{{ item.name }}</v-app-bar-title
+        >
+        <v-progress-linear
+          class="mt-2"
+          color="success"
+          background-color="disabled"
+          rounded
+          :value="item.value"
+        ></v-progress-linear>
+      </v-col>
+    </v-row>
+
     <v-form class="form-default">
       <v-container class="">
         <v-row>
@@ -122,108 +147,28 @@
               :label="field.label"
               :readonly="readonlyField(field)"
             />
-            <v-row class="d-flex" v-else-if="showField('radioPanel', field)">
-              <v-btn
-                class="flex-grow-1"
-                :text="formData[field.name] !== item.value"
-                color="primary"
-                v-for="item in field.items"
-                :key="item.id"
-                @click="
-                  formData[field.name] = item.value
-                  changeAutocomplete({ value: formData[field.name], field })
-                "
-                :disabled="
-                  readonlyField(field) || (item.value === 2 && formData.is_migr)
-                "
-              >
-                {{ item.text }}
-              </v-btn>
-            </v-row>
-            <v-btn
-              v-else-if="showField('btn', field)"
-              block
-              :color="field.color"
-              @click="changeBlockCount(field.increase)"
-              :disabled="readonlyField(field)"
-            >
-              {{ field.label }}
-            </v-btn>
-            <v-card
-              max-height="206"
-              class="overflow-auto"
-              outlined
-              v-else-if="showField('schet', field)"
-            >
-              <v-list>
-                <template v-if="formData[field.name]?.length">
-                  <v-list-item
-                    v-for="(item, index) in formData[field.name]"
-                    :key="index"
-                    :class="index && 'mt-4'"
-                  >
-                    <v-avatar
-                      @click="downloadFile({ item })"
-                      class="pointer"
-                      tile
-                      size="52"
-                      v-if="imageFormat(item)"
-                    >
-                      <v-img :src="$root.env.VUE_APP_STORE + item.name"></v-img>
-                    </v-avatar>
-                    <v-btn x-large v-else @click="downloadFile({ item })" icon>
-                      <v-icon small> $IconDownload </v-icon>
-                    </v-btn>
-                    <v-list-item-content class="d-flex ml-4">
-                      <v-list-item-title>
-                        {{ item.num }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                    <v-btn
-                      @click="
-                        editFile({ index, formItem: formData[field.name] })
-                      "
-                      v-if="!readonlyField(field)"
-                      icon
-                    >
-                      <v-icon small> $IconEdit </v-icon>
-                    </v-btn>
-                    <v-btn
-                      @click="
-                        deleteFile({ index, formItem: formData[field.name] })
-                      "
-                      v-if="!readonlyField(field)"
-                      icon
-                    >
-                      <v-icon small> $IconDelete </v-icon>
-                    </v-btn>
-                  </v-list-item>
-                </template>
-                <v-subheader class="justify-center" v-else
-                  >Нет приложенных документов</v-subheader
-                >
-              </v-list>
-            </v-card>
           </v-col>
-        </v-row>
-        <v-row class="justify-end">
-          <v-btn
-            type="submit"
-            :color="action.color"
-            class="ml-2"
-            :loading="loading"
-            @click.prevent="
-              clickHandler({ action, skipValidation: action.skipValidation })
-            "
-            v-for="action in proxyTab.actions"
-            :key="action.id"
-            v-show="!isHideBtn(action)"
-          >
-            {{ action.text }}
-          </v-btn>
         </v-row>
       </v-container>
     </v-form>
+    <v-container class="">
+      <v-row class="justify-end">
+        <v-btn
+          :type="action.type"
+          :color="action.color"
+          class="ml-2"
+          :loading="loading"
+          @click.prevent="
+            clickHandler({ action, skipValidation: action.skipValidation })
+          "
+          v-for="action in proxyTab.stages[stage.value].actions"
+          :key="action.id"
+          v-show="!isHideBtn(action)"
+        >
+          {{ action.text }}
+        </v-btn>
+      </v-row>
+    </v-container>
   </div>
 </template>
 <script src="./setup.js"></script>

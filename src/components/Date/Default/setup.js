@@ -39,6 +39,11 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const menu = ref(false)
+    const mask = computed(() => {
+      if (props.field.subtype === 'multiple') return ''
+      else if (props.field.subtype === 'period') return '####.##'
+      return '####.##.##'
+    })
     const proxyValue = toRef(props, 'value')
     const dateValue = ref()
 
@@ -111,6 +116,7 @@ export default {
       menu,
       proxyValue,
       dateValue,
+      mask,
 
       changeDate,
       changeValue,
