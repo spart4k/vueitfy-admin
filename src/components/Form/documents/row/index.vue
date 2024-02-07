@@ -22,7 +22,7 @@
                 <!--<p>loading</p>-->
               </div>
               <v-text-field
-                v-else
+                v-else-if="switchType(fieldKey) === 'string'"
                 v-model="formData[fieldKey]"
                 :label="switchLabel(fieldKey)"
                 :error-messages="formErrors[field.name]"
@@ -30,6 +30,22 @@
                 :readonly="field.readonly"
                 :disabled="field.readonly"
               />
+              <Datepicker
+                v-else-if="switchType(fieldKey) === 'date'"
+                v-model="formData[fieldKey]"
+                :label="switchLabel(fieldKey)"
+                :field="{
+                  id: fieldKey,
+                  subtype:
+                    fieldKey === 'med_view_docs_in' ? 'period' : undefined,
+                }"
+                :error-messages="formErrors[field?.name]"
+              ></Datepicker>
+              <v-checkbox
+                v-else-if="switchType(fieldKey) === 'checkbox'"
+                v-model="formData[fieldKey]"
+                :label="switchLabel(fieldKey)"
+              ></v-checkbox>
               <!-- <v-textarea
                 v-else-if="showField('textarea', field)"
                 v-model="formData[field.name]"
@@ -50,7 +66,7 @@
           <div class="document-scan">
             <div class="document-scan-preview-panel">
               <v-icon
-                v-if="!isEdit"
+                v-if="!isEdit && pathDock.length"
                 @click="toEdit"
                 class="document-scan-preview-panel__icon"
               >
@@ -68,20 +84,13 @@
               v-if="document.path_doc && !isEdit"
               class="document-scan-preview"
             >
-              <a
-                target="_blank"
-                :href="$root.env.VUE_APP_STORE + document.path_doc"
-              >
-                <img
-                  :src="$root.env.VUE_APP_STORE + document.path_doc"
-                  alt=""
-                />
+              <a target="_blank" :href="$root.env.VUE_APP_STORE + pathDock[0]">
+                <img :src="$root.env.VUE_APP_STORE + pathDock[0]" alt="" />
               </a>
             </div>
             <DropZone
               v-else
               :options="{
-                withoutSave: false,
                 maxFiles: 1,
                 removeble: true,
                 withoutSave: false,

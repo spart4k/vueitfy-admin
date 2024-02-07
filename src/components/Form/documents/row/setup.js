@@ -5,6 +5,7 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import Autocomplete from '@/components/Autocomplete'
 import DropZone from '@/components/Dropzone/default/index.vue'
+import Datepicker from '@/components/Date/Default/index.vue'
 
 export default {
   name: 'Form-Documents-Row',
@@ -29,15 +30,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    personalId: {
+      type: Number,
+      default: null,
+    },
   },
   components: {
     Autocomplete,
     DropZone,
+    Datepicker,
   },
   setup(props, ctx) {
     const context = {
       root: {
         ctx,
+        store,
       },
     }
     const loading = ref(false)
@@ -91,6 +98,130 @@ export default {
       loading,
       //makeRequestList,
     })
+    const { makeRequest: delInfoAFile } = useRequest({
+      context,
+      request: (id) =>
+        store.dispatch('taskModule/updateFileData', {
+          data: {
+            id,
+            del: 1,
+          },
+        }),
+    })
+    const { makeRequest: loadImage } = useRequest({
+      context,
+      request: (file) =>
+        store.dispatch('storage/loadFilePut', {
+          // id: 1,
+          folder: 'personal_doc',
+          fileName: file.fileName,
+          file: file.file,
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
+    const { makeRequest: updateFileData } = useRequest({
+      context,
+      request: (params) => {
+        console.log(params, 'path_doc')
+        const path_doc = `/personal_doc/${basketFiles.value.fileName}`
+        return store.dispatch('taskModule/updateFileData', {
+          data: {
+            personal_id: props.personalId,
+            doc_id: props.document.doc_id,
+            path_doc,
+          },
+        })
+      },
+    })
+    const switchType = (key) => {
+      let result = ''
+      switch (key) {
+        case 'pasp_data_vid':
+          result = 'date'
+          break
+        case 'pasp_ser':
+          result = 'string'
+          break
+        case 'pasp_num':
+          result = 'string'
+          break
+        case 'pasp_kod_podr':
+          result = 'string'
+          break
+        case 'pasp_kem':
+          result = 'string'
+          break
+        case 'snils':
+          result = 'string'
+          break
+        case 'invoice':
+          result = 'string'
+          break
+        case 'priority':
+          result = 'checkbox'
+          break
+        case 'bank_id':
+          result = 'select'
+          break
+        case 'comment':
+          result = 'string'
+          break
+        case 'registration_address':
+          result = 'string'
+          break
+        case 'patent_ser':
+          result = 'string'
+          break
+        case 'patent_num':
+          result = 'string'
+          break
+        case 'patent_prof':
+          result = 'string'
+          break
+        case 'pasp_address_reg':
+          result = 'string'
+          break
+        case 'med_book_date':
+          result = 'date'
+          break
+        case 'view_home_ser':
+          result = 'string'
+          break
+        case 'view_home_num':
+          result = 'string'
+          break
+        case 'migr_card_ser':
+          result = 'string'
+          break
+        case 'migr_card_num':
+          result = 'string'
+          break
+        case 'migr_card_data_in':
+          result = 'date'
+          break
+        case 'migr_card_data_out':
+          result = 'date'
+          break
+        case 'registration_date_c_docs_in':
+          result = 'date'
+          break
+        case 'registration_date_do_docs_in':
+          result = 'date'
+          break
+        case 'check_patent_date_pay':
+          result = 'date'
+          break
+        case 'check_patent_date_pay_now':
+          result = 'date'
+          break
+        case 'med_view_docs_in':
+          result = 'date'
+          break
+        default:
+          result = 'string'
+      }
+      return result
+    }
     const switchLabel = (key) => {
       let result = ''
       switch (key) {
@@ -193,7 +324,7 @@ export default {
     const toPreview = () => {
       isEdit.value = false
     }
-    let addFiles = (e) => {
+    let addFiles = async (e) => {
       file.value = e[0]
       fileExt = file.value.type.split('/')[1]
       fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -206,6 +337,16 @@ export default {
         form_data,
         file,
       }
+      if (pathDock.value.length) {
+        await delInfoAFile(props.document.id)
+      }
+      await loadImage(basketFiles.value)
+      await updateFileData()
+      const path_doc = `/personal_doc/${basketFiles.value.fileName}`
+      pathDock.value = [path_doc]
+      props.document.path_doc = path_doc
+      console.log('toPreview')
+      toPreview()
     }
     onMounted(async () => {
       // if (props.document.path_doc) {
@@ -233,6 +374,8 @@ export default {
       isEdit,
       toEdit,
       toPreview,
+      switchType,
+      context,
       // documentData,
     }
   },

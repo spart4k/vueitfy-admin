@@ -12,6 +12,7 @@
               :formData="formData"
               :formErrors="formErrors"
               :loading="loading"
+              :personalId="personal_id"
               :document="document"
               ref="rows"
             >
