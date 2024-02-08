@@ -431,6 +431,7 @@ const config = {
         name: 'Выработка X5',
         type: FormOutput,
         detail: true,
+        initialRequestUrl: 'get/parser/active/3',
         lists: [
           { alias: 'type_parser', filter: [] },
           { alias: 'parser_objects', filter: [] },
@@ -456,6 +457,7 @@ const config = {
           selectField({
             label: 'Объект',
             name: 'parser_objects',
+            requestKey: 'object_id',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -472,20 +474,20 @@ const config = {
           }),
           dateField({
             label: 'Период',
-            name: 'data_rojd',
+            name: 'period',
             subtype: 'period',
             placeholder: '',
-            classes: [''],
+            class: [''],
             position: {
               cols: 12,
               sm: 12,
             },
             validations: { required },
-            bootstrapClass: ['changeSelect'],
+            bootstrapClass: [''],
           }),
           dropZoneField({
-            label: 'Скан-копия/фото',
-            name: 'check_docs',
+            label: 'Файл',
+            name: 'file',
             notPut: true,
             placeholder: '',
             class: [''],
@@ -494,19 +496,48 @@ const config = {
               sm: 12,
             },
             bootstrapClass: [''],
-            // validations: { required },
+            validations: { required },
             options: {
               removeble: true,
               withoutSave: false,
-              folder: 'schet',
-              name: '`zayavka_schet`',
+              maxSize: 500,
+              valueId: 'parser_objects',
+              folder: 'parser',
+              name: '`parser_logistic`',
               paramsForEmit: this,
               countFiles: 1,
             },
             value: [],
           }),
         ],
-        stages: [
+        outputData: {
+          zxc: {
+            text: 'По файлу:',
+            value: 1000,
+            stage: 1,
+          },
+          zxc1: {
+            text: 'Найдено:',
+            value: null,
+            stage: 1,
+          },
+          zxc11: {
+            text: 'С ошибками:',
+            value: null,
+            stage: 1,
+          },
+          zxc2: {
+            text: 'Сумма:',
+            value: null,
+            stage: 2,
+          },
+          zxc21: {
+            text: 'На назначений:',
+            value: null,
+            stage: 2,
+          },
+        },
+        stageActions: [
           {
             actions: [
               stringAction({
@@ -519,9 +550,12 @@ const config = {
               stringAction({
                 text: 'Сохранить',
                 type: 'submit',
-                module: '',
-                name: 'saveForm',
-                nextForm: true,
+                color: 'primary',
+                name: 'saveFormStore',
+                action: 'saveFormStore',
+                notClose: true,
+                module: 'form/loadParser',
+                url: 'load/parser/',
               }),
             ],
           },
@@ -535,29 +569,38 @@ const config = {
                 skipValidation: true,
               }),
               stringAction({
-                text: 'Сохранить',
+                text: 'К выработке',
                 type: 'submit',
-                module: '',
-                name: 'saveForm',
-                nextForm: true,
+                color: 'primary',
+                confirm: {
+                  text: 'Вы подтверждаете переход к выработке?',
+                  width: 550,
+                },
+                action: 'changeStage',
+                changeDirection: 1,
+                local: true,
               }),
             ],
           },
           {
             actions: [
               stringAction({
-                text: 'Закрыть',
+                text: 'Вернуться',
                 color: 'error',
-                name: 'closePopup',
-                action: 'closePopup',
-                skipValidation: true,
+                action: 'changeStage',
+                changeDirection: -1,
+                local: true,
               }),
               stringAction({
-                text: 'Сохранить',
+                text: 'Отправить',
                 type: 'submit',
-                module: '',
-                name: 'saveForm',
-                nextForm: true,
+                color: 'primary',
+                confirm: {
+                  text: '`Вы подтверждаете начисления на сумму ${outputData.value.zxc.value}р?`',
+                  width: 600,
+                },
+                action: 'end',
+                local: true,
               }),
             ],
           },

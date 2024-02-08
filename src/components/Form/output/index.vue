@@ -7,33 +7,44 @@
       color="primary"
       indeterminate
     />-->
-    <v-row>
-      <v-col
-        class="mt-4 mb-4"
-        ref="stageRef"
-        v-for="(item, index) in stage.items"
+    <v-container class="">
+      <v-row>
+        <v-col
+          class="mt-4 mb-4"
+          ref="stageRef"
+          v-for="(item, index) in stage.items"
+          :key="index"
+        >
+          <v-app-bar-title
+            :class="[
+              'title',
+              stage.value === index && 'current',
+              stage.value > index && 'completed',
+            ]"
+            >{{ item.name }}</v-app-bar-title
+          >
+          <v-progress-linear
+            class="mt-2"
+            color="success"
+            background-color="disabled"
+            rounded
+            :value="item.value"
+          ></v-progress-linear>
+        </v-col>
+      </v-row>
+
+      <v-row
+        v-for="(item, index) in outputData"
+        v-if="item.stage === stage.value"
         :key="index"
       >
-        <v-app-bar-title
-          :class="[
-            'title',
-            stage.value === index && 'current',
-            stage.value > index && 'completed',
-          ]"
-          >{{ item.name }}</v-app-bar-title
-        >
-        <v-progress-linear
-          class="mt-2"
-          color="success"
-          background-color="disabled"
-          rounded
-          :value="item.value"
-        ></v-progress-linear>
-      </v-col>
-    </v-row>
+        <v-col cols="12" sm="4">{{ item.text }}</v-col>
+        <v-col>{{ item.value }}</v-col>
+      </v-row>
+    </v-container>
 
     <v-form class="form-default">
-      <v-container class="">
+      <v-container class="pb-0">
         <v-row>
           <v-col
             v-for="field in proxyTab.fields"
@@ -151,6 +162,27 @@
         </v-row>
       </v-container>
     </v-form>
+
+    <v-container class="pt-0">
+      <v-row class="justify-end">
+        <v-btn
+          :type="action.type"
+          :color="action.color"
+          class="ml-2 text-decoration-underline"
+          :loading="loading"
+          text
+          @click.prevent="buttonHandler(action)"
+          v-for="(action, index) in subButtons"
+          :key="index"
+        >
+          <v-icon v-if="action.icon" class="mr-2" small>
+            {{ action.icon }}
+          </v-icon>
+          {{ action.text }}
+        </v-btn>
+      </v-row>
+    </v-container>
+
     <v-container class="">
       <v-row class="justify-end">
         <v-btn
@@ -158,10 +190,8 @@
           :color="action.color"
           class="ml-2"
           :loading="loading"
-          @click.prevent="
-            clickHandler({ action, skipValidation: action.skipValidation })
-          "
-          v-for="action in proxyTab.stages[stage.value].actions"
+          @click.prevent="buttonHandler(action)"
+          v-for="action in proxyTab.stageActions[stage.value].actions"
           :key="action.id"
           v-show="!isHideBtn(action)"
         >
@@ -169,6 +199,22 @@
         </v-btn>
       </v-row>
     </v-container>
+
+    <v-dialog v-model="confirm.isShow" persistent :width="confirm.width">
+      <v-card>
+        <v-card-title class="text-h5">{{ confirm.text }} </v-card-title>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-row class="justify-end">
+            <v-btn color="error" @click="confirm.isShow = false">
+              Отмена
+            </v-btn>
+            <v-btn type="submit" color="primary" class="ml-4"> ОК </v-btn>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script src="./setup.js"></script>

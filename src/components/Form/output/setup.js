@@ -41,6 +41,7 @@ export default {
   },
   setup(props, ctx) {
     const proxyTab = ref(_.cloneDeep(props.tab))
+    const outputData = ref(proxyTab.value.outputData)
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
@@ -56,7 +57,7 @@ export default {
     const loading = ref(true)
     const stageRef = ref(null)
     const stage = ref({
-      value: 0,
+      value: 2,
       items: [
         {
           name: 'Загрузка',
@@ -72,12 +73,36 @@ export default {
         },
       ],
     })
+    const confirm = ref({
+      isShow: false,
+      text: '',
+      width: null,
+    })
+    const subButtons = ref([
+      {
+        text: 'Отменить',
+        color: 'error',
+        action: 'changeFormStatus',
+        local: true,
+        icon: '$IconClose',
+      },
+      {
+        text: 'Загрузить',
+        type: 'submit',
+        color: 'primary',
+        name: 'saveFormStore',
+        action: 'saveFormStore',
+        notClose: true,
+        module: 'form/loadParser',
+        url: 'load/parser/',
+        icon: '$IconDownload',
+      },
+    ])
     const { alias } = proxyTab.value
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
 
     const fields = () => {
       const fields = {}
-      console.log('proxyTab.value', proxyTab.value)
       proxyTab.value.fields?.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
@@ -85,7 +110,6 @@ export default {
         else if (typeof el.isShow === 'object' && el.isShow.value) {
           Vue.set(fields, el.name, {})
         } else return
-        // if (el.name === 'vector') return
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
@@ -101,6 +125,7 @@ export default {
         return route.params.id
       }
     }
+
     const { makeRequest } = useRequest({
       context,
       request: () => {
@@ -110,56 +135,53 @@ export default {
         )
       },
     })
+
     const { makeRequest: makeRequestList } = useRequest({
       context,
       request: (data) => store.dispatch('list/get', data),
     })
-    const { makeRequest: changeForm } = useRequest({
-      context,
-      successMessage: 'Сохранено',
-      request: (params) => {
-        console.log(+route.params.id)
-        return store.dispatch(params.module, {
-          //url: `set/data/${alias}`,
-          url: params.url,
-          body: { data: { id: +route.params.id, ...formData } },
-        })
-      },
-    })
-    const { makeRequest: changeFormId } = useRequest({
-      context,
-      successMessage: params?.successMessage === false ? false : 'Сохранено',
-      request: (params) => {
-        console.log('proxyTab.value', proxyTab.value)
-        let id
-        if (proxyTab.value.routeParam) {
-          id = route.params[proxyTab.value.routeParam]
-        } else {
-          id = route.params.id
-        }
-        return store.dispatch(params.module, {
-          url: params.url + '/' + id,
-          body: { data: { ...params.formData } },
-        })
-      },
-    })
+
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
       request: async (params) => {
-        const zayavka = await store.dispatch(params.module, {
-          url: params.url,
-          body: { data: params.formData ? params.formData : formData },
+        const type = params.formData['type_parser']
+        const requestBody = _.cloneDeep(params.formData)
+        delete requestBody.type_parser
+        const data = await store.dispatch(params.module, {
+          url: params.url + type,
+          body: requestBody,
         })
-        if (route.meta.mode.length === 2) {
-          await store.dispatch('form/bindZayavka', {
-            body: { id: +route.params.id, dop: { rashod_id: zayavka.id } },
-          })
-          emit('refreshData')
-        }
-        return zayavka
+        stage.value.value = 1
+        return data
       },
     })
+
+    const { makeRequest: getOutput } = useRequest({
+      context,
+      request: (url) => {
+        return store.dispatch('form/get', url)
+      },
+    })
+
+    const checkOutputStage = async () => {
+      const response = await getOutput(proxyTab.value.initialRequestUrl)
+      // stage.value.value = response.stage - 1
+    }
+
+    const buttonHandler = (action) => {
+      if (action.confirm && !confirm.value.isShow) {
+        confirm.value.text = eval(action.confirm.text)
+        confirm.value.width = action.confirm.width
+        confirm.value.isShow = true
+        return
+      } else if (action.local) {
+        console.log(action, 'zxc')
+      } else {
+        clickHandler({ action, skipValidation: action.skipValidation })
+      }
+      confirm.value.isShow = false
+    }
 
     watch(
       () => stage.value.value,
@@ -179,6 +201,11 @@ export default {
         }
       }
     )
+
+    onMounted(async () => {
+      await checkOutputStage()
+      await getData()
+    })
 
     const {
       formData,
@@ -209,14 +236,10 @@ export default {
       makeRequest,
       makeRequestList,
       isEdit,
-      changeForm,
       mode: isEdit.value,
       createForm,
-      changeFormId,
     })
-    onMounted(async () => {
-      await getData()
-    })
+
     return {
       formData,
       validate,
@@ -241,6 +264,10 @@ export default {
       proxyTab,
       stage,
       stageRef,
+      outputData,
+      confirm,
+      buttonHandler,
+      subButtons,
     }
   },
 }
