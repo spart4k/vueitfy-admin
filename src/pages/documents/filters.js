@@ -67,7 +67,7 @@ const filters = {
         value: 'id',
       },
       items: [],
-      url: 'get/pagination_list/object',
+      url: 'get/pagination_list/object_document',
       position: {
         cols: 12,
         sm: 12,
@@ -158,7 +158,7 @@ const filters = {
     selectField({
       label: 'Критичность',
       name: 'critical_document',
-      subtype: 'single',
+      // subtype: null,
       placeholder: '',
       class: [''],
       selectOption: {
