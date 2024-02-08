@@ -2173,7 +2173,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.name',
+          alias: 'p.name',
           value: 'name',
           search: {
             field: '',
@@ -2223,7 +2223,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.object_name',
+          alias: 'ob.name',
           value: 'object_name',
           search: {
             field: '',
@@ -2248,7 +2248,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.grajdanstvo',
+          alias: 'g.name',
           value: 'grajdanstvo',
           search: {
             field: '',
@@ -2818,7 +2818,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.name',
+          alias: 'p.name',
           value: 'name',
           search: {
             field: '',
@@ -2868,7 +2868,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.object_name',
+          alias: 'ob.name',
           value: 'object_name',
           search: {
             field: '',
@@ -2893,7 +2893,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.grajdanstvo',
+          alias: 'g.name',
           value: 'grajdanstvo',
           search: {
             field: '',
@@ -3108,7 +3108,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.name',
+          alias: 'p.name',
           value: 'name',
           search: {
             field: '',
@@ -3158,7 +3158,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.object_name',
+          alias: 'ob.name',
           value: 'object_name',
           search: {
             field: '',
@@ -3183,7 +3183,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.grajdanstvo',
+          alias: 'g.name',
           value: 'grajdanstvo',
           search: {
             field: '',
@@ -3505,7 +3505,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.name',
+          alias: 'p.name',
           value: 'name',
           search: {
             field: '',
@@ -3555,7 +3555,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.object_name',
+          alias: 'ob.name',
           value: 'object_name',
           search: {
             field: '',
@@ -3580,7 +3580,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.grajdanstvo',
+          alias: 'g.name',
           value: 'grajdanstvo',
           search: {
             field: '',
