@@ -221,31 +221,31 @@ const consumptionConfig = {
         isShow: true,
       },
     },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
+    // {
+    //   title: 'Объект',
+    //   type: 'default',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    //   sorts: [
+    //     {
+    //       type: 'string',
+    //       default: '',
+    //       value: '',
+    //       isShow: false,
+    //     },
+    //   ],
+    //   isShow: true,
+    //   width: '150',
+    //   alias: 'o.name',
+    //   value: 'object_name',
+    //   search: {
+    //     field: '',
+    //     isShow: true,
+    //   },
+    // },
     {
       title: 'Часы',
       type: 'default',
@@ -473,31 +473,31 @@ const skanConfig = {
         isShow: true,
       },
     },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
+    // {
+    //   title: 'Объект',
+    //   type: 'default',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    //   sorts: [
+    //     {
+    //       type: 'string',
+    //       default: '',
+    //       value: '',
+    //       isShow: false,
+    //     },
+    //   ],
+    //   isShow: true,
+    //   width: '150',
+    //   alias: 'o.name',
+    //   value: 'object_name',
+    //   search: {
+    //     field: '',
+    //     isShow: true,
+    //   },
+    // },
     {
       title: 'Часы',
       type: 'default',
@@ -725,31 +725,31 @@ const paymentConfig = {
         isShow: true,
       },
     },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
+    // {
+    //   title: 'Объект',
+    //   type: 'default',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    //   sorts: [
+    //     {
+    //       type: 'string',
+    //       default: '',
+    //       value: '',
+    //       isShow: false,
+    //     },
+    //   ],
+    //   isShow: true,
+    //   width: '150',
+    //   alias: 'o.name',
+    //   value: 'object_name',
+    //   search: {
+    //     field: '',
+    //     isShow: true,
+    //   },
+    // },
     {
       title: 'Часы',
       type: 'default',
@@ -2205,31 +2205,31 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Объект',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'ob.name',
-          value: 'object_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
+        // {
+        //   title: 'Объект',
+        //   type: 'default',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'left',
+        //   },
+        //   sorts: [
+        //     {
+        //       type: 'text',
+        //       default: '',
+        //       value: '',
+        //       isShow: false,
+        //     },
+        //   ],
+        //   isShow: true,
+        //   width: '90',
+        //   alias: 'ob.name',
+        //   value: 'object_name',
+        //   search: {
+        //     field: '',
+        //     isShow: true,
+        //   },
+        // },
         {
           title: 'Гражданство',
           type: 'default',
@@ -2850,31 +2850,31 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Объект',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'ob.name',
-          value: 'object_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
+        // {
+        //   title: 'Объект',
+        //   type: 'default',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'left',
+        //   },
+        //   sorts: [
+        //     {
+        //       type: 'text',
+        //       default: '',
+        //       value: '',
+        //       isShow: false,
+        //     },
+        //   ],
+        //   isShow: true,
+        //   width: '90',
+        //   alias: 'ob.name',
+        //   value: 'object_name',
+        //   search: {
+        //     field: '',
+        //     isShow: true,
+        //   },
+        // },
         {
           title: 'Гражданство',
           type: 'default',
@@ -3140,31 +3140,31 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Объект',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'ob.name',
-          value: 'object_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
+        // {
+        //   title: 'Объект',
+        //   type: 'default',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'left',
+        //   },
+        //   sorts: [
+        //     {
+        //       type: 'text',
+        //       default: '',
+        //       value: '',
+        //       isShow: false,
+        //     },
+        //   ],
+        //   isShow: true,
+        //   width: '90',
+        //   alias: 'ob.name',
+        //   value: 'object_name',
+        //   search: {
+        //     field: '',
+        //     isShow: true,
+        //   },
+        // },
         {
           title: 'Гражданство',
           type: 'default',
@@ -3537,31 +3537,31 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Объект',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'left',
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '90',
-          alias: 'ob.name',
-          value: 'object_name',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
+        // {
+        //   title: 'Объект',
+        //   type: 'default',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'left',
+        //   },
+        //   sorts: [
+        //     {
+        //       type: 'text',
+        //       default: '',
+        //       value: '',
+        //       isShow: false,
+        //     },
+        //   ],
+        //   isShow: true,
+        //   width: '90',
+        //   alias: 'ob.name',
+        //   value: 'object_name',
+        //   search: {
+        //     field: '',
+        //     isShow: true,
+        //   },
+        // },
         {
           title: 'Гражданство',
           type: 'default',
