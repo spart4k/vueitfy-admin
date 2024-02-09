@@ -45,7 +45,9 @@ const Form2 = defineComponent({
     }
     const finalData = ref({})
     const isFormValid = ref(false)
-    const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
+    const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
+      'DD.MM.YYYY'
+    )
     const isHasOsnDoc = ref(
       JSON.parse(props.data.task.dop_data).docs_id.includes(0)
     )

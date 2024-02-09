@@ -37,9 +37,10 @@ const Form15 = defineComponent({
     const popupForm = ref({
       isShow: false,
     })
-    const dateTarget = moment(props.data.entity.date_target).format(
-      'DD.MM.YYYY'
-    )
+    const dateTarget = moment(
+      props.data.entity.date_target,
+      'YYYY-MM-DD'
+    ).format('DD.MM.YYYY')
     const isFormConfirmed = ref(null)
     let confirmData = null
     const infoObj = {

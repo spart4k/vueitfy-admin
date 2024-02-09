@@ -684,7 +684,7 @@ const table = {
     }
     const iconType = (row, cell, innerDataCallBack) => {
       const value = innerDataCallBack(row, cell.value)
-
+      
       if (value === 0) {
         return 'mdi-close'
       } else if (value === 1) {
@@ -815,8 +815,8 @@ const table = {
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,
-      iconType,
-      iconColor,
+      // iconType,
+      // iconColor,
       width,
       colspanLength,
       headActions,
