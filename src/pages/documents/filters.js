@@ -101,7 +101,7 @@ const filters = {
     autocompleteField({
       label: 'Линейщик',
       name: 'personal_id',
-      // subtype: 'single',
+      subtype: 'single',
       placeholder: '',
       class: [''],
       page: 1,
