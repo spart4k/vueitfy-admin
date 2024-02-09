@@ -49,7 +49,9 @@ const Form18 = defineComponent({
         router,
       },
     }
-    const dateTarget = moment(data.entity.date_target).format('DD.MM.YYYY')
+    const dateTarget = moment(data.entity.date_target, 'YYYY-MM-DD').format(
+      'DD.MM.YYYY'
+    )
     const textInfo = {
       obj: {
         key: 'Объект',
