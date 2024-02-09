@@ -1,8 +1,8 @@
 pipeline {
     agent { 
-        node {
-            label 'jenkins-agent-goes-here'
-            }
+        // node {
+        //     label 'jenkins-agent-goes-here'
+        //     }
 
         node {
             checkout scm
