@@ -1,4 +1,4 @@
-import filters from '../appointments/filters'
+import filters from './filters'
 import { required } from '@/utils/validation.js'
 import {
   stringField,
