@@ -1002,21 +1002,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            //{
-            //  type: 'string',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'string',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
-          alias: 'p.name',
+          alias: 'o.name',
           isShow: true,
           width: '40',
           value: 'name',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         {
           title: 'Адрес',
@@ -1027,21 +1027,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            //{
-            //  type: 'text',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.address',
+          alias: 'o.address',
           value: 'address',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         {
           title: 'Направление',
@@ -1052,21 +1052,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            //{
-            //  type: 'string',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'string',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '150',
-          alias: 'p.direction_json',
+          alias: 'd.name',
           value: 'directions',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         //{
         //  title: 'Менеджер',
@@ -1102,21 +1102,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            //{
-            //  type: 'text',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '150',
           value: 'tel_director',
-          alias: 'p.tel_director',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          alias: 'o.tel_director',
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         {
           title: 'Площадь',
@@ -1127,42 +1127,42 @@ const config = {
             position: undefined,
           },
           sorts: [
-            //{
-            //  type: 'text',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '150',
           value: 'square',
-          alias: 'p.square',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
-        },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
+          alias: 'o.square',
+          search: {
+            field: '',
+            isShow: true,
           },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
-            {
-              type: 'button',
-              url: '$IconDelete',
-              function: consoleButton,
-              label: 'Удалить',
-            },
-          ],
         },
+        // {
+        //   title: 'Действия',
+        //   type: 'actions',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'right',
+        //   },
+        //   isShow: true,
+        //   width: '100',
+        //   value: 'actions',
+        //   actions: [
+        //     {
+        //       type: 'button',
+        //       url: '$IconDelete',
+        //       function: consoleButton,
+        //       label: 'Удалить',
+        //     },
+        //   ],
+        // },
       ],
       data: {
         rows: [],
@@ -2668,7 +2668,7 @@ const config = {
         ],
         activeTab: null,
       },
-      //filters,
+      filters,
     },
     {
       selector: '#mainTable',
@@ -2729,7 +2729,7 @@ const config = {
               isShow: false,
             },
           ],
-          alias: 'p.name',
+          alias: 'o.name',
           isShow: true,
           width: '40',
           value: 'name',
@@ -2756,7 +2756,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.address',
+          alias: 'o.address',
           value: 'address',
           search: {
             field: '',
@@ -2781,7 +2781,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'p.direction_json',
+          alias: 'd.name',
           value: 'directions',
           search: {
             field: '',
@@ -2832,7 +2832,7 @@ const config = {
           isShow: true,
           width: '150',
           value: 'tel_director',
-          alias: 'p.tel_director',
+          alias: 'o.tel_director',
           search: {
             field: '',
             isShow: true,
@@ -2857,32 +2857,32 @@ const config = {
           isShow: true,
           width: '150',
           value: 'square',
-          alias: 'p.square',
+          alias: 'o.square',
           search: {
             field: '',
             isShow: true,
           },
         },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
-            {
-              type: 'button',
-              url: '$IconDelete',
-              function: consoleButton,
-              label: 'Удалить',
-            },
-          ],
-        },
+        // {
+        //   title: 'Действия',
+        //   type: 'actions',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'right',
+        //   },
+        //   isShow: true,
+        //   width: '100',
+        //   value: 'actions',
+        //   actions: [
+        //     {
+        //       type: 'button',
+        //       url: '$IconDelete',
+        //       function: consoleButton,
+        //       label: 'Удалить',
+        //     },
+        //   ],
+        // },
       ],
       data: {
         rows: [],
@@ -3836,7 +3836,7 @@ const config = {
         ],
         activeTab: null,
       },
-      //filters,
+      filters,
     },
     {
       selector: '#mainTable',
@@ -3879,7 +3879,7 @@ const config = {
               isShow: false,
             },
           ],
-          alias: 'p.name',
+          alias: 'o.name',
           isShow: true,
           width: '40',
           value: 'name',
@@ -3906,7 +3906,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'ps.address',
+          alias: 'o.address',
           value: 'address',
           search: {
             field: '',
@@ -3931,38 +3931,38 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'p.direction_json',
+          alias: 'd.name',
           value: 'directions',
           search: {
             field: '',
             isShow: true,
           },
         },
-        {
-          title: 'Менеджер',
-          type: 'default',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: undefined,
-          },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
-          isShow: true,
-          width: '150',
-          value: 'manager_directions',
-          alias: 'p.manager_directions',
-          search: {
-            field: '',
-            isShow: true,
-          },
-        },
+        //{
+        //  title: 'Менеджер',
+        //  type: 'default',
+        //  align: 'center',
+        //  fixed: {
+        //    value: false,
+        //    position: undefined,
+        //  },
+        //  sorts: [
+        //    {
+        //      type: 'text',
+        //      default: '',
+        //      value: '',
+        //      isShow: false,
+        //    },
+        //  ],
+        //  isShow: true,
+        //  width: '150',
+        //  value: 'manager_directions',
+        //  alias: 'p.manager_directions',
+        //  search: {
+        //    field: '',
+        //    isShow: true,
+        //  },
+        //},
         {
           title: 'Телефон',
           type: 'default',
@@ -3982,7 +3982,7 @@ const config = {
           isShow: true,
           width: '150',
           value: 'tel_director',
-          alias: 'p.tel_director',
+          alias: 'o.tel_director',
           search: {
             field: '',
             isShow: true,
@@ -4007,32 +4007,32 @@ const config = {
           isShow: true,
           width: '150',
           value: 'square',
-          alias: 'p.square',
+          alias: 'o.square',
           search: {
             field: '',
             isShow: true,
           },
         },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
-            {
-              type: 'button',
-              url: '$IconDelete',
-              function: consoleButton,
-              label: 'Удалить',
-            },
-          ],
-        },
+        // {
+        //   title: 'Действия',
+        //   type: 'actions',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'right',
+        //   },
+        //   isShow: true,
+        //   width: '100',
+        //   value: 'actions',
+        //   actions: [
+        //     {
+        //       type: 'button',
+        //       url: '$IconDelete',
+        //       function: consoleButton,
+        //       label: 'Удалить',
+        //     },
+        //   ],
+        // },
       ],
       data: {
         rows: [],
@@ -4282,7 +4282,7 @@ const config = {
         ],
         activeTab: null,
       },
-      //filters,
+      filters,
     },
     // {
     //   selector: '#mainTable',

@@ -98,7 +98,7 @@ const filters = {
       label: 'Менеджеры',
       name: 'account_id',
       subtype: 'single',
-      typeFilter: 'array',
+      typeFilter: 'select',
       placeholder: '',
       class: [''],
       selectOption: {

@@ -21,7 +21,7 @@ const filters = {
   active: false,
   fields: [
     selectField({
-      label: 'Направления',
+      label: 'Направление',
       name: 'direction_id',
       alias: 'directions',
       subtype: 'array',
@@ -50,7 +50,7 @@ const filters = {
     selectField({
       label: 'Роль',
       name: 'permission_name',
-      subtype: 'array',
+      subtype: 'single',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -77,6 +77,7 @@ const filters = {
       label: 'Приоритет',
       name: `is_chief`,
       value: false,
+      subtype: 'single',
       placeholder: '',
       readonly: false,
       class: [''],
