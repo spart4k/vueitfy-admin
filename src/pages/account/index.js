@@ -1404,6 +1404,7 @@ const config = {
         ],
         activeTab: null,
       },
+      filters,
     },
     {
       selector: '#mainTable',
