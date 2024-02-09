@@ -50,7 +50,9 @@ const Form1 = defineComponent({
     const finalData = ref({})
     const bankCardId = ref(0)
     const isFormValid = ref(false)
-    const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
+    const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
+      'DD.MM.YYYY'
+    )
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
     const isHasCard = props.data.data.docs_id.filter(
       (el) => el.doc_id === 3
