@@ -42,3 +42,30 @@ pipeline {
 
     }
 }
+pipeline {
+    agent any
+
+    stages {
+        stage('Copy Files to Server') {
+            steps {
+                script {
+                    sshagent(credentials: ['jenkins']) {
+                      if (env.BRANCH_NAME == "test") {
+                          sh '''
+                            ssh -o StrictHostKeyChecking=no god@10.63.2.143 "cd ~ && ./deploy.sh"
+                          '''
+                    //   } else if (env.BRANCH_NAME == "stage") {
+                    //       sh '''
+                    //         ssh -o StrictHostKeyChecking=no god@10.63.2.143 "cd ~ && ./deploy.sh"
+                    //       '''
+                      } else if (env.BRANCH_NAME == "prod") {
+                          sh '''
+                            ssh -o StrictHostKeyChecking=no god@10.63.2.143 "cd ~ && ./deploy.sh"
+                          '''
+                      }
+                    }
+                }
+            }
+        }
+    }
+}
