@@ -70,7 +70,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'sa.is_chief',
+      aliasFilter: 'is_chief',
     }),
   ],
   actions: [
