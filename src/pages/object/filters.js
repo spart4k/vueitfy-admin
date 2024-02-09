@@ -122,14 +122,6 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'object_id',
-          url: 'get/pagination_list/object',
-        },
-      ],
       filter: [
         {
           field: 'regions_id',

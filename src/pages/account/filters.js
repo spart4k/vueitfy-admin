@@ -37,14 +37,6 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'object_id',
-          url: 'get/pagination_list/object',
-        },
-      ],
       aliasFilter: 'sa.direction_json',
     }),
     selectField({
@@ -63,18 +55,10 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'object_id',
-          url: 'get/pagination_list/object',
-        },
-      ],
       aliasFilter: 'sp.id',
     }),
     checkboxField({
-      label: 'Приоритет',
+      label: 'Является руководителем',
       name: `is_chief`,
       value: false,
       subtype: 'single',
