@@ -1,47 +1,47 @@
-pipeline {
-    agent { 
-        // node {
-        //     label 'jenkins-agent-goes-here'
-        //     }
+// pipeline {
+//     agent { 
+//         // node {
+//         //     label 'jenkins-agent-goes-here'
+//         //     }
 
-        node {
-            checkout scm
+//         node {
+//             checkout scm
 
-            docker.withServer('tcp://10.63.2.143:2375', 'swarm-certs') {
-                // docker.image('mysql:7').withRun('-p 3306:3306') {
-                //     /* do things */
-                // }
-            }
-        }
-      }
-    stages {
-        stage('Build') {
-            steps {
-                echo "Building.."
-                sh '''
-                echo "doing build stuff.."
-                '''
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "Testing.."
-                sh '''
-                echo "doing test stuff.."
-                '''
-            }
-        }
-        stage('Deliver') {
-            steps {
-                echo 'Deliver....'
-                sh '''
-                echo "doing delivery stuff.."
-                '''
-            }
-        }
+//             docker.withServer('tcp://10.63.2.143:2375', 'swarm-certs') {
+//                 // docker.image('mysql:7').withRun('-p 3306:3306') {
+//                 //     /* do things */
+//                 // }
+//             }
+//         }
+//       }
+//     stages {
+//         stage('Build') {
+//             steps {
+//                 echo "Building.."
+//                 sh '''
+//                 echo "doing build stuff.."
+//                 '''
+//             }
+//         }
+//         stage('Test') {
+//             steps {
+//                 echo "Testing.."
+//                 sh '''
+//                 echo "doing test stuff.."
+//                 '''
+//             }
+//         }
+//         stage('Deliver') {
+//             steps {
+//                 echo 'Deliver....'
+//                 sh '''
+//                 echo "doing delivery stuff.."
+//                 '''
+//             }
+//         }
 
-    }
-}
+//     }
+// }
 pipeline {
     agent any
 
