@@ -57,7 +57,9 @@ export default {
     const loading = ref(true)
     const stageRef = ref(null)
     const stage = ref({
-      value: 2,
+      value: 0,
+      showForm: true,
+      errors: [],
       items: [
         {
           name: 'Загрузка',
@@ -77,6 +79,7 @@ export default {
       isShow: false,
       text: '',
       width: null,
+      action: null,
     })
     const subButtons = ref([
       {
@@ -94,7 +97,7 @@ export default {
         action: 'saveFormStore',
         notClose: true,
         module: 'form/loadParser',
-        url: 'load/parser/',
+        url: `load/parser/`,
         icon: '$IconDownload',
       },
     ])
@@ -143,16 +146,18 @@ export default {
 
     const { makeRequest: createForm } = useRequest({
       context,
-      successMessage: 'Сохранено',
+      // successMessage: 'Сохранено',
       request: async (params) => {
-        const type = params.formData['type_parser']
-        const requestBody = _.cloneDeep(params.formData)
-        delete requestBody.type_parser
+        const requestData = _.cloneDeep(params.formData)
+        if (stage.value.value) requestData.reparse = true
         const data = await store.dispatch(params.module, {
-          url: params.url + type,
-          body: requestBody,
+          url: params.url + proxyTab.value.outputType,
+          body: requestData,
         })
         stage.value.value = 1
+        stage.value.showForm = false
+        stage.value.errors = data.errors
+        setOutputData(data.data)
         return data
       },
     })
@@ -164,19 +169,79 @@ export default {
       },
     })
 
+    const setOutputData = (data) => {
+      Object.keys(data).forEach((item) => {
+        Object.entries(data[item]).forEach((key) => {
+          outputData.value[key[0]].value = key[1]
+        })
+      })
+    }
+
     const checkOutputStage = async () => {
-      const response = await getOutput(proxyTab.value.initialRequestUrl)
-      // stage.value.value = response.stage - 1
+      const response = await getOutput(
+        proxyTab.value.initialRequestUrl + proxyTab.value.outputType
+      )
+      stage.value.outputId = response.id
+      stage.value.value = response.stage - 1
+      if (stage.value.value) {
+        stage.value.showForm = false
+        stage.value.errors = response.errors
+        setOutputData(response.data)
+      }
+    }
+
+    const { makeRequest: changeOutputStage } = useRequest({
+      context,
+      request: (data) => {
+        return store.dispatch('form/update', data)
+      },
+    })
+
+    const changeStage = async (val) => {
+      stage.value.value = stage.value.value + val
+      await changeOutputStage({
+        url: 'set/data/active_parsers',
+        body: {
+          data: {
+            id: stage.value.outputId,
+            stage: stage.value.value + 1,
+          },
+        },
+      })
+    }
+
+    const loadParser = async () => {
+      await changeOutputStage({
+        url: `add/target/service/${stage.value.outputId}`,
+        body: { data: {} },
+      })
+      await changeOutputStage({
+        url: 'set/data/active_parsers',
+        body: {
+          data: {
+            id: stage.value.outputId,
+            status: 3,
+          },
+        },
+      })
+      // if (data.success) {
+      // }
     }
 
     const buttonHandler = (action) => {
       if (action.confirm && !confirm.value.isShow) {
-        confirm.value.text = eval(action.confirm.text)
-        confirm.value.width = action.confirm.width
-        confirm.value.isShow = true
+        console.log('actiom', confirm.value)
+        confirm.value = {
+          isShow: true,
+          text: eval(action.confirm.text),
+          width: action.confirm.width,
+          action: action,
+        }
         return
       } else if (action.local) {
-        console.log(action, 'zxc')
+        if (action.action === 'changeStage') changeStage(action.changeDirection)
+        if (action.action === 'loadParser') loadParser()
+        stage.value.showForm = false
       } else {
         clickHandler({ action, skipValidation: action.skipValidation })
       }
@@ -268,6 +333,7 @@ export default {
       confirm,
       buttonHandler,
       subButtons,
+      changeStage,
     }
   },
 }

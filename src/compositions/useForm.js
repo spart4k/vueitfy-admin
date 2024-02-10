@@ -1150,6 +1150,7 @@ export default function ({
     if (getDetail()) {
       syncForm = await makeRequest()
     }
+    console.log('///////////////////////////')
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)

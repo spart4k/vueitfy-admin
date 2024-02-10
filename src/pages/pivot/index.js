@@ -431,7 +431,8 @@ const config = {
         name: 'Выработка X5',
         type: FormOutput,
         detail: true,
-        initialRequestUrl: 'get/parser/active/3',
+        initialRequestUrl: 'get/parser/active/',
+        outputType: 3,
         lists: [
           { alias: 'type_parser', filter: [] },
           { alias: 'parser_objects', filter: [] },
@@ -456,8 +457,8 @@ const config = {
           }),
           selectField({
             label: 'Объект',
-            name: 'parser_objects',
-            requestKey: 'object_id',
+            name: 'object_id',
+            alias: 'parser_objects',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -509,29 +510,44 @@ const config = {
             },
             value: [],
           }),
+          checkboxField({
+            name: 'reparse',
+            value: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            disabled: true,
+            isShow: {
+              value: true,
+            },
+            bootstrapClass: [''],
+          }),
         ],
         outputData: {
-          zxc: {
+          file: {
             text: 'По файлу:',
-            value: 1000,
+            value: null,
             stage: 1,
           },
-          zxc1: {
+          search: {
             text: 'Найдено:',
             value: null,
             stage: 1,
           },
-          zxc11: {
+          error: {
             text: 'С ошибками:',
             value: null,
             stage: 1,
           },
-          zxc2: {
+          sum: {
             text: 'Сумма:',
             value: null,
             stage: 2,
           },
-          zxc21: {
+          count: {
             text: 'На назначений:',
             value: null,
             stage: 2,
@@ -573,7 +589,7 @@ const config = {
                 type: 'submit',
                 color: 'primary',
                 confirm: {
-                  text: 'Вы подтверждаете переход к выработке?',
+                  text: '`Вы подтверждаете переход к выработке?`',
                   width: 550,
                 },
                 action: 'changeStage',
@@ -596,10 +612,10 @@ const config = {
                 type: 'submit',
                 color: 'primary',
                 confirm: {
-                  text: '`Вы подтверждаете начисления на сумму ${outputData.value.zxc.value}р?`',
+                  text: '`Вы подтверждаете начисления на сумму ${outputData.value.sum.value}р?`',
                   width: 600,
                 },
-                action: 'end',
+                action: 'loadParser',
                 local: true,
               }),
             ],
