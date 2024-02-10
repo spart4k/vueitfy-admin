@@ -42,7 +42,7 @@ export default {
       //url: 'http://localhost:3031',
       autoDiscover: false,
       thumbnailWidth: 150,
-      maxFilesize: 10,
+      maxFilesize: props.options.maxSize ? props.options.maxSize : 10,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
       addRemoveLinks: props?.options?.removeble ? true : false,
       dictDefaultMessage: 'Переместите или выберите файл',

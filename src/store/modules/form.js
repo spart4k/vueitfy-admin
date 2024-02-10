@@ -6,6 +6,7 @@ import {
   remove,
   putForm,
   bindZayavka,
+  loadParser,
 } from '@/api/form'
 //import axios from 'axios'
 
@@ -34,6 +35,10 @@ const form = {
     },
     async bindZayavka(_, params) {
       const result = await bindZayavka(params.body)
+      return result
+    },
+    async loadParser(_, params) {
+      const result = await loadParser(params)
       return result
     },
   },
