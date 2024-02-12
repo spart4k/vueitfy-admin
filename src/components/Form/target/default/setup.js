@@ -13,6 +13,7 @@ import Datepicker from '@/components/Date/Default/index.vue'
 import ColorPicker from '@/components/Colorpicker/index.vue'
 import DateRange from '@/components/Date/Daterange/index.vue'
 import store from '@/store'
+import Output from '../output/default/index.vue'
 
 export default {
   name: 'Form-Default',
@@ -23,6 +24,7 @@ export default {
     ColorPicker,
     DateRange,
     Datepicker,
+    Output,
   },
   props: {
     content: {
@@ -175,7 +177,7 @@ export default {
         props.tab.fields[6].value = props.content?.id
       }
     }
-
+    const hasOutput = computed(() => _.isEmpty(entityData.services))
     const {
       formData,
       validate,
@@ -196,6 +198,7 @@ export default {
       refreshTable,
       isHideBtn,
       colsField,
+      entityData,
     } = useForm({
       form: props.tab,
       context,
@@ -244,6 +247,8 @@ export default {
       isHideBtn,
       route,
       colsField,
+      entityData,
+      hasOutput,
     }
   },
 }

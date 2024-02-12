@@ -1149,6 +1149,7 @@ export default function ({
     let lists = undefined
     if (getDetail()) {
       syncForm = await makeRequest()
+      entityData.value = syncForm.data
     }
     console.log('///////////////////////////')
     if (syncForm) {
@@ -1400,7 +1401,7 @@ export default function ({
       return environment.readonlyAll
     }
   }
-
+  const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
       return (
@@ -1538,5 +1539,6 @@ export default function ({
     readonlyField,
     isHideBtn,
     colsField,
+    entityData,
   }
 }

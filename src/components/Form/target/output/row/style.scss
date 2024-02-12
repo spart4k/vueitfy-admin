@@ -1,0 +1,14 @@
+.output {
+  width: 100%;
+  &-label {
+    width: 100%;
+  }
+  &-panel {
+    a {
+      color: var(--v-textDefault-base);
+    }
+    .debt {
+      color: red;
+    }
+  }
+}

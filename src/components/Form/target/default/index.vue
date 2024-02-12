@@ -141,8 +141,10 @@
             />
           </v-col>
         </v-row>
-        <v-divider class="mt-0 mb-3"></v-divider>
-        <v-row> xyu </v-row>
+        <v-divider v-if="hasOutput" class="mt-0 mb-3"></v-divider>
+        <v-row v-if="hasOutput && !loading">
+          <Output :services="entityData.services" />
+        </v-row>
         <v-divider class="mt-3 mb-3" v-if="tab.actions.length"></v-divider>
         <v-row class="justify-end">
           <v-btn
