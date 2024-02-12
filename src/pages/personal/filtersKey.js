@@ -30,7 +30,7 @@ const filtersKey = {
     selectField({
       label: 'Аккаунты',
       name: 'personal_accounts',
-      alias: 'p.account_json',
+      // alias: 'p.account_json',
       subtype: 'array',
       placeholder: '',
       class: [''],
@@ -49,7 +49,7 @@ const filtersKey = {
     autocompleteField({
       label: 'Линейщик',
       name: 'personal_id',
-      alias: 'uk.personal_id',
+      // alias: 'uk.personal_id',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -73,7 +73,7 @@ const filtersKey = {
     autocompleteField({
       label: 'Объект',
       name: 'object_id',
-      alias: 'uk.object_id',
+      // alias: 'uk.object_id',
       subtype: 'single',
       placeholder: '',
       typeFilter: 'select',
