@@ -354,7 +354,7 @@ const config = {
         url: '$IconUpdate',
         function: changeSort,
         backgroundColor: '#ffffff',
-        type: 'changeUrl',
+        type: 'refresh',
       },
       {
         label: 'Аванс',

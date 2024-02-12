@@ -591,7 +591,6 @@ const table = {
       }
     }
     const changeUrl = (url) => {
-      console.log('changeUrl', url)
       router.push({
         name: url,
       })
@@ -610,7 +609,7 @@ const table = {
         changeUrl(url)
       } else if (type === 'confirmPayment') {
         confirmPayment.value = true
-      } else if (button.label === 'Обновить') {
+      } else if (button.label === 'Обновить' || type === 'refresh') {
         await getItems()
       }
     }
