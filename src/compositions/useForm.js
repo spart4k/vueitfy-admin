@@ -150,6 +150,7 @@ export default function ({
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
+    console.log('/////////////////////////', action.action)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -410,12 +411,17 @@ export default function ({
               'YYYY-MM-DD'
             )
           })
+        } else if (item.subtype === 'period') {
+          newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
         } else {
           newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
         }
       } else if (item.type === 'dateRange') {
         newForm[key].forEach((item, index) => {
-          if (item) newForm[key][index] = moment(item).format('YYYY-MM-DD')
+          if (item)
+            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
         })
       }
     })
@@ -462,10 +468,12 @@ export default function ({
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
             if (file?.accepted) {
+              const valueId =
+                formData[dropzone.options.valueId] ?? store?.state?.user.id
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
-                store?.state?.user.id +
+                valueId +
                 '_' +
                 new Date().getTime()
               const ext = file.name.split('.').pop()
@@ -525,9 +533,15 @@ export default function ({
     } else {
       const result = await createForm(queryParams, params)
     }
-    emit('getItems')
-    emit('closePopup')
+    if (!queryParams.action.notClose) {
+      emit('getItems')
+      emit('closePopup')
+    } else {
+      $v.value.$reset()
+      errorsCount()
+    }
   }
+
   const getDetail = () => {
     if (detail?.requestId) {
       return form?.detail && route.params[detail.requestId]
@@ -1136,6 +1150,7 @@ export default function ({
     if (getDetail()) {
       syncForm = await makeRequest()
     }
+    console.log('///////////////////////////')
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
