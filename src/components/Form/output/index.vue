@@ -49,17 +49,16 @@
         <v-divider class="mb-4" />
         <v-app-bar-title class="current"
           >Ошибки:
-          <span v-if="!stage.errors.length">отсутствуют</span></v-app-bar-title
+          <span v-if="!stage.errors?.length">отсутствуют</span></v-app-bar-title
         >
         <v-list
-          v-if="stage.errors.length"
+          v-if="stage.errors?.length"
           class="overflow-auto mt-2 mb-4"
           max-height="300"
         >
           <v-list-item-title v-for="(item, index) in stage.errors" :key="index">
             Строка {{ item.row_id }}: {{ item.error }}
           </v-list-item-title>
-          <!-- {{ stage.errors }} -->
         </v-list>
         <v-row class="justify-center">
           <v-btn color="primary" @click.prevent="stage.showForm = true">
