@@ -276,6 +276,20 @@ export default {
               stage.value.items[stage.value.value].value = 50
             }
         }
+        // console.log('oldVal', oldVal)
+        // console.log('newVal', newVal)
+        // const changeVal = (val) => {
+        //   if (newVal > oldVal) val++
+        //   else val--
+        //   return val
+        // }
+        // for (let i = oldVal; i !== newVal; i = changeVal(i)) {
+        //   console.log('i', i)
+        //   stage.value.items[i].value = 100
+        //   stageRef.value[i].children[1].ontransitionend = () => {
+        //     continue
+        //   }
+        // }
       }
     )
 
