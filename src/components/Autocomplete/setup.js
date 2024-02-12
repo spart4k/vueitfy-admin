@@ -39,7 +39,6 @@ export default {
       () => proxyValue.value.length === props.field.items.length
     )
     const selectAll = () => {
-      // console.log('selectAll')
       if (checkedAll.value) {
         proxyValue.value = []
       } else {

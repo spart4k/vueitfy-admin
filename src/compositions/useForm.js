@@ -271,13 +271,30 @@ export default function ({
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
       if (action.handlingResponse) {
-        let { text, color } = action.handlingResponse[result.code]
+        const conditionContext = {
+          formData,
+          result,
+        }
+        let res = result.code
+        let contextData = formData
+
+        if (action.handlingResponse.result) res = action.handlingResponse.result
+        if (action.handlingResponse.context)
+          contextData = _.get(
+            conditionContext[action.handlingResponse.context],
+            res
+          )
+        let { text, color } = action.handlingResponse[res]
         // /%\w{n}%/
         //const text = 'Объект с именем %name% уже существует'
         // eslint-disable-next-line
         const key = text.match(/\%\w{1,}\%/g)
-        const keyFormated = key[0].split('%')[1]
-        text = text.replace(key, formData[keyFormated])
+
+        key.forEach((item) => {
+          const keyFormated = item.split('%')[1]
+          text = text.replace(item, contextData[keyFormated])
+        })
+
         store.commit('notifies/showMessage', {
           content: text,
           color,
