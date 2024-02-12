@@ -613,7 +613,7 @@ const config = {
                 color: 'primary',
                 confirm: {
                   text: '`Вы подтверждаете начисления на сумму ${outputData.value.sum.value}р?`',
-                  width: 600,
+                  width: 650,
                 },
                 action: 'loadParser',
                 local: true,
