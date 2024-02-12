@@ -3,8 +3,6 @@ $borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 61px;
 $tableFooterHeight: 85px;
 
-
-
 .v {
   &-table {
     margin: 10px 10px 30px 10px;
@@ -60,7 +58,6 @@ $tableFooterHeight: 85px;
             border-top: 0;
             z-index: 2;
             transform-origin: top;
-            background-color: var(--v-background-base);
             &__row {
               display: flex;
               user-select: none;
@@ -101,7 +98,7 @@ $tableFooterHeight: 85px;
               width: 245px;
               position: fixed;
               padding: 15px;
-              background-color: white;
+              background-color: var(--v-pageBackground-base);
               border-radius: 7px;
               border: 1px solid $borderColor;
               box-shadow: 0px 4px 10px -4px rgba(34, 60, 80, 0.1);
@@ -205,6 +202,7 @@ $tableFooterHeight: 85px;
       }
     }
     &-wrap {
+      min-height: 110px;
       &::-webkit-scrollbar {
         display: none;
       }
@@ -256,7 +254,7 @@ $tableFooterHeight: 85px;
       justify-content: space-between;
       flex-wrap: wrap;
       padding: 5px;
-      background-color: rgb(225, 225, 225);
+      background-color: var(--v-cardBackground-base);
       // min-height: $tablePanelHeight;
       min-height: unset;
       background-color: var(--v-background-base);
@@ -380,8 +378,6 @@ $tableFooterHeight: 85px;
     }
   }
 }
-
-
 
 .v-table-body-row-cell--error1 {
   background-color: #ffb740;
