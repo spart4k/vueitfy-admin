@@ -256,7 +256,7 @@ const Form17 = defineComponent({
                 services: JSON.stringify({
                   3: [
                     {
-                      services: [
+                      service: [
                         {
                           service_id: services_spr[data.entity.doljnost_id],
                           qty: qty.value,

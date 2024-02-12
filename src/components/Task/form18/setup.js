@@ -240,7 +240,7 @@ const Form18 = defineComponent({
       const targetServices = {
         [targetServicesKey]: [
           {
-            services: services,
+            service: services,
             payment_id: paymentData.result,
             is_hold: false,
             is_pay: false,
