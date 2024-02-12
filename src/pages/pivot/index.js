@@ -668,6 +668,14 @@ const config = {
             url: 'create/pay/by_service',
             name: 'createForm',
             action: 'createForm',
+            handlingResponse: {
+              context: 'result',
+              result: 'data',
+              data: {
+                text: 'Создано начислений %count_payment% на сумму %sum_payment% <br/> Создано %count_zero% начислений с полным вычетом на сумму %sum_zero% <br/> Создано задолженностей %count_hold% на сумму %sum_hold%',
+                color: 'success',
+              },
+            },
           }),
         ],
         formData: {},
