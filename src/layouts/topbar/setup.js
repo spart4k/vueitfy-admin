@@ -1,53 +1,97 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch, getCurrentInstance } from 'vue'
 import { useStore } from '@/store'
+import { useRoute, useRouter } from 'vue-router/composables'
 import useMobile from '../Adaptive/checkMob.js'
 // import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
 
 export default {
   name: 'topBar',
-  setup() {
+  props: {
+    navData: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  setup(props) {
     const isMobile = useMobile()
-    //const isOpenMenu = useMenuMobile()
+    const route = useRoute()
+    const router = useRouter()
     const messages = ref(0)
-    const search = ref('')
+    const { $vuetify } = getCurrentInstance().proxy
+
+    const pageName = computed(() => {
+      let name = 'CRM'
+      props.navData.forEach((item, index) => {
+        if (route?.matched?.[0]?.path === item.link) {
+          name = item.name
+        } else if (item.child) {
+          item?.child.forEach((navItem) => {
+            if (route?.matched?.[0]?.path === navItem.link) name = navItem.name
+          })
+        }
+      })
+      return name
+    })
 
     const store = useStore()
-    const isOpenMenu = computed(() => store.state.navmenu)
-
+    const openMenu = computed(() => store?.state?.openMenu)
+    const miniMenu = computed(() => store?.state?.miniMenu)
+    const logout = async () => {
+      console.log('logout')
+      await store.dispatch('auth/logout')
+      store.commit('auth/setToken', '')
+      router.push('/login')
+    }
     const itemSecondMenu = ref({
-      edit: {
-        icon: '$IconEdit',
-        color: '#109CF1',
-        tooltip: 'Новое письмо',
-      },
-      phonebook: {
-        icon: '$IconGuide',
-        color: '#109CF1',
-        tooltip: 'Справочник',
-      },
-      tech: {
-        icon: '$IconTechSupport',
-        color: '#109CF1',
-        tooltip: 'Тех Поддержка',
-      },
+      // edit: {
+      //   icon: '$IconEdit',
+      //   color: 'primary',
+      //   tooltip: 'Новое письмо',
+      // },
+      // phonebook: {
+      //   icon: '$IconGuide',
+      //   color: 'primary',
+      //   tooltip: 'Справочник',
+      // },
+      // tech: {
+      //   icon: '$IconTechSupport',
+      //   color: 'primary',
+      //   tooltip: 'Тех Поддержка',
+      // },
       exit: {
         icon: '$IconExit',
-        color: '#F7685B',
+        color: 'error',
         tooltip: 'Выйти',
+        action: logout,
       },
     })
 
-    const setNavmenu = () => {
-      store.commit('setNavmenu', !isOpenMenu.value)
+    const showNotification = () => {
+      messages.value += 1
     }
+
+    const setNavmenu = () => {
+      store.commit('changeMenuStatus', !openMenu.value)
+    }
+
+    watch(
+      () => $vuetify.theme.dark,
+      () => {
+        localStorage.setItem('darkTheme', $vuetify.theme.dark)
+      }
+    )
 
     return {
       isMobile,
       messages,
-      search,
+      openMenu,
+      miniMenu,
+      pageName,
       itemSecondMenu,
-      isOpenMenu,
+
+      showNotification,
       setNavmenu,
+      logout,
     }
   },
 }

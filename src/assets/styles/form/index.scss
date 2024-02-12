@@ -1,0 +1,127 @@
+.v-application.theme--dark {
+  .field-loading {
+    &.gradient {
+      background: #1d1d1d;
+      background: linear-gradient(
+        to right,
+        #1d1d1d 8%,
+        rgb(37, 35, 35) 38%,
+        #1d1d1d 54%
+      );
+    }
+  }
+}
+.form {
+  background-color: var(--v-background-base);
+  .field {
+    &-col {
+      // height: 70px;
+      height: fit-content;
+      &.flexFlow {
+        display: flex;
+        flex-flow: row wrap;
+        max-width: unset;
+        flex: 1;
+      }
+      &.dropzone {
+        height: auto;
+        border: unset;
+        padding: 20px 10px;
+        background-color: var(--v-background-base);
+        .vue-dropzone {
+          border-color: rgba(var(--v-textDefault-base), 0.6);
+          border-width: 1px;
+        }
+      }
+      &.isHide {
+        display: none;
+      }
+      &.textBlock {
+        //height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        //align-items: center;
+        color: var(--v-textDefault-base);
+        p {
+          &:first-child {
+            //font-weight: 600;
+          }
+        }
+      }
+      .noWrap {
+        .v-select__selections {
+          flex-wrap: unset !important;
+        }
+      }
+      .v-autocomplete {
+        &.v-input--is-readonly {
+          .v-select__selections {
+            flex-wrap: wrap;
+          }
+        }
+        .v-input__append-inner {
+          //margin-left: 0;
+
+          //display: none;
+          &:has(.v-input__icon--append) {
+            margin-left: 0;
+          }
+          .v-input__icon--append {
+            margin-left: 0;
+          }
+        }
+      }
+      .v-select__selections {
+        overflow: auto;
+        max-width: unset;
+        flex: unset;
+        //pointer-events: none;
+      }
+      .v-select .v-chip {
+        flex: unset;
+        min-width: fit-content;
+        //min-width: 100px;
+      }
+      &.readonly {
+        pointer-events: none;
+        label {
+          pointer-events: none;
+        }
+      }
+    }
+  }
+  .field-loading {
+    //background-color: grey;
+    height: 100%;
+    width: 100%;
+    height: 60px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    &.gradient {
+      animation-duration: 1.8s;
+      animation-fill-mode: forwards;
+      animation-iteration-count: infinite;
+      animation-name: placeHolderShimmer;
+      animation-timing-function: linear;
+      background: #f6f7f8;
+      background: linear-gradient(
+        to right,
+        #fafafa 8%,
+        #ededed 38%,
+        #fafafa 54%
+      );
+      background-size: 1000px 640px;
+      position: relative;
+    }
+    @keyframes placeHolderShimmer {
+      0% {
+        background-position: -468px 0;
+      }
+      100% {
+        background-position: 468px 0;
+      }
+    }
+  }
+}

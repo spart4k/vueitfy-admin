@@ -1,0 +1,25 @@
+.col-btn {
+  cursor: pointer;
+}
+
+.form-btn {
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 24px;
+  font-weight: 600;
+
+  &--remove {
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+  }
+
+  &--add {
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+}
+
+.form-link {
+  color: var(--v-primary-base);
+  text-decoration: underline;
+}

@@ -2,6 +2,7 @@
     &-edit {
         display: flex;
         flex-direction: column;
+        flex: 1;
         &-item {
             display: flex;
             width: 100%;
@@ -23,6 +24,10 @@
                     color: var(--v-secondary-base);
                     font-weight: 400;
                 }
+                &_btn {
+                    position: absolute;
+                    right: 16px;
+                }
                 .v-chip {
                     border: none;
                 }
@@ -34,6 +39,15 @@
         }
         &-item+&-item {
             margin-top: 8px;
+        }
+        &::v-deep .v-select__selections {
+            flex-wrap: wrap !important;
+        }
+        &::v-deep .v-chip__content {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 24px;
         }
     }
 }

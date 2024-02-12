@@ -1,28 +1,30 @@
 <template>
   <div class="layout-default d-flex flex-grow-1">
-    <div v-if="!isMobile">
-      <Nav></Nav>
-    </div>
-    <div
-      v-if="isMobile"
-      id="mobileMenu"
-      :class="
-        isOpenMenu ? 'mobile-menu__window--open' : 'mobile-menu__window--close'
-      "
-    >
-      <Nav></Nav>
-    </div>
-    <div
-      id="bg__black"
-      :class="isOpenMenu ? 'bg__black--active' : 'bg__black'"
-    ></div>
-    <div class="d-flex flex-column flex-grow-1">
-      <Topbar></Topbar>
-      <v-main class="d-flex flex-column flex-grow-1">
-        <slot></slot>
-        <!--<Alert />-->
-      </v-main>
-    </div>
+    <template v-if="loaded">
+      <div class="navbar">
+        <Sidebar :navData="navData"></Sidebar>
+      </div>
+      <!-- <div
+        id="bg__black"
+        :class="isOpenMenu ? 'bg__black--active' : 'bg__black'"
+      ></div> -->
+      <div
+        :style="{ overflowX: 'hidden' }"
+        class="d-flex flex-column flex-grow-1"
+      >
+        <Topbar :navData="navData"></Topbar>
+        <v-main class="d-flex flex-column flex-grow-1">
+          <slot></slot>
+        </v-main>
+      </div>
+    </template>
+    <v-progress-circular
+      v-else
+      color="primary"
+      class="loading"
+      :size="80"
+      indeterminate
+    />
   </div>
 </template>
 <style lang="scss" scoped src="./style.scss"></style>

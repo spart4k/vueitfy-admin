@@ -1,0 +1,19 @@
+.v {
+    &-date {
+        display: flex;
+        &-container {
+            max-width: 60px;
+            margin-left: 10px;
+            &_day {
+                font-size: 10px;
+                color: var(--v-text-base);
+                white-space: nowrap;
+            }
+            &_time {
+                font-size: 8px;
+                color: var(--v-disabled-base);
+                white-space: nowrap;
+            }
+        }
+    }
+}

@@ -3,5 +3,21 @@
         padding: 0 23px;
         word-break: break-word;
         margin-bottom: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+::v-deep .dropzone{
+    min-height: 56px !important;
+    border-color: var(--v-disabled-base) !important;
+    border-radius: 6px;
+    .dz-default {
+        margin: 0 !important;
+        color: var(--v-disabled-base) !important;
+        font-weight: 500 !important;
+        font-size: 14px !important;
+        text-transform: uppercase !important;
     }
 }

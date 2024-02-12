@@ -1,0 +1,16 @@
+.form-row {
+  color: black;
+}
+
+.form {
+  position: relative;
+  &-tooltip {
+    position: absolute;
+    bottom: 50%;
+    transform: translate(65%, 0%);
+    right: 0;
+  }
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}

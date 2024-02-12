@@ -1,13 +1,13 @@
+$filtersHeight: calc(100% - 19px);
+
 .v {
     &-filters {
-        height: calc(100% - 19px);
+        height: $filtersHeight;
         width: 214px;
         background-color: var(--v-background-base);
         box-shadow: 0px 4px 10px 0px #0000001A;
         border-radius: 5px;
-        margin-bottom: 19px;
-        overflow: auto;
-        @include custom-scroll-bar-vertical;
+        // margin-bottom: 19px;
         &-date {
             font-size: 30px;
         }
@@ -37,47 +37,61 @@
                 margin-top: 10px;
             }
         }
-        &-folder {
-            &-title {
-                color: var(--v-text-base);
-                font-size: 12px;
-                padding: 0 16px;
-                min-height: 32px !important;
-                font-weight: 500 !important;
-                opacity: 1 !important;
-            }
-            &-container {
-                opacity: 1 !important;
-                &::v-deep .v-expansion-panel-content__wrap {
-                    opacity: 1 !important;
-                }
-                .v-expansion-panel-content__wrap {
-                    opacity: 1 !important;
-                }
-                &_item {
+        &-expansion{
+            overflow-y: auto;
+            @include custom-scroll-bar-vertical;
+            width: 100%;
+            margin-bottom: 5px;
+            &-folder {
+                &-title {
                     color: var(--v-text-base);
                     font-size: 12px;
                     padding: 0 16px;
-                    cursor: pointer;
+                    min-height: 32px !important;
                     font-weight: 500 !important;
-                    &:hover {
-                        color: var(--v-primary-base);
-                        span {
+                    opacity: 1 !important;
+                }
+                &-container {
+                    opacity: 1 !important;
+                    &::v-deep .v-expansion-panel-content__wrap {
+                        opacity: 1 !important;
+                    }
+                    .v-expansion-panel-content__wrap {
+                        opacity: 1 !important;
+                    }
+                    &_item {
+                        display: flex;
+                        align-items: center;
+                        color: var(--v-text-base);
+                        font-size: 12px;
+                        // padding: 0 16px;
+                        cursor: pointer;
+                        font-weight: 500 !important;
+                        &:hover {
+                            color: var(--v-primary-base);
+                            span {
+                                color: var(--v-primary-base);
+                            }
+                        }
+                        &__disabled {
+                            color: var(--v-disabled-base);
+                            span {
+                                color: var(--v-disabled-base);
+                            }
+                        }
+                        &__active {
                             color: var(--v-primary-base);
                         }
                     }
-                    &__disabled {
-                        color: var(--v-disabled-base);
-                        span {
-                            color: var(--v-disabled-base);
-                        }
+                    &_item + &_item {
+                        margin-top: 4px;
                     }
-                    &__active {
-                        color: var(--v-primary-base);
+                    &_text {
+                        flex: 1;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
-                }
-                &_item + &_item {
-                    margin-top: 4px;
                 }
             }
         }
@@ -85,11 +99,12 @@
             width: 100%;
             display: flex;
             min-height: 26px;
-            justify-content: space-between;
+            justify-content: space-around;
             padding: 0 7px;
             margin-top: auto;
             align-items: flex-end;
             &_item {
+                margin-top: 5px;
                 width: 9px;
                 height: 9px;
                 border-radius: 4.5px;
@@ -124,8 +139,16 @@
             }
         }
         &-popup {
+            background-color: var(--v-background-base);
+            border-radius: 10px;
+            padding: 20px 30px;
             &_icon {
-                margin-top: auto;
+                // margin-top: auto;
+            }
+            &_title {
+                color: var(--v-text-base);
+                font-size: 20px;
+                font-weight: 500;
             }
         }
     }

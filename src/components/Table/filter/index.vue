@@ -7,7 +7,7 @@
       </v-row>
       <v-icon @click="closeFilter">$close</v-icon>
     </v-row>
-    <v-form class="fluid">
+    <!--<v-form class="fluid">
       <template v-for="filter in filtersConfig">
         <v-autocomplete
           v-if="filter.type === 'select'"
@@ -54,7 +54,7 @@
                 indeterminate
               />
             </div>
-            <div :data-filter="filter.name" v-intersect="endIntersect" />
+            <div :data-field="filter.name" v-intersect="endIntersect" />
           </template>
           <template v-slot:item="data">
             <template>
@@ -93,7 +93,7 @@
           </template>
           <v-date-picker
             v-model="filter.value"
-            min="1950-01-01"
+            min="1940-01-01"
             color="primary"
             locale="ru-RU"
             :type="filter.subtype === 'period' ? 'month' : undefined"
@@ -104,7 +104,12 @@
       <v-btn @click="saveFilter" color="primary" class="ma">
         <p>Принять</p>
       </v-btn>
-    </v-form>
+    </v-form>-->
+    <FormDefault
+      class="v-table-filter-form"
+      @sendFilter="sendFilter"
+      :tab="filtersConfig"
+    />
   </div>
 </template>
 

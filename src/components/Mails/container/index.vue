@@ -1,38 +1,135 @@
 <template>
-  <div :class="['v-container', 'd-flex']">
+  <div class="trigger-container">
     <div
-      :class="[
-        'v-container-box',
-        $route.query.mail && 'v-container-box__active',
-      ]"
-      v-if="$route.query.compose !== 'new'"
+      @scroll="triggerCheck"
+      ref="container"
+      :class="['v-container', $route?.query?.mail && 'v-container__active']"
     >
       <div
-        class="v-container-box-column d-flex flex-column"
-        v-for="(item, index) in $props.data"
-        :key="index"
+        :class="[
+          'v-container-box',
+          $route?.query?.mail && 'v-container-box__active',
+        ]"
+        @scroll="$route?.query?.mail && triggerCheck()"
+        ref="containerBox"
+        v-if="$route?.query?.compose !== 'new'"
       >
-        <div class="v-container-box-column-title">
-          {{ item.company.name }}
-        </div>
-        <div class="v-container-box-column-items">
-          <MailsLetter
-            :companyColor="item.company.color"
-            :data="mail"
-            :active="Number($route.query.mail) === mail.id"
-            v-for="(mail, index) in item.mail"
-            :key="index"
-          />
+        <template
+          v-if="
+            $route?.query?.filter !== 'folder' &&
+            $route?.query?.filter !== 'box' &&
+            $route?.query?.filter !== 'trans'
+          "
+        >
+          <div v-if="trigger.left" class="trigger trigger__left">
+            <v-btn @click="scrollContainer(-350)" fab small color="primary">
+              <v-icon small color="disabled"> $IconArrowLeft </v-icon>
+            </v-btn>
+          </div>
+          <div
+            v-if="trigger.right"
+            :class="[
+              'trigger',
+              $route.query.mail ? 'trigger__center' : 'trigger__right',
+            ]"
+          >
+            <v-btn @click="scrollContainer(350)" fab small color="primary">
+              <v-icon small color="disabled"> $IconArrowRight </v-icon>
+            </v-btn>
+          </div>
+        </template>
+        <div
+          :class="[
+            'v-container-box-column',
+            'd-flex',
+            'flex-column',
+            ($route?.query?.filter === 'folder' ||
+              $route?.query?.filter === 'box' ||
+              $route?.query?.filter === 'trans') &&
+              'v-container-box-column__horizontal',
+          ]"
+          v-for="(item, index) in $props.data"
+          :key="item?.id"
+          ref="upperItems"
+        >
+          <div
+            v-if="
+              !(
+                $route?.query?.filter === 'folder' ||
+                $route?.query?.filter === 'box' ||
+                $route?.query?.filter === 'trans'
+              )
+            "
+            class="v-container-box-column-title"
+          >
+            <div>
+              {{ item.name }}
+            </div>
+            <v-divider></v-divider>
+            <v-text-field
+              v-model="$props.data[index].search"
+              placeholder="Поиск"
+              clearable
+              @input="$emit('changeSearch', item.id)"
+            ></v-text-field>
+          </div>
+          <div class="v-container-box-column-items">
+            <template v-if="item?.mails?.rows && !item?.mails?.rows?.length">
+              <div class="v-container-box-column-items_stub">
+                <p>Нет писем</p>
+              </div>
+            </template>
+            <template v-else-if="item?.mails?.rows?.length">
+              <MailsLetter
+                :data="mail"
+                :active="Number($route.query.mail) === mail?.id"
+                v-for="(mail, mailIndex) in item?.mails?.rows"
+                :key="mailIndex"
+                :tagsData="$props.filterData.tagsData"
+                :selectedMails="selectedMails"
+                @setRouterPath="
+                  (add, remove, set) => $emit('setRouterPath', add, remove, set)
+                "
+                @setActiveMail="
+                  ($emit) => setActiveMail($emit, index, mailIndex)
+                "
+                @getMails="$emit('getMails')"
+                ref="lowerItems"
+                v-intersect="getPagination"
+              />
+            </template>
+            <template v-else>
+              <div class="v-container-box-column-items_stub">
+                <p>
+                  <v-progress-circular
+                    indeterminate
+                    color="primary"
+                  ></v-progress-circular>
+                </p>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      v-if="$route.query.mail || $route.query.compose === 'new'"
-      class="v-container-expanded"
-    >
-      <MailsLetterExpanded />
+      <div
+        v-if="$route.query.mail || $route.query.compose === 'new'"
+        :class="[
+          'v-container-expanded',
+          $route.query.compose === 'new' && 'v-container-expanded__new',
+          $route?.query?.mail && 'v-container-expanded__edited',
+        ]"
+      >
+        <MailsLetterExpanded
+          @setRouterPath="
+            (add, remove, set) => $emit('setRouterPath', add, remove, set)
+          "
+          @getMails="$emit('getMails')"
+          :filterData="$props.filterData"
+          :data="activeMail"
+        />
+      </div>
     </div>
   </div>
 </template>
-<script src="./setup.ts"></script>
+<script src="./setup.js"></script>
 <style lang="scss" scoped src="./style.scss"></style>

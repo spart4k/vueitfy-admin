@@ -1,20 +1,47 @@
 <template>
   <div class="detail">
-    <div class="detail-tabs">
-      <v-tabs
-        style="flex: unset"
-        v-model="detail.activeTab"
-        background-color="transparent"
-        color="basil"
-        class="p-5"
+    <div class="detail-tabs 1">
+      <!--{{ $route.meta.mode && $route.meta.mode.includes(item.path) }} 1-->
+      <div
+        v-show="$route.meta.label || detail.name || availableTabs.length > 1"
+        class="pa-4 detail-header"
       >
-        <v-tab v-for="item in detail.tabs" :key="item.id">
-          {{ item.name }}
-        </v-tab>
-      </v-tabs>
-      <v-tabs-items v-model="detail.activeTab">
-        <v-tab-item v-for="item in detail.tabs" :key="item.id">
-          <component :is="item.type" :tab="item" :options="item.config" />
+        <p v-if="$route.meta.label" class="text-h4 mb-4">
+          {{ $route.meta.label }}
+        </p>
+        <p v-else-if="detail.name" class="text-h4 mb-4">
+          {{ detail.name }}
+        </p>
+        <v-tabs
+          style="flex: unset"
+          v-model="activeTab"
+          background-color="transparent"
+          color="basil"
+          class="p-5"
+          v-show="availableTabs.length > 1"
+        >
+          <v-tab v-for="item in availableTabs" :key="item.id">
+            {{ item.name }}
+          </v-tab>
+        </v-tabs>
+      </div>
+      <v-tabs-items v-model="activeTab">
+        <v-tab-item v-for="item in availableTabs" :key="item.id">
+          <!--{{ item.type }}-->
+          <component
+            :content="porpsContent"
+            :loading="loading"
+            :is="item.type"
+            :tab="item"
+            :options="item.config"
+            :detail="detail"
+            :syncData="syncForm"
+            :stages="item.stages"
+            :routeParam="id"
+            @closePopup="(e) => $emit('closePopup', e)"
+            @getItems="(e) => $emit('getItems', e)"
+            @refreshData="$emit('refreshData')"
+          />
         </v-tab-item>
       </v-tabs-items>
       <!--<TableDefault :options="detail.tabs[1].config"></TableDefault>-->

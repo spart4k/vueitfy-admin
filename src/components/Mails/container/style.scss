@@ -1,17 +1,59 @@
-.v {
+$expandedLetterWidth: calc(100% - 343px - 13px);
+.trigger {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    // background: red;
+    // height: 60%;
+    // top: 20%;
+    display: flex;
+    align-items: center;
+    // opacity: 0.5;
+    z-index: $navbar-z;
+    button {
+        width: 100%;
+        height: 100%;
+    }
+    &__left {
+        justify-content: flex-end;
+        left: 0px;
+        // border-right: var(--v-disabled-base) solid 6px;
+    }
+    &__right {
+        justify-content: flex-start;
+        right: 0px;
+        // border-left: var(--v-disabled-base) solid 6px;
+    }
+    &__center {
+        transform: translate(-100%, 0);
+        left: 343px;
+        // border-left: var(--v-disabled-base) solid 6px;
+    }
+}
+.trigger-container {
+    width: 100%;
+    position: relative;
+}
+.v{
     &-container {
-        // height: 100%;
+        height: 100%;
         width: 100%;
         overflow: overlay;
+        display: flex;
         @include custom-scroll-bar-vertical;
+        scroll-behavior: smooth;
         &::-webkit-scrollbar{
             display: none;
         }
+        &__active {
+            overflow: hidden;
+        }
         &-box {
-            // width: 100%;
+            width: 100%;
             display: flex;
             &__active {
-                width: 343px;
+                min-width: 343px;
+                max-width: 343px;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 scroll-snap-type: x mandatory;
@@ -23,9 +65,10 @@
             &-column {
                 scroll-snap-align: start;
                 width: 343px;
-                &__expand {
-                    overflow: auto;
-                    @include custom-scroll-bar-vertical;
+                &__horizontal {
+                    width: 100%;
+                    // overflow: auto;
+                    // @include custom-scroll-bar-vertical;
                 }
                 &-title {
                     border-radius: 2px;
@@ -33,16 +76,41 @@
                     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
                     margin-bottom: 15px;
                     text-align: center;
+                    &::v-deep .v-text-field{
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        input {
+                            padding: 4px 10px;
+                            &::placeholder {
+                                text-align: center; 
+                            }
+                        }
+                    }
                 }
                 &-items {
                     // display: flex;
                     // flex-direction: column;
-                    padding-bottom: 35px;
+                    height: 100%;
+                    padding-bottom: 19px;
                     overflow-x: hidden;
                     overflow-y: auto;
                     @include custom-scroll-bar-vertical;
                     .v-letter+.v-letter {
                         margin-top: 7px;
+                    }
+                    &_stub {
+                        height: 100%;
+                        display: flex;
+                        background: var(--v-background-base);
+                        justify-content: center;
+                        align-items: center;
+                        p {
+                            color: var(--v-text-base);
+                            font-size: 20px;
+                            font-weight: 500;
+                            width: 343px;
+                            text-align: center;
+                        }
                     }
                 }
             }
@@ -51,9 +119,16 @@
             }
         }
         &-expanded {
-            flex: 1;
+            // flex: 1;
+            width: $expandedLetterWidth;
             display: flex;
-            padding-bottom: 36px;
+            padding-bottom: 19px;
+            &__new {
+                width: 100%;
+            }
+            &__edited {
+                margin-left: 13px;
+            }
         }
     }
 }

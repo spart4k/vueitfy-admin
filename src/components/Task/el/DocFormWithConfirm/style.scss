@@ -1,0 +1,11 @@
+.form-status {
+    position: absolute;
+    transition: all 0.2s ease;
+
+    & .visible {
+        opacity: 1;
+        left: 0
+    }
+}
+
+

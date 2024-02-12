@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -7,13 +9,19 @@ import vuetify from './plugins/vuetify'
 import '@mdi/font/css/materialdesignicons.css'
 import '@/assets/styles/main.scss'
 import PortalVue from 'portal-vue'
-import VueCompositionApi from '@vue/composition-api'
+import DatetimePicker from 'vuetify-datetime-picker'
+import './plugins'
 
+Vue.use(DatetimePicker)
+// import VueCompositionApi from '@vue/composition-api'
 //import mainJS from '@/trash/main.js'
 
+Vue.config.devtools = true
 Vue.config.productionTip = false
+Vue.config.silent = true
 Vue.use(PortalVue)
-Vue.use(VueCompositionApi)
+Vue.prototype.env = process.env
+// Vue.use(VueCompositionApi)
 
 new Vue({
   router,
@@ -37,4 +45,18 @@ Object.byString = function (o, s) {
     }
   }
   return o
+}
+
+let remove = [/\s+/g, /'(\\.|[^'])*'/g, /"(\\.|[^"])*"/g, /\d+/g]
+
+let emptyArray = /\[,*\]/g
+
+String.isArray = function (str) {
+  for (let r of remove) str = str.replace(r, '')
+
+  if (str[0] !== '[') return false
+
+  while (str.match(emptyArray)) str = str.replace(emptyArray, '')
+
+  return str.length === 0
 }

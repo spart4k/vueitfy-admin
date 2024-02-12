@@ -1,12 +1,16 @@
 <template>
-  <div class="v-edit">
-    <VueEditor v-model="content" />
-    <!-- <v-file-input label="Загрузить файлы" outlined></v-file-input> -->
-    <v-btn height="60" color="disabled" outlined block>
-      <v-icon large class="mr-2">$IconDownload</v-icon>
-      Загрузить файлы
-    </v-btn>
+  <div ref="editorContainer" class="v-edit">
+    <VueEditor
+      class="flex-grow-1 overflow-hidden"
+      :editor-toolbar="toolbar"
+      v-model="$props.data.text"
+    />
+    <DropZone
+      @addFiles="($event) => $emit('addFiles', $event)"
+      @removeFile="($event) => $emit('removeFile', $event)"
+      :options="{ withoutSave: false }"
+    />
   </div>
 </template>
-<script src="./setup.ts"></script>
+<script src="./setup.js"></script>
 <style lang="scss" scoped src="./style.scss"></style>

@@ -1,10 +1,25 @@
 version: '2'
+
 services:
   web:
     build: .
-    command: npm run serve
+    command:
+      npm run build
+      # - npm run serve
+    container_name: Front-node
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
+    # ports:
+    #   - "3031:3032"
+
+  client:
+    image: nginx
+    container_name: Front-nginx
     ports:
-      - "3031:3031"
+      - 8082:80
+    volumes:
+      - ./dist:/usr/share/nginx/html
+      - ./nginx:/etc/nginx/conf.d
+    environment:
+      TZ: Europe/Moscow

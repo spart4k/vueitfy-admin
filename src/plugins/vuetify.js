@@ -2,11 +2,12 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
-import CustomIcons from '@/components/icons/index'
+import CustomIcons from '@/components/Icons/index'
 
 Vue.use(Vuetify)
 export default new Vuetify({
   theme: {
+    dark: false,
     options: {
       customProperties: true,
     },
@@ -25,6 +26,8 @@ export default new Vuetify({
         background: '#ffffff',
         pageBackground: '#F5F6F8',
         disabled: '#C2CFE0',
+        textDefault: '#000000',
+        cardBackground: '#FFFFFF',
       },
       dark: {
         primary: '#007BFF',
@@ -37,7 +40,10 @@ export default new Vuetify({
         topbar: '#252525',
         text: '#FFFFFF',
         navbar: '#252525',
-        background: '#000000',
+        pageBackground: '#1D1D1D',
+        background: '#252525',
+        textDefault: '#ffffff',
+        cardBackground: '#1E1E1E',
       },
       blue: {
         primary: '#07e0f8',

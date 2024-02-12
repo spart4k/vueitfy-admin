@@ -1,276 +1,231 @@
 <template>
-  <transition name="expand" mode="out-in">
-    <v-card
-      height="100vh"
-      overflow="hidden"
-      :class="isСollapseMenu ? 'navbar-card--collapse' : 'navbar-card'"
-      tile
-      color="navbar"
+  <div class="v-sidebar" v-if="openMenu">
+    <v-navigation-drawer
+      v-model="isMobile"
+      :absolute="isMobile"
+      :temporary="isMobile"
+      :permanent="openMenu"
+      :class="['v-sidebar-container']"
+      :mini-variant="miniMenu"
+      :touchless="true"
+      mini-variant-width="76px"
     >
-      <v-btn class="btn-menu__mob" icon v-if="isMobile" @click="setNavmenu">
-        <v-icon v-if="isOpenMenu" key="clear">$IconArrowLeft</v-icon>
-      </v-btn>
-      <v-list
-        class="header-navbar"
-        height="130px"
-        z-index="$default-z"
-        color="navbar"
-      >
-        <v-list-item>
-          <v-list-item-avatar
-            :class="isСollapseMenu ? 'avatar--collapse ' : 'avatar'"
-          >
-            <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-          </v-list-item-avatar>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-content>
-            <v-list-item-title
-              :class="
-                !isСollapseMenu
-                  ? 'text-h6 nav-fio'
-                  : 'text-h6  nav-fio--collapse'
-              "
-            >
-              <p color="text">Азаров Михаил</p>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-navigation-drawer permanent color="navbar">
-        <v-expansion-panels multiple color="navbar">
+      <div class="v-sidebar-container-user">
+        <div class="v-sidebar-container-user_image">
+          <!-- <v-img
+            src="https://media.tenor.com/Q-gxepiJHagAAAAM/nono.gif"
+          ></v-img> -->
+          <v-avatar>
+            <v-icon x-large> mdi-account-circle </v-icon>
+          </v-avatar>
+        </div>
+        <div class="v-sidebar-container-user-info" v-if="!miniMenu">
+          <div class="v-sidebar-container-user-info_name">
+            {{ userInfo.name }}
+          </div>
+          <div class="v-sidebar-container-user-info_email">
+            {{ userInfo.email }}
+          </div>
+          <!-- {{ openMenu }}{{ miniMenu }} -->
+        </div>
+      </div>
+
+      <!-- {{ $props?.navData }} -->
+      <div class="flex-grow-1 overflow-auto">
+        <v-expansion-panels
+          v-model="navbarCurrentRoute"
+          v-if="$props?.navData"
+          multiple
+          color="navbar"
+        >
           <v-expansion-panel
-            v-for="item in dataNavbarHard"
+            v-for="item in $props?.navData"
             :key="item.id"
             color="navbar"
           >
-            <!-- <template
-              :class="
-                !item.disclosure
-                  ? 'navmenu__navlinks'
-                  : 'navmenu__mavlinks--collapse'
-              "
-            >  -->
-            <!-- блок повяления при отсутствии доп ссылок внизу -->
-            <template v-if="!item.disclosure">
-              <router-link
-                color="text"
-                active-class="active"
-                :to="item.link"
-                exact
-              >
-                <div
-                  :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
-                >
-                  <div class="icon__navlink">
-                    <v-icon>{{ item.icon }}</v-icon>
-                  </div>
+            <template v-if="!item?.child">
+              <v-tooltip right>
+                <template v-slot:activator="{ on }">
                   <div
+                    v-on="miniMenu && !isMobileDevice && on"
+                    class="v-sidebar-container-link v-sidebar-container-link__default-height"
                     :class="
-                      isСollapseMenu
-                        ? 'name__navlink--collapse'
-                        : 'nav__navlink'
+                      !isMobileDevice && 'v-sidebar-container-link__hover'
                     "
+                    @click="setRouterPath(item?.link)"
                   >
-                    <p>
-                      {{ item.name }}
-                    </p>
-                  </div>
-                </div>
-              </router-link>
-            </template>
-            <!-- блок с развертыванием меню если открыт полностью и есть внутри еще ссылки-->
-            <template v-if="item.disclosure && !isСollapseMenu">
-              <template
-                :class="item.navlink.link == $route.path ? 'navlink-check' : ''"
-              >
-                <v-expansion-panel-header
-                  :class="isСollapseMenu ? 'link__btn--collapse' : 'link__btn'"
-                  color="navbar"
-                >
-                  <v-icon>{{ item.icon }}</v-icon>
-                  <p
-                    :class="
-                      isСollapseMenu
-                        ? 'name__navlink--collapse'
-                        : 'nav__navlink'
-                    "
-                    color="text"
-                  >
-                    {{ item.name }}
-                  </p>
-                </v-expansion-panel-header>
-              </template>
-            </template>
-            <!-- при скрытие показываются только иконки, при клике открывается меню сбоку -->
-            <template v-if="item.disclosure && isСollapseMenu">
-              <template
-                :class="isСollapseMenu ? 'link__btn--collapse ' : 'link__btn'"
-              >
-                <!-- <template
-                  :class="{ 'check-navlink': $route.path == item.navlink }"
-                > -->
-                <template
-                  :class="{ 'check-navlink': $route.path == item.navlink }"
-                >
-                  <v-menu top :offset-x="offset">
-                    <template v-slot:activator="{ on, attrs }">
+                    <div class="v-sidebar-container-link_icon">
                       <v-icon
-                        :class="
-                          isСollapseMenu ? 'link__btn--collapse' : 'link__btn'
+                        :color="
+                          $route?.matched?.[0]?.path === item.link ||
+                          item?.child?.some(
+                            (e) => $route?.matched?.[0]?.path === e.link
+                          )
+                            ? 'primary'
+                            : ''
                         "
-                        v-bind="attrs"
-                        v-on="on"
+                        >{{ item?.icon }}</v-icon
                       >
-                        {{ item.icon }}
-                      </v-icon>
-                    </template>
-                    <v-list
-                      class="dop-men__navbar"
-                      max-height="calc(100vh - 20px)"
+                    </div>
+                    <div
+                      v-if="!miniMenu"
+                      :class="[
+                        'v-sidebar-container-link_name',
+                        $route?.matched?.[0]?.path === item.link &&
+                          'v-sidebar-container-link_name__active',
+                      ]"
                     >
-                      <v-list-item v-for="link in item.navlink" :key="link.id">
-                        <router-link
-                          active-class="active"
-                          :to="link.link"
-                          exact
-                        >
-                          <p class="navlink__item" color="text">
-                            {{ link.name }}
-                          </p>
-                        </router-link>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
+                      {{ item?.name }}
+                    </div>
+                  </div>
                 </template>
-              </template>
+                <span>{{ item.name }}</span>
+              </v-tooltip>
             </template>
-            <template v-if="!isСollapseMenu">
-              <template
-                :class="isСollapseMenu ? 'nav-link--collapse' : 'nav-link'"
+            <template v-else-if="!miniMenu">
+              <v-expansion-panel-header
+                class="v-sidebar-container-link v-sidebar-container-link__default-height"
+                :class="!isMobileDevice && 'v-sidebar-container-link__hover'"
               >
-                <v-expansion-panel-content
-                  v-for="link in item.navlink"
-                  :key="link.id"
-                  color="navbar"
+                <div class="v-sidebar-container-link_icon">
+                  <v-icon
+                    :color="
+                      $route?.path === item?.link ||
+                      item?.child.some(
+                        (e) => $route?.matched?.[0]?.path === e.link
+                      )
+                        ? 'primary'
+                        : ''
+                    "
+                    >{{ item?.icon }}</v-icon
+                  >
+                </div>
+                <div
+                  v-if="!miniMenu"
+                  :class="[
+                    'v-sidebar-container-link_name',
+                    ($route?.matched?.[0]?.path === item.link ||
+                      item?.child.some(
+                        (e) => $route?.matched?.[0]?.path === e.link
+                      )) &&
+                      'v-sidebar-container-link_name__active',
+                  ]"
                 >
-                  <router-link active-class="active" :to="link.link" exact>
-                    <p class="navlink__item" color="text">
-                      {{ link.name }}
-                    </p>
-                  </router-link>
+                  {{ item?.name }}
+                </div>
+              </v-expansion-panel-header>
+              <template v-if="!miniMenu">
+                <v-expansion-panel-content
+                  v-for="(link, index) in item?.child"
+                  :key="index"
+                  color="navbar"
+                  :class="[
+                    'v-sidebar-container-link',
+                    instantNav && 'v-sidebar-container-link__instant',
+                    !isMobileDevice && 'v-sidebar-container-link__hover',
+                  ]"
+                  @click.native="setRouterPath(link.link)"
+                >
+                  <div
+                    :class="[
+                      'v-sidebar-container-link_name',
+                      'v-sidebar-container-link_name__shifted',
+                      $route?.matched?.[0]?.path === link.link &&
+                        'v-sidebar-container-link_name__active',
+                    ]"
+                  >
+                    {{ link.name }}
+                  </div>
                 </v-expansion-panel-content>
               </template>
             </template>
+            <template v-else>
+              <v-menu offset-x top>
+                <template #activator="{ on: onMenu }">
+                  <v-tooltip right :open-on-hover="!isMobileDevice">
+                    <template #activator="{ on: hint }">
+                      <div
+                        v-on="{ ...hint, ...onMenu }"
+                        class="v-sidebar-container-link v-sidebar-container-link__default-height"
+                        :class="
+                          !isMobileDevice && 'v-sidebar-container-link__hover'
+                        "
+                      >
+                        <div class="v-sidebar-container-link_icon">
+                          <v-icon
+                            :color="
+                              $route?.matched?.[0]?.path === item.link ||
+                              item?.child.some(
+                                (e) => $route?.matched?.[0]?.path === e.link
+                              )
+                                ? 'primary'
+                                : ''
+                            "
+                            >{{ item?.icon }}</v-icon
+                          >
+                        </div>
+                      </div>
+                    </template>
+                    <span>{{ item.name }}</span>
+                  </v-tooltip>
+                </template>
+                <v-list>
+                  <v-list-item class="v-sidebar-container-link_title">
+                    {{ item.name }}
+                  </v-list-item>
+                  <v-list-item
+                    class="v-sidebar-container-link"
+                    :class="
+                      !isMobileDevice && 'v-sidebar-container-link__hover'
+                    "
+                    @click="setRouterPath(link.link)"
+                    v-for="(link, index) in item?.child"
+                    :key="index"
+                  >
+                    <div
+                      :class="[
+                        'v-sidebar-container-link_name',
+                        $route?.matched?.[0]?.path === link.link &&
+                          'v-sidebar-container-link_name__active',
+                      ]"
+                    >
+                      {{ link.name }}
+                    </div>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
           </v-expansion-panel>
         </v-expansion-panels>
-      </v-navigation-drawer>
-      <template class="d-flex">
-        <v-btn
-          :class="collapseNavmenu ? 'btn-menu--collapse' : 'btn-menu__collapse'"
-          v-if="!isMobile"
-          @click="collapseNavmenu"
-          text
-          elevation="0"
-          color="navbar"
+      </div>
+
+      <v-btn
+        :class="[
+          'v-sidebar-container-btn',
+          !isMobileDevice && 'v-sidebar-container-btn__hover',
+        ]"
+        @click="isMobile ? changeMenuStatus() : changeMenuSize()"
+        text
+        color="navbar"
+      >
+        <v-icon v-if="!miniMenu" class="v-sidebar-container-btn_icon">
+          $IconArrowLeft
+        </v-icon>
+        <v-icon
+          v-if="miniMenu"
+          class="v-sidebar-container-btn_icon"
+          padding="0"
+          width="12"
         >
-          <v-icon v-if="!isСollapseMenu" key="onCollapse" color="text">
-            $IconArrowLeft
-          </v-icon>
-          <v-icon
-            v-if="isСollapseMenu"
-            key="offCollapse"
-            color="text"
-            padding="0"
-            width="12"
-          >
-            $IconOpenMenu
-          </v-icon>
-          <span v-if="!isСollapseMenu" class="text-collaspe__navbar">
-            Свернуть
-          </span>
-        </v-btn>
-      </template>
-    </v-card>
-  </transition>
-</template>
-
-<script src="./setup.js"></script>
-<style src="./style.scss" lang="scss"></style>
-
-<!--
-  <template>
-  <v-card width="256" height="100vh" class="navbar-card" tile>
-    <v-btn class="btn-menu__mob" icon v-if="isMobile" @click="setNavmenu">
-      <v-icon v-if="setNavmenu" key="clear">$IconArrowLeft</v-icon>
-    </v-btn>
-    <v-list class="header-navbar" height="130px" z-index="$default-z">
-      <v-list-item>
-        <v-list-item-avatar>
-          <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-        </v-list-item-avatar>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-content>
-          <v-list-item-title class="text-h6 nav-fio">
-            Азаров Михаил
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-    <v-navigation-drawer permanent>
-      <v-expansion-panels multiple>
-        <v-expansion-panel v-for="(item, value) in navLinks" :key="value">
-          <template v-if="!item.child_json">
-            <router-link active-class="active" :to="item.link" exact>
-              <div class="nav-link">
-                <div class="icon__navlink">
-                  <v-icon>{{ item.icon }}</v-icon>
-                </div>
-                <div class="name__navlink">
-                  {{ item.name }}
-                </div>
-              </div>
-            </router-link>
-          </template>
-          <template v-if="item.child_json">
-            <v-expansion-panel-header>
-              <v-icon>{{ item.icon }}</v-icon>
-              {{ item.name }}
-            </v-expansion-panel-header>
-          </template>
-          <v-expansion-panel-content
-            v-for="link in item.child_json"
-            :key="link.id"
-          >
-            <router-link active-class="active" :to="link.link" exact>
-              <p class="navlink__item">
-                {{ link.name }}
-              </p>
-            </router-link>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+          $IconOpenMenu
+        </v-icon>
+        <div v-if="!miniMenu" class="v-sidebar-container-btn_text">
+          Свернуть
+        </div>
+      </v-btn>
     </v-navigation-drawer>
-    <template class="d-flex">
-      <v-btn
-        class="btn-menu__collapse"
-        v-if="!isMobile && !collapseNavmenu"
-        @click="collapseNavmenu"
-      >
-        <v-icon v-if="!collapseNavmenu" key="onCollapse">$IconArrowLeft</v-icon>
-        <span v-if="!collapseNavmenu">Свернуть</span>
-      </v-btn>
-      <v-btn
-        class="btn-menu__collapse"
-        v-if="!isMobile && !collapseNavmenu"
-        @click="collapseNavmenu"
-      >
-        <v-icon v-if="collapseNavmenu" key="offCollapse">$IconOpenMenu</v-icon>
-      </v-btn>
-    </template>
-  </v-card>
+  </div>
 </template>
 
 <script src="./setup.js"></script>
-<style src="./style.scss" lang="scss"></style>-->
+<style src="./style.scss" lang="scss" scoped></style>
