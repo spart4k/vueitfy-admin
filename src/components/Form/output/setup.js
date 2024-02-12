@@ -58,6 +58,7 @@ export default {
     const stageRef = ref(null)
     const stage = ref({
       value: 0,
+      count: 0,
       showForm: true,
       errors: [],
       items: [
@@ -155,6 +156,7 @@ export default {
           body: requestData,
         })
         stage.value.value = 1
+        stage.value.outputId = data.parser_id
         stage.value.showForm = false
         stage.value.errors = data.errors
         setOutputData(data.data)
@@ -197,6 +199,14 @@ export default {
       },
     })
 
+    const { makeRequest: setFinalOutput } = useRequest({
+      context,
+      successMessage: `Добавлена выработка на ${stage.value.count} назначений`,
+      request: (data) => {
+        return store.dispatch('form/update', data)
+      },
+    })
+
     const changeStage = async (val) => {
       stage.value.value = stage.value.value + val
       await changeOutputStage({
@@ -211,11 +221,12 @@ export default {
     }
 
     const loadParser = async () => {
-      await changeOutputStage({
+      const firstReq = await changeOutputStage({
         url: `add/target/service/${stage.value.outputId}`,
         body: { data: {} },
       })
-      await changeOutputStage({
+      stage.value.count = firstReq.count
+      const secondReq = await setFinalOutput({
         url: 'set/data/active_parsers',
         body: {
           data: {
@@ -224,13 +235,14 @@ export default {
           },
         },
       })
-      // if (data.success) {
-      // }
+      if (secondReq.type === 'success') {
+        emit('getItems')
+        emit('closePopup')
+      }
     }
 
     const buttonHandler = (action) => {
       if (action.confirm && !confirm.value.isShow) {
-        console.log('actiom', confirm.value)
         confirm.value = {
           isShow: true,
           text: eval(action.confirm.text),
