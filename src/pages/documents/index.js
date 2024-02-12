@@ -2140,7 +2140,7 @@ const config = {
         },
         headerFixed: true,
         url: 'get/pagination/documents_new',
-        title: 'Новое',
+        title: 'Новые',
       },
       type: TableDefault,
       panel: {
