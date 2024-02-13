@@ -980,7 +980,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 'sa.name',
       value: 'account_name',
       search: {
         field: '',
