@@ -312,8 +312,11 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'pivot/:id',
-        path: ':id',
+        name: 'pivot-edit',
+        path: '/pivot/:id',
+        meta: {
+          mode: ['edit'],
+        },
         component: Detail,
       },
     ],
