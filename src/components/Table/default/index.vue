@@ -137,7 +137,31 @@
                     </v-tooltip>
                   </span>
                   <transition name="accordion">
-                    <div
+                    <v-tooltip
+                      position="fixed"
+                      text="Tooltip"
+                      v-if="
+                        head.sorts && head.sorts.length && head.sorts[0].isShow
+                      "
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          class="v-table-header-row-cell-sort__search"
+                          @clearfield="clearField('searchField')"
+                          clearable
+                          clearing
+                          type="search"
+                          placeholder="Поиск"
+                          v-model="
+                            paramsQuery.searchColumns.find(
+                              (el) => el.field === head.value
+                            ).value
+                          "
+                        />
+                      </template>
+                    </v-tooltip>
+                    <!-- <div
                       v-if="
                         head.sorts && head.sorts.length && head.sorts[0].isShow
                       "
@@ -156,7 +180,7 @@
                           ).value
                         "
                       />
-                    </div>
+                    </div> -->
                   </transition>
                 </div>
               </th>
@@ -413,18 +437,16 @@
       </v-btn>
     </v-row>
     <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
-    <portal v-if="filters" to="filter">
-      <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
-        <keep-alive>
-          <TableFilter
-            class="v-table-filter"
-            @closeFilter="closeFilter"
-            @saveFilter="saveFilter"
-            :filtersConfig="filters"
-          />
-        </keep-alive>
-      </Sheet>
-    </portal>
+    <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
+      <keep-alive>
+        <TableFilter
+          class="v-table-filter"
+          @closeFilter="closeFilter"
+          @saveFilter="saveFilter"
+          :filtersConfig="filters"
+        />
+      </keep-alive>
+    </Sheet>
     <Popup
       closeButton
       @close="closePopupForm"

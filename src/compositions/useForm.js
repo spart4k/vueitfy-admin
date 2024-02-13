@@ -389,6 +389,11 @@ export default function ({
         else newForm[key] = formData[key]
       }
 
+      // if (item.round) {
+      //   const result = formData[key].replaceAll(',', '.')
+      //   newForm[key] = Math.ceil(+result)
+      // }
+
       // if (item.notSend || item.prescription) delete newForm[key]
 
       if (action?.useStorageKey?.length) {

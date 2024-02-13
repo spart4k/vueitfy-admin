@@ -3798,6 +3798,7 @@ const config = {
             },
             // validations: { required },
             bootstrapClass: [''],
+            round: true,
             readonly: {
               value: false,
               condition: [

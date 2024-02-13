@@ -30,7 +30,9 @@ const Form7 = defineComponent({
   setup(props, ctx) {
     const route = useRoute()
     const router = useRouter()
-    const dataRojd = moment(props.data.entity.data_rojd).format('DD.MM.YYYY')
+    const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
+      'DD.MM.YYYY'
+    )
     const context = {
       root: {
         store,
