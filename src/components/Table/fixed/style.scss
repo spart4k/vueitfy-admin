@@ -1,5 +1,5 @@
 $paddingCell: 5px;
-$borderColor: rgba(0,0,0,.3);
+$borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 100px;
 $tableFooterHeight: 85px;
 .v {
@@ -66,8 +66,8 @@ $tableFooterHeight: 85px;
                 width: 15px;
                 height: 15px;
                 //margin-right: 5px;
-                color: rgba(0,0,0,.1);
-                transition: .2s;
+                color: rgba(0, 0, 0, 0.1);
+                transition: 0.2s;
                 path {
                   fill: red;
                 }
@@ -96,7 +96,6 @@ $tableFooterHeight: 85px;
             &__search {
               //margin-top: 5px;
             }
-
           }
           &--fixed {
             position: sticky;
@@ -110,7 +109,7 @@ $tableFooterHeight: 85px;
             z-index: 1;
           }
           &--currentDate {
-            background-color: rgba(0,0,0,.1);
+            background-color: rgba(0, 0, 0, 0.1);
           }
           &--weekendDate {
             background-color: rgba(181, 129, 129, 0.5);
@@ -133,7 +132,7 @@ $tableFooterHeight: 85px;
       &-row {
         border: 1px solid $borderColor;
         cursor: pointer;
-        transition: .2s;
+        transition: 0.2s;
         p {
           display: flex;
         }
@@ -141,13 +140,13 @@ $tableFooterHeight: 85px;
           &:hover {
             border: var(--v-primary-base) solid 1px;
             background-color: rgba(139, 87, 152, 0.1);
+            // background-color: red;
           }
         }
         &-cell {
           padding: $paddingCell;
-          border: rgba(0,0,0,.1) solid 1px;
+          border: rgba(0, 0, 0, 0.1) solid 1px;
           vertical-align: top;
-
 
           &__checkbox {
             //display: flex;
@@ -183,7 +182,7 @@ $tableFooterHeight: 85px;
               border: black solid 2px;
             }
           }
-          &-item+&-item {
+          &-item + &-item {
             margin-top: 4px;
           }
           &--noPadding {
@@ -197,7 +196,7 @@ $tableFooterHeight: 85px;
             // left: 0;
           }
           &--currentDate {
-            background-color: rgba(0,0,0,.1);
+            background-color: rgba(0, 0, 0, 0.1);
           }
           &--weekendDate {
             background-color: rgba(181, 129, 129, 0.5);
@@ -210,7 +209,7 @@ $tableFooterHeight: 85px;
           display: flex;
           &:not(:last-child) {
             padding-bottom: 5px;
-            border-bottom: 1px solid rgba(0,0,0,.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             margin-bottom: 5px;
             span {
               &:first-child {
@@ -221,7 +220,6 @@ $tableFooterHeight: 85px;
               }
             }
           }
-
         }
         &--child {
           max-height: 300px;
@@ -242,7 +240,6 @@ $tableFooterHeight: 85px;
             //color: rgb(256,256,256);
           }
         }
-
       }
       &-wrap {
         height: calc(100% - $tableFooterHeight);
@@ -290,7 +287,6 @@ $tableFooterHeight: 85px;
               margin-right: 5px;
             }
           }
-
         }
       }
     }
@@ -318,7 +314,8 @@ $tableFooterHeight: 85px;
         &__actions {
           display: flex;
           flex-wrap: wrap;
-          > button, div {
+          > button,
+          div {
             &:not(:last-child) {
               margin-right: 5px;
             }
@@ -401,16 +398,16 @@ $tableFooterHeight: 85px;
         }
         &-pages {
           display: flex;
-          color: rgba(0,0,0,.3);
+          color: rgba(0, 0, 0, 0.3);
           &__el {
-            transition: .2s;
+            transition: 0.2s;
             span {
-              transition: .2s;
+              transition: 0.2s;
             }
             &:hover {
-              background-color: rgba(0,0,0,.1);;
+              background-color: rgba(0, 0, 0, 0.1);
               span {
-                transform: translateY(-10%)
+                transform: translateY(-10%);
               }
             }
             &--active {
@@ -419,11 +416,10 @@ $tableFooterHeight: 85px;
               &:hover {
                 background-color: rgb(8, 62, 238);
                 span {
-                  transform: translateY(-10%)
+                  transform: translateY(-10%);
                 }
               }
             }
-
           }
         }
       }
