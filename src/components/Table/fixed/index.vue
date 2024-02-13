@@ -220,24 +220,27 @@
                     >
                   </span>
                   <transition name="accordion">
-                    <div
+                    <v-tooltip
+                      text="Tooltip"
                       v-if="head.sorts && head.sorts[0].isShow"
-                      class="v-table-header-row-cell-sort"
                     >
-                      <v-text-field
-                        class="v-table-header-row-cell-sort__search"
-                        @clearfield="clearField('searchField')"
-                        clearable
-                        clearing
-                        type="search"
-                        placeholder="Поиск"
-                        v-model="
-                          paramsQuery.searchColumns.find(
-                            (el) => el.field === head.value
-                          ).value
-                        "
-                      />
-                    </div>
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          class="v-table-header-row-cell-sort__search"
+                          @clearfield="clearField('searchField')"
+                          clearable
+                          clearing
+                          type="search"
+                          placeholder="Поиск"
+                          v-model="
+                            paramsQuery.searchColumns.find(
+                              (el) => el.field === head.value
+                            ).value
+                          "
+                        />
+                      </template>
+                    </v-tooltip>
                   </transition>
                 </div>
               </th>

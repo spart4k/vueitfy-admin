@@ -121,11 +121,6 @@
                               <v-icon> {{ head.icon }}</v-icon>
                             </span>
                           </div>
-                          <!--<div v-if="head.type === 'actions'">
-                            <span class="mr-2">
-                              {{ head.title }}
-                            </span>
-                          </div>-->
                           <div v-if="head.type === 'download'">
                             <span class="mr-2">
                               {{ head.title }}
@@ -138,7 +133,6 @@
                   </span>
                   <transition name="accordion">
                     <v-tooltip
-                      position="fixed"
                       text="Tooltip"
                       v-if="
                         head.sorts && head.sorts.length && head.sorts[0].isShow
@@ -161,26 +155,6 @@
                         />
                       </template>
                     </v-tooltip>
-                    <!-- <div
-                      v-if="
-                        head.sorts && head.sorts.length && head.sorts[0].isShow
-                      "
-                      class="v-table-header-row-cell-sort"
-                    >
-                      <v-text-field
-                        class="v-table-header-row-cell-sort__search"
-                        @clearfield="clearField('searchField')"
-                        clearable
-                        clearing
-                        type="search"
-                        placeholder="Поиск"
-                        v-model="
-                          paramsQuery.searchColumns.find(
-                            (el) => el.field === head.value
-                          ).value
-                        "
-                      />
-                    </div> -->
                   </transition>
                 </div>
               </th>

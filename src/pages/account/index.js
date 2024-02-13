@@ -560,21 +560,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            //{
-            //  type: 'string',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'string',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           alias: 'p.fio',
           isShow: true,
           width: '40',
           value: 'fio',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         {
           title: 'Роль',
@@ -585,21 +585,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            //{
-            //  type: 'text',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '150',
           value: 'permission_name',
           alias: 'p.permission_name',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         {
           title: 'Телефон',
@@ -610,21 +610,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            //{
-            //  type: 'text',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '90',
           alias: 'p.telefon',
           value: 'telefon',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         {
           title: 'Стац.',
@@ -635,21 +635,21 @@ const config = {
             position: 'left',
           },
           sorts: [
-            //{
-            //  type: 'string',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'string',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '150',
           alias: 'p.landline_phone',
           value: 'landline_phone',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         //{
         //  title: 'Направление',
@@ -685,21 +685,21 @@ const config = {
             position: undefined,
           },
           sorts: [
-            //{
-            //  type: 'text',
-            //  default: '',
-            //  value: '',
-            //  isShow: false,
-            //},
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
           ],
           isShow: true,
           width: '150',
           value: 'comment',
           alias: 'p.comment',
-          //search: {
-          //  field: '',
-          //  isShow: true,
-          //},
+          search: {
+            field: '',
+            isShow: true,
+          },
         },
         {
           title: 'Действия',
