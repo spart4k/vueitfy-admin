@@ -437,18 +437,16 @@
       </v-btn>
     </v-row>
     <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
-    <portal v-if="filters" to="filter">
-      <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
-        <keep-alive>
-          <TableFilter
-            class="v-table-filter"
-            @closeFilter="closeFilter"
-            @saveFilter="saveFilter"
-            :filtersConfig="filters"
-          />
-        </keep-alive>
-      </Sheet>
-    </portal>
+    <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
+      <keep-alive>
+        <TableFilter
+          class="v-table-filter"
+          @closeFilter="closeFilter"
+          @saveFilter="saveFilter"
+          :filtersConfig="filters"
+        />
+      </keep-alive>
+    </Sheet>
     <Popup
       closeButton
       @close="closePopupForm"
