@@ -14,6 +14,8 @@ import FormOutput from '@/components/Form/output/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import FormTarget from '@/components/Form/target/default/index.vue'
 import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
+import { fieldsBaseDefaulrForm as personalFields } from '@/pages/personal/index.js'
+import { objectEditField as objectFields } from '@/pages/object/index.js'
 
 function consoleText(row) {
   console.log(row, 2)
@@ -40,12 +42,16 @@ function changeSort() {
     heading.title = 'Объект'
     heading.alias = 'p.object_name'
     heading.value = 'object_name'
+    heading.routeName = 'pivot-edit-object'
+    heading.routeParam = 'object_id'
     config.options.url = 'get/pagination_pivot/personal_target_object'
   } else if (btn.label === 'ФИО') {
     btn.label = 'Объекты'
     heading.title = 'ФИО'
     heading.alias = 'p.personal_name'
     heading.value = 'personal_name'
+    heading.routeName = 'pivot-edit-personal'
+    heading.routeParam = 'personal_id'
     config.options.url = 'get/pagination_pivot/personal_target_personal'
   }
 }
@@ -400,6 +406,8 @@ const config = {
       alias: 'p.personal_name',
       value: 'personal_name',
       changeable: true,
+      // routeParam: 'personal_id',
+      // route
       fixed: {
         value: true,
         position: 'left',
@@ -409,6 +417,7 @@ const config = {
         isShow: true,
       },
       routeParam: 'personal_id',
+      routeName: 'pivot-edit-personal',
       sorts: [
         {
           type: 'string',
@@ -802,6 +811,130 @@ const config = {
           }),
         ],
         formData: {},
+      },
+      {
+        id: 4,
+        path: 'edit-personal',
+        name: 'Персонал',
+        type: FormDefault,
+        detail: true,
+        lists: [
+          { alias: 'user_keys', filter: [] },
+          { alias: 'habitation_id', filter: [] },
+          { alias: 'account_id', filter: [] },
+          { alias: 'direction_id', filter: [] },
+          { alias: 'grajdanstvo_id', filter: [] },
+          {
+            alias: 'objects_personal',
+            filter: [
+              {
+                field: 'object_id',
+                alias: 'personal_id',
+                value: '',
+                source: '+route.params.id',
+                type: 'num',
+              },
+            ],
+          },
+        ],
+        alias: 'personal',
+        active: false,
+        fields: personalFields,
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'pivot',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'update/personal',
+            action: 'saveFormId',
+            color: 'primary',
+          }),
+        ],
+      },
+      {
+        id: 5,
+        name: 'Основные',
+        type: FormDefault,
+        detail: true,
+        path: 'edit-object',
+        lists: [
+          {
+            alias: 'direction_object',
+            filter: [],
+          },
+          {
+            alias: 'type',
+            filter: [],
+          },
+          {
+            alias: 'object_type',
+            filter: [
+              {
+                field: 'direction_json',
+                source: 'formData',
+                type: 'array',
+              },
+            ],
+          },
+          {
+            alias: 'object_subtype',
+            filter: [
+              {
+                field: 'type',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+          {
+            alias: 'filial_id',
+            filter: [],
+          },
+          {
+            alias: 'city_id',
+            filter: [
+              {
+                field: 'regions_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
+        ],
+        alias: 'object',
+        active: false,
+        fields: objectFields,
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'pivot',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveFormId',
+            url: 'set/object',
+            action: 'saveFormId',
+            color: 'primary',
+          }),
+        ],
       },
       // {
       //   id: 2,
