@@ -408,6 +408,7 @@ const config = {
         field: '',
         isShow: true,
       },
+      routeParam: 'personal_id',
       sorts: [
         {
           type: 'string',
