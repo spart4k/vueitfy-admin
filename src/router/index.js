@@ -329,6 +329,15 @@ const routes = [
         },
         component: Detail,
       },
+      {
+        name: 'pivot-edit-object',
+        path: '/pivot/:id',
+        meta: {
+          mode: ['edit-object'],
+          label: 'Объект',
+        },
+        component: Detail,
+      },
     ],
   },
   {
