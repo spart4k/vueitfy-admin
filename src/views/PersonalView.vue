@@ -13,7 +13,6 @@
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
-    <!-- TODO: Компоненты ФОРМЫ -->
     <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="item in config.tabs" :key="item.options.title">
         <component

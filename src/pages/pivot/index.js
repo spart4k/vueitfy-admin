@@ -12,6 +12,8 @@ import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormOutput from '@/components/Form/output/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
+import FormTarget from '@/components/Form/target/default/index.vue'
+import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
 
 function consoleText(row) {
   console.log(row, 2)
@@ -318,6 +320,7 @@ const config = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination_pivot/personal_target_personal',
     title: 'This is an about page1',
+    doubleHandlerType: 'cell',
   },
   panel: {
     buttons: [
@@ -675,6 +678,125 @@ const config = {
                 text: 'Создано начислений %count_payment% на сумму %sum_payment% <br/> Создано %count_zero% начислений с полным вычетом на сумму %sum_zero% <br/> Создано задолженностей %count_hold% на сумму %sum_hold%',
                 color: 'success',
               },
+            },
+          }),
+        ],
+        formData: {},
+      },
+      {
+        id: 1,
+        name: 'Основные',
+        type: FormTarget,
+        detail: true,
+        path: 'edit',
+        lists: [
+          { alias: 'vid_vedomost_id_logistic', filter: [] },
+          { alias: 'status_pt', filter: [] },
+          // { alias: 'object_id_logistic', filter: [] },
+          // { alias: 'account_id_logistic', filter: [] },
+          { alias: 'direction_id_logistic', filter: [] },
+          {
+            alias: 'doljnost_id_logistic',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'array',
+              },
+            ],
+          },
+          { alias: 'shifts', filter: [] },
+          { alias: 'nutritions', filter: [] },
+          //{
+          //  alias: 'account_id',
+          //  filter: [],
+          //},
+          {
+            alias: 'print_form_key',
+            filter: [
+              {
+                field: 'object_id',
+                value: '',
+                source: 'form.formData',
+                type: 'num',
+              },
+              {
+                field: 'personal_id',
+                value: '',
+                source: 'form.formData',
+                type: 'num',
+              },
+            ],
+          },
+        ],
+        alias: 'personal_target',
+        active: false,
+        fields: appointmentsFields,
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'pivot',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Удалить',
+            type: 'submit',
+            module: 'form/del',
+            color: 'error',
+            url: 'delete/personal_target',
+            name: 'deleteFormById',
+            action: 'deleteFormById',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'is_close',
+                  target: 'formData',
+                  value: [1],
+                  type: true,
+                },
+                {
+                  field: 'status',
+                  target: 'formData',
+                  value: [1, 2],
+                  type: false,
+                },
+                {
+                  permissions: [3, 15, 4],
+                  field: 'status',
+                  target: 'formData',
+                  value: [3],
+                  type: false,
+                },
+              ],
+            },
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'personal_target/update',
+            name: 'saveForm',
+            url: 'update/target',
+            action: 'saveForm',
+            color: 'primary',
+            successMessage: false,
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'readonlyAll',
+                  target: 'environment',
+                  value: [1],
+                  type: true,
+                },
+              ],
             },
           }),
         ],

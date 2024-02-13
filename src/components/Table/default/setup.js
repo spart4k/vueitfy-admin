@@ -288,13 +288,9 @@ const table = {
     }
     const openFilter = ($event) => {
       filter.value.isShow = true
-      //TODO: Работает
-      console.log('OPENED', filter.value.isShow)
     }
     const closeFilter = () => {
       filter.value.isShow = false
-      //TODO: Работает
-      console.log('CLOSED', filter.value.isShow)
     }
     const getItems = async () => {
       loading.value = true
