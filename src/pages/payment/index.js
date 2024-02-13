@@ -1055,7 +1055,7 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      alias: 'o.name',
+      alias: 'pb.fio',
       value: 'bank_fio',
       search: {
         field: '',
