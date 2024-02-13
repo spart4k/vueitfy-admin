@@ -48,7 +48,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'sz.name',
+      aliasFilter: 'z.status',
     }),
     selectField({
       label: 'Направление',
@@ -67,7 +67,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'dir.name',
+      aliasFilter: 'z.direction_id',
     }),
     autocompleteField({
       label: 'Создал',
@@ -89,7 +89,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'sac.name',
+      aliasFilter: 'z.from_account_id',
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -111,7 +111,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'sz.personal_id',
+      aliasFilter: 'z.personal_id',
     }),
     autocompleteField({
       label: 'Объект',
@@ -133,7 +133,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'sz.object_id',
+      aliasFilter: 'z.object_id',
     }),
     autocompleteField({
       label: 'Аккаунт',
@@ -155,7 +155,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'sz.account_id',
+      aliasFilter: 'z.account_id',
     }),
     selectField({
       label: 'Категория',
@@ -174,7 +174,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'rc.name',
+      aliasFilter: 'z.rashod_category_id',
     }),
     selectField({
       label: 'Тип оплаты',
@@ -193,7 +193,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'sz.payment_type',
+      aliasFilter: 'z.payment_type',
     }),
     checkboxField({
       label: 'ВДС',
