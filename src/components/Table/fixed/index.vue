@@ -423,13 +423,11 @@
     <v-contextmenu :options="contextmenu" />
     <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">
-        <keep-alive>
-          <TableFilter
-            @closeFilter="closeFilter"
-            @saveFilter="saveFilter"
-            :filtersConfig="filters"
-          />
-        </keep-alive>
+        <TableFilter
+          @closeFilter="closeFilter"
+          @saveFilter="saveFilter"
+          :filtersConfig="filters"
+        />
       </Sheet>
     </portal>
   </div>

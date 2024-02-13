@@ -15,7 +15,7 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="activeTab">
-      <v-tab-item v-for="item in object.tabs" :key="item.options.title">
+      <v-tab-item v-for="item in object.tabs" :key="item.options">
         <component
           :is="item.type"
           @changeheadershow="changeheadershow"
