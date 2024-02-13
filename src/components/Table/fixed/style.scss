@@ -2,6 +2,7 @@ $paddingCell: 5px;
 $borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 100px;
 $tableFooterHeight: 85px;
+
 .v {
   &-table {
     margin: 10px 10px 30px 10px;
@@ -95,6 +96,15 @@ $tableFooterHeight: 85px;
             }
             &__search {
               //margin-top: 5px;
+              min-width: 245px;
+              max-width: 245px;
+              position: absolute;
+              padding: 15px;
+              background-color: var(--v-pageBackground-base);
+              border-radius: 7px;
+              border: 1px solid $borderColor;
+              box-shadow: 0px 4px 10px -4px rgba(34, 60, 80, 0.1);
+              z-index: 2;
             }
           }
           &--fixed {

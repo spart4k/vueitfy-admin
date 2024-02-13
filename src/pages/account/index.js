@@ -695,10 +695,19 @@ const config = {
           isShow: true,
           width: '150',
           value: 'comment',
-          alias: 'sa.comment',
+          alias: 'p.comment',
           search: {
             field: '',
             isShow: true,
+          },
+        },
+        {
+          title: 'Действия',
+          type: 'actions',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'right',
           },
         },
         // {
