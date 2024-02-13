@@ -400,6 +400,8 @@ const config = {
       alias: 'p.personal_name',
       value: 'personal_name',
       changeable: true,
+      routeParam: 'personal_id',
+      // route
       fixed: {
         value: true,
         position: 'left',
