@@ -316,6 +316,16 @@ const routes = [
         path: '/pivot/:id',
         meta: {
           mode: ['edit'],
+          label: 'Назначение',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot-edit-personal',
+        path: '/pivot/:id',
+        meta: {
+          mode: ['edit-personal'],
+          label: 'Персонал',
         },
         component: Detail,
       },
