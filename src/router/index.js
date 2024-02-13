@@ -304,6 +304,14 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'pivot-profit',
+        path: '/pivot/profit',
+        meta: {
+          mode: ['profit'],
+        },
+        component: Detail,
+      },
+      {
         name: 'pivot/:id',
         path: ':id',
         component: Detail,

@@ -3,7 +3,8 @@ version: '2'
 services:
   web:
     build: .
-    command: npm run build
+    command:
+      npm run build
       # - npm run serve
     container_name: Front-node
     volumes:
