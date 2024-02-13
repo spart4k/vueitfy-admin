@@ -8,7 +8,7 @@ const filters = {
   detail: false,
   isFilter: true,
   lists: [
-    { alias: 'accounts', filter: [] },
+    { alias: 'managers', filter: [] },
     { alias: 'personal_status_id', filter: [] },
     { alias: 'critical_document', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
@@ -39,7 +39,7 @@ const filters = {
     selectField({
       label: 'Менеджеры',
       name: 'account_id',
-      alias: 'accounts',
+      alias: 'managers',
       subtype: 'array',
       placeholder: '',
       class: [''],
