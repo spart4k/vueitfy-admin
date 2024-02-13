@@ -114,7 +114,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'pt.vertical',
+      aliasFilter: 'pt.manager',
     }),
     autocompleteField({
       label: 'Объект',
