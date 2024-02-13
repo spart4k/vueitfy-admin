@@ -56,6 +56,7 @@ export default {
     //const value = ref([]
     const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
+      // dropzone.value.removeAllFiles()
       console.log(files)
       if (props.options.withoutSave) {
         await loadFile(files)
@@ -113,6 +114,8 @@ export default {
         let url = proxyVal.value
         //url = 'https://personal-crm.ru' + url
         url = process.env.VUE_APP_STORE + url
+        console.log(url, 'STORE')
+        // alert(url, 'STORE')
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
 

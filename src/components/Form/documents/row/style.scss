@@ -1,8 +1,31 @@
 .document {
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  padding-bottom: 10px;
+  // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 20px;
   &-fields {
     padding: 0;
+  }
+  &-scan {
+    width: 100%;
+    &-preview {
+      position: relative;
+      width: 100%;
+      &-panel {
+        // position: absolute;
+        right: 10px;
+        top: 10px;
+        color: red;
+        padding: 5px;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 5px;
+        width: 100%;
+        &__icon {
+        }
+      }
+      img {
+        width: 100%;
+      }
+    }
   }
   &:not(:last-child) {
     margin-bottom: 5px;
