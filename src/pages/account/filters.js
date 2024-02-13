@@ -13,7 +13,7 @@ const filters = {
       filter: [],
     },
     {
-      alias: 'permission_name',
+      alias: 'permissions_account',
       filter: [],
     },
   ],
@@ -41,7 +41,7 @@ const filters = {
     }),
     selectField({
       label: 'Роль',
-      name: 'permission_name',
+      name: 'permissions_account',
       subtype: 'single',
       placeholder: '',
       class: [''],
