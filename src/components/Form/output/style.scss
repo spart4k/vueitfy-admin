@@ -9,3 +9,7 @@
 .current {
   color: var(--v-text-base);
 }
+
+.firstLoad {
+  transition-duration: 0.1ms;
+}
