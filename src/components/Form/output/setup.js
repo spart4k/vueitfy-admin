@@ -1,4 +1,11 @@
-import Vue, { computed, ref, onMounted, watch, onUnmounted } from 'vue'
+import Vue, {
+  nextTick,
+  computed,
+  ref,
+  onMounted,
+  watch,
+  onUnmounted,
+} from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/Autocomplete'
 import FormDefault from '@/components/Form/default/index.vue'
@@ -10,6 +17,7 @@ import DropZone from '@/components/Dropzone/default/index.vue'
 import Datetimepicker from '@/components/Date/Datetimepicker/index.vue'
 import ColorPicker from '@/components/Colorpicker/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
+import moment from 'moment'
 
 import _ from 'lodash'
 
@@ -61,6 +69,8 @@ export default {
       count: 0,
       showForm: true,
       errors: [],
+      targets: {},
+      firstLoad: true,
       items: [
         {
           name: 'Загрузка',
@@ -75,6 +85,10 @@ export default {
           value: 0,
         },
       ],
+    })
+    const list = ref({
+      service: [],
+      personal: [],
     })
     const confirm = ref({
       isShow: false,
@@ -142,7 +156,13 @@ export default {
 
     const { makeRequest: makeRequestList } = useRequest({
       context,
-      request: (data) => store.dispatch('list/get', data),
+      request: async (data) => {
+        console.log('data', data)
+        const response = await store.dispatch('list/get', data)
+        if (response.data.service_spr)
+          list.value.service = response.data.service_spr
+        return response
+      },
     })
 
     const { makeRequest: createForm } = useRequest({
@@ -159,6 +179,7 @@ export default {
         stage.value.outputId = data.parser_id
         stage.value.showForm = false
         stage.value.errors = data.errors
+        stage.value.targets = data.targets
         setOutputData(data.data)
         return data
       },
@@ -188,7 +209,13 @@ export default {
       if (stage.value.value) {
         stage.value.showForm = false
         stage.value.errors = response.errors
+        stage.value.targets = response.targets
         setOutputData(response.data)
+        if (stage.value.value === 2 && !list.value.personal.length) {
+          getPersonal()
+        }
+      } else {
+        stage.value.firstLoad = false
       }
     }
 
@@ -218,6 +245,22 @@ export default {
           },
         },
       })
+      if (stage.value.value === 2 && !list.value.personal.length) {
+        getPersonal()
+      }
+    }
+
+    const getPersonal = async () => {
+      const requestList = Object.keys(stage.value.targets).map((item) => {
+        return +item
+      })
+      const responseData = await makeRequestList([
+        {
+          alias: 'parser_personal_id',
+          filter: [{ alias: 'personal_id', value: requestList }],
+        },
+      ])
+      list.value.personal = responseData.data.parser_personal_id
     }
 
     const loadParser = async () => {
@@ -260,36 +303,35 @@ export default {
       confirm.value.isShow = false
     }
 
+    const equateStages = (val) => {
+      let nextStage = 1
+      if (stage.value.value < val) nextStage = -1
+      stage.value.items[val].value = nextStage > 0 ? 100 : 0
+      stageRef.value[val].children[1].ontransitionend = () => {
+        stage.value.items[val + nextStage].value = 50
+      }
+      stageRef.value[val + nextStage].children[1].ontransitionend = () => {
+        if (val + nextStage !== stage.value.value) equateStages(val + nextStage)
+        else if (stage.value.firstLoad) stage.value.firstLoad = false
+      }
+    }
+
+    const convertData = (val) => {
+      return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
+    }
+
+    const getPersonalName = (val) => {
+      return list.value.personal.find((x) => x.id === +val)?.name
+    }
+
+    const getFinalSum = (val) => {
+      return val.reduce((acc, item) => acc + item.sum, 0)
+    }
+
     watch(
       () => stage.value.value,
       (newVal, oldVal) => {
-        if (newVal > oldVal) {
-          stage.value.items[stage.value.value - 1].value = 100
-          stageRef.value[stage.value.value - 1].children[1].ontransitionend =
-            () => {
-              stage.value.items[stage.value.value].value = 50
-            }
-        } else {
-          stage.value.items[stage.value.value + 1].value = 0
-          stageRef.value[stage.value.value + 1].children[1].ontransitionend =
-            () => {
-              stage.value.items[stage.value.value].value = 50
-            }
-        }
-        // console.log('oldVal', oldVal)
-        // console.log('newVal', newVal)
-        // const changeVal = (val) => {
-        //   if (newVal > oldVal) val++
-        //   else val--
-        //   return val
-        // }
-        // for (let i = oldVal; i !== newVal; i = changeVal(i)) {
-        //   console.log('i', i)
-        //   stage.value.items[i].value = 100
-        //   stageRef.value[i].children[1].ontransitionend = () => {
-        //     continue
-        //   }
-        // }
+        equateStages(oldVal)
       }
     )
 
@@ -360,6 +402,10 @@ export default {
       buttonHandler,
       subButtons,
       changeStage,
+      convertData,
+      list,
+      getPersonalName,
+      getFinalSum,
     }
   },
 }

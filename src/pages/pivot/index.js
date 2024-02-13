@@ -443,6 +443,7 @@ const config = {
         lists: [
           { alias: 'type_parser', filter: [] },
           { alias: 'parser_objects', filter: [] },
+          { alias: 'service_spr', filter: [] },
         ],
         fields: [
           selectField({

@@ -308,6 +308,7 @@ const routes = [
         path: '/pivot/profit',
         meta: {
           mode: ['profit'],
+          label: 'Начислить',
         },
         component: Detail,
       },
