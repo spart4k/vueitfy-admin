@@ -2641,7 +2641,7 @@ export const fieldsDocumentDefaultForm = [
   },
 ]
 
-const defaultForm = [
+export const defaultForm = [
   {
     id: 0,
     path: 'edit',
@@ -5035,3 +5035,5 @@ export const config = {
     },
   ],
 }
+
+// export default { config, defaultForm }
