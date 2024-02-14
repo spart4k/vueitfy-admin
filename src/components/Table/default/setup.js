@@ -641,9 +641,10 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
+        console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
           //console.log(headerEl.previousElementSibling.offsetWidth)
-          acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
+          acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
         }, 0)
       })
       //wrapingRow()

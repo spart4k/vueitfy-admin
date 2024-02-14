@@ -17,13 +17,15 @@ import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
 import { fieldsBaseDefaulrForm as personalFields } from '@/pages/personal/index.js'
 import { objectEditField as objectFields } from '@/pages/object/index.js'
 import { defaultForm as personalConfig } from '@/pages/personal/index'
+import { defaultForm as objectConfig } from '@/pages/object/index.js'
 console.log(personalConfig, 'personalForm')
+import _ from 'lodash'
 
-const changeActionTo = (array, key) => {
+const changeActionTo = (array, key, oldPath, newPath) => {
   console.log('changeActionTo')
   array.forEach((tab) => {
-    if (tab.path === 'edit') {
-      tab.path = 'edit-personal'
+    if (tab.path === oldPath) {
+      tab.path = newPath
     }
     if (tab.actions) {
       tab.actions.forEach((el) => {
@@ -35,7 +37,11 @@ const changeActionTo = (array, key) => {
   })
 }
 
-changeActionTo(personalConfig, 'pivot')
+const personalConfigForms = _.cloneDeep(personalConfig)
+const objectConfigForm = _.cloneDeep(objectConfig)
+
+changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
+changeActionTo(objectConfigForm, 'pivot', 'edit', 'edit-object')
 
 function consoleText(row) {
   console.log(row, 2)
@@ -832,130 +838,6 @@ const config = {
         ],
         formData: {},
       },
-      {
-        id: 4,
-        path: 'edit-personal',
-        name: 'Персонал',
-        type: FormDefault,
-        detail: true,
-        lists: [
-          { alias: 'user_keys', filter: [] },
-          { alias: 'habitation_id', filter: [] },
-          { alias: 'account_id', filter: [] },
-          { alias: 'direction_id', filter: [] },
-          { alias: 'grajdanstvo_id', filter: [] },
-          {
-            alias: 'objects_personal',
-            filter: [
-              {
-                field: 'object_id',
-                alias: 'personal_id',
-                value: '',
-                source: '+route.params.id',
-                type: 'num',
-              },
-            ],
-          },
-        ],
-        alias: 'personal',
-        active: false,
-        fields: personalFields,
-        actions: [
-          stringAction({
-            text: 'Закрыть',
-            type: 'submit',
-            color: 'textDefault',
-            name: 'closePopup',
-            action: 'closePopup',
-            to: 'pivot',
-            skipValidation: true,
-          }),
-          stringAction({
-            text: 'Сохранить',
-            type: 'submit',
-            module: 'form/putForm',
-            name: 'saveFormId',
-            url: 'update/personal',
-            action: 'saveFormId',
-            color: 'primary',
-          }),
-        ],
-      },
-      {
-        id: 5,
-        name: 'Основные',
-        type: FormDefault,
-        detail: true,
-        path: 'edit-object',
-        lists: [
-          {
-            alias: 'direction_object',
-            filter: [],
-          },
-          {
-            alias: 'type',
-            filter: [],
-          },
-          {
-            alias: 'object_type',
-            filter: [
-              {
-                field: 'direction_json',
-                source: 'formData',
-                type: 'array',
-              },
-            ],
-          },
-          {
-            alias: 'object_subtype',
-            filter: [
-              {
-                field: 'type',
-                source: 'formData',
-                type: 'num',
-              },
-            ],
-          },
-          {
-            alias: 'filial_id',
-            filter: [],
-          },
-          {
-            alias: 'city_id',
-            filter: [
-              {
-                field: 'regions_id',
-                value: '',
-                source: 'formData',
-                type: 'num',
-              },
-            ],
-          },
-        ],
-        alias: 'object',
-        active: false,
-        fields: objectFields,
-        actions: [
-          stringAction({
-            text: 'Закрыть',
-            type: 'submit',
-            color: 'textDefault',
-            name: 'closePopup',
-            action: 'closePopup',
-            to: 'pivot',
-            skipValidation: true,
-          }),
-          stringAction({
-            text: 'Сохранить',
-            type: 'submit',
-            module: 'form/putForm',
-            name: 'saveFormId',
-            url: 'set/object',
-            action: 'saveFormId',
-            color: 'primary',
-          }),
-        ],
-      },
       // {
       //   id: 2,
       //   name: 'Расход',
@@ -963,7 +845,8 @@ const config = {
       //   active: false,
       //   config: consumptionConfig,
       // },
-      ...personalConfig,
+      ...objectConfigForm,
+      ...personalConfigForms,
     ],
     activeTab: null,
   },
