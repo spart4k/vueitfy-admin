@@ -906,7 +906,7 @@ const config = {
       isShow: true,
       width: '150',
       value: 'date_add',
-      alias: 'p.date_target',
+      alias: 'p.date_add',
       search: {
         field: '',
         isShow: true,
@@ -931,7 +931,7 @@ const config = {
       isShow: true,
       width: '150',
       value: 'date_status',
-      alias: 'p.date_target',
+      alias: 'p.date_status',
       search: {
         field: '',
         isShow: true,
