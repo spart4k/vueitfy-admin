@@ -216,6 +216,7 @@ export default {
     autocompleteField({
       label: 'Объект',
       name: 'object_id',
+      typeFilter: 'select',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -291,6 +292,7 @@ export default {
     autocompleteField({
       label: 'Персонал',
       name: 'personal_id',
+      typeFilter: 'select',
       subtype: 'single',
       placeholder: '',
       class: [''],

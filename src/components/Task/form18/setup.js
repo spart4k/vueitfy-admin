@@ -194,7 +194,12 @@ const Form18 = defineComponent({
         context,
         request: () => {
           console.log('useRequest 144')
-          const totalResult = total.replaceAll(',', '.')
+          let totalResult
+          if (data.entity.direction_id === 6) {
+            totalResult = total.replaceAll(',', '.')
+          } else {
+            totalResult = total
+          }
           return store.dispatch('taskModule/setDataPayment', {
             data: {
               account_id: data.entity.manager,

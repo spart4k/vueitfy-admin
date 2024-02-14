@@ -980,7 +980,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 'sa.name',
       value: 'account_name',
       search: {
         field: '',
@@ -1005,7 +1005,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 'dir.name',
       value: 'direction_name',
       search: {
         field: '',
@@ -1055,7 +1055,7 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      alias: 'o.name',
+      alias: 'pb.fio',
       value: 'bank_fio',
       search: {
         field: '',
@@ -1130,7 +1130,7 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      alias: 'd.name',
+      alias: 'b.name',
       value: 'bank_name',
       search: {
         field: '',
@@ -1205,7 +1205,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 's.name',
       value: 'status_name',
       backgroundColorKey: 'status_color',
       search: {
@@ -1231,7 +1231,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 'p.comment',
       value: 'comment',
       search: {
         field: '',
