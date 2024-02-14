@@ -67,7 +67,7 @@
                 v-show="head.isShow"
                 :id="head.value + '-table-header'"
                 class="v-table-header-row-cell"
-                v-for="(head, index) in options.head"
+                v-for="(head, index) in proxyOptions"
                 :key="index"
               >
                 <div class="v-table-header-row-cell-wrap">
