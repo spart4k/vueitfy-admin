@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch } from 'vue'
+import Vue, { onMounted, ref, computed, watch, toRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 
@@ -60,6 +60,11 @@ const table = {
       default: '',
     },
   },
+  methods: {
+    update() {
+      this.$forceUpdate()
+    },
+  },
   setup(props, ctx) {
     const { emit } = ctx
     const router = useRouter()
@@ -71,7 +76,7 @@ const table = {
     const isMobile = useMobile()
     const { generalConfig } = useTable(props.options)
     const options = generalConfig()
-
+    const proxyOptions = toRef(options, 'head')
     const detail = ref(options?.detail)
     const filters = ref(options?.filters)
     const lastSelected = ref({
@@ -192,12 +197,14 @@ const table = {
     const clearField = () => {
       Vue.set(this, 'searchField', '')
     }
-    const openSort = (head) => {
-      if (head.sorts) {
-        head.sorts[0].isShow = !head.sorts[0].isShow
-      }
+    function openSort(head) {
+      proxyOptions.value.forEach((el, id) => {
+        if (head.title === el.title) el.sorts[0].isShow = !el.sorts[0].isShow
+      })
+      this.update()
     }
     const sortRow = (head) => {
+      console.log('SORTED')
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {
@@ -531,12 +538,11 @@ const table = {
       }
     }
 
-    const closePopupForm = (route) => {
-      console.log('routerouteroute', route)
-      if (route) router.push({ name: route })
-      else router.back()
+    const closePopupForm = () => {
+      router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
+
     const addItem = () => {
       if (options.detail.type === 'popup') {
         //router.push({
@@ -793,6 +799,7 @@ const table = {
       pagination,
       filter,
       isMobile,
+      proxyOptions,
       // METHODS
 
       addBackgroundClass,

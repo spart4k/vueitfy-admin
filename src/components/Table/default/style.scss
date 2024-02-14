@@ -32,6 +32,7 @@ $tableFooterHeight: 85px;
               display: flex;
               align-items: center;
               &-icon {
+                // TODO: СТРЕЛКА
                 &.asc {
                   color: yellow;
                   .asc {
@@ -61,11 +62,12 @@ $tableFooterHeight: 85px;
               user-select: none;
 
               &__icon {
-                width: 15px;
-                height: 15px;
-                //margin-right: 5px;
-                color: rgba(0, 0, 0, 0.1);
-                transition: 0.2s;
+                transform: scale(0.7);
+                width: 22px;
+                height: 22px;
+                margin-right: 8px;
+                color: rgba(0, 0, 0, 0.15);
+                transition: transform 0.3s ease;
                 path {
                   fill: red;
                 }
@@ -93,10 +95,10 @@ $tableFooterHeight: 85px;
             }
             &__search {
               //margin-top: 5px;
-              min-width: 245px;
+              min-width: 160px;
               max-width: 245px;
               padding: 15px;
-            position: absolute;
+              position: absolute;
               background-color: var(--v-pageBackground-base);
               border-radius: 7px;
               border: 1px solid $borderColor;
