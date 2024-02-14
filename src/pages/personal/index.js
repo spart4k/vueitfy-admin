@@ -4033,7 +4033,7 @@ export const config = {
           type: 'default',
           align: 'center',
           fixed: {
-            value: true,
+            value: false,
             position: 'left',
           },
           sorts: [
@@ -4927,8 +4927,8 @@ export const config = {
                     source: 'formData',
                     type: 'num',
                   },
-                ]
-              }
+                ],
+              },
             ],
             fields: [
               autocompleteField({
@@ -5031,7 +5031,7 @@ export const config = {
         ],
         activeTab: null,
       },
-      filters: filtersKey
+      filters: filtersKey,
     },
   ],
 }
