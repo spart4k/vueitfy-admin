@@ -67,7 +67,7 @@
                 v-show="head.isShow"
                 :id="head.value + '-table-header'"
                 class="v-table-header-row-cell"
-                v-for="(head, index) in options.head"
+                v-for="(head, index) in proxyOptions"
                 :key="index"
               >
                 <div class="v-table-header-row-cell-wrap">
@@ -83,19 +83,21 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <vIconSort
-                      v-if="
-                        head.sorts &&
-                        head.sorts.length &&
-                        paramsQuery.sorts.length
-                      "
-                      class="v-table-header-row-cell-wrap__sort-icon mr-1"
-                      :state="
-                        paramsQuery.sorts.find((el) => el.field === head.value)
-                          .value
-                      "
-                      @click="sortRow(head)"
-                    />
+                    <div v-on:click="sortRow(head)">
+                      <vIconSort
+                        v-if="
+                          head.sorts &&
+                          head.sorts.length &&
+                          paramsQuery.sorts.length
+                        "
+                        class="v-table-header-row-cell-wrap__sort-icon"
+                        :state="
+                          paramsQuery.sorts.find(
+                            (el) => el.field === head.value
+                          ).value
+                        "
+                      />
+                    </div>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <div v-bind="attrs" v-on="on">
