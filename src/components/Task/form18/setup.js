@@ -49,7 +49,9 @@ const Form18 = defineComponent({
         router,
       },
     }
-    const dateTarget = moment(data.entity.date_target).format('DD.MM.YYYY')
+    const dateTarget = moment(data.entity.date_target, 'YYYY-MM-DD').format(
+      'DD.MM.YYYY'
+    )
     const textInfo = {
       obj: {
         key: 'Объект',
@@ -192,6 +194,12 @@ const Form18 = defineComponent({
         context,
         request: () => {
           console.log('useRequest 144')
+          let totalResult
+          if (data.entity.direction_id === 6) {
+            totalResult = total.replaceAll(',', '.')
+          } else {
+            totalResult = total
+          }
           return store.dispatch('taskModule/setDataPayment', {
             data: {
               account_id: data.entity.manager,
@@ -204,7 +212,7 @@ const Form18 = defineComponent({
               object_id: data.entity.object_id,
               bank_id: data.data.rek.bank_id,
               invoice: data.data.rek.invoice,
-              total: total,
+              total: +totalResult,
               fio: data.data.rek.fio,
               doljnost_id: data.entity.doljnost_id,
               date_target: data.entity.date_target,

@@ -19,7 +19,7 @@ export default {
     { alias: 'status_id', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'st_rashod_id', filter: [] },
-    { alias: 'payment_account_id', filter: [] },
+    { alias: 'managers', filter: [] },
     { alias: 'bank_id', filter: [] },
     { alias: 'bank_id', filter: [] },
     { alias: 'doljnost_id', filter: [] },
@@ -135,7 +135,7 @@ export default {
     selectField({
       label: 'Менеджеры',
       name: 'account_id',
-      alias: 'payment_account_id',
+      alias: 'managers',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -150,42 +150,32 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.account_id',
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'object_id',
-          filter: [
-            {
-              field: 'direction_id',
-              value: '',
-            },
-            {
-              field: 'account_id',
-              value: '',
-            },
-          ],
-          url: 'get/pagination_list/payment_object_id',
-        },
-        // {
-        //   type: 'api',
-        //   module: 'selects/getListUpdate',
-        //   field: 'object_id',
-        //   //filter: [
-        //   //  {
-        //   //    field: 'direction_id',
-        //   //    value: '',
-        //   //  },
-        //   //],
-        //   condition: [
-        //     {
-        //       field: 'direction_id',
-        //       value: [1],
-        //     },
-        //   ],
-        //   url: 'get/pagination_list/object',
-        // },
-      ],
+      // dependence: [
+      //   // {
+      //   //   type: 'api',
+      //   //   module: 'selects/getListUpdate',
+      //   //   field: 'object_id',
+      //   //   url: 'get/pagination_list/object',
+      //   // },
+      //   // {
+      //   //   type: 'api',
+      //   //   module: 'selects/getListUpdate',
+      //   //   field: 'object_id',
+      //   //   //filter: [
+      //   //   //  {
+      //   //   //    field: 'direction_id',
+      //   //   //    value: '',
+      //   //   //  },
+      //   //   //],
+      //   //   condition: [
+      //   //     {
+      //   //       field: 'direction_id',
+      //   //       value: [1],
+      //   //     },
+      //   //   ],
+      //   //   url: 'get/pagination_list/object',
+      //   // },
+      // ],
     }),
     selectField({
       label: 'Направления',
@@ -204,46 +194,29 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.direction_id',
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'object_id',
-          filter: [
-            {
-              field: 'direction_id',
-              value: '',
-            },
-            {
-              field: 'account_id',
-              value: '',
-            },
-          ],
-          url: 'get/pagination_list/payment_object_id',
-        },
-        // {
-        //   type: 'api',
-        //   module: 'selects/getListUpdate',
-        //   field: 'object_id',
-        //   //filter: [
-        //   //  {
-        //   //    field: 'direction_id',
-        //   //    value: '',
-        //   //  },
-        //   //],
-        //   condition: [
-        //     {
-        //       field: 'direction_id',
-        //       value: [1],
-        //     },
-        //   ],
-        //   url: 'get/pagination_list/object',
-        // },
-      ],
+      // dependence: [
+      //   {
+      //     type: 'api',
+      //     module: 'selects/getListUpdate',
+      //     field: 'object_id',
+      //     filter: [
+      //       {
+      //         field: 'direction_id',
+      //         value: '',
+      //       },
+      //       {
+      //         field: 'account_id',
+      //         value: '',
+      //       },
+      //     ],
+      //     url: 'get/pagination_list/object',
+      //   },
+      // ],
     }),
     autocompleteField({
       label: 'Объект',
       name: 'object_id',
+      typeFilter: 'select',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -254,71 +227,72 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/payment_object_id',
+      url: 'get/pagination_list/object',
       position: {
         cols: 12,
         sm: 12,
       },
       bootstrapClass: [''],
       aliasFilter: 'p.object_id',
-      filter: [
-        {
-          field: 'account_id',
-          // source: 'formData',
-          type: 'array',
-          value: '',
-        },
-        {
-          field: 'direction_id',
-          // source: 'formData',
-          type: 'array',
-          value: '',
-        },
-      ],
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'personal_id',
-          filter: [
-            {
-              field: 'direction_id',
-              value: '',
-            },
-            {
-              field: 'account_id',
-              value: '',
-            },
-            {
-              field: 'object_id',
-              value: '',
-            },
-          ],
-          url: 'get/pagination_list/payment_personal_id',
-        },
-        // {
-        //   type: 'api',
-        //   module: 'selects/getListUpdate',
-        //   field: 'object_id',
-        //   //filter: [
-        //   //  {
-        //   //    field: 'direction_id',
-        //   //    value: '',
-        //   //  },
-        //   //],
-        //   condition: [
-        //     {
-        //       field: 'direction_id',
-        //       value: [1],
-        //     },
-        //   ],
-        //   url: 'get/pagination_list/object',
-        // },
-      ],
+      // filter: [
+      //   {
+      //     field: 'account_id',
+      //     // source: 'formData',
+      //     type: 'array',
+      //     value: '',
+      //   },
+      //   {
+      //     field: 'direction_id',
+      //     // source: 'formData',
+      //     type: 'array',
+      //     value: '',
+      //   },
+      // ],
+      // dependence: [
+      //   {
+      //     type: 'api',
+      //     module: 'selects/getListUpdate',
+      //     field: 'personal_id',
+      //     filter: [
+      //       {
+      //         field: 'direction_id',
+      //         value: '',
+      //       },
+      //       {
+      //         field: 'account_id',
+      //         value: '',
+      //       },
+      //       {
+      //         field: 'object_id',
+      //         value: '',
+      //       },
+      //     ],
+      //     url: 'get/pagination_list/payment_personal_id',
+      //   },
+      //   // {
+      //   //   type: 'api',
+      //   //   module: 'selects/getListUpdate',
+      //   //   field: 'object_id',
+      //   //   //filter: [
+      //   //   //  {
+      //   //   //    field: 'direction_id',
+      //   //   //    value: '',
+      //   //   //  },
+      //   //   //],
+      //   //   condition: [
+      //   //     {
+      //   //       field: 'direction_id',
+      //   //       value: [1],
+      //   //     },
+      //   //   ],
+      //   //   url: 'get/pagination_list/object',
+      //   // },
+      // ],
     }),
     autocompleteField({
       label: 'Персонал',
       name: 'personal_id',
+      typeFilter: 'select',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -329,27 +303,27 @@ export default {
       items: [],
       page: 1,
       search: '',
-      filter: [
-        {
-          field: 'account_id',
-          // source: 'formData',
-          type: 'array',
-          value: '',
-        },
-        {
-          field: 'direction_id',
-          // source: 'formData',
-          type: 'array',
-          value: '',
-        },
-        {
-          field: 'object_id',
-          // source: 'formData',
-          type: 'array',
-          value: '',
-        },
-      ],
-      url: 'get/pagination_list/payment_personal_id',
+      // filter: [
+      //   {
+      //     field: 'account_id',
+      //     // source: 'formData',
+      //     type: 'array',
+      //     value: '',
+      //   },
+      //   {
+      //     field: 'direction_id',
+      //     // source: 'formData',
+      //     type: 'array',
+      //     value: '',
+      //   },
+      //   {
+      //     field: 'object_id',
+      //     // source: 'formData',
+      //     type: 'array',
+      //     value: '',
+      //   },
+      // ],
+      url: 'get/pagination_list/personals',
       position: {
         cols: 12,
         sm: 12,

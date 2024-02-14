@@ -493,6 +493,7 @@ const table = {
       if (props.options.detail.type === 'popup' && !cell.noAction) {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row
+        console.log('CELL', cell, dataCell)
         const hour = '11' //Рабочие часы
         const day = cell.value
         const month = currentDate.value.month
@@ -509,16 +510,26 @@ const table = {
           hour,
           date: formattedDate,
         }
-
+        console.log(dataCell.hasOwnProperty(day))
         if (dataCell.hasOwnProperty(day)) {
-          console.log('Ключ "pattern" существует в объекте regex')
-          porpsContent.id = dataCell[day][0].id
-          router.push({
-            name: `${route.name}-edit`,
-            params: {
-              id: porpsContent.id,
-            },
-          })
+          if (cell.routeParam) {
+            router.push({
+              name: cell.routeName,
+              params: {
+                id: row.row[cell.routeParam],
+              },
+            })
+            console.log('PARAMS', cell)
+          } else {
+            console.log('Ключ "pattern" существует в объекте regex')
+            porpsContent.id = dataCell[day][0].id
+            router.push({
+              name: `${route.name}-edit`,
+              params: {
+                id: porpsContent.id,
+              },
+            })
+          }
         } else {
           console.log('Ключ "pattern" не существует в объекте regex')
           if (routeKey) {
