@@ -470,6 +470,7 @@ const table = {
       })
     })
     const saveFilter = (filterData) => {
+      console.log('saveFilter', filterData)
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -477,15 +478,36 @@ const table = {
           return
         }
         el.value = filterData[el.name]
+        if (
+          el.type === 'dateRange' &&
+          filterData[el.name].every(
+            (el) =>
+              el === null ||
+              el === undefined ||
+              el === '' ||
+              el === '' ||
+              el === null ||
+              el === null
+          )
+        ) {
+          return
+        }
+        let type = el.typeFilter ? el.typeFilter : el.type
+        type = type === 'autocomplete' ? 'select' : type
+        type = type === 'dateRange' && 'date'
+        type = type === 'datetime' ? 'date' : type
+        console.log('filterData', filterData)
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          alias: el.alias,
-          type: el.type,
+          alias: el.aliasFilter,
+          // alias: el.name,
+          type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
         filtersColumns.value.push(obj)
       })
+      paramsQuery.value.currentPage = 1
       getItems()
     }
 
