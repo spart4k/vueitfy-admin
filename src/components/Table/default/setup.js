@@ -538,12 +538,11 @@ const table = {
       }
     }
 
-    const closePopupForm = (route) => {
-      console.log('routerouteroute', route)
-      if (route) router.push({ name: route })
-      else router.back()
+    const closePopupForm = () => {
+      router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
+
     const addItem = () => {
       if (options.detail.type === 'popup') {
         //router.push({
@@ -648,9 +647,10 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
+        console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
           //console.log(headerEl.previousElementSibling.offsetWidth)
-          acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
+          acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
         }, 0)
       })
       //wrapingRow()
