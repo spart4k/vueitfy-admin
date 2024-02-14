@@ -15,6 +15,14 @@ const auth = {
   state: {
     popup: [],
   },
+  mutations: {
+    openPopup(state, component) {
+      state.popup.push(component)
+    },
+    closePopup(state) {
+      state.popup.pop()
+    },
+  },
   actions: {
     async get(_, { url, data }) {
       const result = await getList(url, data)
