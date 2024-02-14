@@ -89,7 +89,7 @@
                         head.sorts.length &&
                         paramsQuery.sorts.length
                       "
-                      class="v-table-header-row-cell-wrap__sort-icon mr-1"
+                      class="v-table-header-row-cell-wrap__sort-icon"
                       :state="
                         paramsQuery.sorts.find((el) => el.field === head.value)
                           .value

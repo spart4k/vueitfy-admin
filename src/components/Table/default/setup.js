@@ -640,7 +640,6 @@ const table = {
         if (!id) return
         const headCell = options.head.find((head) => head.value === id)
         const { width, x } = headerEl.getBoundingClientRect()
-        //FIXME: ИЗ-ЗА этого не происходить вызов tooltip в последней и предпоследней вкладке
         headerOptions.value.push({
           id,
           headCell,
