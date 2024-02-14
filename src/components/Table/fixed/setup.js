@@ -218,6 +218,7 @@ const table = {
     }
     const sortRow = (head) => {
       const { value } = head
+      console.log(head, paramsQuery.value.sorts)
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {
         paramsCol.value = 'asc'
@@ -320,6 +321,7 @@ const table = {
           sorts.push(el)
         }
       })
+      console.log(paramsQuery.value.sorts)
       paramsQuery.value.searchColumns.forEach((el) => {
         if (!el.value) {
           return
@@ -644,6 +646,9 @@ const table = {
         confirmPayment.value = true
       } else if (button.label === 'Обновить' || type === 'refresh') {
         await getItems()
+        if (button?.subtype === 'changeHeads') {
+          initHeadParams()
+        }
       }
     }
     const countingDistances = () => {

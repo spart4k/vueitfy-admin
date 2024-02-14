@@ -371,6 +371,7 @@ const config = {
         function: changeSort,
         backgroundColor: '#ffffff',
         type: 'refresh',
+        subtype: 'changeHeads',
       },
       {
         label: 'Аванс',
