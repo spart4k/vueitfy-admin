@@ -16,6 +16,26 @@ import FormTarget from '@/components/Form/target/default/index.vue'
 import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
 import { fieldsBaseDefaulrForm as personalFields } from '@/pages/personal/index.js'
 import { objectEditField as objectFields } from '@/pages/object/index.js'
+import { defaultForm as personalConfig } from '@/pages/personal/index'
+console.log(personalConfig, 'personalForm')
+
+const changeActionTo = (array, key) => {
+  console.log('changeActionTo')
+  array.forEach((tab) => {
+    if (tab.path === 'edit') {
+      tab.path = 'edit-personal'
+    }
+    if (tab.actions) {
+      tab.actions.forEach((el) => {
+        if (el.action === 'closePopup') {
+          el.to = key
+        }
+      })
+    }
+  })
+}
+
+changeActionTo(personalConfig, 'pivot')
 
 function consoleText(row) {
   console.log(row, 2)
@@ -943,6 +963,7 @@ const config = {
       //   active: false,
       //   config: consumptionConfig,
       // },
+      ...personalConfig,
     ],
     activeTab: null,
   },

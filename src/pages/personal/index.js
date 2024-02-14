@@ -2641,7 +2641,7 @@ export const fieldsDocumentDefaultForm = [
   },
 ]
 
-const defaultForm = [
+export const defaultForm = [
   {
     id: 0,
     path: 'edit',
@@ -4927,8 +4927,8 @@ export const config = {
                     source: 'formData',
                     type: 'num',
                   },
-                ]
-              }
+                ],
+              },
             ],
             fields: [
               autocompleteField({
@@ -5031,7 +5031,9 @@ export const config = {
         ],
         activeTab: null,
       },
-      filters: filtersKey
+      filters: filtersKey,
     },
   ],
 }
+
+// export default { config, defaultForm }
