@@ -204,6 +204,7 @@ const table = {
       this.update()
     }
     const sortRow = (head) => {
+      console.log('SORTED')
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {

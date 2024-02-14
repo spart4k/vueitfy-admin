@@ -83,19 +83,21 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <vIconSort
-                      v-if="
-                        head.sorts &&
-                        head.sorts.length &&
-                        paramsQuery.sorts.length
-                      "
-                      class="v-table-header-row-cell-wrap__sort-icon"
-                      :state="
-                        paramsQuery.sorts.find((el) => el.field === head.value)
-                          .value
-                      "
-                      @click="sortRow(head)"
-                    />
+                    <div v-on:click="sortRow(head)">
+                      <vIconSort
+                        v-if="
+                          head.sorts &&
+                          head.sorts.length &&
+                          paramsQuery.sorts.length
+                        "
+                        class="v-table-header-row-cell-wrap__sort-icon"
+                        :state="
+                          paramsQuery.sorts.find(
+                            (el) => el.field === head.value
+                          ).value
+                        "
+                      />
+                    </div>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <div v-bind="attrs" v-on="on">
