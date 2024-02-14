@@ -373,7 +373,7 @@ const config = {
       {
         label: 'Выработка',
         class: ['v-table-button--custom'],
-        url: 'pivot-add',
+        url: 'pivot-output',
         type: 'changeUrl',
         backgroundColor: '#fff',
       },
@@ -473,7 +473,7 @@ const config = {
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [
       {
-        path: 'add',
+        path: 'output',
         id: 1,
         name: 'Выработка X5',
         type: FormOutput,
