@@ -296,10 +296,11 @@ const routes = [
     component: PivotView,
     children: [
       {
-        name: 'pivot-add',
-        path: '/pivot/add',
+        name: 'pivot-output',
+        path: '/pivot/output',
         meta: {
-          mode: ['add'],
+          mode: ['output'],
+          label: 'Выработка',
         },
         component: Detail,
       },
