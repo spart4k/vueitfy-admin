@@ -537,12 +537,11 @@ const table = {
       }
     }
 
-    const closePopupForm = (route) => {
-      console.log('routerouteroute', route)
-      if (route) router.push({ name: route })
-      else router.back()
+    const closePopupForm = () => {
+      router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
+
     const addItem = () => {
       if (options.detail.type === 'popup') {
         //router.push({
