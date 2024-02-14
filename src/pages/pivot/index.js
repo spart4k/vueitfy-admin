@@ -40,7 +40,7 @@ function changeSort() {
   if (btn.label === 'Объекты') {
     btn.label = 'ФИО'
     heading.title = 'Объект'
-    heading.alias = 'p.object_name'
+    heading.alias = 'o.name'
     heading.value = 'object_name'
     heading.routeName = 'pivot-edit-object'
     heading.routeParam = 'object_id'
@@ -48,7 +48,7 @@ function changeSort() {
   } else if (btn.label === 'ФИО') {
     btn.label = 'Объекты'
     heading.title = 'ФИО'
-    heading.alias = 'p.personal_name'
+    heading.alias = 'p.name'
     heading.value = 'personal_name'
     heading.routeName = 'pivot-edit-personal'
     heading.routeParam = 'personal_id'
@@ -403,7 +403,7 @@ const config = {
       type: 'default',
       isShow: true,
       width: '200',
-      alias: 'p.personal_name',
+      alias: 'p.name',
       value: 'personal_name',
       changeable: true,
       // routeParam: 'personal_id',
