@@ -196,7 +196,8 @@ const Form18 = defineComponent({
           console.log('useRequest 144')
           let totalResult
           if (data.entity.direction_id === 6) {
-            totalResult = total.replaceAll(',', '.')
+            console.log(total)
+            totalResult = total.toString().replaceAll(',', '.')
           } else {
             totalResult = total
           }
