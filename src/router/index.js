@@ -282,6 +282,14 @@ const routes = [
           },
         ],
       },
+      {
+        name: 'personal/:key_id',
+        path: '/personal/:key_id',
+        meta: {
+          mode: ['edit-key'],
+        },
+        component: Detail,
+      },
     ],
   },
   {
