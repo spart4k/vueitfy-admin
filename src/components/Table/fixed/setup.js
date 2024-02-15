@@ -385,6 +385,9 @@ const table = {
           })
         })
         props.options.data.rows = structuredArray
+      } else {
+        props.options.data.totalPages = data.totalPage
+        paramsQuery.value.currentPage = data.totalPage
       }
       loading.value = false
       setTimeout(() => {

@@ -350,6 +350,10 @@ const table = {
       if (options.data.rows?.length && options.data.rows) {
         options.data.totalPages = data.totalPage
         options.data.totalRows = data.total
+        // paramsQuery.value.currentPage = 1
+        // console.log('AFTER COUNTS', paramsQuery.value.countRows)
+        // console.log('AFTER CURRENT', paramsQuery.value.currentPage)
+        // console.log('AFTER DATA', options.data)
         const structuredArray = []
         options.data.rows.forEach((row) => {
           if (options.options.selecting) {
@@ -364,6 +368,9 @@ const table = {
           })
         })
         options.data.rows = structuredArray
+      } else {
+        options.data.totalPages = data.totalPage
+        paramsQuery.value.currentPage = data.totalPage
       }
       loading.value = false
     }
