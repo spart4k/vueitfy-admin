@@ -5069,6 +5069,7 @@ export const config = {
                 label: 'Стажерская',
                 name: `is_stager`,
                 subtype: 'single',
+                toNumber: true,
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -5093,7 +5094,7 @@ export const config = {
               stringAction({
                 text: 'Сохранить',
                 type: 'submit',
-                module: 'form/putForm',
+                module: 'form/update',
                 name: 'saveForm',
                 url: 'set/data/user_keys',
                 action: 'saveForm',
