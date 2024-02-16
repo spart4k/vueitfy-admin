@@ -31,7 +31,7 @@ const filters = {
       label: 'Аккаунты',
       name: 'p.personal_accounts',
       alias: 'personal_accounts',
-      subtype: 'single',
+      subtype: 'array',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -44,7 +44,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.account_id',
+      aliasFilter: 'p.account_json',
     }),
     selectField({
       label: 'Направления',
@@ -77,7 +77,7 @@ const filters = {
       label: 'Объект',
       name: 'object_id',
       alias: 'p.object_id',
-      subtype: 'single',
+      subtype: 'array',
       placeholder: '',
       typeFilter: 'select',
       class: [''],

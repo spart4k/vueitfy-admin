@@ -1,31 +1,36 @@
-import Vue, { computed, ref, onMounted, watch, onUnmounted } from 'vue'
+import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/Autocomplete'
-import FormDefault from '@/components/Form/default/index.vue'
+
+import _ from 'lodash'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 //import useAutocomplete from '@/compositions/useAutocomplete'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import Datetimepicker from '@/components/Date/Datetimepicker/index.vue'
-import ColorPicker from '@/components/Colorpicker/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
-
-import _ from 'lodash'
-
+import ColorPicker from '@/components/Colorpicker/index.vue'
+import DateRange from '@/components/Date/Daterange/index.vue'
 import store from '@/store'
+import Output from '../output/default/index.vue'
 
 export default {
-  name: 'Form-Output',
+  name: 'Form-Default',
   components: {
     Datetimepicker,
     Autocomplete,
-    FormDefault,
     DropZone,
     ColorPicker,
+    DateRange,
     Datepicker,
+    Output,
   },
   props: {
+    content: {
+      type: Object,
+      default: () => {},
+    },
     tab: {
       type: Object,
       default: () => {},
@@ -40,13 +45,10 @@ export default {
     },
   },
   setup(props, ctx) {
-    const proxyTab = ref(_.cloneDeep(props.tab))
     const { emit } = ctx
     const route = useRoute()
     const router = useRouter()
     const autocompleteRef = ref(null)
-
-    // console.log('new URL', window.location.href)
     const context = {
       root: {
         store,
@@ -56,28 +58,35 @@ export default {
       },
     }
     const loading = ref(true)
-    const zayavkaFirstLoad = ref(true)
-    const stage = ref(null)
-    const { alias } = proxyTab.value
-    const dropzone = ref()
-    const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
+    const { alias } = props.tab
+    console.log(route.params)
+    const isEdit = computed(() => {
+      if (props.tab.routeParam) {
+        return route.params[props.tab.routeParam] ? 'edit' : 'add'
+        // return 'add'
+      } else {
+        return route.params.id ? 'edit' : 'add'
+      }
+    })
     const fields = () => {
       const fields = {}
-      proxyTab.value.fields.forEach((el) => {
+      props.tab.fields.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
+          // console.log('CONDITION TRUE', el.name)
           Vue.set(fields, el.name, {})
-        } else return
-        // if (el.name === 'vector') return
+        } else {
+          return
+        }
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
       return fields
     }
-    const params = proxyTab.value.lists
+    const params = props.tab.lists
     const data = params
     const getRequestParam = () => {
       if (props.detail?.requestId) {
@@ -88,12 +97,8 @@ export default {
     }
     const { makeRequest } = useRequest({
       context,
-      request: () => {
-        return store.dispatch(
-          'form/get',
-          `get/form/${alias}/${getRequestParam()}`
-        )
-      },
+      request: () =>
+        store.dispatch('form/get', `get/form/${alias}/${getRequestParam()}`),
     })
     const { makeRequest: makeRequestList } = useRequest({
       context,
@@ -101,13 +106,18 @@ export default {
     })
     const { makeRequest: changeForm } = useRequest({
       context,
-      successMessage: 'Сохранено',
+      successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log(+route.params.id)
+        console.log('changeForm3')
+        let routeParam
+        if (params.action.useRouteParam) {
+          routeParam = params.action.useRouteParam
+        } else {
+          routeParam = 'id'
+        }
         return store.dispatch(params.module, {
-          //url: `set/data/${alias}`,
           url: params.url,
-          body: { data: { id: +route.params.id, ...formData } },
+          body: { data: { id: +route.params[routeParam], ...params.formData } },
         })
       },
     })
@@ -115,10 +125,10 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('proxyTab.value', proxyTab.value)
+        console.log('changeForm2')
         let id
-        if (proxyTab.value.routeParam) {
-          id = route.params[proxyTab.value.routeParam]
+        if (props.tab.routeParam) {
+          id = route.params[props.tab.routeParam]
         } else {
           id = route.params.id
         }
@@ -130,28 +140,44 @@ export default {
     })
     const { makeRequest: createForm } = useRequest({
       context,
-      successMessage: 'Сохранено',
-      request: async (params) => {
-        const zayavka = await store.dispatch(params.module, {
+      successMessage: params?.successMessage === false ? false : 'Сохранено',
+      request: (params) => {
+        console.log('changeForm1', params)
+        console.log(formData, params)
+        return store.dispatch(params.module, {
           url: params.url,
-          body: { data: params.formData ? params.formData : formData },
+          body: {
+            data: params.formData ? params.formData : formData,
+          },
         })
-        if (route.meta.mode.length === 2) {
-          await store.dispatch('form/bindZayavka', {
-            body: { id: +route.params.id, dop: { rashod_id: zayavka.id } },
-          })
-          emit('refreshData')
-        }
-        return zayavka
       },
     })
 
-    onMounted(() => {})
-
-    onUnmounted(() => {
-      // proxyTab.value.fields = _.cloneDeep(proxyTab.value)
+    const { makeRequest: deleteFormById } = useRequest({
+      context,
+      successMessage: 'Удалено!',
+      request(params) {
+        console.log('params', params)
+        const req = store.dispatch(params.module, {
+          url: params.url,
+          id: route.params.id,
+        })
+        return req
+      },
     })
 
+    if (props.tab.hasOwnProperty('content')) {
+      props.tab.fields[0].items[0].id = props.content.account_id
+      props.tab.fields[0].items[0].name = props.content.account_name
+      props.tab.fields[0].value = props.content.account_id
+      props.tab.fields[2].value = Number(props.content.hour)
+      props.tab.fields[1].value = props.content.date
+      props.tab.fields[4].value = props.content.date.slice(0, -3)
+      if (props.content.id) {
+        props.tab.fields[6].value = props.content?.id
+      }
+    }
+    const hasOutput = computed(() => _.isEmpty(entityData.services))
     const {
       formData,
       validate,
@@ -168,12 +194,13 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
-      rebuildFormData,
       readonlyField,
+      refreshTable,
       isHideBtn,
-      getDependies,
+      colsField,
+      entityData,
     } = useForm({
-      form: proxyTab.value,
+      form: props.tab,
       context,
       detail: props.detail,
       loading,
@@ -185,12 +212,17 @@ export default {
       changeForm,
       mode: isEdit.value,
       createForm,
+      deleteFormById,
       changeFormId,
     })
+
     onMounted(async () => {
       await getData()
+      console.log(props.tab.routeParam)
     })
+
     return {
+      readonlyField,
       //endIntersect,
       formData,
       validate,
@@ -205,18 +237,18 @@ export default {
       changeAutocomplete,
       changeSelect,
       openMenu,
-      stage,
       clickHandler,
       isEdit,
       disabledField,
       hideField,
       addFiles,
       changeCheckbox,
-      readonlyField,
-      getDependies,
-      dropzone,
+      refreshTable,
       isHideBtn,
-      proxyTab,
+      route,
+      colsField,
+      entityData,
+      hasOutput,
     }
   },
 }

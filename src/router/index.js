@@ -296,15 +296,46 @@ const routes = [
     component: PivotView,
     children: [
       {
-        name: 'pivot/:id',
-        path: ':id',
-        component: Detail,
-      },
-      {
         name: 'pivot-add',
         path: '/pivot/add',
         meta: {
           mode: ['add'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot-profit',
+        path: '/pivot/profit',
+        meta: {
+          mode: ['profit'],
+          label: 'Начислить',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot-edit',
+        path: '/pivot/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Назначение',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot-edit-personal',
+        path: '/pivot/:id',
+        meta: {
+          mode: ['edit-personal'],
+          label: 'Персонал',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot-edit-object',
+        path: '/pivot/:id',
+        meta: {
+          mode: ['edit-object'],
+          label: 'Объект',
         },
         component: Detail,
       },

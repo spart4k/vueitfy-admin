@@ -218,6 +218,7 @@ const table = {
     }
     const sortRow = (head) => {
       const { value } = head
+      console.log(head, paramsQuery.value.sorts)
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {
         paramsCol.value = 'asc'
@@ -320,6 +321,7 @@ const table = {
           sorts.push(el)
         }
       })
+      console.log(paramsQuery.value.sorts)
       paramsQuery.value.searchColumns.forEach((el) => {
         if (!el.value) {
           return
@@ -470,6 +472,7 @@ const table = {
       })
     })
     const saveFilter = (filterData) => {
+      console.log('saveFilter', filterData)
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -477,15 +480,36 @@ const table = {
           return
         }
         el.value = filterData[el.name]
+        if (
+          el.type === 'dateRange' &&
+          filterData[el.name].every(
+            (el) =>
+              el === null ||
+              el === undefined ||
+              el === '' ||
+              el === '' ||
+              el === null ||
+              el === null
+          )
+        ) {
+          return
+        }
+        let type = el.typeFilter ? el.typeFilter : el.type
+        type = type === 'autocomplete' ? 'select' : type
+        type = type === 'dateRange' && 'date'
+        type = type === 'datetime' ? 'date' : type
+        console.log('filterData', filterData)
         const obj = {
           //field: el.name,
           value: filterData[el.name],
-          alias: el.alias,
-          type: el.type,
+          alias: el.aliasFilter,
+          // alias: el.name,
+          type: el.typeFilter ? el.typeFilter : el.type,
           subtype: el.subtype,
         }
         filtersColumns.value.push(obj)
       })
+      paramsQuery.value.currentPage = 1
       getItems()
     }
 
@@ -493,6 +517,7 @@ const table = {
       if (props.options.detail.type === 'popup' && !cell.noAction) {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row
+        console.log('CELL', cell, dataCell)
         const hour = '11' //Рабочие часы
         const day = cell.value
         const month = currentDate.value.month
@@ -509,16 +534,26 @@ const table = {
           hour,
           date: formattedDate,
         }
-
+        console.log(dataCell.hasOwnProperty(day))
         if (dataCell.hasOwnProperty(day)) {
-          console.log('Ключ "pattern" существует в объекте regex')
-          porpsContent.id = dataCell[day][0].id
-          router.push({
-            name: `${route.name}-edit`,
-            params: {
-              id: porpsContent.id,
-            },
-          })
+          if (cell.routeParam) {
+            router.push({
+              name: cell.routeName,
+              params: {
+                id: row.row[cell.routeParam],
+              },
+            })
+            console.log('PARAMS', cell)
+          } else {
+            console.log('Ключ "pattern" существует в объекте regex')
+            porpsContent.id = dataCell[day][0].id
+            router.push({
+              name: `${route.name}-edit`,
+              params: {
+                id: porpsContent.id,
+              },
+            })
+          }
         } else {
           console.log('Ключ "pattern" не существует в объекте regex')
           if (routeKey) {
@@ -591,7 +626,6 @@ const table = {
       }
     }
     const changeUrl = (url) => {
-      console.log('changeUrl', url)
       router.push({
         name: url,
       })
@@ -610,8 +644,11 @@ const table = {
         changeUrl(url)
       } else if (type === 'confirmPayment') {
         confirmPayment.value = true
-      } else if (button.label === 'Обновить') {
+      } else if (button.label === 'Обновить' || type === 'refresh') {
         await getItems()
+        if (button?.subtype === 'changeHeads') {
+          initHeadParams()
+        }
       }
     }
     const countingDistances = () => {

@@ -403,6 +403,7 @@ const table = {
       }
     }
     const saveFilter = (filterData) => {
+      console.log('saveFilter', filterData)
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -425,10 +426,10 @@ const table = {
           return
         }
         let type = el.typeFilter ? el.typeFilter : el.type
-        type = (type === 'autocomplete' ? 'select' : type)
-        type = (type === 'dateRange' && 'date')
-        type = (type === 'datetime' ? 'date' : type)
-
+        type = type === 'autocomplete' ? 'select' : type
+        type = type === 'dateRange' && 'date'
+        type = type === 'datetime' ? 'date' : type
+        console.log('filterData', filterData)
         const obj = {
           //field: el.name,
           value: filterData[el.name],
@@ -640,9 +641,10 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
+        console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
           //console.log(headerEl.previousElementSibling.offsetWidth)
-          acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
+          acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
         }, 0)
       })
       //wrapingRow()
@@ -815,8 +817,8 @@ const table = {
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,
-      iconType,
-      iconColor,
+      // iconType,
+      // iconColor,
       width,
       colspanLength,
       headActions,

@@ -1,28 +1,21 @@
 <template>
   <div class="form">
-    <!--<v-progress-circular
-      v-if="loading"
-      :size="20"
-      :width="2"
-      color="primary"
-      indeterminate
-    />-->
     <v-form class="form-default">
       <v-container class="">
         <v-row>
           <v-col
-            v-for="field in proxyTab.fields"
+            v-for="field in tab.fields"
             :key="field.id"
             :cols="field.position.cols"
-            :sm="field.position.sm"
+            :sm="colsField(field)"
             class="field-col"
-            :class="
-              !loading &&
-              field.isShow &&
-              ((typeof field.isShow === 'boolean' && field.isShow) ||
-                (typeof field.isShow === 'object' && field.isShow.value)) &&
-              field.class
-            "
+            :class="[
+              field.type,
+              readonlyField(field) ? 'readonly' : '',
+              typeof field.isShow === 'object' && !field.isShow.value
+                ? 'isHide'
+                : '',
+            ]"
           >
             <div
               v-if="
@@ -33,6 +26,21 @@
               "
               class="field-loading gradient"
             ></div>
+            <!--<v-select
+              v-else-if="showField('select', field)"
+              :items="field.items"
+              :item-text="field.selectOption.text"
+              :item-value="field.selectOption.value"
+              :label="field.label"
+              v-model="formData[field.name]"
+              :error-messages="formErrors[field?.name]"
+              persistent-hint
+              clearable
+              :multiple="field.subtype === 'multiselect'"
+              @change="changeSelect({ value: formData[field.name], field })"
+              :disabled="disabledField(field)"
+              :readonly="readonlyField(field)"
+            ></v-select>-->
             <Autocomplete
               v-else-if="showField('select', field)"
               :field="field"
@@ -42,6 +50,7 @@
               ref="autocompleteRef"
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
+              :class="[...field.class]"
             />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
@@ -52,11 +61,14 @@
               ref="autocompleteRef"
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
+              :class="[...field.class]"
             />
+
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
               :label="field.label"
+              :placeholder="field?.placeholder"
               :error-messages="formErrors[field?.name]"
               clearable
               :readonly="readonlyField(field)"
@@ -67,10 +79,6 @@
               v-model="formData[field.name]"
               :label="field.label"
               :disabled="disabledField(field)"
-              @change="
-                checkVector()
-                changeAutocomplete({ value: formData[field.name], field })
-              "
               :readonly="readonlyField(field)"
             ></v-checkbox>
             <Datepicker
@@ -107,10 +115,9 @@
               :formData="formData"
               :disabled="disabledField(field)"
               :field="field"
-              ref="dropzone"
               @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
-              :class="readonlyField(field) && 'clickless'"
+              :readonly="readonlyField(field)"
             />
             <ColorPicker
               v-else-if="showField('colorPicker', field)"
@@ -122,101 +129,35 @@
               :label="field.label"
               :readonly="readonlyField(field)"
             />
-            <v-row class="d-flex" v-else-if="showField('radioPanel', field)">
-              <v-btn
-                class="flex-grow-1"
-                :text="formData[field.name] !== item.value"
-                color="primary"
-                v-for="item in field.items"
-                :key="item.id"
-                @click="
-                  formData[field.name] = item.value
-                  changeAutocomplete({ value: formData[field.name], field })
-                "
-                :disabled="
-                  readonlyField(field) || (item.value === 2 && formData.is_migr)
-                "
-              >
-                {{ item.text }}
-              </v-btn>
-            </v-row>
-            <v-btn
-              v-else-if="showField('btn', field)"
-              block
-              :color="field.color"
-              @click="changeBlockCount(field.increase)"
-              :disabled="readonlyField(field)"
-            >
-              {{ field.label }}
-            </v-btn>
-            <v-card
-              max-height="206"
-              class="overflow-auto"
-              outlined
-              v-else-if="showField('schet', field)"
-            >
-              <v-list>
-                <template v-if="formData[field.name]?.length">
-                  <v-list-item
-                    v-for="(item, index) in formData[field.name]"
-                    :key="index"
-                    :class="index && 'mt-4'"
-                  >
-                    <v-avatar
-                      @click="downloadFile({ item })"
-                      class="pointer"
-                      tile
-                      size="52"
-                      v-if="imageFormat(item)"
-                    >
-                      <v-img :src="$root.env.VUE_APP_STORE + item.name"></v-img>
-                    </v-avatar>
-                    <v-btn x-large v-else @click="downloadFile({ item })" icon>
-                      <v-icon small> $IconDownload </v-icon>
-                    </v-btn>
-                    <v-list-item-content class="d-flex ml-4">
-                      <v-list-item-title>
-                        {{ item.num }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                    <v-btn
-                      @click="
-                        editFile({ index, formItem: formData[field.name] })
-                      "
-                      v-if="!readonlyField(field)"
-                      icon
-                    >
-                      <v-icon small> $IconEdit </v-icon>
-                    </v-btn>
-                    <v-btn
-                      @click="
-                        deleteFile({ index, formItem: formData[field.name] })
-                      "
-                      v-if="!readonlyField(field)"
-                      icon
-                    >
-                      <v-icon small> $IconDelete </v-icon>
-                    </v-btn>
-                  </v-list-item>
-                </template>
-                <v-subheader class="justify-center" v-else
-                  >Нет приложенных документов</v-subheader
-                >
-              </v-list>
-            </v-card>
+            <DateRange
+              v-else-if="showField('dateRange', field)"
+              v-model="formData[field.name]"
+              :formData="formData"
+              :disabled="disabledField(field)"
+              :field="field"
+              :error-messages="formErrors[field?.name]"
+              :label="field.label"
+              :readonly="readonlyField(field)"
+            />
           </v-col>
         </v-row>
+        <v-divider v-if="hasOutput" class="mt-0 mb-3"></v-divider>
+        <v-row v-if="hasOutput && !loading">
+          <Output :services="entityData.services" />
+        </v-row>
+        <v-divider class="mt-3 mb-3" v-if="tab.actions.length"></v-divider>
         <v-row class="justify-end">
           <v-btn
-            type="submit"
+            :type="action.type"
             :color="action.color"
             class="ml-2"
             :loading="loading"
             @click.prevent="
               clickHandler({ action, skipValidation: action.skipValidation })
             "
-            v-for="action in proxyTab.actions"
+            v-for="action in tab.actions"
             :key="action.id"
+            :text="action.action === 'closePopup' ? true : false"
             v-show="!isHideBtn(action)"
           >
             {{ action.text }}

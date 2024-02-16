@@ -3,6 +3,7 @@ import filters from './filters'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
+import FormTarget from '@/components/Form/target/default/index.vue'
 
 import { required } from '@/utils/validation.js'
 import {
@@ -1698,7 +1699,7 @@ const config = {
       {
         id: 1,
         name: 'Основные',
-        type: FormDefault,
+        type: FormTarget,
         detail: true,
         path: 'edit',
         lists: [

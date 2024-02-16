@@ -56,7 +56,6 @@ export default {
       },
     }
     const loading = ref(true)
-    const stage = ref(null)
     const { alias } = props.tab
     console.log(route.params)
     const isEdit = computed(() => {
@@ -79,6 +78,7 @@ export default {
         } else {
           return
         }
+        console.log(el, 'FIELD-EL')
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
@@ -235,7 +235,6 @@ export default {
       changeAutocomplete,
       changeSelect,
       openMenu,
-      stage,
       clickHandler,
       isEdit,
       disabledField,

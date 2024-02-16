@@ -150,6 +150,7 @@ export default function ({
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
+    console.log('/////////////////////////', action.action)
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -270,13 +271,30 @@ export default function ({
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
       if (action.handlingResponse) {
-        let { text, color } = action.handlingResponse[result.code]
+        const conditionContext = {
+          formData,
+          result,
+        }
+        let res = result.code
+        let contextData = formData
+
+        if (action.handlingResponse.result) res = action.handlingResponse.result
+        if (action.handlingResponse.context)
+          contextData = _.get(
+            conditionContext[action.handlingResponse.context],
+            res
+          )
+        let { text, color } = action.handlingResponse[res]
         // /%\w{n}%/
         //const text = 'Объект с именем %name% уже существует'
         // eslint-disable-next-line
         const key = text.match(/\%\w{1,}\%/g)
-        const keyFormated = key[0].split('%')[1]
-        text = text.replace(key, formData[keyFormated])
+
+        key.forEach((item) => {
+          const keyFormated = item.split('%')[1]
+          text = text.replace(item, contextData[keyFormated])
+        })
+
         store.commit('notifies/showMessage', {
           content: text,
           color,
@@ -371,6 +389,11 @@ export default function ({
         else newForm[key] = formData[key]
       }
 
+      // if (item.round) {
+      //   const result = formData[key].replaceAll(',', '.')
+      //   newForm[key] = Math.ceil(+result)
+      // }
+
       // if (item.notSend || item.prescription) delete newForm[key]
 
       if (action?.useStorageKey?.length) {
@@ -410,12 +433,17 @@ export default function ({
               'YYYY-MM-DD'
             )
           })
+        } else if (item.subtype === 'period') {
+          newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
         } else {
           newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
         }
       } else if (item.type === 'dateRange') {
         newForm[key].forEach((item, index) => {
-          if (item) newForm[key][index] = moment(item).format('YYYY-MM-DD')
+          if (item)
+            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
         })
       }
     })
@@ -462,10 +490,12 @@ export default function ({
           for (let l = 0; l < dropzone.value.length; l++) {
             const file = dropzone.value[l][0]
             if (file?.accepted) {
+              const valueId =
+                formData[dropzone.options.valueId] ?? store?.state?.user.id
               const name =
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
-                store?.state?.user.id +
+                valueId +
                 '_' +
                 new Date().getTime()
               const ext = file.name.split('.').pop()
@@ -525,9 +555,15 @@ export default function ({
     } else {
       const result = await createForm(queryParams, params)
     }
-    emit('getItems')
-    emit('closePopup')
+    if (!queryParams.action.notClose) {
+      emit('getItems')
+      emit('closePopup')
+    } else {
+      $v.value.$reset()
+      errorsCount()
+    }
   }
+
   const getDetail = () => {
     if (detail?.requestId) {
       return form?.detail && route.params[detail.requestId]
@@ -1135,7 +1171,9 @@ export default function ({
     let lists = undefined
     if (getDetail()) {
       syncForm = await makeRequest()
+      entityData.value = syncForm.data
     }
+    console.log('///////////////////////////')
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
@@ -1385,7 +1423,7 @@ export default function ({
       return environment.readonlyAll
     }
   }
-
+  const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
       return (
@@ -1523,5 +1561,6 @@ export default function ({
     readonlyField,
     isHideBtn,
     colsField,
+    entityData,
   }
 }

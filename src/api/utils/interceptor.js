@@ -39,7 +39,6 @@ const setup = (axios) => {
           timeout: 1000,
         })
         return Promise.reject(error.response)
-        //console.log('unauthorized, logging out ...')
       }
       if (error?.response?.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true

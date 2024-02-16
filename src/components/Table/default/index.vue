@@ -121,11 +121,6 @@
                               <v-icon> {{ head.icon }}</v-icon>
                             </span>
                           </div>
-                          <!--<div v-if="head.type === 'actions'">
-                            <span class="mr-2">
-                              {{ head.title }}
-                            </span>
-                          </div>-->
                           <div v-if="head.type === 'download'">
                             <span class="mr-2">
                               {{ head.title }}
@@ -137,26 +132,29 @@
                     </v-tooltip>
                   </span>
                   <transition name="accordion">
-                    <div
+                    <v-tooltip
+                      text="Tooltip"
                       v-if="
                         head.sorts && head.sorts.length && head.sorts[0].isShow
                       "
-                      class="v-table-header-row-cell-sort"
                     >
-                      <v-text-field
-                        class="v-table-header-row-cell-sort__search"
-                        @clearfield="clearField('searchField')"
-                        clearable
-                        clearing
-                        type="search"
-                        placeholder="Поиск"
-                        v-model="
-                          paramsQuery.searchColumns.find(
-                            (el) => el.field === head.value
-                          ).value
-                        "
-                      />
-                    </div>
+                      <template v-slot:activator="{ props }">
+                        <v-text-field
+                          v-bind="props"
+                          class="v-table-header-row-cell-sort__search"
+                          @clearfield="clearField('searchField')"
+                          clearable
+                          clearing
+                          type="search"
+                          placeholder="Поиск"
+                          v-model="
+                            paramsQuery.searchColumns.find(
+                              (el) => el.field === head.value
+                            ).value
+                          "
+                        />
+                      </template>
+                    </v-tooltip>
                   </transition>
                 </div>
               </th>
@@ -413,18 +411,16 @@
       </v-btn>
     </v-row>
     <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
-    <portal v-if="filters" to="filter">
-      <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
-        <keep-alive>
-          <TableFilter
-            class="v-table-filter"
-            @closeFilter="closeFilter"
-            @saveFilter="saveFilter"
-            :filtersConfig="filters"
-          />
-        </keep-alive>
-      </Sheet>
-    </portal>
+    <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
+      <keep-alive>
+        <TableFilter
+          class="v-table-filter"
+          @closeFilter="closeFilter"
+          @saveFilter="saveFilter"
+          :filtersConfig="filters"
+        />
+      </keep-alive>
+    </Sheet>
     <Popup
       closeButton
       @close="closePopupForm"

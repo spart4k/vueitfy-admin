@@ -1,0 +1,15 @@
+.title {
+  color: var(--v-disabled-base);
+}
+
+.completed {
+  color: var(--v-success-base);
+}
+
+.current {
+  color: var(--v-text-base);
+}
+
+.firstLoad {
+  transition-duration: 0.1ms;
+}

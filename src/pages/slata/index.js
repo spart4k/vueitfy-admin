@@ -28,7 +28,7 @@ const config = {
     },
     headerFixed: true,
     url: 'get/pagination/slata_report',
-    title: 'Новое',
+    title: 'Новые',
   },
   type: TableDefault,
   panel: {

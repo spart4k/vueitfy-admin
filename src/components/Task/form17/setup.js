@@ -45,7 +45,9 @@ const Form17 = defineComponent({
       },
     }
 
-    const dateTarget = moment(data.entity.date_target).format('DD.MM.YYYY')
+    const dateTarget = moment(data.entity.date_target, 'YYYY-MM-DD').format(
+      'DD.MM.YYYY'
+    )
 
     const getServiceInfo = async (idService) => {
       const { makeRequest } = useRequest({
@@ -254,7 +256,7 @@ const Form17 = defineComponent({
                 services: JSON.stringify({
                   3: [
                     {
-                      services: [
+                      service: [
                         {
                           service_id: services_spr[data.entity.doljnost_id],
                           qty: qty.value,

@@ -2498,16 +2498,17 @@ export const fieldsBaseDefaulrForm = [
     },
     validations: { required },
     bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        // editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.denied,
-      ],
-    },
+    readonly: true,
+    // readonly: {
+    //   value: false,
+    //   condition: [
+    //     editFormPermissions.brigadir,
+    //     editFormPermissions.manager[1],
+    //     editFormPermissions.rukFIlCUPDirector.denied,
+    //     // editFormPermissions.DBA.access,
+    //     editFormPermissions.OBDandOKK.denied,
+    //   ],
+    // },
   }),
   selectField({
     label: 'Доступ',
@@ -2586,11 +2587,11 @@ export const fieldsBaseDefaulrForm = [
     readonly: {
       value: false,
       condition: [
-        editFormPermissions.brigadir,
-        editFormPermissions.manager[1],
-        editFormPermissions.rukFIlCUPDirector.denied,
-        editFormPermissions.DBA.access,
-        editFormPermissions.OBDandOKK.access,
+        // editFormPermissions.brigadir,
+        // editFormPermissions.manager[1],
+        // editFormPermissions.rukFIlCUPDirector.denied,
+        // editFormPermissions.DBA.access,
+        // editFormPermissions.OBDandOKK.access,
       ],
     },
   }),
@@ -2684,7 +2685,7 @@ export const fieldsDocumentDefaultForm = [
   },
 ]
 
-const defaultForm = [
+export const defaultForm = [
   {
     id: 0,
     path: 'edit',
@@ -2723,14 +2724,15 @@ const defaultForm = [
         to: 'personal',
         skipValidation: true,
       }),
-      //stringAction({
-      //  text: 'Сохранить',
-      //  type: 'submit',
-      //  module: '',
-      //  name: 'saveForm',
-      //  //action: 'saveForm',
-      //  nextForm: true,
-      //}),
+      stringAction({
+        text: 'Сохранить',
+        type: 'submit',
+        module: 'form/putForm',
+        name: 'saveFormId',
+        url: 'update/personal',
+        action: 'saveFormId',
+        color: 'primary',
+      }),
     ],
   },
   {
@@ -4075,7 +4077,7 @@ export const config = {
           type: 'default',
           align: 'center',
           fixed: {
-            value: true,
+            value: false,
             position: 'left',
           },
           sorts: [
@@ -4969,8 +4971,8 @@ export const config = {
                     source: 'formData',
                     type: 'num',
                   },
-                ]
-              }
+                ],
+              },
             ],
             fields: [
               autocompleteField({
@@ -5073,7 +5075,9 @@ export const config = {
         ],
         activeTab: null,
       },
-      filters: filtersKey
+      filters: filtersKey,
     },
   ],
 }
+
+// export default { config, defaultForm }

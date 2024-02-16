@@ -73,6 +73,7 @@ export default {
       label: 'Создал',
       name: 'z.from_account_id',
       subtype: 'single',
+      typeFilter: 'select',
       placeholder: '',
       class: [''],
       page: 1,
@@ -93,6 +94,7 @@ export default {
     autocompleteField({
       label: 'Линейщик',
       name: 'z.personal_id',
+      typeFilter: 'select',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -114,6 +116,7 @@ export default {
     autocompleteField({
       label: 'Объект',
       name: 'z.object_id',
+      typeFilter: 'select',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -135,6 +138,7 @@ export default {
     autocompleteField({
       label: 'Аккаунт',
       name: 'z.account_id',
+      typeFilter: 'select',
       subtype: 'single',
       placeholder: '',
       class: [''],
