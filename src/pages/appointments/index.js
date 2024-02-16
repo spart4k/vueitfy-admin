@@ -654,7 +654,7 @@ export const editFields = [
     items: [],
     position: {
       cols: 12,
-      sm: 6,
+      sm: 12,
     },
     validations: { required },
     bootstrapClass: [''],
