@@ -8,9 +8,39 @@ import {
   checkboxField,
   // dropZoneField,
 } from '@/utils/fields.js'
+import _ from 'lodash'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
+import FormTarget from '@/components/Form/target/default/index.vue'
+import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
+import { fieldsBaseDefaulrForm as personalFields } from '@/pages/personal/index.js'
+import { objectEditField as objectFields } from '@/pages/object/index.js'
+import { defaultForm as personalConfig } from '@/pages/personal/index'
+import { defaultForm as objectConfig } from '@/pages/object/index.js'
+console.log(personalConfig, 'personalForm')
+
+const changeActionTo = (array, key, oldPath, newPath) => {
+  console.log('changeActionTo')
+  array.forEach((tab) => {
+    if (tab.path === oldPath) {
+      tab.path = newPath
+    }
+    if (tab.actions) {
+      tab.actions.forEach((el) => {
+        if (el.action === 'closePopup') {
+          el.to = key
+        }
+      })
+    }
+  })
+}
+
+const personalConfigForms = _.cloneDeep(personalConfig)
+const objectConfigForm = _.cloneDeep(objectConfig)
+
+changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
+changeActionTo(objectConfigForm, 'pivot', 'edit', 'edit-object')
 
 function consoleText(row) {
   console.log(row, 2)
