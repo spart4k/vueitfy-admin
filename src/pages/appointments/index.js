@@ -1016,6 +1016,31 @@ const config = {
       },
     },
     {
+      title: 'Ключ',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'print_form_key',
+      alias: 'pt.print_form_key',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
       title: 'Примечание',
       type: 'default',
       align: 'center',
