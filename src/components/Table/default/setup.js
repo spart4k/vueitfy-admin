@@ -346,7 +346,6 @@ const table = {
         },
       })
       options.data.rows = data.rows
-      //options.data.rows = data
       if (options.data.rows?.length && options.data.rows) {
         options.data.totalPages = data.totalPage
         options.data.totalRows = data.total
@@ -364,6 +363,9 @@ const table = {
           })
         })
         options.data.rows = structuredArray
+      } else {
+        // options.data.totalPages = data.totalPage
+        paramsQuery.value.currentPage = 1
       }
       loading.value = false
     }

@@ -31,6 +31,9 @@ $tableFooterHeight: 85px;
             &__sort {
               display: flex;
               align-items: center;
+              &-sort {
+                padding-top: 6px;
+              }
               &-icon {
                 // TODO: СТРЕЛКА
                 &.asc {
@@ -220,6 +223,7 @@ $tableFooterHeight: 85px;
         //display: flex;
         //flex-direction: column;
         border: 1px solid $borderColor;
+        min-height: 118px;
         border-top: 0;
         border-collapse: collapse;
         flex: 1;
