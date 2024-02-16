@@ -68,6 +68,17 @@ const headDateCreate = {
     isShow: true,
   },
 }
+const actions = [
+  stringAction({
+    text: 'Закрыть',
+    type: 'submit',
+    color: 'textDefault',
+    name: 'closePopup',
+    action: 'closePopup',
+    to: 'personal',
+    skipValidation: true,
+  }),
+]
 zayavkaConfig.head.push(headDateCreate)
 const converConfig = (config, listHead, listPanel) => {
   const spliceHeads = (list) => {
@@ -93,6 +104,7 @@ const converConfig = (config, listHead, listPanel) => {
   if (config.filter) {
     config.filter = undefined
   }
+  config.actions = actions
   spliceHeads(listHead)
   splicePanel(listPanel)
 }
