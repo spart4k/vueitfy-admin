@@ -426,6 +426,14 @@ export default function ({
         delete newForm[key]
       }
 
+      if (item.toNumber && item.type === 'checkbox') {
+        if (formData[key]) {
+          newForm[key] = 1
+        } else {
+          newForm[key] = 0
+        }
+      }
+
       if (item.type === 'date') {
         if (item.subtype === 'multiple') {
           newForm[key].forEach((item, index) => {

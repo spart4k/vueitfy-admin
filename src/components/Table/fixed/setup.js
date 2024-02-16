@@ -343,7 +343,7 @@ const table = {
       //  }
       //})
       let by = undefined
-      if (props.routeParam) {
+      if (props.routeParam || store?.state?.formStorage?.id) {
         by = [
           {
             field: props.options.options.urlDetail,
@@ -385,6 +385,8 @@ const table = {
           })
         })
         props.options.data.rows = structuredArray
+      } else {
+        paramsQuery.value.currentPage = 1
       }
       loading.value = false
       setTimeout(() => {

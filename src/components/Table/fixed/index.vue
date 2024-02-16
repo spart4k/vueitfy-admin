@@ -11,7 +11,7 @@
       }"
       ref="dropzone"
     />
-    <v-dialog persistent v-model="confirmPayment" width="400">
+    <v-dialog persistent v-model="confirmPayment" width="420">
       <v-card>
         <v-card-title class="text-h5 text-center">
           Вы подтверждаете начисление аванса за
