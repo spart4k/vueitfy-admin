@@ -21,6 +21,7 @@ import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
 import SlataReportView from '@/views/SlataReportView.vue'
+import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
@@ -682,16 +683,14 @@ const routes = [
       layout: 'blank-layout',
     },
     component: SlataReportView,
-    // children: [
-    //   {
-    //     name: 'slata',
-    //     path: '/salta',
-    //     meta: {
-    //       mode: 'blank-layout',
-    //     },
-    //     component: Detail,
-    //   },
-    // ],
+  },
+  {
+    path: '/corporate-cards',
+    name: 'corporate-cards',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: CorporateCardsView,
   },
   {
     path: '/schedule',
