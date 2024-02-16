@@ -261,6 +261,7 @@ $tableFooterHeight: 85px;
       //height: calc(100% - $tablePanelHeight - $tableFooterHeight);
       overflow: auto;
       //width: 2500px;
+      min-height: 113px;
       width: 100%;
       border: 1px solid $borderColor;
       border-top: 0;

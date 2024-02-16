@@ -83,7 +83,10 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <div v-on:click="sortRow(head)">
+                    <div
+                      class="v-table-header-row-cell-wrap__sort-sort"
+                      v-on:click="sortRow(head)"
+                    >
                       <vIconSort
                         v-if="
                           head.sorts &&
