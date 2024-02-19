@@ -555,7 +555,7 @@ export default function ({
     } else {
       const result = await createForm(queryParams, params)
     }
-    if (!queryParams.action.notClose) {
+    if (!queryParams?.action?.notClose) {
       emit('getItems')
       emit('closePopup')
     } else {
