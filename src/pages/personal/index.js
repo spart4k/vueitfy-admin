@@ -22,16 +22,29 @@ import {
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
-import FormList from '@/components/Form/list/index.vue'
+// import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import paymentConfigOrig from '@/pages/payment/index'
 import zayavkaConfigOrig from '@/pages/zayavka/index'
 
 const paymentConfig = _.cloneDeep(paymentConfigOrig)
 const zayavkaConfig = _.cloneDeep(zayavkaConfigOrig)
-const LIST_HEAD_PAYMENTS = ['status_name', 'account_name', 'date_add', 'bank_fio', 'total']
+const LIST_HEAD_PAYMENTS = [
+  'status_name',
+  'account_name',
+  'date_add',
+  'bank_fio',
+  'total',
+]
 const LIST_PANEL_PAYMENTS = ['Обновить']
-const LIST_HEAD_ZAYAVKA = ['status_name', 'category_name', 'schet', 'date_create', 'total', 'price']
+const LIST_HEAD_ZAYAVKA = [
+  'status_name',
+  'category_name',
+  'schet',
+  'date_create',
+  'total',
+  'price',
+]
 
 paymentConfig.options = {
   ...paymentConfig.options,
@@ -82,7 +95,7 @@ const actions = [
 zayavkaConfig.head.push(headDateCreate)
 const converConfig = (config, listHead, listPanel) => {
   const spliceHeads = (list) => {
-    config.head = config.head.flatMap(head => {
+    config.head = config.head.flatMap((head) => {
       const { value } = head
       if (list.includes(value)) {
         return head
@@ -92,7 +105,7 @@ const converConfig = (config, listHead, listPanel) => {
     })
   }
   const splicePanel = (list) => {
-    config.panel.buttons = config.panel.buttons.flatMap(button => {
+    config.panel.buttons = config.panel.buttons.flatMap((button) => {
       const { label } = button
       if (list.includes(label)) {
         return button
@@ -110,10 +123,28 @@ const converConfig = (config, listHead, listPanel) => {
 }
 converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
 converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
+paymentConfig.detail.popupIndex = 2
+paymentConfig.detail.requestId = 'payment'
+paymentConfig.detail.tabs[0].path = 'edit-payment'
+paymentConfig.detail.tabs[0].routeParam = 'payment'
+paymentConfig.detail.tabs[0].id = 15
 
-console.log(JSON.stringify(paymentConfig.head))
+const changeActionTo = (array, key) => {
+  console.log('changeActionTo')
+  array.forEach((tab) => {
+    if (tab.actions) {
+      tab.actions.forEach((el) => {
+        if (el.action === 'closePopup') {
+          el.to = key
+        }
+      })
+    }
+  })
+}
+console.log(paymentConfig)
+changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import useNavigation from '@/compositions/useNavigation'
-import { payment, userKeys } from '@/pages'
+// import { payment, userKeys } from '@/pages'
 
 // const { addOrUpdateURLParam } = useNavigation({})
 
@@ -1654,7 +1685,7 @@ const bankConfig = {
           isShow: false,
         },
       ],
-      alias: 'pd.id',
+      alias: 'ab.id',
       isShow: true,
       width: '40',
       value: 'id',
@@ -1682,7 +1713,7 @@ const bankConfig = {
       isShow: true,
       width: '150',
       value: 'priority',
-      alias: 'pd.priority',
+      alias: 'ab.priority',
       search: {
         field: '',
         isShow: true,
@@ -1731,7 +1762,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'pb.invoice',
+      alias: 'ab.invoice',
       value: 'invoice',
       search: {
         field: '',
@@ -1757,7 +1788,7 @@ const bankConfig = {
       isShow: true,
       width: '150',
       value: 'fio',
-      alias: 'pb.fio',
+      alias: 'ab.fio',
       search: {
         field: '',
         isShow: true,
@@ -1781,7 +1812,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'pb.comment',
+      alias: 'ab.comment',
       value: 'comment',
       search: {
         field: '',
@@ -4588,7 +4619,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'task_type_name',
-          alias: 'p.telefon',
+          alias: 'tt.name',
           search: {
             field: '',
             isShow: true,
@@ -4613,7 +4644,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'from_account_name',
-          alias: 'p.telefon',
+          alias: 'saf.name',
           search: {
             field: '',
             isShow: true,
@@ -4638,7 +4669,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'to_account_name',
-          alias: 'p.telefon',
+          alias: 'sat.name',
           search: {
             field: '',
             isShow: true,

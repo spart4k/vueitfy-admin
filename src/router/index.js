@@ -247,6 +247,14 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/:payment',
+            path: '/personal/:id/:payment',
+            meta: {
+              mode: ['edit', 'edit-payment'],
+            },
+            component: Detail,
+          },
         ],
       },
       {

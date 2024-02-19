@@ -916,15 +916,16 @@ export default function ({
         })
       }
       if (targetField) {
+        console.log(JSON.stringify(targetField), targetField)
         //if (typeof data === 'object') data = [data]
         console.log('DEFAULT ITEMS', targetField, targetField.defaultItems)
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
-        if (targetField.items.length === 1) {
+        if (targetField?.items?.length === 1) {
           // Если массив, вставить массив
           // formData[targetField.name] = targetField.items[0].id
-        } else if (!targetField.items.length) {
+        } else if (!targetField.items?.length) {
           formData[targetField.name] = null
         }
         targetField.hideItems = targetField.defaultItems
@@ -1191,6 +1192,7 @@ export default function ({
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
+        console.log(field?.name, 'FIELD NAME')
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
