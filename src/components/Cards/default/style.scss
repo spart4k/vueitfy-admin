@@ -10,14 +10,16 @@
         height: 26px;
         margin-bottom: 14px;
       }
-      &_container {
-        display: flex;
+      &-container {
         height: calc(100% - 26px);
-        flex-wrap: wrap;
-        overflow: auto;
         padding: 0 22px 14px;
-        gap: 26px;
-        justify-content: center;
+        overflow: auto;
+        &_list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 26px;
+          justify-content: center;
+        }
       }
     }
   }

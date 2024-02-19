@@ -21,15 +21,35 @@ export default {
     const router = useRouter()
     const route = useRoute()
 
-    const cardInfo = {
-      vidana: 'Выдана',
-      block: 'Блокировка',
-      bik: 'БИК',
-      lico: 'Юр. лицо',
+    const card = {
+      info: {
+        vidana: 'Выдана',
+        block: 'Блокировка',
+        bik: 'БИК',
+        lico: 'Юр. лицо',
+      },
+      status: {
+        1: {
+          name: 'Не выдана',
+          color: 'disabled',
+        },
+        2: {
+          name: 'Выдана',
+          color: 'success',
+        },
+        3: {
+          name: 'Открыта',
+          color: 'primary',
+        },
+        4: {
+          name: 'Закрыта',
+          color: 'error',
+        },
+      },
     }
 
     return {
-      cardInfo,
+      card,
     }
   },
 }
