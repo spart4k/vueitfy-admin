@@ -1608,9 +1608,10 @@ const config = {
                         type: 'num',
                       },
                       {
-                        field: 'personal_id',
+                        field: 'avatar_with_user_key_id',
+                        alias: 'personal_id',
                         value: '',
-                        source: 'form.formData',
+                        source: 'formData',
                         type: 'num',
                       },
                     ],
