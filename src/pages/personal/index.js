@@ -22,10 +22,129 @@ import {
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
-import FormList from '@/components/Form/list/index.vue'
+// import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+
+const paymentConfig = _.cloneDeep(paymentConfigOrig)
+const zayavkaConfig = _.cloneDeep(zayavkaConfigOrig)
+const LIST_HEAD_PAYMENTS = [
+  'status_name',
+  'account_name',
+  'date_add',
+  'bank_fio',
+  'total',
+]
+const LIST_PANEL_PAYMENTS = ['Обновить']
+const LIST_HEAD_ZAYAVKA = [
+  'status_name',
+  'category_name',
+  'schet',
+  'date_create',
+  'total',
+  'price',
+]
+
+paymentConfig.options = {
+  ...paymentConfig.options,
+  urlDetail: 'personal_id',
+  alias: 'pb.personal_id',
+}
+zayavkaConfig.options = {
+  ...zayavkaConfig.options,
+  urlDetail: 'personal_id',
+  alias: 'z.personal_id',
+}
+const headDateCreate = {
+  title: 'Создано',
+  type: 'default',
+  align: 'center',
+  fixed: {
+    value: false,
+    position: 'left',
+  },
+  sorts: [
+    {
+      type: 'string',
+      default: '',
+      value: '',
+      isShow: false,
+    },
+  ],
+  alias: 'z.date_create',
+  isShow: true,
+  width: '40',
+  value: 'date_create',
+  search: {
+    field: '',
+    isShow: true,
+  },
+}
+const actions = [
+  stringAction({
+    text: 'Закрыть',
+    type: 'submit',
+    color: 'textDefault',
+    name: 'closePopup',
+    action: 'closePopup',
+    to: 'personal',
+    skipValidation: true,
+  }),
+]
+zayavkaConfig.head.push(headDateCreate)
+const converConfig = (config, listHead, listPanel) => {
+  const spliceHeads = (list) => {
+    config.head = config.head.flatMap((head) => {
+      const { value } = head
+      if (list.includes(value)) {
+        return head
+      } else {
+        return []
+      }
+    })
+  }
+  const splicePanel = (list) => {
+    config.panel.buttons = config.panel.buttons.flatMap((button) => {
+      const { label } = button
+      if (list.includes(label)) {
+        return button
+      } else {
+        return []
+      }
+    })
+  }
+  if (config.filter) {
+    config.filter = undefined
+  }
+  config.actions = actions
+  spliceHeads(listHead)
+  splicePanel(listPanel)
+}
+converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
+converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
+paymentConfig.detail.popupIndex = 2
+paymentConfig.detail.requestId = 'payment'
+paymentConfig.detail.tabs[0].path = 'edit-payment'
+paymentConfig.detail.tabs[0].routeParam = 'payment'
+paymentConfig.detail.tabs[0].id = 15
+
+const changeActionTo = (array, key) => {
+  console.log('changeActionTo')
+  array.forEach((tab) => {
+    if (tab.actions) {
+      tab.actions.forEach((el) => {
+        if (el.action === 'closePopup') {
+          el.to = key
+        }
+      })
+    }
+  })
+}
+console.log(paymentConfig)
+changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import useNavigation from '@/compositions/useNavigation'
-import { userKeys } from '@/pages'
+// import { payment, userKeys } from '@/pages'
 
 // const { addOrUpdateURLParam } = useNavigation({})
 
@@ -64,9 +183,9 @@ const consumptionConfig = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/payment',
+    url: 'get/pagination/zayavka',
     urlDetail: 'personal_id',
-    alias: 'p.personal_id',
+    alias: 'z.personal_id',
     title: 'This is an about page1',
   },
   panel: {
@@ -343,11 +462,11 @@ const debetorConfig = {
   },
   head: [
     {
-      title: 'ID',
+      title: 'Направление',
       type: 'default',
       align: 'center',
       fixed: {
-        value: true,
+        value: false,
         position: 'left',
       },
       sorts: [
@@ -358,17 +477,17 @@ const debetorConfig = {
           isShow: false,
         },
       ],
-      alias: 'p.id',
+      alias: 'dir.name',
       isShow: true,
       width: '40',
-      value: 'id',
+      value: 'direction_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Дата назн',
+      title: 'Руководитель',
       type: 'default',
       align: 'center',
       fixed: {
@@ -377,7 +496,7 @@ const debetorConfig = {
       },
       sorts: [
         {
-          type: 'number',
+          type: 'string',
           default: '',
           value: '',
           isShow: false,
@@ -385,8 +504,33 @@ const debetorConfig = {
       ],
       isShow: true,
       width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
+      value: 'account_name',
+      alias: 'sa.fio',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Объект',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'object_name',
+      alias: 'o.name',
       search: {
         field: '',
         isShow: true,
@@ -443,7 +587,7 @@ const debetorConfig = {
       },
     },
     {
-      title: 'Часы',
+      title: 'Остаток',
       type: 'default',
       align: 'center',
       fixed: {
@@ -452,7 +596,7 @@ const debetorConfig = {
       },
       sorts: [
         {
-          type: 'number',
+          type: 'string',
           default: '',
           value: '',
           isShow: false,
@@ -460,58 +604,8 @@ const debetorConfig = {
       ],
       isShow: true,
       width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
+      value: 'remainder',
+      alias: 'd.remainder',
       search: {
         field: '',
         isShow: true,
@@ -599,14 +693,7 @@ export const headDocumentConfigEdit = [
       value: false,
       position: undefined,
     },
-    sorts: [
-      {
-        type: 'number',
-        default: '',
-        value: '',
-        isShow: false,
-      },
-    ],
+    sorts: undefined,
     isShow: true,
     width: '150',
     value: 'path_doc',
@@ -1587,7 +1674,7 @@ const bankConfig = {
       type: 'default',
       align: 'center',
       fixed: {
-        value: true,
+        value: false,
         position: 'left',
       },
       sorts: [
@@ -1598,7 +1685,7 @@ const bankConfig = {
           isShow: false,
         },
       ],
-      alias: 'p.id',
+      alias: 'ab.id',
       isShow: true,
       width: '40',
       value: 'id',
@@ -1625,8 +1712,8 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
+      value: 'priority',
+      alias: 'ab.priority',
       search: {
         field: '',
         isShow: true,
@@ -1650,7 +1737,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 'b.name',
       value: 'bank_name',
       search: {
         field: '',
@@ -1675,7 +1762,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'o.name',
+      alias: 'ab.invoice',
       value: 'invoice',
       search: {
         field: '',
@@ -1701,7 +1788,7 @@ const bankConfig = {
       isShow: true,
       width: '150',
       value: 'fio',
-      alias: 'p.hour',
+      alias: 'ab.fio',
       search: {
         field: '',
         isShow: true,
@@ -1725,7 +1812,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'd.name',
+      alias: 'ab.comment',
       value: 'comment',
       search: {
         field: '',
@@ -1971,260 +2058,260 @@ const bankConfig = {
   ],
 }
 
-const paymentConfig = {
-  selector: '#mainTable',
-  options: {
-    selecting: true,
-    search: {
-      function: searchInputing,
-    },
-    headerFixed: true,
-    //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/personal_target_doc',
-    urlDetail: 'personal_id',
-    alias: 'p.personal_id',
-    title: 'This is an about page1',
-  },
-  panel: {
-    buttons: [
-      {
-        label: 'Обновить',
-        class: ['v-table-button--custom'],
-        url: '$IconEdit',
-        function: consolePanel,
-        backgroundColor: '#ffffff',
-      },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
-    ],
-  },
-  head: [
-    {
-      title: 'ID',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'p.id',
-      isShow: true,
-      width: '40',
-      value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'date_target',
-      alias: 'p.date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'personal_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Часы',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'number',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'hour',
-      alias: 'p.hour',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Должность',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'd.name',
-      value: 'doljnost_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'date',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'p.total',
-      value: 'total',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
-    },
-  ],
-  data: {
-    rows: [],
-    totalRows: null,
-    pageLength: 20,
-    currentPage: 1,
-    totalPages: null,
-  },
-  detail: undefined,
-  actions: [
-    stringAction({
-      text: 'Закрыть',
-      type: 'submit',
-      color: 'textDefault',
-      name: 'closePopup',
-      action: 'closePopup',
-      to: 'personal',
-      skipValidation: true,
-    }),
-  ],
-}
+// const paymentConfig = {
+//   selector: '#mainTable',
+//   options: {
+//     selecting: true,
+//     search: {
+//       function: searchInputing,
+//     },
+//     headerFixed: true,
+//     //url: 'https://dummyjson.com/users',
+//     url: 'get/pagination/payment',
+//     urlDetail: 'personal_id',
+//     alias: 'p.personal_id',
+//     title: 'This is an about page1',
+//   },
+//   panel: {
+//     buttons: [
+//       {
+//         label: 'Обновить',
+//         class: ['v-table-button--custom'],
+//         url: '$IconEdit',
+//         function: consolePanel,
+//         backgroundColor: '#ffffff',
+//       },
+//       // {
+//       //   label: 'Скачать',
+//       //   class: ['v-table-button--custom'],
+//       //   function: consolePanel,
+//       //   backgroundColor: '#fff',
+//       // },
+//     ],
+//   },
+//   head: [
+//     {
+//       title: 'ID',
+//       type: 'default',
+//       align: 'center',
+//       fixed: {
+//         value: true,
+//         position: 'left',
+//       },
+//       sorts: [
+//         {
+//           type: 'string',
+//           default: '',
+//           value: '',
+//           isShow: false,
+//         },
+//       ],
+//       alias: 'p.id',
+//       isShow: true,
+//       width: '40',
+//       value: 'id',
+//       search: {
+//         field: '',
+//         isShow: true,
+//       },
+//     },
+//     {
+//       title: 'Дата назн',
+//       type: 'default',
+//       align: 'center',
+//       fixed: {
+//         value: false,
+//         position: undefined,
+//       },
+//       sorts: [
+//         {
+//           type: 'number',
+//           default: '',
+//           value: '',
+//           isShow: false,
+//         },
+//       ],
+//       isShow: true,
+//       width: '150',
+//       value: 'date_target',
+//       alias: 'p.date_target',
+//       search: {
+//         field: '',
+//         isShow: true,
+//       },
+//     },
+//     {
+//       title: 'Линейщик',
+//       type: 'default',
+//       align: 'center',
+//       fixed: {
+//         value: false,
+//         position: 'left',
+//       },
+//       sorts: [
+//         {
+//           type: 'string',
+//           default: '',
+//           value: '',
+//           isShow: false,
+//         },
+//       ],
+//       isShow: true,
+//       width: '90',
+//       alias: 'pers.name',
+//       value: 'personal_name',
+//       search: {
+//         field: '',
+//         isShow: true,
+//       },
+//     },
+//     {
+//       title: 'Объект',
+//       type: 'default',
+//       align: 'center',
+//       fixed: {
+//         value: false,
+//         position: 'left',
+//       },
+//       sorts: [
+//         {
+//           type: 'string',
+//           default: '',
+//           value: '',
+//           isShow: false,
+//         },
+//       ],
+//       isShow: true,
+//       width: '150',
+//       alias: 'o.name',
+//       value: 'object_name',
+//       search: {
+//         field: '',
+//         isShow: true,
+//       },
+//     },
+//     {
+//       title: 'Часы',
+//       type: 'default',
+//       align: 'center',
+//       fixed: {
+//         value: false,
+//         position: undefined,
+//       },
+//       sorts: [
+//         {
+//           type: 'number',
+//           default: '',
+//           value: '',
+//           isShow: false,
+//         },
+//       ],
+//       isShow: true,
+//       width: '150',
+//       value: 'hour',
+//       alias: 'p.hour',
+//       search: {
+//         field: '',
+//         isShow: true,
+//       },
+//     },
+//     {
+//       title: 'Должность',
+//       type: 'default',
+//       align: 'center',
+//       fixed: {
+//         value: false,
+//         position: undefined,
+//       },
+//       sorts: [
+//         {
+//           type: 'date',
+//           default: '',
+//           value: '',
+//           isShow: false,
+//         },
+//       ],
+//       isShow: true,
+//       width: '150',
+//       alias: 'd.name',
+//       value: 'doljnost_name',
+//       search: {
+//         field: '',
+//         isShow: true,
+//       },
+//     },
+//     {
+//       title: 'Сумма',
+//       type: 'default',
+//       align: 'center',
+//       fixed: {
+//         value: false,
+//         position: undefined,
+//       },
+//       sorts: [
+//         {
+//           type: 'date',
+//           default: '',
+//           value: '',
+//           isShow: false,
+//         },
+//       ],
+//       isShow: true,
+//       width: '150',
+//       alias: 'p.total',
+//       value: 'total',
+//       search: {
+//         field: '',
+//         isShow: true,
+//       },
+//     },
+//     {
+//       title: 'Действия',
+//       type: 'actions',
+//       align: 'center',
+//       fixed: {
+//         value: false,
+//         position: 'right',
+//       },
+//       isShow: true,
+//       width: '100',
+//       value: 'actions',
+//       actions: [
+//         {
+//           type: 'button',
+//           url: '$IconSetting',
+//           function: consoleText,
+//           label: 'Редактировать',
+//         },
+//         {
+//           type: 'button',
+//           url: '$IconSetting',
+//           function: consoleButton,
+//           label: 'Удалить',
+//         },
+//       ],
+//     },
+//   ],
+//   data: {
+//     rows: [],
+//     totalRows: null,
+//     pageLength: 20,
+//     currentPage: 1,
+//     totalPages: null,
+//   },
+//   detail: undefined,
+//   actions: [
+//     stringAction({
+//       text: 'Закрыть',
+//       type: 'submit',
+//       color: 'textDefault',
+//       name: 'closePopup',
+//       action: 'closePopup',
+//       to: 'personal',
+//       skipValidation: true,
+//     }),
+//   ],
+// }
 
 const editFormPermissions = {
   // Бригадир(id = 13) - все readonly
@@ -2973,7 +3060,7 @@ export const defaultForm = [
     name: 'Расход',
     type: TableDefault,
     active: false,
-    config: consumptionConfig,
+    config: zayavkaConfig,
   },
   {
     path: 'edit',
@@ -4532,7 +4619,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'task_type_name',
-          alias: 'p.telefon',
+          alias: 'tt.name',
           search: {
             field: '',
             isShow: true,
@@ -4557,7 +4644,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'from_account_name',
-          alias: 'p.telefon',
+          alias: 'saf.name',
           search: {
             field: '',
             isShow: true,
@@ -4582,7 +4669,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'to_account_name',
-          alias: 'p.telefon',
+          alias: 'sat.name',
           search: {
             field: '',
             isShow: true,

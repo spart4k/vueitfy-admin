@@ -1512,7 +1512,7 @@ const config = {
       //               value: [2],
       //             },
       //           ],
-      //           url: 'get/pagination_list/object',
+      //           url: 'get/pagination_list/payment_personal_id',
       //         },
       //         {
       //           type: 'api',
@@ -1548,7 +1548,7 @@ const config = {
       //               value: [1],
       //             },
       //           ],
-      //           url: 'get/pagination_list/object',
+      //           url: 'get/pagination_list/payment_personal_id',
       //         },
       //       ],
       //       readonly: {
@@ -1627,7 +1627,7 @@ const config = {
       //               value: [1],
       //             },
       //           ],
-      //           url: 'get/pagination_list/object',
+      //           url: 'get/pagination_list/payment_personal_id',
       //         },
       //       ],
       //       readonly: {
@@ -2419,7 +2419,7 @@ const config = {
                     value: [2],
                   },
                 ],
-                url: 'get/pagination_list/object',
+                url: 'get/pagination_list/object_personal_id',
               },
               {
                 type: 'api',
@@ -2437,7 +2437,7 @@ const config = {
                     value: [2],
                   },
                 ],
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/payment_personal_id',
               },
               {
                 type: 'api',
@@ -2455,7 +2455,7 @@ const config = {
                     value: [1],
                   },
                 ],
-                url: 'get/pagination_list/object',
+                url: 'get/pagination_list/object_personal_id',
               },
             ],
             readonly: {
@@ -2534,7 +2534,7 @@ const config = {
                     value: [1],
                   },
                 ],
-                url: 'get/pagination_list/object',
+                url: 'get/pagination_list/payment_object_id',
               },
             ],
             readonly: {
@@ -3448,7 +3448,7 @@ const config = {
               //       value: [1],
               //     },
               //   ],
-              //   url: 'get/pagination_list/object',
+              //   url: 'get/pagination_list/payment_personal_id',
               // },
             ],
             requiredFields: ['account_id'],
@@ -3561,19 +3561,19 @@ const config = {
             filter: [
               {
                 field: 'account_id',
-                // source: 'formData',
+                source: 'formData',
                 type: 'array',
                 value: '',
               },
               {
                 field: 'direction_id',
-                // source: 'formData',
+                source: 'formData',
                 type: 'array',
                 value: '',
               },
               {
                 field: 'object_id',
-                // source: 'formData',
+                source: 'formData',
                 type: 'array',
                 value: '',
               },

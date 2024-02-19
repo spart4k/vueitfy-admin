@@ -423,6 +423,8 @@
         />
       </keep-alive>
     </Sheet>
+    {{ !!options.detail }} {{ popupForm.isShow }}
+    {{ options.detail.type === 'popup' }}
     <Popup
       closeButton
       @close="closePopupForm"

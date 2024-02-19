@@ -8,6 +8,7 @@ import {
   checkboxField,
   dropZoneField,
 } from '@/utils/fields.js'
+import _ from 'lodash'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormOutput from '@/components/Form/output/index.vue'
@@ -19,7 +20,6 @@ import { objectEditField as objectFields } from '@/pages/object/index.js'
 import { defaultForm as personalConfig } from '@/pages/personal/index'
 import { defaultForm as objectConfig } from '@/pages/object/index.js'
 console.log(personalConfig, 'personalForm')
-import _ from 'lodash'
 
 const changeActionTo = (array, key, oldPath, newPath) => {
   console.log('changeActionTo')
