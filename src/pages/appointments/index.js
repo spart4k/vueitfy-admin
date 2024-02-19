@@ -1077,7 +1077,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '650px',
+    width: '750px',
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',
@@ -1608,9 +1608,9 @@ const config = {
                         type: 'num',
                       },
                       {
-                        field: 'personal_id',
+                        field: 'avatar_with_user_key_id',
                         value: '',
-                        source: 'form.formData',
+                        source: 'formData',
                         type: 'num',
                       },
                     ],
