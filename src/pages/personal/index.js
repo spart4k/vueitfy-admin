@@ -121,6 +121,8 @@ const converConfig = (config, listHead, listPanel) => {
   spliceHeads(listHead)
   splicePanel(listPanel)
 }
+
+// Convert payment view
 converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
 converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
 paymentConfig.detail.popupIndex = 2
@@ -128,6 +130,15 @@ paymentConfig.detail.requestId = 'payment'
 paymentConfig.detail.tabs[0].path = 'edit-payment'
 paymentConfig.detail.tabs[0].routeParam = 'payment'
 paymentConfig.detail.tabs[0].id = 15
+console.log(zayavkaConfig)
+
+// Convert zayavka view
+zayavkaConfig.detail.popupIndex = 2
+zayavkaConfig.detail.requestId = 'zayavka'
+const editTabZayavka = zayavkaConfig.detail.tabs.find((el) => el.path === 'id')
+console.log(editTabZayavka)
+editTabZayavka.path = 'edit-zayavka'
+editTabZayavka.routeParam = 'edit-zayavka'
 
 const changeActionTo = (array, key) => {
   console.log('changeActionTo')
