@@ -274,7 +274,10 @@
                   class="v-table-body-row-cell v-table-actions"
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
-                  @dblclick="doubleHandler($event, row, cell)"
+                  @dblclick="
+                    $props.options.options.doubleHandlerType === 'row' &&
+                      openRow($event, row, cell)
+                  "
                   :key="cellIndex"
                 >
                   <template v-if="cell.type === 'default'">
@@ -302,6 +305,10 @@
                               ? '#d0f6ff'
                               : '#f4d0ff',
                         }"
+                        @dblclick="
+                          $props.options.options.doubleHandlerType === 'cell' &&
+                            openCell(row, cell, card)
+                        "
                       >
                         <p class="v-table-body-row-cell-item_text">
                           {{ card.hour }}
