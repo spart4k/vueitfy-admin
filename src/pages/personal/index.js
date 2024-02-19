@@ -126,9 +126,23 @@ converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
 paymentConfig.detail.popupIndex = 2
 paymentConfig.detail.requestId = 'payment'
 paymentConfig.detail.tabs[0].path = 'edit-payment'
-;(paymentConfig.detail.tabs[0].routeParam = 'payment'),
-  (paymentConfig.detail.tabs[0].id = 15)
+paymentConfig.detail.tabs[0].routeParam = 'payment'
+paymentConfig.detail.tabs[0].id = 15
+
+const changeActionTo = (array, key) => {
+  console.log('changeActionTo')
+  array.forEach((tab) => {
+    if (tab.actions) {
+      tab.actions.forEach((el) => {
+        if (el.action === 'closePopup') {
+          el.to = key
+        }
+      })
+    }
+  })
+}
 console.log(paymentConfig)
+changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import useNavigation from '@/compositions/useNavigation'
 // import { payment, userKeys } from '@/pages'
 

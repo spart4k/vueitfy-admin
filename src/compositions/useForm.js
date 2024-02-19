@@ -906,7 +906,7 @@ export default function ({
         })
       }
       if (targetField) {
-        console.log(JSON.stringify(targetField))
+        console.log(JSON.stringify(targetField), targetField)
         //if (typeof data === 'object') data = [data]
         console.log('DEFAULT ITEMS', targetField, targetField.defaultItems)
         targetField.items = targetField.defaultItems
