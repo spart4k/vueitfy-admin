@@ -22,7 +22,7 @@ import {
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
-import FormList from '@/components/Form/list/index.vue'
+// import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import paymentConfigOrig from '@/pages/payment/index'
 import zayavkaConfigOrig from '@/pages/zayavka/index'
@@ -110,10 +110,14 @@ const converConfig = (config, listHead, listPanel) => {
 }
 converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
 converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
-
-console.log(JSON.stringify(paymentConfig.head))
+paymentConfig.detail.popupIndex = 2
+paymentConfig.detail.requestId = 'payment'
+paymentConfig.detail.tabs[0].path = 'edit-payment'
+paymentConfig.detail.tabs[0].routeParam = 'payment',
+paymentConfig.detail.tabs[0].id = 15
+console.log(paymentConfig)
 // import useNavigation from '@/compositions/useNavigation'
-import { payment, userKeys } from '@/pages'
+// import { payment, userKeys } from '@/pages'
 
 // const { addOrUpdateURLParam } = useNavigation({})
 

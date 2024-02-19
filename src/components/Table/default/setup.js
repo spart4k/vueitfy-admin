@@ -478,6 +478,8 @@ const table = {
         let requestId = 'id'
         if (props.options.detail.requestId)
           requestId = props.options.detail.requestId
+        console.log(`${route.name}/:${requestId}`)
+        console.log(route)
         router.push({
           name: `${route.name}/:${requestId}`,
           params: {
@@ -485,6 +487,7 @@ const table = {
           },
         })
         popupForm.value.isShow = true
+        console.log(route)
       }
     }
 
@@ -775,7 +778,6 @@ const table = {
           }
         })
       }
-      console.log(styles)
       return styles
     }
 
