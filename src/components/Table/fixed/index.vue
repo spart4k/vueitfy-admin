@@ -333,6 +333,20 @@
                       </v-btn>
                     </div>
                   </template>
+                  <template v-else-if="cell.type === 'download'">
+                    <div
+                      v-if="Object.byString(row.row, cell.value)"
+                      class="v-table-actions-wrap"
+                    >
+                      {{ Object.byString(row.row, cell.value) }}
+                      <v-btn
+                        class="ml-2"
+                        @click="getDownLoadLink(row.row.object_id)"
+                      >
+                        <v-icon small> $IconDownload </v-icon>
+                      </v-btn>
+                    </div>
+                  </template>
                 </td>
               </tr>
               <tr
