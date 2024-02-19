@@ -184,7 +184,7 @@ const Form18 = defineComponent({
         total += formData.sum ?? 0
         return {
           service_id: formData.name,
-          qty: formData.qty,
+          qty: +formData.qty,
           price: formData.price,
           sum: formData.sum,
         }

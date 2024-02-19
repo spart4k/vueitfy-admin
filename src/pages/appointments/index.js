@@ -654,7 +654,7 @@ export const editFields = [
     items: [],
     position: {
       cols: 12,
-      sm: 6,
+      sm: 12,
     },
     validations: { required },
     bootstrapClass: [''],
@@ -1010,6 +1010,31 @@ const config = {
       width: '150',
       value: 'total',
       alias: 'pt.total',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Ключ',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'print_form_key',
+      alias: 'pt.print_form_key',
       search: {
         field: '',
         isShow: true,

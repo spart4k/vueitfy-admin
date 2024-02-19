@@ -842,9 +842,11 @@ export default function ({
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
         dependence.fillField.forEach((el) => {
+          console.log('FILL FIELDS', el, params)
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
-            else if (formData[el]) formData[el] = null
+            else if (formData[el] && params.hasOwnProperty('item'))
+              formData[el] = null
           } else if (typeof el === 'object') {
             const targetObject = form.fields.find((item) => {
               return item.name === el.formKey
@@ -933,6 +935,7 @@ export default function ({
         if (targetField.hasOwnProperty('objectData')) {
           if (data.length) {
             targetField.objectData = data
+            console.log(targetField.objectData, 'targetField.objectData')
           } else {
             const findedDep = targetField.dependence.find(
               (depTarget) => depTarget.type === 'update'
@@ -1049,6 +1052,7 @@ export default function ({
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
+      console.log('IT AUTOCOMPLETE', el.name)
       const filters = []
       const { url } = el
       if (el.filter && el.filter.length) {
@@ -1081,12 +1085,14 @@ export default function ({
           : -1,
         filter: filters,
       })
+      console.log(data, 'DATA DATA')
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
       console.log('LOAD AUTOCOMPLETE ', formData[el.name])
       if (mode === 'edit') {
+        console.log(' MODE EDIT')
         await getDependies({ field: el, value: formData[el.name] })
       }
       return data
@@ -1318,6 +1324,7 @@ export default function ({
     }
     await loadAutocompletes()
     loading.value = false
+    console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
   }
 
   const isHideBtn = (button) => {
