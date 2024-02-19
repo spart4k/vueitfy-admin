@@ -1609,6 +1609,7 @@ const config = {
                       },
                       {
                         field: 'avatar_with_user_key_id',
+                        alias: 'personal_id',
                         value: '',
                         source: 'formData',
                         type: 'num',
