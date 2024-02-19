@@ -21,6 +21,15 @@ Vue.config.productionTip = false
 Vue.config.silent = true
 Vue.use(PortalVue)
 Vue.prototype.env = process.env
+
+Vue.downloadFile = function (val) {
+  const link = document.createElement('a')
+  link.download = val
+  link.href = process.env.VUE_APP_STORE + val
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 // Vue.use(VueCompositionApi)
 
 new Vue({

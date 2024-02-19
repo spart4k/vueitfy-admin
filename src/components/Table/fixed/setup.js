@@ -817,6 +817,16 @@ const table = {
       getItems()
     }
 
+    const getDownLoadLink = async (val) => {
+      const date = `${currentDate.value.year}-${
+        currentDate.value.month < 10 ? '0' : ''
+        }${currentDate.value.month + 1}`
+      globalLoading.value = true
+      const data = await store.dispatch('table/getDetail', `report/personal/period_target?object_id=${val}&period=${date}`)
+      Vue.downloadFile(data.url)
+      globalLoading.value = false
+    }
+
     const acceptForm = async () => {
       const requestData = {
         period: acceptData.value.valueDate,
@@ -984,6 +994,7 @@ const table = {
       createPayment,
       availablePanelBtn,
       prepaymentLoading,
+      getDownLoadLink,
     }
   },
 }
