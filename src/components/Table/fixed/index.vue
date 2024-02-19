@@ -11,7 +11,7 @@
       }"
       ref="dropzone"
     />
-    <v-dialog persistent v-model="confirmPayment" width="400">
+    <v-dialog persistent v-model="confirmPayment" width="420">
       <v-card>
         <v-card-title class="text-h5 text-center">
           Вы подтверждаете начисление аванса за
@@ -330,6 +330,20 @@
                         <v-icon small>
                           {{ action.url }}
                         </v-icon>
+                      </v-btn>
+                    </div>
+                  </template>
+                  <template v-else-if="cell.type === 'download'">
+                    <div
+                      v-if="Object.byString(row.row, cell.value)"
+                      class="v-table-actions-wrap"
+                    >
+                      {{ Object.byString(row.row, cell.value) }}
+                      <v-btn
+                        class="ml-2"
+                        @click="getDownLoadLink(row.row.object_id)"
+                      >
+                        <v-icon small> $IconDownload </v-icon>
                       </v-btn>
                     </div>
                   </template>
