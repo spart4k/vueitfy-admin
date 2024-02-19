@@ -26,7 +26,8 @@ const config = {
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/task',
+    // url: 'get/pagination/task',
+    url: 'get/pagination/personal_active',
     title: 'This is an about page1',
   },
   panel: {

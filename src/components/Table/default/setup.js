@@ -364,6 +364,9 @@ const table = {
           })
         })
         options.data.rows = structuredArray
+      } else {
+        paramsQuery.value.currentPage = 1
+        paramsQuery.value.countRows = options.data.totalPages
       }
       loading.value = false
     }
