@@ -5,8 +5,8 @@ import formComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 
-const Form28 = defineComponent({
-  name: 'Form28',
+const Form31 = defineComponent({
+  name: 'Form31',
   components: {
     TextInfo: textInfo,
     FormError: formError,
@@ -83,4 +83,4 @@ const Form28 = defineComponent({
     }
   },
 })
-export default Form28
+export default Form31

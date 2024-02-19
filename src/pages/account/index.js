@@ -49,6 +49,18 @@ const bankConfig = {
     urlDetail: 'account_id',
     alias: 'account_id',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: 'mdi-delete',
+          label: 'Удалить карту',
+          action: {
+            type: 'delete',
+            alias: 'account_bank',
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [
