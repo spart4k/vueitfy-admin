@@ -1,0 +1,26 @@
+.v {
+  &-cards {
+    &-wrapper {
+      padding: 4px 0;
+      height: 100%;
+      width: 100%;
+      &_panel {
+        padding: 0 22px;
+        width: 100%;
+        height: 26px;
+        margin-bottom: 14px;
+      }
+      &-container {
+        height: calc(100% - 26px);
+        padding: 0 22px 14px;
+        overflow: auto;
+        &_list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 26px;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
