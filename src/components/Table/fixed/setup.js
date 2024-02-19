@@ -396,6 +396,8 @@ const table = {
 
     const initHeadParams = () => {
       const { head } = props.options
+      paramsQuery.value.sorts = []
+      paramsQuery.value.searchColumns = []
       head.forEach((el) => {
         if (el.sorts?.length) {
           //Vue.set(el.sorts, 'field', el.value)
