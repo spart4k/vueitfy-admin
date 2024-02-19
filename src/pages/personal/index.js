@@ -860,6 +860,18 @@ const documentConfigEdit = {
     url: 'get/pagination/personal_doc',
     alias: 'personal_id',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: 'mdi-delete',
+          label: 'Удалить документ',
+          action: {
+            type: 'delete',
+            alias: 'personal_doc',
+          },
+        },
+      ],
+    },
   },
   type: TableDefault,
   panel: {
@@ -1650,6 +1662,18 @@ const bankConfig = {
     urlDetail: 'personal_id',
     alias: 'pb.personal_id',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: 'mdi-delete',
+          label: 'Удалить карту',
+          action: {
+            type: 'delete',
+            alias: 'personal_bank',
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [

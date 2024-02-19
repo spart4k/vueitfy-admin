@@ -284,14 +284,27 @@ const table = {
         return undefined
       }
     }
-    const handlerContext = ({ action, row }) => {
-      console.log(action, row)
+    const handlerContext = async ({ action, row }) => {
       if (action.action.type === 'changeUrl') {
-        console.log(action.action.url)
         changeUrlPath(action.action.url + '/' + row.row.id)
+      } else if (action.action.type === 'delete') {
+        await deleteRow(row.row.id, action.action.alias)
       } else {
         openRow(undefined, row)
       }
+      contextmenu.value.isShow = false
+    }
+    const deleteRow = async (id, alias) => {
+      await store.dispatch('table/get', {
+        url: `set/data/${alias}`,
+        data: {
+          data: {
+            del: 1,
+            id,
+          },
+        },
+      })
+      getItems()
     }
     const openFilter = ($event) => {
       filter.value.isShow = true
