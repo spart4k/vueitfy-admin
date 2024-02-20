@@ -255,6 +255,14 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/:zayavka',
+            path: '/personal/:id/:zayavka',
+            meta: {
+              mode: ['edit', 'edit-zayavka'],
+            },
+            component: Detail,
+          },
         ],
       },
       {

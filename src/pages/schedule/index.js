@@ -965,7 +965,7 @@ const config = {
       type: 'default',
       isShow: true,
       width: '200',
-      alias: 'p.account_name',
+      alias: 'sa.name',
       value: 'account_name',
       changeable: true,
       fixed: {
@@ -993,7 +993,7 @@ const config = {
       type: 'default',
       isShow: true,
       width: '200',
-      alias: 'p.permission_name',
+      alias: 'sp.name',
       value: 'permission_name',
       changeable: true,
       fixed: {
