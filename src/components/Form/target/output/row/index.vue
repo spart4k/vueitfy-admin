@@ -54,14 +54,18 @@
                     />
                   </v-col>
                 </v-row>
-                <div
+                <v-row
                   v-if="sum(row) !== row.sum"
                   class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
                 >
-                  <div class="">Сумма</div>
-                  <div class="output-summ">{{ row.sum }} р</div>
-                </div>
-                <div
+                  <v-col cols="12" sm="6">
+                    <div class="">Сумма</div>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <div class="output-summ">{{ row.sum }} р</div>
+                  </v-col>
+                </v-row>
+                <v-row
                   v-if="row.deduction_debit"
                   class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
                 >
@@ -69,8 +73,8 @@
                   <div :class="row.is_hold ? 'debt' : ''" class="output-summ">
                     {{ row.deduction_debit }} р
                   </div>
-                </div>
-                <div
+                </v-row>
+                <v-row
                   v-if="row.hold_sum"
                   class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
                 >
@@ -78,8 +82,8 @@
                   <div :class="row.is_hold ? 'debt' : ''" class="output-summ">
                     {{ row.hold_sum }} р
                   </div>
-                </div>
-                <div
+                </v-row>
+                <v-row
                   v-if="!row.is_hold"
                   class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
                 >
@@ -93,7 +97,7 @@
                   <div :class="row.is_hold ? 'debt' : ''" class="output-summ">
                     {{ sum(row) }} р
                   </div>
-                </div>
+                </v-row>
                 <!-- <div
                   class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
                 >
