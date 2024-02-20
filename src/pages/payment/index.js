@@ -508,6 +508,19 @@ const config = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/payment',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: 'mdi-account',
+          label: 'Перейти',
+          action: {
+            type: 'changeUrl',
+            target: 'personal_id',
+            url: 'personal',
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [

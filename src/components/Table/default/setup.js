@@ -286,7 +286,7 @@ const table = {
     }
     const handlerContext = async ({ action, row }) => {
       if (action.action.type === 'changeUrl') {
-        changeUrlPath(action.action.url + '/' + row.row.id)
+        changeUrlPath(action.action.url + '/' + row.row[action.action.target])
       } else if (action.action.type === 'delete') {
         await deleteRow(row.row.id, action.action.alias)
       } else {
