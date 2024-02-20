@@ -55,48 +55,77 @@
                   </v-col>
                 </v-row>
                 <v-row
-                  v-if="sum(row) !== row.sum"
-                  class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
-                >
-                  <v-col cols="12" sm="6">
-                    <div class="">Сумма</div>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <div class="output-summ">{{ row.sum }} р</div>
-                  </v-col>
-                </v-row>
-                <v-row
-                  v-if="row.deduction_debit"
-                  class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
-                >
-                  <div class="">Дебит</div>
-                  <div :class="row.is_hold ? 'debt' : ''" class="output-summ">
-                    {{ row.deduction_debit }} р
-                  </div>
-                </v-row>
-                <v-row
-                  v-if="row.hold_sum"
-                  class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
-                >
-                  <div class="">Удержано</div>
-                  <div :class="row.is_hold ? 'debt' : ''" class="output-summ">
-                    {{ row.hold_sum }} р
-                  </div>
-                </v-row>
-                <v-row
                   v-if="!row.is_hold"
-                  class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
+                  class="output-panel d-flex pl-3 pr-3"
                 >
-                  <a
-                    v-if="row.payment_id"
-                    target="_blank"
-                    :href="`/payment/${row.payment_id}`"
-                    >Ссылка на начисления</a
-                  >
-                  <div v-else class=""></div>
-                  <div :class="row.is_hold ? 'debt' : ''" class="output-summ">
-                    {{ sum(row) }} р
-                  </div>
+                  <v-col cols="12" sm="12">
+                    <v-row class="d-flex justify-space-between w-100">
+                      <v-col cols="12" sm="6">
+                        <a
+                          v-if="row.payment_id"
+                          target="_blank"
+                          :href="`/payment/${row.payment_id}`"
+                          >Ссылка на начисления</a
+                        >
+                        <div v-else class=""></div>
+                      </v-col>
+                      <v-col class="d-flex justify-end pl-0" cols="12" sm="3">
+                        <div
+                          :class="row.is_hold ? 'debt' : ''"
+                          class="output-summ"
+                        >
+                          {{ sum(row) }} р
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+                <v-row class="justify-end">
+                  <v-col cols="12" sm="7">
+                    <v-row
+                      v-if="sum(row) !== row.sum"
+                      class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
+                    >
+                      <v-col cols="12" sm="6">
+                        <div class="text-right">Сумма</div>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <div class="output-summ">{{ row.sum }} р</div>
+                      </v-col>
+                    </v-row>
+                    <v-row
+                      v-if="row.deduction_debit"
+                      class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
+                    >
+                      <v-col cols="12" sm="6">
+                        <div class="text-right">Дебит</div>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <div
+                          :class="row.is_hold ? 'debt' : ''"
+                          class="output-summ"
+                        >
+                          {{ row.deduction_debit }} р
+                        </div>
+                      </v-col>
+                    </v-row>
+                    <v-row
+                      v-if="row.hold_sum"
+                      class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
+                    >
+                      <v-col cols="12" sm="6">
+                        <div class="text-right">Итог</div>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <div
+                          :class="row.is_hold ? 'debt' : ''"
+                          class="output-summ"
+                        >
+                          {{ row.hold_sum }} р
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-col>
                 </v-row>
                 <!-- <div
                   class="output-panel d-flex align-start justify-space-between pl-3 pr-3"
