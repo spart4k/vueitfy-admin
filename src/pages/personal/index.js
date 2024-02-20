@@ -1720,7 +1720,7 @@ const bankConfig = {
           isShow: false,
         },
       ],
-      alias: 'ab.id',
+      alias: 'pb.id',
       isShow: true,
       width: '40',
       value: 'id',
@@ -1748,7 +1748,7 @@ const bankConfig = {
       isShow: true,
       width: '150',
       value: 'priority',
-      alias: 'ab.priority',
+      alias: 'pb.priority',
       search: {
         field: '',
         isShow: true,
@@ -1797,7 +1797,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'ab.invoice',
+      alias: 'pb.invoice',
       value: 'invoice',
       search: {
         field: '',
@@ -1823,7 +1823,7 @@ const bankConfig = {
       isShow: true,
       width: '150',
       value: 'fio',
-      alias: 'ab.fio',
+      alias: 'pb.fio',
       search: {
         field: '',
         isShow: true,
