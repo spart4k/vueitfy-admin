@@ -13,9 +13,25 @@
 
   &-item {
     display: flex;
+    padding: 3px;
+    margin: 5px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
   }
+
+  &-img {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .img {
+    width: 100%;
+    height: auto;
+  }
+
 
   &-input {
     display: none;
@@ -44,4 +60,21 @@
 
 .file:hover {
   cursor: pointer;
+}
+
+.heading {
+  font-size: 17px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.list {
+  border: 1px solid rgba(199, 199, 199, 0.589);
+}
+
+
+.alert {
+  margin-bottom: 10px;
+  color: red;
+  font-weight: bold;
 }
