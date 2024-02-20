@@ -27,6 +27,8 @@ export default {
         route,
       },
     }
+    const sum = (row) =>
+      row.sum - (row.hold_sum + row.deduction_debit + row.deduction_hold)
     const { makeRequest: makeRequestList } = useRequest({
       context,
       request: (data) =>
@@ -49,6 +51,7 @@ export default {
       }
       return result
     }
+    const notPay = (row) => !row.is_hold && row.payment_id === 0
     const listService = ref([])
     onMounted(async () => {
       const result = await makeRequestList()
@@ -58,6 +61,8 @@ export default {
     return {
       switchLabel,
       listService,
+      notPay,
+      sum,
     }
   },
 }
