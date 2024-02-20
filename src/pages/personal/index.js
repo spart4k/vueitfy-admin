@@ -1847,7 +1847,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'ab.comment',
+      alias: 'pb.comment',
       value: 'comment',
       search: {
         field: '',
