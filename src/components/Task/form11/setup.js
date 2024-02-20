@@ -311,7 +311,7 @@ const Form11 = defineComponent({
       comment,
       dropZone,
       dropzoneOptions,
-      // sendTaskFinish,
+      sendTaskFinish,
       addDisabledDocuments,
       disabledDocumentsAcc,
       emplyeeFired,

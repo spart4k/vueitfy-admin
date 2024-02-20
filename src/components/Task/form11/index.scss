@@ -14,9 +14,11 @@
   &-item {
     display: flex;
     padding: 3px;
+    padding-bottom: 15px;
     margin: 5px;
     align-items: center;
     justify-content: space-around;
+    border-bottom: 1px solid rgb(212, 212, 212);
   }
 
   &-img {
