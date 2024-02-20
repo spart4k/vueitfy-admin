@@ -515,7 +515,7 @@ const table = {
       getItems()
     }
 
-    const openCell = (row, cell, card) => {
+    const openCell = ($event, row, cell, card) => {
       if (props.options.detail.type === 'popup' && !cell.noAction) {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row

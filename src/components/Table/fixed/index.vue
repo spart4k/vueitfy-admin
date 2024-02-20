@@ -275,8 +275,10 @@
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
                   @dblclick="
-                    $props.options.options.doubleHandlerType === 'row' &&
-                      openRow($event, row, cell)
+                    ;($props.options.options.doubleHandlerType === 'row' &&
+                      openRow($event, row, cell)) ||
+                      ($props.options.options.doubleHandlerType === 'cell' &&
+                        openCell($event, row, cell))
                   "
                   :key="cellIndex"
                 >
@@ -305,9 +307,9 @@
                               ? '#d0f6ff'
                               : '#f4d0ff',
                         }"
-                        @dblclick="
+                        @dblclick.stop="
                           $props.options.options.doubleHandlerType === 'cell' &&
-                            openCell(row, cell, card)
+                            openCell($event, row, cell, card)
                         "
                       >
                         <p class="v-table-body-row-cell-item_text">
