@@ -67,6 +67,7 @@ export default {
     const stage = ref({
       value: 0,
       count: 0,
+      type: null,
       showForm: true,
       errors: [],
       targets: {},
@@ -180,6 +181,7 @@ export default {
         stage.value.showForm = false
         stage.value.errors = data.errors
         stage.value.targets = data.targets
+        stage.value.type = requestData.type_parser
         setOutputData(data.data)
         return data
       },
@@ -193,8 +195,8 @@ export default {
     })
 
     const setOutputData = (data) => {
-      Object.keys(data).forEach((item) => {
-        Object.entries(data[item]).forEach((key) => {
+      Object.keys(data)?.forEach((item) => {
+        Object.entries(data[item])?.forEach((key) => {
           outputData.value[key[0]].value = key[1]
         })
       })
@@ -210,6 +212,7 @@ export default {
         stage.value.showForm = false
         stage.value.errors = response.errors
         stage.value.targets = response.targets
+        stage.value.type = response.subtype
         setOutputData(response.data)
         if (stage.value.value === 2 && !list.value.personal.length) {
           getPersonal()
@@ -250,10 +253,12 @@ export default {
       }
     }
 
+    const loadingPersonal = ref(false)
     const getPersonal = async () => {
       const requestList = Object.keys(stage.value.targets).map((item) => {
         return +item
       })
+      loadingPersonal.value = true
       const responseData = await makeRequestList([
         {
           alias: 'parser_personal_id',
@@ -261,6 +266,7 @@ export default {
         },
       ])
       list.value.personal = responseData.data.parser_personal_id
+      loadingPersonal.value = false
     }
 
     const loadParser = async () => {
@@ -405,6 +411,7 @@ export default {
       convertData,
       list,
       getPersonalName,
+      loadingPersonal,
       getFinalSum,
     }
   },
