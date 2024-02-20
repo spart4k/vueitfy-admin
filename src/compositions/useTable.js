@@ -59,6 +59,7 @@ const _valuesConfigDefault = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   [_keysConfigProperty.DETAIL]: {
     type: 'popup', // String 'popup' or 'page'

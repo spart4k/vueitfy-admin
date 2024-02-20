@@ -1,7 +1,7 @@
 $paddingCell: 5px;
 $borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 61px;
-$tableFooterHeight: 85px;
+$tableFooterHeight: 100px;
 
 .v {
   &-table {
@@ -308,12 +308,17 @@ $tableFooterHeight: 85px;
       //display: flex;
       padding: $paddingCell;
       border: 1px solid $borderColor;
-      font-size: 12px;
+      font-size: 14px;
       width: 100%;
       height: $tableFooterHeight;
+      &-info {
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+      }
       &-total {
         text-align: center;
-        font-size: 12px;
+        font-size: 14px;
       }
       &-pagination {
         width: 100%;
@@ -393,7 +398,8 @@ $tableFooterHeight: 85px;
   background-color: #ff7373;
 }
 
-#name-table-header,  #fio-table-header{
+#name-table-header,
+#fio-table-header {
   width: 414px;
 }
 
