@@ -363,6 +363,8 @@ const table = {
       if (options.data.rows?.length && options.data.rows) {
         options.data.totalPages = data.totalPage
         options.data.totalRows = data.total
+        options.data.footer = data.footer
+        // options.
         const structuredArray = []
         options.data.rows.forEach((row) => {
           if (options.options.selecting) {

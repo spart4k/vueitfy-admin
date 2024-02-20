@@ -414,6 +414,7 @@ const consumptionConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -644,6 +645,7 @@ const debetorConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -901,6 +903,7 @@ const documentConfigEdit = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -1181,6 +1184,7 @@ const documentConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -1634,6 +1638,7 @@ const skanConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -1876,6 +1881,7 @@ const bankConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'

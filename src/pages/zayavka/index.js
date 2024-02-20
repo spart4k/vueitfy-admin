@@ -4460,6 +4460,7 @@ const config = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
