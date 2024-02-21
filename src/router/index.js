@@ -21,6 +21,7 @@ import Detail from '@/components/Table/detail'
 import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
 import SlataReportView from '@/views/SlataReportView.vue'
+import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
@@ -145,6 +146,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'payment/personal-edit',
+        path: ':personal_id',
+        meta: {
+          mode: ['edit-personal'],
+          label: 'Редактировать',
+        },
+        component: Detail,
+      },
+      {
         name: 'payment/:id',
         path: ':id',
         meta: {
@@ -243,6 +253,22 @@ const routes = [
             meta: {
               mode: ['edit', 'new_card'],
               // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal/:id/:payment',
+            path: '/personal/:id/:payment',
+            meta: {
+              mode: ['edit', 'edit-payment'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal/:id/:zayavka',
+            path: '/personal/:id/:zayavka',
+            meta: {
+              mode: ['edit', 'edit-zayavka'],
             },
             component: Detail,
           },
@@ -690,16 +716,14 @@ const routes = [
       layout: 'blank-layout',
     },
     component: SlataReportView,
-    // children: [
-    //   {
-    //     name: 'slata',
-    //     path: '/salta',
-    //     meta: {
-    //       mode: 'blank-layout',
-    //     },
-    //     component: Detail,
-    //   },
-    // ],
+  },
+  {
+    path: '/corporate-cards',
+    name: 'corporate-cards',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: CorporateCardsView,
   },
   {
     path: '/schedule',

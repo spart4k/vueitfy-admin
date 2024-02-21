@@ -654,7 +654,7 @@ export const editFields = [
     items: [],
     position: {
       cols: 12,
-      sm: 6,
+      sm: 12,
     },
     validations: { required },
     bootstrapClass: [''],
@@ -1016,6 +1016,31 @@ const config = {
       },
     },
     {
+      title: 'Ключ',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'print_form_key',
+      alias: 'pt.print_form_key',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
       title: 'Примечание',
       type: 'default',
       align: 'center',
@@ -1073,11 +1098,12 @@ const config = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '650px',
+    width: '750px',
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',
@@ -1608,9 +1634,10 @@ const config = {
                         type: 'num',
                       },
                       {
-                        field: 'personal_id',
+                        field: 'avatar_with_user_key_id',
+                        alias: 'personal_id',
                         value: '',
-                        source: 'form.formData',
+                        source: 'formData',
                         type: 'num',
                       },
                     ],

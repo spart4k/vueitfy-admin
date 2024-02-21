@@ -563,7 +563,7 @@ export default function ({
     } else {
       const result = await createForm(queryParams, params)
     }
-    if (!queryParams.action.notClose) {
+    if (!queryParams?.action?.notClose) {
       emit('getItems')
       emit('closePopup')
     } else {
@@ -842,9 +842,11 @@ export default function ({
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
         dependence.fillField.forEach((el) => {
+          console.log('FILL FIELDS', el, params)
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
-            else if (formData[el]) formData[el] = null
+            else if (formData[el] && params.hasOwnProperty('item'))
+              formData[el] = null
           } else if (typeof el === 'object') {
             const targetObject = form.fields.find((item) => {
               return item.name === el.formKey
@@ -914,15 +916,16 @@ export default function ({
         })
       }
       if (targetField) {
+        console.log(JSON.stringify(targetField), targetField)
         //if (typeof data === 'object') data = [data]
         console.log('DEFAULT ITEMS', targetField, targetField.defaultItems)
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
-        if (targetField.items.length === 1) {
+        if (targetField?.items?.length === 1) {
           // Если массив, вставить массив
           // formData[targetField.name] = targetField.items[0].id
-        } else if (!targetField.items.length) {
+        } else if (!targetField.items?.length) {
           formData[targetField.name] = null
         }
         targetField.hideItems = targetField.defaultItems
@@ -931,7 +934,8 @@ export default function ({
         card = targetField.items.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
           if (data.length) {
-            targetField.objectData = data
+            targetField.objectData = [...targetField.defaultObjectData, ...data]
+            console.log(targetField.objectData, 'targetField.objectData')
           } else {
             const findedDep = targetField.dependence.find(
               (depTarget) => depTarget.type === 'update'
@@ -1048,6 +1052,7 @@ export default function ({
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
+      console.log('IT AUTOCOMPLETE', el.name)
       const filters = []
       const { url } = el
       if (el.filter && el.filter.length) {
@@ -1080,12 +1085,14 @@ export default function ({
           : -1,
         filter: filters,
       })
+      console.log(data, 'DATA DATA')
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
       console.log('LOAD AUTOCOMPLETE ', formData[el.name])
       if (mode === 'edit') {
+        console.log(' MODE EDIT')
         await getDependies({ field: el, value: formData[el.name] })
       }
       return data
@@ -1185,6 +1192,7 @@ export default function ({
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
+        console.log(field?.name, 'FIELD NAME')
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
@@ -1205,7 +1213,7 @@ export default function ({
           }
         }
       }
-
+      console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
       const prescription = form?.fields.find(
         (x) => x.prescription
       )?.prescription
@@ -1316,6 +1324,7 @@ export default function ({
     }
     await loadAutocompletes()
     loading.value = false
+    console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
   }
 
   const isHideBtn = (button) => {

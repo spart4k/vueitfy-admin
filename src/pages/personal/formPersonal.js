@@ -320,6 +320,7 @@ const skanConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -550,6 +551,7 @@ const bankConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -805,6 +807,7 @@ const paymentConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -1060,6 +1063,7 @@ const consumptionConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -1315,6 +1319,7 @@ const debetorConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [

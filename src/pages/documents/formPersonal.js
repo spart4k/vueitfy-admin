@@ -19,7 +19,13 @@ import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 // import useNavigation from '@/compositions/useNavigation'
 
-import { headDocumentConfigEdit, fieldsBaseDocumentConfigEdit, fieldsTypeDocsDocumentConfigEdit, fieldsBaseDefaulrForm, fieldsDocumentDefaultForm} from '@/pages/personal/index'
+import {
+  headDocumentConfigEdit,
+  fieldsBaseDocumentConfigEdit,
+  fieldsTypeDocsDocumentConfigEdit,
+  fieldsBaseDefaulrForm,
+  fieldsDocumentDefaultForm,
+} from '@/pages/personal/index'
 // const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {
@@ -283,6 +289,7 @@ const consumptionConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -295,7 +302,7 @@ const consumptionConfig = {
       to: 'documents',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 const debetorConfig = {
@@ -538,6 +545,7 @@ const debetorConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -550,7 +558,7 @@ const debetorConfig = {
       to: 'documents',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 const documentConfigEdit = {
@@ -592,6 +600,7 @@ const documentConfigEdit = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -624,7 +633,10 @@ const documentConfigEdit = {
             color: 'primary',
             module: 'form/update',
             url: 'set/data/personal_doc',
-            useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }, { requestKey: 'id', storageKey: 'object_id' }],
+            useRouteKey: [
+              { requestKey: 'personal_id', storageKey: 'id' },
+              { requestKey: 'id', storageKey: 'object_id' },
+            ],
             // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
             name: 'updateFormStore',
             action: 'updateFormStore',
@@ -808,6 +820,7 @@ const documentConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -1208,6 +1221,7 @@ const skanConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -1220,7 +1234,7 @@ const skanConfig = {
       to: 'personal',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 const bankConfig = {
@@ -1438,6 +1452,7 @@ const bankConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -1450,7 +1465,7 @@ const bankConfig = {
       to: 'documents',
       skipValidation: true,
     }),
-  ]
+  ],
 }
 
 const paymentConfig = {
@@ -1693,6 +1708,7 @@ const paymentConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   actions: [
@@ -1752,7 +1768,7 @@ const editFormPermissions = {
     denied: {
       permissions: [4],
       type: true,
-    }
+    },
   },
   OBDandOKK: {
     access: {
@@ -1762,8 +1778,8 @@ const editFormPermissions = {
     denied: {
       permissions: [7, 8],
       type: true,
-    }
-  }
+    },
+  },
 }
 
 const defaultForm = [
@@ -1877,410 +1893,410 @@ const defaultForm = [
     active: false,
     config: debetorConfig,
   },
-//   {
-//     path: 'add',
-//     id: 5,
-//     name: 'Заявка на персонал',
-//     type: 'FormStage',
-//     detail: true,
-//     setRoute: 'personal-add',
-//     stages: [
-//       {
-//         id: 0,
-//         name: 'Основные0',
-//         type: FormDefault,
-//         detail: true,
-//         lists: [
-//           // 'vid_vedomost_id',
-//           // 'status_pt',
-//           { alias: 'direction_id_logistic', filter: [] },
-//           { alias: 'grajdanstvo_id', filter: [] },
-//           // { alias: 'brigadirs', filter: [] },
-//           // 'shifts',
-//           // 'nutritions',
-//         ],
-//         alias: 'personal_target',
-//         active: false,
-//         fields: [
-//           stringField({
-//             label: 'ФИО',
-//             name: 'fio',
-//             placeholder: '',
-//             value: '',
-//             class: [''],
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required },
-//             bootstrapClass: [''],
-//           }),
-//           dateField({
-//             label: 'Дата рождения',
-//             name: 'date_rojd',
-//             type: 'date',
-//             value: '',
-//             menu: false,
-//             placeholder: '',
-//             class: [''],
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required },
-//             bootstrapClass: [''],
-//             disable: false,
-//             //mode: 'edit',
-//           }),
-//           selectField({
-//             label: 'Направления',
-//             name: 'direction_id',
-//             alias: 'direction_id_logistic',
-//             placeholder: '',
-//             class: [''],
-//             value: '',
-//             selectOption: {
-//               text: 'name',
-//               value: 'id',
-//             },
-//             items: [],
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required },
-//             bootstrapClass: [''],
-//             dependence: [
-//               {
-//                 type: 'api',
-//                 module: 'selects/getListUpdate',
-//                 field: 'object_id',
-//                 url: 'get/pagination_list/object_logistic',
-//                 alias: 'object_id'
-//               },
-//             ],
-//           }),
-//           autocompleteField({
-//             label: 'Объект',
-//             name: 'object_id',
-//             alias: 'object_json',
-//             subtype: 'single',
-//             placeholder: '',
-//             class: [''],
-//             selectOption: {
-//               text: 'name',
-//               value: 'id',
-//             },
-//             items: [],
-//             page: 1,
-//             search: '',
-//             url: 'get/pagination_list/object_logistic',
-//             // object
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required },
-//             bootstrapClass: [''],
-//             filter: [
-//               {
-//                 field: 'direction_id',
-//                 value: '',
-//               },
-//             ],
-//             dependence: [
-//               {
-//                 type: 'default',
-//                 fillField: ['city_id', 'regions_id'],
-//               },
-//               {
-//                 type: 'api',
-//                 module: 'selects/getListUpdate',
-//                 field: 'personal_id',
-//                 url: 'get/pagination_list/brigadirs',
-//               },
-//             ],
-//             // updateList: [
-//             //   {
-//             //     alias: 'brigadirs',
-//             //     filter: [
-//             //       {
-//             //         field: 'object_id',
-//             //         value: '',
-//             //         source: 'formData',
-//             //         type: 'array',
-//             //       },
-//             //     ],
-//             //   },
-//             // ],
-//             update: {
-//               module: 'selects/getList',
-//               fields: ['personal_id'],
-//             },
-//             isShow: {
-//               value: false,
-//               conditions: [{ field: 'direction_id', value: [1, 6] }],
-//             },
-//           }),
-//           stringField({
-//             label: '',
-//             name: 'city_id',
-//             placeholder: '',
-//             class: [''],
-//             position: {
-//               cols: 12,
-//               sm: 6,
-//             },
-//             isShow: {
-//               value: true,
-//             },
-//             bootstrapClass: [''],
-//           }),
-//           stringField({
-//             label: '',
-//             name: 'regions_id',
-//             placeholder: '',
-//             class: [''],
-//             position: {
-//               cols: 12,
-//               sm: 6,
-//             },
-//             isShow: {
-//               value: true,
-//               // hide: true,
-//             },
-//             bootstrapClass: [''],
-//           }),
-//           autocompleteField({
-//             label: 'Бригадир',
-//             name: 'personal_id',
-//             requestKey: 'account_json',
-//             // subtype: 'single',
-//             subtype: 'multiple',
-//             stringify: true,
-//             placeholder: '',
-//             class: [''],
-//             selectOption: {
-//               text: 'name',
-//               value: 'id',
-//             },
-//             items: [],
-//             page: 1,
-//             search: '',
-//             url: 'get/pagination_list/brigadirs',
-//             // brigadirs
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required },
-//             bootstrapClass: [''],
-//             filter: [
-//               {
-//                 field: 'object_id',
-//                 alias: 'object_json',
-//                 value: '',
-//                 type: 'array'
-//               },
-//               {
-//                 field: 'direction_id',
-//                 alias: 'direction_json',
-//                 value: '',
-//                 type: 'array'
-//               },
-//             ],
-//             isShow: {
-//               value: false,
-//               conditions: [{ field: 'direction_id', value: [1, 6] }],
-//             },
-//           }),
-//           selectField({
-//             label: 'Гражданство',
-//             name: 'grajdanstvo_id',
-//             alias: 'grajdanstvo_id',
-//             placeholder: '',
-//             class: [''],
-//             value: '',
-//             selectOption: {
-//               text: 'name',
-//               value: 'id',
-//             },
-//             items: [],
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required },
-//             bootstrapClass: [''],
-//             update: {
-//               module: 'selects/getList',
-//               fields: ['object_id'],
-//             },
-//           }),
-//           checkboxField({
-//             label: 'Трансфер',
-//             name: 'transfer',
-//             value: false,
-//             placeholder: '',
-//             readonly: false,
-//             class: [''],
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             bootstrapClass: [''],
-//           }),
-//           stringField({
-//             label: 'Адрес А',
-//             name: 'start_point',
-//             placeholder: '',
-//             class: [''],
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required, nameLength },
-//             bootstrapClass: [''],
-//             isShow: {
-//               value: false,
-//               conditions: [{ field: 'transfer', value: [true] }],
-//             },
-//           }),
-//           stringField({
-//             label: 'Адрес Б',
-//             name: 'end_point',
-//             placeholder: '',
-//             class: [''],
-//             position: {
-//               cols: 12,
-//               sm: 12,
-//             },
-//             validations: { required, nameLength },
-//             bootstrapClass: [''],
-//             isShow: {
-//               value: false,
-//               conditions: [{ field: 'transfer', value: [true] }],
-//             },
-//           }),
-//         ],
-//         actions: [
-//           stringAction({
-//             text: 'Закрыть',
-//             type: 'submit',
-//             color: 'textDefault',
-//             name: 'closePopup',
-//             action: 'closePopup',
-//             to: 'personal',
-//             skipValidation: true,
-//           }),
-//           stringAction({
-//             text: 'Сохранить',
-//             type: 'submit',
-//             color: 'primary',
-//             // action: 'nextStage',
-//             module: 'form/create',
-//             url: 'create/unfinished_personal',
-//             name: 'nextStage',
-//             action: 'nextStage',
-//             conditionCode: {
-//               key: 'code',
-//               results: [
-//                 {
-//                   value: 1,
-//                   type: 'success',
-//                   toStorage: ['id'],
-//                 },
-//                 {
-//                   value: 2,
-//                   type: 'error',
-//                   text: 'Error: value 2',
-//                 },
-//                 {
-//                   value: 3,
-//                   type: 'error',
-//                   text: 'Error: value 3',
-//                 },
-//               ],
-//             },
-//           }),
-//         ],
-//         formData: {},
-//       },
-//       {
-//         id: 1,
-//         name: 'Документы',
-//         type: TableDefault,
-//         active: false,
-//         config: documentConfig,
-//         actions: [
-//           stringAction({
-//             text: 'Оставить заявку',
-//             type: 'submit',
-//             color: 'primary',
-//             module: 'form/create',
-//             url: 'query/personal',
-//             to: 'personal',
-//             name: 'createForm',
-//             action: 'createForm',
-//             skipValidation: true,
-//             requestBody: {
-//               store: [
-//                 { requestKey: 'manager_id', storageKey: 'user.user.id' },
-//                 { requestKey: 'personal_id', storageKey: 'formStorage.id' },
-//               ],
-//               static: { type_parent_action: 3, parent_action: 1 },
-//               formData: [
-//                 'direction_id',
-//                 'object_id',
-//                 'grajdanstvo_id',
-//                 'transfer',
-//                 'start_point',
-//                 'end_point',
-//                 'city_id',
-//                 'regions_id',
-//               ],
-//             },
-//             conditionCode: {
-//               key: 'code',
-//               results: [
-//                 {
-//                   value: 1,
-//                   type: 'success',
-//                   emit: 'closePopup',
-//                   to: 'personal',
-//                 },
-//                 {
-//                   value: 2,
-//                   type: 'error',
-//                   text: 'Необходимо приложить паспорт',
-//                 },
-//               ],
-//             },
-//             // nextForm: true,
-//           }),
-//           stringAction({
-//             text: 'Вернуться',
-//             type: 'submit',
-//             color: 'disabled',
-//             module: 'form/del',
-//             url: 'delete/unfinished_personal',
-//             name: 'prevStage',
-//             action: 'prevStage',
-//             // conditionCode: {
-//             //   key: 'code',
-//             //   results: [
-//             //     {
-//             //       value: 1,
-//             //       type: 'success',
-//             //       fromStorage: ['id'],
-//             //     },
-//             //   ],
-//             // },
-//           }),
-//         ],
-//       },
-//     ],
-//   },
+  //   {
+  //     path: 'add',
+  //     id: 5,
+  //     name: 'Заявка на персонал',
+  //     type: 'FormStage',
+  //     detail: true,
+  //     setRoute: 'personal-add',
+  //     stages: [
+  //       {
+  //         id: 0,
+  //         name: 'Основные0',
+  //         type: FormDefault,
+  //         detail: true,
+  //         lists: [
+  //           // 'vid_vedomost_id',
+  //           // 'status_pt',
+  //           { alias: 'direction_id_logistic', filter: [] },
+  //           { alias: 'grajdanstvo_id', filter: [] },
+  //           // { alias: 'brigadirs', filter: [] },
+  //           // 'shifts',
+  //           // 'nutritions',
+  //         ],
+  //         alias: 'personal_target',
+  //         active: false,
+  //         fields: [
+  //           stringField({
+  //             label: 'ФИО',
+  //             name: 'fio',
+  //             placeholder: '',
+  //             value: '',
+  //             class: [''],
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required },
+  //             bootstrapClass: [''],
+  //           }),
+  //           dateField({
+  //             label: 'Дата рождения',
+  //             name: 'date_rojd',
+  //             type: 'date',
+  //             value: '',
+  //             menu: false,
+  //             placeholder: '',
+  //             class: [''],
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required },
+  //             bootstrapClass: [''],
+  //             disable: false,
+  //             //mode: 'edit',
+  //           }),
+  //           selectField({
+  //             label: 'Направления',
+  //             name: 'direction_id',
+  //             alias: 'direction_id_logistic',
+  //             placeholder: '',
+  //             class: [''],
+  //             value: '',
+  //             selectOption: {
+  //               text: 'name',
+  //               value: 'id',
+  //             },
+  //             items: [],
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required },
+  //             bootstrapClass: [''],
+  //             dependence: [
+  //               {
+  //                 type: 'api',
+  //                 module: 'selects/getListUpdate',
+  //                 field: 'object_id',
+  //                 url: 'get/pagination_list/object_logistic',
+  //                 alias: 'object_id'
+  //               },
+  //             ],
+  //           }),
+  //           autocompleteField({
+  //             label: 'Объект',
+  //             name: 'object_id',
+  //             alias: 'object_json',
+  //             subtype: 'single',
+  //             placeholder: '',
+  //             class: [''],
+  //             selectOption: {
+  //               text: 'name',
+  //               value: 'id',
+  //             },
+  //             items: [],
+  //             page: 1,
+  //             search: '',
+  //             url: 'get/pagination_list/object_logistic',
+  //             // object
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required },
+  //             bootstrapClass: [''],
+  //             filter: [
+  //               {
+  //                 field: 'direction_id',
+  //                 value: '',
+  //               },
+  //             ],
+  //             dependence: [
+  //               {
+  //                 type: 'default',
+  //                 fillField: ['city_id', 'regions_id'],
+  //               },
+  //               {
+  //                 type: 'api',
+  //                 module: 'selects/getListUpdate',
+  //                 field: 'personal_id',
+  //                 url: 'get/pagination_list/brigadirs',
+  //               },
+  //             ],
+  //             // updateList: [
+  //             //   {
+  //             //     alias: 'brigadirs',
+  //             //     filter: [
+  //             //       {
+  //             //         field: 'object_id',
+  //             //         value: '',
+  //             //         source: 'formData',
+  //             //         type: 'array',
+  //             //       },
+  //             //     ],
+  //             //   },
+  //             // ],
+  //             update: {
+  //               module: 'selects/getList',
+  //               fields: ['personal_id'],
+  //             },
+  //             isShow: {
+  //               value: false,
+  //               conditions: [{ field: 'direction_id', value: [1, 6] }],
+  //             },
+  //           }),
+  //           stringField({
+  //             label: '',
+  //             name: 'city_id',
+  //             placeholder: '',
+  //             class: [''],
+  //             position: {
+  //               cols: 12,
+  //               sm: 6,
+  //             },
+  //             isShow: {
+  //               value: true,
+  //             },
+  //             bootstrapClass: [''],
+  //           }),
+  //           stringField({
+  //             label: '',
+  //             name: 'regions_id',
+  //             placeholder: '',
+  //             class: [''],
+  //             position: {
+  //               cols: 12,
+  //               sm: 6,
+  //             },
+  //             isShow: {
+  //               value: true,
+  //               // hide: true,
+  //             },
+  //             bootstrapClass: [''],
+  //           }),
+  //           autocompleteField({
+  //             label: 'Бригадир',
+  //             name: 'personal_id',
+  //             requestKey: 'account_json',
+  //             // subtype: 'single',
+  //             subtype: 'multiple',
+  //             stringify: true,
+  //             placeholder: '',
+  //             class: [''],
+  //             selectOption: {
+  //               text: 'name',
+  //               value: 'id',
+  //             },
+  //             items: [],
+  //             page: 1,
+  //             search: '',
+  //             url: 'get/pagination_list/brigadirs',
+  //             // brigadirs
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required },
+  //             bootstrapClass: [''],
+  //             filter: [
+  //               {
+  //                 field: 'object_id',
+  //                 alias: 'object_json',
+  //                 value: '',
+  //                 type: 'array'
+  //               },
+  //               {
+  //                 field: 'direction_id',
+  //                 alias: 'direction_json',
+  //                 value: '',
+  //                 type: 'array'
+  //               },
+  //             ],
+  //             isShow: {
+  //               value: false,
+  //               conditions: [{ field: 'direction_id', value: [1, 6] }],
+  //             },
+  //           }),
+  //           selectField({
+  //             label: 'Гражданство',
+  //             name: 'grajdanstvo_id',
+  //             alias: 'grajdanstvo_id',
+  //             placeholder: '',
+  //             class: [''],
+  //             value: '',
+  //             selectOption: {
+  //               text: 'name',
+  //               value: 'id',
+  //             },
+  //             items: [],
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required },
+  //             bootstrapClass: [''],
+  //             update: {
+  //               module: 'selects/getList',
+  //               fields: ['object_id'],
+  //             },
+  //           }),
+  //           checkboxField({
+  //             label: 'Трансфер',
+  //             name: 'transfer',
+  //             value: false,
+  //             placeholder: '',
+  //             readonly: false,
+  //             class: [''],
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             bootstrapClass: [''],
+  //           }),
+  //           stringField({
+  //             label: 'Адрес А',
+  //             name: 'start_point',
+  //             placeholder: '',
+  //             class: [''],
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required, nameLength },
+  //             bootstrapClass: [''],
+  //             isShow: {
+  //               value: false,
+  //               conditions: [{ field: 'transfer', value: [true] }],
+  //             },
+  //           }),
+  //           stringField({
+  //             label: 'Адрес Б',
+  //             name: 'end_point',
+  //             placeholder: '',
+  //             class: [''],
+  //             position: {
+  //               cols: 12,
+  //               sm: 12,
+  //             },
+  //             validations: { required, nameLength },
+  //             bootstrapClass: [''],
+  //             isShow: {
+  //               value: false,
+  //               conditions: [{ field: 'transfer', value: [true] }],
+  //             },
+  //           }),
+  //         ],
+  //         actions: [
+  //           stringAction({
+  //             text: 'Закрыть',
+  //             type: 'submit',
+  //             color: 'textDefault',
+  //             name: 'closePopup',
+  //             action: 'closePopup',
+  //             to: 'personal',
+  //             skipValidation: true,
+  //           }),
+  //           stringAction({
+  //             text: 'Сохранить',
+  //             type: 'submit',
+  //             color: 'primary',
+  //             // action: 'nextStage',
+  //             module: 'form/create',
+  //             url: 'create/unfinished_personal',
+  //             name: 'nextStage',
+  //             action: 'nextStage',
+  //             conditionCode: {
+  //               key: 'code',
+  //               results: [
+  //                 {
+  //                   value: 1,
+  //                   type: 'success',
+  //                   toStorage: ['id'],
+  //                 },
+  //                 {
+  //                   value: 2,
+  //                   type: 'error',
+  //                   text: 'Error: value 2',
+  //                 },
+  //                 {
+  //                   value: 3,
+  //                   type: 'error',
+  //                   text: 'Error: value 3',
+  //                 },
+  //               ],
+  //             },
+  //           }),
+  //         ],
+  //         formData: {},
+  //       },
+  //       {
+  //         id: 1,
+  //         name: 'Документы',
+  //         type: TableDefault,
+  //         active: false,
+  //         config: documentConfig,
+  //         actions: [
+  //           stringAction({
+  //             text: 'Оставить заявку',
+  //             type: 'submit',
+  //             color: 'primary',
+  //             module: 'form/create',
+  //             url: 'query/personal',
+  //             to: 'personal',
+  //             name: 'createForm',
+  //             action: 'createForm',
+  //             skipValidation: true,
+  //             requestBody: {
+  //               store: [
+  //                 { requestKey: 'manager_id', storageKey: 'user.user.id' },
+  //                 { requestKey: 'personal_id', storageKey: 'formStorage.id' },
+  //               ],
+  //               static: { type_parent_action: 3, parent_action: 1 },
+  //               formData: [
+  //                 'direction_id',
+  //                 'object_id',
+  //                 'grajdanstvo_id',
+  //                 'transfer',
+  //                 'start_point',
+  //                 'end_point',
+  //                 'city_id',
+  //                 'regions_id',
+  //               ],
+  //             },
+  //             conditionCode: {
+  //               key: 'code',
+  //               results: [
+  //                 {
+  //                   value: 1,
+  //                   type: 'success',
+  //                   emit: 'closePopup',
+  //                   to: 'personal',
+  //                 },
+  //                 {
+  //                   value: 2,
+  //                   type: 'error',
+  //                   text: 'Необходимо приложить паспорт',
+  //                 },
+  //               ],
+  //             },
+  //             // nextForm: true,
+  //           }),
+  //           stringAction({
+  //             text: 'Вернуться',
+  //             type: 'submit',
+  //             color: 'disabled',
+  //             module: 'form/del',
+  //             url: 'delete/unfinished_personal',
+  //             name: 'prevStage',
+  //             action: 'prevStage',
+  //             // conditionCode: {
+  //             //   key: 'code',
+  //             //   results: [
+  //             //     {
+  //             //       value: 1,
+  //             //       type: 'success',
+  //             //       fromStorage: ['id'],
+  //             //     },
+  //             //   ],
+  //             // },
+  //           }),
+  //         ],
+  //       },
+  //     ],
+  //   },
 ]
 
 const config = {
@@ -2320,8 +2336,8 @@ const config = {
                   permissions: [1],
                   type: true,
                 },
-              ]
-            }
+              ],
+            },
           },
         ],
       },
@@ -2717,7 +2733,6 @@ const config = {
         activeTab: null,
       },
       filters,
-
     },
     {
       selector: '#mainTable',
@@ -3366,7 +3381,7 @@ const config = {
                       },
                     ],
                   },
-                ]
+                ],
               }),
               selectField({
                 label: 'Объект',
@@ -3425,7 +3440,6 @@ const config = {
                 name: 'saveForm',
                 action: 'saveFormStore',
               }),
-
             ],
           },
           {
@@ -3471,7 +3485,7 @@ const config = {
                       },
                     ],
                   },
-                ]
+                ],
               }),
               selectField({
                 label: 'Объект',
@@ -3538,6 +3552,5 @@ const config = {
     },
   ],
 }
-
 
 export default defaultForm

@@ -49,6 +49,18 @@ const bankConfig = {
     urlDetail: 'account_id',
     alias: 'account_id',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: 'mdi-delete',
+          label: 'Удалить карту',
+          action: {
+            type: 'delete',
+            alias: 'account_bank',
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [
@@ -93,7 +105,7 @@ const bankConfig = {
           isShow: false,
         },
       ],
-      alias: 'p.id',
+      alias: 'ab.id',
       isShow: true,
       width: '40',
       value: 'id',
@@ -121,7 +133,7 @@ const bankConfig = {
       isShow: true,
       width: '150',
       value: 'date_target',
-      alias: 'p.date_target',
+      alias: 'ab.priority',
       search: {
         field: '',
         isShow: true,
@@ -145,7 +157,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 'b.name',
       value: 'bank_name',
       search: {
         field: '',
@@ -170,7 +182,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'o.name',
+      alias: 'ab.invoice',
       value: 'invoice',
       search: {
         field: '',
@@ -196,7 +208,7 @@ const bankConfig = {
       isShow: true,
       width: '150',
       value: 'fio',
-      alias: 'p.hour',
+      alias: 'ab.fio',
       search: {
         field: '',
         isShow: true,
@@ -220,7 +232,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'd.name',
+      alias: 'ab.comment',
       value: 'comment',
       search: {
         field: '',
@@ -260,6 +272,7 @@ const bankConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -509,6 +522,7 @@ const consumptionConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: undefined,
   filters,

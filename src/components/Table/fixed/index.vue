@@ -274,7 +274,12 @@
                   class="v-table-body-row-cell v-table-actions"
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
-                  @dblclick="doubleHandler($event, row, cell)"
+                  @dblclick="
+                    ;($props.options.options.doubleHandlerType === 'row' &&
+                      openRow($event, row, cell)) ||
+                      ($props.options.options.doubleHandlerType === 'cell' &&
+                        openCell($event, row, cell))
+                  "
                   :key="cellIndex"
                 >
                   <template v-if="cell.type === 'default'">
@@ -302,6 +307,10 @@
                               ? '#d0f6ff'
                               : '#f4d0ff',
                         }"
+                        @dblclick.stop="
+                          $props.options.options.doubleHandlerType === 'cell' &&
+                            openCell($event, row, cell, card)
+                        "
                       >
                         <p class="v-table-body-row-cell-item_text">
                           {{ card.hour }}
@@ -330,6 +339,20 @@
                         <v-icon small>
                           {{ action.url }}
                         </v-icon>
+                      </v-btn>
+                    </div>
+                  </template>
+                  <template v-else-if="cell.type === 'download'">
+                    <div
+                      v-if="Object.byString(row.row, cell.value)"
+                      class="v-table-actions-wrap"
+                    >
+                      {{ Object.byString(row.row, cell.value) }}
+                      <v-btn
+                        class="ml-2"
+                        @click="getDownLoadLink(row.row.object_id)"
+                      >
+                        <v-icon small> $IconDownload </v-icon>
                       </v-btn>
                     </div>
                   </template>

@@ -1,7 +1,9 @@
 import filters from './filters'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import FormDefault from '@/components/Form/default/index.vue'
+// import { defaultForm as personalConfig } from '@/pages/personal/index'
 import { stringAction } from '@/utils/actions'
+import _ from 'lodash'
 import {
   dateField,
   stringField,
@@ -29,7 +31,23 @@ function consolePanel() {
 function searchInputing(field) {
   console.log(field)
 }
-
+// const changeActionTo = (array, key, oldPath, newPath) => {
+//   console.log('changeActionTo')
+//   array.forEach((tab) => {
+//     if (tab.path === oldPath) {
+//       tab.path = newPath
+//     }
+//     if (tab.actions) {
+//       tab.actions.forEach((el) => {
+//         if (el.action === 'closePopup') {
+//           el.to = key
+//         }
+//       })
+//     }
+//   })
+// }
+// const personalConfigForms = _.cloneDeep(personalConfig)
+// changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
 const tableConsumptionConfig = {
   selector: '#mainTable',
   options: {
@@ -493,6 +511,7 @@ const tableConsumptionConfig = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
 }
 
@@ -507,6 +526,21 @@ const config = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/payment',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: 'mdi-account',
+          label: 'Перейти',
+          action: {
+            type: 'toRoute',
+            target: 'personal_id',
+            url: 'personal',
+            routeName: 'payment/personal-edit',
+            routeParam: 'personal_id',
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [
@@ -1271,6 +1305,7 @@ const config = {
     pageLength: 20,
     currentPage: 1,
     totalPages: null,
+    footer: null,
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -1512,7 +1547,7 @@ const config = {
       //               value: [2],
       //             },
       //           ],
-      //           url: 'get/pagination_list/object',
+      //           url: 'get/pagination_list/payment_personal_id',
       //         },
       //         {
       //           type: 'api',
@@ -1548,7 +1583,7 @@ const config = {
       //               value: [1],
       //             },
       //           ],
-      //           url: 'get/pagination_list/object',
+      //           url: 'get/pagination_list/payment_personal_id',
       //         },
       //       ],
       //       readonly: {
@@ -1627,7 +1662,7 @@ const config = {
       //               value: [1],
       //             },
       //           ],
-      //           url: 'get/pagination_list/object',
+      //           url: 'get/pagination_list/payment_personal_id',
       //         },
       //       ],
       //       readonly: {
@@ -2419,7 +2454,7 @@ const config = {
                     value: [2],
                   },
                 ],
-                url: 'get/pagination_list/object',
+                url: 'get/pagination_list/object_personal_id',
               },
               {
                 type: 'api',
@@ -2437,7 +2472,7 @@ const config = {
                     value: [2],
                   },
                 ],
-                url: 'get/pagination_list/personal',
+                url: 'get/pagination_list/payment_personal_id',
               },
               {
                 type: 'api',
@@ -2455,7 +2490,7 @@ const config = {
                     value: [1],
                   },
                 ],
-                url: 'get/pagination_list/object',
+                url: 'get/pagination_list/object_personal_id',
               },
             ],
             readonly: {
@@ -2534,7 +2569,7 @@ const config = {
                     value: [1],
                   },
                 ],
-                url: 'get/pagination_list/object',
+                url: 'get/pagination_list/payment_object_id',
               },
             ],
             readonly: {
@@ -3448,7 +3483,7 @@ const config = {
               //       value: [1],
               //     },
               //   ],
-              //   url: 'get/pagination_list/object',
+              //   url: 'get/pagination_list/payment_personal_id',
               // },
             ],
             requiredFields: ['account_id'],
@@ -3561,19 +3596,19 @@ const config = {
             filter: [
               {
                 field: 'account_id',
-                // source: 'formData',
+                source: 'formData',
                 type: 'array',
                 value: '',
               },
               {
                 field: 'direction_id',
-                // source: 'formData',
+                source: 'formData',
                 type: 'array',
                 value: '',
               },
               {
                 field: 'object_id',
-                // source: 'formData',
+                source: 'formData',
                 type: 'array',
                 value: '',
               },
@@ -3644,7 +3679,7 @@ const config = {
               conditions: [
                 {
                   field: 'vid_vedomost_id',
-                  value: [1, 5],
+                  value: [1, 5, 3],
                 },
               ],
             },
@@ -3863,12 +3898,23 @@ const config = {
               cols: 12,
               sm: 4,
             },
+            defaultObjectData: [
+              {
+                id: 11,
+                name: '--Наличные--',
+                bank_id: 11,
+                invoice: '',
+                fio: '',
+              },
+            ],
             objectData: undefined,
             defaultItems: [
               {
                 id: 11,
                 name: '--Наличные--',
                 bank_id: 11,
+                invoice: '',
+                fio: '',
               },
             ],
             validations: { required },

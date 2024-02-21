@@ -284,14 +284,35 @@ const table = {
         return undefined
       }
     }
-    const handlerContext = ({ action, row }) => {
-      console.log(action, row)
+    const handlerContext = async ({ action, row }) => {
       if (action.action.type === 'changeUrl') {
-        console.log(action.action.url)
-        changeUrlPath(action.action.url + '/' + row.row.id)
+        changeUrlPath(action.action.url + '/' + row.row[action.action.target])
+      } else if (action.action.type === 'delete') {
+        await deleteRow(row.row.id, action.action.alias)
+      } else if (action.action.type === 'toRoute') {
+        // await deleteRow(row.row.id, action.action.alias)
+        router.push({
+          name: action.action.routeName,
+          params: {
+            [action.action.routeParam]: row.row[action.action.routeParam],
+          },
+        })
       } else {
         openRow(undefined, row)
       }
+      contextmenu.value.isShow = false
+    }
+    const deleteRow = async (id, alias) => {
+      await store.dispatch('table/get', {
+        url: `set/data/${alias}`,
+        data: {
+          data: {
+            del: 1,
+            id,
+          },
+        },
+      })
+      getItems()
     }
     const openFilter = ($event) => {
       filter.value.isShow = true
@@ -349,6 +370,8 @@ const table = {
       if (options.data.rows?.length && options.data.rows) {
         options.data.totalPages = data.totalPage
         options.data.totalRows = data.total
+        options.data.footer = data.footer
+        // options.
         const structuredArray = []
         options.data.rows.forEach((row) => {
           if (options.options.selecting) {
@@ -487,6 +510,8 @@ const table = {
         let requestId = 'id'
         if (props.options.detail.requestId)
           requestId = props.options.detail.requestId
+        console.log(`${route.name}/:${requestId}`)
+        console.log(route)
         router.push({
           name: `${route.name}/:${requestId}`,
           params: {
@@ -494,6 +519,7 @@ const table = {
           },
         })
         popupForm.value.isShow = true
+        console.log(route)
       }
     }
 
@@ -783,7 +809,6 @@ const table = {
           }
         })
       }
-      // console.log(styles)
       return styles
     }
 

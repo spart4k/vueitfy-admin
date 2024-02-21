@@ -3,6 +3,12 @@ import { stringAction } from '@/utils/actions'
 import _ from 'lodash'
 import { editFields } from '@/pages/appointments/index.js'
 
+const editFieldsClone = _.cloneDeep(editFields)
+
+editFieldsClone.forEach((el) => {
+  el.readonly = false
+})
+
 const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -66,7 +72,7 @@ const config = {
         routeParam: 'form_id',
         alias: 'personal_target',
         active: false,
-        fields: editFields,
+        fields: editFieldsClone,
         actions: [
           stringAction({
             text: 'Закрыть',
@@ -75,6 +81,28 @@ const config = {
             name: 'closePopup',
             action: 'closePopup',
             skipValidation: true,
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'personal_target/update',
+            name: 'saveForm',
+            url: 'update/target',
+            action: 'saveForm',
+            color: 'primary',
+            successMessage: false,
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'readonlyAll',
+                  target: 'environment',
+                  value: [1],
+                  type: true,
+                },
+              ],
+            },
           }),
         ],
         formData: {},

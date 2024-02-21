@@ -396,6 +396,8 @@ const table = {
 
     const initHeadParams = () => {
       const { head } = props.options
+      paramsQuery.value.sorts = []
+      paramsQuery.value.searchColumns = []
       head.forEach((el) => {
         if (el.sorts?.length) {
           //Vue.set(el.sorts, 'field', el.value)
@@ -515,11 +517,10 @@ const table = {
       getItems()
     }
 
-    const openCell = ($event, row, cell) => {
+    const openCell = ($event, row, cell, card) => {
       if (props.options.detail.type === 'popup' && !cell.noAction) {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row
-        console.log('CELL', cell, dataCell)
         const hour = '11' //Рабочие часы
         const day = cell.value
         const month = currentDate.value.month
@@ -529,14 +530,12 @@ const table = {
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
           .toString()
           .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
-        //console.log(dataCell);
         const porpsContent = {
           account_id: dataCell.account_id,
           account_name: dataCell.account_name,
           hour,
           date: formattedDate,
         }
-        console.log(dataCell.hasOwnProperty(day))
         if (dataCell.hasOwnProperty(day)) {
           if (cell.routeParam) {
             router.push({
@@ -545,10 +544,8 @@ const table = {
                 id: row.row[cell.routeParam],
               },
             })
-            console.log('PARAMS', cell)
           } else {
-            console.log('Ключ "pattern" существует в объекте regex')
-            porpsContent.id = dataCell[day][0].id
+            porpsContent.id = card.id
             router.push({
               name: `${route.name}-edit`,
               params: {
@@ -557,7 +554,6 @@ const table = {
             })
           }
         } else {
-          console.log('Ключ "pattern" не существует в объекте regex')
           if (routeKey) {
             router.push({
               name: `${route.name}-new`,
@@ -593,16 +589,6 @@ const table = {
         })
         popupForm.value.isShow = true
       }
-    }
-
-    const doubleHandler = ($event, row, cell) => {
-      if (props.options.options.doubleHandlerType === 'cell') {
-        openCell($event, row, cell)
-      }
-      if (props.options.options.doubleHandlerType === 'row') {
-        openRow($event, row, cell)
-      }
-      console.log($event, row, cell)
     }
 
     const closePopupForm = () => {
@@ -817,6 +803,16 @@ const table = {
       getItems()
     }
 
+    const getDownLoadLink = async (val) => {
+      const date = `${currentDate.value.year}-${
+        currentDate.value.month < 10 ? '0' : ''
+        }${currentDate.value.month + 1}`
+      globalLoading.value = true
+      const data = await store.dispatch('table/getDetail', `report/personal/period_target?object_id=${val}&period=${date}`)
+      Vue.downloadFile(data.url)
+      globalLoading.value = false
+    }
+
     const acceptForm = async () => {
       const requestData = {
         period: acceptData.value.valueDate,
@@ -972,7 +968,6 @@ const table = {
       rowCount,
       isElementXPercentInViewport,
       saveFilter,
-      doubleHandler,
       closePopupForm,
       popupForm,
       filtersColumns,
@@ -984,6 +979,9 @@ const table = {
       createPayment,
       availablePanelBtn,
       prepaymentLoading,
+      getDownLoadLink,
+      openCell,
+      openRow,
     }
   },
 }
