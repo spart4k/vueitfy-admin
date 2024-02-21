@@ -1,6 +1,6 @@
 import { post, get, put } from '@/api/axios'
 
-export const getList = (url, data) => post(url, data)
+export const getList = (url, data, params) => post(url, data, params)
 
 export const getDetail = (url) => get(url)
 
