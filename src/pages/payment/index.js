@@ -3907,7 +3907,7 @@ const config = {
                 fio: '',
               },
             ],
-            objectData: undefined,
+            objectData: [],
             defaultItems: [
               {
                 id: 11,

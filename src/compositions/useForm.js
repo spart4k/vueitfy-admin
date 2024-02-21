@@ -933,15 +933,27 @@ export default function ({
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
+          const findedDep = targetField.dependence.find(
+            (depTarget) => depTarget.type === 'update'
+          )
+          console.log(targetField, 'targetField-ObjectData')
+          targetField.objectData = []
+          if (targetField.hasOwnProperty('defaultObjectData')) {
+            targetField.objectData = [...targetField.defaultObjectData]
+            // findedDep.fields.forEach((el) => (formData[el] = ))
+          }
           if (data.length) {
-            targetField.objectData = [...targetField.defaultObjectData, ...data]
+            targetField.objectData = [...data, targetField.objectData]
             console.log(targetField.objectData, 'targetField.objectData')
           } else {
-            const findedDep = targetField.dependence.find(
-              (depTarget) => depTarget.type === 'update'
-            )
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
+          console.log(
+            JSON.stringify(formData),
+            JSON.stringify(targetField.objectData),
+            'PUT OBJECT DATA',
+            field.name
+          )
         }
       }
       if (data?.length === 1) {
@@ -991,14 +1003,26 @@ export default function ({
           // говно чтобы прятать option после обновления
         }
       }
+      console.log('START UPDATE', dependence.type)
       if (dependence.type === 'update') {
+        console.log('START UPDATE')
         // dependence
-        console.log('FILL FIELD', field)
+        console.log('FILL FIELD', JSON.stringify(field), value)
         if (field.hasOwnProperty('objectData')) {
+          if (field.hasOwnProperty('defaultObjectData')) {
+            field.objectData = [...field.defaultObjectData]
+          }
+          console.log(
+            JSON.stringify(field.objectData),
+            'objectDataString',
+            targetField
+          )
           if (field.objectData?.length) {
             const findedEl = field.objectData?.find((el) => el.id === value)
+            console.log(findedEl, 'findedEl')
             if (findedEl) {
               dependence.fields.forEach((el) => {
+                console.log(findedEl[el], el, 'findedEl[el]')
                 formData[el] = findedEl[el]
               })
             }
@@ -1008,6 +1032,7 @@ export default function ({
             })
           }
         }
+        console.log(JSON.stringify(formData))
         if (
           formData[field.name] === '' ||
           formData[field.name] === null ||
@@ -1318,11 +1343,15 @@ export default function ({
             if (field.putFirst)
               formData[field.name] = field.items[0][field.selectOption.value]
           }
+          if (field.hasOwnProperty('dependence')) {
+            const value = formData[field.name]
+            await getDependies({ value, field })
+          }
         }
       }
       putSelectItems(lists)
     }
-    await loadAutocompletes()
+    // await loadAutocompletes()
     loading.value = false
     console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
   }
