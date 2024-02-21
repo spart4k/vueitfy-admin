@@ -146,6 +146,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'payment/personal-edit',
+        path: ':personal_id',
+        meta: {
+          mode: ['edit-personal'],
+          label: 'Редактировать',
+        },
+        component: Detail,
+      },
+      {
         name: 'payment/:id',
         path: ':id',
         meta: {
