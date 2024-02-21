@@ -92,38 +92,6 @@ const Form11 = defineComponent({
       // })
     })
 
-    // let addFilesPatent = (e, options) => {
-    //   let fileExt = e[0].type.split('/')[1]
-    //   let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-    //   let form_data = new FormData()
-    //   form_data.append('file', e[0])
-
-    //   const { makeRequest: updateFileData } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/updateFileData', {
-    //         personal_id: data.entity.id,
-    //         doc_id: e.item,
-    //         path_doc: `/personal_doc/${fileName}`,
-    //         from_task: true,
-    //       }),
-    //   })
-
-    //   const { makeRequest: loadImage } = useRequest({
-    //     context,
-    //     request: () =>
-    //       store.dispatch('taskModule/loadImage', {
-    //         id: 1,
-    //         folder: 'personal_doc',
-    //         fileName: fileName,
-    //         file: form_data,
-    //       }),
-    //     successMessage: 'Файл успешно загружен',
-    //   })
-    //   updateFileData()
-    //   loadImage()
-    // }
-
     let addFiles = (e, options) => {
       file.value = e[0]
       let fileExt = file.value.type.split('/')[1]
@@ -163,9 +131,7 @@ const Form11 = defineComponent({
         successMessage: 'Файл успешно загружен',
       })
 
-      listDocuments.value.push(e[0])
-
-      // if (currentDropzone.inProcess) {
+      // if (currentDropzone?.inProcess) {
       //   listRequestsForUpload.value.push(
       //     delInfoAFile,
       //     updateFileData,
@@ -181,45 +147,53 @@ const Form11 = defineComponent({
       //   ].inProcess = false
       // }
 
+      listRequestsForUpload.value.push(delInfoAFile, updateFileData, loadImage)
+
       isDocs.value = 1
-      file.value = null
     }
 
     const removeFile = (fileID) => {
-      console.log('REMOVE', fileID)
-
-      listRequestsForUpload.value = listRequestsForUpload.value.filter(
-        (item, ID) => ID !== fileID
-      )
       listDocuments.value = listDocuments.value.filter(
         (item, ID) => ID !== fileID
       )
 
-      if (listRequestsForUpload.value.length == 0) {
+      if (listDocuments.value.length <= 1) {
         refds.value = 0
       }
     }
 
     const sendDocuments = () => {
+      let newFile = ref(listDocuments.value[listDocuments.value.length - 1])
+
+      listDocuments.value.push(file.value)
+
       // listRequestsForUpload.value.forEach((elem, index) => {
       //   elem()
       // })
-      let newFile = listDocuments.value[listDocuments.value.length - 1]
-      listRequestsForUpload.value = listDocuments.value
+
+      file.value = null
       refds.value = 1
       isDocs.value = 0
 
-      // console.log(listDocuments.value[0])
-      // console.log(listRequestsForUpload.value)
-
-      console.log('NEWFIle', newFile)
-
-      if (
-        listRequestsForUpload.value.every((file) => file.name !== newFile.name)
-      )
-        console.log('Файлы совпадают')
+      checkIdenticalFiles(newFile)
 
       dropZone.value.clearDropzone()
+    }
+
+    const checkIdenticalFiles = (newFile) => {
+      // if (
+      //   !listDocuments.value.every((file) => file.name !== newFile.value?.name)
+      // ) {
+      //   console.log('Файлы совпадают')
+      //   errors.value = {
+      //     isActive: true,
+      //     message: 'Одинаковые файлы!!',
+      //   }
+      //   refds.value = 0
+      // } else {
+      //   errors.value.isActive = false
+      //   refds.value = 1
+      // }
     }
 
     let addDisabledDocuments = (elem) => {

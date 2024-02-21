@@ -15,6 +15,7 @@ import Form11 from '@/components/Task/form11/index.vue'
 import Form13 from '@/components/Task/form13/index.vue'
 import Form14 from '@/components/Task/form14/index.vue'
 import Form15 from '@/components/Task/form15/index.vue'
+import Form16 from '@/components/Task/form16/index.vue'
 import Form17 from '@/components/Task/form17/index.vue'
 import Form18 from '@/components/Task/form18/index.vue'
 import Form20 from '@/components/Task/form20/index.vue'
@@ -23,6 +24,7 @@ import Form23 from '@/components/Task/form23/index.vue'
 import Form25 from '@/components/Task/form25/index.vue'
 import Form27 from '@/components/Task/form27/index.vue'
 import Form28 from '@/components/Task/form28/index.vue'
+import Form29 from '@/components/Task/form29/index.vue'
 import Form31 from '@/components/Task/form31/index.vue'
 import moment from 'moment'
 import store from '@/store'
@@ -83,13 +85,16 @@ const task = defineComponent({
     Form13,
     Form14,
     Form15,
+    Form16,
     Form17,
     Form18,
     Form20,
     Form21,
     Form23,
+    Form25,
     Form27,
     Form28,
+    Form29,
     Form31,
   },
 
