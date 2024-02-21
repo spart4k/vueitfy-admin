@@ -4,6 +4,7 @@ import Vue, { onMounted, ref, computed, watch, nextTick, provide } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
+import axios from 'axios'
 
 import vContextmenu from '@/components/Contextmenu/default/index.vue'
 import Sheet from '@/components/Sheet/default/index.vue'
@@ -301,7 +302,11 @@ const table = {
     const closeFilter = () => {
       filter.value.isShow = false
     }
+
+    let controller
     const getItems = async () => {
+      if (controller) controller.abort()
+      controller = new AbortController()
       //this.
       loading.value = true
       const { url } = props.options.options
@@ -366,6 +371,9 @@ const table = {
           filter: filtersColumns.value,
           by,
         },
+        params: {
+          signal: controller.signal,
+        },
       })
       props.options.data.rows = data.rows
       if (props.options.data.rows?.length && props.options.data.rows) {
@@ -389,6 +397,7 @@ const table = {
         paramsQuery.value.currentPage = 1
       }
       loading.value = false
+      controller = undefined
       setTimeout(() => {
         coutingCells()
       }, 0)

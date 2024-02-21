@@ -22,6 +22,6 @@
 //import { get } from '@/api/axios'
 import { post } from '@/api/axios'
 
-export const getList = (url, body) => post(url, body)
+export const getList = (url, body, params) => post(url, body, params)
 
 //export const getDetail = (url) => get(url)

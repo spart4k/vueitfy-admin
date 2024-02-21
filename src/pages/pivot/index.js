@@ -119,6 +119,14 @@ const config = {
         url: 'pivot-output',
         type: 'changeUrl',
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 8, 17],
+              type: true,
+            },
+          ],
+        },
       },
       {
         label: 'Начислить',
@@ -126,6 +134,14 @@ const config = {
         url: 'pivot-profit',
         type: 'changeUrl',
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 8, 17],
+              type: true,
+            },
+          ],
+        },
       },
       // {
       //   label: 'Скачать',
