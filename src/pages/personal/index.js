@@ -4926,11 +4926,11 @@ export const config = {
       detail: {
         type: 'popup', // String 'popup' or 'page'
         classes: [''], // List class
-        width: '900px',
+        width: '550px',
         method: 'get',
         alias: 'user_keys',
         url: '/get/form/',
-        name: 'Личный ключ',
+        name: 'Личные ключи',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [
           {
@@ -5020,6 +5020,14 @@ export const config = {
             ],
             actions: [
               stringAction({
+                text: 'Сохранить',
+                type: 'submit',
+                module: 'form/create',
+                url: 'query/user_key',
+                name: 'saveForm',
+                action: 'saveFormStore',
+              }),
+              stringAction({
                 text: 'Закрыть',
                 type: 'submit',
                 color: 'textDefault',
@@ -5027,14 +5035,6 @@ export const config = {
                 action: 'closePopup',
                 to: 'personal',
                 skipValidation: true,
-              }),
-              stringAction({
-                text: 'Загрузить',
-                type: 'submit',
-                module: 'form/create',
-                url: 'query/user_key',
-                name: 'saveForm',
-                action: 'saveFormStore',
               }),
             ],
           },
@@ -5059,10 +5059,10 @@ export const config = {
               },
             ],
             fields: [
-              autocompleteField({
-                label: 'Сотрудник',
-                name: 'personal_id',
-                alias: 'personal_logistic_x5',
+              stringField({
+                label: 'Ключ',
+                name: 'user_key',
+                // alias: 'personal_logistic_x5',
                 subtype: 'single',
                 placeholder: '',
                 class: [''],
@@ -5074,7 +5074,8 @@ export const config = {
                 items: [],
                 page: 1,
                 search: '',
-                url: 'get/pagination_list/personal_logistic_x5',
+                // TODO: Поменять на другое
+                // url: 'get/pagination_list/personal_logistic_x5',
                 position: {
                   cols: 12,
                   sm: 12,
@@ -5097,10 +5098,86 @@ export const config = {
                 //   },
                 // ],
               }),
+              stringField({
+                label: 'ФИО',
+                name: 'fio',
+                // alias: 'personal_logistic_x5',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                selectOptionName: '',
+                items: [],
+                page: 1,
+                search: '',
+                // TODO: Поменять на другое
+                // url: 'get/pagination_list/personal_logistic_x5',
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                // dependence: [
+                //   {
+                //     //fields: ['statement_card', 'cardowner'],
+                //     type: 'api',
+                //     module: 'personal/getObject',
+                //     //url: 'object_id/avatar_with_user_key_id',
+                //     field: 'object_id',
+                //     url: [
+                //       {
+                //         source: 'formData',
+                //         field: 'this',
+                //       },
+                //     ],
+                //   },
+                // ],
+              }),
+              autocompleteField({
+                label: 'Сотрудник',
+                name: 'personal_id',
+                alias: 'personal_logistic_x5',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                selectOptionName: '',
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/personal_logistic_x5',
+                position: {
+                  cols: 12,
+                  sm: 12,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                updateList: [
+                  {
+                    alias: 'objects_personal',
+                    filter: [
+                      {
+                        field: 'personal_id',
+                        value: '',
+                        source: 'formData',
+                        type: 'num',
+                      },
+                    ],
+                  },
+                ],
+              }),
               selectField({
-                label: 'Объект',
+                label: 'Объекты',
                 name: 'object_id',
                 alias: 'objects_personal',
+                //subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -5114,10 +5191,13 @@ export const config = {
                 },
                 validations: { required },
                 bootstrapClass: [''],
+                //readonly: true,
               }),
-              dropZoneField({
-                label: 'Файл акта',
-                name: 'photo_path',
+              checkboxField({
+                label: 'Стажерская',
+                name: `is_stager`,
+                subtype: 'single',
+                toNumber: true,
                 placeholder: '',
                 readonly: false,
                 class: [''],
@@ -5126,14 +5206,7 @@ export const config = {
                   sm: 12,
                 },
                 bootstrapClass: [''],
-                validations: { required },
-                options: {
-                  withoutSave: false,
-                  folder: 'user_keys',
-                  name: '`Заявка_ФИО_${form.fields.find((el) => el.name === "personal_id").selectOptionName}_${formData["object_id"]}`',
-                  paramsForEmit: this,
-                },
-                value: [],
+                aliasFilter: '',
               }),
             ],
             actions: [
@@ -5147,12 +5220,13 @@ export const config = {
                 skipValidation: true,
               }),
               stringAction({
-                text: 'Загрузить',
+                text: 'Сохранить',
                 type: 'submit',
-                module: 'form/create',
-                url: 'query/user_key',
+                module: 'form/update',
                 name: 'saveForm',
-                action: 'saveFormStore',
+                url: 'set/data/user_keys',
+                action: 'saveForm',
+                color: 'primary',
               }),
             ],
           },
