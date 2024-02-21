@@ -107,8 +107,7 @@ const Form15 = defineComponent({
               ? 1
               : 0,
           need_parse:
-            (data.entity.direction_id === 1 ||
-              data.entity.direction_id === 6) &&
+            data.entity.direction_id === 1 &&
             data.entity.doljnost_id !== 5 &&
             data.entity.doljnost_id !== 7 &&
             data.entity.doljnost_id !== 6 &&
