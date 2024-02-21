@@ -934,7 +934,7 @@ export default function ({
         card = targetField.items.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
           if (data.length) {
-            targetField.objectData = data
+            targetField.objectData = [...targetField.defaultObjectData, ...data]
             console.log(targetField.objectData, 'targetField.objectData')
           } else {
             const findedDep = targetField.dependence.find(

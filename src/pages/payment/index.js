@@ -1,7 +1,9 @@
 import filters from './filters'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import FormDefault from '@/components/Form/default/index.vue'
+// import { defaultForm as personalConfig } from '@/pages/personal/index'
 import { stringAction } from '@/utils/actions'
+import _ from 'lodash'
 import {
   dateField,
   stringField,
@@ -29,7 +31,23 @@ function consolePanel() {
 function searchInputing(field) {
   console.log(field)
 }
-
+// const changeActionTo = (array, key, oldPath, newPath) => {
+//   console.log('changeActionTo')
+//   array.forEach((tab) => {
+//     if (tab.path === oldPath) {
+//       tab.path = newPath
+//     }
+//     if (tab.actions) {
+//       tab.actions.forEach((el) => {
+//         if (el.action === 'closePopup') {
+//           el.to = key
+//         }
+//       })
+//     }
+//   })
+// }
+// const personalConfigForms = _.cloneDeep(personalConfig)
+// changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
 const tableConsumptionConfig = {
   selector: '#mainTable',
   options: {
@@ -514,9 +532,11 @@ const config = {
           icon: 'mdi-account',
           label: 'Перейти',
           action: {
-            type: 'changeUrl',
+            type: 'toRoute',
             target: 'personal_id',
             url: 'personal',
+            routeName: 'payment/personal-edit',
+            routeParam: 'personal_id',
           },
         },
       ],
@@ -3878,12 +3898,23 @@ const config = {
               cols: 12,
               sm: 4,
             },
+            defaultObjectData: [
+              {
+                id: 11,
+                name: '--Наличные--',
+                bank_id: 11,
+                invoice: '',
+                fio: '',
+              },
+            ],
             objectData: undefined,
             defaultItems: [
               {
                 id: 11,
                 name: '--Наличные--',
                 bank_id: 11,
+                invoice: '',
+                fio: '',
               },
             ],
             validations: { required },

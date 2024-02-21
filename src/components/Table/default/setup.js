@@ -289,6 +289,14 @@ const table = {
         changeUrlPath(action.action.url + '/' + row.row[action.action.target])
       } else if (action.action.type === 'delete') {
         await deleteRow(row.row.id, action.action.alias)
+      } else if (action.action.type === 'toRoute') {
+        // await deleteRow(row.row.id, action.action.alias)
+        router.push({
+          name: action.action.routeName,
+          params: {
+            [action.action.routeParam]: row.row[action.action.routeParam],
+          },
+        })
       } else {
         openRow(undefined, row)
       }
