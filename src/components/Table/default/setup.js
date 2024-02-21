@@ -364,7 +364,7 @@ const table = {
         })
         options.data.rows = structuredArray
       } else {
-        // options.data.totalPages = data.totalPage
+        paramsQuery.value.totalPages = options.data.totalPages
         paramsQuery.value.currentPage = 1
       }
       loading.value = false
@@ -649,7 +649,7 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
-        console.log(headerEl, headerEl.previousElementSibling)
+        // console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
           //console.log(headerEl.previousElementSibling.offsetWidth)
           acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
@@ -783,7 +783,7 @@ const table = {
           }
         })
       }
-      console.log(styles)
+      // console.log(styles)
       return styles
     }
 
