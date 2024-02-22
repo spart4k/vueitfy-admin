@@ -387,6 +387,67 @@ export default function ({
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
         else newForm[key] = formData[key]
+
+        if (action?.useStorageKey?.length) {
+          action.useStorageKey.forEach((item) => {
+            newForm[item.requestKey] =
+              store?.state?.formStorage?.[item?.storageKey]
+          })
+        }
+
+        if (action?.useRouteKey?.length) {
+          action.useRouteKey.forEach((item) => {
+            newForm[item.requestKey] = +route.params?.[item?.storageKey]
+          })
+        }
+
+        if (item.requestType === 'number') {
+          if (item.requestKey)
+            newForm[item.requestKey] = Number(newForm[item.requestKey])
+          else newForm[key] = Number(newForm[key])
+        }
+
+        if (item.stringify) {
+          if (item.requestKey)
+            newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
+          else newForm[key] = JSON.stringify(newForm[key])
+          // newForm[key] = JSON.stringify(formData[key])
+        }
+
+        if (item.name === 'subtype' && formData[key] === '') {
+          delete newForm[key]
+        }
+
+        if (item.toNumber && item.type === 'checkbox') {
+          if (formData[key]) {
+            newForm[key] = 1
+          } else {
+            newForm[key] = 0
+          }
+        }
+
+        if (item.type === 'date') {
+          if (item.subtype === 'multiple') {
+            newForm[key].forEach((item, index) => {
+              newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+                'YYYY-MM-DD'
+              )
+            })
+          } else if (item.subtype === 'period') {
+            newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
+          } else {
+            newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
+          }
+        } else if (item.type === 'dateRange') {
+          newForm[key].forEach((item, index) => {
+            if (item)
+              newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+                'YYYY-MM-DD'
+              )
+          })
+        }
       }
 
       // if (item.round) {
@@ -395,65 +456,6 @@ export default function ({
       // }
 
       // if (item.notSend || item.prescription) delete newForm[key]
-
-      if (action?.useStorageKey?.length) {
-        action.useStorageKey.forEach((item) => {
-          newForm[item.requestKey] =
-            store?.state?.formStorage?.[item?.storageKey]
-        })
-      }
-
-      if (action?.useRouteKey?.length) {
-        action.useRouteKey.forEach((item) => {
-          newForm[item.requestKey] = +route.params?.[item?.storageKey]
-        })
-      }
-
-      if (item.requestType === 'number') {
-        if (item.requestKey)
-          newForm[item.requestKey] = Number(newForm[item.requestKey])
-        else newForm[key] = Number(newForm[key])
-      }
-
-      if (item.stringify) {
-        if (item.requestKey)
-          newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
-        else newForm[key] = JSON.stringify(newForm[key])
-        // newForm[key] = JSON.stringify(formData[key])
-      }
-
-      if (item.name === 'subtype' && formData[key] === '') {
-        delete newForm[key]
-      }
-
-      if (item.toNumber && item.type === 'checkbox') {
-        if (formData[key]) {
-          newForm[key] = 1
-        } else {
-          newForm[key] = 0
-        }
-      }
-
-      if (item.type === 'date') {
-        if (item.subtype === 'multiple') {
-          newForm[key].forEach((item, index) => {
-            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
-              'YYYY-MM-DD'
-            )
-          })
-        } else if (item.subtype === 'period') {
-          newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
-        } else {
-          newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
-        }
-      } else if (item.type === 'dateRange') {
-        newForm[key].forEach((item, index) => {
-          if (item)
-            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
-              'YYYY-MM-DD'
-            )
-        })
-      }
     })
     return newForm
   }
