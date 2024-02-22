@@ -103,7 +103,9 @@ const Form15 = defineComponent({
             data.entity.doljnost_id === 5 ||
             data.entity.doljnost_id === 7 ||
             data.entity.doljnost_id === 6 ||
-            data.entity.doljnost_id === 32
+            data.entity.doljnost_id === 8 ||
+            data.entity.doljnost_id === 32 ||
+            data.entity.doljnost_id === 33
               ? 1
               : 0,
           need_parse:
@@ -111,7 +113,9 @@ const Form15 = defineComponent({
             data.entity.doljnost_id !== 5 &&
             data.entity.doljnost_id !== 7 &&
             data.entity.doljnost_id !== 6 &&
-            data.entity.doljnost_id !== 32
+            data.entity.doljnost_id !== 8 &&
+            data.entity.doljnost_id !== 32 &&
+            data.entity.doljnost_id !== 33
               ? 1
               : 0,
         }
