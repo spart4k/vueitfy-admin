@@ -3614,13 +3614,13 @@ const config = {
               },
             ],
             dependence: [
-              {
-                //fields: ['statement_card', 'cardowner'],
-                fillField: ['fio', 'invoice'],
-                type: 'api',
-                module: 'personal/getCard',
-                field: 'personal_bank_id',
-              },
+              // {
+              //   //fields: ['statement_card', 'cardowner'],
+              //   fillField: ['fio', 'invoice'],
+              //   type: 'api',
+              //   module: 'personal/getCard',
+              //   field: 'personal_bank_id',
+              // },
             ],
             requiredFields: ['object_id'],
             readonly: {

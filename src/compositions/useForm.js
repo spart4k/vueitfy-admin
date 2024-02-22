@@ -1351,7 +1351,7 @@ export default function ({
       }
       putSelectItems(lists)
     }
-    // await loadAutocompletes()
+    await loadAutocompletes()
     loading.value = false
     console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
   }
