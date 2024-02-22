@@ -28,15 +28,15 @@ const Form8 = defineComponent({
     },
   },
   setup(props, ctx) {
-    const router = useRouter()
-    const route = useRoute()
-    const proxyConfig = ref(_.cloneDeep(config))
-
     const context = {
       root: {
         store,
       },
     }
+    const router = useRouter()
+    const route = useRoute()
+    const proxyConfig = ref(_.cloneDeep(config))
+
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -51,6 +51,57 @@ const Form8 = defineComponent({
 
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
+
+    const expansionList = ref([
+      {
+        title: 'Паспорт',
+        inProcess: false,
+      },
+      {
+        title: 'Регистрация',
+        inProcess: false,
+      },
+      {
+        title: 'Перевод',
+        inProcess: false,
+      },
+      {
+        title: 'Миграционная карта',
+        inProcess: false,
+      },
+      {
+        title: 'ДМС',
+        inProcess: false,
+      },
+      {
+        title: 'Чек-патент первичный',
+        inProcess: false,
+      },
+      {
+        title: 'Регистрация стр. 2',
+        inProcess: false,
+      },
+      {
+        title: 'ИНН',
+        inProcess: false,
+      },
+      {
+        title: 'Экзамен РФ',
+        inProcess: false,
+      },
+      {
+        title: 'Чек-патент текущий',
+        inProcess: false,
+      },
+      {
+        title: 'Дактилоскопия',
+        inProcess: false,
+      },
+      {
+        title: 'Дактилоскопия стр. 2',
+        inProcess: false,
+      },
+    ])
 
     const popupForm = ref({
       isShow: false,
@@ -490,13 +541,14 @@ const Form8 = defineComponent({
     return {
       addFiles,
       listDocuments,
+      expansionList,
       listRequestsForUpload,
-      sendDocuments,
+      // sendDocuments,
       listDisbledDocuments,
       addFilesPatent,
       disableFinishState,
       textInfo,
-      sendTaskFinish,
+      // sendTaskFinish,
       popupForm,
       Popup,
       closePopupForm,

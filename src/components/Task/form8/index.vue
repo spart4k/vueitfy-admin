@@ -18,18 +18,24 @@
       </v-row>
       <div class="position-relative">
         <div class="mb-10">
-          <span class="font-weight-bold">Приложите документы:</span>
-          <v-expansion-panels :disabled="+data.data?.zayavka?.status !== 5">
+          <span class="font-weight-bold d-block mb-3"
+            >Приложите документы:</span
+          >
+          <v-expansion-panels>
+            <!-- <v-expansion-panels :disabled="+data.data?.zayavka?.status !== 5"> -->
             <v-expansion-panel
-              v-for="(item, index) in listDocuments"
+              v-for="(item, index) in expansionList"
               :key="index"
             >
               <v-expansion-panel-header>
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  <v-icon left v-if="item.inProcess"> $IconGalka </v-icon>
+                  <v-icon left v-if="!item.inProcess"> $IconSetting </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
                 </span>
+                <div>
+                  <span class="text-left">{{ item.title }}</span>
+                </div>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <Dropzone
@@ -62,7 +68,7 @@
         </v-col>
       </v-row>
       <div>
-        <span class="font-weight-bold">Патент:</span>
+        <span class="font-weight-bold d-block mb-3">Патент:</span>
       </div>
       <v-row>
         <v-col

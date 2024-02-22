@@ -815,9 +815,12 @@ const table = {
     const getDownLoadLink = async (val) => {
       const date = `${currentDate.value.year}-${
         currentDate.value.month < 10 ? '0' : ''
-        }${currentDate.value.month + 1}`
+      }${currentDate.value.month + 1}`
       globalLoading.value = true
-      const data = await store.dispatch('table/getDetail', `report/personal/period_target?object_id=${val}&period=${date}`)
+      const data = await store.dispatch(
+        'table/getDetail',
+        `report/personal/period_target?object_id=${val}&period=${date}`
+      )
       Vue.downloadFile(data.url)
       globalLoading.value = false
     }
