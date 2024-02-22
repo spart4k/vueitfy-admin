@@ -208,6 +208,20 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
+                    <div
+                      class="v-table-header-row-cell-wrap__sort-sort mr-2"
+                      v-on:click="sortRow(head)"
+                    >
+                      <vIconSort
+                        v-if="head.title == 'ФИО'"
+                        class="v-table-header-row-cell-wrap__sort-icon"
+                        :state="
+                          paramsQuery.sorts.find(
+                            (el) => el.field === head.value
+                          ).value
+                        "
+                      />
+                    </div>
                     <span @click="!head.added && sortRow(head)">
                       {{ head.title }}
                     </span>
