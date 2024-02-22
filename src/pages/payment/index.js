@@ -3616,7 +3616,7 @@ const config = {
             dependence: [
               {
                 //fields: ['statement_card', 'cardowner'],
-                fillField: ['fio', 'invoice'],
+                fillField: ['fio', 'invoice', 'bank_id'],
                 type: 'api',
                 module: 'personal/getCard',
                 field: 'personal_bank_id',
@@ -3907,7 +3907,7 @@ const config = {
                 fio: '',
               },
             ],
-            objectData: undefined,
+            objectData: [],
             defaultItems: [
               {
                 id: 11,
