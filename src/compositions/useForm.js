@@ -387,6 +387,67 @@ export default function ({
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
         else newForm[key] = formData[key]
+
+        if (action?.useStorageKey?.length) {
+          action.useStorageKey.forEach((item) => {
+            newForm[item.requestKey] =
+              store?.state?.formStorage?.[item?.storageKey]
+          })
+        }
+
+        if (action?.useRouteKey?.length) {
+          action.useRouteKey.forEach((item) => {
+            newForm[item.requestKey] = +route.params?.[item?.storageKey]
+          })
+        }
+
+        if (item.requestType === 'number') {
+          if (item.requestKey)
+            newForm[item.requestKey] = Number(newForm[item.requestKey])
+          else newForm[key] = Number(newForm[key])
+        }
+
+        if (item.stringify) {
+          if (item.requestKey)
+            newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
+          else newForm[key] = JSON.stringify(newForm[key])
+          // newForm[key] = JSON.stringify(formData[key])
+        }
+
+        if (item.name === 'subtype' && formData[key] === '') {
+          delete newForm[key]
+        }
+
+        if (item.toNumber && item.type === 'checkbox') {
+          if (formData[key]) {
+            newForm[key] = 1
+          } else {
+            newForm[key] = 0
+          }
+        }
+
+        if (item.type === 'date') {
+          if (item.subtype === 'multiple') {
+            newForm[key].forEach((item, index) => {
+              newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+                'YYYY-MM-DD'
+              )
+            })
+          } else if (item.subtype === 'period') {
+            newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
+          } else {
+            newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
+          }
+        } else if (item.type === 'dateRange') {
+          newForm[key].forEach((item, index) => {
+            if (item)
+              newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
+                'YYYY-MM-DD'
+              )
+          })
+        }
       }
 
       // if (item.round) {
@@ -395,65 +456,6 @@ export default function ({
       // }
 
       // if (item.notSend || item.prescription) delete newForm[key]
-
-      if (action?.useStorageKey?.length) {
-        action.useStorageKey.forEach((item) => {
-          newForm[item.requestKey] =
-            store?.state?.formStorage?.[item?.storageKey]
-        })
-      }
-
-      if (action?.useRouteKey?.length) {
-        action.useRouteKey.forEach((item) => {
-          newForm[item.requestKey] = +route.params?.[item?.storageKey]
-        })
-      }
-
-      if (item.requestType === 'number') {
-        if (item.requestKey)
-          newForm[item.requestKey] = Number(newForm[item.requestKey])
-        else newForm[key] = Number(newForm[key])
-      }
-
-      if (item.stringify) {
-        if (item.requestKey)
-          newForm[item.requestKey] = JSON.stringify(newForm[item.requestKey])
-        else newForm[key] = JSON.stringify(newForm[key])
-        // newForm[key] = JSON.stringify(formData[key])
-      }
-
-      if (item.name === 'subtype' && formData[key] === '') {
-        delete newForm[key]
-      }
-
-      if (item.toNumber && item.type === 'checkbox') {
-        if (formData[key]) {
-          newForm[key] = 1
-        } else {
-          newForm[key] = 0
-        }
-      }
-
-      if (item.type === 'date') {
-        if (item.subtype === 'multiple') {
-          newForm[key].forEach((item, index) => {
-            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
-              'YYYY-MM-DD'
-            )
-          })
-        } else if (item.subtype === 'period') {
-          newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
-        } else {
-          newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
-        }
-      } else if (item.type === 'dateRange') {
-        newForm[key].forEach((item, index) => {
-          if (item)
-            newForm[key][index] = moment(item, 'YYYY.MM.DD').format(
-              'YYYY-MM-DD'
-            )
-        })
-      }
     })
     return newForm
   }
@@ -933,15 +935,27 @@ export default function ({
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
+          const findedDep = targetField.dependence.find(
+            (depTarget) => depTarget.type === 'update'
+          )
+          console.log(targetField, 'targetField-ObjectData')
+          targetField.objectData = []
+          if (targetField.hasOwnProperty('defaultObjectData')) {
+            targetField.objectData = [...targetField.defaultObjectData]
+            // findedDep.fields.forEach((el) => (formData[el] = ))
+          }
           if (data.length) {
-            targetField.objectData = [...targetField.defaultObjectData, ...data]
+            targetField.objectData = [...data, targetField.objectData]
             console.log(targetField.objectData, 'targetField.objectData')
           } else {
-            const findedDep = targetField.dependence.find(
-              (depTarget) => depTarget.type === 'update'
-            )
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
+          console.log(
+            JSON.stringify(formData),
+            JSON.stringify(targetField.objectData),
+            'PUT OBJECT DATA',
+            field.name
+          )
         }
       }
       if (data?.length === 1) {
@@ -991,14 +1005,26 @@ export default function ({
           // говно чтобы прятать option после обновления
         }
       }
+      console.log('START UPDATE', dependence.type)
       if (dependence.type === 'update') {
+        console.log('START UPDATE')
         // dependence
-        console.log('FILL FIELD', field)
+        console.log('FILL FIELD', JSON.stringify(field), value)
         if (field.hasOwnProperty('objectData')) {
+          if (field.hasOwnProperty('defaultObjectData')) {
+            field.objectData = [...field.defaultObjectData]
+          }
+          console.log(
+            JSON.stringify(field.objectData),
+            'objectDataString',
+            targetField
+          )
           if (field.objectData?.length) {
             const findedEl = field.objectData?.find((el) => el.id === value)
+            console.log(findedEl, 'findedEl')
             if (findedEl) {
               dependence.fields.forEach((el) => {
+                console.log(findedEl[el], el, 'findedEl[el]')
                 formData[el] = findedEl[el]
               })
             }
@@ -1008,6 +1034,7 @@ export default function ({
             })
           }
         }
+        console.log(JSON.stringify(formData))
         if (
           formData[field.name] === '' ||
           formData[field.name] === null ||
@@ -1317,6 +1344,10 @@ export default function ({
             // Если массив, вставить массив
             if (field.putFirst)
               formData[field.name] = field.items[0][field.selectOption.value]
+          }
+          if (field.hasOwnProperty('dependence')) {
+            const value = formData[field.name]
+            await getDependies({ value, field })
           }
         }
       }

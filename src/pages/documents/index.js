@@ -1,3 +1,4 @@
+console.log('START DOCUMENT')
 import filters from './filters'
 import { required } from '@/utils/validation.js'
 import {
