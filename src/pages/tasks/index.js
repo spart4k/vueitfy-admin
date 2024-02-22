@@ -25,9 +25,9 @@ const config = {
       function: searchInputing,
     },
     headerFixed: true,
-    // url: 'get/pagination/task',
+    url: 'get/pagination/task',
     // TODO: изменить на /task
-    url: 'get/pagination/personal_active',
+    // url: 'get/pagination/personal_active',
     title: 'This is an about page1',
   },
   panel: {
