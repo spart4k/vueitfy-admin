@@ -3,6 +3,7 @@
 import Vue, { onMounted, ref, computed, watch, toRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
+import axios from 'axios'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -320,7 +321,38 @@ const table = {
     const closeFilter = () => {
       filter.value.isShow = false
     }
+
+    // Something like this should work:
+
+    // function makeRequestCreator() {
+    //     var call;
+    //     return function(url) {
+    //         if (call) {
+    //             call.cancel();
+    //         }
+    //         call = axios.CancelToken.source();
+    //         return axios.get(url, { cancelToken: call.token }).then((response) => {
+    //             console.log(response.title)
+    //         }).catch(function(thrown) {
+    //             if (axios.isCancel(thrown)) {
+    //                 console.log('First request canceled', thrown.message);
+    //             } else {
+    //                 // handle error
+    //             }
+    //         });
+    //     }
+    // }
+    // You then use it with
+
+    //  var get = makeRequestCreator();
+    //  get('someurl');
+
+    //  Each new request will cancel the previous one
+
+    let controller
     const getItems = async () => {
+      if (controller) controller.abort()
+      controller = new AbortController()
       loading.value = true
       const { url } = props.options.options
       // Может быть без props. после merge cofilcts
@@ -365,6 +397,9 @@ const table = {
           filter: filtersColumns.value,
           by,
         },
+        params: {
+          signal: controller.signal,
+        },
       })
       options.data.rows = data.rows
       //options.data.rows = data
@@ -389,6 +424,7 @@ const table = {
         options.data.rows = structuredArray
       }
       loading.value = false
+      controller = undefined
     }
     const initHeadParams = () => {
       const { head } = options
@@ -673,7 +709,6 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
-        console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
           //console.log(headerEl.previousElementSibling.offsetWidth)
           acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
