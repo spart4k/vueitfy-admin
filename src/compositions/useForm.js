@@ -444,7 +444,9 @@ export default function ({
         } else if (item.subtype === 'period') {
           newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
         } else {
+          console.log(item.name, 'SORT DATE', newForm[key])
           newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format('YYYY-MM-DD')
+          console.log(newForm[key])
         }
       } else if (item.type === 'dateRange') {
         newForm[key].forEach((item, index) => {
