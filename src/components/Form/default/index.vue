@@ -17,7 +17,6 @@
                 : '',
             ]"
           >
-            {{ formData[field.name] }}
             <div
               v-if="
                 loading &&
