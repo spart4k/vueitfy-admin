@@ -1,5 +1,5 @@
 import filters from './filters'
-import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { required, hasDate, hasTime, numeric } from '@/utils/validation.js'
 import FormDefault from '@/components/Form/default/index.vue'
 // import { defaultForm as personalConfig } from '@/pages/personal/index'
 import { stringAction } from '@/utils/actions'
@@ -15,24 +15,14 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 // const changeActionTo = (array, key, oldPath, newPath) => {
-//   console.log('changeActionTo')
 //   array.forEach((tab) => {
 //     if (tab.path === oldPath) {
 //       tab.path = newPath
@@ -3616,7 +3606,7 @@ const config = {
             dependence: [
               {
                 //fields: ['statement_card', 'cardowner'],
-                fillField: ['fio', 'invoice'],
+                fillField: ['fio', 'invoice', 'bank_id'],
                 type: 'api',
                 module: 'personal/getCard',
                 field: 'personal_bank_id',
@@ -3827,11 +3817,12 @@ const config = {
             name: 'total',
             placeholder: '',
             class: [''],
+            requestType: 'number',
             position: {
               cols: 12,
               sm: 6,
             },
-            // validations: { required },
+            validations: { numeric },
             bootstrapClass: [''],
             round: true,
             readonly: {
@@ -3907,7 +3898,7 @@ const config = {
                 fio: '',
               },
             ],
-            objectData: undefined,
+            objectData: [],
             defaultItems: [
               {
                 id: 11,

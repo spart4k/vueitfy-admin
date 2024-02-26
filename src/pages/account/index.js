@@ -19,22 +19,13 @@ import { userKeys } from '@/pages'
 import { stringify } from 'qs'
 import { readonly } from 'vue'
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 const bankConfig = {
   selector: '#mainTable',

@@ -41,9 +41,9 @@ const Form13 = defineComponent({
         value: data.entity.object_name,
       },
     }
-    // console.log(typeof newString)
+    //
     // onMounted(() => {
-    //   console.log(docs_spr, getNameDoc)
+    //
     // })
     const account_id = computed(() => store.state.user.account_id)
     const chied_id = computed(() => store.state.user.chied_id)
@@ -100,7 +100,6 @@ const Form13 = defineComponent({
     }
     let refds = ref(0)
     let addFiles = (e, options) => {
-      console.log(e, options, listDocuments.value)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -150,8 +149,6 @@ const Form13 = defineComponent({
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
       }
-      console.log(listRequestsForUpload.value.length)
-      console.log(listDocuments.value)
     }
 
     const sendDocuments = () => {
@@ -161,12 +158,11 @@ const Form13 = defineComponent({
     }
     let disabledDocumentsAcc = ref(0)
     let addDisabledDocuments = (elem) => {
-      console.log(listDocuments.value)
       let keyOfObject = listDocuments.value.findIndex(
         (x) => x.doc_id == elem.item
       )
       listDocuments.value[keyOfObject].inProcess = true
-      console.log(listDocuments.value)
+
       disabledDocumentsAcc.value + 1
     }
 

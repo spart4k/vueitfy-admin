@@ -50,7 +50,6 @@ const Form3 = defineComponent({
     }
 
     const sendData = async () => {
-      console.log(selectName.value, file.value)
       let fileExt = file.value.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()

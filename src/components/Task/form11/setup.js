@@ -184,7 +184,6 @@ const Form11 = defineComponent({
       // if (
       //   !listDocuments.value.every((file) => file.name !== newFile.value?.name)
       // ) {
-      //   console.log('Файлы совпадают')
       //   errors.value = {
       //     isActive: true,
       //     message: 'Одинаковые файлы!!',

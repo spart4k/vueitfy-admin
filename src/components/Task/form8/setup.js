@@ -70,7 +70,7 @@ const Form8 = defineComponent({
     let disableFinishState = ref(0)
 
     // const sendData = () => {
-    //   console.log(selectName.value, file.value)
+    //
     //   let fileExt = file.value.type.split('/')[1]
     //   let fileName = `personal_doc_` + Date.now() + '.' + fileExt
     //   let form_data = new FormData()

@@ -77,7 +77,6 @@ const form10 = defineComponent({
 
     // Удаление файла
     const removeFile = (fileID) => {
-      console.log('FILE ID', fileID)
       // TODO: доделать
       files.value = files.value.filter((file, id) => fileID !== id)
     }

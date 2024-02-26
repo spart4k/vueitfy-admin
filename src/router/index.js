@@ -238,6 +238,24 @@ const routes = [
             },
             component: Detail,
           },
+        ],
+      },
+      {
+        name: 'personal-add-key',
+        path: '/personal/add-key',
+        meta: {
+          mode: ['add-key'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
+        component: Detail,
+        children: [
           {
             name: 'personal/:id/new_card',
             path: '/personal/:id/new_card',
@@ -272,24 +290,6 @@ const routes = [
             },
             component: Detail,
           },
-        ],
-      },
-      {
-        name: 'personal-add-key',
-        path: '/personal/add-key',
-        meta: {
-          mode: ['add-key'],
-        },
-        component: Detail,
-      },
-      {
-        name: 'personal/:id',
-        path: ':id',
-        meta: {
-          mode: ['edit'],
-        },
-        component: Detail,
-        children: [
           {
             name: 'personal/:id/new',
             path: '/personal/:id/new',

@@ -7,7 +7,6 @@ const storage = {
   actions: {
     async loadFilePut(_, data) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
-      console.log(data)
       const params = {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -18,7 +17,6 @@ const storage = {
     },
     async loadFile(_, { url, data }) {
       // file/save/personal_doc/personal_doc_1231412342134.jpg
-      console.log(data)
       const params = {
         headers: {
           'Content-Type': 'multipart/form-data',
