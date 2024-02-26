@@ -441,6 +441,30 @@ const consumptionConfig = {
   ],
 }
 
+function changeSort() {
+  let btn = config.panel.buttons.find((x) => x.function === changeSort)
+  let heading = config.head.find((x) => x.changeable)
+  if (btn.label === 'Объекты') {
+    btn.label = 'ФИО'
+    heading.title = 'Объект'
+    heading.alias = 'o.name'
+    heading.value = 'object_name'
+    heading.routeName = 'pivot-edit-object'
+    heading.routeParam = 'object_id'
+    heading.type = 'download'
+    config.options.url = 'get/pagination_pivot/personal_target_object'
+  } else if (btn.label === 'ФИО') {
+    btn.label = 'Объекты'
+    heading.title = 'ФИО'
+    heading.alias = 'p.name'
+    heading.value = 'personal_name'
+    heading.routeName = 'pivot-edit-personal'
+    heading.routeParam = 'personal_id'
+    heading.type = 'default'
+    config.options.url = 'get/pagination_pivot/personal_target_personal'
+  }
+}
+
 const debetorConfig = {
   selector: '#mainTable',
   options: {
@@ -461,6 +485,14 @@ const debetorConfig = {
         label: 'Обновить',
         class: ['v-table-button--custom'],
         url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Переплата',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        isSwitch: true,
         function: consolePanel,
         backgroundColor: '#ffffff',
       },

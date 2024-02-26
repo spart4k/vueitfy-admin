@@ -6,6 +6,7 @@
         class="v-table-panel"
       >
         <div class="v-table-panel__actions flex-wrap">
+          <SwitchDefault />
           <v-btn
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
