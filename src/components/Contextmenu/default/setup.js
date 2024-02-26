@@ -53,6 +53,22 @@ export default {
 
       emit('handlerContext', { action, row: props.options.row })
     }
+    const availableContext = computed(() => {
+      const checkIncludesPermissions = (el) => {
+        if (!el.permissions) return true
+
+        return el.permissions.includes(permission.value)
+      }
+      return props.options.actions.actions.filter((action) => {
+        if (!action.isShow) return action
+        else {
+          return action.isShow.condition.some((el) => {
+            return checkIncludesPermissions(el) === el.type
+          })
+          // if ()
+        }
+      })
+    })
     const isReadonly = (action) => {
       const checkIncludesData = (el) => {
         const source = eval(el.target)
@@ -135,6 +151,7 @@ export default {
       handlerClick,
       availablePanelBtn,
       isReadonly,
+      availableContext,
     }
   },
 }

@@ -130,18 +130,18 @@ paymentConfig.detail.requestId = 'payment'
 paymentConfig.detail.tabs[0].path = 'edit-payment'
 paymentConfig.detail.tabs[0].routeParam = 'payment'
 paymentConfig.detail.tabs[0].id = 15
-
+console.log(zayavkaConfig)
 
 // Convert zayavka view
 zayavkaConfig.detail.popupIndex = 2
 zayavkaConfig.detail.requestId = 'zayavka'
 const editTabZayavka = zayavkaConfig.detail.tabs.find((el) => el.path === 'id')
-
+console.log(editTabZayavka)
 editTabZayavka.path = 'edit-zayavka'
 editTabZayavka.routeParam = 'edit-zayavka'
 
 const changeActionTo = (array, key) => {
-  
+  console.log('changeActionTo')
   array.forEach((tab) => {
     if (tab.actions) {
       tab.actions.forEach((el) => {
@@ -152,18 +152,25 @@ const changeActionTo = (array, key) => {
     }
   })
 }
-
+console.log(paymentConfig)
 changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import useNavigation from '@/compositions/useNavigation'
 // import { payment, userKeys } from '@/pages'
 
 // const { addOrUpdateURLParam } = useNavigation({})
 
-function consoleText(row) {}
+function consoleText(row) {
+  console.log(row, 2)
+  //return 'test'
+}
 
-function consoleButton(row) {}
+function consoleButton(row) {
+  console.log(row, 1)
+}
 
-function consolePanel() {}
+function consolePanel() {
+  console.log('panel,button')
+}
 
 function downloadFile(val) {
   const link = document.createElement('a')
@@ -174,7 +181,9 @@ function downloadFile(val) {
   document.body.removeChild(link)
 }
 
-function searchInputing(field) {}
+function searchInputing(field) {
+  console.log(field)
+}
 
 const consumptionConfig = {
   selector: '#mainTable',
@@ -432,6 +441,30 @@ const consumptionConfig = {
   ],
 }
 
+function changeSort() {
+  let btn = config.panel.buttons.find((x) => x.function === changeSort)
+  let heading = config.head.find((x) => x.changeable)
+  if (btn.label === 'Объекты') {
+    btn.label = 'ФИО'
+    heading.title = 'Объект'
+    heading.alias = 'o.name'
+    heading.value = 'object_name'
+    heading.routeName = 'pivot-edit-object'
+    heading.routeParam = 'object_id'
+    heading.type = 'download'
+    config.options.url = 'get/pagination_pivot/personal_target_object'
+  } else if (btn.label === 'ФИО') {
+    btn.label = 'Объекты'
+    heading.title = 'ФИО'
+    heading.alias = 'p.name'
+    heading.value = 'personal_name'
+    heading.routeName = 'pivot-edit-personal'
+    heading.routeParam = 'personal_id'
+    heading.type = 'default'
+    config.options.url = 'get/pagination_pivot/personal_target_personal'
+  }
+}
+
 const debetorConfig = {
   selector: '#mainTable',
   options: {
@@ -453,6 +486,14 @@ const debetorConfig = {
         class: ['v-table-button--custom'],
         url: '$IconEdit',
         function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Переплата',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        isSwitch: true,
+        function: changeSort,
         backgroundColor: '#ffffff',
       },
       // {
@@ -3291,6 +3332,15 @@ export const defaultForm = [
     type: TableDefault,
     active: false,
     config: paymentConfig,
+    isShow: {
+      value: true,
+      condition: [
+        {
+          permissions: [16, 19],
+          type: false,
+        },
+      ],
+    },
   },
   {
     path: 'edit',
@@ -3307,6 +3357,32 @@ export const defaultForm = [
     type: TableDefault,
     active: false,
     config: debetorConfig,
+    isShow: {
+      value: true,
+      condition: [
+        {
+          permissions: [16, 19],
+          type: false,
+        },
+      ],
+    },
+  },
+  {
+    path: 'edit',
+    id: 9,
+    name: 'Переплаты',
+    type: TableDefault,
+    active: false,
+    config: holdPayments,
+    isShow: {
+      value: true,
+      condition: [
+        {
+          permissions: [16, 19],
+          type: false,
+        },
+      ],
+    },
   },
   {
     path: 'edit',
@@ -4056,6 +4132,15 @@ export const config = {
                   },
                 ],
               },
+              isShow: {
+                value: true,
+                condition: [
+                  {
+                    permissions: [16, 19],
+                    type: false,
+                  },
+                ],
+              },
               action: {
                 type: 'changeUrl',
                 target: 'id',
@@ -4312,6 +4397,15 @@ export const config = {
               },
             },
           ],
+          isShow: {
+            value: true,
+            condition: [
+              {
+                permissions: [16, 19],
+                type: false,
+              },
+            ],
+          },
         },
       },
       type: TableDefault,
@@ -5437,6 +5531,15 @@ export const config = {
           },
         ],
         activeTab: null,
+      },
+      isShow: {
+        value: true,
+        condition: [
+          {
+            permissions: [16, 19],
+            type: false,
+          },
+        ],
       },
       filters: filtersKey,
     },

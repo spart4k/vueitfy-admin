@@ -223,6 +223,7 @@ const table = {
       //}
       //
     }
+
     const openContext = ($event, row) => {
       //return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
@@ -470,7 +471,6 @@ const table = {
       }
     }
     const saveFilter = (filterData) => {
-      
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -496,7 +496,7 @@ const table = {
         type = type === 'autocomplete' ? 'select' : type
         type = type === 'dateRange' && 'date'
         type = type === 'datetime' ? 'date' : type
-        
+
         const obj = {
           //field: el.name,
           value: filterData[el.name],
@@ -537,7 +537,6 @@ const table = {
     }
 
     const openRow = ($event, row) => {
-      
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -545,8 +544,7 @@ const table = {
         let requestId = 'id'
         if (props.options.detail.requestId)
           requestId = props.options.detail.requestId
-        
-        
+
         router.push({
           name: `${route.name}/:${requestId}`,
           params: {
@@ -554,7 +552,6 @@ const table = {
           },
         })
         popupForm.value.isShow = true
-        
       }
     }
 
@@ -567,9 +564,6 @@ const table = {
       activeIndexCells
     ) => {
       if (options.detail.type === 'popup') {
-        
-        
-
         if (activeIndexCells.includes(indexCell)) {
           // let requestId = 'id'
           // if (props.options.detail.requestId)
@@ -651,7 +645,7 @@ const table = {
         const link = document.createElement('a')
         link.download = path.url
         link.setAttribute('target', '_blank')
-        
+
         link.href = process.env.VUE_APP_STORE + path.url
         document.body.appendChild(link)
         link.click()
@@ -798,12 +792,11 @@ const table = {
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        
         return el.permissions.includes(permission.value)
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        
+
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
@@ -813,7 +806,6 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some((el) => {
-            
             return (
               checkIncludesPermissions(el) &&
               checkIncludesDirections(el) === el.type
@@ -828,10 +820,8 @@ const table = {
       let styles = {}
       if (props.options.options.styleRow) {
         props.options.options.styleRow.forEach((el) => {
-          
           const style = el.result[row[el.targetKey]]
           for (let key in style) {
-            
             styles = {
               ...style,
             }
