@@ -24,9 +24,7 @@ export default function () {
     history.pushState(null, '', newRelativePathQuery)
   }
 
-  const removeURLParam = (key) => {
-    console.log(key)
-  }
+  const removeURLParam = (key) => {}
 
   return { addOrUpdateURLParam, removeURLParam }
 }

@@ -10,7 +10,7 @@ const navmenu = {
         const response = await getNavmenu()
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
   },

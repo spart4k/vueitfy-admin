@@ -82,7 +82,7 @@ export default {
         //    .field((el) => el.toLowerCase().includes(string))
         //    .splice(0, 10)
         //  field.loading = false
-        //  console.log(data)
+        //
         //  Vue.set(field, 'items', data)
         //}, 200)
 
@@ -93,7 +93,7 @@ export default {
         //const { url } = props.field
         const url = `get/pagination/${props.tab.url}`
         //const filter = []
-        console.log(props.objectInfo.id)
+
         const data = await getList(url, {
           countRows: 10,
           currentPage: queryOptions.value.page,
@@ -123,12 +123,11 @@ export default {
 
         //Vue.set(field, 'items', data.rows)
         loading.value = false
-        //console.log(data.products, field)
+        //
       }
     }
     const endIntersect = async (entries, observer, isIntersecting) => {
       if (isIntersecting) {
-        console.log(isIntersecting)
         //const dataset = entries[0].target.dataset.field
         if (items.value.length && !loading.value) {
           //field.page = field.page + 10
@@ -162,7 +161,6 @@ export default {
       }
     )
     onMounted(async () => {
-      console.log('mount')
       // queryOptions.value.page = 1
       await querySelections(true)
     })

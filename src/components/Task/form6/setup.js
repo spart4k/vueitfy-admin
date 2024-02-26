@@ -46,7 +46,7 @@ const Form6 = defineComponent({
     // }
 
     // onMounted(() => {
-    //   console.log(docs_spr, getNameDoc)
+    //
     // })
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
@@ -62,7 +62,6 @@ const Form6 = defineComponent({
     let disableFinishState = ref(0)
 
     let addFiles = (e, options) => {
-      console.log(e[0])
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -147,7 +146,6 @@ const Form6 = defineComponent({
         listRequestsForUpload.value
           .at()()
           .then((data) => {
-            console.log(data)
             resultOnew = data.result
           })
           .then(() => {

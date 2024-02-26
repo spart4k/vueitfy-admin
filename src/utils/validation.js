@@ -60,11 +60,6 @@ const hasBothDateMessage = ['', '']
 const hasBothDate = {
   $validator: (val) => {
     // const splitedValue = val.split(' ')
-    console.log(
-      val,
-      'validation',
-      val.every((el) => !el)
-    )
     if (val.every((el) => !el)) {
       return true
     } else if (val.every((el) => el)) {

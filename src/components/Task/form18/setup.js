@@ -81,7 +81,6 @@ const Form18 = defineComponent({
     const rejectedPrice = ref('')
     const isFormValid = ref(false)
     const addGroup = async () => {
-      console.log('addGroup')
       let qty
       let serviceId
       let dataForService
@@ -96,44 +95,13 @@ const Form18 = defineComponent({
           55: 70,
           51: 78,
         }
-        console.log('getService')
+
         // qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
         serviceId = dolToService[data.entity.doljnost_id]
-        console.log(serviceId)
+
         dataForService = await getServiceInfo(serviceId)
       }
-      console.log(qty, serviceId, dataForService)
-      console.log(
-        useForm({
-          fields: {
-            name: {
-              validations: { required },
-              default:
-                dataForService && dataForService.length ? serviceId : undefined,
-            },
-            qty: {
-              validations: { required },
-              default:
-                dataForService && dataForService.length ? qty : undefined,
-            },
-            price: {
-              validations: { required },
-              default:
-                dataForService && dataForService.length
-                  ? dataForService[0].price
-                  : undefined,
-            },
-            sum: {
-              validations: { required },
-              default:
-                dataForService && dataForService.length
-                  ? qty * dataForService[0].price
-                  : undefined,
-            },
-          },
-          context,
-        })
-      )
+
       formGroup.value = [
         ...formGroup.value,
         useForm({
@@ -193,10 +161,8 @@ const Form18 = defineComponent({
       const { makeRequest: setDataPayment } = useRequest({
         context,
         request: () => {
-          console.log('useRequest 144')
           let totalResult
           if (data.entity.direction_id === 6) {
-            console.log(total)
             totalResult = total.toString().replaceAll(',', '.')
           } else {
             totalResult = total
@@ -259,7 +225,6 @@ const Form18 = defineComponent({
       const { makeRequest: setPersonalTarget } = useRequest({
         context,
         request: () => {
-          console.log('useRequest 197')
           return store.dispatch('taskModule/setPersonalData', {
             data: {
               id: data.entity.id,
@@ -273,7 +238,6 @@ const Form18 = defineComponent({
       const { makeRequest: changeStatusTask } = useRequest({
         context,
         request: () => {
-          console.log('useRequest 211')
           return store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
@@ -305,7 +269,6 @@ const Form18 = defineComponent({
         const { makeRequest: changeStatusTask } = useRequest({
           context,
           request: () => {
-            console.log('useRequest 243')
             return store.dispatch('taskModule/setPartTask', {
               status: 6,
               data: {
@@ -334,7 +297,6 @@ const Form18 = defineComponent({
       const { makeRequest } = useRequest({
         context,
         request: () => {
-          console.log('useRequest 272')
           return store.dispatch(
             'taskModule/getServicePrice',
             `object_id=${data.entity.object_id}&service_id=${idService}&date_target=${data.entity.date_target}`
@@ -347,9 +309,9 @@ const Form18 = defineComponent({
     const changeServiceDetail = async (i, idService) => {
       rejectedPrice.value = ''
       isReject.value = false
-      console.log(i, idService)
+
       const data = await getServiceInfo(idService)
-      console.log(data)
+
       if (!data.length) {
         rejectedPrice.value = servicesDetail.find(
           (item) => item.id == idService
@@ -360,7 +322,7 @@ const Form18 = defineComponent({
       } else {
         formGroup.value[i].formData.price = data[0]?.price ?? ''
       }
-      console.log(formGroup.value[i].formData.price, data[0].price)
+
       changeSum(i)
     }
 
@@ -409,7 +371,6 @@ const Form18 = defineComponent({
       () => {
         if (formGroup) {
           isFormValid.value = formGroup.value.every((group) => group.validate())
-          console.log(isFormValid, formGroup.value)
         }
       },
       { deep: true }

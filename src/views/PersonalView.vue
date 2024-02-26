@@ -30,7 +30,6 @@
 import { ref } from 'vue'
 import { config } from '@/pages/personal/index'
 
-console.log(config)
 //import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
@@ -48,7 +47,6 @@ export default {
     },
   },
   setup() {
-    console.log('Я тут PerosnalView!')
     const activeTab = ref(0)
     return {
       config,

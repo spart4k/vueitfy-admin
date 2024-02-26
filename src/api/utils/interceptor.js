@@ -27,12 +27,11 @@ const setup = (axios) => {
     async (error) => {
       const originalConfig = error.config
       // Do something with response error
-      console.log(error)
+
       if (
         error?.response?.status === 403 &&
         error?.response?.data?.message === 'invalid credentials'
       ) {
-        console.log('login invalid')
         store.commit('notifies/showMessage', {
           color: 'error',
           content: 'Не верный логин или пароль',
@@ -43,8 +42,8 @@ const setup = (axios) => {
       if (error?.response?.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true
         // await refresh()
-        // console.log($route)
-        console.log(router.currentRoute)
+        //
+
         if (router.currentRoute.path !== '/login') {
           store.commit('notifies/showMessage', {
             color: 'error',
@@ -56,7 +55,7 @@ const setup = (axios) => {
         // const router = useRouter()
         // router.push('/login')
         // return axios(originalConfig)
-        //console.log('unauthorized, logging out ...')
+        //
       }
       return Promise.reject(error)
     }

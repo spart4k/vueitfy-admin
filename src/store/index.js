@@ -38,7 +38,6 @@ const store = new Vuex.Store({
       state.formStorage = {}
     },
     changeMenuStatus(state, value) {
-      console.log('changeMenuStatus')
       state.openMenu = value
     },
     changeMenuSize(state, value) {

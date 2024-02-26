@@ -130,18 +130,18 @@ paymentConfig.detail.requestId = 'payment'
 paymentConfig.detail.tabs[0].path = 'edit-payment'
 paymentConfig.detail.tabs[0].routeParam = 'payment'
 paymentConfig.detail.tabs[0].id = 15
-console.log(zayavkaConfig)
+
 
 // Convert zayavka view
 zayavkaConfig.detail.popupIndex = 2
 zayavkaConfig.detail.requestId = 'zayavka'
 const editTabZayavka = zayavkaConfig.detail.tabs.find((el) => el.path === 'id')
-console.log(editTabZayavka)
+
 editTabZayavka.path = 'edit-zayavka'
 editTabZayavka.routeParam = 'edit-zayavka'
 
 const changeActionTo = (array, key) => {
-  console.log('changeActionTo')
+  
   array.forEach((tab) => {
     if (tab.actions) {
       tab.actions.forEach((el) => {
@@ -152,25 +152,18 @@ const changeActionTo = (array, key) => {
     }
   })
 }
-console.log(paymentConfig)
+
 changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import useNavigation from '@/compositions/useNavigation'
 // import { payment, userKeys } from '@/pages'
 
 // const { addOrUpdateURLParam } = useNavigation({})
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
 function downloadFile(val) {
   const link = document.createElement('a')
@@ -181,9 +174,7 @@ function downloadFile(val) {
   document.body.removeChild(link)
 }
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 const consumptionConfig = {
   selector: '#mainTable',

@@ -20,7 +20,6 @@ const auth = {
     async auth({ commit }, data) {
       //try {
       const result = await login(data)
-      console.log(result)
       commit('auth/setToken', result.AccessToken, { root: true })
       return result
     },

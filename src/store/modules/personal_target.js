@@ -8,7 +8,7 @@ const personal = {
   actions: {
     async update(_, params) {
       const result = await putForm(params)
-      console.log(result)
+
       if (result?.data?.length) {
         result.data.forEach((el) => {
           if (el.code === 1) {

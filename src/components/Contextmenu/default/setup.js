@@ -50,9 +50,8 @@ export default {
     const handlerClick = (action) => {
       //if (props.options.)
       //const event = action.type
-      console.log(action)
+
       emit('handlerContext', { action, row: props.options.row })
-      console.log('handlerClick')
     }
     const isReadonly = (action) => {
       const checkIncludesData = (el) => {
@@ -85,10 +84,6 @@ export default {
                 conditionEl.permission_id?.length &&
                 !conditionEl.target
               ) {
-                console.log(
-                  checkIncludesPermissions(conditionEl),
-                  conditionEl.type
-                )
                 return checkIncludesPermissions(conditionEl) && conditionEl.type
               } else if (
                 conditionEl.is_personal_vertical?.length &&
@@ -102,7 +97,7 @@ export default {
                 )
               }
             })
-          console.log(condition())
+
           action.readonly.value = condition()
           return action.readonly.value
         }
@@ -112,12 +107,12 @@ export default {
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
         if (!el.permissions) return true
-        console.log(el.permissions.includes(permission.value))
+
         return el.permissions.includes(permission.value)
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        console.log(_.intersection(el.direction_id, directions.value).length)
+
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
@@ -127,12 +122,6 @@ export default {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some((el) => {
-            console.log('condition1')
-            //console.log(
-            //  checkIncludesPermissions(el),
-            //  checkIncludesDirections(el),
-            //  el.type
-            //)
             return (
               checkIncludesPermissions(el) &&
               checkIncludesDirections(el) === el.type

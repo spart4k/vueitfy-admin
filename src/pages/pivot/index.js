@@ -19,10 +19,8 @@ import { fieldsBaseDefaulrForm as personalFields } from '@/pages/personal/index.
 import { objectEditField as objectFields } from '@/pages/object/index.js'
 import { defaultForm as personalConfig } from '@/pages/personal/index'
 import { defaultForm as objectConfig } from '@/pages/object/index.js'
-console.log(personalConfig, 'personalForm')
 
 const changeActionTo = (array, key, oldPath, newPath) => {
-  console.log('changeActionTo')
   array.forEach((tab) => {
     if (tab.path === oldPath) {
       tab.path = newPath
@@ -43,22 +41,13 @@ const objectConfigForm = _.cloneDeep(objectConfig)
 changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
 changeActionTo(objectConfigForm, 'pivot', 'edit', 'edit-object')
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 function changeSort() {
   let btn = config.panel.buttons.find((x) => x.function === changeSort)

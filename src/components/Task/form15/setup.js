@@ -152,7 +152,7 @@ const Form15 = defineComponent({
 
     const confirm = async () => {
       isFormConfirmed.value = true
-      console.log('confirm')
+
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {
@@ -162,7 +162,7 @@ const Form15 = defineComponent({
     }
     const reject = async () => {
       isFormConfirmed.value = false
-      console.log('confirm')
+
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {
