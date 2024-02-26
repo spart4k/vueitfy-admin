@@ -35,7 +35,7 @@ export default {
           url: 'delete/service_price',
           id: price_id.value,
         })
-        console.log(result)
+
         if (result.code === 1) {
           const index = props.row.items.findIndex((el) => el.id === price_id)
           props.row.items.splice(index, 1)
@@ -166,7 +166,7 @@ export default {
       context,
       // successMessage: 'Сохранено',
       request: (params) => {
-        // console.log(url)
+        //
         const result = store.dispatch('form/del', params)
         return result
       },

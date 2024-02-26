@@ -67,7 +67,6 @@ export default function ({
       if (!form) return
     }
     return Object.keys(formData || fields).reduce((obj, key) => {
-      console.log(key)
       if (
         (typeof formFields[key]?.isShow === 'boolean' &&
           !formFields[key]?.isShow) ||
@@ -150,7 +149,7 @@ export default function ({
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
-    console.log('/////////////////////////', action.action)
+
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -764,7 +763,7 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-    console.log('GET DEP')
+
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
@@ -795,7 +794,7 @@ export default function ({
         })
       } else if (dependence.url && typeof dependence.url === 'string') {
         url = dependence.url
-        console.log('745')
+
         if (targetField?.type === 'autocomplete') {
           const filter = []
           const query = (target) => {
@@ -844,7 +843,6 @@ export default function ({
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
         dependence.fillField.forEach((el) => {
-          console.log('FILL FIELDS', el, params)
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
             else if (formData[el] && params.hasOwnProperty('item'))
@@ -907,7 +905,6 @@ export default function ({
       field.loading = true
       if (depField) targetField.loading = true
       let data
-      console.log('DATA 847', dependence.module, url, value)
 
       if (dependence.module) {
         data = await store.dispatch(dependence.module, {
@@ -918,9 +915,8 @@ export default function ({
         })
       }
       if (targetField) {
-        console.log(JSON.stringify(targetField), targetField)
         //if (typeof data === 'object') data = [data]
-        console.log('DEFAULT ITEMS', targetField, targetField.defaultItems)
+
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
@@ -938,7 +934,6 @@ export default function ({
           const findedDep = targetField.dependence.find(
             (depTarget) => depTarget.type === 'update'
           )
-          console.log(targetField, 'targetField-ObjectData')
           targetField.objectData = []
           if (targetField.hasOwnProperty('defaultObjectData')) {
             targetField.objectData = [...targetField.defaultObjectData]
@@ -946,16 +941,9 @@ export default function ({
           }
           if (data.length) {
             targetField.objectData = [...data, targetField.objectData]
-            console.log(targetField.objectData, 'targetField.objectData')
           } else {
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
-          console.log(
-            JSON.stringify(formData),
-            JSON.stringify(targetField.objectData),
-            'PUT OBJECT DATA',
-            field.name
-          )
         }
       }
       if (data?.length === 1) {
@@ -1005,26 +993,16 @@ export default function ({
           // говно чтобы прятать option после обновления
         }
       }
-      console.log('START UPDATE', dependence.type)
       if (dependence.type === 'update') {
-        console.log('START UPDATE')
         // dependence
-        console.log('FILL FIELD', JSON.stringify(field), value)
         if (field.hasOwnProperty('objectData')) {
           if (field.hasOwnProperty('defaultObjectData')) {
             field.objectData = [...field.defaultObjectData]
           }
-          console.log(
-            JSON.stringify(field.objectData),
-            'objectDataString',
-            targetField
-          )
           if (field.objectData?.length) {
             const findedEl = field.objectData?.find((el) => el.id === value)
-            console.log(findedEl, 'findedEl')
             if (findedEl) {
               dependence.fields.forEach((el) => {
-                console.log(findedEl[el], el, 'findedEl[el]')
                 formData[el] = findedEl[el]
               })
             }
@@ -1034,7 +1012,6 @@ export default function ({
             })
           }
         }
-        console.log(JSON.stringify(formData))
         if (
           formData[field.name] === '' ||
           formData[field.name] === null ||
@@ -1079,7 +1056,6 @@ export default function ({
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
-      console.log('IT AUTOCOMPLETE', el.name)
       const filters = []
       const { url } = el
       if (el.filter && el.filter.length) {
@@ -1112,14 +1088,13 @@ export default function ({
           : -1,
         filter: filters,
       })
-      console.log(data, 'DATA DATA')
+
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
         el.items = data.rows
       }
-      console.log('LOAD AUTOCOMPLETE ', formData[el.name])
+
       if (mode === 'edit') {
-        console.log(' MODE EDIT')
         await getDependies({ field: el, value: formData[el.name] })
       }
       return data
@@ -1215,11 +1190,11 @@ export default function ({
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
-    console.log('///////////////////////////')
+
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
-        console.log(field?.name, 'FIELD NAME')
+
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
@@ -1240,7 +1215,7 @@ export default function ({
           }
         }
       }
-      console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
+
       const prescription = form?.fields.find(
         (x) => x.prescription
       )?.prescription
@@ -1355,7 +1330,6 @@ export default function ({
     }
     await loadAutocompletes()
     loading.value = false
-    console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
   }
 
   const isHideBtn = (button) => {
@@ -1419,14 +1393,6 @@ export default function ({
       return result
     }
     const checkIncludesPermissions = (el) => {
-      console.log(
-        field.name,
-        el.permissions.includes(permission.value),
-        permission.value,
-        el.permissions,
-        [4].includes(4),
-        el
-      )
       return el.permissions.includes(permission.value)
     }
     if (typeof field.readonly === 'boolean')

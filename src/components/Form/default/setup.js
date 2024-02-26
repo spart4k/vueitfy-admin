@@ -57,7 +57,7 @@ export default {
     }
     const loading = ref(true)
     const { alias } = props.tab
-    console.log(route.params)
+
     const isEdit = computed(() => {
       if (props.tab.routeParam) {
         return route.params[props.tab.routeParam] ? 'edit' : 'add'
@@ -73,12 +73,11 @@ export default {
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
-          // console.log('CONDITION TRUE', el.name)
+          //
           Vue.set(fields, el.name, {})
         } else {
           return
         }
-        // console.log(el, 'FIELD-EL')
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
@@ -107,7 +106,6 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('changeForm3')
         let routeParam
         if (params.action.useRouteParam) {
           routeParam = params.action.useRouteParam
@@ -124,7 +122,6 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('changeForm2')
         let id
         if (props.tab.routeParam) {
           id = route.params[props.tab.routeParam]
@@ -141,8 +138,6 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('changeForm1', params)
-        console.log(formData, params)
         return store.dispatch(params.module, {
           url: params.url,
           body: {
@@ -156,7 +151,6 @@ export default {
       context,
       successMessage: 'Удалено!',
       request(params) {
-        console.log('params', params)
         const req = store.dispatch(params.module, {
           url: params.url,
           id: route.params.id,
@@ -216,7 +210,6 @@ export default {
 
     onMounted(async () => {
       await getData()
-      console.log(props.tab.routeParam)
     })
 
     return {

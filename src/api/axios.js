@@ -31,7 +31,6 @@ export const putFile = (endpoint, data = {}, params = {}) => {
 }
 
 export const put = (endpoint, data = {}) => {
-  console.log(endpoint, data)
   return instance
     .put(`${process.env.VUE_APP_API_URL}/${endpoint}`, data)
     .then(sendData)

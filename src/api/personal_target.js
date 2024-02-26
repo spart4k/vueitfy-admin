@@ -12,9 +12,7 @@ export default class Cities {
 
       return data
     } catch (error) {
-      console.log(error)
       return error
     }
   }
-
 }

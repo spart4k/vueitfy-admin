@@ -44,10 +44,8 @@ const form23 = defineComponent({
     let unConfirmed = ref([])
 
     const addConfirmed = (data) => {
-      console.log(data, 11111111)
       confirmed.value.push(data)
       unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
-      console.log(confirmed)
 
       store.commit(
         'notifies/showMessage',
@@ -61,7 +59,6 @@ const form23 = defineComponent({
     const addUnconfirmed = (data) => {
       unConfirmed.value.push(data)
       confirmed.value = confirmed.value.filter((x) => x.id !== data.id)
-      console.log(unConfirmed)
     }
 
     const { makeRequest, loading } = useRequest({
@@ -80,7 +77,6 @@ const form23 = defineComponent({
     const clickCheckBtn = async () => {
       if (unConfirmed.value.length) {
         if (comment.value.trim()) {
-          console.log([...confirmed.value, ...unConfirmed.value])
           isShow.value = false
           commentError.value = false
           const dataFrom = await makeRequest()
@@ -88,7 +84,6 @@ const form23 = defineComponent({
             emit('closePopup')
             emit('getItems')
           }
-          console.log(dataFrom)
         } else {
           commentError.value = true
         }
@@ -98,7 +93,6 @@ const form23 = defineComponent({
           emit('closePopup')
           emit('getItems')
         }
-        console.log(dataFrom)
       }
     }
 
@@ -106,7 +100,6 @@ const form23 = defineComponent({
       if (cb) {
         cb()
       }
-      console.log('submit')
     }
 
     const getDocName = (id) => {
@@ -157,7 +150,7 @@ const form23 = defineComponent({
         }
       }
       isFormValid.value = isValid
-      console.log(osnValidate())
+
       if (isFormValid.value) {
         docsId.forEach((item) => {
           finalData.value = { ...finalData.value, ...data.value[item].formData }
@@ -165,9 +158,7 @@ const form23 = defineComponent({
       }
     }
 
-    const sendData = () => {
-      console.log(finalData.value)
-    }
+    const sendData = () => {}
 
     return {
       textInfo,

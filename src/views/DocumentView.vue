@@ -33,7 +33,6 @@ import { ref, toRefs, watch } from 'vue'
 import { documents } from '@/pages'
 // import { warn } from '@vue/composition-api'
 
-console.log(documents)
 //import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/indedx'
 //import Axios from 'axios'
@@ -59,11 +58,9 @@ export default {
           const form = documents.tabs[newVal].detail.tabs.find(
             (el) => el.id === bindField.targetForm
           )
-          // console.log(form)
           const targetField = form.stages[0].fields.find(
             (field) => field.name === bindField.field
           )
-          // console.log(targetField)
           targetField.value = newVal
         })
       }

@@ -10,7 +10,7 @@ export default class Cities {
     try {
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'text/plain,
+          'Content-Type': 'text/plain',
         },
       })
       //if (!data || data.cityFound.length === 0) {
@@ -23,7 +23,6 @@ export default class Cities {
 
       return data
     } catch (error) {
-      console.log(error)
       //let errorText = ''
       //if (error?.response?.data?.message?.name)
       //  errorText = error?.response?.data?.message?.name
@@ -56,7 +55,7 @@ export default class Cities {
 
       return data
     } catch (error) {
-      console.log(error)
+      return error
       //let errorText = ''
       //if (error?.response?.data?.message?.name)
       //  errorText = error?.response?.data?.message?.name
@@ -76,7 +75,7 @@ export default class Cities {
     try {
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'text/plain,
+          'Content-Type': 'text/plain',
         },
       })
       //if (!data || data.cityFound.length === 0) {
@@ -89,7 +88,7 @@ export default class Cities {
 
       return data
     } catch (error) {
-      console.log(error)
+      return error
       //let errorText = ''
       //if (error?.response?.data?.message?.name)
       //  errorText = error?.response?.data?.message?.name
@@ -125,7 +124,6 @@ export default class Cities {
         longitude: newCity.longtitude,
       }
     } catch (error) {
-      console.log(error)
       let errorText = ''
       if (error?.response?.data?.message?.name)
         errorText = error?.response?.data?.message?.name
@@ -146,7 +144,6 @@ export default class Cities {
       const { data } = await axios.put(
         `users/api/admin/city/${id}?name=${city.name}`
       )
-      console.log(data)
       const updatedCity = data.city[0]
       store.commit('alert/show', {
         type: 'success',
@@ -163,7 +160,6 @@ export default class Cities {
         longitude: updatedCity.longtitude,
       }
     } catch (error) {
-      console.log(error)
       let errorText = ''
       if (error?.response?.data?.message?.name)
         errorText = error?.response?.data?.message?.name

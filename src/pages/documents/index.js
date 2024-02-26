@@ -1,4 +1,3 @@
-console.log('START DOCUMENT')
 import filters from './filters'
 import { required } from '@/utils/validation.js'
 import {
@@ -22,10 +21,8 @@ import _, { functionsIn } from 'lodash'
 
 import personalPage2 from './formPersonal'
 
-console.log('personalPage2: ', personalPage2)
-
-// console.log('personalPage2', personalPage2.tabs[0].detail)
-// console.log('personalPage', personalPage.tabs[0])
+//
+//
 
 //const form = personalPage2.tabs[0].detail.tabs[0]
 
@@ -34,7 +31,7 @@ console.log('personalPage2: ', personalPage2)
 // const personalForm = personalPage.tabs[0].detail.tabs[0]
 // const personalForm2 = personalPage.tabs[0].detail.tabs[1]
 
-// console.log('personalForm', personalForm)
+//
 // personalForm.path = 'persanalById'
 // personalForm2.path = 'persanalById'
 
@@ -83,30 +80,17 @@ console.log('personalPage2: ', personalPage2)
 //   }
 
 //   // personalPage2.tabs[0].detail.tabs[0].fields = dataContent[0].fields
-//   // console.log(personalPage2.tabs[0].detail.tabs[0])
+//   //
 //   return personalForms
 // }
 
-// console.log('personalForms', personalForms())
+function consoleText(row) {}
 
-// console.log('pers:', personalPage2.tabs[0].detail.tabs)
+function consoleButton(row) {}
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consolePanel() {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
-
-function consolePanel() {
-  console.log('panel,button')
-}
-
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 const consumptionConfig = {
   selector: '#mainTable',
@@ -1556,7 +1540,6 @@ const defaultForm = [
   //   ],
   // },
 ]
-console.log('defaultForm', defaultForm)
 
 const keysForm = [
   {

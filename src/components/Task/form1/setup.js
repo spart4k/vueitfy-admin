@@ -59,7 +59,7 @@ const Form1 = defineComponent({
     ).length
     const isHasOnlyCard =
       JSON.parse(props.data.task.dop_data).docs_id.length === 1 && isHasCard
-    console.log(JSON.parse(props.data.task.dop_data))
+
     const comment = ref('')
     let isShow = ref(true)
     let commentError = ref('')
@@ -84,7 +84,7 @@ const Form1 = defineComponent({
     const addUnconfirmed = (data) => {
       unConfirmed.value.push(data)
       confirmed.value = confirmed.value.filter((x) => x.id !== data.id)
-      console.log('Confirmed', unConfirmed.value)
+
       checkAllowDisable()
     }
     let isActiveBtnFirst = ref(false)
@@ -93,13 +93,11 @@ const Form1 = defineComponent({
         props.data.data.docs_id.length ==
         unConfirmed.value.length + confirmed.value.length
       ) {
-        console.log('wdwdwdwd')
         isActiveBtnFirst.value = true
       }
     }
     watchEffect(() => {
       const arr = comment.value
-      console.log(arr)
     })
     const { makeRequest, loading } = useRequest({
       context,
@@ -186,11 +184,10 @@ const Form1 = defineComponent({
     const clickCheckBtn = async () => {
       if (unConfirmed.value.length) {
         if (comment.value.trim()) {
-          console.log([...confirmed.value, ...unConfirmed.value], 'is push')
           isShow.value = false
           commentError.value = ''
           const dataFrom = await makeRequest()
-          console.log(dataFrom)
+
           if (dataFrom.success) {
             ctx.emit('closePopup')
             ctx.emit('getItems')
@@ -208,7 +205,6 @@ const Form1 = defineComponent({
       if (cb) {
         cb()
       }
-      console.log('submit')
     }
 
     const getDocName = (id) => {

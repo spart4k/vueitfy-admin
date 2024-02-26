@@ -158,7 +158,6 @@ export default {
     const { makeRequest: makeRequestList } = useRequest({
       context,
       request: async (data) => {
-        console.log('data', data)
         const response = await store.dispatch('list/get', data)
         if (response.data.service_spr)
           list.value.service = response.data.service_spr
