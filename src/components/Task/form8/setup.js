@@ -439,12 +439,12 @@ const Form8 = defineComponent({
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
-        // listDisbledDocuments.value = listDisbledDocuments.value - 1
       }
-      listDisbledDocuments.value = listDisbledDocuments.value + 1
+      listDisbledDocuments.value++
     }
 
     const sendDocuments = () => {
+      // FIXME: Должен быть один запрос с данными на сервер
       // listRequestsForUpload.value.forEach((elem, index) => {
       //   elem()
       // })
@@ -501,7 +501,6 @@ const Form8 = defineComponent({
           // TODO: было { doc_id: item }
           pasteObject = { doc_id: item.id }
           pasteObject['inProcess'] = true
-          // listDisbledDocuments.value = listDisbledDocuments.value + 1
         }
         listDocuments.value.push(pasteObject)
       })
