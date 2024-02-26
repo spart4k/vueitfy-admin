@@ -1,11 +1,7 @@
 <template>
   <transition name="context-open">
     <div
-      :class="
-        options.isShow && availablePanelBtn.length
-          ? 'v-contextmenu--show'
-          : 'v-contextmenu--hide'
-      "
+      :class="options.isShow ? 'v-contextmenu--show' : 'v-contextmenu--hide'"
       :style="{
         top: options.y + 'px',
         [options.direction]: options.x + 'px',
@@ -22,7 +18,7 @@
 
         </div>-->
         <v-btn
-          v-for="(action, actionsIndex) in options.actions.actions"
+          v-for="(action, actionsIndex) in availableContext"
           :key="actionsIndex"
           class="v-contextmenu-item d-flex justify-start"
           block
