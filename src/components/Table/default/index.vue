@@ -370,16 +370,18 @@
       v-if="options.data.rows && options.data.rows.length"
       class="v-table-footer pl-4"
     >
-      <div v-if="options.data.footer.length" class="v-table-footer-info">
+      <div class="v-table-footer-info">
         <div class="v-table-footer-total">
           Итого: {{ options.data.totalRows }}
-          <span
-            v-for="footerInfo in options.data.footer"
-            v-show="footerInfo.value"
-            :key="footerInfo.name"
-          >
-            {{ footerInfo.name }}: {{ footerInfo.value }}
-          </span>
+          <div v-if="options.data.footer.length" class="">
+            <span
+              v-for="footerInfo in options.data.footer"
+              v-show="footerInfo.value"
+              :key="footerInfo.name"
+            >
+              {{ footerInfo.name }}: {{ footerInfo.value }}
+            </span>
+          </div>
         </div>
       </div>
       <div class="v-table-footer-pagination">
