@@ -191,8 +191,8 @@
                 v-show="head.isShow"
                 :id="head.value + '-table-header'"
                 class="v-table-header-row-cell"
-                v-for="head in options.head"
-                :key="head.id"
+                v-for="(head, index) in options.head"
+                :key="index"
                 ref="cells"
               >
                 <div class="v-table-header-row-cell-wrap">
@@ -208,20 +208,22 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <div
+                    <span
                       class="v-table-header-row-cell-wrap__sort-sort mr-2"
                       v-on:click="sortRow(head)"
+                      v-if="availibleTitlesForSortIcons.includes(head.title)"
                     >
                       <vIconSort
-                        v-if="head.title == 'ФИО'"
                         class="v-table-header-row-cell-wrap__sort-icon"
                         :state="
-                          paramsQuery.sorts.find(
-                            (el) => el.field === head.value
-                          ).value
+                          paramsQuery.sorts.length
+                            ? paramsQuery.sorts.find(
+                                (el) => el.field === head.value
+                              ).value
+                            : null
                         "
                       />
-                    </div>
+                    </span>
                     <span @click="!head.added && sortRow(head)">
                       {{ head.title }}
                     </span>

@@ -369,7 +369,10 @@
       </div>
     </div>
 
-    <div v-if="options.data.rows" class="v-table-footer pl-4">
+    <div
+      v-if="options.data.rows && options.data.rows.length"
+      class="v-table-footer pl-4"
+    >
       <div v-if="options.data.footer.length" class="v-table-footer-info"></div>
       <div class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
