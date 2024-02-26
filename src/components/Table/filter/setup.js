@@ -40,16 +40,16 @@ export default {
       menuRef.value.save(filter.date)
     }
     //const querySelections = async (string, filter) => {
-    //  console.log(string)
+    //
     //  if (string) {
-    //    console.log('quiery')
+    //
     //    string = string.toLowerCase()
     //    //setTimeout(() => {
     //    //  const data = filter.data
     //    //    .filter((el) => el.toLowerCase().includes(string))
     //    //    .splice(0, 10)
     //    //  filter.loading = false
-    //    //  console.log(data)
+    //    //
     //    //  Vue.set(filter, 'items', data)
     //    //}, 200)
     //    filter.loading = true
@@ -62,18 +62,18 @@ export default {
     //      currentPage: filter.page,
     //      searchValue: string,
     //    })
-    //    console.log(data)
+    //
     //    if (data.rows) {
     //      filter.items = [...filter.items, ...data.rows]
     //    }
 
     //    //Vue.set(filter, 'items', data.rows)
     //    filter.loading = false
-    //    //console.log(data.products, filter)
+    //    //
     //  }
     //}
     // const initData = () => {
-    //   console.log('initData')
+    //
     //   props.filtersConfig.map((el) => {
     //     //el.loading = false
     //     Vue.set(el, 'loading', false)
@@ -93,11 +93,11 @@ export default {
     //const vm = this
     //const endIntersect = (entries, observer, isIntersecting) => {
     //  if (isIntersecting) {
-    //    console.log(entries[0].target)
+    //
     //    const dataset = entries[0].target.dataset.filter
     //    const filter = props.filtersConfig.find((el) => el.name === dataset)
-    //    console.log('isIntersecting')
-    //    console.log(filter.items)
+    //
+    //
     //    if (filter.items.length && !filter.loading) {
     //      //filter.page = filter.page + 10
     //      //Vue.set(filter, 'page', filter.page + 1)
@@ -125,16 +125,16 @@ export default {
     //    newVal.forEach((_, elIndex) => {
     //      if (newVal[elIndex] !== oldVal[elIndex]) {
     //        const string = newVal[elIndex]
-    //        console.log(props.filtersConfig[0].search)
+    //
     //        const filterElement = props.filtersConfig.find(
     //          (el) => el.search === string
     //        )
-    //        console.log(filterElement)
+    //
     //        querySelections(string, filterElement)
     //      }
     //    })
     //    //const
-    //    //console.log(newVal)
+    //    //
     //  }
     //)
     onMounted(() => {

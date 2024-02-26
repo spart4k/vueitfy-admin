@@ -23,10 +23,9 @@ export default {
     onMounted(async () => {
       loaded.value = false
       const account = await store.dispatch('auth/checkMe')
-      console.log(account)
+
       navData.value = await store.dispatch('navmenu/getNavmenu')
       loaded.value = true
-      console.log(navData.value)
     })
 
     return {

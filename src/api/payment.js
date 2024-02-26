@@ -10,13 +10,12 @@ export default class Cities {
     try {
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'text/plain,
+          'Content-Type': 'text/plain',
         },
       })
 
       return data
     } catch (error) {
-      console.log(error)
       return error
     }
   }
@@ -30,7 +29,6 @@ export default class Cities {
       })
       return data
     } catch (error) {
-      console.log(error)
       return error
     }
   }
@@ -39,14 +37,12 @@ export default class Cities {
     try {
       const { data } = await axios.post(`${url}`, paramsQuery, {
         headers: {
-          'Content-Type': 'text/plain'
+          'Content-Type': 'text/plain',
         },
       })
       return data
     } catch (error) {
-      console.log(error)
       return error
     }
   }
-
 }

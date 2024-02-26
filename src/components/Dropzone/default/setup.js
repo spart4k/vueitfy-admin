@@ -57,7 +57,7 @@ export default {
     const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
       // dropzone.value.removeAllFiles()
-      console.log(files)
+
       if (props.options.withoutSave) {
         await loadFile(files)
         if (props.options.callbacks) {
@@ -68,31 +68,31 @@ export default {
         if (proxyVal.value === undefined) {
           proxyVal.value = []
         }
-        console.log(proxyVal)
+
         proxyVal.value.push(files)
-        // console.log(files, proxyVal.value)
+        //
         emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
-      //console.log(dropzone.value)
+      //
       ////const progress = document.querySelector('.dz-progress')
       ////progress.style.opacity = 0
       //setTimeout(() => {
-      //  console.log(files)
+      //
       //  //dropzone.value.processQueue()
       //}, 1000)
-      //console.log(dropzone.value)
-      //console.log(dropzone.value.processQueue())
-      //console.log(dropzone.value.getAcceptedFiles())
+      //
+      //)
+      //)
       //dropzone.value.processQueue()
       //value.value.push(files)
-      // console.log(dropzone.value)
+      //
     }
     let clearDropzone = () => {
       dropzone.value.removeAllFiles()
-      // console.log('wdadwwadwadwa')
+      //
     }
     const showSuccess = () => {
-      //console.log(file)
+      //
       //dropzone.value.processQueue()
     }
     const removed = (file) => {
@@ -114,7 +114,7 @@ export default {
         let url = proxyVal.value
         //url = 'https://personal-crm.ru' + url
         url = process.env.VUE_APP_STORE + url
-        console.log(url, 'STORE')
+
         // alert(url, 'STORE')
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()

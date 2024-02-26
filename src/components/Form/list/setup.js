@@ -54,14 +54,14 @@ export default {
     //       const fieldName = date + '/' + el.name
     //       Vue.set(fields, fieldName, {})
     //       Vue.set(fields[fieldName], 'validations', validations)
-    //       console.log(props.tab.formData[el.name])
+    //
     //       Vue.set(fields[fieldName], 'default', props.tab.formData[el.name])
     //       if (el.type === 'autocomplete' && el.alias) {
     //         Vue.set(fields[fieldName], 'default', props.tab.formData[el.alias])
     //       }
     //     })
     //   })
-    //   console.log(fields)
+    //
     //   return fields
     // }
     const prevTab = ref({})
@@ -75,9 +75,9 @@ export default {
     const targets = ref([])
     const changeForm = async ({ url, module }) => {
       rows.value.forEach((el) => el.validate(true))
-      console.log(rows.value)
+
       const isValid = rows.value.every((el) => el.validate(true))
-      console.log(isValid, 'isValid')
+
       if (!isValid) return
       const {
         object_id,
@@ -114,12 +114,12 @@ export default {
         const person = { ...defaultData }
         person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
         person.tid = targets.value[index].id
-        console.log(props.tab.formData.date_target[index], 'root')
+
         person.date_target = targets.value[index].date
         if (el.formData.print_form_key) {
           person.print_form_key = el.formData.print_form_key
         }
-        console.log(person, 'person')
+
         return person
       })
       const { makeRequest } = useRequest({
@@ -131,9 +131,9 @@ export default {
           }),
         successMessage: `Успешно создано ${rows.value.length} назначений`,
       })
-      console.log(isValid)
+
       const result = await makeRequest()
-      console.log(result, 'RESULT')
+
       if (result?.data?.length) {
         store.commit('notifies/showMessage', {
           color: 'error',
@@ -144,7 +144,7 @@ export default {
           const findedIndex = targets.value.findIndex(
             (target) => target.id === el.tid
           )
-          console.log(findedIndex)
+
           const objectItems = props.tabs[0].fields.find(
             (field) => field.name === 'object_id'
           ).items
@@ -195,28 +195,24 @@ export default {
       changeForm,
     })
     // const getDataFromPrevTav = () => {
-    //   console.log('getPrev')
+    //
     //   prevTab.value = props.tabs[props.activeTab - 1]
     //   if (props.tab.fromLastTab) {
     //     //const field = prevTab.value.find((el) => el.name === )
     //     const fields = props.tab.fromLastTab.map((el) => {
     //       const findEl = prevTab.value.fields.find((tabField) => {
-    //         //console.log(tabField[el.alias], el.alias)
     //         return tabField[el.alias] === el.name
     //       })
-    //       console.log(findEl)
     //       if (el.type === 'list') {
-    //         console.log(findEl.items)
-    //         console.log(formData)
     //         for (let key in formData) {
     //           const splited = key.split('/')
-    //           console.log(splited)
+    //
     //           if (splited[1] === el.nameInTab) {
-    //             console.log(splited)
+    //
     //             formData[key] = findEl.items.find(
     //               (elItem) => elItem.id === props.tab.formData[el.name]
     //             ).name
-    //             console.log(formData[key])
+    //
     //           }
     //         }
     //       }

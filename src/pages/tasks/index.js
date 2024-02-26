@@ -1,19 +1,10 @@
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 import FrameView from '@/components/Task/frame-view/index.vue'
 

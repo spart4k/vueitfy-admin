@@ -51,7 +51,7 @@ export default {
       return fields
     }
     const personal_id = +route.params.id
-    const canEdit = [4, 7, 8].includes(store.state.user.permission_id)
+    const canEdit = [4, 7, 8, 16].includes(store.state.user.permission_id)
     const { makeRequest, loading } = useRequest({
       context,
       request: () => store.dispatch('personal/getDocuments', personal_id),
@@ -101,7 +101,6 @@ export default {
     const { makeRequest: updateFileData } = useRequest({
       context,
       request: (params) => {
-        console.log(params, 'path_doc')
         return store.dispatch('taskModule/updateFileData', {
           data: {
             personal_id,
@@ -134,17 +133,15 @@ export default {
       let stack = {}
       loading.value = true
       rows.value.forEach(async (row) => {
-        console.log(row.formData)
         stack = { ...stack, ...row.formData }
       })
-      console.log(stack, 'stack')
+
       const data = {
         data: stack,
       }
       const resultField = await updateFields(data)
       docsData.value = await makeRequest()
       loading.value = false
-      console.log(resultField)
     }
     onMounted(async () => {
       docsData.value = await makeRequest()

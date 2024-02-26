@@ -38,7 +38,7 @@ const mail = {
         const response = await getBoxes()
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -47,7 +47,7 @@ const mail = {
         const response = await getFolders()
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -56,7 +56,7 @@ const mail = {
         const response = await getTags()
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -65,7 +65,7 @@ const mail = {
         const response = await getNotRead()
         return response.count
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -74,7 +74,7 @@ const mail = {
         const response = await createBox(data)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -83,7 +83,7 @@ const mail = {
         const response = await createFolder(data)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -92,7 +92,7 @@ const mail = {
         const response = await editBox(data.content, data.id)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -101,7 +101,7 @@ const mail = {
         const response = await editFolder(data.content, data.id)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -110,7 +110,7 @@ const mail = {
         const response = await deleteBox(data)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -119,7 +119,7 @@ const mail = {
         const response = await deleteFolder(data)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -128,7 +128,7 @@ const mail = {
         const response = await getBoxMails(data.content, data.id)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -137,23 +137,23 @@ const mail = {
         const response = await getFolderMails(data.content, data.id)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
     async changeMail(_, data) {
       try {
-        // console.log('data, params', data, params)
+        // return e
         const response = await changeMail(data.content, data.id)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
     async changeLettersContainer(_, data) {
       try {
-        // console.log('data, params', data, params)
+        // return e
         const response = await changeLettersContainer(
           data.content,
           data.type,
@@ -161,37 +161,37 @@ const mail = {
         )
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
     async filterMail(_, data) {
       try {
-        // console.log('data, params', data, params)
+        // return e
         const response = await filterMail(data)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
     async countTags(_, data) {
       try {
-        // console.log('data, params', data, params)
+        // return e
         const response = await countFilter(data, 'tags')
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
     async countFolders(_, data) {
       try {
-        // console.log('data, params', data, params)
+        // return e
         const response = await countFilter(data, 'folders')
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -200,7 +200,7 @@ const mail = {
         const response = await getMail(data)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -212,7 +212,7 @@ const mail = {
         const response = await sendMessage(data, config)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -221,7 +221,7 @@ const mail = {
         const response = await getSendedMessages(data.content, data.id)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -230,7 +230,7 @@ const mail = {
         const response = await getSendedMessage(data)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -239,7 +239,7 @@ const mail = {
         const response = await getDeletedMessages(data.content, data.id)
         return response.data
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -248,7 +248,7 @@ const mail = {
         const response = await getBroadcastMails(data.content)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -257,7 +257,7 @@ const mail = {
         const response = await getDirections()
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -266,7 +266,7 @@ const mail = {
         const response = await getOtdel(id)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -275,7 +275,7 @@ const mail = {
         const response = await getObjects(id)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -284,7 +284,7 @@ const mail = {
         const response = await getAccounts(id)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
 
@@ -293,7 +293,7 @@ const mail = {
         const response = await broadcast(data)
         return response
       } catch (e) {
-        console.log(e)
+        return e
       }
     },
   },

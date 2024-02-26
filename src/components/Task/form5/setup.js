@@ -46,7 +46,7 @@ const Form5 = defineComponent({
     // }
 
     // onMounted(() => {
-    //   console.log(docs_spr, getNameDoc)
+    //
     // })
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
@@ -57,7 +57,7 @@ const Form5 = defineComponent({
           let pasteObject = data.data.docs.find(
             (doc) => doc.doc_id === newSpr[index]
           )
-          console.log(pasteObject)
+
           if (pasteObject) {
             pasteObject['inProcess'] = false
           } else {
@@ -66,10 +66,8 @@ const Form5 = defineComponent({
               doc_id: newSpr[index],
             }
             listDisbledDocuments.value = listDisbledDocuments.value + 1
-            console.log('listDisbledDocuments', listDisbledDocuments)
           }
           listDocuments.value.push(pasteObject)
-          console.log(listDocuments.value)
         }
       }
 
@@ -84,7 +82,7 @@ const Form5 = defineComponent({
       //   }
       //   listDocuments.value.push(pasteObject)
       // })
-      // console.log(listDocuments)
+      //
     })
 
     let listRequestsForUpload = ref([])
@@ -92,7 +90,6 @@ const Form5 = defineComponent({
     let disableFinishState = ref(0)
     let docs_ids = ref([])
     let addFiles = (e, options) => {
-      console.log(e, options, listDocuments.value)
       docs_ids.value.push(e.item)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -132,7 +129,6 @@ const Form5 = defineComponent({
         successMessage: 'Файл успешно загружен',
       })
 
-      console.log(listDocuments.value)
       if (!currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
@@ -155,7 +151,6 @@ const Form5 = defineComponent({
         ].inProcess = false
         listDisbledDocuments.value = listDisbledDocuments.value - 1
       }
-      console.log(listRequestsForUpload.value.length)
     }
 
     let sendTaskFinish = async () => {

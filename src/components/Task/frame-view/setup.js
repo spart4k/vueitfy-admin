@@ -143,11 +143,9 @@ const task = defineComponent({
     }
 
     const refreshData = async () => {
-      console.log('refreshData')
       if (countdownTimerIntervalId.value)
         clearInterval(countdownTimerIntervalId.value)
       await getData()
-      console.log('data', data.value)
     }
 
     const getData = async () => {

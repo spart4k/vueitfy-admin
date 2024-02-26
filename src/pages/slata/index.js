@@ -304,5 +304,4 @@ const config = {
   filters,
 }
 
-console.log(config)
 export default config

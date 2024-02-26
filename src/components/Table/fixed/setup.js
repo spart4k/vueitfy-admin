@@ -137,7 +137,7 @@ const table = {
           x + width + tablePosition.value >= window.innerWidth &&
           headerEl.isShow
         ) {
-          //console.log(width, x, window.innerWidth)
+          //
           emit('changeheadershow', { headerEl, value: false })
         } else if (
           x + width + tablePosition.value <= window.innerWidth &&
@@ -159,8 +159,8 @@ const table = {
       }
     }
     const checkboxInput = (row, indexRow) => {
-      //console.log(row, indexRow)
-      //console.log('checkbox')
+      //
+      //
       let delta = null
       if (indexRow > lastSelected.value.indexRow) {
         delta = indexRow - lastSelected.value.indexRow
@@ -172,37 +172,37 @@ const table = {
           i < lastSelected.value.indexRow + delta;
           i++
         ) {
-          //console.log(i)
-          //console.log(props.options.data.rows[i].row)
+          //
+          //
           if (!props.options.data.rows[i].row.selected) {
             props.options.data.rows[i].row.selected = true
           } else {
-            //console.log(i, lastSelected.value.indexRow)
+            //
             //props.options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) props.options.data[i].row.selected = true
           }
         }
       } else {
-        //console.log('down')
+        //
         delta = lastSelected.value.indexRow - indexRow
         for (
           let i = lastSelected.value.indexRow;
           i > lastSelected.value.indexRow - delta;
           i--
         ) {
-          //console.log(i)
-          //console.log(props.options.data.rows[i].row)
+          //
+          //
           if (!props.options.data.rows[i].row.selected) {
             props.options.data.rows[i].row.selected = true
           } else {
-            //console.log(i)
+            //
             //props.options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) props.options.data[i].row.selected = true
           }
         }
       }
-      //console.log(delta)
-      //console.log(lastSelected.value.indexRow)
+      //
+      //
     }
     const saveLastSelected = (data) => {
       lastSelected.value = {
@@ -220,7 +220,7 @@ const table = {
     }
     const sortRow = (head) => {
       const { value } = head
-      console.log(head, paramsQuery.value.sorts)
+
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {
         paramsCol.value = 'asc'
@@ -236,7 +236,7 @@ const table = {
       //} else if (head.sorts[0].value === 'desc') {
       //  head.sorts[0].value = undefined
       //}
-      //console.log(paramsCol)
+      //
     }
     const openContext = ($event, row) => {
       if (!contextmenu.value.isShow) {
@@ -250,8 +250,8 @@ const table = {
           contextmenu.value.isShow = false
         }, 0)
       }
-      //console.log($event.clientX, $event.clientY)
-      //console.log($event, row)
+      //
+      //
       let direction = 'left'
       let clientX = $event.clientX
       if ($event.clientX + contextWidth >= window.innerWidth) {
@@ -279,11 +279,11 @@ const table = {
       headerOptions.value()
     }
     const getFixedStyle = (head) => {
-      //console.log(head)
+      //
       const { width } = headerOptions.value.find((el) => el.id === head.value)
-      //console.log(width)
+      //
       if (head.fixed.value && head.fixed.position) {
-        //console.log({ [head.fixed.position]: getWidth(head.value) })
+        //
         //if (head.fixed.position === 'right') {
 
         //}
@@ -327,7 +327,7 @@ const table = {
           sorts.push(el)
         }
       })
-      console.log(paramsQuery.value.sorts)
+
       paramsQuery.value.searchColumns.forEach((el) => {
         if (!el.value) {
           return
@@ -455,12 +455,12 @@ const table = {
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        console.log(el.permissions.includes(permission.value))
+        
         return el.permissions.includes(permission.value)
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        console.log(_.intersection(el.direction_id, directions.value).length)
+        
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
@@ -470,12 +470,7 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some((el) => {
-            console.log('condition1')
-            console.log(
-              checkIncludesPermissions(el),
-              checkIncludesDirections(el),
-              el.type
-            )
+            
             return (
               checkIncludesPermissions(el) &&
               checkIncludesDirections(el) === el.type
@@ -486,7 +481,7 @@ const table = {
       })
     })
     const saveFilter = (filterData) => {
-      console.log('saveFilter', filterData)
+      
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -512,7 +507,7 @@ const table = {
         type = type === 'autocomplete' ? 'select' : type
         type = type === 'dateRange' && 'date'
         type = type === 'datetime' ? 'date' : type
-        console.log('filterData', filterData)
+        
         const obj = {
           //field: el.name,
           value: filterData[el.name],
@@ -914,7 +909,7 @@ const table = {
         })
       })
       // setTimeout(() => {
-      //   //console.log(headerEl.previousElementSibling.offsetWidth)
+      //   //
       //   // acumWidth = headerEl.previousElementSibling.offsetWidth + acumWidth
       // }, 0)
       //wrapingRow()

@@ -59,7 +59,7 @@ const Form4 = defineComponent({
       fileName = `personal_doc_` + Date.now() + '.' + fileExt
       form_data = new FormData()
       form_data.append('file', e[0])
-      console.log(fileExt, fileName, form_data, e[0])
+
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
@@ -124,13 +124,12 @@ const Form4 = defineComponent({
       )
     })
     let sendData = async () => {
-      // console.log(hasMigr.value &&,= 'HASMIG')
+      //
       await pushSomeShit()
       if (hasMigr.value && isGalkaVisible.value) {
         await makeRequest()
         await delInfoAFile()
         await updateFileData().then((str) => {
-          console.log(data)
           const { makeRequest: startTask } = useRequest({
             context,
             request: () =>
