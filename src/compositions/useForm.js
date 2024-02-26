@@ -45,7 +45,6 @@ export default function ({
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
-
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       obj[key] = ref(fields[key].default)
@@ -57,13 +56,13 @@ export default function ({
   const computedFormData = computed(() => formData)
 
   let startFormData = formData
-
+  const tabFields = form.fields
   const validations = () => {
     const formFields = {}
     if (form) {
-      form?.fields?.forEach((el) => {
-        formFields[el.name] = el
-      })
+      for (let key in tabFields) {
+        formFields[tabFields[key].name] = tabFields[key]
+      }
       if (!form) return
     }
     return Object.keys(formData || fields).reduce((obj, key) => {
@@ -581,7 +580,7 @@ export default function ({
   }
 
   const hasSelect = () => {
-    return form?.fields.some(
+    return Object.values(tabFields).some(
       (field) => field.type === 'select' && field.isShow && !field.withoutList
     )
   }
@@ -725,9 +724,10 @@ export default function ({
       field.loading = true
       const lists = await makeRequestList(listData)
       for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
+        const field = tabFields[keyList]
+        // const field = form?.fields.find((el) =>
+        //   el.alias ? el.alias === keyList : el.name === keyList
+        // )
         if (field) {
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
@@ -1191,7 +1191,8 @@ export default function ({
     console.log('///////////////////////////')
     if (syncForm) {
       for (let formKey in syncForm.data) {
-        const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
+        const field = tabFields[formKey]
+        // const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
         console.log(field?.name, 'FIELD NAME')
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
@@ -1214,9 +1215,12 @@ export default function ({
         }
       }
       console.log(JSON.stringify(formData), 'FORM DATA CONSOLE')
-      const prescription = form?.fields.find(
+      const prescription = Object.values(tabFields).find(
         (x) => x.prescription
       )?.prescription
+      // const prescription = form?.fields.find(
+      //   (x) => x.prescription
+      // )?.prescription
       if (prescription) {
         syncForm.data[prescription].forEach((item, index) => {
           Object.keys(item).forEach((key) => {
@@ -1470,6 +1474,7 @@ export default function ({
         })
       )
     }
+    console.log(field)
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
       //}
@@ -1540,9 +1545,12 @@ export default function ({
   watch(
     () => wrapFormData,
     () => {
-      form?.fields?.forEach((el) => {
-        showField(el.type, el)
-      })
+      for (let key in tabFields) {
+        showField(tabFields[key].type, tabFields[key])
+      }
+      // form?.fields?.forEach((el) => {
+      //   showField(el.type, el)
+      // })
       if ($touched.value) {
         errorsCount()
       }

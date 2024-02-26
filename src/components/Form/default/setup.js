@@ -68,21 +68,26 @@ export default {
     })
     const fields = () => {
       const fields = {}
-      props.tab.fields.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
+      const tabFields = props.tab.fields
+      for (let key in tabFields) {
+        const { validations } = tabFields[key]
+        if (typeof tabFields[key].isShow === 'boolean' && tabFields[key].isShow)
+          Vue.set(fields, tabFields[key].name, {})
+        else if (
+          typeof tabFields[key].isShow === 'object' &&
+          tabFields[key].isShow.value
+        ) {
           // console.log('CONDITION TRUE', el.name)
-          Vue.set(fields, el.name, {})
+          Vue.set(fields, tabFields[key].name, {})
         } else {
           return
         }
-        console.log(el, 'FIELD-EL')
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
-      })
+        console.log(tabFields[key], 'FIELD-EL')
+        Vue.set(fields, tabFields[key].name, {})
+        Vue.set(fields[tabFields[key].name], 'validations', validations)
+        Vue.set(fields[tabFields[key].name], 'default', tabFields[key].value)
+      }
+      // props.tab.fields.forEach((el) => {})
       return fields
     }
     const params = props.tab.lists

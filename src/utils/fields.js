@@ -37,10 +37,13 @@ const stringField = (properties) => {
 }
 
 const selectField = (properties) => {
-  return {
+  const data = {
     type: 'select',
     hideItems: [],
     ...defaultProperties(properties),
+  }
+  return {
+    ...data,
   }
 }
 
