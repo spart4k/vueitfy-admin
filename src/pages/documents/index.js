@@ -2914,14 +2914,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'p.pasport',
@@ -2940,14 +2941,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.migr_card',
@@ -2967,14 +2969,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.migr_uch',
@@ -2993,14 +2996,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.migr_uch_2',
@@ -3021,14 +3025,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'p.invoice',
@@ -3204,14 +3209,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'p.pasport',
@@ -3230,14 +3236,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.migr_card',
@@ -3257,14 +3264,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.migr_uch',
@@ -3283,14 +3291,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           idth: '90',
           alias: 'ps.migr_uch_2',
@@ -3311,14 +3320,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'p.invoice',
@@ -3337,14 +3347,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.patent',
@@ -3363,14 +3374,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.patent_2',
@@ -3391,14 +3403,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.check_patent',
@@ -3418,14 +3431,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.check_patent_2',
@@ -3601,14 +3615,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'p.pasport',
@@ -3627,14 +3642,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.pasport_2',
@@ -3653,14 +3669,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: 'text',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'ps.migr_card',
@@ -3680,14 +3697,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: '',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: '',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'p.inn',
@@ -3706,14 +3724,15 @@ const config = {
             value: false,
             position: 'left',
           },
-          sorts: [
-            {
-              type: '',
-              default: '',
-              value: '',
-              isShow: false,
-            },
-          ],
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: '',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
           isShow: true,
           width: '90',
           alias: 'p.snils',
