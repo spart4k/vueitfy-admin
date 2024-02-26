@@ -109,7 +109,7 @@ $tableFooterHeight: 85px;
           }
           &--fixed {
             position: sticky;
-            background-color: #fff;
+            // background-color: #fff;
             background-color: var(--v-background-base);
             // min-width: 150px;
             // right: 0;
@@ -134,7 +134,7 @@ $tableFooterHeight: 85px;
         top: 0;
         position: sticky;
         z-index: 2;
-        background-color: var(--v-background-base);
+        // background-color: var(--v-background-base);
         //background-color: red;
       }
     }
@@ -200,11 +200,15 @@ $tableFooterHeight: 85px;
           }
           &--fixed {
             position: sticky;
-            background-color: #fff;
             background-color: var(--v-background-base);
             z-index: 1;
             // left: 0;
           }
+
+          &--fixed:hover {
+            background-color: var(--v-background-base);
+          }
+
           &--currentDate {
             background-color: rgba(0, 0, 0, 0.1);
           }
