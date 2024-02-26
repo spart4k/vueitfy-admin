@@ -34,6 +34,12 @@ export default {
     const loading = ref(false)
     const syncForm = ref({})
     const activeTab = ref(0)
+    const permission = computed(() => store.state.user.permission_id)
+    const checkIncludesPermissions = (el) => {
+      if (!el.permissions) return true
+
+      return el.permissions.includes(permission.value)
+    }
     const availableTabs = computed(() => {
       return props.detail.tabs.filter((item) => {
         return (
@@ -44,6 +50,18 @@ export default {
     })
 
     const porpsContent = ref(props.content)
+
+    const availableTabsAll = computed(() => {
+      return availableTabs.value.filter((tab) => {
+        if (!tab.isShow) return tab
+        else {
+          return tab.isShow.condition.some((el) => {
+            return checkIncludesPermissions(el) === el.type
+          })
+          // if ()
+        }
+      })
+    })
 
     onUnmounted(() => {
       if (props?.detail?.clearStore) store.commit('clearFormStorage')
@@ -56,6 +74,7 @@ export default {
       id,
       availableTabs,
       activeTab,
+      availableTabsAll,
     }
   },
 }
