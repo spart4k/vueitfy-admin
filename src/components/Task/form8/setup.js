@@ -55,7 +55,7 @@ const Form8 = defineComponent({
       //   value: props.data.entity.object_name,
       // },
     }
-    const expensesForm = ref(null)
+    const expensesActive = ref(true)
     const patentsActive = ref(false)
 
     let listDocuments = ref([])
@@ -66,7 +66,6 @@ const Form8 = defineComponent({
     })
 
     let listRequestsForUpload = ref([])
-    let file = ref('')
     let disableFinishState = ref(0)
 
     // const sendData = () => {
@@ -348,6 +347,7 @@ const Form8 = defineComponent({
     }
 
     let addFiles = (e, options) => {
+      console.log('ITEM', e)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -414,23 +414,28 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
+
       if (!currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
           updateFileData,
           loadImage
         )
+
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
+
         if (additionalRequestFlag) {
           listRequestsForUpload.value.push(createFillScanProcess)
         }
       } else {
         listRequestsForUpload.value.push(updateFileData, loadImage)
+
         if (additionalRequestFlag) {
           listRequestsForUpload.value.push(createFillScanProcess)
         }
+
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
@@ -440,11 +445,16 @@ const Form8 = defineComponent({
     }
 
     const sendDocuments = () => {
-      listRequestsForUpload.value.forEach((elem, index) => {
-        elem()
-      })
+      // listRequestsForUpload.value.forEach((elem, index) => {
+      //   elem()
+      // })
+
+      console.log('Requests', listRequestsForUpload.value)
+
       listRequestsForUpload.value = []
+
       patentsActive.value = true
+      expensesActive.value = false
     }
 
     const closePopupForm = (route) => {
@@ -473,10 +483,7 @@ const Form8 = defineComponent({
       }
 
       patentsActive.value = false
-    }
-
-    const disable = (data) => {
-      console.log('DIS', data)
+      expensesActive.value = true
     }
 
     onMounted(() => {
@@ -509,19 +516,15 @@ const Form8 = defineComponent({
       }
     })
 
-    onUpdated(() => {
-      // console.log('CODE', props.data)
-    })
-
     return {
       addFiles,
       listDocuments,
-      disable,
       listRequestsForUpload,
       sendDocuments,
       listDisbledDocuments,
       addFilesPatent,
       patentsActive,
+      expensesActive,
       disableFinishState,
       textInfo,
       sendTaskFinish,
@@ -529,7 +532,6 @@ const Form8 = defineComponent({
       Popup,
       closePopupForm,
       pushToZayavka,
-      expensesForm,
       proxyConfig,
     }
   },

@@ -26,11 +26,12 @@
             <v-expansion-panel
               v-for="(accordion, index) in listDocuments"
               :key="index"
+              :disabled="!expensesActive"
             >
               <v-expansion-panel-header>
                 <span>
-                  <v-icon left v-if="accordion.inProcess"> $IconGalka </v-icon>
-                  <v-icon left v-if="!accordion.inProcess">
+                  <v-icon left v-if="!accordion.inProcess"> $IconGalka </v-icon>
+                  <v-icon left v-if="accordion.inProcess">
                     $IconSetting
                   </v-icon>
                   {{ data.data.docs_spr[accordion.doc_id] }}
@@ -61,7 +62,7 @@
             <v-btn
               small
               color="success"
-              :disabled="listDisbledDocuments < 1"
+              :disabled="listDisbledDocuments < 1 || !expensesActive"
               @click="sendDocuments"
             >
               Приложить
