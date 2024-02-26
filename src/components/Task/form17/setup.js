@@ -108,7 +108,6 @@ const Form17 = defineComponent({
     let isSetTask = ref(false)
     const dopData = JSON.stringify(data.task.dop_data)
     const addFiles = (e) => {
-      console.log(e)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `workout_25_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -326,7 +325,7 @@ const Form17 = defineComponent({
         //     }
         // })
       }
-      console.log(result)
+
       // let { status } = result
       // if (status) {
       ctx.emit('closePopup')

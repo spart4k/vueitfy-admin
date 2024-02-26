@@ -17,9 +17,8 @@ const account = {
       return result
     },
     async getKeys(_, { url, wrap, body }) {
-      console.log(url)
       const result = await getKeys(url)
-      console.log(result, wrap, body)
+
       if (wrap) {
         return { data: { [wrap]: result } }
       } else {
@@ -28,22 +27,19 @@ const account = {
     },
     async checkEveryDayPayment(_, { url }) {
       const result = await checkEveryDayPayment(url)
-      console.log(result)
+
       return result
     },
     async getObject(_, { url }) {
-      console.log(url)
       const { data } = await getObject(url)
-      // console.log(result)
+      //
       return data
     },
     async create(_, { url, body }) {
-      console.log(_, url, body)
       const result = await create(url, body)
       return result
     },
     async createData(_, { url, body }) {
-      console.log(_, url, body)
       const result = await create(url, body)
       return result
     },

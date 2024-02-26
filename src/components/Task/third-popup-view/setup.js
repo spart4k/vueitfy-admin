@@ -55,20 +55,18 @@ const ThirdPopupView = defineComponent({
 
     let accForSend = ref(0)
     let setImageForPopup = (index) => {
-      console.log(index)
       imageShowPopup.value = imagePreview.value[index]
     }
     // let sendFile
     data.data.docs.forEach((element, index) => {
       imagePreview.value.push(process.env.VUE_APP_STORE + element.path_doc)
-      console.log(index)
+
       isShowBtnArray.value.push(true)
     })
 
     let watchForComment = computed({
       get: () => comment.value,
       set: (val) => {
-        console.log(val)
         if (val && accForSend.value >= 0) {
           isFormValid.value = true
         } else {
@@ -81,7 +79,7 @@ const ThirdPopupView = defineComponent({
     const addToDenied = (index) => {
       Vue.set(isShowBtnArray.value, index, false)
       accForSend.value = 1 + accForSend.value
-      console.log(index)
+
       store.commit(
         'notifies/showMessage',
         {
@@ -117,23 +115,22 @@ const ThirdPopupView = defineComponent({
         ctx.emit('getItems')
       }
     }
-    console.log(imagePreview.value)
+
     let isLoadImage = ref(false)
     const handleFileUpload = async (e, indexForPhoto) => {
       accForSend.value = accForSend.value - 1
       isLoadImage.value = true
       let file = e.target.files[0]
-      console.log(file)
+
       let reader = new FileReader()
       reader.addEventListener(
         'load',
         async function () {
           Vue.set(imagePreview.value, indexForPhoto, reader.result)
           Vue.set(isShowBtnArray.value, indexForPhoto, false)
-          console.log(imagePreview.value)
+
           const dataFrom = await makeRequest()
           const newVal = await newRequest()
-          console.log(dataFrom, newVal)
         }.bind(this),
         false
       )

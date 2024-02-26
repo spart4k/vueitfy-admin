@@ -50,7 +50,6 @@ const auth = {
     },
     async loadStatus({ commit }, data) {
       const result = await putForm(data)
-      console.log(result)
       if (result.code === 1) {
         commit(
           'notifies/showMessage',

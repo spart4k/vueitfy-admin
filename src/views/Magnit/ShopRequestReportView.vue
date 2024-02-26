@@ -29,7 +29,6 @@ export default {
     },
   },
   setup() {
-    console.log(shopRequestMagnitReport)
     return {
       shopRequestMagnitReport,
     }

@@ -9,8 +9,6 @@
 <script>
 import { schedule } from '@/pages'
 
-console.log(schedule)
-
 import TableFixed from '@/components/Table/fixed/index.vue'
 
 export default {

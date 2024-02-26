@@ -56,7 +56,7 @@ export default {
     onMounted(async () => {
       const result = await makeRequestList()
       listService.value = result.data.service_spr
-      // console.log(props.tab.routeParam)
+      //
     })
     return {
       switchLabel,

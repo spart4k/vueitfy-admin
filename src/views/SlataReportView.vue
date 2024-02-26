@@ -15,7 +15,6 @@
 import { ref, toRefs, watch } from 'vue'
 import slata from '@/pages/slata/index.js'
 
-console.log(slata)
 export default {
   name: 'SlataReportView',
   components: {

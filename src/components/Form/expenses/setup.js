@@ -61,7 +61,7 @@ export default {
     const router = useRouter()
     const autocompleteRef = ref(null)
 
-    // console.log('new URL', window.location.href)
+    //
     const context = {
       root: {
         store,
@@ -118,7 +118,6 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: (params) => {
-        console.log(+route.params.id)
         return store.dispatch(params.module, {
           //url: `set/data/${alias}`,
           url: params.url,
@@ -130,7 +129,6 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('proxyTab.value', proxyTab.value)
         let id
         if (proxyTab.value.routeParam) {
           id = route.params[proxyTab.value.routeParam]
