@@ -204,6 +204,8 @@ export default function ({
         emit('closePopup')
       } else if (result.result === 1) {
         emit('closePopup')
+      } else if (result.success) {
+        emit('closePopup')
       }
     } else if (action.action === 'saveFormStore') {
       loading.value = true

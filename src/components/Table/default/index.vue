@@ -426,7 +426,11 @@
         {{ action.text }}
       </v-btn>
     </v-row>
-    <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
+    <v-contextmenu
+      @handlerContext="handlerContext"
+      ref="contextMenuRef"
+      :options="contextmenu"
+    />
     <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
       <keep-alive>
         <TableFilter

@@ -152,7 +152,9 @@ const changeActionTo = (array, key) => {
     }
   })
 }
+
 console.log(paymentConfig)
+
 changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import useNavigation from '@/compositions/useNavigation'
 // import { payment, userKeys } from '@/pages'
@@ -493,7 +495,8 @@ const debetorConfig = {
         class: ['v-table-button--custom'],
         url: '$IconEdit',
         isSwitch: true,
-        function: changeSort,
+        type: 'switch',
+        function: consolePanel,
         backgroundColor: '#ffffff',
       },
       // {
@@ -3035,7 +3038,7 @@ export const defaultForm = [
     ],
     alias: 'personal',
     active: false,
-    fields: fieldsBaseDefaulrForm,
+    fields: [],
     actions: [
       stringAction({
         text: 'Закрыть',
@@ -3332,15 +3335,6 @@ export const defaultForm = [
     type: TableDefault,
     active: false,
     config: paymentConfig,
-    isShow: {
-      value: true,
-      condition: [
-        {
-          permissions: [16, 19],
-          type: false,
-        },
-      ],
-    },
   },
   {
     path: 'edit',
@@ -3357,15 +3351,6 @@ export const defaultForm = [
     type: TableDefault,
     active: false,
     config: debetorConfig,
-    isShow: {
-      value: true,
-      condition: [
-        {
-          permissions: [16, 19],
-          type: false,
-        },
-      ],
-    },
   },
   {
     path: 'edit',
@@ -3374,15 +3359,6 @@ export const defaultForm = [
     type: TableDefault,
     active: false,
     config: holdPayments,
-    isShow: {
-      value: true,
-      condition: [
-        {
-          permissions: [16, 19],
-          type: false,
-        },
-      ],
-    },
   },
   {
     path: 'edit',
@@ -4090,6 +4066,100 @@ export const defaultForm = [
       },
     ],
   },
+  {
+    id: 11,
+    path: 'direction',
+    name: 'Основные',
+    type: FormDefault,
+    detail: true,
+    lists: [
+      {
+        alias: 'directions_free_personal',
+        filter: [
+          {
+            field: 'personal_id',
+            value: '',
+            source: '+route.params.id',
+            type: 'num',
+          },
+        ],
+      },
+      // 'user_keys',
+      // 'habitation_id',
+      // 'account_id',
+      // 'direction_id',
+      // 'grajdanstvo_id',
+    ],
+    alias: 'personal',
+    active: false,
+    fields: [
+      selectField({
+        label: 'Направление',
+        name: 'direction_json',
+        alias: 'directions_free_personal',
+        subtype: 'multiple',
+        // subtype: 'multiple',
+        placeholder: '',
+        notPut: true,
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [],
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        validations: { required },
+        bootstrapClass: [''],
+        // readonly: true,
+        // readonly: {
+        //   value: false,
+        //   condition: [
+        //     editFormPermissions.brigadir,
+        //     editFormPermissions.manager[1],
+        //     editFormPermissions.rukFIlCUPDirector.denied,
+        //     // editFormPermissions.DBA.access,
+        //     editFormPermissions.OBDandOKK.denied,
+        //   ],
+        // },
+      }),
+    ],
+    actions: [
+      stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'textDefault',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
+      stringAction({
+        text: 'Сохранить',
+        type: 'submit',
+        module: 'form/putForm',
+        name: 'saveForm',
+        url: 'update/personal/direction',
+        action: 'saveForm',
+        color: 'primary',
+        // handlingResponse: {
+        //   1: {
+        //     text: 'Объект привязан',
+        //     color: 'success',
+        //   },
+        //   2: {
+        //     text: 'Сотрудник удален',
+        //     color: 'error',
+        //   },
+        //   3: {
+        //     text: '',
+        //   },
+        // },
+      }),
+    ],
+  },
 ]
 
 export const config = {
@@ -4132,19 +4202,40 @@ export const config = {
                   },
                 ],
               },
-              isShow: {
-                value: true,
+              action: {
+                type: 'changeUrl',
+                target: 'id',
+                url: 'personal/bind',
+              },
+            },
+            {
+              icon: 'mdi-plus',
+              label: 'Добавить направ-ие',
+              // isShow: {
+              //   condition: [
+              //     {
+              //       direction_id: [1, 6],
+              //       type: true,
+              //     },
+              //   ],
+              // },
+              readonly: {
+                value: false,
                 condition: [
                   {
-                    permissions: [16, 19],
-                    type: false,
+                    is_personal_vertical: [true],
+                    type: true,
+                  },
+                  {
+                    permission_id: [13],
+                    type: true,
                   },
                 ],
               },
               action: {
                 type: 'changeUrl',
                 target: 'id',
-                url: 'personal/bind',
+                url: 'personal/direction',
               },
             },
           ],
@@ -4396,16 +4487,37 @@ export const config = {
                 url: 'personal/bind',
               },
             },
-          ],
-          isShow: {
-            value: true,
-            condition: [
-              {
-                permissions: [16, 19],
-                type: false,
+            {
+              icon: 'mdi-plus',
+              label: 'Добавить направ-ие',
+              // isShow: {
+              //   condition: [
+              //     {
+              //       direction_id: [1, 6],
+              //       type: true,
+              //     },
+              //   ],
+              // },
+              readonly: {
+                value: false,
+                condition: [
+                  {
+                    is_personal_vertical: [true],
+                    type: true,
+                  },
+                  {
+                    permission_id: [13],
+                    type: true,
+                  },
+                ],
               },
-            ],
-          },
+              action: {
+                type: 'changeUrl',
+                target: 'id',
+                url: 'personal/direction',
+              },
+            },
+          ],
         },
       },
       type: TableDefault,
@@ -5531,15 +5643,6 @@ export const config = {
           },
         ],
         activeTab: null,
-      },
-      isShow: {
-        value: true,
-        condition: [
-          {
-            permissions: [16, 19],
-            type: false,
-          },
-        ],
       },
       filters: filtersKey,
     },
