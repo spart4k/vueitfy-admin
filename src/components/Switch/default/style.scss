@@ -1,0 +1,18 @@
+.switch {
+  &-wrap {
+    display: flex;
+    padding: 3px;
+    border-radius: 12px;
+    background-color: #d6dbe2;
+  }
+  &-tab {
+    padding: 6px 10px;
+    border-radius: 9px;
+    &--active {
+      background-color: #ffffff;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

@@ -6,18 +6,20 @@
         class="v-table-panel"
       >
         <div class="v-table-panel__actions flex-wrap">
-          <SwitchDefault />
-          <v-btn
+          <div class=""></div>
+          <div
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
-            @click="panelHandler(button)"
-            small
+            class=""
           >
-            <v-icon v-if="button.type === 'icon'" small class="mr-2">
-              {{ button.url }}
-            </v-icon>
-            <p v-if="true">{{ button.label }}</p>
-          </v-btn>
+            <SwitchDefault v-if="button.type === 'switch'" />
+            <v-btn v-else-if="!button.type" @click="panelHandler(button)" small>
+              <v-icon v-if="button.type === 'icon'" small class="mr-2">
+                {{ button.url }}
+              </v-icon>
+              <p v-if="true">{{ button.label }}</p>
+            </v-btn>
+          </div>
         </div>
 
         <div class="v-table-panel__search">
