@@ -70,6 +70,7 @@ const table = {
       row: {},
     })
     const rowCount = [5, 10, 15, 20, 25, 30]
+    const availibleTitlesForSortIcons = ['ФИО', 'Объект', 'Должность']
     const contextmenu = ref({
       isShow: false,
       x: null,
@@ -943,6 +944,7 @@ const table = {
       currentDate,
       dropzone,
       acceptData,
+      availibleTitlesForSortIcons,
       // METHODS
       wrapingRow,
       openChildRow,
