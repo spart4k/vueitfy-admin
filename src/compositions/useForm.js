@@ -800,13 +800,14 @@ export default function ({
           const query = (target) => {
             target.filter.forEach((el) => {
               if (!formData[el.field] && !el.source) return
-              if (el.source)
+              if (el.source) {
+                const source = eval(el.source)
                 filter.push({
                   alias: el.alias ?? el.field,
                   type: el.type,
-                  value: el.source ? eval(el.source) : formData[el.field],
+                  value: el.source ? source[el.field] : formData[el.field],
                 })
-              else {
+              } else {
                 filter.push({
                   alias: el.alias ?? el.field,
                   type: el.type,
