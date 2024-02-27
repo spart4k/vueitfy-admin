@@ -3038,7 +3038,7 @@ export const defaultForm = [
     ],
     alias: 'personal',
     active: false,
-    fields: [],
+    fields: fieldsBaseDefaulrForm,
     actions: [
       stringAction({
         text: 'Закрыть',
@@ -4075,6 +4075,9 @@ export const defaultForm = [
             type: 'num',
           },
         ],
+        emptyWarning: {
+          text: 'Все доступные направления добавлены',
+        },
       },
       // 'user_keys',
       // 'habitation_id',

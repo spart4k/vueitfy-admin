@@ -1293,8 +1293,18 @@ export default function ({
         const field = form?.fields.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
+        const listObject = form?.lists?.find((el) => {
+          return el.alias ? el.alias === keyList : el.name === keyList
+        })
         if (field) {
           field.hideItems = lists.data[keyList]
+          if (!lists.data[keyList].length && listObject.emptyWarning) {
+            store.commit('notifies/showMessage', {
+              color: 'warning',
+              content: listObject.emptyWarning.text,
+              // timeout: 3000,
+            })
+          }
           if (field.hiding) {
             if (field.hiding.conditions) {
               const condition = field.hiding.conditions.find(
