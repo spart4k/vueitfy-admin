@@ -59,7 +59,7 @@ export default {
 
         return el.permissions.includes(permission.value)
       }
-      return props.options.actions.actions.filter((action) => {
+      return props.options?.actions?.actions?.filter((action) => {
         if (!action.isShow) return action
         else {
           return action.isShow.condition.some((el) => {
