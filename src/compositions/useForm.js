@@ -56,7 +56,7 @@ export default function ({
   const computedFormData = computed(() => formData)
 
   let startFormData = formData
-  const tabFields = form.fields
+  const tabFields = form?.fields
   const validations = () => {
     const formFields = {}
     if (form) {
@@ -82,6 +82,18 @@ export default function ({
   }
 
   let $v = useVuelidate(validations(), computedFormData.value)
+
+  const getAlias = (keyList) => {
+    console.log(keyList, Object.values(form?.fields))
+    const field = Object.values(form?.fields).find((el) =>
+      el.alias ? el.alias === keyList : el.name === keyList
+    )
+    console.log(field && field?.alias ? field.alias : field?.name)
+    return field && field.name
+    // return
+    // console.log(field)
+    // return el.alias ? el.alias === keyList : el.name === keyList
+  }
 
   const rebuildFormData = () => {
     // Object.assign(
@@ -724,7 +736,9 @@ export default function ({
       field.loading = true
       const lists = await makeRequestList(listData)
       for (let keyList in lists.data) {
-        const field = tabFields[keyList]
+        console.log(tabFields[getAlias(keyList)])
+        const field = tabFields[getAlias(keyList)]
+        console.log(field, 'getFIELD')
         // const field = form?.fields.find((el) =>
         //   el.alias ? el.alias === keyList : el.name === keyList
         // )
@@ -1048,7 +1062,7 @@ export default function ({
   }
 
   const loadAutocompletes = async () => {
-    const fields = form?.fields
+    const fields = Object.keys(form?.fields)
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
@@ -1102,9 +1116,10 @@ export default function ({
 
   const putSelectItems = (lists) => {
     for (let keyList in lists.data) {
-      const field = form?.fields.find((el) =>
-        el.alias ? el.alias === keyList : el.name === keyList
-      )
+      // const field = form?.fields.find((el) =>
+      //   el.alias ? el.alias === keyList : el.name === keyList
+      // )
+      const field = form.fields[keyList]
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1299,9 +1314,14 @@ export default function ({
       })
       lists = await makeRequestList(listQuery)
       for (let keyList in lists.data) {
-        const field = form?.fields.find((el) => {
-          return el.alias ? el.alias === keyList : el.name === keyList
-        })
+        // const field = form.fields[keyList]
+        console.log(tabFields[getAlias(keyList)], 'getFIELD')
+        const field = tabFields[getAlias(keyList)]
+        console.log(field)
+        console.log(field)
+        // const field = form?.fields.find((el) => {
+        //   return el.alias ? el.alias === keyList : el.name === keyList
+        // })
         if (field) {
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
