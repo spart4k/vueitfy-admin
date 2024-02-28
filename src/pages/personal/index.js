@@ -2662,7 +2662,7 @@ export const fieldsBaseDefaulrForm = [
       sm: 6,
     },
     bootstrapClass: [''],
-    //validations: { required },
+    validations: { required },
     //isShow: false,
     readonly: {
       value: false,
