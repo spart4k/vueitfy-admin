@@ -104,6 +104,7 @@ export default {
         store.dispatch('taskModule/updateFileData', {
           data: {
             id,
+            doc_id: props.document.doc_id,
             del: 1,
           },
         }),
