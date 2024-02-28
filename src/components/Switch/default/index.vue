@@ -2,10 +2,17 @@
   <div class="">
     <div class="switch">
       <div class="switch-wrap">
-        <div class="switch-tab" :class="true ? 'switch-tab--active' : ''">
-          День
+        <div
+          v-for="(tab, tabIndex) in button.values"
+          :key="tabIndex"
+          class="switch-tab"
+          :class="proxyValue === tab.value ? 'switch-tab--active' : ''"
+          @click="handlerSwitch(tab)"
+        >
+          {{ tab.label }}
         </div>
-        <div class="switch-tab">Ночь</div>
+        <div class="switch-thumb"></div>
+        <!-- <div class="switch-tab">{{ tab.label }}</div> -->
       </div>
     </div>
   </div>
