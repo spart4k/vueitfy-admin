@@ -12,7 +12,11 @@
             :key="indexButton"
             class=""
           >
-            <SwitchDefault :button="button" v-if="button.type === 'switch'" />
+            <SwitchDefault
+              @getItems="changeHeaders"
+              :button="button"
+              v-if="button.type === 'switch'"
+            />
             <v-btn v-else-if="!button.type" @click="panelHandler(button)" small>
               <v-icon v-if="button.type === 'icon'" small class="mr-2">
                 {{ button.url }}
@@ -97,7 +101,7 @@
                         :state="
                           paramsQuery.sorts.find(
                             (el) => el.field === head.value
-                          ).value
+                          )?.value
                         "
                       />
                     </div>

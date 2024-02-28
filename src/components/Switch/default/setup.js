@@ -18,7 +18,8 @@ export default {
     const proxyValue = toRef(props, 'value')
     const button = toRef(props, 'button')
     const handlerSwitch = (tab) => {
-      tab.action && tab.action()
+      tab.action && tab.action(tab)
+      button.value.refreshTable && emit('getItems')
       proxyValue.value = tab.value
     }
     onMounted(() => {

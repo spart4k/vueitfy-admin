@@ -395,6 +395,8 @@ const table = {
     }
     const initHeadParams = () => {
       const { head } = options
+      paramsQuery.value.sorts = []
+      paramsQuery.value.searchColumns = []
       head.forEach((el) => {
         if (el.sorts?.length) {
           paramsQuery.value.sorts.push({
@@ -816,7 +818,10 @@ const table = {
     const clickHandler = ({ action }) => {
       emit('closePopup', action.to)
     }
-
+    const changeHeaders = async () => {
+      initHeadParams()
+      await getItems()
+    }
     return {
       // DATA
       headerOptions,
@@ -873,6 +878,7 @@ const table = {
       availablePanelBtn,
       clickHandler,
       insertStyle,
+      changeHeaders,
     }
   },
 }
