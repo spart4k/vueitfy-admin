@@ -278,6 +278,7 @@ $tableFooterHeight: 100px;
       }
       &__actions {
         display: flex;
+        align-items: center;
         flex-wrap: wrap;
         > button,
         div {
