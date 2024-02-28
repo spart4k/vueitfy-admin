@@ -223,7 +223,7 @@ const table = {
       //}
       //
     }
-
+    const contextMenuRef = ref(null)
     const openContext = ($event, row) => {
       //return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
@@ -246,6 +246,11 @@ const table = {
         direction = 'right'
         clientX = window.innerWidth - $event.clientX
       }
+      console.log(contextMenuRef.value)
+      // if (!contextMenuRef.value.availableContext.length) {
+      //   return
+      // }
+
       setTimeout(
         () => {
           contextmenu.value.isShow = true
@@ -891,6 +896,7 @@ const table = {
       availablePanelBtn,
       clickHandler,
       insertStyle,
+      contextMenuRef,
     }
   },
 }
