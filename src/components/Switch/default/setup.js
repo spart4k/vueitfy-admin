@@ -33,6 +33,9 @@ export default {
     const widthThumb = computed(
       () => thumbs.value[proxyValue.value - 1]?.offsetWidth
     )
+    const leftThumb = computed(() =>
+      proxyValue.value === 1 ? 0 : thumbs.value[0]?.offsetWidth
+    )
     watch(
       () => proxyValue.value,
       (newVal) => {
@@ -45,6 +48,7 @@ export default {
       button,
       thumbs,
       widthThumb,
+      leftThumb,
     }
   },
 }

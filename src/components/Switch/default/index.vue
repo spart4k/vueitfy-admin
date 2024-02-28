@@ -1,7 +1,6 @@
 <template>
   <div class="">
     <div class="switch">
-      {{ widthThumb }}
       <div class="switch-wrap">
         <div
           v-for="(tab, tabIndex) in button.values"
@@ -13,7 +12,13 @@
         >
           {{ tab.label }}
         </div>
-        <div class="switch-thumb"></div>
+        <div
+          :style="{
+            width: widthThumb + 'px',
+            transform: `translateX(${leftThumb}px)`,
+          }"
+          class="switch-thumb"
+        ></div>
         <!-- <div class="switch-tab">{{ tab.label }}</div> -->
       </div>
     </div>
