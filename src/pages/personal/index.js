@@ -3262,6 +3262,7 @@ export const defaultForm = [
         action: 'saveForm',
         color: 'primary',
         handlingResponse: {
+          result: 'code',
           1: {
             text: 'Объект привязан',
             color: 'success',
@@ -4139,23 +4140,90 @@ export const defaultForm = [
         url: 'update/personal/direction',
         action: 'saveForm',
         color: 'primary',
-        // handlingResponse: {
-        //   1: {
-        //     text: 'Объект привязан',
-        //     color: 'success',
-        //   },
-        //   2: {
-        //     text: 'Сотрудник удален',
-        //     color: 'error',
-        //   },
-        //   3: {
-        //     text: '',
-        //   },
-        // },
+        handlingResponse: {
+          result: 'code',
+          1: {
+            text: 'Направление добавлено',
+            color: 'success',
+          },
+          2: {
+            text: 'Направление не добавлено',
+            color: 'error',
+          },
+          3: {
+            text: 'Направление уже добавлено',
+            color: 'warning',
+          },
+        },
       }),
     ],
   },
 ]
+
+const contextMenuPersonal = {
+  actions: [
+    {
+      icon: 'mdi-plus',
+      label: 'Привязать объект',
+      isShow: {
+        condition: [
+          {
+            direction_id: [1, 6],
+            type: true,
+          },
+        ],
+      },
+      readonly: {
+        value: true,
+        condition: [
+          {
+            is_personal_vertical: [true],
+            type: true,
+          },
+          {
+            permission_id: [4],
+            type: false,
+          },
+        ],
+      },
+      action: {
+        type: 'changeUrl',
+        target: 'id',
+        url: 'personal/bind',
+      },
+    },
+    {
+      icon: 'mdi-plus',
+      label: 'Добавить направ-ие',
+      // isShow: {
+      //   condition: [
+      //     {
+      //       direction_id: [1, 6],
+      //       type: true,
+      //     },
+      //   ],
+      // },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            is_personal_vertical: [true],
+            type: true,
+          },
+          {
+            permission_id: [13],
+            type: true,
+          },
+        ],
+      },
+      action: {
+        type: 'changeUrl',
+        target: 'id',
+        url: 'personal/direction',
+      },
+    },
+  ],
+}
 
 export const config = {
   title: 'Персонал',
@@ -4171,70 +4239,7 @@ export const config = {
         headerFixed: true,
         url: 'get/pagination/personal_active',
         title: 'Основные',
-        contextMenu: {
-          actions: [
-            {
-              icon: 'mdi-plus',
-              label: 'Привязать объект',
-              isShow: {
-                condition: [
-                  {
-                    direction_id: [1, 6],
-                    type: true,
-                  },
-                ],
-              },
-              readonly: {
-                value: true,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [4],
-                    type: false,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/bind',
-              },
-            },
-            {
-              icon: 'mdi-plus',
-              label: 'Добавить направ-ие',
-              // isShow: {
-              //   condition: [
-              //     {
-              //       direction_id: [1, 6],
-              //       type: true,
-              //     },
-              //   ],
-              // },
-              readonly: {
-                value: false,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [13],
-                    type: true,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/direction',
-              },
-            },
-          ],
-        },
+        contextMenu: contextMenuPersonal,
       },
       type: TableDefault,
       panel: {
@@ -4450,70 +4455,7 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_passive',
         title: 'Пассив',
-        contextMenu: {
-          actions: [
-            {
-              icon: 'mdi-plus',
-              label: 'Привязать объект',
-              isShow: {
-                condition: [
-                  {
-                    direction_id: [1, 6],
-                    type: true,
-                  },
-                ],
-              },
-              readonly: {
-                value: true,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [4],
-                    type: false,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/bind',
-              },
-            },
-            {
-              icon: 'mdi-plus',
-              label: 'Добавить направ-ие',
-              // isShow: {
-              //   condition: [
-              //     {
-              //       direction_id: [1, 6],
-              //       type: true,
-              //     },
-              //   ],
-              // },
-              readonly: {
-                value: false,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [13],
-                    type: true,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/direction',
-              },
-            },
-          ],
-        },
+        contextMenu: contextMenuPersonal,
       },
       type: TableDefault,
       panel: {
