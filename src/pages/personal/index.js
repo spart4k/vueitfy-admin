@@ -3339,14 +3339,14 @@ export const defaultForm = [
     active: false,
     config: debetorConfig,
   },
-  {
-    path: 'edit',
-    id: 9,
-    name: 'Переплаты',
-    type: TableDefault,
-    active: false,
-    config: holdPayments,
-  },
+  // {
+  //   path: 'edit',
+  //   id: 9,
+  //   name: 'Переплаты',
+  //   type: TableDefault,
+  //   active: false,
+  //   config: holdPayments,
+  // },
   {
     id: 7,
     path: 'load',

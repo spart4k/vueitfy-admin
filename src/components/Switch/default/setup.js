@@ -1,4 +1,4 @@
-import Vue, { onMounted, toRef, watch } from 'vue'
+import Vue, { ref, onMounted, computed, toRef, watch } from 'vue'
 import _ from 'lodash'
 
 export default {
@@ -22,6 +22,7 @@ export default {
       button.value.refreshTable && emit('getItems')
       proxyValue.value = tab.value
     }
+    const thumbs = ref([])
     onMounted(() => {
       if (props.value === undefined) {
         proxyValue.value = button.value.values[0].value
@@ -29,6 +30,9 @@ export default {
         console.log(proxyValue.value)
       }
     })
+    const widthThumb = computed(
+      () => thumbs.value[proxyValue.value - 1]?.offsetWidth
+    )
     watch(
       () => proxyValue.value,
       (newVal) => {
@@ -39,6 +43,8 @@ export default {
       handlerSwitch,
       proxyValue,
       button,
+      thumbs,
+      widthThumb,
     }
   },
 }

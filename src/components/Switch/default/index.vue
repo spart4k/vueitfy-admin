@@ -1,6 +1,7 @@
 <template>
   <div class="">
     <div class="switch">
+      {{ widthThumb }}
       <div class="switch-wrap">
         <div
           v-for="(tab, tabIndex) in button.values"
@@ -8,6 +9,7 @@
           class="switch-tab"
           :class="proxyValue === tab.value ? 'switch-tab--active' : ''"
           @click="handlerSwitch(tab)"
+          ref="thumbs"
         >
           {{ tab.label }}
         </div>
