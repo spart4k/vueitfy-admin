@@ -55,7 +55,7 @@ const config = {
           isShow: false,
         },
       ],
-      alias: 'p.id',
+      alias: 't.id',
       isShow: true,
       width: '40',
       value: 'id',
@@ -82,7 +82,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'ps.status',
+      alias: 'tt.name',
       value: 'task_type',
       search: {
         field: '',
@@ -108,7 +108,7 @@ const config = {
       isShow: true,
       width: '150',
       value: 'to_fio',
-      alias: 'p.telefon',
+      alias: 'sat.name',
       search: {
         field: '',
         isShow: true,
@@ -132,7 +132,7 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      alias: 'p.name',
+      alias: 'saf.name',
       value: 'from_fio',
       search: {
         field: '',
