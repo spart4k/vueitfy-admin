@@ -493,16 +493,17 @@ const debetorConfig = {
         class: ['v-table-button--custom'],
         url: '$IconEdit',
         type: 'switch',
-        function: consolePanel,
         backgroundColor: '#ffffff',
         values: [
           {
-            label: 'День',
+            label: 'Задолженность',
             value: 1,
+            action: consolePanel,
           },
           {
-            label: 'День',
+            label: 'Переплата',
             value: 2,
+            action: consolePanel,
           },
         ],
       },
