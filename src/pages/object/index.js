@@ -3101,6 +3101,7 @@ const config = {
                 action: 'createForm',
                 color: 'primary',
                 handlingResponse: {
+                  result: 'code',
                   1: {
                     text: 'Объект %name% успешно создан',
                     color: 'success',
@@ -3760,6 +3761,7 @@ const config = {
                 action: 'createForm',
                 color: 'primary',
                 handlingResponse: {
+                  result: 'code',
                   1: {
                     text: 'Объект успешно назначен',
                     color: 'success',
