@@ -16,8 +16,9 @@
               @getItems="changeHeaders"
               :button="button"
               v-if="button.type === 'switch'"
+              v-model="button.value"
             />
-            <v-btn v-else-if="!button.type" @click="panelHandler(button)" small>
+            <v-btn v-else @click="panelHandler(button)" small>
               <v-icon v-if="button.type === 'icon'" small class="mr-2">
                 {{ button.url }}
               </v-icon>
