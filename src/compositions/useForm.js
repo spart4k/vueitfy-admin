@@ -90,9 +90,6 @@ export default function ({
     )
     console.log(field && field?.alias ? field.alias : field?.name)
     return field && field.name
-    // return
-    // console.log(field)
-    // return el.alias ? el.alias === keyList : el.name === keyList
   }
 
   const rebuildFormData = () => {
@@ -1062,7 +1059,7 @@ export default function ({
   }
 
   const loadAutocompletes = async () => {
-    const fields = Object.keys(form?.fields)
+    const fields = Object.values(form?.fields)
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
@@ -1090,7 +1087,7 @@ export default function ({
           })
         })
       }
-      const data = await getList(url, {
+      const data = getList(url, {
         countRows: 10,
         currentPage: 1,
         searchValue: '',
