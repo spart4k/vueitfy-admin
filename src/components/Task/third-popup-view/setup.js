@@ -33,7 +33,6 @@ const ThirdPopupView = defineComponent({
         store,
       },
     }
-
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -48,7 +47,8 @@ const ThirdPopupView = defineComponent({
     const isShowBtnArray = ref([])
     const isFormValid = ref(false)
     const isImgPopupOpen = ref(false)
-    // let file = ref()
+    const confirmDocs = ref([])
+    const editedDocs = ref({})
     let imagePreview = ref([])
     let imageShowPopup = ref('')
     let comment = ref('')
@@ -89,26 +89,28 @@ const ThirdPopupView = defineComponent({
         1000
       )
     }
-    const { makeRequest: doneRequest } = useRequest({
-      context,
-      request: () => {
-        const docs_id = JSON.parse(data.task.dop_data).docs_id
-        return store.dispatch('taskModule/setPartTask', {
-          status: 2,
-          data: {
-            process_id: data.task.process_id,
-            account_id: account_id.value,
-            task_id: data.task.id,
-            parent_action: data.task.parent_action,
-            personal_id: data.entity.id,
-            docs_id,
-            comment: comment.value,
-          },
-        })
-      },
-      successMessage: 'Файл успешно загружен',
-    })
+
     let sendDoneTask = async () => {
+      const { makeRequest: doneRequest } = useRequest({
+        context,
+        request: () => {
+          const docs_id = JSON.parse(data.task.dop_data).docs_id
+          return store.dispatch('taskModule/setPartTask', {
+            status: 2,
+            data: {
+              process_id: data.task.process_id,
+              account_id: account_id.value,
+              task_id: data.task.id,
+              parent_action: data.task.parent_action,
+              personal_id: data.entity.id,
+              docs_id: docs_id,
+              comment: comment.value,
+            },
+          })
+        },
+        successMessage: 'Файл успешно загружен',
+      })
+
       const { success } = await doneRequest()
       if (success) {
         ctx.emit('closePopup')
@@ -117,45 +119,22 @@ const ThirdPopupView = defineComponent({
     }
 
     let isLoadImage = ref(false)
-    const handleFileUpload = async (e, indexForPhoto) => {
-      accForSend.value = accForSend.value - 1
-      isLoadImage.value = true
+
+    function uploadChangedFile(e, indexForPhoto) {
       let file = e.target.files[0]
-
-      let reader = new FileReader()
-      reader.addEventListener(
-        'load',
-        async function () {
-          Vue.set(imagePreview.value, indexForPhoto, reader.result)
-          Vue.set(isShowBtnArray.value, indexForPhoto, false)
-
-          const dataFrom = await makeRequest()
-          const newVal = await newRequest()
-        }.bind(this),
-        false
-      )
-
-      reader.readAsDataURL(file)
+      let fileReader = new FileReader()
       let form_data = new FormData()
-      // file/save/personal_doc/personal_doc_1231412342134.jpg
-
-      // Объект для отправки данных в самом конце формы
-
-      // accaunt_id по дефолту полставить 25
-      // $.ajax('/set/data/personal_doc', {
-      //  method: "POST",
-      //    data: {id: $doc['id'], path_doc: '/personal_doc/имя файла'
-      //    success: function() {
-      //     }
-      //   })
-      form_data.append('file', file)
       let fileExt = file.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-      // let dataFromDopData = JSO
-      const { makeRequest } = useRequest({
+
+      fileReader.readAsDataURL(file)
+      form_data.append('file', file)
+
+      const { makeRequest: loadImage } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/loadImage', {
+            // id: data.data.docs[0].id,
             id: 1,
             folder: 'personal_doc',
             fileName: fileName,
@@ -163,35 +142,45 @@ const ThirdPopupView = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      const { makeRequest: newRequest } = useRequest({
+
+      const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            data: { id: 1, path_doc: `/personal_doc/${fileName}` },
+            data: {
+              id: data.data.docs[indexForPhoto].id,
+              path_doc: `/personal_doc/${fileName}`,
+            },
           }),
       })
+
+      fileReader.onload = async function () {
+        Vue.set(imagePreview.value, indexForPhoto, fileReader.result)
+        Vue.set(isShowBtnArray.value, indexForPhoto, false)
+
+        await updateFileData()
+        await loadImage()
+      }
     }
 
-    const confirmDocs = ref([])
-    const editedDocs = ref({})
     return {
       infoObj,
       confirmDocs,
       editedDocs,
-      handleFileUpload,
       imagePreview,
-      addToDenied,
       isShowBtnArray,
       textInfo,
       isFormValid,
       isImgPopupOpen,
-      setImageForPopup,
       imageShowPopup,
       comment,
-      sendDoneTask,
       watchForComment,
       isLoadImage,
       account_id,
+      uploadChangedFile,
+      addToDenied,
+      setImageForPopup,
+      sendDoneTask,
     }
   },
 })
