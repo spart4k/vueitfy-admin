@@ -57,7 +57,7 @@ export default {
     }
     const loading = ref(true)
     const { alias } = props.tab
-    console.log(route.params)
+
     const isEdit = computed(() => {
       if (props.tab.routeParam) {
         return route.params[props.tab.routeParam] ? 'edit' : 'add'
@@ -82,7 +82,7 @@ export default {
         } else {
           return
         }
-        console.log(tabFields[key], 'FIELD-EL')
+        // console.log(tabFields[key], 'FIELD-EL')
         Vue.set(fields, tabFields[key].name, {})
         Vue.set(fields[tabFields[key].name], 'validations', validations)
         Vue.set(fields[tabFields[key].name], 'default', tabFields[key].value)
@@ -112,7 +112,6 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('changeForm3')
         let routeParam
         if (params.action.useRouteParam) {
           routeParam = params.action.useRouteParam
@@ -129,7 +128,6 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('changeForm2')
         let id
         if (props.tab.routeParam) {
           id = route.params[props.tab.routeParam]
@@ -146,8 +144,6 @@ export default {
       context,
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
-        console.log('changeForm1', params)
-        console.log(formData, params)
         return store.dispatch(params.module, {
           url: params.url,
           body: {
@@ -161,7 +157,6 @@ export default {
       context,
       successMessage: 'Удалено!',
       request(params) {
-        console.log('params', params)
         const req = store.dispatch(params.module, {
           url: params.url,
           id: route.params.id,
@@ -220,8 +215,15 @@ export default {
     })
 
     onMounted(async () => {
+      var start = performance.now()
+
       await getData()
-      console.log(props.tab.routeParam)
+
+      var end = performance.now()
+
+      var time = end - start
+
+      console.log('Время выполнения = ' + time)
     })
 
     return {

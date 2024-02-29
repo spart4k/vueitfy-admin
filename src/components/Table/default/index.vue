@@ -6,17 +6,25 @@
         class="v-table-panel"
       >
         <div class="v-table-panel__actions flex-wrap">
-          <v-btn
+          <div class=""></div>
+          <div
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
-            @click="panelHandler(button)"
-            small
+            class=""
           >
-            <v-icon v-if="button.type === 'icon'" small class="mr-2">
-              {{ button.url }}
-            </v-icon>
-            <p v-if="true">{{ button.label }}</p>
-          </v-btn>
+            <SwitchDefault
+              @getItems="changeHeaders"
+              :button="button"
+              v-if="button.type === 'switch'"
+              v-model="button.value"
+            />
+            <v-btn v-else @click="panelHandler(button)" small>
+              <v-icon v-if="button.type === 'icon'" small class="mr-2">
+                {{ button.url }}
+              </v-icon>
+              <p v-if="true">{{ button.label }}</p>
+            </v-btn>
+          </div>
         </div>
 
         <div class="v-table-panel__search">
@@ -83,7 +91,10 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
-                    <div v-on:click="sortRow(head)">
+                    <div
+                      class="v-table-header-row-cell-wrap__sort-sort"
+                      v-on:click="sortRow(head)"
+                    >
                       <vIconSort
                         v-if="
                           head.sorts &&
@@ -94,7 +105,7 @@
                         :state="
                           paramsQuery.sorts.find(
                             (el) => el.field === head.value
-                          ).value
+                          )?.value
                         "
                       />
                     </div>
@@ -370,16 +381,18 @@
       v-if="options.data.rows && options.data.rows.length"
       class="v-table-footer pl-4"
     >
-      <div v-if="options.data.footer.length" class="v-table-footer-info">
+      <div class="v-table-footer-info">
         <div class="v-table-footer-total">
           Итого: {{ options.data.totalRows }}
-          <span
-            v-for="footerInfo in options.data.footer"
-            v-show="footerInfo.value"
-            :key="footerInfo.name"
-          >
-            {{ footerInfo.name }}: {{ footerInfo.value }}
-          </span>
+          <div v-if="options.data.footer.length" class="">
+            <span
+              v-for="footerInfo in options.data.footer"
+              v-show="footerInfo.value"
+              :key="footerInfo.name"
+            >
+              {{ footerInfo.name }}: {{ footerInfo.value }}
+            </span>
+          </div>
         </div>
       </div>
       <div class="v-table-footer-pagination">
@@ -421,7 +434,11 @@
         {{ action.text }}
       </v-btn>
     </v-row>
-    <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
+    <v-contextmenu
+      @handlerContext="handlerContext"
+      ref="contextMenuRef"
+      :options="contextmenu"
+    />
     <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
       <keep-alive>
         <TableFilter

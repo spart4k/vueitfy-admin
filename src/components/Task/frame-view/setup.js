@@ -1,8 +1,7 @@
 import { defineComponent, onMounted, ref, onUnmounted } from 'vue'
-import Form1 from '@/components/Task/form1/index.vue'
 import SecondPopupView from '../second-popup-view/index.vue'
 import ThirdPopupView from '@/components/Task/third-popup-view/index.vue'
-import Form15 from '@/components/Task/form15/index.vue'
+import Form1 from '@/components/Task/form1/index.vue'
 import Form2 from '@/components/Task/form2/index.vue'
 import Form3 from '@/components/Task/form3/index.vue'
 import Form4 from '@/components/Task/form4/index.vue'
@@ -11,16 +10,21 @@ import Form6 from '@/components/Task/form6/index.vue'
 import Form7 from '@/components/Task/form7/index.vue'
 import Form8 from '@/components/Task/form8/index.vue'
 import Form9 from '@/components/Task/form9/index.vue'
+import Form10 from '@/components/Task/form10/index.vue'
+import Form11 from '@/components/Task/form11/index.vue'
 import Form13 from '@/components/Task/form13/index.vue'
 import Form14 from '@/components/Task/form14/index.vue'
-import Form23 from '@/components/Task/form23/index.vue'
-import Form20 from '@/components/Task/form20/index.vue'
-import Form21 from '@/components/Task/form21/index.vue'
-import Form27 from '@/components/Task/form27/index.vue'
-import Form28 from '@/components/Task/form28/index.vue'
+import Form15 from '@/components/Task/form15/index.vue'
+import Form16 from '@/components/Task/form16/index.vue'
 import Form17 from '@/components/Task/form17/index.vue'
 import Form18 from '@/components/Task/form18/index.vue'
+import Form20 from '@/components/Task/form20/index.vue'
+import Form21 from '@/components/Task/form21/index.vue'
+import Form23 from '@/components/Task/form23/index.vue'
 import Form25 from '@/components/Task/form25/index.vue'
+import Form27 from '@/components/Task/form27/index.vue'
+import Form28 from '@/components/Task/form28/index.vue'
+import Form29 from '@/components/Task/form29/index.vue'
 import Form31 from '@/components/Task/form31/index.vue'
 import moment from 'moment'
 import store from '@/store'
@@ -47,7 +51,7 @@ const taskNameSpr = {
   16: 'Внесение назначения в PVP-портал',
   17: 'Прикладывание/корректировка выработки',
   18: 'Проверка выработки',
-  19: 'Внесение сотрудника в PVP-портал ',
+  19: 'Внесение сотрудника в PVP-портал',
   20: 'Внесение',
   21: 'Проверка внесенных данных',
   22: 'Авторизация в боте',
@@ -76,16 +80,21 @@ const task = defineComponent({
     Form7,
     Form8,
     Form9,
+    Form10,
+    Form11,
     Form13,
     Form14,
     Form15,
+    Form16,
     Form17,
     Form18,
     Form20,
     Form21,
     Form23,
+    Form25,
     Form27,
     Form28,
+    Form29,
     Form31,
   },
 
@@ -134,11 +143,9 @@ const task = defineComponent({
     }
 
     const refreshData = async () => {
-      console.log('refreshData')
       if (countdownTimerIntervalId.value)
         clearInterval(countdownTimerIntervalId.value)
       await getData()
-      console.log('data', data.value)
     }
 
     const getData = async () => {

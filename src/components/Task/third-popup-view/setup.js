@@ -33,7 +33,6 @@ const ThirdPopupView = defineComponent({
         store,
       },
     }
-
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -48,27 +47,26 @@ const ThirdPopupView = defineComponent({
     const isShowBtnArray = ref([])
     const isFormValid = ref(false)
     const isImgPopupOpen = ref(false)
-    // let file = ref()
+    const confirmDocs = ref([])
+    const editedDocs = ref({})
     let imagePreview = ref([])
     let imageShowPopup = ref('')
     let comment = ref('')
 
     let accForSend = ref(0)
     let setImageForPopup = (index) => {
-      console.log(index)
       imageShowPopup.value = imagePreview.value[index]
     }
     // let sendFile
     data.data.docs.forEach((element, index) => {
       imagePreview.value.push(process.env.VUE_APP_STORE + element.path_doc)
-      console.log(index)
+
       isShowBtnArray.value.push(true)
     })
 
     let watchForComment = computed({
       get: () => comment.value,
       set: (val) => {
-        console.log(val)
         if (val && accForSend.value >= 0) {
           isFormValid.value = true
         } else {
@@ -81,7 +79,7 @@ const ThirdPopupView = defineComponent({
     const addToDenied = (index) => {
       Vue.set(isShowBtnArray.value, index, false)
       accForSend.value = 1 + accForSend.value
-      console.log(index)
+
       store.commit(
         'notifies/showMessage',
         {
@@ -91,74 +89,52 @@ const ThirdPopupView = defineComponent({
         1000
       )
     }
-    const { makeRequest: doneRequest } = useRequest({
-      context,
-      request: () => {
-        const docs_id = JSON.parse(data.task.dop_data).docs_id
-        return store.dispatch('taskModule/setPartTask', {
-          status: 2,
-          data: {
-            process_id: data.task.process_id,
-            account_id: account_id.value,
-            task_id: data.task.id,
-            parent_action: data.task.parent_action,
-            personal_id: data.entity.id,
-            docs_id,
-            comment: comment.value,
-          },
-        })
-      },
-      successMessage: 'Файл успешно загружен',
-    })
+
     let sendDoneTask = async () => {
+      const { makeRequest: doneRequest } = useRequest({
+        context,
+        request: () => {
+          const docs_id = JSON.parse(data.task.dop_data).docs_id
+          return store.dispatch('taskModule/setPartTask', {
+            status: 2,
+            data: {
+              process_id: data.task.process_id,
+              account_id: account_id.value,
+              task_id: data.task.id,
+              parent_action: data.task.parent_action,
+              personal_id: data.entity.id,
+              docs_id: docs_id,
+              comment: comment.value,
+            },
+          })
+        },
+        successMessage: 'Файл успешно загружен',
+      })
+
       const { success } = await doneRequest()
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
     }
-    console.log(imagePreview.value)
+
     let isLoadImage = ref(false)
-    const handleFileUpload = async (e, indexForPhoto) => {
-      accForSend.value = accForSend.value - 1
-      isLoadImage.value = true
+
+    function uploadChangedFile(e, indexForPhoto) {
       let file = e.target.files[0]
-      console.log(file)
-      let reader = new FileReader()
-      reader.addEventListener(
-        'load',
-        async function () {
-          Vue.set(imagePreview.value, indexForPhoto, reader.result)
-          Vue.set(isShowBtnArray.value, indexForPhoto, false)
-          console.log(imagePreview.value)
-          const dataFrom = await makeRequest()
-          const newVal = await newRequest()
-          console.log(dataFrom, newVal)
-        }.bind(this),
-        false
-      )
-
-      reader.readAsDataURL(file)
+      let fileReader = new FileReader()
       let form_data = new FormData()
-      // file/save/personal_doc/personal_doc_1231412342134.jpg
-
-      // Объект для отправки данных в самом конце формы
-
-      // accaunt_id по дефолту полставить 25
-      // $.ajax('/set/data/personal_doc', {
-      //  method: "POST",
-      //    data: {id: $doc['id'], path_doc: '/personal_doc/имя файла'
-      //    success: function() {
-      //     }
-      //   })
-      form_data.append('file', file)
       let fileExt = file.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-      // let dataFromDopData = JSO
-      const { makeRequest } = useRequest({
+
+      fileReader.readAsDataURL(file)
+      form_data.append('file', file)
+
+      const { makeRequest: loadImage } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/loadImage', {
+            // id: data.data.docs[0].id,
             id: 1,
             folder: 'personal_doc',
             fileName: fileName,
@@ -166,35 +142,45 @@ const ThirdPopupView = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      const { makeRequest: newRequest } = useRequest({
+
+      const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            data: { id: 1, path_doc: `/personal_doc/${fileName}` },
+            data: {
+              id: data.data.docs[indexForPhoto].id,
+              path_doc: `/personal_doc/${fileName}`,
+            },
           }),
       })
+
+      fileReader.onload = async function () {
+        Vue.set(imagePreview.value, indexForPhoto, fileReader.result)
+        Vue.set(isShowBtnArray.value, indexForPhoto, false)
+
+        await updateFileData()
+        await loadImage()
+      }
     }
 
-    const confirmDocs = ref([])
-    const editedDocs = ref({})
     return {
       infoObj,
       confirmDocs,
       editedDocs,
-      handleFileUpload,
       imagePreview,
-      addToDenied,
       isShowBtnArray,
       textInfo,
       isFormValid,
       isImgPopupOpen,
-      setImageForPopup,
       imageShowPopup,
       comment,
-      sendDoneTask,
       watchForComment,
       isLoadImage,
       account_id,
+      uploadChangedFile,
+      addToDenied,
+      setImageForPopup,
+      sendDoneTask,
     }
   },
 })

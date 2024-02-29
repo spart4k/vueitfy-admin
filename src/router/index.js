@@ -146,6 +146,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'payment/personal-edit',
+        path: ':personal_id',
+        meta: {
+          mode: ['edit-personal'],
+          label: 'Редактировать',
+        },
+        component: Detail,
+      },
+      {
         name: 'payment/:id',
         path: ':id',
         meta: {
@@ -220,15 +229,42 @@ const routes = [
             },
             component: Detail,
           },
-          {
-            name: 'personal-bind/:id',
-            path: '/personal/bind/:id',
-            meta: {
-              mode: ['bind'],
-              label: 'Привязать объект',
-            },
-            component: Detail,
-          },
+        ],
+      },
+      {
+        name: 'personal-direction/:id',
+        path: '/personal/direction/:id',
+        meta: {
+          mode: ['direction'],
+          label: 'Изменить направление',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal-bind/:id',
+        path: '/personal/bind/:id',
+        meta: {
+          mode: ['bind'],
+          label: 'Привязать объект',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal-add-key',
+        path: '/personal/add-key',
+        meta: {
+          mode: ['add-key'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
+        component: Detail,
+        children: [
           {
             name: 'personal/:id/new_card',
             path: '/personal/:id/new_card',
@@ -263,24 +299,6 @@ const routes = [
             },
             component: Detail,
           },
-        ],
-      },
-      {
-        name: 'personal-add-key',
-        path: '/personal/add-key',
-        meta: {
-          mode: ['add-key'],
-        },
-        component: Detail,
-      },
-      {
-        name: 'personal/:id',
-        path: ':id',
-        meta: {
-          mode: ['edit'],
-        },
-        component: Detail,
-        children: [
           {
             name: 'personal/:id/new',
             path: '/personal/:id/new',

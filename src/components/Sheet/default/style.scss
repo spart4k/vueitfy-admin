@@ -10,11 +10,13 @@
   transition: background-color .3s;
   &-body {
     //background-color: $table-background;
+    overflow-y: auto;
     background-color: var(--v-background-base);
     height: 100%;
     width: $sheetWidth;
     // padding: 10px;
     &-container {
+      overflow-y: auto;
       height: 100%;
     }
   }

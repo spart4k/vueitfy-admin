@@ -100,7 +100,7 @@ export default {
           controller = undefined
         }
       } catch (e) {
-        console.log(e)
+        return e
       }
     }
 

@@ -57,7 +57,7 @@ const Form7 = defineComponent({
     ).length
     const isHasOnlyCard =
       JSON.parse(props.data.task.dop_data).docs_id.length === 1 && isHasCard
-    console.log(JSON.parse(props.data.task.dop_data))
+
     const finalData = ref({})
     const isFormValid = ref(false)
     const bankCardId = ref(0)
@@ -94,7 +94,6 @@ const Form7 = defineComponent({
     )
 
     const changeDocs = (data) => {
-      console.log(data)
       finalData.value = isHasOsnDoc
         ? { 0: formObj.value.formData, ...data.correctedDocs }
         : data.correctedDocs
@@ -143,7 +142,7 @@ const Form7 = defineComponent({
           acc = { ...acc, ...value }
           return acc
         }, {})
-        console.log(data)
+
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
             ...data,
@@ -173,7 +172,7 @@ const Form7 = defineComponent({
           Date.parse(props.data.task.date_create) +
           props.data.task.time_execution * 1000 -
           Date.now()
-        console.log()
+
         let data = {}
         data = {
           process_id: task.process_id,
@@ -196,23 +195,21 @@ const Form7 = defineComponent({
 
     const sendData = async () => {
       if (isHasOsnDoc) {
-        console.log(setPersonalData)
         await setPersonalData()
       }
-      console.log(setPersonalDocData)
+
       // if ()
       if (!isHasOnlyCard) {
         await setPersonalDocData()
       }
-      console.log(setSaveDocs)
+
       await setSaveDocs()
-      console.log(changeStatusTask)
+
       const { success } = await changeStatusTask()
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
-      console.log(finalData.value)
     }
 
     watch(

@@ -1,7 +1,9 @@
 import filters from './filters'
-import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { required, hasDate, hasTime, numeric } from '@/utils/validation.js'
 import FormDefault from '@/components/Form/default/index.vue'
+// import { defaultForm as personalConfig } from '@/pages/personal/index'
 import { stringAction } from '@/utils/actions'
+import _ from 'lodash'
 import {
   dateField,
   stringField,
@@ -13,23 +15,29 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
-
+function searchInputing(field) {}
+// const changeActionTo = (array, key, oldPath, newPath) => {
+//   array.forEach((tab) => {
+//     if (tab.path === oldPath) {
+//       tab.path = newPath
+//     }
+//     if (tab.actions) {
+//       tab.actions.forEach((el) => {
+//         if (el.action === 'closePopup') {
+//           el.to = key
+//         }
+//       })
+//     }
+//   })
+// }
+// const personalConfigForms = _.cloneDeep(personalConfig)
+// changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
 const tableConsumptionConfig = {
   selector: '#mainTable',
   options: {
@@ -514,9 +522,11 @@ const config = {
           icon: 'mdi-account',
           label: 'Перейти',
           action: {
-            type: 'changeUrl',
+            type: 'toRoute',
             target: 'personal_id',
             url: 'personal',
+            routeName: 'payment/personal-edit',
+            routeParam: 'personal_id',
           },
         },
       ],
@@ -3596,7 +3606,7 @@ const config = {
             dependence: [
               {
                 //fields: ['statement_card', 'cardowner'],
-                fillField: ['fio', 'invoice'],
+                fillField: ['fio', 'invoice', 'bank_id'],
                 type: 'api',
                 module: 'personal/getCard',
                 field: 'personal_bank_id',
@@ -3807,11 +3817,12 @@ const config = {
             name: 'total',
             placeholder: '',
             class: [''],
+            requestType: 'number',
             position: {
               cols: 12,
               sm: 6,
             },
-            // validations: { required },
+            validations: { numeric },
             bootstrapClass: [''],
             round: true,
             readonly: {
@@ -3878,12 +3889,23 @@ const config = {
               cols: 12,
               sm: 4,
             },
-            objectData: undefined,
+            defaultObjectData: [
+              {
+                id: 11,
+                name: '--Наличные--',
+                bank_id: 11,
+                invoice: '',
+                fio: '',
+              },
+            ],
+            objectData: [],
             defaultItems: [
               {
                 id: 11,
                 name: '--Наличные--',
                 bank_id: 11,
+                invoice: '',
+                fio: '',
               },
             ],
             validations: { required },

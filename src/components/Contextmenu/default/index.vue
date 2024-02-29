@@ -18,12 +18,13 @@
 
         </div>-->
         <v-btn
-          v-for="(action, actionsIndex) in options.actions.actions"
+          v-for="(action, actionsIndex) in availableContext"
           :key="actionsIndex"
           class="v-contextmenu-item d-flex justify-start"
           block
           @click="handlerClick(action)"
           :disabled="isReadonly(action)"
+          v-if="!isShow(action)"
         >
           <v-icon left>
             {{ action.icon }}

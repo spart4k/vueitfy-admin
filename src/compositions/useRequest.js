@@ -52,7 +52,6 @@ export default function ({
       .then((responseData) =>
       {
         //if (successMessage) $notifier.showMessage({ content: unref(successMessage), color: 'success' })
-        console.log(data)
         if (successMessage && data?.action?.successMessage !== false) store.commit(
           'notifies/showMessage',
           {
@@ -64,7 +63,6 @@ export default function ({
         return responseData
       })
       .catch((err) => {
-        console.log(err)
         //if (withErrors) $notifier.showMessage({ content: processError(err).text, color: 'error' })
         if (withErrors) store.commit(
           'notifies/showMessage',

@@ -3,6 +3,7 @@ $borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 61px;
 $tableFooterHeight: 100px;
 
+
 .v {
   &-table {
     margin: 10px 10px 30px 10px;
@@ -31,6 +32,9 @@ $tableFooterHeight: 100px;
             &__sort {
               display: flex;
               align-items: center;
+              &-sort {
+                padding-top: 6px;
+              }
               &-icon {
                 // TODO: СТРЕЛКА
                 &.asc {
@@ -220,6 +224,7 @@ $tableFooterHeight: 100px;
         //display: flex;
         //flex-direction: column;
         border: 1px solid $borderColor;
+        min-height: 118px;
         border-top: 0;
         border-collapse: collapse;
         flex: 1;
@@ -273,6 +278,7 @@ $tableFooterHeight: 100px;
       }
       &__actions {
         display: flex;
+        align-items: center;
         flex-wrap: wrap;
         > button,
         div {

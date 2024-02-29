@@ -199,28 +199,27 @@ export default {
     const activeTab = ref(0)
     const loading = ref(false)
     const fields = () => {
-      // console.log('rebuild fields')
+      //
       const fields = {}
       listFields.value.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
-          // console.log('CONDITION TRUE', el.name)
+          //
           Vue.set(fields, el.name, {})
         } else return
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      // console.log(fields)
+      //
       return fields
     }
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
       request: (params) => {
-        console.log(formData, params)
         formData.service_id = dialogParams.value.id
         formData.object_id = +route.params.id
         params.formData.service_id = dialogParams.value.id
@@ -232,7 +231,7 @@ export default {
           },
         })
         dialog.value = false
-        console.log(tabRef.value, activeTab.value)
+
         tabRef.value[activeTab.value].items = []
         tabRef.value[activeTab.value].loading = true
         tabRef.value[activeTab.value].querySelections(true)
@@ -245,8 +244,6 @@ export default {
     watch(
       () => activeTab.value,
       () => {
-        console.log(activeTab.value)
-        console.log(tabRef.value[activeTab.value])
         tabRef.value[activeTab.value].items = []
         tabRef.value[activeTab.value].loading = true
         tabRef.value[activeTab.value].queryOptions.page = 1
@@ -271,9 +268,7 @@ export default {
       createForm,
       //makeRequestList,
     })
-    const sendRates = async () => {
-      console.log('test')
-    }
+    const sendRates = async () => {}
     const { id } = route?.params
     const actions = ref([
       // stringAction({
@@ -319,7 +314,7 @@ export default {
     ])
     const openDialog = (param) => {
       dialog.value = true
-      // console.log(name)
+      //
       dialogParams.value.id = param.id
       dialogParams.value.name = param.name
       // dialogName.value = name
@@ -330,9 +325,9 @@ export default {
         store.dispatch('form/get', `get/form/${props.tab.alias}/${id}`),
     })
     onMounted(async () => {
-      //console.log(type)
+      //
       //const { data } = await makeRequest()
-      //console.log(data)
+      //
       //objectInfo.value = data
     })
     return {

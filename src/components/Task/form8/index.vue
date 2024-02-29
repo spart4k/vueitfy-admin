@@ -18,18 +18,27 @@
       </v-row>
       <div class="position-relative">
         <div class="mb-10">
-          <span class="font-weight-bold">Приложите документы:</span>
-          <v-expansion-panels :disabled="+data.data?.zayavka?.status !== 5">
+          <span class="font-weight-bold d-block mb-3"
+            >Приложите документы:</span
+          >
+          <v-expansion-panels>
+            <!-- :disabled="+data.data?.zayavka?.status !== 5" -->
             <v-expansion-panel
-              v-for="(item, index) in listDocuments"
+              v-for="(accordion, index) in listDocuments"
               :key="index"
+              :disabled="!expensesActive"
             >
               <v-expansion-panel-header>
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
-                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
-                  {{ data.data.docs_spr[item.doc_id] }}
+                  <v-icon left v-if="!accordion.inProcess"> $IconGalka </v-icon>
+                  <v-icon left v-if="accordion.inProcess">
+                    $IconSetting
+                  </v-icon>
+                  {{ data.data.docs_spr[accordion.doc_id] }}
                 </span>
+                <div>
+                  <span class="text-left">{{ accordion.title }}</span>
+                </div>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <Dropzone
@@ -38,7 +47,7 @@
                     folder: 'tmp',
                     removeble: false,
                   }"
-                  :paramsForEmit="{ item: item.doc_id }"
+                  :paramsForEmit="{ item: accordion.doc_id }"
                   @addFiles="addFiles"
                 ></Dropzone>
               </v-expansion-panel-content>
@@ -53,7 +62,7 @@
             <v-btn
               small
               color="success"
-              :disabled="listDisbledDocuments != 0"
+              :disabled="listDisbledDocuments < 1 || !expensesActive"
               @click="sendDocuments"
             >
               Приложить
@@ -62,9 +71,9 @@
         </v-col>
       </v-row>
       <div>
-        <span class="font-weight-bold">Патент:</span>
+        <span class="font-weight-bold d-block mb-3">Патент:</span>
       </div>
-      <v-row>
+      <v-row :class="patentsActive ? 'patents-active' : 'patents-disabled'">
         <v-col
           cols="6"
           :class="[
@@ -81,6 +90,7 @@
             }"
             :paramsForEmit="{ item: 5 }"
             @addFiles="addFilesPatent"
+            :disabled="true"
           ></Dropzone>
         </v-col>
         <v-col

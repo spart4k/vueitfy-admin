@@ -79,7 +79,7 @@ export default {
           Vue.set(fields[name], 'default', '')
         }
       })
-      console.log(fields)
+
       return fields
     }
     fields()
@@ -104,6 +104,7 @@ export default {
         store.dispatch('taskModule/updateFileData', {
           data: {
             id,
+            doc_id: props.document.doc_id,
             del: 1,
           },
         }),
@@ -122,7 +123,6 @@ export default {
     const { makeRequest: updateFileData } = useRequest({
       context,
       request: (params) => {
-        console.log(params, 'path_doc')
         const path_doc = `/personal_doc/${basketFiles.value.fileName}`
         return store.dispatch('taskModule/updateFileData', {
           data: {
@@ -330,7 +330,7 @@ export default {
       fileName = `personal_doc_` + Date.now() + '.' + fileExt
       form_data = new FormData()
       form_data.append('file', e[0])
-      console.log(fileExt, fileName, form_data, e[0])
+
       basketFiles.value = {
         fileExt,
         fileName,
@@ -345,7 +345,7 @@ export default {
       const path_doc = `/personal_doc/${basketFiles.value.fileName}`
       pathDock.value = [path_doc]
       props.document.path_doc = path_doc
-      console.log('toPreview')
+
       toPreview()
     }
     onMounted(async () => {

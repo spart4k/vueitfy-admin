@@ -6,7 +6,6 @@ const file = {
   namespaced: true,
   actions: {
     async create(_, { data, folder, params }) {
-      console.log(data, folder, params)
       const result = await create(data, folder, params)
       return result
     },

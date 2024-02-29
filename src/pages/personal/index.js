@@ -152,7 +152,9 @@ const changeActionTo = (array, key) => {
     }
   })
 }
+
 console.log(paymentConfig)
+
 changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import useNavigation from '@/compositions/useNavigation'
 // import { payment, userKeys } from '@/pages'
@@ -182,7 +184,7 @@ function downloadFile(val) {
 }
 
 function searchInputing(field) {
-  console.log(field)
+  // console.log(field)
 }
 
 const consumptionConfig = {
@@ -441,6 +443,185 @@ const consumptionConfig = {
   ],
 }
 
+const debetorConfigHead = [
+  {
+    title: 'Направление',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'left',
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    alias: 'dir.name',
+    isShow: true,
+    width: '40',
+    value: 'direction_name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Руководитель',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: undefined,
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    value: 'account_name',
+    alias: 'sa.fio',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Объект',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: undefined,
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    value: 'object_name',
+    alias: 'o.name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Линейщик',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'left',
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '90',
+    alias: 'pers.name',
+    value: 'personal_name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Объект',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'left',
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    alias: 'o.name',
+    value: 'object_name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Остаток',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: undefined,
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    value: 'remainder',
+    alias: 'd.remainder',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Действия',
+    type: 'actions',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'right',
+    },
+    isShow: true,
+    width: '100',
+    value: 'actions',
+    actions: [
+      {
+        type: 'button',
+        url: '$IconSetting',
+        function: consoleText,
+        label: 'Редактировать',
+      },
+      {
+        type: 'button',
+        url: '$IconSetting',
+        function: consoleButton,
+        label: 'Удалить',
+      },
+    ],
+  },
+]
+
 const debetorConfig = {
   selector: '#mainTable',
   options: {
@@ -453,6 +634,82 @@ const debetorConfig = {
     url: 'get/pagination/personal_debit',
     urlDetail: 'personal_id',
     alias: 'd.debtor_id',
+    title: 'This is an about page1',
+    noTableAction: true,
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      {
+        label: 'Переплата',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        type: 'switch',
+        value: 1,
+        refreshTable: true,
+        backgroundColor: '#ffffff',
+        values: [
+          {
+            label: 'Задолженность',
+            value: 1,
+            action: changeSort,
+          },
+          {
+            label: 'Переплата',
+            value: 2,
+            action: changeSort,
+          },
+        ],
+      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
+    ],
+  },
+  head: debetorConfigHead,
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 20,
+    currentPage: 1,
+    totalPages: null,
+    footer: null,
+  },
+  detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'textDefault',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ],
+}
+
+const holdPayments = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/hold_payments',
+    urlDetail: 'personal_id',
+    alias: 'hp.personal_id',
     title: 'This is an about page1',
   },
   panel: {
@@ -474,7 +731,7 @@ const debetorConfig = {
   },
   head: [
     {
-      title: 'Направление',
+      title: 'id',
       type: 'default',
       align: 'center',
       fixed: {
@@ -489,17 +746,17 @@ const debetorConfig = {
           isShow: false,
         },
       ],
-      alias: 'dir.name',
+      alias: 'hp.id',
       isShow: true,
       width: '40',
-      value: 'direction_name',
+      value: 'id',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Руководитель',
+      title: 'В/В',
       type: 'default',
       align: 'center',
       fixed: {
@@ -516,40 +773,15 @@ const debetorConfig = {
       ],
       isShow: true,
       width: '150',
-      value: 'account_name',
-      alias: 'sa.fio',
+      value: 'vid_vedomost',
+      alias: 'vv.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'object_name',
-      alias: 'o.name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
+      title: 'Остаток',
       type: 'default',
       align: 'center',
       fixed: {
@@ -566,40 +798,15 @@ const debetorConfig = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
-      value: 'personal_name',
+      alias: 'hp.remainder',
+      value: 'remainder',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Остаток',
+      title: 'Сумма',
       type: 'default',
       align: 'center',
       fixed: {
@@ -616,39 +823,64 @@ const debetorConfig = {
       ],
       isShow: true,
       width: '150',
-      value: 'remainder',
-      alias: 'd.remainder',
+      value: 'sum',
+      alias: 'hp.sum',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Действия',
-      type: 'actions',
+      title: 'Дата назн',
+      type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'right',
+        position: 'left',
       },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
+      sorts: [
         {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
         },
       ],
+      isShow: true,
+      width: '90',
+      alias: 'hp.date_target',
+      value: 'date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
     },
+    // {
+    //   title: 'Действия',
+    //   type: 'actions',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'right',
+    //   },
+    //   isShow: true,
+    //   width: '100',
+    //   value: 'actions',
+    //   actions: [
+    //     {
+    //       type: 'button',
+    //       url: '$IconSetting',
+    //       function: consoleText,
+    //       label: 'Редактировать',
+    //     },
+    //     {
+    //       type: 'button',
+    //       url: '$IconSetting',
+    //       function: consoleButton,
+    //       label: 'Удалить',
+    //     },
+    //   ],
+    // },
   ],
   data: {
     rows: [],
@@ -1852,7 +2084,7 @@ const bankConfig = {
       ],
       isShow: true,
       width: '150',
-      alias: 'ab.comment',
+      alias: 'pb.comment',
       value: 'comment',
       search: {
         field: '',
@@ -2424,7 +2656,7 @@ export const fieldsBaseDefaulrForm = [
       sm: 6,
     },
     bootstrapClass: [''],
-    //validations: { required },
+    validations: { required },
     //isShow: false,
     readonly: {
       value: false,
@@ -3021,6 +3253,7 @@ export const defaultForm = [
         action: 'saveForm',
         color: 'primary',
         handlingResponse: {
+          result: 'code',
           1: {
             text: 'Объект привязан',
             color: 'success',
@@ -3111,6 +3344,22 @@ export const defaultForm = [
     active: false,
     config: debetorConfig,
   },
+  // {
+  //   path: 'edit',
+  //   id: 9,
+  //   name: 'Переплаты',
+  //   type: TableDefault,
+  //   active: false,
+  //   config: holdPayments,
+  // },
+  // {
+  //   path: 'edit',
+  //   id: 9,
+  //   name: 'Переплаты',
+  //   type: TableDefault,
+  //   active: false,
+  //   config: holdPayments,
+  // },
   {
     id: 7,
     path: 'load',
@@ -3809,7 +4058,183 @@ export const defaultForm = [
       },
     ],
   },
+  {
+    id: 11,
+    path: 'direction',
+    name: 'Основные',
+    type: FormDefault,
+    detail: true,
+    lists: [
+      {
+        alias: 'directions_free_personal',
+        filter: [
+          {
+            field: 'personal_id',
+            value: '',
+            source: '+route.params.id',
+            type: 'num',
+          },
+        ],
+        emptyWarning: {
+          text: 'Все доступные направления добавлены',
+        },
+      },
+      // 'user_keys',
+      // 'habitation_id',
+      // 'account_id',
+      // 'direction_id',
+      // 'grajdanstvo_id',
+    ],
+    alias: 'personal',
+    active: false,
+    fields: [
+      selectField({
+        label: 'Направление',
+        name: 'direction_json',
+        alias: 'directions_free_personal',
+        subtype: 'multiple',
+        // subtype: 'multiple',
+        placeholder: '',
+        notPut: true,
+        class: [''],
+        selectOption: {
+          text: 'name',
+          value: 'id',
+        },
+        items: [],
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        validations: { required },
+        bootstrapClass: [''],
+        // readonly: true,
+        // readonly: {
+        //   value: false,
+        //   condition: [
+        //     editFormPermissions.brigadir,
+        //     editFormPermissions.manager[1],
+        //     editFormPermissions.rukFIlCUPDirector.denied,
+        //     // editFormPermissions.DBA.access,
+        //     editFormPermissions.OBDandOKK.denied,
+        //   ],
+        // },
+      }),
+    ],
+    actions: [
+      stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'textDefault',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
+      stringAction({
+        text: 'Сохранить',
+        type: 'submit',
+        module: 'form/putForm',
+        name: 'saveForm',
+        url: 'update/personal/direction',
+        action: 'saveForm',
+        color: 'primary',
+        handlingResponse: {
+          result: 'code',
+          1: {
+            text: 'Направление добавлено',
+            color: 'success',
+          },
+          2: {
+            text: 'Направление не добавлено',
+            color: 'error',
+          },
+          3: {
+            text: 'Направление уже добавлено',
+            color: 'warning',
+          },
+        },
+      }),
+    ],
+  },
 ]
+
+const contextMenuPersonal = {
+  actions: [
+    {
+      icon: 'mdi-plus',
+      label: 'Привязать объект',
+      isShow: {
+        condition: [
+          {
+            direction_id: [1, 6],
+            type: true,
+          },
+        ],
+      },
+      readonly: {
+        value: true,
+        condition: [
+          {
+            is_personal_vertical: [true],
+            type: true,
+          },
+          {
+            permission_id: [4],
+            type: false,
+          },
+        ],
+      },
+      action: {
+        type: 'changeUrl',
+        target: 'id',
+        url: 'personal/bind',
+      },
+    },
+    {
+      icon: 'mdi-plus',
+      label: 'Добавить направ-ие',
+      // isShow: {
+      //   condition: [
+      //     {
+      //       direction_id: [1, 6],
+      //       type: true,
+      //     },
+      //   ],
+      // },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            is_personal_vertical: [true],
+            type: true,
+          },
+          {
+            permission_id: [13],
+            type: true,
+          },
+        ],
+      },
+      action: {
+        type: 'changeUrl',
+        target: 'id',
+        url: 'personal/direction',
+      },
+    },
+  ],
+}
+function changeSort(tab) {
+  console.log(tab)
+  // let btn = config.panel.buttons.find((x) => x.function === changeSort)
+  // let heading = config.head.find((x) => x.changeable)
+  if (tab.value === 2) {
+    debetorConfig.head = holdPayments.head
+    debetorConfig.options.url = 'get/pagination/hold_payments'
+  } else if (tab.value === 1) {
+    debetorConfig.head = debetorConfigHead
+    debetorConfig.options.url = 'get/pagination/personal_debit'
+  }
+}
 
 export const config = {
   title: 'Персонал',
@@ -3825,40 +4250,7 @@ export const config = {
         headerFixed: true,
         url: 'get/pagination/personal_active',
         title: 'Основные',
-        contextMenu: {
-          actions: [
-            {
-              icon: 'mdi-plus',
-              label: 'Привязать объект',
-              isShow: {
-                condition: [
-                  {
-                    direction_id: [1, 6],
-                    type: true,
-                  },
-                ],
-              },
-              readonly: {
-                value: true,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [4],
-                    type: false,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/bind',
-              },
-            },
-          ],
-        },
+        contextMenu: contextMenuPersonal,
       },
       type: TableDefault,
       panel: {
@@ -4074,40 +4466,7 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_passive',
         title: 'Пассив',
-        contextMenu: {
-          actions: [
-            {
-              icon: 'mdi-plus',
-              label: 'Привязать объект',
-              isShow: {
-                condition: [
-                  {
-                    direction_id: [1, 6],
-                    type: true,
-                  },
-                ],
-              },
-              readonly: {
-                value: true,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [4],
-                    type: false,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/bind',
-              },
-            },
-          ],
-        },
+        contextMenu: contextMenuPersonal,
       },
       type: TableDefault,
       panel: {

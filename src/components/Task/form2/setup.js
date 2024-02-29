@@ -58,7 +58,7 @@ const Form2 = defineComponent({
     const newStatus = ref(0)
     const changeDocs = (data) => {
       finalData.value = data
-      console.log(data)
+
       isFormValid.value =
         data.confirmed.length + data.rejected.length === data.confirmDocsLength
     }
@@ -156,7 +156,7 @@ const Form2 = defineComponent({
           obd_id: props.data.task.from_account_id,
           comment: comment.value,
         }
-        // console.log(props.data.data.dop_data)
+        //
         const dopData = JSON.parse(props.data.task.dop_data)
         if (dopData.bank_card_id) {
           data.bank_card_id = dopData.bank_card_id
@@ -177,14 +177,12 @@ const Form2 = defineComponent({
       ) {
         commentErr.value = 'Заполните комментарий'
       } else {
-        console.log(setPersonalData)
-
         const { success } = await changeStatusTask()
         if (success) {
           ctx.emit('closePopup')
           ctx.emit('getItems')
         }
-        console.log(changeStatusTask)
+
         if (
           props.data.entity.grajdanstvo_id === 1 &&
           newStatus.value === 2 &&
@@ -192,9 +190,7 @@ const Form2 = defineComponent({
         ) {
           // await setStartStep()
           await setPersonalData()
-          console.log(setStartStep)
         }
-        console.log(finalData.value)
       }
     }
 

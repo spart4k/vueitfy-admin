@@ -14,7 +14,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const route = useRoute()
-    // console.log('cards', cards)
+    //
 
     const cards = ref([
       {

@@ -1,9 +1,8 @@
 <template>
   <div class="detail">
     <div class="detail-tabs 1">
-      <!--{{ $route.meta.mode && $route.meta.mode.includes(item.path) }} 1-->
       <div
-        v-show="$route.meta.label || detail.name || availableTabs.length > 1"
+        v-show="$route.meta.label || detail.name || availableTabsAll.length > 1"
         class="pa-4 detail-header"
       >
         <p v-if="$route.meta.label" class="text-h4 mb-4">
@@ -18,15 +17,15 @@
           background-color="transparent"
           color="basil"
           class="p-5"
-          v-show="availableTabs.length > 1"
+          v-show="availableTabsAll.length > 1"
         >
-          <v-tab v-for="item in availableTabs" :key="item.id">
+          <v-tab v-for="item in availableTabsAll" :key="item.id">
             {{ item.name }}
           </v-tab>
         </v-tabs>
       </div>
       <v-tabs-items v-model="activeTab">
-        <v-tab-item v-for="item in availableTabs" :key="item.id">
+        <v-tab-item v-for="item in availableTabsAll" :key="item.id">
           <!--{{ item.type }}-->
           <component
             :content="porpsContent"

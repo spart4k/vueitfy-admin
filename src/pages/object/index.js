@@ -17,22 +17,13 @@ import TableDefault from '@/components/Table/default/index.vue'
 import Rates from '@/components/Form/rates/default/index.vue'
 import { userKeys } from '@/pages'
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 export const objectEditField = [
   selectField({
@@ -1789,6 +1780,7 @@ export const defaultForm = [
         },
         validations: { required },
         //isShow: false,
+        //isShow: false,
       }),
       num_from_x5: stringField({
         label: 'ID X5',
@@ -3083,6 +3075,7 @@ const config = {
                 action: 'createForm',
                 color: 'primary',
                 handlingResponse: {
+                  result: 'code',
                   1: {
                     text: 'Объект %name% успешно создан',
                     color: 'success',
@@ -3742,6 +3735,7 @@ const config = {
                 action: 'createForm',
                 color: 'primary',
                 handlingResponse: {
+                  result: 'code',
                   1: {
                     text: 'Объект успешно назначен',
                     color: 'success',

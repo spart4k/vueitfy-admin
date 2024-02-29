@@ -1,4 +1,12 @@
-import { defineComponent, ref, computed, onMounted, toRef } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  toRef,
+  reactive,
+  onUpdated,
+} from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
@@ -28,15 +36,15 @@ const Form8 = defineComponent({
     },
   },
   setup(props, ctx) {
-    const router = useRouter()
-    const route = useRoute()
-    const proxyConfig = ref(_.cloneDeep(config))
-
     const context = {
       root: {
         store,
       },
     }
+    const router = useRouter()
+    const route = useRoute()
+    const proxyConfig = ref(_.cloneDeep(config))
+
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -47,7 +55,8 @@ const Form8 = defineComponent({
       //   value: props.data.entity.object_name,
       // },
     }
-    const expensesForm = ref(null)
+    const expensesActive = ref(true)
+    const patentsActive = ref(false)
 
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
@@ -57,11 +66,10 @@ const Form8 = defineComponent({
     })
 
     let listRequestsForUpload = ref([])
-    let file = ref('')
     let disableFinishState = ref(0)
 
     // const sendData = () => {
-    //   console.log(selectName.value, file.value)
+    //
     //   let fileExt = file.value.type.split('/')[1]
     //   let fileName = `personal_doc_` + Date.now() + '.' + fileExt
     //   let form_data = new FormData()
@@ -128,6 +136,8 @@ const Form8 = defineComponent({
 
     let docs_ids = ref([])
     let addFilesPatent = (e, options) => {
+      // console.log('SPR', props.data.data.docs_spr[1])
+
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -318,7 +328,6 @@ const Form8 = defineComponent({
     }
 
     const pushToZayavka = () => {
-      console.log('data.data?.zayavka?.id', props.data)
       if (props.data.data?.zayavka?.id) {
         router.push({
           name: 'main/:id/:form_id',
@@ -338,6 +347,7 @@ const Form8 = defineComponent({
     }
 
     let addFiles = (e, options) => {
+      console.log('ITEM', e)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -404,36 +414,47 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
+
       if (!currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
           updateFileData,
           loadImage
         )
+
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
+
         if (additionalRequestFlag) {
           listRequestsForUpload.value.push(createFillScanProcess)
         }
       } else {
         listRequestsForUpload.value.push(updateFileData, loadImage)
+
         if (additionalRequestFlag) {
           listRequestsForUpload.value.push(createFillScanProcess)
         }
+
         listDocuments.value[
           listDocuments.value.findIndex((x) => x.doc_id == e.item)
         ].inProcess = false
-        listDisbledDocuments.value = listDisbledDocuments.value - 1
       }
-      console.log(listRequestsForUpload.value.length)
+      listDisbledDocuments.value++
     }
 
     const sendDocuments = () => {
-      listRequestsForUpload.value.forEach((elem, index) => {
-        elem()
-      })
+      // FIXME: Должен быть один запрос с данными на сервер
+      // listRequestsForUpload.value.forEach((elem, index) => {
+      //   elem()
+      // })
+
+      console.log('Requests', listRequestsForUpload.value)
+
       listRequestsForUpload.value = []
+
+      patentsActive.value = true
+      expensesActive.value = false
     }
 
     const closePopupForm = (route) => {
@@ -460,19 +481,26 @@ const Form8 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+
+      patentsActive.value = false
+      expensesActive.value = true
     }
 
     onMounted(() => {
-      props.data.data.docs_grajdanstvo.forEach((item, index) => {
-        let pasteObject = props.data.data.docs.find(
+      // console.log('List', props.data.data)
+
+      // props.data.data.docs_grajdanstvo.forEach((item, index) => {
+      // TODO: обращение шло к props.data.data.docs_grajdanstvo
+      props.data.data.grajdanstvo.forEach((item, index) => {
+        let pasteObject = props.data.data?.docs?.find(
           (doc) => doc.doc_id === item
         )
         if (pasteObject) {
           pasteObject['inProcess'] = false
         } else {
-          pasteObject = { doc_id: item }
+          // TODO: было { doc_id: item }
+          pasteObject = { doc_id: item.id }
           pasteObject['inProcess'] = true
-          listDisbledDocuments.value = listDisbledDocuments.value + 1
         }
         listDocuments.value.push(pasteObject)
       })
@@ -494,6 +522,8 @@ const Form8 = defineComponent({
       sendDocuments,
       listDisbledDocuments,
       addFilesPatent,
+      patentsActive,
+      expensesActive,
       disableFinishState,
       textInfo,
       sendTaskFinish,
@@ -501,7 +531,6 @@ const Form8 = defineComponent({
       Popup,
       closePopupForm,
       pushToZayavka,
-      expensesForm,
       proxyConfig,
     }
   },
