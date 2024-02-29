@@ -83,13 +83,25 @@ export default function ({
 
   let $v = useVuelidate(validations(), computedFormData.value)
 
+  const fieldsAlias = computed(() => {
+    const object = {}
+    Object.values(form?.fields).forEach((el) => {
+      // object[el.alias]
+      console.log(el.alias, (object[el.name] = el.alias))
+      el?.alias ? (object[el.alias] = el.name) : (object[el.name] = el.name)
+    })
+    return object
+  })
+
   const getAlias = (keyList) => {
-    console.log(keyList, Object.values(form?.fields))
-    const field = Object.values(form?.fields).find((el) =>
-      el.alias ? el.alias === keyList : el.name === keyList
-    )
-    console.log(field && field?.alias ? field.alias : field?.name)
-    return field && field.name
+    // console.log(keyList, Object.values(form?.fields))
+    // const field = Object.values(form?.fields).find((el) =>
+    //   el.alias ? el.alias === keyList : el.name === keyList
+    // )
+    // console.log(field && field?.alias ? field.alias : field?.name)
+    // return field && field.name
+    console.log(fieldsAlias.value)
+    return fieldsAlias.value[keyList]
   }
 
   const rebuildFormData = () => {
@@ -1312,8 +1324,8 @@ export default function ({
       lists = await makeRequestList(listQuery)
       for (let keyList in lists.data) {
         // const field = form.fields[keyList]
-        console.log(tabFields[getAlias(keyList)], 'getFIELD')
-        const field = tabFields[getAlias(keyList)]
+        console.log(tabFields[getAlias(tabFields)], 'getFIELD')
+        const field = tabFields[getAlias(tabFields)]
         console.log(field)
         console.log(field)
         // const field = form?.fields.find((el) => {
