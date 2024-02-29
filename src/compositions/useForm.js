@@ -1238,7 +1238,9 @@ export default function ({
 
       originalData = _.cloneDeep(formData)
     }
+    console.log(hasSelect(), 'hasSelect')
     if (hasSelect()) {
+      console.log(form?.lists, 'form list')
       const listQuery = form?.lists?.flatMap((list) => {
         if (list.condition) {
           for (let i = 0; i < list.condition.length; i++) {
@@ -1293,7 +1295,9 @@ export default function ({
         }
         return element
       })
+      console.log(listQuery, 'LISTDATA')
       lists = await makeRequestList(listQuery)
+      console.log(lists)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList

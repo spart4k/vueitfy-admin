@@ -8,32 +8,29 @@
         <v-col cols="12" sm="6" class="document-fields">
           <v-row>
             <v-col
-              v-for="(field, fieldKey) in formData"
+              v-for="(field, fieldKey) in fieldsData.length ? fieldsData : 10"
               :key="fieldKey"
               :cols="12"
               :sm="6"
               class="field-col"
               :class="field.type"
             >
-              <div
-                v-if="loading && field.isShow"
-                class="field-loading gradient"
-              >
-                <!--<p>loading</p>-->
+              <div v-if="loading" class="field-loading gradient">
+                <!-- <p>loading</p> -->
               </div>
               <v-text-field
-                v-else-if="switchType(fieldKey) === 'string'"
-                v-model="formData[fieldKey]"
-                :label="switchLabel(fieldKey)"
+                v-else-if="field.type === 'string'"
+                v-model="formData[field.name]"
+                :label="field.label"
                 :error-messages="formErrors[field.name]"
                 clearable
                 :readonly="field.readonly"
                 :disabled="field.readonly"
               />
               <Datepicker
-                v-else-if="switchType(fieldKey) === 'date'"
-                v-model="formData[fieldKey]"
-                :label="switchLabel(fieldKey)"
+                v-else-if="field.type === 'date'"
+                v-model="formData[field.name]"
+                :label="field.label"
                 :field="{
                   id: fieldKey,
                   subtype:
@@ -42,10 +39,22 @@
                 :error-messages="formErrors[field?.name]"
               ></Datepicker>
               <v-checkbox
-                v-else-if="switchType(fieldKey) === 'checkbox'"
-                v-model="formData[fieldKey]"
-                :label="switchLabel(fieldKey)"
+                v-else-if="field.type === 'checkbox'"
+                v-model="formData[field.name]"
+                :label="field.label"
               ></v-checkbox>
+              <Autocomplete
+                v-else-if="field.type === 'select'"
+                :field="{
+                  ...field,
+                  items: listData[field.name],
+                }"
+                v-model="formData[field.name]"
+                :error-messages="formErrors[field?.name]"
+                :formData="formData"
+                ref="autocompleteRef"
+                @change="changeAutocomplete"
+              />
               <!-- <v-textarea
                 v-else-if="showField('textarea', field)"
                 v-model="formData[field.name]"
@@ -66,7 +75,11 @@
           <div class="document-scan">
             <div class="document-scan-preview-panel">
               <v-icon
-                v-if="!isEdit && pathDock.length"
+                v-if="
+                  !isEdit &&
+                  pathDock.length &&
+                  !(document.doc_id === 13 && document.path_doc)
+                "
                 @click="toEdit"
                 class="document-scan-preview-panel__icon"
               >

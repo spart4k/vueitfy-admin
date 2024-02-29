@@ -4,7 +4,7 @@
       <v-form>
         <v-container>
           <!-- <DocForm :docsData="docsData"></DocForm> -->
-          <template v-if="docsData">
+          <template>
             <Row
               v-for="document in docsData"
               :tab="tab"
