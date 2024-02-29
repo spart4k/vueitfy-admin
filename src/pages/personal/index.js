@@ -635,6 +635,7 @@ const debetorConfig = {
     urlDetail: 'personal_id',
     alias: 'd.debtor_id',
     title: 'This is an about page1',
+    noTableAction: true,
   },
   panel: {
     buttons: [
