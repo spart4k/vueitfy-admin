@@ -50,7 +50,7 @@
                   id="file"
                   ref="file"
                   accept="image/*"
-                  @change="handleFileUpload($event, index)"
+                  @change="uploadChangedFile($event, index)"
                 />
                 <v-icon color="orange" x-small>$IconEdit</v-icon>
               </v-btn>
