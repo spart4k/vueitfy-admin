@@ -1,8 +1,6 @@
 <template>
   <div class="">
     <div class="switch">
-      {{ proxyValue }}
-      {{ testTask }}
       <div class="switch-wrap">
         <div
           v-for="(tab, tabIndex) in button.values"
