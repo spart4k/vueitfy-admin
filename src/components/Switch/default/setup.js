@@ -20,9 +20,12 @@ export default {
     const handlerSwitch = (tab) => {
       tab.action && tab.action(tab)
       button.value.refreshTable && emit('getItems')
+      console.log(tab.value)
+      testTask.value = tab.value
       proxyValue.value = tab.value
     }
     const thumbs = ref([])
+    const testTask = ref(null)
     onMounted(() => {
       if (props.value === undefined) {
         proxyValue.value = button.value.values[0].value
@@ -49,6 +52,7 @@ export default {
       thumbs,
       widthThumb,
       leftThumb,
+      testTask,
     }
   },
 }

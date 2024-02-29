@@ -648,6 +648,7 @@ const debetorConfig = {
         class: ['v-table-button--custom'],
         url: '$IconEdit',
         type: 'switch',
+        value: 2,
         refreshTable: true,
         backgroundColor: '#ffffff',
         values: [
