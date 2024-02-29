@@ -40,7 +40,7 @@ export default {
       proxyValue.value === 1 ? 0 : thumbs.value[0]?.offsetWidth
     )
     watch(
-      () => proxyValue.value,
+      () => testTask.value,
       (newVal) => {
         emit('input', newVal)
       }
