@@ -154,7 +154,6 @@ const Form27 = defineComponent({
       }
     }
     const reject = async () => {
-      console.log('reject')
       isFormConfirmed.value = false
       if (!formData.comment) {
         commentErr.value = 'Обязательное поле'

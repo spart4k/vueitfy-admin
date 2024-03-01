@@ -40,7 +40,7 @@ const Form8 = defineComponent({
     // }
 
     // onMounted(() => {
-    //   console.log(docs_spr, getNameDoc)
+    //
     // })
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
@@ -67,11 +67,8 @@ const Form8 = defineComponent({
       })
       listNewChet.value = JSON.parse(data.data.zayavka.close_schet)
     })
-    let removeFilesPatent = (e, options) => {
-      console.log(e, options)
-    }
+    let removeFilesPatent = (e, options) => {}
     let sendCloseDocsSchet = (e) => {
-      console.log(e)
       const { makeRequest: setDataZayavka } = useRequest({
         context,
         request: () => {
@@ -96,7 +93,6 @@ const Form8 = defineComponent({
     let isSaveDocCloses = ref(false)
     let listOtherDoc = ref([])
     let addFilesPatent = (e, options) => {
-      console.log(Object.values(e), listNewChet.value, listNewChet.value.at(-1))
       let objectForCloseChet
       let lastElem
       Object.values(e).forEach((elem, index) => {
@@ -118,7 +114,7 @@ const Form8 = defineComponent({
           name: fileName,
           valid: 0,
         })
-        console.log(listNewChet.value)
+
         const { makeRequest: updateFileData } = useRequest({
           context,
           request: () =>
@@ -167,8 +163,6 @@ const Form8 = defineComponent({
     }
 
     let addFiles = (e, options) => {
-      console.log(e, options, listDocuments.value)
-
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -247,7 +241,7 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
-      console.log(listDocuments.value)
+
       if (!currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
@@ -270,7 +264,6 @@ const Form8 = defineComponent({
         ].inProcess = false
         listDisbledDocuments.value = listDisbledDocuments.value - 1
       }
-      console.log(listRequestsForUpload.value.length)
     }
     const sendDocuments = () => {
       listRequestsForUpload.value.forEach((elem, index) => {
@@ -281,7 +274,6 @@ const Form8 = defineComponent({
       listDocuments.value.forEach((elem, index) => {
         newArray.push(ref(`docDropzone` + index))
       })
-      console.log(newArray)
     }
 
     let sendTaskFinish = async () => {

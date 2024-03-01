@@ -103,16 +103,19 @@ const Form15 = defineComponent({
             data.entity.doljnost_id === 5 ||
             data.entity.doljnost_id === 7 ||
             data.entity.doljnost_id === 6 ||
-            data.entity.doljnost_id === 32
+            data.entity.doljnost_id === 8 ||
+            data.entity.doljnost_id === 32 ||
+            data.entity.doljnost_id === 33
               ? 1
               : 0,
           need_parse:
-            (data.entity.direction_id === 1 ||
-              data.entity.direction_id === 6) &&
+            data.entity.direction_id === 1 &&
             data.entity.doljnost_id !== 5 &&
             data.entity.doljnost_id !== 7 &&
             data.entity.doljnost_id !== 6 &&
-            data.entity.doljnost_id !== 32
+            data.entity.doljnost_id !== 8 &&
+            data.entity.doljnost_id !== 32 &&
+            data.entity.doljnost_id !== 33
               ? 1
               : 0,
         }
@@ -149,7 +152,7 @@ const Form15 = defineComponent({
 
     const confirm = async () => {
       isFormConfirmed.value = true
-      console.log('confirm')
+
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {
@@ -159,7 +162,7 @@ const Form15 = defineComponent({
     }
     const reject = async () => {
       isFormConfirmed.value = false
-      console.log('confirm')
+
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {

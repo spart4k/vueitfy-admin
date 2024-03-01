@@ -24,8 +24,8 @@ const auth = {
     },
   },
   actions: {
-    async get(_, { url, data }) {
-      const result = await getList(url, data)
+    async get(_, { url, data, params }) {
+      const result = await getList(url, data, params)
       return result
     },
     async getDetail(_, url) {
@@ -50,7 +50,6 @@ const auth = {
     },
     async loadStatus({ commit }, data) {
       const result = await putForm(data)
-      console.log(result)
       if (result.code === 1) {
         commit(
           'notifies/showMessage',

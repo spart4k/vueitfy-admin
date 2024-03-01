@@ -17,22 +17,13 @@ import TableDefault from '@/components/Table/default/index.vue'
 import Rates from '@/components/Form/rates/default/index.vue'
 import { userKeys } from '@/pages'
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 export const objectEditField = [
   selectField({

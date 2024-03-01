@@ -45,68 +45,78 @@ export default {
         proxyValue.value = props.field.items.slice()
       }
     }
+    let controller
     const querySelections = async (params, isObs = false) => {
-      if (props.field.type === 'select') return
-      if (params.search || params.id || isObs) {
-        if (params.search) params.search = params.search.toLowerCase()
+      try {
+        if (props.field.type === 'select') return
+        if (params.search || params.id || isObs) {
+          if (params.search) params.search = params.search.toLowerCase()
 
-        loading.value = true
+          if (controller) controller.abort()
+          controller = new AbortController()
+          loading.value = true
 
-        const { url } = props.field
-        const filter = []
+          const { url } = props.field
+          const filter = []
 
-        console.log('props.field.props.field.', props.field)
-        if (props.field.filter && props.field.filter.length) {
-          props.field.filter.forEach((el) => {
-            if (!props.formData[el.field]) return
-            filter.push({
-              alias: el.alias ?? el.field,
-              value: props.formData[el.field],
-              type: el.type,
+          if (props.field.filter && props.field.filter.length) {
+            props.field.filter.forEach((el) => {
+              if (!props.formData[el.field]) return
+              filter.push({
+                alias: el.alias ?? el.field,
+                value: props.formData[el.field],
+                type: el.type,
+              })
             })
-          })
+          }
+
+          const data = await getList(
+            url,
+            {
+              countRows: 10,
+              currentPage: props.field.page,
+              searchValue: params.search ? params.search : '',
+              id: params.id ? params.id : -1,
+              filter,
+            },
+            {
+              signal: controller.signal,
+            }
+          )
+
+          Object.assign(queryData, data)
+
+          if (
+            data?.rows?.length ||
+            data.page > data.totalPage ||
+            data.totalPage === 0
+          ) {
+            Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
+          } else {
+            Vue.set(props.field, 'items', [])
+          }
+
+          loading.value = false
+          controller = undefined
         }
-
-        const data = await getList(url, {
-          countRows: 10,
-          currentPage: props.field.page,
-          searchValue: params.search ? params.search : '',
-          id: params.id ? params.id : -1,
-          filter,
-        })
-
-        Object.assign(queryData, data)
-
-        if (
-          data?.rows?.length ||
-          data.page > data.totalPage ||
-          data.totalPage === 0
-        ) {
-          Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
-        } else {
-          Vue.set(props.field, 'items', [])
-        }
-
-        loading.value = false
+      } catch (e) {
+        return e
       }
     }
 
     const endIntersect = (entries, observer, isIntersecting) => {
-      console.log('queryData', queryData)
+      if (loading.value) return
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)
         ? true
         : queryData.totalPage > queryData.page
-
       if (isIntersecting) {
         if (props.field.items.length && !props.field.loading && isAtFinalPage) {
           props.field.page = props.field.page + 1
           // (queryData?.totalPage > queryData?.page || queryData.page === null)
-
           const params = {
             search: props.field.search,
             name: props.field.name,
           }
-
           querySelections(params, true)
         }
       }
@@ -115,7 +125,6 @@ export default {
       selectAll.value ? 'mdi-close-box' : 'mdi-minus-box'
     )
     const removeSelected = (data) => {
-      // console.log(proxyValue.value, data)
       if (Array.isArray(proxyValue.value))
         proxyValue.value.splice(data.index, 1)
       else proxyValue.value = null

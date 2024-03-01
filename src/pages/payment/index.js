@@ -15,39 +15,14 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
-// const changeActionTo = (array, key, oldPath, newPath) => {
-//   console.log('changeActionTo')
-//   array.forEach((tab) => {
-//     if (tab.path === oldPath) {
-//       tab.path = newPath
-//     }
-//     if (tab.actions) {
-//       tab.actions.forEach((el) => {
-//         if (el.action === 'closePopup') {
-//           el.to = key
-//         }
-//       })
-//     }
-//   })
-// }
-// const personalConfigForms = _.cloneDeep(personalConfig)
-// changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
+function searchInputing(field) {}
+
 const tableConsumptionConfig = {
   selector: '#mainTable',
   options: {

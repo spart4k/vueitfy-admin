@@ -1,19 +1,10 @@
-function consoleText(row) {
-  console.log(row, 2)
-  //return 'test'
-}
+function consoleText(row) {}
 
-function consoleButton(row) {
-  console.log(row, 1)
-}
+function consoleButton(row) {}
 
-function consolePanel() {
-  console.log('panel,button')
-}
+function consolePanel() {}
 
-function searchInputing(field) {
-  console.log(field)
-}
+function searchInputing(field) {}
 
 import FrameView from '@/components/Task/frame-view/index.vue'
 
@@ -63,7 +54,7 @@ const config = {
           isShow: false,
         },
       ],
-      alias: 'p.id',
+      alias: 't.id',
       isShow: true,
       width: '40',
       value: 'id',
@@ -90,7 +81,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'ps.status',
+      alias: 'tt.name',
       value: 'task_type',
       search: {
         field: '',
@@ -116,7 +107,7 @@ const config = {
       isShow: true,
       width: '150',
       value: 'to_fio',
-      alias: 'p.telefon',
+      alias: 'sat.name',
       search: {
         field: '',
         isShow: true,
@@ -140,7 +131,7 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      alias: 'p.name',
+      alias: 'saf.name',
       value: 'from_fio',
       search: {
         field: '',

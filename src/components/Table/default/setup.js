@@ -3,6 +3,7 @@
 import Vue, { onMounted, ref, computed, watch, toRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
+import axios from 'axios'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -121,7 +122,7 @@ const table = {
           x + width + tablePosition.value >= window.innerWidth &&
           headerEl.isShow
         ) {
-          //console.log(width, x, window.innerWidth)
+          //
           emit('changeheadershow', { headerEl, value: false })
         } else if (
           x + width + tablePosition.value <= window.innerWidth &&
@@ -143,8 +144,8 @@ const table = {
       }
     }
     const checkboxInput = (row, indexRow) => {
-      //console.log(row, indexRow)
-      //console.log('checkbox')
+      //
+      //
       let delta = null
       if (indexRow > lastSelected.value.indexRow) {
         delta = indexRow - lastSelected.value.indexRow
@@ -156,37 +157,37 @@ const table = {
           i < lastSelected.value.indexRow + delta;
           i++
         ) {
-          //console.log(i)
-          //console.log(options.data.rows[i].row)
+          //
+          //
           if (!options.data.rows[i].row.selected) {
             options.data.rows[i].row.selected = true
           } else {
-            //console.log(i, lastSelected.value.indexRow)
+            //
             //options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       } else {
-        //console.log('down')
+        //
         delta = lastSelected.value.indexRow - indexRow
         for (
           let i = lastSelected.value.indexRow;
           i > lastSelected.value.indexRow - delta;
           i--
         ) {
-          //console.log(i)
-          //console.log(options.data.rows[i].row)
+          //
+          //
           if (!options.data.rows[i].row.selected) {
             options.data.rows[i].row.selected = true
           } else {
-            //console.log(i)
+            //
             //options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       }
-      //console.log(delta)
-      //console.log(lastSelected.value.indexRow)
+      //
+      //
     }
     const saveLastSelected = (data) => {
       lastSelected.value = {
@@ -204,7 +205,6 @@ const table = {
       this.update()
     }
     const sortRow = (head) => {
-      console.log('SORTED')
       const { value } = head
       const paramsCol = paramsQuery.value.sorts.find((el) => el.field === value)
       if (!paramsCol.value) {
@@ -221,8 +221,9 @@ const table = {
       //} else if (head.sorts[0].value === 'desc') {
       //  head.sorts[0].value = undefined
       //}
-      //console.log(paramsCol)
+      //
     }
+    const contextMenuRef = ref(null)
     const openContext = ($event, row) => {
       //return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
@@ -236,8 +237,8 @@ const table = {
           contextmenu.value.isShow = false
         }, 0)
       }
-      //console.log($event.clientX, $event.clientY)
-      //console.log($event, row) // eslint-disable-next-line
+      //
+      //
       // eslint-disable-next-line
       let direction = 'left' // eslint-disable-next-line
       let clientX = $event.clientX
@@ -245,6 +246,11 @@ const table = {
         direction = 'right'
         clientX = window.innerWidth - $event.clientX
       }
+      console.log(contextMenuRef.value)
+      // if (!contextMenuRef.value.availableContext.length) {
+      //   return
+      // }
+
       setTimeout(
         () => {
           contextmenu.value.isShow = true
@@ -266,11 +272,11 @@ const table = {
       headerOptions.value()
     }
     const getFixedStyle = (head) => {
-      //console.log(head)
+      //
       const { width } = headerOptions.value.find((el) => el.id === head.value)
-      //console.log(width)
+      //
       if (head.fixed.value && head.fixed.position) {
-        //console.log({ [head.fixed.position]: getWidth(head.value) })
+        //
         //if (head.fixed.position === 'right') {
 
         //}
@@ -320,7 +326,38 @@ const table = {
     const closeFilter = () => {
       filter.value.isShow = false
     }
+
+    // Something like this should work:
+
+    // function makeRequestCreator() {
+    //     var call;
+    //     return function(url) {
+    //         if (call) {
+    //             call.cancel();
+    //         }
+    //         call = axios.CancelToken.source();
+    //         return axios.get(url, { cancelToken: call.token }).then((response) => {
+    //
+    //         }).catch(function(thrown) {
+    //             if (axios.isCancel(thrown)) {
+    //
+    //             } else {
+    //                 // handle error
+    //             }
+    //         });
+    //     }
+    // }
+    // You then use it with
+
+    //  var get = makeRequestCreator();
+    //  get('someurl');
+
+    //  Each new request will cancel the previous one
+
+    let controller
     const getItems = async () => {
+      if (controller) controller.abort()
+      controller = new AbortController()
       loading.value = true
       const { url } = props.options.options
       // Может быть без props. после merge cofilcts
@@ -343,7 +380,7 @@ const table = {
       })
 
       let by = undefined
-      // console.log('props.filtersConfig', store.state.formStorage, props.detail?.stageData.id)
+      //
       if (props.routeParam || store?.state?.formStorage?.id) {
         by = [
           {
@@ -364,6 +401,9 @@ const table = {
           sorts,
           filter: filtersColumns.value,
           by,
+        },
+        params: {
+          signal: controller.signal,
         },
       })
       options.data.rows = data.rows
@@ -389,6 +429,7 @@ const table = {
         options.data.rows = structuredArray
       }
       loading.value = false
+      controller = undefined
     }
     const initHeadParams = () => {
       const { head } = options
@@ -433,7 +474,6 @@ const table = {
       }
     }
     const saveFilter = (filterData) => {
-      console.log('saveFilter', filterData)
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -459,7 +499,7 @@ const table = {
         type = type === 'autocomplete' ? 'select' : type
         type = type === 'dateRange' && 'date'
         type = type === 'datetime' ? 'date' : type
-        console.log('filterData', filterData)
+
         const obj = {
           //field: el.name,
           value: filterData[el.name],
@@ -500,7 +540,6 @@ const table = {
     }
 
     const openRow = ($event, row) => {
-      console.log('row')
       if (options.detail.type === 'popup') {
         //router.push({
         //  path: `${route.}./1`
@@ -508,8 +547,7 @@ const table = {
         let requestId = 'id'
         if (props.options.detail.requestId)
           requestId = props.options.detail.requestId
-        console.log(`${route.name}/:${requestId}`)
-        console.log(route)
+
         router.push({
           name: `${route.name}/:${requestId}`,
           params: {
@@ -517,7 +555,6 @@ const table = {
           },
         })
         popupForm.value.isShow = true
-        console.log(route)
       }
     }
 
@@ -530,9 +567,6 @@ const table = {
       activeIndexCells
     ) => {
       if (options.detail.type === 'popup') {
-        console.log('cell')
-        console.log($event, row, cell, indexRow, indexCell)
-
         if (activeIndexCells.includes(indexCell)) {
           // let requestId = 'id'
           // if (props.options.detail.requestId)
@@ -548,8 +582,8 @@ const table = {
             },
           })
 
-          //console.log(url);
-          //console.log(route.name);
+          //
+          //
           //documents/personal/id
           // router.push(
           //   {
@@ -614,7 +648,7 @@ const table = {
         const link = document.createElement('a')
         link.download = path.url
         link.setAttribute('target', '_blank')
-        console.log(process.env.VUE_APP_STORE)
+
         link.href = process.env.VUE_APP_STORE + path.url
         document.body.appendChild(link)
         link.click()
@@ -673,9 +707,8 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
-        console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
-          //console.log(headerEl.previousElementSibling.offsetWidth)
+          //
           acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
         }, 0)
       })
@@ -762,12 +795,11 @@ const table = {
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        console.log(el.permissions.includes(permission.value))
         return el.permissions.includes(permission.value)
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        console.log(_.intersection(el.direction_id, directions.value).length)
+
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
@@ -777,12 +809,6 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some((el) => {
-            console.log('condition1')
-            console.log(
-              checkIncludesPermissions(el),
-              checkIncludesDirections(el),
-              el.type
-            )
             return (
               checkIncludesPermissions(el) &&
               checkIncludesDirections(el) === el.type
@@ -797,10 +823,8 @@ const table = {
       let styles = {}
       if (props.options.options.styleRow) {
         props.options.options.styleRow.forEach((el) => {
-          console.log(el.result, row)
           const style = el.result[row[el.targetKey]]
           for (let key in style) {
-            console.log(style, key)
             styles = {
               ...style,
             }
@@ -870,6 +894,7 @@ const table = {
       availablePanelBtn,
       clickHandler,
       insertStyle,
+      contextMenuRef,
     }
   },
 }

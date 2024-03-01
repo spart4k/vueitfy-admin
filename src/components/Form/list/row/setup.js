@@ -59,7 +59,6 @@ export default {
     }
     const loading = ref(true)
     const fields = () => {
-      console.log('fields')
       const fields = {}
       props.tab.fields.forEach((el) => {
         const { validations } = el
@@ -77,13 +76,12 @@ export default {
     const propsActiveTab = toRef(props, 'activeTab')
     const prevTab = ref({})
     const getDataFromPrevTav = () => {
-      console.log(props.activeTab - 1, props.tabs)
       prevTab.value = props.tabs[0]
       if (props.tab.fromLastTab) {
         //const field = prevTab.value.find((el) => el.name === )
         const fields = props.tab.fromLastTab.map((el) => {
           const findEl = prevTab.value.fields.find((tabField) => {
-            //console.log(tabField[el.alias], el.alias)
+            //
             return tabField[el.alias] === el.name
           })
           if (el.type === 'list') {
@@ -127,7 +125,6 @@ export default {
       makeRequestList,
     })
     onMounted(async () => {
-      console.log('moun row')
       getDataFromPrevTav()
       loading.value = true
       await getData()

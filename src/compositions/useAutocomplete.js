@@ -26,7 +26,7 @@ export default function (searchFields, fields) {
       //    .field((el) => el.toLowerCase().includes(string))
       //    .splice(0, 10)
       //  field.loading = false
-      //  console.log(data)
+      //
       //  Vue.set(field, 'items', data)
       //}, 200)
       field.loading = true
@@ -47,7 +47,7 @@ export default function (searchFields, fields) {
 
       //Vue.set(field, 'items', data.rows)
       field.loading = false
-      //console.log(data.products, field)
+      //
     }
   }
   const deepEqual = (obj1, obj2) => {
@@ -64,7 +64,7 @@ export default function (searchFields, fields) {
         }
       })
       //const
-      //console.log(newVal)
+      //
     }
   )
   return {

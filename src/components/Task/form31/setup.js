@@ -60,7 +60,6 @@ const Form31 = defineComponent({
     })
 
     const confirm = async () => {
-      console.log(getPaymentId)
       // const data = await getPaymentId() TODO: Доделать, когда запрос поправят
       if ((() => true)()) {
         // TODO: Сюда закинуть data из строки выше

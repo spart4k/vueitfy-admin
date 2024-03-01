@@ -370,16 +370,19 @@
       v-if="options.data.rows && options.data.rows.length"
       class="v-table-footer pl-4"
     >
-      <div v-if="options.data.footer.length" class="v-table-footer-info"></div>
-      <div class="v-table-footer-total">
-        Итого: {{ options.data.totalRows }}
-        <span
-          v-for="footerInfo in options.data.footer"
-          v-show="footerInfo.value"
-          :key="footerInfo.name"
-        >
-          {{ footerInfo.name }}: {{ footerInfo.value }}
-        </span>
+      <div class="v-table-footer-info">
+        <div class="v-table-footer-total">
+          Итого: {{ options.data.totalRows }}
+          <div v-if="options.data.footer.length" class="">
+            <span
+              v-for="footerInfo in options.data.footer"
+              v-show="footerInfo.value"
+              :key="footerInfo.name"
+            >
+              {{ footerInfo.name }}: {{ footerInfo.value }}
+            </span>
+          </div>
+        </div>
       </div>
       <div class="v-table-footer-pagination">
         <div class="v-table-footer-pagination-length">
@@ -420,7 +423,11 @@
         {{ action.text }}
       </v-btn>
     </v-row>
-    <v-contextmenu @handlerContext="handlerContext" :options="contextmenu" />
+    <v-contextmenu
+      @handlerContext="handlerContext"
+      ref="contextMenuRef"
+      :options="contextmenu"
+    />
     <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
       <keep-alive>
         <TableFilter

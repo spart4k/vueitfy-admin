@@ -64,7 +64,6 @@ export default {
     watch(
       () => date,
       (newVal) => {
-        console.log('date change', newVal)
         proxyValue.value = [date.start, date.end]
       },
       { deep: true }
@@ -73,7 +72,6 @@ export default {
     watch(
       () => proxyValue.value,
       (newVal) => {
-        console.log(newVal)
         emit('input', newVal)
       },
       { deep: true }

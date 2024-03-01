@@ -61,7 +61,7 @@ const Form8 = defineComponent({
     let disableFinishState = ref(0)
 
     // const sendData = () => {
-    //   console.log(selectName.value, file.value)
+    //
     //   let fileExt = file.value.type.split('/')[1]
     //   let fileName = `personal_doc_` + Date.now() + '.' + fileExt
     //   let form_data = new FormData()
@@ -318,7 +318,6 @@ const Form8 = defineComponent({
     }
 
     const pushToZayavka = () => {
-      console.log('data.data?.zayavka?.id', props.data)
       if (props.data.data?.zayavka?.id) {
         router.push({
           name: 'main/:id/:form_id',
@@ -426,7 +425,6 @@ const Form8 = defineComponent({
         ].inProcess = false
         listDisbledDocuments.value = listDisbledDocuments.value - 1
       }
-      console.log(listRequestsForUpload.value.length)
     }
 
     const sendDocuments = () => {

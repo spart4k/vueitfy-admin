@@ -9,10 +9,12 @@
       </v-card-title>
       <div
         v-if="
-          data.entity.doljnost_id == 5 ||
-          data.entity.doljnost_id == 7 ||
-          data.entity.doljnost_id == 6 ||
-          data.entity.doljnost_id == 32
+          data.entity.doljnost_id === 5 ||
+          data.entity.doljnost_id === 6 ||
+          data.entity.doljnost_id === 7 ||
+          data.entity.doljnost_id === 8 ||
+          data.entity.doljnost_id === 32 ||
+          data.entity.doljnost_id === 33
         "
       >
         <TextInfo :infoObj="infoObj" class="mb-5" />
@@ -63,9 +65,11 @@
       <v-btn
         v-if="
           data.entity.doljnost_id == 5 ||
-          data.entity.doljnost_id == 7 ||
-          data.entity.doljnost_id == 6 ||
-          data.entity.doljnost_id == 32
+          data.entity.doljnost_id === 6 ||
+          data.entity.doljnost_id === 7 ||
+          data.entity.doljnost_id === 8 ||
+          data.entity.doljnost_id === 32 ||
+          data.entity.doljnost_id === 33
         "
         :disabled="!isSetTask"
         class="mr-2"

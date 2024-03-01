@@ -68,38 +68,36 @@ export default {
       }),
     ])
     const fields = () => {
-      // console.log('rebuild fields')
+      //
       const fields = {}
       listFields.value.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
-          // console.log('CONDITION TRUE', el.name)
+          //
           Vue.set(fields, el.name, {})
         } else return
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
-      // console.log(fields)
+      //
       return fields
     }
     const tryLoading = ref(false)
     const auth = async () => {
-      console.log(validate())
       if (!validate()) return
       try {
         const result = await makeRequest()
-        console.log(result.status)
+
         if (result.status === 403) {
           // vForm.password.$errors.push(result.data.message)
-          console.log(vForm)
         }
-        console.log(result)
+
         router.push('/main')
       } catch (err) {
-        console.log(err)
+        return err
       }
       // await makeRequestMe()
     }
