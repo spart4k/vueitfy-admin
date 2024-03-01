@@ -17,7 +17,6 @@ import FormDefault from '@/components/Form/default/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
-// import useNavigation from '@/compositions/useNavigation'
 
 import {
   headDocumentConfigEdit,
@@ -26,7 +25,6 @@ import {
   fieldsBaseDefaulrForm,
   fieldsDocumentDefaultForm,
 } from '@/pages/personal/index'
-// const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {}
 

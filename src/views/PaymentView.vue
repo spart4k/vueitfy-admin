@@ -1,10 +1,7 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableDefault
-      @changeheadershow="changeheadershow"
-      :options="paymentConfig"
-    />
+    <TableDefault @changeheadershow="changeheadershow" :options="payment" />
   </div>
   <!--</Layout>-->
 </template>
@@ -32,36 +29,38 @@ export default {
   },
   async mounted() {},
   setup() {
-    let paymentConfig = {}
-    const loading = ref(true)
-    const initConfig = () => {
-      // const changeActionTo = (array, key, oldPath, newPath) => {
-      //   console.log('changeActionTo')
-      //   array.forEach((tab) => {
-      //     if (tab.path === oldPath) {
-      //       tab.path = newPath
-      //     }
-      //     if (tab.actions) {
-      //       tab.actions.forEach((el) => {
-      //         if (el.action === 'closePopup') {
-      //           el.to = key
-      //         }
-      //       })
-      //     }
-      //   })
-      // }
-      // const personalConfigForms = _.cloneDeep(personalConfig)
-      paymentConfig = _.cloneDeep(payment)
-      // changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
-      // paymentConfig.detail.tabs.push(personalConfigForms)
-      loading.value = false
-    }
+    // let paymentConfig = {}
+    // const loading = ref(false)
+    // const initConfig = () => {
+    //   // const changeActionTo = (array, key, oldPath, newPath) => {
+    //   //   console.log('changeActionTo')
+    //   //   array.forEach((tab) => {
+    //   //     if (tab.path === oldPath) {
+    //   //       tab.path = newPath
+    //   //     }
+    //   //     if (tab.actions) {
+    //   //       tab.actions.forEach((el) => {
+    //   //         if (el.action === 'closePopup') {
+    //   //           el.to = key
+    //   //         }
+    //   //       })
+    //   //     }
+    //   //   })
+    //   // }
+    //   // const personalConfigForms = _.cloneDeep(personalConfig)
+    //   console.log('payment', payment)
+    //   // paymentConfig = _.cloneDeep(payment)
+    //   // changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
+    //   // paymentConfig.detail.tabs.push(personalConfigForms)
+    //   // loading.value = true
+    // }
     onMounted(() => {
-      initConfig()
+      // initConfig()
     })
     return {
-      // payment,
-      paymentConfig,
+      // loading,
+      // paymentConfig,
+      payment,
     }
   },
 }

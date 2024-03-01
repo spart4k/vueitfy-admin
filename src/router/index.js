@@ -129,14 +129,6 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'payment-load',
-        path: 'load',
-        meta: {
-          mode: ['load'],
-        },
-        component: Detail,
-      },
-      {
         name: 'payment/:id',
         path: ':id',
         meta: {
@@ -146,20 +138,19 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'payment-load',
+        path: 'load',
+        meta: {
+          mode: ['load'],
+        },
+        component: Detail,
+      },
+      {
         name: 'payment/personal-edit',
         path: ':personal_id',
         meta: {
           mode: ['edit-personal'],
           label: 'Редактировать',
-        },
-        component: Detail,
-      },
-      {
-        name: 'payment/:id',
-        path: ':id',
-        meta: {
-          mode: ['edit'],
-          label: 'Редактировать начисление',
         },
         component: Detail,
       },

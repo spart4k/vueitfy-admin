@@ -51,11 +51,13 @@ paymentConfig.options = {
   urlDetail: 'personal_id',
   alias: 'pb.personal_id',
 }
+
 zayavkaConfig.options = {
   ...zayavkaConfig.options,
   urlDetail: 'personal_id',
   alias: 'z.personal_id',
 }
+
 const headDateCreate = {
   title: 'Создано',
   type: 'default',
@@ -130,13 +132,11 @@ paymentConfig.detail.requestId = 'payment'
 paymentConfig.detail.tabs[0].path = 'edit-payment'
 paymentConfig.detail.tabs[0].routeParam = 'payment'
 paymentConfig.detail.tabs[0].id = 15
-console.log(zayavkaConfig)
-
+ 
 // Convert zayavka view
 zayavkaConfig.detail.popupIndex = 2
 zayavkaConfig.detail.requestId = 'zayavka'
 const editTabZayavka = zayavkaConfig.detail.tabs.find((el) => el.path === 'id')
-console.log(editTabZayavka)
 editTabZayavka.path = 'edit-zayavka'
 editTabZayavka.routeParam = 'edit-zayavka'
 
@@ -154,10 +154,6 @@ const changeActionTo = (array, key) => {
 }
 console.log(paymentConfig)
 changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
-// import useNavigation from '@/compositions/useNavigation'
-// import { payment, userKeys } from '@/pages'
-
-// const { addOrUpdateURLParam } = useNavigation({})
 
 function consoleText(row) {
   console.log(row, 2)
