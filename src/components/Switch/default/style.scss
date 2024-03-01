@@ -1,0 +1,28 @@
+.switch {
+  &-wrap {
+    display: flex;
+    padding: 3px;
+    border-radius: 12px;
+    background-color: #d6dbe2;
+    position: relative;
+  }
+  &-tab {
+    padding: 6px 10px;
+    border-radius: 9px;
+    z-index: 2;
+    &--active {
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &-thumb {
+    position: absolute;
+    height: calc(100% - 3px * 2);
+    // background-color: red;
+    background-color: #ffffff;
+    border-radius: 9px;
+    transition: 0.2s;
+    z-index: 1;
+  }
+}
