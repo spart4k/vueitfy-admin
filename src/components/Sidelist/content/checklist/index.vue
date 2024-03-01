@@ -2,49 +2,21 @@
   <v-tabs-items class="h-100" v-model="stage">
     <v-tab-item class="h-100">
       <div class="v-panel d-flex flex-column">
-        <div class="v-panel-heading">
-          <v-btn
-            class="v-panel-heading_item v-panel-heading_item__left"
-            icon
-            x-small
-            @click="$emit('closePanel')"
-          >
-            <v-icon small color="disabled">$IconArrowRight</v-icon></v-btn
-          >
-          План закрытия
-        </div>
-        <div class="overflow-auto flex-grow-1">
-          <div class="v-panel-item">
-            <div class="v-panel-item-container">
-              <div class="v-panel-item-container_name">
-                РЦ Самара
-                <v-btn icon x-small>
-                  <v-icon x-small color="success">$IconLock</v-icon></v-btn
-                >
-              </div>
-              <v-btn icon x-small @click="stage++">
-                <v-icon small color="disabled">$IconArrowRight</v-icon></v-btn
-              >
-            </div>
-            <div class="v-panel-item-container">
-              <div class="v-panel-item-container-info">
-                <div class="v-panel-item-container-info_item">
-                  А:&nbsp;<v-icon x-small color="success">$IconGalka</v-icon>
-                </div>
-                <div class="v-panel-item-container-info_item">
-                  Б/П:&nbsp;<v-icon x-small color="error">$IconClose</v-icon>
-                </div>
-                <div class="v-panel-item-container-info_item">
-                  К:&nbsp;<v-icon x-small color="success">$IconGalka</v-icon>
-                </div>
-                <div class="v-panel-item-container-info_item">
-                  Г:&nbsp;<v-icon x-small color="error">$IconClose</v-icon>
-                </div>
-              </div>
-              <div class="v-panel-item-container_sum">Сумма: 500000</div>
-            </div>
+        <div class="pl-7 pr-7">
+          <div class="v-panel-heading">
+            <v-btn
+              class="v-panel-heading_item v-panel-heading_item__left"
+              icon
+              x-small
+              @click="$emit('closePanel')"
+            >
+              <v-icon small color="disabled">$IconArrowRight</v-icon></v-btn
+            >
+            План закрытия
           </div>
-          <div class="v-panel-item">
+        </div>
+        <div class="overflow-auto flex-grow-1 pl-7 pr-7">
+          <div class="v-panel-item" v-for="(item, i) in 16" :key="i">
             <div class="v-panel-item-container">
               <div class="v-panel-item-container_name">
                 РЦ Самара
@@ -80,30 +52,35 @@
 
     <v-tab-item class="h-100">
       <div class="v-panel d-flex flex-column">
-        <div class="v-panel-heading">
-          <v-btn
-            class="v-panel-heading_item v-panel-heading_item__left"
-            icon
-            x-small
-            @click="stage--"
-          >
-            <v-icon small color="disabled">$IconArrowLeft</v-icon></v-btn
-          >
-          <div class="v-panel-heading_relative">
+        <div class="pl-7 pr-7">
+          <div class="v-panel-heading">
             <v-btn
+              class="v-panel-heading_item v-panel-heading_item__left"
               icon
               x-small
-              class="v-panel-heading_item v-panel-heading_item__center"
+              @click="stage--"
             >
-              <v-icon small color="disabled">$IconLock</v-icon></v-btn
+              <v-icon small color="disabled">$IconArrowLeft</v-icon></v-btn
             >
-            РЦ Самара
-          </div>
-          <div class="v-panel-heading_item v-panel-heading_item__right">
-            Январь 2024
+            <div class="v-panel-heading_relative">
+              <v-btn
+                icon
+                x-small
+                class="v-panel-heading_item v-panel-heading_item__center"
+              >
+                <v-icon small color="disabled">$IconLock</v-icon></v-btn
+              >
+              РЦ Самара
+            </div>
+            <div class="v-panel-heading_item v-panel-heading_item__right">
+              Январь 2024
+            </div>
           </div>
         </div>
-        <v-expansion-panels multiple class="overflow-auto d-block flex-grow-1">
+        <v-expansion-panels
+          multiple
+          class="overflow-auto d-block flex-grow-1 pl-7 pr-7"
+        >
           <v-expansion-panel v-for="(item, i) in 6" :key="i">
             <v-expansion-panel-header>
               <v-btn @click.stop icon x-small class="mr-1 flex-grow-0">
