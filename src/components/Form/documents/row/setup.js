@@ -493,6 +493,7 @@ export default {
           result = dateField({
             label: switchLabel(key),
             name: key,
+            subtype: 'period',
             value: '',
             type: 'date',
             //subtype: 'single',
@@ -795,6 +796,9 @@ export default {
           break
         case 'migr_card_data_out':
           result = 'До'
+          break
+        case 'inn':
+          result = 'ИНН'
           break
         case 'registration_date_c_docs_in':
           result = 'C'
