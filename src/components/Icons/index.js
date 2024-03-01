@@ -43,6 +43,7 @@ import IconArrowRight from './arrow-right/arrow-right.vue'
 import IconArrowUp from './arrow-up/arrow-up.vue'
 import IconNotificationBell from './notification/notification.vue'
 import IconMailActive from './mail-active/mail-active.vue'
+import IconLock from './lock/lock.vue'
 
 import IconCheckPoten from './check-poten/check-poten.vue'
 import IconDmc from './dmc/dmc.vue'
@@ -71,6 +72,9 @@ import IconGroups from './groups/groups.vue'
 export default {
   IconAdd: {
     component: IconAdd,
+  },
+  IconLock: {
+    component: IconLock,
   },
   IconGroups: {
     component: IconGroups,

@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 
 import vContextmenu from '@/components/Contextmenu/default/index.vue'
+import vSidelist from '@/components/Sidelist/default/index.vue'
 import Sheet from '@/components/Sheet/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
 import DropZone from '@/components/Dropzone/default/index.vue'
@@ -29,6 +30,7 @@ const table = {
     //vInput,
     vIconSort,
     vContextmenu,
+    vSidelist,
     Sheet,
     TableFilter,
     Popup,
