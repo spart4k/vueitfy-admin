@@ -1,6 +1,7 @@
 import filters from './filters'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import FormDefault from '@/components/Form/default/index.vue'
+import FormOutputCorrect from '@/components/Form/output/index.vue'
 import { stringAction } from '@/utils/actions'
 import {
   dateField,
@@ -3103,7 +3104,7 @@ const config = {
       {
         id: 0,
         name: 'Добавить начисление',
-        type: 'FormDefault',
+        type: 'FormOutputCorrect',
         path: 'add-edit-logistic',
         detail: {
           type: 'popup', // String 'popup' or 'page'
