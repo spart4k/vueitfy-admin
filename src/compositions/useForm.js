@@ -100,7 +100,9 @@ export default function ({
       Vue.set(formData, key, ref(fields[key].default))
     }
   }
-
+  const popupForm = ref({
+    isShow: false,
+  })
   const $errors = ref({})
   const errorsCount = () => {
     $errors.value = Object.keys(formData).reduce((obj, key) => {
@@ -314,7 +316,6 @@ export default function ({
       loading.value = false
     }
   }
-
   const stageRequest = async (action) => {
     const sortedData = sortData({ action })
     loading.value = true
@@ -327,6 +328,27 @@ export default function ({
     const response = responseHandler({ action, data })
     if (!response) return false
     return true
+  }
+
+  const appendFieldHandler = ({ action, field }) => {
+    console.log(action)
+    console.log(form)
+    if (form.detail.type === 'popup') {
+      //router.push({
+      //  path: `${route.}./1`
+      //})
+      let requestId = 'id'
+      if (form.detail.requestId) requestId = form.detail.requestId
+
+      router.push({
+        name: action.action.name,
+        // name: `${route.name}/:${requestId}`,
+        // params: {
+        //   [requestId]: row.id,
+        // },
+      })
+      popupForm.value.isShow = true
+    }
   }
 
   const responseHandler = ({ action, data }) => {
@@ -1567,5 +1589,7 @@ export default function ({
     isHideBtn,
     colsField,
     entityData,
+    appendFieldHandler,
+    popupForm,
   }
 }

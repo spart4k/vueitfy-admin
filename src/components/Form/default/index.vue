@@ -73,7 +73,33 @@
               clearable
               :readonly="readonlyField(field)"
               :disabled="disabledField(field)"
-            />
+            >
+              {{ field?.appendAction }}
+              <template v-if="field?.appendAction?.length" v-slot:append>
+                <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->
+                <v-tooltip
+                  v-for="action in field.appendAction"
+                  :key="action.label"
+                  top
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="appendFieldHandler({ action, field })"
+                      class=""
+                      small
+                    >
+                      <v-tooltip activator="parent" location="top"
+                        >Tooltip</v-tooltip
+                      >
+                      <v-icon> {{ action.icon }} </v-icon></v-btn
+                    >
+                  </template>
+                  <span>{{ action.label }}</span>
+                </v-tooltip>
+              </template>
+            </v-text-field>
             <v-checkbox
               v-else-if="showField('checkbox', field)"
               v-model="formData[field.name]"
@@ -161,6 +187,29 @@
         </v-row>
       </v-container>
     </v-form>
+    <Popup
+      closeButton
+      @close="closePopupForm"
+      :options="{
+        width: tab?.detail.width,
+        portal: `table-detail${
+          tab?.detail?.popupIndex ? tab?.detail?.popupIndex : ''
+        }`,
+      }"
+      v-if="popupForm.isShow"
+    >
+      <!--<Detail
+        class="cols-6"
+        :detail="options.detail"
+        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
+      />-->
+      <router-view
+        :detail="tab.detail"
+        :class="[...tab.detail.bootstrapClass, ...tab.detail.classes]"
+        @closePopup="closePopupForm"
+        @getItems="getItems"
+      />
+    </Popup>
   </div>
 </template>
 <script src="./setup.js"></script>
