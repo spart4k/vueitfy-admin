@@ -26,6 +26,13 @@ export default {
       //   dataForService = await getServiceInfo(serviceId)
       // }
       // formGroup.value = [...formGroup.value]
+      services.services.push({
+        service_id: null,
+        qty: 0,
+        price: 0,
+        sum: 0,
+      })
+      console.log(services.services)
     }
     const services = reactive({
       services: [
@@ -48,10 +55,11 @@ export default {
       sum: 1933,
     })
     onMounted(() => {
-      addGroup()
+      // addGroup()
     })
     return {
       services,
+      addGroup,
     }
   },
 }

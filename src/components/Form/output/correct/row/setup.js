@@ -8,6 +8,7 @@ import {
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import useForm from '@/compositions/useForm.js'
+import Autocomplete from '@/components/Autocomplete'
 export default {
   name: 'form-output-correct-row',
   props: {
@@ -19,6 +20,9 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  components: {
+    Autocomplete,
   },
   setup(props, ctx) {
     const context = {
@@ -79,6 +83,7 @@ export default {
         case 'service_id':
           result = selectField({
             label: switchLabel(key),
+            alias: 'service_spr',
             name: key,
             // alias: 'status_pt',
             placeholder: '',
@@ -276,26 +281,6 @@ export default {
       // }
       // formGroup.value = [...formGroup.value]
     }
-    const services = reactive({
-      services: [
-        {
-          service_id: 9,
-          qty: '161',
-          price: 11,
-          sum: 1771,
-        },
-        {
-          service_id: 10,
-          qty: '54',
-          price: 3,
-          sum: 162,
-        },
-      ],
-      payment_id: 1,
-      is_hold: false,
-      is_pay: false,
-      sum: 1933,
-    })
     const fieldsData = ref([])
     // const fields = ref([])
     const initFields = () => {
@@ -346,7 +331,7 @@ export default {
       name: 'Данные документов',
       lists: [
         {
-          alias: 'sex',
+          alias: 'service_spr',
           filter: [],
         },
       ],
@@ -369,9 +354,64 @@ export default {
       makeRequestList,
       //makeRequestList,
     })
+    const listData = ref({})
+    const loadList = async () => {
+      const listQuery = form?.lists?.flatMap((list) => {
+        let filter = list.filter.reduce((acc, el) => {
+          const source = eval(el.source)
+          if (
+            source &&
+            source[el.field] !== null &&
+            source[el.field] !== undefined &&
+            source[el.field] !== ''
+          ) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
+              type: el.type,
+            })
+          } else if (el.sendEmpty) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: el.value,
+              type: el.type,
+            })
+          }
+          return acc
+        }, [])
+
+        const element = {
+          alias: list.alias,
+          filter,
+        }
+        return element
+      })
+      const lists = await makeRequestList(listQuery)
+      listData.value = lists.data
+      for (let keyList in lists.data) {
+        const field = form?.fields.find((el) => {
+          return el.alias ? el.alias === keyList : el.name === keyList
+        })
+        console.log(field)
+        if (field) {
+          field.hideItems = lists.data[keyList]
+          // field.items =
+          Vue.set(field, 'items', lists.data[keyList])
+          if (field.items.length === 1) {
+            // Если массив, вставить массив
+            if (field.putFirst)
+              formData[field.name] = field.items[0][field.selectOption.value]
+          }
+        }
+      }
+    }
+
     onMounted(() => {
       // addGroup()
       // initFields()
+      loadList()
     })
     return {
       showField,
@@ -382,7 +422,6 @@ export default {
       touchedForm,
       openMenu,
       fieldsData,
-      services,
     }
   },
 }
