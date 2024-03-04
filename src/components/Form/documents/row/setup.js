@@ -747,7 +747,7 @@ export default {
           result = 'Кем выдан'
           break
         case 'snils':
-          result = 'Снилс'
+          result = 'Номер'
           break
         case 'invoice':
           result = 'Номер Р/С'
@@ -792,13 +792,13 @@ export default {
           result = 'Номер'
           break
         case 'migr_card_data_in':
-          result = 'С'
+          result = 'Дата въезда'
           break
         case 'migr_card_data_out':
-          result = 'До'
+          result = 'Дата выезда'
           break
         case 'inn':
-          result = 'ИНН'
+          result = 'Номер'
           break
         case 'registration_date_c_docs_in':
           result = 'C'
