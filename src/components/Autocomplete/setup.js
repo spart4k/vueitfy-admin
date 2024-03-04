@@ -110,7 +110,11 @@ export default {
         ? true
         : queryData.totalPage > queryData.page
       if (isIntersecting) {
-        if (props.field.items.length && !props.field.loading && isAtFinalPage) {
+        if (
+          props.field?.items.length &&
+          !props.field.loading &&
+          isAtFinalPage
+        ) {
           props.field.page = props.field.page + 1
           // (queryData?.totalPage > queryData?.page || queryData.page === null)
           const params = {
