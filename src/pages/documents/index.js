@@ -19,7 +19,7 @@ import { ref } from 'vue'
 import _, { functionsIn } from 'lodash'
 // import personalPage from '@/pages/personal/index'
 
-import personalPage2 from './formPersonal'
+// import personalPage2 from './formPersonal'
 
 //
 //
@@ -1434,7 +1434,7 @@ const defaultForm = [
       },
     ],
   },
-  ...personalPage2,
+  // ...personalPage2,
   // {
   //   path: 'personalById',
   //   id: 6,

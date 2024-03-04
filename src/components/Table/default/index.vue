@@ -288,7 +288,7 @@
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
                         @click="
-                          action.function(Object.byString(row.row, cell.value))
+                          downloadFile(Object.byString(row.row, cell.value))
                         "
                       >
                         <v-icon small>

@@ -1,6 +1,6 @@
 import filters from './filters'
-import addEditForm from './config/add-edit-form.js'
-import loadForm from './config/load-form.js'
+import formAddEdit from './config/form-add-edit.js'
+import formLoad from './config/form-load.js'
 
 function consoleText(row) {}
 
@@ -509,7 +509,7 @@ const config = {
     alias: 'payment',
     url: '/get/form/',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-    tabs: [addEditForm, loadForm],
+    tabs: [formAddEdit, formLoad],
     activeTab: null,
   },
   filters,

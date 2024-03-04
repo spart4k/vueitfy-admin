@@ -1,7 +1,7 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableDefault @changeheadershow="changeheadershow" :options="payment" />
+    <TableDefault @changeheadershow="changeheadershow" :options="zxc" />
   </div>
   <!--</Layout>-->
 </template>
@@ -29,6 +29,8 @@ export default {
   },
   async mounted() {},
   setup() {
+    const zxc = payment
+    console.log('defaultForm', personalConfig)
     // let paymentConfig = {}
     // const loading = ref(false)
     // const initConfig = () => {
@@ -60,6 +62,7 @@ export default {
     return {
       // loading,
       // paymentConfig,
+      zxc,
       payment,
     }
   },

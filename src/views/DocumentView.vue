@@ -29,7 +29,6 @@
 
 <script>
 import { ref, toRefs, watch } from 'vue'
-//import formPersonal from '@/pages/personal/formPersonal'
 import { documents } from '@/pages'
 // import { warn } from '@vue/composition-api'
 

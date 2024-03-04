@@ -27,7 +27,6 @@
       </div>
       <v-tabs-items v-model="activeTab">
         <v-tab-item v-for="item in availableTabsAll" :key="item.id">
-          <!--{{ item.type }}-->
           <component
             :content="porpsContent"
             :loading="loading"

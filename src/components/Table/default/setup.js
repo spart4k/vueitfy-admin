@@ -838,6 +838,10 @@ const table = {
       emit('closePopup', action.to)
     }
 
+    const downloadFile = (val) => {
+      Vue.downloadFile(val)
+    }
+
     return {
       // DATA
       headerOptions,
@@ -894,6 +898,7 @@ const table = {
       availablePanelBtn,
       clickHandler,
       insertStyle,
+      downloadFile,
       contextMenuRef,
     }
   },

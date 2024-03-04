@@ -291,7 +291,7 @@ const routes = [
           },
           {
             name: 'personal/:id/:object_id',
-            path: ':object_id',
+            path: '/personal/:id/:object_id',
             meta: {
               mode: ['edit', 'object_id'],
             },
