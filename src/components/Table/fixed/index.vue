@@ -249,7 +249,7 @@
           </thead>
 
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
-            <v-sidelist />
+            <v-sidelist :date="currentDate" />
             <template v-for="row in options.data.rows">
               <tr
                 :key="row.row.id"

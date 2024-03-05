@@ -10,7 +10,11 @@ export default {
   components: {
     Checklist,
   },
-  props: {},
+  props: {
+    date: {
+      type: String,
+    },
+  },
   setup() {
     const panel = ref({
       isShow: false,

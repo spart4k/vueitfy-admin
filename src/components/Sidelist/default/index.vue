@@ -19,12 +19,9 @@
       >
         <component
           :is="'Checklist'"
+          :date="$props.date"
           @closePanel="closePanel"
-          v-if="!panel.loading"
         />
-        <div v-else class="d-flex align-center justify-center h-100">
-          <v-progress-circular color="primary" :size="80" indeterminate />
-        </div>
       </div>
     </transition>
   </div>
