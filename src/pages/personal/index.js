@@ -17,123 +17,120 @@ import formKeyEdit from './config/form-key-edit.js'
 import formBind from './config/form-bind.js'
 import formLoad from './config/form-load.js'
 
-import paymentConfigOrig from '@/pages/payment/index'
-import zayavkaConfigOrig from '@/pages/zayavka/index'
+// import paymentConfigOrig from '@/pages/payment/index'
+// import zayavkaConfigOrig from '@/pages/zayavka/index'
 
-const paymentConfig = _.cloneDeep(paymentConfigOrig)
-const zayavkaConfig = _.cloneDeep(zayavkaConfigOrig)
-const LIST_HEAD_PAYMENTS = [
-  'status_name',
-  'account_name',
-  'date_add',
-  'bank_fio',
-  'total',
-]
-const LIST_PANEL_PAYMENTS = ['Обновить']
-const LIST_HEAD_ZAYAVKA = [
-  'status_name',
-  'category_name',
-  'schet',
-  'date_create',
-  'total',
-  'price',
-]
+// const paymentConfig = _.cloneDeep(paymentConfigOrig)
+// const zayavkaConfig = _.cloneDeep(zayavkaConfigOrig)
+// const LIST_HEAD_PAYMENTS = [
+//   'status_name',
+//   'account_name',
+//   'date_add',
+//   'bank_fio',
+//   'total',
+// ]
+// const LIST_PANEL_PAYMENTS = ['Обновить']
+// const LIST_HEAD_ZAYAVKA = [
+//   'status_name',
+//   'category_name',
+//   'schet',
+//   'date_create',
+//   'total',
+//   'price',
+// ]
 
-paymentConfig.options = {
-  ...paymentConfig.options,
-  urlDetail: 'personal_id',
-  alias: 'pb.personal_id',
-}
+// paymentConfig.options = {
+//   ...paymentConfig.options,
+//   urlDetail: 'personal_id',
+//   alias: 'pb.personal_id',
+// }
 
-zayavkaConfig.options = {
-  ...zayavkaConfig.options,
-  urlDetail: 'personal_id',
-  alias: 'z.personal_id',
-}
+// zayavkaConfig.options = {
+//   ...zayavkaConfig.options,
+//   urlDetail: 'personal_id',
+//   alias: 'z.personal_id',
+// }
 
-const headDateCreate = {
-  title: 'Создано',
-  type: 'default',
-  align: 'center',
-  fixed: {
-    value: false,
-    position: 'left',
-  },
-  sorts: [
-    {
-      type: 'string',
-      default: '',
-      value: '',
-      isShow: false,
-    },
-  ],
-  alias: 'z.date_create',
-  isShow: true,
-  width: '40',
-  value: 'date_create',
-  search: {
-    field: '',
-    isShow: true,
-  },
-}
-zayavkaConfig.head.push(headDateCreate)
+// const headDateCreate = {
+//   title: 'Создано',
+//   type: 'default',
+//   align: 'center',
+//   fixed: {
+//     value: false,
+//     position: 'left',
+//   },
+//   sorts: [
+//     {
+//       type: 'string',
+//       default: '',
+//       value: '',
+//       isShow: false,
+//     },
+//   ],
+//   alias: 'z.date_create',
+//   isShow: true,
+//   width: '40',
+//   value: 'date_create',
+//   search: {
+//     field: '',
+//     isShow: true,
+//   },
+// }
+// zayavkaConfig.head.push(headDateCreate)
 
-const actions = [
-  stringAction({
-    text: 'Закрыть',
-    type: 'submit',
-    color: 'textDefault',
-    name: 'closePopup',
-    action: 'closePopup',
-    to: 'personal',
-    skipValidation: true,
-  }),
-]
+// const actions = [
+//   stringAction({
+//     text: 'Закрыть',
+//     type: 'submit',
+//     color: 'textDefault',
+//     name: 'closePopup',
+//     action: 'closePopup',
+//     skipValidation: true,
+//   }),
+// ]
 
-const converConfig = (config, listHead, listPanel) => {
-  const spliceHeads = (list) => {
-    config.head = config.head.flatMap((head) => {
-      const { value } = head
-      if (list.includes(value)) {
-        return head
-      } else {
-        return []
-      }
-    })
-  }
-  const splicePanel = (list) => {
-    config.panel.buttons = config.panel.buttons.flatMap((button) => {
-      const { label } = button
-      if (list.includes(label)) {
-        return button
-      } else {
-        return []
-      }
-    })
-  }
-  if (config.filter) {
-    config.filter = undefined
-  }
-  config.actions = actions
-  spliceHeads(listHead)
-  splicePanel(listPanel)
-}
+// const converConfig = (config, listHead, listPanel) => {
+//   const spliceHeads = (list) => {
+//     config.head = config.head.flatMap((head) => {
+//       const { value } = head
+//       if (list.includes(value)) {
+//         return head
+//       } else {
+//         return []
+//       }
+//     })
+//   }
+//   const splicePanel = (list) => {
+//     config.panel.buttons = config.panel.buttons.flatMap((button) => {
+//       const { label } = button
+//       if (list.includes(label)) {
+//         return button
+//       } else {
+//         return []
+//       }
+//     })
+//   }
+//   if (config.filter) {
+//     config.filter = undefined
+//   }
+//   config.actions = actions
+//   spliceHeads(listHead)
+//   splicePanel(listPanel)
+// }
 
-// Convert payment view
-converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
-converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
-paymentConfig.detail.popupIndex = 2
-paymentConfig.detail.requestId = 'payment'
-paymentConfig.detail.tabs[0].path = 'edit-payment'
-paymentConfig.detail.tabs[0].routeParam = 'payment'
-paymentConfig.detail.tabs[0].id = 15
+// // Convert payment view
+// converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
+// converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
+// paymentConfig.detail.requestId = 'payment'
+// paymentConfig.detail.tabs[0].path = 'edit-payment'
+// paymentConfig.detail.tabs[0].routeParam = 'payment'
+// paymentConfig.detail.tabs[0].id = 15
 
-// Convert zayavka view
-zayavkaConfig.detail.popupIndex = 2
-zayavkaConfig.detail.requestId = 'zayavka'
-const editTabZayavka = zayavkaConfig.detail.tabs.find((el) => el.path === 'id')
-editTabZayavka.path = 'edit-zayavka'
-editTabZayavka.routeParam = 'edit-zayavka'
+// // Convert zayavka view
+// zayavkaConfig.detail.requestId = 'zayavka'
+// const editTabZayavka = zayavkaConfig.detail.tabs.find((el) => el.path === 'id')
+// editTabZayavka.path = 'edit-zayavka'
+// editTabZayavka.routeParam = 'edit-zayavka'
 
 function consoleText(row) {
   console.log(row, 2)
@@ -156,31 +153,31 @@ export const defaultForm = [
   formPersonalDocs,
   tablePersonalScan,
   tablePersonalBank,
-  {
-    path: 'edit',
-    id: 4,
-    name: 'Начисления и выплаты',
-    type: TableDefault,
-    active: false,
-    config: paymentConfig,
-    isShow: {
-      value: true,
-      condition: [
-        {
-          permissions: [16, 19],
-          type: false,
-        },
-      ],
-    },
-  },
-  {
-    path: 'edit',
-    id: 1,
-    name: 'Расход',
-    type: TableDefault,
-    active: false,
-    config: zayavkaConfig,
-  },
+  // {
+  //   path: 'edit',
+  //   id: 4,
+  //   name: 'Начисления и выплаты',
+  //   type: TableDefault,
+  //   active: false,
+  //   config: paymentConfig,
+  //   isShow: {
+  //     value: true,
+  //     condition: [
+  //       {
+  //         permissions: [16, 19],
+  //         type: false,
+  //       },
+  //     ],
+  //   },
+  // },
+  // {
+  //   path: 'edit',
+  //   id: 1,
+  //   name: 'Расход',
+  //   type: TableDefault,
+  //   active: false,
+  //   config: zayavkaConfig,
+  // },
   tablePersonalDebt,
   tablePersonalOverpayments,
   formPersonalAdd,

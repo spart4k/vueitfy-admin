@@ -32,6 +32,10 @@ import { config } from '@/pages/personal/index'
 import store from '@/store'
 import _ from 'lodash'
 
+import { stringAction } from '@/utils/actions'
+import paymentConfigOrig from '@/pages/payment/index'
+import { zayavkaConfigOrig } from '@/pages/zayavka/index'
+
 //import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
@@ -51,22 +55,12 @@ export default {
   setup() {
     const activeTab = ref(0)
     const permission = computed(() => store.state.user.permission_id)
-    const directions = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
+
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
-
       return el.permissions.includes(permission.value)
     }
-    const checkIncludesDirections = (el) => {
-      //return el.direction_id.includes(directions.value)
 
-      if (!el.direction_id) return true
-      else {
-        return !!_.intersection(el.direction_id, directions.value).length
-      }
-    }
     const availableTabs = computed(() => {
       return config.tabs.filter((tab) => {
         if (!tab.isShow) return tab
@@ -74,10 +68,125 @@ export default {
           return tab.isShow.condition.some((el) => {
             return checkIncludesPermissions(el) === el.type
           })
-          // if ()
         }
       })
     })
+
+    const paymentConfig = _.cloneDeep(paymentConfigOrig)
+    const zayavkaConfig = _.cloneDeep(zayavkaConfigOrig)
+
+    // const LIST_HEAD_PAYMENTS = [
+    //   'status_name',
+    //   'account_name',
+    //   'date_add',
+    //   'bank_fio',
+    //   'total',
+    // ]
+    // const LIST_PANEL_PAYMENTS = ['Обновить']
+    // const LIST_HEAD_ZAYAVKA = [
+    //   'status_name',
+    //   'category_name',
+    //   'schet',
+    //   'date_create',
+    //   'total',
+    //   'price',
+    // ]
+
+    // paymentConfig.options = {
+    //   ...paymentConfig.options,
+    //   urlDetail: 'personal_id',
+    //   alias: 'pb.personal_id',
+    // }
+
+    // zayavkaConfig.options = {
+    //   ...zayavkaConfig.options,
+    //   urlDetail: 'personal_id',
+    //   alias: 'z.personal_id',
+    // }
+
+    // const headDateCreate = {
+    //   title: 'Создано',
+    //   type: 'default',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'left',
+    //   },
+    //   sorts: [
+    //     {
+    //       type: 'string',
+    //       default: '',
+    //       value: '',
+    //       isShow: false,
+    //     },
+    //   ],
+    //   alias: 'z.date_create',
+    //   isShow: true,
+    //   width: '40',
+    //   value: 'date_create',
+    //   search: {
+    //     field: '',
+    //     isShow: true,
+    //   },
+    // }
+    // zayavkaConfig.head.push(headDateCreate)
+
+    // const actions = [
+    //   stringAction({
+    //     text: 'Закрыть',
+    //     type: 'submit',
+    //     color: 'textDefault',
+    //     name: 'closePopup',
+    //     action: 'closePopup',
+    //     skipValidation: true,
+    //   }),
+    // ]
+
+    // const converConfig = (config, listHead, listPanel) => {
+    //   const spliceHeads = (list) => {
+    //     config.head = config.head.flatMap((head) => {
+    //       const { value } = head
+    //       if (list.includes(value)) {
+    //         return head
+    //       } else {
+    //         return []
+    //       }
+    //     })
+    //   }
+    //   const splicePanel = (list) => {
+    //     config.panel.buttons = config.panel.buttons.flatMap((button) => {
+    //       const { label } = button
+    //       if (list.includes(label)) {
+    //         return button
+    //       } else {
+    //         return []
+    //       }
+    //     })
+    //   }
+    //   if (config.filter) {
+    //     config.filter = undefined
+    //   }
+    //   config.actions = actions
+    //   spliceHeads(listHead)
+    //   splicePanel(listPanel)
+    // }
+
+    // // Convert payment view
+    // converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
+    // converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
+    // paymentConfig.detail.requestId = 'payment'
+    // paymentConfig.detail.tabs[0].path = 'edit-payment'
+    // paymentConfig.detail.tabs[0].routeParam = 'payment'
+    // paymentConfig.detail.tabs[0].id = 15
+
+    // // Convert zayavka view
+    // zayavkaConfig.detail.requestId = 'zayavka'
+    // const editTabZayavka = zayavkaConfig.detail.tabs.find(
+    //   (el) => el.path === 'id'
+    // )
+    // editTabZayavka.path = 'edit-zayavka'
+    // editTabZayavka.routeParam = 'edit-zayavka'
+
     return {
       config,
       activeTab,

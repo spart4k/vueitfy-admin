@@ -267,7 +267,6 @@ const bankConfig = {
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
-    popupIndex: 2,
     getOnClose: true,
     classes: [''], // List class
     width: '500px',

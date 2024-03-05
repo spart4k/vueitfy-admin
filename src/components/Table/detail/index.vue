@@ -19,6 +19,7 @@
           color="basil"
           class="p-5"
           v-show="availableTabsAll.length > 1"
+          mobile-breakpoint="0"
         >
           <v-tab v-for="item in availableTabsAll" :key="item.id">
             {{ item.name }}

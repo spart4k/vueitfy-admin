@@ -5,8 +5,8 @@
     </component>
     <Notifier />
     <portal-target name="filter" />
-    <portal-target name="table-detail" />
-    <portal-target name="table-detail2" />
+    <portal-target name="table-detail" multiple />
+    <!-- <portal-target name="table-detail2" /> -->
   </v-app>
 </template>
 

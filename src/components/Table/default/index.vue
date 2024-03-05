@@ -443,9 +443,7 @@
       @close="closePopupForm"
       :options="{
         width: options.detail.width,
-        portal: `table-detail${
-          options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
-        }`,
+        portal: 'table-detail',
       }"
       v-if="
         options.detail && options.detail.type === 'popup' && popupForm.isShow
