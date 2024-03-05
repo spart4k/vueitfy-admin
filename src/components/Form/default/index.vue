@@ -89,6 +89,7 @@
                       @click="appendFieldHandler({ action, field })"
                       class=""
                       small
+                      v-if="appendActionShow(action)"
                     >
                       <v-tooltip activator="parent" location="top"
                         >Tooltip</v-tooltip
@@ -208,7 +209,7 @@
         :class="[...tab.detail.bootstrapClass, ...tab.detail.classes]"
         @closePopup="closePopupForm"
         @getItems="getItems"
-        @refresh="getData"
+        @refreshData="getData"
         :formDataParent="formData"
       />
     </Popup>

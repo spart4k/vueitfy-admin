@@ -485,9 +485,18 @@ export default {
       }
     }
     const errorSerivce = computed(() => {
-      return rejectedPrice.value
-        ? [...formErrors.value.service_id, ...rejectedPrice.value]
-        : formErrors.value.service_id
+      // console.log(vForm?.value?.service_id.$errors)
+      let stack = []
+      console.log(formErrors.value)
+      if (formErrors.value?.service_id?.length)
+        stack.push(...formErrors.value.service_id)
+      if (rejectedPrice.value) {
+        stack.push(...rejectedPrice.value)
+      }
+      return stack
+      // return rejectedPrice.value
+      //   ? [...vForm?.value?.service_id.$errors, ...rejectedPrice.value]
+      //   : vForm?.value?.service_id.$errors.length
     })
     watch(
       (el) => formData.qty,

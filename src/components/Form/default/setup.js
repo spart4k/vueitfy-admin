@@ -199,6 +199,7 @@ export default {
       colsField,
       appendFieldHandler,
       popupForm,
+      appendActionShow,
     } = useForm({
       form: props.tab,
       context,
@@ -249,6 +250,7 @@ export default {
       appendFieldHandler,
       popupForm,
       closePopupForm,
+      appendActionShow,
     }
   },
 }

@@ -331,6 +331,63 @@ export default function ({
     return true
   }
 
+  const appendActionShow = (action) => {
+    const checkIncludesData = (el) => {
+      let source = eval(el.target)
+      let result
+      if (el.array) {
+        result = _.isEqual(el.value, source[el.field])
+      } else {
+        result = el.value.includes(source[el.field])
+      }
+      return result
+    }
+    const checkIncludesPermissions = (el) => {
+      return el.permissions.includes(permission.value)
+    }
+    if (typeof action.isShow === 'boolean')
+      return environment.readonlyAll ? true : action.isShow
+    else if (typeof action.isShow === 'object') {
+      if (action.isShow.condition?.length) {
+        const condition = () =>
+          action.isShow.condition.some((conditionEl) => {
+            if (
+              (conditionEl.target === 'formData' ||
+                conditionEl.target === 'environment' ||
+                conditionEl.target === 'originalData') &&
+              !conditionEl.permissions
+            ) {
+              return checkIncludesData(conditionEl) === conditionEl.type
+            } else if (conditionEl.permissions?.length && !conditionEl.target) {
+              const result = checkIncludesPermissions(conditionEl)
+              // if (!result && !conditionEl.type) {
+              // }
+              return checkIncludesPermissions(conditionEl) === conditionEl.type
+            } else if (conditionEl.hasOwnProperty('funcCondition')) {
+              const conditionContext = {
+                store,
+                formData,
+                originalData,
+                environment,
+              }
+              return (
+                conditionEl.funcCondition(conditionContext) === conditionEl.type
+              )
+            } else {
+              return (
+                (checkIncludesData(conditionEl) &&
+                  checkIncludesPermissions(conditionEl)) === conditionEl.type
+              )
+            }
+          })
+        action.isShow.value = condition()
+        return environment.readonlyAll ? true : action.isShow.value
+      }
+    } else if (typeof action.isShow === 'undefined') {
+      return environment.readonlyAll
+    }
+  }
+
   const appendFieldHandler = ({ action, field }) => {
     console.log(action)
     console.log(form)
@@ -1592,5 +1649,6 @@ export default function ({
     entityData,
     appendFieldHandler,
     popupForm,
+    appendActionShow,
   }
 }

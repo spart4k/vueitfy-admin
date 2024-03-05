@@ -4053,6 +4053,21 @@ const config = {
                   type: 'changeUrl',
                   name: 'payment/:id/output',
                 },
+                isShow: {
+                  value: true,
+                  condition: [
+                    {
+                      funcCondition: (context) =>
+                        context.formData.vid_vedomost_id === 1 &&
+                        (context.formData.status_id === 1 ||
+                          context.formData.status_id === 2 ||
+                          context.formData.status_id === 3) &&
+                        (context.formData.direction_id === 1 ||
+                          context.formData.direction_id === 6),
+                      type: true,
+                    },
+                  ],
+                },
               },
             ],
           }),

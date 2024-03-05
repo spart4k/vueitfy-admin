@@ -4,15 +4,24 @@
       <div>
         <!-- {{ services }} -->
         <v-row>
-          <Row
-            v-for="(service, serviceKey) in services.services"
-            :service="service"
-            :formDataParent="formDataParent"
-            :key="service.id"
-            ref="servicesRow"
-            :canRemoved="canRemoved"
-            @removeService="removeService(serviceKey)"
-          ></Row>
+          <!-- {{ loading }} -->
+          <template v-if="!loading">
+            <Row
+              v-for="(service, serviceKey) in services.services"
+              :service="service"
+              :formDataParent="formDataParent"
+              :key="service.id"
+              ref="servicesRow"
+              :canRemoved="canRemoved"
+              :loading="loading"
+              @removeService="removeService(serviceKey)"
+            ></Row>
+          </template>
+          <template v-else>
+            <div v-for="loading in 5" :key="loading" class="form-row-loading">
+              <div class="form-row-loading-wrap gradient"></div>
+            </div>
+          </template>
         </v-row>
         <v-row class="justify-space-between">
           <v-col style="padding: 0" cols="6">
@@ -51,6 +60,7 @@
           @click.prevent="save"
           :text="false"
           type="submit"
+          :disabled="!canSend"
         >
           Сохранить
         </v-btn>

@@ -81,7 +81,6 @@ export default {
       services.value.services.splice(serviceKey, 1)
     }
     const save = async () => {
-      console.log(save)
       const validate = servicesRow.value.forEach((el) => el.validate(true))
       if (canSend.value) {
         console.log('send')
@@ -110,7 +109,7 @@ export default {
             timeout: 1000,
           })
           emit('closePopup')
-          emit('refresh')
+          emit('refreshData')
         } else {
           store.commit('notifies/showMessage', {
             color: 'error',
@@ -126,12 +125,19 @@ export default {
     const closePopup = () => {
       emit('closePopup')
     }
-    const canRemoved = computed(() => services.value.services.length > 1)
-    const canSend = computed(() =>
-      servicesRow.value.every((el) => el.validate(true))
-    )
+    const canRemoved = computed(() => services.value?.services?.length > 1)
+    const canSend = computed(() => {
+      servicesRow?.value?.forEach(
+        (el) => el.validate(true) && !el.errorSerivce.length
+      )
+      return servicesRow?.value?.every(
+        (el) => el.validate(true) && !el.errorSerivce.length
+      )
+    })
     onMounted(async () => {
+      loading.value = true
       const data = await makeRequest()
+      loading.value = false
       data.services.forEach((el) => {
         el.id = uuidv4()
       })
@@ -142,12 +148,14 @@ export default {
       services,
       addGroup,
       actions,
+      loading,
       save,
       removeLast,
       removeService,
       servicesRow,
       closePopup,
       canRemoved,
+      canSend,
     }
   },
 }
