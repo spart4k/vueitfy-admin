@@ -1,6 +1,7 @@
 import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/Autocomplete'
+import Popup from '@/components/Popup/index.vue'
 
 import _ from 'lodash'
 
@@ -23,6 +24,7 @@ export default {
     ColorPicker,
     DateRange,
     Datepicker,
+    Popup,
   },
   props: {
     content: {
@@ -170,7 +172,10 @@ export default {
         props.tab.fields[6].value = props.content?.id
       }
     }
-
+    const closePopupForm = () => {
+      router.push({ name: route.matched.at(-2).name })
+      popupForm.value.isShow = false
+    }
     const {
       formData,
       validate,
@@ -191,6 +196,9 @@ export default {
       refreshTable,
       isHideBtn,
       colsField,
+      appendFieldHandler,
+      popupForm,
+      appendActionShow,
     } = useForm({
       form: props.tab,
       context,
@@ -238,6 +246,10 @@ export default {
       isHideBtn,
       route,
       colsField,
+      appendFieldHandler,
+      popupForm,
+      closePopupForm,
+      appendActionShow,
     }
   },
 }

@@ -84,9 +84,11 @@
         //min-width: 100px;
       }
       &.readonly {
-        pointer-events: none;
-        label {
+        .v-input__control {
           pointer-events: none;
+          label {
+            pointer-events: none;
+          }
         }
       }
     }
@@ -126,5 +128,5 @@
   }
 }
 .v-menu__content {
-  z-index: 30 !important;
+  // z-index: 30 !important;
 }

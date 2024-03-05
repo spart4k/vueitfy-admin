@@ -40,6 +40,7 @@
             @closePopup="(e) => $emit('closePopup', e)"
             @getItems="(e) => $emit('getItems', e)"
             @refreshData="$emit('refreshData')"
+            :formDataParent="formDataParent"
           />
         </v-tab-item>
       </v-tabs-items>
