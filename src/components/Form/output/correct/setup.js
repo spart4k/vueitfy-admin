@@ -1,32 +1,34 @@
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import Row from './row/index.vue'
+import useRequest from '@/compositions/useRequest'
+import { useRouter, useRoute } from 'vue-router/composables'
+import { stringAction } from '@/utils/actions'
+import store from '@/store'
+
 export default {
   name: 'form-output-correct',
   components: {
     Row,
   },
-  setup() {
+  props: {
+    formDataParent: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
+    const context = {
+      root: {
+        store,
+        router,
+        ctx,
+        route,
+      },
+    }
     const addGroup = async () => {
-      // let qty
-      // let serviceId
-      // let dataForService
-      // if (data.entity.direction_id === 6) {
-      //   const dolToService = {
-      //     24: 61,
-      //     25: 62,
-      //     26: 63,
-      //     27: 64,
-      //     49: 70,
-      //     50: 77,
-      //     55: 70,
-      //     51: 78,
-      //   }
-      //   // qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
-      //   serviceId = dolToService[data.entity.doljnost_id]
-      //   dataForService = await getServiceInfo(serviceId)
-      // }
-      // formGroup.value = [...formGroup.value]
-      services.services.push({
+      services.value.services.push({
         service_id: null,
         qty: 0,
         price: 0,
@@ -34,32 +36,56 @@ export default {
       })
       console.log(services.services)
     }
-    const services = reactive({
-      services: [
-        {
-          service_id: 9,
-          qty: '161',
-          price: 11,
-          sum: 1771,
-        },
-        {
-          service_id: 10,
-          qty: '54',
-          price: 3,
-          sum: 162,
-        },
-      ],
-      payment_id: 1,
-      is_hold: false,
-      is_pay: false,
-      sum: 1933,
+    const removeLast = () => {
+      services.value.services.pop()
+    }
+    const servicesRow = ref([])
+    const services = ref({})
+    // const { pay }
+    const actions = ref([
+      stringAction({
+        text: 'Сохранить',
+        type: 'submit',
+        module: 'form/create',
+        url: 'create/service_price',
+        name: 'createForm',
+        action: 'createForm',
+      }),
+      stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        module: '',
+        name: 'saveForm',
+        nextForm: true,
+        color: 'transparent',
+        action: 'turnOff',
+        skipValidation: true,
+      }),
+    ])
+    const { makeRequest, loading } = useRequest({
+      context,
+      request: () => store.dispatch('payments/getOutput', +route.params.id),
     })
-    onMounted(() => {
+    const initData = () => {}
+    const removeService = (serviceKey) => {
+      console.log('remove')
+      services.value.services.splice(serviceKey, 1)
+    }
+    const save = () => {
+      console.log(save)
+    }
+    onMounted(async () => {
+      services.value = await makeRequest()
       // addGroup()
     })
     return {
       services,
       addGroup,
+      actions,
+      save,
+      removeLast,
+      removeService,
+      servicesRow,
     }
   },
 }

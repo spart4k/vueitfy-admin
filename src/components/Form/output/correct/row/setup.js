@@ -9,6 +9,8 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import useForm from '@/compositions/useForm.js'
 import Autocomplete from '@/components/Autocomplete'
+import FormError from '@/components/Task/el/FormError/index.vue'
+
 export default {
   name: 'form-output-correct-row',
   props: {
@@ -20,9 +22,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    formDataParent: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: {
     Autocomplete,
+    FormError,
   },
   setup(props, ctx) {
     const context = {
@@ -31,6 +38,7 @@ export default {
         store,
       },
     }
+    const { emit } = ctx
     const loading = ref(false)
     const switchType = (key) => {
       let result = ''
@@ -407,7 +415,50 @@ export default {
         }
       }
     }
+    const removeService = (id) => {
+      console.log(id)
+      emit('removeService')
+    }
+    const isReject = ref(false)
+    const rejectedPrice = ref('')
+    const changeAutocomplete = async ({ field, value }) => {
+      rejectedPrice.value = ''
+      isReject.value = false
+      console.log(field, value)
+      const data = await getServiceInfo(value)
+      if (!data.length) {
+        rejectedPrice.value = ['Отсутствует тариф']
+        rejectedPrice.value ? (isReject.value = true) : (isReject.value = false)
+        formData.price = 0
+        return false
+      } else {
+        formData.price = data[0]?.price ?? ''
+      }
 
+      changeSum()
+    }
+    const getServiceInfo = async (idService) => {
+      const { makeRequest } = useRequest({
+        context,
+        request: () => {
+          return store.dispatch(
+            'taskModule/getServicePrice',
+            `object_id=${props.formDataParent.object_id}&service_id=${idService}&date_target=${props.formDataParent.date_target}`
+          )
+        },
+      })
+      return await makeRequest()
+    }
+    const changeSum = () => {
+      if (formData.price && formData.qty) {
+        const sum = formData.price * formData.qty
+        formData.sum = Math.round(sum * 100) / 100
+      } else {
+        formData.sum = 0
+      }
+    }
+    const fieldService = () =>
+      fieldsData.value.find((el) => el.name === 'service_id')
     onMounted(() => {
       // addGroup()
       // initFields()
@@ -422,6 +473,13 @@ export default {
       touchedForm,
       openMenu,
       fieldsData,
+      removeService,
+      changeSum,
+      changeAutocomplete,
+      rejectedPrice,
+      isReject,
+      fields: fields(),
+      fieldService,
     }
   },
 }

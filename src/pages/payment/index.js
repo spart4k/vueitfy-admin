@@ -1,7 +1,7 @@
 import filters from './filters'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import FormDefault from '@/components/Form/default/index.vue'
-import FormOutputCorrect from '@/components/Form/output/index.vue'
+import FormOutputCorrect from '@/components/Form/output/correct/index.vue'
 import { stringAction } from '@/utils/actions'
 import {
   dateField,
@@ -3104,12 +3104,12 @@ const config = {
       {
         id: 0,
         name: 'Добавить начисление',
-        type: 'FormOutputCorrect',
+        type: 'FormDefault',
         path: 'add-edit-logistic',
         detail: {
           type: 'popup', // String 'popup' or 'page'
           classes: [''], // List class
-          width: '600px',
+          width: '780px',
           method: 'get',
           alias: 'payment',
           url: '/get/form/',
@@ -3120,7 +3120,7 @@ const config = {
               id: 8,
               path: 'output',
               name: 'Основные',
-              type: FormDefault,
+              type: FormOutputCorrect,
               detail: true,
               lists: [
                 {
@@ -4047,7 +4047,7 @@ const config = {
             },
             appendAction: [
               {
-                icon: 'mdi-cash',
+                icon: 'mdi-table-edit',
                 label: 'Изменить выработку',
                 action: {
                   type: 'changeUrl',

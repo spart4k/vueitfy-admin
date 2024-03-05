@@ -28,6 +28,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    formDataParent: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props) {
     const route = useRoute()

@@ -75,7 +75,7 @@
               :disabled="disabledField(field)"
             >
               {{ field?.appendAction }}
-              <template v-if="field?.appendAction?.length" v-slot:append>
+              <template v-if="field?.appendAction?.length" v-slot:append-outer>
                 <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->
                 <v-tooltip
                   v-for="action in field.appendAction"
@@ -208,6 +208,7 @@
         :class="[...tab.detail.bootstrapClass, ...tab.detail.classes]"
         @closePopup="closePopupForm"
         @getItems="getItems"
+        :formDataParent="formData"
       />
     </Popup>
   </div>
