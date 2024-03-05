@@ -208,6 +208,7 @@
         :class="[...tab.detail.bootstrapClass, ...tab.detail.classes]"
         @closePopup="closePopupForm"
         @getItems="getItems"
+        @refresh="getData"
         :formDataParent="formData"
       />
     </Popup>

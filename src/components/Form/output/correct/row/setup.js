@@ -1,9 +1,10 @@
-import Vue, { onMounted, reactive, ref } from 'vue'
+import Vue, { onMounted, computed, ref, watch } from 'vue'
 import {
   stringField,
   selectField,
   // dropZoneField,label:"label:"ФИО директора"
 } from '@/utils/fields.js'
+import { required } from '@/utils/validation'
 
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
@@ -25,6 +26,10 @@ export default {
     formDataParent: {
       type: Object,
       default: () => {},
+    },
+    canRemoved: {
+      type: Boolean,
+      default: true,
     },
   },
   components: {
@@ -71,6 +76,7 @@ export default {
             },
             bootstrapClass: [''],
             // required: { required },
+            validations: { required },
           })
           break
         case 'sum':
@@ -107,7 +113,7 @@ export default {
             },
             value: 1,
             disable: true,
-            // validations: { required },
+            validations: { required },
             bootstrapClass: [''],
           })
           break
@@ -303,9 +309,15 @@ export default {
       const fields = {}
       const tabFields = fieldsData.value
       tabFields.forEach((el) => {
-        // const { validations } = tabFields[key]
+        console.log(el)
+        const { validations } = el
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'default', props.service[el.name])
+        Vue.set(
+          fields[el.name],
+          'validations',
+          validations ? validations : null
+        )
       })
       // for (let key in tabFields) {
       //   console.log(key, tabFields)
@@ -459,6 +471,31 @@ export default {
     }
     const fieldService = () =>
       fieldsData.value.find((el) => el.name === 'service_id')
+    const isNumber = (evt) => {
+      evt = evt ? evt : window.event
+      var charCode = evt.which ? evt.which : evt.keyCode
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault()
+      } else {
+        return true
+      }
+    }
+    const errorSerivce = computed(() => {
+      return rejectedPrice.value
+        ? [...formErrors.value.service_id, ...rejectedPrice.value]
+        : formErrors.value.service_id
+    })
+    watch(
+      (el) => formData.qty,
+      () => {
+        validate(true)
+        changeSum()
+      }
+    )
     onMounted(() => {
       // addGroup()
       // initFields()
@@ -480,6 +517,8 @@ export default {
       isReject,
       fields: fields(),
       fieldService,
+      isNumber,
+      errorSerivce,
     }
   },
 }

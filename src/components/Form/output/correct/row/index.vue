@@ -14,15 +14,16 @@
           class="mr-1"
           filled
           label="Наименование"
-        ></v-select> -->
+        ></v-select>
+        -->
         <!-- {{ fieldsData[2] }} -->
-        <!-- <Autocomplete
+        <Autocomplete
           :field="{
-            ...fieldsData[2],
+            ...fieldService(),
             label: 'Наименование',
           }"
           v-model="formData.service_id"
-          :error-messages="rejectedPrice ? rejectedPrice : null"
+          :error-messages="errorSerivce"
           :formData="formData"
           ref="autocompleteRef"
           @change="changeAutocomplete"
@@ -32,8 +33,9 @@
         <v-text-field
           label="QTY"
           class="mr-1"
+          :error-messages="formErrors.qty"
           v-model="formData.qty"
-          @blur="() => changeSum(i)"
+          @keypress="isNumber($event)"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="2" class="">
@@ -45,19 +47,17 @@
           readonly
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="2" class="">
+      <v-col cols="12" :sm="canRemoved ? 2 : 3" class="">
         <v-text-field
           v-model="formData.sum"
           label="Сумма"
           disabled
           readonly
-        ></v-text-field> -->
-        {{ fieldService.selectOption }}
+        ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="1" class="">
+      <v-col v-if="canRemoved" cols="12" sm="1" class="">
         <v-icon @click="removeService" class="mt-5">mdi-delete</v-icon>
       </v-col>
-      <!-- {{ fieldsData[0].items }} -->
     </v-row>
     <!-- <v-messages
       class="ml-3"

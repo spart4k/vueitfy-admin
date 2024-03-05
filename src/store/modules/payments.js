@@ -1,5 +1,5 @@
 //import
-import { getOutput } from '@/api/payments'
+import { getOutput, updateOutput } from '@/api/payments'
 //import axios from 'axios'
 
 const account = {
@@ -10,8 +10,11 @@ const account = {
     //   return result
     // },
     async getOutput(_, url) {
-      console.log(getOutput)
       const result = await getOutput(url)
+      return result
+    },
+    async updateOutput(_, body) {
+      const result = await updateOutput(body)
       return result
     },
   },

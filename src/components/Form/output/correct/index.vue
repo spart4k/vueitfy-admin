@@ -10,6 +10,7 @@
             :formDataParent="formDataParent"
             :key="service.id"
             ref="servicesRow"
+            :canRemoved="canRemoved"
             @removeService="removeService(serviceKey)"
           ></Row>
         </v-row>
@@ -20,6 +21,7 @@
               class="form-btn form-btn--remove"
               color="primary"
               block
+              :disabled="!canRemoved"
               >-</v-btn
             >
           </v-col>
@@ -35,7 +37,14 @@
         </v-row>
       </div>
       <v-row class="justify-end mt-5">
-        <v-btn color="transparent" :text="false" class="ml-2"> Закрыть </v-btn>
+        <v-btn
+          color="transparent"
+          @click="closePopup"
+          :text="false"
+          class="ml-2"
+        >
+          Закрыть
+        </v-btn>
         <v-btn
           color="primary"
           class="ml-2"
