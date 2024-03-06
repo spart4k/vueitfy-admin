@@ -110,6 +110,7 @@
           :listNames="listNames"
           :docs="docs"
           :entity="entity"
+          ref="docFormRef"
         ></DocForm>
       </div>
     </div>

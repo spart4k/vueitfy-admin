@@ -5,12 +5,27 @@
         <v-expansion-panel>
           <v-expansion-panel-header class="document-header">
             <div class="document-title text-h6 mb-2">
-              {{ document.doc_name }}
+              {{
+                document.doc_name
+                  ? document.doc_name
+                  : docNames[document.doc_id]
+              }}
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
+            <div v-if="showScan && document.path_doc">
+              <span>Скан:</span>
+              <a download :href="$root.env.VUE_APP_STORE + document.path_doc"
+                ><v-icon left small> $IconDocument </v-icon></a
+              >
+            </div>
+
             <v-row class="justify-space-between">
-              <v-col cols="12" sm="6" class="document-fields">
+              <v-col
+                cols="12"
+                :sm="showDropzone ? 6 : 12"
+                class="document-fields"
+              >
                 <v-row>
                   <v-col
                     v-for="(field, fieldKey) in fieldsData.length
@@ -70,7 +85,7 @@
                 </v-row>
               </v-col>
 
-              <v-col v-if="true" cols="12" sm="5">
+              <v-col v-if="showDropzone" cols="12" sm="5">
                 <!-- {{ $root.env.VUE_APP_STORE + document.path_doc }}
           {{ pathDock }} -->
                 <!-- <img :src="$root.env.VUE_APP_STORE + document.path_doc" alt="" /> -->
@@ -128,6 +143,17 @@
             alt=""
           />-->
               </v-col>
+            </v-row>
+            <v-row justify="end">
+              <v-btn
+                :disabled="false"
+                @click="sendBankCard"
+                color="primary"
+                small
+              >
+                <!-- <v-icon left> $IconMain </v-icon> -->
+                Завершить
+              </v-btn>
             </v-row>
           </v-expansion-panel-content>
         </v-expansion-panel>

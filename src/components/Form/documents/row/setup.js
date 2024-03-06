@@ -6,6 +6,7 @@ import store from '@/store'
 import Autocomplete from '@/components/Autocomplete'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
+import { required } from '@/utils/validation.js'
 import {
   stringField,
   dateField,
@@ -40,6 +41,26 @@ export default {
     personalId: {
       type: Number,
       default: null,
+    },
+    docNames: {
+      type: Object,
+      default: () => {},
+    },
+    showScan: {
+      type: Boolean,
+      default: false,
+    },
+    showDropzone: {
+      type: Boolean,
+      default: true,
+    },
+    allFieldsRequireds: {
+      type: Boolean,
+      default: false,
+    },
+    acceptDocPanel: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -209,7 +230,48 @@ export default {
               text: 'name',
               value: 'id',
             },
-            items: [],
+            items: [
+              {
+                text: 'СБЕРБАНК',
+                value: 1,
+              },
+              {
+                text: 'Почта Банк',
+                value: 2,
+              },
+              {
+                text: 'Пром Связь',
+                value: 3,
+              },
+              {
+                text: 'Альфабанк',
+                value: 4,
+              },
+              {
+                text: 'Тинькофф',
+                value: 5,
+              },
+              {
+                text: 'ВТБ',
+                value: 7,
+              },
+              {
+                text: '-НАЛИЧНЫЕ-',
+                value: 11,
+              },
+              {
+                text: 'УБРИР',
+                value: 12,
+              },
+              {
+                text: 'Открытие',
+                value: 13,
+              },
+              {
+                text: 'МТС Банк',
+                value: 14,
+              },
+            ],
             position: {
               cols: 12,
               sm: 6,
@@ -800,6 +862,9 @@ export default {
         case 'inn':
           result = 'Номер'
           break
+        case 'fio':
+          result = 'ФИО'
+          break
         case 'registration_date_c_docs_in':
           result = 'C'
           break
@@ -868,11 +933,42 @@ export default {
       }
       return result
     }
+    const { makeRequest: sendBankCardRequest } = useRequest({
+      context,
+      request: () => {
+        return store.dispatch('taskModule/setBankData', {
+          data: {
+            data: {
+              bank_id: formData.bank_id,
+              fio: formData.fio,
+              invoice: formData.invoice,
+              priority: formData.priority,
+              personal_id: props.personalId,
+              comment: formData.comment,
+            },
+          },
+        })
+      },
+      successMessage: 'Банковские реквизиты успешно добавлены',
+    })
+
+    const sendBankCard = async () => {
+      const { result } = await sendBankCardRequest()
+      const bankCardId = result
+      ctx.emit('changeDocs', {
+        bank_card_id: bankCardId.value,
+        // formObj: formObj,
+      })
+    }
     const docs_data = props.document.docs_data
     const fieldsData = []
     const initFields = () => {
       for (let key in docs_data) {
-        fieldsData.push(switchType(key))
+        const field = switchType(key)
+        if (props.allFieldsRequireds) {
+          field.validations = { required }
+        }
+        fieldsData.push(field)
       }
     }
     initFields()
@@ -916,6 +1012,10 @@ export default {
       lists: [
         {
           alias: 'sex',
+          filter: [],
+        },
+        {
+          alias: 'bank_id',
           filter: [],
         },
       ],
@@ -1016,6 +1116,7 @@ export default {
     }
     const listData = ref({})
     const loadList = async () => {
+      console.log('loadList')
       const listQuery = form?.lists?.flatMap((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
@@ -1066,12 +1167,14 @@ export default {
         }
       }
     }
+    // const docName = () =>
     onMounted(async () => {
       // if (props.document.path_doc) {
       //   isEdit.value = false
       // }
       // initFields()
       // initDocFields()
+      console.log('onMounted')
       loadList()
       if (props.document.path_doc) {
         pathDock.value = [props.document.path_doc]
@@ -1101,6 +1204,7 @@ export default {
       fieldsData,
       docFields,
       listData,
+      sendBankCard,
       // documentData,
     }
   },

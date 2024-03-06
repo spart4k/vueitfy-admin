@@ -179,7 +179,7 @@ const Form1 = defineComponent({
         })
       },
     })
-
+    const docFormRef = ref(null)
     let showNextStep = ref(false)
     const clickCheckBtn = async () => {
       if (unConfirmed.value.length) {
@@ -254,14 +254,14 @@ const Form1 = defineComponent({
       }
       isFormValid.value = isValid
       if (isFormValid.value) {
-        docsId.forEach((item) => {
-          if (data.formObj.value[item] && item !== 3) {
-            finalData.value = {
-              ...finalData.value,
-              ...data.formObj.value[item].formData,
-            }
-          }
-        })
+        // docsId.forEach((item) => {
+        //   if (data.formObj.value[item] && item !== 3) {
+        //     finalData.value = {
+        //       ...finalData.value,
+        //       ...data.formObj.value[item].formData,
+        //     }
+        //   }
+        // })
       }
     }
 
@@ -309,6 +309,7 @@ const Form1 = defineComponent({
       isActiveBtnFirst,
       isHasOnlyCard,
       isHasCard,
+      docFormRef,
     }
   },
 })

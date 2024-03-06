@@ -1,10 +1,11 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import DateTimePicker from '@/components/Date/Datetimepicker/index.vue'
 import useRequest from '@/compositions/useRequest'
 import { useRouter, useRoute } from 'vue-router/composables'
+import FormDocumentsRow from '@/components/Form/documents/row/index.vue'
 import store from '@/store'
 
 const bankItemsSpr = {
@@ -55,6 +56,7 @@ const docForm = defineComponent({
   components: {
     FormError,
     DateTimePicker,
+    FormDocumentsRow,
   },
   props: {
     listNames: {
@@ -100,6 +102,72 @@ const docForm = defineComponent({
       },
     }
     const bankItems = Object.values(bankItemsSpr)
+    const docFields = {
+      1: {
+        citizenship: '',
+        pasp_data_vid: '',
+        pasp_date_in: '',
+        pasp_date_out: '',
+        pasp_kem: '',
+        pasp_num: '',
+        pasp_ser: '',
+        sex: '',
+      },
+      2: { snils: '' },
+      3: { invoice: '', priority: '', bank_id: '', fio: '', comment: '' },
+      4: { registration_address: '' },
+      5: { patent_num: '', patent_prof: '', patent_ser: '' },
+      6: {
+        pasp_address_reg: '',
+      },
+      7: {},
+      8: { med_book_date: '' },
+      9: {
+        view_home_ser: '',
+        view_home_num: '',
+        view_home_podr: '',
+        view_home_data_vid: '',
+        vew_home_kem: '',
+      },
+      10: {
+        goal_visit: '',
+        migr_card_data_in: '',
+        migr_card_data_out: '',
+        migr_card_num: '',
+        migr_card_ser: '',
+      },
+      11: {},
+      13: { check_patent_date_pay: '' },
+      14: { registration_date_c_docs_in: '', registration_date_do_docs_in: '' },
+      15: {
+        patent_date_docs_in: '',
+        patent_date_docs_out: '',
+        patent_region: '',
+        patent_special_marks_date: '',
+      },
+      16: {},
+      17: { inn: '' },
+      18: {},
+      19: { check_patent_date_pay_now: '' },
+      20: {},
+      21: {},
+      22: { view_home_address_reg: '' },
+      23: { med_view_docs_in: '' },
+      24: {
+        sex: '',
+        card_id_num: '',
+        card_id_ser: '',
+        card_id_period_date_in: '',
+        card_id_period_date_out: '',
+        citizenship: '',
+      },
+      25: {},
+      26: {
+        card_id_kem: '',
+        card_id_date_vid: '',
+        card_id_pers_num: '',
+      },
+    }
     const formObj = ref({
       // Паспорт
       1: useForm({
@@ -370,7 +438,7 @@ const docForm = defineComponent({
       },
       successMessage: 'Банковские реквизиты успешно добавлены',
     })
-
+    const docRows = ref([])
     const sendBankCard = async () => {
       const { result } = await makeRequest()
       bankCardId.value = result
@@ -379,7 +447,18 @@ const docForm = defineComponent({
         formObj: formObj,
       })
     }
-
+    const docsData = ref([])
+    const initDocData = () => {
+      docsData.value = props.docs.map((el) => {
+        return {
+          doc_id: el.doc_id,
+          doc_name: props.listNames[el.doc_id],
+          docs_data: docFields[el.doc_id],
+          id: el.id,
+          path_doc: el.path_doc,
+        }
+      })
+    }
     watch(
       formObj,
       () => {
@@ -390,12 +469,16 @@ const docForm = defineComponent({
       },
       { deep: true }
     )
-
+    onMounted(() => {
+      initDocData()
+    })
     return {
       formObj,
       bankItems,
       sendBankCard,
       bankCardId,
+      docsDataFormated: docsData,
+      docRows,
     }
   },
 })
