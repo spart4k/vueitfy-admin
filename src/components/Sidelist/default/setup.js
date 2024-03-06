@@ -33,10 +33,13 @@ export default {
       panel.value.isShow = false
     }
 
+    const transitionEnd = () => {}
+
     return {
       panel,
 
       closePanel,
+      transitionEnd,
     }
   },
 }

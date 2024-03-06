@@ -13,7 +13,11 @@
         >{{ item.name }}</v-btn
       >
     </div>
-    <transition name="sidelist">
+    <transition
+      @after-enter="transitionEnd"
+      @after-leave="transitionEnd"
+      name="sidelist"
+    >
       <div
         v-click-outside="closePanel"
         v-if="panel.isShow"

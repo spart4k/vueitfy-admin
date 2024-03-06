@@ -2,7 +2,7 @@
   <div class="w-100 h-100">
     <v-tabs-items class="h-100" v-model="stage" v-if="data?.code === 1 || true">
       <v-tab-item class="h-100">
-        <div class="v-panel d-flex flex-column">
+        <div class="v-panel d-flex flex-column pb-5">
           <SidelistHeader
             @closePanel="$emit('closePanel')"
             :data="$props.data"
