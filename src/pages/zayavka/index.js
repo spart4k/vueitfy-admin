@@ -3424,7 +3424,7 @@ export const editFields = [
         {
           target: 'originalData',
           field: 'status',
-          value: [1, 6],
+          value: [1, 9],
           type: false,
         },
       ],
@@ -3670,7 +3670,7 @@ export const editFields = [
         {
           target: 'originalData',
           field: 'status',
-          value: [1, 6],
+          value: [1, 9],
           type: false,
         },
       ],
@@ -3711,7 +3711,7 @@ export const editFields = [
         {
           target: 'originalData',
           field: 'status',
-          value: [1, 6],
+          value: [1, 9],
           type: false,
         },
       ],
@@ -3753,7 +3753,7 @@ export const editFields = [
         {
           target: 'originalData',
           field: 'status',
-          value: [1, 6],
+          value: [1, 9],
           type: false,
         },
       ],
@@ -4837,7 +4837,7 @@ const config = {
                 {
                   field: 'status',
                   target: 'formData',
-                  value: [6],
+                  value: [9],
                   type: false,
                 },
               ],
@@ -4852,6 +4852,18 @@ const config = {
             // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
             name: 'customFormStore',
             action: 'customFormStore',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'status',
+                  target: 'formData',
+                  value: [9],
+                  type: true,
+                },
+              ],
+            },
           }),
         ],
         formData: {},
