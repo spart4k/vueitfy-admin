@@ -73,6 +73,17 @@ const docForm = defineComponent({
     entity: {
       type: Object,
     },
+    correct: {
+      type: Boolean,
+      default: false,
+    },
+    acceptDocPanel: {
+      type: Boolean,
+      default: false,
+    },
+    task: {
+      type: Object,
+    },
   },
   data: function () {
     return {
@@ -102,78 +113,151 @@ const docForm = defineComponent({
       },
     }
     const bankItems = Object.values(bankItemsSpr)
+    const loadedData = props.docsData
     const getPassportField = (grajdanstvo_id) => {
       const fieldsPass = {
-        pasp_ser: '',
-        pasp_num: '',
-        pasp_data_vid: '',
-        pasp_kem: '',
+        pasp_ser: loadedData.pasp_ser ? loadedData.pasp_ser : '',
+        pasp_num: loadedData.pasp_num ? loadedData.pasp_num : '',
+        pasp_data_vid: loadedData.pasp_data_vid ? loadedData.pasp_data_vid : '',
+        pasp_kem: loadedData.pasp_kem ? loadedData.pasp_kem : '',
       }
       if (grajdanstvo_id === 1) {
-        fieldsPass.pasp_kod_podr = ''
+        fieldsPass.pasp_kod_podr = loadedData.pasp_kod_podr
+          ? loadedData.pasp_kod_podr
+          : ''
       } else {
-        fieldsPass.citizenship = ''
-        fieldsPass.sex = ''
-        fieldsPass.pasp_date_in = ''
-        fieldsPass.pasp_date_out = ''
+        fieldsPass.citizenship = fieldsPass.citizenship
+          ? fieldsPass.citizenship
+          : ''
+        fieldsPass.sex = fieldsPass.sex ? fieldsPass.sex : ''
+        fieldsPass.pasp_date_in = fieldsPass.pasp_date_in
+          ? fieldsPass.pasp_date_in
+          : ''
+        fieldsPass.pasp_date_out = fieldsPass.pasp_date_out
+          ? fieldsPass.pasp_date_out
+          : ''
       }
       return fieldsPass
     }
+
     const docFields = {
       1: getPassportField(props.entity.grajdanstvo_id),
-      2: { snils: '' },
-      3: { invoice: '', priority: false, bank_id: '', fio: '', comment: '' },
-      4: { registration_address: '' },
-      5: { patent_num: '', patent_prof: '', patent_ser: '' },
+      2: { snils: loadedData.snils ? loadedData.snils : '' },
+      3: {
+        invoice: loadedData.invoice ? loadedData.invoice : '',
+        priority: false,
+        bank_id: loadedData.bank_id ? loadedData.bank_id : '',
+        fio: loadedData.fio ? loadedData.fio : '',
+        comment: '',
+      },
+      4: {
+        registration_address: loadedData.registration_address
+          ? loadedData.registration_address
+          : '',
+      },
+      5: {
+        patent_num: loadedData.patent_num ? loadedData.patent_num : '',
+        patent_prof: loadedData.patent_prof ? loadedData.patent_prof : '',
+        patent_ser: loadedData.patent_ser ? loadedData.patent_ser : '',
+      },
       6: {
-        pasp_address_reg: '',
+        pasp_address_reg: loadedData.pasp_address_reg
+          ? loadedData.pasp_address_reg
+          : '',
       },
       7: {},
-      8: { med_book_date: '' },
+      8: {
+        med_book_date: loadedData.med_book_date ? loadedData.med_book_date : '',
+      },
       9: {
-        view_home_ser: '',
-        view_home_num: '',
-        view_home_podr: '',
-        view_home_data_vid: '',
-        vew_home_kem: '',
+        view_home_ser: loadedData.view_home_ser ? loadedData.view_home_ser : '',
+        view_home_num: loadedData.view_home_num ? loadedData.view_home_num : '',
+        view_home_podr: loadedData.view_home_podr
+          ? loadedData.view_home_podr
+          : '',
+        view_home_data_vid: loadedData.view_home_data_vid
+          ? loadedData.view_home_data_vid
+          : '',
+        vew_home_kem: loadedData.vew_home_kem ? loadedData.vew_home_kem : '',
       },
       10: {
-        goal_visit: '',
-        migr_card_data_in: '',
-        migr_card_data_out: '',
-        migr_card_num: '',
-        migr_card_ser: '',
+        goal_visit: loadedData.goal_visit ? loadedData.goal_visit : '',
+        migr_card_data_in: loadedData.migr_card_data_in
+          ? loadedData.migr_card_data_in
+          : '',
+        migr_card_data_out: loadedData.migr_card_data_out
+          ? loadedData.migr_card_data_out
+          : '',
+        migr_card_num: loadedData.migr_card_num ? loadedData.migr_card_num : '',
+        migr_card_ser: loadedData.migr_card_ser ? loadedData.migr_card_ser : '',
       },
       11: {},
-      13: { check_patent_date_pay: '' },
-      14: { registration_date_c_docs_in: '', registration_date_do_docs_in: '' },
+      13: {
+        check_patent_date_pay: loadedData.check_patent_date_pay
+          ? loadedData.check_patent_date_pay
+          : '',
+      },
+      14: {
+        registration_date_c_docs_in: loadedData.registration_date_c_docs_in
+          ? loadedData.registration_date_c_docs_in
+          : '',
+        registration_date_do_docs_in: loadedData.registration_date_do_docs_in
+          ? loadedData.registration_date_do_docs_in
+          : '',
+      },
       15: {
-        patent_date_docs_in: '',
-        patent_date_docs_out: '',
-        patent_region: '',
-        patent_special_marks_date: '',
+        patent_date_docs_in: loadedData.patent_date_docs_in
+          ? loadedData.patent_date_docs_in
+          : '',
+        patent_date_docs_out: loadedData.patent_date_docs_out
+          ? loadedData.patent_date_docs_out
+          : '',
+        patent_region: loadedData.patent_region ? loadedData.patent_region : '',
+        patent_special_marks_date: loadedData.patent_special_marks_date
+          ? loadedData.patent_special_marks_date
+          : '',
       },
       16: {},
-      17: { inn: '' },
+      17: { inn: loadedData.inn ? loadedData.inn : '' },
       18: {},
-      19: { check_patent_date_pay_now: '' },
+      19: {
+        check_patent_date_pay_now: loadedData.check_patent_date_pay_now
+          ? loadedData.check_patent_date_pay_now
+          : '',
+      },
       20: {},
       21: {},
-      22: { view_home_address_reg: '' },
-      23: { med_view_docs_in: '' },
+      22: {
+        view_home_address_reg: loadedData.view_home_address_reg
+          ? loadedData.view_home_address_reg
+          : '',
+      },
+      23: {
+        med_view_docs_in: loadedData.med_view_docs_in
+          ? loadedData.med_view_docs_in
+          : '',
+      },
       24: {
-        sex: '',
-        card_id_num: '',
-        card_id_ser: '',
-        card_id_period_date_in: '',
-        card_id_period_date_out: '',
-        citizenship: '',
+        sex: loadedData.sex ? loadedData.sex : '',
+        card_id_num: loadedData.card_id_num ? loadedData.card_id_num : '',
+        card_id_ser: loadedData.card_id_ser ? loadedData.card_id_ser : '',
+        card_id_period_date_in: loadedData.card_id_period_date_in
+          ? loadedData.card_id_period_date_in
+          : '',
+        card_id_period_date_out: loadedData.card_id_period_date_out
+          ? loadedData.card_id_period_date_out
+          : '',
+        citizenship: loadedData.citizenship ? loadedData.citizenship : '',
       },
       25: {},
       26: {
-        card_id_kem: '',
-        card_id_date_vid: '',
-        card_id_pers_num: '',
+        card_id_kem: loadedData.card_id_kem ? loadedData.card_id_kem : '',
+        card_id_date_vid: loadedData.card_id_date_vid
+          ? loadedData.card_id_date_vid
+          : '',
+        card_id_pers_num: loadedData.card_id_pers_num
+          ? loadedData.card_id_pers_num
+          : '',
       },
     }
     const formObj = ref({
@@ -218,7 +302,7 @@ const docForm = defineComponent({
         fields: {
           invoice: {
             validations: { required },
-            default: '',
+            default: loadedData.patent_num ? loadedData.patent_num : '',
           },
           priority: {
             default: false,
@@ -228,10 +312,10 @@ const docForm = defineComponent({
           },
           fio: {
             validations: { required },
-            default: '',
+            default: loadedData.patent_num ? loadedData.patent_num : '',
           },
           comment: {
-            default: '',
+            default: loadedData.patent_num ? loadedData.patent_num : '',
           },
         },
         context,

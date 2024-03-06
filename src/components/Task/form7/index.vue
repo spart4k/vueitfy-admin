@@ -76,7 +76,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <DocFormCorrect
+      <!-- <DocFormCorrect
         v-if="docs && docs.length"
         class="mb-10"
         @change="changeDocs"
@@ -86,7 +86,19 @@
         :docs="docs"
         :entity="entity"
         :task="JSON.parse(data.task.dop_data)"
-      ></DocFormCorrect>
+      ></DocFormCorrect> -->
+      <DocForm
+        v-if="docs && docs.length"
+        class="mb-10"
+        @change="changeDocs"
+        :docsData="docsData"
+        :bankData="bankData"
+        :listNames="listNames"
+        :docs="docs"
+        :entity="entity"
+        :task="JSON.parse(data.task.dop_data)"
+        :correct="true"
+      ></DocForm>
       <FormComment />
     </div>
     <v-divider></v-divider>

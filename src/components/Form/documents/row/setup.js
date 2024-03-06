@@ -62,6 +62,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    correct: {
+      type: Boolean,
+      default: false,
+    },
+    docsData: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: {
     Autocomplete,
@@ -1042,7 +1050,7 @@ export default {
       },
       successMessage: 'Банковские реквизиты успешно добавлены',
     })
-
+    const isCorrect = ref(false)
     const sendBankCard = async () => {
       const { result } = await sendBankCardRequest()
       const bankCardId = result
@@ -1050,6 +1058,25 @@ export default {
         bank_card_id: bankCardId,
         // formObj: formObj,
       })
+    }
+    const confirmCorrect = async (doc) => {
+      isCorrect.value = true
+      if (props.document.doc_id === 3) {
+        // sendBankCard()
+      }
+      // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
+      // const { result } = await makeRequest(doc.id)
+
+      // const bankCardId = result
+
+      // correctedDocs.value = {
+      //   ...correctedDocs.value,
+      //   [doc.id]: formObj.value[doc.doc_id].formData,
+      // }
+      // ctx.emit('change', {
+      //   // bank_card_id: bankCardId,
+      //   // correctedDocs: correctedDocs.value,
+      // })
     }
     const docs_data = props.document.docs_data
     const fieldsData = []
@@ -1308,6 +1335,8 @@ export default {
       docFields,
       listData,
       sendBankCard,
+      confirmCorrect,
+      isCorrect,
       // documentData,
     }
   },

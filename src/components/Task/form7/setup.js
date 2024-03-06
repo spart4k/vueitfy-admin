@@ -1,5 +1,6 @@
 import { defineComponent, ref, watch } from 'vue'
 import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -15,6 +16,7 @@ const Form7 = defineComponent({
     TextInfo,
     FormComment,
     DocFormCorrect,
+    DocForm,
   },
   props: {
     data: {

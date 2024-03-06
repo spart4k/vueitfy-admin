@@ -10,8 +10,12 @@
       :showScan="true"
       ref="docRows"
       :allFieldsRequireds="true"
-      :acceptDocPanel="document.doc_id === 3 ? true : false"
+      :acceptDocPanel="
+        document.doc_id === 3 && task.task_type_id === 1 ? true : false
+      "
       :personalId="entity.id"
+      :correct="correct"
+      :docsData="docsData"
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
     />
   </div>

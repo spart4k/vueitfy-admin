@@ -4,6 +4,15 @@
       <v-expansion-panels v-model="folderPanel" class="">
         <v-expansion-panel>
           <v-expansion-panel-header class="document-header">
+            <v-icon
+              small
+              color="green"
+              style="flex: 0"
+              class="mr-3 mb-1"
+              v-if="isCorrect"
+            >
+              $IconGalka
+            </v-icon>
             <div class="document-title text-h6 mb-2">
               {{
                 document.doc_name
@@ -153,6 +162,17 @@
               >
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Завершить
+              </v-btn>
+            </v-row>
+            <v-row v-if="correct" justify="end">
+              <v-btn
+                :disabled="vForm.$invalid"
+                @click="confirmCorrect"
+                color="primary"
+                small
+              >
+                <!-- <v-icon left> $IconMain </v-icon> -->
+                Исправлено
               </v-btn>
             </v-row>
           </v-expansion-panel-content>

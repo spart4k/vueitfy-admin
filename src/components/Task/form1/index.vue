@@ -110,6 +110,7 @@
           :listNames="listNames"
           :docs="docs"
           :entity="entity"
+          :task="data.task"
           ref="docFormRef"
         ></DocForm>
       </div>
