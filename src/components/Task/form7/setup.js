@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue'
 import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -94,7 +94,21 @@ const Form7 = defineComponent({
         context,
       })
     )
-
+    const allDocsValid = computed(() => {
+      return docFormRef.value?.docRows?.every(
+        (el) => !el.vForm.$invalid && el.isCorrect
+      )
+    })
+    const isValid = computed(() => {
+      if (isHasOnlyCard.value && bankCardId.value) {
+        return true
+      } else if (allDocsValid.value && (isHasCard ? bankCardId.value : true)) {
+        return true
+      } else {
+        return false
+      }
+    })
+    const docFormRef = ref(null)
     const changeDocs = (data) => {
       finalData.value = isHasOsnDoc
         ? { 0: formObj.value.formData, ...data.correctedDocs }
@@ -244,6 +258,8 @@ const Form7 = defineComponent({
       bankData: props.data.data.bank_card,
       isHasCard,
       isHasOnlyCard,
+      docFormRef,
+      isValid,
     }
   },
 })

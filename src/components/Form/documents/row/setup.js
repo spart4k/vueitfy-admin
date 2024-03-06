@@ -1062,7 +1062,7 @@ export default {
     const confirmCorrect = async (doc) => {
       isCorrect.value = true
       if (props.document.doc_id === 3) {
-        // sendBankCard()
+        sendBankCard()
       }
       // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
       // const { result } = await makeRequest(doc.id)

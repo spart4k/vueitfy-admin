@@ -98,6 +98,7 @@
         :entity="entity"
         :task="JSON.parse(data.task.dop_data)"
         :correct="true"
+        ref="docFormRef"
       ></DocForm>
       <FormComment />
     </div>
@@ -107,7 +108,7 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn small :disabled="!isFormValid" color="info" @click="sendData">
+      <v-btn small :disabled="!isValid" color="info" @click="sendData">
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
