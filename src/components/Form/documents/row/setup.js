@@ -741,7 +741,7 @@ export default {
           result = 'Номер'
           break
         case 'pasp_kod_podr':
-          result = 'Код подразделения'
+          result = 'К/П'
           break
         case 'pasp_kem':
           result = 'Кем выдан'
@@ -774,7 +774,7 @@ export default {
           result = 'Профессия'
           break
         case 'pasp_address_reg':
-          result = 'Адрес'
+          result = 'Адрес регистрации'
           break
         case 'med_book_date':
           result = 'Дата'
