@@ -7,7 +7,7 @@
           <!-- {{ loading }} -->
           <template v-if="!loading">
             <Row
-              v-for="(service, serviceKey) in services.services"
+              v-for="(service, serviceKey) in services.service"
               :service="service"
               :formDataParent="formDataParent"
               :key="service.id"

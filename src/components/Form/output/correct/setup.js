@@ -31,17 +31,17 @@ export default {
       },
     }
     const addGroup = async () => {
-      services.value.services.push({
+      services.value.service.push({
         id: uuidv4(),
         service_id: null,
         qty: 0,
         price: 0,
         sum: 0,
       })
-      console.log(services.services)
+      console.log(services.service)
     }
     const removeLast = () => {
-      services.value.services.pop()
+      services.value.service.pop()
     }
     const servicesRow = ref([])
     const services = ref({})
@@ -78,7 +78,7 @@ export default {
     const initData = () => {}
     const removeService = (serviceKey) => {
       console.log('remove')
-      services.value.services.splice(serviceKey, 1)
+      services.value.service.splice(serviceKey, 1)
     }
     const save = async () => {
       const validate = servicesRow.value.forEach((el) => el.validate(true))
@@ -91,9 +91,9 @@ export default {
         const body = {
           data: {
             payment_id,
-            service: {
+            services: {
               ...services.value,
-              services: servicesFormated,
+              service: servicesFormated,
             },
           },
         }
@@ -125,7 +125,7 @@ export default {
     const closePopup = () => {
       emit('closePopup')
     }
-    const canRemoved = computed(() => services.value?.services?.length > 1)
+    const canRemoved = computed(() => services.value?.service?.length > 1)
     const canSend = computed(() => {
       servicesRow?.value?.forEach(
         (el) => el.validate(true) && !el.errorSerivce.length
@@ -137,8 +137,9 @@ export default {
     onMounted(async () => {
       loading.value = true
       const data = await makeRequest()
+      console.log(data)
       loading.value = false
-      data.services.forEach((el) => {
+      data.service.forEach((el) => {
         el.id = uuidv4()
       })
       services.value = data
