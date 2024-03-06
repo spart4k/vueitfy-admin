@@ -1,4 +1,4 @@
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -50,6 +50,18 @@ const Form1 = defineComponent({
     const finalData = ref({})
     const bankCardId = ref(0)
     const isFormValid = ref(false)
+    const allDocsValid = computed(() => {
+      return docFormRef.value.docRows.every((el) => !el.vForm.$invalid)
+    })
+    const isValid = computed(() => {
+      if (isHasOnlyCard.value && bankCardId.value) {
+        return true
+      } else if (allDocsValid.value) {
+        return true
+      } else {
+        return false
+      }
+    })
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
@@ -280,7 +292,6 @@ const Form1 = defineComponent({
       // })
       // }
     }
-
     const sendData = async () => {
       if (isHasOsnDoc) {
         await sendPersonalData()
@@ -327,6 +338,8 @@ const Form1 = defineComponent({
       isHasCard,
       docFormRef,
       cardAccepted,
+      allDocsValid,
+      isValid,
     }
   },
 })
