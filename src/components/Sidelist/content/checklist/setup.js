@@ -3,11 +3,20 @@ import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import axios from 'axios'
 
+import SidelistHeader from '@/components/Sidelist/content/header/index.vue'
+
 export default {
   name: 'CheckList',
+  components: {
+    SidelistHeader,
+  },
   props: {
     date: {
       type: String,
+    },
+    data: {
+      type: Object,
+      default: () => {},
     },
   },
   setup(props) {

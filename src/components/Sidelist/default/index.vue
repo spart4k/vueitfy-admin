@@ -6,7 +6,7 @@
         color="navbar"
         elevation="0"
         size="x-small"
-        @click=";(panel.isShow = true), (panel.component = item.component)"
+        @click=";(panel.isShow = true), (panel.index = index)"
         v-for="(item, index) in $props.data"
         :key="index"
         ><v-icon class="mr-2" small color="text">{{ item.icon }}</v-icon
@@ -20,8 +20,9 @@
         class="v-side-panel"
       >
         <component
-          :is="panel.component"
+          :is="$props.data[panel.index].component"
           :date="$props.date"
+          :data="$props.data[panel.index]"
           @closePanel="closePanel"
         />
       </div>

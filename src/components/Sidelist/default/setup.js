@@ -26,7 +26,7 @@ export default {
       isShow: false,
       loading: false,
       stage: 1,
-      component: '',
+      index: 0,
     })
 
     const closePanel = () => {

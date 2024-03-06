@@ -3,19 +3,10 @@
     <v-tabs-items class="h-100" v-model="stage" v-if="data?.code === 1 || true">
       <v-tab-item class="h-100">
         <div class="v-panel d-flex flex-column">
-          <div class="pl-7 pr-7">
-            <div class="v-panel-heading">
-              <v-btn
-                class="v-panel-heading_item v-panel-heading_item__left"
-                icon
-                x-small
-                @click="$emit('closePanel')"
-              >
-                <v-icon small color="disabled">$IconArrowRight</v-icon></v-btn
-              >
-              План закрытия
-            </div>
-          </div>
+          <SidelistHeader
+            @closePanel="$emit('closePanel')"
+            :data="$props.data"
+          />
           <div class="overflow-auto flex-grow-1 pl-7 pr-7">
             <div class="v-panel-item" v-for="(item, i) in 16" :key="i">
               <div class="v-panel-item-container">
@@ -53,31 +44,12 @@
 
       <v-tab-item class="h-100">
         <div class="v-panel d-flex flex-column">
-          <div class="pl-7 pr-7">
-            <div class="v-panel-heading">
-              <v-btn
-                class="v-panel-heading_item v-panel-heading_item__left"
-                icon
-                x-small
-                @click="stage--"
-              >
-                <v-icon small color="disabled">$IconArrowLeft</v-icon></v-btn
-              >
-              <div class="v-panel-heading_relative">
-                <v-btn
-                  icon
-                  x-small
-                  class="v-panel-heading_item v-panel-heading_item__center"
-                >
-                  <v-icon small color="disabled">$IconLock</v-icon></v-btn
-                >
-                РЦ Самара
-              </div>
-              <div class="v-panel-heading_item v-panel-heading_item__right">
-                Январь 2024
-              </div>
-            </div>
-          </div>
+          <SidelistHeader
+            @changeStage="stage--"
+            :data="$props.data"
+            :date="$props.date"
+            stage
+          />
           <v-expansion-panels
             multiple
             class="overflow-auto d-block flex-grow-1 pl-7 pr-7"
