@@ -4,11 +4,11 @@
       <v-form>
         <v-container>
           <!-- <DocForm :docsData="docsData"></DocForm> -->
-          <template v-if="!loading">
+          <template v-if="docsData">
             <Row
               v-for="document in docsData"
               :tab="tab"
-              :key="document.id"
+              :key="document.title"
               :formData="formData"
               :formErrors="formErrors"
               :loading="loading"
@@ -18,12 +18,7 @@
             >
             </Row>
           </template>
-          <template v-else>
-            <div v-for="loading in 10" :key="loading" class="form-row-loading">
-              <div class="form-row-loading-wrap gradient"></div>
-            </div>
-          </template>
-          <v-row class="justify-end mt-5">
+          <v-row class="justify-end">
             <v-btn
               type="submit"
               class="ml-2"

@@ -3,6 +3,7 @@
 import Vue, { onMounted, ref, computed, watch, toRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
+import axios from 'axios'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -10,7 +11,6 @@ import useRequest from '@/compositions/useRequest'
 import vContextmenu from '@/components/Contextmenu/default/index.vue'
 import Sheet from '@/components/Sheet/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
-import SwitchDefault from '@/components/Switch/default/index.vue'
 
 //import vTableButton from '../button/index.js'
 //import vButton from '../../button/index.js'
@@ -37,7 +37,6 @@ const table = {
     TableFilter,
     Popup,
     Detail,
-    SwitchDefault,
   },
   props: {
     options: {
@@ -296,15 +295,6 @@ const table = {
         changeUrlPath(action.action.url + '/' + row.row[action.action.target])
       } else if (action.action.type === 'delete') {
         await deleteRow(row.row.id, action.action.alias)
-      } else if (action.action.type === 'toRoute') {
-        // await deleteRow(row.row.id, action.action.alias)
-        router.push({
-          name: action.action.routeName,
-          params: {
-            [action.action.routeParam]: row.row[action.action.routeParam],
-          },
-        })
-        popupForm.value.isShow = true
       } else {
         openRow(undefined, row)
       }
@@ -328,7 +318,38 @@ const table = {
     const closeFilter = () => {
       filter.value.isShow = false
     }
+
+    // Something like this should work:
+
+    // function makeRequestCreator() {
+    //     var call;
+    //     return function(url) {
+    //         if (call) {
+    //             call.cancel();
+    //         }
+    //         call = axios.CancelToken.source();
+    //         return axios.get(url, { cancelToken: call.token }).then((response) => {
+    //
+    //         }).catch(function(thrown) {
+    //             if (axios.isCancel(thrown)) {
+    //
+    //             } else {
+    //                 // handle error
+    //             }
+    //         });
+    //     }
+    // }
+    // You then use it with
+
+    //  var get = makeRequestCreator();
+    //  get('someurl');
+
+    //  Each new request will cancel the previous one
+
+    let controller
     const getItems = async () => {
+      if (controller) controller.abort()
+      controller = new AbortController()
       loading.value = true
       const { url } = props.options.options
       // Может быть без props. после merge cofilcts
@@ -373,6 +394,9 @@ const table = {
           filter: filtersColumns.value,
           by,
         },
+        params: {
+          signal: controller.signal,
+        },
       })
       options.data.rows = data.rows
       //options.data.rows = data
@@ -397,11 +421,10 @@ const table = {
         options.data.rows = structuredArray
       }
       loading.value = false
+      controller = undefined
     }
     const initHeadParams = () => {
       const { head } = options
-      paramsQuery.value.sorts = []
-      paramsQuery.value.searchColumns = []
       head.forEach((el) => {
         if (el.sorts?.length) {
           paramsQuery.value.sorts.push({
@@ -676,7 +699,6 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
-        console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
           //
           acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
@@ -807,10 +829,7 @@ const table = {
     const clickHandler = ({ action }) => {
       emit('closePopup', action.to)
     }
-    const changeHeaders = async () => {
-      initHeadParams()
-      await getItems()
-    }
+
     return {
       // DATA
       headerOptions,
@@ -868,7 +887,6 @@ const table = {
       clickHandler,
       insertStyle,
       contextMenuRef,
-      changeHeaders,
     }
   },
 }
