@@ -249,7 +249,11 @@
           </thead>
 
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
-            <v-sidelist :date="currentDate" />
+            <v-sidelist
+              v-if="$props.options.options.sideMenu"
+              :date="currentDate"
+              :data="$props.options.options.sideMenu"
+            />
             <template v-for="row in options.data.rows">
               <tr
                 :key="row.row.id"

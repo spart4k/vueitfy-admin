@@ -24,10 +24,12 @@ export default {
         'table/getDetail',
         `get/period/month?period=${props.date.date}`
       )
-      data.value.content = await store.dispatch(
-        'table/getDetail',
-        `get/checklist/${data.value.period.data.id}`
-      )
+      if (data.value.period?.code === 1) {
+        data.value.content = await store.dispatch(
+          'table/getDetail',
+          `get/checklist/${data.value.period.data.id}`
+        )
+      }
       loading.value = false
     }
 

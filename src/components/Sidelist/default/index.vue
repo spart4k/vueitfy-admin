@@ -6,9 +6,11 @@
         color="navbar"
         elevation="0"
         size="x-small"
-        @click="panel.isShow = true"
-        ><v-icon class="mr-2" small color="text">$IconGraphic</v-icon>План
-        закрытия</v-btn
+        @click=";(panel.isShow = true), (panel.component = item.component)"
+        v-for="(item, index) in $props.data"
+        :key="index"
+        ><v-icon class="mr-2" small color="text">{{ item.icon }}</v-icon
+        >{{ item.name }}</v-btn
       >
     </div>
     <transition name="sidelist">
@@ -18,7 +20,7 @@
         class="v-side-panel"
       >
         <component
-          :is="'Checklist'"
+          :is="panel.component"
           :date="$props.date"
           @closePanel="closePanel"
         />
