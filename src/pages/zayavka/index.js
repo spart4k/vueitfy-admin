@@ -4852,6 +4852,18 @@ const config = {
             // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
             name: 'customFormStore',
             action: 'customFormStore',
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  field: 'status',
+                  target: 'formData',
+                  value: [9],
+                  type: true,
+                },
+              ],
+            },
           }),
         ],
         formData: {},
