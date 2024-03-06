@@ -132,13 +132,22 @@ const Form1 = defineComponent({
 
     const { makeRequest: sendPersonalDoc } = useRequest({
       context,
-      request: () =>
-        store.dispatch('taskModule/setPersonalDocData', {
+      request: () => {
+        let bodyData = {}
+        docFormRef.value.docRows.forEach((el) => {
+          if (el.document.doc_id !== 3) {
+            bodyData = {
+              ...el.formData,
+            }
+          }
+        })
+        return store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...finalData.value,
+            ...bodyData,
             id: props.data.data.personal_doc_data.id,
           },
-        }),
+        })
+      },
     })
 
     const { makeRequest: setSaveDocs } = useRequest({
@@ -237,32 +246,39 @@ const Form1 = defineComponent({
       },
       context,
     })
-
-    const changeDocs = (data) => {
+    const cardAccepted = ref(false)
+    const changeDocs = (data, documentIndex) => {
+      console.log(documentIndex)
       if (data.bank_card_id) {
         bankCardId.value = data.bank_card_id
+        cardAccepted.value = true
       }
-      const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
-      let isValid = isFormValid.value
-      for (let i = 0; i < docsId.length; i++) {
-        if (data.formObj.value && data.formObj.value[docsId[i]]) {
-          isValid = data.formObj.value[docsId[i]].validate()
-          if (!isValid) {
-            break
-          }
-        }
-      }
-      isFormValid.value = isValid
-      if (isFormValid.value) {
-        // docsId.forEach((item) => {
-        //   if (data.formObj.value[item] && item !== 3) {
-        //     finalData.value = {
-        //       ...finalData.value,
-        //       ...data.formObj.value[item].formData,
-        //     }
-        //   }
-        // })
-      }
+      // const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
+      // let isValid = isFormValid.value
+      // docFormRef.value.docRows[documentIndex].formData
+      // finalData.value = {
+      //   ...finalData.value,
+      //   ...docFormRef.value.docRows[documentIndex].formData,
+      // }
+      // for (let i = 0; i < docsId.length; i++) {
+      //   if (data.formObj.value && data.formObj.value[docsId[i]]) {
+      //     isValid = data.formObj.value[docsId[i]].validate()
+      //     if (!isValid) {
+      //       break
+      //     }
+      //   }
+      // }
+      // isFormValid.value = isValid
+      // if (isFormValid.value) {
+      // docsId.forEach((item) => {
+      //   if (data.formObj.value[item] && item !== 3) {
+      //     finalData.value = {
+      //       ...finalData.value,
+      //       ...data.formObj.value[item].formData,
+      //     }
+      //   }
+      // })
+      // }
     }
 
     const sendData = async () => {
@@ -310,6 +326,7 @@ const Form1 = defineComponent({
       isHasOnlyCard,
       isHasCard,
       docFormRef,
+      cardAccepted,
     }
   },
 })

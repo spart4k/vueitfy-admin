@@ -144,7 +144,7 @@
           />-->
               </v-col>
             </v-row>
-            <v-row justify="end">
+            <v-row v-if="acceptDocPanel" justify="end">
               <v-btn
                 :disabled="false"
                 @click="sendBankCard"

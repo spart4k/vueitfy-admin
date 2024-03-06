@@ -3,7 +3,7 @@
     <div class="mb-2">Приложенные документы:</div>
     <FormDocumentsRow
       :key="document.id"
-      v-for="document in docsDataFormated"
+      v-for="(document, documentIndex) in docsDataFormated"
       :document="document"
       :docNames="listNames"
       :showDropzone="false"
@@ -12,7 +12,7 @@
       :allFieldsRequireds="true"
       :acceptDocPanel="document.doc_id === 3 ? true : false"
       :personalId="entity.id"
-      @changeDocs="$emit('changeDocs', $event)"
+      @changeDocs="$emit('changeDocs', $event, documentIndex)"
     />
   </div>
 </template>

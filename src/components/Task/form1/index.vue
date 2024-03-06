@@ -121,7 +121,7 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn small :disabled="!isFormValid" color="info" @click="sendData">
+      <v-btn small :disabled="false" color="info" @click="sendData">
         <v-icon small>mdi-content-save</v-icon>
         Сохранить
       </v-btn>
