@@ -1,4 +1,24 @@
 .v {
-  &-heading {
+  &-search {
+    margin-bottom: 10px;
+    &::v-deep .v-input__control {
+      min-height: 32px;
+      .v-input__slot {
+        margin: 0 !important;
+        box-shadow: none !important;
+        background-color: var(--v-pageBackground-base) !important;
+        .v-icon {
+          color: var(--v-disabled-base);
+        }
+        .v-text-field__slot {
+          input {
+            color: var(--v-text-base) !important;
+          }
+          label {
+            color: var(--v-gray-base) !important;
+          }
+        }
+      }
+    }
   }
 }
