@@ -102,19 +102,27 @@ const docForm = defineComponent({
       },
     }
     const bankItems = Object.values(bankItemsSpr)
-    const docFields = {
-      1: {
-        citizenship: '',
-        pasp_data_vid: '',
-        pasp_date_in: '',
-        pasp_date_out: '',
-        pasp_kem: '',
-        pasp_num: '',
+    const getPassportField = (grajdanstvo_id) => {
+      const fieldsPass = {
         pasp_ser: '',
-        sex: '',
-      },
+        pasp_num: '',
+        pasp_data_vid: '',
+        pasp_kem: '',
+      }
+      if (grajdanstvo_id === 1) {
+        fieldsPass.pasp_kod_podr = ''
+      } else {
+        fieldsPass.citizenship = ''
+        fieldsPass.sex = ''
+        fieldsPass.pasp_date_in = ''
+        fieldsPass.pasp_date_out = ''
+      }
+      return fieldsPass
+    }
+    const docFields = {
+      1: getPassportField(props.entity.grajdanstvo_id),
       2: { snils: '' },
-      3: { invoice: '', priority: '', bank_id: '', fio: '', comment: '' },
+      3: { invoice: '', priority: false, bank_id: '', fio: '', comment: '' },
       4: { registration_address: '' },
       5: { patent_num: '', patent_prof: '', patent_ser: '' },
       6: {

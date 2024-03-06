@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect, computed } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -51,12 +51,12 @@ const Form1 = defineComponent({
     const bankCardId = ref(0)
     const isFormValid = ref(false)
     const allDocsValid = computed(() => {
-      return docFormRef.value.docRows.every((el) => !el.vForm.$invalid)
+      return docFormRef.value?.docRows?.every((el) => !el.vForm.$invalid)
     })
     const isValid = computed(() => {
       if (isHasOnlyCard.value && bankCardId.value) {
         return true
-      } else if (allDocsValid.value) {
+      } else if (allDocsValid.value && (isHasCard ? bankCardId.value : true)) {
         return true
       } else {
         return false
@@ -132,7 +132,7 @@ const Form1 = defineComponent({
     const { makeRequest: sendPersonalData } = useRequest({
       context,
       request: () =>
-        store.dispatch('taskModule/setPersonalData', {
+        store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
             name: formData.name,
@@ -149,6 +149,7 @@ const Form1 = defineComponent({
         docFormRef.value.docRows.forEach((el) => {
           if (el.document.doc_id !== 3) {
             bodyData = {
+              ...bodyData,
               ...el.formData,
             }
           }
@@ -292,6 +293,7 @@ const Form1 = defineComponent({
       // })
       // }
     }
+
     const sendData = async () => {
       if (isHasOsnDoc) {
         await sendPersonalData()
@@ -309,6 +311,7 @@ const Form1 = defineComponent({
     }
 
     return {
+      allDocsValid,
       dataRojd,
       textInfo,
       docsData: props.data.data.personal_doc_data,
@@ -338,7 +341,6 @@ const Form1 = defineComponent({
       isHasCard,
       docFormRef,
       cardAccepted,
-      allDocsValid,
       isValid,
     }
   },

@@ -636,7 +636,98 @@ export default {
               text: 'name',
               value: 'id',
             },
-            items: [],
+            defaultItems: [
+              {
+                id: 1,
+                name: 'РФ',
+              },
+              {
+                id: 2,
+                name: 'Узбекистан',
+              },
+              {
+                id: 3,
+                name: 'Таджикистан',
+              },
+              {
+                id: 4,
+                name: 'Киргизия',
+              },
+              {
+                id: 5,
+                name: 'Украина',
+              },
+              {
+                id: 6,
+                name: 'Казахстан',
+              },
+              {
+                id: 7,
+                name: 'Бєларусь',
+              },
+              {
+                id: 8,
+                name: 'Азербайджан',
+              },
+              {
+                id: 9,
+                name: 'Армения',
+              },
+              {
+                id: 10,
+                name: 'Молдова',
+              },
+              {
+                id: 11,
+                name: 'Туркменистан',
+              },
+            ],
+            items: [
+              {
+                id: 1,
+                name: 'РФ',
+              },
+              {
+                id: 2,
+                name: 'Узбекистан',
+              },
+              {
+                id: 3,
+                name: 'Таджикистан',
+              },
+              {
+                id: 4,
+                name: 'Киргизия',
+              },
+              {
+                id: 5,
+                name: 'Украина',
+              },
+              {
+                id: 6,
+                name: 'Казахстан',
+              },
+              {
+                id: 7,
+                name: 'Бєларусь',
+              },
+              {
+                id: 8,
+                name: 'Азербайджан',
+              },
+              {
+                id: 9,
+                name: 'Армения',
+              },
+              {
+                id: 10,
+                name: 'Молдова',
+              },
+              {
+                id: 11,
+                name: 'Туркменистан',
+              },
+            ],
             position: {
               cols: 12,
               sm: 6,
@@ -956,7 +1047,7 @@ export default {
       const { result } = await sendBankCardRequest()
       const bankCardId = result
       ctx.emit('changeDocs', {
-        bank_card_id: bankCardId.value,
+        bank_card_id: bankCardId,
         // formObj: formObj,
       })
     }
@@ -966,7 +1057,10 @@ export default {
       for (let key in docs_data) {
         const field = switchType(key)
         if (props.allFieldsRequireds) {
-          field.validations = { required }
+          if (field.name === 'comment') return
+          else {
+            field.validations = { required }
+          }
         }
         fieldsData.push(field)
       }
@@ -1016,6 +1110,10 @@ export default {
         },
         {
           alias: 'bank_id',
+          filter: [],
+        },
+        {
+          alias: 'citizenship',
           filter: [],
         },
       ],
@@ -1156,9 +1254,14 @@ export default {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
         if (field) {
+          console.log(field.name)
           field.hideItems = lists.data[keyList]
           // field.items =
-          Vue.set(field, 'items', lists.data[keyList])
+          Vue.set(
+            field,
+            'items',
+            lists.data[keyList] ? lists.data[keyList] : field.items
+          )
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)
