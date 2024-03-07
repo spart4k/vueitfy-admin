@@ -11,6 +11,7 @@
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
             class=""
+            :class="`panel-button_${button.label}`"
           >
             <SwitchDefault
               @getItems="changeHeaders"

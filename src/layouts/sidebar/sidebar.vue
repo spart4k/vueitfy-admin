@@ -53,6 +53,7 @@
                       !isMobileDevice && 'v-sidebar-container-link__hover'
                     "
                     :to="item?.link"
+                    :name="item.link"
                   >
                     <div class="v-sidebar-container-link_icon">
                       <v-icon
@@ -124,11 +125,13 @@
                     'v-sidebar-container-link',
                     instantNav && 'v-sidebar-container-link__instant',
                     !isMobileDevice && 'v-sidebar-container-link__hover',
+                    `nav-button_${link.name}`,
                   ]"
                 >
                   <router-link
                     class="text-decoration-none pl-6 pr-6 pb-4 d-block"
                     :to="link.link"
+                    :name="`${item.link}`"
                   >
                     <div
                       :class="[
@@ -191,6 +194,7 @@
                       :class="
                         !isMobileDevice && 'v-sidebar-container-link__hover'
                       "
+                      :link="link.name"
                     >
                       <div
                         :class="[
