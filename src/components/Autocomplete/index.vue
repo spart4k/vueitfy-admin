@@ -10,6 +10,7 @@
       :label="field?.label"
       :multiple="field?.subtype === 'multiple'"
       class="mb-4"
+      :solo="field.solo"
       :item-text="field?.selectOption?.text"
       :item-value="field?.selectOption?.value"
       no-data-text="Нет объектов"

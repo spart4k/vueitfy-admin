@@ -18,11 +18,8 @@
       @after-leave="transitionEnd"
       name="sidelist"
     >
-      <div
-        v-click-outside="closePanel"
-        v-if="panel.isShow"
-        class="v-side-panel"
-      >
+      <!-- v-click-outside="closePanel" -->
+      <div v-if="panel.isShow" class="v-side-panel">
         <component
           :is="$props.data[panel.index].component"
           :date="$props.date"

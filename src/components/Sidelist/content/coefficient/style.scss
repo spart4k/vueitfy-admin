@@ -1,49 +1,82 @@
 .v {
   &-object {
     &-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 7px 8px 7px 4px;
-      font-size: 14px;
-      font-weight: 600;
-      box-sizing: content-box;
-      border: 1px solid transparent;
-      &_btn {
-        opacity: 0;
-      }
       &:last-child {
         margin-bottom: 10px;
       }
-      &:nth-child(odd) {
-        background-color: var(--v-pageBackground-base);
-      }
-      &:hover {
-        border-top: 1px solid var(--v-primary-base);
-        border-bottom: 1px solid var(--v-primary-base);
-        button {
-          opacity: 1;
+      &-person {
+        display: flex;
+        justify-content: space-between;
+        padding: 7px 8px 7px 4px;
+        font-size: 14px;
+        font-weight: 600;
+        box-sizing: content-box;
+        border: 1px solid transparent;
+        &_btn {
+          opacity: 0;
+        }
+        &:nth-child(odd) {
+          background-color: var(--v-pageBackground-base);
+        }
+        &:hover {
+          border-top: 1px solid var(--v-primary-base);
+          border-bottom: 1px solid var(--v-primary-base);
+          button {
+            opacity: 1;
+          }
+        }
+        span {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
-      span {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      &_coef {
-        &::v-deep .v-input__control {
-          min-height: 30px;
-          .v-input__slot {
-            border: 1px solid var(--v-disabled-base) !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            .v-text-field__slot {
-              input {
-                color: var(--v-text-base) !important;
-                font-weight: 600;
-                text-align: center;
+      &-edit {
+        &_coef {
+          min-width: 46px;
+          flex: 0;
+          &::v-deep .v-input__control {
+            min-height: 32px;
+            .v-input__slot {
+              border: 1px solid var(--v-disabled-base) !important;
+              margin: 0 !important;
+              box-shadow: none !important;
+              padding: 0 6px !important;
+              .v-text-field__slot {
+                input {
+                  color: var(--v-text-base) !important;
+                  font-weight: 600;
+                  text-align: center;
+                }
+                label {
+                  color: var(--v-gray-base) !important;
+                }
               }
-              label {
-                color: var(--v-gray-base) !important;
+            }
+          }
+        }
+        &_select {
+          &::v-deep .v-input {
+            margin: 0 !important;
+            padding: 0 !important;
+            .v-input__slot {
+              margin: 0;
+            }
+          }
+
+          &::v-deep .v-input__control {
+            min-height: 32px;
+            .v-input__slot {
+              margin: 0 !important;
+              border: 1px solid var(--v-disabled-base) !important;
+              box-shadow: none !important;
+              .v-text-field__slot {
+                input {
+                  color: var(--v-text-base) !important;
+                }
+                label {
+                  color: var(--v-gray-base) !important;
+                }
               }
             }
           }

@@ -18,28 +18,56 @@
               </div>
               <div v-else>
                 <v-btn class="mb-3" small block color="success">+</v-btn>
-                <div v-for="person in item.content" :key="person.personal_id">
-                  <div v-if="!person.isEdit" class="v-object-item text--text">
+                <div
+                  v-for="person in item.content"
+                  :key="person.personal_id"
+                  class="v-object-item"
+                >
+                  <div
+                    v-if="!person.edit.isShow"
+                    class="v-object-item-person text--text"
+                  >
                     <span class="flex-grow-1">{{ person.personal_name }}</span>
                     <div class="ml-2 d-flex align-center">
                       {{ person.coefficient
                       }}<v-btn
-                        class="ml-2 v-object-item_btn"
+                        class="ml-2 v-object-item-person_btn"
                         icon
                         x-small
-                        @click="person.isEdit = true"
+                        @click="editPerson(person)"
                       >
                         <v-icon small color="gray">$IconEdit</v-icon></v-btn
                       >
+                      <v-btn class="v-object-item-person_btn" icon x-small>
+                        <v-icon small color="error">$IconClose</v-icon></v-btn
+                      >
                     </div>
                   </div>
-                  <div class="d-flex" v-if="person.isEdit">
-                    <div>
-                      <Autocomplete :field="edit" v-model="edit.name" />
+                  <div
+                    class="d-flex align-center v-object-item-edit mb-1 mt-1"
+                    v-else
+                  >
+                    <div class="flex-grow-1 v-object-item-edit_select">
+                      <Autocomplete
+                        :field="edit"
+                        v-model="person.edit.name_id"
+                      />
                     </div>
-                    <div class="mr-3 ml-3 v-object-item_coef">
-                      <v-text-field v-mask="mask" solo />
+                    <div class="mr-3 ml-3 v-object-item-edit_coef">
+                      <v-text-field
+                        v-model="person.edit.coefficient"
+                        v-mask="mask(person.edit.coefficient)"
+                        solo
+                      />
                     </div>
+                    <v-btn icon x-small>
+                      <v-icon small color="success">$IconGalka</v-icon></v-btn
+                    >
+                    <v-btn icon x-small @click="person.edit.isShow = false">
+                      <v-icon small color="gray"
+                        >$IconArrowCircleRight</v-icon
+                      ></v-btn
+                    >
                   </div>
                 </div>
               </div>
