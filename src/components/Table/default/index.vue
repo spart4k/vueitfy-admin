@@ -10,6 +10,7 @@
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
             @click="panelHandler(button)"
+            :class="`panel-button_${button.label}`"
             small
           >
             <v-icon v-if="button.type === 'icon'" small class="mr-2">
