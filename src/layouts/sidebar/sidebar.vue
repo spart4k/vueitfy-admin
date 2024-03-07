@@ -87,7 +87,10 @@
             <template v-else-if="!miniMenu">
               <v-expansion-panel-header
                 class="v-sidebar-container-link v-sidebar-container-link__default-height"
-                :class="!isMobileDevice && 'v-sidebar-container-link__hover'"
+                :class="[
+                  !isMobileDevice && 'v-sidebar-container-link__hover',
+                  `nav-button_${item.name}`,
+                ]"
               >
                 <div class="v-sidebar-container-link_icon">
                   <v-icon
@@ -125,7 +128,6 @@
                     'v-sidebar-container-link',
                     instantNav && 'v-sidebar-container-link__instant',
                     !isMobileDevice && 'v-sidebar-container-link__hover',
-                    `nav-button_${link.name}`,
                   ]"
                 >
                   <router-link
