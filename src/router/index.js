@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PaymentView from '../views/PaymentView.vue'
+import PaymentListView from '../views/PaymentListView.vue'
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
 import X5importView from '../views/X5importView.vue'
@@ -155,6 +156,17 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/payment_list',
+    name: 'payment_list',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PaymentListView,
   },
   {
     path: '/personal_target',
