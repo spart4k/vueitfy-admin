@@ -73,6 +73,7 @@
               clearable
               :readonly="readonlyField(field)"
               :disabled="disabledField(field)"
+              :name="field.name"
             />
             <v-checkbox
               v-else-if="showField('checkbox', field)"
@@ -80,6 +81,8 @@
               :label="field.label"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
+              :name="field.name"
+              :class="'checkbox_' + field.name"
             ></v-checkbox>
             <Datepicker
               v-else-if="showField('date', field)"
