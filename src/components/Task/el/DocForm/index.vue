@@ -15,6 +15,7 @@
       "
       :personalId="entity.id"
       :correct="correct"
+      :confirm="confirm"
       :docsData="docsData"
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
     />

@@ -151,17 +151,19 @@ const Form7 = defineComponent({
     const { makeRequest: setPersonalDocData } = useRequest({
       context,
       request: () => {
-        const data = Object.values(finalData.value).reduce((acc, value) => {
-          if (value.hasOwnProperty('bank_id')) {
-            return
+        let bodyData = {}
+        docFormRef.value.docRows.forEach((el) => {
+          if (el.document.doc_id !== 3) {
+            bodyData = {
+              ...bodyData,
+              ...el.formData,
+            }
           }
-          acc = { ...acc, ...value }
-          return acc
-        }, {})
+        })
 
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...data,
+            ...bodyData,
             id: props.data.data.personal_doc_data.id,
           },
         })

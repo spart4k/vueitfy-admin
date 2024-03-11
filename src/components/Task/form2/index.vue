@@ -61,7 +61,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <DocFormWithConfirm
+      <!-- <DocFormWithConfirm
         v-if="docs && docs.length"
         class="mb-10"
         @change="changeDocs"
@@ -69,7 +69,20 @@
         :bankData="bankData"
         :listNames="listNames"
         :docs="docs"
-      ></DocFormWithConfirm>
+      ></DocFormWithConfirm> -->
+      <DocForm
+        v-if="docs && docs.length"
+        class="mb-10"
+        @change="changeDocs"
+        :docsData="docsData"
+        :bankData="bankData"
+        :listNames="listNames"
+        :docs="docs"
+        :entity="entity"
+        :task="JSON.parse(data.task.dop_data)"
+        :confirm="true"
+        ref="docFormRef"
+      ></DocForm>
       <v-textarea
         v-model="comment"
         @input="commentErr = ''"

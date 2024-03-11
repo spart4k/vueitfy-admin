@@ -6,6 +6,7 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment/moment'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 
@@ -15,6 +16,7 @@ const Form2 = defineComponent({
     TextInfo,
     DocFormWithConfirm,
     FormComment,
+    DocForm,
   },
   props: {
     data: {

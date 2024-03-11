@@ -84,6 +84,10 @@ const docForm = defineComponent({
     task: {
       type: Object,
     },
+    confirm: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: function () {
     return {

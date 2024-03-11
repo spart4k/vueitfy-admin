@@ -13,6 +13,14 @@
             >
               $IconGalka
             </v-icon>
+            <v-icon
+              x-small
+              color="red"
+              style="flex: 0"
+              class="mr-3 mb-1"
+              v-else-if="isRejected && confirm"
+              >$IconClose</v-icon
+            >
             <div class="document-title text-h6 mb-2">
               {{
                 document.doc_name
@@ -55,7 +63,7 @@
                       :label="field.label"
                       :error-messages="formErrors[field.name]"
                       clearable
-                      :readonly="field.readonly"
+                      :readonly="field.readonly || confirm"
                       :disabled="field.readonly"
                     />
                     <Datepicker
@@ -64,11 +72,13 @@
                       :label="field.label"
                       :field="field"
                       :error-messages="formErrors[field?.name]"
+                      :readonly="confirm"
                     ></Datepicker>
                     <v-checkbox
                       v-else-if="field.type === 'checkbox'"
                       v-model="formData[field.name]"
                       :label="field.label"
+                      :readonly="confirm"
                     ></v-checkbox>
                     <Autocomplete
                       v-else-if="field.type === 'select'"
@@ -81,6 +91,7 @@
                       :formData="formData"
                       ref="autocompleteRef"
                       @change="changeAutocomplete"
+                      :readonly="confirm"
                     />
                     <!-- <v-textarea
                 v-else-if="showField('textarea', field)"
@@ -173,6 +184,27 @@
               >
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Исправлено
+              </v-btn>
+            </v-row>
+            <v-row v-if="confirm" justify="end">
+              <v-btn
+                :disabled="vForm.$invalid"
+                @click="rejectDoc"
+                color="error"
+                small
+              >
+                <!-- <v-icon left> $IconMain </v-icon> -->
+                Отклонить
+              </v-btn>
+              <v-btn
+                :disabled="vForm.$invalid"
+                @click="confirmCorrect"
+                color="primary"
+                small
+                class="ml-2"
+              >
+                <!-- <v-icon left> $IconMain </v-icon> -->
+                Подтвердить
               </v-btn>
             </v-row>
           </v-expansion-panel-content>

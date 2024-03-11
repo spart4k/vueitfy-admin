@@ -70,6 +70,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    confirm: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     Autocomplete,
@@ -1297,6 +1301,20 @@ export default {
         }
       }
     }
+    const isRejected = ref(false)
+    const rejectDoc = (idDoc) => {
+      // if (!rejectedDocs.value.includes(idDoc)) {
+      //   rejectedDocs.value = [...rejectedDocs.value, idDoc]
+      // }
+      isRejected.value = true
+      isCorrect.value = false
+      // confirmedDocs.value = confirmedDocs.value.filter((doc) => doc !== idDoc)
+      // ctx.emit('change', {
+      //   confirmed: confirmedDocs.value,
+      //   rejected: rejectedDocs.value,
+      //   confirmDocsLength: confirmDocsLength,
+      // })
+    }
     // const docName = () =>
     onMounted(async () => {
       // if (props.document.path_doc) {
@@ -1337,6 +1355,8 @@ export default {
       sendBankCard,
       confirmCorrect,
       isCorrect,
+      isRejected,
+      rejectDoc,
       // documentData,
     }
   },
