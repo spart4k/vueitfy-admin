@@ -1,0 +1,14 @@
+.personal {
+  background-color: #fff;
+  padding-inline: 10px;
+  margin-bottom: 14px;
+  &-wrap {
+  }
+  &-head {
+    display: flex;
+    &-info {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
