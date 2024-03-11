@@ -6,26 +6,18 @@
         class="v-table-panel"
       >
         <div class="v-table-panel__actions flex-wrap">
-          <div class=""></div>
-          <div
+          <v-btn
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
-            class=""
+            @click="panelHandler(button)"
             :class="`panel-button_${button.label}`"
+            small
           >
-            <SwitchDefault
-              @getItems="changeHeaders"
-              :button="button"
-              v-if="button.type === 'switch'"
-              v-model="button.value"
-            />
-            <v-btn v-else @click="panelHandler(button)" small>
-              <v-icon v-if="button.type === 'icon'" small class="mr-2">
-                {{ button.url }}
-              </v-icon>
-              <p v-if="true">{{ button.label }}</p>
-            </v-btn>
-          </div>
+            <v-icon v-if="button.type === 'icon'" small class="mr-2">
+              {{ button.url }}
+            </v-icon>
+            <p v-if="true">{{ button.label }}</p>
+          </v-btn>
         </div>
 
         <div class="v-table-panel__search">
@@ -106,7 +98,7 @@
                         :state="
                           paramsQuery.sorts.find(
                             (el) => el.field === head.value
-                          )?.value
+                          ).value
                         "
                       />
                     </div>

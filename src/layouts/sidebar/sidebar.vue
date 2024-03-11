@@ -54,6 +54,7 @@
                     "
                     :to="item?.link"
                     :name="item.link"
+                    :id="`nav-chapter_${item.name}`"
                   >
                     <div class="v-sidebar-container-link_icon">
                       <v-icon
@@ -128,6 +129,7 @@
                     'v-sidebar-container-link',
                     instantNav && 'v-sidebar-container-link__instant',
                     !isMobileDevice && 'v-sidebar-container-link__hover',
+                    `nav-button_${link.name}`,
                   ]"
                 >
                   <router-link
@@ -193,10 +195,10 @@
                       :to="link.link"
                       class="v-sidebar-container-link"
                       style="height: 100%; width: 100%"
+                      :link="link.name"
                       :class="
                         !isMobileDevice && 'v-sidebar-container-link__hover'
                       "
-                      :link="link.name"
                     >
                       <div
                         :class="[
