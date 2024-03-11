@@ -30,6 +30,7 @@
           @focus="$emit('focus')"
           @blur="$emit('blur')"
           :error-messages="errorMessages"
+          :name="field?.name"
         ></v-text-field>
       </template>
       <v-date-picker
