@@ -8,6 +8,8 @@ import {
   delForm,
   bindZayavka,
   loadParser,
+  getPaymentList,
+  getPaymentListObjects,
 } from '@/api/form'
 //import axios from 'axios'
 
@@ -44,6 +46,16 @@ const form = {
     },
     async loadParser(_, params) {
       const result = await loadParser(params)
+      return result
+    },
+    async getPaymentList(_, params) {
+      console.log(params)
+      const result = await getPaymentList(params)
+      return result
+    },
+    async getPaymentListObjects(_, params) {
+      console.log(params)
+      const result = await getPaymentListObjects(params)
       return result
     },
   },
