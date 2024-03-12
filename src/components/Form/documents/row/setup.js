@@ -3,7 +3,7 @@ import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
 

@@ -4,7 +4,7 @@ import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
 import Row from '../row/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 

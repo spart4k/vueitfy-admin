@@ -5,6 +5,7 @@ import {
   create,
   remove,
   putForm,
+  delForm,
   bindZayavka,
   loadParser,
 } from '@/api/form'
@@ -31,6 +32,10 @@ const form = {
     },
     async del(_, params) {
       const result = await remove(params)
+      return result
+    },
+    async delForm(_, params) {
+      const result = await delForm(params)
       return result
     },
     async bindZayavka(_, params) {

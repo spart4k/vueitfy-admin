@@ -85,6 +85,18 @@ const config = {
     url: 'get/pagination_pivot/personal_target_personal',
     title: 'This is an about page1',
     doubleHandlerType: 'cell',
+    sideMenu: [
+      {
+        component: 'Checklist',
+        name: 'План закрытия',
+        icon: '$IconGraphic',
+      },
+      {
+        component: 'Coefficient',
+        name: 'Коэффициент',
+        icon: '$IconGraphic',
+      },
+    ],
   },
   panel: {
     buttons: [

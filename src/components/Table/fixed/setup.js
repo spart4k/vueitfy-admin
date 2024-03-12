@@ -5,11 +5,14 @@ import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
+import moment from 'moment'
 
 import vContextmenu from '@/components/Contextmenu/default/index.vue'
+import vSidelist from '@/components/Sidelist/default/index.vue'
 import Sheet from '@/components/Sheet/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
 import DropZone from '@/components/Dropzone/default/index.vue'
+import Checklist from '@/components/Sidelist/content/checklist/index.vue'
 
 //import vTableButton from '../button/index.js'
 //import vButton from '../../button/index.js'
@@ -29,11 +32,13 @@ const table = {
     //vInput,
     vIconSort,
     vContextmenu,
+    vSidelist,
     Sheet,
     TableFilter,
     Popup,
     Detail,
     DropZone,
+    Checklist,
   },
   props: {
     options: {
@@ -101,7 +106,6 @@ const table = {
       dataCellForm: {},
     })
     const currentDate = ref({
-      month: new Date().getMonth(),
       monthArray: [
         'Январь',
         'Февраль',
@@ -116,7 +120,9 @@ const table = {
         'Ноябрь',
         'Декабрь',
       ],
+      month: new Date().getMonth(),
       year: new Date().getFullYear(),
+      date: moment(new Date()).format('YYYY-MM'),
     })
     const cells = ref(null)
     const cellItems = ref(null)
@@ -779,21 +785,12 @@ const table = {
       })
     }
     const changeMonth = async (val) => {
-      currentDate.value.month += val
-      if (currentDate.value.month < 0) {
-        currentDate.value.month = 11
-        currentDate.value.year -= 1
-      } else if (currentDate.value.month > 11) {
-        currentDate.value.month = 0
-        currentDate.value.year += 1
-      }
-      acceptData.value.valueDate = `${currentDate.value.year}-${
-        currentDate.value.month < 10 ? '0' : ''
-      }${currentDate.value.month + 1}`
-      // acceptData.value.valueDate
-      // setTimeout(() => {
-      //   countingDistances()
-      // }, 0)
+      currentDate.value.date = moment(`${currentDate.value.date}-10`).add(val, 'M').format('YYYY-MM')
+      currentDate.value.year = currentDate.value.date.split('-')[0]
+      currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
+      setTimeout(() => {
+        countingDistances()
+      }, 0)
       addDayOfMonth()
       await getItems()
     }
@@ -809,9 +806,7 @@ const table = {
     }
 
     const getDownLoadLink = async (val) => {
-      const date = `${currentDate.value.year}-${
-        currentDate.value.month < 10 ? '0' : ''
-      }${currentDate.value.month + 1}`
+      const date = currentDate.value.date
       globalLoading.value = true
       const data = await store.dispatch(
         'table/getDetail',
@@ -833,9 +828,7 @@ const table = {
 
     const createPayment = async () => {
       prepaymentLoading.value = true
-      const date = `${currentDate.value.year}-${
-        currentDate.value.month < 10 ? '0' : ''
-      }${currentDate.value.month + 1}`
+      const date = currentDate.value.date
       const response = await store.dispatch('table/createPrepayment', {
         data: {
           period: date,

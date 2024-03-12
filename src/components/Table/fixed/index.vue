@@ -105,6 +105,7 @@
         @getItems="getItems"
       />
     </Popup>
+
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
@@ -264,6 +265,11 @@
           </thead>
 
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
+            <v-sidelist
+              v-if="$props.options.options.sideMenu"
+              :date="currentDate"
+              :data="$props.options.options.sideMenu"
+            />
             <template v-for="row in options.data.rows">
               <tr
                 :key="row.row.id"
@@ -462,7 +468,9 @@
         </div>
       </div>
     </div>
+
     <v-contextmenu :options="contextmenu" />
+
     <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">
         <keep-alive>
