@@ -9,7 +9,7 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import useForm from '@/compositions/useForm.js'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
 import FormError from '@/components/Task/el/FormError/index.vue'
 
 export default {
