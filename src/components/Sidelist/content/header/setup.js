@@ -18,6 +18,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    lockColor: {
+      type: String,
+      default: '',
+    },
   },
   setup(props) {
     return {}
