@@ -8,21 +8,23 @@ import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import moment from 'moment'
-import Info from '../info/index.vue'
-import InfoOutput from '../output/index.vue'
-import InfoOverpayment from '../overpayment/default/index.vue'
-import InfoConsumption from '../consumption/index.vue'
-import Total from '../../total/index.vue'
+import Info from '../../info/index.vue'
+import InfoOutput from '../../output/index.vue'
+// import InfoOverpayment from '../default/index.vue'
+import InfoConsumption from '../../consumption/index.vue'
+import Total from '../../../total/index.vue'
+import Row from '../row/index.vue'
 //import { tableApi } from '@/api'
 
 const table = {
-  name: 'PaymentList-Row-Object',
+  name: 'PaymentList-Row-Object-Output',
   components: {
     Info,
     InfoOutput,
-    InfoOverpayment,
+    // InfoOverpayment,
     InfoConsumption,
     Total,
+    Row,
     //vTableButton,
     //vButton,
     //vInput,
@@ -65,12 +67,13 @@ const table = {
     }
     const total = ref({})
     const isOpen = ref(false)
+    const objects = ref([])
     const isOpenObject = ref(false)
     const { makeRequest } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/hold`,
         }),
     })
     watch(
@@ -80,8 +83,8 @@ const table = {
           try {
             const { result } = await makeRequest()
             if (result) {
-              // objects.value = result.objects
-              total.value = result
+              objects.value = result
+              // total.value = result
               // console.log('getItems')
             }
           } catch (err) {
@@ -93,6 +96,7 @@ const table = {
     return {
       isOpen,
       total,
+      objects,
     }
   },
 }

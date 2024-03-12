@@ -2,7 +2,7 @@
   <div class="personal">
     <div class="personal-wrap">
       <v-expansion-panels v-model="isOpen">
-        <v-expansion-panel>
+        <v-expansion-panel class="personal-expension">
           <v-expansion-panel-header class="personal-expension-head">
             <div class="personal-head">
               <div class="personal-head-info">

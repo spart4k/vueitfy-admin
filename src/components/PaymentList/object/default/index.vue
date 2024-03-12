@@ -2,16 +2,23 @@
   <div class="object">
     <v-expansion-panels v-model="isOpen">
       <v-expansion-panel>
-        <v-expansion-panel-header class="personal-expension-head">
-          <div class="personal-head">
-            <div class="personal-head-info">
+        <v-expansion-panel-header class="object-expension-head">
+          <div class="object-head">
+            <div class="object-head-info">
               <!-- <v-checkbox
                 @click="(event) => event.stopPropagation()"
                 class=""
               ></v-checkbox> -->
               <span>{{ object.name }}</span>
+              <v-chip
+                class="object-head-info__total mr-6"
+                color="green"
+                variant="flat"
+              >
+                1000р
+              </v-chip>
             </div>
-            <div class="personal-head-panel"></div>
+            <div class="object-head-panel"></div>
           </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content>

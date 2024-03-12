@@ -1,13 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router/composables'
-import useRequest from '@/compositions/useRequest'
-// import Row from '../row/index.vue'
-import store from '@/store'
-import { v4 as uuidv4 } from 'uuid'
-import axios from 'axios'
-import moment from 'moment'
+import { reactive } from 'vue'
 
 //import { tableApi } from '@/api'
 
@@ -31,10 +24,16 @@ const table = {
     },
   },
   setup(props, ctx) {
-    const { emit } = ctx
-    const router = useRouter()
-    const route = useRoute()
-    return {}
+    const fields = reactive({
+      total_by_services: 'Сумма по выработке',
+      total_hold: 'Начислено ранее',
+      total_debit: 'Сумма к удержанию',
+      total_coefficient: 'Коэффициент',
+      total: 'Итого',
+    })
+    return {
+      fields,
+    }
   },
 }
 

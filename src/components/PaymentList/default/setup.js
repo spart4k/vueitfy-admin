@@ -99,7 +99,8 @@ const table = {
       try {
         const { result } = await makeRequest()
         if (result) {
-          rows.value = result.splice(0, 10)
+          // rows.value = result.splice(0, 10)
+          rows.value = result
           console.log('getItems')
         }
       } catch (err) {

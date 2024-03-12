@@ -1,20 +1,21 @@
 <template>
-  <div class="object">
+  <div class="type">
     <v-expansion-panels v-model="isOpen">
       <v-expansion-panel>
-        <v-expansion-panel-header class="personal-expension-head">
+        <v-expansion-panel-header class="type-expension-head">
           <div class="personal-head">
-            <div class="personal-head-info">
+            <div class="type-head-info">
               <span>Выработка1</span>
             </div>
-            <div class="personal-head-panel"></div>
+            <div class="type-head-panel"></div>
           </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-expansion-panels v-for="item in 10" :key="item">
+          Отсутствует
+          <!-- <v-expansion-panels v-for="item in 10" :key="item">
             <v-expansion-panel>
-              <v-expansion-panel-header class="personal-expension-head">
-                <v-row class="personal-head">
+              <v-expansion-panel-header class="type-expension-head">
+                <v-row class="type-head">
                   <v-col cols="12" sm="5">Таскание мешков</v-col>
                   <v-col cols="12" sm="2">999</v-col>
                   <v-col cols="12" sm="2">999</v-col>
@@ -22,11 +23,7 @@
                 </v-row>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-row
-                  v-for="subItem in 4"
-                  :key="subItem"
-                  class="personal-head"
-                >
+                <v-row v-for="subItem in 4" :key="subItem" class="type-head">
                   <v-col cols="12" sm="5">01.01.2001</v-col>
                   <v-col cols="12" sm="2">1</v-col>
                   <v-col cols="12" sm="2">1.4</v-col>
@@ -34,7 +31,7 @@
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
-          </v-expansion-panels>
+          </v-expansion-panels> -->
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
