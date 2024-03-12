@@ -1,31 +1,23 @@
 <template>
-  <div class="">
+  <div class="v-autocomplete">
     <v-autocomplete
       clearable
       v-model="proxyValue"
       :loading="loading"
-      :items="field?.items"
-      :search-input.sync="searchProps"
+      :items="field.items"
+      :search-input.sync="search"
       :error-messages="errorMessages"
-      :label="field?.label"
-      :multiple="field?.subtype === 'multiple'"
-      class="mb-4"
+      :label="field.label"
+      :multiple="field.subtype === 'multiple'"
       :solo="field.solo"
-      :item-text="field?.selectOption?.text"
-      :item-value="field?.selectOption?.value"
+      :outlined="field.outlined"
+      :item-text="field.selectOption.text"
+      :item-value="field.selectOption.value"
+      :rules="field.required && [() => !!proxyValue || '']"
       no-data-text="Нет объектов"
       @change="update"
-      :disabled="disabled"
-      :readonly="readonly"
+      :readonly="$props.readonly"
     >
-      <template v-if="false" v-slot:prepend-item>
-        <v-list-item ripple @click="selectAll">
-          <v-list-item-action>
-            <v-checkbox v-model="checkedAll"></v-checkbox>
-          </v-list-item-action>
-          <v-list-item-content>Выбрать все</v-list-item-content>
-        </v-list-item>
-      </template>
       <template v-slot:append>
         <v-progress-circular
           v-if="loading"
@@ -70,4 +62,4 @@
   </div>
 </template>
 <script src="./setup"></script>
-<style lang="scss" scoped></style>
+<style src="./style.scss" lang="scss" scoped></style>

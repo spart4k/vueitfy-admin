@@ -7,7 +7,9 @@
         x-small
         @click="$emit($props.stage ? 'changeStage' : 'closePanel')"
       >
-        <v-icon small color="disabled">$IconArrowLeft</v-icon></v-btn
+        <v-icon small color="disabled">{{
+          $props.stage ? '$IconArrowLeft' : '$IconArrowRight'
+        }}</v-icon></v-btn
       >
       <div class="v-heading_relative">
         <v-btn

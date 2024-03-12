@@ -36,8 +36,8 @@
           min-width: 46px;
           flex: 0;
           &::v-deep .v-input__control {
-            min-height: 32px;
             .v-input__slot {
+              min-height: 32px;
               border: 1px solid var(--v-disabled-base) !important;
               margin: 0 !important;
               box-shadow: none !important;
@@ -83,6 +83,29 @@
         }
       }
     }
+    &-methods {
+      &::v-deep .v-input__control {
+        // min-height: 32px;
+        width: 100px;
+        .v-input__slot {
+          min-height: 32px;
+          border: 1px solid var(--v-disabled-base) !important;
+          margin: 0 !important;
+          box-shadow: none !important;
+          padding: 0 6px !important;
+          .v-text-field__slot {
+            input {
+              color: var(--v-text-base) !important;
+              font-weight: 600;
+              text-align: center;
+            }
+            label {
+              color: var(--v-gray-base) !important;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -103,6 +126,9 @@
     padding: 7px 0;
     color: var(--v-text-base);
     font-weight: 600;
+    .v-btn--icon {
+      flex: none !important;
+    }
   }
   .row + .row {
     margin-top: 6px;
