@@ -41,6 +41,7 @@
             @getItems="(e) => $emit('getItems', e)"
             @refreshData="$emit('refreshData')"
             :formDataParent="formDataParent"
+            :class="item?.label"
           />
         </v-tab-item>
       </v-tabs-items>

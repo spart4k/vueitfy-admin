@@ -25,6 +25,7 @@
           @setStageData="setStageData"
           @closePopup="(e) => $emit('closePopup', e)"
           @getItems="(e) => $emit('getItems', e)"
+          :class="item?.label"
         />
         <!--<v-progress-circular
           v-else

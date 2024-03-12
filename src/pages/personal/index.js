@@ -3391,6 +3391,7 @@ export const defaultForm = [
         name: 'Основные',
         type: FormDefault,
         detail: true,
+        label: 'personal-add-stage-1',
         lists: [
           // 'vid_vedomost_id',
           // 'status_pt',
@@ -3954,6 +3955,7 @@ export const defaultForm = [
         type: TableDefault,
         active: false,
         config: documentConfig,
+        label: 'personal-add-stage-2',
         actions: [
           stringAction({
             text: 'Оставить заявку',
