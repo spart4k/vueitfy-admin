@@ -18,12 +18,13 @@
           x-small
           class="v-heading_item v-heading_item__center"
         >
-          <v-icon small color="disabled">$IconLock</v-icon></v-btn
+          <v-icon :color="$props.lockColor" small>$IconLock</v-icon></v-btn
         >
         {{ $props.data.name }}
       </div>
       <div v-if="$props.date" class="v-heading_item v-heading_item__right">
-        Январь 2024
+        {{ $props.date.monthArray[$props.date.month] }}
+        {{ $props.date.year }}
       </div>
     </div>
   </div>
