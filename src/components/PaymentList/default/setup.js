@@ -2,15 +2,17 @@
 //document.adoptedStyleSheets.push(style)
 import Vue, { onMounted, ref, computed, watch, nextTick, provide } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
+import useRequest from '@/compositions/useRequest'
 import Row from '../row/index.vue'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
+import moment from 'moment'
 
 //import { tableApi } from '@/api'
 
 const table = {
-  name: 'TableFixed',
+  name: 'PaymentList',
   components: {
     //vTableButton,
     //vButton,
@@ -37,9 +39,15 @@ const table = {
     const router = useRouter()
     const route = useRoute()
     const loading = ref(false)
-
+    const context = {
+      root: {
+        store,
+        router,
+        ctx,
+        route,
+      },
+    }
     const currentDate = ref({
-      month: new Date().getMonth(),
       monthArray: [
         'Январь',
         'Февраль',
@@ -54,35 +62,58 @@ const table = {
         'Ноябрь',
         'Декабрь',
       ],
+      month: new Date().getMonth(),
       year: new Date().getFullYear(),
+      date: moment(new Date()).format('YYYY-MM'),
     })
+    const rows = ref([])
     const acceptData = ref({
       popup: false,
       valueDate: new Date().toISOString().substr(0, 7),
       valueProfit: { title: 'Аванс', value: 5 },
     })
     const changeMonth = async (val) => {
-      currentDate.value.month += val
-      if (currentDate.value.month < 0) {
-        currentDate.value.month = 11
-        currentDate.value.year -= 1
-      } else if (currentDate.value.month > 11) {
-        currentDate.value.month = 0
-        currentDate.value.year += 1
-      }
-      acceptData.value.valueDate = `${currentDate.value.year}-${
-        currentDate.value.month < 10 ? '0' : ''
-      }${currentDate.value.month + 1}`
-      // acceptData.value.valueDate
+      currentDate.value.date = moment(`${currentDate.value.date}-10`)
+        .add(val, 'M')
+        .format('YYYY-MM')
+      currentDate.value.year = currentDate.value.date.split('-')[0]
+      currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
       // setTimeout(() => {
-      //   countingDistances()
+      // countingDistances()
       // }, 0)
       // addDayOfMonth()
-      // await getItems()
+      provide('period', currentDate.date)
+      await getItems()
     }
+    const { makeRequest } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('form/getPaymentList', {
+          url: 'payment_list/personals',
+          body: {
+            period: currentDate.value.date,
+          },
+        }),
+    })
+    const getItems = async () => {
+      try {
+        const { result } = await makeRequest()
+        if (result) {
+          rows.value = result.splice(0, 10)
+          console.log('getItems')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    onMounted(() => {
+      getItems()
+    })
     return {
       currentDate,
       changeMonth,
+      getItems,
+      rows,
     }
   },
 }

@@ -28,7 +28,7 @@
               </v-icon>
               <p v-if="true">{{ button.label }}</p>
             </v-btn> -->
-            buttons
+            <!-- buttons -->
           </div>
           <div class="v-table-panel-items__search">
             <v-text-field
@@ -42,7 +42,12 @@
       </div>
 
       <div class="v-table-wrap">
-        <Row v-for="row in 10" :key="row" />
+        <Row
+          v-for="row in rows"
+          :row="row"
+          :period="currentDate.date"
+          :key="row.personal_id"
+        />
       </div>
     </div>
   </div>

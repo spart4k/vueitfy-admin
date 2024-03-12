@@ -1,27 +1,32 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, inject, reactive } from 'vue'
+import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
-import Row from '../row/index.vue'
+// import Row from '../row/index.vue'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import moment from 'moment'
-import Total from '../total/index.vue'
-
+import Info from '../info/index.vue'
+import InfoOutput from '../output/index.vue'
+import InfoOverpayment from '../overpayment/index.vue'
+import InfoConsumption from '../consumption/index.vue'
+import Total from '../../total/index.vue'
 //import { tableApi } from '@/api'
-import Object from '../object/default/index.vue'
 
 const table = {
-  name: 'PaymentList-Row',
+  name: 'PaymentList-Row-Object-Output',
   components: {
+    Info,
+    InfoOutput,
+    InfoOverpayment,
+    InfoConsumption,
+    Total,
     //vTableButton,
     //vButton,
     //vInput,
-    Row,
-    Object,
-    Total,
+    // Row,
   },
   props: {
     row: {
@@ -29,16 +34,27 @@ const table = {
       default: () => {},
       require: true,
     },
+    object: {
+      type: Object,
+      default: () => {},
+      require: true,
+    },
+    personalId: {
+      type: Number,
+    },
     period: {
       type: String,
       default: '',
+    },
+    showTotal: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, ctx) {
     const { emit } = ctx
     const router = useRouter()
     const route = useRoute()
-    const isOpen = ref(false)
     const context = {
       root: {
         store,
@@ -47,28 +63,26 @@ const table = {
         route,
       },
     }
-    const objects = ref([])
-    const period = inject('period')
     const total = ref({})
-    console.log(period)
-    const { makeRequest, loading } = useRequest({
+    const isOpen = ref(false)
+    const isOpenObject = ref(false)
+    const { makeRequest } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.row.personal_id}`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/services`,
         }),
     })
     watch(
       () => isOpen.value,
       async (newVal) => {
-        console.log(newVal + '_' + props.row.personal_id)
         if (newVal === 0) {
           try {
             const { result } = await makeRequest()
             if (result) {
-              objects.value = result.objects
+              // objects.value = result.objects
               total.value = result
-              console.log('getItems')
+              // console.log('getItems')
             }
           } catch (err) {
             console.log(err)
@@ -78,9 +92,7 @@ const table = {
     )
     return {
       isOpen,
-      objects,
       total,
-      loading,
     }
   },
 }
