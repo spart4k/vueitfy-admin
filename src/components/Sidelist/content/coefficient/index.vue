@@ -16,6 +16,7 @@
                   @click.stop="item.footer = !item.footer"
                   icon
                   x-small
+                  v-if="permission"
                 >
                   <v-icon small :color="item.footer ? 'primary' : 'disabled'"
                     >$IconEtc</v-icon
@@ -98,7 +99,7 @@
               </div>
               <v-expansion-panel-content>
                 <div
-                  v-if="!item.loaded"
+                  v-if="!item?.loaded"
                   class="d-flex align-center justify-center h-100 mb-3"
                 >
                   <v-progress-circular
@@ -111,7 +112,7 @@
                   <v-btn
                     @click="addPerson(item)"
                     class="mb-3"
-                    v-if="!item?.content[0]?.added"
+                    v-if="!item?.content[0]?.added && permission"
                     small
                     block
                     color="success"
@@ -132,6 +133,7 @@
                       <div class="ml-2 d-flex align-center">
                         {{ person.coefficient
                         }}<v-btn
+                          v-if="permission"
                           class="ml-2 v-object-item-person_btn"
                           icon
                           x-small
@@ -140,6 +142,7 @@
                           <v-icon small color="gray">$IconEdit</v-icon></v-btn
                         >
                         <v-btn
+                          v-if="permission"
                           @click="confirmDelete(person, 'person')"
                           class="v-object-item-person_btn"
                           icon

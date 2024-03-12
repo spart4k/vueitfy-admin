@@ -35,7 +35,9 @@ export default {
       isShow: false,
       type: null,
     })
-    // 4 8 17 3
+    const permission = computed(() =>
+      [3, 4, 8, 17].includes(store.state.user.permission_id)
+    )
 
     const rules = {
       required: (value) => !!value || 'Required.',
@@ -254,7 +256,8 @@ export default {
         if (newVal.length > oldVal.length)
           index = _.difference(newVal, oldVal)[0]
         else index = _.difference(oldVal, newVal)[0]
-        if (!data.value[index].loaded) getObjectPersonal(data.value[index].id)
+        if (!data.value[index]?.loaded && data.value[index]?.id)
+          getObjectPersonal(data.value[index].id)
       },
       { deep: true }
     )
@@ -267,6 +270,7 @@ export default {
       panel,
       autocompleteConfig,
       rules,
+      permission,
 
       mask,
       addPerson,
