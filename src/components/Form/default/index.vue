@@ -16,6 +16,7 @@
                 ? 'isHide'
                 : '',
             ]"
+            :name="field.name"
           >
             <div
               v-if="
