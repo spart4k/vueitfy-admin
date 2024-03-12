@@ -41,6 +41,7 @@
             @closePopup="(e) => $emit('closePopup', e)"
             @getItems="(e) => $emit('getItems', e)"
             @refreshData="$emit('refreshData')"
+            :class="item?.label"
           />
         </v-tab-item>
       </v-tabs-items>
