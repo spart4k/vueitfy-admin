@@ -11,7 +11,19 @@
           </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          Отсутствует
+          <template v-if="!objects.length && !loading">
+            <div>Отсутствует</div>
+          </template>
+          <template v-else>
+            <Row
+              v-for="item in objects"
+              :key="item"
+              :period="period"
+              :personalId="personalId"
+              :object="object"
+              :row="item"
+            />
+          </template>
           <!-- <v-expansion-panels v-for="item in 10" :key="item">
             <v-expansion-panel>
               <v-expansion-panel-header class="type-expension-head">
