@@ -90,7 +90,7 @@
       <DocForm
         v-if="docs && docs.length"
         class="mb-10"
-        @change="changeDocs"
+        @changeDocs="changeDocs"
         :docsData="docsData"
         :bankData="bankData"
         :listNames="listNames"

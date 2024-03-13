@@ -110,6 +110,8 @@ const Form7 = defineComponent({
     })
     const docFormRef = ref(null)
     const changeDocs = (data) => {
+      console.log('changeDocs')
+      console.log(data)
       finalData.value = isHasOsnDoc
         ? { 0: formObj.value.formData, ...data.correctedDocs }
         : data.correctedDocs
@@ -137,7 +139,7 @@ const Form7 = defineComponent({
     const { makeRequest: setPersonalData } = useRequest({
       context,
       request: () => {
-        return store.dispatch('taskModule/setPersonalData', {
+        return store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
             name: formObj.value.formData.name,
@@ -262,6 +264,7 @@ const Form7 = defineComponent({
       isHasOnlyCard,
       docFormRef,
       isValid,
+      bankCardId,
     }
   },
 })

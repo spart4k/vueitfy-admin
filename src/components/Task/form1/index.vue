@@ -117,7 +117,7 @@
     </div>
 
     <v-divider></v-divider>
-    {{ isValid }}
+    <!-- {{ isValid }} -->
     <v-row class="py-2" justify="end" v-if="showNextStep">
       <v-btn class="mr-2" small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
