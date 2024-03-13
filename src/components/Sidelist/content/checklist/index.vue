@@ -89,7 +89,7 @@
             <v-app-bar-title class="text--text text-h5" v-else>{{
               data.content?.code === 2
                 ? 'Период не обрабатывался'
-                : 'Lorem, ipsum dolor'
+                : 'Период не обрабатывался'
             }}</v-app-bar-title>
           </div>
         </div>

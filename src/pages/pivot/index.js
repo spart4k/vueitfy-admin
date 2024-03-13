@@ -90,11 +90,13 @@ const config = {
         component: 'Checklist',
         name: 'План закрытия',
         icon: '$IconGraphic',
+        condition: [3, 4, 8, 17],
       },
       {
         component: 'Coefficient',
         name: 'Коэффициент',
         icon: '$IconGraphic',
+        condition: [3, 4, 8, 17],
       },
     ],
   },
