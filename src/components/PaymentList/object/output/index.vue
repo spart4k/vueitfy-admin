@@ -12,7 +12,7 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <template v-if="!objects.length && !loading">
-            <div>Отсутствует</div>
+            <div class="empty">Отсутствует</div>
           </template>
           <template v-else>
             <Row
