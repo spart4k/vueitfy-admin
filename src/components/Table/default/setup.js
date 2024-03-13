@@ -889,6 +889,7 @@ const table = {
       clickHandler,
       insertStyle,
       contextMenuRef,
+      // changeHeaders,
     }
   },
 }

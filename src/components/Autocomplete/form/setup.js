@@ -111,8 +111,8 @@ export default {
         : queryData.totalPage > queryData.page
       if (isIntersecting) {
         if (
-          props.field?.items.length &&
-          !props.field.loading &&
+          props.field?.items?.length &&
+          !props.field?.loading &&
           isAtFinalPage
         ) {
           props.field.page = props.field.page + 1
