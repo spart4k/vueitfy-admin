@@ -21,7 +21,7 @@
               v-else-if="isRejected && confirm"
               >$IconClose</v-icon
             >
-            <div class="document-title text-h6 mb-2">
+            <div class="document-title text-h7 mb-2">
               {{
                 document.doc_name
                   ? document.doc_name

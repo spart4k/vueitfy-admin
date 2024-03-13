@@ -1,6 +1,9 @@
 .document {
   // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   // padding-bottom: 20px;
+  &-title {
+    font-size: 18px;
+  }
   &-fields {
     padding: 0;
   }
@@ -31,7 +34,7 @@
       }
     }
   }
-  &:last-child {
-    margin-bottom: 100px;
+  &:not(:last-child) {
+    margin-bottom: 0px;
   }
 }
