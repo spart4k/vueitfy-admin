@@ -8,6 +8,7 @@
         size="x-small"
         @click=";(panel.isShow = true), (panel.index = index)"
         v-for="(item, index) in $props.data"
+        v-if="checkPermission(item)"
         :key="index"
         ><v-icon class="mr-2" small color="text">{{ item.icon }}</v-icon
         >{{ item.name }}</v-btn

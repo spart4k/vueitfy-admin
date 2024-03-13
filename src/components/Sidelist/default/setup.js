@@ -29,6 +29,10 @@ export default {
       index: 0,
     })
 
+    const checkPermission = (val) => {
+      return val.condition.includes(store.state.user.permission_id)
+    }
+
     const closePanel = () => {
       panel.value.isShow = false
     }
@@ -40,6 +44,7 @@ export default {
 
       closePanel,
       transitionEnd,
+      checkPermission,
     }
   },
 }
