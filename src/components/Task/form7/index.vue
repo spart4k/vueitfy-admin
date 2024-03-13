@@ -76,7 +76,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <DocFormCorrect
+      <!-- <DocFormCorrect
         v-if="docs && docs.length"
         class="mb-10"
         @change="changeDocs"
@@ -86,7 +86,20 @@
         :docs="docs"
         :entity="entity"
         :task="JSON.parse(data.task.dop_data)"
-      ></DocFormCorrect>
+      ></DocFormCorrect> -->
+      <DocForm
+        v-if="docs && docs.length"
+        class="mb-10"
+        @changeDocs="changeDocs"
+        :docsData="docsData"
+        :bankData="bankData"
+        :listNames="listNames"
+        :docs="docs"
+        :entity="entity"
+        :task="JSON.parse(data.task.dop_data)"
+        :correct="true"
+        ref="docFormRef"
+      ></DocForm>
       <FormComment />
     </div>
     <v-divider></v-divider>
@@ -95,7 +108,7 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn small :disabled="!isFormValid" color="info" @click="sendData">
+      <v-btn small :disabled="!isValid" color="info" @click="sendData">
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>

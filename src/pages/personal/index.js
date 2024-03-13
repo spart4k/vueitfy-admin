@@ -158,6 +158,18 @@ changeActionTo(paymentConfig.detail.tabs, 'personal/:id')
 // import { payment, userKeys } from '@/pages'
 
 // const { addOrUpdateURLParam } = useNavigation({})
+function changeSort(tab) {
+  console.log(tab)
+  // let btn = config.panel.buttons.find((x) => x.function === changeSort)
+  // let heading = config.head.find((x) => x.changeable)
+  if (tab.value === 2) {
+    debetorConfig.head = holdPayments.head
+    debetorConfig.options.url = 'get/pagination/hold_payments'
+  } else if (tab.value === 1) {
+    debetorConfig.head = debetorConfigHead
+    debetorConfig.options.url = 'get/pagination/personal_debit'
+  }
+}
 
 function consoleText(row) {
   console.log(row, 2)
@@ -170,6 +182,211 @@ function consoleButton(row) {
 
 function consolePanel() {
   console.log('panel,button')
+}
+const holdPayments = {
+  selector: '#mainTable',
+  options: {
+    selecting: true,
+    search: {
+      function: searchInputing,
+    },
+    headerFixed: true,
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/hold_payments',
+    urlDetail: 'personal_id',
+    alias: 'hp.personal_id',
+    title: 'This is an about page1',
+  },
+  panel: {
+    buttons: [
+      {
+        label: 'Обновить',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        function: consolePanel,
+        backgroundColor: '#ffffff',
+      },
+      // {
+      //   label: 'Скачать',
+      //   class: ['v-table-button--custom'],
+      //   function: consolePanel,
+      //   backgroundColor: '#fff',
+      // },
+    ],
+  },
+  head: [
+    {
+      title: 'id',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'hp.id',
+      isShow: true,
+      width: '40',
+      value: 'id',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'В/В',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'vid_vedomost',
+      alias: 'vv.name',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Остаток',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'hp.remainder',
+      value: 'remainder',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Сумма',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'sum',
+      alias: 'hp.sum',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Дата назн',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'hp.date_target',
+      value: 'date_target',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    // {
+    //   title: 'Действия',
+    //   type: 'actions',
+    //   align: 'center',
+    //   fixed: {
+    //     value: false,
+    //     position: 'right',
+    //   },
+    //   isShow: true,
+    //   width: '100',
+    //   value: 'actions',
+    //   actions: [
+    //     {
+    //       type: 'button',
+    //       url: '$IconSetting',
+    //       function: consoleText,
+    //       label: 'Редактировать',
+    //     },
+    //     {
+    //       type: 'button',
+    //       url: '$IconSetting',
+    //       function: consoleButton,
+    //       label: 'Удалить',
+    //     },
+    //   ],
+    // },
+  ],
+  data: {
+    rows: [],
+    totalRows: null,
+    pageLength: 20,
+    currentPage: 1,
+    totalPages: null,
+    footer: null,
+  },
+  detail: undefined,
+  actions: [
+    stringAction({
+      text: 'Закрыть',
+      type: 'submit',
+      color: 'textDefault',
+      name: 'closePopup',
+      action: 'closePopup',
+      to: 'personal',
+      skipValidation: true,
+    }),
+  ],
 }
 
 function downloadFile(val) {
@@ -441,29 +658,184 @@ const consumptionConfig = {
   ],
 }
 
-function changeSort() {
-  let btn = config.panel.buttons.find((x) => x.function === changeSort)
-  let heading = config.head.find((x) => x.changeable)
-  if (btn.label === 'Объекты') {
-    btn.label = 'ФИО'
-    heading.title = 'Объект'
-    heading.alias = 'o.name'
-    heading.value = 'object_name'
-    heading.routeName = 'pivot-edit-object'
-    heading.routeParam = 'object_id'
-    heading.type = 'download'
-    config.options.url = 'get/pagination_pivot/personal_target_object'
-  } else if (btn.label === 'ФИО') {
-    btn.label = 'Объекты'
-    heading.title = 'ФИО'
-    heading.alias = 'p.name'
-    heading.value = 'personal_name'
-    heading.routeName = 'pivot-edit-personal'
-    heading.routeParam = 'personal_id'
-    heading.type = 'default'
-    config.options.url = 'get/pagination_pivot/personal_target_personal'
-  }
-}
+const debetorConfigHead = [
+  {
+    title: 'Направление',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'left',
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    alias: 'dir.name',
+    isShow: true,
+    width: '40',
+    value: 'direction_name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Руководитель',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: undefined,
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    value: 'account_name',
+    alias: 'sa.fio',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Объект',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: undefined,
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    value: 'object_name',
+    alias: 'o.name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Линейщик',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'left',
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '90',
+    alias: 'pers.name',
+    value: 'personal_name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Объект',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'left',
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    alias: 'o.name',
+    value: 'object_name',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Остаток',
+    type: 'default',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: undefined,
+    },
+    sorts: [
+      {
+        type: 'string',
+        default: '',
+        value: '',
+        isShow: false,
+      },
+    ],
+    isShow: true,
+    width: '150',
+    value: 'remainder',
+    alias: 'd.remainder',
+    search: {
+      field: '',
+      isShow: true,
+    },
+  },
+  {
+    title: 'Действия',
+    type: 'actions',
+    align: 'center',
+    fixed: {
+      value: false,
+      position: 'right',
+    },
+    isShow: true,
+    width: '100',
+    value: 'actions',
+    actions: [
+      {
+        type: 'button',
+        url: '$IconSetting',
+        function: consoleText,
+        label: 'Редактировать',
+      },
+      {
+        type: 'button',
+        url: '$IconSetting',
+        function: consoleButton,
+        label: 'Удалить',
+      },
+    ],
+  },
+]
 
 const debetorConfig = {
   selector: '#mainTable',
@@ -681,212 +1053,6 @@ const debetorConfig = {
         },
       ],
     },
-  ],
-  data: {
-    rows: [],
-    totalRows: null,
-    pageLength: 20,
-    currentPage: 1,
-    totalPages: null,
-    footer: null,
-  },
-  detail: undefined,
-  actions: [
-    stringAction({
-      text: 'Закрыть',
-      type: 'submit',
-      color: 'textDefault',
-      name: 'closePopup',
-      action: 'closePopup',
-      to: 'personal',
-      skipValidation: true,
-    }),
-  ],
-}
-
-const holdPayments = {
-  selector: '#mainTable',
-  options: {
-    selecting: true,
-    search: {
-      function: searchInputing,
-    },
-    headerFixed: true,
-    //url: 'https://dummyjson.com/users',
-    url: 'get/pagination/hold_payments',
-    urlDetail: 'personal_id',
-    alias: 'hp.personal_id',
-    title: 'This is an about page1',
-  },
-  panel: {
-    buttons: [
-      {
-        label: 'Обновить',
-        class: ['v-table-button--custom'],
-        url: '$IconEdit',
-        function: consolePanel,
-        backgroundColor: '#ffffff',
-      },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
-    ],
-  },
-  head: [
-    {
-      title: 'id',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      alias: 'hp.id',
-      isShow: true,
-      width: '40',
-      value: 'id',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'В/В',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'vid_vedomost',
-      alias: 'vv.name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Остаток',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'hp.remainder',
-      value: 'remainder',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Сумма',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'sum',
-      alias: 'hp.sum',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Дата назн',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'hp.date_target',
-      value: 'date_target',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    // {
-    //   title: 'Действия',
-    //   type: 'actions',
-    //   align: 'center',
-    //   fixed: {
-    //     value: false,
-    //     position: 'right',
-    //   },
-    //   isShow: true,
-    //   width: '100',
-    //   value: 'actions',
-    //   actions: [
-    //     {
-    //       type: 'button',
-    //       url: '$IconSetting',
-    //       function: consoleText,
-    //       label: 'Редактировать',
-    //     },
-    //     {
-    //       type: 'button',
-    //       url: '$IconSetting',
-    //       function: consoleButton,
-    //       label: 'Удалить',
-    //     },
-    //   ],
-    // },
   ],
   data: {
     rows: [],

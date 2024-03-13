@@ -596,3 +596,7 @@ input:-webkit-autofill {
   left: unset !important;
   transform-origin: right top !important;
 }
+
+.v-menu__content {
+  z-index: 100 !important;
+}

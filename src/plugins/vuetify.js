@@ -22,6 +22,7 @@ export default new Vuetify({
         warning: '#FFC107',
         topbar: '#FFFFFF',
         text: '#334D6E',
+        gray: '#90A0B7',
         navbar: '#FFFFFF',
         background: '#ffffff',
         pageBackground: '#F5F6F8',

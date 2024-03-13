@@ -85,6 +85,18 @@ const config = {
     url: 'get/pagination_pivot/personal_target_personal',
     title: 'This is an about page1',
     doubleHandlerType: 'cell',
+    sideMenu: [
+      {
+        component: 'Checklist',
+        name: 'План закрытия',
+        icon: '$IconGraphic',
+      },
+      {
+        component: 'Coefficient',
+        name: 'Коэффициент',
+        icon: '$IconGraphic',
+      },
+    ],
   },
   panel: {
     buttons: [
@@ -230,46 +242,11 @@ const config = {
         initialRequestUrl: 'get/parser/active/',
         outputType: 3,
         lists: [
-          { alias: 'type_parser', filter: [] },
-          { alias: 'parser_objects', filter: [] },
-          { alias: 'service_spr', filter: [] },
+          // { alias: 'type_parser', filter: [] },
+          // { alias: 'object_period', filter: [] },
+          // { alias: 'service_spr', filter: [] },
         ],
         fields: [
-          selectField({
-            label: 'Тип',
-            name: 'type_parser',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Объект',
-            name: 'object_id',
-            alias: 'parser_objects',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
           dateField({
             label: 'Период',
             name: 'period',
@@ -280,9 +257,95 @@ const config = {
               cols: 12,
               sm: 12,
             },
+            updateList: [
+              {
+                alias: 'object_period',
+                filter: [
+                  {
+                    field: 'period',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
             validations: { required },
             bootstrapClass: [''],
           }),
+          selectField({
+            label: 'Объект',
+            name: 'object_id',
+            alias: 'object_period',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            updateList: [
+              {
+                alias: 'object_type_period',
+                filter: [
+                  {
+                    field: 'period',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                  {
+                    field: 'object_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          selectField({
+            label: 'Тип',
+            name: 'type_parser',
+            alias: 'object_type_period',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          // selectField({
+          //   label: 'Период',
+          //   name: 'period',
+          //   alias: 'period',
+          //   placeholder: '',
+          //   class: [''],
+          //   selectOption: {
+          //     text: 'name',
+          //     value: 'id',
+          //   },
+          //   items: [],
+          //   position: {
+          //     cols: 12,
+          //     sm: 12,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
           dropZoneField({
             label: 'Файл',
             name: 'file',
