@@ -1479,7 +1479,7 @@ export default {
           })
         }
         const data = await getList(url, {
-          countRows: 10,
+          countRows: 200,
           currentPage: 1,
           searchValue: '',
           id: formData[el.name ? el.name : el.alias]
