@@ -12,10 +12,9 @@
         }}</v-icon></v-btn
       >
       <div class="v-heading_relative">
-        <v-tooltip top>
+        <v-tooltip v-if="$props.lock?.color" top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              v-if="$props.lock"
               icon
               x-small
               v-bind="attrs"
