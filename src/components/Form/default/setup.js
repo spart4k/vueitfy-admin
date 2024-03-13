@@ -1,6 +1,6 @@
 import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
 
 import _ from 'lodash'
 
