@@ -7,11 +7,13 @@ import Autocomplete from '@/components/Autocomplete'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
 import { required } from '@/utils/validation.js'
+import { getList } from '@/api/selects'
 import {
   stringField,
   dateField,
   selectField,
   checkboxField,
+  autocompleteField,
   // dropZoneField,label:"label:"ФИО директора"
 } from '@/utils/fields.js'
 
@@ -861,6 +863,40 @@ export default {
             bootstrapClass: [''],
           })
           break
+        case 'patent_date_docs_in':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'patent_date_docs_out':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
         case 'card_id_pers_num':
           result = stringField({
             label: switchLabel(key),
@@ -876,6 +912,31 @@ export default {
             // required: { required },
           })
           break
+        case 'patent_region':
+          result = autocompleteField({
+            label: switchLabel(key),
+            name: key,
+            alias: 'regions_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/regions_id',
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          })
+          break
+
         default:
           result = stringField({
             label: switchLabel(key),
@@ -1086,7 +1147,7 @@ export default {
       // })
     }
     const docs_data = props.document.docs_data
-    const fieldsData = []
+    const fieldsData = ref([])
     const initFields = () => {
       for (let key in docs_data) {
         const field = switchType(key)
@@ -1096,7 +1157,7 @@ export default {
             field.validations = { required }
           }
         }
-        fieldsData.push(field)
+        fieldsData.value.push(field)
       }
     }
     initFields()
@@ -1104,7 +1165,7 @@ export default {
     console.log()
     const fields = () => {
       const fields = {}
-      const tabFields = fieldsData
+      const tabFields = fieldsData.value
       tabFields.forEach((el) => {
         // const { validations } = tabFields[key]
         Vue.set(fields, el.name, {})
@@ -1151,7 +1212,7 @@ export default {
           filter: [],
         },
       ],
-      fields: fieldsData,
+      fields: fieldsData.value,
     }
     const { makeRequest: makeRequestList } = useRequest({
       context,
@@ -1318,6 +1379,55 @@ export default {
       //   confirmDocsLength: confirmDocsLength,
       // })
     }
+    const loadAutocompletes = async () => {
+      const fields = form?.fields
+        .filter((el) => el.type === 'autocomplete' && el.isShow)
+        .map((el) => el)
+      console.log(fields)
+      const queryFields = fields.map(async (el) => {
+        const filters = []
+        const { url } = el
+        if (el.filter && el.filter.length) {
+          el.filter.forEach((filter) => {
+            let value, type
+            if (filter.source === 'fromPrev') {
+              value = form?.formData[filter.field]
+            } else if (filter.source && filter.source !== 'formData') {
+              const source = eval(filter.source)
+              value = source
+            } else if (filter.source === 'formData') {
+              value = formData[filter.field]
+            } else {
+              value = formData[filter.field]
+            }
+            if (filter.type) type = filter.type
+            filters.push({
+              alias: filter.field,
+              value,
+              type,
+            })
+          })
+        }
+        const data = await getList(url, {
+          countRows: 10,
+          currentPage: 1,
+          searchValue: '',
+          id: formData[el.name ? el.name : el.alias]
+            ? formData[el.name ? el.name : el.alias]
+            : -1,
+          filter: filters,
+        })
+
+        if (data.rows) {
+          el.items = [...el.items, ...data.rows]
+          el.items = data.rows
+        }
+        console.log(el.items)
+
+        return data
+      })
+      await Promise.all(queryFields)
+    }
     // const docName = () =>
     onMounted(async () => {
       // if (props.document.path_doc) {
@@ -1327,6 +1437,7 @@ export default {
       // initDocFields()
       console.log('onMounted')
       loadList()
+      loadAutocompletes()
       if (props.document.path_doc) {
         pathDock.value = [props.document.path_doc]
       }

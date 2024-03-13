@@ -93,6 +93,18 @@
                       @change="changeAutocomplete"
                       :readonly="confirm"
                     />
+                    <Autocomplete
+                      v-else-if="field.type === 'autocomplete'"
+                      :field="{
+                        ...field,
+                      }"
+                      v-model="formData[field.name]"
+                      :error-messages="formErrors[field?.name]"
+                      :formData="formData"
+                      ref="autocompleteRef"
+                      @change="changeAutocomplete"
+                      :readonly="confirm"
+                    />
                     <!-- <v-textarea
                 v-else-if="showField('textarea', field)"
                 v-model="formData[field.name]"
