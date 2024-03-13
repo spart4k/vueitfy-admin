@@ -1,0 +1,32 @@
+.v {
+  &-side {
+    height: 100%;
+    z-index: 2;
+    width: 20px;
+    position: fixed;
+    right: 0;
+    &-list {
+      display: flex;
+      flex-direction: row-reverse;
+      transform-origin: center right;
+      transform: rotate(-90deg) translate(18px, -15px);
+      &_item + &_item {
+        margin-right: 10px;
+      }
+    }
+    &-panel {
+      width: 450px;
+      height: 590px;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      right: 0;
+      top: 0;
+      overflow: hidden;
+      filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
+      background-color: var(--v-navbar-base);
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+  }
+}

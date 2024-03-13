@@ -306,3 +306,12 @@
   transform: translateX(100%);
   opacity: 0;
 }
+
+.sidelist-enter-active,
+.sidelist-leave-active {
+  transition: all 0.2s ease-out;
+}
+.sidelist-enter,
+.sidelist-leave-to {
+  transform: translateX(100%);
+}

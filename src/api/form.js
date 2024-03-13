@@ -10,6 +10,12 @@ export const putForm = ({ url, body }) => put(url, body)
 
 export const loadParser = ({ url, body }) => post(url, body)
 
+export const delForm = ({ url, body }) => del(url, body)
+
 export const remove = ({ url, id }) => del(`${url}/${id}`)
 
 export const bindZayavka = (data) => put('task/update/dop_data', data)
+
+export const getPaymentList = ({ url, body }) => post(url, body)
+
+export const getPaymentListObjects = ({ url, body }) => get(url, body)
