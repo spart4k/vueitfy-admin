@@ -6,6 +6,16 @@ import store from '@/store'
 import Autocomplete from '@/components/Autocomplete'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
+import { required } from '@/utils/validation.js'
+import { getList } from '@/api/selects'
+import {
+  stringField,
+  dateField,
+  selectField,
+  checkboxField,
+  autocompleteField,
+  // dropZoneField,label:"label:"ФИО директора"
+} from '@/utils/fields.js'
 
 export default {
   name: 'Form-Documents-Row',
@@ -33,6 +43,38 @@ export default {
     personalId: {
       type: Number,
       default: null,
+    },
+    docNames: {
+      type: Object,
+      default: () => {},
+    },
+    showScan: {
+      type: Boolean,
+      default: false,
+    },
+    showDropzone: {
+      type: Boolean,
+      default: true,
+    },
+    allFieldsRequireds: {
+      type: Boolean,
+      default: false,
+    },
+    acceptDocPanel: {
+      type: Boolean,
+      default: false,
+    },
+    correct: {
+      type: Boolean,
+      default: false,
+    },
+    docsData: {
+      type: Object,
+      default: () => {},
+    },
+    confirm: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -64,74 +106,6 @@ export default {
     //   return result
     // })
     const documentName = computed(() => Object.keys(props.document)[0])
-
-    const fields = () => {
-      const fields = {}
-      props.document.docs_data.forEach((el) => {
-        // const { validations } = el
-        const name = Object.keys(el)[0]
-        Vue.set(fields, name, {})
-        // // else return
-        Vue.set(fields[name], 'validations', {})
-        if (Object.values(el)[0]) {
-          Vue.set(fields[name], 'default', Object.values(el)[0])
-        } else {
-          Vue.set(fields[name], 'default', '')
-        }
-      })
-
-      return fields
-    }
-    fields()
-    const {
-      showField,
-      formData,
-      validate,
-      formErrors,
-      vForm,
-      touchedForm,
-      openMenu,
-    } = useForm({
-      // form: props.document,
-      fields: fields(),
-      context,
-      loading,
-      //makeRequestList,
-    })
-    const { makeRequest: delInfoAFile } = useRequest({
-      context,
-      request: (id) =>
-        store.dispatch('taskModule/updateFileData', {
-          data: {
-            id,
-            del: 1,
-          },
-        }),
-    })
-    const { makeRequest: loadImage } = useRequest({
-      context,
-      request: (file) =>
-        store.dispatch('storage/loadFilePut', {
-          // id: 1,
-          folder: 'personal_doc',
-          fileName: file.fileName,
-          file: file.file,
-        }),
-      successMessage: 'Файл успешно загружен',
-    })
-    const { makeRequest: updateFileData } = useRequest({
-      context,
-      request: (params) => {
-        const path_doc = `/personal_doc/${basketFiles.value.fileName}`
-        return store.dispatch('taskModule/updateFileData', {
-          data: {
-            personal_id: props.personalId,
-            doc_id: props.document.doc_id,
-            path_doc,
-          },
-        })
-      },
-    })
     const switchType = (key) => {
       let result = ''
       switch (key) {
@@ -160,7 +134,67 @@ export default {
           result = 'checkbox'
           break
         case 'bank_id':
-          result = 'select'
+          result = selectField({
+            label: switchLabel(key),
+            name: key,
+            // alias: 'status_pt',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [
+              {
+                text: 'СБЕРБАНК',
+                value: 1,
+              },
+              {
+                text: 'Почта Банк',
+                value: 2,
+              },
+              {
+                text: 'Пром Связь',
+                value: 3,
+              },
+              {
+                text: 'Альфабанк',
+                value: 4,
+              },
+              {
+                text: 'Тинькофф',
+                value: 5,
+              },
+              {
+                text: 'ВТБ',
+                value: 7,
+              },
+              {
+                text: '-НАЛИЧНЫЕ-',
+                value: 11,
+              },
+              {
+                text: 'УБРИР',
+                value: 12,
+              },
+              {
+                text: 'Открытие',
+                value: 13,
+              },
+              {
+                text: 'МТС Банк',
+                value: 14,
+              },
+            ],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            value: 1,
+            disable: true,
+            // validations: { required },
+            bootstrapClass: [''],
+          })
           break
         case 'comment':
           result = 'string'
@@ -214,8 +248,394 @@ export default {
           result = 'date'
           break
         case 'med_view_docs_in':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            subtype: 'period',
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
+        case 'sex':
+          result = selectField({
+            label: switchLabel(key),
+            name: key,
+            // alias: 'status_pt',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            value: 1,
+            disable: true,
+            // validations: { required },
+            bootstrapClass: [''],
+          })
+          break
+        case 'pasp_date_in':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'pasp_date_out':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'citizenship':
+          result = selectField({
+            label: switchLabel(key),
+            name: key,
+            // alias: 'status_pt',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            defaultItems: [
+              {
+                id: 1,
+                name: 'РФ',
+              },
+              {
+                id: 2,
+                name: 'Узбекистан',
+              },
+              {
+                id: 3,
+                name: 'Таджикистан',
+              },
+              {
+                id: 4,
+                name: 'Киргизия',
+              },
+              {
+                id: 5,
+                name: 'Украина',
+              },
+              {
+                id: 6,
+                name: 'Казахстан',
+              },
+              {
+                id: 7,
+                name: 'Бєларусь',
+              },
+              {
+                id: 8,
+                name: 'Азербайджан',
+              },
+              {
+                id: 9,
+                name: 'Армения',
+              },
+              {
+                id: 10,
+                name: 'Молдова',
+              },
+              {
+                id: 11,
+                name: 'Туркменистан',
+              },
+            ],
+            items: [
+              {
+                id: 1,
+                name: 'РФ',
+              },
+              {
+                id: 2,
+                name: 'Узбекистан',
+              },
+              {
+                id: 3,
+                name: 'Таджикистан',
+              },
+              {
+                id: 4,
+                name: 'Киргизия',
+              },
+              {
+                id: 5,
+                name: 'Украина',
+              },
+              {
+                id: 6,
+                name: 'Казахстан',
+              },
+              {
+                id: 7,
+                name: 'Бєларусь',
+              },
+              {
+                id: 8,
+                name: 'Азербайджан',
+              },
+              {
+                id: 9,
+                name: 'Армения',
+              },
+              {
+                id: 10,
+                name: 'Молдова',
+              },
+              {
+                id: 11,
+                name: 'Туркменистан',
+              },
+            ],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            value: 1,
+            disable: true,
+            // validations: { required },
+            bootstrapClass: [''],
+          })
+          break
+        case 'goal_visit':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'card_id_num':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'card_id_ser':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'card_id_period_date_in':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'card_id_period_date_out':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'card_id_kem':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'card_id_date_vid':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'patent_date_docs_in':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'patent_date_docs_out':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'card_id_pers_num':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'patent_region':
+          result = autocompleteField({
+            label: switchLabel(key),
+            name: key,
+            alias: 'regions_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/regions_id',
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          })
+          break
+        case 'patent_special_marks_date':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+
         default:
           result = 'string'
       }
@@ -234,13 +654,13 @@ export default {
           result = 'Номер'
           break
         case 'pasp_kod_podr':
-          result = 'Код подразделения'
+          result = 'К/П'
           break
         case 'pasp_kem':
           result = 'Кем выдан'
           break
         case 'snils':
-          result = 'Снилс'
+          result = 'Номер'
           break
         case 'invoice':
           result = 'Номер Р/С'
@@ -267,7 +687,7 @@ export default {
           result = 'Профессия'
           break
         case 'pasp_address_reg':
-          result = 'Адрес'
+          result = 'Адрес регистрации'
           break
         case 'med_book_date':
           result = 'Дата'
@@ -285,10 +705,16 @@ export default {
           result = 'Номер'
           break
         case 'migr_card_data_in':
-          result = 'С'
+          result = 'Дата въезда'
           break
         case 'migr_card_data_out':
-          result = 'До'
+          result = 'Дата выезда'
+          break
+        case 'inn':
+          result = 'Номер'
+          break
+        case 'fio':
+          result = 'ФИО'
           break
         case 'registration_date_c_docs_in':
           result = 'C'
@@ -310,6 +736,179 @@ export default {
       }
       return result
     }
+    const { makeRequest: sendBankCardRequest } = useRequest({
+      context,
+      request: () => {
+        return store.dispatch('taskModule/setBankData', {
+          data: {
+            data: {
+              bank_id: formData.bank_id,
+              fio: formData.fio,
+              invoice: formData.invoice,
+              priority: formData.priority,
+              personal_id: props.personalId,
+              comment: formData.comment,
+            },
+          },
+        })
+      },
+      successMessage: 'Банковские реквизиты успешно добавлены',
+    })
+    const isCorrect = ref(false)
+    const sendBankCard = async () => {
+      const { result } = await sendBankCardRequest()
+      const bankCardId = result
+      ctx.emit('changeDocs', {
+        bank_card_id: bankCardId,
+        // formObj: formObj,
+      })
+    }
+    const confirmDoc = () => {
+      isCorrect.value = true
+    }
+    const confirmCorrect = async (doc) => {
+      isCorrect.value = true
+      if (props.document.doc_id === 3) {
+        sendBankCard()
+      }
+      // correctedDocs.value[doc.id] = formObj.value[doc.doc_id].getData()
+      // const { result } = await makeRequest(doc.id)
+
+      // const bankCardId = result
+
+      // correctedDocs.value = {
+      //   ...correctedDocs.value,
+      //   [doc.id]: formObj.value[doc.doc_id].formData,
+      // }
+      // ctx.emit('change', {
+      //   // bank_card_id: bankCardId,
+      //   // correctedDocs: correctedDocs.value,
+      // })
+    }
+    const docs_data = props.document.docs_data
+    const fieldsData = ref([])
+    const initFields = () => {
+      for (let key in docs_data) {
+        const field = switchType(key)
+        if (props.allFieldsRequireds) {
+          if (field.name === 'comment') return
+          else {
+            field.validations = { required }
+          }
+        }
+        fieldsData.value.push(field)
+      }
+    }
+    initFields()
+    const docFields = {}
+    console.log()
+    const fields = () => {
+      const fields = {}
+      const tabFields = fieldsData.value
+      tabFields.forEach((el) => {
+        // const { validations } = tabFields[key]
+        Vue.set(fields, el.name, {})
+        Vue.set(fields[el.name], 'default', docs_data[el.name])
+      })
+      // for (let key in tabFields) {
+      //   console.log(key, tabFields)
+      //   const { validations } = tabFields[key]
+      //   if (typeof tabFields[key].isShow === 'boolean' && tabFields[key].isShow)
+      //     Vue.set(fields, tabFields[key].name, {})
+      //   else if (
+      //     typeof tabFields[key].isShow === 'object' &&
+      //     tabFields[key].isShow.value
+      //   ) {
+      //     // console.log('CONDITION TRUE', el.name)
+      //     Vue.set(fields, tabFields[key].name, {})
+      //   } else {
+      //     return
+      //   }
+      //   console.log(tabFields[key], 'FIELD-EL')
+      //   Vue.set(fields, tabFields[key].name, {})
+      //   Vue.set(fields[tabFields[key].name], 'validations', validations)
+      //   Vue.set(fields[tabFields[key].name], 'default', docs_data[key])
+      // }
+      // props.tab.fields.forEach((el) => {})
+      console.log(fields)
+      return fields
+    }
+    // fields()
+    const form = {
+      id: 0,
+      name: 'Данные документов',
+      lists: [
+        {
+          alias: 'sex',
+          filter: [],
+        },
+        {
+          alias: 'bank_id',
+          filter: [],
+        },
+        {
+          alias: 'citizenship',
+          filter: [],
+        },
+      ],
+      fields: fieldsData.value,
+    }
+    const { makeRequest: makeRequestList } = useRequest({
+      context,
+      request: (data) => store.dispatch('list/get', data),
+    })
+    const {
+      showField,
+      formData,
+      validate,
+      formErrors,
+      vForm,
+      touchedForm,
+      openMenu,
+    } = useForm({
+      // form: props.document,
+      fields: fields(),
+      context,
+      loading,
+      form,
+      makeRequestList,
+      //makeRequestList,
+    })
+    const { makeRequest: delInfoAFile } = useRequest({
+      context,
+      request: (id) =>
+        store.dispatch('taskModule/updateFileData', {
+          data: {
+            id,
+            del: 1,
+          },
+        }),
+    })
+    const { makeRequest: loadImage } = useRequest({
+      context,
+      request: (file) =>
+        store.dispatch('storage/loadFilePut', {
+          // id: 1,
+          folder: 'personal_doc',
+          fileName: file.fileName,
+          file: file.file,
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
+    const { makeRequest: updateFileData } = useRequest({
+      context,
+      request: (params) => {
+        console.log(params, 'path_doc')
+        const path_doc = `/personal_doc/${basketFiles.value.fileName}`
+        return store.dispatch('taskModule/updateFileData', {
+          data: {
+            personal_id: props.personalId,
+            doc_id: props.document.doc_id,
+            path_doc,
+          },
+        })
+      },
+    })
     let fileExt
     let fileName
     let form_data
@@ -347,10 +946,137 @@ export default {
 
       toPreview()
     }
+    const listData = ref({})
+    const loadList = async () => {
+      console.log('loadList')
+      const listQuery = form?.lists?.flatMap((list) => {
+        let filter = list.filter.reduce((acc, el) => {
+          const source = eval(el.source)
+          if (
+            source &&
+            source[el.field] !== null &&
+            source[el.field] !== undefined &&
+            source[el.field] !== ''
+          ) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: Array.isArray(source[el.field])
+                ? source[el.field]
+                : [source[el.field]],
+              type: el.type,
+            })
+          } else if (el.sendEmpty) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: el.value,
+              type: el.type,
+            })
+          }
+          return acc
+        }, [])
+
+        const element = {
+          alias: list.alias,
+          filter,
+        }
+        return element
+      })
+      const lists = await makeRequestList(listQuery)
+      listData.value = lists.data
+      for (let keyList in lists.data) {
+        const field = form?.fields.find((el) => {
+          return el.alias ? el.alias === keyList : el.name === keyList
+        })
+        if (field) {
+          console.log(field.name)
+          field.hideItems = lists.data[keyList]
+          // field.items =
+          Vue.set(
+            field,
+            'items',
+            lists.data[keyList] ? lists.data[keyList] : field.items
+          )
+          if (field.items.length === 1) {
+            // Если массив, вставить массив
+            if (field.putFirst)
+              formData[field.name] = field.items[0][field.selectOption.value]
+          }
+        }
+      }
+    }
+    const isRejected = ref(false)
+    const rejectDoc = (idDoc) => {
+      // if (!rejectedDocs.value.includes(idDoc)) {
+      //   rejectedDocs.value = [...rejectedDocs.value, idDoc]
+      // }
+      isRejected.value = true
+      isCorrect.value = false
+      // confirmedDocs.value = confirmedDocs.value.filter((doc) => doc !== idDoc)
+      // ctx.emit('change', {
+      //   confirmed: confirmedDocs.value,
+      //   rejected: rejectedDocs.value,
+      //   confirmDocsLength: confirmDocsLength,
+      // })
+    }
+    const loadAutocompletes = async () => {
+      const fields = form?.fields
+        .filter((el) => el.type === 'autocomplete' && el.isShow)
+        .map((el) => el)
+      console.log(fields)
+      const queryFields = fields.map(async (el) => {
+        const filters = []
+        const { url } = el
+        if (el.filter && el.filter.length) {
+          el.filter.forEach((filter) => {
+            let value, type
+            if (filter.source === 'fromPrev') {
+              value = form?.formData[filter.field]
+            } else if (filter.source && filter.source !== 'formData') {
+              const source = eval(filter.source)
+              value = source
+            } else if (filter.source === 'formData') {
+              value = formData[filter.field]
+            } else {
+              value = formData[filter.field]
+            }
+            if (filter.type) type = filter.type
+            filters.push({
+              alias: filter.field,
+              value,
+              type,
+            })
+          })
+        }
+        const data = await getList(url, {
+          countRows: 10,
+          currentPage: 1,
+          searchValue: '',
+          id: formData[el.name ? el.name : el.alias]
+            ? formData[el.name ? el.name : el.alias]
+            : -1,
+          filter: filters,
+        })
+
+        if (data.rows) {
+          el.items = [...el.items, ...data.rows]
+          el.items = data.rows
+        }
+        console.log(el.items)
+
+        return data
+      })
+      await Promise.all(queryFields)
+    }
+    // const docName = () =>
     onMounted(async () => {
       // if (props.document.path_doc) {
       //   isEdit.value = false
       // }
+      // initFields()
+      // initDocFields()
+      console.log('onMounted')
+      loadList()
+      loadAutocompletes()
       if (props.document.path_doc) {
         pathDock.value = [props.document.path_doc]
       }
@@ -375,6 +1101,16 @@ export default {
       toPreview,
       switchType,
       context,
+      fields: fields(),
+      fieldsData,
+      docFields,
+      listData,
+      sendBankCard,
+      confirmCorrect,
+      isCorrect,
+      isRejected,
+      rejectDoc,
+      confirmDoc,
       // documentData,
     }
   },

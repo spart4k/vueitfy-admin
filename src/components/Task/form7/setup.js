@@ -1,5 +1,6 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue'
 import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -15,6 +16,7 @@ const Form7 = defineComponent({
     TextInfo,
     FormComment,
     DocFormCorrect,
+    DocForm,
   },
   props: {
     data: {
@@ -92,8 +94,24 @@ const Form7 = defineComponent({
         context,
       })
     )
-
+    const allDocsValid = computed(() => {
+      return docFormRef.value?.docRows?.every(
+        (el) => !el.vForm.$invalid && el.isCorrect
+      )
+    })
+    const isValid = computed(() => {
+      if (isHasOnlyCard.value && bankCardId.value) {
+        return true
+      } else if (allDocsValid.value && (isHasCard ? bankCardId.value : true)) {
+        return true
+      } else {
+        return false
+      }
+    })
+    const docFormRef = ref(null)
     const changeDocs = (data) => {
+      console.log('changeDocs')
+      console.log(data)
       finalData.value = isHasOsnDoc
         ? { 0: formObj.value.formData, ...data.correctedDocs }
         : data.correctedDocs
@@ -121,7 +139,7 @@ const Form7 = defineComponent({
     const { makeRequest: setPersonalData } = useRequest({
       context,
       request: () => {
-        return store.dispatch('taskModule/setPersonalData', {
+        return store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
             name: formObj.value.formData.name,
@@ -135,17 +153,19 @@ const Form7 = defineComponent({
     const { makeRequest: setPersonalDocData } = useRequest({
       context,
       request: () => {
-        const data = Object.values(finalData.value).reduce((acc, value) => {
-          if (value.hasOwnProperty('bank_id')) {
-            return
+        let bodyData = {}
+        docFormRef.value.docRows.forEach((el) => {
+          if (el.document.doc_id !== 3) {
+            bodyData = {
+              ...bodyData,
+              ...el.formData,
+            }
           }
-          acc = { ...acc, ...value }
-          return acc
-        }, {})
+        })
 
         return store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...data,
+            ...bodyData,
             id: props.data.data.personal_doc_data.id,
           },
         })
@@ -242,6 +262,9 @@ const Form7 = defineComponent({
       bankData: props.data.data.bank_card,
       isHasCard,
       isHasOnlyCard,
+      docFormRef,
+      isValid,
+      bankCardId,
     }
   },
 })

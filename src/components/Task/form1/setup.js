@@ -1,4 +1,4 @@
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect, computed } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -50,6 +50,18 @@ const Form1 = defineComponent({
     const finalData = ref({})
     const bankCardId = ref(0)
     const isFormValid = ref(false)
+    const allDocsValid = computed(() => {
+      return docFormRef.value?.docRows?.every((el) => !el.vForm.$invalid)
+    })
+    const isValid = computed(() => {
+      if (isHasOnlyCard.value && bankCardId.value) {
+        return true
+      } else if (allDocsValid.value && (isHasCard ? bankCardId.value : true)) {
+        return true
+      } else {
+        return false
+      }
+    })
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
@@ -120,7 +132,7 @@ const Form1 = defineComponent({
     const { makeRequest: sendPersonalData } = useRequest({
       context,
       request: () =>
-        store.dispatch('taskModule/setPersonalData', {
+        store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
             name: formData.name,
@@ -132,13 +144,23 @@ const Form1 = defineComponent({
 
     const { makeRequest: sendPersonalDoc } = useRequest({
       context,
-      request: () =>
-        store.dispatch('taskModule/setPersonalDocData', {
+      request: () => {
+        let bodyData = {}
+        docFormRef.value.docRows.forEach((el) => {
+          if (el.document.doc_id !== 3) {
+            bodyData = {
+              ...bodyData,
+              ...el.formData,
+            }
+          }
+        })
+        return store.dispatch('taskModule/setPersonalDocData', {
           data: {
-            ...finalData.value,
+            ...bodyData,
             id: props.data.data.personal_doc_data.id,
           },
-        }),
+        })
+      },
     })
 
     const { makeRequest: setSaveDocs } = useRequest({
@@ -179,7 +201,7 @@ const Form1 = defineComponent({
         })
       },
     })
-
+    const docFormRef = ref(null)
     let showNextStep = ref(false)
     const clickCheckBtn = async () => {
       if (unConfirmed.value.length) {
@@ -237,32 +259,39 @@ const Form1 = defineComponent({
       },
       context,
     })
-
-    const changeDocs = (data) => {
+    const cardAccepted = ref(false)
+    const changeDocs = (data, documentIndex) => {
+      console.log(documentIndex)
       if (data.bank_card_id) {
         bankCardId.value = data.bank_card_id
+        cardAccepted.value = true
       }
-      const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
-      let isValid = isFormValid.value
-      for (let i = 0; i < docsId.length; i++) {
-        if (data.formObj.value && data.formObj.value[docsId[i]]) {
-          isValid = data.formObj.value[docsId[i]].validate()
-          if (!isValid) {
-            break
-          }
-        }
-      }
-      isFormValid.value = isValid
-      if (isFormValid.value) {
-        docsId.forEach((item) => {
-          if (data.formObj.value[item] && item !== 3) {
-            finalData.value = {
-              ...finalData.value,
-              ...data.formObj.value[item].formData,
-            }
-          }
-        })
-      }
+      // const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
+      // let isValid = isFormValid.value
+      // docFormRef.value.docRows[documentIndex].formData
+      // finalData.value = {
+      //   ...finalData.value,
+      //   ...docFormRef.value.docRows[documentIndex].formData,
+      // }
+      // for (let i = 0; i < docsId.length; i++) {
+      //   if (data.formObj.value && data.formObj.value[docsId[i]]) {
+      //     isValid = data.formObj.value[docsId[i]].validate()
+      //     if (!isValid) {
+      //       break
+      //     }
+      //   }
+      // }
+      // isFormValid.value = isValid
+      // if (isFormValid.value) {
+      // docsId.forEach((item) => {
+      //   if (data.formObj.value[item] && item !== 3) {
+      //     finalData.value = {
+      //       ...finalData.value,
+      //       ...data.formObj.value[item].formData,
+      //     }
+      //   }
+      // })
+      // }
     }
 
     const sendData = async () => {
@@ -282,6 +311,7 @@ const Form1 = defineComponent({
     }
 
     return {
+      allDocsValid,
       dataRojd,
       textInfo,
       docsData: props.data.data.personal_doc_data,
@@ -309,6 +339,9 @@ const Form1 = defineComponent({
       isActiveBtnFirst,
       isHasOnlyCard,
       isHasCard,
+      docFormRef,
+      cardAccepted,
+      isValid,
     }
   },
 })

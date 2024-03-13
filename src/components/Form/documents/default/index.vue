@@ -18,7 +18,13 @@
             >
             </Row>
           </template>
-          <v-row class="justify-end">
+          <template v-else>
+            <div v-for="loading in 10" :key="loading" class="form-row-loading">
+              <div class="form-row-loading-wrap gradient"></div>
+            </div>
+          </template>
+          <!-- <v-row class="justify-end mt-5"> -->
+          <v-row class="mt-4 justify-end">
             <v-btn
               type="submit"
               class="ml-2"
