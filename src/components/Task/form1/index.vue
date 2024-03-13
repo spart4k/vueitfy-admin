@@ -110,17 +110,20 @@
           :listNames="listNames"
           :docs="docs"
           :entity="entity"
+          :task="data.task"
+          ref="docFormRef"
         ></DocForm>
       </div>
     </div>
 
     <v-divider></v-divider>
+    <!-- {{ isValid }} -->
     <v-row class="py-2" justify="end" v-if="showNextStep">
       <v-btn class="mr-2" small @click="$emit('closePopup')" color="blue-grey">
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn small :disabled="!isFormValid" color="info" @click="sendData">
+      <v-btn small :disabled="!isValid" color="info" @click="sendData">
         <v-icon small>mdi-content-save</v-icon>
         Сохранить
       </v-btn>
