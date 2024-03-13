@@ -1,13 +1,23 @@
 <template>
   <div class="w-100 h-100">
-    <v-tabs-items class="h-100" v-model="stage" v-if="data?.code === 1 || true">
+    <v-tabs-items class="h-100" v-model="stage">
       <v-tab-item class="h-100">
         <div class="v-panel d-flex flex-column pb-5">
           <SidelistHeader
             @closePanel="$emit('closePanel')"
+            @changePeriod="
+              changePeriod({ type: 'month', object: data.period.data })
+            "
             :data="$props.data"
+            :lockColor="
+              data.period?.data?.id &&
+              (data.period?.data?.is_close === 1 ? 'success' : 'disabled')
+            "
           />
-          <div class="overflow-auto flex-grow-1 pl-7 pr-7">
+          <div
+            class="overflow-auto flex-grow-1 pl-7 pr-7"
+            v-if="data.content?.code === 1 && !loading"
+          >
             <div
               class="v-panel-item"
               v-for="(item, i) in data.content.data"
@@ -16,13 +26,17 @@
               <div class="v-panel-item-container">
                 <div class="v-panel-item-container_name">
                   {{ item.name }}
-                  <v-btn icon x-small>
+                  <v-btn
+                    @click.stop="changePeriod({ type: 'object', object: item })"
+                    icon
+                    x-small
+                  >
                     <v-icon
                       x-small
                       :color="
-                        item.is_close === 2
+                        item?.is_close === 2
                           ? 'warning'
-                          : item.is_close === 1
+                          : item?.is_close === 1
                           ? 'success'
                           : 'disabled'
                       "
@@ -54,6 +68,19 @@
               </div>
             </div>
           </div>
+          <div v-else class="d-flex align-center justify-center h-100">
+            <v-progress-circular
+              v-if="loading"
+              color="primary"
+              :size="80"
+              indeterminate
+            />
+            <v-app-bar-title class="text--text text-h5" v-else>{{
+              data.content?.code === 2
+                ? 'Период не обрабатывался'
+                : 'Lorem, ipsum dolor'
+            }}</v-app-bar-title>
+          </div>
         </div>
       </v-tab-item>
 
@@ -61,20 +88,23 @@
         <div class="v-panel d-flex flex-column">
           <SidelistHeader
             @changeStage="stageBack()"
-            :data="$props.data"
+            @changePeriod="
+              changePeriod({ type: 'object', object: data.detail })
+            "
+            :data="data.detail"
             :date="$props.date"
             :lockColor="
-              data.detail.is_close === 2
+              data.detail?.is_close === 2
                 ? 'warning'
-                : data.detail.is_close === 1
+                : data.detail?.is_close === 1
                 ? 'success'
                 : 'disabled'
             "
             stage
           />
-          <v-row v-if="data.detail.is_close === 2" class="justify-center mt-4">
+          <v-row v-if="data.detail?.is_close === 2" class="justify-center mt-4">
             <v-btn
-              @click="changePeriod({ type: 'object', object: data.detail })"
+              @click=";(confirm.isShow = true), (confirm.object = data)"
               color="success"
               >Начать период</v-btn
             >
@@ -91,8 +121,13 @@
               :key="i"
             >
               <v-expansion-panel-header>
-                <v-btn @click.stop icon x-small class="mr-1 flex-grow-0">
-                  <v-icon small :color="item.is_close ? 'success' : 'disabled'"
+                <v-btn
+                  @click.stop="changePeriod({ type: 'type', object: item })"
+                  icon
+                  x-small
+                  class="mr-1 flex-grow-0"
+                >
+                  <v-icon small :color="item?.is_close ? 'success' : 'disabled'"
                     >$IconLock</v-icon
                   ></v-btn
                 >
@@ -189,7 +224,10 @@
                           На сумму: {{ item.content?.sum_parser }}р
                         </div>
                       </v-row>
-                      <div class="v-panel-item-doc mt-4">
+                      <div
+                        @click="downloadFile(item.content?.filepath)"
+                        class="v-panel-item-doc mt-4 v-panel-item-doc__pointer"
+                      >
                         <v-row
                           class="d-flex align-center justify-space-between"
                         >
@@ -297,7 +335,10 @@
                             Итого: {{ history.sum }}р
                           </div>
                         </v-row>
-                        <div class="v-panel-item-doc mt-4">
+                        <div
+                          @click="downloadFile(history.filepath)"
+                          class="v-panel-item-doc mt-4 v-panel-item-doc__pointer"
+                        >
                           <v-row
                             class="d-flex align-center justify-space-between"
                           >
@@ -343,64 +384,43 @@
                     <!-- <div class="v-panel-item-doc mt-4"></div> -->
                   </v-col>
                 </template>
-
-                <!-- <v-col class="p-0" cols="12" sm="12">
-                  <v-row>
-                    <div class="v-panel-item_text">Назначения: 100</div>
-                  </v-row>
-                  <v-row>
-                    <div class="v-panel-item_text">Оплачено: 90</div>
-                  </v-row>
-                  <v-row>
-                    <div class="v-panel-item_text v-panel-item_text__bold">
-                      На сумму: 10 000 000р
-                    </div>
-                  </v-row>
-                </v-col> -->
-                <!-- <div class="v-panel-item_text mt-4 mb-2">Загруженный файл</div> -->
-                <!-- <div class="v-panel-item-doc">
-                  <v-row class="d-flex align-center justify-space-between">
-                    <div>
-                      <v-icon x-small color="disabled">$IconAttachMail</v-icon
-                      ><span
-                        class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
-                        >poopy.small.jpg.png</span
-                      >
-                    </div>
-                    <span class="ml-1 gray--text v-panel-item-doc_date"
-                      >02.02.2024</span
-                    >
-                  </v-row>
-                  <v-row
-                    ><span class="ml-4 gray--text v-panel-item-doc_text"
-                      >Абдула Ахмед Мухали Пчих Ъ</span
-                    ></v-row
-                  >
-                  <v-divider class="mt-1 mb-1"></v-divider>
-                  <v-row
-                    ><span class="ml-4 text--text v-panel-item-doc_text"
-                      >Остаток ошибок:
-                      <span class="font-weight-bold">9 000</span> из 1 000
-                    </span></v-row
-                  >
-                </div> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
         </div>
       </v-tab-item>
     </v-tabs-items>
-    <div class="d-flex align-center justify-center h-100">
-      <v-progress-circular
-        v-if="loading"
-        color="primary"
-        :size="80"
-        indeterminate
-      />
-      <v-app-bar-title class="text--text text-h5" v-else>{{
-        data?.code === 2 ? 'Период не обрабатывался' : 'Lorem, ipsum dolor'
-      }}</v-app-bar-title>
-    </div>
+
+    <v-dialog persistent v-model="confirm.isShow" width="500">
+      <v-card>
+        <v-card-title class="text-h5 justify-center">
+          Вы подтверждаете начало периода?
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" @click="confirm.isShow = false">
+            Отменить
+          </v-btn>
+          <v-btn
+            @click="
+              changePeriod({ type: 'object', object: confirm.object.detail }),
+                (confirm.isShow = false)
+            "
+            class="ml-4"
+            type="submit"
+            color="primary"
+          >
+            Принять
+          </v-btn>
+          <!-- <v-progress-circular
+            v-if="prepaymentLoading"
+            color="primary"
+            :size="30"
+            indeterminate
+          /> -->
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script src="./setup.js"></script>

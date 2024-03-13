@@ -13,10 +13,11 @@
       >
       <div class="v-heading_relative">
         <v-btn
-          v-if="$props.date"
+          v-if="$props.lockColor"
           icon
           x-small
           class="v-heading_item v-heading_item__center"
+          @click="$emit('changePeriod')"
         >
           <v-icon :color="$props.lockColor" small>$IconLock</v-icon></v-btn
         >

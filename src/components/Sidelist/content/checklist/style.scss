@@ -61,6 +61,9 @@
         &_date {
           font-size: 12px;
         }
+        &__pointer {
+          cursor: pointer;
+        }
       }
     }
     &-item + &-item {
