@@ -936,6 +936,23 @@ export default {
             bootstrapClass: [''],
           })
           break
+        case 'patent_special_marks_date':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
 
         default:
           result = stringField({
