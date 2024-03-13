@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import axios from 'axios'
 import _ from 'lodash'
+import moment from 'moment'
 
 import SidelistHeader from '@/components/Sidelist/content/header/index.vue'
 
@@ -60,8 +61,8 @@ export default {
         )
         type.loading = false
         Vue.set(type, 'content', {})
-        Vue.set(type.content, 'edit', false)
         type.content = responseData.result
+        Vue.set(type.content, 'edit', false)
         type.content.code = responseData.code
         detailPanels.value.push(index)
       }
@@ -121,6 +122,8 @@ export default {
       }
     }
 
+    const changeTotalCount = () => {}
+
     const stageBack = () => {
       detailPanels.value = []
       stage.value--
@@ -128,6 +131,10 @@ export default {
 
     const downloadFile = (path) => {
       Vue.downloadFile(path)
+    }
+
+    const formatDate = (date) => {
+      return moment(date).format('YYYY.MM.DD')
     }
 
     onMounted(() => {
@@ -160,6 +167,8 @@ export default {
       changePeriod,
       editTotalCount,
       downloadFile,
+      formatDate,
+      changeTotalCount,
     }
   },
 }

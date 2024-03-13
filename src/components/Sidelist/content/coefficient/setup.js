@@ -212,12 +212,10 @@ export default {
         const requestData = {
           url: methods[method].url,
           body: {
-            data: {
-              period: props.date.date,
-              personal_id: methods[method].personal_id,
-              coefficient: methods[method].coefficient,
-              object_id: person.object_id,
-            },
+            period: props.date.date,
+            personal_id: methods[method].personal_id,
+            coefficient: methods[method].coefficient,
+            object_id: person.object_id,
           },
         }
         person.edit.loading = true

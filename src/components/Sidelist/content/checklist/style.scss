@@ -50,6 +50,15 @@
         &__bold {
           font-weight: 500;
         }
+        &::v-deep .v-input {
+          width: 80px;
+          .v-input__slot {
+            margin: 0;
+            input {
+              padding: 0;
+            }
+          }
+        }
       }
       &-doc {
         border: 1px solid var(--v-disabled-base);
@@ -57,6 +66,9 @@
         padding: 7px 12px;
         &_text {
           font-size: 14px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         &_date {
           font-size: 12px;

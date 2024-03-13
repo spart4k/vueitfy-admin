@@ -9,10 +9,12 @@
               changePeriod({ type: 'month', object: data.period.data })
             "
             :data="$props.data"
-            :lockColor="
-              data.period?.data?.id &&
-              (data.period?.data?.is_close === 1 ? 'success' : 'disabled')
-            "
+            :lock="{
+              color:
+                data.period?.data?.id &&
+                (data.period?.data?.is_close === 1 ? 'success' : 'disabled'),
+              tooltip: 'Закрыть период',
+            }"
           />
           <div
             class="overflow-auto flex-grow-1 pl-7 pr-7"
@@ -26,23 +28,32 @@
               <div class="v-panel-item-container">
                 <div class="v-panel-item-container_name">
                   {{ item.name }}
-                  <v-btn
-                    @click.stop="changePeriod({ type: 'object', object: item })"
-                    icon
-                    x-small
-                  >
-                    <v-icon
-                      x-small
-                      :color="
-                        item?.is_close === 2
-                          ? 'warning'
-                          : item?.is_close === 1
-                          ? 'success'
-                          : 'disabled'
-                      "
-                      >$IconLock</v-icon
-                    ></v-btn
-                  >
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        @click.stop="
+                          changePeriod({ type: 'object', object: item })
+                        "
+                        icon
+                        x-small
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon
+                          x-small
+                          :color="
+                            item?.is_close === 2
+                              ? 'warning'
+                              : item?.is_close === 1
+                              ? 'success'
+                              : 'disabled'
+                          "
+                          >$IconLock</v-icon
+                        ></v-btn
+                      >
+                    </template>
+                    <span>Закрыть объект</span>
+                  </v-tooltip>
                 </div>
                 <v-btn icon x-small @click="openDetail(item)">
                   <v-icon small color="disabled">$IconArrowRight</v-icon></v-btn
@@ -93,13 +104,15 @@
             "
             :data="data.detail"
             :date="$props.date"
-            :lockColor="
-              data.detail?.is_close === 2
-                ? 'warning'
-                : data.detail?.is_close === 1
-                ? 'success'
-                : 'disabled'
-            "
+            :lock="{
+              color:
+                data.detail?.is_close === 2
+                  ? 'warning'
+                  : data.detail?.is_close === 1
+                  ? 'success'
+                  : 'disabled',
+              tooltip: 'Закрыть объект',
+            }"
             stage
           />
           <v-row v-if="data.detail?.is_close === 2" class="justify-center mt-4">
@@ -121,16 +134,25 @@
               :key="i"
             >
               <v-expansion-panel-header>
-                <v-btn
-                  @click.stop="changePeriod({ type: 'type', object: item })"
-                  icon
-                  x-small
-                  class="mr-1 flex-grow-0"
-                >
-                  <v-icon small :color="item?.is_close ? 'success' : 'disabled'"
-                    >$IconLock</v-icon
-                  ></v-btn
-                >
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      @click.stop="changePeriod({ type: 'type', object: item })"
+                      icon
+                      x-small
+                      v-bind="attrs"
+                      v-on="on"
+                      class="mr-1 flex-grow-0"
+                    >
+                      <v-icon
+                        small
+                        :color="item?.is_close ? 'success' : 'disabled'"
+                        >$IconLock</v-icon
+                      ></v-btn
+                    >
+                  </template>
+                  <span>Закрыть тип</span>
+                </v-tooltip>
                 <span
                   class="flex-grow-1 d-flex align-center v-panel-item_heading"
                 >
@@ -231,17 +253,24 @@
                         <v-row
                           class="d-flex align-center justify-space-between"
                         >
-                          <div>
-                            <v-icon x-small color="disabled"
-                              >$IconAttachMail</v-icon
-                            ><span
-                              class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
-                              >{{ item.content?.filepath }}</span
+                          <v-col cols="12" sm="8">
+                            <div class="d-flex align-center">
+                              <v-icon x-small color="disabled"
+                                >$IconAttachMail</v-icon
+                              >
+                              <div
+                                class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
+                              >
+                                {{ item.content?.filepath }}
+                              </div>
+                            </div>
+                          </v-col>
+                          <v-col cols="12" sm="4">
+                            <span
+                              class="ml-1 gray--text v-panel-item-doc_date"
+                              >{{ formatDate(item.content?.last_date) }}</span
                             >
-                          </div>
-                          <span class="ml-1 gray--text v-panel-item-doc_date">{{
-                            item.content?.last_date
-                          }}</span>
+                          </v-col>
                         </v-row>
                         <v-row
                           ><span
@@ -271,9 +300,20 @@
 
                 <template v-if="item.type_id === 3">
                   <v-col class="p-0" cols="12" sm="12">
-                    <v-row class="mb-4">
-                      <div class="v-panel-item_text v-panel-item_text__bold">
-                        {{ item.content?.load }}/{{ item.content?.total }}
+                    <v-row class="mb-4 align-center">
+                      <div
+                        class="v-panel-item_text v-panel-item_text__bold d-flex align-center"
+                      >
+                        <div>{{ item.content?.load }}/</div>
+                        <div v-if="!item.content?.edit">
+                          {{ item.content?.total }}
+                        </div>
+                        <v-text-field
+                          class="pt-0 mt-0 ml-1"
+                          v-else
+                          v-model="editedType.total"
+                          v-mask="'#########'"
+                        />
                       </div>
                       <!-- <template v-if="editedType.loading">
                         <v-progress-circular
@@ -294,12 +334,22 @@
                         >
                       </template>
                       <template v-else-if="item.content?.edit">
-                        <v-btn class="ml-2" icon x-small>
+                        <v-btn
+                          @click="changeTotalCount()"
+                          class="ml-2"
+                          icon
+                          x-small
+                        >
                           <v-icon small color="success"
                             >$IconGalka</v-icon
                           ></v-btn
                         >
-                        <v-btn class="ml-2" icon x-small>
+                        <v-btn
+                          @click="item.content.edit = false"
+                          class="ml-2"
+                          icon
+                          x-small
+                        >
                           <v-icon small color="gray"
                             >$IconArrowCircleRight</v-icon
                           ></v-btn
@@ -342,18 +392,24 @@
                           <v-row
                             class="d-flex align-center justify-space-between"
                           >
-                            <div>
-                              <v-icon x-small color="disabled"
-                                >$IconAttachMail</v-icon
-                              ><span
-                                class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
-                                >{{ history.filepath }}</span
+                            <v-col cols="12" sm="8">
+                              <div class="d-flex align-center">
+                                <v-icon x-small color="disabled"
+                                  >$IconAttachMail</v-icon
+                                >
+                                <div
+                                  class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
+                                >
+                                  {{ history.filepath }}
+                                </div>
+                              </div>
+                            </v-col>
+                            <v-col cols="12" sm="4">
+                              <span
+                                class="ml-1 gray--text v-panel-item-doc_date"
+                                >{{ formatDate(history.date) }}</span
                               >
-                            </div>
-                            <span
-                              class="ml-1 gray--text v-panel-item-doc_date"
-                              >{{ history.date }}</span
-                            >
+                            </v-col>
                           </v-row>
                           <v-row
                             ><span
