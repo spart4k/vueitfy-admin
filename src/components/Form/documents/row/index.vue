@@ -84,7 +84,6 @@
                       v-else-if="field.type === 'select'"
                       :field="{
                         ...field,
-                        items: listData[field.name],
                       }"
                       v-model="formData[field.name]"
                       :error-messages="formErrors[field?.name]"
