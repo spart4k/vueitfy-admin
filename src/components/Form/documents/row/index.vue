@@ -198,7 +198,7 @@
               </v-btn>
               <v-btn
                 :disabled="vForm.$invalid"
-                @click="confirmCorrect"
+                @click="confirmDoc"
                 color="primary"
                 small
                 class="ml-2"

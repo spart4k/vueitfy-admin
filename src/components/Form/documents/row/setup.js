@@ -1063,6 +1063,9 @@ export default {
         // formObj: formObj,
       })
     }
+    const confirmDoc = () => {
+      isCorrect.value = true
+    }
     const confirmCorrect = async (doc) => {
       isCorrect.value = true
       if (props.document.doc_id === 3) {
@@ -1357,6 +1360,7 @@ export default {
       isCorrect,
       isRejected,
       rejectDoc,
+      confirmDoc,
       // documentData,
     }
   },

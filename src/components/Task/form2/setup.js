@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import DocFormWithConfirm from '@/components/Task/el/DocFormWithConfirm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import { useRouter, useRoute } from 'vue-router/composables'
@@ -50,11 +50,15 @@ const Form2 = defineComponent({
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
-    const isHasOsnDoc = ref(
-      JSON.parse(props.data.task.dop_data).docs_id.includes(0)
-    )
-    const isOsnDocConfirmed = ref(false)
-    const isOsnDocTouched = ref(isHasOsnDoc.value ? false : true)
+    const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const isHasCard = props.data.data.docs_id.filter(
+      (el) => el.doc_id === 3
+    ).length
+    const isHasOnlyCard =
+      JSON.parse(props.data.task.dop_data).docs_id.length === 1 && isHasCard
+    const isOsnDocConfirmed = ref(null)
+    const bankCardId = ref(0)
+    // const isOsnDocTouched = ref(isHasOsnDoc.value ? false : true)
     const commentErr = ref('')
     const comment = ref('')
     const newStatus = ref(0)
@@ -82,7 +86,7 @@ const Form2 = defineComponent({
 
     const confirmOsnData = () => {
       const doscId = JSON.parse(props.data.task.dop_data).docs_id
-      isOsnDocTouched.value = true
+      // isOsnDocTouched.value = true
       isOsnDocConfirmed.value = true
       if (doscId.length === 1 && doscId[0] === 0) {
         isFormValid.value = true
@@ -90,13 +94,25 @@ const Form2 = defineComponent({
     }
     const rejectOsnData = () => {
       const doscId = JSON.parse(props.data.task.dop_data).docs_id
-      isOsnDocTouched.value = true
+      // isOsnDocTouched.value = true
       isOsnDocConfirmed.value = false
       if (doscId.length === 1 && doscId[0] === 0) {
         isFormValid.value = true
       }
     }
-
+    const docFormRef = ref(null)
+    const allDocsTouched = computed(() => {
+      return docFormRef.value?.docRows?.every(
+        (el) => el.isCorrect || el.isRejected
+      )
+    })
+    const isValid = computed(() => {
+      console.log(allDocsTouched.value, isHasOsnDoc, isOsnDocConfirmed.value)
+      return (
+        allDocsTouched.value &&
+        (isHasOsnDoc ? isOsnDocConfirmed.value !== null : true)
+      )
+    })
     const { makeRequest: setPersonalData } = useRequest({
       context,
       request: () => {
@@ -116,7 +132,19 @@ const Form2 = defineComponent({
         // }
       },
     })
-
+    const rejectedDocs = computed(() => {
+      let rejectedRows = docFormRef.value?.docRows?.flatMap((el) => {
+        if (el.isRejected) {
+          return el.document.id
+        } else {
+          return []
+        }
+      })
+      if (isOsnDocConfirmed.value === false) {
+        rejectedRows.push(0)
+      }
+      return rejectedRows
+    })
     const { makeRequest: setStartStep } = useRequest({
       context,
       request: () => {
@@ -138,11 +166,7 @@ const Form2 = defineComponent({
         if (!finalData.value.rejected) {
           finalData.value.rejected = []
         }
-        newStatus.value =
-          finalData.value.rejected.length ||
-          (isHasOsnDoc.value && !isOsnDocConfirmed.value)
-            ? 6
-            : 2
+        newStatus.value = rejectedDocs.value.length ? 6 : 2
         // let status
         // if ()
         let data = {
@@ -150,10 +174,7 @@ const Form2 = defineComponent({
           personal_id: props.data.entity.id,
           task_id: props.data.task.id,
           parent_action: props.data.task.id,
-          docs_id:
-            isHasOsnDoc && isOsnDocConfirmed.value
-              ? [0, ...finalData.value.rejected]
-              : finalData.value.rejected,
+          docs_id: rejectedDocs.value,
           account_id: props.data.task.to_account_id,
           obd_id: props.data.task.from_account_id,
           comment: comment.value,
@@ -171,13 +192,8 @@ const Form2 = defineComponent({
     })
 
     const sendData = async () => {
-      if (
-        (finalData.value.rejected &&
-          finalData.value.rejected.length &&
-          !comment.value) ||
-        (isHasOsnDoc.value && !isOsnDocConfirmed.value && !comment.value)
-      ) {
-        commentErr.value = 'Заполните комментарий'
+      if (rejectedDocs.value.length && !comment.value) {
+        commentErr.value = ['Заполните комментарий']
       } else {
         const { success } = await changeStatusTask()
         if (success) {
@@ -214,9 +230,14 @@ const Form2 = defineComponent({
       confirmOsnData,
       rejectOsnData,
       isOsnDocConfirmed,
-      isOsnDocTouched,
+      // isOsnDocTouched,
       commentErr,
       comment,
+      // isValid,
+      allDocsTouched,
+      docFormRef,
+      isValid,
+      rejectedDocs,
     }
   },
 })

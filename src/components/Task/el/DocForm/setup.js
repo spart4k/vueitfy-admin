@@ -88,6 +88,9 @@ const docForm = defineComponent({
       type: Boolean,
       default: false,
     },
+    bankData: {
+      type: Object,
+    },
   },
   data: function () {
     return {
@@ -117,7 +120,10 @@ const docForm = defineComponent({
       },
     }
     const bankItems = Object.values(bankItemsSpr)
-    const loadedData = props.docsData
+    const loadedData = {
+      ...props.docsData,
+      ...props.bankData,
+    }
     const getPassportField = (grajdanstvo_id) => {
       const fieldsPass = {
         pasp_ser: loadedData.pasp_ser ? loadedData.pasp_ser : '',
@@ -125,20 +131,21 @@ const docForm = defineComponent({
         pasp_data_vid: loadedData.pasp_data_vid ? loadedData.pasp_data_vid : '',
         pasp_kem: loadedData.pasp_kem ? loadedData.pasp_kem : '',
       }
+      console.log()
       if (grajdanstvo_id === 1) {
         fieldsPass.pasp_kod_podr = loadedData.pasp_kod_podr
           ? loadedData.pasp_kod_podr
           : ''
       } else {
-        fieldsPass.citizenship = fieldsPass.citizenship
-          ? fieldsPass.citizenship
+        fieldsPass.citizenship = loadedData.citizenship
+          ? loadedData.citizenship
           : ''
-        fieldsPass.sex = fieldsPass.sex ? fieldsPass.sex : ''
-        fieldsPass.pasp_date_in = fieldsPass.pasp_date_in
-          ? fieldsPass.pasp_date_in
+        fieldsPass.sex = loadedData.sex ? loadedData.sex : ''
+        fieldsPass.pasp_date_in = loadedData.pasp_date_in
+          ? loadedData.pasp_date_in
           : ''
-        fieldsPass.pasp_date_out = fieldsPass.pasp_date_out
-          ? fieldsPass.pasp_date_out
+        fieldsPass.pasp_date_out = loadedData.pasp_date_out
+          ? loadedData.pasp_date_out
           : ''
       }
       return fieldsPass
