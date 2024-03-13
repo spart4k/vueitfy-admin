@@ -5,7 +5,7 @@
         <v-expansion-panel-header class="type-expension-head">
           <div class="personal-head">
             <div class="type-head-info">
-              <span>Выработка1</span>
+              <span>Выработка</span>
             </div>
             <div class="type-head-panel"></div>
           </div>

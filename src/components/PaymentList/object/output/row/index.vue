@@ -9,7 +9,7 @@
                 <v-col cols="12" sm="5">{{ row.service_name }}</v-col>
                 <v-col cols="12" sm="2">{{ row.qty }}</v-col>
                 <v-col cols="12" sm="2">{{ row.price }}</v-col>
-                <v-col class="green--text" cols="12" sm="3">{{
+                <v-col class="green--text text-right" cols="12" sm="3">{{
                   row.sum
                 }}</v-col>
               </v-row>
@@ -26,7 +26,9 @@
               >
               <v-col cols="12" sm="2">{{ row.qty }}</v-col>
               <v-col cols="12" sm="2">{{ row.price }}</v-col>
-              <v-col class="green--text" cols="12" sm="3">{{ row.sum }}</v-col>
+              <v-col class="green--text text-right" cols="12" sm="3">{{
+                row.sum
+              }}</v-col>
             </v-row>
             <!-- <span>{{ item.sum }}</span> -->
             <!-- asdads -->
