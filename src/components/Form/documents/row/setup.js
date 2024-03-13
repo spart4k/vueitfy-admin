@@ -110,28 +110,128 @@ export default {
       let result = ''
       switch (key) {
         case 'pasp_data_vid':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'pasp_ser':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'pasp_num':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'pasp_kod_podr':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'pasp_kem':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'snils':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'invoice':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'priority':
-          result = 'checkbox'
+          result = checkboxField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            value: false,
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 4,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          })
           break
         case 'bank_id':
           result = selectField({
@@ -197,55 +297,273 @@ export default {
           })
           break
         case 'comment':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'registration_address':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'patent_ser':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'patent_num':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'patent_prof':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'pasp_address_reg':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'med_book_date':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'view_home_ser':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'view_home_num':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'migr_card_ser':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'migr_card_num':
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
           break
         case 'migr_card_data_in':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'migr_card_data_out':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'registration_date_c_docs_in':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'registration_date_do_docs_in':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'check_patent_date_pay':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'check_patent_date_pay_now':
-          result = 'date'
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
           break
         case 'med_view_docs_in':
           result = dateField({
@@ -637,7 +955,19 @@ export default {
           break
 
         default:
-          result = 'string'
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
       }
       return result
     }
@@ -731,11 +1061,60 @@ export default {
         case 'med_view_docs_in':
           result = 'Период'
           break
+        case 'sex':
+          result = 'Пол'
+          break
+        case 'pasp_date_in':
+          result = 'С'
+          break
+        case 'pasp_date_out':
+          result = 'По'
+          break
+        case 'citizenship':
+          result = 'Гражданство'
+          break
+        case 'goal_visit':
+          result = 'Цель визита '
+          break
+        case 'card_id_num':
+          result = 'Номер'
+          break
+        case 'card_id_ser':
+          result = 'Серия'
+          break
+        case 'card_id_period_date_in':
+          result = 'С'
+          break
+        case 'card_id_period_date_out':
+          result = 'По'
+          break
+        case 'card_id_kem':
+          result = 'Орган выдачи'
+          break
+        case 'card_id_date_vid':
+          result = 'Дата выдачи'
+          break
+        case 'card_id_pers_num':
+          result = 'Персональный номер'
+          break
+        case 'patent_region':
+          result = 'Регион'
+          break
+        case 'patent_date_docs_in':
+          result = 'С'
+          break
+        case 'patent_date_docs_out':
+          result = 'По'
+          break
+        case 'patent_special_marks_date':
+          result = 'Специальные отметки'
+          break
         default:
           result = key
       }
       return result
     }
+
     const { makeRequest: sendBankCardRequest } = useRequest({
       context,
       request: () => {
