@@ -335,7 +335,20 @@ const Form8 = defineComponent({
       }
       popupForm.value.isShow = true
     }
-
+    const { makeRequest: createFillScanProcess } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/startProcess', {
+          parent_process: props.data.task.process_id,
+          process_id: 1,
+          parent_action: props.data.task.process_id,
+          type_parent_action: 2,
+          account_id: props.data.task.to_account_id,
+          personal_id: props.data.entity.id,
+          docs_id: docs_ids.value,
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
     let addFiles = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -375,20 +388,6 @@ const Form8 = defineComponent({
 
       // Когда запрос будет готов от Миши, нужно сформировать его по примеру ниже из старого кода. Функцию эту запушить в переменную, которая при нажаити на кнопку вызывает функции запросов в цикле
       // Добавить эот запрос в массив запросов нужно по условию, код закомментирован
-      const { makeRequest: createFillScanProcess } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/startProcess', {
-            parent_process: props.data.task.process_id,
-            process_id: 1,
-            parent_action: props.data.task.process_id,
-            type_parent_action: 2,
-            account_id: props.data.task.to_account_id,
-            personal_id: props.data.entity.id,
-            docs_id: docs_ids.value,
-          }),
-        successMessage: 'Файл успешно загружен',
-      })
 
       let additionalRequestFlag
       if (
@@ -427,10 +426,11 @@ const Form8 = defineComponent({
       }
     }
 
-    const sendDocuments = () => {
-      listRequestsForUpload.value.forEach((elem, index) => {
-        elem()
-      })
+    const sendDocuments = async () => {
+      // listRequestsForUpload.value.forEach((elem, index) => {
+      //   elem()
+      // })
+      await createFillScanProcess()
       listRequestsForUpload.value = []
     }
 
