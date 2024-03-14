@@ -18,9 +18,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    lockColor: {
-      type: String,
-      default: '',
+    lock: {
+      type: Object,
+      default: {},
     },
   },
   setup(props) {

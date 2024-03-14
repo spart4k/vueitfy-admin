@@ -1,13 +1,25 @@
 <template>
   <div class="w-100 h-100">
-    <v-tabs-items class="h-100" v-model="stage" v-if="data?.code === 1 || true">
+    <v-tabs-items class="h-100" v-model="stage">
       <v-tab-item class="h-100">
         <div class="v-panel d-flex flex-column pb-5">
           <SidelistHeader
             @closePanel="$emit('closePanel')"
+            @changePeriod="
+              changePeriod({ type: 'month', object: data.period.data })
+            "
             :data="$props.data"
+            :lock="{
+              color:
+                data.period?.data?.id &&
+                (data.period?.data?.is_close === 1 ? 'success' : 'disabled'),
+              tooltip: 'Закрыть период',
+            }"
           />
-          <div class="overflow-auto flex-grow-1 pl-7 pr-7">
+          <div
+            class="overflow-auto flex-grow-1 pl-7 pr-7"
+            v-if="data.content?.code === 1 && !loading"
+          >
             <div
               class="v-panel-item"
               v-for="(item, i) in data.content.data"
@@ -16,19 +28,32 @@
               <div class="v-panel-item-container">
                 <div class="v-panel-item-container_name">
                   {{ item.name }}
-                  <v-btn icon x-small>
-                    <v-icon
-                      x-small
-                      :color="
-                        item.is_close === 2
-                          ? 'warning'
-                          : item.is_close === 1
-                          ? 'success'
-                          : 'disabled'
-                      "
-                      >$IconLock</v-icon
-                    ></v-btn
-                  >
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        @click.stop="
+                          changePeriod({ type: 'object', object: item })
+                        "
+                        icon
+                        x-small
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        <v-icon
+                          x-small
+                          :color="
+                            item?.is_close === 2
+                              ? 'warning'
+                              : item?.is_close === 1
+                              ? 'success'
+                              : 'disabled'
+                          "
+                          >$IconLock</v-icon
+                        ></v-btn
+                      >
+                    </template>
+                    <span>Закрыть объект</span>
+                  </v-tooltip>
                 </div>
                 <v-btn icon x-small @click="openDetail(item)">
                   <v-icon small color="disabled">$IconArrowRight</v-icon></v-btn
@@ -54,6 +79,19 @@
               </div>
             </div>
           </div>
+          <div v-else class="d-flex align-center justify-center h-100">
+            <v-progress-circular
+              v-if="loading"
+              color="primary"
+              :size="80"
+              indeterminate
+            />
+            <v-app-bar-title class="text--text text-h5" v-else>{{
+              data.content?.code === 2
+                ? 'Период не обрабатывался'
+                : 'Период не обрабатывался'
+            }}</v-app-bar-title>
+          </div>
         </div>
       </v-tab-item>
 
@@ -61,20 +99,25 @@
         <div class="v-panel d-flex flex-column">
           <SidelistHeader
             @changeStage="stageBack()"
-            :data="$props.data"
-            :date="$props.date"
-            :lockColor="
-              data.detail.is_close === 2
-                ? 'warning'
-                : data.detail.is_close === 1
-                ? 'success'
-                : 'disabled'
+            @changePeriod="
+              changePeriod({ type: 'object', object: data.detail })
             "
+            :data="data.detail"
+            :date="$props.date"
+            :lock="{
+              color:
+                data.detail?.is_close === 2
+                  ? 'warning'
+                  : data.detail?.is_close === 1
+                  ? 'success'
+                  : 'disabled',
+              tooltip: 'Закрыть объект',
+            }"
             stage
           />
-          <v-row v-if="data.detail.is_close === 2" class="justify-center mt-4">
+          <v-row v-if="data.detail?.is_close === 2" class="justify-center mt-4">
             <v-btn
-              @click="changePeriod({ type: 'object', object: data.detail })"
+              @click=";(confirm.isShow = true), (confirm.object = data)"
               color="success"
               >Начать период</v-btn
             >
@@ -91,11 +134,25 @@
               :key="i"
             >
               <v-expansion-panel-header>
-                <v-btn @click.stop icon x-small class="mr-1 flex-grow-0">
-                  <v-icon small :color="item.is_close ? 'success' : 'disabled'"
-                    >$IconLock</v-icon
-                  ></v-btn
-                >
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      @click.stop="changePeriod({ type: 'type', object: item })"
+                      icon
+                      x-small
+                      v-bind="attrs"
+                      v-on="on"
+                      class="mr-1 flex-grow-0"
+                    >
+                      <v-icon
+                        small
+                        :color="item?.is_close ? 'success' : 'disabled'"
+                        >$IconLock</v-icon
+                      ></v-btn
+                    >
+                  </template>
+                  <span>Закрыть тип</span>
+                </v-tooltip>
                 <span
                   class="flex-grow-1 d-flex align-center v-panel-item_heading"
                 >
@@ -189,21 +246,31 @@
                           На сумму: {{ item.content?.sum_parser }}р
                         </div>
                       </v-row>
-                      <div class="v-panel-item-doc mt-4">
+                      <div
+                        @click="downloadFile(item.content?.filepath)"
+                        class="v-panel-item-doc mt-4 v-panel-item-doc__pointer"
+                      >
                         <v-row
                           class="d-flex align-center justify-space-between"
                         >
-                          <div>
-                            <v-icon x-small color="disabled"
-                              >$IconAttachMail</v-icon
-                            ><span
-                              class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
-                              >{{ item.content?.filepath }}</span
+                          <v-col cols="12" sm="8">
+                            <div class="d-flex align-center">
+                              <v-icon x-small color="disabled"
+                                >$IconAttachMail</v-icon
+                              >
+                              <div
+                                class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
+                              >
+                                {{ item.content?.filepath }}
+                              </div>
+                            </div>
+                          </v-col>
+                          <v-col cols="12" sm="4">
+                            <span
+                              class="ml-1 gray--text v-panel-item-doc_date"
+                              >{{ formatDate(item.content?.last_date) }}</span
                             >
-                          </div>
-                          <span class="ml-1 gray--text v-panel-item-doc_date">{{
-                            item.content?.last_date
-                          }}</span>
+                          </v-col>
                         </v-row>
                         <v-row
                           ><span
@@ -233,9 +300,20 @@
 
                 <template v-if="item.type_id === 3">
                   <v-col class="p-0" cols="12" sm="12">
-                    <v-row class="mb-4">
-                      <div class="v-panel-item_text v-panel-item_text__bold">
-                        {{ item.content?.load }}/{{ item.content?.total }}
+                    <v-row class="mb-4 align-center">
+                      <div
+                        class="v-panel-item_text v-panel-item_text__bold d-flex align-center"
+                      >
+                        <div>{{ item.content?.load }}/</div>
+                        <div v-if="!item.content?.edit">
+                          {{ item.content?.total }}
+                        </div>
+                        <v-text-field
+                          class="pt-0 mt-0 ml-1"
+                          v-else
+                          v-model="editedType.total"
+                          v-mask="'#########'"
+                        />
                       </div>
                       <!-- <template v-if="editedType.loading">
                         <v-progress-circular
@@ -256,12 +334,22 @@
                         >
                       </template>
                       <template v-else-if="item.content?.edit">
-                        <v-btn class="ml-2" icon x-small>
+                        <v-btn
+                          @click="changeTotalCount()"
+                          class="ml-2"
+                          icon
+                          x-small
+                        >
                           <v-icon small color="success"
                             >$IconGalka</v-icon
                           ></v-btn
                         >
-                        <v-btn class="ml-2" icon x-small>
+                        <v-btn
+                          @click="item.content.edit = false"
+                          class="ml-2"
+                          icon
+                          x-small
+                        >
                           <v-icon small color="gray"
                             >$IconArrowCircleRight</v-icon
                           ></v-btn
@@ -297,22 +385,31 @@
                             Итого: {{ history.sum }}р
                           </div>
                         </v-row>
-                        <div class="v-panel-item-doc mt-4">
+                        <div
+                          @click="downloadFile(history.filepath)"
+                          class="v-panel-item-doc mt-4 v-panel-item-doc__pointer"
+                        >
                           <v-row
                             class="d-flex align-center justify-space-between"
                           >
-                            <div>
-                              <v-icon x-small color="disabled"
-                                >$IconAttachMail</v-icon
-                              ><span
-                                class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
-                                >{{ history.filepath }}</span
+                            <v-col cols="12" sm="8">
+                              <div class="d-flex align-center">
+                                <v-icon x-small color="disabled"
+                                  >$IconAttachMail</v-icon
+                                >
+                                <div
+                                  class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
+                                >
+                                  {{ history.filepath }}
+                                </div>
+                              </div>
+                            </v-col>
+                            <v-col cols="12" sm="4">
+                              <span
+                                class="ml-1 gray--text v-panel-item-doc_date"
+                                >{{ formatDate(history.date) }}</span
                               >
-                            </div>
-                            <span
-                              class="ml-1 gray--text v-panel-item-doc_date"
-                              >{{ history.date }}</span
-                            >
+                            </v-col>
                           </v-row>
                           <v-row
                             ><span
@@ -343,64 +440,43 @@
                     <!-- <div class="v-panel-item-doc mt-4"></div> -->
                   </v-col>
                 </template>
-
-                <!-- <v-col class="p-0" cols="12" sm="12">
-                  <v-row>
-                    <div class="v-panel-item_text">Назначения: 100</div>
-                  </v-row>
-                  <v-row>
-                    <div class="v-panel-item_text">Оплачено: 90</div>
-                  </v-row>
-                  <v-row>
-                    <div class="v-panel-item_text v-panel-item_text__bold">
-                      На сумму: 10 000 000р
-                    </div>
-                  </v-row>
-                </v-col> -->
-                <!-- <div class="v-panel-item_text mt-4 mb-2">Загруженный файл</div> -->
-                <!-- <div class="v-panel-item-doc">
-                  <v-row class="d-flex align-center justify-space-between">
-                    <div>
-                      <v-icon x-small color="disabled">$IconAttachMail</v-icon
-                      ><span
-                        class="ml-1 text--text v-panel-item-doc_text font-weight-bold"
-                        >poopy.small.jpg.png</span
-                      >
-                    </div>
-                    <span class="ml-1 gray--text v-panel-item-doc_date"
-                      >02.02.2024</span
-                    >
-                  </v-row>
-                  <v-row
-                    ><span class="ml-4 gray--text v-panel-item-doc_text"
-                      >Абдула Ахмед Мухали Пчих Ъ</span
-                    ></v-row
-                  >
-                  <v-divider class="mt-1 mb-1"></v-divider>
-                  <v-row
-                    ><span class="ml-4 text--text v-panel-item-doc_text"
-                      >Остаток ошибок:
-                      <span class="font-weight-bold">9 000</span> из 1 000
-                    </span></v-row
-                  >
-                </div> -->
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
         </div>
       </v-tab-item>
     </v-tabs-items>
-    <div class="d-flex align-center justify-center h-100">
-      <v-progress-circular
-        v-if="loading"
-        color="primary"
-        :size="80"
-        indeterminate
-      />
-      <v-app-bar-title class="text--text text-h5" v-else>{{
-        data?.code === 2 ? 'Период не обрабатывался' : 'Lorem, ipsum dolor'
-      }}</v-app-bar-title>
-    </div>
+
+    <v-dialog persistent v-model="confirm.isShow" width="500">
+      <v-card>
+        <v-card-title class="text-h5 justify-center">
+          Вы подтверждаете начало периода?
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" @click="confirm.isShow = false">
+            Отменить
+          </v-btn>
+          <v-btn
+            @click="
+              changePeriod({ type: 'object', object: confirm.object.detail }),
+                (confirm.isShow = false)
+            "
+            class="ml-4"
+            type="submit"
+            color="primary"
+          >
+            Принять
+          </v-btn>
+          <!-- <v-progress-circular
+            v-if="prepaymentLoading"
+            color="primary"
+            :size="30"
+            indeterminate
+          /> -->
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script src="./setup.js"></script>
