@@ -67,7 +67,7 @@ const table = {
     const isOpen = ref(false)
     const objects = ref([])
     const isOpenObject = ref(false)
-    const { makeRequest } = useRequest({
+    const { makeRequest, loading } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
@@ -99,6 +99,7 @@ const table = {
       total,
       objects,
       convertData,
+      loading,
     }
   },
 }

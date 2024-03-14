@@ -11,7 +11,27 @@
           </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-expansion-panels v-for="item in objects" :key="item">
+          <template v-if="loading">
+            <div v-for="loading in 4" :key="loading" class="form-row-loading">
+              <div class="form-row-loading-wrap gradient"></div>
+            </div>
+          </template>
+          <template v-else>
+            <template v-if="!objects.length">
+              <div class="empty">Отсутствует</div>
+            </template>
+            <template v-else>
+              <Row
+                v-for="item in objects"
+                :key="item"
+                :period="period"
+                :personalId="personalId"
+                :object="object"
+                :row="item"
+              />
+            </template>
+          </template>
+          <!-- <v-expansion-panels v-for="item in objects" :key="item">
             <v-expansion-panel>
               <v-expansion-panel-header class="type-expension-head">
                 <v-row class="type-head">
@@ -30,7 +50,7 @@
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
-          </v-expansion-panels>
+          </v-expansion-panels> -->
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>

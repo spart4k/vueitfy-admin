@@ -5,7 +5,7 @@
         <v-expansion-panel-header class="type-expension-head">
           <div class="type-head">
             <div class="type-head-info">
-              <span>Переплата</span>
+              <span>Начислено ранне</span>
             </div>
             <div class="type-head-panel"></div>
           </div>
