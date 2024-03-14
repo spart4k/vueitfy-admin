@@ -13,6 +13,7 @@ import InfoOutput from '../output/index.vue'
 import InfoOverpayment from '../overpayment/default/index.vue'
 import InfoConsumption from '../consumption/index.vue'
 import Total from '../../total/index.vue'
+import Row from './row/index.vue'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -27,6 +28,7 @@ const table = {
     //vButton,
     //vInput,
     // Row,
+    Row,
   },
   props: {
     row: {

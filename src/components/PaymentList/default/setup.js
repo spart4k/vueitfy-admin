@@ -38,7 +38,6 @@ const table = {
     const { emit } = ctx
     const router = useRouter()
     const route = useRoute()
-    const loading = ref(false)
     const context = {
       root: {
         store,
@@ -85,7 +84,7 @@ const table = {
       provide('period', currentDate.date)
       await getItems()
     }
-    const { makeRequest } = useRequest({
+    const { makeRequest, loading } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentList', {
@@ -115,6 +114,7 @@ const table = {
       changeMonth,
       getItems,
       rows,
+      loading,
     }
   },
 }
