@@ -252,7 +252,7 @@ $tableFooterHeight: 85px;
         }
       }
       &-wrap {
-        height: calc(100% - $tableFooterHeight);
+        // height: calc(100% - $tableFooterHeight);
       }
     }
     &-wrap {
