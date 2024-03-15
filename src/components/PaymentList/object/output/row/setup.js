@@ -65,7 +65,7 @@ const table = {
     }
     const total = ref({})
     const isOpen = ref(false)
-    const objects = ref([])
+    const objects = ref(null)
     const isOpenObject = ref(false)
     // const loading = ref(true)
     const { makeRequest, loading } = useRequest({
@@ -78,21 +78,38 @@ const table = {
     const convertData = (val) => {
       return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
     }
+    let touched = false
+    const getObjects = async () => {
+      console.log(objects.value)
+      if (objects.value !== null) return
+      isOpen.value = undefined
+      if (loading.value) {
+        return
+      } else {
+        try {
+          const { result } = await makeRequest()
+          if (result) {
+            objects.value = result
+            total.value = result
+            isOpen.value = 0
+            console.log('getItems')
+          }
+        } catch (err) {
+          console.log(err)
+        }
+        loading.value = false
+        // Vue.set(type, 'content', {})
+        // type.content = responseData.result
+        // Vue.set(type.content, 'edit', false)
+        // type.content.code = responseData.code
+        // detailPanels.value.push(index)
+      }
+    }
     watch(
       () => isOpen.value,
-      async (newVal) => {
-        if (newVal === 0) {
-          try {
-            const { result } = await makeRequest()
-            if (result) {
-              objects.value = result
-              // total.value = result
-              // console.log('getItems')
-            }
-          } catch (err) {
-            console.log(err)
-          }
-        }
+      async () => {
+        touched = true
+        await getObjects()
       }
     )
     return {

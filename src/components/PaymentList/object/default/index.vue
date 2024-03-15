@@ -11,11 +11,11 @@
               ></v-checkbox> -->
               <span>{{ object.name }}</span>
               <v-chip
-                class="object-head-info__total mr-6"
+                class="object-head-info__total mr-2"
                 color="green"
                 variant="flat"
               >
-                1000р
+                {{ object.total }}р
               </v-chip>
             </div>
             <div class="object-head-panel"></div>
