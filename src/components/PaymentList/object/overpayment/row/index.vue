@@ -13,7 +13,7 @@
                 color="green"
                 variant="flat"
               >
-                {{ object.total }}р
+                {{ row.sum }}р
               </v-chip>
             </div>
             <div class="type-head-panel"></div>

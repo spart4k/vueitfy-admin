@@ -85,7 +85,7 @@
     margin-top: 6px;
   }
   &-content {
-    padding: 0 32px 0 32px;
+    padding: 0 32px 10px 32px;
   }
 }
 
@@ -93,4 +93,5 @@
   font-size: 16px;
   width: 100%;
   text-align: center;
+  color: var(--v-text-base);
 }
