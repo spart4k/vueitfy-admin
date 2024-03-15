@@ -17,33 +17,36 @@
             </div>
             <div class="type-head-panel"></div>
           </div>
+          <template v-slot:actions>
+            <v-progress-circular
+              v-if="loading"
+              color="primary"
+              :size="28"
+              indeterminate
+            />
+          </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <template v-if="loading">
-            <div v-for="loading in 4" :key="loading" class="form-row-loading">
-              <div class="form-row-loading-wrap gradient"></div>
-            </div>
+          <template v-if="objects && !objects.length">
+            <div class="empty">Отсутствует</div>
           </template>
           <template v-else>
-            <template v-if="!objects.length">
-              <div class="empty">Отсутствует</div>
-            </template>
-            <template v-else>
-              <v-row v-for="row in objects" class="justify-space-between">
-                <v-row class="type-head">
-                  <v-col cols="12" sm="5"
-                    ><span>{{ convertData(row.date_target) }}</span></v-col
-                  >
-                  <v-col cols="12" sm="2">{{ row.qty }}</v-col>
-                  <v-col cols="12" sm="2">{{ row.price }}</v-col>
-                  <v-col class="green--text text-right" cols="12" sm="3">{{
-                    row.sum
-                  }}</v-col>
-                </v-row>
-                <!-- <span>{{ item.sum }}</span> -->
-                <!-- asdads -->
+            <v-row v-for="row in objects" class="justify-space-between">
+              <v-row class="type-head">
+                <v-col cols="12" sm="5"
+                  ><span class="type-date">{{
+                    convertData(row.date_target)
+                  }}</span></v-col
+                >
+                <v-col cols="12" sm="2">{{ row.qty }}</v-col>
+                <v-col cols="12" sm="2">{{ row.price }}</v-col>
+                <v-col class="green--text text-right" cols="12" sm="3">{{
+                  row.sum
+                }}</v-col>
               </v-row>
-            </template>
+              <!-- <span>{{ item.sum }}</span> -->
+              <!-- asdads -->
+            </v-row>
           </template>
         </v-expansion-panel-content>
       </v-expansion-panel>

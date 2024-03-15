@@ -13,6 +13,8 @@
     display: flex;
     width: 100%;
     // margin-bottom: 10px;
+    // font-weight: 500;
+    font-size: 12px;
     &-info {
       display: flex;
       align-items: center;
@@ -124,7 +126,7 @@
   }
   .v-expansion-panel-header {
     min-height: 30px !important;
-    padding: 7px 7px;
+    padding: 0px 0px;
     color: var(--v-text-base);
     font-weight: 400;
   }
@@ -132,9 +134,10 @@
     margin-top: 6px;
   }
   &-content {
-    padding: 0 10px 10px 10px;
-    margin-top: 10px;
+    padding: 0 5px 10px 10px;
+    margin-top: 5px;
     color: var(--v-text-base);
+    font-size: 12px;
   }
 }
 

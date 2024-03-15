@@ -30,7 +30,7 @@
             </v-btn> -->
             <!-- buttons -->
           </div>
-          <div class="v-table-panel-items__search">
+          <div v-if="false" class="v-table-panel-items__search">
             <v-text-field
               label="Поиск"
               hide-details="auto"

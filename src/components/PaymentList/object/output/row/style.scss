@@ -12,12 +12,22 @@
   &-head {
     display: flex;
     width: 100%;
+
     // margin-bottom: 10px;
+    > div {
+      transition: 0.2s;
+    }
     &-info {
       display: flex;
       align-items: center;
       width: 100%;
+      // font-weight: 500;
+      font-size: 12px;
     }
+  }
+  &-date {
+    font-size: 14px;
+    color: #90a0b7;
   }
 }
 
@@ -89,7 +99,8 @@
   }
   &-content {
     padding: 0 30px 20px 10px;
-    margin-top: 10px;
+    margin-top: 5px;
     color: var(--v-text-base);
+    font-size: 12px;
   }
 }

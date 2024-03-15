@@ -29,6 +29,7 @@ export default new Vuetify({
         disabled: '#C2CFE0',
         textDefault: '#000000',
         cardBackground: '#FFFFFF',
+        red: '#FF5252',
       },
       dark: {
         primary: '#007BFF',
