@@ -14,6 +14,14 @@
               </div>
               <div class="personal-head-panel"></div>
             </div>
+            <template v-slot:actions>
+              <v-progress-circular
+                v-if="loading"
+                color="primary"
+                :size="28"
+                indeterminate
+              />
+            </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <template v-if="!loading">

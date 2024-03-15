@@ -58,22 +58,36 @@ const table = {
           url: `payment_list/personals/${props.period}/${props.row.personal_id}`,
         }),
     })
+    const getObjects = async () => {
+      if (objects.value.length) return
+      isOpen.value = undefined
+      if (loading.value) {
+        return
+      } else {
+        try {
+          const { result } = await makeRequest()
+          if (result) {
+            objects.value = result.objects
+            total.value = result
+            isOpen.value = 0
+            console.log('getItems')
+          }
+        } catch (err) {
+          console.log(err)
+        }
+        loading.value = false
+        // Vue.set(type, 'content', {})
+        // type.content = responseData.result
+        // Vue.set(type.content, 'edit', false)
+        // type.content.code = responseData.code
+        // detailPanels.value.push(index)
+      }
+    }
     watch(
       () => isOpen.value,
       async (newVal) => {
         console.log(newVal + '_' + props.row.personal_id)
-        if (newVal === 0) {
-          try {
-            const { result } = await makeRequest()
-            if (result) {
-              objects.value = result.objects
-              total.value = result
-              console.log('getItems')
-            }
-          } catch (err) {
-            console.log(err)
-          }
-        }
+        await getObjects()
       }
     )
     return {
