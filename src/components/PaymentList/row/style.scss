@@ -2,6 +2,7 @@
   background-color: #fff;
   margin-bottom: 14px;
   margin-top: 14px;
+  padding-inline: 86px;
   &-wrap {
   }
   &-expension {
@@ -11,7 +12,6 @@
     &-head {
       padding: 0;
       padding-inline: 10px;
-      border-bottom: 1px solid #d6dbe2;
     }
   }
   &-head {
@@ -19,7 +19,7 @@
     &-info {
       display: flex;
       align-items: center;
-      font-size: 20px;
+      font-size: 16px;
     }
   }
 }
@@ -90,5 +90,6 @@
   }
   &-content {
     padding: 0 85px;
+    border-top: 1px solid #d6dbe2;
   }
 }
