@@ -67,7 +67,7 @@ const table = {
     }
     const total = ref({})
     const isOpen = ref(false)
-    const objects = ref([])
+    const objects = ref(null)
     const isOpenObject = ref(false)
     const { makeRequest, loading } = useRequest({
       context,
@@ -76,9 +76,11 @@ const table = {
           url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/services`,
         }),
     })
+    let touched = false
     const getObjects = async () => {
       console.log(objects.value)
-      if (objects.value.length) return
+      if (objects.value !== null) return
+      touched = true
       isOpen.value = undefined
       if (loading.value) {
         return

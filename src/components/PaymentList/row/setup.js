@@ -47,7 +47,7 @@ const table = {
         route,
       },
     }
-    const objects = ref([])
+    const objects = ref(null)
     const period = inject('period')
     const total = ref({})
     console.log(period)
@@ -59,7 +59,7 @@ const table = {
         }),
     })
     const getObjects = async () => {
-      if (objects.value.length) return
+      if (objects.value !== null) return
       isOpen.value = undefined
       if (loading.value) {
         return

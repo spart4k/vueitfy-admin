@@ -5,29 +5,39 @@
         <v-expansion-panel-header class="type-expension-head">
           <div class="type-head">
             <div class="type-head-info">
-              <span>{{ row.vid_vedomost_name }}</span>
+              <span :class="isOpen && 'font-weight-medium'">{{
+                row.vid_vedomost_name
+              }}</span>
+              <v-chip
+                class="type-head-info__total mr-2"
+                color="green"
+                variant="flat"
+              >
+                {{ object.total }}р
+              </v-chip>
             </div>
             <div class="type-head-panel"></div>
           </div>
+          <template v-slot:actions>
+            <v-progress-circular
+              v-if="loading"
+              color="primary"
+              :size="20"
+              indeterminate
+            />
+          </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <template v-if="loading">
-            <div v-for="loading in 4" :key="loading" class="form-row-loading">
-              <div class="form-row-loading-wrap gradient"></div>
-            </div>
+          <template v-if="!loading && objects && objects.length">
+            <v-row v-for="row in objects" class="justify-space-between">
+              <span>{{ convertData(row.date_target) }}</span>
+              <span class="text-right">{{ row.sum }}р</span>
+              <!-- <span>{{ item.sum }}</span> -->
+              <!-- asdads -->
+            </v-row>
           </template>
           <template v-else>
-            <template v-if="!objects.length">
-              <div class="empty">Отсутствует</div>
-            </template>
-            <template v-else>
-              <v-row v-for="row in objects" class="justify-space-between">
-                <span>{{ convertData(row.date_target) }}</span>
-                <span>{{ row.sum }}р</span>
-                <!-- <span>{{ item.sum }}</span> -->
-                <!-- asdads -->
-              </v-row>
-            </template>
+            <div class="empty">Отсутствует</div>
           </template>
         </v-expansion-panel-content>
       </v-expansion-panel>

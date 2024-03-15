@@ -19,10 +19,7 @@
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <template v-if="!objects.length">
-            <div class="empty">Отсутствует</div>
-          </template>
-          <template v-else>
+          <template v-if="!loading && objects && objects.length">
             <Row
               v-for="item in objects"
               :key="item"
@@ -31,6 +28,9 @@
               :object="object"
               :row="item"
             />
+          </template>
+          <template v-else>
+            <div class="empty">Отсутствует</div>
           </template>
 
           <!-- <v-expansion-panels v-for="item in 10" :key="item">

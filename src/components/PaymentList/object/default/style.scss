@@ -1,13 +1,12 @@
 .object {
   background-color: #fff;
   margin-bottom: 14px;
-  border-top: 1px solid #d6dbe2;
   &-wrap {
   }
   &-expension {
     &-head {
       padding: 0;
-      padding-inline: 10px;
+      padding: unset !important;
     }
   }
   &-head {
@@ -19,10 +18,12 @@
       align-items: center;
       width: 100%;
       justify-content: space-between;
+      font-weight: 500;
+      font-size: 16px;
       &__total {
         color: #fff;
         padding: 0 6px !important;
-        height: 23px;
+        height: 19px;
         font-weight: 400;
       }
     }
@@ -51,6 +52,7 @@
     margin-top: 6px;
   }
   &-content {
-    padding: 0 35px;
+    margin-top: 10px;
+    padding: 0 17px;
   }
 }

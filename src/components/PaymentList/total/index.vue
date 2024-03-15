@@ -1,5 +1,5 @@
 <template>
-  <div class="total mt-3">
+  <div class="total">
     <v-row>
       <v-col cols="12" sm="5">
         <p class="weight">Подытог:</p>
@@ -9,7 +9,13 @@
           v-for="(field, fieldKey) in fields"
           class="justify-space-between"
         >
-          <p :class="fieldKey === 'total_by_services' ? 'weight' : 'default'">
+          <p
+            :class="
+              fieldKey === 'total_by_services' || fieldKey === 'total'
+                ? 'weight'
+                : 'default'
+            "
+          >
             {{ field }}
           </p>
           <p
