@@ -68,7 +68,7 @@
         </template>
       </div>
     </div>
-    <Popup
+    <!-- <Popup
       closeButton
       @close="closePopupForm"
       :options="{
@@ -79,13 +79,8 @@
       }"
       v-if="popupForm.isShow"
     >
-      <!--<Detail
-        class="cols-6"
-        :detail="options.detail"
-        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
-      />-->
       <router-view @closePopup="closePopupForm" />
-    </Popup>
+    </Popup> -->
   </div>
 </template>
 <style lang="scss" scoped src="./style.scss"></style>

@@ -167,16 +167,16 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: PaymentListView,
-    children: [
-      {
-        name: 'payment_list/:object',
-        path: ':object',
-        meta: {
-          label: 'Добавить начисление',
-        },
-        // component: Detail,
-      },
-    ],
+    // children: [
+    //   {
+    //     name: 'payment_list/:object',
+    //     path: ':object',
+    //     meta: {
+    //       label: 'Добавить начисление',
+    //     },
+    //     // component: Detail,
+    //   },
+    // ],
   },
   {
     path: '/personal_target',
