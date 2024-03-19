@@ -145,15 +145,17 @@ const routes = [
           label: 'Редактировать начисление',
         },
         component: Detail,
-      },
-      {
-        name: 'payment/:id',
-        path: ':id',
-        meta: {
-          mode: ['edit'],
-          label: 'Редактировать начисление',
-        },
-        component: Detail,
+        children: [
+          {
+            name: 'payment/:id/output',
+            path: 'output',
+            meta: {
+              mode: ['add-edit-logistic', 'output'],
+              label: 'Редактировать начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
     ],
   },
@@ -777,6 +779,12 @@ const routes = [
     component: TestView,
   },
 ]
+
+// Добавил фикс для варнингов - причина не известна, решение: https://stackoverflow.com/questions/62462276/how-to-solve-avoided-redundant-navigation-to-current-location-error-in-vue
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err)
+}
 
 const router = new VueRouter({
   mode: 'history',

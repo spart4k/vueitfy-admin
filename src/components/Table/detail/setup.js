@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router/composables'
 
 import FormDefault from '@/components/Form/default/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
+import FormOutputCorrect from '@/components/Form/output/correct/index.vue'
 import TableDefault from '@/components/Table/default/index.vue'
 import FrameView from '@/components/Task/frame-view/index.vue'
 
@@ -16,6 +17,7 @@ export default {
     TableDefault,
     FormStage,
     FrameView,
+    FormOutputCorrect,
   },
   props: {
     content: {
@@ -23,6 +25,10 @@ export default {
       default: () => {},
     },
     detail: {
+      type: Object,
+      default: () => {},
+    },
+    formDataParent: {
       type: Object,
       default: () => {},
     },

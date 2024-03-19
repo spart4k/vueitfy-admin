@@ -226,8 +226,10 @@ $borderColor: rgba(0, 0, 0, 0.3);
   &-input {
     &--is {
       &-readonly {
-        opacity: 0.5;
-        pointer-events: none;
+        .v-input__control {
+          opacity: 0.5;
+          pointer-events: none;
+        }
       }
     }
   }
