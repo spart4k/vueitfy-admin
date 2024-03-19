@@ -5,13 +5,34 @@
         <v-expansion-panel-header class="type-expension-head">
           <div class="personal-head">
             <div class="type-head-info">
-              <span>Выработка1</span>
+              <span>Сумма по выработке</span>
             </div>
             <div class="type-head-panel"></div>
           </div>
+          <template v-slot:actions>
+            <v-progress-circular
+              v-if="loading"
+              color="primary"
+              :size="28"
+              indeterminate
+            />
+          </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          Отсутствует
+          <template v-if="!loading && objects && objects.length">
+            <Row
+              v-for="item in objects"
+              :key="item"
+              :period="period"
+              :personalId="personalId"
+              :object="object"
+              :row="item"
+            />
+          </template>
+          <template v-else>
+            <div class="empty">Отсутствует</div>
+          </template>
+
           <!-- <v-expansion-panels v-for="item in 10" :key="item">
             <v-expansion-panel>
               <v-expansion-panel-header class="type-expension-head">

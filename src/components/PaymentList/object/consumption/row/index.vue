@@ -5,16 +5,15 @@
         <v-expansion-panel-header class="type-expension-head">
           <div class="type-head">
             <div class="type-head-info">
-              <span :class="isOpen && 'font-weight-medium'">{{
-                row.vid_vedomost_name
-              }}</span>
-              <v-chip
-                class="type-head-info__total mr-2"
-                color="green"
-                variant="flat"
-              >
-                {{ row.sum }}р
-              </v-chip>
+              <v-row class="type-head">
+                <v-col cols="12" sm="5">{{ row.category_name }}</v-col>
+                <v-col cols="12" sm="2">{{ row.qty }}</v-col>
+                <v-col cols="12" sm="2">{{ row.price }}</v-col>
+                <v-col class="red--text text-right" cols="12" sm="3">{{
+                  row.sum
+                }}</v-col>
+              </v-row>
+              <!-- <span>{{ row.service_name }}</span> -->
             </div>
             <div class="type-head-panel"></div>
           </div>
@@ -28,16 +27,21 @@
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <template v-if="!loading && objects && objects.length">
+          <template v-if="objects && !objects.length">
+            <div class="empty">Отсутствует</div>
+          </template>
+          <template v-else>
             <v-row v-for="row in objects" class="justify-space-between">
-              <span>{{ convertData(row.date_target) }}</span>
-              <span class="text-right">{{ row.sum }}р</span>
+              <v-row class="type-head">
+                <v-col cols="12" sm="6">{{ row.rashod_vid_name }}</v-col>
+                <v-col cols="12" sm="3">{{ row.count }}</v-col>
+                <v-col class="red--text text-right pr-8" cols="12" sm="3">{{
+                  row.sum
+                }}</v-col>
+              </v-row>
               <!-- <span>{{ item.sum }}</span> -->
               <!-- asdads -->
             </v-row>
-          </template>
-          <template v-else>
-            <div class="empty">Отсутствует</div>
           </template>
         </v-expansion-panel-content>
       </v-expansion-panel>

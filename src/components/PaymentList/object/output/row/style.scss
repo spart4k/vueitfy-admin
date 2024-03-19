@@ -1,21 +1,33 @@
 .type {
   background-color: #fff;
-  // margin-bottom: 14px;
+  margin-bottom: 2px;
   &-wrap {
   }
   &-expension {
     &-head {
-      padding: 0 12px !important;
+      padding: 0;
+      padding-inline: 10px;
     }
   }
   &-head {
     display: flex;
-    // padding: 7px;
+    width: 100%;
+
+    // margin-bottom: 10px;
+    > div {
+      transition: 0.2s;
+    }
     &-info {
       display: flex;
       align-items: center;
-      font-size: 14px;
+      width: 100%;
+      // font-weight: 500;
+      font-size: 12px;
     }
+  }
+  &-date {
+    font-size: 14px;
+    color: #90a0b7;
   }
 }
 
@@ -86,15 +98,9 @@
     margin-top: 6px;
   }
   &-content {
-    padding: 0 40px 10px 40px;
-    margin-top: 10px;
+    padding: 0 30px 20px 10px;
+    margin-top: 5px;
     color: var(--v-text-base);
+    font-size: 12px;
   }
-}
-
-.empty {
-  font-size: 16px;
-  width: 100%;
-  text-align: center;
-  color: var(--v-text-base);
 }

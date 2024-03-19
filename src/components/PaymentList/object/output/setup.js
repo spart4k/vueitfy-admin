@@ -13,6 +13,7 @@ import InfoOutput from '../output/index.vue'
 import InfoOverpayment from '../overpayment/default/index.vue'
 import InfoConsumption from '../consumption/index.vue'
 import Total from '../../total/index.vue'
+import Row from './row/index.vue'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -23,6 +24,7 @@ const table = {
     InfoOverpayment,
     InfoConsumption,
     Total,
+    Row,
     //vTableButton,
     //vButton,
     //vInput,
@@ -65,30 +67,47 @@ const table = {
     }
     const total = ref({})
     const isOpen = ref(false)
-    const objects = ref([])
+    const objects = ref(null)
     const isOpenObject = ref(false)
-    const { makeRequest } = useRequest({
+    const { makeRequest, loading } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
           url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/services`,
         }),
     })
+    let touched = false
+    const getObjects = async () => {
+      console.log(objects.value)
+      if (objects.value !== null) return
+      touched = true
+      isOpen.value = undefined
+      if (loading.value) {
+        return
+      } else {
+        try {
+          const { result } = await makeRequest()
+          if (result) {
+            objects.value = result
+            total.value = result
+            isOpen.value = 0
+            console.log('getItems')
+          }
+        } catch (err) {
+          console.log(err)
+        }
+        loading.value = false
+        // Vue.set(type, 'content', {})
+        // type.content = responseData.result
+        // Vue.set(type.content, 'edit', false)
+        // type.content.code = responseData.code
+        // detailPanels.value.push(index)
+      }
+    }
     watch(
       () => isOpen.value,
-      async (newVal) => {
-        if (newVal === 0) {
-          try {
-            const { result } = await makeRequest()
-            if (result) {
-              objects.value = result
-              total.value = result
-              // console.log('getItems')
-            }
-          } catch (err) {
-            console.log(err)
-          }
-        }
+      async () => {
+        await getObjects()
       }
     )
     return {

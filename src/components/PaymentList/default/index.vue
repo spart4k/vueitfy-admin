@@ -30,7 +30,7 @@
             </v-btn> -->
             <!-- buttons -->
           </div>
-          <div class="v-table-panel-items__search">
+          <div v-if="false" class="v-table-panel-items__search">
             <v-text-field
               label="Поиск"
               hide-details="auto"
@@ -42,12 +42,29 @@
       </div>
 
       <div class="v-table-wrap">
-        <Row
-          v-for="row in rows"
-          :row="row"
-          :period="currentDate.date"
-          :key="row.personal_id"
-        />
+        <template v-if="loading">
+          <div
+            class="v-table-loading text-center d-flex align-center justify-center flex-grow-1"
+          >
+            <v-progress-circular color="primary" :size="80" indeterminate />
+          </div>
+        </template>
+        <template v-else>
+          <div
+            v-if="!rows.length"
+            class="v-table-loading text-center d-flex align-center justify-center flex-grow-1"
+          >
+            <div class="">Отсутствует</div>
+          </div>
+          <template v-else>
+            <Row
+              v-for="row in rows"
+              :row="row"
+              :period="currentDate.date"
+              :key="row.personal_id"
+            />
+          </template>
+        </template>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@ import useRequest from '@/compositions/useRequest'
 import vContextmenu from '@/components/Contextmenu/default/index.vue'
 import Sheet from '@/components/Sheet/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
+import SwitchDefault from '@/components/Switch/default/index.vue'
 
 //import vTableButton from '../button/index.js'
 //import vButton from '../../button/index.js'
@@ -37,6 +38,7 @@ const table = {
     TableFilter,
     Popup,
     Detail,
+    SwitchDefault,
   },
   props: {
     options: {
@@ -642,15 +644,20 @@ const table = {
         const link = document.createElement('a')
         link.download = path.url
         link.setAttribute('target', '_blank')
-
+        console.log(process.env.VUE_APP_STORE)
         link.href = process.env.VUE_APP_STORE + path.url
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
         getItems()
       }
+      console.log(button)
+      if (button.refreshTable) {
+        getItems()
+      }
       if (button.function) button.function()
     }
+
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -832,6 +839,11 @@ const table = {
       emit('closePopup', action.to)
     }
 
+    const changeHeaders = async () => {
+      initHeadParams()
+      await getItems()
+    }
+
     return {
       // DATA
       headerOptions,
@@ -889,7 +901,7 @@ const table = {
       clickHandler,
       insertStyle,
       contextMenuRef,
-      // changeHeaders,
+      changeHeaders,
     }
   },
 }

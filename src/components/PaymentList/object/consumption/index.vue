@@ -9,9 +9,30 @@
             </div>
             <div class="type-head-panel"></div>
           </div>
+          <template v-slot:actions>
+            <v-progress-circular
+              v-if="loading"
+              color="primary"
+              :size="20"
+              indeterminate
+            />
+          </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-expansion-panels v-for="item in objects" :key="item">
+          <template v-if="objects && !objects.length">
+            <div class="empty">Отсутствует</div>
+          </template>
+          <template v-else>
+            <Row
+              v-for="item in objects"
+              :key="item"
+              :period="period"
+              :personalId="personalId"
+              :object="object"
+              :row="item"
+            />
+          </template>
+          <!-- <v-expansion-panels v-for="item in objects" :key="item">
             <v-expansion-panel>
               <v-expansion-panel-header class="type-expension-head">
                 <v-row class="type-head">
@@ -30,7 +51,7 @@
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
-          </v-expansion-panels>
+          </v-expansion-panels> -->
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>

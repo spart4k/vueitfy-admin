@@ -759,6 +759,7 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
+    console.log(params)
     queueMicrotask(async () => {
       await getDependies(params)
     })
@@ -1041,17 +1042,27 @@ export default function ({
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
-          const findedDep = targetField.dependence.find(
-            (depTarget) => depTarget.type === 'update'
-          )
+          // const findedDep = targetField.dependence.find(
+          //   (depTarget) => depTarget.type === 'update'
+          // )
           targetField.objectData = []
           if (targetField.hasOwnProperty('defaultObjectData')) {
-            targetField.objectData = [...targetField.defaultObjectData]
+            console.log(targetField.defaultObjectData)
+            // targetField.objectData = targetField.objectData.concat(
+            //   targetField.defaultObjectData
+            // )
+            // targetField.objectData.
+            targetField.defaultObjectData.forEach((el) =>
+              targetField.objectData.push(el)
+            )
             // findedDep.fields.forEach((el) => (formData[el] = ))
           }
           if (data.length) {
-            targetField.objectData = [...data, targetField.objectData]
+            targetField.objectData = [...data, ...targetField.objectData]
           } else {
+            const findedDep = targetField.dependence.find(
+              (depTarget) => depTarget.type === 'update'
+            )
             findedDep.fields.forEach((el) => (formData[el] = ''))
           }
         }
@@ -1106,13 +1117,11 @@ export default function ({
       if (dependence.type === 'update') {
         // dependence
         if (field.hasOwnProperty('objectData')) {
-          if (field.hasOwnProperty('defaultObjectData')) {
-            field.objectData = [...field.defaultObjectData]
-          }
           if (field.objectData?.length) {
             const findedEl = field.objectData?.find((el) => el.id === value)
             if (findedEl) {
               dependence.fields.forEach((el) => {
+                console.log(formData[el], findedEl)
                 formData[el] = findedEl[el]
               })
             }
@@ -1122,6 +1131,7 @@ export default function ({
             })
           }
         }
+
         if (
           formData[field.name] === '' ||
           formData[field.name] === null ||

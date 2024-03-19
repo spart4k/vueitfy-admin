@@ -1,5 +1,5 @@
 <template>
-  <div class="total mt-3">
+  <div class="total">
     <v-row>
       <v-col cols="12" sm="5">
         <p class="weight">Подытог:</p>
@@ -9,20 +9,51 @@
           v-for="(field, fieldKey) in fields"
           class="justify-space-between"
         >
-          <p :class="fieldKey === 'total_by_services' ? 'weight' : 'default'">
+          <p
+            :class="
+              fieldKey === 'total_by_services' || fieldKey === 'total'
+                ? 'weight'
+                : 'default'
+            "
+          >
             {{ field }}
           </p>
           <p
             :class="
-              ['total_coefficient', 'total_by_services'].includes(fieldKey)
+              ['total_coefficient', 'total_by_services'].includes(fieldKey) &&
+              info[fieldKey] !== 0
                 ? 'green--text'
-                : fieldKey !== 'total'
+                : fieldKey !== 'total' && info[fieldKey] !== 0
                 ? 'red--text'
                 : ''
             "
             v-if="!loading"
           >
-            {{ info[fieldKey] }}
+            <span
+              v-if="
+                ['total_coefficient', 'total_by_services'].includes(fieldKey) &&
+                info[fieldKey] !== 0 &&
+                fieldKey !== 'total'
+              "
+              >+</span
+            >
+            <span
+              v-else-if="
+                ['total_hold', 'total_debit'].includes(fieldKey) &&
+                info[fieldKey] !== 0 &&
+                fieldKey !== 'total'
+              "
+              >-</span
+            ><span
+              :class="
+                fieldKey === 'total' && info[fieldKey] > 0
+                  ? 'green--text'
+                  : fieldKey === 'total' && info[fieldKey] < 0
+                  ? 'red--text'
+                  : ''
+              "
+              >{{ info[fieldKey] }}</span
+            >
           </p>
           <template v-else>
             <div v-for="loading in 1" :key="loading" class="form-row-loading">
