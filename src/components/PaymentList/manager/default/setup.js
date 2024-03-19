@@ -20,7 +20,7 @@ const table = {
     personal,
   },
   props: {
-    row: {
+    manager: {
       type: Object,
       default: () => {},
       require: true,
@@ -54,7 +54,7 @@ const table = {
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.row.personal_id}`,
+          url: `payment_list/personals/${props.period}/${props.manager.personal_id}`,
         }),
     })
     const getObjects = async () => {
@@ -85,8 +85,8 @@ const table = {
     watch(
       () => isOpen.value,
       async (newVal) => {
-        console.log(newVal + '_' + props.row.personal_id)
-        await getObjects()
+        // console.log(newVal + '_' + props.row.personal_id)
+        // await getObjects()
       }
     )
     return {

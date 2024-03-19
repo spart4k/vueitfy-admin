@@ -35,21 +35,14 @@
             </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <template v-if="!loading">
-              <Object
-                v-for="object in objects"
-                :key="object.id"
-                :object="object"
-                :personalId="row.personal_id"
-                :period="period"
-                :showTotal="objects.length > 1"
-              />
-            </template>
-            <template v-else>
-              <div v-for="loading in 1" :key="loading" class="form-row-loading">
-                <div class="form-row-loading-wrap gradient"></div>
-              </div>
-            </template>
+            <Object
+              v-for="object in objects"
+              :key="object.id"
+              :object="object"
+              :personalId="row.personal_id"
+              :period="period"
+              :showTotal="objects.length > 1"
+            />
 
             <Total :loading="loading" :info="total" />
           </v-expansion-panel-content>

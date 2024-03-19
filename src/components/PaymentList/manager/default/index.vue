@@ -10,7 +10,7 @@
                   @click="(event) => event.stopPropagation()"
                   class=""
                 ></v-checkbox>
-                <span>Manager</span>
+                <span>{{ manager.account_name }}</span>
               </div>
               <div class="personal-head-panel"></div>
             </div>
@@ -35,13 +35,16 @@
             </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <personal
+            <!-- <personal
               v-for="row in rows"
               :row="row"
               :period="period"
               :key="row.personal_id"
-            />
+            /> -->
             <!-- <p v-for="item in 50" :key="item">Линейщик 1</p> -->
+            <div v-for="row in rows" :key="row.personal_id" class="personal">
+              <span> {{ row.personal_name }} </span>
+            </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>

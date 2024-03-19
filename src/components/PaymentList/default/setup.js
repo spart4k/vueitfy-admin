@@ -98,12 +98,28 @@ const table = {
           },
         }),
     })
+    const managers = ref([])
+    const fakeInitManager = () => {
+      const grishov = {
+        account_name: 'Гришов Павел',
+        account_id: null,
+        personals: rows.value,
+      }
+      const zavelka = {
+        account_name: 'Завелка Саша',
+        account_id: null,
+        personals: rows.value,
+      }
+      managers.value.push(grishov)
+      managers.value.push(zavelka)
+    }
     const getItems = async () => {
       try {
         const { result } = await makeRequest()
         if (result) {
           // rows.value = result.splice(0, 10)
           rows.value = result
+          fakeInitManager()
           console.log('getItems')
         }
       } catch (err) {
@@ -119,6 +135,7 @@ const table = {
       getItems,
       rows,
       loading,
+      managers,
     }
   },
 }

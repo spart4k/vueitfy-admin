@@ -63,7 +63,12 @@
               :period="currentDate.date"
               :key="row.personal_id"
             /> -->
-            <Manager :rows="rows" :period="currentDate.date" />
+            <Manager
+              v-for="manager in managers"
+              :manager="manager"
+              :rows="manager.personals"
+              :period="currentDate.date"
+            />
           </template>
         </template>
       </div>
