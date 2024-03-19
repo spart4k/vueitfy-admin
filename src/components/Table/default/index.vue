@@ -10,7 +10,6 @@
           <div
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
-            @click="panelHandler(button)"
             :class="`panel-button_${button.label}`"
             small
           >
