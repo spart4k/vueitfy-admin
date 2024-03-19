@@ -57,16 +57,35 @@
             <div class="">Отсутствует</div>
           </div>
           <template v-else>
-            <Row
+            <!-- <Row
               v-for="row in rows"
               :row="row"
               :period="currentDate.date"
               :key="row.personal_id"
-            />
+            /> -->
+            <Manager :rows="rows" :period="currentDate.date" />
           </template>
         </template>
       </div>
     </div>
+    <Popup
+      closeButton
+      @close="closePopupForm"
+      :options="{
+        width: options.detail.width,
+        portal: `table-detail${
+          options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
+        }`,
+      }"
+      v-if="popupForm.isShow"
+    >
+      <!--<Detail
+        class="cols-6"
+        :detail="options.detail"
+        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
+      />-->
+      <router-view @closePopup="closePopupForm" />
+    </Popup>
   </div>
 </template>
 <style lang="scss" scoped src="./style.scss"></style>

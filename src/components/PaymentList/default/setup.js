@@ -3,11 +3,13 @@
 import Vue, { onMounted, ref, computed, watch, nextTick, provide } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
-import Row from '../row/index.vue'
+import Row from '../personal/index.vue'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import moment from 'moment'
+import Manager from '../manager/default/index.vue'
+import Popup from '@/components/Popup/index.vue'
 
 //import { tableApi } from '@/api'
 
@@ -18,6 +20,8 @@ const table = {
     //vButton,
     //vInput,
     Row,
+    Manager,
+    Popup,
   },
   props: {
     options: {
@@ -65,6 +69,7 @@ const table = {
       year: new Date().getFullYear(),
       date: moment(new Date()).format('YYYY-MM'),
     })
+    provide('period', currentDate.value.date)
     const rows = ref([])
     const acceptData = ref({
       popup: false,
@@ -81,7 +86,6 @@ const table = {
       // countingDistances()
       // }, 0)
       // addDayOfMonth()
-      provide('period', currentDate.date)
       await getItems()
     }
     const { makeRequest, loading } = useRequest({

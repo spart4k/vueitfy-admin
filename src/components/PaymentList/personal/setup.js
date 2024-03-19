@@ -3,7 +3,7 @@
 import Vue, { onMounted, ref, computed, watch, inject, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
-import Row from '../row/index.vue'
+import Row from './index.vue'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
@@ -55,7 +55,7 @@ const table = {
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.row.personal_id}`,
+          url: `payment_list/personals/${period}/${props.row.personal_id}`,
         }),
     })
     const getObjects = async () => {
