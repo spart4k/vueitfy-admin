@@ -731,6 +731,7 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
+    console.log(params)
     queueMicrotask(async () => {
       await getDependies(params)
     })
@@ -1012,8 +1013,23 @@ export default function ({
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
+          // const findedDep = targetField.dependence.find(
+          //   (depTarget) => depTarget.type === 'update'
+          // )
+          targetField.objectData = []
+          if (targetField.hasOwnProperty('defaultObjectData')) {
+            console.log(targetField.defaultObjectData)
+            // targetField.objectData = targetField.objectData.concat(
+            //   targetField.defaultObjectData
+            // )
+            // targetField.objectData.
+            targetField.defaultObjectData.forEach((el) =>
+              targetField.objectData.push(el)
+            )
+            // findedDep.fields.forEach((el) => (formData[el] = ))
+          }
           if (data.length) {
-            targetField.objectData = data
+            targetField.objectData = [...data, ...targetField.objectData]
           } else {
             const findedDep = targetField.dependence.find(
               (depTarget) => depTarget.type === 'update'
@@ -1077,6 +1093,7 @@ export default function ({
             const findedEl = field.objectData?.find((el) => el.id === value)
             if (findedEl) {
               dependence.fields.forEach((el) => {
+                console.log(formData[el], findedEl)
                 formData[el] = findedEl[el]
               })
             }
