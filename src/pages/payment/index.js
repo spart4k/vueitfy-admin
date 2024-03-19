@@ -4123,12 +4123,23 @@ const config = {
               cols: 12,
               sm: 4,
             },
-            objectData: undefined,
+            defaultObjectData: [
+              {
+                id: 11,
+                name: '--Наличные--',
+                bank_id: 11,
+                invoice: '',
+                fio: '',
+              },
+            ],
+            objectData: [],
             defaultItems: [
               {
                 id: 11,
                 name: '--Наличные--',
                 bank_id: 11,
+                invoice: '',
+                fio: '',
               },
             ],
             validations: { required },
