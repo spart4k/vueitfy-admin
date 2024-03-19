@@ -68,24 +68,29 @@
               :manager="manager"
               :rows="manager.personals"
               :period="currentDate.date"
+              @openPersonal="openPersonal"
             />
           </template>
         </template>
       </div>
     </div>
-    <!-- <Popup
+    <Popup
       closeButton
       @close="closePopupForm"
       :options="{
-        width: options.detail.width,
+        width: '600px',
         portal: `table-detail${
           options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
         }`,
       }"
       v-if="popupForm.isShow"
     >
-      <router-view @closePopup="closePopupForm" />
-    </Popup> -->
+      <router-view
+        :period="period"
+        :row="activePerson"
+        @closePopup="closePopupForm"
+      />
+    </Popup>
   </div>
 </template>
 <style lang="scss" scoped src="./style.scss"></style>

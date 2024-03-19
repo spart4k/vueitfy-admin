@@ -57,6 +57,7 @@ const table = {
           url: `payment_list/personals/${props.period}/${props.manager.personal_id}`,
         }),
     })
+
     const getObjects = async () => {
       if (objects.value !== null) return
       isOpen.value = undefined
@@ -82,6 +83,9 @@ const table = {
         // detailPanels.value.push(index)
       }
     }
+    const openPersonal = (row) => {
+      emit('openPersonal', row)
+    }
     watch(
       () => isOpen.value,
       async (newVal) => {
@@ -94,6 +98,7 @@ const table = {
       objects,
       total,
       loading,
+      openPersonal,
     }
   },
 }

@@ -98,6 +98,9 @@ const table = {
           },
         }),
     })
+    const popupForm = ref({
+      isShow: false,
+    })
     const managers = ref([])
     const fakeInitManager = () => {
       const grishov = {
@@ -126,6 +129,18 @@ const table = {
         console.log(err)
       }
     }
+    const openPersonal = (row) => {
+      console.log('row', row)
+      popupForm.value.isShow = true
+      activePerson.value = row
+      router.push({
+        path: `/payment_list/${row.personal_id}`,
+      })
+    }
+    const closePopupForm = () => {
+      popupForm.value.isShow = false
+    }
+    const activePerson = ref({})
     onMounted(() => {
       getItems()
     })
@@ -136,6 +151,11 @@ const table = {
       rows,
       loading,
       managers,
+      openPersonal,
+      popupForm,
+      closePopupForm,
+      activePerson,
+      period: currentDate.value.date,
     }
   },
 }

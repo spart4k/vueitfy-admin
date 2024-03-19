@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PaymentView from '../views/PaymentView.vue'
 import PaymentListView from '../views/PaymentListView.vue'
+import PaymentListPersonalView from '../components/PaymentList/personal/index.vue'
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
 import X5importView from '../views/X5importView.vue'
@@ -167,16 +168,16 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: PaymentListView,
-    // children: [
-    //   {
-    //     name: 'payment_list/:object',
-    //     path: ':object',
-    //     meta: {
-    //       label: 'Добавить начисление',
-    //     },
-    //     // component: Detail,
-    //   },
-    // ],
+    children: [
+      {
+        name: 'payment_list/:object',
+        path: ':object',
+        meta: {
+          label: 'Добавить начисление',
+        },
+        component: PaymentListPersonalView,
+      },
+    ],
   },
   {
     path: '/personal_target',

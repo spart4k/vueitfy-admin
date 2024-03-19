@@ -55,33 +55,27 @@ const table = {
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${period}/${props.row.personal_id}`,
+          url: `payment_list/personals/${props.period}/${props.row.personal_id}`,
         }),
     })
     const getObjects = async () => {
-      if (objects.value !== null) return
-      isOpen.value = undefined
-      if (loading.value) {
-        return
-      } else {
-        try {
-          const { result } = await makeRequest()
-          if (result) {
-            objects.value = result.objects
-            total.value = result
-            isOpen.value = 0
-            console.log('getItems')
-          }
-        } catch (err) {
-          console.log(err)
+      try {
+        const { result } = await makeRequest()
+        if (result) {
+          objects.value = result.objects
+          total.value = result
+          isOpen.value = 0
+          console.log('getItems')
         }
-        loading.value = false
-        // Vue.set(type, 'content', {})
-        // type.content = responseData.result
-        // Vue.set(type.content, 'edit', false)
-        // type.content.code = responseData.code
-        // detailPanels.value.push(index)
+      } catch (err) {
+        console.log(err)
       }
+      loading.value = false
+      // Vue.set(type, 'content', {})
+      // type.content = responseData.result
+      // Vue.set(type.content, 'edit', false)
+      // type.content.code = responseData.code
+      // detailPanels.value.push(index)
     }
     watch(
       () => isOpen.value,
@@ -90,6 +84,9 @@ const table = {
         await getObjects()
       }
     )
+    onMounted(() => {
+      getObjects()
+    })
     return {
       isOpen,
       objects,

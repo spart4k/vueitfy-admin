@@ -42,7 +42,12 @@
               :key="row.personal_id"
             /> -->
             <!-- <p v-for="item in 50" :key="item">Линейщик 1</p> -->
-            <div v-for="row in rows" :key="row.personal_id" class="personal">
+            <div
+              @dblclick="openPersonal(row)"
+              v-for="row in rows"
+              :key="row.personal_id"
+              class="personal"
+            >
               <span> {{ row.personal_name }} </span>
             </div>
           </v-expansion-panel-content>
