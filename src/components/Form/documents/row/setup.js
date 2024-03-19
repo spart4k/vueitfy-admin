@@ -1171,7 +1171,11 @@ export default {
       for (let key in docs_data) {
         const field = switchType(key)
         if (props.allFieldsRequireds) {
-          if (field.name === 'comment') return
+          if (
+            field.name === 'comment' ||
+            field.name === 'patent_special_marks_date'
+          )
+            field.validations = ''
           else {
             field.validations = { required }
           }
