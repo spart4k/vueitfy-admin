@@ -139,6 +139,7 @@ const table = {
     }
     const closePopupForm = () => {
       popupForm.value.isShow = false
+      router.back()
     }
     const activePerson = ref({})
     onMounted(() => {
