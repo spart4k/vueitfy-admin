@@ -679,7 +679,7 @@ export const editFields = [
       conditions: [
         {
           field: 'type',
-          value: [11],
+          value: [11, 12],
         },
         {
           field: 'direction_id',
