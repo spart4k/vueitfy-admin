@@ -92,7 +92,7 @@ const table = {
       context,
       request: () =>
         store.dispatch('form/getPaymentList', {
-          url: 'payment_list/personals',
+          url: 'payment_list/accounts',
           body: {
             period: currentDate.value.date,
           },
@@ -121,8 +121,8 @@ const table = {
         const { result } = await makeRequest()
         if (result) {
           // rows.value = result.splice(0, 10)
-          rows.value = result
-          fakeInitManager()
+          managers.value = result
+          // fakeInitManager()
           console.log('getItems')
         }
       } catch (err) {
