@@ -679,7 +679,7 @@ export const editFields = [
       conditions: [
         {
           field: 'type',
-          value: [11],
+          value: [11, 12],
         },
         {
           field: 'direction_id',
@@ -687,7 +687,7 @@ export const editFields = [
         },
         {
           field: 'doljnost_id',
-          value: [5, 7],
+          value: [5, 7, 8, 23, 33],
         },
       ],
     },
@@ -1675,7 +1675,7 @@ const config = {
                   conditions: [
                     {
                       field: 'type',
-                      value: [11],
+                      value: [11, 12],
                       source: 'form.formData[el.field]',
                     },
                     {
@@ -1685,7 +1685,7 @@ const config = {
                     },
                     {
                       field: 'doljnost_id',
-                      value: [5, 7],
+                      value: [5, 7, 8, 23, 33],
                       source: 'form.formData[el.field]',
                     },
                   ],
