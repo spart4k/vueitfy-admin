@@ -940,7 +940,7 @@ export default {
           result = dateField({
             label: switchLabel(key),
             name: key,
-            value: '',
+            value: null,
             type: 'date',
             //subtype: 'single',
             menu: false,
