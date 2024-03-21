@@ -226,7 +226,7 @@ const docForm = defineComponent({
         patent_region: loadedData.patent_region ? loadedData.patent_region : '',
         patent_special_marks_date: loadedData.patent_special_marks_date
           ? loadedData.patent_special_marks_date
-          : '',
+          : null,
       },
       16: {},
       17: { inn: loadedData.inn ? loadedData.inn : '' },
