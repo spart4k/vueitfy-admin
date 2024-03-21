@@ -7,6 +7,7 @@ import {
   datetimeField,
   dropZoneField,
   checkboxField,
+  colorPicker,
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -14,9 +15,9 @@ import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
-  path: 'edit',
   id: uuidv4(),
-  name: 'Переплаты',
+  path: 'edit',
+  name: 'Назначения',
   type: 'TableDefault',
   active: false,
   config: {
@@ -28,10 +29,23 @@ export default {
       },
       headerFixed: true,
       //url: 'https://dummyjson.com/users',
-      url: 'get/pagination/hold_payments',
-      urlDetail: 'personal_id',
-      alias: 'hp.personal_id',
+      url: 'get/pagination/object_target',
+      urlDetail: 'id',
+      alias: 'ot.object_id',
       title: 'This is an about page1',
+      styleRow: [
+        {
+          targetKey: 'is_active',
+          result: {
+            1: {
+              backgroundColor: 'green',
+            },
+            0: {
+              backgroundColor: 'unset',
+            },
+          },
+        },
+      ],
     },
     panel: {
       buttons: [
@@ -42,17 +56,26 @@ export default {
           function: null,
           backgroundColor: '#ffffff',
         },
+        //{
+        //  label: 'Добавить',
+        //  class: ['v-table-button--custom'],
+        //  url: '$IconSetting',
+        //  function: consolePanel,
+        //  backgroundColor: '#fff',
+        //},
+        // {
+        //   label: 'Скачать',
+        //   class: ['v-table-button--custom'],
+        //   function: consolePanel,
+        //   backgroundColor: '#fff',
+        // },
       ],
     },
     head: [
       {
-        title: 'id',
+        title: 'Сотрудник',
         type: 'default',
         align: 'center',
-        fixed: {
-          value: false,
-          position: 'left',
-        },
         sorts: [
           {
             type: 'string',
@@ -61,23 +84,40 @@ export default {
             isShow: false,
           },
         ],
-        alias: 'hp.id',
+        alias: 'sa.name',
         isShow: true,
         width: '40',
-        value: 'id',
+        value: 'account_name',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'В/В',
+        title: 'Направление',
         type: 'default',
         align: 'center',
-        fixed: {
-          value: false,
-          position: undefined,
+        sorts: [
+          {
+            type: 'string',
+            default: '',
+            value: '',
+            isShow: false,
+          },
+        ],
+        alias: 'd.name',
+        isShow: true,
+        width: '40',
+        value: 'direction_name',
+        search: {
+          field: '',
+          isShow: true,
         },
+      },
+      {
+        title: 'Должность',
+        type: 'default',
+        align: 'center',
         sorts: [
           {
             type: 'string',
@@ -88,21 +128,17 @@ export default {
         ],
         isShow: true,
         width: '150',
-        value: 'vid_vedomost',
-        alias: 'vv.name',
+        value: 'permission_name',
+        alias: 'sp.name',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Остаток',
+        title: 'Д назнач',
         type: 'default',
         align: 'center',
-        fixed: {
-          value: false,
-          position: 'left',
-        },
         sorts: [
           {
             type: 'string',
@@ -113,46 +149,17 @@ export default {
         ],
         isShow: true,
         width: '90',
-        alias: 'hp.remainder',
-        value: 'remainder',
+        alias: 'ot.date_target_start',
+        value: 'date_target_start',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Сумма',
+        title: 'Д оконч',
         type: 'default',
         align: 'center',
-        fixed: {
-          value: false,
-          position: undefined,
-        },
-        sorts: [
-          {
-            type: 'string',
-            default: '',
-            value: '',
-            isShow: false,
-          },
-        ],
-        isShow: true,
-        width: '150',
-        value: 'sum',
-        alias: 'hp.sum',
-        search: {
-          field: '',
-          isShow: true,
-        },
-      },
-      {
-        title: 'Дата назн',
-        type: 'default',
-        align: 'center',
-        fixed: {
-          value: false,
-          position: 'left',
-        },
         sorts: [
           {
             type: 'string',
@@ -163,8 +170,29 @@ export default {
         ],
         isShow: true,
         width: '90',
-        alias: 'hp.date_target',
-        value: 'date_target',
+        alias: 'ot.date_target_end',
+        value: 'date_target_end',
+        search: {
+          field: '',
+          isShow: true,
+        },
+      },
+      {
+        title: 'Назначил',
+        type: 'default',
+        align: 'center',
+        sorts: [
+          {
+            type: 'string',
+            default: '',
+            value: '',
+            isShow: false,
+          },
+        ],
+        isShow: true,
+        width: '90',
+        alias: 'sat.name',
+        value: 'target_name',
         search: {
           field: '',
           isShow: true,
@@ -184,21 +212,12 @@ export default {
       stringAction({
         text: 'Закрыть',
         type: 'submit',
-        color: 'textDefault',
+        color: 'text',
         name: 'closePopup',
         action: 'closePopup',
-        to: 'personal',
+        to: 'object',
         skipValidation: true,
       }),
-    ],
-  },
-  isShow: {
-    value: true,
-    condition: [
-      {
-        permissions: [16, 19],
-        type: false,
-      },
     ],
   },
 }

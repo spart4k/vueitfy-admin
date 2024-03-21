@@ -28,10 +28,10 @@ const config = {
           label: 'Перейти',
           action: {
             type: 'toRoute',
-            target: 'personal_id',
             url: 'personal',
-            routeName: 'payment/personal-edit',
+            routeName: 'payment-personal',
             routeParam: 'personal_id',
+            routeTarget: 'id',
           },
         },
       ],

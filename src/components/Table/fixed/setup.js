@@ -617,7 +617,7 @@ const table = {
     }
     const panelHandler = async (button) => {
       const { type, url } = button
-      if (button.function) button.function()
+      if (button.function) button.function(props.options)
       if (type === 'addItem') {
         addItem()
       } else if (type === 'importFile') {

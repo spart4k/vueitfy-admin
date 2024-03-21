@@ -27,23 +27,24 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { config } from '@/pages/personal/index'
+import { ref, computed, onMounted } from 'vue'
 import store from '@/store'
 import _ from 'lodash'
+import useView from '@/compositions/useView.js'
 
-import { stringAction } from '@/utils/actions'
+// import { stringAction } from '@/utils/actions'
+import { config as personalConfigOrig } from '@/pages/personal/index'
 import paymentConfigOrig from '@/pages/payment/index'
-import { zayavkaConfigOrig } from '@/pages/zayavka/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { initPaymentZayavka } from '@/utils/helpers.js'
+// import personalTabs from '@/pages/zayavka/index'
 
-//import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 
 export default {
   name: 'Personal-View',
   components: {
-    //TableDefault,
     //Layout,
   },
   methods: {
@@ -53,6 +54,15 @@ export default {
     },
   },
   setup() {
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+    } = useView()
+    const config = _.cloneDeep(personalConfigOrig)
+
     const activeTab = ref(0)
     const permission = computed(() => store.state.user.permission_id)
 
@@ -71,122 +81,36 @@ export default {
         }
       })
     })
+    console.log(availableTabs)
 
-    const paymentConfig = _.cloneDeep(paymentConfigOrig)
-    const zayavkaConfig = _.cloneDeep(zayavkaConfigOrig)
+    onMounted(() => {
+      const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+        paymentConfigOrig,
+        zayavkaConfigOrig
+      )
 
-    // const LIST_HEAD_PAYMENTS = [
-    //   'status_name',
-    //   'account_name',
-    //   'date_add',
-    //   'bank_fio',
-    //   'total',
-    // ]
-    // const LIST_PANEL_PAYMENTS = ['Обновить']
-    // const LIST_HEAD_ZAYAVKA = [
-    //   'status_name',
-    //   'category_name',
-    //   'schet',
-    //   'date_create',
-    //   'total',
-    //   'price',
-    // ]
+      configRouteConvert({
+        config: paymentConfig.config,
+        route: 'payment',
+        newPath: 'edit-payment',
+        settings: {
+          index: [0],
+        },
+      })
 
-    // paymentConfig.options = {
-    //   ...paymentConfig.options,
-    //   urlDetail: 'personal_id',
-    //   alias: 'pb.personal_id',
-    // }
+      configRouteConvert({
+        config: zayavkaConfig.config,
+        route: 'zayavka',
+        newPath: 'edit-zayavka',
+        settings: {
+          oldPath: 'id',
+        },
+      })
 
-    // zayavkaConfig.options = {
-    //   ...zayavkaConfig.options,
-    //   urlDetail: 'personal_id',
-    //   alias: 'z.personal_id',
-    // }
-
-    // const headDateCreate = {
-    //   title: 'Создано',
-    //   type: 'default',
-    //   align: 'center',
-    //   fixed: {
-    //     value: false,
-    //     position: 'left',
-    //   },
-    //   sorts: [
-    //     {
-    //       type: 'string',
-    //       default: '',
-    //       value: '',
-    //       isShow: false,
-    //     },
-    //   ],
-    //   alias: 'z.date_create',
-    //   isShow: true,
-    //   width: '40',
-    //   value: 'date_create',
-    //   search: {
-    //     field: '',
-    //     isShow: true,
-    //   },
-    // }
-    // zayavkaConfig.head.push(headDateCreate)
-
-    // const actions = [
-    //   stringAction({
-    //     text: 'Закрыть',
-    //     type: 'submit',
-    //     color: 'textDefault',
-    //     name: 'closePopup',
-    //     action: 'closePopup',
-    //     skipValidation: true,
-    //   }),
-    // ]
-
-    // const converConfig = (config, listHead, listPanel) => {
-    //   const spliceHeads = (list) => {
-    //     config.head = config.head.flatMap((head) => {
-    //       const { value } = head
-    //       if (list.includes(value)) {
-    //         return head
-    //       } else {
-    //         return []
-    //       }
-    //     })
-    //   }
-    //   const splicePanel = (list) => {
-    //     config.panel.buttons = config.panel.buttons.flatMap((button) => {
-    //       const { label } = button
-    //       if (list.includes(label)) {
-    //         return button
-    //       } else {
-    //         return []
-    //       }
-    //     })
-    //   }
-    //   if (config.filter) {
-    //     config.filter = undefined
-    //   }
-    //   config.actions = actions
-    //   spliceHeads(listHead)
-    //   splicePanel(listPanel)
-    // }
-
-    // // Convert payment view
-    // converConfig(paymentConfig, LIST_HEAD_PAYMENTS, LIST_PANEL_PAYMENTS)
-    // converConfig(zayavkaConfig, LIST_HEAD_ZAYAVKA, LIST_PANEL_PAYMENTS)
-    // paymentConfig.detail.requestId = 'payment'
-    // paymentConfig.detail.tabs[0].path = 'edit-payment'
-    // paymentConfig.detail.tabs[0].routeParam = 'payment'
-    // paymentConfig.detail.tabs[0].id = 15
-
-    // // Convert zayavka view
-    // zayavkaConfig.detail.requestId = 'zayavka'
-    // const editTabZayavka = zayavkaConfig.detail.tabs.find(
-    //   (el) => el.path === 'id'
-    // )
-    // editTabZayavka.path = 'edit-zayavka'
-    // editTabZayavka.routeParam = 'edit-zayavka'
-
+      config.tabs[0].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+      config.tabs[1].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+      config.tabs[2].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    })
     return {
       config,
       activeTab,

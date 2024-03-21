@@ -31,6 +31,10 @@ Vue.downloadFile = function (val) {
   link.click()
   document.body.removeChild(link)
 }
+
+import TableDefault from '@/components/Table/default/index.vue'
+Vue.component('TableDefault', TableDefault)
+
 // Vue.use(VueCompositionApi)
 
 new Vue({

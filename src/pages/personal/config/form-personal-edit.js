@@ -12,7 +12,6 @@ import {
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
-import TableDefault from '@/components/Table/default/index.vue'
 
 const editFormPermissions = {
   // Бригадир(id = 13) - все readonly

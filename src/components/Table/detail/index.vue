@@ -29,7 +29,7 @@
       <v-tabs-items v-model="activeTab">
         <v-tab-item v-for="item in availableTabsAll" :key="item.id">
           <component
-            :content="porpsContent"
+            :content="propsContent"
             :loading="loading"
             :is="item.type"
             :tab="item"
@@ -44,8 +44,6 @@
           />
         </v-tab-item>
       </v-tabs-items>
-      <!--<TableDefault :options="detail.tabs[1].config"></TableDefault>-->
-      <!--{{ TableDefault }}-->
     </div>
   </div>
 </template>

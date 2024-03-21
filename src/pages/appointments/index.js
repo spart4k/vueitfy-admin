@@ -1,5 +1,4 @@
 import filters from './filters'
-// import TableDefault from '@/components/Table/default/index.vue'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'

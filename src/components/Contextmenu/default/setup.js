@@ -19,7 +19,7 @@ export default {
   methods: {
     handlerOutside(e) {
       const context = document.querySelector('.v-contextmenu')
-      if (context.contains(e.target)) {
+      if (context?.contains(e.target)) {
         // Clicked in box
         return
       } else {

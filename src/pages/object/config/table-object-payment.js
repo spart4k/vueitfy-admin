@@ -7,16 +7,17 @@ import {
   datetimeField,
   dropZoneField,
   checkboxField,
+  colorPicker,
   textBlock,
 } from '@/utils/fields.js'
+import filters from '../filters'
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
-  path: 'edit',
   id: uuidv4(),
-  name: 'Переплаты',
+  name: 'Расход',
   type: 'TableDefault',
   active: false,
   config: {
@@ -28,9 +29,9 @@ export default {
       },
       headerFixed: true,
       //url: 'https://dummyjson.com/users',
-      url: 'get/pagination/hold_payments',
+      url: 'get/pagination/payment',
       urlDetail: 'personal_id',
-      alias: 'hp.personal_id',
+      alias: 'p.personal_id',
       title: 'This is an about page1',
     },
     panel: {
@@ -42,15 +43,28 @@ export default {
           function: null,
           backgroundColor: '#ffffff',
         },
+        {
+          label: 'Добавить',
+          class: ['v-table-button--custom'],
+          url: '$IconSetting',
+          function: null,
+          backgroundColor: '#fff',
+        },
+        // {
+        //   label: 'Скачать',
+        //   class: ['v-table-button--custom'],
+        //   function: consolePanel,
+        //   backgroundColor: '#fff',
+        // },
       ],
     },
     head: [
       {
-        title: 'id',
+        title: 'ID',
         type: 'default',
         align: 'center',
         fixed: {
-          value: false,
+          value: true,
           position: 'left',
         },
         sorts: [
@@ -61,7 +75,7 @@ export default {
             isShow: false,
           },
         ],
-        alias: 'hp.id',
+        alias: 'p.id',
         isShow: true,
         width: '40',
         value: 'id',
@@ -71,7 +85,7 @@ export default {
         },
       },
       {
-        title: 'В/В',
+        title: 'Дата назн',
         type: 'default',
         align: 'center',
         fixed: {
@@ -80,7 +94,7 @@ export default {
         },
         sorts: [
           {
-            type: 'string',
+            type: 'number',
             default: '',
             value: '',
             isShow: false,
@@ -88,15 +102,15 @@ export default {
         ],
         isShow: true,
         width: '150',
-        value: 'vid_vedomost',
-        alias: 'vv.name',
+        value: 'date_target',
+        alias: 'p.date_target',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Остаток',
+        title: 'Линейщик',
         type: 'default',
         align: 'center',
         fixed: {
@@ -113,8 +127,83 @@ export default {
         ],
         isShow: true,
         width: '90',
-        alias: 'hp.remainder',
-        value: 'remainder',
+        alias: 'pers.name',
+        value: 'personal_name',
+        search: {
+          field: '',
+          isShow: true,
+        },
+      },
+      {
+        title: 'Объект',
+        type: 'default',
+        align: 'center',
+        fixed: {
+          value: false,
+          position: 'left',
+        },
+        sorts: [
+          {
+            type: 'string',
+            default: '',
+            value: '',
+            isShow: false,
+          },
+        ],
+        isShow: true,
+        width: '150',
+        alias: 'o.name',
+        value: 'object_name',
+        search: {
+          field: '',
+          isShow: true,
+        },
+      },
+      {
+        title: 'Часы',
+        type: 'default',
+        align: 'center',
+        fixed: {
+          value: false,
+          position: undefined,
+        },
+        sorts: [
+          {
+            type: 'number',
+            default: '',
+            value: '',
+            isShow: false,
+          },
+        ],
+        isShow: true,
+        width: '150',
+        value: 'hour',
+        alias: 'p.hour',
+        search: {
+          field: '',
+          isShow: true,
+        },
+      },
+      {
+        title: 'Должность',
+        type: 'default',
+        align: 'center',
+        fixed: {
+          value: false,
+          position: undefined,
+        },
+        sorts: [
+          {
+            type: 'date',
+            default: '',
+            value: '',
+            isShow: false,
+          },
+        ],
+        isShow: true,
+        width: '150',
+        alias: 'd.name',
+        value: 'doljnost_name',
         search: {
           field: '',
           isShow: true,
@@ -130,7 +219,7 @@ export default {
         },
         sorts: [
           {
-            type: 'string',
+            type: 'date',
             default: '',
             value: '',
             isShow: false,
@@ -138,37 +227,38 @@ export default {
         ],
         isShow: true,
         width: '150',
-        value: 'sum',
-        alias: 'hp.sum',
+        alias: 'p.total',
+        value: 'total',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Дата назн',
-        type: 'default',
+        title: 'Действия',
+        type: 'actions',
         align: 'center',
         fixed: {
           value: false,
-          position: 'left',
+          position: 'right',
         },
-        sorts: [
+        isShow: true,
+        width: '100',
+        value: 'actions',
+        actions: [
           {
-            type: 'string',
-            default: '',
-            value: '',
-            isShow: false,
+            type: 'button',
+            url: '$IconSetting',
+            function: null,
+            label: 'Редактировать',
+          },
+          {
+            type: 'button',
+            url: '$IconSetting',
+            function: null,
+            label: 'Удалить',
           },
         ],
-        isShow: true,
-        width: '90',
-        alias: 'hp.date_target',
-        value: 'date_target',
-        search: {
-          field: '',
-          isShow: true,
-        },
       },
     ],
     data: {
@@ -180,25 +270,6 @@ export default {
       footer: null,
     },
     detail: undefined,
-    actions: [
-      stringAction({
-        text: 'Закрыть',
-        type: 'submit',
-        color: 'textDefault',
-        name: 'closePopup',
-        action: 'closePopup',
-        to: 'personal',
-        skipValidation: true,
-      }),
-    ],
-  },
-  isShow: {
-    value: true,
-    condition: [
-      {
-        permissions: [16, 19],
-        type: false,
-      },
-    ],
+    filters,
   },
 }

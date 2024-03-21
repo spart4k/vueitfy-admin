@@ -12,7 +12,6 @@ import {
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
-import TableDefault from '@/components/Table/default/index.vue'
 
 function changeSort() {
   let btn = tablePersonalDebt.config.panel.buttons.find(
@@ -24,7 +23,7 @@ function changeSort() {
     heading.title = 'Объект'
     heading.alias = 'o.name'
     heading.value = 'object_name'
-    heading.routeName = 'pivot-edit-object'
+    heading.routeName = 'pivot-object'
     heading.routeParam = 'object_id'
     heading.type = 'download'
     tablePersonalDebt.config.options.url =
@@ -34,7 +33,7 @@ function changeSort() {
     heading.title = 'ФИО'
     heading.alias = 'p.name'
     heading.value = 'personal_name'
-    heading.routeName = 'pivot-edit-personal'
+    heading.routeName = 'pivot-personal'
     heading.routeParam = 'personal_id'
     heading.type = 'default'
     tablePersonalDebt.config.options.url =
@@ -46,7 +45,7 @@ const tablePersonalDebt = {
   path: 'edit',
   id: uuidv4(),
   name: 'Задолженность',
-  type: TableDefault,
+  type: 'TableDefault',
   active: false,
   config: {
     selector: '#mainTable',

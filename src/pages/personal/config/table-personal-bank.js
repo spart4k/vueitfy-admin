@@ -19,13 +19,12 @@ import {
   numeric,
 } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
-import TableDefault from '@/components/Table/default/index.vue'
 
 export default {
   path: 'edit',
   id: uuidv4(),
   name: 'Банковские карты',
-  type: TableDefault,
+  type: 'TableDefault',
   active: false,
   config: {
     selector: '#mainTable',

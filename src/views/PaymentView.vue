@@ -1,24 +1,26 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableDefault @changeheadershow="changeheadershow" :options="zxc" />
+    <TableDefault @changeheadershow="changeheadershow" :options="config" />
   </div>
   <!--</Layout>-->
 </template>
 
 <script>
-import { payment } from '@/pages'
-
-import TableDefault from '@/components/Table/default/index.vue'
-import { defaultForm as personalConfig } from '@/pages/personal/index'
 import _ from 'lodash'
 import { onMounted, ref } from 'vue'
+import useView from '@/compositions/useView.js'
+
+// import { payment } from '@/pages'
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { personalTabs as personalTabsOrig } from '@/pages/personal/index'
+import { initPaymentZayavka } from '@/utils/helpers.js'
 
 export default {
   name: 'Payment-View',
 
   components: {
-    TableDefault,
     //Layout,
   },
   methods: {
@@ -27,43 +29,54 @@ export default {
       headerEl.isShow = value
     },
   },
-  async mounted() {},
   setup() {
-    const zxc = payment
-    console.log('defaultForm', personalConfig)
-    // let paymentConfig = {}
-    // const loading = ref(false)
-    // const initConfig = () => {
-    //   // const changeActionTo = (array, key, oldPath, newPath) => {
-    //   //   console.log('changeActionTo')
-    //   //   array.forEach((tab) => {
-    //   //     if (tab.path === oldPath) {
-    //   //       tab.path = newPath
-    //   //     }
-    //   //     if (tab.actions) {
-    //   //       tab.actions.forEach((el) => {
-    //   //         if (el.action === 'closePopup') {
-    //   //           el.to = key
-    //   //         }
-    //   //       })
-    //   //     }
-    //   //   })
-    //   // }
-    //   // const personalConfigForms = _.cloneDeep(personalConfig)
-    //   console.log('payment', payment)
-    //   // paymentConfig = _.cloneDeep(payment)
-    //   // changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
-    //   // paymentConfig.detail.tabs.push(personalConfigForms)
-    //   // loading.value = true
-    // }
-    onMounted(() => {
-      // initConfig()
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+    } = useView()
+    const config = _.cloneDeep(paymentConfigOrig)
+    const personalTabs = _.cloneDeep(personalTabsOrig)
+
+    const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+      paymentConfigOrig,
+      zayavkaConfigOrig
+    )
+
+    configRouteConvert({
+      config: paymentConfig.config,
+      route: 'payment',
+      newPath: 'personal-payment',
+      settings: {
+        index: [0],
+      },
     })
+
+    configRouteConvert({
+      config: zayavkaConfig.config,
+      route: 'zayavka',
+      newPath: 'personal-zayavka',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+
+    personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    config.detail.tabs.push(...personalTabs)
+    configRouteConvert({
+      config: config,
+      newPath: 'personal',
+      // route: 'personal_id',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+
+    onMounted(() => {})
     return {
-      // loading,
-      // paymentConfig,
-      zxc,
-      payment,
+      config,
     }
   },
 }

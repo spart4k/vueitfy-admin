@@ -13,7 +13,6 @@ import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
-import TableDefault from '@/components/Table/default/index.vue'
 import { documents, userKeys } from '@/pages'
 import { ref } from 'vue'
 import _, { functionsIn } from 'lodash'
@@ -1081,7 +1080,7 @@ const defaultForm = [
   {
     id: 1,
     name: 'Расход',
-    type: TableDefault,
+    type: 'TableDefault',
     active: false,
     config: consumptionConfig,
   },
@@ -1249,14 +1248,14 @@ const defaultForm = [
   {
     id: 3,
     name: 'Сканы',
-    type: TableDefault,
+    type: 'TableDefault',
     active: false,
     config: skanConfig,
   },
   {
     id: 4,
     name: 'Начисления и выплаты',
-    type: TableDefault,
+    type: 'TableDefault',
     active: false,
     config: paymentConfig,
   },
@@ -2129,7 +2128,7 @@ const config = {
         url: 'get/pagination/documents_new',
         title: 'Новые',
       },
-      type: TableDefault,
+      type: 'TableDefault',
       panel: {
         buttons: [
           {
@@ -2767,7 +2766,7 @@ const config = {
         url: 'get/pagination/documents_eaes',
         title: 'ЕАЭС',
       },
-      type: TableDefault,
+      type: 'TableDefault',
       panel: {
         buttons: [
           {
@@ -3056,7 +3055,7 @@ const config = {
         url: 'get/pagination/documents_dont_res',
         title: 'Нерезиденты',
       },
-      type: TableDefault,
+      type: 'TableDefault',
       panel: {
         buttons: [
           {
@@ -3454,7 +3453,7 @@ const config = {
         url: 'get/pagination/documents_rf',
         title: 'РФ',
       },
-      type: TableDefault,
+      type: 'TableDefault',
       panel: {
         buttons: [
           {
