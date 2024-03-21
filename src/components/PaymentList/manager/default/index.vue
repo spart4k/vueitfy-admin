@@ -1,18 +1,18 @@
 <template>
-  <div class="personal">
-    <div class="personal-wrap">
+  <div class="manager">
+    <div class="manager-wrap">
       <v-expansion-panels v-model="isOpen">
-        <v-expansion-panel class="personal-expension">
-          <v-expansion-panel-header class="personal-expension-head">
-            <div class="personal-head">
-              <div class="personal-head-info">
+        <v-expansion-panel class="manager-expension">
+          <v-expansion-panel-header class="manager-expension-head">
+            <div class="manager-head">
+              <div class="manager-head-info">
                 <v-checkbox
                   @click="(event) => event.stopPropagation()"
                   class=""
                 ></v-checkbox>
                 <span>{{ manager.account_name }}</span>
               </div>
-              <div class="personal-head-panel"></div>
+              <div class="manager-head-panel"></div>
             </div>
             <template v-slot:actions>
               <!-- <svg
@@ -44,10 +44,11 @@
             <!-- <p v-for="item in 50" :key="item">Линейщик 1</p> -->
             <div
               @dblclick="openPersonal(row)"
-              v-for="row in rows"
+              v-for="row in objects"
               :key="row.personal_id"
               class="personal"
             >
+              <v-checkbox @click.stop class=""></v-checkbox>
               <span> {{ row.personal_name }} </span>
             </div>
           </v-expansion-panel-content>

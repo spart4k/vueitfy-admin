@@ -86,10 +86,13 @@
     margin-top: 6px;
   }
   &-content {
-    padding: 0 40px 10px 40px;
-    margin-top: 10px;
+    padding: 0 40px 0px 40px;
+    // margin-top: 10px;
     color: var(--v-text-base);
   }
+}
+.content-wrap {
+  padding: 0 0 10px 0;
 }
 
 .empty {

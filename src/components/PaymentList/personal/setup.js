@@ -33,6 +33,10 @@ const table = {
       type: String,
       default: '',
     },
+    searchValue: {
+      type: String,
+      default: '',
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -77,9 +81,11 @@ const table = {
       // type.content.code = responseData.code
       // detailPanels.value.push(index)
     }
+    const closePopup = () => emit('closePopup')
     watch(
       () => isOpen.value,
       async (newVal) => {
+        // isOpen.value = undefined
         console.log(newVal + '_' + props.row.personal_id)
         await getObjects()
       }
@@ -92,6 +98,7 @@ const table = {
       objects,
       total,
       loading,
+      closePopup,
     }
   },
 }

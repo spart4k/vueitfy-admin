@@ -10,7 +10,7 @@ import axios from 'axios'
 import moment from 'moment'
 import Manager from '../manager/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
-
+console.log('CREATED PAYMENTS')
 //import { tableApi } from '@/api'
 
 const table = {
@@ -86,8 +86,10 @@ const table = {
       // countingDistances()
       // }, 0)
       // addDayOfMonth()
+      searchInput.value = ''
       await getItems()
     }
+    console.log('CREATED PAYMENTS')
     const { makeRequest, loading } = useRequest({
       context,
       request: () =>
@@ -95,12 +97,15 @@ const table = {
           url: 'payment_list/accounts',
           body: {
             period: currentDate.value.date,
+            search: searchInput.value,
           },
         }),
     })
+
     const popupForm = ref({
       isShow: false,
     })
+    const searchInput = ref('')
     const managers = ref([])
     const fakeInitManager = () => {
       const grishov = {
@@ -141,6 +146,13 @@ const table = {
       popupForm.value.isShow = false
       router.back()
     }
+    watch(
+      () => searchInput.value,
+      () => {
+        console.log('search')
+        getItems()
+      }
+    )
     const activePerson = ref({})
     onMounted(() => {
       getItems()
@@ -157,6 +169,7 @@ const table = {
       closePopupForm,
       activePerson,
       period: currentDate.value.date,
+      searchInput,
     }
   },
 }

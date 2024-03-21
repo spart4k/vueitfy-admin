@@ -32,6 +32,10 @@ const table = {
     rows: {
       type: Array,
     },
+    searchValue: {
+      type: String,
+      default: '',
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -53,8 +57,12 @@ const table = {
     const { makeRequest, loading } = useRequest({
       context,
       request: () =>
-        store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.manager.personal_id}`,
+        store.dispatch('form/getPaymentList', {
+          url: `payment_list/${props.manager.account_id}/personals`,
+          body: {
+            period: props.period,
+            search: props.searchValue,
+          },
         }),
     })
 
@@ -67,7 +75,7 @@ const table = {
         try {
           const { result } = await makeRequest()
           if (result) {
-            objects.value = result.objects
+            objects.value = result
             total.value = result
             isOpen.value = 0
             console.log('getItems')
@@ -90,7 +98,7 @@ const table = {
       () => isOpen.value,
       async (newVal) => {
         // console.log(newVal + '_' + props.row.personal_id)
-        // await getObjects()
+        await getObjects()
       }
     )
     return {

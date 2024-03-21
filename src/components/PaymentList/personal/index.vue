@@ -2,14 +2,20 @@
   <div class="personal">
     <div class="personal-wrap">
       <v-expansion-panels v-model="isOpen">
-        <v-expansion-panel class="personal-expension">
-          <v-expansion-panel-header class="personal-expension-head">
+        <v-expansion-panel
+          style="points-events: unset"
+          class="personal-expension"
+        >
+          <v-expansion-panel-header
+            :class="isOpen === 0 ? 'points-unset' : ''"
+            class="personal-expension-head"
+          >
             <div class="personal-head">
               <div class="personal-head-info">
-                <v-checkbox
+                <!-- <v-checkbox
                   @click="(event) => event.stopPropagation()"
                   class=""
-                ></v-checkbox>
+                ></v-checkbox> -->
                 <span>{{ row.personal_name }}</span>
               </div>
               <div class="personal-head-panel"></div>
@@ -32,8 +38,16 @@
                 :size="28"
                 indeterminate
               />
+              <template v-else><p></p></template>
+              <!-- <v-icon @click="closePopup" v-else>mdi-close</v-icon> -->
             </template>
           </v-expansion-panel-header>
+          <v-icon
+            v-if="!loading"
+            class="personal-head-panel__close"
+            @click="closePopup"
+            >mdi-close</v-icon
+          >
           <v-expansion-panel-content>
             <Object
               v-for="object in objects"
