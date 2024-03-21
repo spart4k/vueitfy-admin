@@ -19,19 +19,21 @@
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <template v-if="!loading && objects && objects.length">
-            <Row
-              v-for="item in objects"
-              :key="item"
-              :period="period"
-              :personalId="personalId"
-              :object="object"
-              :row="item"
-            />
-          </template>
-          <template v-else>
-            <div class="empty">Отсутствует</div>
-          </template>
+          <div class="content-wrap">
+            <template v-if="!loading && objects && objects.length">
+              <Row
+                v-for="item in objects"
+                :key="item"
+                :period="period"
+                :personalId="personalId"
+                :object="object"
+                :row="item"
+              />
+            </template>
+            <template v-else>
+              <div class="empty">Отсутствует</div>
+            </template>
+          </div>
 
           <!-- <v-expansion-panels v-for="item in 10" :key="item">
             <v-expansion-panel>

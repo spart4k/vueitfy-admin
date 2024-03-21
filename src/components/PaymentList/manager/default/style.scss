@@ -1,8 +1,11 @@
-.personal {
+.manager {
   background-color: #fff;
-  margin-bottom: 14px;
-  margin-top: 14px;
-  padding-inline: 86px;
+  // margin-bottom: 14px;
+  // margin-top: 14px;
+  padding: 0px 40px 0px 40px;
+  border-bottom: 1px solid #d6dbe2;
+  // height: 48px;
+  color: var(--v-text-base);
   &-wrap {
   }
   &-expension {
@@ -21,6 +24,23 @@
       align-items: center;
       font-size: 16px;
     }
+  }
+  .personal {
+    background-color: #fff;
+    // margin-bottom: 14px;
+    // margin-top: 14px;
+    padding: 0px 40px 0px 40px;
+    border-bottom: 1px solid #d6dbe2;
+    // height: 48px;
+    color: var(--v-text-base);
+    display: flex;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &:hover {
+    cursor: pointer;
   }
 }
 
@@ -89,7 +109,7 @@
     margin-top: 6px;
   }
   &-content {
-    padding: 0 85px;
+    padding: 0 30px;
     border-top: 1px solid #d6dbe2;
   }
 }
