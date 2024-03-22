@@ -9,7 +9,7 @@ $tableFooterHeight: 85px;
     //position: relative;
     //overflow: auto;
     height: 100%;
-    height: calc(100% - $tableFooterHeight);
+    height: calc(100%);
     position: relative;
     &-header {
       //border: 1px solid $borderColor;
@@ -302,6 +302,8 @@ $tableFooterHeight: 85px;
       }
     }
     &-panel {
+      display: flex;
+      justify-content: space-between;
       padding: 5px;
       background-color: rgb(225, 225, 225);
       // min-height: $tablePanelHeight;
