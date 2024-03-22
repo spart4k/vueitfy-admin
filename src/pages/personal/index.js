@@ -662,9 +662,9 @@ const debetorConfig = {
         label: 'Переплата',
         class: ['v-table-button--custom'],
         url: '$IconEdit',
+        isSwitch: true,
         type: 'switch',
-        value: 1,
-        refreshTable: true,
+        function: consolePanel,
         backgroundColor: '#ffffff',
         values: [
           {
