@@ -10,6 +10,7 @@ import tablePersonalScan from './config/table-personal-scan.js'
 import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalEdit from './config/form-personal-edit.js'
 import formPersonalAdd from './config/form-personal-add.js'
+import formPersonalDirection from './config/form-personal-direction.js'
 
 import formKeyAdd from './config/form-key-add.js'
 import formKeyEdit from './config/form-key-edit.js'
@@ -31,7 +32,12 @@ function searchInputing(field) {
   console.log(field)
 }
 
-const nonExportTabs = [formLoad, formBind, formPersonalAdd]
+const nonExportTabs = [
+  formLoad,
+  formBind,
+  formPersonalAdd,
+  formPersonalDirection,
+]
 
 export const personalTabs = [
   formPersonalEdit,
@@ -40,6 +46,71 @@ export const personalTabs = [
   tablePersonalBank,
   tablePersonalDebt,
 ]
+
+const contextMenuPersonal = {
+  actions: [
+    {
+      icon: 'mdi-plus',
+      label: 'Привязать объект',
+      isShow: {
+        condition: [
+          {
+            direction_id: [1, 6],
+            type: true,
+          },
+        ],
+      },
+      readonly: {
+        value: true,
+        condition: [
+          {
+            is_personal_vertical: [true],
+            type: true,
+          },
+          {
+            permission_id: [4],
+            type: false,
+          },
+        ],
+      },
+      action: {
+        type: 'changeUrl',
+        target: 'id',
+        url: 'personal/bind',
+      },
+    },
+    {
+      icon: 'mdi-plus',
+      label: 'Добавить направ-ие',
+      // isShow: {
+      //   condition: [
+      //     {
+      //       direction_id: [1, 6],
+      //       type: true,
+      //     },
+      //   ],
+      // },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            is_personal_vertical: [true],
+            type: true,
+          },
+          {
+            permission_id: [13],
+            type: true,
+          },
+        ],
+      },
+      action: {
+        type: 'changeUrl',
+        target: 'id',
+        url: 'personal/direction',
+      },
+    },
+  ],
+}
 
 export const config = {
   title: 'Персонал',
@@ -55,41 +126,7 @@ export const config = {
         headerFixed: true,
         url: 'get/pagination/personal_active',
         title: 'Основные',
-        contextMenu: {
-          actions: [
-            {
-              icon: 'mdi-plus',
-              label: 'Привязать объект',
-              readonly: {
-                value: true,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [4],
-                    type: false,
-                  },
-                ],
-              },
-              isShow: {
-                value: true,
-                condition: [
-                  {
-                    permissions: [16, 19],
-                    type: false,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/bind',
-              },
-            },
-          ],
-        },
+        contextMenu: contextMenuPersonal,
       },
       type: 'TableDefault',
       panel: {
@@ -305,49 +342,7 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_passive',
         title: 'Пассив',
-        contextMenu: {
-          actions: [
-            {
-              icon: 'mdi-plus',
-              label: 'Привязать объект',
-              isShow: {
-                condition: [
-                  {
-                    direction_id: [1, 6],
-                    type: true,
-                  },
-                ],
-              },
-              readonly: {
-                value: true,
-                condition: [
-                  {
-                    is_personal_vertical: [true],
-                    type: true,
-                  },
-                  {
-                    permission_id: [4],
-                    type: false,
-                  },
-                ],
-              },
-              action: {
-                type: 'changeUrl',
-                target: 'id',
-                url: 'personal/bind',
-              },
-            },
-          ],
-          isShow: {
-            value: true,
-            condition: [
-              {
-                permissions: [16, 19],
-                type: false,
-              },
-            ],
-          },
-        },
+        contextMenu: contextMenuPersonal,
       },
       type: 'TableDefault',
       panel: {
@@ -1174,15 +1169,6 @@ export const config = {
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [formKeyAdd, formKeyEdit],
         activeTab: null,
-      },
-      isShow: {
-        value: true,
-        condition: [
-          {
-            permissions: [16, 19],
-            type: false,
-          },
-        ],
       },
       filters: filtersKey,
     },

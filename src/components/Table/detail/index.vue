@@ -1,7 +1,6 @@
 <template>
   <div class="detail">
     <div class="detail-tabs 1">
-      <!--{{ $route.meta.mode && $route.meta.mode.includes(item.path) }} 1-->
       <div
         v-show="$route.meta.label || detail.name || availableTabsAll.length > 1"
         class="pa-4 detail-header"
