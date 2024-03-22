@@ -18,7 +18,7 @@ export default {
   id: uuidv4(),
   path: 'edit',
   name: 'Тарифы',
-  type: 'Rates',
+  type: 'FormRates',
   detail: true,
   alias: 'object',
   active: false,

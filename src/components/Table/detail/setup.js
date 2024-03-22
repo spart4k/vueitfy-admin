@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router/composables'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
+import FormRates from '@/components/Form/rates/default/index.vue'
 import TableFixed from '@/components/Table/fixed/index.vue'
 import FormOutputCorrect from '@/components/Form/output/correct/index.vue'
 // import TableDefault from '@/components/Table/default/index.vue'
@@ -19,6 +20,7 @@ export default {
     TableFixed,
     FormStage,
     FrameView,
+    FormRates,
     FormDocuments,
     FormOutputCorrect,
   },
