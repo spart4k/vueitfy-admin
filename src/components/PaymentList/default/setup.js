@@ -107,31 +107,30 @@ const table = {
     })
     const searchInput = ref('')
     const managers = ref([])
-    const fakeInitManager = () => {
-      const grishov = {
-        account_name: 'Гришов Павел',
-        account_id: null,
-        personals: rows.value,
-      }
-      const zavelka = {
-        account_name: 'Завелка Саша',
-        account_id: null,
-        personals: rows.value,
-      }
-      managers.value.push(grishov)
-      managers.value.push(zavelka)
-    }
+    const fakeInitManager = () => {}
     const getItems = async () => {
-      try {
-        const { result } = await makeRequest()
-        if (result) {
-          // rows.value = result.splice(0, 10)
-          managers.value = result
-          // fakeInitManager()
-          console.log('getItems')
+      if (store.state.user.permission_id === 1) {
+        loading.value = true
+        managers.value = [
+          {
+            account_id: store.state.user.id,
+            account_name: store.state.user.name,
+            total: 0,
+          },
+        ]
+        loading.value = false
+      } else {
+        try {
+          const { result } = await makeRequest()
+          if (result) {
+            // rows.value = result.splice(0, 10)
+            managers.value = result
+            // fakeInitManager()
+            console.log('getItems')
+          }
+        } catch (err) {
+          console.log(err)
         }
-      } catch (err) {
-        console.log(err)
       }
     }
     const openPersonal = (row) => {

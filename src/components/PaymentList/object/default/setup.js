@@ -66,12 +66,12 @@ const table = {
     const total = ref({})
     const isOpen = ref(false)
     const isOpenObject = ref(false)
-    const period = inject('period')
+    // const period = inject('period')
     const { makeRequest } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${period}/${props.personalId}/${props.object.id}`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}`,
         }),
     })
     watch(

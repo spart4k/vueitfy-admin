@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, inject, reactive } from 'vue'
+import Vue, { toRef, ref, computed, watch, inject, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
@@ -50,8 +50,9 @@ const table = {
         route,
       },
     }
+    const period = toRef(props, 'period')
     const objects = ref(null)
-    const period = inject('period')
+    // const period = inject('period')
     const total = ref({})
     console.log(period)
     const { makeRequest, loading } = useRequest({
@@ -67,6 +68,7 @@ const table = {
     })
 
     const getObjects = async () => {
+      console.log('update')
       if (objects.value !== null) return
       isOpen.value = undefined
       if (loading.value) {
@@ -99,6 +101,15 @@ const table = {
       async (newVal) => {
         // console.log(newVal + '_' + props.row.personal_id)
         await getObjects()
+      }
+    )
+    watch(
+      () => period.value,
+      async (newVal) => {
+        isOpen.value = null
+        objects.value = null
+        // console.log(newVal + '_' + props.row.personal_id)
+        // await getObjects()
       }
     )
     return {
