@@ -5,6 +5,8 @@ import FormDefault from '@/components/Form/default/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
 import TableFixed from '@/components/Table/fixed/index.vue'
+import FormOutputCorrect from '@/components/Form/output/correct/index.vue'
+// import TableDefault from '@/components/Table/default/index.vue'
 import FrameView from '@/components/Task/frame-view/index.vue'
 
 //import { form, list } from '@/api/index.js'
@@ -18,6 +20,7 @@ export default {
     FormStage,
     FrameView,
     FormDocuments,
+    FormOutputCorrect,
   },
   props: {
     content: {
@@ -25,6 +28,10 @@ export default {
       default: () => {},
     },
     detail: {
+      type: Object,
+      default: () => {},
+    },
+    formDataParent: {
       type: Object,
       default: () => {},
     },

@@ -61,6 +61,7 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
+      console.log(form)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -100,7 +101,9 @@ export default function ({
       Vue.set(formData, key, ref(fields[key].default))
     }
   }
-
+  const popupForm = ref({
+    isShow: false,
+  })
   const $errors = ref({})
   const errorsCount = () => {
     $errors.value = Object.keys(formData).reduce((obj, key) => {
@@ -314,7 +317,6 @@ export default function ({
       loading.value = false
     }
   }
-
   const stageRequest = async (action) => {
     const sortedData = sortData({ action })
     loading.value = true
@@ -327,6 +329,84 @@ export default function ({
     const response = responseHandler({ action, data })
     if (!response) return false
     return true
+  }
+
+  const appendActionShow = (action) => {
+    const checkIncludesData = (el) => {
+      let source = eval(el.target)
+      let result
+      if (el.array) {
+        result = _.isEqual(el.value, source[el.field])
+      } else {
+        result = el.value.includes(source[el.field])
+      }
+      return result
+    }
+    const checkIncludesPermissions = (el) => {
+      return el.permissions.includes(permission.value)
+    }
+    if (typeof action.isShow === 'boolean')
+      return environment.readonlyAll ? true : action.isShow
+    else if (typeof action.isShow === 'object') {
+      if (action.isShow.condition?.length) {
+        const condition = () =>
+          action.isShow.condition.some((conditionEl) => {
+            if (
+              (conditionEl.target === 'formData' ||
+                conditionEl.target === 'environment' ||
+                conditionEl.target === 'originalData') &&
+              !conditionEl.permissions
+            ) {
+              return checkIncludesData(conditionEl) === conditionEl.type
+            } else if (conditionEl.permissions?.length && !conditionEl.target) {
+              const result = checkIncludesPermissions(conditionEl)
+              // if (!result && !conditionEl.type) {
+              // }
+              return checkIncludesPermissions(conditionEl) === conditionEl.type
+            } else if (conditionEl.hasOwnProperty('funcCondition')) {
+              const conditionContext = {
+                store,
+                formData,
+                originalData,
+                environment,
+              }
+              return (
+                conditionEl.funcCondition(conditionContext) === conditionEl.type
+              )
+            } else {
+              return (
+                (checkIncludesData(conditionEl) &&
+                  checkIncludesPermissions(conditionEl)) === conditionEl.type
+              )
+            }
+          })
+        action.isShow.value = condition()
+        return environment.readonlyAll ? true : action.isShow.value
+      }
+    } else if (typeof action.isShow === 'undefined') {
+      return environment.readonlyAll
+    }
+  }
+
+  const appendFieldHandler = ({ action, field }) => {
+    console.log(action)
+    console.log(form)
+    if (form.detail.type === 'popup') {
+      //router.push({
+      //  path: `${route.}./1`
+      //})
+      let requestId = 'id'
+      if (form.detail.requestId) requestId = form.detail.requestId
+
+      router.push({
+        name: action.action.name,
+        // name: `${route.name}/:${requestId}`,
+        // params: {
+        //   [requestId]: row.id,
+        // },
+      })
+      popupForm.value.isShow = true
+    }
   }
 
   const responseHandler = ({ action, data }) => {
@@ -651,6 +731,7 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
+    console.log(params)
     queueMicrotask(async () => {
       await getDependies(params)
     })
@@ -689,11 +770,14 @@ export default function ({
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
+            let value = source[el.field]
+            if (moment(value, 'YYYY.MM', true).isValid())
+              value = moment(value, 'YYYY.MM').format('YYYY-MM')
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source[el.field])
                 ? source[el.field]
-                : [source[el.field]],
+                : [value],
               type: el.type,
             })
           } else if (el.source !== 'formData') {
@@ -929,8 +1013,23 @@ export default function ({
           : data
         card = targetField.items.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
+          // const findedDep = targetField.dependence.find(
+          //   (depTarget) => depTarget.type === 'update'
+          // )
+          targetField.objectData = []
+          if (targetField.hasOwnProperty('defaultObjectData')) {
+            console.log(targetField.defaultObjectData)
+            // targetField.objectData = targetField.objectData.concat(
+            //   targetField.defaultObjectData
+            // )
+            // targetField.objectData.
+            targetField.defaultObjectData.forEach((el) =>
+              targetField.objectData.push(el)
+            )
+            // findedDep.fields.forEach((el) => (formData[el] = ))
+          }
           if (data.length) {
-            targetField.objectData = data
+            targetField.objectData = [...data, ...targetField.objectData]
           } else {
             const findedDep = targetField.dependence.find(
               (depTarget) => depTarget.type === 'update'
@@ -994,6 +1093,7 @@ export default function ({
             const findedEl = field.objectData?.find((el) => el.id === value)
             if (findedEl) {
               dependence.fields.forEach((el) => {
+                console.log(formData[el], findedEl)
                 formData[el] = findedEl[el]
               })
             }
@@ -1563,5 +1663,8 @@ export default function ({
     isHideBtn,
     colsField,
     entityData,
+    appendFieldHandler,
+    popupForm,
+    appendActionShow,
   }
 }

@@ -10,11 +10,16 @@
         <v-expansion-panel>
           <v-expansion-panel-header>
             <v-row align="center">
-              <template v-if="isHasOsnDoc && isOsnDocTouched">
-                <v-icon x-small color="green" v-if="isOsnDocConfirmed"
+              <template v-if="isHasOsnDoc">
+                <v-icon x-small color="green" v-if="isOsnDocConfirmed === true"
                   >$IconGalka</v-icon
                 >
-                <v-icon x-small color="red" v-else>$IconClose</v-icon>
+                <v-icon
+                  x-small
+                  color="red"
+                  v-else-if="isOsnDocConfirmed === false"
+                  >$IconClose</v-icon
+                >
               </template>
               <span class="ml-2">Основные данные</span>
             </v-row>
@@ -61,7 +66,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <DocFormWithConfirm
+      <!-- <DocFormWithConfirm
         v-if="docs && docs.length"
         class="mb-10"
         @change="changeDocs"
@@ -69,10 +74,23 @@
         :bankData="bankData"
         :listNames="listNames"
         :docs="docs"
-      ></DocFormWithConfirm>
+      ></DocFormWithConfirm> -->
+      <DocForm
+        v-if="docs && docs.length"
+        class="mb-10"
+        @changeDocs="changeDocs"
+        :docsData="docsData"
+        :bankData="bankData"
+        :listNames="listNames"
+        :docs="docs"
+        :entity="entity"
+        :task="JSON.parse(data.task.dop_data)"
+        :confirm="true"
+        ref="docFormRef"
+      ></DocForm>
       <v-textarea
         v-model="comment"
-        @input="commentErr = ''"
+        @input="commentErr = []"
         :error-messages="commentErr"
         rows="2"
         clearable
@@ -86,12 +104,7 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn
-        small
-        :disabled="!isFormValid || !isOsnDocTouched"
-        color="info"
-        @click="sendData"
-      >
+      <v-btn small :disabled="!isValid" color="info" @click="sendData">
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>

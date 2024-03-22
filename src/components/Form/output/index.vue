@@ -266,6 +266,9 @@
                 :error-messages="formErrors[field?.name]"
                 :disabled="disabledField(field)"
                 :readonly="readonlyField(field)"
+                @input="
+                  changeAutocomplete({ value: formData[field.name], field })
+                "
               ></Datepicker>
               <v-textarea
                 v-else-if="showField('textarea', field)"

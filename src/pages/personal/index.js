@@ -4,7 +4,6 @@ import filtersKey from './filtersKey'
 import { stringAction } from '@/utils/actions'
 import _ from 'lodash'
 
-import tablePersonalOverpayments from './config/table-personal-overpayments.js'
 import tablePersonalDebt from './config/table-personal-debt.js'
 import tablePersonalBank from './config/table-personal-bank.js'
 import tablePersonalScan from './config/table-personal-scan.js'
@@ -40,7 +39,6 @@ export const personalTabs = [
   tablePersonalScan,
   tablePersonalBank,
   tablePersonalDebt,
-  tablePersonalOverpayments,
 ]
 
 export const config = {

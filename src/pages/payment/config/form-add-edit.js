@@ -17,7 +17,234 @@ export default {
   name: 'Добавить начисление',
   type: 'FormDefault',
   path: 'add-edit-logistic',
-  detail: true,
+  detail: {
+    type: 'popup', // String 'popup' or 'page'
+    classes: [''], // List class
+    width: '780px',
+    method: 'get',
+    alias: 'payment',
+    url: '/get/form/',
+    bootstrapClass: [''],
+    tabs: [
+      {
+        id: 8,
+        path: 'output',
+        name: 'Основные',
+        type: 'FormOutputCorrect',
+        detail: true,
+        lists: [
+          {
+            alias: 'bind_directions',
+            filter: [
+              {
+                field: 'bind_objects',
+                alias: 'object_id',
+                value: '',
+                source: 'formData',
+                type: 'array',
+              },
+            ],
+          },
+          // 'user_keys',
+          // 'habitation_id',
+          // 'account_id',
+          // 'direction_id',
+          // 'grajdanstvo_id',
+        ],
+        alias: 'personal',
+        active: false,
+        fields: [
+          autocompleteField({
+            label: 'Объект',
+            //subtype: 'multiple',
+            name: 'bind_objects',
+            requestKey: 'object_id',
+            //subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            //readonly: true,
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/bind_objects',
+            // object
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            filter: [
+              {
+                field: 'personal_id',
+                value: '',
+                source: '+route.params.id',
+              },
+            ],
+            dependence: [
+              {
+                type: 'api',
+                module: 'selects/getListUpdate',
+                field: 'bind_directions',
+                url: 'get/pagination_list/bind_directions',
+                filter: [
+                  {
+                    field: 'bind_objects',
+                    alias: 'object_id',
+                    value: '',
+                    type: 'num',
+                  },
+                  {
+                    field: 'personal_id',
+                    value: '',
+                    source: '+route.params.id',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            //isShow: {
+            //  value: false,
+            //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
+            //},
+          }),
+          autocompleteField({
+            label: 'Направления',
+            subtype: 'multiple',
+            name: 'bind_directions',
+            alias: '',
+            notSend: true,
+            //subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            //readonly: true,
+            items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/bind_objects',
+            // object
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            updateList: [
+              {
+                alias: 'bind_accounts',
+                filter: [
+                  {
+                    field: 'bind_objects',
+                    alias: 'object_id',
+                    source: 'formData',
+                    value: '',
+                    type: 'num',
+                  },
+                  {
+                    field: 'bind_directions',
+                    alias: 'direction_json',
+                    source: 'formData',
+                    value: '',
+                    type: 'array',
+                  },
+                  {
+                    field: 'personal_id',
+                    value: '',
+                    source: '+route.params.id',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            filter: [
+              {
+                field: 'bind_objects',
+                alias: 'object_id',
+                value: '',
+                type: 'num',
+              },
+              {
+                field: 'bind_directions',
+                alias: 'direction_json',
+                value: '',
+                type: 'array',
+              },
+              {
+                field: 'personal_id',
+                value: '',
+                source: '+route.params.id',
+                type: 'num',
+              },
+            ],
+            //isShow: {
+            //  value: false,
+            //  conditions: [{ field: 'direction_id', value: [[1], [6], [1, 6]] }],
+            //},
+          }),
+          selectField({
+            label: 'Сотрудники',
+            name: 'account_json',
+            alias: 'bind_accounts',
+            subtype: 'multiple',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'textDefault',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'personal',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/putForm',
+            name: 'saveForm',
+            url: 'update/personal/object',
+            action: 'saveForm',
+            color: 'primary',
+            handlingResponse: {
+              1: {
+                text: 'Объект привязан',
+                color: 'success',
+              },
+              2: {
+                text: 'Сотрудник удален',
+                color: 'error',
+              },
+              3: {
+                text: '',
+              },
+            },
+          }),
+        ],
+      },
+    ],
+  },
   //lists: [],
   lists: [
     {
@@ -595,6 +822,115 @@ export default {
         ],
       },
     }),
+    //selectField({
+    //  label: 'Статья расхода',
+    //  name: 'st_rashod_id',
+    //  placeholder: '',
+    //  class: [''],
+    //  selectOption: {
+    //    text: 'name',
+    //    value: 'id',
+    //  },
+    //  items: [
+    //    {
+    //      id: 0,
+    //      label: 'Продавец',
+    //      value: 'Абдуллина Ирина',
+    //    },
+    //    {
+    //      id: 1,
+    //      label: 'Приемщик',
+    //      value: 'Адылова Ильмира',
+    //    },
+    //    {
+    //      id: 2,
+    //      label: 'Погрузчик',
+    //      value: 'Азаров Михаил',
+    //    },
+    //  ],
+    //  position: {
+    //    cols: 12,
+    //    sm: 6,
+    //  },
+    //  validations: { required },
+    //  bootstrapClass: [''],
+    //}),
+    // stringField({
+    //   label: 'Часы (план)',
+    //   name: 'hour_plan',
+    //   placeholder: '',
+    //   readonly: true,
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 2,
+    //   },
+    //   bootstrapClass: [''],
+    //   //validations: { required },
+    //   //isShow: false,
+    // }),
+    // stringField({
+    //   label: 'Часы(факт)',
+    //   name: 'hour_fact',
+    //   placeholder: '',
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 2,
+    //   },
+    //   bootstrapClass: [''],
+    //   //validations: { required },
+    //   //isShow: false,
+    // }),
+    // stringField({
+    //   label: 'Часы',
+    //   name: 'hour',
+    //   placeholder: '',
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 2,
+    //   },
+    //   validations: { required },
+    //   bootstrapClass: [''],
+    // }),
+    // stringField({
+    //   label: 'Тариф',
+    //   name: 'price',
+    //   placeholder: '',
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 2,
+    //   },
+    //   bootstrapClass: [''],
+    // }),
+    // stringField({
+    //   label: 'Удержано',
+    //   name: 'debit_percent',
+    //   placeholder: '',
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 3,
+    //   },
+    //   validations: { required },
+    //   bootstrapClass: [''],
+    //   isShow: true,
+    // }),
+    // dateField({
+    //   label: 'Назначение на дату',
+    //   name: 'date_target',
+    //   // subtype: 'multiple',
+    //   placeholder: '',
+    //   classes: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 6,
+    //   },
+    //   validations: { required },
+    //   bootstrapClass: [''],
+    // }),
     stringField({
       label: 'Сумма',
       name: 'total',
@@ -618,7 +954,70 @@ export default {
           },
         ],
       },
+      appendAction: [
+        {
+          icon: 'mdi-table-edit',
+          label: 'Изменить выработку',
+          action: {
+            type: 'changeUrl',
+            name: 'payment/:id/output',
+          },
+          isShow: {
+            value: true,
+            condition: [
+              {
+                funcCondition: (context) =>
+                  context.formData.vid_vedomost_id === 1 &&
+                  (context.formData.status_id === 1 ||
+                    context.formData.status_id === 2 ||
+                    context.formData.status_id === 3) &&
+                  (context.formData.direction_id === 1 ||
+                    context.formData.direction_id === 6),
+                type: true,
+              },
+            ],
+          },
+        },
+      ],
     }),
+    // stringField({
+    //   label: '% удержания',
+    //   name: 'debit_percent',
+    //   placeholder: '',
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 3,
+    //   },
+    //   validations: { required },
+    //   bootstrapClass: [''],
+    //   isShow: true,
+    // }),
+    // stringField({
+    //   label: 'Итог',
+    //   name: 'total',
+    //   placeholder: '',
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 6,
+    //   },
+    //   validations: { required },
+    //   bootstrapClass: [''],
+    // }),
+    //stringField({
+    //  label: 'Минус нал',
+    //  name: 'minus_nal',
+    //  placeholder: '',
+    //  class: [''],
+    //  position: {
+    //    cols: 12,
+    //    sm: 2,
+    //  },
+    //  validations: { required },
+    //  bootstrapClass: [''],
+    //  isShow: false,
+    //}),
     selectField({
       label: 'Банки.карта/нал',
       name: 'personal_bank_id',
@@ -642,7 +1041,7 @@ export default {
           fio: '',
         },
       ],
-      objectData: undefined,
+      objectData: [],
       defaultItems: [
         {
           id: 11,

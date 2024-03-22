@@ -7,7 +7,7 @@ import Vue, {
   onUnmounted,
 } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
 import FormDefault from '@/components/Form/default/index.vue'
 
 import useForm from '@/compositions/useForm.js'

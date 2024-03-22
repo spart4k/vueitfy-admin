@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import PaymentView from '../views/PaymentView.vue'
+import PaymentListView from '../views/PaymentListView.vue'
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
 import X5importView from '../views/X5importView.vue'
@@ -134,6 +135,17 @@ const routes = [
           label: 'Редактировать начисление',
         },
         component: Detail,
+        children: [
+          {
+            name: 'payment/:id/output',
+            path: 'output',
+            meta: {
+              mode: ['add-edit-logistic', 'output'],
+              label: 'Редактировать начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'payment-load',
@@ -180,6 +192,17 @@ const routes = [
         ],
       },
     ],
+  },
+  {
+    path: '/payment_list',
+    name: 'payment_list',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PaymentListView,
   },
   {
     path: '/personal_target',
@@ -781,6 +804,12 @@ const routes = [
     ],
   },
 ]
+
+// Добавил фикс для варнингов - причина не известна, решение: https://stackoverflow.com/questions/62462276/how-to-solve-avoided-redundant-navigation-to-current-location-error-in-vue
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err)
+}
 
 const router = new VueRouter({
   mode: 'history',
