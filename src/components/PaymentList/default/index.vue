@@ -114,9 +114,9 @@
       v-if="popupForm.isShow"
     >
       <router-view
-        :period="period"
         :row="activePerson"
         @closePopup="closePopupForm"
+        :period="currentDate.date"
       />
     </Popup>
   </div>
