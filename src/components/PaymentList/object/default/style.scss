@@ -7,12 +7,12 @@
     &-head {
       padding: 0;
       padding: unset !important;
+      pointer-events: unset;
     }
   }
   &-head {
     display: flex;
     width: 100%;
-
     &-info {
       display: flex;
       align-items: center;

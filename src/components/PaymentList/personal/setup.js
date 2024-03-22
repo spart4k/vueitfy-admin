@@ -3,7 +3,7 @@
 import Vue, { onMounted, ref, computed, watch, inject, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
-import Row from '../row/index.vue'
+import Row from './index.vue'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
@@ -33,6 +33,10 @@ const table = {
       type: String,
       default: '',
     },
+    searchValue: {
+      type: String,
+      default: '',
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -59,42 +63,42 @@ const table = {
         }),
     })
     const getObjects = async () => {
-      if (objects.value !== null) return
-      isOpen.value = undefined
-      if (loading.value) {
-        return
-      } else {
-        try {
-          const { result } = await makeRequest()
-          if (result) {
-            objects.value = result.objects
-            total.value = result
-            isOpen.value = 0
-            console.log('getItems')
-          }
-        } catch (err) {
-          console.log(err)
+      try {
+        const { result } = await makeRequest()
+        if (result) {
+          objects.value = result.objects
+          total.value = result
+          isOpen.value = 0
+          console.log('getItems')
         }
-        loading.value = false
-        // Vue.set(type, 'content', {})
-        // type.content = responseData.result
-        // Vue.set(type.content, 'edit', false)
-        // type.content.code = responseData.code
-        // detailPanels.value.push(index)
+      } catch (err) {
+        console.log(err)
       }
+      loading.value = false
+      // Vue.set(type, 'content', {})
+      // type.content = responseData.result
+      // Vue.set(type.content, 'edit', false)
+      // type.content.code = responseData.code
+      // detailPanels.value.push(index)
     }
+    const closePopup = () => emit('closePopup')
     watch(
       () => isOpen.value,
       async (newVal) => {
+        // isOpen.value = undefined
         console.log(newVal + '_' + props.row.personal_id)
         await getObjects()
       }
     )
+    onMounted(() => {
+      getObjects()
+    })
     return {
       isOpen,
       objects,
       total,
       loading,
+      closePopup,
     }
   },
 }

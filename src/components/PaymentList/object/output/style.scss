@@ -82,11 +82,14 @@
     font-weight: 400;
   }
   .row + .row {
-    margin-top: 6px;
+    // margin-top: 6px;
   }
   &-content {
-    padding: 0 32px 10px 32px;
+    padding: 0 32px 0px 32px;
   }
+}
+.content-wrap {
+  padding: 0 0 10px 0;
 }
 
 .empty {
