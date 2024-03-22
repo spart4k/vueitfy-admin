@@ -9,7 +9,6 @@ const config = {
     method: 'get',
     alias: 'zayavka',
     name: 'Заявка',
-    popupIndex: 2,
     url: '/get/form/',
     requestId: 'form_id',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )

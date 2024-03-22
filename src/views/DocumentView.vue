@@ -29,18 +29,15 @@
 
 <script>
 import { ref, toRefs, watch } from 'vue'
-//import formPersonal from '@/pages/personal/formPersonal'
 import { documents } from '@/pages'
 // import { warn } from '@vue/composition-api'
 
-//import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/indedx'
 //import Axios from 'axios'
 
 export default {
   name: 'Documents-View',
   components: {
-    //TableDefault,
     //Layout,
   },
   methods: {

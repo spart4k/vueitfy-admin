@@ -1,8 +1,6 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100 view-table">
-    <!-- <TableDefault @changeheadershow="changeheadershow" :options="object" /> -->
-    <!-- <TableFixed @changeheadershow="changeheadershow" :options="personal" /> -->
     <v-tabs
       style="flex: unset"
       v-model="activeTab"
@@ -31,7 +29,6 @@
 import { ref } from 'vue'
 import { object } from '@/pages'
 
-import TableDefault from '@/components/Table/default/index.vue'
 // import TableFixed from '@/components/Table/fixed/index.vue'
 
 //import Layout from '@/layouts/default/index'
@@ -40,7 +37,6 @@ import TableDefault from '@/components/Table/default/index.vue'
 export default {
   name: 'Object-View',
   components: {
-    TableDefault,
     // TableFixed,
     //Layout,
   },

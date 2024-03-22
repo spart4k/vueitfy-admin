@@ -27,19 +27,24 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { config } from '@/pages/personal/index'
+import { ref, computed, onMounted } from 'vue'
 import store from '@/store'
 import _ from 'lodash'
+import useView from '@/compositions/useView.js'
 
-//import TableDefault from '@/components/Table/default/index.vue'
+// import { stringAction } from '@/utils/actions'
+import { config as personalConfigOrig } from '@/pages/personal/index'
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { initPaymentZayavka } from '@/utils/helpers.js'
+// import personalTabs from '@/pages/zayavka/index'
+
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 
 export default {
   name: 'Personal-View',
   components: {
-    //TableDefault,
     //Layout,
   },
   methods: {
@@ -49,24 +54,23 @@ export default {
     },
   },
   setup() {
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+    } = useView()
+    const config = _.cloneDeep(personalConfigOrig)
+
     const activeTab = ref(0)
     const permission = computed(() => store.state.user.permission_id)
-    const directions = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
+
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
-
       return el.permissions.includes(permission.value)
     }
-    const checkIncludesDirections = (el) => {
-      //return el.direction_id.includes(directions.value)
 
-      if (!el.direction_id) return true
-      else {
-        return !!_.intersection(el.direction_id, directions.value).length
-      }
-    }
     const availableTabs = computed(() => {
       return config.tabs.filter((tab) => {
         if (!tab.isShow) return tab
@@ -74,9 +78,38 @@ export default {
           return tab.isShow.condition.some((el) => {
             return checkIncludesPermissions(el) === el.type
           })
-          // if ()
         }
       })
+    })
+    console.log(availableTabs)
+
+    onMounted(() => {
+      const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+        paymentConfigOrig,
+        zayavkaConfigOrig
+      )
+
+      configRouteConvert({
+        config: paymentConfig.config,
+        route: 'payment',
+        newPath: 'edit-payment',
+        settings: {
+          index: [0],
+        },
+      })
+
+      configRouteConvert({
+        config: zayavkaConfig.config,
+        route: 'zayavka',
+        newPath: 'edit-zayavka',
+        settings: {
+          oldPath: 'id',
+        },
+      })
+
+      config.tabs[0].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+      config.tabs[1].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+      config.tabs[2].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
     })
     return {
       config,

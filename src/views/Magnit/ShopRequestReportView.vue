@@ -12,14 +12,12 @@
 <script>
 import { shopRequestMagnitReport } from '@/pages'
 
-import TableDefault from '@/components/Table/default/index.vue'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 
 export default {
   name: 'Shop-Request-Magnit-Report-View',
   components: {
-    TableDefault,
     //Layout,
   },
   methods: {
