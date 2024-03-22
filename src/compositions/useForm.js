@@ -207,6 +207,11 @@ export default function ({
         emit('closePopup')
       } else if (result.result === 1) {
         emit('closePopup')
+      } else if (result.success) {
+        emit('closePopup')
+      }
+      if (action.handlingResponse) {
+        handlingResponse(action, result)
       }
     } else if (action.action === 'saveFormStore') {
       loading.value = true
@@ -272,35 +277,9 @@ export default function ({
       }
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
+      console.log(action.handlingResponse)
       if (action.handlingResponse) {
-        const conditionContext = {
-          formData,
-          result,
-        }
-        let res = result.code
-        let contextData = formData
-
-        if (action.handlingResponse.result) res = action.handlingResponse.result
-        if (action.handlingResponse.context)
-          contextData = _.get(
-            conditionContext[action.handlingResponse.context],
-            res
-          )
-        let { text, color } = action.handlingResponse[res]
-        // /%\w{n}%/
-        //const text = 'Объект с именем %name% уже существует'
-        // eslint-disable-next-line
-        const key = text.match(/\%\w{1,}\%/g)
-
-        key.forEach((item) => {
-          const keyFormated = item.split('%')[1]
-          text = text.replace(item, contextData[keyFormated])
-        })
-
-        store.commit('notifies/showMessage', {
-          content: text,
-          color,
-        })
+        handlingResponse(action, result)
       }
       //emit('closePopup')
     } else if (action.action === 'closePopup') {
@@ -315,6 +294,53 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
+    }
+  }
+  const handlingResponse = (action, result) => {
+    console.log(action.handlingResponse)
+    if (action.handlingResponse?.result === 'code') {
+      let { text, color } = action.handlingResponse[result.code]
+      let keyFormated
+      // eslint-disable-next-line
+      const key = text.match(/\%\w{1,}\%/g)
+      console.log(key)
+      if (key?.length) {
+        keyFormated = key[0].split('%')[1]
+        text = text.replace(key, formData[keyFormated])
+      }
+      store.commit('notifies/showMessage', {
+        content: text,
+        color,
+      })
+    } else {
+      const conditionContext = {
+        formData,
+        result,
+      }
+      let res = result.code
+      let contextData = formData
+
+      if (action.handlingResponse.result) res = action.handlingResponse.result
+      if (action.handlingResponse.context)
+        contextData = _.get(
+          conditionContext[action.handlingResponse.context],
+          res
+        )
+      let { text, color } = action.handlingResponse[res]
+      // /%\w{n}%/
+      //const text = 'Объект с именем %name% уже существует'
+      // eslint-disable-next-line
+      const key = text.match(/\%\w{1,}\%/g)
+
+      key.forEach((item) => {
+        const keyFormated = item.split('%')[1]
+        text = text.replace(item, contextData[keyFormated])
+      })
+
+      store.commit('notifies/showMessage', {
+        content: text,
+        color,
+      })
     }
   }
   const stageRequest = async (action) => {
@@ -1391,8 +1417,18 @@ export default function ({
         const field = form?.fields.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
+        const listObject = form?.lists?.find((el) => {
+          return el.alias ? el.alias === keyList : el.name === keyList
+        })
         if (field) {
           field.hideItems = lists.data[keyList]
+          if (!lists.data[keyList].length && listObject.emptyWarning) {
+            store.commit('notifies/showMessage', {
+              color: 'warning',
+              content: listObject.emptyWarning.text,
+              // timeout: 3000,
+            })
+          }
           if (field.hiding) {
             if (field.hiding.conditions) {
               const condition = field.hiding.conditions.find(

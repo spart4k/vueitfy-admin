@@ -234,16 +234,25 @@ const routes = [
             },
             component: Detail,
           },
-          {
-            name: 'personal-bind/:id',
-            path: '/personal/bind/:id',
-            meta: {
-              mode: ['bind'],
-              label: 'Привязать объект',
-            },
-            component: Detail,
-          },
         ],
+      },
+      {
+        name: 'personal-direction/:id',
+        path: '/personal/direction/:id',
+        meta: {
+          mode: ['direction'],
+          label: 'Изменить направление',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal-bind/:id',
+        path: '/personal/bind/:id',
+        meta: {
+          mode: ['bind'],
+          label: 'Привязать объект',
+        },
+        component: Detail,
       },
       {
         name: 'personal-add-key',
