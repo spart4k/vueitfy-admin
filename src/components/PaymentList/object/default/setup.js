@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch } from 'vue'
+import Vue, { onMounted, ref, computed, watch, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 // import Row from '../row/index.vue'
@@ -66,6 +66,7 @@ const table = {
     const total = ref({})
     const isOpen = ref(false)
     const isOpenObject = ref(false)
+    // const period = inject('period')
     const { makeRequest } = useRequest({
       context,
       request: () =>

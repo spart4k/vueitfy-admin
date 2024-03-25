@@ -22,6 +22,14 @@ const setup = (axios) => {
   })
   axios.interceptors.response.use(
     (response) => {
+      // console.log(response)
+      if (!response.data) {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Ошибка сервера',
+          timeout: 1000,
+        })
+      }
       return response
     },
     async (error) => {
