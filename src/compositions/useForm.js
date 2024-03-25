@@ -797,7 +797,16 @@ export default function ({
         let filter = list.filter.reduce((acc, el) => {
           console.log(el)
           const source = eval(el.source)
-          if (source[el.field] !== null && source[el.field] !== undefined) {
+          if (el.routeKey) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: [+route.params[el.routeKey]],
+              type: el.type,
+            })
+          } else if (
+            source[el.field] !== null &&
+            source[el.field] !== undefined
+          ) {
             let value = source[el.field]
             if (moment(value, 'YYYY.MM', true).isValid())
               value = moment(value, 'YYYY.MM').format('YYYY-MM')
