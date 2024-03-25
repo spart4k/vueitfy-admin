@@ -1383,10 +1383,10 @@ export default function ({
                 : [source[el.field]],
               type: el.type,
             })
-          } else if (el.source === '+route.params.id') {
+          } else if (el.routeKey) {
             acc.push({
               alias: el.alias ?? el.field,
-              value: [+route.params.id],
+              value: [+route.params[el.routeKey]],
               type: el.type,
             })
           } else if (el.sendEmpty) {

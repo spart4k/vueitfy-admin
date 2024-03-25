@@ -141,7 +141,8 @@ export default {
             {
               field: 'personal_id',
               value: '',
-              source: '+route.params.id',
+              // source: '+route.params.id',
+              routeKey: 'id',
               type: 'num',
             },
           ],

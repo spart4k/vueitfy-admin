@@ -82,7 +82,8 @@ export default {
               {
                 field: 'personal_id',
                 value: '',
-                source: '+route.params.id',
+                // source: '+route.params.id',
+                routeKey: 'id',
               },
             ],
             dependence: [
@@ -101,8 +102,9 @@ export default {
                   {
                     field: 'personal_id',
                     value: '',
-                    source: '+route.params.id',
+                    // source: '+route.params.id',
                     type: 'num',
+                    routeKey: 'id',
                   },
                 ],
               },
@@ -158,7 +160,8 @@ export default {
                   {
                     field: 'personal_id',
                     value: '',
-                    source: '+route.params.id',
+                    // source: '+route.params.id',
+                    routeKey: 'id',
                     type: 'num',
                   },
                 ],
@@ -180,7 +183,8 @@ export default {
               {
                 field: 'personal_id',
                 value: '',
-                source: '+route.params.id',
+                // source: '+route.params.id',
+                routeKey: 'id',
                 type: 'num',
               },
             ],
