@@ -12,34 +12,25 @@ import _ from 'lodash'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormOutput from '@/components/Form/output/index.vue'
-import TableDefault from '@/components/Table/default/index.vue'
 import FormTarget from '@/components/Form/target/default/index.vue'
 import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
-import { fieldsBaseDefaulrForm as personalFields } from '@/pages/personal/index.js'
-import { objectEditField as objectFields } from '@/pages/object/index.js'
-import { defaultForm as personalConfig } from '@/pages/personal/index'
-import { defaultForm as objectConfig } from '@/pages/object/index.js'
+// import { fieldsBaseDefaultForm as personalFields } from '@/pages/personal/index.js'
+// import { defaultForm as personalConfig } from '@/pages/personal/index'
+// import { defaultForm as objectConfig } from '@/pages/object/index.js'
 
-const changeActionTo = (array, key, oldPath, newPath) => {
-  array.forEach((tab) => {
-    if (tab.path === oldPath) {
-      tab.path = newPath
-    }
-    if (tab.actions) {
-      tab.actions.forEach((el) => {
-        if (el.action === 'closePopup') {
-          el.to = key
-        }
-      })
-    }
-  })
-}
+// const changeActionTo = (array, oldPath, newPath) => {
+//   array.forEach((tab) => {
+//     if (tab.path === oldPath) {
+//       tab.path = newPath
+//     }
+//   })
+// }
 
-const personalConfigForms = _.cloneDeep(personalConfig)
-const objectConfigForm = _.cloneDeep(objectConfig)
+// const personalConfigForms = _.cloneDeep(personalConfig)
+// const objectConfigForm = _.cloneDeep(objectConfig)
 
-changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
-changeActionTo(objectConfigForm, 'pivot', 'edit', 'edit-object')
+// changeActionTo(personalConfigForms, 'edit', 'edit-personal')
+// changeActionTo(objectConfigForm, 'edit', 'edit-object')
 
 function consoleText(row) {}
 
@@ -49,15 +40,15 @@ function consolePanel() {}
 
 function searchInputing(field) {}
 
-function changeSort() {
-  let btn = config.panel.buttons.find((x) => x.function === changeSort)
+function changeSort(config) {
+  let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
   let heading = config.head.find((x) => x.changeable)
   if (btn.label === 'Объекты') {
     btn.label = 'ФИО'
     heading.title = 'Объект'
     heading.alias = 'o.name'
     heading.value = 'object_name'
-    heading.routeName = 'pivot-edit-object'
+    heading.routeName = 'pivot-object'
     heading.routeParam = 'object_id'
     heading.type = 'download'
     config.options.url = 'get/pagination_pivot/personal_target_object'
@@ -66,14 +57,14 @@ function changeSort() {
     heading.title = 'ФИО'
     heading.alias = 'p.name'
     heading.value = 'personal_name'
-    heading.routeName = 'pivot-edit-personal'
+    heading.routeName = 'pivot-personal'
     heading.routeParam = 'personal_id'
     heading.type = 'default'
     config.options.url = 'get/pagination_pivot/personal_target_personal'
   }
 }
 
-const config = {
+export const config = {
   selector: '#mainTable',
   options: {
     selecting: true,
@@ -146,12 +137,6 @@ const config = {
           ],
         },
       },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   // function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
       {
         label: 'Объекты',
         class: ['v-table-button--custom'],
@@ -206,7 +191,7 @@ const config = {
         isShow: true,
       },
       routeParam: 'personal_id',
-      routeName: 'pivot-edit-personal',
+      routeName: 'pivot-personal',
       sorts: [
         {
           type: 'string',
@@ -228,7 +213,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '600px',
+    width: '800px',
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
@@ -487,7 +472,7 @@ const config = {
       {
         path: 'profit',
         id: 2,
-        name: 'Основные',
+        name: 'Профит',
         type: FormDefault,
         detail: true,
         lists: [],
@@ -537,7 +522,7 @@ const config = {
       },
       {
         id: 1,
-        name: 'Основные',
+        name: 'Редактирование выработки',
         type: FormTarget,
         detail: true,
         path: 'edit',
@@ -661,8 +646,8 @@ const config = {
       //   active: false,
       //   config: consumptionConfig,
       // },
-      ...objectConfigForm,
-      ...personalConfigForms,
+      // ...objectConfigForm,
+      // ...personalConfigForms,
     ],
     activeTab: null,
   },

@@ -3,7 +3,6 @@ import { required } from '@/utils/validation.js'
 import FormStage from '@/components/Form/stage/index.vue'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
-//import TableDefault from '@/components/Table/default/index.vue'
 import {
   stringField,
   selectField,

@@ -30,9 +30,7 @@
       :is="Popup"
       :options="{
         width: proxyConfig.detail.width,
-        portal: `table-detail${
-          proxyConfig?.detail?.popupIndex ? proxyConfig?.detail?.popupIndex : ''
-        }`,
+        portal: 'table-detail',
       }"
       v-if="
         proxyConfig.detail &&

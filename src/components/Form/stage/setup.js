@@ -1,6 +1,7 @@
 import Vue, { onUnmounted, onMounted, ref } from 'vue'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
+import FormDocuments from '@/components/Form/documents/default/index.vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import useStage from '@/compositions/useStage'
 
@@ -12,6 +13,7 @@ export default {
   components: {
     FormDefault,
     FormList,
+    FormDocuments,
   },
   props: {
     stages: {

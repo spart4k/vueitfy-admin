@@ -15,6 +15,7 @@
             <SwitchDefault
               @getItems="changeHeaders"
               :button="button"
+              :config="options"
               v-if="button.type === 'switch'"
               v-model="button.value"
             />
@@ -296,7 +297,7 @@
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
                         @click="
-                          action.function(Object.byString(row.row, cell.value))
+                          downloadFile(Object.byString(row.row, cell.value))
                         "
                       >
                         <v-icon small>
@@ -451,9 +452,7 @@
       @close="closePopupForm"
       :options="{
         width: options.detail.width,
-        portal: `table-detail${
-          options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
-        }`,
+        portal: 'table-detail',
       }"
       v-if="
         options.detail && options.detail.type === 'popup' && popupForm.isShow

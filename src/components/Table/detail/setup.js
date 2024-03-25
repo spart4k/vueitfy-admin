@@ -3,8 +3,11 @@ import { useRoute, useRouter } from 'vue-router/composables'
 
 import FormDefault from '@/components/Form/default/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
+import FormDocuments from '@/components/Form/documents/default/index.vue'
+import FormRates from '@/components/Form/rates/default/index.vue'
+import TableFixed from '@/components/Table/fixed/index.vue'
 import FormOutputCorrect from '@/components/Form/output/correct/index.vue'
-import TableDefault from '@/components/Table/default/index.vue'
+// import TableDefault from '@/components/Table/default/index.vue'
 import FrameView from '@/components/Task/frame-view/index.vue'
 
 //import { form, list } from '@/api/index.js'
@@ -14,9 +17,11 @@ export default {
   name: 'Table-Detail',
   components: {
     FormDefault,
-    TableDefault,
+    TableFixed,
     FormStage,
     FrameView,
+    FormRates,
+    FormDocuments,
     FormOutputCorrect,
   },
   props: {
@@ -55,7 +60,7 @@ export default {
       })
     })
 
-    const porpsContent = ref(props.content)
+    const propsContent = ref(props.content)
 
     const availableTabsAll = computed(() => {
       return availableTabs.value.filter((tab) => {
@@ -75,8 +80,7 @@ export default {
     return {
       loading,
       syncForm,
-      TableDefault,
-      porpsContent,
+      propsContent,
       id,
       availableTabs,
       activeTab,
