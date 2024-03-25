@@ -61,7 +61,6 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
-      console.log(form)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -796,6 +795,7 @@ export default function ({
 
         // if (list.condition) return []
         let filter = list.filter.reduce((acc, el) => {
+          console.log(el)
           const source = eval(el.source)
           if (source[el.field] !== null && source[el.field] !== undefined) {
             let value = source[el.field]
@@ -906,30 +906,13 @@ export default function ({
         url = dependence.url
 
         if (targetField?.type === 'autocomplete') {
-          const filter = []
-          const query = (target) => {
-            target.filter.forEach((el) => {
-              if (!formData[el.field] && !el.source) return
-              if (el.source) {
-                const source = eval(el.source)
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  type: el.type,
-                  value: el.source ? source[el.field] : formData[el.field],
-                })
-              } else {
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  type: el.type,
-                  value: formData[el.field],
-                })
-              }
-            })
-          }
+          let filter = []
           if (targetField.filter && targetField.filter.length) {
-            query(targetField)
+            // query(targetField)
+            filter = getDepFilters(targetField)
           } else if (dependence.filter && dependence.filter.length) {
-            query(dependence)
+            // query(dependence)
+            filter = getDepFilters(dependence)
           }
           body = {
             countRows: 10,
@@ -1171,34 +1154,43 @@ export default function ({
     }
   }
 
+  const getDepFilters = (target) => {
+    const filters = target.filter.flatMap((el) => {
+      // console.log('el', el)
+      const filter = {
+        alias: el.alias ?? el.field,
+        type: el.type,
+      }
+      if (!formData[el.field] && !el.source && !el.routeKey) return []
+      if (el.source) {
+        const source = eval(el.source)
+        if (el.source === 'fromPrev') {
+          filter.value = form?.formData[el.field]
+        } else if (el.source && el.source !== 'formData') {
+          const source = eval(el.source)
+          filter.value = source
+        } else if (el.source === 'formData') {
+          filter.value = formData[el.field]
+        } else {
+          filter.value = el.source ? eval(el.source) : formData[el.field]
+        }
+      } else if (el.routeKey) {
+        filter.value = +route.params[el.routeKey]
+      } else {
+        filter.value = formData[el.field]
+      }
+      return filter
+    })
+    return filters
+  }
+
   const loadAutocompletes = async () => {
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
-      const filters = []
+      // const filters = []
       const { url } = el
-      if (el.filter && el.filter.length) {
-        el.filter.forEach((filter) => {
-          let value, type
-          if (filter.source === 'fromPrev') {
-            value = form?.formData[filter.field]
-          } else if (filter.source && filter.source !== 'formData') {
-            const source = eval(filter.source)
-            value = source
-          } else if (filter.source === 'formData') {
-            value = formData[filter.field]
-          } else {
-            value = formData[filter.field]
-          }
-          if (filter.type) type = filter.type
-          filters.push({
-            alias: filter.field,
-            value,
-            type,
-          })
-        })
-      }
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
@@ -1206,7 +1198,7 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
-        filter: filters,
+        filter: getDepFilters(el),
       })
 
       if (data.rows) {
@@ -1393,10 +1385,10 @@ export default function ({
                 : [source[el.field]],
               type: el.type,
             })
-          } else if (el.source === '+route.params.id') {
+          } else if (el.routeKey) {
             acc.push({
               alias: el.alias ?? el.field,
-              value: [+route.params.id],
+              value: [+route.params[el.routeKey]],
               type: el.type,
             })
           } else if (el.sendEmpty) {

@@ -719,7 +719,7 @@ const routes = [
     component: DocumentView,
     children: [
       {
-        name: 'documents-query',
+        name: 'documents/query',
         path: '/documents/query',
         meta: {
           mode: ['query'],
@@ -727,43 +727,31 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'documents-personal-id',
-        path: '/documents/personal/:id',
+        name: 'documents/:id',
+        path: '/documents/:id',
         meta: {
-          mode: ['persanalById'],
+          mode: ['personal'],
+          label: 'Персонал',
         },
         component: Detail,
         children: [
           {
-            name: 'documents-personal-id-new',
-            path: '/documents/personal/:id/new',
+            name: 'documents/:id/:payment',
+            path: '/documents/:id/:payment',
             meta: {
-              mode: ['persanalById', 'new'],
+              mode: ['personal', 'personal-payment'],
             },
             component: Detail,
           },
           {
-            name: 'documents-personal-id-object_id',
-            path: ':object_id',
+            name: 'documents/:id/:zayavka',
+            path: '/documents/:id/:zayavka',
             meta: {
-              mode: ['persanalById', 'object_id'],
+              mode: ['personal', 'personal-zayavka'],
             },
             component: Detail,
           },
-          // {
-          //   name: 'documents-personal-id-new',
-          //   path: 'documents/personal/:id/new',
-          //   meta: {
-          //     mode: ['persanalById', 'object_id'],
-          //   },
-          //   component: Detail,
-          // },
         ],
-      },
-      {
-        name: 'documents/:id',
-        path: ':id',
-        component: Detail,
       },
     ],
   },
