@@ -1153,7 +1153,9 @@ export default function ({
   }
 
   const getDepFilters = (target) => {
-    const filters = target.filter.flatMap((el) => {
+    console.log(target)
+    if (!target.filter) return []
+    const filters = target?.filter?.flatMap((el) => {
       // console.log('el', el)
       const filter = {
         alias: el.alias ?? el.field,
