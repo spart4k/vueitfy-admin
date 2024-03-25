@@ -61,7 +61,6 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
-      console.log(form)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })

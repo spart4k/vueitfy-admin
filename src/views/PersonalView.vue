@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
 import store from '@/store'
+import { ref, computed, onMounted } from 'vue'
 import _ from 'lodash'
 import useView from '@/compositions/useView.js'
 
@@ -81,36 +81,34 @@ export default {
         }
       })
     })
-    console.log(availableTabs)
 
-    onMounted(() => {
-      const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
-        paymentConfigOrig,
-        zayavkaConfigOrig
-      )
+    const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+      paymentConfigOrig,
+      zayavkaConfigOrig
+    )
 
-      configRouteConvert({
-        config: paymentConfig.config,
-        route: 'payment',
-        newPath: 'edit-payment',
-        settings: {
-          index: [0],
-        },
-      })
-
-      configRouteConvert({
-        config: zayavkaConfig.config,
-        route: 'zayavka',
-        newPath: 'edit-zayavka',
-        settings: {
-          oldPath: 'id',
-        },
-      })
-
-      config.tabs[0].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
-      config.tabs[1].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
-      config.tabs[2].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    configRouteConvert({
+      config: paymentConfig.config,
+      route: 'payment',
+      newPath: 'edit-payment',
+      settings: {
+        index: [0],
+      },
     })
+
+    configRouteConvert({
+      config: zayavkaConfig.config,
+      route: 'zayavka',
+      newPath: 'edit-zayavka',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+
+    config.tabs[0].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    config.tabs[1].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    config.tabs[2].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+
     return {
       config,
       activeTab,

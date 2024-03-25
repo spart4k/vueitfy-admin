@@ -537,9 +537,6 @@ const table = {
 
     const openRow = ($event, row) => {
       if (options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
         let requestId = 'id'
         if (props.options.detail.requestId)
           requestId = props.options.detail.requestId
@@ -564,11 +561,6 @@ const table = {
     ) => {
       if (options.detail.type === 'popup') {
         if (activeIndexCells.includes(indexCell)) {
-          // let requestId = 'id'
-          // if (props.options.detail.requestId)
-          //   requestId = props.options.detail.requestId
-          //documents/personal/id
-
           const name = `documents-personal-id`
 
           router.push({
@@ -577,18 +569,6 @@ const table = {
               id: row.personal_id,
             },
           })
-
-          //
-          //
-          //documents/personal/id
-          // router.push(
-          //   {
-          //     name: `${route.name}/:id`,
-          //     params: {
-          //       id: row.row.id
-          //     }
-          // })
-
           popupForm.value.isShow = true
         }
       }
@@ -601,9 +581,6 @@ const table = {
 
     const addItem = () => {
       if (options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
         router.push({
           name: `${route.name}-add`,
         })
