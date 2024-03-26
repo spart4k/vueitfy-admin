@@ -35,7 +35,7 @@
           indeterminate
         />-->
         <v-row
-          v-if="item.type.name === 'TableDefault'"
+          v-if="item.type === 'TableDefault'"
           class="justify-end align-end"
         >
           <v-btn
