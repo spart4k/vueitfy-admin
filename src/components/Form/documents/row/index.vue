@@ -42,6 +42,7 @@
                 cols="12"
                 :sm="showDropzone ? 6 : 12"
                 class="document-fields"
+                v-if="showFields"
               >
                 <v-row>
                   <v-col
@@ -116,7 +117,11 @@
                 </v-row>
               </v-col>
 
-              <v-col v-if="showDropzone" cols="12" sm="5">
+              <v-col
+                v-if="showDropzone"
+                cols="12"
+                :sm="showDropzone && !showFields ? 12 : 5"
+              >
                 <!-- {{ $root.env.VUE_APP_STORE + document.path_doc }}
           {{ pathDock }} -->
                 <!-- <img :src="$root.env.VUE_APP_STORE + document.path_doc" alt="" /> -->

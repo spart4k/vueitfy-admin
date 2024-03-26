@@ -1310,6 +1310,7 @@ export default function ({
     let syncForm = undefined
     let lists = undefined
     if (getDetail()) {
+      console.log(getDetail())
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }

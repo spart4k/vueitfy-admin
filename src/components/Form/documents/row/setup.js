@@ -76,6 +76,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showFields: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     Autocomplete,

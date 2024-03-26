@@ -91,6 +91,18 @@ const docForm = defineComponent({
     bankData: {
       type: Object,
     },
+    showDropzone: {
+      type: Boolean,
+      default: false,
+    },
+    showFields: {
+      type: Boolean,
+      default: false,
+    },
+    showScan: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: function () {
     return {

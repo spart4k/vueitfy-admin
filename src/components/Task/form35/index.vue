@@ -38,33 +38,96 @@
           Закрыть
         </v-btn> -->
       </div>
-      <div class="">
-        <v-row align="center">
-          <v-icon class="mr-2" v-if="osnConfirmed !== null" small color="green"
-            >$IconGalka</v-icon
-          >
-          <span>Выберите статус работника:</span>
-        </v-row>
-        <div class="w-100 d-flex justify-center mt-2">
-          <v-btn
-            @click="isFire"
-            :class="status === 'Работает' ? 'disabled' : ''"
-            color="error mr-3"
-            >Уволен</v-btn
-          >
-          <v-btn
-            @click="isWork"
-            :class="status === 'Уволен' ? 'disabled' : ''"
-            color="success"
-            >Работает</v-btn
-          >
+      <div class="form">
+        <div class="flex-column">
+          <p>Выберите сотрудника</p>
+          <v-col cols="12" sm="12">
+            <Autocomplete
+              :field="fieldsTemplate.account"
+              v-model="formData.account"
+              :error-messages="formErrors.account"
+              :formData="formData"
+              ref="autocompleteRef"
+              @change="changeAutocomplete"
+              :readonly="readonlyField(fieldsTemplate.account)"
+              :class="[...fieldsTemplate.account.class]"
+            />
+          </v-col>
         </div>
-        <Autocomplete
-          v-if="status === 'Работает'"
-          class="mt-3"
-          :field="autocompleteConfig"
-          v-model="object"
-        />
+        <div class="flex-column">
+          <p>Укажите стоимость документа</p>
+          <v-row>
+            <v-col cols="12" sm="5">
+              <Autocomplete
+                :field="fieldsTemplate.account"
+                v-model="formData.rashod_vid"
+                :error-messages="formErrors.rashod_vid"
+                :formData="formData"
+                ref="autocompleteRef"
+                @change="changeAutocomplete"
+                :class="[...fieldsTemplate.account.class]"
+              />
+            </v-col>
+            <v-col cols="12" sm="3">
+              <v-text-field
+                v-model="formData.count"
+                :label="fieldsTemplate.count.label"
+                :placeholder="fieldsTemplate.count?.placeholder"
+                :error-messages="formErrors.count"
+                clearable
+                :name="fieldsTemplate.count"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-text-field
+                v-model="formData.count"
+                :label="fieldsTemplate.count.label"
+                :placeholder="fieldsTemplate.count?.placeholder"
+                :error-messages="formErrors.count"
+                clearable
+                :name="fieldsTemplate.count"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12">
+              <v-text-field
+                v-model="formData.exact_name"
+                :label="fieldsTemplate.exact_name.label"
+                :placeholder="fieldsTemplate.exact_name?.placeholder"
+                :error-messages="formErrors.exact_name"
+                clearable
+                :name="fieldsTemplate.exact_name"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </div>
+        <div class="flex-column">
+          <p>Укажите тип оплаты</p>
+          <v-row>
+            <v-col cols="12" sm="12">
+              <Autocomplete
+                :field="fieldsTemplate.type_pay"
+                v-model="formData.type_pay"
+                :error-messages="formErrors.type_pay"
+                :formData="formData"
+                ref="autocompleteRef"
+                @change="changeAutocomplete"
+                :class="[...fieldsTemplate.account.class]"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="12">
+              <DropZone
+                :options="fieldsTemplate.check_docs.options"
+                v-model="formData.check_docs"
+                :formData="formData"
+                :field="fieldsTemplate.check_docs"
+                @addFiles="addFiles($event, fieldsTemplate.check_docs)"
+                :error-messages="formErrors.check_docs"
+              />
+            </v-col>
+          </v-row>
+        </div>
       </div>
       <div class="w-100 d-flex justify-end mt-5">
         <v-btn color="transparent mr-3">Закрыть</v-btn>
