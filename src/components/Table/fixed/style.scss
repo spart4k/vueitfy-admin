@@ -1,7 +1,7 @@
 $paddingCell: 5px;
 $borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 100px;
-$tableFooterHeight: 85px;
+$tableFooterHeight: 105px;
 
 .v {
   &-table {
@@ -149,8 +149,7 @@ $tableFooterHeight: 85px;
         &-cell--hover {
           &:hover {
             border: var(--v-primary-base) solid 1px;
-            background-color: rgba(139, 87, 152, 0.1);
-            // background-color: red;
+            background-color: rgb(231, 231, 231);
           }
         }
         &-cell {
@@ -179,6 +178,8 @@ $tableFooterHeight: 85px;
             &_text {
               display: flex;
               justify-content: center;
+              font-size: 12px;
+              line-height: 16px;
 
               // overflow: hidden;
               // text-overflow: ellipsis;
@@ -190,6 +191,9 @@ $tableFooterHeight: 85px;
             }
             &:hover {
               border: black solid 2px;
+            }
+            &__deleted {
+              opacity: 0.8;
             }
           }
           &-item + &-item {
@@ -431,6 +435,31 @@ $tableFooterHeight: 85px;
                 }
               }
             }
+          }
+        }
+      }
+      &-state {
+        &-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &-column {
+            &-item {
+              display: flex;
+              &_type {
+                border-radius: 4px;
+                height: auto;
+                width: 30px;
+              }
+              &_count {
+              }
+            }
+            &-item + &-item {
+              margin-top: 4px;
+            }
+          }
+          &-column + &-column {
+            margin-left: 8px;
           }
         }
       }
