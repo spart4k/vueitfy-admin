@@ -11,7 +11,7 @@
               <div class="alert" v-if="false">
                 <!-- <span>{{ errors.message }}</span> -->
               </div>
-              <v-list lines="one" class="list overflow-y-auto" max-height="220">
+              <!-- <v-list lines="one" class="list overflow-y-auto" max-height="220">
                 <v-list-item
                   v-for="(file, fileID) in files"
                   :key="file"
@@ -30,7 +30,15 @@
                     <IconDelete />
                   </div>
                 </v-list-item>
-              </v-list>
+              </v-list> -->
+              <FormTitle
+                :docName="getDocName(item.doc_id)"
+                v-for="(item, index) in docs"
+                :docs="item"
+                :key="index"
+                @confirmed="addConfirmed"
+                @unconfirmed="addUnconfirmed"
+              ></FormTitle>
             </div>
 
             <div v-if="!files.length" class="text-center mt-4">

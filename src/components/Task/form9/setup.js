@@ -54,8 +54,8 @@ const Form8 = defineComponent({
     let isSetFilesCloseSchet = ref(false)
     let docs = ref(null)
     onMounted(() => {
-      data.data.docs_grajdanstvo.forEach((item, index) => {
-        let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
+      data.data.grajdanstvo.forEach((item, index) => {
+        let pasteObject = data.data.docs_id.find((doc) => doc.doc_id === item)
         if (pasteObject) {
           pasteObject['inProcess'] = false
         } else {

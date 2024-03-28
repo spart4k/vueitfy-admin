@@ -13,6 +13,7 @@ import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import IconDelete from '@/components/Icons/delete/delete.vue'
+import FormTitle from '@/components/Task/el/FormTitle/index.vue'
 import { methods } from 'vue2-dropzone'
 
 const Form11 = defineComponent({
@@ -20,6 +21,7 @@ const Form11 = defineComponent({
   components: {
     DropZone,
     IconDelete,
+    FormTitle,
   },
   props: {
     data: {
@@ -27,7 +29,7 @@ const Form11 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }, ctx) {
+  setup(props, ctx) {
     const route = useRoute()
     const router = useRouter()
 
@@ -66,7 +68,7 @@ const Form11 = defineComponent({
     const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
-    let sss = JSON.parse(data.task.dop_data)
+    let sss = JSON.parse(props.data.task.dop_data)
     let file = ref(null)
     let comment = ref('')
     let listRequestsForUpload = ref([])
@@ -79,7 +81,31 @@ const Form11 = defineComponent({
     })
     let isDocs = ref(false)
     let dropZone = ref(null)
+    let confirmed = ref([])
+    let unConfirmed = ref([])
+    const addConfirmed = (data) => {
+      confirmed.value.push(data)
+      unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
+      checkAllowDisable()
+    }
+    const addUnconfirmed = (data) => {
+      unConfirmed.value.push(data)
+      confirmed.value = confirmed.value.filter((x) => x.id !== data.id)
 
+      checkAllowDisable()
+    }
+    let checkAllowDisable = () => {
+      if (
+        props.data.data.docs_id.length ==
+        unConfirmed.value.length + confirmed.value.length
+      ) {
+        isActiveBtnFirst.value = true
+      }
+    }
+    let isActiveBtnFirst = ref(false)
+    const getDocName = (id) => {
+      return props.data.data.docs_spr[id]
+    }
     onMounted(() => {
       // sss.docs_id.forEach((item) => {
       //   let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -112,7 +138,7 @@ const Form11 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
+            personal_id: props.data.entity.id,
             doc_id: e.item,
             path_doc: `/personal_doc/${fileName}`,
             from_task: true,
@@ -217,14 +243,14 @@ const Form11 = defineComponent({
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
-              process_id: data.task.process_id,
+              process_id: props.data.task.process_id,
               manager_id: account_id,
-              task_id: data.task.id,
-              parent_action: data.task.id,
-              personal_id: data.entity.id,
+              task_id: props.data.task.id,
+              parent_action: props.data.task.id,
+              personal_id: props.data.entity.id,
               comment: comment.value,
               docs_id: keyOfObjectSend,
-              account_id: data.task.from_account_id,
+              account_id: props.data.task.from_account_id,
             },
           }),
       })
@@ -242,7 +268,7 @@ const Form11 = defineComponent({
         store.dispatch('taskModule/setPartTask', {
           status: 2,
           data: {
-            id: data.task.id,
+            id: props.data.task.id,
           },
         }),
     })
@@ -253,14 +279,14 @@ const Form11 = defineComponent({
         store.dispatch('taskModule/setStartStep', {
           data: {
             process: 5,
-            process_id: data.task['process_id'],
+            process_id: props.data.task['process_id'],
             step_id: 5,
-            docs_id: JSON.parse(data.task.dop_data)['docs_id'],
-            personal_id: data.entity['id'],
+            docs_id: JSON.parse(props.data.task.dop_data)['docs_id'],
+            personal_id: props.data.entity['id'],
             // account_id - chief id
             account_id: chied_id,
             type_parent_action: 2,
-            parent_action: data.entity['id'],
+            parent_action: props.data.entity['id'],
           },
         }),
     })
@@ -285,11 +311,15 @@ const Form11 = defineComponent({
       dropZone,
       dropzoneOptions,
       sendTaskFinish,
+      docs: props.data.data.docs_id,
       addDisabledDocuments,
       disabledDocumentsAcc,
       emplyeeFired,
       errors,
       refds,
+      addConfirmed,
+      addUnconfirmed,
+      getDocName,
     }
   },
 })

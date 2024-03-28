@@ -6,29 +6,21 @@
       >
       <div class="position-relative mb-8">
         <!-- TODO: LIST -->
-        <div v-if="listDocuments?.length && listDocuments">
+        <div v-if="docs?.length && docs">
           <div class="alert text-center" v-if="errors.isActive">
             <span>{{ errors.message }}</span>
           </div>
-
-          <v-list lines="one" class="list overflow-y-auto" max-height="220">
-            <v-list-item
-              v-for="(file, fileID) in listDocuments"
-              :key="file"
-              class="file-item mb-3"
-            >
-              <div class="file-img">
-                <v-img class="img" :src="file.dataURL"></v-img>
-              </div>
-              <div class="file-name">{{ file.name }}</div>
-              <div class="file-remove" @click="removeFile(fileID)">
-                <IconDelete />
-              </div>
-            </v-list-item>
-          </v-list>
+          <FormTitle
+            :docName="getDocName(item.doc_id)"
+            v-for="(item, index) in docs"
+            :docs="item"
+            :key="index"
+            @confirmed="addConfirmed"
+            @unconfirmed="addUnconfirmed"
+          ></FormTitle>
         </div>
 
-        <div v-if="!listDocuments?.length" class="text-center mt-4">
+        <div v-else class="text-center mt-4">
           <span class="font-weight-regular text-subtitle-1"
             >Документы не загружены</span
           >
