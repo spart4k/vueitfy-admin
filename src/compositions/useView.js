@@ -100,7 +100,7 @@ export default function () {
     if (route) config.detail.requestId = route
     if (settings.index?.length) {
       settings.index.forEach((item) => {
-        config.detail.tabs[item].path = newPath
+        if (newPath) config.detail.tabs[item].path = newPath
         if (route) config.detail.tabs[item].routeParam = route
       })
     } else if (settings.oldPath) {
@@ -109,7 +109,7 @@ export default function () {
           item.path === settings.oldPath &&
           !settings.exceptName?.includes(item.name)
         ) {
-          item.path = newPath
+          if (newPath) item.path = newPath
           if (route) item.routeParam = route
         }
       })
