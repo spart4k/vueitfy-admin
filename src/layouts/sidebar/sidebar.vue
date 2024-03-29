@@ -53,6 +53,8 @@
                       !isMobileDevice && 'v-sidebar-container-link__hover'
                     "
                     :to="item?.link"
+                    :name="item.link"
+                    :id="`nav-chapter_${item.name}`"
                   >
                     <div class="v-sidebar-container-link_icon">
                       <v-icon
@@ -86,7 +88,10 @@
             <template v-else-if="!miniMenu">
               <v-expansion-panel-header
                 class="v-sidebar-container-link v-sidebar-container-link__default-height"
-                :class="!isMobileDevice && 'v-sidebar-container-link__hover'"
+                :class="[
+                  !isMobileDevice && 'v-sidebar-container-link__hover',
+                  `nav-button_${item.name}`,
+                ]"
               >
                 <div class="v-sidebar-container-link_icon">
                   <v-icon
@@ -124,11 +129,13 @@
                     'v-sidebar-container-link',
                     instantNav && 'v-sidebar-container-link__instant',
                     !isMobileDevice && 'v-sidebar-container-link__hover',
+                    `nav-button_${link.name}`,
                   ]"
                 >
                   <router-link
                     class="text-decoration-none pl-6 pr-6 pb-4 d-block"
                     :to="link.link"
+                    :name="`${item.link}`"
                   >
                     <div
                       :class="[
@@ -188,6 +195,7 @@
                       :to="link.link"
                       class="v-sidebar-container-link"
                       style="height: 100%; width: 100%"
+                      :link="link.name"
                       :class="
                         !isMobileDevice && 'v-sidebar-container-link__hover'
                       "

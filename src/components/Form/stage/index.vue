@@ -25,6 +25,7 @@
           @setStageData="setStageData"
           @closePopup="(e) => $emit('closePopup', e)"
           @getItems="(e) => $emit('getItems', e)"
+          :class="item?.label"
         />
         <!--<v-progress-circular
           v-else
@@ -34,7 +35,7 @@
           indeterminate
         />-->
         <v-row
-          v-if="item.type.name === 'TableDefault'"
+          v-if="item.type === 'TableDefault'"
           class="justify-end align-end"
         >
           <v-btn

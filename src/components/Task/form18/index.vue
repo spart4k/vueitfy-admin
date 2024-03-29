@@ -27,6 +27,7 @@
           style="height: 50px"
         >
           <v-col class="px-0" cols="5">
+            <!-- {{ group.formData }} -->
             <v-select
               v-model="group.formData.name"
               :items="servicesDetail"

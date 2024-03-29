@@ -75,6 +75,7 @@ const table = {
       row: {},
     })
     const rowCount = [5, 10, 15, 20, 25, 30]
+    const availibleTitlesForSortIcons = ['ФИО', 'Объект', 'Должность']
     const contextmenu = ref({
       isShow: false,
       x: null,
@@ -354,7 +355,7 @@ const table = {
       //  }
       //})
       let by = undefined
-      if (props.routeParam) {
+      if (props.routeParam || store?.state?.formStorage?.id) {
         by = [
           {
             field: props.options.options.urlDetail,
@@ -383,6 +384,7 @@ const table = {
       if (props.options.data.rows?.length && props.options.data.rows) {
         props.options.data.totalPages = data.totalPage
         props.options.data.totalRows = data.total
+        props.options.data.footer = data.footer
         const structuredArray = []
         props.options.data.rows.forEach((row) => {
           if (props.options.options.selecting) {
@@ -397,6 +399,8 @@ const table = {
           })
         })
         props.options.data.rows = structuredArray
+      } else {
+        paramsQuery.value.currentPage = 1
       }
       loading.value = false
       controller = undefined
@@ -621,7 +625,7 @@ const table = {
     }
     const panelHandler = async (button) => {
       const { type, url } = button
-      if (button.function) button.function()
+      if (button.function) button.function(props.options)
       if (type === 'addItem') {
         addItem()
       } else if (type === 'importFile') {
@@ -803,9 +807,18 @@ const table = {
     const getDownLoadLink = async (val) => {
       const date = currentDate.value.date
       globalLoading.value = true
-      const data = await store.dispatch('table/getDetail', `report/personal/period_target?object_id=${val}&period=${date}`)
+      const data = await store.dispatch(
+        'table/getDetail',
+        `report/personal/period_target?object_id=${val}&period=${date}`
+      )
       Vue.downloadFile(data.url)
       globalLoading.value = false
+    }
+
+    const getItemFromCompare = ({ compareItem, cuttedArray,}) => {
+      const item = cuttedArray.find(x => x.color === compareItem)
+      if (item?.count) return item.count
+      else return 0
     }
 
     const acceptForm = async () => {
@@ -929,6 +942,7 @@ const table = {
       currentDate,
       dropzone,
       acceptData,
+      availibleTitlesForSortIcons,
       // METHODS
       wrapingRow,
       openChildRow,
@@ -936,6 +950,7 @@ const table = {
       saveLastSelected,
       clearField,
       openSort,
+      getItemFromCompare,
       sortRow,
       openContext,
       getWidth,

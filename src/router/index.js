@@ -5,6 +5,7 @@ import PaymentListView from '../views/PaymentListView.vue'
 import PaymentListPersonalView from '../components/PaymentList/personal/index.vue'
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
+import Pivotx5View from '../views/Pivotx5View.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -16,11 +17,9 @@ import UserKeysView from '../views/UserKeysView.vue'
 import TasksView from '../views/Tasks.vue'
 
 import MailView from '../views/DefaultMails.vue'
-import TestView from '@/views/TestView'
 import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
 import Detail from '@/components/Table/detail'
-import GrishaView from '@/views/GrishaView.vue'
 import DocumentView from '@/views/DocumentView.vue'
 import SlataReportView from '@/views/SlataReportView.vue'
 import CorporateCardsView from '@/views/CorporateCardsView.vue'
@@ -131,14 +130,6 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'payment-load',
-        path: 'load',
-        meta: {
-          mode: ['load'],
-        },
-        component: Detail,
-      },
-      {
         name: 'payment/:id',
         path: ':id',
         meta: {
@@ -153,6 +144,50 @@ const routes = [
             meta: {
               mode: ['add-edit-logistic', 'output'],
               label: 'Редактировать начисление',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'payment-load',
+        path: 'load',
+        meta: {
+          mode: ['load'],
+        },
+        component: Detail,
+      },
+      // {
+      //   name: 'payment/personal-edit',
+      //   path: ':personal_id',
+      //   meta: {
+      //     mode: ['edit-personal'],
+      //     label: 'Редактировать',
+      //   },
+      //   component: Detail,
+      // },
+      {
+        name: 'payment-personal',
+        path: '/payment/:id',
+        meta: {
+          mode: ['personal'],
+          label: 'Персонал',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'payment-personal/:payment',
+            path: '/payment/:id/:payment',
+            meta: {
+              mode: ['personal', 'personal-payment'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'payment-personal/:zayavka',
+            path: '/payment/:id/:zayavka',
+            meta: {
+              mode: ['personal', 'personal-zayavka'],
             },
             component: Detail,
           },
@@ -245,16 +280,25 @@ const routes = [
             },
             component: Detail,
           },
-          {
-            name: 'personal-bind/:id',
-            path: '/personal/bind/:id',
-            meta: {
-              mode: ['bind'],
-              label: 'Привязать объект',
-            },
-            component: Detail,
-          },
         ],
+      },
+      {
+        name: 'personal-direction/:id',
+        path: '/personal/direction/:id',
+        meta: {
+          mode: ['direction'],
+          label: 'Изменить направление',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal-bind/:id',
+        path: '/personal/bind/:id',
+        meta: {
+          mode: ['bind'],
+          label: 'Привязать объект',
+        },
+        component: Detail,
       },
       {
         name: 'personal-add-key',
@@ -316,7 +360,7 @@ const routes = [
           },
           {
             name: 'personal/:id/:object_id',
-            path: ':object_id',
+            path: '/personal/:id/:object_id',
             meta: {
               mode: ['edit', 'object_id'],
             },
@@ -373,24 +417,53 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'pivot-edit-personal',
+        name: 'pivot-personal',
         path: '/pivot/:id',
         meta: {
-          mode: ['edit-personal'],
+          mode: ['personal'],
           label: 'Персонал',
         },
         component: Detail,
+        children: [
+          {
+            name: 'pivot-personal/:payment',
+            path: '/pivot/:id/:payment',
+            meta: {
+              mode: ['personal', 'personal-payment'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot-personal/:zayavka',
+            path: '/pivot/:id/:zayavka',
+            meta: {
+              mode: ['personal', 'personal-zayavka'],
+            },
+            component: Detail,
+          },
+        ],
       },
       {
-        name: 'pivot-edit-object',
+        name: 'pivot-object',
         path: '/pivot/:id',
         meta: {
-          mode: ['edit-object'],
+          mode: ['object'],
           label: 'Объект',
         },
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/pivotx5',
+    name: 'pivotx5',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: Pivotx5View,
   },
   {
     path: '/x5import',
@@ -615,17 +688,6 @@ const routes = [
     ],
   },
   {
-    path: '/test',
-    name: 'test',
-    meta: {
-      layout: 'blank-layout',
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: TestView,
-  },
-  {
     path: '/navbar',
     name: 'navbar',
     meta: {
@@ -661,14 +723,6 @@ const routes = [
     component: MailView,
   },
   {
-    path: '/grisha',
-    name: 'grisha',
-    meta: {
-      layout: 'blank-layout',
-    },
-    csajdomponent: GrishaView,
-  },
-  {
     path: '/documents',
     name: 'documents',
     meta: {
@@ -677,7 +731,7 @@ const routes = [
     component: DocumentView,
     children: [
       {
-        name: 'documents-query',
+        name: 'documents/query',
         path: '/documents/query',
         meta: {
           mode: ['query'],
@@ -685,43 +739,31 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'documents-personal-id',
-        path: '/documents/personal/:id',
+        name: 'documents/:id',
+        path: '/documents/:id',
         meta: {
-          mode: ['persanalById'],
+          mode: ['personal'],
+          label: 'Персонал',
         },
         component: Detail,
         children: [
           {
-            name: 'documents-personal-id-new',
-            path: '/documents/personal/:id/new',
+            name: 'documents/:id/:payment',
+            path: '/documents/:id/:payment',
             meta: {
-              mode: ['persanalById', 'new'],
+              mode: ['personal', 'personal-payment'],
             },
             component: Detail,
           },
           {
-            name: 'documents-personal-id-object_id',
-            path: ':object_id',
+            name: 'documents/:id/:zayavka',
+            path: '/documents/:id/:zayavka',
             meta: {
-              mode: ['persanalById', 'object_id'],
+              mode: ['personal', 'personal-zayavka'],
             },
             component: Detail,
           },
-          // {
-          //   name: 'documents-personal-id-new',
-          //   path: 'documents/personal/:id/new',
-          //   meta: {
-          //     mode: ['persanalById', 'object_id'],
-          //   },
-          //   component: Detail,
-          // },
         ],
-      },
-      {
-        name: 'documents/:id',
-        path: ':id',
-        component: Detail,
       },
     ],
   },
@@ -780,14 +822,6 @@ const routes = [
         component: Detail,
       },
     ],
-  },
-  {
-    path: '/test',
-    name: 'test',
-    meta: {
-      layout: 'blank-layout',
-    },
-    component: TestView,
   },
 ]
 

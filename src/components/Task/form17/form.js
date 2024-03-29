@@ -10,7 +10,6 @@ const config = {
     width: '600px',
     method: 'get',
     alias: 'personal_target',
-    popupIndex: 2,
     url: '/get/form/',
     name: 'Назначения',
     requestId: 'form_id',

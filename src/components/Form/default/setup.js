@@ -81,7 +81,6 @@ export default {
         } else {
           return
         }
-
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)

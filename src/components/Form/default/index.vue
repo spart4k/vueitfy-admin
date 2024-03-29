@@ -16,6 +16,7 @@
                 ? 'isHide'
                 : '',
             ]"
+            :name="field.name"
           >
             <div
               v-if="
@@ -73,6 +74,7 @@
               clearable
               :readonly="readonlyField(field)"
               :disabled="disabledField(field)"
+              :name="field.name"
             >
               {{ field?.appendAction }}
               <template v-if="field?.appendAction?.length" v-slot:append-outer>
@@ -107,6 +109,8 @@
               :label="field.label"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
+              :name="field.name"
+              :class="'checkbox_' + field.name"
             ></v-checkbox>
             <Datepicker
               v-else-if="showField('date', field)"

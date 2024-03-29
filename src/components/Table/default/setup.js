@@ -20,10 +20,10 @@ import vIconSort from '../../Icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
-import { post } from '@/api/axios'
 import useTable from '@/compositions/useTable.js'
-import { personal } from '@/pages/index.js'
 import moment from 'moment/moment'
+// import { post } from '@/api/axios'
+// import { personal } from '@/pages/index.js'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -297,6 +297,15 @@ const table = {
         changeUrlPath(action.action.url + '/' + row.row[action.action.target])
       } else if (action.action.type === 'delete') {
         await deleteRow(row.row.id, action.action.alias)
+      } else if (action.action.type === 'toRoute') {
+        // await deleteRow(row.row.id, action.action.alias)
+        router.push({
+          name: action.action.routeName,
+          params: {
+            [action.action.routeTarget]: row.row[action.action.routeParam],
+          },
+        })
+        popupForm.value.isShow = true
       } else {
         openRow(undefined, row)
       }
@@ -401,7 +410,6 @@ const table = {
         },
       })
       options.data.rows = data.rows
-      //options.data.rows = data
       if (options.data.rows?.length && options.data.rows) {
         options.data.totalPages = data.totalPage
         options.data.totalRows = data.total
@@ -421,6 +429,9 @@ const table = {
           })
         })
         options.data.rows = structuredArray
+      } else {
+        paramsQuery.value.totalPages = options.data.totalPages
+        paramsQuery.value.currentPage = 1
       }
       loading.value = false
       controller = undefined
@@ -517,27 +528,15 @@ const table = {
       activeIndexCells
     ) => {
       if (!options.detail || options.options.noTableAction) return
-
-      //проверка на существование ключа, если ключа нету тогда выставляет по умолчанию row
-      // по хорошему этот функционал нужно вынести в момент создание ключей, ПО УМОЛЧАНИЮ
-      if (!props.options.options.hasOwnProperty('doubleHandlerType')) {
-        props.options.options.doubleHandlerType = 'row'
-      }
-
       if (props.options.options.doubleHandlerType === 'cell') {
         openCell($event, row, cell, indexRow, indexCell, activeIndexCells)
-      }
-
-      if (props.options.options.doubleHandlerType === 'row') {
+      } else {
         openRow($event, row, cell)
       }
     }
 
     const openRow = ($event, row) => {
       if (options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
         let requestId = 'id'
         if (props.options.detail.requestId)
           requestId = props.options.detail.requestId
@@ -562,11 +561,6 @@ const table = {
     ) => {
       if (options.detail.type === 'popup') {
         if (activeIndexCells.includes(indexCell)) {
-          // let requestId = 'id'
-          // if (props.options.detail.requestId)
-          //   requestId = props.options.detail.requestId
-          //documents/personal/id
-
           const name = `documents-personal-id`
 
           router.push({
@@ -575,18 +569,6 @@ const table = {
               id: row.personal_id,
             },
           })
-
-          //
-          //
-          //documents/personal/id
-          // router.push(
-          //   {
-          //     name: `${route.name}/:id`,
-          //     params: {
-          //       id: row.row.id
-          //     }
-          // })
-
           popupForm.value.isShow = true
         }
       }
@@ -599,9 +581,6 @@ const table = {
 
     const addItem = () => {
       if (options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
         router.push({
           name: `${route.name}-add`,
         })
@@ -837,6 +816,10 @@ const table = {
       emit('closePopup', action.to)
     }
 
+    const downloadFile = (val) => {
+      Vue.downloadFile(val)
+    }
+    
     const changeHeaders = async () => {
       initHeadParams()
       await getItems()
@@ -898,6 +881,7 @@ const table = {
       availablePanelBtn,
       clickHandler,
       insertStyle,
+      downloadFile,
       contextMenuRef,
       changeHeaders,
     }

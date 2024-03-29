@@ -1,5 +1,5 @@
-import { defineComponent, ref, computed, onMounted, toRef } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
+import { defineComponent, ref, computed, onMounted, toRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -8,10 +8,13 @@ import store from '@/store'
 import Popup from '@/components/Popup/index.vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import { stringField, selectField, checkboxField } from '@/utils/fields.js'
-import { addFields, editFields } from '@/pages/zayavka/index.js'
+// import { addFields, editFields } from '@/pages/zayavka/index.js'
 import _ from 'lodash'
 
-import config from '@/components/Task/form8/form.js'
+import useView from '@/compositions/useView.js'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+
+// import config from '@/components/Task/form8/form.js'
 
 const Form8 = defineComponent({
   name: 'Form8',
@@ -30,7 +33,25 @@ const Form8 = defineComponent({
   setup(props, ctx) {
     const router = useRouter()
     const route = useRoute()
-    const proxyConfig = ref(_.cloneDeep(config))
+    // const proxyConfig = ref(_.cloneDeep(config))
+    const { configRouteConvert } = useView()
+    const config = _.cloneDeep(zayavkaConfigOrig)
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-add',
+      settings: {
+        oldPath: 'add',
+      },
+    })
 
     const context = {
       root: {
@@ -160,53 +181,99 @@ const Form8 = defineComponent({
       disableFinishState.value = disableFinishState.value + 1
     }
 
-    const setZayavkaEdit = () => {
-      const editFieldsProxy = _.cloneDeep(editFields)
-      const editConfig = proxyConfig.value.detail.tabs[1]
-      editConfig.fields = editFieldsProxy
-    }
-
     const setZayavkaItems = () => {
-      const addFieldsProxy = _.cloneDeep(addFields)
-      const addConfig = proxyConfig.value.detail.tabs[0]
-      addConfig.fields = addFieldsProxy
+      config.detail.tabs[0].fields = _.cloneDeep(
+        zayavkaConfigOrig.detail.tabs[0].fields
+      )
 
-      const category = addConfig.fields.find((x) => x.name === 'category_zr')
-      category.value = 8
-      category.readonly = true
-
-      const direction = addConfig.fields.find((x) => x.name === 'direction_id')
-      direction.value = JSON.parse(props.data.entity.direction_json)[0]
-      direction.readonly = true
-
-      const vector = addConfig.fields.find((x) => x.name === 'vector_id')
-      vector.readonly = true
-
-      const personal = addConfig.fields.find((x) => x.name === 'personal_zr')
-      personal.readonly = true
-      personal.value = props.data.entity.id
-
-      const yourself = addConfig.fields.find((x) => x.name === 'on_yourself')
-      yourself.readonly = true
-
-      // const name = addConfig.fields.find((x) => x.name === 'name')
-      // name.value = props.data.entity.name
-
-      const is_migr = addConfig.fields.find((x) => x.name === 'is_migr')
-      is_migr.value = true
+      const fieldsChanges = {
+        vector_id: {
+          readonly: true,
+        },
+        category_zr: {
+          value: 8,
+          readonly: true,
+        },
+        direction_id: {
+          value: JSON.parse(props.data.entity.direction_json)[0],
+          readonly: true,
+        },
+        personal_zr: {
+          value: props.data.entity.id,
+          readonly: true,
+        },
+        on_yourself: {
+          readonly: true,
+        },
+        is_migr: {
+          value: true,
+        },
+        'btn-decrease': {
+          readonly: true,
+        },
+        'btn-increase': {
+          readonly: true,
+        },
+      }
+      const addConfig = config.detail.tabs[0]
+      Object.keys(fieldsChanges).forEach((key) => {
+        let field = addConfig.fields.find((x) => x.name === key)
+        if (fieldsChanges[key].value) field.value = fieldsChanges[key].value
+        if (fieldsChanges[key].readonly)
+          field.readonly = fieldsChanges[key].readonly
+      })
+      addConfig.lists.push(
+        {
+          alias: 'rashod_vid',
+          filter: [
+            {
+              field: 'category_zr',
+              alias: 'rashod_category_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+        {
+          alias: 'permissions_zr',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+        {
+          alias: 'personal_object_zr',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_zr',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        }
+      )
 
       const docsSpr = { 7: 51, 8: 52, 11: 55, 16: 54, 18: 43, 19: 50, 23: 44 }
-
       const arr = listDocuments.value.filter((x) => x.inProcess)
       const filterArray = arr.reduce((acc, item) => {
         if (docsSpr[item.doc_id]) acc.push(docsSpr[item.doc_id])
         return acc
       }, [])
-
       const btnIndex = addConfig.fields.findIndex(
         (x) => x.id === 'btn-decrease'
       )
-
       filterArray?.forEach((item, index) => {
         if (!index) {
           const rashod_vid = addConfig.fields.find(
@@ -214,14 +281,6 @@ const Form8 = defineComponent({
           )
           const count = addConfig.fields.find((x) => x.name === 'count')
           const vds = addConfig.fields.find((x) => x.name === 'vds')
-          const btnDecrease = addConfig.fields.find(
-            (x) => x.name === 'btn-decrease'
-          )
-          const btnIncrease = addConfig.fields.find(
-            (x) => x.name === 'btn-increase'
-          )
-          btnDecrease.readonly = true
-          btnIncrease.readonly = true
           rashod_vid.value = item
           rashod_vid.readonly = true
           count.value = '1'
@@ -322,11 +381,9 @@ const Form8 = defineComponent({
         router.push({
           name: 'main/:id/:form_id',
           params: {
-            id: route.params.id,
             form_id: props.data.data?.zayavka?.id,
           },
         })
-        setZayavkaEdit()
       } else {
         router.push({
           name: 'main/:id/add',
@@ -335,7 +392,20 @@ const Form8 = defineComponent({
       }
       popupForm.value.isShow = true
     }
-
+    const { makeRequest: createFillScanProcess } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/startProcess', {
+          parent_process: props.data.task.process_id,
+          process_id: 1,
+          parent_action: props.data.task.process_id,
+          type_parent_action: 2,
+          account_id: props.data.task.to_account_id,
+          personal_id: props.data.entity.id,
+          docs_id: docs_ids.value,
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
     let addFiles = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -375,20 +445,6 @@ const Form8 = defineComponent({
 
       // Когда запрос будет готов от Миши, нужно сформировать его по примеру ниже из старого кода. Функцию эту запушить в переменную, которая при нажаити на кнопку вызывает функции запросов в цикле
       // Добавить эот запрос в массив запросов нужно по условию, код закомментирован
-      const { makeRequest: createFillScanProcess } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/startProcess', {
-            parent_process: props.data.task.process_id,
-            process_id: 1,
-            parent_action: props.data.task.process_id,
-            type_parent_action: 2,
-            account_id: props.data.task.to_account_id,
-            personal_id: props.data.entity.id,
-            docs_id: docs_ids.value,
-          }),
-        successMessage: 'Файл успешно загружен',
-      })
 
       let additionalRequestFlag
       if (
@@ -427,10 +483,11 @@ const Form8 = defineComponent({
       }
     }
 
-    const sendDocuments = () => {
-      listRequestsForUpload.value.forEach((elem, index) => {
-        elem()
-      })
+    const sendDocuments = async () => {
+      // listRequestsForUpload.value.forEach((elem, index) => {
+      //   elem()
+      // })
+      await createFillScanProcess()
       listRequestsForUpload.value = []
     }
 
@@ -475,12 +532,11 @@ const Form8 = defineComponent({
         listDocuments.value.push(pasteObject)
       })
       if (
-        proxyConfig.value.detail &&
-        proxyConfig.value.detail.type === 'popup' &&
-        route.meta?.mode?.length === 2
+        config.detail &&
+        config.detail.type === 'popup' &&
+        route.meta?.mode?.length >= 2
       ) {
-        if (route.params.form_id) setZayavkaEdit()
-        else setZayavkaItems()
+        if (!route.params.form_id) setZayavkaItems()
         popupForm.value.isShow = true
       }
     })
@@ -500,7 +556,7 @@ const Form8 = defineComponent({
       closePopupForm,
       pushToZayavka,
       expensesForm,
-      proxyConfig,
+      config,
     }
   },
 })

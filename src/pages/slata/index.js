@@ -13,7 +13,6 @@ import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
 import FormList from '@/components/Form/list/index.vue'
-import TableDefault from '@/components/Table/default/index.vue'
 import { userKeys } from '@/pages'
 import { ref } from 'vue'
 import axios from 'axios'
@@ -30,7 +29,7 @@ const config = {
     url: 'get/pagination/slata_report',
     title: 'Новые',
   },
-  type: TableDefault,
+  type: 'TableDefault',
   panel: {
     buttons: [
       {

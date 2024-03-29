@@ -14,7 +14,6 @@ import {
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormDocuments from '@/components/Form/documents/default/index.vue'
-import TableDefault from '@/components/Table/default/index.vue'
 import { userKeys } from '@/pages'
 import { stringify } from 'qs'
 import { readonly } from 'vue'
@@ -267,7 +266,6 @@ const bankConfig = {
   },
   detail: {
     type: 'popup', // String 'popup' or 'page'
-    popupIndex: 2,
     getOnClose: true,
     classes: [''], // List class
     width: '500px',
@@ -535,7 +533,7 @@ const config = {
         url: 'get/pagination/account_active',
         title: 'Активные',
       },
-      type: TableDefault,
+      type: 'TableDefault',
       panel: {
         buttons: [
           {
@@ -1411,7 +1409,7 @@ const config = {
             path: 'edit',
             id: 7,
             name: 'Банковские карты',
-            type: TableDefault,
+            type: 'TableDefault',
             active: false,
             config: bankConfig,
           },
@@ -1432,7 +1430,7 @@ const config = {
         url: 'get/pagination/account_archive',
         title: 'Заблокированные',
       },
-      type: TableDefault,
+      type: 'TableDefault',
       panel: {
         buttons: [
           {
@@ -1868,7 +1866,7 @@ const config = {
           {
             id: 1,
             name: 'Расход',
-            type: TableDefault,
+            type: 'TableDefault',
             active: false,
             config: consumptionConfig,
           },

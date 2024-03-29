@@ -23,6 +23,7 @@ Vue.use(PortalVue)
 Vue.prototype.env = process.env
 
 Vue.downloadFile = function (val) {
+  console.log(val)
   const link = document.createElement('a')
   link.download = val
   link.href = process.env.VUE_APP_STORE + val
@@ -30,6 +31,9 @@ Vue.downloadFile = function (val) {
   link.click()
   document.body.removeChild(link)
 }
+
+import TableDefault from '@/components/Table/default/index.vue'
+Vue.component('TableDefault', TableDefault)
 
 // Vue.directive('click-outside', {
 //   bind () {

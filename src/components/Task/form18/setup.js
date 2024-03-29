@@ -97,9 +97,13 @@ const Form18 = defineComponent({
         }
 
         // qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
-        serviceId = dolToService[data.entity.doljnost_id]
-
+        // serviceId = dolToService[data.entity.doljnost_id]
+        console.log('addGroup')
         dataForService = await getServiceInfo(serviceId)
+        console.log(
+          dataForService,
+          dataForService && dataForService.length ? qty : undefined
+        )
       }
 
       formGroup.value = [
@@ -370,6 +374,7 @@ const Form18 = defineComponent({
       formGroup,
       () => {
         if (formGroup) {
+          console.log(formGroup.value)
           isFormValid.value = formGroup.value.every((group) => group.validate())
         }
       },

@@ -94,6 +94,18 @@
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
         ></Form9>
+        <Form10
+          v-if="data.task.task_type_id === 10"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        ></Form10>
+        <Form11
+          v-if="data.task.task_type_id === 11"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        ></Form11>
         <!--Подтверждение назначения-->
         <Form13
           v-if="data.task.task_type_id === 13"
@@ -103,6 +115,13 @@
         />
         <Form15
           v-if="data.task.task_type_id === 15"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <!-- Внесение назначения в PVP-портал -->
+        <Form16
+          v-if="data.task.task_type_id === 16"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
@@ -135,6 +154,13 @@
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
         />
+        <!--  -->
+        <Form25
+          v-if="data.task.task_type_id === 25"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
         <!--Согласование начисления-->
         <Form27
           v-if="data.task.task_type_id === 27"
@@ -145,6 +171,12 @@
         <!--Корректировка начисления-->
         <Form28
           v-if="data.task.task_type_id === 28"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form29
+          v-if="data.task.task_type_id === 29"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"

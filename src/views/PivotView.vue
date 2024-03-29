@@ -1,15 +1,26 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableFixed @changeheadershow="changeheadershow" :options="pivot" />
+    <TableFixed @changeheadershow="changeheadershow" :options="config" />
   </div>
   <!--</Layout>-->
 </template>
 
 <script>
-import { pivot } from '@/pages'
+import _ from 'lodash'
+import useView from '@/compositions/useView.js'
 
+import { config as pivotConfigOrig } from '@/pages/pivot/index'
 import TableFixed from '@/components/Table/fixed/index.vue'
+
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { personalTabs as personalTabsOrig } from '@/pages/personal/index'
+import { initPaymentZayavka } from '@/utils/helpers.js'
+import { objectTabs as objectTabsOrig } from '@/pages/object/index'
+// import { config as personalConfigOrig } from '@/pages/personal/index'
+// import paymentConfigOrig from '@/pages/payment/index'
+// import zayavkaConfigOrig from '@/pages/zayavka/index'
 
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
@@ -27,8 +38,64 @@ export default {
     },
   },
   setup() {
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+    } = useView()
+    const config = _.cloneDeep(pivotConfigOrig)
+    const personalTabs = _.cloneDeep(personalTabsOrig)
+    const objectTabs = _.cloneDeep(objectTabsOrig)
+
+    const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+      paymentConfigOrig,
+      zayavkaConfigOrig
+    )
+
+    configRouteConvert({
+      config: paymentConfig.config,
+      route: 'payment',
+      newPath: 'personal-payment',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: zayavkaConfig.config,
+      route: 'zayavka',
+      newPath: 'personal-zayavka',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+
+    personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+
+    config.detail.tabs.push(...personalTabs)
+    configRouteConvert({
+      config: config,
+      newPath: 'personal',
+      settings: {
+        oldPath: 'edit',
+        exceptName: ['Редактирование выработки'],
+      },
+    })
+
+    config.detail.tabs.push(...objectTabs)
+    configRouteConvert({
+      config: config,
+      newPath: 'object',
+      settings: {
+        oldPath: 'edit',
+        exceptName: ['Редактирование выработки'],
+      },
+    })
+
     return {
-      pivot,
+      config,
     }
   },
 }

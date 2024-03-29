@@ -125,25 +125,16 @@
       <component
         :is="Popup"
         :options="{
-          width: proxyConfig.detail.width,
-          portal: `table-detail${
-            proxyConfig?.detail?.popupIndex
-              ? proxyConfig?.detail?.popupIndex
-              : ''
-          }`,
+          width: config.detail.width,
+          portal: 'table-detail',
         }"
         v-if="
-          proxyConfig.detail &&
-          proxyConfig.detail.type === 'popup' &&
-          popupForm.isShow
+          config.detail && config.detail.type === 'popup' && popupForm.isShow
         "
       >
         <router-view
-          :detail="proxyConfig.detail"
-          :class="[
-            ...proxyConfig.detail.bootstrapClass,
-            ...proxyConfig.detail.classes,
-          ]"
+          :detail="config.detail"
+          :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
           @closePopup="closePopupForm"
           @refreshData="$emit('refreshData')"
         />

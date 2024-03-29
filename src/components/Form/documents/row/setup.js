@@ -971,6 +971,7 @@ export default {
       }
       return result
     }
+
     const switchLabel = (key) => {
       let result = ''
       switch (key) {
@@ -1216,7 +1217,7 @@ export default {
       console.log(fields)
       return fields
     }
-    // fields()
+    fields()
     const form = {
       id: 0,
       name: 'Данные документов',
@@ -1431,7 +1432,7 @@ export default {
           })
         }
         const data = await getList(url, {
-          countRows: 10,
+          countRows: 200,
           currentPage: 1,
           searchValue: '',
           id: formData[el.name ? el.name : el.alias]

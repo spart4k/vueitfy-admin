@@ -192,8 +192,8 @@
                 v-show="head.isShow"
                 :id="head.value + '-table-header'"
                 class="v-table-header-row-cell"
-                v-for="head in options.head"
-                :key="head.id"
+                v-for="(head, index) in options.head"
+                :key="index"
                 ref="cells"
               >
                 <div class="v-table-header-row-cell-wrap">
@@ -209,6 +209,22 @@
                     "
                     class="v-table-header-row-cell-wrap__sort"
                   >
+                    <span
+                      class="v-table-header-row-cell-wrap__sort-sort mr-2"
+                      v-on:click="sortRow(head)"
+                      v-if="availibleTitlesForSortIcons.includes(head.title)"
+                    >
+                      <vIconSort
+                        class="v-table-header-row-cell-wrap__sort-icon"
+                        :state="
+                          paramsQuery.sorts.length
+                            ? paramsQuery.sorts.find(
+                                (el) => el.field === head.value
+                              ).value
+                            : null
+                        "
+                      />
+                    </span>
                     <span @click="!head.added && sortRow(head)">
                       {{ head.title }}
                     </span>
@@ -299,19 +315,29 @@
                     <template
                       v-for="card in Object.byString(row.row, cell.value)"
                     >
-                      <!-- {{ card }} -->
                       <div
                         :key="card.id"
-                        class="v-table-body-row-cell-item"
+                        :class="[
+                          'v-table-body-row-cell-item',
+                          card.is_del && 'v-table-body-row-cell-item__deleted',
+                        ]"
                         :style="{
                           width: '150px',
-                          height: '60px',
+                          height: '80px',
                           background:
-                            card.type_shift === 1
+                            (card.type_shift === 1
                               ? '#c5ffc5'
                               : card.type_shift === 2
                               ? '#d0f6ff'
-                              : '#f4d0ff',
+                              : card.type_shift === 3
+                              ? '#f4d0ff'
+                              : null) ??
+                            card?.status_color +
+                              `${
+                                card.is_del
+                                  ? ' repeating-linear-gradient( -45deg, #cccccc5c 0 10px, #9999991a 10px 30px )'
+                                  : ''
+                              }`,
                         }"
                         @dblclick.stop="
                           $props.options.options.doubleHandlerType === 'cell' &&
@@ -319,10 +345,10 @@
                         "
                       >
                         <p class="v-table-body-row-cell-item_text">
-                          {{ card.hour }}
+                          {{ card.hour ?? card.position }}
                         </p>
                         <p class="v-table-body-row-cell-item_text">
-                          {{ card.doljnost_name }}
+                          {{ card.doljnost_name ?? card.smena }}
                         </p>
                         <p
                           class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
@@ -330,7 +356,7 @@
                           {{
                             options.head[0].value === 'personal_name'
                               ? card.object_name
-                              : card.personal_name
+                              : card.personal_name ?? card.fio
                           }}
                         </p>
                       </div>
@@ -431,8 +457,73 @@
     </div>
 
     <div class="v-table-footer pl-4">
-      <div class="v-table-footer-total">
+      <div v-if="!options.data.footer" class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
+      </div>
+      <div v-if="options.data.footer" class="v-table-footer-state">
+        <div
+          class="v-table-footer-state-container"
+          v-if="options.data.footer.state"
+        >
+          <div class="v-table-footer-state-container-column">
+            <div
+              class="v-table-footer-state-container-column-item font-weight-bold"
+            >
+              Итого: {{ options.data.footer.all }}
+            </div>
+            <div
+              class="v-table-footer-state-container-column-item font-weight-bold"
+            >
+              Итого: {{ options.data.footer.del }}
+            </div>
+          </div>
+          <div
+            class="v-table-footer-state-container-column"
+            v-for="(item, index) in options.data.footer.state"
+            :key="index"
+          >
+            <div class="v-table-footer-state-container-column-item">
+              <div
+                class="v-table-footer-state-container-column-item_type mr-1"
+                :style="{ background: item.color }"
+              ></div>
+              <span class="v-table-footer-state-container-column-item_count">{{
+                item.count
+              }}</span>
+            </div>
+            <div class="v-table-footer-state-container-column-item">
+              <div
+                class="v-table-footer-state-container-column-item_type mr-1"
+                :style="{
+                  background:
+                    item.color +
+                    ' repeating-linear-gradient( -45deg, #cccccc5c 0 2px, #9999991a 2px 6px )',
+                }"
+              ></div>
+              <span class="v-table-footer-state-container-column-item_count">{{
+                getItemFromCompare({
+                  compareItem: item.color,
+                  cuttedArray: options.data.footer.del_state,
+                })
+              }}</span>
+            </div>
+          </div>
+          <!-- <div>
+            <div
+              class="v-table-footer-state-item font-weight-bold"
+              v-for="(item, index) in options.data.footer.state"
+              :key="index"
+            >
+              <div
+                class="v-table-footer-state-item_type mr-1"
+                :style="{ background: item.color }"
+              ></div>
+              <div>
+                {{ item.count }}
+              </div>
+            </div>
+          </div> -->
+        </div>
       </div>
       <div class="v-table-footer-pagination">
         <div class="v-table-footer-pagination-length">

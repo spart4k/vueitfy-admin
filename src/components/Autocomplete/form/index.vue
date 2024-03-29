@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div :class="`select_${field.name}`" class="">
     <v-autocomplete
       clearable
       v-model="proxyValue"
@@ -16,6 +16,7 @@
       @change="update"
       :disabled="disabled"
       :readonly="readonly"
+      :name="field.name"
     >
       <template v-if="false" v-slot:prepend-item>
         <v-list-item ripple @click="selectAll">

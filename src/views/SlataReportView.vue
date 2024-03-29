@@ -18,7 +18,6 @@ import slata from '@/pages/slata/index.js'
 export default {
   name: 'SlataReportView',
   components: {
-    //TableDefault,
     //Layout,
   },
   methods: {
