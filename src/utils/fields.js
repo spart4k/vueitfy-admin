@@ -104,6 +104,14 @@ const radioPanel = (properties) => {
   }
 }
 
+const carouselField = (properties) => {
+  return {
+    type: 'carousel',
+    ...defaultProperties(properties),
+    notSend: true,
+  }
+}
+
 export {
   dateField,
   stringField,
@@ -117,4 +125,5 @@ export {
   colorPicker,
   radioPanel,
   dateRangeField,
+  carouselField,
 }

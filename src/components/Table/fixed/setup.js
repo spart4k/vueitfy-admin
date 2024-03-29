@@ -384,6 +384,7 @@ const table = {
       if (props.options.data.rows?.length && props.options.data.rows) {
         props.options.data.totalPages = data.totalPage
         props.options.data.totalRows = data.total
+        props.options.data.footer = data.footer
         const structuredArray = []
         props.options.data.rows.forEach((row) => {
           if (props.options.options.selecting) {
@@ -814,6 +815,12 @@ const table = {
       globalLoading.value = false
     }
 
+    const getItemFromCompare = ({ compareItem, cuttedArray,}) => {
+      const item = cuttedArray.find(x => x.color === compareItem)
+      if (item?.count) return item.count
+      else return 0
+    }
+
     const acceptForm = async () => {
       const requestData = {
         period: acceptData.value.valueDate,
@@ -943,6 +950,7 @@ const table = {
       saveLastSelected,
       clearField,
       openSort,
+      getItemFromCompare,
       sortRow,
       openContext,
       getWidth,

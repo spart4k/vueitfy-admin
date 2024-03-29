@@ -204,6 +204,18 @@
                 >
               </v-list>
             </v-card>
+            <!-- <v-carousel
+              height="400px"
+              v-else-if="
+                showField('carousel', field) && formData[field.name].length
+              "
+            >
+              <v-carousel-item
+                v-for="(item, i) in formData[field.name]"
+                :key="i"
+                :src="$root.env.VUE_APP_STORE + item.name"
+              ></v-carousel-item>
+            </v-carousel> -->
           </v-col>
         </v-row>
         <v-row class="justify-end">
