@@ -82,6 +82,7 @@ const table = {
     const proxyOptions = toRef(options, 'head')
     const detail = ref(options?.detail)
     const filters = ref(options?.filters)
+    const panel = ref(options?.panel)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -113,6 +114,25 @@ const table = {
     })
     const popupForm = ref({
       isShow: false,
+    })
+    const currentDate = ref({
+      monthArray: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      date: moment(new Date()).format('YYYY-MM'),
     })
     const wrapingRow = () => {
       const table = document.querySelector(options.selector)
@@ -400,6 +420,7 @@ const table = {
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
+          // period: props.options.panel.date ? currentDate.value.date : undefined,
           searchColumns,
           sorts,
           filter: filtersColumns.value,
@@ -577,6 +598,13 @@ const table = {
     const closePopupForm = () => {
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
+    }
+
+    const changeMonth = async (val) => {
+      currentDate.value.date = moment(`${currentDate.value.date}-10`).add(val, 'M').format('YYYY-MM')
+      currentDate.value.year = currentDate.value.date.split('-')[0]
+      currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
+      await getItems()
     }
 
     const addItem = () => {
@@ -836,6 +864,8 @@ const table = {
       filter,
       isMobile,
       proxyOptions,
+      panel,
+      currentDate,
       // METHODS
 
       addBackgroundClass,
@@ -857,6 +887,7 @@ const table = {
       getItems,
       watchScroll,
       handlerContext,
+      changeMonth,
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,

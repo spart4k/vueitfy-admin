@@ -14,6 +14,7 @@ import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
 import UserKeysView from '../views/UserKeysView.vue'
 import TasksView from '../views/Tasks.vue'
+import ReportTaxiView from '../views/ReportTaxiView.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -637,6 +638,18 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/report_taxi',
+    name: 'report_taxi',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: ReportTaxiView,
+    children: [],
   },
   {
     path: '/zayavka',

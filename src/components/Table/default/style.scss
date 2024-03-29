@@ -3,7 +3,6 @@ $borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 61px;
 $tableFooterHeight: 100px;
 
-
 .v {
   &-table {
     margin: 10px 10px 30px 10px;
@@ -256,10 +255,6 @@ $tableFooterHeight: 100px;
       }
     }
     &-panel {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      flex-wrap: wrap;
       padding: 5px;
       background-color: var(--v-cardBackground-base);
       // min-height: $tablePanelHeight;
@@ -267,36 +262,53 @@ $tableFooterHeight: 100px;
       background-color: var(--v-background-base);
       border: 1px solid $borderColor;
       border-bottom: 0;
-      &__search {
+      &-items {
         display: flex;
         align-items: baseline;
-        @media (max-width: $mobileWidth) {
-          justify-content: space-between;
-          width: 100%;
-          margin-bottom: 10px;
-        }
-      }
-      &__actions {
-        display: flex;
+        justify-content: space-between;
         flex-wrap: wrap;
-        > button,
-        div {
-          &:not(:last-child) {
-            margin-right: 5px;
+        &__search {
+          display: flex;
+          align-items: baseline;
+          @media (max-width: $mobileWidth) {
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+          }
+        }
+        &__actions {
+          display: flex;
+          flex-wrap: wrap;
+          > button,
+          div {
+            &:not(:last-child) {
+              margin-right: 5px;
+            }
+          }
+          @media (max-width: $mobileWidth) {
+            //justify-content: space-between;
+            //width: 100%;
           }
         }
         @media (max-width: $mobileWidth) {
-          //justify-content: space-between;
-          //width: 100%;
+          flex-direction: column-reverse;
         }
-      }
-      @media (max-width: $mobileWidth) {
-        flex-direction: column-reverse;
       }
       &--fixed {
         top: 0;
         position: sticky;
         z-index: 2;
+      }
+      &-date {
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        justify-content: center;
+        font-weight: 500;
+        &_month {
+          width: 160px;
+          text-align: center;
+        }
       }
     }
     &-filter {
