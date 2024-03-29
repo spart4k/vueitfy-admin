@@ -134,17 +134,21 @@ const table = {
         }
       })
     }
+
     const openChildRow = ($event, row) => {
       $event.stopPropagation()
       if (row.child.isShow) {
         row.child.isShow = false
       } else {
+        console.log('row child show')
         row.child.isShow = true
+        console.log(row.child)
       }
       if (contextmenu.value.isShow) {
         contextmenu.value.isShow = false
       }
     }
+
     const checkboxInput = (row, indexRow) => {
       //
       //
@@ -519,6 +523,26 @@ const table = {
       getItems()
     }
 
+    const detectDoubleTapClosure = (event) => {
+      console.log(event)
+      let lastTap = 0
+      let timeout
+      return function detectDoubleTap(event) {
+        const curTime = new Date().getTime()
+        const tapLen = curTime - lastTap
+        if (tapLen < 500 && tapLen > 0) {
+          console.log('Double tapped!')
+          alert('Double tapped!')
+          event.preventDefault()
+        } else {
+          timeout = setTimeout(() => {
+            clearTimeout(timeout)
+          }, 500)
+        }
+        lastTap = curTime
+      }
+    }
+
     const doubleHandler = (
       $event,
       row,
@@ -527,6 +551,7 @@ const table = {
       indexCell,
       activeIndexCells
     ) => {
+      console.log('tab')
       if (!options.detail || options.options.noTableAction) return
       if (props.options.options.doubleHandlerType === 'cell') {
         openCell($event, row, cell, indexRow, indexCell, activeIndexCells)
@@ -690,7 +715,7 @@ const table = {
           acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
         }, 0)
       })
-      //wrapingRow()
+      wrapingRow()
       window.addEventListener('resize', () => watchScroll())
       watchScroll()
       pagination.value = {
@@ -819,7 +844,7 @@ const table = {
     const downloadFile = (val) => {
       Vue.downloadFile(val)
     }
-    
+
     const changeHeaders = async () => {
       initHeadParams()
       await getItems()
@@ -884,6 +909,7 @@ const table = {
       downloadFile,
       contextMenuRef,
       changeHeaders,
+      detectDoubleTapClosure,
     }
   },
 }

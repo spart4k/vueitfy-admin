@@ -225,6 +225,8 @@
                   v-show="cell.isShow ? true : false"
                   v-for="(cell, cellIndex) in options.head"
                   :key="cellIndex"
+                  @click="detectDoubleTapClosure"
+                  @touchend="detectDoubleTapClosure"
                   @dblclick="
                     doubleHandler($event, row.row, cell, indexRow, cellIndex, [
                       0,
@@ -318,7 +320,7 @@
                 v-show="
                   row.child.isShow && options.head.some((el) => !el.isShow)
                 "
-                class="v-table-body-row v-table-body-row--child overflowHidden"
+                class="v-table-body-row v-table-body-row--child ч]"
               >
                 <td class="v-table-body-row-cell" :colspan="colspanLength">
                   <transition-group
