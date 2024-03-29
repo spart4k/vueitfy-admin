@@ -703,6 +703,8 @@ const table = {
         if (!id) return
         const headCell = options.head.find((head) => head.value === id)
         const { width, x } = headerEl.getBoundingClientRect()
+        console.log(headCell)
+        console.log(options.head)
         headerOptions.value.push({
           id,
           headCell,

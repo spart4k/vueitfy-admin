@@ -281,32 +281,32 @@ export const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-          isShow: true,
-          width: '100',
-          value: 'actions',
-          actions: [
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleText,
-              label: 'Редактировать',
-            },
-            {
-              type: 'button',
-              url: '$IconSetting',
-              function: consoleButton,
-              label: 'Удалить',
-            },
-          ],
-        },
+        // {
+        //   title: 'Действия',
+        //   type: 'actions',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'right',
+        //   },
+        //   isShow: true,
+        //   width: '100',
+        //   value: 'actions',
+        //   actions: [
+        //     {
+        //       type: 'button',
+        //       url: '$IconSetting',
+        //       function: consoleText,
+        //       label: 'Редактировать',
+        //     },
+        //     {
+        //       type: 'button',
+        //       url: '$IconSetting',
+        //       function: consoleButton,
+        //       label: 'Удалить',
+        //     },
+        //   ],
+        // },
       ],
       data: {
         rows: [],

@@ -704,15 +704,15 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-        },
+        // {
+        //   title: 'Действия',
+        //   type: 'actions',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'right',
+        //   },
+        // },
         // {
         //   title: 'Действия',
         //   type: 'actions',
