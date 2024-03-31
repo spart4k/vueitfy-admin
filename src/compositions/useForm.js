@@ -1173,7 +1173,7 @@ export default function ({
       }
       if (!formData[el.field] && !el.source && !el.routeKey) return []
       if (el.source) {
-        const source = eval(el.source)
+        // const source = eval(el.source)
         if (el.source === 'fromPrev') {
           filter.value = form?.formData[el.field]
         } else if (el.source && el.source !== 'formData') {
