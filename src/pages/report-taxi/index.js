@@ -43,56 +43,6 @@ const config = {
   },
   head: [
     {
-      title: 'Объект',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'o.name',
-      value: 'object_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Адрес',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'o.address',
-      value: 'address',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
       title: 'Менеджер',
       type: 'default',
       align: 'center',
@@ -110,58 +60,8 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'sa.name',
+      alias: 'o.name',
       value: 'account_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Линейщик',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'pers.name',
-      value: 'objecpersonal_namet_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Услуга',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'd.name',
-      value: 'doljnost_name',
       search: {
         field: '',
         isShow: true,
@@ -185,15 +85,15 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'p.date_target',
-      value: 'date_target',
+      alias: 'o.name',
+      value: 'date',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Часы',
+      title: 'Время с',
       type: 'default',
       align: 'center',
       fixed: {
@@ -210,8 +110,58 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'p.hour',
-      value: 'hour',
+      alias: 'o.name',
+      value: 'time_from',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Время по',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'o.name',
+      value: 'time_to',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Тариф',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'o.name',
+      value: 'tarif',
       search: {
         field: '',
         isShow: true,
@@ -235,8 +185,33 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'p.total',
-      value: 'total',
+      alias: 'o.name',
+      value: 'price',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Оплата',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '90',
+      alias: 'o.name',
+      value: 'card',
       search: {
         field: '',
         isShow: true,
