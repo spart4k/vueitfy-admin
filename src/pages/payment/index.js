@@ -3995,7 +3995,7 @@ const config = {
               ],
             },
           }),
-          textBlock({
+          stringField({
             label: 'Должность',
             name: 'bank_id',
             placeholder: '',
@@ -4008,7 +4008,9 @@ const config = {
             bootstrapClass: [''],
             value: 0,
             //validations: { required },
-            //isShow: false,
+            isShow: {
+              value: true,
+            },
           }),
         ],
         actions: [
