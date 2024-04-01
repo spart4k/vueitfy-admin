@@ -96,8 +96,8 @@ const Form18 = defineComponent({
           51: 78,
         }
 
-        // qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
-        // serviceId = dolToService[data.entity.doljnost_id]
+        qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
+        serviceId = dolToService[data.entity.doljnost_id]
         console.log('addGroup')
         dataForService = await getServiceInfo(serviceId)
         console.log(

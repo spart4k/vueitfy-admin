@@ -6,6 +6,7 @@ import shopRequestMagnitReport from './magnit/shop-request-report'
 import userKeys from './user-keys'
 import tasks from './tasks'
 import pivot from './pivot'
+import pivotx5 from './pivotx5'
 import x5import from './x5import'
 import object from './object'
 import account from './account'
@@ -28,4 +29,5 @@ export {
   object,
   account,
   zayavka,
+  pivotx5,
 }
