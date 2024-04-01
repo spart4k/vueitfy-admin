@@ -1,41 +1,46 @@
 .background {
-    &-upper {
-        padding-top: 20px;
-        border-top-right-radius: 20px;
-        border-top-left-radius: 20px;
-        background: var(--v-disabled-base);
-    }
-    &-middle {
-        background: var(--v-disabled-base);
-    }
-    &-down {
-        border-bottom-right-radius: 20px;
-        border-bottom-left-radius: 20px;
-        background: var(--v-disabled-base);
-        margin-bottom: 20px;
-    }
+  &-upper {
+    padding-top: 20px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    background: var(--v-disabled-base);
+  }
+  &-middle {
+    background: var(--v-disabled-base);
+  }
+  &-down {
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background: var(--v-disabled-base);
+    margin-bottom: 20px;
+  }
 }
 
 .field-col {
-    &::v-deep .v-list-item {
-        .v-icon {
-            color: var(--v-secondary-base) !important;
-        }
-        .v-btn {
-            .v-icon {
-                color: var(--v-secondary-base) !important;
-            }
-        }
-        span {
-            color: var(--v-secondary-base) !important;
-        }
+  &::v-deep .v-list-item {
+    .v-icon {
+      color: var(--v-secondary-base) !important;
     }
+    .v-btn {
+      .v-icon {
+        color: var(--v-secondary-base) !important;
+      }
+    }
+    span {
+      color: var(--v-secondary-base) !important;
+    }
+  }
+  &::v-deep .v-carousel {
+    .v-image__image {
+      background-size: contain;
+    }
+  }
 }
 
 .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .clickless {
-    pointer-events: none;
+  pointer-events: none;
 }

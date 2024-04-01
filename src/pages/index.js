@@ -7,6 +7,7 @@ import userKeys from './user-keys'
 import reportTaxi from './report-taxi'
 import tasks from './tasks'
 import pivot from './pivot'
+import pivotx5 from './pivotx5'
 import x5import from './x5import'
 import object from './object'
 import account from './account'
@@ -30,4 +31,5 @@ export {
   account,
   zayavka,
   reportTaxi,
+  pivotx5,
 }

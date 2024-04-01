@@ -15,6 +15,7 @@ import {
   textBlock,
   radioPanel,
   dropZoneField,
+  carouselField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 
@@ -3763,6 +3764,14 @@ export const editFields = [
     },
     bootstrapClass: [''],
   },
+  carouselField({
+    name: 'schet',
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+  }),
   textareaField({
     label: 'Ошибка',
     name: 'error_text',
