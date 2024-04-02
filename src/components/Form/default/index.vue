@@ -178,6 +178,7 @@
             :type="action.type"
             :color="action.color"
             class="ml-2"
+            :class="'formButton_' + action.text"
             :loading="loading"
             @click.prevent="
               clickHandler({ action, skipValidation: action.skipValidation })
