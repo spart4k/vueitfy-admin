@@ -5,6 +5,7 @@ import PaymentListView from '../views/PaymentListView.vue'
 import PaymentListPersonalView from '../components/PaymentList/personal/index.vue'
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
+import Pivotx5View from '../views/Pivotx5View.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -452,6 +453,17 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/pivotx5',
+    name: 'pivotx5',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: Pivotx5View,
   },
   {
     path: '/x5import',
