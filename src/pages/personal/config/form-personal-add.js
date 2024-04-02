@@ -67,6 +67,7 @@ export default {
       ],
       alias: 'personal_target',
       active: false,
+      label: 'personal-add',
       fields: [
         stringField({
           label: 'ФИО',
@@ -498,6 +499,7 @@ export default {
       name: 'Документы',
       type: 'TableDefault',
       active: false,
+      label: 'personal-add-doc',
       config: {
         selector: '#mainTable',
         options: {
@@ -644,6 +646,7 @@ export default {
               lists: [{ alias: 'documents', filter: [] }],
               alias: 'personal_doc',
               active: false,
+              label: 'personal-add-doc-document',
               fields: [
                 selectField({
                   label: 'Тип документа',
@@ -732,6 +735,7 @@ export default {
               lists: [{ alias: 'documents', filter: [] }],
               alias: 'personal_doc',
               active: false,
+              label: 'personal-add-doc-document-new',
               fields: [
                 selectField({
                   label: 'Тип документа',
