@@ -31,7 +31,7 @@ const filters = {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/managers_default',
+      url: 'get/pagination_list/managers_default_roznica',
       position: {
         cols: 12,
         sm: 12,
