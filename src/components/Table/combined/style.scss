@@ -121,6 +121,12 @@ $tableFooterHeight: 100px;
             overflow-y: hidden;
             left: 0;
           }
+          &--currentDate {
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+          &--weekendDate {
+            background-color: rgba(181, 129, 129, 0.5);
+          }
           &:hover {
             cursor: pointer;
           }
@@ -143,6 +149,12 @@ $tableFooterHeight: 100px;
         p {
           display: flex;
         }
+        &-cell--hover {
+          &:hover {
+            border: var(--v-primary-base) solid 1px;
+            background-color: rgb(231, 231, 231);
+          }
+        }
         &-cell {
           padding: $paddingCell;
           &__checkbox {
@@ -156,12 +168,56 @@ $tableFooterHeight: 100px;
               height: 100%;
             }
           }
+          &-item {
+            width: 160px;
+            height: 72px;
+            display: flex;
+            // align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            &_text {
+              display: flex;
+              justify-content: center;
+              font-size: 12px;
+              line-height: 16px;
+
+              // overflow: hidden;
+              // text-overflow: ellipsis;
+              &__bold {
+                white-space: break-spaces;
+                font-weight: 700;
+                font-size: 12px;
+              }
+            }
+            &:hover {
+              border: black solid 2px;
+            }
+            &__deleted {
+              opacity: 0.8;
+            }
+          }
+          &-item + &-item {
+            margin-top: 4px;
+          }
+          &--noPadding {
+            padding: 0;
+          }
           &--fixed {
             position: sticky;
             //background-color: #fff;
             background-color: var(--v-background-base);
             z-index: 1;
             left: 0;
+          }
+          &--fixed:hover {
+            background-color: var(--v-background-base);
+          }
+
+          &--currentDate {
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+          &--weekendDate {
+            background-color: rgba(181, 129, 129, 0.5);
           }
         }
         &-paragraph {
@@ -206,7 +262,6 @@ $tableFooterHeight: 100px;
       }
     }
     &-wrap {
-      min-height: 110px;
       &::-webkit-scrollbar {
         display: none;
       }
@@ -396,6 +451,31 @@ $tableFooterHeight: 100px;
                 }
               }
             }
+          }
+        }
+      }
+      &-state {
+        &-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &-column {
+            &-item {
+              display: flex;
+              &_type {
+                border-radius: 4px;
+                height: auto;
+                width: 30px;
+              }
+              &_count {
+              }
+            }
+            &-item + &-item {
+              margin-top: 4px;
+            }
+          }
+          &-column + &-column {
+            margin-left: 8px;
           }
         }
       }

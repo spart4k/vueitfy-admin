@@ -400,9 +400,9 @@
       <div class="v-table-footer-info">
         <div class="v-table-footer-total">
           Итого: {{ options.data.totalRows }}
-          <div v-if="options.data?.footer?.length" class="">
+          <div v-if="options.data.footer.length" class="">
             <span
-              v-for="footerInfo in options.data?.footer"
+              v-for="footerInfo in options.data.footer"
               v-show="footerInfo.value"
               :key="footerInfo.name"
             >
@@ -430,6 +430,7 @@
         </div>
       </div>
     </div>
+
     <v-row
       style="flex: 0"
       class="mt-5 justify-end"
@@ -450,11 +451,13 @@
         {{ action.text }}
       </v-btn>
     </v-row>
+
     <v-contextmenu
       @handlerContext="handlerContext"
       ref="contextMenuRef"
       :options="contextmenu"
     />
+
     <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
       <keep-alive>
         <TableFilter
@@ -465,6 +468,7 @@
         />
       </keep-alive>
     </Sheet>
+
     <Popup
       closeButton
       @close="closePopupForm"
@@ -476,17 +480,102 @@
         options.detail && options.detail.type === 'popup' && popupForm.isShow
       "
     >
-      <!--<Detail
-        class="cols-6"
-        :detail="options.detail"
-        :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
-      />-->
       <router-view
+        :content="popupForm.dataCellForm"
         :detail="detail"
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
         @closePopup="closePopupForm"
         @getItems="getItems"
       />
+    </Popup>
+
+    <DropZone
+      v-show="false"
+      @fileUpload="fileUpload"
+      :options="{
+        withoutSave: true,
+        folder: options.options.folder,
+        formats: options.options.formats,
+      }"
+      ref="dropzone"
+    />
+    <v-dialog persistent v-model="confirmPayment" width="420">
+      <v-card>
+        <v-card-title class="text-h5 text-center">
+          Вы подтверждаете начисление аванса за
+          {{ currentDate.monthArray[currentDate.month] }}
+          {{ currentDate.year }}
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            v-if="!prepaymentLoading"
+            text
+            color="error"
+            @click="confirmPayment = false"
+          >
+            Отменить
+          </v-btn>
+          <v-btn
+            v-if="!prepaymentLoading"
+            text
+            color="primary"
+            @click="createPayment"
+          >
+            Принять
+          </v-btn>
+          <v-progress-circular
+            v-if="prepaymentLoading"
+            color="primary"
+            :size="30"
+            indeterminate
+          />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <Popup
+      :options="{ portal: 'filter', padding: '20px 30px', width: '434px' }"
+      @close="acceptData.popup = false"
+      v-if="acceptData.popup"
+    >
+      <div class="d-flex flex-column align-center">
+        <v-select
+          v-model="acceptData.valueProfit"
+          :items="[
+            { title: 'Аванс', value: 5 },
+            { title: 'Зарплата', value: 3 },
+          ]"
+          item-text="title"
+          full-width
+          return-object
+          style="width: 100%"
+          label="Вид ведомости"
+        ></v-select>
+        <v-date-picker
+          locale="ru"
+          v-model="acceptData.valueDate"
+          color="primary"
+          width="100%"
+          type="month"
+        ></v-date-picker>
+        <div class="d-flex mt-7">
+          <v-btn @click="acceptForm" tonal color="primary"> Принять </v-btn>
+          <v-btn
+            @click="acceptData.popup = false"
+            tonal
+            color="error"
+            class="ml-5"
+          >
+            Отменить
+          </v-btn>
+        </div>
+      </div>
+    </Popup>
+    <Popup
+      v-if="globalLoading"
+      :options="{ portal: 'filter', transparent: true }"
+    >
+      <v-progress-circular color="primary" :size="80" indeterminate />
     </Popup>
   </div>
 </template>

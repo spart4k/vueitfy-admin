@@ -416,7 +416,7 @@ const table = {
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
-          // period: props.options.panel.date ? currentDate.value.date : undefined,
+          period: props.options.panel.date ? currentDate.value.date : undefined,
           searchColumns,
           sorts,
           filter: filtersColumns.value,
@@ -625,7 +625,6 @@ const table = {
     }
     const panelHandler = async (button) => {
       const { type, url } = button
-      if (button.function) button.function(props.options)
       if (type === 'addItem') {
         addItem()
       } else if (type === 'changeUrl') {
@@ -657,6 +656,7 @@ const table = {
       if (button.refreshTable) {
         getItems()
       }
+      if (button.function) button.function()
     }
 
     // COMPUTED PROPERTIES
