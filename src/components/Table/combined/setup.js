@@ -5,26 +5,16 @@ import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import axios from 'axios'
 
-import useForm from '@/compositions/useForm.js'
-import useRequest from '@/compositions/useRequest'
-
 import vContextmenu from '@/components/Contextmenu/default/index.vue'
 import Sheet from '@/components/Sheet/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
 import SwitchDefault from '@/components/Switch/default/index.vue'
-
-//import vTableButton from '../button/index.js'
-//import vButton from '../../button/index.js'
-//import vInput from '../../input/default/index.js'
 import vIconSort from '../../Icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
-import useMobile from '@/layouts/Adaptive/checkMob.js'
-import useTable from '@/compositions/useTable.js'
+
+import _ from 'lodash'
 import moment from 'moment/moment'
-// import { post } from '@/api/axios'
-// import { personal } from '@/pages/index.js'
-//import { tableApi } from '@/api'
 
 const table = {
   name: 'TableDefault',
@@ -68,22 +58,30 @@ const table = {
     const { emit } = ctx
     const router = useRouter()
     const route = useRoute()
+
     const loading = ref(false)
+    const globalLoading = ref(false)
+
     const headerOptions = ref([])
+
     const tablePosition = ref(null)
+
     const searchField = ref('')
-    const isMobile = useMobile()
-    const { generalConfig } = useTable(props.options)
-    const options = generalConfig()
+
+    // const { generalConfig } = useTable(props.options)
     const proxyOptions = toRef(options, 'head')
+
+    const options = ref(props.options)
     const detail = ref(options?.detail)
     const filters = ref(options?.filters)
     const panel = ref(options?.panel)
+
     const lastSelected = ref({
       indexRow: null,
       row: {},
     })
     const rowCount = [5, 10, 15, 20, 25, 30]
+    const contextMenuRef = ref(null)
     const contextmenu = ref({
       isShow: false,
       x: null,
@@ -129,6 +127,35 @@ const table = {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       date: moment(new Date()).format('YYYY-MM'),
+    })
+    const permission = computed(() => store.state.user.permission_id)
+    const directions = computed(() =>
+      JSON.parse(store.state.user.direction_json)
+    )
+    const availablePanelBtn = computed(() => {
+      const checkIncludesPermissions = (el) => {
+        return el.permissions.includes(permission.value)
+      }
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+
+        if (!el.direction_id) return true
+        else {
+          return !!_.intersection(el.direction_id, directions.value).length
+        }
+      }
+      return props.options.panel.buttons.filter((btn) => {
+        if (!btn.isShow) return btn
+        else {
+          return btn.isShow.condition.some((el) => {
+            return (
+              checkIncludesPermissions(el) &&
+              checkIncludesDirections(el) === el.type
+            )
+          })
+          // if ()
+        }
+      })
     })
     const wrapingRow = () => {
       const table = document.querySelector(options.selector)
@@ -232,16 +259,7 @@ const table = {
       } else if (paramsCol.value === 'desc') {
         paramsCol.value = undefined
       }
-      //if (head.sorts[0].value === undefined) {
-      //  head.sorts[0].value = 'asc'
-      //} else if (head.sorts[0].value === 'asc') {
-      //  head.sorts[0].value = 'desc'
-      //} else if (head.sorts[0].value === 'desc') {
-      //  head.sorts[0].value = undefined
-      //}
-      //
     }
-    const contextMenuRef = ref(null)
     const openContext = ($event, row) => {
       //return // eslint-disable-next-line
       if (!contextmenu.value.isShow) {
@@ -346,40 +364,12 @@ const table = {
       filter.value.isShow = false
     }
 
-    // Something like this should work:
-
-    // function makeRequestCreator() {
-    //     var call;
-    //     return function(url) {
-    //         if (call) {
-    //             call.cancel();
-    //         }
-    //         call = axios.CancelToken.source();
-    //         return axios.get(url, { cancelToken: call.token }).then((response) => {
-    //
-    //         }).catch(function(thrown) {
-    //             if (axios.isCancel(thrown)) {
-    //
-    //             } else {
-    //                 // handle error
-    //             }
-    //         });
-    //     }
-    // }
-    // You then use it with
-
-    //  var get = makeRequestCreator();
-    //  get('someurl');
-
-    //  Each new request will cancel the previous one
-
     let controller
     const getItems = async () => {
       if (controller) controller.abort()
       controller = new AbortController()
       loading.value = true
       const { url } = props.options.options
-      // Может быть без props. после merge cofilcts
       let sorts = []
       let searchColumns = []
 
@@ -452,9 +442,14 @@ const table = {
       }
       loading.value = false
       controller = undefined
+      setTimeout(() => {
+        coutingCells()
+      }, 0)
     }
     const initHeadParams = () => {
       const { head } = options
+      paramsQuery.value.sorts = []
+      paramsQuery.value.searchColumns = []
       head.forEach((el) => {
         if (el.sorts?.length) {
           paramsQuery.value.sorts.push({
@@ -472,26 +467,15 @@ const table = {
         }
       })
     }
-    const watchScroll = () => {
-      //const firstListItem = list.querySelector('.horizontal-scroll-container__list-item:first-child');
-      //const lastHeadTable = header.options
-      //const table = document.querySelector(options.selector)
-    }
+
     const isElementXPercentInViewport = (element) => {
-      /* eslint-disable */
       const { x } = element.getBoundingClientRect()
-      /* eslint-disable */
       if (
-        /* eslint-disable */
         element.offsetLeft + element.offsetWidth + x &&
-        /* eslint-disable */
         element.offsetLeft < window.innerWidth
       ) {
-        /* eslint-disable */
         return true
-        /* eslint-disable */
       } else {
-        /* eslint-disable */
         return false
       }
     }
@@ -597,7 +581,9 @@ const table = {
     }
 
     const changeMonth = async (val) => {
-      currentDate.value.date = moment(`${currentDate.value.date}-10`).add(val, 'M').format('YYYY-MM')
+      currentDate.value.date = moment(`${currentDate.value.date}-10`)
+        .add(val, 'M')
+        .format('YYYY-MM')
       currentDate.value.year = currentDate.value.date.split('-')[0]
       currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
       await getItems()
@@ -714,9 +700,7 @@ const table = {
           acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
         }, 0)
       })
-      //wrapingRow()
-      window.addEventListener('resize', () => watchScroll())
-      watchScroll()
+
       pagination.value = {
         ...options.data,
       }
@@ -791,36 +775,6 @@ const table = {
       return key in obj
     })
 
-    const permission = computed(() => store.state.user.permission_id)
-    const directions = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
-    const availablePanelBtn = computed(() => {
-      const checkIncludesPermissions = (el) => {
-        return el.permissions.includes(permission.value)
-      }
-      const checkIncludesDirections = (el) => {
-        //return el.direction_id.includes(directions.value)
-
-        if (!el.direction_id) return true
-        else {
-          return !!_.intersection(el.direction_id, directions.value).length
-        }
-      }
-      return props.options.panel.buttons.filter((btn) => {
-        if (!btn.isShow) return btn
-        else {
-          return btn.isShow.condition.some((el) => {
-            return (
-              checkIncludesPermissions(el) &&
-              checkIncludesDirections(el) === el.type
-            )
-          })
-          // if ()
-        }
-      })
-    })
-
     const insertStyle = (row) => {
       let styles = {}
       if (props.options.options.styleRow) {
@@ -843,7 +797,7 @@ const table = {
     const downloadFile = (val) => {
       Vue.downloadFile(val)
     }
-    
+
     const changeHeaders = async () => {
       initHeadParams()
       await getItems()
@@ -858,7 +812,6 @@ const table = {
       contextmenu,
       pagination,
       filter,
-      isMobile,
       proxyOptions,
       panel,
       currentDate,
@@ -881,7 +834,6 @@ const table = {
       openFilter,
       closeFilter,
       getItems,
-      watchScroll,
       handlerContext,
       changeMonth,
       // COMPUTED PROPERTIES
