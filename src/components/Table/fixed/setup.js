@@ -528,7 +528,6 @@ const table = {
     }
 
     const openCell = ($event, row, cell, card) => {
-      console.log('zxc')
       if (props.options.detail.type === 'popup' && !cell.noAction) {
         const routeKey = props.options.options.routeKey
         const dataCell = row.row
