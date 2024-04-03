@@ -8,10 +8,10 @@
         >{{ field.label }}</v-subheader
       >
     </v-row>
-    <v-row style="flex-wrap: nowrap" class="mt-0">
+    <v-row class="row mt-0">
       <v-col
         style="transition: 0.2s"
-        class="pl-0"
+        class="pl-0 date date-left"
         cols="12"
         :sm="!isEmpty ? 6 : 6"
       >
@@ -66,7 +66,7 @@
       </v-col>
       <v-col
         style="transition: 0.2s"
-        class="pr-0"
+        class="pr-0 date date-right"
         cols="12"
         :sm="!isEmpty ? 5 : 6"
       >
@@ -128,7 +128,7 @@
           </v-date-picker>
         </v-menu> -->
       </v-col>
-      <v-col v-if="!isEmpty" class="pr-0" :sm="!isEmpty ? 1 : 0">
+      <v-col v-if="!isEmpty" class="pr-0 removeAll" :sm="!isEmpty ? 1 : 0">
         <v-icon @click="resetDate" class="mt-1 mr-1" x-small>$IconClose</v-icon>
       </v-col>
     </v-row>

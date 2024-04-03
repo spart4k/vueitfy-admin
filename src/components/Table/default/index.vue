@@ -6,10 +6,10 @@
         class="v-table-panel"
       >
         <div class="v-table-panel__actions flex-wrap">
-          <div class=""></div>
           <div
             v-for="(button, indexButton) in availablePanelBtn"
             :key="indexButton"
+            class="panel-button"
             :class="`panel-button_${button.label}`"
             small
           >
@@ -413,7 +413,7 @@
           <v-pagination
             v-model="paramsQuery.currentPage"
             :length="options.data.totalPages"
-            :total-visible="7"
+            :total-visible="isMobile ? 4 : 7"
           ></v-pagination>
         </div>
       </div>

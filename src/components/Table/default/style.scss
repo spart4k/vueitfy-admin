@@ -3,7 +3,6 @@ $borderColor: rgba(0, 0, 0, 0.3);
 $tablePanelHeight: 61px;
 $tableFooterHeight: 100px;
 
-
 .v {
   &-table {
     margin: 10px 10px 30px 10px;
@@ -267,6 +266,9 @@ $tableFooterHeight: 100px;
       background-color: var(--v-background-base);
       border: 1px solid $borderColor;
       border-bottom: 0;
+      &-button {
+        margin-bottom: 5px;
+      }
       &__search {
         display: flex;
         align-items: baseline;
@@ -282,7 +284,8 @@ $tableFooterHeight: 100px;
         > button,
         div {
           &:not(:last-child) {
-            margin-right: 5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
           }
         }
         @media (max-width: $mobileWidth) {

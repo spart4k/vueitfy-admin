@@ -13,4 +13,23 @@
     right: 0;
     left: unset;
   }
+  .row {
+    flex-wrap: nowrap;
+    @media (max-width: $mobileWidth) {
+      flex-wrap: wrap;
+    }
+    .date {
+      &-left {
+      }
+      &-right {
+      }
+      @media (max-width: $mobileWidth) {
+        padding: 0 !important;
+        height: 80px;
+      }
+    }
+  }
+  .removeAll {
+    display: none;
+  }
 }

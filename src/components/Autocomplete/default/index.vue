@@ -2,6 +2,7 @@
   <div class="v-autocomplete">
     <v-autocomplete
       clearable
+      attach=""
       v-model="proxyValue"
       :loading="loading"
       :items="field.items"
