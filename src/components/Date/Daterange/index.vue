@@ -24,45 +24,6 @@
           @focus="onFocus"
           @blur="unFocus"
         ></Datepicker>
-        <!-- <v-menu
-          :key="field.id"
-          :ref="`menuRef_${field.id}`"
-          v-model="dateMenu.start"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-        >
-          <template v-slot:activator="{ attrs }">
-            <v-text-field
-              @click:append="openMenu('start')"
-              v-model="date.start"
-              append-icon="mdi-calendar"
-              v-bind="attrs"
-              placeholder="От"
-              :readonly="readonly"
-              class="mt-0 pt-0"
-              clearable
-              @focus="onFocus"
-              @blur="unFocus"
-              :error-messages="errorMessages.length ? errorMessages[0][0] : ''"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="date.start"
-            color="primary"
-            locale="ru-RU"
-            :readonly="readonly"
-            :first-day-of-week="1"
-            :max="date.end"
-            @input="
-              field.subtype !== 'multiple' ? closeMenu('start') : undefined
-            "
-          >
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="closeMenu('start')"> OK </v-btn>
-          </v-date-picker>
-        </v-menu> -->
       </v-col>
       <v-col
         style="transition: 0.2s"
@@ -80,53 +41,6 @@
           @blur="unFocus"
           edge="right"
         ></Datepicker>
-        <!-- <v-menu
-          :key="field.id"
-          :ref="`menuRef_${field.id}`"
-          v-model="dateMenu.end"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-
-          content-class="rightDate"
-          location="top start"
-          attach="#attachMenu"
-          :right="true"
-          style="right: 0"
-        >
-          <template v-slot:activator="{ attrs }">
-            <template>
-              <v-text-field
-                @click:append="openMenu('end')"
-                v-model="date.end"
-                append-icon="mdi-calendar"
-                v-bind="attrs"
-                :readonly="readonly"
-                placeholder="По"
-                class="mt-0 pt-0"
-                clearable
-                @focus="onFocus"
-                @blur="unFocus"
-                :error-messages="
-                  errorMessages.length ? errorMessages[0][1] : ''
-                "
-              ></v-text-field>
-            </template>
-          </template>
-          <v-date-picker
-            v-model="date.end"
-            color="primary"
-            locale="ru-RU"
-            :readonly="readonly"
-            :first-day-of-week="1"
-            :min="date.start"
-            @input="field.subtype !== 'multiple' ? closeMenu('end') : undefined"
-          >
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="closeMenu('end')"> OK </v-btn>
-          </v-date-picker>
-        </v-menu> -->
       </v-col>
       <v-col v-if="!isEmpty" class="pr-0" :sm="!isEmpty ? 1 : 0">
         <v-icon @click="resetDate" class="mt-1 mr-1" x-small>$IconClose</v-icon>

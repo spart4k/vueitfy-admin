@@ -4,6 +4,7 @@ import personal from './personal'
 import shopRequestMagnit from './magnit/shop-request'
 import shopRequestMagnitReport from './magnit/shop-request-report'
 import userKeys from './user-keys'
+import reportTaxi from './report-taxi'
 import tasks from './tasks'
 import pivot from './pivot'
 import pivotx5 from './pivotx5'
@@ -29,5 +30,6 @@ export {
   object,
   account,
   zayavka,
+  reportTaxi,
   pivotx5,
 }
