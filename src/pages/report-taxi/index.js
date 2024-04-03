@@ -149,7 +149,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'tt.tarif',
+          alias: 'tt.name',
           value: 'tarif',
           search: {
             field: '',
@@ -254,6 +254,7 @@ const config = {
           },
         ],
         search: true,
+        filters: true,
         date: true,
         addedItemsChildrenType: 'object',
       },
@@ -277,7 +278,7 @@ const config = {
           isShow: true,
           width: '150',
           alias: 'sy.name',
-          value: 'account_name',
+          value: 'name_telephone',
           search: {
             field: '',
             isShow: true,
