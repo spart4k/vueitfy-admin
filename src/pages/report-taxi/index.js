@@ -149,7 +149,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'tt.tarif',
+          alias: 'tt.name',
           value: 'tarif',
           search: {
             field: '',
