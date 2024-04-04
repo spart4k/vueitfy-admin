@@ -76,17 +76,12 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <!-- <DocFormCorrect
-        v-if="docs && docs.length"
-        class="mb-10"
-        @change="changeDocs"
-        :docsData="docsData"
-        :bankData="bankData"
-        :listNames="listNames"
-        :docs="docs"
-        :entity="entity"
-        :task="JSON.parse(data.task.dop_data)"
-      ></DocFormCorrect> -->
+      <DocMain
+        :docMainData="docMainData"
+        :isShow="isHasOsnDoc"
+        :correct="true"
+        ref="docMainRef"
+      />
       <DocForm
         v-if="docs && docs.length"
         class="mb-10"

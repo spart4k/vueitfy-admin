@@ -1,5 +1,4 @@
-import { defineComponent, ref, computed, watch } from 'vue'
-import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
+import { defineComponent, ref, reactive, computed, watch } from 'vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
@@ -9,13 +8,14 @@ import store from '@/store'
 import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import DocMain from '../el/DocMain/index.vue'
 
 const Form7 = defineComponent({
   name: 'Form7',
   components: {
     TextInfo,
     FormComment,
-    DocFormCorrect,
+    DocMain,
     DocForm,
   },
   props: {
@@ -74,7 +74,11 @@ const Form7 = defineComponent({
         }
       }
     )
-
+    const docMainData = reactive({
+      name: props.data.entity.name,
+      data_rojd: props.data.entity.data_rojd,
+      grajdanstvo_id: props.data.entity.grajdanstvo_id,
+    })
     const formObj = ref(
       useForm({
         fields: {
@@ -128,6 +132,9 @@ const Form7 = defineComponent({
           docsIdArr.length === Object.values(data.correctedDocs).length
       }
     }
+
+    const docMainRef = ref(null)
+    const docMainValid = computed(() => true)
 
     const confirmOsnDoc = () => {
       const aidDocs = JSON.parse(props.data.task.dop_data).docs_id
@@ -265,6 +272,8 @@ const Form7 = defineComponent({
       docFormRef,
       isValid,
       bankCardId,
+      docMainData,
+      docMainRef,
     }
   },
 })
