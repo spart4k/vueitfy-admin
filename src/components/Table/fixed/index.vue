@@ -325,25 +325,40 @@
                           width: '150px',
                           height: '80px',
                           background:
-                            (card.type_shift === 1
+                            ((card?.type_shift === 1
                               ? '#c5ffc5'
-                              : card.type_shift === 2
+                              : card?.type_shift === 2
                               ? '#d0f6ff'
-                              : card.type_shift === 3
+                              : card?.type_shift === 3
                               ? '#f4d0ff'
                               : null) ??
-                            card?.status_color +
                               `${
-                                card.is_del
-                                  ? ' repeating-linear-gradient( -45deg, #cccccc5c 0 10px, #9999991a 10px 30px )'
-                                  : ''
-                              }`,
+                                card?.status_color ? card?.status_color : ''
+                              }` +
+                                `${
+                                  card?.is_del
+                                    ? ' repeating-linear-gradient( -45deg, #cccccc5c 0 10px, #9999991a 10px 30px )'
+                                    : ''
+                                }`) ||
+                            '#c5ffc5',
                         }"
                         @dblclick.stop="
                           $props.options.options.doubleHandlerType === 'cell' &&
                             openCell($event, row, cell, card)
                         "
                       >
+                        <p
+                          v-if="card.tarif"
+                          class="v-table-body-row-cell-item_text"
+                        >
+                          {{ card.tarif }}
+                        </p>
+                        <p
+                          v-if="card.price"
+                          class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
+                        >
+                          {{ card.price }}
+                        </p>
                         <p class="v-table-body-row-cell-item_text">
                           {{ card.hour ?? card.position }}
                         </p>
@@ -457,8 +472,17 @@
     </div>
 
     <div class="v-table-footer pl-4">
-      <div v-if="!options.data.footer" class="v-table-footer-total">
+      <div v-if="!options.data.footer?.length" class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
+      </div>
+      <div v-if="options.data?.footer?.length" class="text-center">
+        <span
+          v-for="footerInfo in options.data?.footer"
+          v-show="footerInfo.value"
+          :key="footerInfo.name"
+        >
+          {{ footerInfo.name }}: {{ footerInfo.value }}
+        </span>
       </div>
       <div v-if="options.data.footer" class="v-table-footer-state">
         <div
@@ -508,21 +532,6 @@
               }}</span>
             </div>
           </div>
-          <!-- <div>
-            <div
-              class="v-table-footer-state-item font-weight-bold"
-              v-for="(item, index) in options.data.footer.state"
-              :key="index"
-            >
-              <div
-                class="v-table-footer-state-item_type mr-1"
-                :style="{ background: item.color }"
-              ></div>
-              <div>
-                {{ item.count }}
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
       <div class="v-table-footer-pagination">
