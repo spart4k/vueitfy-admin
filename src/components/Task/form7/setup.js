@@ -98,6 +98,14 @@ const Form7 = defineComponent({
         context,
       })
     )
+    const docMainRef = ref(null)
+    const docMainValid = computed(() => {
+      if (isHasOsnDoc) {
+        return !docMainRef.value.vForm.$invalid && docMainRef.value.osnConfirmed
+      } else {
+        return true
+      }
+    })
     const allDocsValid = computed(() => {
       return docFormRef.value?.docRows?.every(
         (el) => !el.vForm.$invalid && el.isCorrect
@@ -106,7 +114,11 @@ const Form7 = defineComponent({
     const isValid = computed(() => {
       if (isHasOnlyCard.value && bankCardId.value) {
         return true
-      } else if (allDocsValid.value && (isHasCard ? bankCardId.value : true)) {
+      } else if (
+        allDocsValid.value &&
+        (isHasCard ? bankCardId.value : true) &&
+        (isHasOsnDoc ? docMainValid.value : true)
+      ) {
         return true
       } else {
         return false
@@ -132,9 +144,6 @@ const Form7 = defineComponent({
           docsIdArr.length === Object.values(data.correctedDocs).length
       }
     }
-
-    const docMainRef = ref(null)
-    const docMainValid = computed(() => true)
 
     const confirmOsnDoc = () => {
       const aidDocs = JSON.parse(props.data.task.dop_data).docs_id
