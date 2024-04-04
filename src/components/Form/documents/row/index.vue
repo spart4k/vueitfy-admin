@@ -65,6 +65,7 @@
                       clearable
                       :readonly="field.readonly || confirm"
                       :disabled="field.readonly"
+                      :class="'docInput_' + field.name"
                     />
                     <Datepicker
                       v-else-if="field.type === 'date'"
@@ -73,12 +74,14 @@
                       :field="field"
                       :error-messages="formErrors[field?.name]"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     ></Datepicker>
                     <v-checkbox
                       v-else-if="field.type === 'checkbox'"
                       v-model="formData[field.name]"
                       :label="field.label"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     ></v-checkbox>
                     <Autocomplete
                       v-else-if="field.type === 'select'"
@@ -91,6 +94,7 @@
                       ref="autocompleteRef"
                       @change="changeAutocomplete"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     />
                     <Autocomplete
                       v-else-if="field.type === 'autocomplete'"
@@ -103,6 +107,7 @@
                       ref="autocompleteRef"
                       @change="changeAutocomplete"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     />
                     <!-- <v-textarea
                 v-else-if="showField('textarea', field)"
