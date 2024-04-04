@@ -472,8 +472,17 @@
     </div>
 
     <div class="v-table-footer pl-4">
-      <div v-if="!options.data.footer" class="v-table-footer-total">
+      <div v-if="!options.data.footer?.length" class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
+      </div>
+      <div v-if="options.data?.footer?.length" class="text-center">
+        <span
+          v-for="footerInfo in options.data?.footer"
+          v-show="footerInfo.value"
+          :key="footerInfo.name"
+        >
+          {{ footerInfo.name }}: {{ footerInfo.value }}
+        </span>
       </div>
       <div v-if="options.data.footer" class="v-table-footer-state">
         <div
@@ -523,21 +532,6 @@
               }}</span>
             </div>
           </div>
-          <!-- <div>
-            <div
-              class="v-table-footer-state-item font-weight-bold"
-              v-for="(item, index) in options.data.footer.state"
-              :key="index"
-            >
-              <div
-                class="v-table-footer-state-item_type mr-1"
-                :style="{ background: item.color }"
-              ></div>
-              <div>
-                {{ item.count }}
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
       <div class="v-table-footer-pagination">
