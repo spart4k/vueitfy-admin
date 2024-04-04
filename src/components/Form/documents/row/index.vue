@@ -66,6 +66,7 @@
                       :readonly="field.readonly || confirm"
                       :disabled="field.readonly"
                       :class="'docInput_' + field.name"
+                      :name="'docInput_' + field.name"
                     />
                     <Datepicker
                       v-else-if="field.type === 'date'"
