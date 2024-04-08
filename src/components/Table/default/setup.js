@@ -497,7 +497,7 @@ const table = {
     }
     const saveFilter = async (filterData) => {
       filtersColumns.value = []
-      filters.value.fields.forEach((el) => {
+      filters.value?.fields?.forEach((el) => {
         if (!filterData[el.name]) {
           el.value = ''
           return
@@ -682,7 +682,7 @@ const table = {
     // HOOKS
     const initialFilter = () => {
       const filter = {}
-      filters.value.fields.forEach((item) => {
+      filters.value?.fields?.forEach((item) => {
         filter[item.name] = item.value
       })
       return filter
