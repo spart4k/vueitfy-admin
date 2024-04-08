@@ -181,15 +181,15 @@
             Строка {{ item.row_id }}: {{ item.error }}
           </v-list-item-title>
         </v-list>
-        <v-row class="justify-center">
+        <v-row class="justify-space-between">
+          <v-btn color="primary" @click.prevent="getDownloadPath()">
+            <v-icon small> $IconDownload </v-icon>
+          </v-btn>
           <v-btn color="primary" @click.prevent="stage.showForm = true">
             <v-icon small class="mr-2"> $IconUpdate </v-icon>
             Обновить
           </v-btn>
-          <v-btn color="primary" @click.prevent="getDownloadPath()">
-            <v-icon small class="mr-2"> $IconDownload </v-icon>
-            Скачать
-          </v-btn>
+          <div></div>
         </v-row>
         <v-divider class="mt-4" />
       </div>
