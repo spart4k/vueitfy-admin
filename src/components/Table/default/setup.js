@@ -495,7 +495,7 @@ const table = {
         return false
       }
     }
-    const saveFilter = (filterData) => {
+    const saveFilter = async (filterData) => {
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -509,10 +509,7 @@ const table = {
             (el) =>
               el === null ||
               el === undefined ||
-              el === '' ||
-              el === '' ||
-              el === null ||
-              el === null
+              el === ''
           )
         ) {
           return
@@ -533,7 +530,7 @@ const table = {
         filtersColumns.value.push(obj)
       })
       paramsQuery.value.currentPage = 1
-      getItems()
+      await getItems()
     }
 
     const doubleHandler = (
@@ -683,9 +680,18 @@ const table = {
     // )
 
     // HOOKS
+    const initialFilter = () => {
+      const filter = {}
+      filters.value.fields.forEach((item) => {
+        filter[item.name] = item.value
+      })
+      return filter
+    }
+
     onMounted(async () => {
       initHeadParams()
-      await getItems()
+      await saveFilter(initialFilter())
+      // await getItems()
 
       watch(
         () => paramsQuery,
