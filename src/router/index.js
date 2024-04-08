@@ -16,6 +16,7 @@ import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.v
 import UserKeysView from '../views/UserKeysView.vue'
 import TasksView from '../views/Tasks.vue'
 import ReportTaxiView from '../views/ReportTaxiView.vue'
+import HabitationView from '../views/HabitationView.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -676,6 +677,15 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/habitation',
+    name: 'habitation',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: HabitationView,
+    children: [],
   },
   {
     path: '/zayavka',

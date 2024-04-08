@@ -14,6 +14,7 @@ import account from './account'
 import zayavka from './zayavka'
 import documents from './documents'
 import schedule from './schedule'
+import habitation from './habitation'
 
 export {
   schedule,
@@ -32,4 +33,5 @@ export {
   zayavka,
   reportTaxi,
   pivotx5,
+  habitation,
 }
