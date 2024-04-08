@@ -186,6 +186,10 @@
             <v-icon small class="mr-2"> $IconUpdate </v-icon>
             Обновить
           </v-btn>
+          <v-btn color="primary" @click.prevent="getDownloadPath()">
+            <v-icon small class="mr-2"> $IconDownload </v-icon>
+            Скачать
+          </v-btn>
         </v-row>
         <v-divider class="mt-4" />
       </div>
