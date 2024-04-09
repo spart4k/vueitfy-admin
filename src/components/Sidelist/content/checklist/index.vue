@@ -71,7 +71,7 @@
                       :color="
                         item.is_load === 2
                           ? 'warning'
-                          : tem.is_load === 1
+                          : item.is_load === 1
                           ? 'success'
                           : 'error'
                       "
