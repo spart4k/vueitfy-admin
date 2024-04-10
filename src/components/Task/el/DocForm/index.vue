@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-2">Приложенные документы:</div>
+    <div class="mb-2 font-weight-bold">Приложенные документы:</div>
     <FormDocumentsRow
       :key="document.id"
       v-for="(document, documentIndex) in docsDataFormated"

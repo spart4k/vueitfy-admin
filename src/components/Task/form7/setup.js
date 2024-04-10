@@ -124,12 +124,13 @@ const Form7 = defineComponent({
         return false
       }
     })
+    const rejectedComment = JSON.parse(props.data.task.dop_data).comment
     const docFormRef = ref(null)
     const changeDocs = (data) => {
       console.log('changeDocs')
       console.log(data)
       finalData.value = isHasOsnDoc
-        ? { 0: formObj.value.formData, ...data.correctedDocs }
+        ? { 0: docMainRef.value.formData, ...data.correctedDocs }
         : data.correctedDocs
       bankCardId.value = data.bank_card_id
       const docsIdArr = [
@@ -148,7 +149,7 @@ const Form7 = defineComponent({
     const confirmOsnDoc = () => {
       const aidDocs = JSON.parse(props.data.task.dop_data).docs_id
       if (aidDocs.length === 1 && aidDocs[0] === 0) isFormValid.value = true
-      finalData.value = { ...finalData.value, 0: formObj.value.formData }
+      finalData.value = { ...finalData.value, 0: docMainRef.value.formData }
       osnConfirmed.value = true
     }
 
@@ -158,9 +159,7 @@ const Form7 = defineComponent({
         return store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
-            name: formObj.value.formData.name,
-            data_rojd: formObj.value.formData.data_rojd,
-            grajdanstvo_id: formObj.value.formData.grajdanstvo_id,
+            ...docMainRef.value.formData,
           },
         })
       },
@@ -283,6 +282,7 @@ const Form7 = defineComponent({
       bankCardId,
       docMainData,
       docMainRef,
+      rejectedComment,
     }
   },
 })

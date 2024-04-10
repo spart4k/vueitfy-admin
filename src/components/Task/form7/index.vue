@@ -82,6 +82,9 @@
         :correct="true"
         ref="docMainRef"
       />
+      <div class="rejectedComment mb-2">
+        <span>!</span> {{ rejectedComment }}
+      </div>
       <DocForm
         v-if="docs && docs.length"
         class="mb-10"
@@ -95,7 +98,7 @@
         :correct="true"
         ref="docFormRef"
       ></DocForm>
-      <FormComment />
+      <!-- <FormComment /> -->
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
@@ -113,4 +116,13 @@
 
 <script src="./setup.js"></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.rejectedComment {
+  // display: inline-flex;
+  padding: 2px 10px;
+  border: 1px dashed #ff5252;
+  span {
+    color: #ff5252;
+  }
+}
+</style>

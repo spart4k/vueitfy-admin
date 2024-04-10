@@ -87,7 +87,7 @@ const Form1 = defineComponent({
     }
     let confirmed = ref([])
     let unConfirmed = ref([])
-
+    const rejectedComment = JSON.parse(props.data.task.dop_data).comment
     const addConfirmed = (data) => {
       confirmed.value.push(data)
       unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
@@ -342,6 +342,7 @@ const Form1 = defineComponent({
       docFormRef,
       cardAccepted,
       isValid,
+      rejectedComment,
     }
   },
 })

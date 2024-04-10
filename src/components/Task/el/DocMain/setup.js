@@ -1,4 +1,4 @@
-import Vue, { ref, onMounted } from 'vue'
+import Vue, { ref, onMounted, watch } from 'vue'
 import { stringField, selectField, dateField } from '@/utils/fields.js'
 import { required } from '@/utils/validation.js'
 import useRequest from '@/compositions/useRequest'
@@ -248,6 +248,11 @@ export default {
     const sumbitDoc = () => {
       osnConfirmed.value = true
     }
+    watch(formData, () => {
+      console.log(formData)
+      osnConfirmed.value = false
+    }),
+      { deep: true }
     onMounted(async () => {
       // await getData()
     })

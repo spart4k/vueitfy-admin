@@ -76,6 +76,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    citizenship: {
+      type: Array,
+      default: () => [],
+    },
   },
   components: {
     Autocomplete,
@@ -123,6 +127,61 @@ export default {
               cols: 12,
               sm: 12,
             },
+            bootstrapClass: [''],
+          })
+          break
+        case 'date_rojd':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'name':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'grajdanstvo_id':
+          result = selectField({
+            label: switchLabel(key),
+            name: key,
+            // alias: 'status_pt',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            defaultItems: props.citizenship,
+            items: props.citizenship,
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            value: 1,
+            disable: true,
+            // validations: { required },
             bootstrapClass: [''],
           })
           break
@@ -953,6 +1012,53 @@ export default {
             bootstrapClass: [''],
           })
           break
+        case 'dms_ser':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'dms_num':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'dms_vidachi':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: null,
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
 
         default:
           result = stringField({
@@ -977,6 +1083,15 @@ export default {
       switch (key) {
         case 'pasp_data_vid':
           result = 'Дата выдачи'
+          break
+        case 'name':
+          result = 'ФИО'
+          break
+        case 'Дата рождения':
+          result = 'data_rojd'
+          break
+        case 'Гражданство':
+          result = 'grajdanstvo_id'
           break
         case 'pasp_ser':
           result = 'Серия'
@@ -1107,8 +1222,14 @@ export default {
         case 'patent_date_docs_out':
           result = 'По'
           break
-        case 'patent_special_marks_date':
-          result = 'Специальные отметки'
+        case 'dms_ser':
+          result = 'Серия'
+          break
+        case 'dms_num':
+          result = 'Номер'
+          break
+        case 'dms_vidachi':
+          result = 'Дата выдачи'
           break
         default:
           result = key

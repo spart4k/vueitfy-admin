@@ -58,10 +58,11 @@
             <v-btn
               color="warning"
               class="ml-2"
+              :disabled="vForm.$invalid"
               @click.prevent="sumbitDoc"
               small
             >
-              Исправить
+              Исправлено
             </v-btn>
           </v-row>
         </v-expansion-panel-content>

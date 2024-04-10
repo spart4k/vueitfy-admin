@@ -5,13 +5,14 @@
         <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
-      <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <span
+      <TextInfo v-if="textInfo" class="mb-3" :infoObj="textInfo"></TextInfo>
+      <span class="font-weight-bold mb2"
         ><v-icon small v-if="isLoadedImage || data.data.docs.length"
           >$IconGalka</v-icon
-        >Прикрепите реквизиты</span
-      >
+        >Прикрепите реквизиты:
+      </span>
       <Dropzone
+        class="mt-2"
         :options="{
           withoutSave: false,
           folder: 'tmp',

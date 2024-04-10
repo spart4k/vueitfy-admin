@@ -137,7 +137,7 @@ const Form4 = defineComponent({
                 // type_parent_action: 2,
 
                 parent_process: data.task.process_id,
-                process_id: data.task.process_id,
+                process_id: 1,
                 account_id: data.task.to_account_id,
                 task_id: data.task.id,
                 docs_id: [str.result],
