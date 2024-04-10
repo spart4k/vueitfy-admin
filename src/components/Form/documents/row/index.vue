@@ -200,22 +200,11 @@
               </v-btn>
             </v-row>
             <v-row v-if="confirm" justify="end">
-              <v-btn
-                :disabled="vForm.$invalid"
-                @click="rejectDoc"
-                color="error"
-                small
-              >
+              <v-btn @click="rejectDoc" color="error" small>
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Отклонить
               </v-btn>
-              <v-btn
-                :disabled="vForm.$invalid"
-                @click="confirmDoc"
-                color="primary"
-                small
-                class="ml-2"
-              >
+              <v-btn @click="confirmDoc" color="primary" small class="ml-2">
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Подтвердить
               </v-btn>

@@ -6,6 +6,7 @@ import {
   checkboxField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
+import { required } from '@/utils/validation.js'
 
 const filters = {
   id: 0,
@@ -13,10 +14,25 @@ const filters = {
   type: 'FormDefault',
   detail: false,
   isFilter: true,
-  lists: [{ alias: 'status_x5', filter: [] }],
+  lists: [{ alias: 'taxi_tarif', filter: [] }],
   alias: 'pivotx5',
   active: false,
   fields: [
+    dateRangeField({
+      label: 'Период',
+      name: 'date',
+      subtype: 'range',
+      typeFilter: 'date',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 't.date',
+      validations: { required },
+    }),
     autocompleteField({
       label: 'Менеджер',
       name: 'account_id',
@@ -31,17 +47,17 @@ const filters = {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/managers_default_roznica',
+      url: 'get/pagination_list/managers_default',
       position: {
         cols: 12,
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'o.manager_directions',
+      aliasFilter: 't.account_id',
     }),
     selectField({
-      label: 'Статус',
-      name: 'status_x5',
+      label: 'Тариф',
+      name: 'taxi_tarif',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -55,23 +71,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 's.id',
-    }),
-    checkboxField({
-      label: 'Удалённые',
-      name: 'phx.is_del',
-      placeholder: '',
-      subtype: 'single',
-      readonly: false,
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'phx.is_del',
-      //validations: { required },
-      //isShow: false,
+      aliasFilter: 'tt.id',
     }),
   ],
   actions: [

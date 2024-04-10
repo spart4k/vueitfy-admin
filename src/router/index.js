@@ -15,6 +15,8 @@ import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
 import UserKeysView from '../views/UserKeysView.vue'
 import TasksView from '../views/Tasks.vue'
+import ReportTaxiView from '../views/ReportTaxiView.vue'
+import HabitationView from '../views/HabitationView.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -649,6 +651,41 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/report_taxi',
+    name: 'report_taxi',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ReportTaxiView,
+    children: [
+      {
+        name: 'report_taxi-edit',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'report_taxi/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/habitation',
+    name: 'habitation',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: HabitationView,
+    children: [],
   },
   {
     path: '/zayavka',

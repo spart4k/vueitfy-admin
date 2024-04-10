@@ -18,6 +18,7 @@
       :readonly="readonly"
       :name="field.name"
     >
+      czxc
       <template v-if="false" v-slot:prepend-item>
         <v-list-item ripple @click="selectAll">
           <v-list-item-action>
@@ -58,16 +59,26 @@
         </div>
         <div :data-field="field.name" v-intersect="endIntersect" />
       </template>
-      <!--<template v-slot:item="data">
+      <template v-slot:item="data">
         <template>
           <v-list-item-content>
-            <v-list-item-title v-html="data.item.name" />
-            <v-list-item-subtitle v-html="data.item.id" />
+            <v-row class="d-flex">
+              <div v-if="data.item?.color" class="mr-2 d-flex align-center">
+                <div
+                  :style="{ backgroundColor: data.item.color }"
+                  class="colorCube"
+                ></div>
+              </div>
+              <span class="textDefault--text">
+                <v-list-item-title v-html="data.item.name" />
+              </span>
+            </v-row>
+            <!-- <v-list-item-subtitle v-html="data.item.id" /> -->
           </v-list-item-content>
         </template>
-      </template>-->
+      </template>
     </v-autocomplete>
   </div>
 </template>
 <script src="./setup"></script>
-<style lang="scss" scoped></style>
+<style src="./style.scss" lang="scss" scoped></style>
