@@ -35,6 +35,18 @@ export default {
       bootstrapClass: [''],
       validations: { required },
     }),
+    stringField({
+      label: 'Телефон',
+      name: 'telephone',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      validations: { required },
+    }),
     dateField({
       label: 'Дата поездки',
       name: 'date',

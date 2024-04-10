@@ -10,8 +10,8 @@
       <div class="mb-10">
         <span>Приложите документы</span>
         <v-expansion-panels multiple>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
+          <v-expansion-panel class="panel_Регистрация">
+            <v-expansion-panel-header class="button_Регистрация">
               <span>
                 <v-icon left v-if="!listDocuments[0].inProcess">
                   $IconGalka
@@ -34,8 +34,8 @@
               ></Dropzone>
             </v-expansion-panel-content>
           </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
+          <v-expansion-panel class="panel_Регистрация стр.2">
+            <v-expansion-panel-header class="button_Регистрация стр.2">
               <span>
                 <v-icon left v-if="!listDocuments[1].inProcess">
                   $IconGalka
@@ -58,8 +58,8 @@
               ></Dropzone>
             </v-expansion-panel-content>
           </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
+          <v-expansion-panel class="panel_ИНН">
+            <v-expansion-panel-header class="button_ИНН">
               <span>
                 <v-icon left v-if="!listDocuments[2].inProcess">
                   $IconGalka
@@ -82,8 +82,8 @@
               ></Dropzone>
             </v-expansion-panel-content>
           </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
+          <v-expansion-panel class="panel_Ученический договор">
+            <v-expansion-panel-header class="button_Ученический договор">
               <span>
                 <v-icon left v-if="!listDocuments[3].inProcess">
                   $IconGalka
@@ -122,6 +122,7 @@
         <v-btn
           small
           color="info"
+          class="action_save"
           :disabled="listDisbledDocuments !== 0"
           @click="sendTaskFinish"
         >
