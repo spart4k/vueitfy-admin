@@ -29,7 +29,7 @@ const taskModule = {
     },
 
     async setBid(_, data) {
-      const result = await setBid('set/data/zayavka', data.data)
+      const result = await setBid('set/zayavka/close_schet', data)
 
       return result
     },

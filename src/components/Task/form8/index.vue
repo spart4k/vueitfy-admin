@@ -19,7 +19,7 @@
       <div class="position-relative">
         <div class="mb-10">
           <span class="font-weight-bold">Приложите документы:</span>
-          <v-expansion-panels :disabled="+data.data?.zayavka?.status !== 5">
+          <v-expansion-panels>
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
               :key="index"
