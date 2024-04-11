@@ -11,7 +11,7 @@
               <div class="alert" v-if="false">
                 <!-- <span>{{ errors.message }}</span> -->
               </div>
-              <v-list lines="one" class="list overflow-y-auto" max-height="220">
+              <!-- <v-list lines="one" class="list overflow-y-auto" max-height="220">
                 <v-list-item
                   v-for="(file, fileID) in files"
                   :key="file"
@@ -30,7 +30,15 @@
                     <IconDelete />
                   </div>
                 </v-list-item>
-              </v-list>
+              </v-list> -->
+              <FormTitle
+                :docName="item.name"
+                v-for="(item, index) in formatedSchets"
+                :docs="item"
+                :key="index"
+                @confirmed="addConfirmed"
+                @unconfirmed="addUnconfirmed"
+              ></FormTitle>
             </div>
 
             <div v-if="!files.length" class="text-center mt-4">
@@ -47,7 +55,7 @@
             <span class="font-weight-bold heading"
               >Укажите сумму закрывающих документов:</span
             >
-            <v-text-field
+            <!-- <v-text-field
               variant="outlined"
               :value="sum"
               min="0"
@@ -56,15 +64,29 @@
               class="sum-input"
               label="Сумма"
             >
-            </v-text-field>
+            </v-text-field> -->
+            <v-textarea
+              v-model="comment"
+              placeholder="Комментарий"
+              class="pt-0"
+              rows="2"
+            ></v-textarea>
             <div class="d-flex justify-end">
               <v-btn
                 @click="sendDocuments"
                 small
-                variant="tonal"
-                color="orange"
+                color="warning"
+                class="black--text mr-4"
                 :disabled="sum < 1 && !files.length"
-                >Приложить</v-btn
+                >Ответить</v-btn
+              >
+              <v-btn
+                @click="sendDocuments"
+                small
+                color="green"
+                class="white--text"
+                :disabled="sum < 1 && !files.length"
+                >Принять</v-btn
               >
             </div>
           </div>

@@ -9,12 +9,14 @@ import {
 import { useRouter, useRoute } from 'vue-router/composables'
 import IconDelete from '@/components/Icons/delete/delete.vue'
 import useRequest from '@/compositions/useRequest'
+import FormTitle from '@/components/Task/el/FormTitle/index.vue'
 import store from '@/store'
 
 const form10 = defineComponent({
   name: 'Form10',
   components: {
     IconDelete,
+    FormTitle,
   },
   props: {
     data: {
@@ -22,7 +24,7 @@ const form10 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }, ctx) {
+  setup(props, ctx) {
     // Variables
     const account_id = computed(() => store.state.user.account_id)
     const chied_id = computed(() => store.state.user.chied_id)
@@ -77,7 +79,13 @@ const form10 = defineComponent({
       // TODO: доделать
       files.value = files.value.filter((file, id) => fileID !== id)
     }
-
+    const formatedSchets = () =>
+      props.data.data.zayavka.close_schet.map((el) => {
+        return {
+          ...el,
+          path_doc: el.name,
+        }
+      })
     // Изменение суммы в поле
     const changeSum = (e) => (sum.value = e)
 
@@ -95,13 +103,13 @@ const form10 = defineComponent({
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
-              process_id: data.task.process_id,
+              process_id: props.data.task.process_id,
               manager_id: account_id,
-              task_id: data.task.id,
-              parent_action: data.task.id,
-              personal_id: data.entity.id,
+              task_id: props.data.task.id,
+              parent_action: props.data.task.id,
+              personal_id: props.data.entity.id,
               docs_id: keyOfObjectSend,
-              account_id: data.task.from_account_id,
+              account_id: props.data.task.from_account_id,
             },
           }),
       })
@@ -120,6 +128,7 @@ const form10 = defineComponent({
       changeSum,
       removeFile,
       sendTaskFinish,
+      formatedSchets: formatedSchets(),
     }
   },
 })
