@@ -75,7 +75,7 @@
             >
           </v-col>
           <v-col style="padding: 0" cols="6">
-            <v-btn
+            <v-btngit
               @click="addGroup"
               class="form-btn form-btn--add"
               color="success"
