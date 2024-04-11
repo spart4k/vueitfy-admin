@@ -176,7 +176,9 @@ const Form18 = defineComponent({
 
       if (data.entity.direction_id === 1) {
         targetServicesKey =
-          [5, 7, 6, 32].indexOf(Number(data.entity.doljnost_id)) === -1 ? 2 : 1
+          [5, 7, 8, 23, 33].indexOf(Number(data.entity.doljnost_id)) === -1
+            ? 2
+            : 1
       } else if (data.entity.direction_id === 6) {
         targetServicesKey = 3
       }
