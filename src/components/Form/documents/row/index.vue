@@ -1,6 +1,9 @@
 <template>
   <div class="document">
-    <div class="document-wrap">
+    <div
+      class="document-wrap"
+      :class="'docAccordion_' + document.doc_name || docNames[document.doc_id]"
+    >
       <v-expansion-panels v-model="folderPanel" class="">
         <v-expansion-panel>
           <v-expansion-panel-header class="document-header">
