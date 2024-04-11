@@ -73,7 +73,8 @@ const form10 = defineComponent({
         name: 'iujk.png',
       },
     ])
-
+    const accepted_amount = ref('')
+    const accepted = ref(JSON.parse(props.data.task.dop_data).accept)
     // Удаление файла
     const removeFile = (fileID) => {
       // TODO: доделать
@@ -88,6 +89,32 @@ const form10 = defineComponent({
       })
     // Изменение суммы в поле
     const changeSum = (e) => (sum.value = e)
+    const comment = ref('')
+    const { makeRequest: setDataZayavka } = useRequest({
+      context,
+      request: () => {
+        return store.dispatch('taskModule/acceptSchets', {
+          data: {
+            id: props.data.task.process_id,
+            close_schets: props.data.data.zayavka.close_schet,
+          },
+        })
+      },
+      successMessage: 'Файл успешно загружен',
+    })
+
+    const { makeRequest: updateDopData } = useRequest({
+      context,
+      request: () => {
+        return store.dispatch('taskModule/updateDopData', {
+          id: props.data.task.id,
+          dop: {
+            accept: true,
+          },
+        })
+      },
+      successMessage: 'Успешно',
+    })
 
     let sendTaskFinish = async () => {
       let keyOfObjectSend = {}
@@ -120,6 +147,14 @@ const form10 = defineComponent({
         ctx.emit('getItems')
       }
     }
+    const formRowsRef = ref([])
+    const allChecked = computed(() =>
+      formRowsRef.value.every((el) => !el.isShowAdd || !el.isShowCansel)
+    )
+    const acceptSchets = async () => {
+      await setDataZayavka()
+      await updateDopData()
+    }
 
     return {
       files,
@@ -129,6 +164,12 @@ const form10 = defineComponent({
       removeFile,
       sendTaskFinish,
       formatedSchets: formatedSchets(),
+      acceptSchets,
+      formRowsRef,
+      allChecked,
+      comment,
+      accepted,
+      accepted_amount,
     }
   },
 })

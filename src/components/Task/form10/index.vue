@@ -38,6 +38,8 @@
                 :key="index"
                 @confirmed="addConfirmed"
                 @unconfirmed="addUnconfirmed"
+                ref="formRowsRef"
+                :hideActions="accepted"
               ></FormTitle>
             </div>
 
@@ -49,12 +51,9 @@
           </div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="!accepted">
         <v-col>
           <div>
-            <span class="font-weight-bold heading"
-              >Укажите сумму закрывающих документов:</span
-            >
             <!-- <v-text-field
               variant="outlined"
               :value="sum"
@@ -77,15 +76,38 @@
                 small
                 color="warning"
                 class="black--text mr-4"
-                :disabled="sum < 1 && !files.length"
+                :disabled="!allChecked || !comment"
                 >Ответить</v-btn
               >
               <v-btn
-                @click="sendDocuments"
+                @click="acceptSchets"
                 small
                 color="green"
                 class="white--text"
-                :disabled="sum < 1 && !files.length"
+                :disabled="!allChecked"
+                >Принять</v-btn
+              >
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col>
+          <div>
+            <v-text-field
+              variant="outlined"
+              v-model="accepted_amount"
+              class="sum-input"
+              label="Сумма"
+            >
+            </v-text-field>
+            <div class="d-flex justify-end">
+              <v-btn
+                @click="sendAmmount"
+                small
+                color="green"
+                class="white--text"
+                :disabled="false"
                 >Принять</v-btn
               >
             </div>
@@ -113,7 +135,7 @@
           color="info"
           @click="sendTaskFinish"
           small
-          :disabled="!files.length"
+          :disabled="!allChecked"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

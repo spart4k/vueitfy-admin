@@ -13,6 +13,10 @@ const docsRequired = defineComponent({
     docName: {
       type: String,
     },
+    hideActions: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {

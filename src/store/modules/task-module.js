@@ -9,6 +9,9 @@ import {
   startProcess,
   putTask,
   setBid,
+  acceptSchets,
+  updateDopData,
+  sendAmmount,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -31,6 +34,22 @@ const taskModule = {
     async setBid(_, data) {
       const result = await setBid('set/zayavka/close_schet', data)
 
+      return result
+    },
+
+    async acceptSchets(_, data) {
+      const result = await acceptSchets('set/zayavka/close_schet', data)
+
+      return result
+    },
+
+    async updateDopData(_, data) {
+      const result = await updateDopData('task/update/dop_data', data)
+      return result
+    },
+
+    async sendAmmount(_, data) {
+      const result = await sendAmmount('task/update/dop_data', data)
       return result
     },
 
