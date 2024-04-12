@@ -1,6 +1,5 @@
 <template>
   <div class="form">
-    zxc
     <v-form class="form-default">
       <v-container class="">
         <v-row>
