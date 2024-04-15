@@ -687,13 +687,32 @@ const routes = [
     component: HabitationView,
     children: [
       {
-        name: 'habitation/:id',
-        path: ':id',
+        name: 'habitation/:habitation_id',
+        path: ':habitation_id',
         meta: {
           mode: ['habitation-edit'],
           label: 'Редактировать проживание',
         },
-        children: [],
+        children: [
+          {
+            name: 'habitation/:habitation_id/add-owner',
+            path: 'add-owner',
+            meta: {
+              mode: ['habitation-edit', 'habitation-owner-add'],
+              label: 'Добавить владельца',
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:habitation_id/add-realtor',
+            path: 'add-realtor',
+            meta: {
+              mode: ['habitation-edit', 'habitation-realtor-add'],
+              label: 'Добавить риэлтора',
+            },
+            component: Detail,
+          },
+        ],
         component: Detail,
       },
       {

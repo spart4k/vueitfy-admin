@@ -234,6 +234,7 @@ export const config = {
         alias: 'documents',
         url: '/get/form/',
         name: 'Такси',
+        requestId: 'habitation_id',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,

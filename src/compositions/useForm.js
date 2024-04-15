@@ -414,8 +414,6 @@ export default function ({
   }
 
   const appendFieldHandler = ({ action, field }) => {
-    console.log(action)
-    console.log(form)
     if (form.detail.type === 'popup') {
       //router.push({
       //  path: `${route.}./1`
@@ -1266,6 +1264,60 @@ export default function ({
     }
   }
 
+  const refreshSelectItems = async (field) => {
+    let filter = []
+    if (field.filter) {
+      filter = field.filter.reduce((acc, el) => {
+        console.log(el)
+        const source = eval(el.source)
+        if (el.routeKey) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: [+route.params[el.routeKey]],
+            type: el.type,
+          })
+        } else if (
+          source[el.field] !== null &&
+          source[el.field] !== undefined
+        ) {
+          let value = source[el.field]
+          if (moment(value, 'YYYY.MM', true).isValid())
+            value = moment(value, 'YYYY.MM').format('YYYY-MM')
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source[el.field]) ? source[el.field] : [value],
+            type: el.type,
+          })
+        } else if (el.source !== 'formData') {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source) ? source : [source],
+            type: el.type,
+          })
+        } else if (el.source === 'formData') {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source[el.field])
+              ? source[el.field]
+              : [source[el.field]],
+            type: el.type,
+          })
+        }
+        return acc
+      }, [])
+    }
+
+    const requestData = {
+      alias: field.alias,
+      filter,
+    }
+
+    field.loading = true
+    const lists = await makeRequestList([requestData])
+    field.items = lists.data[field.alias ?? field.name]
+    field.loading = false
+  }
+
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
@@ -1711,5 +1763,6 @@ export default function ({
     appendFieldHandler,
     popupForm,
     appendActionShow,
+    refreshSelectItems,
   }
 }

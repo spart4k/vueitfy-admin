@@ -61,6 +61,8 @@ export default {
     const loading = ref(true)
     const { alias } = props.tab
 
+    const fieldsRef = ref(null)
+
     const isEdit = computed(() => {
       if (props.tab.routeParam) {
         return route.params[props.tab.routeParam] ? 'edit' : 'add'
@@ -177,6 +179,16 @@ export default {
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
+    const getItems = () => {
+      const refreshField = props.tab.fields.find((x) => {
+        if (x.appendAction) {
+          return x.appendAction.find(
+            (y) => y.action.name === route.name && y.action.refresh
+          )
+        }
+      })
+      if (refreshField) refreshSelectItems(refreshField)
+    }
     const {
       formData,
       validate,
@@ -188,6 +200,7 @@ export default {
       changeAutocomplete,
       changeSelect,
       showField,
+      refreshSelectItems,
       openMenu,
       disabledField,
       hideField,
@@ -251,6 +264,8 @@ export default {
       popupForm,
       closePopupForm,
       appendActionShow,
+      getItems,
+      fieldsRef,
     }
   },
 }

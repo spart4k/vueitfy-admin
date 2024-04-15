@@ -17,6 +17,7 @@
                 : '',
             ]"
             :name="field.name"
+            ref="fieldsRef"
           >
             <div
               v-if="
@@ -76,7 +77,6 @@
               :disabled="disabledField(field)"
               :name="field.name"
             >
-              {{ field?.appendAction }}
               <template v-if="field?.appendAction?.length" v-slot:append-outer>
                 <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->
                 <v-tooltip
@@ -170,6 +170,18 @@
               :label="field.label"
               :readonly="readonlyField(field)"
             />
+            <v-carousel
+              v-else-if="
+                showField('carousel', field) && formData[field.name].length
+              "
+              height="300px"
+            >
+              <v-carousel-item
+                v-for="(item, i) in formData[field.name]"
+                :key="i"
+                :src="$root.env.VUE_APP_STORE + item"
+              ></v-carousel-item>
+            </v-carousel>
           </v-col>
         </v-row>
         <v-divider class="mt-0 mb-3" v-if="tab.actions.length"></v-divider>
