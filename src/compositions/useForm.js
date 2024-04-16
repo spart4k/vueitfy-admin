@@ -1623,9 +1623,8 @@ export default function ({
   const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
-      return (
-        (typeof field.isShow === 'boolean' && field.isShow) ||
-        field.isShow.conditions?.every((el) => {
+      const everyMethod = () => {
+        return field.isShow.conditions?.every((el) => {
           if (el.target === 'items') {
             if (el.value === 'notEmpty') {
               return field.items.length
@@ -1648,7 +1647,35 @@ export default function ({
             })
           }
         })
-      )
+      }
+      const someMethod = () => {
+        return field.isShow.conditions?.some((el) => {
+          if (el.target === 'items') {
+            if (el.value === 'notEmpty') {
+              return field.items.length
+            }
+          } else if (el.target === 'value') {
+            if (el.value === 'notEmpty') {
+              return formData[el.field]
+            }
+          } else {
+            return el.value.some((ai) => {
+              if (Array.isArray(ai)) {
+                const cloneAi = [...ai]
+                const cloneFieldEl = [...formData[el.field]]
+                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+              } else {
+                return [ai].includes(
+                  el.source ? eval(el.source) : formData[el.field]
+                )
+              }
+            })
+          }
+        })
+      }
+      let func = everyMethod
+      if (field.isShow?.type === 'some') func = someMethod
+      return (typeof field.isShow === 'boolean' && field.isShow) || func()
     }
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {

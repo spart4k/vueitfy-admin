@@ -46,7 +46,8 @@ export default {
       alias: 'city_id',
       filter: [
         {
-          field: 'regions_id',
+          alias: 'regions_id',
+          field: 'region_id',
           value: '',
           source: 'formData',
           type: 'num',
@@ -57,6 +58,25 @@ export default {
     { alias: 'owner_habitation', filter: [] },
     { alias: 'realtors', filter: [] },
     { alias: 'owner_type', filter: [] },
+    {
+      alias: 'object_habitation',
+      filter: [
+        {
+          field: 'region_id',
+          alias: 'o.regions_id',
+          value: '',
+          type: 'num',
+          source: 'formData',
+        },
+        {
+          field: 'city_id',
+          alias: 'o.city_id',
+          value: '',
+          type: 'num',
+          source: 'formData',
+        },
+      ],
+    },
     // {
     //   alias: 'account_objects',
     //   filter: [
@@ -225,14 +245,21 @@ export default {
       bootstrapClass: [''],
       updateList: [
         {
-          alias: 'account_objects',
+          alias: 'object_habitation',
           filter: [
             {
-              source: 'formData',
-              type: 'num',
-              value: 'id',
               field: 'region_id',
-              alias: 'regions_id',
+              alias: 'o.regions_id',
+              value: '',
+              type: 'num',
+              source: 'formData',
+            },
+            {
+              field: 'city_id',
+              alias: 'o.city_id',
+              value: '',
+              type: 'num',
+              source: 'formData',
             },
           ],
         },
@@ -280,61 +307,77 @@ export default {
       validations: {},
       bootstrapClass: [''],
     }),
-    autocompleteField({
-      label: 'Объект',
-      name: 'object_json',
-      subtype: 'multiple',
-      placeholder: '',
-      stringify: true,
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      page: 1,
-      search: '',
-      url: 'get/pagination_list/object',
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
-    // selectField({
-    //   label: 'Объекты2',
+    // autocompleteField({
+    //   label: 'Объект',
     //   name: 'object_json',
-    //   alias: 'account_objects',
     //   subtype: 'multiple',
-    //   stringify: true,
     //   placeholder: '',
+    //   stringify: true,
     //   class: [''],
     //   selectOption: {
     //     text: 'name',
     //     value: 'id',
     //   },
     //   items: [],
+    //   page: 1,
+    //   search: '',
+    //   url: 'get/pagination_list/object',
     //   position: {
     //     cols: 12,
     //     sm: 12,
     //   },
-    //   validations: {},
+    //   validations: { required },
     //   bootstrapClass: [''],
-    //   // updateList: [
-    //   //   {
-    //   //     alias: 'account_id',
-    //   //     filter: [
-    //   //       {
-    //   //         field: 'direction_json',
-    //   //         value: '',
-    //   //         source: 'formData',
-    //   //         type: 'num',
-    //   //       },
-    //   //     ],
-    //   //   },
-    //   // ],
     // }),
+    selectField({
+      label: 'Объекты',
+      name: 'object_json',
+      alias: 'object_habitation',
+      subtype: 'multiple',
+      stringify: true,
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: {},
+      bootstrapClass: [''],
+      filter: [
+        {
+          field: 'region_id',
+          alias: 'o.regions_id',
+          value: '',
+          type: 'num',
+          source: 'formData',
+        },
+        {
+          field: 'city_id',
+          alias: 'o.city_id',
+          value: '',
+          type: 'num',
+          source: 'formData',
+        },
+      ],
+      // updateList: [
+      //   {
+      //     alias: 'account_id',
+      //     filter: [
+      //       {
+      //         field: 'direction_json',
+      //         value: '',
+      //         source: 'formData',
+      //         type: 'num',
+      //       },
+      //     ],
+      //   },
+      // ],
+    }),
     checkboxField({
       label: 'Риэлтор',
       name: 'is_realtor',
@@ -515,7 +558,11 @@ export default {
       },
       isShow: {
         value: false,
-        conditions: [{ field: 'habitation_type_id', value: [1] }],
+        type: 'some',
+        conditions: [
+          { field: 'habitation_type_id', value: [1] },
+          { field: 'owner_type_id', value: [1] },
+        ],
       },
       dependence: [
         {
@@ -547,7 +594,11 @@ export default {
       readonly: true,
       isShow: {
         value: false,
-        conditions: [{ field: 'habitation_type_id', value: [1] }],
+        type: 'some',
+        conditions: [
+          { field: 'habitation_type_id', value: [1] },
+          { field: 'owner_type_id', value: [1] },
+        ],
       },
       position: {
         cols: 12,

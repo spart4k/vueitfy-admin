@@ -1,4 +1,11 @@
-import Vue, { watch, ref, computed, onMounted, toRef } from 'vue'
+import Vue, {
+  watch,
+  ref,
+  computed,
+  onMounted,
+  toRef,
+  getCurrentInstance,
+} from 'vue'
 import { getList } from '@/api/selects'
 
 export default {
@@ -151,6 +158,8 @@ export default {
         : false
     })
 
+    const parentComp = getCurrentInstance().proxy.$parent.$parent
+
     //const styleChip = computed(() =>)
 
     watch(
@@ -190,6 +199,7 @@ export default {
       selectAll,
       checkedAll,
       icon,
+      parentComp,
     }
   },
 }
