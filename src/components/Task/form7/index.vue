@@ -22,6 +22,7 @@
                 <v-text-field
                   v-model="formObj.formData.name"
                   label="ФИО"
+                  name="name_fio"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -40,6 +41,7 @@
                       v-model="formObj.formData.data_rojd"
                       label="Дата рождения"
                       prepend-icon="mdi-calendar"
+                      name="date_rojd"
                       v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
