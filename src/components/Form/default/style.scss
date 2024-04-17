@@ -39,4 +39,13 @@
   ::v-deep .v-image__image--cover {
     background-size: contain !important;
   }
+  .carousel {
+    position: relative;
+    &_delete {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      top: 0;
+    }
+  }
 }

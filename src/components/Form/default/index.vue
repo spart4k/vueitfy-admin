@@ -175,13 +175,56 @@
                 showField('carousel', field) && formData[field.name].length
               "
               height="300px"
+              class="carousel"
+              v-model="model"
             >
+              <v-btn
+                @click="formData[field.name].splice(model, 1)"
+                class="carousel_delete"
+                color="text"
+                icon
+                small
+              >
+                <v-icon small color="text">$IconDelete</v-icon></v-btn
+              >
               <v-carousel-item
                 v-for="(item, i) in formData[field.name]"
                 :key="i"
                 :src="$root.env.VUE_APP_STORE + item"
               ></v-carousel-item>
             </v-carousel>
+            <v-card
+              class="overflow-auto"
+              outlined
+              v-else-if="
+                showField('docList', field) && formData[field.name].length
+              "
+            >
+              <v-list>
+                <v-list-item
+                  :value="item"
+                  :key="index"
+                  v-for="(item, index) in formData[field.name]"
+                >
+                  <v-list-item-icon>
+                    <v-btn icon @click="downloadFile(item)">
+                      <v-icon color="text">$IconDownload</v-icon></v-btn
+                    >
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item"></v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-btn @click="formData[field.name].splice(index, 1)" icon>
+                      <v-icon color="text">$IconDelete</v-icon></v-btn
+                    >
+                  </v-list-item-icon>
+                  <!-- <template v-slot:append>
+                    <v-btn icon> <v-icon>$IconDelete</v-icon></v-btn>
+                  </template> -->
+                </v-list-item>
+              </v-list>
+            </v-card>
           </v-col>
         </v-row>
         <v-divider class="mt-0 mb-3" v-if="tab.actions.length"></v-divider>

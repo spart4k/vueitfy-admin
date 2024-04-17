@@ -8,6 +8,7 @@ import {
   checkboxField,
   dropZoneField,
   carouselField,
+  docListField,
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
@@ -101,10 +102,13 @@ export default {
     }),
     dropZoneField({
       label: 'Фото',
-      name: 'contract_doc_path',
+      name: 'photo_path_load',
       notPut: true,
       placeholder: '',
       class: [''],
+      toObject: {
+        stash: 'photo_path',
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -114,8 +118,8 @@ export default {
       options: {
         removeble: true,
         withoutSave: false,
-        folder: 'schet',
-        name: '`zayavka_schet`',
+        folder: 'habitation',
+        name: '`habitation_photo`',
         paramsForEmit: this,
         countFiles: 10,
         placeholder: 'Переместите или выберите фото',
@@ -153,7 +157,6 @@ export default {
       name: 'habitation_type_id',
       alias: 'habitation_type',
       subtype: 'single',
-      stringify: true,
       placeholder: '',
       class: [''],
       selectOption: {
@@ -170,7 +173,7 @@ export default {
     }),
     checkboxField({
       label: 'Регистрация',
-      name: 'is_registation',
+      name: 'is_registration',
       value: false,
       placeholder: '',
       class: [''],
@@ -279,6 +282,7 @@ export default {
       name: 'price_of_registration',
       placeholder: '',
       value: '',
+      requestType: 'number',
       class: [''],
       position: {
         cols: 12,
@@ -399,7 +403,7 @@ export default {
       name: 'realtor_id',
       alias: 'realtors',
       subtype: 'single',
-      stringify: true,
+      requestType: 'number',
       placeholder: '',
       class: [''],
       isShow: {
@@ -665,6 +669,10 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -775,6 +783,7 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      requestType: 'number',
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1] }],
@@ -792,6 +801,7 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      requestType: 'number',
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2] }],
@@ -862,10 +872,13 @@ export default {
     }),
     dropZoneField({
       label: 'Договор',
-      name: 'contract_doc_path',
+      name: 'doc_path_load',
       notPut: true,
       placeholder: '',
       class: [''],
+      toObject: {
+        stash: 'doc_path',
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -875,17 +888,21 @@ export default {
       options: {
         removeble: true,
         withoutSave: false,
-        folder: 'schet',
-        name: '`zayavka_schet`',
+        folder: 'habitation',
+        name: '`habitation_doc`',
         paramsForEmit: this,
         countFiles: 10,
         placeholder: 'Переместите или выберите договор',
       },
-      isShow: {
-        value: false,
-        conditions: [{ field: 'habitation_type_id', value: [1, 2] }],
-      },
       value: [],
+    }),
+    docListField({
+      name: 'doc_path',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
     }),
 
     textareaField({
@@ -913,11 +930,11 @@ export default {
     stringAction({
       text: 'Сохранить',
       type: 'submit',
-      module: 'form/create',
-      name: 'createForm',
-      url: 'set/data/habitation',
-      action: 'createForm',
       color: 'primary',
+      module: 'form/create',
+      url: 'create/habitation',
+      name: 'saveFormStore',
+      action: 'saveFormStore',
       isHide: {
         value: false,
         type: 'every',
@@ -934,11 +951,11 @@ export default {
     stringAction({
       text: 'Сохранить',
       type: 'submit',
-      module: 'form/update',
-      url: 'set/data/habitation',
-      name: 'saveForm',
-      useRouteParam: 'id',
-      action: 'saveForm',
+      module: 'form/putForm',
+      url: 'update/habitation',
+      name: 'updateFormStore',
+      useRouteParam: 'habitation_id',
+      action: 'updateFormStore',
       color: 'primary',
       isHide: {
         value: false,
