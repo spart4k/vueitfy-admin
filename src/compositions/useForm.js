@@ -605,77 +605,80 @@ export default function ({
 
     // const queries = []
 
-    const dropzoneArray = form.fields.filter((x) => x.type === 'dropzone')
+    const dropzoneArray = form.fields.filter(
+      (x) =>
+        x.type === 'dropzone' &&
+        ((typeof x.isShow === 'boolean' && x.isShow) ||
+          (typeof x.isShow === 'object' && x.isShow.value))
+    )
 
-    for (const dropzone of dropzoneArray) {
-      const isShow =
-        (typeof dropzone.isShow === 'boolean' && dropzone.isShow) ||
-        (typeof dropzone.isShow === 'object' && dropzone.isShow.value)
-      if (!isShow) continue
-      if (dropzone.value.length) {
-        let fileIndex = 1
-        const queries = []
-        for (const item of dropzone.value) {
-          const file = item[0]
-          if (file?.accepted) {
-            const valueId =
-              formData[dropzone.options.valueId] ?? store?.state?.user.id
-            const name =
-              eval(dropzone.options.name).split(' ').join('_') +
-              '_' +
-              valueId +
-              '_' +
-              fileIndex +
-              '_' +
-              new Date().getTime()
-            const ext = file.name.split('.').pop()
-            const storeForm = new FormData()
-            storeForm.append('name', name + '.' + ext)
-            storeForm.append('file', file)
-            const params = {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
+    await Promise.all(
+      dropzoneArray.map(async (dropzone) => {
+        if (dropzone.value.length) {
+          let fileIndex = 1
+          const queries = []
+          for (const item of dropzone.value) {
+            const file = item[0]
+            if (file?.accepted) {
+              const valueId =
+                formData[dropzone.options.valueId] ?? store?.state?.user.id
+              const name =
+                eval(dropzone.options.name).split(' ').join('_') +
+                '_' +
+                valueId +
+                '_' +
+                fileIndex +
+                '_' +
+                new Date().getTime()
+              const ext = file.name.split('.').pop()
+              const storeForm = new FormData()
+              storeForm.append('name', name + '.' + ext)
+              storeForm.append('file', file)
+              const params = {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+              queries.push({
+                request: store.dispatch('file/create', {
+                  data: storeForm,
+                  folder: `${dropzone.options.folder}/${name}.${ext}`,
+                  params,
+                }),
+                path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
+                index: fileIndex,
+              })
+              fileIndex += 1
             }
-            queries.push({
-              request: store.dispatch('file/create', {
-                data: storeForm,
-                folder: `${dropzone.options.folder}/${name}.${ext}`,
-                params,
-              }),
-              path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
-              index: fileIndex,
-            })
-            fileIndex += 1
           }
-        }
-        await Promise.all(queries).then((data) => {
-          if (dropzone.grouping) {
-            const fileArray = [...data]
-            fileArray.forEach((file) => {
-              delete file.request
-            })
-            setFormData(fileArray, dropzone)
-          } else if (dropzone.toObject) {
-            const fileArray = [...data]
-            toObject(fileArray, dropzone)
-          } else {
-            setFormData(data[0].path, dropzone)
-          }
-        })
-      } else if (dropzone.toObject) {
-        toObject(null, dropzone)
-      }
-
-      if (dropzone.stash) {
-        formData[dropzone.stash].forEach((file, index) => {
-          queryParams.formData[dropzone.name].push({
-            path: file.name,
-            index: queryParams.formData[dropzone.name].length + 1,
+          await Promise.all(queries).then((data) => {
+            if (dropzone.grouping) {
+              const fileArray = [...data]
+              fileArray.forEach((file) => {
+                delete file.request
+              })
+              setFormData(fileArray, dropzone)
+            } else if (dropzone.toObject) {
+              const fileArray = [...data]
+              toObject(fileArray, dropzone)
+            } else {
+              setFormData(data[0].path, dropzone)
+            }
           })
-        })
-      }
-    }
+        } else if (dropzone.toObject) {
+          toObject(null, dropzone)
+        }
+
+        if (dropzone.stash) {
+          formData[dropzone.stash].forEach((file, index) => {
+            queryParams.formData[dropzone.name].push({
+              path: file.name,
+              index: queryParams.formData[dropzone.name].length + 1,
+            })
+          })
+        }
+      })
+    )
 
     if (update) {
       const result = await changeForm(queryParams)
