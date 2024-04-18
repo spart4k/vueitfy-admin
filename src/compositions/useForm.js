@@ -239,6 +239,7 @@ export default function ({
           url: action.url,
           module: action.module,
           formData: sortedData,
+          action,
         },
         { update: true }
       )
@@ -414,8 +415,6 @@ export default function ({
   }
 
   const appendFieldHandler = ({ action, field }) => {
-    console.log(action)
-    console.log(form)
     if (form.detail.type === 'popup') {
       //router.push({
       //  path: `${route.}./1`
@@ -581,28 +580,45 @@ export default function ({
     const { update } = params
     const { change } = params
 
-    const queries = []
+    const setFormData = (val, dropzone) => {
+      if (queryParams && queryParams.formData) {
+        queryParams.formData[dropzone.name] = val
+      } else {
+        formData[dropzone.name] = val
+      }
+    }
 
-    for (let i = 0; i < form.fields.length; i++) {
-      const item = form.fields[i]
-      const isShow =
-        (typeof item.isShow === 'boolean' && item.isShow) ||
-        (typeof item.isShow === 'object' && item.isShow.value)
-      if (item.type === 'dropzone' && isShow) {
-        const dropzone = item
+    const toObject = (arr, dropzone) => {
+      const obj = {
+        new: [],
+        del: [],
+      }
+      arr?.forEach((item) => {
+        obj.new.push(item.path)
+      })
+      if (originalData) {
+        const stash = dropzone.toObject?.stash
+        obj.del = _.difference(originalData[stash], formData[stash])
+      }
+      setFormData(obj, dropzone)
+    }
 
-        const setFormData = (val) => {
-          if (queryParams && queryParams.formData) {
-            queryParams.formData[dropzone.name] = val
-          } else {
-            formData[dropzone.name] = val
-          }
-        }
+    // const queries = []
 
-        let fileIndex = 1
+    const dropzoneArray = form.fields.filter(
+      (x) =>
+        x.type === 'dropzone' &&
+        ((typeof x.isShow === 'boolean' && x.isShow) ||
+          (typeof x.isShow === 'object' && x.isShow.value))
+    )
+
+    await Promise.all(
+      dropzoneArray.map(async (dropzone) => {
         if (dropzone.value.length) {
-          for (let l = 0; l < dropzone.value.length; l++) {
-            const file = dropzone.value[l][0]
+          let fileIndex = 1
+          const queries = []
+          for (const item of dropzone.value) {
+            const file = item[0]
             if (file?.accepted) {
               const valueId =
                 formData[dropzone.options.valueId] ?? store?.state?.user.id
@@ -610,6 +626,8 @@ export default function ({
                 eval(dropzone.options.name).split(' ').join('_') +
                 '_' +
                 valueId +
+                '_' +
+                fileIndex +
                 '_' +
                 new Date().getTime()
               const ext = file.name.split('.').pop()
@@ -622,7 +640,7 @@ export default function ({
                 },
               }
               queries.push({
-                request: await store.dispatch('file/create', {
+                request: store.dispatch('file/create', {
                   data: storeForm,
                   folder: `${dropzone.options.folder}/${name}.${ext}`,
                   params,
@@ -630,25 +648,25 @@ export default function ({
                 path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
                 index: fileIndex,
               })
-              if (dropzone.grouping) {
-                fileIndex += 1
-              } else {
-                break
-              }
+              fileIndex += 1
             }
           }
-          const data = await Promise.all(queries)
-          if (dropzone.grouping) {
-            const fileArray = [...data]
-            fileArray.forEach((file) => {
-              // file.name = file.path
-              delete file.request
-              // delete file.path
-            })
-            setFormData(fileArray)
-          } else {
-            setFormData(data[0].path)
-          }
+          await Promise.all(queries).then((data) => {
+            if (dropzone.grouping) {
+              const fileArray = [...data]
+              fileArray.forEach((file) => {
+                delete file.request
+              })
+              setFormData(fileArray, dropzone)
+            } else if (dropzone.toObject) {
+              const fileArray = [...data]
+              toObject(fileArray, dropzone)
+            } else {
+              setFormData(data[0].path, dropzone)
+            }
+          })
+        } else if (dropzone.toObject) {
+          toObject(null, dropzone)
         }
 
         if (dropzone.stash) {
@@ -659,8 +677,8 @@ export default function ({
             })
           })
         }
-      }
-    }
+      })
+    )
 
     if (update) {
       const result = await changeForm(queryParams)
@@ -1266,6 +1284,60 @@ export default function ({
     }
   }
 
+  const refreshSelectItems = async (field) => {
+    let filter = []
+    if (field.filter) {
+      filter = field.filter.reduce((acc, el) => {
+        console.log(el)
+        const source = eval(el.source)
+        if (el.routeKey) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: [+route.params[el.routeKey]],
+            type: el.type,
+          })
+        } else if (
+          source[el.field] !== null &&
+          source[el.field] !== undefined
+        ) {
+          let value = source[el.field]
+          if (moment(value, 'YYYY.MM', true).isValid())
+            value = moment(value, 'YYYY.MM').format('YYYY-MM')
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source[el.field]) ? source[el.field] : [value],
+            type: el.type,
+          })
+        } else if (el.source !== 'formData') {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source) ? source : [source],
+            type: el.type,
+          })
+        } else if (el.source === 'formData') {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source[el.field])
+              ? source[el.field]
+              : [source[el.field]],
+            type: el.type,
+          })
+        }
+        return acc
+      }, [])
+    }
+
+    const requestData = {
+      alias: field.alias,
+      filter,
+    }
+
+    field.loading = true
+    const lists = await makeRequestList([requestData])
+    field.items = lists.data[field.alias ?? field.name]
+    field.loading = false
+  }
+
   const queryList = async (field, clear = true) => {
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
@@ -1572,9 +1644,8 @@ export default function ({
   const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
-      return (
-        (typeof field.isShow === 'boolean' && field.isShow) ||
-        field.isShow.conditions?.every((el) => {
+      const everyMethod = () => {
+        return field.isShow.conditions?.every((el) => {
           if (el.target === 'items') {
             if (el.value === 'notEmpty') {
               return field.items.length
@@ -1597,7 +1668,35 @@ export default function ({
             })
           }
         })
-      )
+      }
+      const someMethod = () => {
+        return field.isShow.conditions?.some((el) => {
+          if (el.target === 'items') {
+            if (el.value === 'notEmpty') {
+              return field.items.length
+            }
+          } else if (el.target === 'value') {
+            if (el.value === 'notEmpty') {
+              return formData[el.field]
+            }
+          } else {
+            return el.value.some((ai) => {
+              if (Array.isArray(ai)) {
+                const cloneAi = [...ai]
+                const cloneFieldEl = [...formData[el.field]]
+                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+              } else {
+                return [ai].includes(
+                  el.source ? eval(el.source) : formData[el.field]
+                )
+              }
+            })
+          }
+        })
+      }
+      let func = everyMethod
+      if (field.isShow?.type === 'some') func = someMethod
+      return (typeof field.isShow === 'boolean' && field.isShow) || func()
     }
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
@@ -1711,5 +1810,6 @@ export default function ({
     appendFieldHandler,
     popupForm,
     appendActionShow,
+    refreshSelectItems,
   }
 }

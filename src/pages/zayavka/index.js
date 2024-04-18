@@ -3764,14 +3764,6 @@ export const editFields = [
     },
     bootstrapClass: [''],
   },
-  carouselField({
-    name: 'schet',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-  }),
   textareaField({
     label: 'Ошибка',
     name: 'error_text',

@@ -78,6 +78,16 @@ export default function () {
     if (listPanel) splicePanel(listPanel)
   }
 
+  const convertFormConfig = ({ config, listField }) => {
+    config.fields = config.fields.flatMap((field) => {
+      if (listField.includes(field.name)) {
+        return field
+      } else {
+        return []
+      }
+    })
+  }
+
   const addCloseButton = (config) => {
     const btn = stringAction({
       text: 'Закрыть',
@@ -122,5 +132,6 @@ export default function () {
     convertConfigPanel,
     addCloseButton,
     configRouteConvert,
+    convertFormConfig,
   }
 }
