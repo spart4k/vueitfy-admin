@@ -818,6 +818,24 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
+    children: [
+      {
+        name: 'corporate-cards/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:id',
+        path: ':id',
+        meta: {
+          mode: ['id'],
+        },
+        component: Detail,
+      },
+    ],
     component: CorporateCardsView,
   },
   {
