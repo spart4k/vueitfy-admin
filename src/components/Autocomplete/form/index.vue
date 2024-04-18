@@ -18,7 +18,6 @@
       :readonly="readonly"
       :name="field.name"
     >
-      czxc
       <template v-if="false" v-slot:prepend-item>
         <v-list-item ripple @click="selectAll">
           <v-list-item-action>
@@ -76,6 +75,25 @@
             <!-- <v-list-item-subtitle v-html="data.item.id" /> -->
           </v-list-item-content>
         </template>
+      </template>
+      <template v-if="field?.appendAction?.length" v-slot:append-outer>
+        <v-tooltip v-for="action in field.appendAction" :key="action.label" top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              @click="parentComp.appendFieldHandler({ action, field })"
+              v-if="parentComp.appendActionShow(action)"
+              text
+              v-bind="attrs"
+              v-on="on"
+              class=""
+              small
+            >
+              <v-tooltip activator="parent" location="top">Tooltip</v-tooltip>
+              <v-icon> {{ action.icon }} </v-icon></v-btn
+            >
+          </template>
+          <span>{{ action.label }}</span>
+        </v-tooltip>
       </template>
     </v-autocomplete>
   </div>

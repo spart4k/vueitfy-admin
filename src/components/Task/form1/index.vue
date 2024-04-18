@@ -20,6 +20,7 @@
           @input="commentError = ''"
           :error-messages="commentError"
           rows="2"
+          name="comment"
           clearable
           label="Комментарий"
           class="mb-2"

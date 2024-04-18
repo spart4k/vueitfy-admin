@@ -93,6 +93,7 @@
         @input="commentErr = []"
         :error-messages="commentErr"
         rows="2"
+        name="comment"
         clearable
         label="Комментарий"
         class="mb-2"

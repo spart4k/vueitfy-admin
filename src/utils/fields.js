@@ -112,6 +112,14 @@ const carouselField = (properties) => {
   }
 }
 
+const docListField = (properties) => {
+  return {
+    type: 'docList',
+    ...defaultProperties(properties),
+    notSend: true,
+  }
+}
+
 export {
   dateField,
   stringField,
@@ -121,6 +129,7 @@ export {
   datetimeField,
   checkboxField,
   dropZoneField,
+  docListField,
   textBlock,
   colorPicker,
   radioPanel,
