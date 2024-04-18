@@ -112,7 +112,7 @@ export default {
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         let routeParam
-        if (params.action.useRouteParam) {
+        if (params.action?.useRouteParam) {
           routeParam = params.action.useRouteParam
         } else {
           routeParam = 'id'
@@ -179,6 +179,11 @@ export default {
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
+
+    const downloadFile = (link) => {
+      Vue.downloadFile(link)
+    }
+
     const getItems = () => {
       const refreshField = props.tab.fields.find((x) => {
         if (x.appendAction) {
@@ -266,6 +271,7 @@ export default {
       appendActionShow,
       getItems,
       fieldsRef,
+      downloadFile,
     }
   },
 }

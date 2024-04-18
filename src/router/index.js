@@ -687,6 +687,16 @@ const routes = [
     component: HabitationView,
     children: [
       {
+        name: 'habitation/add',
+        path: 'add',
+        meta: {
+          mode: ['habitation-add'],
+          label: 'Добавить проживание',
+        },
+        children: [],
+        component: Detail,
+      },
+      {
         name: 'habitation/:habitation_id',
         path: ':habitation_id',
         meta: {
@@ -713,16 +723,6 @@ const routes = [
             component: Detail,
           },
         ],
-        component: Detail,
-      },
-      {
-        name: 'habitation/add',
-        path: 'add',
-        meta: {
-          mode: ['habitation-add'],
-          label: 'Добавить проживание',
-        },
-        children: [],
         component: Detail,
       },
       {
