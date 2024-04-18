@@ -637,19 +637,15 @@ export default function ({
                 'Content-Type': 'multipart/form-data',
               },
             }
-            queries.push(
-              new Promise(() => {
-                return {
-                  request: store.dispatch('file/create', {
-                    data: storeForm,
-                    folder: `${dropzone.options.folder}/${name}.${ext}`,
-                    params,
-                  }),
-                  path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
-                  index: fileIndex,
-                }
-              })
-            )
+            queries.push({
+              request: store.dispatch('file/create', {
+                data: storeForm,
+                folder: `${dropzone.options.folder}/${name}.${ext}`,
+                params,
+              }),
+              path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
+              index: fileIndex,
+            })
             fileIndex += 1
           }
         }
