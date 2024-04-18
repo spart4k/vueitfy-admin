@@ -799,7 +799,7 @@ export const config = {
         url: '/get/form/',
         name: 'Такси',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,
       },
       filters: filtersArchive,

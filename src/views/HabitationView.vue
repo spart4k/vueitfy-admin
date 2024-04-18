@@ -81,6 +81,13 @@ export default {
         index: [1],
       },
     })
+    configRouteConvert({
+      config: config.tabs[3],
+      newPath: 'habitation-edit',
+      settings: {
+        index: [1],
+      },
+    })
     const bankConfig = _.cloneDeep(bankConfigOrig)
 
     const LIST_HEAD = ['id', 'bank_name', 'invoice', 'fio']
