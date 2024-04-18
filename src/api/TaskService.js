@@ -9,5 +9,5 @@ export const changeStatusAndData = (url, data) => put(url, data)
 export const setFile = (url, data) => post(url, data)
 export const updateDataFile = (url, data) => post(url, data)
 export const startProcess = (url, data) => post(url, data)
-
+export const sendAmmount = (url, data) => post(url, data)
 export const putTask = (url, data) => put(url, data)

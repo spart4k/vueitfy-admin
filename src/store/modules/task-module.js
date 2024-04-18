@@ -49,7 +49,7 @@ const taskModule = {
     },
 
     async sendAmmount(_, data) {
-      const result = await sendAmmount('task/update/dop_data', data)
+      const result = await sendAmmount('set/data/zayavka', data)
       return result
     },
 

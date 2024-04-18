@@ -5,6 +5,7 @@ import {
   onMounted,
   onUpdated,
   reactive,
+  toRef,
 } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import IconDelete from '@/components/Icons/delete/delete.vue'
@@ -73,7 +74,7 @@ const form10 = defineComponent({
         name: 'iujk.png',
       },
     ])
-    const accepted_amount = ref('')
+    // const accepted_amount = ref('')
     const accepted = ref(JSON.parse(props.data.task.dop_data).accept)
     // Удаление файла
     const removeFile = (fileID) => {
@@ -88,6 +89,33 @@ const form10 = defineComponent({
         }
       })
     // Изменение суммы в поле
+    const answer = async () => {
+      const { makeRequest: sendAnswer } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/setPartTask', {
+            status: 6,
+            data: {
+              process_id: props.data.task.process_id,
+              // manager_id: account_id,
+              task_id: props.data.task.id,
+              parent_action: props.data.task.id,
+              rashod_id: Number(props.data.data.zayavka.id),
+              comment: comment.value,
+              // personal_id: props.data.entity.id,
+              // docs_id: keyOfObjectSend,
+              account_id: props.data.task.from_account_id,
+              okk_id: store.state.user.id,
+              cancel_close: schets.value.filter((el) => el.valid === 1),
+            },
+          }),
+      })
+      const { success } = await sendAnswer()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
+    }
     const changeSum = (e) => (sum.value = e)
     const comment = ref('')
     const { makeRequest: setDataZayavka } = useRequest({
@@ -96,7 +124,7 @@ const form10 = defineComponent({
         return store.dispatch('taskModule/acceptSchets', {
           data: {
             id: props.data.task.process_id,
-            close_schets: props.data.data.zayavka.close_schet,
+            close_schets: schets.value,
           },
         })
       },
@@ -115,14 +143,23 @@ const form10 = defineComponent({
       },
       successMessage: 'Успешно',
     })
-
+    const { makeRequest: sendAmmountRequest } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/sendAmmount', {
+          data: {
+            id: props.data.entity.id,
+            accepted_amount: accepted_amount.value,
+          },
+        }),
+    })
     let sendTaskFinish = async () => {
-      let keyOfObjectSend = {}
-      listDocuments.value.forEach((elem, index) => {
-        for (const key in elem) {
-          keyOfObjectSend[elem.doc_id] = !elem.inProcess
-        }
-      })
+      // let keyOfObjectSend = {}
+      // listDocuments.value.forEach((elem, index) => {
+      //   for (const key in elem) {
+      //     keyOfObjectSend[elem.doc_id] = !elem.inProcess
+      //   }
+      // })
 
       const { makeRequest: changeStatus } = useRequest({
         context,
@@ -131,12 +168,12 @@ const form10 = defineComponent({
             status: 2,
             data: {
               process_id: props.data.task.process_id,
-              manager_id: account_id,
+              // manager_id: account_id,
               task_id: props.data.task.id,
               parent_action: props.data.task.id,
-              personal_id: props.data.entity.id,
-              docs_id: keyOfObjectSend,
-              account_id: props.data.task.from_account_id,
+              // personal_id: props.data.entity.id,
+              // docs_id: keyOfObjectSend,
+              // account_id: props.data.task.from_account_id,
             },
           }),
       })
@@ -148,12 +185,32 @@ const form10 = defineComponent({
       }
     }
     const formRowsRef = ref([])
+    const start_accepted_amount = toRef(
+      props.data.data.zayavka,
+      'accepted_amount'
+    )
+    const accepted_amount = ref(
+      Object.assign({}, toRef(props.data.data, 'zayavka').value).accepted_amount
+    )
+    const sendAmmount = async () => {
+      await sendAmmountRequest()
+      start_accepted_amount.value = accepted_amount.value
+    }
+    const schets = computed(() => {
+      return formRowsRef.value.map((el, elIndex) => {
+        return {
+          ...props.data.data.zayavka.close_schet[elIndex],
+          valid: el.isShowAdd ? 1 : 2,
+        }
+      })
+    })
     const allChecked = computed(() =>
       formRowsRef.value.every((el) => !el.isShowAdd || !el.isShowCansel)
     )
     const acceptSchets = async () => {
       await setDataZayavka()
       await updateDopData()
+      accepted.value = true
     }
 
     return {
@@ -170,6 +227,10 @@ const form10 = defineComponent({
       comment,
       accepted,
       accepted_amount,
+      start_accepted_amount,
+      sendAmmount,
+      schets,
+      answer,
     }
   },
 })

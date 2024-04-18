@@ -72,7 +72,7 @@
             ></v-textarea>
             <div class="d-flex justify-end">
               <v-btn
-                @click="sendDocuments"
+                @click="answer"
                 small
                 color="warning"
                 class="black--text mr-4"
@@ -107,7 +107,7 @@
                 small
                 color="green"
                 class="white--text"
-                :disabled="false"
+                :disabled="!accepted_amount && accepted_amount !== 0"
                 >Принять</v-btn
               >
             </div>
@@ -135,7 +135,7 @@
           color="info"
           @click="sendTaskFinish"
           small
-          :disabled="!allChecked"
+          :disabled="!allChecked && start_accepted_amount === null"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
