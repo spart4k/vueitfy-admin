@@ -13,6 +13,20 @@ const required = Object.assign({}, vueRequired, {
   $message: () => 'Обязательное поле',
 })
 
+// const length = (value) => {
+//   return {
+//     $validator: (val) => val.length === { value },
+//     $message: () => 'Не менее 11 символов',
+//   }
+// }
+
+const length = (param) => {
+  return {
+    $validator: (value) => param === value.length,
+    $message: () => `Необходимое кол-во символов: ${param}`,
+  }
+}
+
 const minLength = (value) =>
   Object.assign({}, vueMinLength(value), {
     $message: () => `Недостаточно символов (${value})`,
@@ -120,5 +134,6 @@ export {
   minLength,
   numeric,
   hasBothDate,
+  length,
   // strongPassword
 }

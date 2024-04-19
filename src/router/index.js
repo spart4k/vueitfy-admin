@@ -936,6 +936,7 @@ const routes = [
         path: 'add',
         meta: {
           mode: ['add'],
+          label: 'Добавить карту',
         },
         component: Detail,
       },
@@ -943,7 +944,8 @@ const routes = [
         name: 'corporate-cards/:id',
         path: ':id',
         meta: {
-          mode: ['id'],
+          mode: ['edit'],
+          label: 'Редактировать карту',
         },
         component: Detail,
       },

@@ -9,8 +9,9 @@
 <script>
 import _ from 'lodash'
 import { onMounted, ref } from 'vue'
+import useView from '@/compositions/useView.js'
 
-import config from '@/pages/card/index'
+import { config as cardConfigOrig } from '@/pages/card/index'
 
 export default {
   name: 'CorporateCards-View',
@@ -25,6 +26,23 @@ export default {
     },
   },
   setup() {
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+      convertFormConfig,
+    } = useView()
+    const config = _.cloneDeep(cardConfigOrig)
+
+    configRouteConvert({
+      config: config,
+      newPath: 'edit',
+      settings: {
+        index: [1],
+      },
+    })
     onMounted(() => {})
     return {
       config,
