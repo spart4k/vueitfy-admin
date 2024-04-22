@@ -17,6 +17,10 @@ const docsRequired = defineComponent({
       type: Boolean,
       default: false,
     },
+    isShowRemove: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -37,6 +41,10 @@ const docsRequired = defineComponent({
       this.isShowAdd = true
       this.$emit('unconfirmed', { id: this.docs.id })
     },
+    clickRemove() {
+      this.$emit('remove', { id: this.docs.id })
+    },
   },
 })
+
 export default docsRequired

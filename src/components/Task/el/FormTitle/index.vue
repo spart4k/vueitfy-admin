@@ -2,7 +2,7 @@
   <div
     class="docs-required"
     :class="{
-      'is-unconfirmed': !isShowCansel,
+      'is-unconfirmed': !isShowCansel || isShowRemove,
       'is-confirmed': !isShowAdd,
     }"
   >
@@ -29,6 +29,12 @@
       </div>
       <div v-if="isShowCansel && !hideActions" @click="clickDel">
         <v-icon small>$IconClose</v-icon>
+      </div>
+      <div
+        v-if="(isShowRemove && !hideActions) || isShowRemove"
+        @click="clickRemove"
+      >
+        <v-icon small>$IconDelete</v-icon>
       </div>
     </div>
     <FormPopupPhoto

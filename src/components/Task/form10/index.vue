@@ -76,7 +76,7 @@
                 small
                 color="warning"
                 class="black--text mr-4"
-                :disabled="!allChecked || !comment"
+                :disabled="!allChecked"
                 >Ответить</v-btn
               >
               <v-btn

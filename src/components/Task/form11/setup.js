@@ -1,10 +1,11 @@
-import {
+import Vue, {
   defineComponent,
   ref,
   computed,
   onMounted,
   onUpdated,
   reactive,
+  toRef,
 } from 'vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -13,6 +14,7 @@ import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import IconDelete from '@/components/Icons/delete/delete.vue'
+import FormTitle from '@/components/Task/el/FormTitle/index.vue'
 import { methods } from 'vue2-dropzone'
 
 const Form11 = defineComponent({
@@ -20,6 +22,7 @@ const Form11 = defineComponent({
   components: {
     DropZone,
     IconDelete,
+    FormTitle,
   },
   props: {
     data: {
@@ -27,10 +30,10 @@ const Form11 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }, ctx) {
+  setup(props, ctx) {
     const route = useRoute()
     const router = useRouter()
-
+    const attachedFile = ref(false)
     const context = {
       root: {
         store,
@@ -62,11 +65,11 @@ const Form11 = defineComponent({
     })
 
     //Variables
-    const account_id = computed(() => store.state.user.account_id)
+    const account_id = computed(() => store.state.user.id)
     const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
-    let sss = JSON.parse(data.task.dop_data)
+    let sss = JSON.parse(props.data.task.dop_data)
     let file = ref(null)
     let comment = ref('')
     let listRequestsForUpload = ref([])
@@ -79,7 +82,7 @@ const Form11 = defineComponent({
     })
     let isDocs = ref(false)
     let dropZone = ref(null)
-
+    const listOtherDoc = ref([])
     onMounted(() => {
       // sss.docs_id.forEach((item) => {
       //   let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -90,66 +93,83 @@ const Form11 = defineComponent({
       //   }
       //   listDocuments.value.push(pasteObject)
       // })
+      formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
+        return {
+          ...el,
+          path_doc: el.name,
+        }
+      })
     })
-
+    const formatedSchets = ref([])
+    const { makeRequest: delCloseSchet } = useRequest({
+      context,
+      request: (id) => store.dispatch('taskModule/delCloseSchet', id),
+    })
+    const listNewChet = ref([])
     let addFiles = (e, options) => {
-      file.value = e[0]
-      let fileExt = file.value.type.split('/')[1]
-      let fileName = `personal_doc_` + Date.now() + '.' + fileExt
-      let form_data = new FormData()
-      form_data.append('file', file.value)
-      refds.value = 0
-      let currentDropzone = listDocuments.value.find((x) => x.doc_id === e.item)
-      docs_ids.value.push(e.item)
-
-      const { makeRequest: delInfoAFile } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/updateFileData', { id: e.item, del: 1 }),
+      let objectForCloseChet
+      let lastElem
+      console.log(e)
+      Object.values(e).forEach((elem, index) => {
+        // if (listNewChet.value.length) {
+        lastElem = listNewChet.value.length
+        objectForCloseChet = lastElem + 1
+        // }
+        let fileExt = elem.type.split('/')[1]
+        console.log(store.state.user)
+        let fileName =
+          `close_schet_` +
+          props.data.data.zayavka.id +
+          '_' +
+          store.state.user.id +
+          '_' +
+          Date.now() +
+          Math.floor(Math.random()) * Math.floor(Math.random()) +
+          '.' +
+          fileExt
+        let form_data = new FormData()
+        form_data.append('file', elem)
+        console.log(listNewChet.value)
+        listNewChet.value.push({
+          index: objectForCloseChet,
+          path_doc: '/close_schet' + '/' + fileName,
+        })
+        const { makeRequest: loadImage } = useRequest({
+          context,
+          request: () =>
+            store.dispatch('taskModule/loadImage', {
+              id: 1,
+              folder: 'close_schet',
+              fileName: fileName,
+              file: form_data,
+            }),
+          successMessage: 'Файл успешно загружен',
+        })
+        listOtherDoc.value.push({ loadImage })
+        attachedFile.value = true
+        // isSetFilesCloseSchet.value = true
       })
 
-      const { makeRequest: updateFileData } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
-            doc_id: e.item,
-            path_doc: `/personal_doc/${fileName}`,
-            from_task: true,
-          }),
-      })
-
-      const { makeRequest: loadImage } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/loadImage', {
-            id: 1,
-            folder: 'personal_doc',
-            fileName: fileName,
-            file: form_data,
-          }),
-        successMessage: 'Файл успешно загружен',
-      })
-
-      // if (currentDropzone?.inProcess) {
-      //   listRequestsForUpload.value.push(
-      //     delInfoAFile,
-      //     updateFileData,
-      //     loadImage
-      //   )
-      //   listDocuments.value[
-      //     listDocuments.value.findIndex((x) => x.doc_id == e.item)
-      //   ].inProcess = false
-      // } else {
-      //   listRequestsForUpload.value.push(updateFileData, loadImage)
-      //   listDocuments.value[
-      //     listDocuments.value.findIndex((x) => x.doc_id == e.item)
-      //   ].inProcess = false
-      // }
-
-      listRequestsForUpload.value.push(delInfoAFile, updateFileData, loadImage)
-
-      isDocs.value = 1
+      // const { makeRequest: setDataZayavka } = useRequest({
+      //   context,
+      //   request: () =>
+      //     store.dispatch('taskModule/setBid', {
+      //       id: JSON.parse(data.task.dop_data).rashod_id,
+      //       close_schet: listNewChet.value,
+      //     }),
+      //   successMessage: 'Файл успешно загружен',
+      // })
+      //   $.ajax('/common/save/zayavka', {
+      //     method: "POST",
+      //     data: {id: <?php echo $rashod['id']; ?>, close_schet: JSON.stringify(closeSchet)},
+      //     success: function() {
+      //         docsClose = [];
+      //         slidePopup('Закрывающие документы успешно прикреплены!', 'success');
+      //         $('#form_zayavka_close_dz .dz-preview').remove();
+      //         $('#form_zayavka_close_dz').removeClass('dz-started');
+      //         checkValid();
+      //     }
+      // })
     }
 
     const removeFile = (fileID) => {
@@ -162,22 +182,30 @@ const Form11 = defineComponent({
       }
     }
 
-    const sendDocuments = () => {
-      let newFile = ref(listDocuments.value[listDocuments.value.length - 1])
+    let sendCloseDocsSchet = async (e) => {
+      const { makeRequest: setDataZayavka } = useRequest({
+        context,
+        request: () => {
+          return store.dispatch('taskModule/setBid', {
+            data: {
+              id: props.data.data.zayavka.id,
+              close_schets: listNewChet.value,
+            },
+          })
+        },
+        successMessage: 'Файл успешно загружен',
+      })
+      await Promise.all(
+        listOtherDoc.value.map(async (doc, index) => {
+          await doc.loadImage()
+          // await doc.updateFileData()
+        })
+      )
 
-      listDocuments.value.push(file.value)
-
-      // listRequestsForUpload.value.forEach((elem, index) => {
-      //   elem()
-      // })
-
-      file.value = null
-      refds.value = 1
-      isDocs.value = 0
-
-      checkIdenticalFiles(newFile)
-
-      dropZone.value.clearDropzone()
+      await setDataZayavka()
+      await updateDopData()
+      JSON.parse(attached_amount.value).attached = true
+      // dropZone.value.clearDropzone()
     }
 
     const checkIdenticalFiles = (newFile) => {
@@ -203,32 +231,40 @@ const Form11 = defineComponent({
       disabledDocumentsAcc.value + 1
     }
 
-    let sendTaskFinish = async () => {
-      let keyOfObjectSend = {}
-      listDocuments.value.forEach((elem, index) => {
-        for (const key in elem) {
-          keyOfObjectSend[elem.doc_id] = !elem.inProcess
-        }
-      })
+    const attached_amount = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data')).value
+    )
 
+    const { makeRequest: updateDopData } = useRequest({
+      context,
+      request: () => {
+        return store.dispatch('taskModule/updateDopData', {
+          id: props.data.task.id,
+          dop: {
+            attached: true,
+          },
+        })
+      },
+      successMessage: 'Успешно',
+    })
+
+    let sendTaskFinish = async () => {
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
-              process_id: data.task.process_id,
-              manager_id: account_id,
-              task_id: data.task.id,
-              parent_action: data.task.id,
-              personal_id: data.entity.id,
+              process_id: props.data.task.process_id,
+              account_id: account_id.value,
+              task_id: props.data.task.id,
+              parent_action: props.data.task.id,
               comment: comment.value,
-              docs_id: keyOfObjectSend,
-              account_id: data.task.from_account_id,
+              okk_id: props.data.task.from_account_id,
+              rashod_id: props.data.data.zayavka.id,
             },
           }),
       })
-      sendDocuments()
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')
@@ -242,7 +278,7 @@ const Form11 = defineComponent({
         store.dispatch('taskModule/setPartTask', {
           status: 2,
           data: {
-            id: data.task.id,
+            id: props.data.task.id,
           },
         }),
     })
@@ -253,17 +289,34 @@ const Form11 = defineComponent({
         store.dispatch('taskModule/setStartStep', {
           data: {
             process: 5,
-            process_id: data.task['process_id'],
+            process_id: props.data.task['process_id'],
             step_id: 5,
-            docs_id: JSON.parse(data.task.dop_data)['docs_id'],
-            personal_id: data.entity['id'],
+            docs_id: JSON.parse(props.data.task.dop_data)['docs_id'],
+            personal_id: props.data.entity['id'],
             // account_id - chief id
             account_id: chied_id,
             type_parent_action: 2,
-            parent_action: data.entity['id'],
+            parent_action: props.data.entity['id'],
           },
         }),
     })
+    const removedDocs = ref([])
+    const removeDoc = async ({ id }, index) => {
+      console.log(id, index)
+      let isConfirmed = confirm(
+        'Вы подтверждаете удаление документа под номером ' + index
+      )
+      if (isConfirmed) {
+        await delCloseSchet(id)
+        formatedSchets.value.splice(index, 1)
+        removedDocs.value.push(id)
+        store.commit('notifies/showMessage', {
+          color: 'success',
+          content: 'Документа ' + id + ' удален',
+          timeout: 1000,
+        })
+      }
+    }
 
     let emplyeeFired = () => {
       changeStatusNew()
@@ -278,7 +331,6 @@ const Form11 = defineComponent({
       removeFile,
       listDocuments,
       listRequestsForUpload,
-      sendDocuments,
       listDisbledDocuments,
       // addFilesPatent,
       comment,
@@ -290,6 +342,12 @@ const Form11 = defineComponent({
       emplyeeFired,
       errors,
       refds,
+      formatedSchets,
+      removeDoc,
+      removedDocs,
+      attachedFile,
+      sendCloseDocsSchet,
+      attached_amount,
     }
   },
 })

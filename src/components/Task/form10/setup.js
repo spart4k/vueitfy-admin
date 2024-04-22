@@ -90,6 +90,14 @@ const form10 = defineComponent({
       })
     // Изменение суммы в поле
     const answer = async () => {
+      if (!allChecked.value || !comment.value) {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Введите комментарий',
+          timeout: 1000,
+        })
+        return
+      }
       const { makeRequest: sendAnswer } = useRequest({
         context,
         request: () =>
@@ -110,6 +118,7 @@ const form10 = defineComponent({
             },
           }),
       })
+      await setDataZayavka()
       const { success } = await sendAnswer()
       if (success) {
         ctx.emit('closePopup')
@@ -123,7 +132,7 @@ const form10 = defineComponent({
       request: () => {
         return store.dispatch('taskModule/acceptSchets', {
           data: {
-            id: props.data.task.process_id,
+            id: props.data.task.entity_id,
             close_schets: schets.value,
           },
         })
