@@ -25,7 +25,9 @@
               :key="index"
               :class="`panel_${data.data.docs_spr[item.doc_id]}`"
             >
-              <v-expansion-panel-header>
+              <v-expansion-panel-header
+                :class="`button_${data.data.docs_spr[item.doc_id]}`"
+              >
                 <span>
                   <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
                   <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
