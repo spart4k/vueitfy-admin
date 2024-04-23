@@ -1,5 +1,5 @@
 <template>
-  <div class="v-cards-wrapper">
+  <div class="v-cards-wrapper" @click="$emit('changeComp')">
     <div class="v-cards-wrapper_panel"></div>
     <div class="v-cards-wrapper-container">
       <div class="v-cards-wrapper-container_list">
