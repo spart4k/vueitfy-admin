@@ -80,6 +80,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    fromTask: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     Autocomplete,

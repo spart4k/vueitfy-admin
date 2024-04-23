@@ -17,6 +17,7 @@
       :correct="correct"
       :confirm="confirm"
       :docsData="docsData"
+      :fromTask="true"
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
     />
   </div>

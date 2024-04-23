@@ -21,7 +21,10 @@
               v-else-if="isRejected && confirm"
               >$IconClose</v-icon
             >
-            <div class="document-title text-h7 mb-2">
+            <div
+              :class="fromTask ? 'document-title--task' : ''"
+              class="document-title text-h7 mb-2"
+            >
               {{
                 document.doc_name
                   ? document.doc_name
@@ -186,7 +189,7 @@
               <v-btn
                 :disabled="vForm.$invalid"
                 @click="confirmCorrect"
-                color="primary"
+                color="warning"
                 small
               >
                 <!-- <v-icon left> $IconMain </v-icon> -->
@@ -206,7 +209,6 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-
       <div class="document-file"></div>
     </div>
     <v-divider></v-divider>
