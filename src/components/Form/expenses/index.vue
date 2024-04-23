@@ -56,6 +56,7 @@
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
+              :name="field.name"
               :label="field.label"
               :error-messages="formErrors[field?.name]"
               clearable
