@@ -1047,6 +1047,15 @@ export default {
         case 'fio':
           result = 'ФИО'
           break
+        case 'surname':
+          result = 'фамилия'
+          break
+        case 'name_n':
+          result = 'Имя'
+          break
+        case 'patronymic':
+          result = 'Отчество'
+          break
         case 'registration_date_c_docs_in':
           result = 'C'
           break
