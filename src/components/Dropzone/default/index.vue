@@ -1,7 +1,8 @@
 <template>
   <div
     class="dropzone-wrap"
-    :class="[options.withoutSave ? 'without-api' : '']"
+    :class="[options.withoutSave ? 'without-api' : '', $props.name]"
+    :name="$props.name"
   >
     <vue-dropzone
       class="dropzone"

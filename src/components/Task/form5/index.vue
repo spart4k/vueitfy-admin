@@ -29,6 +29,7 @@
                   folder: 'tmp',
                   removeble: false,
                 }"
+                name="reg_page1"
                 :paramsForEmit="{ item: 4 }"
                 @addFiles="addFiles"
               ></Dropzone>
@@ -53,6 +54,7 @@
                   folder: 'tmp',
                   removeble: false,
                 }"
+                name="reg_page2"
                 :paramsForEmit="{ item: 14 }"
                 @addFiles="addFiles"
               ></Dropzone>
@@ -77,6 +79,7 @@
                   folder: 'tmp',
                   removeble: false,
                 }"
+                name="inn"
                 :paramsForEmit="{ item: 17 }"
                 @addFiles="addFiles"
               ></Dropzone>
@@ -101,6 +104,7 @@
                   folder: 'tmp',
                   removeble: false,
                 }"
+                name="pact"
                 :paramsForEmit="{ item: 25 }"
                 @addFiles="addFiles"
               ></Dropzone>
