@@ -6,66 +6,16 @@
         >&nbsp;({{ dataRojd }} г.р)
       </v-card-title>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <v-expansion-panels class="mb-5" v-if="isHasOsnDoc" accordion>
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            <v-row align="center">
-              <template v-if="isHasOsnDoc">
-                <v-icon x-small color="green" v-if="isOsnDocConfirmed === true"
-                  >$IconGalka</v-icon
-                >
-                <v-icon
-                  x-small
-                  color="red"
-                  v-else-if="isOsnDocConfirmed === false"
-                  >$IconClose</v-icon
-                >
-              </template>
-              <span class="ml-2">Основные данные</span>
-            </v-row>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="formData.name"
-                  readonly
-                  label="ФИО"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="formData.data_rojd"
-                  label="Дата рождения"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                ></v-text-field>
-              </v-col>
-              <v-col style="position: relative; z-index: 30">
-                <v-select
-                  v-model="formData.grajdanstvo_id"
-                  persistent-hint
-                  :items="citizenItems"
-                  label="Гражданство"
-                  readonly
-                ></v-select>
-              </v-col>
-            </v-row>
-            <v-row class="py-2 px-2" justify="end">
-              <v-btn small @click="rejectOsnData" class="mr-2" color="error">
-                <v-icon left> $IconClose </v-icon>
-                Отклонить
-              </v-btn>
-              <v-btn small @click="confirmOsnData" color="primary">
-                <v-icon left> $IconMain </v-icon>
-                Подтвердить
-              </v-btn>
-            </v-row>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <DocMain
+        :docMainData="docMainData"
+        :isShow="isHasOsnDoc"
+        :entity="data.entity"
+        :confirm="true"
+        ref="docMainRef"
+        @rejectDoc="rejectOsnData"
+        @confirmDoc="confirmOsnData"
+        :readonly="true"
+      />
       <!-- <DocFormWithConfirm
         v-if="docs && docs.length"
         class="mb-10"

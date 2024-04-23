@@ -4,8 +4,19 @@
       <v-expansion-panel>
         <v-expansion-panel-header>
           <v-row align="center">
-            <v-icon class="mr-2" v-if="osnConfirmed" small color="green"
+            <v-icon
+              class="mr-2"
+              v-if="osnConfirmed || isOsnDocConfirmed"
+              small
+              color="green"
               >$IconGalka</v-icon
+            >
+            <v-icon
+              x-small
+              class="mr-2"
+              color="red"
+              v-else-if="isOsnDocConfirmed === false"
+              >$IconClose</v-icon
             >
             <span>Основные данные</span>
           </v-row>
@@ -35,6 +46,7 @@
                 ref="autocompleteRef"
                 @change="changeAutocomplete"
                 :class="[...field.class]"
+                :readonly="field.readonly"
               />
               <v-text-field
                 v-else-if="field.type === 'string'"
@@ -44,6 +56,7 @@
                 :error-messages="formErrors[field?.name]"
                 clearable
                 :name="field.name"
+                :readonly="field.readonly"
               ></v-text-field>
               <Datepicker
                 v-else-if="field.type === 'date'"
@@ -51,10 +64,11 @@
                 :field="field"
                 :label="field.label"
                 :error-messages="formErrors[field?.name]"
+                :readonly="field.readonly"
               ></Datepicker>
             </v-col>
           </v-row>
-          <v-row class="justify-end">
+          <v-row v-if="correct" class="justify-end">
             <v-btn
               color="warning"
               class="ml-2"
@@ -63,6 +77,16 @@
               small
             >
               Исправлено
+            </v-btn>
+          </v-row>
+          <v-row v-if="confirm" justify="end">
+            <v-btn @click="rejectDoc" color="error" small>
+              <!-- <v-icon left> $IconMain </v-icon> -->
+              Отклонить
+            </v-btn>
+            <v-btn @click="confirmDoc" color="primary" small class="ml-2">
+              <!-- <v-icon left> $IconMain </v-icon> -->
+              Подтвердить
             </v-btn>
           </v-row>
         </v-expansion-panel-content>

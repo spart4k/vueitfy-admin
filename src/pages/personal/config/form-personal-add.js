@@ -104,7 +104,7 @@ export default {
             cols: 12,
             sm: 4,
           },
-          validations: { required },
+          validations: {},
           bootstrapClass: [''],
         }),
         dateField({

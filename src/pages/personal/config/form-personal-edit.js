@@ -157,7 +157,7 @@ export default {
         sm: 4,
       },
       bootstrapClass: [''],
-      validations: { required },
+      validations: {},
       //isShow: false,
       readonly: {
         value: false,

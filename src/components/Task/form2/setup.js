@@ -9,6 +9,8 @@ import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+import DocMain from '../el/DocMain/index.vue'
+import docForm from '../el/DocForm/setup'
 
 const Form2 = defineComponent({
   name: 'Form2',
@@ -17,6 +19,7 @@ const Form2 = defineComponent({
     DocFormWithConfirm,
     FormComment,
     DocForm,
+    DocMain,
   },
   props: {
     data: {
@@ -46,7 +49,6 @@ const Form2 = defineComponent({
       // },
     }
     const finalData = ref({})
-    const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
@@ -64,9 +66,7 @@ const Form2 = defineComponent({
     const newStatus = ref(0)
     const changeDocs = (data) => {
       finalData.value = data
-
-      isFormValid.value =
-        data.confirmed.length + data.rejected.length === data.confirmDocsLength
+      console.log(data)
     }
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
@@ -83,22 +83,22 @@ const Form2 = defineComponent({
       data_rojd: props.data.entity.data_rojd,
       grajdanstvo_id: props.data.entity.grajdanstvo_id,
     }
-
+    const docMainRef = ref(null)
+    const docMainValid = computed(() => {
+      if (isHasOsnDoc) {
+        return !docMainRef.value.isOsnDocConfirmed !== null
+      } else {
+        return true
+      }
+    })
     const confirmOsnData = () => {
       const doscId = JSON.parse(props.data.task.dop_data).docs_id
       // isOsnDocTouched.value = true
       isOsnDocConfirmed.value = true
-      if (doscId.length === 1 && doscId[0] === 0) {
-        isFormValid.value = true
-      }
     }
     const rejectOsnData = () => {
-      const doscId = JSON.parse(props.data.task.dop_data).docs_id
-      // isOsnDocTouched.value = true
+      console.log('reject')
       isOsnDocConfirmed.value = false
-      if (doscId.length === 1 && doscId[0] === 0) {
-        isFormValid.value = true
-      }
     }
     const docFormRef = ref(null)
     const allDocsTouched = computed(() => {
@@ -107,11 +107,7 @@ const Form2 = defineComponent({
       )
     })
     const isValid = computed(() => {
-      console.log(allDocsTouched.value, isHasOsnDoc, isOsnDocConfirmed.value)
-      return (
-        allDocsTouched.value &&
-        (isHasOsnDoc ? isOsnDocConfirmed.value !== null : true)
-      )
+      return allDocsTouched.value && docMainValid.value
     })
     const { makeRequest: setPersonalData } = useRequest({
       context,
@@ -140,7 +136,7 @@ const Form2 = defineComponent({
           return []
         }
       })
-      if (isOsnDocConfirmed.value === false) {
+      if (docMainRef.value.isOsnDocConfirmed === false) {
         rejectedRows.push(0)
       }
       return rejectedRows
@@ -221,7 +217,6 @@ const Form2 = defineComponent({
       listNames: props.data.data.docs_spr,
       changeDocs,
       sendData,
-      isFormValid,
       finalData,
       textInfo,
       isHasOsnDoc,
@@ -238,6 +233,8 @@ const Form2 = defineComponent({
       docFormRef,
       isValid,
       rejectedDocs,
+      docMainValid,
+      docMainRef,
     }
   },
 })

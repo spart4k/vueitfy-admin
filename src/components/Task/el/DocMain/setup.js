@@ -1,4 +1,4 @@
-import Vue, { ref, onMounted, watch } from 'vue'
+import Vue, { ref, reactive, onMounted, watch } from 'vue'
 import { stringField, selectField, dateField } from '@/utils/fields.js'
 import { required } from '@/utils/validation.js'
 import useRequest from '@/compositions/useRequest'
@@ -16,11 +16,19 @@ export default {
       type: Boolean,
       default: false,
     },
-    docMainData: {
+    correct: {
+      type: Boolean,
+      default: false,
+    },
+    entity: {
       type: Object,
       default: () => {},
     },
-    correct: {
+    confirm: {
+      type: Boolean,
+      default: false,
+    },
+    readonly: {
       type: Boolean,
       default: false,
     },
@@ -33,6 +41,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const osnConfirmed = ref(false)
+    const { emit } = ctx
     const context = {
       root: {
         store,
@@ -41,28 +50,62 @@ export default {
         route,
       },
     }
+    const docMainData = reactive({
+      surname: props.entity.surname,
+      name_n: props.entity.name_n,
+      patronymic: props.entity.patronymic,
+      data_rojd: props.entity.data_rojd,
+      grajdanstvo_id: props.entity.grajdanstvo_id,
+    })
     const fieldsConfig = ref([
       stringField({
-        label: 'ФИО',
-        name: 'name',
+        label: 'Фамилия',
+        name: 'surname',
         placeholder: '',
         class: [''],
-        prescription: 'items',
-        notSend: true,
         position: {
           cols: 12,
-          sm: 12,
+          sm: 4,
         },
-        value: props.docMainData.name,
+        readonly: props.readonly,
+        value: docMainData.surname,
         validations: { required },
+        bootstrapClass: [''],
+      }),
+      stringField({
+        label: 'Имя',
+        name: 'name_n',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 4,
+        },
+        readonly: props.readonly,
+        value: docMainData.name_n,
+        validations: { required },
+        bootstrapClass: [''],
+      }),
+      stringField({
+        label: 'Отчество',
+        name: 'patronymic',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 4,
+        },
+        value: docMainData.patronymic,
+        readonly: props.readonly,
+        validations: {},
         bootstrapClass: [''],
       }),
       dateField({
         label: 'Дата рождения',
         name: 'data_rojd',
-        value: props.docMainData.data_rojd,
+        value: docMainData.data_rojd,
         type: 'date',
-        readonly: true,
+        readonly: props.readonly,
         menu: false,
         placeholder: '',
         class: [''],
@@ -80,7 +123,7 @@ export default {
         label: 'Гражданство',
         name: 'grajdanstvo_id',
         // alias: 'status_pt',
-        value: props.docMainData.grajdanstvo_id,
+        value: docMainData.grajdanstvo_id,
         placeholder: '',
         class: [''],
         selectOption: {
@@ -186,6 +229,7 @@ export default {
         disable: true,
         validations: { required },
         bootstrapClass: [''],
+        readonly: props.readonly,
       }),
     ])
     const tab = {
@@ -248,6 +292,15 @@ export default {
     const sumbitDoc = () => {
       osnConfirmed.value = true
     }
+    const isOsnDocConfirmed = ref(null)
+    const rejectDoc = () => {
+      isOsnDocConfirmed.value = false
+      emit('rejectDoc')
+    }
+    const confirmDoc = () => {
+      isOsnDocConfirmed.value = true
+      emit('confirmDoc')
+    }
     watch(formData, () => {
       console.log(formData)
       osnConfirmed.value = false
@@ -267,6 +320,9 @@ export default {
       osnConfirmed,
       sumbitDoc,
       tab,
+      rejectDoc,
+      confirmDoc,
+      isOsnDocConfirmed,
     }
   },
 }
