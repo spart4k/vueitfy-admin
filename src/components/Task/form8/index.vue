@@ -23,6 +23,7 @@
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
               :key="index"
+              :class="`panel_${data.data.docs_spr[item.doc_id]}`"
             >
               <v-expansion-panel-header>
                 <span>
