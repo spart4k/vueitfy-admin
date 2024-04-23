@@ -1,13 +1,8 @@
 import { defineComponent, ref, computed } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import { useRouter, useRoute } from 'vue-router/composables'
-// import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
-// import FormComment from '@/components/Task/el/FormComment/index.vue'
-// import useForm from '@/compositions/useForm'
-// import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
-// import moment from 'moment'
 
 const Form4 = defineComponent({
   name: 'Form4',
@@ -142,7 +137,7 @@ const Form4 = defineComponent({
                 // type_parent_action: 2,
 
                 parent_process: data.task.process_id,
-                process_id: data.task.process_id,
+                process_id: 1,
                 account_id: data.task.to_account_id,
                 task_id: data.task.id,
                 docs_id: [str.result],

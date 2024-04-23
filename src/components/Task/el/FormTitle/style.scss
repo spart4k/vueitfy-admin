@@ -1,36 +1,36 @@
 .docs-required {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 5px 5px 5px;
 }
 .docs-required__container-layout {
-    display: flex;
+  display: flex;
 }
 .docs-required__inner-image {
-    width: 50px;
-    height: 50px;
+  width: 50px;
+  height: 50px;
 }
 .docs-required__image {
-    width: 100%;
+  width: 100%;
 }
 .docs-required__contols-panel {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-
 .docs-required__name-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-left: 5px;
 }
 
 .is-unconfirmed {
-    background: red;
+  background: rgba(220, 0, 0, 0.2);
 }
 
 .is-confirmed {
-    background: rgba(66, 220, 0, 0.2);
+  background: rgba(66, 220, 0, 0.2);
 }

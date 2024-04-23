@@ -78,17 +78,15 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-      <!-- <DocFormCorrect
-        v-if="docs && docs.length"
-        class="mb-10"
-        @change="changeDocs"
-        :docsData="docsData"
-        :bankData="bankData"
-        :listNames="listNames"
-        :docs="docs"
-        :entity="entity"
-        :task="JSON.parse(data.task.dop_data)"
-      ></DocFormCorrect> -->
+      <DocMain
+        :docMainData="docMainData"
+        :isShow="isHasOsnDoc"
+        :correct="true"
+        ref="docMainRef"
+      />
+      <div class="rejectedComment mb-2">
+        <span>!</span> {{ rejectedComment }}
+      </div>
       <DocForm
         v-if="docs && docs.length"
         class="mb-10"
@@ -102,7 +100,7 @@
         :correct="true"
         ref="docFormRef"
       ></DocForm>
-      <FormComment />
+      <!-- <FormComment /> -->
     </div>
     <v-divider></v-divider>
     <v-row class="py-2 px-2" justify="end">
@@ -120,4 +118,13 @@
 
 <script src="./setup.js"></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.rejectedComment {
+  // display: inline-flex;
+  padding: 2px 10px;
+  border: 1px dashed #ff5252;
+  span {
+    color: #ff5252;
+  }
+}
+</style>

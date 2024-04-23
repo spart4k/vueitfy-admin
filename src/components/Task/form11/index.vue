@@ -6,29 +6,26 @@
       >
       <div class="position-relative mb-8">
         <!-- TODO: LIST -->
-        <div v-if="listDocuments?.length && listDocuments">
+        <div v-if="true">
           <div class="alert text-center" v-if="errors.isActive">
             <span>{{ errors.message }}</span>
           </div>
 
-          <v-list lines="one" class="list overflow-y-auto" max-height="220">
-            <v-list-item
-              v-for="(file, fileID) in listDocuments"
-              :key="file"
-              class="file-item mb-3"
-            >
-              <div class="file-img">
-                <v-img class="img" :src="file.dataURL"></v-img>
-              </div>
-              <div class="file-name">{{ file.name }}</div>
-              <div class="file-remove" @click="removeFile(fileID)">
-                <IconDelete />
-              </div>
-            </v-list-item>
-          </v-list>
+          <FormTitle
+            :docName="item.name"
+            v-for="(item, index) in formatedSchets"
+            :docs="item"
+            :key="index"
+            @confirmed="addConfirmed"
+            @unconfirmed="addUnconfirmed"
+            ref="formRowsRef"
+            :hideActions="true"
+            :isShowRemove="item.valid === 2"
+            @remove="removeDoc($event, index)"
+          ></FormTitle>
         </div>
 
-        <div v-if="!listDocuments?.length" class="text-center mt-4">
+        <div v-if="!formatedSchets?.length" class="text-center mt-4">
           <span class="font-weight-regular text-subtitle-1"
             >Документы не загружены</span
           >
@@ -50,16 +47,20 @@
             @addFiles="addFiles"
             :options="dropzoneOptions"
           ></DropZone> -->
-          <div class="d-flex justify-end">
-            <v-btn
-              @click="sendDocuments"
-              small
-              variant="tonal"
-              color="orange"
-              :disabled="!isDocs"
-              >Приложить</v-btn
-            >
-          </div>
+          <v-row>
+            <v-col cols="12">
+              <div style="display: flex; justify-content: center">
+                <v-btn
+                  small
+                  color="success"
+                  :disabled="!attachedFile"
+                  @click="sendCloseDocsSchet"
+                >
+                  Приложить
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <!-- TODO: Комментарии -->
@@ -95,7 +96,7 @@
           color="info"
           @click="sendTaskFinish"
           small
-          :disabled="comment && !refds"
+          :disabled="!comment && JSON.parse(attached_amount).attached"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

@@ -13,7 +13,7 @@
           </div> -->
         </v-col>
       </v-row>
-      <div class="mb-10">
+      <div class="mb-7">
         <span>Приложите документы</span>
         <v-expansion-panels multiple>
           <v-expansion-panel
@@ -24,21 +24,21 @@
             <v-expansion-panel-header>
               <div>
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
                   <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  <v-icon left v-else> $IconGalka </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
                 </span>
-                <div v-if="item.path_doc" style="margin-top: 10px">
-                  Скан:
-                  <a
-                    download
-                    :href="'https://test.api.personal-crm.ru' + item.path_doc"
-                    ><v-icon left width="10px"> $IconDocument </v-icon></a
-                  >
-                </div>
               </div>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
+              <div v-if="item.path_doc" style="margin-top: 10px">
+                Скан:
+                <a
+                  download
+                  :href="'https://test.api.personal-crm.ru' + item.path_doc"
+                  ><v-icon left width="10px"> $IconDocument </v-icon></a
+                >
+              </div>
               <Dropzone
                 :options="{
                   withoutSave: false,
@@ -60,7 +60,7 @@
             <v-btn
               small
               color="success"
-              :disabled="listDisbledDocuments != 0"
+              :disabled="!attachedFile"
               @click="sendDocuments"
             >
               Приложить
@@ -68,7 +68,7 @@
           </div>
         </v-col>
       </v-row>
-      <div>
+      <div class="mt-8">
         <span>Приложите закрывающие документы</span>
       </div>
       <v-row>
