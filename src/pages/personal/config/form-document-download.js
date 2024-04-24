@@ -237,7 +237,7 @@ export default {
       },
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1] }],
+        conditions: [{ field: 'document_id', value: [1, 3] }],
       },
       items: [],
       position: {
@@ -361,6 +361,7 @@ export default {
       label: 'Медицинских страхование',
       name: 'insurance_id',
       alias: 'medical_insurance',
+      requestKey: 'medical_insurance_id',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -370,7 +371,7 @@ export default {
       },
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 2] }],
+        conditions: [{ field: 'document_id', value: [2] }],
       },
       items: [],
       position: {
@@ -402,6 +403,24 @@ export default {
       bootstrapClass: [''],
     }),
     dateField({
+      label: 'Дата подписания',
+      name: 'date_create',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 3] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    dateField({
       label: 'Дата заключения',
       name: 'date_conclusion',
       type: 'date',
@@ -411,7 +430,7 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 3] }],
+        conditions: [{ field: 'document_id', value: [1] }],
       },
       position: {
         cols: 12,
@@ -429,7 +448,7 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 3] }],
+        conditions: [{ field: 'document_id', value: [3] }],
       },
       position: {
         cols: 12,
@@ -592,8 +611,9 @@ export default {
       color: 'primary',
       module: 'form/create',
       url: 'generation/personal_doc',
-      name: 'saveFormStore',
-      action: 'saveFormStore',
+      useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+      name: 'createForm',
+      action: 'createForm',
     }),
   ],
 }

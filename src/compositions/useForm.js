@@ -500,6 +500,7 @@ export default function ({
 
         if (action?.useRouteKey?.length) {
           action.useRouteKey.forEach((item) => {
+            console.log('zxczxczxc', item)
             newForm[item.requestKey] = +route.params?.[item?.storageKey]
           })
         }
