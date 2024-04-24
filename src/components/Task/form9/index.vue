@@ -123,7 +123,7 @@
         <v-btn
           small
           color="info"
-          :disabled="listDisbledDocuments !== 0 && !listNewChet.length"
+          :disabled="listDisbledDocuments !== 0 || !listNewChet.length"
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>

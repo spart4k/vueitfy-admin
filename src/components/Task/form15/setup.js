@@ -54,7 +54,7 @@ const Form15 = defineComponent({
       },
       employee: {
         key: 'Сотрудник',
-        value: `${props.data.entity.surname} ${props.data.entity.name_n} ${props.data.entity.patronymic}`,
+        value: props.data.entity.personal_name,
       },
       avatar: {
         key: 'Аватар',
