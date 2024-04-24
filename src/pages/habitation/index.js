@@ -1,7 +1,11 @@
 import filters from './filters'
 import filtersArchive from './filtersArchive'
 
-const config = {
+import formHabitationAddEdit from './config/form-habitation-add-edit'
+import formOwnerAddEdit from './config/form-owner-add-edit'
+import formRealtorAddEdit from './config/form-realtor-add-edit'
+
+export const config = {
   title: 'Проживание',
   activeTab: 0,
   tabs: [
@@ -26,6 +30,13 @@ const config = {
             url: '$IconEdit',
             // function: consolePanel,
             backgroundColor: '#ffffff',
+          },
+          {
+            label: 'Добавить',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'habitation/add',
+            backgroundColor: '#fff',
           },
         ],
         date: true,
@@ -223,8 +234,9 @@ const config = {
         alias: 'documents',
         url: '/get/form/',
         name: 'Такси',
+        requestId: 'habitation_id',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,
       },
       filters,
@@ -250,6 +262,13 @@ const config = {
             url: '$IconEdit',
             // function: consolePanel,
             backgroundColor: '#ffffff',
+          },
+          {
+            label: 'Добавить',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'habitation-add-realtor',
+            backgroundColor: '#fff',
           },
         ],
         date: true,
@@ -371,9 +390,10 @@ const config = {
         method: 'get',
         alias: 'documents',
         url: '/get/form/',
-        name: 'Такси',
+        name: 'Риэлторы',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        requestId: 'realtor_id',
+        tabs: [formRealtorAddEdit, Object.assign({}, formRealtorAddEdit)],
         activeTab: null,
       },
       filters,
@@ -399,6 +419,13 @@ const config = {
             url: '$IconEdit',
             // function: consolePanel,
             backgroundColor: '#ffffff',
+          },
+          {
+            label: 'Добавить',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'habitation-add-owner',
+            backgroundColor: '#fff',
           },
         ],
         date: true,
@@ -547,7 +574,8 @@ const config = {
         url: '/get/form/',
         name: 'Такси',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        requestId: 'owner_id',
+        tabs: [formOwnerAddEdit, Object.assign({}, formOwnerAddEdit)],
         activeTab: null,
       },
       filters,
@@ -771,7 +799,7 @@ const config = {
         url: '/get/form/',
         name: 'Такси',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,
       },
       filters: filtersArchive,

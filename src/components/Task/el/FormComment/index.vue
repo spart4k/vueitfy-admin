@@ -2,6 +2,7 @@
   <v-textarea
     rows="2"
     clearable
+    name="comment"
     label="Комментарий"
     v-model="proxyValue"
     :error-messages="errors"
