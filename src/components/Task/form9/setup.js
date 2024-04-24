@@ -8,7 +8,7 @@ import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form8 = defineComponent({
-  name: 'Form8',
+  name: 'Form9',
   components: {
     Dropzone,
     TextInfo,
