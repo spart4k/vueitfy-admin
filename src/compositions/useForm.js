@@ -277,7 +277,6 @@ export default function ({
       }
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
-      console.log(action.handlingResponse)
       if (action.handlingResponse) {
         handlingResponse(action, result)
       }
@@ -297,13 +296,11 @@ export default function ({
     }
   }
   const handlingResponse = (action, result) => {
-    console.log(action.handlingResponse)
     if (action.handlingResponse?.result === 'code') {
       let { text, color } = action.handlingResponse[result.code]
       let keyFormated
       // eslint-disable-next-line
       const key = text.match(/\%\w{1,}\%/g)
-      console.log(key)
       if (key?.length) {
         keyFormated = key[0].split('%')[1]
         text = text.replace(key, formData[keyFormated])
@@ -500,7 +497,6 @@ export default function ({
 
         if (action?.useRouteKey?.length) {
           action.useRouteKey.forEach((item) => {
-            console.log('zxczxczxc', item)
             newForm[item.requestKey] = +route.params?.[item?.storageKey]
           })
         }
@@ -777,7 +773,6 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
-    console.log(params)
     queueMicrotask(async () => {
       await getDependies(params)
     })
@@ -814,7 +809,6 @@ export default function ({
 
         // if (list.condition) return []
         let filter = list.filter.reduce((acc, el) => {
-          console.log(el)
           const source = eval(el.source)
           if (el.routeKey) {
             acc.push({
@@ -1065,7 +1059,6 @@ export default function ({
           // )
           targetField.objectData = []
           if (targetField.hasOwnProperty('defaultObjectData')) {
-            console.log(targetField.defaultObjectData)
             // targetField.objectData = targetField.objectData.concat(
             //   targetField.defaultObjectData
             // )
@@ -1139,7 +1132,6 @@ export default function ({
             const findedEl = field.objectData?.find((el) => el.id === value)
             if (findedEl) {
               dependence.fields.forEach((el) => {
-                console.log(formData[el], findedEl)
                 formData[el] = findedEl[el]
               })
             }
@@ -1192,7 +1184,6 @@ export default function ({
   const getDepFilters = (target) => {
     if (!target.filter) return []
     const filters = target?.filter?.flatMap((el) => {
-      // console.log('el', el)
       const filter = {
         alias: el.alias ?? el.field,
         type: el.type,
@@ -1296,7 +1287,6 @@ export default function ({
     let filter = []
     if (field.filter) {
       filter = field.filter.reduce((acc, el) => {
-        console.log(el)
         const source = eval(el.source)
         if (el.routeKey) {
           acc.push({
