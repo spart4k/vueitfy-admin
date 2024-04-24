@@ -3,11 +3,13 @@ import Dropzone from '@/components/Dropzone/default'
 import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form4 = defineComponent({
   name: 'Form4',
   components: {
     Dropzone,
+    PersTitle,
   },
   props: {
     data: {
@@ -97,6 +99,7 @@ const Form4 = defineComponent({
             doc_id: 10,
             personal_id: data.entity.id,
             path_doc: `/personal_doc/${fileName}`,
+            from_task: true,
           },
         }),
     })
@@ -123,7 +126,9 @@ const Form4 = defineComponent({
       await pushSomeShit()
       if (hasMigr.value && isGalkaVisible.value) {
         await makeRequest()
-        await delInfoAFile()
+        if (data.data.migr_card?.id) {
+          await delInfoAFile()
+        }
         await updateFileData().then((str) => {
           const { makeRequest: startTask } = useRequest({
             context,
