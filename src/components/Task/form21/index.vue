@@ -3,9 +3,9 @@
     <div style="padding-top: 20px">
       <PersTitle
         :data="{
-          surname: data.entity.surname,
-          name_n: data.entity.name_n,
-          patronymic: data.entity.patronymic,
+          surname: data.data.personal.surname,
+          name_n: data.data.personal.name_n,
+          patronymic: data.data.personal.patronymic,
           dataRojd,
         }"
       />
