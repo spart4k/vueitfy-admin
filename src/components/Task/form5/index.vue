@@ -5,112 +5,110 @@
         <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
         >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
       </v-card-title>
-      <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
+      <TextInfo v-if="textInfo" class="mb-2" :infoObj="textInfo"></TextInfo>
       <!-- {{ getNameDoc(1) }} -->
       <div class="mb-10">
-        <span>Приложите документы</span>
-        <v-expansion-panels multiple>
-          <v-expansion-panel class="panel_Регистрация">
-            <v-expansion-panel-header class="button_Регистрация">
-              <span>
-                <v-icon left v-if="!listDocuments[0].inProcess">
-                  $IconGalka
-                </v-icon>
-                <v-icon left v-if="listDocuments[0].inProcess">
-                  $IconSetting
-                </v-icon>
-                Регистрация
-              </span>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <Dropzone
-                :options="{
-                  withoutSave: false,
-                  folder: 'tmp',
-                  removeble: false,
-                }"
-                name="reg_page1"
-                :paramsForEmit="{ item: 4 }"
-                @addFiles="addFiles"
-              ></Dropzone>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <v-expansion-panel class="panel_Регистрация стр.2">
-            <v-expansion-panel-header class="button_Регистрация стр.2">
-              <span>
-                <v-icon left v-if="!listDocuments[1].inProcess">
-                  $IconGalka
-                </v-icon>
-                <v-icon left v-if="listDocuments[1].inProcess">
-                  $IconSetting
-                </v-icon>
-                Регистрация стр.2
-              </span>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <Dropzone
-                :options="{
-                  withoutSave: false,
-                  folder: 'tmp',
-                  removeble: false,
-                }"
-                name="reg_page2"
-                :paramsForEmit="{ item: 14 }"
-                @addFiles="addFiles"
-              ></Dropzone>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <v-expansion-panel class="panel_ИНН">
-            <v-expansion-panel-header class="button_ИНН">
-              <span>
-                <v-icon left v-if="!listDocuments[2].inProcess">
-                  $IconGalka
-                </v-icon>
-                <v-icon left v-if="listDocuments[2].inProcess">
-                  $IconSetting
-                </v-icon>
-                ИНН
-              </span>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <Dropzone
-                :options="{
-                  withoutSave: false,
-                  folder: 'tmp',
-                  removeble: false,
-                }"
-                name="inn"
-                :paramsForEmit="{ item: 17 }"
-                @addFiles="addFiles"
-              ></Dropzone>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <v-expansion-panel class="panel_Ученический договор">
-            <v-expansion-panel-header class="button_Ученический договор">
-              <span>
-                <v-icon left v-if="!listDocuments[3].inProcess">
-                  $IconGalka
-                </v-icon>
-                <v-icon left v-if="listDocuments[3].inProcess">
-                  $IconSetting
-                </v-icon>
-                Ученический договор
-              </span>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <Dropzone
-                :options="{
-                  withoutSave: false,
-                  folder: 'tmp',
-                  removeble: false,
-                }"
-                name="pact"
-                :paramsForEmit="{ item: 25 }"
-                @addFiles="addFiles"
-              ></Dropzone>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+        <span class="font-weight-bold mb-4">Приложите документы: </span>
+        <div class="mt-3">
+          <v-expansion-panels multiple>
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <span>
+                  <v-icon left v-if="!listDocuments[0].inProcess">
+                    $IconGalka
+                  </v-icon>
+                  <v-icon left v-if="listDocuments[0].inProcess">
+                    $IconSetting
+                  </v-icon>
+                  Регистрация
+                </span>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Dropzone
+                  :options="{
+                    withoutSave: false,
+                    folder: 'tmp',
+                    removeble: false,
+                  }"
+                  :paramsForEmit="{ item: 4 }"
+                  @addFiles="addFiles"
+                ></Dropzone>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <span>
+                  <v-icon left v-if="!listDocuments[1].inProcess">
+                    $IconGalka
+                  </v-icon>
+                  <v-icon left v-if="listDocuments[1].inProcess">
+                    $IconSetting
+                  </v-icon>
+                  Регистрация стр.2
+                </span>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Dropzone
+                  :options="{
+                    withoutSave: false,
+                    folder: 'tmp',
+                    removeble: false,
+                  }"
+                  :paramsForEmit="{ item: 14 }"
+                  @addFiles="addFiles"
+                ></Dropzone>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <span>
+                  <v-icon left v-if="!listDocuments[2].inProcess">
+                    $IconGalka
+                  </v-icon>
+                  <v-icon left v-if="listDocuments[2].inProcess">
+                    $IconSetting
+                  </v-icon>
+                  ИНН
+                </span>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Dropzone
+                  :options="{
+                    withoutSave: false,
+                    folder: 'tmp',
+                    removeble: false,
+                  }"
+                  :paramsForEmit="{ item: 17 }"
+                  @addFiles="addFiles"
+                ></Dropzone>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>
+                <span>
+                  <v-icon left v-if="!listDocuments[3].inProcess">
+                    $IconGalka
+                  </v-icon>
+                  <v-icon left v-if="listDocuments[3].inProcess">
+                    $IconSetting
+                  </v-icon>
+                  Ученический договор
+                </span>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Dropzone
+                  :options="{
+                    withoutSave: false,
+                    folder: 'tmp',
+                    removeble: false,
+                  }"
+                  :paramsForEmit="{ item: 25 }"
+                  @addFiles="addFiles"
+                ></Dropzone>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
       </div>
 
       <v-row class="py-2" justify="end">

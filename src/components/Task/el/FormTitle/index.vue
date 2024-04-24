@@ -2,7 +2,7 @@
   <div
     class="docs-required"
     :class="[
-      !isShowCansel && 'is-unconfirmed',
+      (!isShowCansel || isShowRemove) && 'is-unconfirmed',
       !isShowAdd && 'is-confirmed',
       true && `docs-required_${docName}`,
     ]"
@@ -25,11 +25,17 @@
       </div>
     </div>
     <div class="docs-required__contols-panel">
-      <div v-if="isShowAdd" @click="clickAdd">
+      <div v-if="isShowAdd && !hideActions" @click="clickAdd">
         <v-icon small>$IconGalka</v-icon>
       </div>
-      <div v-if="isShowCansel" @click="clickDel">
+      <div v-if="isShowCansel && !hideActions" @click="clickDel">
         <v-icon small>$IconClose</v-icon>
+      </div>
+      <div
+        v-if="(isShowRemove && !hideActions) || isShowRemove"
+        @click="clickRemove"
+      >
+        <v-icon small>$IconDelete</v-icon>
       </div>
     </div>
     <FormPopupPhoto

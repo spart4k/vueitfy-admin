@@ -72,7 +72,7 @@
         <span>{{ data.data.account.name }}</span></v-col
       ><v-col cols="12 mb-4"
         ><span
-          ><span class="">Моб.</span> {{ mobilePhone }}
+          ><span class="font-weight-bold">Моб.</span> {{ mobilePhone }}
           <span class="font-weight-bold">Стац.</span> {{ landPhone }}</span
         ></v-col
       >

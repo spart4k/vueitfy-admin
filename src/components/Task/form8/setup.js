@@ -1,5 +1,12 @@
 import Dropzone from '@/components/Dropzone/default'
-import { defineComponent, ref, computed, onMounted, toRef } from 'vue'
+import Vue, {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  toRef,
+  reactive,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -148,7 +155,7 @@ const Form8 = defineComponent({
     // }
 
     let docs_ids = ref([])
-    let addFilesPatent = (e, options) => {
+    let addFilesPatent = async (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -158,10 +165,12 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: props.data.entity.id,
-            doc_id: e.item,
-            path_doc: `/personal_doc/${fileName}`,
-            from_task: true,
+            data: {
+              personal_id: props.data.entity.id,
+              doc_id: e.item,
+              path_doc: `/personal_doc/${fileName}`,
+              from_task: true,
+            },
           }),
       })
 
@@ -176,19 +185,81 @@ const Form8 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      updateFileData()
-      loadImage()
+      // const updateFileData()
+      await loadImage()
+      console.log(patent[e.item])
+      const { result } = await updateFileData()
+      console.log(result)
+      patent[e.item] = result
       disableFinishState.value = disableFinishState.value + 1
     }
+
+    const patent = reactive({
+      5: null,
+      15: null,
+    })
 
     const setZayavkaItems = () => {
       config.detail.tabs[0].fields = _.cloneDeep(
         zayavkaConfigOrig.detail.tabs[0].fields
       )
 
+      const from_task_8 = stringField({
+        label: 'Кол-во',
+        name: 'from_task_8',
+        placeholder: '',
+        class: [''],
+        value: true,
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
+
+      const process_id = stringField({
+        label: 'Кол-во',
+        name: 'process_id',
+        placeholder: '',
+        value: props.data.task.process_id,
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
+
+      const task_id = stringField({
+        label: 'Кол-во',
+        name: 'task_id',
+        placeholder: '',
+        class: [''],
+        value: props.data.task.id,
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
+
+      config.detail.tabs[0].fields.push(from_task_8, process_id, task_id)
+
       const fieldsChanges = {
         vector_id: {
           readonly: true,
+        },
+        status_zr: {
+          value: 2,
         },
         category_zr: {
           value: 8,
@@ -213,6 +284,9 @@ const Form8 = defineComponent({
         },
         'btn-increase': {
           readonly: true,
+        },
+        from_task_8: {
+          value: true,
         },
       }
       const addConfig = config.detail.tabs[0]
@@ -394,7 +468,7 @@ const Form8 = defineComponent({
     }
     const { makeRequest: createFillScanProcess } = useRequest({
       context,
-      request: () =>
+      request: (doc_id) =>
         store.dispatch('taskModule/startProcess', {
           parent_process: props.data.task.process_id,
           process_id: 1,
@@ -402,11 +476,13 @@ const Form8 = defineComponent({
           type_parent_action: 2,
           account_id: props.data.task.to_account_id,
           personal_id: props.data.entity.id,
-          docs_id: docs_ids.value,
+          docs_id: doc_id,
         }),
       successMessage: 'Файл успешно загружен',
     })
-    let addFiles = (e, options) => {
+    const attachedFile = ref(false)
+    let addFiles = (e, document) => {
+      console.log(e, document)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -417,17 +493,21 @@ const Form8 = defineComponent({
       const { makeRequest: delInfoAFile } = useRequest({
         context,
         request: () =>
-          store.dispatch('taskModule/updateFileData', { id: e.item, del: 1 }),
+          store.dispatch('taskModule/updateFileData', {
+            data: { id: e.item, del: 1 },
+          }),
       })
 
       const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: props.data.entity.id,
-            doc_id: e.item,
-            path_doc: `/personal_doc/${fileName}`,
-            from_task: true,
+            data: {
+              personal_id: props.data.entity.id,
+              doc_id: e.item,
+              path_doc: `/personal_doc/${fileName}`,
+              from_task: true,
+            },
           }),
       })
 
@@ -459,36 +539,49 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
-      if (!currentDropzone.inProcess) {
-        listRequestsForUpload.value.push(
-          delInfoAFile,
-          updateFileData,
-          loadImage
-        )
-        listDocuments.value[
-          listDocuments.value.findIndex((x) => x.doc_id == e.item)
-        ].inProcess = false
-        if (additionalRequestFlag) {
-          listRequestsForUpload.value.push(createFillScanProcess)
-        }
-      } else {
-        listRequestsForUpload.value.push(updateFileData, loadImage)
-        if (additionalRequestFlag) {
-          listRequestsForUpload.value.push(createFillScanProcess)
-        }
-        listDocuments.value[
-          listDocuments.value.findIndex((x) => x.doc_id == e.item)
-        ].inProcess = false
-        listDisbledDocuments.value = listDisbledDocuments.value - 1
-      }
+      console.log('process')
+      listRequestsForUpload.value.push({
+        delInfoAFile,
+        updateFileData,
+        loadImage,
+        document,
+      })
+      document.inProcess = true
+      attachedFile.value = true
     }
 
     const sendDocuments = async () => {
-      // listRequestsForUpload.value.forEach((elem, index) => {
-      //   elem()
-      // })
-      await createFillScanProcess()
+      await Promise.all(
+        listRequestsForUpload.value.map(async (doc, index) => {
+          console.log(doc)
+          if (doc.document.path_doc) {
+            await doc.delInfoAFile()
+          }
+          const res = await doc.loadImage()
+          const docRes = await doc.updateFileData()
+          if (docRes.result) {
+            doc.document.inProcess = false
+            const searchedDoc = listDocuments.value.find(
+              (el) => el.id === doc.document.id
+            )
+            searchedDoc.inProcess = false
+            Vue.set(doc, 'document', doc.document)
+            Vue.set(doc.document, 'inProcess', false)
+            console.log(doc.document.inProcess)
+            doc.document.newId = docRes.result
+            // doc.document.newId = docRes.result
+            // await createFillScanProcess(docRes.result)
+          }
+        })
+      )
+      const acceptedDocs = listRequestsForUpload.value.flatMap((el) => {
+        if (el.document.newId) return el.document.newId
+        else return []
+      })
+      console.log(acceptedDocs)
+      await createFillScanProcess(acceptedDocs)
       listRequestsForUpload.value = []
+      attachedFile.value = false
     }
 
     const closePopupForm = (route) => {
@@ -498,23 +591,25 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
-      const { makeRequest: changeStatus } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/setPartTask', {
-            status: 2,
-            data: {
-              process_id: props.data.task.process_id,
-              task_id: props.data.task.id,
-              parent_action: props.data.task.id,
-            },
-          }),
-      })
-      const { success } = await changeStatus()
-      if (success) {
-        ctx.emit('closePopup')
-        ctx.emit('getItems')
-      }
+      console.log(patent)
+      // await createFillScanProcess([patent[5], patent[15]])
+      // const { makeRequest: changeStatus } = useRequest({
+      //   context,
+      //   request: () =>
+      //     store.dispatch('taskModule/setPartTask', {
+      //       status: 2,
+      //       data: {
+      //         process_id: props.data.task.process_id,
+      //         task_id: props.data.task.id,
+      //         parent_action: props.data.task.id,
+      //       },
+      //     }),
+      // })
+      // const { success } = await changeStatus()
+      // if (success) {
+      //   ctx.emit('closePopup')
+      //   ctx.emit('getItems')
+      // }
     }
 
     onMounted(() => {
@@ -557,6 +652,8 @@ const Form8 = defineComponent({
       pushToZayavka,
       expensesForm,
       config,
+      attachedFile,
+      patent,
     }
   },
 })

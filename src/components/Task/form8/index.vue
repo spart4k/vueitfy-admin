@@ -19,7 +19,7 @@
       <div class="position-relative">
         <div class="mb-10">
           <span class="font-weight-bold">Приложите документы:</span>
-          <v-expansion-panels :disabled="+data.data?.zayavka?.status !== 5">
+          <v-expansion-panels>
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
               :key="index"
@@ -29,22 +29,32 @@
                 :class="`button_${data.data.docs_spr[item.doc_id]}`"
               >
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
+                  <!-- {{ item.inProcess }} -->
                   <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  <v-icon left v-else> $IconGalka </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
                 </span>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <Dropzone
-                  :options="{
-                    withoutSave: false,
-                    folder: 'tmp',
-                    removeble: false,
-                  }"
-                  :name="data.data.docs_spr[item.doc_id]"
-                  :paramsForEmit="{ item: item.doc_id }"
-                  @addFiles="addFiles"
-                ></Dropzone>
+                <div v-if="item.path_doc">
+                  <div class="mb-2">
+                    <span>Скан:</span>
+                    <a download :href="$root.env.VUE_APP_STORE + item.path_doc"
+                      ><v-icon left small> $IconDocument </v-icon></a
+                    >
+                  </div>
+                </div>
+                <div class="">
+                  <Dropzone
+                    :options="{
+                      withoutSave: false,
+                      folder: 'tmp',
+                      removeble: false,
+                    }"
+                    :paramsForEmit="{ item: item.doc_id }"
+                    @addFiles="addFiles($event, item)"
+                  ></Dropzone>
+                </div>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -57,7 +67,7 @@
             <v-btn
               small
               color="success"
-              :disabled="listDisbledDocuments != 0"
+              :disabled="!attachedFile"
               @click="sendDocuments"
             >
               Приложить
