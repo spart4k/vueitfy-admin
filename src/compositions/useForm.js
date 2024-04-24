@@ -822,6 +822,7 @@ export default function ({
               type: el.type,
             })
           } else if (
+            !el.sendEmpty &&
             source[el.field] !== null &&
             source[el.field] !== undefined
           ) {
@@ -847,6 +848,12 @@ export default function ({
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
+              type: el.type,
+            })
+          } else if (el.sendEmpty) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: null,
               type: el.type,
             })
           }

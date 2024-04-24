@@ -14,14 +14,12 @@ import {
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
-import formOwnerAddEdit from './form-owner-add-edit'
-import formRealtorAddEdit from './form-realtor-add-edit'
 
 export default {
   id: uuidv4(),
   name: 'Запросить документ',
   type: 'FormDefault',
-  path: 'habitation-add',
+  path: 'edit',
   alias: 'habitation',
   active: false,
   detail: {
@@ -47,11 +45,49 @@ export default {
     //     },
     //   ],
     // },
+    {
+      alias: 'personal_employment',
+      filter: [
+        {
+          field: 'personal_id',
+          value: '',
+          routeKey: 'id',
+          type: 'num',
+        },
+      ],
+    },
+    { alias: 'mvd', filter: [] },
+    { alias: 'juridical_person', filter: [] },
+    {
+      alias: 'objects_personal',
+      filter: [
+        {
+          field: 'personal_id',
+          value: '',
+          routeKey: 'id',
+          type: 'num',
+        },
+      ],
+    },
+    {
+      alias: 'personal_doc_type',
+      filter: [
+        {
+          field: 'personal_id',
+          value: '',
+          routeKey: 'id',
+          type: 'num',
+        },
+      ],
+    },
+    { alias: 'medical_insurance', filter: [] },
   ],
   fields: [
     selectField({
       label: 'Документ',
       name: 'document_id',
+      alias: 'personal_employment',
+      requestKey: 'personal_employment_id',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -59,26 +95,58 @@ export default {
         text: 'name',
         value: 'id',
       },
-      items: [
+      items: [],
+      updateList: [
         {
-          name: 'termination',
-          id: 1,
+          alias: 'work_activity_type',
+          condition: [
+            {
+              key: 'document_id',
+              value: [1],
+            },
+          ],
+          filter: [
+            {
+              alias: 'conclusion',
+              sendEmpty: true,
+              value: '',
+              type: '',
+            },
+          ],
         },
         {
-          name: 'conclusion',
-          id: 2,
+          alias: 'work_activity_type',
+          condition: [
+            {
+              key: 'document_id',
+              value: [2],
+            },
+          ],
+          filter: [
+            {
+              alias: 'employment',
+              sendEmpty: true,
+              value: '',
+              type: '',
+            },
+          ],
         },
         {
-          name: 'employment',
-          id: 3,
-        },
-        {
-          name: 'contract',
-          id: 4,
-        },
-        {
-          name: 'gph',
-          id: 5,
+          alias: 'work_activity_type',
+          condition: [
+            {
+              key: 'document_id',
+              value: [3],
+            },
+          ],
+          filter: [
+            {
+              alias: 'termination',
+              sendEmpty: true,
+              value: '',
+              type: '',
+            },
+          ],
         },
       ],
       position: {
@@ -156,6 +224,29 @@ export default {
         },
       ],
     }),
+    selectField({
+      label: 'Тип документа',
+      name: 'doc_type_id',
+      alias: 'personal_doc_type',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1] }],
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: {},
+      bootstrapClass: [''],
+    }),
     dateField({
       label: 'Дата создания',
       name: 'date_contract',
@@ -175,30 +266,9 @@ export default {
       bootstrapClass: [''],
     }),
     selectField({
-      label: 'Линейщик',
-      name: 'personal_id',
-      subtype: 'single',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [1, 2, 3, 4, 5] }],
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: {},
-      bootstrapClass: [''],
-    }),
-    selectField({
       label: 'МВД',
       name: 'mvd_id',
+      alias: 'mvd',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -221,6 +291,7 @@ export default {
     selectField({
       label: 'Объект',
       name: 'object_id',
+      alias: 'objects_personal',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -243,6 +314,7 @@ export default {
     selectField({
       label: 'Юридическое лицо',
       name: 'juridical_person_id',
+      alias: 'juridical_person',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -262,9 +334,55 @@ export default {
       validations: {},
       bootstrapClass: [''],
     }),
+    selectField({
+      label: 'Тип трудовой деятельности',
+      name: 'work_activity_id',
+      alias: 'work_activity_type',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 2, 3] }],
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: {},
+      bootstrapClass: [''],
+    }),
+    selectField({
+      label: 'Медицинских страхование',
+      name: 'insurance_id',
+      alias: 'medical_insurance',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 2] }],
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: {},
+      bootstrapClass: [''],
+    }),
     dateField({
-      label: 'Дата расторжения',
-      name: 'date_cancel',
+      label: 'Дата заключения ГПХ',
+      name: 'date_gph',
       type: 'date',
       value: '',
       menu: false,
@@ -272,23 +390,10 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    checkboxField({
-      label: 'Инициатива расторжения иностранного гражданина',
-      name: 'is_cancel',
-      value: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [1] }],
+        conditions: [
+          { field: 'work_activity_id', value: [3] },
+          { field: 'document_id', value: [2] },
+        ],
       },
       position: {
         cols: 12,
@@ -306,7 +411,7 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [2] }],
+        conditions: [{ field: 'document_id', value: [1, 3] }],
       },
       position: {
         cols: 12,
@@ -315,8 +420,8 @@ export default {
       bootstrapClass: [''],
     }),
     dateField({
-      label: 'Дата подписания',
-      name: 'date_create',
+      label: 'Дата расторжения',
+      name: 'date_cancel',
       type: 'date',
       value: '',
       menu: false,
@@ -324,7 +429,7 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 2] }],
+        conditions: [{ field: 'document_id', value: [1, 3] }],
       },
       position: {
         cols: 12,
@@ -332,10 +437,60 @@ export default {
       },
       bootstrapClass: [''],
     }),
+    checkboxField({
+      label: 'Инициатива расторжения иностранного гражданина',
+      name: 'is_cancel',
+      value: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [3] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'Профессия',
+      name: 'profession',
+      placeholder: '',
+      value: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 3, 4] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
 
     stringField({
       label: 'Услуги',
-      name: 'service',
+      name: 'services',
+      placeholder: '',
+      value: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [5] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'Услуги отступление от договора',
+      name: 'service_defect',
       placeholder: '',
       value: '',
       class: [''],
@@ -361,7 +516,7 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [4] }],
+        conditions: [{ field: 'document_id', value: [4, 5] }],
       },
       position: {
         cols: 12,
@@ -436,7 +591,7 @@ export default {
       type: 'submit',
       color: 'primary',
       module: 'form/create',
-      url: 'create/habitation',
+      url: 'generation/personal_doc',
       name: 'saveFormStore',
       action: 'saveFormStore',
     }),
