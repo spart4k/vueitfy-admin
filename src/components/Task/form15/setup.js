@@ -46,7 +46,7 @@ const Form15 = defineComponent({
     const infoObj = {
       creator: {
         key: 'Создатель',
-        value: props.data.entity.surname,
+        value: props.data.entity.account_name,
       },
       ved_type: {
         key: 'Вид ведомости',
