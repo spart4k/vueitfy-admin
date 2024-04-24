@@ -592,24 +592,24 @@ const Form8 = defineComponent({
 
     let sendTaskFinish = async () => {
       console.log(patent)
-      // await createFillScanProcess([patent[5], patent[15]])
-      // const { makeRequest: changeStatus } = useRequest({
-      //   context,
-      //   request: () =>
-      //     store.dispatch('taskModule/setPartTask', {
-      //       status: 2,
-      //       data: {
-      //         process_id: props.data.task.process_id,
-      //         task_id: props.data.task.id,
-      //         parent_action: props.data.task.id,
-      //       },
-      //     }),
-      // })
-      // const { success } = await changeStatus()
-      // if (success) {
-      //   ctx.emit('closePopup')
-      //   ctx.emit('getItems')
-      // }
+      await createFillScanProcess([patent[5], patent[15]])
+      const { makeRequest: changeStatus } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/setPartTask', {
+            status: 2,
+            data: {
+              process_id: props.data.task.process_id,
+              task_id: props.data.task.id,
+              parent_action: props.data.task.id,
+            },
+          }),
+      })
+      const { success } = await changeStatus()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     onMounted(() => {
