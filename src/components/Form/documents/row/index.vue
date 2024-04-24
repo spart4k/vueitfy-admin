@@ -26,7 +26,7 @@
             >
             <div
               :class="fromTask ? 'document-title--task' : ''"
-              class="document-title text-h7 mb-2"
+              class="document-title text-h7"
             >
               {{
                 document.doc_name

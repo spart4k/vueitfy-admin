@@ -11,6 +11,7 @@ import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import DocMain from '../el/DocMain/index.vue'
 import docForm from '../el/DocForm/setup'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form2 = defineComponent({
   name: 'Form2',
@@ -20,6 +21,7 @@ const Form2 = defineComponent({
     FormComment,
     DocForm,
     DocMain,
+    PersTitle,
   },
   props: {
     data: {

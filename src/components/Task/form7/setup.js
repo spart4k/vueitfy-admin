@@ -9,6 +9,7 @@ import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocMain from '../el/DocMain/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form7 = defineComponent({
   name: 'Form7',
@@ -17,6 +18,7 @@ const Form7 = defineComponent({
     FormComment,
     DocMain,
     DocForm,
+    PersTitle,
   },
   props: {
     data: {

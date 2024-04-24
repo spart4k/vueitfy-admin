@@ -31,7 +31,7 @@
                   </div>
                 </v-list-item>
               </v-list> -->
-              <FormTitle
+              <DocAccepting
                 :docName="item.name"
                 v-for="(item, index) in formatedSchets"
                 :docs="item"
@@ -40,7 +40,7 @@
                 @unconfirmed="addUnconfirmed"
                 ref="formRowsRef"
                 :hideActions="accepted"
-              ></FormTitle>
+              ></DocAccepting>
             </div>
 
             <div v-if="!files.length" class="text-center mt-4">

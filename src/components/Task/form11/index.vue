@@ -11,7 +11,7 @@
             <span>{{ errors.message }}</span>
           </div>
 
-          <FormTitle
+          <DocAccepting
             :docName="item.name"
             v-for="(item, index) in formatedSchets"
             :docs="item"
@@ -22,7 +22,7 @@
             :hideActions="true"
             :isShowRemove="item.valid === 2"
             @remove="removeDoc($event, index)"
-          ></FormTitle>
+          ></DocAccepting>
         </div>
 
         <div v-if="!formatedSchets?.length" class="text-center mt-4">

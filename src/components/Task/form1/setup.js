@@ -2,7 +2,7 @@ import { defineComponent, reactive, ref, watchEffect, computed } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
-import FormTitle from '@/components/Task/el/FormTitle/index.vue'
+import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import FormError from '@/components/Task/el/FormError/setup'
 import DateTimePicker from '@/components/Date/Datetimepicker/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
@@ -13,6 +13,7 @@ import store from '@/store'
 import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router/composables'
 import DocMain from '../el/DocMain/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form1 = defineComponent({
   name: 'Form1',
@@ -21,10 +22,11 @@ const Form1 = defineComponent({
     FormComment,
     TextInfo,
     DocScan,
-    FormTitle,
+    DocAccepting,
     DateTimePicker,
     DocForm,
     DocMain,
+    PersTitle,
   },
   props: {
     data: {

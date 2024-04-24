@@ -1,10 +1,14 @@
 <template>
   <div>
     <div style="padding-top: 20px">
-      <v-card-title class="d-flex justify-center text-h6">
-        <span class="font-weight-bold text-h6">{{ entity.name }}</span
-        >&nbsp;({{ dataRojd }} г.р)
-      </v-card-title>
+      <PersTitle
+        :data="{
+          surname: data.entity.surname,
+          name_n: data.entity.name_n,
+          patronymic: data.entity.patronymic,
+          dataRojd,
+        }"
+      />
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <div class="rejectedComment mb-2">
         <span>!</span> {{ rejectedComment }}
