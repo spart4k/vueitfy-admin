@@ -1244,6 +1244,10 @@ export default {
         case 'dms_vidachi':
           result = 'Дата выдачи'
           break
+        case 'patent_special_marks_date':
+          result = 'Особые отметки'
+          break
+
         default:
           result = key
       }

@@ -5,12 +5,14 @@ import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form8 = defineComponent({
   name: 'Form8',
   components: {
     Dropzone,
     TextInfo,
+    PersTitle,
   },
 
   props: {

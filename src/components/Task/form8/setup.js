@@ -20,6 +20,7 @@ import _ from 'lodash'
 
 import useView from '@/compositions/useView.js'
 import zayavkaConfigOrig from '@/pages/zayavka/index'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 // import config from '@/components/Task/form8/form.js'
 
@@ -29,6 +30,7 @@ const Form8 = defineComponent({
     Dropzone,
     TextInfo,
     Popup,
+    PersTitle,
   },
 
   props: {
@@ -571,6 +573,7 @@ const Form8 = defineComponent({
             doc.document.newId = docRes.result
             // doc.document.newId = docRes.result
             // await createFillScanProcess(docRes.result)
+            listDisbledDocuments.value--
           }
         })
       )

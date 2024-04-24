@@ -14,7 +14,7 @@ import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import IconDelete from '@/components/Icons/delete/delete.vue'
-import FormTitle from '@/components/Task/el/FormTitle/index.vue'
+import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import { methods } from 'vue2-dropzone'
 
 const Form11 = defineComponent({
@@ -22,7 +22,7 @@ const Form11 = defineComponent({
   components: {
     DropZone,
     IconDelete,
-    FormTitle,
+    DocAccepting,
   },
   props: {
     data: {

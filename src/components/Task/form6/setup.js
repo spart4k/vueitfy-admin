@@ -6,12 +6,14 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form6 = defineComponent({
   name: 'Form6',
   components: {
     Dropzone,
     TextInfo,
+    PersTitle,
   },
 
   props: {

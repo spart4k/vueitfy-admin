@@ -10,14 +10,14 @@ import {
 import { useRouter, useRoute } from 'vue-router/composables'
 import IconDelete from '@/components/Icons/delete/delete.vue'
 import useRequest from '@/compositions/useRequest'
-import FormTitle from '@/components/Task/el/FormTitle/index.vue'
+import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import store from '@/store'
 
 const form10 = defineComponent({
   name: 'Form10',
   components: {
     IconDelete,
-    FormTitle,
+    DocAccepting,
   },
   props: {
     data: {
