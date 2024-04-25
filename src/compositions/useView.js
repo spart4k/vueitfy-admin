@@ -78,6 +78,16 @@ export default function () {
     if (listPanel) splicePanel(listPanel)
   }
 
+  const convertFormConfig = ({ config, listField }) => {
+    config.fields = config.fields.flatMap((field) => {
+      if (listField.includes(field.name)) {
+        return field
+      } else {
+        return []
+      }
+    })
+  }
+
   const addCloseButton = (config) => {
     const btn = stringAction({
       text: 'Закрыть',
@@ -100,7 +110,7 @@ export default function () {
     if (route) config.detail.requestId = route
     if (settings.index?.length) {
       settings.index.forEach((item) => {
-        config.detail.tabs[item].path = newPath
+        if (newPath) config.detail.tabs[item].path = newPath
         if (route) config.detail.tabs[item].routeParam = route
       })
     } else if (settings.oldPath) {
@@ -109,7 +119,7 @@ export default function () {
           item.path === settings.oldPath &&
           !settings.exceptName?.includes(item.name)
         ) {
-          item.path = newPath
+          if (newPath) item.path = newPath
           if (route) item.routeParam = route
         }
       })
@@ -122,5 +132,6 @@ export default function () {
     convertConfigPanel,
     addCloseButton,
     configRouteConvert,
+    convertFormConfig,
   }
 }

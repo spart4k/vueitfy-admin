@@ -1,18 +1,17 @@
 import { defineComponent, ref, computed } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import { useRouter, useRoute } from 'vue-router/composables'
-// import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
-// import FormComment from '@/components/Task/el/FormComment/index.vue'
-// import useForm from '@/compositions/useForm'
-// import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
-// import moment from 'moment'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+import Autocomplete from '@/components/Autocomplete/default'
 
 const Form4 = defineComponent({
   name: 'Form4',
   components: {
     Dropzone,
+    PersTitle,
+    Autocomplete,
   },
   props: {
     data: {
@@ -63,7 +62,17 @@ const Form4 = defineComponent({
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
-
+    const autocompleteConfig = {
+      label: 'Выберите проживание',
+      name: 'habitaion',
+      items: [...data.data.habitations, { id: 0, name: '-Самостоятельное-' }],
+      solo: false,
+      required: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+    }
     const { makeRequest: delInfoAFile } = useRequest({
       context,
       request: () =>
@@ -102,6 +111,7 @@ const Form4 = defineComponent({
             doc_id: 10,
             personal_id: data.entity.id,
             path_doc: `/personal_doc/${fileName}`,
+            from_task: true,
           },
         }),
     })
@@ -128,7 +138,9 @@ const Form4 = defineComponent({
       await pushSomeShit()
       if (hasMigr.value && isGalkaVisible.value) {
         await makeRequest()
-        await delInfoAFile()
+        if (data.data.migr_card?.id) {
+          await delInfoAFile()
+        }
         await updateFileData().then((str) => {
           const { makeRequest: startTask } = useRequest({
             context,
@@ -142,7 +154,7 @@ const Form4 = defineComponent({
                 // type_parent_action: 2,
 
                 parent_process: data.task.process_id,
-                process_id: data.task.process_id,
+                process_id: 1,
                 account_id: data.task.to_account_id,
                 task_id: data.task.id,
                 docs_id: [str.result],
@@ -174,6 +186,7 @@ const Form4 = defineComponent({
       widthTrasfer: JSON.parse(data.task.dop_data).transfer,
       isGalkaVisible,
       hasMigr,
+      autocompleteConfig,
     }
   },
 })

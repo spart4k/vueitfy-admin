@@ -6,21 +6,26 @@
       >
       <div class="position-relative mb-8">
         <!-- TODO: LIST -->
-        <div v-if="docs?.length && docs">
+        <div v-if="true">
           <div class="alert text-center" v-if="errors.isActive">
             <span>{{ errors.message }}</span>
           </div>
-          <FormTitle
-            :docName="getDocName(item.doc_id)"
-            v-for="(item, index) in docs"
+
+          <DocAccepting
+            :docName="item.name"
+            v-for="(item, index) in formatedSchets"
             :docs="item"
             :key="index"
             @confirmed="addConfirmed"
             @unconfirmed="addUnconfirmed"
-          ></FormTitle>
+            ref="formRowsRef"
+            :hideActions="true"
+            :isShowRemove="item.valid === 2"
+            @remove="removeDoc($event, index)"
+          ></DocAccepting>
         </div>
 
-        <div v-else class="text-center mt-4">
+        <div v-if="!formatedSchets?.length" class="text-center mt-4">
           <span class="font-weight-regular text-subtitle-1"
             >Документы не загружены</span
           >
@@ -42,16 +47,20 @@
             @addFiles="addFiles"
             :options="dropzoneOptions"
           ></DropZone> -->
-          <div class="d-flex justify-end">
-            <v-btn
-              @click="sendDocuments"
-              small
-              variant="tonal"
-              color="orange"
-              :disabled="!isDocs"
-              >Приложить</v-btn
-            >
-          </div>
+          <v-row>
+            <v-col cols="12">
+              <div style="display: flex; justify-content: center">
+                <v-btn
+                  small
+                  color="success"
+                  :disabled="!attachedFile"
+                  @click="sendCloseDocsSchet"
+                >
+                  Приложить
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <!-- TODO: Комментарии -->
@@ -87,7 +96,7 @@
           color="info"
           @click="sendTaskFinish"
           small
-          :disabled="comment && !refds"
+          :disabled="!comment && JSON.parse(attached_amount).attached"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

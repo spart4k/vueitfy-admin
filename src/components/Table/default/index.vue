@@ -5,46 +5,60 @@
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
         class="v-table-panel"
       >
-        <div class="v-table-panel__actions flex-wrap">
-          <div class=""></div>
-          <div
-            v-for="(button, indexButton) in availablePanelBtn"
-            :key="indexButton"
-            :class="`panel-button_${button.label}`"
-            small
-          >
-            <SwitchDefault
-              @getItems="changeHeaders"
-              :button="button"
-              :config="options"
-              v-if="button.type === 'switch'"
-              v-model="button.value"
-            />
-            <v-btn v-else @click="panelHandler(button)" small>
-              <v-icon v-if="button.type === 'icon'" small class="mr-2">
-                {{ button.url }}
-              </v-icon>
-              <p v-if="true">{{ button.label }}</p>
+        <!-- <div v-if="panel.date" class="v-table-panel-date">
+          <v-btn icon class="mr-4" @click="changeMonth(-1)">
+            <v-icon small> $IconArrowLeft </v-icon>
+          </v-btn>
+          <div class="v-table-panel-date_month">
+            {{ currentDate.monthArray[currentDate.month] }}
+            {{ currentDate.year }}
+          </div>
+          <v-btn icon class="ml-4" @click="changeMonth(1)">
+            <v-icon small> $IconArrowRight </v-icon>
+          </v-btn>
+        </div> -->
+        <div class="v-table-panel-items">
+          <div class="v-table-panel-items__actions flex-wrap">
+            <div class=""></div>
+            <div
+              v-for="(button, indexButton) in availablePanelBtn"
+              :key="indexButton"
+              :class="`panel-button_${button.label}`"
+              small
+            >
+              <SwitchDefault
+                @getItems="changeHeaders"
+                :button="button"
+                :config="options"
+                v-if="button.type === 'switch'"
+                v-model="button.value"
+              />
+              <v-btn v-else @click="panelHandler(button)" small>
+                <v-icon v-if="button.type === 'icon'" small class="mr-2">
+                  {{ button.url }}
+                </v-icon>
+                <p v-if="true">{{ button.label }}</p>
+              </v-btn>
+            </div>
+          </div>
+
+          <div class="v-table-panel-items__search">
+            <v-text-field
+              label="Поиск"
+              hide-details="auto"
+              clearable
+              v-model="paramsQuery.searchGlobal"
+            ></v-text-field>
+            <v-btn
+              v-if="options.filters"
+              small
+              @click="openFilter($event)"
+              class="ml-2"
+              elevation="2"
+            >
+              Фильтры
             </v-btn>
           </div>
-        </div>
-
-        <div class="v-table-panel__search">
-          <v-text-field
-            label="Поиск"
-            hide-details="auto"
-            clearable
-            v-model="paramsQuery.searchGlobal"
-          ></v-text-field>
-          <v-btn
-            v-if="options.filters"
-            small
-            @click="openFilter($event)"
-            class="ml-2"
-            elevation="2"
-          >
-            Фильтры
-          </v-btn>
         </div>
       </div>
       <div class="v-table-wrap">
@@ -386,9 +400,9 @@
       <div class="v-table-footer-info">
         <div class="v-table-footer-total">
           Итого: {{ options.data.totalRows }}
-          <div v-if="options.data.footer.length" class="">
+          <div v-if="options.data?.footer?.length" class="">
             <span
-              v-for="footerInfo in options.data.footer"
+              v-for="footerInfo in options.data?.footer"
               v-show="footerInfo.value"
               :key="footerInfo.name"
             >

@@ -5,6 +5,7 @@ import PaymentListView from '../views/PaymentListView.vue'
 import PaymentListPersonalView from '../components/PaymentList/personal/index.vue'
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
+import Pivotx5View from '../views/Pivotx5View.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -14,6 +15,8 @@ import ShopRequestMagnitView from '../views/Magnit/ShopRequestView.vue'
 import ShopRequestMagnitReportView from '../views/Magnit/ShopRequestReportView.vue'
 import UserKeysView from '../views/UserKeysView.vue'
 import TasksView from '../views/Tasks.vue'
+import ReportTaxiView from '../views/ReportTaxiView.vue'
+import HabitationView from '../views/HabitationView.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -454,6 +457,17 @@ const routes = [
     ],
   },
   {
+    path: '/pivotx5',
+    name: 'pivotx5',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: Pivotx5View,
+  },
+  {
     path: '/x5import',
     name: 'x5import',
     meta: {
@@ -634,6 +648,153 @@ const routes = [
       {
         name: 'user-keys/:id',
         path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/report_taxi',
+    name: 'report_taxi',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ReportTaxiView,
+    children: [
+      {
+        name: 'report_taxi-edit',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'report_taxi/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/habitation',
+    name: 'habitation',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: HabitationView,
+    children: [
+      {
+        name: 'habitation/add',
+        path: 'add',
+        meta: {
+          mode: ['habitation-add'],
+          label: 'Добавить проживание',
+        },
+        children: [],
+        component: Detail,
+      },
+      {
+        name: 'habitation/:habitation_id',
+        path: ':habitation_id',
+        meta: {
+          mode: ['habitation-edit'],
+          label: 'Редактировать проживание',
+        },
+        children: [
+          {
+            name: 'habitation/:habitation_id/add-owner',
+            path: 'add-owner',
+            meta: {
+              mode: ['habitation-edit', 'habitation-owner-add'],
+              label: 'Добавить владельца',
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:habitation_id/add-realtor',
+            path: 'add-realtor',
+            meta: {
+              mode: ['habitation-edit', 'habitation-realtor-add'],
+              label: 'Добавить риэлтора',
+            },
+            component: Detail,
+          },
+        ],
+        component: Detail,
+      },
+      {
+        name: 'habitation-add-owner',
+        path: 'add-owner',
+        meta: {
+          mode: ['habitation-owner-add'],
+          label: 'Добавить владельца',
+        },
+        component: Detail,
+      },
+      {
+        name: 'habitation/:owner_id',
+        path: ':owner_id',
+        meta: {
+          mode: ['habitation-owner-edit'],
+          label: 'Редактировать владельца',
+        },
+        children: [
+          {
+            name: 'habitation/:owner_id/:card_id',
+            path: ':card_id',
+            meta: {
+              mode: ['habitation-owner-edit', 'new_card'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:owner_id/add',
+            path: 'add',
+            meta: {
+              mode: ['habitation-owner-edit', 'add'],
+            },
+            component: Detail,
+          },
+        ],
+        component: Detail,
+      },
+      {
+        name: 'habitation-add-realtor',
+        path: 'add-realtor',
+        meta: {
+          mode: ['habitation-realtor-add'],
+          label: 'Добавить риэлтора',
+        },
+        component: Detail,
+      },
+      {
+        name: 'habitation/:realtor_id',
+        path: ':realtor_id',
+        meta: {
+          mode: ['habitation-realtor-edit'],
+          label: 'Редактировать риэлтора',
+        },
+        children: [
+          {
+            name: 'habitation/:realtor_id/:card_id',
+            path: ':card_id',
+            meta: {
+              mode: ['habitation-realtor-edit', 'new_card'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:realtor_id/add',
+            path: 'add',
+            meta: {
+              mode: ['habitation-realtor-edit', 'add'],
+            },
+            component: Detail,
+          },
+        ],
         component: Detail,
       },
     ],

@@ -1,18 +1,17 @@
 import { defineComponent, ref, computed } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
-// import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 // import FormComment from '@/components/Task/el/FormComment/index.vue'
-import useForm from '@/compositions/useForm'
-import { required } from '@/utils/validation'
 // import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 // import moment from 'moment'
+import Autocomplete from '@/components/Autocomplete/default'
 
 const Form3 = defineComponent({
   name: 'Form3',
   components: {
     Dropzone,
+    Autocomplete,
   },
   props: {
     data: {
@@ -48,7 +47,17 @@ const Form3 = defineComponent({
     let addFiles = (e) => {
       file.value = e[0]
     }
-
+    const autocompleteConfig = {
+      label: 'Наименование',
+      name: 'status_zr',
+      items: data.data.rashod_vid_id,
+      solo: false,
+      required: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+    }
     const sendData = async () => {
       let fileExt = file.value.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -129,6 +138,7 @@ const Form3 = defineComponent({
       mobilePhone,
       addFiles,
       sendData,
+      autocompleteConfig,
     }
   },
 })

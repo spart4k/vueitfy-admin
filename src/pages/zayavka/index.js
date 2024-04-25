@@ -15,6 +15,7 @@ import {
   textBlock,
   radioPanel,
   dropZoneField,
+  carouselField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 

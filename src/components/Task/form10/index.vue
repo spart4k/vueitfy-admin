@@ -31,14 +31,16 @@
                   </div>
                 </v-list-item>
               </v-list> -->
-              <FormTitle
-                :docName="getDocName(item.doc_id)"
-                v-for="(item, index) in docs"
+              <DocAccepting
+                :docName="item.name"
+                v-for="(item, index) in formatedSchets"
                 :docs="item"
                 :key="index"
                 @confirmed="addConfirmed"
                 @unconfirmed="addUnconfirmed"
-              ></FormTitle>
+                ref="formRowsRef"
+                :hideActions="accepted"
+              ></DocAccepting>
             </div>
 
             <div v-if="!files.length" class="text-center mt-4">
@@ -49,13 +51,10 @@
           </div>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="!accepted">
         <v-col>
           <div>
-            <span class="font-weight-bold heading"
-              >Укажите сумму закрывающих документов:</span
-            >
-            <v-text-field
+            <!-- <v-text-field
               variant="outlined"
               :value="sum"
               min="0"
@@ -64,15 +63,52 @@
               class="sum-input"
               label="Сумма"
             >
+            </v-text-field> -->
+            <v-textarea
+              v-model="comment"
+              placeholder="Комментарий"
+              class="pt-0"
+              rows="2"
+            ></v-textarea>
+            <div class="d-flex justify-end">
+              <v-btn
+                @click="answer"
+                small
+                color="warning"
+                class="black--text mr-4"
+                :disabled="!allChecked"
+                >Ответить</v-btn
+              >
+              <v-btn
+                @click="acceptSchets"
+                small
+                color="green"
+                class="white--text"
+                :disabled="!allChecked"
+                >Принять</v-btn
+              >
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col>
+          <div>
+            <v-text-field
+              variant="outlined"
+              v-model="accepted_amount"
+              class="sum-input"
+              label="Сумма"
+            >
             </v-text-field>
             <div class="d-flex justify-end">
               <v-btn
-                @click="sendDocuments"
+                @click="sendAmmount"
                 small
-                variant="tonal"
-                color="orange"
-                :disabled="sum < 1 && !files.length"
-                >Приложить</v-btn
+                color="green"
+                class="white--text"
+                :disabled="!accepted_amount && accepted_amount !== 0"
+                >Принять</v-btn
               >
             </div>
           </div>
@@ -99,7 +135,7 @@
           color="info"
           @click="sendTaskFinish"
           small
-          :disabled="!files.length"
+          :disabled="!allChecked && start_accepted_amount === null"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

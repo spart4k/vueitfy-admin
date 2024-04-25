@@ -1,5 +1,4 @@
 import { defineComponent, ref, computed, watch } from 'vue'
-import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
@@ -14,7 +13,6 @@ const Form7 = defineComponent({
   components: {
     TextInfo,
     FormComment,
-    DocFormCorrect,
     DocForm,
     Autocomplete,
   },

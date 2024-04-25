@@ -46,10 +46,6 @@ const table = {
       default: () => {},
       require: true,
     },
-    tab: {
-      type: Object,
-      default: () => {},
-    },
     filtersConfig: {
       type: Object,
       default: () => {},
@@ -82,6 +78,7 @@ const table = {
     const proxyOptions = toRef(options, 'head')
     const detail = ref(options?.detail)
     const filters = ref(options?.filters)
+    const panel = ref(options?.panel)
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -113,6 +110,25 @@ const table = {
     })
     const popupForm = ref({
       isShow: false,
+    })
+    const currentDate = ref({
+      monthArray: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      date: moment(new Date()).format('YYYY-MM'),
     })
     const wrapingRow = () => {
       const table = document.querySelector(options.selector)
@@ -400,6 +416,7 @@ const table = {
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
+          // period: props.options.panel.date ? currentDate.value.date : undefined,
           searchColumns,
           sorts,
           filter: filtersColumns.value,
@@ -478,9 +495,9 @@ const table = {
         return false
       }
     }
-    const saveFilter = (filterData) => {
+    const saveFilter = async (filterData) => {
       filtersColumns.value = []
-      filters.value.fields.forEach((el) => {
+      filters.value?.fields?.forEach((el) => {
         if (!filterData[el.name]) {
           el.value = ''
           return
@@ -492,10 +509,7 @@ const table = {
             (el) =>
               el === null ||
               el === undefined ||
-              el === '' ||
-              el === '' ||
-              el === null ||
-              el === null
+              el === ''
           )
         ) {
           return
@@ -516,7 +530,7 @@ const table = {
         filtersColumns.value.push(obj)
       })
       paramsQuery.value.currentPage = 1
-      getItems()
+      await getItems()
     }
 
     const doubleHandler = (
@@ -579,6 +593,13 @@ const table = {
       popupForm.value.isShow = false
     }
 
+    const changeMonth = async (val) => {
+      currentDate.value.date = moment(`${currentDate.value.date}-10`).add(val, 'M').format('YYYY-MM')
+      currentDate.value.year = currentDate.value.date.split('-')[0]
+      currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
+      await getItems()
+    }
+
     const addItem = () => {
       if (options.detail.type === 'popup') {
         router.push({
@@ -601,6 +622,7 @@ const table = {
     }
     const panelHandler = async (button) => {
       const { type, url } = button
+      if (button.function) button.function(props.options)
       if (type === 'addItem') {
         addItem()
       } else if (type === 'changeUrl') {
@@ -632,7 +654,6 @@ const table = {
       if (button.refreshTable) {
         getItems()
       }
-      if (button.function) button.function()
     }
 
     // COMPUTED PROPERTIES
@@ -659,9 +680,18 @@ const table = {
     // )
 
     // HOOKS
+    const initialFilter = () => {
+      const filter = {}
+      filters.value?.fields?.forEach((item) => {
+        filter[item.name] = item.value
+      })
+      return filter
+    }
+
     onMounted(async () => {
       initHeadParams()
-      await getItems()
+      await saveFilter(initialFilter())
+      // await getItems()
 
       watch(
         () => paramsQuery,
@@ -836,6 +866,8 @@ const table = {
       filter,
       isMobile,
       proxyOptions,
+      panel,
+      currentDate,
       // METHODS
 
       addBackgroundClass,
@@ -857,6 +889,7 @@ const table = {
       getItems,
       watchScroll,
       handlerContext,
+      changeMonth,
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,

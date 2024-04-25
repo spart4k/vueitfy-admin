@@ -1,8 +1,8 @@
-import { defineComponent, ref, watchEffect, computed } from 'vue'
+import { defineComponent, reactive, ref, watchEffect, computed } from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
-import FormTitle from '@/components/Task/el/FormTitle/index.vue'
+import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import FormError from '@/components/Task/el/FormError/setup'
 import DateTimePicker from '@/components/Date/Datetimepicker/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
@@ -12,6 +12,8 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router/composables'
+import DocMain from '../el/DocMain/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form1 = defineComponent({
   name: 'Form1',
@@ -20,9 +22,11 @@ const Form1 = defineComponent({
     FormComment,
     TextInfo,
     DocScan,
-    FormTitle,
+    DocAccepting,
     DateTimePicker,
     DocForm,
+    DocMain,
+    PersTitle,
   },
   props: {
     data: {
@@ -50,6 +54,14 @@ const Form1 = defineComponent({
     const finalData = ref({})
     const bankCardId = ref(0)
     const isFormValid = ref(false)
+    const docMainRef = ref(null)
+    const docMainValid = computed(() => {
+      if (isHasOsnDoc) {
+        return !docMainRef.value.vForm.$invalid && docMainRef.value.osnConfirmed
+      } else {
+        return true
+      }
+    })
     const allDocsValid = computed(() => {
       return docFormRef.value?.docRows?.every((el) => !el.vForm.$invalid)
     })
@@ -87,7 +99,7 @@ const Form1 = defineComponent({
     }
     let confirmed = ref([])
     let unConfirmed = ref([])
-
+    const rejectedComment = JSON.parse(props.data.task.dop_data).comment
     const addConfirmed = (data) => {
       confirmed.value.push(data)
       unConfirmed.value = unConfirmed.value.filter((x) => x.id !== data.id)
@@ -129,17 +141,16 @@ const Form1 = defineComponent({
         }),
     })
 
-    const { makeRequest: sendPersonalData } = useRequest({
+    const { makeRequest: setPersonalData } = useRequest({
       context,
-      request: () =>
-        store.dispatch('taskModule/setPersonalDataWithoutTarget', {
+      request: () => {
+        return store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
-            name: formData.name,
-            data_rojd: formData.data_rojd,
-            grajdanstvo_id: formData.grajdanstvo_id,
+            ...docMainRef.value.formData,
           },
-        }),
+        })
+      },
     })
 
     const { makeRequest: sendPersonalDoc } = useRequest({
@@ -296,7 +307,7 @@ const Form1 = defineComponent({
 
     const sendData = async () => {
       if (isHasOsnDoc) {
-        await sendPersonalData()
+        await setPersonalData()
       }
       if (!isHasOnlyCard) {
         await sendPersonalDoc()
@@ -342,6 +353,9 @@ const Form1 = defineComponent({
       docFormRef,
       cardAccepted,
       isValid,
+      rejectedComment,
+      docMainValid,
+      docMainRef,
     }
   },
 })

@@ -58,16 +58,45 @@
         </div>
         <div :data-field="field.name" v-intersect="endIntersect" />
       </template>
-      <!--<template v-slot:item="data">
+      <template v-slot:item="data">
         <template>
           <v-list-item-content>
-            <v-list-item-title v-html="data.item.name" />
-            <v-list-item-subtitle v-html="data.item.id" />
+            <v-row class="d-flex">
+              <div v-if="data.item?.color" class="mr-2 d-flex align-center">
+                <div
+                  :style="{ backgroundColor: data.item.color }"
+                  class="colorCube"
+                ></div>
+              </div>
+              <span class="textDefault--text">
+                <v-list-item-title v-html="data.item.name" />
+              </span>
+            </v-row>
+            <!-- <v-list-item-subtitle v-html="data.item.id" /> -->
           </v-list-item-content>
         </template>
-      </template>-->
+      </template>
+      <template v-if="field?.appendAction?.length" v-slot:append-outer>
+        <v-tooltip v-for="action in field.appendAction" :key="action.label" top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              @click="parentComp.appendFieldHandler({ action, field })"
+              v-if="parentComp.appendActionShow(action)"
+              text
+              v-bind="attrs"
+              v-on="on"
+              class=""
+              small
+            >
+              <v-tooltip activator="parent" location="top">Tooltip</v-tooltip>
+              <v-icon> {{ action.icon }} </v-icon></v-btn
+            >
+          </template>
+          <span>{{ action.label }}</span>
+        </v-tooltip>
+      </template>
     </v-autocomplete>
   </div>
 </template>
 <script src="./setup"></script>
-<style lang="scss" scoped></style>
+<style src="./style.scss" lang="scss" scoped></style>

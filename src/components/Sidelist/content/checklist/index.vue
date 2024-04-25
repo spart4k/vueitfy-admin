@@ -68,7 +68,13 @@
                   >
                     {{ types[item.type_id] }}:&nbsp;<v-icon
                       x-small
-                      :color="item.is_load ? 'success' : 'error'"
+                      :color="
+                        item.is_load === 2
+                          ? 'warning'
+                          : item.is_load === 1
+                          ? 'success'
+                          : 'error'
+                      "
                       >{{ item.is_load ? '$IconGalka' : '$IconClose' }}</v-icon
                     >
                   </div>

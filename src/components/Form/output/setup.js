@@ -289,6 +289,24 @@ export default {
       }
     }
 
+    const getDownloadPath = async () => {
+      const data = await store.dispatch('table/get', {
+        url: 'report/excel/parser_error',
+        data: {
+          parser_id: stage.value.outputId,
+        },
+      })
+      if (data.code === 1) {
+        Vue.downloadFile(data.result)
+      } else if (data.code === 2) {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: data.result,
+          timeout: 1000,
+        })
+      }
+    }
+
     const buttonHandler = (action) => {
       if (action.confirm && !confirm.value.isShow) {
         confirm.value = {
@@ -412,6 +430,7 @@ export default {
       getPersonalName,
       loadingPersonal,
       getFinalSum,
+      getDownloadPath,
     }
   },
 }

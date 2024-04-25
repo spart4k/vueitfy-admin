@@ -36,7 +36,7 @@
             :detail="detail"
             :syncData="syncForm"
             :stages="item.stages"
-            :routeParam="id"
+            :routeParam="id || $route.params[item.routeParam]"
             @closePopup="(e) => $emit('closePopup', e)"
             @getItems="(e) => $emit('getItems', e)"
             @refreshData="$emit('refreshData')"

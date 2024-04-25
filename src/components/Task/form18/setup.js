@@ -14,6 +14,7 @@ import Popup from '@/components/Popup/index.vue'
 import _ from 'lodash'
 
 import config from '@/components/Task/form15/form.js'
+import Autocomplete from '@/components/Autocomplete/default'
 
 const Form18 = defineComponent({
   name: 'Form18',
@@ -27,6 +28,7 @@ const Form18 = defineComponent({
     FormError,
     FormComment,
     Popup,
+    Autocomplete,
   },
   props: {
     data: {
@@ -80,59 +82,37 @@ const Form18 = defineComponent({
     const servicesDetail = data.data.services
     const rejectedPrice = ref('')
     const isFormValid = ref(false)
+    const autocompleteConfig = {
+      label: 'Наименование',
+      name: 'name',
+      items: servicesDetail,
+      solo: false,
+      required: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+    }
     const addGroup = async () => {
-      let qty
-      let serviceId
-      let dataForService
-      if (data.entity.direction_id === 6) {
-        const dolToService = {
-          24: 61,
-          25: 62,
-          26: 63,
-          27: 64,
-          49: 70,
-          50: 77,
-          55: 70,
-          51: 78,
-        }
-
-        // qty = JSON.parse(data.entity.services)['3'][0].services[0].qty
-        // serviceId = dolToService[data.entity.doljnost_id]
-        console.log('addGroup')
-        dataForService = await getServiceInfo(serviceId)
-        console.log(
-          dataForService,
-          dataForService && dataForService.length ? qty : undefined
-        )
-      }
-
       formGroup.value = [
         ...formGroup.value,
         useForm({
           fields: {
             name: {
               validations: { required },
-              default:
-                dataForService && dataForService.length ? serviceId : undefined,
+              default: undefined,
             },
             qty: {
               validations: { required },
-              default:
-                dataForService && dataForService.length ? qty : undefined,
+              default: undefined,
             },
             price: {
               validations: { required },
-              default:
-                dataForService && dataForService.length
-                  ? dataForService[0].price
-                  : undefined,
+              default: undefined,
             },
             sum: {
               validations: { required },
-              default:
-                dataForService && dataForService.length
-                  ? qty * dataForService[0].price
-                  : undefined,
+              default: undefined,
             },
           },
           context,
@@ -209,7 +189,9 @@ const Form18 = defineComponent({
 
       if (data.entity.direction_id === 1) {
         targetServicesKey =
-          [5, 7, 6, 32].indexOf(Number(data.entity.doljnost_id)) === -1 ? 2 : 1
+          [5, 7, 8, 23, 33].indexOf(Number(data.entity.doljnost_id)) === -1
+            ? 2
+            : 1
       } else if (data.entity.direction_id === 6) {
         targetServicesKey = 3
       }
@@ -311,6 +293,7 @@ const Form18 = defineComponent({
     }
     const isReject = ref(false)
     const changeServiceDetail = async (i, idService) => {
+      console.log(idService)
       rejectedPrice.value = ''
       isReject.value = false
 
@@ -407,6 +390,7 @@ const Form18 = defineComponent({
       proxyConfig,
       closePopupForm,
       Popup,
+      autocompleteConfig,
     }
   },
 })

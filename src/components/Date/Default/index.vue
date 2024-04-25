@@ -9,9 +9,7 @@
       offset-y
       min-width="auto"
       :contentClass="edge === 'right' ? 'rightDate' : undefined"
-      :attach="edge === 'right' ? '#attachMenu' : false"
       :right="edge === 'right' ? true : false"
-      :style="edge === 'right' ? 'right: 0' : ''"
     >
       <template v-slot:activator="{ attrs }">
         <v-text-field

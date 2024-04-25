@@ -161,6 +161,7 @@ const ThirdPopupView = defineComponent({
         await updateFileData()
         await loadImage()
       }
+      isLoadImage.value = true
     }
 
     return {

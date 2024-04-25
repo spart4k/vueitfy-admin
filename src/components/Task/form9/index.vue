@@ -1,10 +1,14 @@
 <template>
   <div>
     <div style="padding: 8px">
-      <v-card-title class="d-flex justify-center text-h6">
-        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
-        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
-      </v-card-title>
+      <PersTitle
+        :data="{
+          surname: data.entity.surname,
+          name_n: data.entity.name_n,
+          patronymic: data.entity.patronymic,
+          dataRojd: data.entity.data_rojd.split('-').reverse().join('.'),
+        }"
+      />
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
       <v-row>
         <v-col cols="12">
@@ -13,7 +17,7 @@
           </div> -->
         </v-col>
       </v-row>
-      <div class="mb-10">
+      <div class="mb-7">
         <span>Приложите документы</span>
         <v-expansion-panels multiple>
           <v-expansion-panel
@@ -24,21 +28,21 @@
             <v-expansion-panel-header>
               <div>
                 <span>
-                  <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
                   <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
+                  <v-icon left v-else> $IconGalka </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
                 </span>
-                <div v-if="item.path_doc" style="margin-top: 10px">
-                  Скан:
-                  <a
-                    download
-                    :href="'https://test.api.personal-crm.ru' + item.path_doc"
-                    ><v-icon left width="10px"> $IconDocument </v-icon></a
-                  >
-                </div>
               </div>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
+              <div v-if="item.path_doc" style="margin-top: 10px">
+                Скан:
+                <a
+                  download
+                  :href="'https://test.api.personal-crm.ru' + item.path_doc"
+                  ><v-icon left width="10px"> $IconDocument </v-icon></a
+                >
+              </div>
               <Dropzone
                 :options="{
                   withoutSave: false,
@@ -60,7 +64,7 @@
             <v-btn
               small
               color="success"
-              :disabled="listDisbledDocuments != 0"
+              :disabled="!attachedFile"
               @click="sendDocuments"
             >
               Приложить
@@ -68,7 +72,7 @@
           </div>
         </v-col>
       </v-row>
-      <div>
+      <div class="mt-8">
         <span>Приложите закрывающие документы</span>
       </div>
       <v-row>
@@ -119,7 +123,7 @@
         <v-btn
           small
           color="info"
-          :disabled="listDisbledDocuments !== 0 && !listNewChet.length"
+          :disabled="listDisbledDocuments !== 0 || !listNewChet.length"
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>

@@ -76,8 +76,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -738,8 +738,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -1031,8 +1031,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -1436,8 +1436,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,

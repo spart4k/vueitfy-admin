@@ -1,16 +1,18 @@
-import { defineComponent, ref, computed, onMounted } from 'vue'
+import Vue, { defineComponent, ref, computed, onMounted } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form8 = defineComponent({
-  name: 'Form8',
+  name: 'Form9',
   components: {
     Dropzone,
     TextInfo,
+    PersTitle,
   },
 
   props: {
@@ -19,7 +21,7 @@ const Form8 = defineComponent({
       default: () => {},
     },
   },
-  setup({ data }, ctx) {
+  setup(props, ctx) {
     const context = {
       root: {
         store,
@@ -28,11 +30,11 @@ const Form8 = defineComponent({
     const textInfo = {
       manager: {
         key: 'Менеджер',
-        value: data.entity.account_name,
+        value: props.data.entity.account_name,
       },
       obj: {
         key: 'Объект',
-        value: data.entity.object_name,
+        value: props.data.entity.object_name,
       },
     }
     // let getNameDoc = (docID) => {
@@ -44,7 +46,7 @@ const Form8 = defineComponent({
     // })
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
-    let listNewChet = ref('')
+    let listNewChet = ref([])
 
     let clearDropzone = ref(null)
 
@@ -54,8 +56,10 @@ const Form8 = defineComponent({
     let isSetFilesCloseSchet = ref(false)
     let docs = ref(null)
     onMounted(() => {
-      data.data.grajdanstvo.forEach((item, index) => {
-        let pasteObject = data.data.docs_id.find((doc) => doc.doc_id === item)
+      props.data.data.docs_grajdanstvo.forEach((item, index) => {
+        let pasteObject = props.data.data.docs.find(
+          (doc) => doc.doc_id === item
+        )
         if (pasteObject) {
           pasteObject['inProcess'] = false
         } else {
@@ -65,29 +69,36 @@ const Form8 = defineComponent({
         }
         listDocuments.value.push(pasteObject)
       })
-      listNewChet.value = JSON.parse(data.data.zayavka.close_schet)
+      listNewChet.value = props.data.data.zayavka.close_schet
     })
     let removeFilesPatent = (e, options) => {}
-    let sendCloseDocsSchet = (e) => {
+    let sendCloseDocsSchet = async (e) => {
       const { makeRequest: setDataZayavka } = useRequest({
         context,
         request: () => {
           return store.dispatch('taskModule/setBid', {
             data: {
-              id: Number(JSON.parse(data.task.dop_data).rashod_id),
-              close_schet: listNewChet.value,
+              id: Number(JSON.parse(props.data.task.dop_data).rashod_id),
+              close_schets: listNewChet.value.filter((el) =>
+                el.hasOwnProperty('index')
+              ),
             },
           })
         },
         successMessage: 'Файл успешно загружен',
       })
+      await Promise.all(
+        listOtherDoc.value.map(async (doc, index) => {
+          await doc.loadImage()
+          // await doc.updateFileData()
+        })
+      )
 
-      setDataZayavka()
+      await setDataZayavka()
       isSetFilesCloseSchet.value = false
-      listOtherDoc.value.forEach((elem, index) => {
-        elem()
-      })
+
       listOtherDoc.value = []
+      listNewChet.value = []
       clearDropzone.value.clearDropzone()
     }
     let isSaveDocCloses = ref(false)
@@ -95,48 +106,57 @@ const Form8 = defineComponent({
     let addFilesPatent = (e, options) => {
       let objectForCloseChet
       let lastElem
+      console.log(e)
       Object.values(e).forEach((elem, index) => {
-        if (listNewChet.value.length) {
-          lastElem = listNewChet.value.length
-          objectForCloseChet = lastElem + 1
-        }
+        // if (listNewChet.value.length) {
+        lastElem = listNewChet.value.length
+        objectForCloseChet = lastElem + 1
+        // }
         let fileExt = elem.type.split('/')[1]
+        console.log(store.state.user)
         let fileName =
-          `personal_doc_` +
+          `close_schet_` +
+          Number(JSON.parse(props.data.task.dop_data).rashod_id) +
+          '_' +
+          store.state.user.id +
+          '_' +
           Date.now() +
           Math.floor(Math.random()) * Math.floor(Math.random()) +
           '.' +
           fileExt
         let form_data = new FormData()
         form_data.append('file', elem)
+        console.log(listNewChet.value)
         listNewChet.value.push({
-          id: listNewChet.value.length ? objectForCloseChet : 1,
-          name: fileName,
-          valid: 0,
+          index: objectForCloseChet,
+          path_doc: '/close_schet' + '/' + fileName,
         })
 
         const { makeRequest: updateFileData } = useRequest({
           context,
           request: () =>
             store.dispatch('taskModule/updateFileData', {
-              personal_id: data.entity.id,
-              // doc_id: e.item,
-              path_doc: `/personal_doc/${fileName}`,
-              from_task: true,
+              data: {
+                personal_id: props.data.entity.id,
+                doc_id: e.item,
+                path_doc: `/personal_doc/${fileName}`,
+                from_task: true,
+              },
             }),
         })
+
         const { makeRequest: loadImage } = useRequest({
           context,
           request: () =>
             store.dispatch('taskModule/loadImage', {
               id: 1,
-              folder: 'personal_doc',
+              folder: 'close_schet',
               fileName: fileName,
               file: form_data,
             }),
           successMessage: 'Файл успешно загружен',
         })
-        listOtherDoc.value.push(updateFileData, loadImage)
+        listOtherDoc.value.push({ updateFileData, loadImage })
         isSetFilesCloseSchet.value = true
       })
 
@@ -161,28 +181,49 @@ const Form8 = defineComponent({
       //     }
       // })
     }
-
-    let addFiles = (e, options) => {
+    const { makeRequest: createFillScanProcess } = useRequest({
+      context,
+      request: (doc_id) =>
+        store.dispatch('taskModule/startProcess', {
+          parent_process: props.data.task.process_id,
+          process_id: 1,
+          parent_action: props.data.task.process_id,
+          type_parent_action: 2,
+          account_id: props.data.task.to_account_id,
+          personal_id: props.data.entity.id,
+          docs_id: doc_id,
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
+    const attachedFile = ref(false)
+    let docs_ids = ref([])
+    let addFiles = (e, document) => {
+      console.log(e, document)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
       form_data.append('file', e[0])
 
       let currentDropzone = listDocuments.value.find((x) => x.doc_id === e.item)
-
+      docs_ids.value.push(e.item)
       const { makeRequest: delInfoAFile } = useRequest({
         context,
         request: () =>
-          store.dispatch('taskModule/updateFileData', { id: e.item, del: 1 }),
+          store.dispatch('taskModule/updateFileData', {
+            data: { id: e.item, del: 1 },
+          }),
       })
+
       const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: data.entity.id,
-            doc_id: e.item,
-            path_doc: `/personal_doc/${fileName}`,
-            from_task: true,
+            data: {
+              personal_id: props.data.entity.id,
+              doc_id: e.item,
+              path_doc: `/personal_doc/${fileName}`,
+              from_task: true,
+            },
           }),
       })
 
@@ -200,34 +241,7 @@ const Form8 = defineComponent({
 
       // Когда запрос будет готов от Миши, нужно сформировать его по примеру ниже из старого кода. Функцию эту запушить в переменную, которая при нажаити на кнопку вызывает функции запросов в цикле
       // Добавить эот запрос в массив запросов нужно по условию, код закомментирован
-      // const { makeRequest: createFillScanProcess } = useRequest({
-      //   context,
-      //   request: () =>
-      //     store.dispatch('taskModule/loadImage', {
-      //       id: 1,
-      //       folder: 'personal_doc',
-      //       fileName: fileName,
-      //       file: form_data,
-      //     }),
-      //   successMessage: 'Файл успешно загружен',
 
-      //   $.ajax('/personal/create_fill_scan_process', {
-      //     method: "POST",
-      //     data: { parent_process: <?php echo $task['process_id']; ?>,
-      //             process_id: 1,
-      //             account_id: <?php echo $task['to_account_id']; ?>,
-      //             personal_id: <?php echo $entity['id']; ?>,
-      //             parent_action: <?php echo $task['id']; ?>,
-      //             type_parent_action: 2,
-      //             docs_id: docs_id
-      //     },
-      //     success: function() {
-      //         docsAdd = [];
-      //         slidePopup('Документы успешно прикреплены!', 'success');
-      //         checkValid();
-      //     }
-      // })
-      // })
       let additionalRequestFlag
       if (
         e.item != 7 &&
@@ -241,40 +255,60 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
+      console.log('process')
+      listRequestsForUpload.value.push({
+        delInfoAFile,
+        updateFileData,
+        loadImage,
+        document,
+      })
+      document.inProcess = true
+      attachedFile.value = true
+    }
 
-      if (!currentDropzone.inProcess) {
-        listRequestsForUpload.value.push(
-          delInfoAFile,
-          updateFileData,
-          loadImage
-        )
-        listDocuments.value[
-          listDocuments.value.findIndex((x) => x.doc_id == e.item)
-        ].inProcess = false
-        // if (additionalRequestFlag) {
-        //   listRequestsForUpload.value.push(createFillScanProcess)
-        // }
-      } else {
-        listRequestsForUpload.value.push(updateFileData, loadImage)
-        // if (additionalRequestFlag) {
-        //   listRequestsForUpload.value.push(createFillScanProcess)
-        // }
-        listDocuments.value[
-          listDocuments.value.findIndex((x) => x.doc_id == e.item)
-        ].inProcess = false
-        listDisbledDocuments.value = listDisbledDocuments.value - 1
-      }
-    }
-    const sendDocuments = () => {
-      listRequestsForUpload.value.forEach((elem, index) => {
-        elem()
+    const sendDocuments = async () => {
+      await Promise.all(
+        listRequestsForUpload.value.map(async (doc, index) => {
+          console.log(doc)
+          if (doc.document.path_doc) {
+            await doc.delInfoAFile()
+          }
+          const res = await doc.loadImage()
+          const docRes = await doc.updateFileData()
+          if (docRes.result) {
+            doc.document.inProcess = false
+            const searchedDoc = listDocuments.value.find(
+              (el) => el.id === doc.document.id
+            )
+            searchedDoc.inProcess = false
+            Vue.set(doc, 'document', doc.document)
+            Vue.set(doc.document, 'inProcess', false)
+            console.log(doc.document.inProcess)
+            doc.document.newId = docRes.result
+            // doc.document.newId = docRes.result
+            // await createFillScanProcess(docRes.result)
+          }
+        })
+      )
+      const acceptedDocs = listRequestsForUpload.value.flatMap((el) => {
+        if (el.document.newId) return el.document.newId
+        else return []
       })
+      console.log(acceptedDocs)
+      await createFillScanProcess(acceptedDocs)
       listRequestsForUpload.value = []
-      let newArray = []
-      listDocuments.value.forEach((elem, index) => {
-        newArray.push(ref(`docDropzone` + index))
-      })
+      attachedFile.value = false
     }
+    // const sendDocuments = () => {
+    //   listRequestsForUpload.value.forEach((elem, index) => {
+    //     elem()
+    //   })
+    //   listRequestsForUpload.value = []
+    //   let newArray = []
+    //   listDocuments.value.forEach((elem, index) => {
+    //     newArray.push(ref(`docDropzone` + index))
+    //   })
+    // }
 
     let sendTaskFinish = async () => {
       //   $.ajax('/common/save/personal', {
@@ -302,9 +336,10 @@ const Form8 = defineComponent({
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
-              process_id: data.task.process_id,
-              task_id: data.task.id,
-              parent_action: data.task.id,
+              process_id: props.data.task.process_id,
+              task_id: props.data.task.id,
+              parent_action: props.data.task.id,
+              rashod_id: Number(JSON.parse(props.data.task.dop_data).rashod_id),
             },
           }),
       })
@@ -330,6 +365,7 @@ const Form8 = defineComponent({
       clearDropzone,
       listNewChet,
       docs,
+      attachedFile,
     }
   },
 })

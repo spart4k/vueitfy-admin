@@ -104,6 +104,22 @@ const radioPanel = (properties) => {
   }
 }
 
+const carouselField = (properties) => {
+  return {
+    type: 'carousel',
+    ...defaultProperties(properties),
+    notSend: true,
+  }
+}
+
+const docListField = (properties) => {
+  return {
+    type: 'docList',
+    ...defaultProperties(properties),
+    notSend: true,
+  }
+}
+
 export {
   dateField,
   stringField,
@@ -113,8 +129,10 @@ export {
   datetimeField,
   checkboxField,
   dropZoneField,
+  docListField,
   textBlock,
   colorPicker,
   radioPanel,
   dateRangeField,
+  carouselField,
 }

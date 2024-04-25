@@ -1,11 +1,13 @@
 <template>
   <div style="padding-top: 10px">
-    <div style="text-align: center">
-      <v-card-title class="d-flex justify-center text-h6">
-        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
-        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
-      </v-card-title>
-    </div>
+    <PersTitle
+      :data="{
+        surname: data.entity.surname,
+        name_n: data.entity.name_n,
+        patronymic: data.entity.patronymic,
+        dataRojd: data.entity.data_rojd.split('-').reverse().join('.'),
+      }"
+    />
     <!-- data.migr_card -->
     <div v-if="widthTrasfer" class="mb-2">
       <div style="font-size: 18px" class="font-weight-bold">
@@ -28,13 +30,11 @@
       >
       Заселите:
     </div>
-    <v-select
-      label="Выберите проживание"
-      :items="[...data.data.habitations, { id: 0, name: '-Самостоятельное-' }]"
-      item-text="name"
-      item-value="id"
+    <Autocomplete
+      :readonly="autocompleteConfig.readonly"
+      :field="autocompleteConfig"
       v-model="selectName"
-    ></v-select>
+    />
     <span style="font-size: 18px" class="font-weight-bold">
       <v-icon x-small color="green" v-if="isGalkaVisible || hasMigr"
         >$IconGalka</v-icon

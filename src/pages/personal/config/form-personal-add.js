@@ -69,16 +69,42 @@ export default {
       active: false,
       fields: [
         stringField({
-          label: 'ФИО',
-          name: 'fio',
+          label: 'Фамилия',
+          name: 'surname',
           placeholder: '',
           value: '',
           class: [''],
           position: {
             cols: 12,
-            sm: 12,
+            sm: 4,
           },
           validations: { required },
+          bootstrapClass: [''],
+        }),
+        stringField({
+          label: 'Имя',
+          name: 'name_n',
+          placeholder: '',
+          value: '',
+          class: [''],
+          position: {
+            cols: 12,
+            sm: 4,
+          },
+          validations: { required },
+          bootstrapClass: [''],
+        }),
+        stringField({
+          label: 'Отчество',
+          name: 'patronymic',
+          placeholder: '',
+          value: '',
+          class: [''],
+          position: {
+            cols: 12,
+            sm: 4,
+          },
+          validations: {},
           bootstrapClass: [''],
         }),
         dateField({

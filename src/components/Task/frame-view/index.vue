@@ -26,7 +26,7 @@
           <span :class="`circle circle--${data.task.status}`"></span>
           <span>{{ data.task.status_name }}</span>
         </v-row>
-        <v-row v-if="taskDeadline" class="task__info-row" align="center">
+        <v-row v-if="false" class="task__info-row" align="center">
           <v-icon>mdi-timer</v-icon>
           <span class="timer" :class="{ 'timer-minus': timerDiff < 0 }">{{
             timerString
