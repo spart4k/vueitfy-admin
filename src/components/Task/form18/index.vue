@@ -26,17 +26,14 @@
           class="px-0"
           style="height: 50px"
         >
-          <v-col class="px-0" cols="5">
+          <v-col class="px-0" cols="6">
             <!-- {{ group.formData }} -->
-            <v-select
-              v-model="group.formData.name"
-              :items="servicesDetail"
-              @change="(idService) => changeServiceDetail(i, idService)"
-              item-text="name"
-              item-value="id"
+            <Autocomplete
+              :field="autocompleteConfig"
               class="mr-1"
-              label="Наименование"
-            ></v-select>
+              @change="(idService) => changeServiceDetail(i, idService.value)"
+              v-model="group.formData.name"
+            />
           </v-col>
           <v-col class="px-0">
             <v-text-field
