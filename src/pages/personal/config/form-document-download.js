@@ -33,18 +33,6 @@ export default {
     tabs: [],
   },
   lists: [
-    // {
-    //   alias: 'account_objects',
-    //   filter: [
-    //     {
-    //       source: 'formData',
-    //       type: 'num',
-    //       value: 'id',
-    //       field: 'region_id',
-    //       alias: 'regions_id',
-    //     },
-    //   ],
-    // },
     {
       alias: 'personal_employment',
       filter: [
@@ -96,6 +84,12 @@ export default {
         value: 'id',
       },
       items: [],
+      dependence: [
+        {
+          type: 'default',
+          fillField: ['profession'],
+        },
+      ],
       updateList: [
         {
           alias: 'work_activity_type',
@@ -224,49 +218,9 @@ export default {
         },
       ],
     }),
+
     selectField({
-      label: 'Тип документа',
-      name: 'doc_type_id',
-      alias: 'personal_doc_type',
-      subtype: 'single',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [1, 3] }],
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: {},
-      bootstrapClass: [''],
-    }),
-    dateField({
-      label: 'Дата создания',
-      name: 'date_contract',
-      type: 'date',
-      value: '',
-      menu: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [4, 5] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    selectField({
-      label: 'МВД',
+      label: 'Настоящее уведомление представляется в',
       name: 'mvd_id',
       alias: 'mvd',
       subtype: 'single',
@@ -288,31 +242,66 @@ export default {
       validations: {},
       bootstrapClass: [''],
     }),
-    selectField({
-      label: 'Объект',
-      name: 'object_id',
-      alias: 'objects_personal',
-      subtype: 'single',
+    dateField({
+      label:
+        '6. Дата заключения гражданско-правового договора на выполнение работ (оказание услуг) (указывается в случае заключения в устной форме)',
+      name: 'date_gph',
+      type: 'date',
+      value: '',
+      menu: false,
       placeholder: '',
       class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 2, 3, 5] }],
+        conditions: [
+          { field: 'work_activity_id', value: [3] },
+          { field: 'document_id', value: [2] },
+        ],
       },
-      items: [],
       position: {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      bootstrapClass: [''],
+    }),
+    dateField({
+      label: 'Дата создания',
+      name: 'date_contract',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [4, 5] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label:
+        'Исполнитель обязуется оказать услуги по выкладке товара, а также услуги по',
+      name: 'services',
+      placeholder: '',
+      value: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [5] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
       bootstrapClass: [''],
     }),
     selectField({
-      label: 'Юридическое лицо',
+      label: '1.2. Сведения о работодателе или заказчике работ (услуг)',
       name: 'juridical_person_id',
       alias: 'juridical_person',
       subtype: 'single',
@@ -324,7 +313,35 @@ export default {
       },
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 2, 3, 4, 5] }],
+        conditions: [{ field: 'document_id', value: [1, 3, 4, 5] }],
+        location: [
+          { field: 'document_id', value: [1], index: 7 },
+          { field: 'document_id', value: [3], index: 4 },
+          { field: 'document_id', value: [4], index: 6 },
+          { field: 'document_id', value: [5], index: 6 },
+        ],
+        label: [
+          {
+            field: 'document_id',
+            value: [1],
+            label: '1.2. Сведения о работодателе или заказчике работ (услуг)',
+          },
+          {
+            field: 'document_id',
+            value: [3],
+            label: '1.2. Сведения о работодателе или заказчике работ (услуг)',
+          },
+          {
+            field: 'document_id',
+            value: [4],
+            label: 'Наименование работодателя',
+          },
+          {
+            field: 'document_id',
+            value: [5],
+            label: 'Наименование Заказчика',
+          },
+        ],
       },
       items: [],
       position: {
@@ -335,7 +352,69 @@ export default {
       bootstrapClass: [''],
     }),
     selectField({
-      label: 'Тип трудовой деятельности',
+      label: '2.7. Документ, удостоверяющий личность',
+      name: 'doc_type_id',
+      alias: 'personal_doc_type',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 3] }],
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: {},
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label:
+        '3.2. Профессия (специальность, должность, вид трудовой деятельности) по трудовому или гражданско-правовому договору',
+      name: 'profession',
+      placeholder: '',
+      value: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 3, 4] }],
+        label: [
+          {
+            field: 'document_id',
+            value: [1],
+            label:
+              '3.2. Профессия (специальность, должность, вид трудовой деятельности) по трудовому или гражданско-правовому договору',
+          },
+          {
+            field: 'document_id',
+            value: [3],
+            label:
+              '3.2. Профессия (специальность, должность, вид трудовой деятельности) по трудовому или гражданско-правовому договору',
+          },
+          {
+            field: 'document_id',
+            value: [4],
+            label:
+              '1.2 Работодатель предоставляет, а работник соглашается выполнять работу в',
+          },
+        ],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    selectField({
+      label:
+        '3.3. Трудовая деятельность осуществляется иностранным гражданином (лицом без гражданства) на основании',
       name: 'work_activity_id',
       alias: 'work_activity_type',
       subtype: 'single',
@@ -348,6 +427,31 @@ export default {
       isShow: {
         value: false,
         conditions: [{ field: 'document_id', value: [1, 2, 3] }],
+        location: [
+          { field: 'document_id', value: [1], index: 10 },
+          { field: 'document_id', value: [2], index: 7 },
+          { field: 'document_id', value: [3], index: 10 },
+        ],
+        label: [
+          {
+            field: 'document_id',
+            value: [1],
+            label:
+              '3.3. Трудовая деятельность осуществляется иностранным гражданином (лицом без гражданства) на основании',
+          },
+          {
+            field: 'document_id',
+            value: [2],
+            label:
+              '5. Трудовая деятельность осуществляется иностранным гражданином (лицом без гражданства) на основании',
+          },
+          {
+            field: 'document_id',
+            value: [3],
+            label:
+              '3.3. Трудовая деятельность осуществляется иностранным гражданином (лицом без гражданства) на основании',
+          },
+        ],
       },
       items: [],
       position: {
@@ -357,8 +461,238 @@ export default {
       validations: {},
       bootstrapClass: [''],
     }),
+    dateField({
+      label:
+        'Дата заключения с иностранным гражданином (лицом без гражданства) трудового договора или гражданско-правового договора на выполнение работ (оказание услуг)',
+      name: 'date_conclusion',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
     selectField({
-      label: 'Медицинских страхование',
+      label:
+        '3.4. Адрес места осуществления трудовой деятельности принятого на работу иностранного гражданина (лица без гражданства)',
+      name: 'object_id',
+      alias: 'objects_personal',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 2, 3, 5] }],
+        location: [
+          { field: 'document_id', value: [1], index: 12 },
+          { field: 'document_id', value: [2], index: 5 },
+          { field: 'document_id', value: [3], index: 12 },
+          { field: 'document_id', value: [5], index: 12 },
+        ],
+        label: [
+          {
+            field: 'document_id',
+            value: [1],
+            label:
+              '3.4. Адрес места осуществления трудовой деятельности принятого на работу иностранного гражданина (лица без гражданства)',
+          },
+          {
+            field: 'document_id',
+            value: [2],
+            label: '4. Сведения о месте осуществления трудовой деятельности',
+          },
+          {
+            field: 'document_id',
+            value: [3],
+            label:
+              '3.4. Адрес места осуществления трудовой деятельности принятого на работу иностранного гражданина (лица без гражданства)',
+          },
+          {
+            field: 'document_id',
+            value: [5],
+            label: '1.2 Сети магазина',
+          },
+        ],
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: {},
+      bootstrapClass: [''],
+    }),
+
+    dateField({
+      label:
+        'Дата прекращения (расторжения) с иностранным гражданином (лицом без гражданства) трудового договора или гражданско-правового договора на выполнение работ (оказание услуг)',
+      name: 'date_cancel',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [3] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    checkboxField({
+      label:
+        'Трудовой договор или гражданско-правовой договор прекращен (расторгнут) по инициативе иностранного гражданина (лица без гражданства)',
+      name: 'is_cancel',
+      value: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [3] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    dateField({
+      label: 'Дата подписания уведомления',
+      name: 'date_create',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [1, 3] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+
+    dateField({
+      label: 'Дата начала выполнения работ',
+      name: 'date_start',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [4, 5] }],
+        label: [
+          {
+            field: 'document_id',
+            value: [4],
+            label: '2.1 Дата начала выполнения работы',
+          },
+          {
+            field: 'document_id',
+            value: [5],
+            label: '1.4 Срок оказания услуг с',
+          },
+        ],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    dateField({
+      label: '1.4 Срок оказания услуг по',
+      name: 'date_end',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [5] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label:
+        '2.1.3. Исполнитель допустил отступление от условий договора или технологической карты проведения',
+      name: 'service_defect',
+      placeholder: '',
+      value: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [5] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: '5.2.1 Работнику выплачивается должностной оклад в размере',
+      name: 'salary',
+      placeholder: '',
+      value: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [4] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: '3.1. Цена за единицу руб./час',
+      name: 'price',
+      placeholder: '',
+      value: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [5] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    selectField({
+      label:
+        '8. Сведения о действующем договоре (полисе) добровольного медицинского  страхования, либо договоре о предоставлении платных медицинских услуг, либо действующем полисе обязательного медицинского страхования:',
       name: 'insurance_id',
       alias: 'medical_insurance',
       requestKey: 'medical_insurance_id',
@@ -381,220 +715,6 @@ export default {
       validations: {},
       bootstrapClass: [''],
     }),
-    dateField({
-      label: 'Дата заключения ГПХ',
-      name: 'date_gph',
-      type: 'date',
-      value: '',
-      menu: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [
-          { field: 'work_activity_id', value: [3] },
-          { field: 'document_id', value: [2] },
-        ],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    dateField({
-      label: 'Дата подписания',
-      name: 'date_create',
-      type: 'date',
-      value: '',
-      menu: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [1, 3] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    dateField({
-      label: 'Дата заключения',
-      name: 'date_conclusion',
-      type: 'date',
-      value: '',
-      menu: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [1] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    dateField({
-      label: 'Дата расторжения',
-      name: 'date_cancel',
-      type: 'date',
-      value: '',
-      menu: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [3] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    checkboxField({
-      label: 'Инициатива расторжения иностранного гражданина',
-      name: 'is_cancel',
-      value: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [3] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    stringField({
-      label: 'Профессия',
-      name: 'profession',
-      placeholder: '',
-      value: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [1, 3, 4] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
-
-    stringField({
-      label: 'Услуги',
-      name: 'services',
-      placeholder: '',
-      value: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [5] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
-    stringField({
-      label: 'Услуги отступление от договора',
-      name: 'service_defect',
-      placeholder: '',
-      value: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [5] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
-
-    dateField({
-      label: 'Дата начала выполнения работ',
-      name: 'date_start',
-      type: 'date',
-      value: '',
-      menu: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [4, 5] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    dateField({
-      label: 'Дата окончания выполнения работ',
-      name: 'date_end',
-      type: 'date',
-      value: '',
-      menu: false,
-      placeholder: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [5] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
-    stringField({
-      label: 'Зарплата',
-      name: 'salary',
-      placeholder: '',
-      value: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [4] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
-    stringField({
-      label: 'Цена за единицу',
-      name: 'price',
-      placeholder: '',
-      value: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'document_id', value: [5] }],
-      },
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
   ],
   actions: [
     stringAction({
@@ -612,6 +732,7 @@ export default {
       module: 'form/create',
       url: 'generation/personal_doc',
       useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
+      download: true,
       name: 'createForm',
       action: 'createForm',
     }),

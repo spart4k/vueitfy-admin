@@ -275,6 +275,7 @@ export default function ({
           emit('closePopup')
         }
       }
+      if (action.download) Vue.downloadFile(result.path)
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
       if (action.handlingResponse) {
@@ -1695,6 +1696,24 @@ export default function ({
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
       return (typeof field.isShow === 'boolean' && field.isShow) || func()
+    }
+    if (field.isShow?.label) {
+      const trueCondition = field.isShow.label.find((x) =>
+        x.value?.includes(formData[x.field])
+      )
+      if (trueCondition) field.label = trueCondition.label
+    }
+    if (field.isShow?.location) {
+      const trueCondition = field.isShow.location.find((x) =>
+        x.value?.includes(formData[x.field])
+      )
+      if (trueCondition) {
+        const index = form.fields.findIndex((x) => x.name === field.name)
+        if (index !== trueCondition.index) {
+          const item = form.fields.splice(index, 1)
+          form.fields.splice(trueCondition.index, 0, ...item)
+        }
+      }
     }
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
