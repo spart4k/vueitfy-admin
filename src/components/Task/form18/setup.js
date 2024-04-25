@@ -14,6 +14,7 @@ import Popup from '@/components/Popup/index.vue'
 import _ from 'lodash'
 
 import config from '@/components/Task/form15/form.js'
+import Autocomplete from '@/components/Autocomplete/default'
 
 const Form18 = defineComponent({
   name: 'Form18',
@@ -27,6 +28,7 @@ const Form18 = defineComponent({
     FormError,
     FormComment,
     Popup,
+    Autocomplete,
   },
   props: {
     data: {
@@ -80,6 +82,17 @@ const Form18 = defineComponent({
     const servicesDetail = data.data.services
     const rejectedPrice = ref('')
     const isFormValid = ref(false)
+    const autocompleteConfig = {
+      label: 'Наименование',
+      name: 'name',
+      items: servicesDetail,
+      solo: false,
+      required: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+    }
     const addGroup = async () => {
       formGroup.value = [
         ...formGroup.value,
@@ -280,6 +293,7 @@ const Form18 = defineComponent({
     }
     const isReject = ref(false)
     const changeServiceDetail = async (i, idService) => {
+      console.log(idService)
       rejectedPrice.value = ''
       isReject.value = false
 
@@ -376,6 +390,7 @@ const Form18 = defineComponent({
       proxyConfig,
       closePopupForm,
       Popup,
+      autocompleteConfig,
     }
   },
 })

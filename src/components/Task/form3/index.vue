@@ -20,18 +20,8 @@
     </v-row>
     <v-row class="mt-0">
       <v-col cols="6">
-        <v-select
-          label="Наименование"
-          :items="data.data.rashod_vid_id"
-          item-text="name"
-          item-value="id"
-          v-model="selectName"
-        >
-          <!-- <template v-slot:item="{ props, item }">
-            <v-list-item v-bind="props" :subtitle="item.name"></v-list-item>
-          </template>  -->
-        </v-select></v-col
-      >
+        <Autocomplete :field="autocompleteConfig" v-model="selectName" />
+      </v-col>
       <v-col cols="3">
         <v-text-field disabled value="1" label="Кол-во"></v-text-field
       ></v-col>

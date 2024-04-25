@@ -4,12 +4,14 @@ import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+import Autocomplete from '@/components/Autocomplete/default'
 
 const Form4 = defineComponent({
   name: 'Form4',
   components: {
     Dropzone,
     PersTitle,
+    Autocomplete,
   },
   props: {
     data: {
@@ -60,7 +62,17 @@ const Form4 = defineComponent({
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
-
+    const autocompleteConfig = {
+      label: 'Выберите проживание',
+      name: 'habitaion',
+      items: [...data.data.habitations, { id: 0, name: '-Самостоятельное-' }],
+      solo: false,
+      required: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+    }
     const { makeRequest: delInfoAFile } = useRequest({
       context,
       request: () =>
@@ -174,6 +186,7 @@ const Form4 = defineComponent({
       widthTrasfer: JSON.parse(data.task.dop_data).transfer,
       isGalkaVisible,
       hasMigr,
+      autocompleteConfig,
     }
   },
 })
