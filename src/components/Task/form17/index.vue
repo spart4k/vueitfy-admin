@@ -35,12 +35,17 @@
         <div style="display: flex; gap: 5px">
           <div style="width: 500px">
             <span>Наименование:</span>
-            <v-select
+            <!-- <v-select
               :label="data.entity.doljnost_name"
               v-model="selectName"
               disabled
             >
-            </v-select>
+            </v-select> -->
+            <Autocomplete
+              :readonly="autocompleteConfig.readonly"
+              :field="autocompleteConfig"
+              v-model="selectName"
+            />
           </div>
           <div>
             <span>QTY:</span><v-text-field v-model="qty"></v-text-field>
