@@ -30,13 +30,11 @@
       >
       Заселите:
     </div>
-    <v-select
-      label="Выберите проживание"
-      :items="[...data.data.habitations, { id: 0, name: '-Самостоятельное-' }]"
-      item-text="name"
-      item-value="id"
+    <Autocomplete
+      :readonly="autocompleteConfig.readonly"
+      :field="autocompleteConfig"
       v-model="selectName"
-    ></v-select>
+    />
     <span style="font-size: 18px" class="font-weight-bold">
       <v-icon x-small color="green" v-if="isGalkaVisible || hasMigr"
         >$IconGalka</v-icon
