@@ -275,9 +275,9 @@ export default function ({
           emit('closePopup')
         }
       }
+      if (action.download) Vue.downloadFile(result.path)
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
-      console.log(action.handlingResponse)
       if (action.handlingResponse) {
         handlingResponse(action, result)
       }
@@ -297,13 +297,11 @@ export default function ({
     }
   }
   const handlingResponse = (action, result) => {
-    console.log(action.handlingResponse)
     if (action.handlingResponse?.result === 'code') {
       let { text, color } = action.handlingResponse[result.code]
       let keyFormated
       // eslint-disable-next-line
       const key = text.match(/\%\w{1,}\%/g)
-      console.log(key)
       if (key?.length) {
         keyFormated = key[0].split('%')[1]
         text = text.replace(key, formData[keyFormated])
@@ -776,7 +774,6 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
-    console.log(params)
     queueMicrotask(async () => {
       await getDependies(params)
     })
@@ -813,7 +810,6 @@ export default function ({
 
         // if (list.condition) return []
         let filter = list.filter.reduce((acc, el) => {
-          console.log(el)
           const source = eval(el.source)
           if (el.routeKey) {
             acc.push({
@@ -822,6 +818,7 @@ export default function ({
               type: el.type,
             })
           } else if (
+            !el.sendEmpty &&
             source[el.field] !== null &&
             source[el.field] !== undefined
           ) {
@@ -847,6 +844,12 @@ export default function ({
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
+              type: el.type,
+            })
+          } else if (el.sendEmpty) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: null,
               type: el.type,
             })
           }
@@ -1057,7 +1060,6 @@ export default function ({
           // )
           targetField.objectData = []
           if (targetField.hasOwnProperty('defaultObjectData')) {
-            console.log(targetField.defaultObjectData)
             // targetField.objectData = targetField.objectData.concat(
             //   targetField.defaultObjectData
             // )
@@ -1131,7 +1133,6 @@ export default function ({
             const findedEl = field.objectData?.find((el) => el.id === value)
             if (findedEl) {
               dependence.fields.forEach((el) => {
-                console.log(formData[el], findedEl)
                 formData[el] = findedEl[el]
               })
             }
@@ -1184,7 +1185,6 @@ export default function ({
   const getDepFilters = (target) => {
     if (!target.filter) return []
     const filters = target?.filter?.flatMap((el) => {
-      // console.log('el', el)
       const filter = {
         alias: el.alias ?? el.field,
         type: el.type,
@@ -1288,7 +1288,6 @@ export default function ({
     let filter = []
     if (field.filter) {
       filter = field.filter.reduce((acc, el) => {
-        console.log(el)
         const source = eval(el.source)
         if (el.routeKey) {
           acc.push({
@@ -1697,6 +1696,24 @@ export default function ({
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
       return (typeof field.isShow === 'boolean' && field.isShow) || func()
+    }
+    if (field.isShow?.label) {
+      const trueCondition = field.isShow.label.find((x) =>
+        x.value?.includes(formData[x.field])
+      )
+      if (trueCondition) field.label = trueCondition.label
+    }
+    if (field.isShow?.location) {
+      const trueCondition = field.isShow.location.find((x) =>
+        x.value?.includes(formData[x.field])
+      )
+      if (trueCondition) {
+        const index = form.fields.findIndex((x) => x.name === field.name)
+        if (index !== trueCondition.index) {
+          const item = form.fields.splice(index, 1)
+          form.fields.splice(trueCondition.index, 0, ...item)
+        }
+      }
     }
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
