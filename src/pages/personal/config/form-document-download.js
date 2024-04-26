@@ -68,7 +68,17 @@ export default {
         },
       ],
     },
-    { alias: 'medical_insurance', filter: [] },
+    {
+      alias: 'medical_insurance',
+      filter: [
+        {
+          field: 'personal_id',
+          value: '',
+          routeKey: 'id',
+          type: 'num',
+        },
+      ],
+    },
   ],
   fields: [
     selectField({
@@ -147,7 +157,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     autocompleteField({
@@ -168,13 +178,14 @@ export default {
       url: 'get/pagination_list/regions_id',
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [4, 5] }],
+        conditions: [{ field: 'document_id', value: [4, 5, 6] }],
       },
       position: {
         cols: 12,
         sm: 6,
       },
       bootstrapClass: [''],
+      validations: { required },
       updateList: [
         {
           alias: 'city_id',
@@ -206,9 +217,10 @@ export default {
       },
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [4, 5] }],
+        conditions: [{ field: 'document_id', value: [4, 5, 6] }],
       },
       bootstrapClass: [''],
+      validations: { required },
       filter: [
         {
           field: 'regions_id',
@@ -239,7 +251,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     dateField({
@@ -262,6 +274,7 @@ export default {
         cols: 12,
         sm: 12,
       },
+      validations: { required },
       bootstrapClass: [''],
     }),
     dateField({
@@ -274,17 +287,35 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [4, 5] }],
+        conditions: [{ field: 'document_id', value: [4, 5, 6] }],
+        label: [
+          {
+            field: 'document_id',
+            value: [4],
+            label: 'Дата создания',
+          },
+          {
+            field: 'document_id',
+            value: [5],
+            label: 'Дата создания',
+          },
+          {
+            field: 'document_id',
+            value: [6],
+            label: 'Дата составления',
+          },
+        ],
       },
       position: {
         cols: 12,
         sm: 12,
       },
+      validations: { required },
       bootstrapClass: [''],
     }),
     stringField({
       label:
-        'Исполнитель обязуется оказать услуги по выкладке товара, а также услуги по',
+        '1.2 Исполнитель обязуется оказать услуги по выкладке товара, а также услуги по',
       name: 'services',
       placeholder: '',
       value: '',
@@ -313,7 +344,7 @@ export default {
       },
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 3, 4, 5] }],
+        conditions: [{ field: 'document_id', value: [1, 3, 4, 5, 6] }],
         location: [
           { field: 'document_id', value: [1], index: 7 },
           { field: 'document_id', value: [3], index: 4 },
@@ -341,6 +372,11 @@ export default {
             value: [5],
             label: 'Наименование Заказчика',
           },
+          {
+            field: 'document_id',
+            value: [6],
+            label: 'Наименование работодателя',
+          },
         ],
       },
       items: [],
@@ -348,7 +384,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     selectField({
@@ -371,7 +407,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     stringField({
@@ -383,13 +419,25 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 3, 4] }],
+        conditions: [{ field: 'document_id', value: [1, 2, 3, 4] }],
+        location: [
+          { field: 'document_id', value: [1], index: 9 },
+          { field: 'document_id', value: [2], index: 4 },
+          { field: 'document_id', value: [3], index: 9 },
+          { field: 'document_id', value: [4], index: 9 },
+          { field: 'document_id', value: [5], index: 9 },
+        ],
         label: [
           {
             field: 'document_id',
             value: [1],
             label:
               '3.2. Профессия (специальность, должность, вид трудовой деятельности) по трудовому или гражданско-правовому договору',
+          },
+          {
+            field: 'document_id',
+            value: [2],
+            label: '3. Профессия по трудовому договору',
           },
           {
             field: 'document_id',
@@ -458,7 +506,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     dateField({
@@ -478,6 +526,7 @@ export default {
         cols: 12,
         sm: 12,
       },
+      validations: { required },
       bootstrapClass: [''],
     }),
     selectField({
@@ -494,12 +543,14 @@ export default {
       },
       isShow: {
         value: false,
-        conditions: [{ field: 'document_id', value: [1, 2, 3, 5] }],
+        conditions: [{ field: 'document_id', value: [1, 2, 5, 6] }],
         location: [
           { field: 'document_id', value: [1], index: 12 },
           { field: 'document_id', value: [2], index: 5 },
           { field: 'document_id', value: [3], index: 12 },
+          { field: 'document_id', value: [4], index: 12 },
           { field: 'document_id', value: [5], index: 12 },
+          { field: 'document_id', value: [6], index: 12 },
         ],
         label: [
           {
@@ -515,23 +566,58 @@ export default {
           },
           {
             field: 'document_id',
-            value: [3],
-            label:
-              '3.4. Адрес места осуществления трудовой деятельности принятого на работу иностранного гражданина (лица без гражданства)',
-          },
-          {
-            field: 'document_id',
             value: [5],
             label: '1.2 Сети магазина',
           },
+          {
+            field: 'document_id',
+            value: [6],
+            label: '4. Обучение проходит в',
+          },
         ],
+      },
+      items: [],
+      updateList: [
+        {
+          alias: 'contract_room_type',
+          filter: [
+            {
+              field: 'object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+      ],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    selectField({
+      label: '1.2. Тип помещения',
+      name: 'room_type_id',
+      alias: 'contract_room_type',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [5] }],
       },
       items: [],
       position: {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
 
@@ -552,11 +638,12 @@ export default {
         cols: 12,
         sm: 12,
       },
+      validations: { required },
       bootstrapClass: [''],
     }),
     checkboxField({
       label:
-        'Трудовой договор или гражданско-правовой договор прекращен (расторгнут) по инициативе иностранного гражданина (лица без гражданства)',
+        '3.4 Трудовой договор или гражданско-правовой договор прекращен (расторгнут) по инициативе иностранного гражданина (лица без гражданства)',
       name: 'is_cancel',
       value: false,
       placeholder: '',
@@ -587,6 +674,7 @@ export default {
         cols: 12,
         sm: 12,
       },
+      validations: { required },
       bootstrapClass: [''],
     }),
 
@@ -618,6 +706,7 @@ export default {
         cols: 12,
         sm: 12,
       },
+      validations: { required },
       bootstrapClass: [''],
     }),
     dateField({
@@ -636,6 +725,7 @@ export default {
         cols: 12,
         sm: 12,
       },
+      validations: { required },
       bootstrapClass: [''],
     }),
     stringField({
@@ -712,7 +802,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
   ],
