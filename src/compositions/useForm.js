@@ -790,7 +790,7 @@ export default function ({
         array
     }
     const { field } = params
-    if (field.updateList && field.updateList.length) {
+    if (field.updateList && field?.updateList.length) {
       const listData = field?.updateList?.flatMap((list) => {
         if (list.condition) {
           const conditionContext = {
@@ -896,6 +896,27 @@ export default function ({
     }
   }
 
+  const changeInput = (params) => {
+    const { value, field } = params
+    if (field.dependence) {
+      field.dependence?.forEach((dependence) => {
+        const targetField = form.fields.find(
+          (el) => el.name === dependence.field
+        )
+
+        if (dependence?.type === 'computed' && dependence.funcComputed) {
+          const context = {
+            store,
+            formData,
+            originalData,
+            environment,
+          }
+          dependence.funcComputed(context)
+        }
+      })
+    }
+  }
+
   const hasDepenceFieldsApi = () =>
     form?.fields.some(
       (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
@@ -903,7 +924,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
@@ -1025,6 +1045,14 @@ export default function ({
         }
 
         return
+      } else if (dependence?.type === 'computed' && dependence.funcComputed) {
+        const context = {
+          store,
+          formData,
+          originalData,
+          environment,
+        }
+        dependence.funcComputed(context)
       }
       field.loading = true
       if (depField) targetField.loading = true
@@ -1053,7 +1081,7 @@ export default function ({
         targetField.hideItems = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
-        card = targetField.items.find((el) => el.id === formData[depField])
+        card = targetField.items?.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
           // const findedDep = targetField.dependence.find(
           //   (depTarget) => depTarget.type === 'update'
@@ -1810,6 +1838,7 @@ export default function ({
     getDependies,
     changeSelect,
     changeAutocomplete,
+    changeInput,
     getData,
     showField,
     openMenu,

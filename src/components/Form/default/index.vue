@@ -73,6 +73,12 @@
               :placeholder="field?.placeholder"
               :error-messages="formErrors[field?.name]"
               clearable
+              @input="
+                changeInput({
+                  value: formData[field.name],
+                  field,
+                })
+              "
               :readonly="readonlyField(field)"
               :disabled="disabledField(field)"
               :name="field.name"

@@ -29,6 +29,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    name: {
+      type: String,
+      default: () => '',
+    },
+    field: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -42,6 +50,7 @@ export default {
       //url: 'http://localhost:3031',
       autoDiscover: false,
       thumbnailWidth: 150,
+      hiddenInputContainer: props.name ? `.${props.name}` : 'body',
       maxFilesize: props.options.maxSize ? props.options.maxSize : 10,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
       addRemoveLinks: props?.options?.removeble ? true : false,

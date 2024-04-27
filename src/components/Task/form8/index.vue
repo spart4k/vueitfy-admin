@@ -23,8 +23,11 @@
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
               :key="index"
+              :class="`panel_${data.data.docs_spr[item.doc_id]}`"
             >
-              <v-expansion-panel-header>
+              <v-expansion-panel-header
+                :class="`button_${data.data.docs_spr[item.doc_id]}`"
+              >
                 <span>
                   <v-icon left v-if="!item.inProcess"> $IconGalka </v-icon>
                   <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
@@ -38,6 +41,7 @@
                     folder: 'tmp',
                     removeble: false,
                   }"
+                  :name="data.data.docs_spr[item.doc_id]"
                   :paramsForEmit="{ item: item.doc_id }"
                   @addFiles="addFiles"
                 ></Dropzone>
@@ -80,6 +84,7 @@
               removeble: false,
             }"
             :paramsForEmit="{ item: 5 }"
+            name="patent1"
             @addFiles="addFilesPatent"
           ></Dropzone>
         </v-col>
@@ -97,6 +102,7 @@
               folder: 'tmp',
               removeble: false,
             }"
+            name="patent2"
             :paramsForEmit="{ item: 15 }"
             @addFiles="addFilesPatent"
           ></Dropzone>
