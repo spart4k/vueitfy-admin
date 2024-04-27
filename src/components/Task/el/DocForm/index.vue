@@ -19,6 +19,7 @@
       :confirm="confirm"
       :docsData="docsData"
       :fromTask="true"
+      :withoutSave="withoutSave"
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
     />
   </div>

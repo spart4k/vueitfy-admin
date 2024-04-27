@@ -42,9 +42,6 @@
           Закрыть
         </v-btn> -->
       </div>
-      <FormError v-if="dopData && dopData.comment" class="mb-5">
-        {{ dopData.comment }}
-      </FormError>
       <div class="form">
         <DocForm
           v-if="docs && docs.length"
@@ -59,11 +56,23 @@
           :showScan="false"
           :task="JSON.parse(data.task.dop_data)"
           ref="docFormRef"
-          :withoutSave="true"
+          :withoutSave="false"
         ></DocForm>
       </div>
+      <v-row>
+        <v-textarea
+          v-model="comment"
+          placeholder="Комментарий"
+          class="pt-0"
+          rows="1"
+          :error-messages="errorComment"
+        ></v-textarea>
+      </v-row>
       <div class="w-100 d-flex justify-end mt-5">
         <v-btn small color="transparent mr-3">Закрыть</v-btn>
+        <v-btn small :disabled="false" @click="rejectTask" color="error mr-3"
+          >Отклонить</v-btn
+        >
         <v-btn small :disabled="false" @click="sendData" color="primary"
           >Завершить</v-btn
         >

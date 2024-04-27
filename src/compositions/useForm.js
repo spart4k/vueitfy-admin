@@ -75,6 +75,7 @@ export default function ({
       ) {
         return obj
       }
+      console.log(formFields, key)
       if (form) obj[key] = { ...formFields[key].validations, $autoDirty }
       else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
@@ -277,7 +278,6 @@ export default function ({
       }
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
-      console.log(action.handlingResponse)
       if (action.handlingResponse) {
         handlingResponse(action, result)
       }
@@ -297,13 +297,11 @@ export default function ({
     }
   }
   const handlingResponse = (action, result) => {
-    console.log(action.handlingResponse)
     if (action.handlingResponse?.result === 'code') {
       let { text, color } = action.handlingResponse[result.code]
       let keyFormated
       // eslint-disable-next-line
       const key = text.match(/\%\w{1,}\%/g)
-      console.log(key)
       if (key?.length) {
         keyFormated = key[0].split('%')[1]
         text = text.replace(key, formData[keyFormated])
@@ -776,7 +774,6 @@ export default function ({
   //}
 
   const changeAutocomplete = async (params) => {
-    console.log(params)
     queueMicrotask(async () => {
       await getDependies(params)
     })
@@ -793,6 +790,7 @@ export default function ({
         array
     }
     const { field } = params
+    console.log(field)
     if (field.updateList && field.updateList.length) {
       const listData = field?.updateList?.flatMap((list) => {
         if (list.condition) {
@@ -813,7 +811,6 @@ export default function ({
 
         // if (list.condition) return []
         let filter = list.filter.reduce((acc, el) => {
-          console.log(el)
           const source = eval(el.source)
           if (el.routeKey) {
             acc.push({
@@ -973,9 +970,9 @@ export default function ({
               return item.name === el.formKey
             })
             if (
-              (typeof targetObject.isShow === 'boolean' &&
+              (typeof targetObject?.isShow === 'boolean' &&
                 targetObject.isShow) ||
-              (typeof targetObject.isShow === 'object' &&
+              (typeof targetObject?.isShow === 'object' &&
                 targetObject.isShow.value)
             ) {
               formData[el.targetKey] = targetObject.items?.find(
@@ -1057,7 +1054,6 @@ export default function ({
           // )
           targetField.objectData = []
           if (targetField.hasOwnProperty('defaultObjectData')) {
-            console.log(targetField.defaultObjectData)
             // targetField.objectData = targetField.objectData.concat(
             //   targetField.defaultObjectData
             // )
@@ -1131,7 +1127,6 @@ export default function ({
             const findedEl = field.objectData?.find((el) => el.id === value)
             if (findedEl) {
               dependence.fields.forEach((el) => {
-                console.log(formData[el], findedEl)
                 formData[el] = findedEl[el]
               })
             }
@@ -1275,6 +1270,7 @@ export default function ({
           }
         }
         field.items = lists.data[keyList]
+        Vue.set(field, 'items', lists.data[keyList])
         if (field.items.length === 1) {
           // Если массив, вставить массив
           // formData[field.name] = field.items[0][field.selectOption.value]
@@ -1288,7 +1284,6 @@ export default function ({
     let filter = []
     if (field.filter) {
       filter = field.filter.reduce((acc, el) => {
-        console.log(el)
         const source = eval(el.source)
         if (el.routeKey) {
           acc.push({
@@ -1381,7 +1376,6 @@ export default function ({
     let syncForm = undefined
     let lists = undefined
     if (getDetail()) {
-      console.log(getDetail())
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
@@ -1491,10 +1485,13 @@ export default function ({
         return element
       })
       lists = await makeRequestList(listQuery)
+      console.log(lists)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
+        console.log(field)
+        console.log(form)
         const listObject = form?.lists?.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
@@ -1520,6 +1517,7 @@ export default function ({
             }
           }
           field.items = lists.data[keyList]
+          Vue.set(field, 'items', lists.data[keyList])
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)

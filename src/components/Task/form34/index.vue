@@ -1,12 +1,20 @@
 <template>
   <div class="">
     <div style="padding: 10px">
-      <div style="margin-bottom: 30px" v-if="!showNextStep">
-        <v-card-title class="d-flex justify-center text-h6">
+      <div class="mb-3" v-if="!showNextStep">
+        <!-- <v-card-title class="d-flex justify-center text-h6">
           <span class="font-weight-bold text-h6">{{ entity.name }}</span
           >&nbsp;({{ dataRojd }} г.р)
-        </v-card-title>
-        <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
+        </v-card-title> -->
+        <PersTitle
+          :data="{
+            surname: data.entity.surname,
+            name_n: data.entity.name_n,
+            patronymic: data.entity.patronymic,
+            dataRojd,
+          }"
+        />
+        <TextInfo class="mb-1" :infoObj="textInfo"></TextInfo>
         <!-- <FormTitle
           :docName="getDocName(item.doc_id)"
           v-for="(item, index) in docs"
@@ -43,16 +51,20 @@
           <v-icon class="mr-2" v-if="osnConfirmed !== null" small color="green"
             >$IconGalka</v-icon
           >
-          <span>Выберите статус работника:</span>
+          <span style="font-size: 18px" class="font-weight-bold"
+            >Выберите статус работника:</span
+          >
         </v-row>
         <div class="w-100 d-flex justify-center mt-2">
           <v-btn
+            small
             @click="isFire"
             :class="status === 'Работает' ? 'disabled' : ''"
             color="error mr-3"
             >Уволен</v-btn
           >
           <v-btn
+            small
             @click="isWork"
             :class="status === 'Уволен' ? 'disabled' : ''"
             color="success"
@@ -67,8 +79,12 @@
         />
       </div>
       <div class="w-100 d-flex justify-end mt-5">
-        <v-btn color="transparent mr-3">Закрыть</v-btn>
-        <v-btn :disabled="!isValid" color="primary">Завершить</v-btn>
+        <v-btn small @click="$emit('closePopup')" color="transparent mr-3"
+          >Закрыть</v-btn
+        >
+        <v-btn small @click="sendData" :disabled="!isValid" color="primary"
+          >Завершить</v-btn
+        >
       </div>
     </div>
   </div>

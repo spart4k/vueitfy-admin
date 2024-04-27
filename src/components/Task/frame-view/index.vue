@@ -36,12 +36,12 @@
       <v-divider></v-divider>
       <div class="task-slot">
         <!--Внесение-->
-        <!-- <Form1
+        <Form1
           v-if="data.task.task_type_id === 1"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
-        ></Form1> -->
+        ></Form1>
         <!--Подтверждение-->
         <Form2
           v-if="data.task.task_type_id === 2"
@@ -89,7 +89,7 @@
           @refreshData="refreshData"
         ></Form8>
         <Form9
-          v-if="data.task.task_type_id === 1"
+          v-if="data.task.task_type_id === 9"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
@@ -201,6 +201,12 @@
         />
         <Form36
           v-if="data.task.task_type_id === 36"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form37
+          v-if="data.task.task_type_id === 37"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"

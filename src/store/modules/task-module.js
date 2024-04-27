@@ -13,6 +13,7 @@ import {
   updateDopData,
   sendAmmount,
   delCloseSchet,
+  createZayavka,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -61,6 +62,12 @@ const taskModule = {
 
     async setPartTask(_, data) {
       const result = await putTask('task/update/status', data)
+
+      return result
+    },
+
+    async createZayavka(_, data) {
+      const result = await createZayavka('create/zayavka/34_task', data)
 
       return result
     },

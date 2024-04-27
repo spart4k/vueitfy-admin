@@ -13,10 +13,9 @@ import DropZone from '@/components/Dropzone/default/index.vue'
 import { stringField, selectField, dropZoneField } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
-import FormError from '@/components/Task/el/FormError/index.vue'
 
 export default {
-  name: 'Form36',
+  name: 'Form37',
   components: {
     TextInfo,
     FormComment,
@@ -24,7 +23,6 @@ export default {
     Autocomplete,
     DropZone,
     PersTitle,
-    FormError,
   },
   props: {
     data: {
@@ -51,10 +49,10 @@ export default {
         route,
       },
     }
+    const comment = ref('')
     const docFormRef = ref(null)
     const doc = JSON.parse(props.data.task.dop_data).doc_id
-    const docs =
-      doc === 4 ? [{ doc_id: doc }, { doc_id: 14 }] : [{ doc_id: doc }]
+    const docs = props.data.data.docs
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -66,7 +64,6 @@ export default {
       // },
     }
     const osnConfirmed = ref(null)
-
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: () => {
@@ -76,8 +73,7 @@ export default {
           process_id: task.process_id,
           task_id: task.id,
           parent_action: task.id,
-          doc_id: JSON.parse(props.data.task.dop_data).doc_id,
-          docs_id: objectResult.docId,
+          docs_id: JSON.parse(props.data.task.dop_data).docs_id,
           personal_id: props.data.entity.id,
         }
         return store.dispatch('taskModule/setPartTask', {
@@ -86,37 +82,61 @@ export default {
         })
       },
     })
+    const { makeRequest: changeStatusTaskReject } = useRequest({
+      context,
+      request: () => {
+        const task = props.data.task
+        let data = {}
+        data = {
+          process_id: task.process_id,
+          task_id: task.id,
+          parent_action: task.id,
+          doc_id: JSON.parse(props.data.task.dop_data).doc_id,
+          personal_id: props.data.entity.id,
+          comment: comment.value,
+          account_id: props.data.task.from_account_id,
+        }
+        return store.dispatch('taskModule/setPartTask', {
+          status: 6,
+          data,
+        })
+      },
+    })
     const objectResult = {
       docId: [],
     }
-    const dopData = JSON.parse(props.data.task.dop_data)
+    const showCommentError = () => {
+      errorComment.value.push('Введите комментарий')
+    }
+    const errorComment = ref([])
+    const rejectTask = async () => {
+      if (!comment.value) {
+        showCommentError()
+        return
+      }
+      const { success } = await changeStatusTaskReject()
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
+    }
     const sendData = async () => {
-      // console.log(docFormRef.value.docRows)
-      const docFormRefsLoad = docFormRef.value.docRows.map(
-        async (docRef, index) => {
-          console.log(doc)
-          await Promise.all(
-            docRef.listRequestsForUpload.map(async (doc) => {
-              console.log(docRef)
-              if (docRef.pathDock.length) {
-                // await doc.delInfoAFile()
-              }
-              const res = await doc.loadImage()
-              const { result } = await doc.updateFileData()
-              objectResult.docId.push(result)
-            })
-          )
-        }
-      )
-      console.log(objectResult)
-      await Promise.all(docFormRefsLoad)
       const { success } = await changeStatusTask()
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
     }
-
+    watch(
+      () => comment.value,
+      () => {
+        if (!comment.value) {
+          showCommentError()
+        } else {
+          errorComment.value = []
+        }
+      }
+    )
     onMounted(async () => {})
     return {
       dataRojd,
@@ -154,7 +174,9 @@ export default {
       osnConfirmed,
       docs,
       docFormRef,
-      dopData,
+      comment,
+      rejectTask,
+      errorComment,
     }
   },
 }

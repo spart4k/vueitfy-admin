@@ -130,7 +130,7 @@
                 <!-- <img :src="$root.env.VUE_APP_STORE + document.path_doc" alt="" /> -->
                 <!-- <img :src="$root.env.VUE_APP_STORE + pathDock" alt="" /> -->
                 <div class="document-scan">
-                  <div class="document-scan-preview-panel">
+                  <div v-if="!withoutSave" class="document-scan-preview-panel">
                     <v-icon
                       v-if="!isEdit && pathDock.length"
                       @click="toEdit"
@@ -147,7 +147,7 @@
                     </v-icon>
                   </div>
                   <div
-                    v-if="document.path_doc && !isEdit"
+                    v-if="document.path_doc && !isEdit && !showScan"
                     class="document-scan-preview"
                   >
                     <a

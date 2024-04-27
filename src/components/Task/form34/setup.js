@@ -7,6 +7,7 @@ import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import Autocomplete from '@/components/Autocomplete/default'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form7 = defineComponent({
   name: 'Form7',
@@ -15,6 +16,7 @@ const Form7 = defineComponent({
     FormComment,
     DocForm,
     Autocomplete,
+    PersTitle,
   },
   props: {
     data: {
@@ -64,27 +66,37 @@ const Form7 = defineComponent({
     })
     const docFormRef = ref(null)
 
-    const { makeRequest: changeStatusTask } = useRequest({
+    const { makeRequest: createZayavka } = useRequest({
       context,
       request: () => {
-        const task = props.data.task
-        const taskDeadline =
-          Date.parse(props.data.task.date_create) +
-          props.data.task.time_execution * 1000 -
-          Date.now()
-
-        let data = {}
-        data = {
-          process_id: task.process_id,
-          task_id: task.id,
-          parent_action: task.id,
-          docs_id: JSON.parse(props.data.task.dop_data).docs_id,
-          account_id: task.to_account_id,
+        const data = {
+          object_id: object.value,
           personal_id: props.data.entity.id,
-          okk_id: props.data.task.from_account_id,
+          direction_id: JSON.parse(props.data.entity.direction_json).includes(1)
+            ? 1
+            : 6,
+        }
+        return store.dispatch('taskModule/createZayavka', {
+          data,
+        })
+      },
+    })
+
+    const { makeRequest: changeStatusTask } = useRequest({
+      context,
+      request: (rashod_id) => {
+        const data = {
+          process_id: props.data.task.process_id,
+          task_id: props.data.task.id,
+          parent_action: props.data.task.id,
+          doc_id: JSON.parse(props.data.task.dop_data).doc_id,
+          personal_id: props.data.entity.id,
+          object_id: status.value === 'Работает' ? object.value : undefined,
+          rashod_id,
+          is_work: status.value === 'Работает' ? true : false,
         }
         return store.dispatch('taskModule/setPartTask', {
-          status: taskDeadline > 0 ? 2 : 3,
+          status: 2,
           data,
         })
       },
@@ -93,10 +105,9 @@ const Form7 = defineComponent({
     const autocompleteConfig = {
       label: 'Объект',
       name: 'object',
-      items: [],
-      solo: true,
+      items: props.data.data.objects,
+      solo: false,
       required: true,
-      url: 'get/pagination_list/object',
       selectOption: {
         text: 'name',
         value: 'id',
@@ -113,7 +124,9 @@ const Form7 = defineComponent({
       status.value = 'Работает'
     }
     const sendData = async () => {
-      const { success } = await changeStatusTask()
+      const rashod_id = await createZayavka()
+      console.log(rashod_id)
+      const { success } = await changeStatusTask(rashod_id.id)
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')

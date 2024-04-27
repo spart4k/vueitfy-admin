@@ -84,6 +84,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    withoutSave: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     Autocomplete,
@@ -1396,41 +1400,6 @@ export default {
       makeRequestList,
       //makeRequestList,
     })
-    const { makeRequest: delInfoAFile } = useRequest({
-      context,
-      request: (id) =>
-        store.dispatch('taskModule/updateFileData', {
-          data: {
-            id,
-            del: 1,
-          },
-        }),
-    })
-    const { makeRequest: loadImage } = useRequest({
-      context,
-      request: (file) =>
-        store.dispatch('storage/loadFilePut', {
-          // id: 1,
-          folder: 'personal_doc',
-          fileName: file.fileName,
-          file: file.file,
-        }),
-      successMessage: 'Файл успешно загружен',
-    })
-    const { makeRequest: updateFileData } = useRequest({
-      context,
-      request: (params) => {
-        console.log(params, 'path_doc')
-        const path_doc = `/personal_doc/${basketFiles.value.fileName}`
-        return store.dispatch('taskModule/updateFileData', {
-          data: {
-            personal_id: props.personalId,
-            doc_id: props.document.doc_id,
-            path_doc,
-          },
-        })
-      },
-    })
     let fileExt
     let fileName
     let form_data
@@ -1444,7 +1413,9 @@ export default {
     const toPreview = () => {
       isEdit.value = false
     }
+    const listRequestsForUpload = ref([])
     let addFiles = async (e) => {
+      console.log(e[0])
       file.value = e[0]
       fileExt = file.value.type.split('/')[1]
       fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -1457,16 +1428,91 @@ export default {
         form_data,
         file,
       }
-      if (pathDock.value.length) {
-        await delInfoAFile(props.document.id)
+      const { makeRequest: delInfoAFile } = useRequest({
+        context,
+        request: (id) =>
+          store.dispatch('taskModule/updateFileData', {
+            data: {
+              id: props.document.id,
+              del: 1,
+            },
+          }),
+      })
+      const { makeRequest: loadImage } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('storage/loadFilePut', {
+            // id: 1,
+            folder: 'personal_doc',
+            fileName,
+            file: file.value,
+          }),
+        successMessage: 'Файл успешно загружен',
+      })
+      const { makeRequest: updateFileData } = useRequest({
+        context,
+        request: () => {
+          const path_doc = `/personal_doc/${fileName}`
+          return store.dispatch('taskModule/updateFileData', {
+            data: {
+              personal_id: props.personalId,
+              doc_id: props.document.doc_id,
+              path_doc,
+            },
+          })
+        },
+      })
+      console.log(!props.withoutSave)
+      if (!props.withoutSave) {
+        if (pathDock.value.length) {
+          await delInfoAFile(props.document.id)
+        }
+        await loadImage(basketFiles.value)
+        await updateFileData()
+        const path_doc = `/personal_doc/${basketFiles.value.fileName}`
+        pathDock.value = [path_doc]
+        props.document.path_doc = path_doc
+      } else {
+        listRequestsForUpload.value.push({
+          delInfoAFile,
+          loadImage,
+          updateFileData,
+        })
+        pathDock.value = [e[0].dataURL]
       }
-      await loadImage(basketFiles.value)
-      await updateFileData()
-      const path_doc = `/personal_doc/${basketFiles.value.fileName}`
-      pathDock.value = [path_doc]
-      props.document.path_doc = path_doc
 
       toPreview()
+    }
+    const listRequestsResult = ref([])
+    const loadDocument = async () => {
+      await Promise.all(
+        listRequestsForUpload.value.map(async (doc, index) => {
+          console.log(doc)
+          const objectResult = {}
+          if (pathDock.value.length) {
+            await doc.delInfoAFile()
+          }
+          const res = await doc.loadImage()
+          objectResult.imageId = res
+          const docRes = await doc.updateFileData()
+          objectResult.docId = docRes
+          if (docRes.result) {
+            console.log(docRes)
+            listRequestsResult.push(docRes)
+            // doc.document.inProcess = false
+            // const searchedDoc = listDocuments.value.find(
+            //   (el) => el.id === doc.document.id
+            // )
+            // searchedDoc.inProcess = false
+            // Vue.set(doc, 'document', doc.document)
+            // Vue.set(doc.document, 'inProcess', false)
+            // console.log(doc.document.inProcess)
+            // doc.document.newId = docRes.result
+            // doc.document.newId = docRes.result
+            // await createFillScanProcess(docRes.result)
+          }
+        })
+      )
     }
     const listData = ref({})
     const loadList = async () => {
@@ -1633,6 +1679,9 @@ export default {
       isRejected,
       rejectDoc,
       confirmDoc,
+      listRequestsForUpload,
+      listRequestsResult,
+      loadDocument,
       // documentData,
     }
   },
