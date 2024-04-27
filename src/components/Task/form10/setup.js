@@ -12,6 +12,10 @@ import IconDelete from '@/components/Icons/delete/delete.vue'
 import useRequest from '@/compositions/useRequest'
 import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import store from '@/store'
+import { required } from '@/utils/validation'
+import { stringField, selectField, checkboxField } from '@/utils/fields.js'
+import { addFields, editFields } from '@/pages/zayavka/index.js'
+import _ from 'lodash'
 
 const form10 = defineComponent({
   name: 'Form10',
@@ -27,9 +31,6 @@ const form10 = defineComponent({
   },
   setup(props, ctx) {
     // Variables
-    const account_id = computed(() => store.state.user.account_id)
-    const chied_id = computed(() => store.state.user.chied_id)
-    let listDocuments = ref([])
     let sum = ref(0)
     const route = useRoute()
     const router = useRouter()
@@ -45,7 +46,9 @@ const form10 = defineComponent({
       isActive: false,
       message: 'Ошибка',
     })
-
+    const popupForm = ref({
+      isShow: false,
+    })
     // Моковые данные
     let files = ref([
       {
@@ -228,6 +231,7 @@ const form10 = defineComponent({
       // Методы
       changeSum,
       removeFile,
+      docs: props.data.data.docs_id,
       sendTaskFinish,
       formatedSchets: formatedSchets(),
       acceptSchets,

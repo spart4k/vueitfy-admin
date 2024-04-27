@@ -48,6 +48,7 @@
                 cols="12"
                 :sm="showDropzone ? 6 : 12"
                 class="document-fields"
+                v-if="showFields"
               >
                 <v-row>
                   <v-col
@@ -128,13 +129,17 @@
                 </v-row>
               </v-col>
 
-              <v-col v-if="showDropzone" cols="12" sm="5">
+              <v-col
+                v-if="showDropzone"
+                cols="12"
+                :sm="showDropzone && !showFields ? 12 : 5"
+              >
                 <!-- {{ $root.env.VUE_APP_STORE + document.path_doc }}
           {{ pathDock }} -->
                 <!-- <img :src="$root.env.VUE_APP_STORE + document.path_doc" alt="" /> -->
                 <!-- <img :src="$root.env.VUE_APP_STORE + pathDock" alt="" /> -->
                 <div class="document-scan">
-                  <div class="document-scan-preview-panel">
+                  <div v-if="!withoutSave" class="document-scan-preview-panel">
                     <v-icon
                       v-if="!isEdit && pathDock.length"
                       @click="toEdit"
@@ -151,7 +156,7 @@
                     </v-icon>
                   </div>
                   <div
-                    v-if="document.path_doc && !isEdit"
+                    v-if="document.path_doc && !isEdit && !showScan"
                     class="document-scan-preview"
                   >
                     <a

@@ -21,7 +21,7 @@
         <span>Приложите документы</span>
         <v-expansion-panels multiple>
           <v-expansion-panel
-            v-for="(item, index) in listDocuments"
+            v-for="(item, index) in docs"
             :key="index"
             ref="docs"
           >

@@ -75,12 +75,12 @@
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
         ></Form6>
-        <Form7
+        <!-- <Form7
           v-if="data.task.task_type_id === 7"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
-        ></Form7>
+        ></Form7> -->
         <Form8
           v-if="data.task.task_type_id === 8"
           :data="data"
@@ -183,6 +183,30 @@
         />
         <Form31
           v-if="data.task.task_type_id === 31"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form34
+          v-if="data.task.task_type_id === 34"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form35
+          v-if="data.task.task_type_id === 35"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form36
+          v-if="data.task.task_type_id === 36"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form37
+          v-if="data.task.task_type_id === 37"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"

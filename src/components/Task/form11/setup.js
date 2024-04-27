@@ -337,6 +337,7 @@ const Form11 = defineComponent({
       dropZone,
       dropzoneOptions,
       sendTaskFinish,
+      docs: props.data.data.docs_id,
       addDisabledDocuments,
       disabledDocumentsAcc,
       emplyeeFired,

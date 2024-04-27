@@ -6,8 +6,9 @@
       v-for="(document, documentIndex) in docsDataFormated"
       :document="document"
       :docNames="listNames"
-      :showDropzone="false"
-      :showScan="true"
+      :showDropzone="showDropzone"
+      :showFields="showFields"
+      :showScan="showScan"
       ref="docRows"
       :allFieldsRequireds="true"
       :acceptDocPanel="
@@ -18,6 +19,7 @@
       :confirm="confirm"
       :docsData="docsData"
       :fromTask="true"
+      :withoutSave="withoutSave"
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
     />
   </div>

@@ -54,6 +54,7 @@ export default {
     }
     let controller
     const querySelections = async (params, isObs = false) => {
+      if (!props.field.url) return
       try {
         if (props.field.type === 'select') return
         if (params.search || params.id || isObs) {
