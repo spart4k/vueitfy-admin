@@ -1103,6 +1103,10 @@ export default {
         cols: 12,
         sm: 12,
       },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'document_id', value: [7] }],
+      },
       validations: { required },
       bootstrapClass: [''],
     }),
