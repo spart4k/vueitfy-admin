@@ -63,7 +63,9 @@
         ></DocForm>
       </div>
       <div class="w-100 d-flex justify-end mt-5">
-        <v-btn small color="transparent mr-3">Закрыть</v-btn>
+        <v-btn small @click="$emit('closePopup')" color="transparent mr-3"
+          >Закрыть</v-btn
+        >
         <v-btn small :disabled="false" @click="sendData" color="primary"
           >Завершить</v-btn
         >

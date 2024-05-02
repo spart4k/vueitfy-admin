@@ -107,6 +107,10 @@ const docForm = defineComponent({
       type: Boolean,
       default: false,
     },
+    delFile: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: function () {
     return {

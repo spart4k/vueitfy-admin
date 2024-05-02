@@ -57,6 +57,7 @@
           :task="JSON.parse(data.task.dop_data)"
           ref="docFormRef"
           :withoutSave="false"
+          :delFile="false"
         ></DocForm>
       </div>
       <v-row>
@@ -69,7 +70,9 @@
         ></v-textarea>
       </v-row>
       <div class="w-100 d-flex justify-end mt-5">
-        <v-btn small color="transparent mr-3">Закрыть</v-btn>
+        <v-btn @click="$emit('closePopup')" small color="transparent mr-3"
+          >Закрыть</v-btn
+        >
         <v-btn small :disabled="false" @click="rejectTask" color="error mr-3"
           >Отклонить</v-btn
         >
