@@ -12,6 +12,7 @@ import {
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
+import formPersonalHabitation from './form-personal-habitation'
 
 const editFormPermissions = {
   // Бригадир(id = 13) - все readonly
@@ -77,10 +78,18 @@ export default {
   path: 'edit',
   name: 'Основные',
   type: 'FormDefault',
-  detail: true,
+  detail: {
+    type: 'popup', // String 'popup' or 'page'
+    classes: [''], // List class
+    width: '780px',
+    method: 'get',
+    alias: 'payment',
+    url: '/get/form/',
+    bootstrapClass: [''],
+    tabs: [Object.assign({}, formPersonalHabitation)],
+  },
   lists: [
     { alias: 'user_keys', filter: [] },
-    { alias: 'habitation_id', filter: [] },
     { alias: 'account_id', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
@@ -309,10 +318,46 @@ export default {
         ],
       },
     }),
+    // selectField({
+    //   label: 'Проживание',
+    //   name: 'habitation_id',
+    //   alias: 'habitation',
+    //   placeholder: '',
+    //   class: [''],
+    //   selectOption: {
+    //     text: 'name',
+    //     value: 'id',
+    //   },
+    //   items: [],
+    //   position: {
+    //     cols: 12,
+    //     sm: 6,
+    //   },
+    //   defaultItems: [
+    //     {
+    //       id: 11,
+    //       name: '--Самостоятельное--',
+    //       bank_id: 11,
+    //     },
+    //   ],
+    //   //validations: { required },
+    //   bootstrapClass: [''],
+    //   readonly: {
+    //     value: false,
+    //     condition: [
+    //       editFormPermissions.brigadir,
+    //       editFormPermissions.manager[1],
+    //       editFormPermissions.rukFIlCUPDirector.denied,
+    //       editFormPermissions.DBA.denied,
+    //       editFormPermissions.OBDandOKK.access,
+    //     ],
+    //   },
+    // }),
     selectField({
-      label: 'Проживание',
-      name: 'habitation_id',
-      alias: 'direction_json',
+      label: 'Объекты',
+      name: 'object_id',
+      alias: 'objects_personal',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -324,25 +369,9 @@ export default {
         cols: 12,
         sm: 6,
       },
-      defaultItems: [
-        {
-          id: 11,
-          name: '--Самостоятельное--',
-          bank_id: 11,
-        },
-      ],
-      //validations: { required },
+      validations: { required },
       bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          editFormPermissions.brigadir,
-          editFormPermissions.manager[1],
-          editFormPermissions.rukFIlCUPDirector.denied,
-          editFormPermissions.DBA.denied,
-          editFormPermissions.OBDandOKK.access,
-        ],
-      },
+      readonly: true,
     }),
     checkboxField({
       label: 'Штатный',
@@ -365,11 +394,10 @@ export default {
         ],
       },
     }),
-    selectField({
-      label: 'Объекты',
-      name: 'object_id',
-      alias: 'objects_personal',
-      subtype: 'multiple',
+    autocompleteField({
+      label: 'Проживание',
+      name: 'habitation_id',
+      subtype: 'single',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -377,13 +405,52 @@ export default {
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/habitation',
+      defaultItems: [
+        {
+          id: 11,
+          name: '--Самостоятельное--',
+          bank_id: 11,
+        },
+      ],
       position: {
         cols: 12,
         sm: 6,
       },
       validations: { required },
       bootstrapClass: [''],
+      filter: [
+        {
+          field: 'object_id',
+          value: '',
+          type: 'num',
+        },
+      ],
+      appendAction: [
+        {
+          icon: '$IconHome',
+          label: 'Сменить проживание',
+          action: {
+            type: 'changeUrl',
+            name: 'personal/:id/edit_habitation',
+            refreshForm: true,
+          },
+          isShow: true,
+        },
+      ],
       readonly: true,
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     editFormPermissions.brigadir,
+      //     editFormPermissions.manager[1],
+      //     editFormPermissions.rukFIlCUPDirector.denied,
+      //     editFormPermissions.DBA.denied,
+      //     editFormPermissions.OBDandOKK.access,
+      //   ],
+      // },
     }),
   ],
   actions: [

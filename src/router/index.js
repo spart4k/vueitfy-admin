@@ -368,6 +368,15 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/edit_habitation',
+            path: 'edit_habitation',
+            meta: {
+              mode: ['edit', 'edit_habitation'],
+              label: 'Редактировать проживание',
+            },
+            component: Detail,
+          },
         ],
       },
       {
