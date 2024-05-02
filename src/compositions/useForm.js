@@ -1068,7 +1068,6 @@ export default function ({
       }
       if (targetField) {
         //if (typeof data === 'object') data = [data]
-
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
@@ -1231,7 +1230,7 @@ export default function ({
           filter.value = el.source ? eval(el.source) : formData[el.field]
         }
       } else if (el.routeKey) {
-        filter.value = +route.params[el.routeKey]
+        filter.value = [+route.params[el.routeKey]]
       } else {
         filter.value = formData[el.field]
       }
@@ -1257,9 +1256,10 @@ export default function ({
         filter: getDepFilters(el),
       })
 
+      if (el.defaultItems) el.items = [...el.defaultItems]
+
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
-        el.items = data.rows
       }
 
       if (mode === 'edit') {
@@ -1302,10 +1302,15 @@ export default function ({
             }
           }
         }
-        field.items = lists.data[keyList]
-        if (field.items.length === 1) {
+        // field.items = lists.data[keyList]
+        field.items = field.defaultItems
+          ? [...field.defaultItems, ...lists.data[keyList]]
+          : lists.data[keyList]
+        if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
-          // formData[field.name] = field.items[0][field.selectOption.value]
+          if (field.putFirst)
+            formData[field.name] =
+              lists.data[keyList][0][field.selectOption.value]
         }
         showField(field.type, field, true)
       }
@@ -1545,7 +1550,9 @@ export default function ({
               }
             }
           }
-          field.items = lists.data[keyList]
+          field.items = field.defaultItems
+            ? [...field.defaultItems, ...lists.data[keyList]]
+            : lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)
@@ -1723,7 +1730,10 @@ export default function ({
       }
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
-      return (typeof field.isShow === 'boolean' && field.isShow) || func()
+
+      let funcResult = func()
+      if (field.isShow?.reverse) funcResult = !funcResult
+      return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
     if (field.isShow?.label) {
       const trueCondition = field.isShow.label.find((x) =>

@@ -83,6 +83,7 @@ export default {
     classes: [''], // List class
     width: '780px',
     method: 'get',
+    name: 'Редактировать проживание',
     alias: 'payment',
     url: '/get/form/',
     bootstrapClass: [''],

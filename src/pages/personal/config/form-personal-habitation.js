@@ -46,24 +46,16 @@ export default {
     },
   ],
   fields: [
-    // stringField({
-    //   label: 'personal_habitation',
-    //   name: 'personal_habitation',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 12,
-    //   },
-    //   validations: { required },
-    //   bootstrapClass: [''],
-    // }),
     selectField({
-      label: 'personal_habitation',
+      label: 'personal_habitation_orig',
       name: 'personal_habitation',
-      alias: 'personal_habitation',
       subtype: 'single',
       putFirst: true,
+      notSend: true,
+      readonly: true,
+      isShow: {
+        value: true,
+      },
       placeholder: '',
       class: [''],
       selectOption: {
@@ -75,31 +67,37 @@ export default {
         cols: 12,
         sm: 12,
       },
-      //   dependence: [
-      //     {
-      //       type: 'default',
-      //       fillField: [
-      //         {
-      //           formKey: 'personal_habitation',
-      //           compareKey: 'id',
-      //           objectKey: 'id',
-      //           targetKey: 'personal_habitation_copy',
-      //         },
-      //       ],
-      //     },
-      //   ],
+      dependence: [
+        {
+          type: 'default',
+          fillField: [
+            {
+              formKey: 'personal_habitation',
+              compareKey: 'id',
+              objectKey: 'id',
+              targetKey: 'habitation_id',
+            },
+          ],
+        },
+      ],
       validations: { required },
       bootstrapClass: [''],
     }),
     autocompleteField({
-      label: 'personal_habitation',
-      name: 'personal_habitation',
+      label: 'Объект',
+      name: 'habitation_id',
       subtype: 'single',
       placeholder: '',
-      class: ['background-down'],
+      class: [''],
       page: 1,
       search: '',
       url: 'get/pagination_list/habitation',
+      defaultItems: [
+        {
+          id: 11,
+          name: '--Самостоятельное--',
+        },
+      ],
       filter: [
         {
           field: 'personal_id',
@@ -120,6 +118,92 @@ export default {
       validations: { required },
       bootstrapClass: [''],
     }),
+    dateField({
+      label: 'Дата выселения',
+      name: 'date_out',
+      subtype: 'date',
+      placeholder: '',
+      classes: [''],
+      isShow: {
+        value: false,
+        reverse: true,
+        conditions: [{ field: 'personal_habitation', value: [11] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    textareaField({
+      label: 'Причина',
+      name: 'why',
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        reverse: true,
+        conditions: [{ field: 'personal_habitation', value: [11] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    dateField({
+      label: 'Дата заселения',
+      name: 'date_in',
+      subtype: 'date',
+      placeholder: '',
+      classes: [''],
+      isShow: {
+        value: false,
+        reverse: true,
+        conditions: [{ field: 'habitation_id', value: [11] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    checkboxField({
+      label: 'С регистрацией',
+      name: 'with_check_in',
+      value: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        reverse: true,
+        conditions: [{ field: 'habitation_id', value: [11] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
+    textareaField({
+      label: 'Комментарий',
+      name: 'comment',
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        reverse: true,
+        conditions: [{ field: 'habitation_id', value: [11] }],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+    }),
   ],
   actions: [
     stringAction({
@@ -135,7 +219,7 @@ export default {
       type: 'submit',
       color: 'primary',
       module: 'form/create',
-      url: 'generation/personal_doc',
+      url: 'tempalweq/personal_doc',
       useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
       download: true,
       name: 'createForm',

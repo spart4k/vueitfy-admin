@@ -373,7 +373,6 @@ const routes = [
             path: 'edit_habitation',
             meta: {
               mode: ['edit', 'edit_habitation'],
-              label: 'Редактировать проживание',
             },
             component: Detail,
           },
