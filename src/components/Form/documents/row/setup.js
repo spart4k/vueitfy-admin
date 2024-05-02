@@ -88,6 +88,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    delFile: {
+      type: Boolean,
+      default: true,
+    },
+    showFields: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     Autocomplete,
@@ -1458,13 +1466,14 @@ export default {
               personal_id: props.personalId,
               doc_id: props.document.doc_id,
               path_doc,
+              id: !props.delFile ? props.document.id : undefined,
             },
           })
         },
       })
       console.log(!props.withoutSave)
       if (!props.withoutSave) {
-        if (pathDock.value.length) {
+        if (pathDock.value.length && props.delFile) {
           await delInfoAFile(props.document.id)
         }
         await loadImage(basketFiles.value)

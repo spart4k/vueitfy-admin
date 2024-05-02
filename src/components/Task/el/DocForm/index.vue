@@ -20,6 +20,7 @@
       :docsData="docsData"
       :fromTask="true"
       :withoutSave="withoutSave"
+      :delFile="delFile"
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
     />
   </div>

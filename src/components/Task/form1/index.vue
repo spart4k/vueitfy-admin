@@ -60,6 +60,7 @@
           :entity="entity"
           :task="data.task"
           ref="docFormRef"
+          :showFields="true"
         ></DocForm>
       </div>
     </div>
