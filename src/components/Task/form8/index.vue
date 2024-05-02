@@ -22,15 +22,28 @@
       </v-row>
       <div class="position-relative">
         <div class="mb-10">
-          <span class="font-weight-bold">Приложите документы:</span>
-          <v-expansion-panels>
+          <!-- <span class="font-weight-bold">Приложите документы:</span> -->
+          <DocForm
+            v-if="listDocuments && listDocuments.length"
+            @changeDocs="changeDocs"
+            :docsData="listDocuments"
+            :listNames="listNames"
+            :docs="listDocuments"
+            :entity="data.entity"
+            :task="data.task"
+            ref="docFormRef"
+            title="Приложите документы:"
+            :showFields="false"
+            :showDropzone="true"
+            :withoutSave="true"
+          ></DocForm>
+          <!-- <v-expansion-panels>
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
               :key="index"
             >
               <v-expansion-panel-header>
                 <span>
-                  <!-- {{ item.inProcess }} -->
                   <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
                   <v-icon left v-else> $IconGalka </v-icon>
                   {{ data.data.docs_spr[item.doc_id] }}
@@ -58,7 +71,7 @@
                 </div>
               </v-expansion-panel-content>
             </v-expansion-panel>
-          </v-expansion-panels>
+          </v-expansion-panels> -->
         </div>
       </div>
 
@@ -68,7 +81,7 @@
             <v-btn
               small
               color="success"
-              :disabled="!attachedFile"
+              :disabled="!canAttach"
               @click="sendDocuments"
             >
               Приложить

@@ -17,6 +17,7 @@ import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import { stringField, selectField, checkboxField } from '@/utils/fields.js'
 // import { addFields, editFields } from '@/pages/zayavka/index.js'
 import _ from 'lodash'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
 
 import useView from '@/compositions/useView.js'
 import zayavkaConfigOrig from '@/pages/zayavka/index'
@@ -31,6 +32,7 @@ const Form8 = defineComponent({
     TextInfo,
     Popup,
     PersTitle,
+    DocForm,
   },
 
   props: {
@@ -78,7 +80,7 @@ const Form8 = defineComponent({
       // },
     }
     const expensesForm = ref(null)
-
+    const docFormRef = ref(null)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
 
@@ -553,40 +555,69 @@ const Form8 = defineComponent({
     }
 
     const sendDocuments = async () => {
+      const newDocIds = []
+      const attachedDocs = docFormRef.value.docRows.flatMap((doc) => {
+        console.log(doc, Object.keys(doc.basketFiles).length)
+        if (Object.keys(doc.basketFiles).length) {
+          return doc
+        } else {
+          return []
+        }
+      })
       await Promise.all(
-        listRequestsForUpload.value.map(async (doc, index) => {
+        attachedDocs.map(async (doc) => {
           console.log(doc)
           if (doc.document.path_doc) {
-            await doc.delInfoAFile()
+            await doc.listRequestsForUpload[0].delInfoAFile()
           }
-          const res = await doc.loadImage()
-          const docRes = await doc.updateFileData()
+          const res = await doc.listRequestsForUpload[0].loadImage()
+          const docRes = await doc.listRequestsForUpload[0].updateFileData()
           if (docRes.result) {
-            doc.document.inProcess = false
-            const searchedDoc = listDocuments.value.find(
-              (el) => el.id === doc.document.id
-            )
-            searchedDoc.inProcess = false
-            Vue.set(doc, 'document', doc.document)
-            Vue.set(doc.document, 'inProcess', false)
-            console.log(doc.document.inProcess)
-            doc.document.newId = docRes.result
+            newDocIds.push(docRes.result)
+            doc.document.path_doc = '/personal_doc/' + doc.basketFiles.fileName
+            doc.listRequestsForUpload[0].clearBasket()
+            doc.isCorrect = true
             // doc.document.newId = docRes.result
             // await createFillScanProcess(docRes.result)
             listDisbledDocuments.value--
+            doc.folderPanel = undefined
           }
         })
       )
-      const acceptedDocs = listRequestsForUpload.value.flatMap((el) => {
-        if (el.document.newId) return el.document.newId
-        else return []
-      })
-      console.log(acceptedDocs)
-      await createFillScanProcess(acceptedDocs)
-      listRequestsForUpload.value = []
-      attachedFile.value = false
+      console.log(newDocIds)
+      // await Promise.all(
+      //   listRequestsForUpload.value.map(async (doc, index) => {
+      //     console.log(doc)
+      //     if (doc.document.path_doc) {
+      //       await doc.delInfoAFile()
+      //     }
+      //     const res = await doc.loadImage()
+      //     const docRes = await doc.updateFileData()
+      //     if (docRes.result) {
+      //       doc.document.inProcess = false
+      //       const searchedDoc = listDocuments.value.find(
+      //         (el) => el.id === doc.document.id
+      //       )
+      //       searchedDoc.inProcess = false
+      //       Vue.set(doc, 'document', doc.document)
+      //       Vue.set(doc.document, 'inProcess', false)
+      //       console.log(doc.document.inProcess)
+      //       doc.document.newId = docRes.result
+      //       // doc.document.newId = docRes.result
+      //       // await createFillScanProcess(docRes.result)
+      //       listDisbledDocuments.value--
+      //     }
+      //   })
+      // )
+      await createFillScanProcess(newDocIds)
+      newDocIds.value = []
+      // attachedFile.value = false
     }
-
+    const canAttach = computed(() => {
+      return docFormRef.value?.docRows.some(
+        (el) => Object.keys(el.basketFiles).length
+      )
+    })
     const closePopupForm = (route) => {
       if (route) router.push({ name: route })
       else router.back()
@@ -628,7 +659,10 @@ const Form8 = defineComponent({
           listDisbledDocuments.value = listDisbledDocuments.value + 1
         }
         listDocuments.value.push(pasteObject)
+        console.log(docFormRef.value)
       })
+      // console.log(docFormRef.value)
+
       if (
         config.detail &&
         config.detail.type === 'popup' &&
@@ -657,6 +691,10 @@ const Form8 = defineComponent({
       config,
       attachedFile,
       patent,
+      docsData: props.data.data.docs,
+      listNames: props.data.data.docs_spr,
+      docFormRef,
+      canAttach,
     }
   },
 })
