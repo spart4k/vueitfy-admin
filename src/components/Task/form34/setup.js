@@ -93,7 +93,15 @@ const Form7 = defineComponent({
           personal_id: props.data.entity.id,
           object_id: status.value === 'Работает' ? object.value : undefined,
           rashod_id,
-          is_work: status.value === 'Работает' ? true : false,
+          is_work:
+            status.value === 'Работает' &&
+            JSON.parse(props.data.task.dop_data).doc_id !== 5
+              ? true
+              : false,
+          is_fired: status.value === 'Уволен' ? true : false,
+          is_patent:
+            JSON.parse(props.data.task.dop_data).doc_id === 5 &&
+            status.value === 'Работает',
         }
         return store.dispatch('taskModule/setPartTask', {
           status: 2,

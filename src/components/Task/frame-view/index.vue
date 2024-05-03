@@ -211,6 +211,12 @@
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
         />
+        <Form38
+          v-if="data.task.task_type_id === 38"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
         <!--Корректировка документов-->
         <!-- <Form8 v-if="data.task.task_type_id === 8" :data="data" @closePopup"$emit('closePopup')></Form8> -->
         <!-- <Form23 v-if="data.task.task_type_id === 23" :data="data" @closePopup"$emit('closePopup')></Form23> -->
