@@ -33,6 +33,10 @@ export default {
       type: String,
       default: () => '',
     },
+    field: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx

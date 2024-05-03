@@ -275,6 +275,7 @@ export default function ({
           emit('closePopup')
         }
       }
+      if (action.download) Vue.downloadFile(result.path)
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
       if (action.handlingResponse) {
@@ -789,7 +790,7 @@ export default function ({
         array
     }
     const { field } = params
-    if (field.updateList && field.updateList.length) {
+    if (field.updateList && field?.updateList.length) {
       const listData = field?.updateList?.flatMap((list) => {
         if (list.condition) {
           const conditionContext = {
@@ -817,6 +818,7 @@ export default function ({
               type: el.type,
             })
           } else if (
+            !el.sendEmpty &&
             source[el.field] !== null &&
             source[el.field] !== undefined
           ) {
@@ -842,6 +844,12 @@ export default function ({
               value: Array.isArray(source[el.field])
                 ? source[el.field]
                 : [source[el.field]],
+              type: el.type,
+            })
+          } else if (el.sendEmpty) {
+            acc.push({
+              alias: el.alias ?? el.field,
+              value: null,
               type: el.type,
             })
           }
@@ -888,6 +896,27 @@ export default function ({
     }
   }
 
+  const changeInput = (params) => {
+    const { value, field } = params
+    if (field.dependence) {
+      field.dependence?.forEach((dependence) => {
+        const targetField = form.fields.find(
+          (el) => el.name === dependence.field
+        )
+
+        if (dependence?.type === 'computed' && dependence.funcComputed) {
+          const context = {
+            store,
+            formData,
+            originalData,
+            environment,
+          }
+          dependence.funcComputed(context)
+        }
+      })
+    }
+  }
+
   const hasDepenceFieldsApi = () =>
     form?.fields.some(
       (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
@@ -895,7 +924,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
@@ -1017,6 +1045,14 @@ export default function ({
         }
 
         return
+      } else if (dependence?.type === 'computed' && dependence.funcComputed) {
+        const context = {
+          store,
+          formData,
+          originalData,
+          environment,
+        }
+        dependence.funcComputed(context)
       }
       field.loading = true
       if (depField) targetField.loading = true
@@ -1045,7 +1081,7 @@ export default function ({
         targetField.hideItems = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
-        card = targetField.items.find((el) => el.id === formData[depField])
+        card = targetField.items?.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
           // const findedDep = targetField.dependence.find(
           //   (depTarget) => depTarget.type === 'update'
@@ -1177,7 +1213,6 @@ export default function ({
   const getDepFilters = (target) => {
     if (!target.filter) return []
     const filters = target?.filter?.flatMap((el) => {
-      // console.log('el', el)
       const filter = {
         alias: el.alias ?? el.field,
         type: el.type,
@@ -1691,6 +1726,24 @@ export default function ({
       if (field.isShow?.type === 'some') func = someMethod
       return (typeof field.isShow === 'boolean' && field.isShow) || func()
     }
+    if (field.isShow?.label) {
+      const trueCondition = field.isShow.label.find((x) =>
+        x.value?.includes(formData[x.field])
+      )
+      if (trueCondition) field.label = trueCondition.label
+    }
+    if (field.isShow?.location) {
+      const trueCondition = field.isShow.location.find((x) =>
+        x.value?.includes(formData[x.field])
+      )
+      if (trueCondition) {
+        const index = form.fields.findIndex((x) => x.name === field.name)
+        if (index !== trueCondition.index) {
+          const item = form.fields.splice(index, 1)
+          form.fields.splice(trueCondition.index, 0, ...item)
+        }
+      }
+    }
     if (field.isShow.conditions && field.isShow.conditions.length) {
       //if (field.name === 'print_form_key') {
       //}
@@ -1786,6 +1839,7 @@ export default function ({
     getDependies,
     changeSelect,
     changeAutocomplete,
+    changeInput,
     getData,
     showField,
     openMenu,

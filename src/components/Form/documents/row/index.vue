@@ -205,6 +205,7 @@
                 :disabled="vForm.$invalid"
                 @click="confirmCorrect"
                 color="warning"
+                :name="`${docNames[document.doc_id]}_correct_btn`"
                 small
               >
                 <!-- <v-icon left> $IconMain </v-icon> -->
@@ -212,11 +213,22 @@
               </v-btn>
             </v-row>
             <v-row v-if="confirm" justify="end">
-              <v-btn @click="rejectDoc" color="error" small>
+              <v-btn
+                :name="`${docNames[document.doc_id]}_reject_btn`"
+                @click="rejectDoc"
+                color="error"
+                small
+              >
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Отклонить
               </v-btn>
-              <v-btn @click="confirmDoc" color="primary" small class="ml-2">
+              <v-btn
+                :name="`${docNames[document.doc_id]}_accept_btn`"
+                @click="confirmDoc"
+                color="primary"
+                small
+                class="ml-2"
+              >
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Подтвердить
               </v-btn>

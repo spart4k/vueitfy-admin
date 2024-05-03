@@ -11,6 +11,7 @@ import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalEdit from './config/form-personal-edit.js'
 import formPersonalAdd from './config/form-personal-add.js'
 import formPersonalDirection from './config/form-personal-direction.js'
+import formDocumentDownload from './config/form-document-download.js'
 
 import formKeyAdd from './config/form-key-add.js'
 import formKeyEdit from './config/form-key-edit.js'
@@ -45,6 +46,7 @@ export const personalTabs = [
   tablePersonalScan,
   tablePersonalBank,
   tablePersonalDebt,
+  formDocumentDownload,
 ]
 
 const contextMenuPersonal = {
