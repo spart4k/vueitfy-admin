@@ -54,11 +54,22 @@
               </v-col>
             </v-row>
             <v-row class="py-2 px-2" justify="end">
-              <v-btn small @click="rejectOsnData" class="mr-2" color="error">
+              <v-btn
+                name="main_info_reject_btn"
+                small
+                @click="rejectOsnData"
+                class="mr-2"
+                color="error"
+              >
                 <v-icon left> $IconClose </v-icon>
                 Отклонить
               </v-btn>
-              <v-btn small @click="confirmOsnData" color="primary">
+              <v-btn
+                name="main_info_accept_btn"
+                small
+                @click="confirmOsnData"
+                color="primary"
+              >
                 <v-icon left> $IconMain </v-icon>
                 Подтвердить
               </v-btn>
