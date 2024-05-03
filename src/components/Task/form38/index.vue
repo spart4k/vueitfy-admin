@@ -41,11 +41,8 @@
             <v-expansion-panel
               v-for="(item, index) in listDocuments"
               :key="index"
-              :class="`panel_${data.data.docs_spr[item.doc_id]}`"
             >
-              <v-expansion-panel-header
-                :class="`button_${data.data.docs_spr[item.doc_id]}`"
-              >
+              <v-expansion-panel-header>
                 <span>
                   <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
                   <v-icon left v-else> $IconGalka </v-icon>
@@ -111,7 +108,6 @@
               removeble: false,
             }"
             :paramsForEmit="{ item: 5 }"
-            name="patent1"
             @addFiles="addFilesPatent"
           ></Dropzone>
         </v-col>
@@ -129,7 +125,6 @@
               folder: 'tmp',
               removeble: false,
             }"
-            name="patent2"
             :paramsForEmit="{ item: 15 }"
             @addFiles="addFilesPatent"
           ></Dropzone>
@@ -145,16 +140,12 @@
           <v-icon small>mdi-close</v-icon>
           Закрыть
         </v-btn>
-        <v-btn
-          small
-          color="info"
-          :disabled="disableFinishState !== 2"
-          @click="sendTaskFinish"
-        >
+        <v-btn small color="info" :disabled="!isValid" @click="sendTaskFinish">
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
       </v-row>
+      {{ attachedDocsValid }}
       <component
         :is="Popup"
         :options="{

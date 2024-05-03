@@ -14,7 +14,12 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import Popup from '@/components/Popup/index.vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
-import { stringField, selectField, checkboxField } from '@/utils/fields.js'
+import {
+  stringField,
+  selectField,
+  checkboxField,
+  autocompleteField,
+} from '@/utils/fields.js'
 // import { addFields, editFields } from '@/pages/zayavka/index.js'
 import _ from 'lodash'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
@@ -26,7 +31,7 @@ import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 // import config from '@/components/Task/form8/form.js'
 
 const Form8 = defineComponent({
-  name: 'Form8',
+  name: 'Form38',
   components: {
     Dropzone,
     TextInfo,
@@ -91,7 +96,25 @@ const Form8 = defineComponent({
     let listRequestsForUpload = ref([])
     let file = ref('')
     let disableFinishState = ref(0)
-
+    const attachedDocsValid = computed(() => {
+      let counter = null
+      // return docFormRef.value.docRows.every((el) => el.isCorrect)
+      docFormRef?.value?.docRows.forEach((el) => {
+        if (el.isCorrect) counter++
+      })
+      const medDocs = docFormRef?.value?.docRows.flatMap((el) => {
+        if (el.document.doc_id === 27 || el.document.doc_id === 11) {
+          return el
+        } else {
+          return []
+        }
+      })
+      const medDocsAttached = medDocs?.some((el) => el.isCorrect)
+      return counter >= docFormRef?.value?.docRows.length - 1 && medDocsAttached
+    })
+    const isValid = computed(
+      () => attachedDocsValid.value && patent[5] && patent[15]
+    )
     // const sendData = () => {
     //
     //   let fileExt = file.value.type.split('/')[1]
@@ -292,6 +315,9 @@ const Form8 = defineComponent({
         from_task_8: {
           value: true,
         },
+        personal_object_zr: {
+          value: JSON.parse(dopData.value).object_id,
+        },
       }
       const addConfig = config.detail.tabs[0]
       Object.keys(fieldsChanges).forEach((key) => {
@@ -343,6 +369,8 @@ const Form8 = defineComponent({
         }
       )
 
+      // const object_zr = addConfig.fields.find((el) => el.name === 'object_zr')
+      // object_zr.value = 2
       const docsSpr = { 7: 51, 8: 52, 11: 55, 16: 54, 18: 43, 19: 50, 23: 44 }
       const arr = listDocuments.value.filter((x) => x.inProcess)
       const filterArray = arr.reduce((acc, item) => {
@@ -447,6 +475,105 @@ const Form8 = defineComponent({
                 sm: 12,
               },
               bootstrapClass: [''],
+            }),
+            autocompleteField({
+              label: 'Объект',
+              name: 'object_zr',
+              requestKey: 'object_id',
+              // subtype: 'single',
+              subtype: 'single',
+              placeholder: '',
+              class: ['background-down'],
+              page: 1,
+              search: '',
+              url: 'get/pagination_list/object_zr',
+              selectOption: {
+                text: 'name',
+                value: 'id',
+              },
+              items: [],
+              position: {
+                cols: 12,
+                sm: 12,
+              },
+              value: 2,
+              filter: [
+                {
+                  field: 'direction_id',
+                  value: '',
+                },
+                {
+                  field: 'type_objects',
+                  value: '',
+                },
+              ],
+              validations: { required },
+              bootstrapClass: [''],
+              updateList: [
+                {
+                  alias: 'req_zr_id',
+                  condition: [
+                    {
+                      key: 'vector_id',
+                      value: [2],
+                    },
+                  ],
+                  filter: [
+                    {
+                      field: 'direction_id',
+                      value: '',
+                      source: 'formData',
+                      type: 'num',
+                    },
+                    {
+                      field: 'object_zr',
+                      value: '',
+                      source: 'formData',
+                      type: 'num',
+                    },
+                    {
+                      field: 'is_migr',
+                      value: '',
+                      source: 'formData',
+                      type: 'num',
+                    },
+                    {
+                      field: 'type_pay',
+                      value: '',
+                      source: 'formData',
+                      type: 'num',
+                    },
+                    {
+                      field: 'vector_id',
+                      value: '',
+                      source: 'formData',
+                      type: 'num',
+                    },
+                  ],
+                },
+              ],
+              dependence: [
+                {
+                  type: 'default',
+                  fillField: [
+                    {
+                      formKey: 'object_zr',
+                      compareKey: 'id',
+                      objectKey: 'name',
+                      targetKey: 'name',
+                    },
+                    'regions_id',
+                    'city_id',
+                  ],
+                },
+              ],
+              isShow: {
+                value: false,
+                conditions: [
+                  { field: 'vector_id', value: [2] },
+                  { field: 'on_yourself', value: [false] },
+                ],
+              },
             }),
           ]
           addConfig.fields.splice(btnIndex + 5 * (index - 1), 0, ...insertItems)
@@ -554,6 +681,19 @@ const Form8 = defineComponent({
       attachedFile.value = true
     }
 
+    const { makeRequest: updateDopData } = useRequest({
+      context,
+      request: (doc_ids) => {
+        return store.dispatch('taskModule/updateDopData', {
+          id: props.data.task.id,
+          dop: {
+            doc_ids,
+          },
+        })
+      },
+      successMessage: 'Успешно',
+    })
+
     const sendDocuments = async () => {
       const newDocIds = []
       const attachedDocs = docFormRef.value.docRows.flatMap((doc) => {
@@ -609,8 +749,14 @@ const Form8 = defineComponent({
       //     }
       //   })
       // )
-      await createFillScanProcess(newDocIds)
-      newDocIds.value = []
+      if (!loadedDocs) {
+        loadedDocs = []
+      }
+      console.log(loadedDocs, newDocIds)
+      loadedDocs.value = [...newDocIds, ...loadedDocs]
+      console.log(loadedDocs)
+      await updateDopData(loadedDocs.value)
+      // newDocIds.value = []
       // attachedFile.value = false
     }
     const canAttach = computed(() => {
@@ -645,9 +791,14 @@ const Form8 = defineComponent({
         ctx.emit('getItems')
       }
     }
-
+    const docs = ref([])
+    const dopData = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data')).value
+    )
+    let loadedDocs = JSON.parse(dopData.value).doc_ids
+    // const { doc_ }
     onMounted(() => {
-      props.data.data.docs_grajdanstvo.forEach((item, index) => {
+      props.data.data.docs_id.forEach((item, index) => {
         let pasteObject = props.data.data.docs.find(
           (doc) => doc.doc_id === item
         )
@@ -659,7 +810,7 @@ const Form8 = defineComponent({
           listDisbledDocuments.value = listDisbledDocuments.value + 1
         }
         listDocuments.value.push(pasteObject)
-        console.log(docFormRef.value)
+        console.log(listDocuments.value)
       })
       // console.log(docFormRef.value)
 
@@ -685,6 +836,11 @@ const Form8 = defineComponent({
       sendTaskFinish,
       popupForm,
       Popup,
+      docs: props.data.data.docs_id.map((el) => {
+        return {
+          doc_id: el,
+        }
+      }),
       closePopupForm,
       pushToZayavka,
       expensesForm,
@@ -692,9 +848,40 @@ const Form8 = defineComponent({
       attachedFile,
       patent,
       docsData: props.data.data.docs,
-      listNames: props.data.data.docs_spr,
+      listNames: {
+        1: 'Паспорт',
+        2: 'СНИЛС',
+        3: 'Реквизиты карты',
+        4: 'Регистрация',
+        5: 'Патент',
+        6: 'Паспорт стр.2',
+        7: 'Перевод',
+        8: 'Мед. книжка',
+        9: 'Вид на жительство',
+        10: 'Миграционная карта',
+        11: 'ДМС',
+        12: 'Рабочая виза',
+        13: 'Чек-патент первичный',
+        14: 'Регистрация стр. 2',
+        15: 'Патент стр. 2',
+        16: 'Фото',
+        17: 'ИНН',
+        18: 'Экзамен РФ',
+        19: 'Чек-патент текущий',
+        20: 'Дактилоскопия',
+        21: 'Дактилоскопия стр. 2',
+        22: 'Вид на жительство стр. 2',
+        23: 'Медосмотр',
+        24: 'ID карта',
+        25: 'Ученический договор',
+        26: 'ID карта стр.2',
+        27: 'ОМС',
+      },
       docFormRef,
       canAttach,
+      loadedDocs,
+      isValid,
+      attachedDocsValid,
     }
   },
 })

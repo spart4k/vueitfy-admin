@@ -41,6 +41,7 @@
         :task="JSON.parse(data.task.dop_data)"
         :confirm="true"
         ref="docFormRef"
+        :showFields="true"
       ></DocForm>
       <v-textarea
         v-model="comment"

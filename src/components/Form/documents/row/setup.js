@@ -1,4 +1,4 @@
-import Vue, { ref, onMounted, computed } from 'vue'
+import Vue, { ref, onMounted, computed, toRef } from 'vue'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
@@ -125,6 +125,7 @@ export default {
     //   }, [])
     //   return result
     // })
+    const folderPanel = ref(false)
     const documentName = computed(() => Object.keys(props.document)[0])
     const switchType = (key) => {
       let result = ''
@@ -1335,7 +1336,6 @@ export default {
     }
     initFields()
     const docFields = {}
-    console.log()
     const fields = () => {
       const fields = {}
       const tabFields = fieldsData.value
@@ -1364,7 +1364,6 @@ export default {
       //   Vue.set(fields[tabFields[key].name], 'default', docs_data[key])
       // }
       // props.tab.fields.forEach((el) => {})
-      console.log(fields)
       return fields
     }
     fields()
@@ -1414,6 +1413,7 @@ export default {
     const isEdit = ref(false)
     let file = ref('')
     const basketFiles = ref({})
+    const dropZoneRef = ref(null)
     const pathDock = ref('')
     const toEdit = () => {
       isEdit.value = true
@@ -1448,13 +1448,14 @@ export default {
       })
       const { makeRequest: loadImage } = useRequest({
         context,
-        request: () =>
-          store.dispatch('storage/loadFilePut', {
+        request: () => {
+          return store.dispatch('storage/loadFilePut', {
             // id: 1,
             folder: 'personal_doc',
             fileName,
             file: file.value,
-          }),
+          })
+        },
         successMessage: 'Файл успешно загружен',
       })
       const { makeRequest: updateFileData } = useRequest({
@@ -1471,7 +1472,6 @@ export default {
           })
         },
       })
-      console.log(!props.withoutSave)
       if (!props.withoutSave) {
         if (pathDock.value.length && props.delFile) {
           await delInfoAFile(props.document.id)
@@ -1482,10 +1482,15 @@ export default {
         pathDock.value = [path_doc]
         props.document.path_doc = path_doc
       } else {
+        const clearBasket = () => {
+          basketFiles.value = {}
+          dropZoneRef.value.clearDropzone()
+        }
         listRequestsForUpload.value.push({
           delInfoAFile,
           loadImage,
           updateFileData,
+          clearBasket,
         })
         pathDock.value = [e[0].dataURL]
       }
@@ -1493,10 +1498,10 @@ export default {
       toPreview()
     }
     const listRequestsResult = ref([])
+    const document = toRef(props, 'document')
     const loadDocument = async () => {
       await Promise.all(
         listRequestsForUpload.value.map(async (doc, index) => {
-          console.log(doc)
           const objectResult = {}
           if (pathDock.value.length) {
             await doc.delInfoAFile()
@@ -1506,7 +1511,6 @@ export default {
           const docRes = await doc.updateFileData()
           objectResult.docId = docRes
           if (docRes.result) {
-            console.log(docRes)
             listRequestsResult.push(docRes)
             // doc.document.inProcess = false
             // const searchedDoc = listDocuments.value.find(
@@ -1525,7 +1529,6 @@ export default {
     }
     const listData = ref({})
     const loadList = async () => {
-      console.log('loadList')
       const listQuery = form?.lists?.flatMap((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
@@ -1565,7 +1568,6 @@ export default {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
         if (field) {
-          console.log(field.name)
           field.hideItems = lists.data[keyList]
           // field.items =
           Vue.set(
@@ -1599,7 +1601,6 @@ export default {
       const fields = form?.fields
         .filter((el) => el.type === 'autocomplete' && el.isShow)
         .map((el) => el)
-      console.log(fields)
       const queryFields = fields.map(async (el) => {
         const filters = []
         const { url } = el
@@ -1638,7 +1639,6 @@ export default {
           el.items = [...el.items, ...data.rows]
           el.items = data.rows
         }
-        console.log(el.items)
 
         return data
       })
@@ -1651,11 +1651,13 @@ export default {
       // }
       // initFields()
       // initDocFields()
-      console.log('onMounted')
       loadList()
       loadAutocompletes()
       if (props.document.path_doc) {
         pathDock.value = [props.document.path_doc]
+      }
+      if (props.document.inProcess !== undefined) {
+        !props.document.inProcess ? (isCorrect.value = true) : false
       }
     })
     return {
@@ -1691,6 +1693,9 @@ export default {
       listRequestsForUpload,
       listRequestsResult,
       loadDocument,
+      document,
+      dropZoneRef,
+      folderPanel,
       // documentData,
     }
   },

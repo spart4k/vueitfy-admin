@@ -111,6 +111,10 @@ const docForm = defineComponent({
       type: Boolean,
       default: true,
     },
+    title: {
+      type: String,
+      default: 'Приложенные документы:',
+    },
   },
   data: function () {
     return {
@@ -172,7 +176,7 @@ const docForm = defineComponent({
     }
 
     const docFields = {
-      1: getPassportField(props.entity.grajdanstvo_id),
+      1: getPassportField(props.entity?.grajdanstvo_id),
       2: { snils: loadedData.snils ? loadedData.snils : '' },
       3: {
         invoice: loadedData.invoice ? loadedData.invoice : '',
@@ -579,6 +583,7 @@ const docForm = defineComponent({
           docs_data: docFields[el.doc_id],
           id: el.id,
           path_doc: el.path_doc,
+          inProcess: el.inProcess !== undefined ? el.inProcess : undefined,
         }
       })
     }

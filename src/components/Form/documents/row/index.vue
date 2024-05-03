@@ -180,6 +180,7 @@
                     }"
                     @addFiles="addFiles($event, field)"
                     :error-messages="formErrors[field?.name]"
+                    ref="dropZoneRef"
                   />
                 </div>
                 <!--<img

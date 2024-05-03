@@ -75,7 +75,6 @@ export default function ({
       ) {
         return obj
       }
-      console.log(formFields, key)
       if (form) obj[key] = { ...formFields[key].validations, $autoDirty }
       else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
@@ -790,7 +789,6 @@ export default function ({
         array
     }
     const { field } = params
-    console.log(field)
     if (field.updateList && field.updateList.length) {
       const listData = field?.updateList?.flatMap((list) => {
         if (list.condition) {
@@ -1484,13 +1482,10 @@ export default function ({
         return element
       })
       lists = await makeRequestList(listQuery)
-      console.log(lists)
       for (let keyList in lists.data) {
         const field = form?.fields.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
-        console.log(field)
-        console.log(form)
         const listObject = form?.lists?.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
