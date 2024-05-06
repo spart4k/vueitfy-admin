@@ -249,6 +249,14 @@ const Form11 = defineComponent({
     })
 
     let sendTaskFinish = async () => {
+      if (JSON.parse(attached_amount.value).attached && !comment.value) {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Введите комментарий',
+          timeout: 1000,
+        })
+        return
+      }
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>

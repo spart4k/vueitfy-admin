@@ -1332,6 +1332,7 @@ export default function ({
   }
 
   const queryList = async (field, clear = true) => {
+    console.log(field.name)
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
@@ -1354,6 +1355,10 @@ export default function ({
       return element
     })
     field.loading = true
+    console.log(listData)
+    if (field.name === 'personal_object_zr') {
+      console.log(listData)
+    }
     const lists = await makeRequestList(listData)
     putSelectItems(lists)
     if (clear) formData[field.name] = ''
@@ -1381,7 +1386,7 @@ export default function ({
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
-
+        console.log(field)
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
@@ -1397,8 +1402,9 @@ export default function ({
           //     field,
           //   })
           // }
+          console.log(field, field.name)
           if (field.updateList && field.updateList.length) {
-            //await queryList(field, false)
+            await queryList(field, false)
           }
         }
       }
@@ -1518,9 +1524,16 @@ export default function ({
             if (field.putFirst)
               formData[field.name] = field.items[0][field.selectOption.value]
           }
-          if (field.hasOwnProperty('dependence')) {
+          console.log(field.hasOwnProperty('dependence'), field.name)
+          if (
+            field.hasOwnProperty('dependence') ||
+            field.hasOwnProperty('updateList')
+          ) {
             const value = formData[field.name]
             await getDependies({ value, field })
+          }
+          if (field.hasOwnProperty('updateList')) {
+            await queryList(field, false)
           }
         }
       }

@@ -1,10 +1,11 @@
 <template>
   <div
     class="docs-required"
-    :class="{
-      'is-unconfirmed': !isShowCansel || isShowRemove,
-      'is-confirmed': !isShowAdd,
-    }"
+    :class="[
+      (!isShowCansel || (isShowRemove && docs.valid === 2)) && 'is-unconfirmed',
+      !isShowAdd && docs.valid === 1 && 'is-confirmed',
+      true && `docs-required_${docName}`,
+    ]"
   >
     <div class="docs-required__container-layout">
       <div

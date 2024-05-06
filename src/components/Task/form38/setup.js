@@ -113,7 +113,8 @@ const Form8 = defineComponent({
       return counter >= docFormRef?.value?.docRows.length - 1 && medDocsAttached
     })
     const isValid = computed(
-      () => attachedDocsValid.value && patent[5] && patent[15]
+      () =>
+        attachedDocsValid.value && patent[5] && patent[15] && hasRashod.value
     )
     // const sendData = () => {
     //
@@ -318,6 +319,9 @@ const Form8 = defineComponent({
         personal_object_zr: {
           value: JSON.parse(dopData.value).object_id,
         },
+        personal_account_zr: {
+          value: props.data.task.from_account_id,
+        },
       }
       const addConfig = config.detail.tabs[0]
       Object.keys(fieldsChanges).forEach((key) => {
@@ -366,13 +370,45 @@ const Form8 = defineComponent({
               type: 'num',
             },
           ],
+        },
+        {
+          alias: 'personal_account_zr',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_zr',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_object_zr',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
         }
       )
 
       // const object_zr = addConfig.fields.find((el) => el.name === 'object_zr')
       // object_zr.value = 2
       const docsSpr = { 7: 51, 8: 52, 11: 55, 16: 54, 18: 43, 19: 50, 23: 44 }
-      const arr = listDocuments.value.filter((x) => x.inProcess)
+      // console.log(listDocuments.value)
+      const filledDocs = docFormRef?.value?.docRows.flatMap((el) => {
+        if (el.isCorrect) {
+          return el.document
+        } else {
+          return []
+        }
+      })
+      console.log(filledDocs)
+      const arr = filledDocs
       const filterArray = arr.reduce((acc, item) => {
         if (docsSpr[item.doc_id]) acc.push(docsSpr[item.doc_id])
         return acc
@@ -380,6 +416,7 @@ const Form8 = defineComponent({
       const btnIndex = addConfig.fields.findIndex(
         (x) => x.id === 'btn-decrease'
       )
+      console.log(filterArray)
       filterArray?.forEach((item, index) => {
         if (!index) {
           const rashod_vid = addConfig.fields.find(
@@ -476,105 +513,6 @@ const Form8 = defineComponent({
               },
               bootstrapClass: [''],
             }),
-            autocompleteField({
-              label: 'Объект',
-              name: 'object_zr',
-              requestKey: 'object_id',
-              // subtype: 'single',
-              subtype: 'single',
-              placeholder: '',
-              class: ['background-down'],
-              page: 1,
-              search: '',
-              url: 'get/pagination_list/object_zr',
-              selectOption: {
-                text: 'name',
-                value: 'id',
-              },
-              items: [],
-              position: {
-                cols: 12,
-                sm: 12,
-              },
-              value: 2,
-              filter: [
-                {
-                  field: 'direction_id',
-                  value: '',
-                },
-                {
-                  field: 'type_objects',
-                  value: '',
-                },
-              ],
-              validations: { required },
-              bootstrapClass: [''],
-              updateList: [
-                {
-                  alias: 'req_zr_id',
-                  condition: [
-                    {
-                      key: 'vector_id',
-                      value: [2],
-                    },
-                  ],
-                  filter: [
-                    {
-                      field: 'direction_id',
-                      value: '',
-                      source: 'formData',
-                      type: 'num',
-                    },
-                    {
-                      field: 'object_zr',
-                      value: '',
-                      source: 'formData',
-                      type: 'num',
-                    },
-                    {
-                      field: 'is_migr',
-                      value: '',
-                      source: 'formData',
-                      type: 'num',
-                    },
-                    {
-                      field: 'type_pay',
-                      value: '',
-                      source: 'formData',
-                      type: 'num',
-                    },
-                    {
-                      field: 'vector_id',
-                      value: '',
-                      source: 'formData',
-                      type: 'num',
-                    },
-                  ],
-                },
-              ],
-              dependence: [
-                {
-                  type: 'default',
-                  fillField: [
-                    {
-                      formKey: 'object_zr',
-                      compareKey: 'id',
-                      objectKey: 'name',
-                      targetKey: 'name',
-                    },
-                    'regions_id',
-                    'city_id',
-                  ],
-                },
-              ],
-              isShow: {
-                value: false,
-                conditions: [
-                  { field: 'vector_id', value: [2] },
-                  { field: 'on_yourself', value: [false] },
-                ],
-              },
-            }),
           ]
           addConfig.fields.splice(btnIndex + 5 * (index - 1), 0, ...insertItems)
         }
@@ -595,6 +533,7 @@ const Form8 = defineComponent({
         })
         setZayavkaItems()
       }
+      console.log(router, route)
       popupForm.value.isShow = true
     }
     const { makeRequest: createFillScanProcess } = useRequest({
@@ -680,7 +619,6 @@ const Form8 = defineComponent({
       document.inProcess = true
       attachedFile.value = true
     }
-
     const { makeRequest: updateDopData } = useRequest({
       context,
       request: (doc_ids) => {
@@ -795,6 +733,7 @@ const Form8 = defineComponent({
     const dopData = ref(
       Object.assign({}, toRef(props.data.task, 'dop_data')).value
     )
+    const hasRashod = ref(JSON.parse(dopData.value).rashod_id)
     let loadedDocs = JSON.parse(dopData.value).doc_ids
     // const { doc_ }
     onMounted(() => {
@@ -882,6 +821,8 @@ const Form8 = defineComponent({
       loadedDocs,
       isValid,
       attachedDocsValid,
+      hasRashod,
+      dopData,
     }
   },
 })
