@@ -130,6 +130,8 @@
               :key="indexButton"
               @click="panelHandler(button)"
               :disabled="button.isDisabled"
+              class="mb-2"
+              :color="button.color && 'rgb(255, 144, 0)'"
               small
             >
               <v-icon small class="mr-2">
