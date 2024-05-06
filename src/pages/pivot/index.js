@@ -163,6 +163,22 @@ export const config = {
           ],
         },
       },
+      {
+        label: 'ЗП Клининг',
+        class: ['v-table-button--custom'],
+        url: 'pivot-profit-cleaning',
+        type: 'changeUrl',
+        color: 'warning',
+        backgroundColor: 'rgb(255, 144, 0)',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 8, 17],
+              type: true,
+            },
+          ],
+        },
+      },
     ],
     filters: true,
     search: true,
@@ -513,6 +529,57 @@ export const config = {
               result: 'data',
               data: {
                 text: 'Создано начислений %count_payment% на сумму %sum_payment% <br/> Создано %count_zero% начислений с полным вычетом на сумму %sum_zero% <br/> Создано задолженностей %count_hold% на сумму %sum_hold%',
+                color: 'success',
+              },
+            },
+          }),
+        ],
+        formData: {},
+      },
+      {
+        path: 'profit-cleaning',
+        id: 2,
+        name: 'Профит',
+        type: FormDefault,
+        detail: true,
+        lists: [],
+        // alias: 'personal',
+        active: false,
+        fields: [
+          dateField({
+            label: 'Период',
+            name: 'period',
+            subtype: 'period',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            color: 'error',
+            name: 'closePopup',
+            action: 'closePopup',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/create',
+            url: 'create/pay/cleaning',
+            name: 'createForm',
+            action: 'createForm',
+            handlingResponse: {
+              context: 'result',
+              result: 'data',
+              data: {
+                text: 'Создано начислений %count% <br/> Ошибок: %count_error%',
                 color: 'success',
               },
             },

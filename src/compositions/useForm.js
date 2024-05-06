@@ -318,21 +318,24 @@ export default function ({
       }
       let res = result.code
       let contextData = formData
-
+      console.log(conditionContext)
       if (action.handlingResponse.result) res = action.handlingResponse.result
       if (action.handlingResponse.context)
-        contextData = _.get(
-          conditionContext[action.handlingResponse.context],
-          res
-        )
+        contextData = conditionContext[action.handlingResponse.context]
+      console.log(contextData)
+      console.log(conditionContext[action.handlingResponse.context], res)
       let { text, color } = action.handlingResponse[res]
       // /%\w{n}%/
       //const text = 'Объект с именем %name% уже существует'
       // eslint-disable-next-line
       const key = text.match(/\%\w{1,}\%/g)
-
+      console.log(key)
       key.forEach((item) => {
         const keyFormated = item.split('%')[1]
+        console.log(text)
+        console.log(contextData)
+        console.log(keyFormated)
+        console.log(item)
         text = text.replace(item, contextData[keyFormated])
       })
 
