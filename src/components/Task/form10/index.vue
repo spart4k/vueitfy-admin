@@ -6,8 +6,8 @@
           <span class="font-weight-bold heading"
             >Проверьте закрывающие документы:</span
           >
-          <div class="position-relative mb-8">
-            <div v-if="files.length">
+          <div class="position-relative mb-0">
+            <div class="mb-6" v-if="files.length">
               <div class="alert" v-if="false">
                 <!-- <span>{{ errors.message }}</span> -->
               </div>
@@ -36,11 +36,25 @@
                 v-for="(item, index) in formatedSchets"
                 :docs="item"
                 :key="index"
-                @confirmed="addConfirmed"
-                @unconfirmed="addUnconfirmed"
+                @confirmed="addConfirmed(item)"
+                @unconfirmed="addUnconfirmed(item)"
                 ref="formRowsRef"
                 :hideActions="accepted"
               ></DocAccepting>
+            </div>
+            <div
+              v-if="
+                zayavkaNameList.length && data.data.zayavka.payment_type === 3
+              "
+              class="zayavka-items"
+            >
+              <ZayavkaItem
+                v-for="item in data.data.zayavka.items"
+                :key="item.id"
+                :item="item"
+                :list="zayavkaNameList"
+                ref="zayavkaItems"
+              />
             </div>
 
             <div v-if="!files.length" class="text-center mt-4">
@@ -135,7 +149,7 @@
           color="info"
           @click="sendTaskFinish"
           small
-          :disabled="!allChecked && start_accepted_amount === null"
+          :disabled="!allChecked || start_accepted_amount === null"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
