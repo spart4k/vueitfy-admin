@@ -63,33 +63,13 @@ export default {
       alias: 'object_habitation',
       filter: [
         {
-          field: 'region_id',
-          alias: 'o.regions_id',
-          value: '',
-          type: 'num',
-          source: 'formData',
-        },
-        {
-          field: 'city_id',
-          alias: 'o.city_id',
-          value: '',
+          field: 'account_json',
+          value: [],
           type: 'num',
           source: 'formData',
         },
       ],
     },
-    // {
-    //   alias: 'account_objects',
-    //   filter: [
-    //     {
-    //       source: 'formData',
-    //       type: 'num',
-    //       value: 'id',
-    //       field: 'region_id',
-    //       alias: 'regions_id',
-    //     },
-    //   ],
-    // },
   ],
   fields: [
     carouselField({
@@ -183,6 +163,24 @@ export default {
       },
       bootstrapClass: [''],
     }),
+    stringField({
+      label: 'Цена регистрации за человека',
+      name: 'price_of_registration',
+      placeholder: '',
+      value: '',
+      requestType: 'number',
+      isShow: {
+        value: false,
+        conditions: [{ field: 'is_registration', value: [true] }],
+      },
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
     autocompleteField({
       label: 'Регион',
       name: 'region_id',
@@ -216,18 +214,6 @@ export default {
             },
           ],
         },
-        // {
-        //   alias: 'account_objects',
-        //   filter: [
-        //     {
-        //       source: 'formData',
-        //       type: 'num',
-        //       value: 'id',
-        //       field: 'region_id',
-        //       alias: 'regions_id',
-        //     },
-        //   ],
-        // },
       ],
     }),
     selectField({
@@ -246,27 +232,6 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
-      updateList: [
-        {
-          alias: 'object_habitation',
-          filter: [
-            {
-              field: 'region_id',
-              alias: 'o.regions_id',
-              value: '',
-              type: 'num',
-              source: 'formData',
-            },
-            {
-              field: 'city_id',
-              alias: 'o.city_id',
-              value: '',
-              type: 'num',
-              source: 'formData',
-            },
-          ],
-        },
-      ],
       filter: [
         {
           field: 'region_id',
@@ -277,20 +242,6 @@ export default {
         },
       ],
     }),
-    stringField({
-      label: 'Цена регистрации за человека',
-      name: 'price_of_registration',
-      placeholder: '',
-      value: '',
-      requestType: 'number',
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
     selectField({
       label: 'Аккаунт',
       name: 'account_json',
@@ -299,6 +250,19 @@ export default {
       stringify: true,
       placeholder: '',
       class: [''],
+      updateList: [
+        {
+          alias: 'object_habitation',
+          filter: [
+            {
+              field: 'account_json',
+              value: [],
+              type: 'num',
+              source: 'formData',
+            },
+          ],
+        },
+      ],
       selectOption: {
         text: 'name',
         value: 'id',
@@ -330,35 +294,6 @@ export default {
       },
       validations: {},
       bootstrapClass: [''],
-      filter: [
-        {
-          field: 'region_id',
-          alias: 'o.regions_id',
-          value: '',
-          type: 'num',
-          source: 'formData',
-        },
-        {
-          field: 'city_id',
-          alias: 'o.city_id',
-          value: '',
-          type: 'num',
-          source: 'formData',
-        },
-      ],
-      // updateList: [
-      //   {
-      //     alias: 'account_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_json',
-      //         value: '',
-      //         source: 'formData',
-      //         type: 'num',
-      //       },
-      //     ],
-      //   },
-      // ],
     }),
     checkboxField({
       label: 'Риэлтор',
@@ -658,7 +593,7 @@ export default {
       bootstrapClass: [''],
     }),
     stringField({
-      label: 'Администратор',
+      label: 'ФИО администратора',
       name: 'administrator_name',
       placeholder: '',
       value: '',
@@ -691,6 +626,7 @@ export default {
       validations: { required },
       bootstrapClass: [''],
     }),
+
     stringField({
       label: 'Площадь',
       name: 'square',
@@ -701,6 +637,24 @@ export default {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [3] }],
       },
+      dependence: [
+        {
+          type: 'computed',
+          field: 'capacity',
+          funcComputed: (context) => {
+            if (
+              Number(context.formData.square) &&
+              Math.floor(Number(context.formData.square) / 8) > 0
+            ) {
+              context.formData.capacity = Math.floor(
+                Number(context.formData.square) / 8
+              )
+            } else {
+              context.formData.capacity = ''
+            }
+          },
+        },
+      ],
       position: {
         cols: 12,
         sm: 6,
@@ -714,6 +668,7 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: true,
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [3] }],
@@ -725,6 +680,7 @@ export default {
       validations: { required },
       bootstrapClass: [''],
     }),
+
     stringField({
       label: 'Кол-во мест',
       name: 'count_place',

@@ -204,6 +204,7 @@ export default {
       getData,
       changeAutocomplete,
       changeSelect,
+      changeInput,
       showField,
       refreshSelectItems,
       openMenu,
@@ -272,6 +273,7 @@ export default {
       getItems,
       fieldsRef,
       downloadFile,
+      changeInput,
     }
   },
 }

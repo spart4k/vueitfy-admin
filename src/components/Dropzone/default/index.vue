@@ -4,6 +4,7 @@
     :class="[options.withoutSave ? 'without-api' : '', $props.name]"
     :name="$props.name"
   >
+    <v-list-item-title v-if="field?.label">{{ field.label }}</v-list-item-title>
     <vue-dropzone
       class="dropzone"
       ref="dropzone"
