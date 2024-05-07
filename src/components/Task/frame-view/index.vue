@@ -75,12 +75,12 @@
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
         ></Form6>
-        <!-- <Form7
+        <Form7
           v-if="data.task.task_type_id === 7"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
-        ></Form7> -->
+        ></Form7>
         <Form8
           v-if="data.task.task_type_id === 8"
           :data="data"
