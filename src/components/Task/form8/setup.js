@@ -157,7 +157,10 @@ const Form8 = defineComponent({
     //   pushSomeShit()
     //   changeStatus()
     // }
-
+    const hasZayavka = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data'))
+    )
+    const needPatent = toRef(props.data.data, 'need_patent').value
     let docs_ids = ref([])
     let addFilesPatent = async (e, options) => {
       let fileExt = e[0].type.split('/')[1]
@@ -352,6 +355,7 @@ const Form8 = defineComponent({
       const btnIndex = addConfig.fields.findIndex(
         (x) => x.id === 'btn-decrease'
       )
+
       filterArray?.forEach((item, index) => {
         if (!index) {
           const rashod_vid = addConfig.fields.find(
@@ -645,7 +649,10 @@ const Form8 = defineComponent({
         ctx.emit('getItems')
       }
     }
-
+    const refreshData = () => {
+      console.log('refreshData')
+      ctx.emit('refreshData')
+    }
     onMounted(() => {
       props.data.data.docs_grajdanstvo.forEach((item, index) => {
         let pasteObject = props.data.data.docs.find(
@@ -695,6 +702,9 @@ const Form8 = defineComponent({
       listNames: props.data.data.docs_spr,
       docFormRef,
       canAttach,
+      needPatent,
+      refreshData,
+      hasZayavka,
     }
   },
 })

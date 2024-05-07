@@ -21,7 +21,10 @@
         </v-col>
       </v-row>
       <div class="position-relative">
-        <div class="mb-10">
+        <div
+          :class="[!data.data.zayavka.id ? 'overflow-inputs' : '']"
+          class="mb-10"
+        >
           <!-- <span class="font-weight-bold">Приложите документы:</span> -->
           <DocForm
             v-if="listDocuments && listDocuments.length"
@@ -92,15 +95,14 @@
       <div>
         <span class="font-weight-bold">Патент:</span>
       </div>
-      <v-row>
-        <v-col
-          cols="6"
-          :class="[
-            listDisbledDocuments > 0 && data.data.need_patent
-              ? 'overflow-inputs'
-              : '',
-          ]"
-        >
+      <v-row
+        :class="[
+          listDisbledDocuments > 0 && !data.data.zayavka.id
+            ? 'overflow-inputs'
+            : '',
+        ]"
+      >
+        <v-col cols="6">
           <Dropzone
             :options="{
               withoutSave: false,
@@ -111,14 +113,7 @@
             @addFiles="addFilesPatent"
           ></Dropzone>
         </v-col>
-        <v-col
-          cols="6"
-          :class="[
-            listDisbledDocuments > 0 && data.data.need_patent
-              ? 'overflow-inputs'
-              : '',
-          ]"
-        >
+        <v-col cols="6">
           <Dropzone
             :options="{
               withoutSave: false,
@@ -143,7 +138,7 @@
         <v-btn
           small
           color="info"
-          :disabled="disableFinishState !== 2 || !data.data.zayavka.length"
+          :disabled="disableFinishState !== 2 || !data.data.zayavka.id"
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>
@@ -164,7 +159,7 @@
           :detail="config.detail"
           :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
           @closePopup="closePopupForm"
-          @refreshData="$emit('refreshData')"
+          @refreshData="refreshData"
         />
       </component>
     </div>
