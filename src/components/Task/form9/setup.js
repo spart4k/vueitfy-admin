@@ -1,4 +1,4 @@
-import Vue, { defineComponent, ref, computed, onMounted } from 'vue'
+import Vue, { defineComponent, ref, toRef, computed, onMounted } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -6,6 +6,8 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
+import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 
 const Form8 = defineComponent({
   name: 'Form9',
@@ -13,6 +15,8 @@ const Form8 = defineComponent({
     Dropzone,
     TextInfo,
     PersTitle,
+    DocForm,
+    DocAccepting,
   },
 
   props: {
@@ -44,6 +48,7 @@ const Form8 = defineComponent({
     // onMounted(() => {
     //
     // })
+    const docFormRef = ref(null)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
     let listNewChet = ref([])
@@ -55,11 +60,16 @@ const Form8 = defineComponent({
     let disableFinishState = ref(0)
     let isSetFilesCloseSchet = ref(false)
     let docs = ref(null)
+    const getDocName = (id) => {
+      return props.data.data.docs_spr[id]
+    }
+    const closeSchet = toRef(props.data.data.zayavka, 'close_schet')
     onMounted(() => {
       props.data.data.docs_grajdanstvo.forEach((item, index) => {
         let pasteObject = props.data.data.docs.find(
           (doc) => doc.doc_id === item
         )
+        console.log(pasteObject)
         if (pasteObject) {
           pasteObject['inProcess'] = false
         } else {
@@ -69,7 +79,7 @@ const Form8 = defineComponent({
         }
         listDocuments.value.push(pasteObject)
       })
-      listNewChet.value = props.data.data.zayavka.close_schet
+      listNewChet.value = [...closeSchet.value]
     })
     let removeFilesPatent = (e, options) => {}
     let sendCloseDocsSchet = async (e) => {
@@ -98,6 +108,18 @@ const Form8 = defineComponent({
       isSetFilesCloseSchet.value = false
 
       listOtherDoc.value = []
+      const newSchets = listNewChet.value
+        .filter((el) => el.hasOwnProperty('index'))
+        .map((el) => {
+          return {
+            ...el,
+            name: el.path_doc,
+          }
+        })
+      console.log('newSchet')
+      newSchets.forEach((el) => {
+        closeSchet.value.push(el)
+      })
       listNewChet.value = []
       clearDropzone.value.clearDropzone()
     }
@@ -267,37 +289,39 @@ const Form8 = defineComponent({
     }
 
     const sendDocuments = async () => {
+      const newDocIds = []
+      const attachedDocs = docFormRef.value.docRows.flatMap((doc) => {
+        console.log(doc, Object.keys(doc.basketFiles).length)
+        if (Object.keys(doc.basketFiles).length) {
+          return doc
+        } else {
+          return []
+        }
+      })
       await Promise.all(
-        listRequestsForUpload.value.map(async (doc, index) => {
+        attachedDocs.map(async (doc) => {
           console.log(doc)
           if (doc.document.path_doc) {
-            await doc.delInfoAFile()
+            await doc.listRequestsForUpload[0].delInfoAFile()
           }
-          const res = await doc.loadImage()
-          const docRes = await doc.updateFileData()
+          const res = await doc.listRequestsForUpload[0].loadImage()
+          const docRes = await doc.listRequestsForUpload[0].updateFileData()
           if (docRes.result) {
-            doc.document.inProcess = false
-            const searchedDoc = listDocuments.value.find(
-              (el) => el.id === doc.document.id
-            )
-            searchedDoc.inProcess = false
-            Vue.set(doc, 'document', doc.document)
-            Vue.set(doc.document, 'inProcess', false)
-            console.log(doc.document.inProcess)
-            doc.document.newId = docRes.result
+            newDocIds.push(docRes.result)
+            doc.document.path_doc = '/personal_doc/' + doc.basketFiles.fileName
+            doc.listRequestsForUpload[0].clearBasket()
+            doc.isCorrect = true
             // doc.document.newId = docRes.result
             // await createFillScanProcess(docRes.result)
+            listDisbledDocuments.value--
+            doc.folderPanel = undefined
           }
         })
       )
-      const acceptedDocs = listRequestsForUpload.value.flatMap((el) => {
-        if (el.document.newId) return el.document.newId
-        else return []
-      })
-      console.log(acceptedDocs)
-      await createFillScanProcess(acceptedDocs)
-      listRequestsForUpload.value = []
-      attachedFile.value = false
+      console.log(newDocIds)
+      await createFillScanProcess(newDocIds)
+      newDocIds.value = []
+      // attachedFile.value = false
     }
     // const sendDocuments = () => {
     //   listRequestsForUpload.value.forEach((elem, index) => {
@@ -309,7 +333,11 @@ const Form8 = defineComponent({
     //     newArray.push(ref(`docDropzone` + index))
     //   })
     // }
-
+    const canAttach = computed(() => {
+      return docFormRef.value?.docRows.some(
+        (el) => Object.keys(el.basketFiles).length
+      )
+    })
     let sendTaskFinish = async () => {
       //   $.ajax('/common/save/personal', {
       //     method: "POST",
@@ -366,6 +394,10 @@ const Form8 = defineComponent({
       listNewChet,
       docs: props.data.data.docs,
       attachedFile,
+      canAttach,
+      docFormRef,
+      getDocName,
+      closeSchet,
     }
   },
 })

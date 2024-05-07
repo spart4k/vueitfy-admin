@@ -589,30 +589,6 @@ const Form8 = defineComponent({
         })
       )
       console.log(newDocIds)
-      // await Promise.all(
-      //   listRequestsForUpload.value.map(async (doc, index) => {
-      //     console.log(doc)
-      //     if (doc.document.path_doc) {
-      //       await doc.delInfoAFile()
-      //     }
-      //     const res = await doc.loadImage()
-      //     const docRes = await doc.updateFileData()
-      //     if (docRes.result) {
-      //       doc.document.inProcess = false
-      //       const searchedDoc = listDocuments.value.find(
-      //         (el) => el.id === doc.document.id
-      //       )
-      //       searchedDoc.inProcess = false
-      //       Vue.set(doc, 'document', doc.document)
-      //       Vue.set(doc.document, 'inProcess', false)
-      //       console.log(doc.document.inProcess)
-      //       doc.document.newId = docRes.result
-      //       // doc.document.newId = docRes.result
-      //       // await createFillScanProcess(docRes.result)
-      //       listDisbledDocuments.value--
-      //     }
-      //   })
-      // )
       await createFillScanProcess(newDocIds)
       newDocIds.value = []
       // attachedFile.value = false

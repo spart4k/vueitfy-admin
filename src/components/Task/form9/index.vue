@@ -18,38 +18,21 @@
         </v-col>
       </v-row>
       <div class="mb-7">
-        <span>Приложите документы</span>
-        <v-expansion-panels multiple>
-          <v-expansion-panel v-for="(item, index) in docs" :key="index">
-            <v-expansion-panel-header>
-              <div>
-                <span>
-                  <v-icon left v-if="item.inProcess"> $IconSetting </v-icon>
-                  <v-icon left v-else> $IconGalka </v-icon>
-                  {{ data.data.docs_spr[item.doc_id] }}
-                </span>
-              </div>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <div v-if="item.path_doc" style="margin-top: 10px">
-                Скан:
-                <a download :href="$root.env.VUE_APP_STORE + item.path_doc"
-                  ><v-icon left width="10px"> $IconDocument </v-icon></a
-                >
-              </div>
-              <Dropzone
-                :options="{
-                  withoutSave: false,
-                  folder: 'tmp',
-                  removeble: false,
-                }"
-                :paramsForEmit="{ item: item.doc_id }"
-                @addFiles="addFiles"
-                :ref="`docDropzone` + index"
-              ></Dropzone>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+        <DocForm
+          v-if="listDocuments && listDocuments.length"
+          @changeDocs="changeDocs"
+          :docsData="listDocuments"
+          :listNames="data.data.docs_spr"
+          :docs="docs"
+          :entity="data.entity"
+          :task="data.task"
+          ref="docFormRef"
+          title="Приложите документы:"
+          :showFields="false"
+          :showDropzone="true"
+          :withoutSave="true"
+          :fromTask="true"
+        ></DocForm>
       </div>
 
       <v-row>
@@ -58,7 +41,7 @@
             <v-btn
               small
               color="success"
-              :disabled="!attachedFile"
+              :disabled="!canAttach"
               @click="sendDocuments"
             >
               Приложить
@@ -66,6 +49,18 @@
           </div>
         </v-col>
       </v-row>
+      <div class="">
+        <span>Закрывающие документы:</span>
+        <DocAccepting
+          :docName="item.name"
+          v-for="(item, index) in data.data.zayavka.close_schet"
+          :docs="item"
+          :key="index"
+          @confirmed="addConfirmed"
+          @unconfirmed="addUnconfirmed"
+          :hideActions="true"
+        ></DocAccepting>
+      </div>
       <div class="mt-8">
         <span>Приложите закрывающие документы</span>
       </div>
@@ -117,7 +112,9 @@
         <v-btn
           small
           color="info"
-          :disabled="listDisbledDocuments !== 0 || !listNewChet.length"
+          :disabled="
+            listDisbledDocuments !== 0 || !data.data.zayavka.close_schet.length
+          "
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>
