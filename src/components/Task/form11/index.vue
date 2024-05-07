@@ -4,7 +4,7 @@
       <span class="font-weight-bold heading"
         >Проверьте закрывающие документы:</span
       >
-      <div class="position-relative mb-8">
+      <div class="position-relative mb-4">
         <!-- TODO: LIST -->
         <div v-if="true">
           <div class="alert text-center" v-if="errors.isActive">
@@ -19,10 +19,19 @@
             @confirmed="addConfirmed"
             @unconfirmed="addUnconfirmed"
             ref="formRowsRef"
+            class="mb-2"
             :hideActions="true"
-            :isShowRemove="item.valid === 2"
+            :isShowRemove="item.valid === 2 || item.valid === 0"
             @remove="removeDoc($event, index)"
           ></DocAccepting>
+          <v-row>
+            <v-textarea
+              v-model="comment"
+              placeholder="Комментарий"
+              class=""
+              rows="2"
+            ></v-textarea>
+          </v-row>
         </div>
 
         <div v-if="!formatedSchets?.length" class="text-center mt-4">
@@ -64,14 +73,6 @@
         </v-col>
       </v-row>
       <!-- TODO: Комментарии -->
-      <v-row>
-        <v-textarea
-          v-model="comment"
-          placeholder="Комментарий"
-          class="pt-0"
-          rows="2"
-        ></v-textarea>
-      </v-row>
       <v-row class="py-2" justify="end">
         <v-btn
           class="mr-3"
@@ -92,12 +93,7 @@
           Завершить
         </v-btn> -->
         <!-- FIXME: починить disabled -->
-        <v-btn
-          color="info"
-          @click="sendTaskFinish"
-          small
-          :disabled="!comment && JSON.parse(attached_amount).attached"
-        >
+        <v-btn color="info" @click="sendTaskFinish" small>
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>

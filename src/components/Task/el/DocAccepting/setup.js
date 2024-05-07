@@ -1,8 +1,8 @@
-import { defineComponent } from 'vue'
+import { ref, onMounted } from 'vue'
 import FormPopupPhoto from '@/components/Task/el/FormPopupPhoto/index.vue'
 
-const docsRequired = defineComponent({
-  name: 'DocsRequired',
+export default {
+  name: 'DocsAccepting',
   components: {
     FormPopupPhoto,
   },
@@ -22,29 +22,38 @@ const docsRequired = defineComponent({
       default: false,
     },
   },
-  data() {
+  setup(props, ctx) {
+    const { emit } = ctx
+    const isShowAdd = ref(true)
+    const isShowCansel = ref(true)
+    const clickAdd = () => {
+      isShowAdd.value = false
+      isShowCansel.value = true
+      emit('confirmed', { id: props.docs.id })
+    }
+    const clickDel = () => {
+      isShowAdd.value = true
+      isShowCansel.value = false
+      emit('unconfirmed', { id: props.docs.id })
+    }
+    const clickRemove = () => {
+      emit('remove', { id: props.docs.id })
+    }
+    onMounted(() => {
+      if (props.docs.valid === 1) {
+        isShowAdd.value = true
+        isShowCansel.value = false
+      } else if (props.docs.valid === 2) {
+        isShowAdd.value = false
+        isShowCansel.value = true
+      }
+    })
     return {
-      isShowAdd: true,
-      isShowCansel: true,
-      isImgPopupOpen: false,
+      isShowAdd,
+      isShowCansel,
+      clickAdd,
+      clickDel,
+      clickRemove,
     }
   },
-
-  methods: {
-    clickAdd() {
-      this.isShowAdd = false
-      this.isShowCansel = true
-      this.$emit('confirmed', { id: this.docs.id })
-    },
-    clickDel() {
-      this.isShowCansel = false
-      this.isShowAdd = true
-      this.$emit('unconfirmed', { id: this.docs.id })
-    },
-    clickRemove() {
-      this.$emit('remove', { id: this.docs.id })
-    },
-  },
-})
-
-export default docsRequired
+}

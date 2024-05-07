@@ -1,27 +1,17 @@
-import {
-  defineComponent,
-  ref,
-  computed,
-  onMounted,
-  onUpdated,
-  reactive,
-  toRef,
-} from 'vue'
+import { defineComponent, ref, computed, toRef, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import IconDelete from '@/components/Icons/delete/delete.vue'
 import useRequest from '@/compositions/useRequest'
 import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import store from '@/store'
-import { required } from '@/utils/validation'
-import { stringField, selectField, checkboxField } from '@/utils/fields.js'
-import { addFields, editFields } from '@/pages/zayavka/index.js'
-import _ from 'lodash'
+import ZayavkaItem from '@/components/Task/el/ZayavkaItem/index.vue'
 
 const form10 = defineComponent({
   name: 'Form10',
   components: {
     IconDelete,
     DocAccepting,
+    ZayavkaItem,
   },
   props: {
     data: {
@@ -49,6 +39,7 @@ const form10 = defineComponent({
     const popupForm = ref({
       isShow: false,
     })
+    const zayavkaItems = ref([])
     // Моковые данные
     let files = ref([
       {
@@ -157,6 +148,7 @@ const form10 = defineComponent({
     })
     const { makeRequest: sendAmmountRequest } = useRequest({
       context,
+      successMessage: 'Успешно применено',
       request: () =>
         store.dispatch('taskModule/sendAmmount', {
           data: {
@@ -172,7 +164,35 @@ const form10 = defineComponent({
       //     keyOfObjectSend[elem.doc_id] = !elem.inProcess
       //   }
       // })
-
+      const items = zayavkaItems.value.map((el) => {
+        if (!el.formData.accept_sum) {
+          el.formData.accept_sum = undefined
+        }
+        return el.formData
+      })
+      console.log(items)
+      const { makeRequest: sendZayavkaItems } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/sendZayavkaItems', {
+            status: 2,
+            data: {
+              items,
+              id: props.data.data.zayavka.id,
+            },
+          }),
+      })
+      if (!zayavkaValid.value && props.data.data.zayavka.payment_type === 3) {
+        zayavkaItems.value.forEach((el) => {
+          if (!el.formData.accept_sum) {
+            el.errorTextShow = true
+          }
+        })
+        return
+      } else if (zayavkaValid.value) {
+        // send
+        await sendZayavkaItems()
+      }
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -216,14 +236,49 @@ const form10 = defineComponent({
         }
       })
     })
+    const zayavkaNameList = ref({})
+    const getListZayavka = async () => {
+      const { makeRequest: makeRequestList } = useRequest({
+        context,
+        request: (data) =>
+          store.dispatch('list/get', [
+            {
+              alias: 'rashod_vid',
+              filter: [
+                {
+                  alias: 'rashod_category_id',
+                  value: [8],
+                  type: 'num',
+                },
+              ],
+            },
+          ]),
+      })
+      const { data } = await makeRequestList()
+      if (data) {
+        zayavkaNameList.value = data.rashod_vid
+      }
+    }
     const allChecked = computed(() =>
       formRowsRef.value.every((el) => !el.isShowAdd || !el.isShowCansel)
     )
+    const zayavkaValid = computed(() => {
+      return zayavkaItems.value.every((el) => el.formData.accept_sum)
+    })
     const acceptSchets = async () => {
       await setDataZayavka()
       await updateDopData()
       accepted.value = true
     }
+    const addUnconfirmed = (item) => {
+      item.valid = 1
+    }
+    const addConfirmed = (item) => {
+      item.valid = 2
+    }
+    onMounted(() => {
+      getListZayavka()
+    })
 
     return {
       files,
@@ -244,6 +299,11 @@ const form10 = defineComponent({
       sendAmmount,
       schets,
       answer,
+      zayavkaNameList,
+      zayavkaItems,
+      zayavkaValid,
+      addUnconfirmed,
+      addConfirmed,
     }
   },
 })

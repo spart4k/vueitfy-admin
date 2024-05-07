@@ -14,6 +14,8 @@ import {
   sendAmmount,
   delCloseSchet,
   createZayavka,
+  sendZayavkaItems,
+  setDataServices,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -71,7 +73,15 @@ const taskModule = {
 
       return result
     },
+    async sendZayavkaItems(_, data) {
+      const result = await sendZayavkaItems('set/zayavka/close', data)
+      return result
+    },
 
+    async setDataServices(_, data) {
+      const result = await setDataServices('set/target/services', data)
+      return result
+    },
     //     POST /set/data/zayavka_items
     // body: {data['items']['id'], rashod_vid_id, price}
 

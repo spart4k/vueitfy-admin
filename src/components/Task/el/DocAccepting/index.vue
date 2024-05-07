@@ -2,8 +2,8 @@
   <div
     class="docs-required"
     :class="[
-      (!isShowCansel || isShowRemove) && 'is-unconfirmed',
-      !isShowAdd && 'is-confirmed',
+      (!isShowCansel || isShowRemove) && docs.valid === 1 && 'is-unconfirmed',
+      (!isShowAdd || docs.valid === 2) && 'is-confirmed',
       true && `docs-required_${docName}`,
     ]"
   >

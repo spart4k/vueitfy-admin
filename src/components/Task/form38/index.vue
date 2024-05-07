@@ -15,7 +15,7 @@
         <v-col cols="12">
           <div style="display: flex; justify-content: center">
             <v-btn small color="info" @click="pushToZayavka">
-              {{ data.data?.zayavka?.id ? 'Изменить' : 'Создать' }}
+              {{ hasRashod ? 'Изменить' : 'Создать' }}
             </v-btn>
           </div>
         </v-col>
@@ -145,7 +145,6 @@
           Завершить
         </v-btn>
       </v-row>
-      {{ attachedDocsValid }}
       <component
         :is="Popup"
         :options="{
