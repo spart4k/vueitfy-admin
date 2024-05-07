@@ -101,7 +101,7 @@
       </div>
       <v-row
         :class="[
-          listDisbledDocuments > 0 && !data.data.zayavka.id
+          listDisbledDocuments > 0 || !data.data.zayavka.id
             ? 'overflow-inputs'
             : '',
         ]"
