@@ -20,7 +20,7 @@
               <p v-if="true">{{ button.label }}</p>
             </v-btn> -->
             <!-- buttons -->
-            <v-btn small color="primary">Экспорт</v-btn>
+            <v-btn @click="exportPayment" small color="primary">Экспорт</v-btn>
           </div>
         </div>
         <div class="v-table-panel-date">

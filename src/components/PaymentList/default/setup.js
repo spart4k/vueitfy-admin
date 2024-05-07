@@ -1,6 +1,14 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, nextTick, provide } from 'vue'
+import Vue, {
+  onMounted,
+  ref,
+  computed,
+  watch,
+  nextTick,
+  provide,
+  reactive,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 import Row from '../personal/index.vue'
@@ -13,7 +21,7 @@ import { stringAction } from '@/utils/actions'
 import Manager from '../manager/default/index.vue'
 import FormDefault from '@/components/Form/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
-import { dateField } from '@/utils/fields.js'
+import { dateField, stringField } from '@/utils/fields.js'
 console.log('CREATED PAYMENTS')
 //import { tableApi } from '@/api'
 
@@ -73,6 +81,52 @@ const table = {
       year: new Date().getFullYear(),
       date: moment(new Date()).format('YYYY-MM'),
     })
+    const dateFieldExport = reactive(
+      dateField({
+        label: 'Период',
+        name: 'period',
+        subtype: 'period',
+        placeholder: '',
+        class: [''],
+        value: currentDate.value.date,
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        validations: { required },
+        bootstrapClass: [''],
+      })
+    )
+    const checkedPersonal = computed(() => {
+      const personals = []
+      managerRef.value.forEach((el) => {
+        el.objects?.forEach((object) => {
+          if (object.touching) {
+            personals.push(object.personal_id)
+          }
+        })
+      })
+      return personals
+    })
+    const personalExport = reactive(
+      stringField({
+        label: 'personal_ids',
+        name: 'personal_ids',
+        placeholder: '',
+        class: [''],
+        disabled: true,
+        isShow: {
+          value: true,
+        },
+        value: checkedPersonal,
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        // validations: { required },
+        bootstrapClass: [''],
+      })
+    )
     provide('period', currentDate.value.date)
     const rows = ref([])
     const acceptData = ref({
@@ -91,6 +145,7 @@ const table = {
       // }, 0)
       // addDayOfMonth()
       searchInput.value = ''
+      dateFieldExport.value = currentDate.value.date
       await getItems()
     }
     console.log('CREATED PAYMENTS')
@@ -157,7 +212,13 @@ const table = {
       router.back()
     }
     const managerRef = ref([])
-    const detail = {
+    const exportPayment = () => {
+      popupForm.value.isShow = true
+      router.push({
+        path: `/payment_list/export`,
+      })
+    }
+    const detail = ref({
       type: 'popup', // String 'popup' or 'page'
       getOnClose: true,
       classes: [''], // List class
@@ -171,7 +232,7 @@ const table = {
       activeTab: null,
       tabs: [
         {
-          path: 'new_card',
+          path: 'export',
           id: 1,
           name: 'Основные',
           type: FormDefault,
@@ -180,25 +241,11 @@ const table = {
           alias: 'account_bank',
           active: false,
           routeParam: 'card_id',
-          fields: [
-            dateField({
-              label: 'Период',
-              name: 'period',
-              subtype: 'period',
-              placeholder: '',
-              class: [''],
-              position: {
-                cols: 12,
-                sm: 12,
-              },
-              validations: { required },
-              bootstrapClass: [''],
-            }),
-          ],
+          fields: [dateFieldExport, personalExport],
           actions: [
             stringAction({
               text: 'Закрыть',
-              color: 'error',
+              color: 'textDefault',
               name: 'closePopup',
               action: 'closePopup',
               skipValidation: true,
@@ -207,7 +254,7 @@ const table = {
               text: 'Сохранить',
               type: 'submit',
               module: 'form/create',
-              url: 'create/pay/by_service',
+              url: 'report/personal/payment_list',
               name: 'createForm',
               action: 'createForm',
               handlingResponse: {
@@ -223,7 +270,7 @@ const table = {
           formData: {},
         },
       ],
-    }
+    })
     watch(
       () => searchInput.value,
       () => {
@@ -249,6 +296,9 @@ const table = {
       period: currentDate.value.date,
       searchInput,
       managerRef,
+      detail,
+      exportPayment,
+      checkedPersonal,
     }
   },
 }
