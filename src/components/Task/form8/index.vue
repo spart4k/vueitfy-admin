@@ -143,7 +143,7 @@
         <v-btn
           small
           color="info"
-          :disabled="disableFinishState !== 2"
+          :disabled="disableFinishState !== 2 || !data.data.zayavka.length"
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>
