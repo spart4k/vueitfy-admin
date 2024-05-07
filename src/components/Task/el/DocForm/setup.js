@@ -115,6 +115,10 @@ const docForm = defineComponent({
       type: String,
       default: 'Приложенные документы:',
     },
+    fromTask: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: function () {
     return {
