@@ -107,10 +107,10 @@ export default {
     }
     const removed = (file) => {
       if (!props.options.withoutSave) {
-        const index = proxyVal.value.findIndex(
+        const index = proxyVal.value?.findIndex(
           (x) => x[0].upload.uuid === file.upload.uuid
         )
-        proxyVal.value.splice(index, 1)
+        proxyVal.value?.splice(index, 1)
       }
     }
     watch(

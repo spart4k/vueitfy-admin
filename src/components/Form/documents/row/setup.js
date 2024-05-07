@@ -1468,7 +1468,7 @@ export default {
               doc_id: props.document.doc_id,
               path_doc,
               id: !props.delFile ? props.document.id : undefined,
-              from_task: props.from_task ? props.from_task : undefined,
+              from_task: props.fromTask ? props.fromTask : undefined,
             },
           })
         },
