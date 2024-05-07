@@ -76,10 +76,8 @@ const docsRequired = {
       stringField({
         label: 'Стоимость',
         name: `price`,
-        notSend: true,
         placeholder: '',
         readonly: undefined,
-        prescription: 'items',
         class: [''],
         position: {
           cols: 12,
@@ -91,9 +89,6 @@ const docsRequired = {
       checkboxField({
         label: 'ВДС',
         name: `is_debit`,
-        notSend: true,
-        value: true,
-        prescription: 'items',
         placeholder: '',
         readonly: true,
         class: [''],
@@ -105,8 +100,7 @@ const docsRequired = {
       }),
       stringField({
         label: 'Точное наименование',
-        name: `exact_name`,
-        notSend: true,
+        name: `name`,
         placeholder: '',
         readonly: undefined,
         prescription: 'items',
@@ -120,7 +114,6 @@ const docsRequired = {
       stringField({
         label: 'К принятию',
         name: `accept_sum`,
-        notSend: true,
         placeholder: '',
         readonly: undefined,
         prescription: 'items',

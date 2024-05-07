@@ -102,6 +102,7 @@
         @click="confirmTask"
         small
         color="info"
+        class="mr-2"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

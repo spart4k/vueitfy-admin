@@ -221,6 +221,22 @@ const Form18 = defineComponent({
         },
       })
 
+      const { makeRequest: setDataServices } = useRequest({
+        context,
+        request: () => {
+          return store.dispatch('taskModule/setDataServices', {
+            data: {
+              services: services,
+              type_id: targetServicesKey,
+              target_id: data.entity.id,
+              date_target: data.entity.date_target,
+              personal_id: data.entity.personal_id,
+              object_id: data.entity.object_id,
+            },
+          })
+        },
+      })
+
       const { makeRequest: changeStatusTask } = useRequest({
         context,
         request: () => {
@@ -236,7 +252,7 @@ const Form18 = defineComponent({
           })
         },
       })
-
+      await setDataServices()
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {

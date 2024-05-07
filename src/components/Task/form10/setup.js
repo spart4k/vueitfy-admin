@@ -148,6 +148,7 @@ const form10 = defineComponent({
     })
     const { makeRequest: sendAmmountRequest } = useRequest({
       context,
+      successMessage: 'Успешно применено',
       request: () =>
         store.dispatch('taskModule/sendAmmount', {
           data: {
@@ -163,6 +164,24 @@ const form10 = defineComponent({
       //     keyOfObjectSend[elem.doc_id] = !elem.inProcess
       //   }
       // })
+      const items = zayavkaItems.value.map((el) => {
+        if (!el.formData.accept_sum) {
+          el.formData.accept_sum = undefined
+        }
+        return el.formData
+      })
+      console.log(items)
+      const { makeRequest: sendZayavkaItems } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/sendZayavkaItems', {
+            status: 2,
+            data: {
+              items,
+              id: props.data.data.zayavka.id,
+            },
+          }),
+      })
       if (!zayavkaValid.value && props.data.data.zayavka.payment_type === 3) {
         zayavkaItems.value.forEach((el) => {
           if (!el.formData.accept_sum) {
@@ -170,8 +189,9 @@ const form10 = defineComponent({
           }
         })
         return
-      } else if (props.data.data.zayavka.payment_type === 3) {
+      } else if (zayavkaValid.value) {
         // send
+        await sendZayavkaItems()
       }
       const { makeRequest: changeStatus } = useRequest({
         context,
