@@ -39,6 +39,7 @@
             :showFields="false"
             :showDropzone="true"
             :withoutSave="true"
+            :fromTask="true"
           ></DocForm>
           <!-- <v-expansion-panels>
             <v-expansion-panel
