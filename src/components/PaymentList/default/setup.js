@@ -257,6 +257,7 @@ const table = {
               url: 'report/personal/payment_list',
               name: 'createForm',
               action: 'createForm',
+              download: true,
               handlingResponse: {
                 context: 'result',
                 result: 'data',
