@@ -103,7 +103,9 @@ const Form7 = defineComponent({
     const docMainRef = ref(null)
     const docMainValid = computed(() => {
       if (isHasOsnDoc) {
-        return !docMainRef.value.vForm.$invalid && docMainRef.value.osnConfirmed
+        return (
+          !docMainRef.value?.vForm.$invalid && docMainRef.value?.osnConfirmed
+        )
       } else {
         return true
       }
@@ -120,6 +122,12 @@ const Form7 = defineComponent({
         allDocsValid.value &&
         (isHasCard ? bankCardId.value : true) &&
         (isHasOsnDoc ? docMainValid.value : true)
+      ) {
+        return true
+      } else if (
+        !props.data.data.docs_id.length &&
+        isHasOsnDoc &&
+        docMainValid.value
       ) {
         return true
       } else {
@@ -285,6 +293,8 @@ const Form7 = defineComponent({
       docMainData,
       docMainRef,
       rejectedComment,
+      allDocsValid,
+      docMainValid,
     }
   },
 })
