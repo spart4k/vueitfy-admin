@@ -7,8 +7,9 @@
             <div class="manager-head">
               <div class="manager-head-info">
                 <v-checkbox
-                  @click="(event) => event.stopPropagation()"
+                  @click.stop="touchManager(manager)"
                   class=""
+                  v-model="manager.touching"
                 ></v-checkbox>
                 <span>{{ manager.account_name }}</span>
               </div>
@@ -48,7 +49,11 @@
               :key="row.personal_id"
               class="personal"
             >
-              <v-checkbox @click.stop class=""></v-checkbox>
+              <v-checkbox
+                v-model="row.touching"
+                @click.stop
+                class=""
+              ></v-checkbox>
               <span> {{ row.personal_name }} </span>
             </div>
           </v-expansion-panel-content>

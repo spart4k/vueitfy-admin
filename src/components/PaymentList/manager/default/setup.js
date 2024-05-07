@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import moment from 'moment'
 import personal from '../../personal/index.vue'
+import { object } from '@/pages'
 
 //import { tableApi } from '@/api'
 
@@ -53,7 +54,6 @@ const table = {
     const period = toRef(props, 'period')
     const objects = ref(null)
     // const period = inject('period')
-    const total = ref({})
     console.log(period)
     const { makeRequest, loading } = useRequest({
       context,
@@ -67,18 +67,30 @@ const table = {
         }),
     })
 
-    const getObjects = async () => {
+    const getObjects = async (touching) => {
       console.log('update')
-      if (objects.value !== null) return
+      if (objects.value !== null) {
+        if (touching) {
+          objects.value.forEach((element) => {
+            element.touching = true
+          })
+        }
+        return
+      }
       isOpen.value = undefined
       if (loading.value) {
         return
       } else {
         try {
-          const { result } = await makeRequest()
+          let { result } = await makeRequest()
           if (result) {
+            result = result.map((el) => {
+              return {
+                ...el,
+                touching,
+              }
+            })
             objects.value = result
-            total.value = result
             isOpen.value = 0
             console.log('getItems')
           }
@@ -95,6 +107,13 @@ const table = {
     }
     const openPersonal = (row) => {
       emit('openPersonal', row)
+    }
+    const touchManager = async () => {
+      isOpen.value = 0
+      await getObjects(true)
+      if (!props.manager.touching) {
+        objects.value.forEach((el) => (el.touching = false))
+      }
     }
     watch(
       () => isOpen.value,
@@ -115,9 +134,10 @@ const table = {
     return {
       isOpen,
       objects,
-      total,
+
       loading,
       openPersonal,
+      touchManager,
     }
   },
 }
