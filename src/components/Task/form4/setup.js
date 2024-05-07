@@ -67,7 +67,7 @@ const Form4 = defineComponent({
       name: 'habitaion',
       items: [...data.data.habitations, { id: 0, name: '-Самостоятельное-' }],
       solo: false,
-      required: true,
+      // required: true,
       selectOption: {
         text: 'name',
         value: 'id',
