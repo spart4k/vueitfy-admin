@@ -20,11 +20,7 @@
       <div class="mb-7">
         <span>Приложите документы</span>
         <v-expansion-panels multiple>
-          <v-expansion-panel
-            v-for="(item, index) in docs"
-            :key="index"
-            ref="docs"
-          >
+          <v-expansion-panel v-for="(item, index) in docs" :key="index">
             <v-expansion-panel-header>
               <div>
                 <span>
@@ -37,9 +33,7 @@
             <v-expansion-panel-content>
               <div v-if="item.path_doc" style="margin-top: 10px">
                 Скан:
-                <a
-                  download
-                  :href="'https://test.api.personal-crm.ru' + item.path_doc"
+                <a download :href="$root.env.VUE_APP_STORE + item.path_doc"
                   ><v-icon left width="10px"> $IconDocument </v-icon></a
                 >
               </div>

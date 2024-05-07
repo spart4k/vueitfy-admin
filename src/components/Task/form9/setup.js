@@ -364,7 +364,7 @@ const Form8 = defineComponent({
       isSetFilesCloseSchet,
       clearDropzone,
       listNewChet,
-      docs,
+      docs: props.data.data.docs,
       attachedFile,
     }
   },
