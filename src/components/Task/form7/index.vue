@@ -31,6 +31,7 @@
         :entity="entity"
         :task="JSON.parse(data.task.dop_data)"
         :correct="true"
+        :showFields="true"
         ref="docFormRef"
       ></DocForm>
       <!-- <FormComment /> -->
