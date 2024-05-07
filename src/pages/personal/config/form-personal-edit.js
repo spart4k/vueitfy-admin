@@ -411,9 +411,8 @@ export default {
       url: 'get/pagination_list/habitation',
       defaultItems: [
         {
-          id: 11,
+          id: 0,
           name: '--Самостоятельное--',
-          bank_id: 11,
         },
       ],
       position: {

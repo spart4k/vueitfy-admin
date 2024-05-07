@@ -58,6 +58,12 @@ export default {
       },
       placeholder: '',
       class: [''],
+      defaultItems: [
+        {
+          id: 0,
+          name: '--Самостоятельное--',
+        },
+      ],
       selectOption: {
         text: 'name',
         value: 'id',
@@ -70,14 +76,17 @@ export default {
       dependence: [
         {
           type: 'default',
-          fillField: [
-            {
-              formKey: 'personal_habitation',
-              compareKey: 'id',
-              objectKey: 'id',
-              targetKey: 'habitation_id',
-            },
-          ],
+          action: {
+            type: 'hideOptions',
+            field: 'personal_habitation',
+            targetField: 'habitation_id',
+            condition: [
+              {
+                value: 0,
+                options: [0],
+              },
+            ],
+          },
         },
       ],
       validations: { required },
@@ -94,7 +103,7 @@ export default {
       url: 'get/pagination_list/habitation',
       defaultItems: [
         {
-          id: 11,
+          id: 0,
           name: '--Самостоятельное--',
         },
       ],
@@ -103,6 +112,12 @@ export default {
           field: 'personal_id',
           value: '',
           routeKey: 'id',
+          type: 'num',
+        },
+        {
+          field: 'personal_habitation',
+          alias: 'habitation_id',
+          value: '',
           type: 'num',
         },
       ],
@@ -126,8 +141,14 @@ export default {
       classes: [''],
       isShow: {
         value: false,
-        reverse: true,
-        conditions: [{ field: 'personal_habitation', value: [11] }],
+        conditions: [
+          { field: 'personal_habitation', value: [0], reverse: true },
+          {
+            field: 'habitation_id',
+            target: 'value',
+            value: 'notEmpty',
+          },
+        ],
       },
       position: {
         cols: 12,
@@ -143,8 +164,14 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        reverse: true,
-        conditions: [{ field: 'personal_habitation', value: [11] }],
+        conditions: [
+          { field: 'personal_habitation', value: [0], reverse: true },
+          {
+            field: 'habitation_id',
+            target: 'value',
+            value: 'notEmpty',
+          },
+        ],
       },
       position: {
         cols: 12,
@@ -161,8 +188,14 @@ export default {
       classes: [''],
       isShow: {
         value: false,
-        reverse: true,
-        conditions: [{ field: 'habitation_id', value: [11] }],
+        conditions: [
+          { field: 'habitation_id', value: [0], reverse: true },
+          {
+            field: 'habitation_id',
+            target: 'value',
+            value: 'notEmpty',
+          },
+        ],
       },
       position: {
         cols: 12,
@@ -179,8 +212,14 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        reverse: true,
-        conditions: [{ field: 'habitation_id', value: [11] }],
+        conditions: [
+          { field: 'habitation_id', value: [0], reverse: true },
+          {
+            field: 'habitation_id',
+            target: 'value',
+            value: 'notEmpty',
+          },
+        ],
       },
       position: {
         cols: 12,
@@ -195,8 +234,14 @@ export default {
       class: [''],
       isShow: {
         value: false,
-        reverse: true,
-        conditions: [{ field: 'habitation_id', value: [11] }],
+        conditions: [
+          { field: 'habitation_id', value: [0], reverse: true },
+          {
+            field: 'habitation_id',
+            target: 'value',
+            value: 'notEmpty',
+          },
+        ],
       },
       position: {
         cols: 12,
@@ -219,11 +264,24 @@ export default {
       type: 'submit',
       color: 'primary',
       module: 'form/create',
-      url: 'tempalweq/personal_doc',
+      url: 'create/personal/habitation',
       useRouteKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
-      download: true,
       name: 'createForm',
       action: 'createForm',
+      handlingResponse: {
+        1: {
+          text: 'Проживание изменено',
+          color: 'success',
+        },
+        2: {
+          text: 'Превышен лимит регистраций',
+          color: 'error',
+        },
+        3: {
+          text: 'Дата заселения совпадает с периодом проживания на другом объекте',
+          color: 'error',
+        },
+      },
     }),
   ],
 }

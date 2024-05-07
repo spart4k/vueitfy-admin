@@ -650,7 +650,6 @@ const table = {
         document.body.removeChild(link)
         getItems()
       }
-      console.log(button)
       if (button.refreshTable) {
         getItems()
       }

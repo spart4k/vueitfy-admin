@@ -268,18 +268,22 @@ export default {
             prescription: 'items',
             placeholder: '',
             readonly:
-              isEdit.value === 'edit'
-                ? {
-                    value: false,
-                    condition: [
-                      {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
-                        type: false,
-                      },
-                    ],
-                  }
+              proxyTab.value.path === 'id'
+                ? formData?.type_zayavka === 2
+                  ? true
+                  : {
+                      value: false,
+                      condition: [
+                        {
+                          target: 'originalData',
+                          field: 'status',
+                          value: [1],
+                          type: false,
+                        },
+                      ],
+                    }
+                : formData?.vector_id === 2
+                ? true
                 : undefined,
             class: [''],
             position: {
@@ -414,6 +418,54 @@ export default {
           const item = Object.keys(formData).find((x) => x === 'is_migr')
           formData[item] = true
         }
+      }
+
+      if (proxyTab.value.path === 'add') {
+        watch(
+          () => formData?.vector_id,
+          () => {
+            const vdsArray = proxyTab.value.fields.filter((x) =>
+              x.name.includes('vds')
+            )
+            vdsArray.forEach((item) => {
+              if (formData?.vector_id === 2) {
+                item.readonly = true
+                formData[item.name] = false
+              } else {
+                item.readonly = false
+              }
+            })
+          },
+          { immediate: true, deep: true }
+        )
+      } else if (proxyTab.value.path === 'id') {
+        watch(
+          () => formData?.type_zayavka,
+          () => {
+            const vdsArray = proxyTab.value.fields.filter((x) =>
+              x.name.includes('vds')
+            )
+            vdsArray.forEach((item) => {
+              if (formData?.type_zayavka === 2) {
+                item.readonly = true
+                formData[item.name] = false
+              } else {
+                item.readonly = {
+                  value: false,
+                  condition: [
+                    {
+                      target: 'originalData',
+                      field: 'status',
+                      value: [1],
+                      type: false,
+                    },
+                  ],
+                }
+              }
+            })
+          },
+          { immediate: true, deep: true }
+        )
       }
     })
 

@@ -330,7 +330,7 @@ export default function ({
       // eslint-disable-next-line
       const key = text.match(/\%\w{1,}\%/g)
 
-      key.forEach((item) => {
+      key?.forEach((item) => {
         const keyFormated = item.split('%')[1]
         text = text.replace(item, contextData[keyFormated])
       })
@@ -1030,10 +1030,9 @@ export default function ({
           if (Array.isArray(condition.value)) cloneAi = [...condition.value]
           else cloneAi = [condition.value]
 
-          if (Array.isArray(condition.value)) {
+          if (Array.isArray(formData[dependence.action.field])) {
             cloneFieldEl = [...formData[dependence.action.field]]
           } else cloneFieldEl = [formData[dependence.action.field]]
-
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
         if (dep) {
@@ -1262,6 +1261,8 @@ export default function ({
         el.items = [...el.items, ...data.rows]
       }
 
+      el.hideItems = el.items
+
       if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
       }
@@ -1315,6 +1316,10 @@ export default function ({
         showField(field.type, field, true)
       }
     }
+  }
+
+  const refreshForm = () => {
+    getData()
   }
 
   const refreshSelectItems = async (field) => {
@@ -1686,19 +1691,22 @@ export default function ({
             }
           } else if (el.target === 'value') {
             if (el.value === 'notEmpty') {
-              return formData[el.field]
+              return `${formData[el.field]}`
             }
           } else {
             return el.value.some((ai) => {
+              let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
                 const cloneFieldEl = [...formData[el.field]]
-                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
               } else {
-                return [ai].includes(
+                result = [ai].includes(
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
+              if (el.reverse) return !result
+              return result
             })
           }
         })
@@ -1711,19 +1719,22 @@ export default function ({
             }
           } else if (el.target === 'value') {
             if (el.value === 'notEmpty') {
-              return formData[el.field]
+              return `${formData[el.field]}`
             }
           } else {
             return el.value.some((ai) => {
+              let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
                 const cloneFieldEl = [...formData[el.field]]
-                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
               } else {
-                return [ai].includes(
+                result = [ai].includes(
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
+              if (el.reverse) return !result
+              return result
             })
           }
         })
@@ -1732,7 +1743,6 @@ export default function ({
       if (field.isShow?.type === 'some') func = someMethod
 
       let funcResult = func()
-      if (field.isShow?.reverse) funcResult = !funcResult
       return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
     if (field.isShow?.label) {
@@ -1867,5 +1877,6 @@ export default function ({
     popupForm,
     appendActionShow,
     refreshSelectItems,
+    refreshForm,
   }
 }

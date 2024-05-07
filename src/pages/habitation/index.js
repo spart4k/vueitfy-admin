@@ -1,5 +1,4 @@
 import filters from './filters'
-import filtersArchive from './filtersArchive'
 
 import formHabitationAddEdit from './config/form-habitation-add-edit'
 import formOwnerAddEdit from './config/form-owner-add-edit'
@@ -60,7 +59,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.id',
           value: 'id',
           search: {
             field: '',
@@ -85,7 +84,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.name',
           value: 'name',
           search: {
             field: '',
@@ -110,7 +109,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'ci.name',
           value: 'city',
           search: {
             field: '',
@@ -135,7 +134,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'gr.name',
           value: 'region',
           search: {
             field: '',
@@ -160,7 +159,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'ht.name',
           value: 'habitation_type',
           search: {
             field: '',
@@ -185,7 +184,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.address',
           value: 'address',
           search: {
             field: '',
@@ -210,7 +209,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.count_place',
           value: 'capacity',
           search: {
             field: '',
@@ -292,7 +291,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'r.id',
           value: 'id',
           search: {
             field: '',
@@ -317,7 +316,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'r.name',
           value: 'name',
           search: {
             field: '',
@@ -342,7 +341,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'gr.name',
           value: 'region',
           search: {
             field: '',
@@ -367,7 +366,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'r.telephone',
           value: 'telephone',
           search: {
             field: '',
@@ -449,7 +448,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'oh.id',
           value: 'id',
           search: {
             field: '',
@@ -474,7 +473,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'oh.name',
           value: 'name',
           search: {
             field: '',
@@ -549,7 +548,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'oh.telephone',
           value: 'telephone',
           search: {
             field: '',
@@ -590,7 +589,7 @@ export const config = {
           //   function: searchInputing,
         },
         headerFixed: true,
-        url: 'get/pagination/habitation',
+        url: 'get/pagination/habitation_archive',
         title: 'Архив',
       },
       panel: {
@@ -624,7 +623,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.id',
           value: 'id',
           search: {
             field: '',
@@ -649,7 +648,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.name',
           value: 'name',
           search: {
             field: '',
@@ -674,7 +673,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'ci.name',
           value: 'city',
           search: {
             field: '',
@@ -699,7 +698,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'gr.name',
           value: 'region',
           search: {
             field: '',
@@ -724,7 +723,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'ht.name',
           value: 'habitation_type',
           search: {
             field: '',
@@ -749,7 +748,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.address',
           value: 'address',
           search: {
             field: '',
@@ -774,7 +773,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.count_place',
           value: 'capacity',
           search: {
             field: '',
@@ -802,7 +801,7 @@ export const config = {
         tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,
       },
-      filters: filtersArchive,
+      filters,
     },
   ],
 }
