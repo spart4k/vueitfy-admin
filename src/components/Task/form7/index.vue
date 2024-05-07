@@ -21,7 +21,7 @@
         ref="docMainRef"
       />
       <DocForm
-        v-if="docs && docs.length"
+        v-if="docsData && docsData.length"
         class="mb-10"
         @changeDocs="changeDocs"
         :docsData="docsData"
