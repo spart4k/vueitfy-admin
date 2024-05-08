@@ -616,11 +616,10 @@ const Form8 = defineComponent({
         ? props.data.data.docs_grajdanstvo.length - 1
         : props.data.data.docs_grajdanstvo.length
       const attached = docFormRef.value?.docRows.filter((el) => el.isCorrect)
-
       if (hasDmsAndOms) {
         const dms = attached?.find((el) => el.document.doc_id == 11)
         const oms = attached?.find((el) => el.document.doc_id == 27)
-        if ((dms || oms) && attached.length === needDocumentsLength) {
+        if ((dms || oms) && attached.length >= needDocumentsLength) {
           result = true
         } else {
           result = false
