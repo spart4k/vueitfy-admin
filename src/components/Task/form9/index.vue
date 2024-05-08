@@ -112,9 +112,7 @@
         <v-btn
           small
           color="info"
-          :disabled="
-            listDisbledDocuments !== 0 || !data.data.zayavka.close_schet.length
-          "
+          :disabled="!docsAttached || !data.data.zayavka.close_schet.length"
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>

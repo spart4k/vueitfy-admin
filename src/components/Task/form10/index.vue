@@ -43,7 +43,7 @@
               ></DocAccepting>
             </div>
             <div
-              v-if="
+              v-show="
                 zayavkaNameList.length && data.data.zayavka.payment_type === 3
               "
               class="zayavka-items"
@@ -105,29 +105,6 @@
           </div>
         </v-col>
       </v-row>
-      <v-row v-else>
-        <v-col>
-          <div>
-            <v-text-field
-              variant="outlined"
-              v-model="accepted_amount"
-              class="sum-input"
-              label="Сумма"
-            >
-            </v-text-field>
-            <div class="d-flex justify-end">
-              <v-btn
-                @click="sendAmmount"
-                small
-                color="green"
-                class="white--text"
-                :disabled="!accepted_amount && accepted_amount !== 0"
-                >Принять</v-btn
-              >
-            </div>
-          </div>
-        </v-col>
-      </v-row>
       <v-row class="py-2" justify="end">
         <v-btn
           class="mr-3"
@@ -149,7 +126,7 @@
           color="info"
           @click="sendTaskFinish"
           small
-          :disabled="!allChecked || start_accepted_amount === null"
+          :disabled="!allChecked"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
