@@ -1,8 +1,11 @@
 <template>
   <div class="v-table">
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
-      <div :class="true ? 'v-table-panel--fixed' : ''" class="v-table-panel">
-        <div style="visibility: hidden" class="v-table-panel-items">
+      <div
+        :class="true ? 'v-table-panel--fixed' : ''"
+        class="v-table-panel align-center"
+      >
+        <div style="" class="v-table-panel-items">
           <div class="v-table-panel-items__actions flex-wrap">
             <!-- <v-btn
               v-for="(button, indexButton) in availablePanelBtn"
@@ -17,15 +20,7 @@
               <p v-if="true">{{ button.label }}</p>
             </v-btn> -->
             <!-- buttons -->
-          </div>
-          <div v-if="true" class="v-table-panel-items__search">
-            <v-text-field
-              label="Поиск"
-              hide-details="auto"
-              clearable
-              v-model="searchInput"
-            ></v-text-field>
-            <!-- <v-btn small class="ml-2" elevation="2"> Фильтры </v-btn> -->
+            <v-btn @click="exportPayment" small color="primary">Экспорт</v-btn>
           </div>
         </div>
         <div class="v-table-panel-date">
@@ -97,6 +92,7 @@
               :period="currentDate.date"
               @openPersonal="openPersonal"
               :searchValue="searchInput"
+              ref="managerRef"
             />
           </template>
         </template>
@@ -115,6 +111,7 @@
     >
       <router-view
         :row="activePerson"
+        :detail="detail"
         @closePopup="closePopupForm"
         :period="currentDate.date"
       />

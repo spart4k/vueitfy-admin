@@ -209,6 +209,14 @@ const routes = [
     component: PaymentListView,
     children: [
       {
+        name: 'payment_list/export',
+        path: 'export',
+        meta: {
+          mode: ['export'],
+        },
+        component: Detail,
+      },
+      {
         name: 'payment_list/:object',
         path: ':object',
         meta: {
