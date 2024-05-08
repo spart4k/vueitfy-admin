@@ -101,9 +101,7 @@
       </div>
       <v-row
         :class="[
-          listDisbledDocuments > 0 || !data.data.zayavka.id
-            ? 'overflow-inputs'
-            : '',
+          !docsAttached || !data.data.zayavka.id ? 'overflow-inputs' : '',
         ]"
       >
         <v-col cols="6">
@@ -136,7 +134,7 @@
           class="mr-3"
           small
           @click="$emit('closePopup')"
-          color="blue-grey"
+          color="defaultText"
         >
           <v-icon small>mdi-close</v-icon>
           Закрыть
@@ -144,7 +142,11 @@
         <v-btn
           small
           color="info"
-          :disabled="disableFinishState !== 2 || !data.data.zayavka.id"
+          :disabled="
+            !docsAttached ||
+            (!data.data.zayavka.id && !patent[5]) ||
+            !patent[15]
+          "
           @click="sendTaskFinish"
         >
           <v-icon small>mdi-content-save</v-icon>

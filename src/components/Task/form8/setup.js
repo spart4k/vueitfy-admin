@@ -346,7 +346,16 @@ const Form8 = defineComponent({
         }
       )
 
-      const docsSpr = { 7: 51, 8: 52, 11: 55, 16: 54, 18: 43, 19: 50, 23: 44 }
+      const docsSpr = {
+        7: 51,
+        8: 52,
+        11: 55,
+        16: 54,
+        18: 43,
+        19: 50,
+        23: 44,
+        27: 67,
+      }
       const arr = listDocuments.value.filter((x) => x.inProcess)
       const filterArray = arr.reduce((acc, item) => {
         if (docsSpr[item.doc_id]) acc.push(docsSpr[item.doc_id])
@@ -598,6 +607,34 @@ const Form8 = defineComponent({
         (el) => Object.keys(el.basketFiles).length
       )
     })
+    const docsAttached = computed(() => {
+      let result = false
+      const hasDmsAndOms =
+        props.data.data.docs_grajdanstvo.includes(27) &&
+        props.data.data.docs_grajdanstvo.includes(11)
+      const needDocumentsLength = hasDmsAndOms
+        ? props.data.data.docs_grajdanstvo.length - 1
+        : props.data.data.docs_grajdanstvo.length
+      const attached = docFormRef.value?.docRows.filter((el) => el.isCorrect)
+
+      if (hasDmsAndOms) {
+        const dms = attached?.find((el) => el.document.doc_id == 11)
+        const oms = attached?.find((el) => el.document.doc_id == 27)
+        if ((dms || oms) && attached.length === needDocumentsLength) {
+          result = true
+        } else {
+          result = false
+        }
+      } else if (attached.length === needDocumentsLength) {
+        result = true
+      } else {
+        result = false
+      }
+      return result
+      // return docFormRef.value?.docRows.some(
+      //   (el) => Object.keys(el.basketFiles).length
+      // )
+    })
     const closePopupForm = (route) => {
       if (route) router.push({ name: route })
       else router.back()
@@ -630,21 +667,21 @@ const Form8 = defineComponent({
       ctx.emit('refreshData')
     }
     onMounted(() => {
-      props.data.data.docs_grajdanstvo.forEach((item, index) => {
-        let pasteObject = props.data.data.docs.find(
-          (doc) => doc.doc_id === item
-        )
-        if (pasteObject) {
-          pasteObject['inProcess'] = false
-        } else {
-          pasteObject = { doc_id: item }
-          pasteObject['inProcess'] = true
-          listDisbledDocuments.value = listDisbledDocuments.value + 1
+      listDocuments.value = props.data.data.docs_grajdanstvo.map(
+        (item, index) => {
+          let pasteObject = props.data.data.docs.find(
+            (doc) => doc.doc_id === item
+          )
+          if (pasteObject) {
+            pasteObject['inProcess'] = false
+          } else {
+            pasteObject = { doc_id: item }
+            pasteObject['inProcess'] = true
+            listDisbledDocuments.value = listDisbledDocuments.value + 1
+          }
+          return pasteObject
         }
-        listDocuments.value.push(pasteObject)
-        console.log(docFormRef.value)
-      })
-      // console.log(docFormRef.value)
+      )
 
       if (
         config.detail &&
@@ -681,6 +718,7 @@ const Form8 = defineComponent({
       needPatent,
       refreshData,
       hasZayavka,
+      docsAttached,
     }
   },
 })

@@ -65,20 +65,21 @@ const Form8 = defineComponent({
     }
     const closeSchet = toRef(props.data.data.zayavka, 'close_schet')
     onMounted(() => {
-      props.data.data.docs_grajdanstvo.forEach((item, index) => {
-        let pasteObject = props.data.data.docs.find(
-          (doc) => doc.doc_id === item
-        )
-        console.log(pasteObject)
-        if (pasteObject) {
-          pasteObject['inProcess'] = false
-        } else {
-          pasteObject = { doc_id: item }
-          pasteObject['inProcess'] = true
-          listDisbledDocuments.value = listDisbledDocuments.value + 1
+      listDocuments.value = props.data.data.docs_grajdanstvo.map(
+        (item, index) => {
+          let pasteObject = props.data.data.docs.find(
+            (doc) => doc.doc_id === item
+          )
+          if (pasteObject) {
+            pasteObject['inProcess'] = false
+          } else {
+            pasteObject = { doc_id: item }
+            pasteObject['inProcess'] = true
+            listDisbledDocuments.value = listDisbledDocuments.value + 1
+          }
+          return pasteObject
         }
-        listDocuments.value.push(pasteObject)
-      })
+      )
       listNewChet.value = [...closeSchet.value]
     })
     let removeFilesPatent = (e, options) => {}
@@ -338,6 +339,36 @@ const Form8 = defineComponent({
         (el) => Object.keys(el.basketFiles).length
       )
     })
+
+    const docsAttached = computed(() => {
+      let result = false
+      const hasDmsAndOms =
+        props.data.data.docs_grajdanstvo.includes(27) &&
+        props.data.data.docs_grajdanstvo.includes(11)
+      const needDocumentsLength = hasDmsAndOms
+        ? props.data.data.docs_grajdanstvo.length - 1
+        : props.data.data.docs_grajdanstvo.length
+      const attached = docFormRef.value?.docRows.filter((el) => el.isCorrect)
+
+      if (hasDmsAndOms) {
+        const dms = attached?.find((el) => el.document.doc_id == 11)
+        const oms = attached?.find((el) => el.document.doc_id == 27)
+        if ((dms || oms) && attached.length === needDocumentsLength) {
+          result = true
+        } else {
+          result = false
+        }
+      } else if (attached.length === needDocumentsLength) {
+        result = true
+      } else {
+        result = false
+      }
+      return result
+      // return docFormRef.value?.docRows.some(
+      //   (el) => Object.keys(el.basketFiles).length
+      // )
+    })
+
     let sendTaskFinish = async () => {
       //   $.ajax('/common/save/personal', {
       //     method: "POST",
@@ -398,6 +429,7 @@ const Form8 = defineComponent({
       docFormRef,
       getDocName,
       closeSchet,
+      docsAttached,
     }
   },
 })

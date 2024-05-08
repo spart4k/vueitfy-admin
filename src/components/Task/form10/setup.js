@@ -166,7 +166,7 @@ const form10 = defineComponent({
       // })
       const items = zayavkaItems.value.map((el) => {
         if (!el.formData.accept_sum) {
-          el.formData.accept_sum = undefined
+          el.formData.accept_sum = el.formData.price * el.formData.count
         }
         return el.formData
       })
@@ -175,7 +175,6 @@ const form10 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/sendZayavkaItems', {
-            status: 2,
             data: {
               items,
               id: props.data.data.zayavka.id,
