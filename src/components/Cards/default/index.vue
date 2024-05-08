@@ -1,5 +1,6 @@
 <template>
   <div class="v-cards-wrapper">
+    <!-- {{ $props.options }} -->
     <div class="v-cards-wrapper_panel"></div>
     <div class="v-cards-wrapper-container">
       <div class="v-cards-wrapper-container_list">

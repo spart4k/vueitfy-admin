@@ -979,6 +979,26 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
+    children: [
+      {
+        name: 'corporate-cards/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить карту',
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать карту',
+        },
+        component: Detail,
+      },
+    ],
     component: CorporateCardsView,
   },
   {

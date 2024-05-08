@@ -649,6 +649,8 @@ const table = {
         link.click()
         document.body.removeChild(link)
         getItems()
+      } else if (type === 'changeComp') {
+        emit('changeComp')
       }
       if (button.refreshTable) {
         getItems()

@@ -1,21 +1,67 @@
 <template>
+  <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <CardsDefault />
+    <TableDefault
+      v-if="tableView"
+      @changeComp="changeComp"
+      @changeheadershow="changeheadershow"
+      :options="config"
+    />
+    <CorpCards :options="config" @changeComp="changeComp" v-else />
   </div>
+  <!--</Layout>-->
 </template>
 
 <script>
-// import Vue from 'vue'
-import CardsDefault from '@/components/Cards/default/index.vue'
+import _ from 'lodash'
+import { onMounted, ref } from 'vue'
+import useView from '@/compositions/useView.js'
+
+import { config as cardConfigOrig } from '@/pages/card/index'
+import CorpCards from '@/components/Cards/default/index.vue'
 
 export default {
   name: 'CorporateCards-View',
+
   components: {
-    CardsDefault,
+    //Layout,
+    CorpCards,
   },
-  data() {
-    return {}
+  methods: {
+    changeheadershow(options) {
+      const { headerEl, value } = options
+      headerEl.isShow = value
+    },
   },
-  methods: {},
+  setup() {
+    const tableView = ref(true)
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+      convertFormConfig,
+    } = useView()
+    const config = _.cloneDeep(cardConfigOrig)
+
+    configRouteConvert({
+      config: config,
+      newPath: 'edit',
+      settings: {
+        index: [1],
+      },
+    })
+
+    const changeComp = () => {
+      tableView.value = !tableView.value
+    }
+    onMounted(() => {})
+    return {
+      config,
+      changeComp,
+      tableView,
+    }
+  },
 }
 </script>
