@@ -62,16 +62,19 @@ const Form4 = defineComponent({
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
+
     const autocompleteConfig = {
       label: 'Выберите проживание',
       name: 'habitaion',
-      items: [...data.data.habitations, { id: 0, name: '-Самостоятельное-' }],
+      items: [],
       solo: false,
       // required: true,
+      url: '/get/pagination_list/habitation',
       selectOption: {
         text: 'name',
         value: 'id',
       },
+      filter: [{ value: data.entity.id, alias: 'personal_id', type: 'num' }],
     }
     const { makeRequest: delInfoAFile } = useRequest({
       context,

@@ -33,6 +33,7 @@
     <Autocomplete
       :readonly="autocompleteConfig.readonly"
       :field="autocompleteConfig"
+      :filter="autocompleteConfig.filter"
       v-model="selectName"
     />
     <span style="font-size: 18px" class="font-weight-bold">
