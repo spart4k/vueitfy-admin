@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
 import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
@@ -62,11 +62,35 @@ const Form4 = defineComponent({
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
-
+    const personal_id = data.entity.id
+    const habitaionList = ref([])
+    const getListZayavka = async () => {
+      const { makeRequest: makeRequestList } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('list/get', [
+            {
+              alias: 'personal_habitation',
+              filter: [
+                {
+                  alias: 'personal_id',
+                  value: [personal_id],
+                  type: 'num',
+                },
+              ],
+            },
+          ]),
+      })
+      const { data } = await makeRequestList()
+      if (data) {
+        habitaionList.value = data.personal_habitation
+      }
+    }
+    console.log(data)
     const autocompleteConfig = {
       label: 'Выберите проживание',
       name: 'habitaion',
-      items: [{ id: 0, name: '-Самостоятельное-' }],
+      items: [...habitaionList.value, { id: 0, name: '-Самостоятельное-' }],
       defaultItems: [{ id: 0, name: '-Самостоятельное-' }],
       solo: false,
       // required: true,
@@ -75,7 +99,9 @@ const Form4 = defineComponent({
         text: 'name',
         value: 'id',
       },
-      filter: [{ value: [data.entity.id], alias: 'personal_id', type: 'num' }],
+      filter: [
+        { value: [data?.entity?.id], alias: 'personal_id', type: 'num' },
+      ],
     }
     const { makeRequest: delInfoAFile } = useRequest({
       context,
@@ -177,6 +203,10 @@ const Form4 = defineComponent({
         ctx.emit('getItems')
       }
     }
+
+    onMounted(() => {
+      getListZayavka(data.entity.id)
+    })
 
     // let widthTrasfer = ref('')
     // widthTrasfer.value = JSON.parse(data.task.dop_data).transfer
