@@ -96,39 +96,39 @@
           </div>
         </v-col>
       </v-row>
-      <div>
-        <span class="font-weight-bold">Патент:</span>
-      </div>
-      <v-row
-        :class="[
-          !docsAttached || !data.data.zayavka.id ? 'overflow-inputs' : '',
-        ]"
-      >
-        <v-col cols="6">
-          <Dropzone
-            :options="{
-              withoutSave: false,
-              folder: 'tmp',
-              removeble: false,
-            }"
-            :paramsForEmit="{ item: 5 }"
-            name="patent1"
-            @addFiles="addFilesPatent"
-          ></Dropzone>
-        </v-col>
-        <v-col cols="6">
-          <Dropzone
-            :options="{
-              withoutSave: false,
-              folder: 'tmp',
-              removeble: false,
-            }"
-            name="patent2"
-            :paramsForEmit="{ item: 15 }"
-            @addFiles="addFilesPatent"
-          ></Dropzone>
-        </v-col>
-      </v-row>
+      <template v-if="needPatent">
+        <div>
+          <span class="font-weight-bold">Патент:</span>
+        </div>
+        <v-row
+          :class="[
+            !docsAttached || !data.data.zayavka.id ? 'overflow-inputs' : '',
+          ]"
+        >
+          <v-col cols="6">
+            <Dropzone
+              :options="{
+                withoutSave: false,
+                folder: 'tmp',
+                removeble: false,
+              }"
+              :paramsForEmit="{ item: 5 }"
+              @addFiles="addFilesPatent"
+            ></Dropzone>
+          </v-col>
+          <v-col cols="6">
+            <Dropzone
+              :options="{
+                withoutSave: false,
+                folder: 'tmp',
+                removeble: false,
+              }"
+              :paramsForEmit="{ item: 15 }"
+              @addFiles="addFilesPatent"
+            ></Dropzone>
+          </v-col>
+        </v-row>
+      </template>
       <v-row class="py-2" justify="end">
         <v-btn
           class="mr-3"
@@ -144,8 +144,8 @@
           color="info"
           :disabled="
             !docsAttached ||
-            (!data.data.zayavka.id && !patent[5]) ||
-            !patent[15]
+            (!data.data.zayavka.id && !patent[5] && needPatent) ||
+            (!patent[15] && needPatent)
           "
           @click="sendTaskFinish"
         >

@@ -353,7 +353,7 @@ const Form8 = defineComponent({
       if (hasDmsAndOms) {
         const dms = attached?.find((el) => el.document.doc_id == 11)
         const oms = attached?.find((el) => el.document.doc_id == 27)
-        if ((dms || oms) && attached.length === needDocumentsLength) {
+        if ((dms || oms) && attached.length >= needDocumentsLength) {
           result = true
         } else {
           result = false

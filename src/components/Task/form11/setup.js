@@ -69,7 +69,7 @@ const Form11 = defineComponent({
     const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
-    let sss = JSON.parse(props.data.task.dop_data)
+    let dopData = JSON.parse(props.data.task.dop_data)
     let file = ref(null)
     let comment = ref('')
     let listRequestsForUpload = ref([])
@@ -84,7 +84,7 @@ const Form11 = defineComponent({
     let dropZone = ref(null)
     const listOtherDoc = ref([])
     onMounted(() => {
-      // sss.docs_id.forEach((item) => {
+      // dopData.docs_id.forEach((item) => {
       //   let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
       //   if (pasteObject) {
       //     pasteObject['inProcess'] = true
@@ -340,6 +340,7 @@ const Form11 = defineComponent({
       listDocuments,
       listRequestsForUpload,
       listDisbledDocuments,
+      dopData,
       // addFilesPatent,
       comment,
       dropZone,

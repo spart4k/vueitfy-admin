@@ -1350,7 +1350,7 @@ export default {
           result = 'Дата выдачи'
           break
         case 'check_patent_period':
-          result = 'Период оплаты"'
+          result = 'Период оплаты'
           break
         case 'dms_name':
           result = 'Наименование полиса'
