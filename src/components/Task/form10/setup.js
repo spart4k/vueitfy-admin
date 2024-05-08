@@ -5,6 +5,12 @@ import useRequest from '@/compositions/useRequest'
 import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import store from '@/store'
 import ZayavkaItem from '@/components/Task/el/ZayavkaItem/index.vue'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import useView from '@/compositions/useView.js'
+import { stringField, selectField, checkboxField } from '@/utils/fields.js'
+import _ from 'lodash'
+import { required } from '@/utils/validation'
+import Popup from '@/components/Popup/index.vue'
 
 const form10 = defineComponent({
   name: 'Form10',
@@ -12,6 +18,7 @@ const form10 = defineComponent({
     IconDelete,
     DocAccepting,
     ZayavkaItem,
+    Popup,
   },
   props: {
     data: {
@@ -32,6 +39,24 @@ const form10 = defineComponent({
         route,
       },
     }
+    const { configRouteConvert } = useView()
+    const config = _.cloneDeep(zayavkaConfigOrig)
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-add',
+      settings: {
+        oldPath: 'add',
+      },
+    })
     let errors = ref({
       isActive: false,
       message: 'Ошибка',
@@ -275,6 +300,282 @@ const form10 = defineComponent({
     const addConfirmed = (item) => {
       item.valid = 2
     }
+    const setZayavkaItems = () => {
+      config.detail.tabs[0].fields = _.cloneDeep(
+        zayavkaConfigOrig.detail.tabs[0].fields
+      )
+
+      const from_task_8 = stringField({
+        label: 'Кол-во',
+        name: 'from_task_8',
+        placeholder: '',
+        class: [''],
+        value: true,
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
+
+      const process_id = stringField({
+        label: 'Кол-во',
+        name: 'process_id',
+        placeholder: '',
+        value: props.data.task.process_id,
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
+
+      const task_id = stringField({
+        label: 'Кол-во',
+        name: 'task_id',
+        placeholder: '',
+        class: [''],
+        value: props.data.task.id,
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
+
+      config.detail.tabs[0].fields.push(from_task_8, process_id, task_id)
+
+      const fieldsChanges = {
+        vector_id: {
+          readonly: true,
+        },
+        status_zr: {
+          value: 2,
+        },
+        category_zr: {
+          value: 8,
+          readonly: true,
+        },
+        direction_id: {
+          value: props.data.data.zayavka.direction_id,
+          readonly: true,
+        },
+        personal_zr: {
+          value: props.data.entity.id,
+          readonly: true,
+        },
+        on_yourself: {
+          readonly: true,
+        },
+        is_migr: {
+          value: true,
+        },
+        'btn-decrease': {
+          readonly: true,
+        },
+        'btn-increase': {
+          readonly: true,
+        },
+        from_task_8: {
+          value: true,
+        },
+      }
+      const addConfig = config.detail.tabs[0]
+      Object.keys(fieldsChanges).forEach((key) => {
+        let field = addConfig.fields.find((x) => x.name === key)
+        if (fieldsChanges[key].value) field.value = fieldsChanges[key].value
+        if (fieldsChanges[key].readonly)
+          field.readonly = fieldsChanges[key].readonly
+      })
+      addConfig.lists.push(
+        {
+          alias: 'rashod_vid',
+          filter: [
+            {
+              field: 'category_zr',
+              alias: 'rashod_category_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+        {
+          alias: 'permissions_zr',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+        {
+          alias: 'personal_object_zr',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_zr',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        }
+      )
+
+      const docsSpr = {
+        7: 51,
+        8: 52,
+        11: 55,
+        16: 54,
+        18: 43,
+        19: 50,
+        23: 44,
+        27: 67,
+      }
+      // const arr = listDocuments.value.filter((x) => x.inProcess)
+      // const filterArray = arr.reduce((acc, item) => {
+      //   if (docsSpr[item.doc_id]) acc.push(docsSpr[item.doc_id])
+      //   return acc
+      // }, [])
+      // const btnIndex = addConfig.fields.findIndex(
+      //   (x) => x.id === 'btn-decrease'
+      // )
+
+      // filterArray?.forEach((item, index) => {
+      //   if (!index) {
+      //     const rashod_vid = addConfig.fields.find(
+      //       (x) => x.name === 'rashod_vid'
+      //     )
+      //     const count = addConfig.fields.find((x) => x.name === 'count')
+      //     const vds = addConfig.fields.find((x) => x.name === 'vds')
+      //     rashod_vid.value = item
+      //     rashod_vid.readonly = true
+      //     count.value = '1'
+      //     count.readonly = true
+      //     vds.value = true
+      //     vds.readonly = true
+      //   } else {
+      //     const insertItems = [
+      //       selectField({
+      //         label: 'Наименование',
+      //         name: `rashod_vid%${index}`,
+      //         notSend: true,
+      //         placeholder: '',
+      //         prescription: 'items',
+      //         class: [''],
+      //         value: item,
+      //         readonly: true,
+      //         items: [],
+      //         selectOption: {
+      //           text: 'name',
+      //           value: 'id',
+      //         },
+      //         position: {
+      //           cols: 12,
+      //           sm: 5,
+      //         },
+      //         validations: { required },
+      //         bootstrapClass: [''],
+      //       }),
+      //       stringField({
+      //         label: 'Кол-во',
+      //         name: `count%${index}`,
+      //         notSend: true,
+      //         placeholder: '',
+      //         readonly: true,
+      //         prescription: 'items',
+      //         value: '1',
+      //         class: [''],
+      //         position: {
+      //           cols: 12,
+      //           sm: 2,
+      //         },
+      //         validations: { required },
+      //         bootstrapClass: [''],
+      //       }),
+      //       stringField({
+      //         label: 'Стоимость',
+      //         name: `price%${index}`,
+      //         notSend: true,
+      //         placeholder: '',
+      //         readonly: undefined,
+      //         prescription: 'items',
+      //         class: [''],
+      //         position: {
+      //           cols: 12,
+      //           sm: 3,
+      //         },
+      //         validations: { required },
+      //         bootstrapClass: [''],
+      //       }),
+      //       checkboxField({
+      //         label: 'ВДС',
+      //         name: `vds%${index}`,
+      //         notSend: true,
+      //         value: true,
+      //         prescription: 'items',
+      //         placeholder: '',
+      //         readonly: true,
+      //         class: [''],
+      //         position: {
+      //           cols: 12,
+      //           sm: 2,
+      //         },
+      //         bootstrapClass: [''],
+      //       }),
+      //       stringField({
+      //         label: 'Точное наименование',
+      //         name: `exact_name%${index}`,
+      //         notSend: true,
+      //         placeholder: '',
+      //         readonly: undefined,
+      //         prescription: 'items',
+      //         class: [''],
+      //         position: {
+      //           cols: 12,
+      //           sm: 12,
+      //         },
+      //         bootstrapClass: [''],
+      //       }),
+      //     ]
+      //     addConfig.fields.splice(btnIndex + 5 * (index - 1), 0, ...insertItems)
+      //   }
+      // })
+    }
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
+      popupForm.value.isShow = false
+    }
+    const openZayavka = () => {
+      console.log('zayavka')
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          form_id: props.data.data?.zayavka?.id,
+        },
+      })
+      setZayavkaItems()
+      popupForm.value.isShow = true
+    }
     onMounted(() => {
       getListZayavka()
     })
@@ -303,6 +604,10 @@ const form10 = defineComponent({
       zayavkaValid,
       addUnconfirmed,
       addConfirmed,
+      openZayavka,
+      config,
+      popupForm,
+      closePopupForm,
     }
   },
 })

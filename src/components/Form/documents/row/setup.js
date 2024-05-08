@@ -1059,6 +1059,51 @@ export default {
             // required: { required },
           })
           break
+        case 'check_patent_period':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'dms_name':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'oms_name':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
         case 'dms_vidachi':
           result = dateField({
             label: switchLabel(key),
@@ -1256,6 +1301,15 @@ export default {
           break
         case 'dms_vidachi':
           result = 'Дата выдачи'
+          break
+        case 'check_patent_period':
+          result = 'Период оплаты"'
+          break
+        case 'dms_name':
+          result = 'Наименование полиса'
+          break
+        case 'oms_name':
+          result = 'Наименование полиса'
           break
         case 'patent_special_marks_date':
           result = 'Особые отметки'

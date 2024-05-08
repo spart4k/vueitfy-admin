@@ -116,7 +116,7 @@
           Закрыть
         </v-btn>
 
-        <v-btn class="mr-3" @click="false" color="info" small>
+        <v-btn class="mr-3" @click="openZayavka" color="info" small>
           <v-icon small>mdi-subdirectory-arrow-right</v-icon>
           Перейти
         </v-btn>
@@ -133,6 +133,20 @@
         </v-btn>
       </v-row>
     </div>
+    <Popup
+      :options="{
+        width: config.detail.width,
+        portal: 'table-detail',
+      }"
+      v-if="config.detail && config.detail.type === 'popup' && popupForm.isShow"
+    >
+      <router-view
+        :detail="config.detail"
+        :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+        @closePopup="closePopupForm"
+        @refreshData="refreshData"
+      />
+    </Popup>
   </div>
 </template>
 

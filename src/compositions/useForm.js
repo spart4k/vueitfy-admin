@@ -485,8 +485,8 @@ export default function ({
       }
 
       if (
-        ((typeof item.isShow === 'boolean' && item.isShow) ||
-          (typeof item.isShow === 'object' && item.isShow.value)) &&
+        ((typeof item?.isShow === 'boolean' && item?.isShow) ||
+          (typeof item?.isShow === 'object' && item?.isShow.value)) &&
         !item.notSend
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
