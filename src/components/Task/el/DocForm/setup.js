@@ -230,7 +230,9 @@ const docForm = defineComponent({
         migr_card_num: loadedData.migr_card_num ? loadedData.migr_card_num : '',
         migr_card_ser: loadedData.migr_card_ser ? loadedData.migr_card_ser : '',
       },
-      11: {},
+      11: {
+        dms_name: loadedData.dms_name ? loadedData.dms_name : '',
+      },
       13: {
         check_patent_date_pay: loadedData.check_patent_date_pay
           ? loadedData.check_patent_date_pay
@@ -262,6 +264,9 @@ const docForm = defineComponent({
       19: {
         check_patent_date_pay_now: loadedData.check_patent_date_pay_now
           ? loadedData.check_patent_date_pay_now
+          : '',
+        check_patent_period: loadedData.check_patent_period
+          ? loadedData.check_patent_period
           : '',
       },
       20: {},
@@ -297,6 +302,9 @@ const docForm = defineComponent({
         card_id_pers_num: loadedData.card_id_pers_num
           ? loadedData.card_id_pers_num
           : '',
+      },
+      27: {
+        oms_name: loadedData.oms_name ? loadedData.oms_name : '',
       },
     }
     const formObj = ref({
