@@ -259,11 +259,13 @@ const table = {
               action: 'createForm',
               download: true,
               handlingResponse: {
-                context: 'result',
-                result: 'data',
-                data: {
-                  text: 'Создано начислений %count_payment% на сумму %sum_payment% <br/> Создано %count_zero% начислений с полным вычетом на сумму %sum_zero% <br/> Создано задолженностей %count_hold% на сумму %sum_hold%',
+                1: {
+                  text: 'Успешно',
                   color: 'success',
+                },
+                2: {
+                  text: 'Ошибка',
+                  color: 'error',
                 },
               },
             }),
