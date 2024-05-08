@@ -1533,7 +1533,7 @@ export default function ({
             await getDependies({ value, field })
           }
           if (field.hasOwnProperty('updateList')) {
-            await queryList(field, false)
+            // await queryList(field, false)
           }
         }
       }
