@@ -94,7 +94,6 @@ const Form4 = defineComponent({
       defaultItems: [{ id: 0, name: '-Самостоятельное-' }],
       solo: false,
       // required: true,
-      url: 'get/pagination_list/personal_habitation',
       selectOption: {
         text: 'name',
         value: 'id',
