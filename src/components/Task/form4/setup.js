@@ -66,10 +66,11 @@ const Form4 = defineComponent({
     const autocompleteConfig = {
       label: 'Выберите проживание',
       name: 'habitaion',
-      items: [],
+      items: [{ id: 0, name: '-Самостоятельное-' }],
+      defaultItems: [{ id: 0, name: '-Самостоятельное-' }],
       solo: false,
       // required: true,
-      url: 'get/pagination_list/habitation',
+      url: 'get/pagination_list/personal_id',
       selectOption: {
         text: 'name',
         value: 'id',
