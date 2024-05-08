@@ -26,7 +26,7 @@ export default {
   name: 'Добавить карту',
   type: 'FormDefault',
   path: 'add',
-  alias: 'corp_card',
+  alias: 'corp_bank',
   active: false,
   detail: {
     type: 'popup', // String 'popup' or 'page'
@@ -80,23 +80,33 @@ export default {
       validations: { required },
       bootstrapClass: [''],
     }),
-    selectField({
+    autocompleteField({
       label: 'Кому выдана',
       name: 'account_id',
       subtype: 'single',
       placeholder: '',
       class: [''],
-      requestType: 'number',
       selectOption: {
         text: 'name',
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/account_bank_list',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => context.environment.mode !== 'edit',
+            type: false,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
       },
-      // validations: { required },
       bootstrapClass: [''],
     }),
     selectField({
@@ -165,7 +175,7 @@ export default {
       class: [''],
       position: {
         cols: 12,
-        sm: 2,
+        sm: 3,
       },
       validations: { required, length: length(3), numeric },
       bootstrapClass: [''],
@@ -178,24 +188,24 @@ export default {
       class: [''],
       position: {
         cols: 12,
-        sm: 2,
+        sm: 3,
       },
       validations: { required, length: length(5) },
       bootstrapClass: [''],
     }),
-    stringField({
-      label: 'PIN',
-      name: 'pin',
-      placeholder: '',
-      value: '',
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 2,
-      },
-      validations: { required, length: length(4), numeric },
-      bootstrapClass: [''],
-    }),
+    // stringField({
+    //   label: 'PIN',
+    //   name: 'pin',
+    //   placeholder: '',
+    //   value: '',
+    //   class: [''],
+    //   position: {
+    //     cols: 12,
+    //     sm: 2,
+    //   },
+    //   validations: { required, length: length(4), numeric },
+    //   bootstrapClass: [''],
+    // }),
     textareaField({
       label: 'Примечание',
       name: 'note',
