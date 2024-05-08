@@ -19,7 +19,7 @@ import formRealtorAddEdit from './form-realtor-add-edit'
 
 export default {
   id: uuidv4(),
-  name: 'Добавить владельца',
+  name: 'Редактировать проживание',
   type: 'FormDefault',
   path: 'habitation-add',
   alias: 'habitation',
