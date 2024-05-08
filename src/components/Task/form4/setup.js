@@ -62,38 +62,15 @@ const Form4 = defineComponent({
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
-    const personal_id = data.entity.id
-    const habitaionList = ref([])
-    const getListZayavka = async () => {
-      const { makeRequest: makeRequestList } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('list/get', [
-            {
-              alias: 'personal_habitation',
-              filter: [
-                {
-                  alias: 'personal_id',
-                  value: [personal_id],
-                  type: 'num',
-                },
-              ],
-            },
-          ]),
-      })
-      const { data } = await makeRequestList()
-      if (data) {
-        habitaionList.value = data.personal_habitation
-      }
-    }
     console.log(data)
     const autocompleteConfig = {
       label: 'Выберите проживание',
       name: 'habitaion',
-      items: [...habitaionList.value, { id: 0, name: '-Самостоятельное-' }],
+      items: [{ id: 0, name: '-Самостоятельное-' }],
       defaultItems: [{ id: 0, name: '-Самостоятельное-' }],
       solo: false,
       // required: true,
+      url: '/get/pagination_list/habitation',
       selectOption: {
         text: 'name',
         value: 'id',
@@ -203,9 +180,7 @@ const Form4 = defineComponent({
       }
     }
 
-    onMounted(() => {
-      getListZayavka(data.entity.id)
-    })
+    onMounted(() => {})
 
     // let widthTrasfer = ref('')
     // widthTrasfer.value = JSON.parse(data.task.dop_data).transfer
