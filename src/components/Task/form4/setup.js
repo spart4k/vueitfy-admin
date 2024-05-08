@@ -74,7 +74,7 @@ const Form4 = defineComponent({
         text: 'name',
         value: 'id',
       },
-      filter: [{ value: data.entity.id, alias: 'personal_id', type: 'num' }],
+      filter: [{ value: [data.entity.id], alias: 'personal_id', type: 'num' }],
     }
     const { makeRequest: delInfoAFile } = useRequest({
       context,
