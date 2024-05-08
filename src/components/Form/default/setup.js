@@ -192,7 +192,15 @@ export default {
           )
         }
       })
+      const refreshFullForm = props.tab.fields.find((x) => {
+        if (x.appendAction) {
+          return x.appendAction.find(
+            (y) => y.action.name === route.name && y.action.refreshForm
+          )
+        }
+      })
       if (refreshField) refreshSelectItems(refreshField)
+      if (refreshFullForm) refreshForm()
     }
     const {
       formData,
@@ -207,6 +215,7 @@ export default {
       changeInput,
       showField,
       refreshSelectItems,
+      refreshForm,
       openMenu,
       disabledField,
       hideField,
