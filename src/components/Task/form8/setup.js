@@ -641,8 +641,8 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
-      console.log(patent)
-      await createFillScanProcess([patent[5], patent[15]])
+      if (needPatent) await createFillScanProcess([patent[5], patent[15]])
+
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>

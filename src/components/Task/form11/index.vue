@@ -1,6 +1,15 @@
 <template>
   <div>
     <div style="padding-top: 20px">
+      <v-row>
+        <v-textarea
+          v-model="dopData.comment"
+          placeholder="Комментарий ОКК"
+          disabled
+          class=""
+          rows="1"
+        ></v-textarea>
+      </v-row>
       <span class="font-weight-bold heading"
         >Проверьте закрывающие документы:</span
       >
@@ -93,7 +102,12 @@
           Завершить
         </v-btn> -->
         <!-- FIXME: починить disabled -->
-        <v-btn color="info" @click="sendTaskFinish" small>
+        <v-btn
+          :disabled="!comment && !attachedFile"
+          color="info"
+          @click="sendTaskFinish"
+          small
+        >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
