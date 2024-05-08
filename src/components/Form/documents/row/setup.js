@@ -1104,7 +1104,54 @@ export default {
             // required: { required },
           })
           break
+        case 'oms_num':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'oms_ser':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
         case 'dms_vidachi':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: null,
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'oms_vidachi':
           result = dateField({
             label: switchLabel(key),
             name: key,
@@ -1313,6 +1360,16 @@ export default {
           break
         case 'patent_special_marks_date':
           result = 'Особые отметки'
+          break
+
+        case 'oms_num':
+          result = 'Номер'
+          break
+        case 'oms_ser':
+          result = 'Серия'
+          break
+        case 'oms_vidachi':
+          result = 'Дата выдачи'
           break
 
         default:
