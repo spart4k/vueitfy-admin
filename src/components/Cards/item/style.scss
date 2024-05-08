@@ -1,69 +1,65 @@
 .v {
   &-card {
     &-container {
-      width: 570px;
-      height: 216px;
+      width: 350px;
       background-color: var(--v-background-base);
-      border-radius: 12px;
-      padding: 18px 26px 22px;
-      &-upper {
-        width: 100%;
-        height: 22px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .v-chip {
-          border-radius: 5px;
-          height: 100%;
-          padding: 0 14px;
-          font-size: 12px;
-          display: block;
-          width: fit-content;
-        }
-        .v-icon {
-          font-size: 14px;
-          height: 14px;
-          width: 14px;
-        }
-      }
+      border-radius: 20px;
+      padding: 20px 20px 10px;
+      box-shadow: 3px 3px 7px 0px #17171b40;
 
-      &-down {
+      &-card {
         width: 100%;
-        height: 144px;
-        display: flex;
-        &-left {
-          width: 252px;
-          height: 100%;
-          margin-right: 18px;
-          &-info {
-            height: 88px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            .row + .row {
-              margin-top: 0px;
-            }
-            .row {
-              display: flex;
-              justify-content: space-between;
-              span {
-                font-weight: 500;
-                font-size: 14px;
-                color: var(--v-text-base);
-              }
-            }
-          }
-          &-comment {
-            // border: red solid 1px;
+        height: 166px;
+        padding: 0 11px;
+        margin-bottom: 20px;
+      }
+      &-info {
+        line-height: normal;
+        &_item {
+          display: flex;
+          justify-content: space-between;
+          span {
+            font-size: 14px;
           }
         }
-        &-right {
-          width: 248px;
-          height: 100%;
+        &_item + &_item {
+          margin-top: 10px;
         }
       }
+      &-actions {
+        display: flex;
+        justify-content: flex-end;
+        button {
+          min-width: 44px !important;
+          padding: 0 !important;
+          border-radius: 10px !important;
+        }
+        &_item {
+        }
+        &_item + &_item {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+::v-deep .v-list {
+  padding: 8px 5px !important;
+  .v-list-item {
+    padding: 0 !important;
+    min-height: 38px !important;
+    button {
+      padding: 0 12px !important;
+      height: 38px !important;
+      width: 100% !important;
+      justify-content: flex-start !important;
+    }
+    .v-icon {
+      margin-right: 10px;
+    }
+    span {
+      color: var(--v-base-textDefault) !important;
     }
   }
 }

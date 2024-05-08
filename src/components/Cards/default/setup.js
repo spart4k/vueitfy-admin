@@ -9,7 +9,12 @@ export default {
   components: {
     CardsItem,
   },
-  props: {},
+  props: {
+    options: {
+      type: Object,
+      default: () => {},
+    },
+  },
   setup(props, context) {
     const store = useStore()
     const router = useRouter()
