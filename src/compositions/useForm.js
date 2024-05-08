@@ -1471,6 +1471,7 @@ export default function ({
 
       originalData = _.cloneDeep(formData)
     }
+    await loadAutocompletes()
     if (hasSelect()) {
       const listQuery = form?.lists?.flatMap((list) => {
         if (list.condition) {
@@ -1571,7 +1572,6 @@ export default function ({
       }
       putSelectItems(lists)
     }
-    await loadAutocompletes()
     loading.value = false
   }
 
