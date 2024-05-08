@@ -22,7 +22,7 @@
           <span>{{ formatDate(data.task.date_create) }}</span>
         </v-row>
         <v-row
-          v-if="data.data.zayavka.id"
+          v-if="data.data?.zayavka?.id"
           class="task__info-row"
           align="center"
         >
