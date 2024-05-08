@@ -305,6 +305,9 @@ const docForm = defineComponent({
       },
       27: {
         oms_name: loadedData.oms_name ? loadedData.oms_name : '',
+        oms_num: loadedData.oms_num ? loadedData.oms_num : '',
+        oms_ser: loadedData.oms_ser ? loadedData.oms_ser : '',
+        oms_vidachi: loadedData.oms_vidachi ? loadedData.oms_vidachi : '',
       },
     }
     const formObj = ref({
