@@ -328,8 +328,8 @@ export default function ({
       //const text = 'Объект с именем %name% уже существует'
       // eslint-disable-next-line
       const key = text.match(/\%\w{1,}\%/g)
-      console.log(key)
-      key.forEach((item) => {
+
+      key?.forEach((item) => {
         const keyFormated = item.split('%')[1]
         console.log(text)
         console.log(contextData)
@@ -1033,10 +1033,9 @@ export default function ({
           if (Array.isArray(condition.value)) cloneAi = [...condition.value]
           else cloneAi = [condition.value]
 
-          if (Array.isArray(condition.value)) {
+          if (Array.isArray(formData[dependence.action.field])) {
             cloneFieldEl = [...formData[dependence.action.field]]
           } else cloneFieldEl = [formData[dependence.action.field]]
-
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
         if (dep) {
@@ -1071,7 +1070,6 @@ export default function ({
       }
       if (targetField) {
         //if (typeof data === 'object') data = [data]
-
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
@@ -1233,7 +1231,7 @@ export default function ({
           filter.value = el.source ? eval(el.source) : formData[el.field]
         }
       } else if (el.routeKey) {
-        filter.value = +route.params[el.routeKey]
+        filter.value = [+route.params[el.routeKey]]
       } else {
         filter.value = formData[el.field]
       }
@@ -1259,10 +1257,13 @@ export default function ({
         filter: getDepFilters(el),
       })
 
+      if (el.defaultItems) el.items = [...el.defaultItems]
+
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
-        el.items = data.rows
       }
+
+      el.hideItems = el.items
 
       if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
@@ -1304,15 +1305,26 @@ export default function ({
             }
           }
         }
-        field.items = lists.data[keyList]
-        Vue.set(field, 'items', lists.data[keyList])
-        if (field.items.length === 1) {
+        // field.items = lists.data[keyList]
+        Vue.set(field, 'items', [])
+        // if (field.items.length === 1) {
+        // field.items = lists.data[keyList]
+        field.items = field.defaultItems
+          ? [...field.defaultItems, ...lists.data[keyList]]
+          : lists.data[keyList]
+        if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
-          // formData[field.name] = field.items[0][field.selectOption.value]
+          if (field.putFirst)
+            formData[field.name] =
+              lists.data[keyList][0][field.selectOption.value]
         }
         showField(field.type, field, true)
       }
     }
+  }
+
+  const refreshForm = () => {
+    getData()
   }
 
   const refreshSelectItems = async (field) => {
@@ -1470,6 +1482,7 @@ export default function ({
 
       originalData = _.cloneDeep(formData)
     }
+    await loadAutocompletes()
     if (hasSelect()) {
       const listQuery = form?.lists?.flatMap((list) => {
         if (list.condition) {
@@ -1554,8 +1567,12 @@ export default function ({
               }
             }
           }
-          field.items = lists.data[keyList]
-          Vue.set(field, 'items', lists.data[keyList])
+          // field.items = lists.data[keyList]
+          // Vue.set(field, 'items', lists.data[keyList])
+          Vue.set(field, 'items', [])
+          field.items = field.defaultItems
+            ? [...field.defaultItems, ...lists.data[keyList]]
+            : lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)
@@ -1576,7 +1593,6 @@ export default function ({
       }
       putSelectItems(lists)
     }
-    await loadAutocompletes()
     loading.value = false
   }
 
@@ -1696,19 +1712,22 @@ export default function ({
             }
           } else if (el.target === 'value') {
             if (el.value === 'notEmpty') {
-              return formData[el.field]
+              return `${formData[el.field]}`
             }
           } else {
             return el.value.some((ai) => {
+              let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
                 const cloneFieldEl = [...formData[el.field]]
-                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
               } else {
-                return [ai].includes(
+                result = [ai].includes(
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
+              if (el.reverse) return !result
+              return result
             })
           }
         })
@@ -1721,26 +1740,31 @@ export default function ({
             }
           } else if (el.target === 'value') {
             if (el.value === 'notEmpty') {
-              return formData[el.field]
+              return `${formData[el.field]}`
             }
           } else {
             return el.value.some((ai) => {
+              let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
                 const cloneFieldEl = [...formData[el.field]]
-                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
               } else {
-                return [ai].includes(
+                result = [ai].includes(
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
+              if (el.reverse) return !result
+              return result
             })
           }
         })
       }
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
-      return (typeof field.isShow === 'boolean' && field.isShow) || func()
+
+      let funcResult = func()
+      return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
     if (field.isShow?.label) {
       const trueCondition = field.isShow.label.find((x) =>
@@ -1874,5 +1898,6 @@ export default function ({
     popupForm,
     appendActionShow,
     refreshSelectItems,
+    refreshForm,
   }
 }
