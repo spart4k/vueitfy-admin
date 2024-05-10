@@ -74,7 +74,7 @@
               :error-messages="formErrors[field?.name]"
               clearable
               @input="
-                changeInput({
+                changeValue({
                   value: formData[field.name],
                   field,
                 })
@@ -82,6 +82,7 @@
               :readonly="readonlyField(field)"
               :disabled="disabledField(field)"
               :name="field.name"
+              :class="[...field.class]"
             >
               <template v-if="field?.appendAction?.length" v-slot:append-outer>
                 <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->
@@ -117,6 +118,12 @@
               :readonly="readonlyField(field)"
               :name="field.name"
               :class="'checkbox_' + field.name"
+              @change="
+                changeValue({
+                  value: formData[field.name],
+                  field,
+                })
+              "
             ></v-checkbox>
             <Datepicker
               v-else-if="showField('date', field)"

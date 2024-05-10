@@ -899,20 +899,17 @@ export default function ({
     }
   }
 
-  const changeInput = (params) => {
+  const changeValue = (params) => {
     const { value, field } = params
     if (field.dependence) {
       field.dependence?.forEach((dependence) => {
-        const targetField = form.fields.find(
-          (el) => el.name === dependence.field
-        )
-
         if (dependence?.type === 'computed' && dependence.funcComputed) {
           const context = {
             store,
             formData,
             originalData,
             environment,
+            form,
           }
           dependence.funcComputed(context)
         }
@@ -1053,6 +1050,7 @@ export default function ({
           formData,
           originalData,
           environment,
+          form,
         }
         dependence.funcComputed(context)
       }
@@ -1879,7 +1877,7 @@ export default function ({
     getDependies,
     changeSelect,
     changeAutocomplete,
-    changeInput,
+    changeValue,
     getData,
     showField,
     openMenu,

@@ -212,7 +212,7 @@ export default {
       getData,
       changeAutocomplete,
       changeSelect,
-      changeInput,
+      changeValue,
       showField,
       refreshSelectItems,
       refreshForm,
@@ -282,7 +282,7 @@ export default {
       getItems,
       fieldsRef,
       downloadFile,
-      changeInput,
+      changeValue,
     }
   },
 }
