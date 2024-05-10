@@ -62,6 +62,7 @@ export default {
         {
           id: 0,
           name: '--Самостоятельное--',
+          is_registration: 0,
         },
       ],
       selectOption: {
@@ -89,6 +90,20 @@ export default {
           },
         },
       ],
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'is_registration',
+      name: 'is_registration',
+      notSend: true,
+      placeholder: '',
+      value: '',
+      class: ['displayNone'],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
       validations: { required },
       bootstrapClass: [''],
     }),
@@ -130,6 +145,33 @@ export default {
         cols: 12,
         sm: 12,
       },
+      dependence: [
+        {
+          type: 'default',
+          fillField: [
+            {
+              formKey: 'habitation_id',
+              compareKey: 'id',
+              objectKey: 'is_registration',
+              targetKey: 'is_registration',
+            },
+          ],
+        },
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            const checkBox = context.form.fields.find(
+              (x) => x.name === 'with_check_in'
+            )
+            if (context.formData.is_registration) {
+              checkBox.readonly = false
+            } else {
+              checkBox.readonly = true
+              context.formData.with_check_in = false
+            }
+          },
+        },
+      ],
       validations: { required },
       bootstrapClass: [''],
     }),
