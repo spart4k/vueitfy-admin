@@ -104,7 +104,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: { required },
+      // validations: { required },
       bootstrapClass: [''],
     }),
     autocompleteField({

@@ -59,31 +59,31 @@ export default {
       ],
     },
     head: [
-      {
-        title: 'id',
-        type: 'default',
-        align: 'center',
-        fixed: {
-          value: false,
-          position: 'left',
-        },
-        sorts: [
-          {
-            type: 'text',
-            default: '',
-            value: '',
-            isShow: false,
-          },
-        ],
-        isShow: true,
-        width: '90',
-        alias: 'h.id',
-        value: 'id',
-        search: {
-          field: '',
-          isShow: true,
-        },
-      },
+      // {
+      //   title: 'ID',
+      //   type: 'default',
+      //   align: 'center',
+      //   fixed: {
+      //     value: false,
+      //     position: 'left',
+      //   },
+      //   sorts: [
+      //     {
+      //       type: 'text',
+      //       default: '',
+      //       value: '',
+      //       isShow: false,
+      //     },
+      //   ],
+      //   isShow: true,
+      //   width: '90',
+      //   alias: 'h.id',
+      //   value: 'id',
+      //   search: {
+      //     field: '',
+      //     isShow: true,
+      //   },
+      // },
       {
         title: 'Имя',
         type: 'default',
