@@ -240,7 +240,8 @@ export const config = {
         tabs: [
           formHabitationAddEdit,
           Object.assign({}, formHabitationAddEdit),
-          // tableHabitationCurrent,
+          tableHabitationCurrent,
+          Object.assign({}, tableHabitationCurrent),
         ],
         activeTab: null,
       },
