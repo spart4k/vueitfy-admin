@@ -342,7 +342,12 @@ export default {
       },
     })
 
-    console.log('config.tabs[3]', config.tabs)
+    console.log('config.tabs[3]', config.tabs[0].detail.tabs[3])
+
+    config.tabs[0].detail.tabs[3].config.options.url =
+      'get/pagination/habitation_history_archive'
+    config.tabs[0].detail.tabs[3].config.options.alias = 'hha.habitation_id'
+    config.tabs[0].detail.tabs[3].name = 'Архив'
 
     return {
       config,

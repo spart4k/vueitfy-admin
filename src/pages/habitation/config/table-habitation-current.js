@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   id: uuidv4(),
   path: 'habitation-edit',
-  name: 'Проживалки',
+  name: 'Текущие проживания',
   type: 'TableDefault',
   routeParam: 'habitation_id',
   active: false,
@@ -38,7 +38,7 @@ export default {
       //url: 'https://dummyjson.com/users',
       url: 'get/pagination/habitation_history',
       urlDetail: 'habitation_id',
-      alias: 'z.habitation_id',
+      alias: 'hh.habitation_id',
       title: 'This is an about page1',
     },
     panel: {
