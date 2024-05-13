@@ -4,8 +4,6 @@ import formHabitationAddEdit from './config/form-habitation-add-edit'
 import formOwnerAddEdit from './config/form-owner-add-edit'
 import formRealtorAddEdit from './config/form-realtor-add-edit'
 
-import tableHabitationCurrent from './config/table-habitation-current'
-
 export const config = {
   title: 'Проживание',
   activeTab: 0,
@@ -237,12 +235,7 @@ export const config = {
         name: 'Проживание',
         requestId: 'habitation_id',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [
-          formHabitationAddEdit,
-          Object.assign({}, formHabitationAddEdit),
-          Object.assign({}, tableHabitationCurrent),
-          Object.assign({}, tableHabitationCurrent),
-        ],
+        tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,
       },
       filters,

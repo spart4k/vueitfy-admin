@@ -1,29 +1,12 @@
-import {
-  dateField,
-  stringField,
-  selectField,
-  autocompleteField,
-  textareaField,
-  datetimeField,
-  dropZoneField,
-  checkboxField,
-  textBlock,
-} from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import {
-  required,
-  hasDate,
-  hasTime,
-  nameLength,
-  minLength,
-  numeric,
-} from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
-export default {
+import formHabitationAddEdit from './form-habitation-add-edit'
+
+export const config = {
   id: uuidv4(),
   path: 'habitation-edit',
-  name: 'Текущие проживания',
+  name: 'Проживающие',
   type: 'TableDefault',
   routeParam: 'habitation_id',
   active: false,
@@ -59,33 +42,8 @@ export default {
       ],
     },
     head: [
-      // {
-      //   title: 'ID',
-      //   type: 'default',
-      //   align: 'center',
-      //   fixed: {
-      //     value: false,
-      //     position: 'left',
-      //   },
-      //   sorts: [
-      //     {
-      //       type: 'text',
-      //       default: '',
-      //       value: '',
-      //       isShow: false,
-      //     },
-      //   ],
-      //   isShow: true,
-      //   width: '90',
-      //   alias: 'h.id',
-      //   value: 'id',
-      //   search: {
-      //     field: '',
-      //     isShow: true,
-      //   },
-      // },
       {
-        title: 'Имя',
+        title: 'Линейщик',
         type: 'default',
         align: 'center',
         fixed: {
@@ -103,14 +61,14 @@ export default {
         isShow: true,
         width: '90',
         alias: 'h.name',
-        value: 'name',
+        value: 'personal_name',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Город',
+        title: 'Дата заселения',
         type: 'default',
         align: 'center',
         fixed: {
@@ -128,14 +86,14 @@ export default {
         isShow: true,
         width: '150',
         alias: 'ci.name',
-        value: 'city',
+        value: 'date_in',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Регион',
+        title: 'Дата выселения',
         type: 'default',
         align: 'center',
         fixed: {
@@ -153,14 +111,14 @@ export default {
         isShow: true,
         width: '150',
         alias: 'gr.name',
-        value: 'region',
+        value: 'date_out',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Тип',
+        title: 'Причина',
         type: 'default',
         align: 'center',
         fixed: {
@@ -178,14 +136,14 @@ export default {
         isShow: true,
         width: '90',
         alias: 'ht.name',
-        value: 'habitation_type',
+        value: 'why',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Адрес',
+        title: 'Коммент',
         type: 'default',
         align: 'center',
         fixed: {
@@ -203,16 +161,16 @@ export default {
         isShow: true,
         width: '90',
         alias: 'h.address',
-        value: 'address',
+        value: 'comment',
         search: {
           field: '',
           isShow: true,
         },
       },
       {
-        title: 'Вместимость',
-        type: 'default',
+        title: 'Регистрация',
         align: 'center',
+        type: 'checkbox',
         fixed: {
           value: false,
           position: 'left',
@@ -228,7 +186,7 @@ export default {
         isShow: true,
         width: '90',
         alias: 'h.count_place',
-        value: 'capacity',
+        value: 'with_check_in',
         search: {
           field: '',
           isShow: true,
@@ -243,20 +201,20 @@ export default {
       totalPages: null,
       footer: null,
     },
-    detail: {
-      type: 'popup', // String 'popup' or 'page'
-      getOnClose: true,
-      classes: [''], // List class
-      width: '500px',
-      method: 'get',
-      alias: 'documents',
-      url: '/get/form/',
-      requestId: 'habitation_id',
-      name: 'Проживание',
-      bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-      activeTab: null,
-      tabs: [],
-    },
+    // detail: {
+    //   type: 'popup', // String 'popup' or 'page'
+    //   getOnClose: true,
+    //   classes: [''], // List class
+    //   width: '800px',
+    //   method: 'get',
+    //   alias: 'documents',
+    //   url: '/get/form/',
+    //   requestId: 'habitation_history_id',
+    //   name: 'Проживание',
+    //   bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
+    //   activeTab: null,
+    //   tabs: [],
+    // },
     actions: [
       stringAction({
         text: 'Закрыть',
