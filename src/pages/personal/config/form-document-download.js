@@ -1759,8 +1759,8 @@ export default {
     value: true,
     condition: [
       {
-        permissions: [16, 19, 7],
-        type: false,
+        permissions: [16, 19, 4],
+        type: true,
       },
     ],
   },
