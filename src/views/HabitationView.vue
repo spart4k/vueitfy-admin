@@ -35,6 +35,7 @@ import bankConfigOrig from '@/pages/personal/config/table-personal-bank'
 // import TableFixed from '@/components/Table/fixed/index.vue'
 import paymentConfigOrig from '@/pages/payment/index'
 import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { config as tableHabitationCurrent } from '@/pages/habitation/config/table-habitation-current'
 import { initPaymentZayavka } from '@/utils/helpers.js'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
@@ -289,6 +290,37 @@ export default {
     config.tabs[1].detail.tabs.push(bankConfigRealtor)
     config.tabs[2].detail.tabs.push(bankConfigOwner)
 
+    // configRouteConvert({
+    //   config: tableHabitationCurrent.config,
+    //   newPath: 'habitation-history-edit',
+    //   route: 'habitation_history_id',
+    //   settings: {
+    //     oldPath: 'habitation-add',
+    //   },
+    // })
+    config.tabs[0].detail.tabs.push(
+      _.cloneDeep(tableHabitationCurrent),
+      _.cloneDeep(tableHabitationCurrent)
+    )
+    config.tabs[0].detail.tabs[2].config.head.splice(2, 2)
+    config.tabs[0].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[0].detail.tabs[3].config.options.url =
+      'get/pagination/habitation_history_archive'
+    config.tabs[0].detail.tabs[3].config.options.alias = 'hha.habitation_id'
+    config.tabs[0].detail.tabs[3].name = 'История'
+
+    config.tabs[3].detail.tabs.push(
+      _.cloneDeep(tableHabitationCurrent),
+      _.cloneDeep(tableHabitationCurrent)
+    )
+
+    config.tabs[3].detail.tabs[2].config.head.splice(2, 2)
+    config.tabs[3].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[3].detail.tabs[3].config.options.url =
+      'get/pagination/habitation_history_archive'
+    config.tabs[3].detail.tabs[3].config.options.alias = 'hha.habitation_id'
+    config.tabs[3].detail.tabs[3].name = 'История'
+
     zayavkaConfig0.config.options.urlDetail = 'habitation_id'
     zayavkaConfig0.config.options.alias = 'z.habitation_id'
 
@@ -341,8 +373,6 @@ export default {
         oldPath: 'edit',
       },
     })
-
-    console.log('config.tabs[3]', config.tabs)
 
     return {
       config,

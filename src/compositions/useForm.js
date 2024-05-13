@@ -1433,7 +1433,6 @@ export default function ({
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
-        console.log(field)
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
