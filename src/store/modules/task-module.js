@@ -206,6 +206,11 @@ const taskModule = {
 
       return result
     },
+    async setTaskCustom(_, { url, body }) {
+      const result = await setTask(url, body)
+
+      return result
+    },
   },
 }
 

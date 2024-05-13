@@ -5,6 +5,7 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 import Autocomplete from '@/components/Autocomplete/default'
+import DateTimePicker from '@/components/Date/Default/index.vue'
 
 const Form4 = defineComponent({
   name: 'Form4',
@@ -12,6 +13,7 @@ const Form4 = defineComponent({
     Dropzone,
     PersTitle,
     Autocomplete,
+    DateTimePicker,
   },
   props: {
     data: {
@@ -32,6 +34,8 @@ const Form4 = defineComponent({
       },
     }
     let selectName = ref('')
+    const is_registration = ref(false)
+    const date_in = ref('')
     const isGalkaVisible = ref(false)
     let options = {
       withoutSave: false,
@@ -62,7 +66,6 @@ const Form4 = defineComponent({
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
-    console.log(data)
     const autocompleteConfig = {
       label: 'Выберите проживание',
       name: 'habitaion',
@@ -121,6 +124,23 @@ const Form4 = defineComponent({
           },
         }),
     })
+    const { makeRequest: createHabitation } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setTaskCustom', {
+          url: 'create/personal/habitation',
+          body: {
+            data: {
+              habitation_id: selectName.value,
+              personal_id: data.entity.id,
+              with_check_in:
+                selectName.value !== 0 ? is_registration.value : false,
+              date_in: date_in.value,
+              comment: '',
+            },
+          },
+        }),
+    })
     const { makeRequest: doneTask } = useRequest({
       context,
       request: () =>
@@ -173,10 +193,26 @@ const Form4 = defineComponent({
           startTask()
         })
       }
-      const { success } = await doneTask()
-      if (success) {
-        ctx.emit('closePopup')
-        ctx.emit('getItems')
+      const habitationRequest = await createHabitation()
+      if (habitationRequest.code === '1') {
+        const { success } = await doneTask()
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
+      } else if (habitationRequest.code === '2') {
+        store.dispatch('notifies/showMessage', {
+          content: 'На объекте превышен лимит регистраций',
+          timeout: 1000,
+          color: 'error',
+        })
+      } else if (habitationRequest.code === '3') {
+        store.dispatch('notifies/showMessage', {
+          content:
+            'Дата заселения совпадает с периодом проживания на другом объекте',
+          timeout: 1000,
+          color: 'error',
+        })
       }
     }
 
@@ -188,6 +224,8 @@ const Form4 = defineComponent({
       sendData,
       options,
       selectName,
+      is_registration,
+      date_in,
       isShowBtn,
       addFiles,
       ticket: data.ticket,
