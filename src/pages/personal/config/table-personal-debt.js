@@ -443,7 +443,7 @@ const tablePersonalDebt = {
     value: true,
     condition: [
       {
-        permissions: [16, 19],
+        permissions: [16, 19, 7],
         type: false,
       },
     ],

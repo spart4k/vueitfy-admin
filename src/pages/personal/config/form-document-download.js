@@ -1755,4 +1755,13 @@ export default {
       action: 'createForm',
     }),
   ],
+  isShow: {
+    value: true,
+    condition: [
+      {
+        permissions: [16, 19, 7],
+        type: false,
+      },
+    ],
+  },
 }

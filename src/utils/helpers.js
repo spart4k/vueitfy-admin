@@ -17,7 +17,7 @@ const initPaymentZayavka = (paymentConfigOrig, zayavkaConfigOrig) => {
       value: true,
       condition: [
         {
-          permissions: [16, 19],
+          permissions: [16, 19, 7],
           type: false,
         },
       ],
@@ -27,6 +27,15 @@ const initPaymentZayavka = (paymentConfigOrig, zayavkaConfigOrig) => {
     path: 'edit',
     name: 'Расход',
     config: _.cloneDeep(zayavkaConfigOrig),
+    isShow: {
+      value: true,
+      condition: [
+        {
+          permissions: [7],
+          type: false,
+        },
+      ],
+    },
   })
 
   paymentConfig.config.options = {
