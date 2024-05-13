@@ -55,7 +55,10 @@ export default {
         },
       ],
     },
-    { alias: 'managers', filter: [] },
+    {
+      alias: 'managers',
+      filter: [{ alias: 'permission_id', value: [1], type: 'num' }],
+    },
     { alias: 'owner_habitation', filter: [] },
     { alias: 'realtors', filter: [] },
     { alias: 'owner_type', filter: [] },
@@ -152,7 +155,11 @@ export default {
             ) {
               context.formData.square = ''
               if (context.formData.is_registration) {
-                context.formData.capacity = ''
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
                 capacity.readonly = false
               } else {
                 context.formData.capacity = '0'
@@ -168,7 +175,11 @@ export default {
                     Number(context.formData.square) / 8
                   )
                 } else {
-                  context.formData.capacity = ''
+                  if (
+                    context.formData.capacity !== context.originalData?.capacity
+                  ) {
+                    context.formData.capacity = ''
+                  }
                 }
                 capacity.readonly = true
               } else {
@@ -176,7 +187,11 @@ export default {
                 capacity.readonly = true
               }
             } else {
-              context.formData.capacity = ''
+              if (
+                context.formData.capacity !== context.originalData?.capacity
+              ) {
+                context.formData.capacity = ''
+              }
               capacity.readonly = true
             }
           },
@@ -213,7 +228,11 @@ export default {
             ) {
               context.formData.square = ''
               if (context.formData.is_registration) {
-                context.formData.capacity = ''
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
                 capacity.readonly = false
               } else {
                 context.formData.capacity = '0'
@@ -229,7 +248,11 @@ export default {
                     Number(context.formData.square) / 8
                   )
                 } else {
-                  context.formData.capacity = ''
+                  if (
+                    context.formData.capacity !== context.originalData?.capacity
+                  ) {
+                    context.formData.capacity = ''
+                  }
                 }
                 capacity.readonly = true
               } else {
@@ -237,7 +260,11 @@ export default {
                 capacity.readonly = true
               }
             } else {
-              context.formData.capacity = ''
+              if (
+                context.formData.capacity !== context.originalData?.capacity
+              ) {
+                context.formData.capacity = ''
+              }
               capacity.readonly = true
             }
           },
@@ -736,7 +763,11 @@ export default {
                   Number(context.formData.square) / 8
                 )
               } else {
-                context.formData.capacity = ''
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
               }
             } else {
               context.formData.capacity = '0'
