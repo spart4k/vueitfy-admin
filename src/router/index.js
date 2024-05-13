@@ -418,6 +418,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'pivot-profit-cleaning',
+        path: '/pivot/profit-cleaning',
+        meta: {
+          mode: ['profit-cleaning'],
+          label: 'Начислить',
+        },
+        component: Detail,
+      },
+      {
         name: 'pivot-edit',
         path: '/pivot/:id',
         meta: {
