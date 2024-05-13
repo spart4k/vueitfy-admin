@@ -1263,6 +1263,9 @@ export default function ({
 
       el.hideItems = el.items
 
+      if (el.putFirst && !formData[el.name] && el.items[0])
+        formData[el.name] = el.items[0][el.selectOption.value]
+
       if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
       }
