@@ -616,11 +616,10 @@ const Form8 = defineComponent({
         ? props.data.data.docs_grajdanstvo.length - 1
         : props.data.data.docs_grajdanstvo.length
       const attached = docFormRef.value?.docRows.filter((el) => el.isCorrect)
-
       if (hasDmsAndOms) {
         const dms = attached?.find((el) => el.document.doc_id == 11)
         const oms = attached?.find((el) => el.document.doc_id == 27)
-        if ((dms || oms) && attached.length === needDocumentsLength) {
+        if ((dms || oms) && attached.length >= needDocumentsLength) {
           result = true
         } else {
           result = false
@@ -642,8 +641,17 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
-      console.log(patent)
-      await createFillScanProcess([patent[5], patent[15]])
+      if (needPatent) await createFillScanProcess([patent[5], patent[15]])
+      const { makeRequest: preRequest } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/setPersonalDataWithoutTarget', {
+            data: {
+              id: props.data.task.entity_id,
+              status: 5,
+            },
+          }),
+      })
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -656,6 +664,7 @@ const Form8 = defineComponent({
             },
           }),
       })
+      await preRequest()
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')
