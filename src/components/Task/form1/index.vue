@@ -61,6 +61,8 @@
           :task="data.task"
           ref="docFormRef"
           :showFields="true"
+          :bankCompleted="bankCompleted"
+          :taskInfo="data"
         ></DocForm>
       </div>
     </div>
