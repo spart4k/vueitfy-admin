@@ -55,8 +55,8 @@ function changeSort(config) {
   } else if (btn.label === 'ФИО') {
     btn.label = 'Объекты'
     heading.title = 'ФИО'
-    heading.alias = 'p.name'
-    heading.value = 'personal_name'
+    heading.alias = "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)"
+    heading.value = 'fio'
     heading.routeName = 'pivot-personal'
     heading.routeParam = 'personal_id'
     heading.type = 'default'
@@ -99,13 +99,6 @@ export const config = {
         url: '$IconEdit',
         // function: consolePanel,
         backgroundColor: '#ffffff',
-      },
-      {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        // function: consolePanel,
-        backgroundColor: '#fff',
       },
       {
         label: 'Выработка',
@@ -193,8 +186,8 @@ export const config = {
       type: 'default',
       isShow: true,
       width: '200',
-      alias: 'p.name',
-      value: 'personal_name',
+      alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+      value: 'fio',
       changeable: true,
       // routeParam: 'personal_id',
       // route

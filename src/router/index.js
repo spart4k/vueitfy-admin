@@ -376,6 +376,14 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/edit_habitation',
+            path: 'edit_habitation',
+            meta: {
+              mode: ['edit', 'edit_habitation'],
+            },
+            component: Detail,
+          },
         ],
       },
       {
@@ -739,6 +747,14 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'habitation/:habitation_id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['habitation-edit', 'habitation-zayavka-edit'],
+            },
+            component: Detail,
+          },
         ],
         component: Detail,
       },
@@ -775,6 +791,14 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'habitation/:owner_id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['habitation-owner-edit', 'habitation-zayavka-edit'],
+            },
+            component: Detail,
+          },
         ],
         component: Detail,
       },
@@ -808,6 +832,14 @@ const routes = [
             path: 'add',
             meta: {
               mode: ['habitation-realtor-edit', 'add'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:realtor_id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['habitation-realtor-edit', 'habitation-zayavka-edit'],
             },
             component: Detail,
           },
@@ -947,6 +979,26 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
+    children: [
+      {
+        name: 'corporate-cards/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить карту',
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать карту',
+        },
+        component: Detail,
+      },
+    ],
     component: CorporateCardsView,
   },
   {

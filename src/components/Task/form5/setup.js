@@ -6,12 +6,14 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form5 = defineComponent({
   name: 'Form5',
   components: {
     Dropzone,
     TextInfo,
+    PersTitle,
   },
 
   props: {
@@ -158,6 +160,18 @@ const Form5 = defineComponent({
         elem()
       })
 
+      const { makeRequest: preRequest } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/setPersonalDataWithoutTarget', {
+            data: {
+              id: data.task.entity_id,
+              status: 3,
+              unfinished: 0,
+              is_passive: 0,
+            },
+          }),
+      })
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -183,6 +197,7 @@ const Form5 = defineComponent({
         //           x5: getListValueByNameField('objects_all', <?php echo $entity['object_id']; ?>, 'subtype') == 9 ? 1 : 0
       })
 
+      await preRequest()
       await changeStatus()
       const { makeRequest: createFillScanProcess } = useRequest({
         context,

@@ -9,6 +9,13 @@ import {
   startProcess,
   putTask,
   setBid,
+  acceptSchets,
+  updateDopData,
+  sendAmmount,
+  delCloseSchet,
+  createZayavka,
+  sendZayavkaItems,
+  setDataServices,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -29,8 +36,29 @@ const taskModule = {
     },
 
     async setBid(_, data) {
-      const result = await setBid('set/data/zayavka', data.data)
+      const result = await setBid('set/zayavka/close_schet', data)
 
+      return result
+    },
+
+    async acceptSchets(_, data) {
+      const result = await acceptSchets('set/zayavka/close_schet', data)
+
+      return result
+    },
+
+    async updateDopData(_, data) {
+      const result = await updateDopData('task/update/dop_data', data)
+      return result
+    },
+
+    async sendAmmount(_, data) {
+      const result = await sendAmmount('set/data/zayavka', data)
+      return result
+    },
+
+    async delCloseSchet(_, id) {
+      const result = await delCloseSchet(`delete/close_schet/${id}`)
       return result
     },
 
@@ -40,6 +68,20 @@ const taskModule = {
       return result
     },
 
+    async createZayavka(_, data) {
+      const result = await createZayavka('create/zayavka/34_task', data)
+
+      return result
+    },
+    async sendZayavkaItems(_, data) {
+      const result = await sendZayavkaItems('set/zayavka/close', data)
+      return result
+    },
+
+    async setDataServices(_, data) {
+      const result = await setDataServices('set/target/services', data)
+      return result
+    },
     //     POST /set/data/zayavka_items
     // body: {data['items']['id'], rashod_vid_id, price}
 

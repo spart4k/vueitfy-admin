@@ -371,9 +371,9 @@
                           class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
                         >
                           {{
-                            options.head[0].value === 'personal_name'
+                            options.head[0].value === 'fio'
                               ? card.object_name
-                              : card.personal_name ?? card.fio
+                              : card.fio
                           }}
                         </p>
                       </div>

@@ -13,6 +13,7 @@ import Popup from '@/components/Popup/index.vue'
 import _ from 'lodash'
 
 import config from '@/components/Task/form17/form.js'
+import Autocomplete from '@/components/Autocomplete/default'
 
 const Form17 = defineComponent({
   name: 'Form17',
@@ -22,6 +23,7 @@ const Form17 = defineComponent({
     Dropzone,
     TextInfo,
     Popup,
+    Autocomplete,
   },
   props: {
     data: {
@@ -106,6 +108,18 @@ const Form17 = defineComponent({
     let loadImage
     let changeStatusTask
     let isSetTask = ref(false)
+    const autocompleteConfig = {
+      label: data.entity.doljnost_name,
+      name: 'name',
+      items: [],
+      solo: false,
+      required: true,
+      readonly: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+    }
     const dopData = JSON.stringify(data.task.dop_data)
     const addFiles = (e) => {
       let fileExt = e[0].type.split('/')[1]
@@ -389,6 +403,7 @@ const Form17 = defineComponent({
       proxyConfig,
       closePopupForm,
       Popup,
+      autocompleteConfig,
     }
   },
 })

@@ -35,6 +35,8 @@ export default {
 
     let controller
     const querySelections = async () => {
+      console.log(JSON.stringify(props.field))
+      if (!props.field?.url) return
       try {
         if (controller) controller.abort()
         controller = new AbortController()

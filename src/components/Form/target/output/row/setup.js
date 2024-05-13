@@ -27,8 +27,10 @@ export default {
         route,
       },
     }
-    const sum = (row) =>
-      row.sum - (row.hold_sum + row.deduction_debit + row.deduction_hold)
+    const sum = (row) => {
+      console.log(row)
+      return row.sum - (row.hold_sum + row.deduction_debit + row.deduction_hold)
+    }
     const { makeRequest: makeRequestList } = useRequest({
       context,
       request: (data) =>

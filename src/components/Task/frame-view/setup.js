@@ -26,6 +26,11 @@ import Form27 from '@/components/Task/form27/index.vue'
 import Form28 from '@/components/Task/form28/index.vue'
 import Form29 from '@/components/Task/form29/index.vue'
 import Form31 from '@/components/Task/form31/index.vue'
+import Form34 from '@/components/Task/form34/index.vue'
+import Form35 from '@/components/Task/form35/index.vue'
+import Form36 from '@/components/Task/form36/index.vue'
+import Form37 from '@/components/Task/form37/index.vue'
+import Form38 from '@/components/Task/form38/index.vue'
 import moment from 'moment'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
@@ -64,6 +69,11 @@ const taskNameSpr = {
   29: 'Подтверждение увольнения',
   30: 'Техобращение',
   31: 'Подтверждение рабочего статуса',
+  34: 'Уточнения статуса',
+  35: 'Уточнение деталей документа',
+  36: 'Прикладывание документов',
+  37: 'Проверка документов',
+  38: 'Продление патента',
 }
 
 const task = defineComponent({
@@ -96,6 +106,11 @@ const task = defineComponent({
     Form28,
     Form29,
     Form31,
+    Form34,
+    Form35,
+    Form36,
+    Form37,
+    Form38,
   },
 
   props: {},

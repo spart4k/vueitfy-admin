@@ -33,7 +33,10 @@ import { ref, computed, onMounted } from 'vue'
 import { config as habitationConfigOrig } from '@/pages/habitation/index'
 import bankConfigOrig from '@/pages/personal/config/table-personal-bank'
 // import TableFixed from '@/components/Table/fixed/index.vue'
-
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { config as tableHabitationCurrent } from '@/pages/habitation/config/table-habitation-current'
+import { initPaymentZayavka } from '@/utils/helpers.js'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 export default {
@@ -59,6 +62,49 @@ export default {
       convertFormConfig,
     } = useView()
     const activeTab = ref(0)
+
+    const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+      paymentConfigOrig,
+      zayavkaConfigOrig
+    )
+
+    const zayavkaConfig0 = _.cloneDeep(zayavkaConfig)
+    const zayavkaConfig1 = _.cloneDeep(zayavkaConfig)
+    const zayavkaConfig2 = _.cloneDeep(zayavkaConfig)
+    const zayavkaConfig3 = _.cloneDeep(zayavkaConfig)
+
+    configRouteConvert({
+      config: zayavkaConfig0.config,
+      route: 'zayavka',
+      newPath: 'habitation-zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    configRouteConvert({
+      config: zayavkaConfig1.config,
+      route: 'zayavka',
+      newPath: 'habitation-zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    configRouteConvert({
+      config: zayavkaConfig2.config,
+      route: 'zayavka',
+      newPath: 'habitation-zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    configRouteConvert({
+      config: zayavkaConfig3.config,
+      route: 'zayavka',
+      newPath: 'habitation-zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
 
     configRouteConvert({
       config: config.tabs[0],
@@ -243,6 +289,64 @@ export default {
     bankConfigOwner.config.options.urlDetail = undefined
     config.tabs[1].detail.tabs.push(bankConfigRealtor)
     config.tabs[2].detail.tabs.push(bankConfigOwner)
+
+    // configRouteConvert({
+    //   config: tableHabitationCurrent.config,
+    //   newPath: 'habitation-history-edit',
+    //   route: 'habitation_history_id',
+    //   settings: {
+    //     oldPath: 'habitation-add',
+    //   },
+    // })
+    config.tabs[0].detail.tabs.push(
+      _.cloneDeep(tableHabitationCurrent),
+      _.cloneDeep(tableHabitationCurrent)
+    )
+    config.tabs[0].detail.tabs[2].config.head.splice(2, 2)
+    config.tabs[0].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[0].detail.tabs[3].config.options.url =
+      'get/pagination/habitation_history_archive'
+    config.tabs[0].detail.tabs[3].config.options.alias = 'hha.habitation_id'
+    config.tabs[0].detail.tabs[3].name = 'История'
+
+    config.tabs[3].detail.tabs.push(
+      _.cloneDeep(tableHabitationCurrent),
+      _.cloneDeep(tableHabitationCurrent)
+    )
+
+    config.tabs[3].detail.tabs[2].config.head.splice(2, 2)
+    config.tabs[3].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[3].detail.tabs[3].config.options.url =
+      'get/pagination/habitation_history_archive'
+    config.tabs[3].detail.tabs[3].config.options.alias = 'hha.habitation_id'
+    config.tabs[3].detail.tabs[3].name = 'История'
+
+    zayavkaConfig0.config.options.urlDetail = 'habitation_id'
+    zayavkaConfig0.config.options.alias = 'z.habitation_id'
+
+    zayavkaConfig1.config.options.urlDetail = 'realtor_id'
+    zayavkaConfig1.config.options.alias = 'z.realtor_id'
+
+    zayavkaConfig2.config.options.urlDetail = 'owner_id'
+    zayavkaConfig2.config.options.alias = 'z.owner_id'
+
+    zayavkaConfig3.config.options.urlDetail = 'habitation_id'
+    zayavkaConfig3.config.options.alias = 'z.habitation_id'
+
+    config.tabs[0].detail.tabs.push(zayavkaConfig0)
+    config.tabs[1].detail.tabs.push(zayavkaConfig1)
+    config.tabs[2].detail.tabs.push(zayavkaConfig2)
+    config.tabs[3].detail.tabs.push(zayavkaConfig3)
+
+    configRouteConvert({
+      config: config.tabs[0],
+      newPath: 'habitation-edit',
+      route: 'habitation_id',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+
     configRouteConvert({
       config: config.tabs[1],
       newPath: 'habitation-realtor-edit',
@@ -256,6 +360,15 @@ export default {
       config: config.tabs[2],
       newPath: 'habitation-owner-edit',
       route: 'owner_id',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+
+    configRouteConvert({
+      config: config.tabs[3],
+      newPath: 'habitation-edit',
+      route: 'habitation_id',
       settings: {
         oldPath: 'edit',
       },

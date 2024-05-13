@@ -19,7 +19,7 @@ import formRealtorAddEdit from './form-realtor-add-edit'
 
 export default {
   id: uuidv4(),
-  name: 'Добавить владельца',
+  name: 'Редактировать проживание',
   type: 'FormDefault',
   path: 'habitation-add',
   alias: 'habitation',
@@ -55,7 +55,10 @@ export default {
         },
       ],
     },
-    { alias: 'managers', filter: [] },
+    {
+      alias: 'managers',
+      filter: [{ alias: 'permission_id', value: [1], type: 'num' }],
+    },
     { alias: 'owner_habitation', filter: [] },
     { alias: 'realtors', filter: [] },
     { alias: 'owner_type', filter: [] },
@@ -139,6 +142,61 @@ export default {
       subtype: 'single',
       placeholder: '',
       class: [''],
+      dependence: [
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            const capacity = context.form.fields.find(
+              (x) => x.name === 'capacity'
+            )
+            if (
+              context.formData.habitation_type_id === 1 ||
+              context.formData.habitation_type_id === 2
+            ) {
+              context.formData.square = ''
+              if (context.formData.is_registration) {
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
+                capacity.readonly = false
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else if (context.formData.habitation_type_id === 3) {
+              if (context.formData.is_registration) {
+                if (
+                  Number(context.formData.square) &&
+                  Math.floor(Number(context.formData.square) / 8) > 0
+                ) {
+                  context.formData.capacity = Math.floor(
+                    Number(context.formData.square) / 8
+                  )
+                } else {
+                  if (
+                    context.formData.capacity !== context.originalData?.capacity
+                  ) {
+                    context.formData.capacity = ''
+                  }
+                }
+                capacity.readonly = true
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else {
+              if (
+                context.formData.capacity !== context.originalData?.capacity
+              ) {
+                context.formData.capacity = ''
+              }
+              capacity.readonly = true
+            }
+          },
+        },
+      ],
       selectOption: {
         text: 'name',
         value: 'id',
@@ -157,6 +215,61 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      dependence: [
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            const capacity = context.form.fields.find(
+              (x) => x.name === 'capacity'
+            )
+            if (
+              context.formData.habitation_type_id === 1 ||
+              context.formData.habitation_type_id === 2
+            ) {
+              context.formData.square = ''
+              if (context.formData.is_registration) {
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
+                capacity.readonly = false
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else if (context.formData.habitation_type_id === 3) {
+              if (context.formData.is_registration) {
+                if (
+                  Number(context.formData.square) &&
+                  Math.floor(Number(context.formData.square) / 8) > 0
+                ) {
+                  context.formData.capacity = Math.floor(
+                    Number(context.formData.square) / 8
+                  )
+                } else {
+                  if (
+                    context.formData.capacity !== context.originalData?.capacity
+                  ) {
+                    context.formData.capacity = ''
+                  }
+                }
+                capacity.readonly = true
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else {
+              if (
+                context.formData.capacity !== context.originalData?.capacity
+              ) {
+                context.formData.capacity = ''
+              }
+              capacity.readonly = true
+            }
+          },
+        },
+      ],
       position: {
         cols: 12,
         sm: 12,
@@ -640,24 +753,31 @@ export default {
       dependence: [
         {
           type: 'computed',
-          field: 'capacity',
           funcComputed: (context) => {
-            if (
-              Number(context.formData.square) &&
-              Math.floor(Number(context.formData.square) / 8) > 0
-            ) {
-              context.formData.capacity = Math.floor(
-                Number(context.formData.square) / 8
-              )
+            if (context.formData.is_registration) {
+              if (
+                Number(context.formData.square) &&
+                Math.floor(Number(context.formData.square) / 8) > 0
+              ) {
+                context.formData.capacity = Math.floor(
+                  Number(context.formData.square) / 8
+                )
+              } else {
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
+              }
             } else {
-              context.formData.capacity = ''
+              context.formData.capacity = '0'
             }
           },
         },
       ],
       position: {
         cols: 12,
-        sm: 6,
+        sm: 12,
       },
       validations: { required },
       bootstrapClass: [''],
@@ -669,13 +789,13 @@ export default {
       value: '',
       class: [''],
       readonly: true,
-      isShow: {
-        value: false,
-        conditions: [{ field: 'habitation_type_id', value: [3] }],
-      },
+      // isShow: {
+      //   value: false,
+      //   conditions: [{ field: 'habitation_type_id', value: [3] }],
+      // },
       position: {
         cols: 12,
-        sm: 6,
+        sm: 12,
       },
       validations: { required },
       bootstrapClass: [''],
@@ -687,23 +807,6 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
-    stringField({
-      label: 'Кол-во зарегистрированных',
-      name: 'count_reserve',
-      placeholder: '',
-      value: '',
-      class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'habitation_type_id', value: [3] }],
-      },
       position: {
         cols: 12,
         sm: 12,

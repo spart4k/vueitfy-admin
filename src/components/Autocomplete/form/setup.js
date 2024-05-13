@@ -6,6 +6,7 @@ import Vue, {
   toRef,
   getCurrentInstance,
 } from 'vue'
+import { useRoute } from 'vue-router/composables'
 import { getList } from '@/api/selects'
 
 export default {
@@ -33,6 +34,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const loading = ref(false)
+    const route = useRoute()
     const proxyValue = toRef(props, 'value')
     const searchProps = ref(props.field.search)
 
@@ -54,6 +56,7 @@ export default {
     }
     let controller
     const querySelections = async (params, isObs = false) => {
+      if (!props.field.url) return
       try {
         if (props.field.type === 'select') return
         if (params.search || params.id || isObs) {
@@ -68,12 +71,20 @@ export default {
 
           if (props.field.filter && props.field.filter.length) {
             props.field.filter.forEach((el) => {
-              if (!props.formData[el.field]) return
-              filter.push({
-                alias: el.alias ?? el.field,
-                value: props.formData[el.field],
-                type: el.type,
-              })
+              if (el.routeKey) {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  value: [+route.params[el.routeKey]],
+                  type: el.type,
+                })
+              } else {
+                if (!props.formData[el.field]) return
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  value: props.formData[el.field],
+                  type: el.type,
+                })
+              }
             })
           }
 
