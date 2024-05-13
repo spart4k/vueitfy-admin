@@ -420,26 +420,6 @@ export default {
       bootstrapClass: [''],
       readonly: true,
     }),
-    selectField({
-      label: 'Объекты',
-      name: 'object_id',
-      alias: 'objects_personal',
-      subtype: 'multiple',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-      readonly: true,
-    }),
     checkboxField({
       label: 'Штатный',
       name: 'in_state',
