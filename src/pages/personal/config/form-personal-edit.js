@@ -401,6 +401,7 @@ export default {
       subtype: 'single',
       placeholder: '',
       class: [''],
+      putFirst: true,
       selectOption: {
         text: 'name',
         value: 'id',
