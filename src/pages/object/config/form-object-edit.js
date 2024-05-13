@@ -125,6 +125,16 @@ export default {
           //url: 'object_id/avatar_with_user_key_id',
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.store.state.user.permission_id === 7,
+            type: true,
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Тип',
@@ -157,6 +167,16 @@ export default {
           ],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.store.state.user.permission_id === 7,
+            type: true,
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Подтип',
@@ -191,12 +211,21 @@ export default {
           },
         ],
       },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.store.state.user.permission_id === 7,
+            type: true,
+          },
+        ],
+      },
     }),
     stringField({
       label: 'Название',
       name: 'name',
       placeholder: '',
-      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -204,12 +233,21 @@ export default {
       },
       bootstrapClass: [''],
       required: { required },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.store.state.user.permission_id === 7,
+            type: true,
+          },
+        ],
+      },
     }),
     colorPicker({
       label: 'Цвет',
       name: 'color',
       placeholder: '',
-      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -218,6 +256,16 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.store.state.user.permission_id === 7,
+            type: true,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Регион',
@@ -321,7 +369,6 @@ export default {
       name: 'with_nutrition',
       placeholder: '',
       value: false,
-      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -340,13 +387,22 @@ export default {
           },
         ],
       },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.store.state.user.permission_id === 7,
+            type: true,
+          },
+        ],
+      },
     }),
     stringField({
       label: 'Стоимость питания',
       name: 'sum_nutrition',
       placeholder: '',
       //value: 0,
-      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -363,6 +419,16 @@ export default {
         ],
       },
       validations: { required },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.store.state.user.permission_id === 7,
+            type: true,
+          },
+        ],
+      },
       //isShow: false,
     }),
     stringField({

@@ -21,6 +21,14 @@ const buttonsMixin = [
     function: consolePanel,
     url: 'documents/query',
     backgroundColor: '#fff',
+    isShow: {
+      condition: [
+        {
+          permissions: [16],
+          type: true,
+        },
+      ],
+    },
   },
 ]
 

@@ -53,6 +53,14 @@ const config = {
         function: consolePanel,
         backgroundColor: '#fff',
         type: 'addItem',
+        isShow: {
+          condition: [
+            {
+              permissions: [1, 15, 3, 4],
+              type: true,
+            },
+          ],
+        },
       },
       {
         label: 'Бухгалтерия excel',

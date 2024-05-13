@@ -57,21 +57,8 @@ const contextMenuPersonal = {
       isShow: {
         condition: [
           {
-            direction_id: [1, 6],
+            permission_id: [1, 3, 15, 4],
             type: true,
-          },
-        ],
-      },
-      readonly: {
-        value: true,
-        condition: [
-          {
-            is_personal_vertical: [true],
-            type: true,
-          },
-          {
-            permission_id: [4],
-            type: false,
           },
         ],
       },
@@ -84,14 +71,14 @@ const contextMenuPersonal = {
     {
       icon: 'mdi-plus',
       label: 'Добавить направ-ие',
-      // isShow: {
-      //   condition: [
-      //     {
-      //       direction_id: [1, 6],
-      //       type: true,
-      //     },
-      //   ],
-      // },
+      isShow: {
+        condition: [
+          {
+            permission_id: [1, 3, 15, 4],
+            type: true,
+          },
+        ],
+      },
       readonly: {
         value: false,
         condition: [
@@ -991,6 +978,14 @@ export const config = {
             type: 'changeUrl',
             url: 'personal-add-key',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1, 15, 3, 4],
+                  type: true,
+                },
+              ],
+            },
           },
           // {
           //   label: 'Скачать',
@@ -1171,6 +1166,14 @@ export const config = {
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [formKeyAdd, formKeyEdit],
         activeTab: null,
+      },
+      isShow: {
+        condition: [
+          {
+            permissions: [16, 19],
+            type: false,
+          },
+        ],
       },
       filters: filtersKey,
     },

@@ -22,6 +22,15 @@ export default {
   detail: true,
   alias: 'object',
   active: false,
+  isShow: {
+    value: true,
+    condition: [
+      {
+        permissions: [7],
+        type: false,
+      },
+    ],
+  },
   actions: [
     stringAction({
       text: 'Сохранить',

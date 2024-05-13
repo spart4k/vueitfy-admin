@@ -504,7 +504,15 @@ export default {
             name: 'personal/:id/edit_habitation',
             refreshForm: true,
           },
-          isShow: true,
+          isShow: {
+            value: false,
+            condition: [
+              {
+                permissions: [1, 3, 4, 5],
+                type: true,
+              },
+            ],
+          },
         },
       ],
       readonly: true,
