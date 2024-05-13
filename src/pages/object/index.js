@@ -73,7 +73,7 @@ const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [15, 2, 4, 3],
+                  permissions: [4, 3],
                   type: true,
                 },
               ],
@@ -262,9 +262,12 @@ const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [1, 2, 3, 4, 9, 15],
-                  direction_id: [1, 6],
+                  vertical: true,
                   type: true,
+                },
+                {
+                  permissions: [13],
+                  type: false,
                 },
               ],
             },

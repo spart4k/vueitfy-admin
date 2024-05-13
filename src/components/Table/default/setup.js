@@ -506,10 +506,7 @@ const table = {
         if (
           el.type === 'dateRange' &&
           filterData[el.name].every(
-            (el) =>
-              el === null ||
-              el === undefined ||
-              el === ''
+            (el) => el === null || el === undefined || el === ''
           )
         ) {
           return
@@ -594,7 +591,9 @@ const table = {
     }
 
     const changeMonth = async (val) => {
-      currentDate.value.date = moment(`${currentDate.value.date}-10`).add(val, 'M').format('YYYY-MM')
+      currentDate.value.date = moment(`${currentDate.value.date}-10`)
+        .add(val, 'M')
+        .format('YYYY-MM')
       currentDate.value.year = currentDate.value.date.split('-')[0]
       currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
       await getItems()
@@ -798,29 +797,46 @@ const table = {
     })
 
     const permission = computed(() => store.state.user.permission_id)
+    const vertical = computed(() => store.state.user.is_personal_vertical)
     const directions = computed(() =>
       JSON.parse(store.state.user.direction_json)
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        return el.permissions.includes(permission.value)
+        if (!el.permissions) return true
+        else {
+          return el.permissions.includes(permission.value)
+        }
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
         }
       }
+      const checkIncludesVertical = (el) => {
+        if (!el.vertical) return true
+        else {
+          return vertical.value
+        }
+      }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some((el) => {
-            return (
-              checkIncludesPermissions(el) &&
-              checkIncludesDirections(el) === el.type
+          return btn.isShow.condition.every((el) => {
+            console.log(
+              checkIncludesPermissions(el),
+              checkIncludesVertical(el),
+              checkIncludesDirections(el),
+              el.type
             )
+            const result =
+              el.type === checkIncludesPermissions(el) &&
+              checkIncludesVertical(el) &&
+              checkIncludesDirections(el)
+            console.log(result)
+            return result
           })
           // if ()
         }
@@ -849,7 +865,7 @@ const table = {
     const downloadFile = (val) => {
       Vue.downloadFile(val)
     }
-    
+
     const changeHeaders = async () => {
       initHeadParams()
       await getItems()
