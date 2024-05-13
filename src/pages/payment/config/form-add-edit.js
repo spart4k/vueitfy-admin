@@ -971,14 +971,19 @@ export default {
             condition: [
               {
                 funcCondition: (context) =>
-                  context.formData.vid_vedomost_id === 1 &&
                   (context.formData.status_id === 1 ||
                     context.formData.status_id === 2 ||
                     context.formData.status_id === 3) &&
                   (context.formData.direction_id === 1 ||
-                    context.formData.direction_id === 6),
+                    context.formData.direction_id === 6) &&
+                  context.formData.vid_vedomost_id === 1,
                 type: true,
               },
+              // {
+              //   funcCondition: (context) =>
+              //     context.formData.vid_vedomost_id !== 1,
+              //   type: false,
+              // },
             ],
           },
         },
