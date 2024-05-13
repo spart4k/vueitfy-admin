@@ -96,6 +96,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    bankCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    taskInfo: {
+      type: Object,
+    },
   },
   components: {
     Autocomplete,
@@ -1384,6 +1391,7 @@ export default {
         return store.dispatch('taskModule/setBankData', {
           data: {
             data: {
+              id: props.bankCompleted ? props.bankCompleted : undefined,
               bank_id: formData.bank_id,
               fio: formData.fio,
               invoice: formData.invoice,
@@ -1396,9 +1404,25 @@ export default {
       },
       successMessage: 'Банковские реквизиты успешно добавлены',
     })
+
     const isCorrect = ref(false)
     const sendBankCard = async () => {
       const { result } = await sendBankCardRequest()
+      if (result && !props.bankCompleted) {
+        const { makeRequest: updateDopData } = useRequest({
+          context,
+          request: () => {
+            return store.dispatch('taskModule/updateDopData', {
+              id: props.taskInfo.task.id,
+              dop: {
+                bank_card_id: result,
+              },
+            })
+          },
+          successMessage: 'Успешно',
+        })
+        await updateDopData()
+      }
       const bankCardId = result
       ctx.emit('changeDocs', {
         bank_card_id: bankCardId,

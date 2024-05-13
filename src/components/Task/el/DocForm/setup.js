@@ -119,6 +119,13 @@ const docForm = defineComponent({
       type: Boolean,
       default: false,
     },
+    bankCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    taskInfo: {
+      type: Object,
+    },
   },
   data: function () {
     return {
