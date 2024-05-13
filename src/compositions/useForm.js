@@ -408,7 +408,8 @@ export default function ({
             }
           })
         action.isShow.value = condition()
-        return environment.readonlyAll ? true : action.isShow.value
+        console.log(action.isShow.value)
+        return environment.readonlyAll ? false : action.isShow.value
       }
     } else if (typeof action.isShow === 'undefined') {
       return environment.readonlyAll

@@ -442,12 +442,6 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
         ],
       },
     ],
@@ -680,12 +674,6 @@ export const addFields = [
           },
           {
             field: 'vector_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'type_objects',
             value: '',
             source: 'formData',
             type: 'num',
@@ -1032,31 +1020,6 @@ export const addFields = [
     ],
     validations: { required },
     bootstrapClass: [''],
-    updateList: [
-      {
-        alias: 'type_pay',
-        filter: [
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'object_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'vector_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-        ],
-      },
-    ],
     isShow: {
       value: false,
       conditions: [
@@ -1099,29 +1062,6 @@ export const addFields = [
     bootstrapClass: [''],
     updateList: [
       {
-        alias: 'type_pay',
-        filter: [
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'object_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'vector_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-        ],
-      },
-      {
         alias: 'req_zr_id',
         condition: [
           {
@@ -1160,12 +1100,6 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
         ],
       },
     ],
@@ -1178,12 +1112,6 @@ export const addFields = [
             compareKey: 'id',
             objectKey: 'name',
             targetKey: 'name',
-          },
-          {
-            formKey: 'object_zr',
-            compareKey: 'id',
-            objectKey: 'id',
-            targetKey: 'habitation_id',
           },
           'regions_id',
           'city_id',
@@ -1604,12 +1532,6 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
         ],
       },
       {
@@ -1709,12 +1631,12 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['rek1', 'rek2', 'bank_id', 'owner_id', 'realtor_id'],
+        fillField: ['rek1', 'rek2', 'bank_id'],
       },
     ],
     isShow: {
       value: true,
-      conditions: [{ field: 'type_pay', value: [1, 2, 3, 6, 7] }],
+      conditions: [{ field: 'type_pay', value: [1, 2, 3] }],
     },
   }),
   dropZoneField({
@@ -1876,57 +1798,6 @@ export const addFields = [
     requestType: 'number',
     placeholder: '',
     class: [''],
-    disabled: true,
-    isShow: {
-      value: true,
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
-  stringField({
-    label: 'owner_id',
-    name: 'owner_id',
-    placeholder: '',
-    class: [''],
-    requestType: 'number',
-    disabled: true,
-    isShow: {
-      value: true,
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
-  stringField({
-    label: 'realtor_id',
-    name: 'realtor_id',
-    placeholder: '',
-    class: [''],
-    requestType: 'number',
-    disabled: true,
-    isShow: {
-      value: true,
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
-  stringField({
-    label: 'habitation_id',
-    name: 'habitation_id',
-    placeholder: '',
-    class: [''],
-    requestType: 'number',
     disabled: true,
     isShow: {
       value: true,
@@ -2411,12 +2282,6 @@ export const editFields = [
             source: 'formData',
             type: 'num',
           },
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
         ],
       },
     ],
@@ -2658,12 +2523,6 @@ export const editFields = [
           {
             field: 'type_zayavka',
             alias: 'vector_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'type_objects',
             value: '',
             source: 'formData',
             type: 'num',
@@ -3036,32 +2895,6 @@ export const editFields = [
       cols: 12,
       sm: 12,
     },
-    updateList: [
-      {
-        alias: 'type_pay',
-        filter: [
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'object_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'type_zayavka',
-            alias: 'vector_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-        ],
-      },
-    ],
     dependence: [
       {
         type: 'api',
@@ -3165,36 +2998,6 @@ export const editFields = [
             source: 'formData',
             type: 'num',
           },
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-        ],
-      },
-      {
-        alias: 'type_pay',
-        filter: [
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'object_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'type_zayavka',
-            alias: 'vector_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
         ],
       },
     ],
@@ -3207,12 +3010,6 @@ export const editFields = [
             compareKey: 'id',
             objectKey: 'name',
             targetKey: 'to_name',
-          },
-          {
-            formKey: 'object_zr',
-            compareKey: 'id',
-            objectKey: 'id',
-            targetKey: 'habitation_id',
           },
           'regions_id',
           'city_id',
@@ -3777,12 +3574,6 @@ export const editFields = [
             source: 'formData',
             type: 'num',
           },
-          {
-            field: 'type_objects',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
         ],
       },
       {
@@ -3899,12 +3690,12 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['rek1', 'rek2', 'bank_id', 'owner_id', 'realtor_id'],
+        fillField: ['rek1', 'rek2', 'bank_id'],
       },
     ],
     isShow: {
       value: false,
-      conditions: [{ field: 'payment_type', value: [1, 2, 3, 6, 7] }],
+      conditions: [{ field: 'payment_type', value: [1, 2, 3] }],
     },
   }),
   dropZoneField({
@@ -4160,57 +3951,6 @@ export const editFields = [
     },
     bootstrapClass: [''],
   }),
-  stringField({
-    label: 'owner_id',
-    name: 'owner_id',
-    placeholder: '',
-    class: [''],
-    requestType: 'number',
-    disabled: true,
-    isShow: {
-      value: true,
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
-  stringField({
-    label: 'realtor_id',
-    name: 'realtor_id',
-    placeholder: '',
-    class: [''],
-    requestType: 'number',
-    disabled: true,
-    isShow: {
-      value: true,
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
-  stringField({
-    label: 'habitation_id',
-    name: 'habitation_id',
-    placeholder: '',
-    class: [''],
-    requestType: 'number',
-    disabled: true,
-    isShow: {
-      value: true,
-    },
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
 ]
 
 const config = {
@@ -4242,6 +3982,14 @@ const config = {
         type: 'addItem',
         //function: consolePanel,
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [7, 12],
+              type: false,
+            },
+          ],
+        },
       },
       {
         label: 'Бухгалтерия excel',
