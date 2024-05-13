@@ -1,4 +1,11 @@
-import { defineComponent, reactive, ref, watchEffect, computed } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  ref,
+  toRef,
+  watchEffect,
+  computed,
+} from 'vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -77,6 +84,10 @@ const Form1 = defineComponent({
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
+    const dopData = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data')).value
+    )
+    const bankCompleted = ref(JSON.parse(dopData.value).bank_card_id)
     const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
     const isHasCard = props.data.data.docs_id.filter(
       (el) => el.doc_id === 3
@@ -276,6 +287,8 @@ const Form1 = defineComponent({
       if (data.bank_card_id) {
         bankCardId.value = data.bank_card_id
         cardAccepted.value = true
+        console.log(data.bank_card_id)
+        bankCompleted.value = data.bank_card_id
       }
       // const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)
       // let isValid = isFormValid.value
@@ -356,6 +369,8 @@ const Form1 = defineComponent({
       rejectedComment,
       docMainValid,
       docMainRef,
+      dopData,
+      bankCompleted,
     }
   },
 })

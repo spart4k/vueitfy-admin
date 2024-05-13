@@ -22,6 +22,8 @@
       :withoutSave="withoutSave"
       :delFile="delFile"
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
+      :taskInfo="taskInfo"
+      :bankCompleted="bankCompleted"
     />
   </div>
 </template>
