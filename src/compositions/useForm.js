@@ -1418,7 +1418,7 @@ export default function ({
     //let listQuery = undefined
     let syncForm = undefined
     let lists = undefined
-    if (getDetail()) {
+    if (getDetail() && form.alias) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }

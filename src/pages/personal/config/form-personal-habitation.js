@@ -20,7 +20,7 @@ export default {
   name: 'Редактировать проживание',
   type: 'FormDefault',
   path: 'edit_habitation',
-  alias: 'habitation',
+  // alias: 'habitation',
   active: false,
   detail: {
     type: 'popup', // String 'popup' or 'page'
