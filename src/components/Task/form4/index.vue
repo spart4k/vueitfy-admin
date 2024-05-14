@@ -25,17 +25,38 @@
       style="font-size: 18px"
       class="d-flex align-center font-weight-bold mb-2"
     >
-      <v-icon class="mr-1" v-if="selectName !== ''" x-small color="green"
+      <v-icon
+        class="mr-1"
+        v-if="selectName !== '' && date_in !== ''"
+        x-small
+        color="green"
         >$IconGalka</v-icon
       >
       Заселите:
     </div>
-    <Autocomplete
-      :readonly="autocompleteConfig.readonly"
-      :field="autocompleteConfig"
-      :filter="autocompleteConfig.filter"
-      v-model="selectName"
-    />
+    <v-row>
+      <v-col :cols="12" :sm="5">
+        <Autocomplete
+          :readonly="autocompleteConfig.readonly"
+          :field="autocompleteConfig"
+          :filter="autocompleteConfig.filter"
+          v-model="selectName"
+        />
+      </v-col>
+      <v-col :cols="12" :sm="4">
+        <DateTimePicker
+          :label="'Дата заселения'"
+          :field="{}"
+          v-model="date_in"
+        />
+      </v-col>
+      <v-col :cols="12" :sm="3">
+        <v-checkbox
+          v-model="is_registration"
+          :label="'Регистрация'"
+        ></v-checkbox>
+      </v-col>
+    </v-row>
     <span style="font-size: 18px" class="font-weight-bold">
       <v-icon x-small color="green" v-if="isGalkaVisible || hasMigr"
         >$IconGalka</v-icon
@@ -53,7 +74,7 @@
         small
         color="info"
         @click="sendData"
-        :disabled="(!selectName && selectName !== 0) || !hasMigr"
+        :disabled="(!selectName && selectName !== 0) || !hasMigr || !date_in"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

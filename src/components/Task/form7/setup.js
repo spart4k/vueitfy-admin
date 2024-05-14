@@ -1,4 +1,4 @@
-import { defineComponent, ref, reactive, computed, watch } from 'vue'
+import { defineComponent, toRef, ref, reactive, computed, watch } from 'vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
@@ -37,6 +37,10 @@ const Form7 = defineComponent({
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
+    const dopData = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data')).value
+    )
+    const bankCompleted = ref(JSON.parse(dopData.value).bank_card_id)
     const context = {
       root: {
         store,
@@ -295,6 +299,7 @@ const Form7 = defineComponent({
       rejectedComment,
       allDocsValid,
       docMainValid,
+      bankCompleted,
     }
   },
 })
