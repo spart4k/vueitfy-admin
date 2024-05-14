@@ -1423,7 +1423,7 @@ export default {
         })
         await updateDopData()
       }
-      const bankCardId = result
+      const bankCardId = result !== 0 ? result : props.bankCompleted
       ctx.emit('changeDocs', {
         bank_card_id: bankCardId,
         // formObj: formObj,
