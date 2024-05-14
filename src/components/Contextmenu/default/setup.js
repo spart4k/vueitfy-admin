@@ -95,17 +95,19 @@ export default {
                 conditionEl.target === 'formData' &&
                 !conditionEl.permissions
               ) {
-                return checkIncludesData(conditionEl) && conditionEl.type
+                return checkIncludesData(conditionEl) === conditionEl.type
               } else if (
                 conditionEl.permission_id?.length &&
                 !conditionEl.target
               ) {
-                return checkIncludesPermissions(conditionEl) && conditionEl.type
+                return (
+                  checkIncludesPermissions(conditionEl) === conditionEl.type
+                )
               } else if (
                 conditionEl.is_personal_vertical?.length &&
                 !conditionEl.target
               ) {
-                return checkIncludesVertical(conditionEl) && conditionEl.type
+                return checkIncludesVertical(conditionEl) === conditionEl.type
               } else {
                 return (
                   checkIncludesData(conditionEl) &&
@@ -132,31 +134,35 @@ export default {
         return result
       }
       const checkIncludesPermissions = (el) => {
+        console.log(el, permission.value)
         return el.permission_id.includes(permission.value)
       }
       const checkIncludesVertical = (el) => {
         return el.is_personal_vertical.includes(is_personal_vertical.value)
       }
-      if (typeof action.readonly === 'boolean') return action.readonly
-      else if (typeof action.readonly === 'object') {
-        if (action.readonly.condition?.length) {
+      if (typeof action.isShow === 'boolean') return action.isShow
+      else if (typeof action.isShow === 'object') {
+        if (action.isShow.condition?.length) {
           const condition = () =>
-            action.readonly.condition.every((conditionEl) => {
+            action.isShow.condition.every((conditionEl) => {
               if (
                 conditionEl.target === 'formData' &&
                 !conditionEl.permissions
               ) {
-                return checkIncludesData(conditionEl) && conditionEl.type
+                return checkIncludesData(conditionEl) === conditionEl.type
               } else if (
                 conditionEl.permission_id?.length &&
                 !conditionEl.target
               ) {
-                return checkIncludesPermissions(conditionEl) && conditionEl.type
+                console.log(checkIncludesPermissions(conditionEl))
+                return (
+                  checkIncludesPermissions(conditionEl) === conditionEl.type
+                )
               } else if (
                 conditionEl.is_personal_vertical?.length &&
                 !conditionEl.target
               ) {
-                return checkIncludesVertical(conditionEl) && conditionEl.type
+                return checkIncludesVertical(conditionEl) === conditionEl.type
               } else {
                 return (
                   checkIncludesData(conditionEl) &&
@@ -165,8 +171,9 @@ export default {
               }
             })
 
-          action.readonly.value = condition()
-          return action.readonly.value
+          action.isShow.value = condition()
+          console.log(action.isShow.value, 'context')
+          return action.isShow.value
         }
       }
     }
@@ -214,6 +221,7 @@ export default {
       isReadonly,
       availableContext,
       isShow,
+      permission,
     }
   },
 }
