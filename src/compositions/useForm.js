@@ -1475,7 +1475,9 @@ export default function ({
       }
 
       if (syncForm.hasOwnProperty('readonly')) {
+        console.log('READONLY')
         environment.readonlyAll = syncForm.readonly
+        console.log(environment.readonlyAll)
       }
 
       originalData = _.cloneDeep(formData)
@@ -1608,8 +1610,9 @@ export default function ({
     const checkIncludesPermissions = (el) => {
       return el.permissions.includes(permission.value)
     }
-    if (typeof button.isHide === 'boolean') return button.isHide
-    else if (typeof button.isHide === 'object') {
+    if (typeof button.isHide === 'boolean') {
+      return environment.readonlyAll ? true : button.isHide
+    } else if (typeof button.isHide === 'object') {
       if (button.isHide.condition?.length) {
         const condition = () =>
           button.isHide.condition.some((conditionEl) => {
@@ -1638,9 +1641,14 @@ export default function ({
             }
           })
         button.isHide.value = condition()
-        return button.isHide.value
+        // return button.isHide.value
+        return environment.readonlyAll ? true : button.isHide.value
       }
-    } else if (typeof button.isHide === 'undefined') return false
+    } else if (typeof button.isHide === 'undefined') {
+      return environment.readonlyAll && button.text === 'Сохранить'
+        ? true
+        : false
+    }
   }
 
   const readonlyField = (field) => {
@@ -1693,6 +1701,17 @@ export default function ({
             }
           })
         field.readonly.value = condition()
+        console.log(
+          field.name,
+          environment.readonlyAll,
+          environment.readonlyAll ? true : field.readonly.value
+        )
+        if (field.name === 'name') {
+          console.log(
+            environment.readonlyAll,
+            environment.readonlyAll ? true : field.readonly.value
+          )
+        }
         return environment.readonlyAll ? true : field.readonly.value
       }
     } else if (typeof field.readonly === 'undefined') {
