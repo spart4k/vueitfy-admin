@@ -1811,7 +1811,7 @@ const config = {
                   type: false,
                 },
                 {
-                  permissions: [3, 15, 4],
+                  permissions: [1, 3, 15, 4],
                   field: 'status',
                   target: 'formData',
                   value: [3],

@@ -9,7 +9,7 @@ const filters = {
   isFilter: true,
   lists: [
     {
-      alias: 'directions',
+      alias: 'direction_id',
       filter: [],
     },
     {
@@ -23,7 +23,7 @@ const filters = {
     selectField({
       label: 'Направление',
       name: 'direction_id',
-      alias: 'directions',
+      alias: 'direction_id',
       subtype: 'array',
       placeholder: '',
       class: [''],
