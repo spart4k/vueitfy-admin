@@ -55,6 +55,7 @@ const contextMenuPersonal = {
       icon: 'mdi-plus',
       label: 'Привязать объект',
       isShow: {
+        value: false,
         condition: [
           {
             permission_id: [1, 3, 15, 4],
@@ -72,6 +73,7 @@ const contextMenuPersonal = {
       icon: 'mdi-plus',
       label: 'Добавить направ-ие',
       isShow: {
+        value: false,
         condition: [
           {
             permission_id: [1, 3, 15, 4],
