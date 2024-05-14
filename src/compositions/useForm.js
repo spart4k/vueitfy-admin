@@ -1264,6 +1264,9 @@ export default function ({
 
       el.hideItems = el.items
 
+      if (el.putFirst && !formData[el.name] && el.items[0])
+        formData[el.name] = el.items[0][el.selectOption.value]
+
       if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
       }
@@ -1426,7 +1429,7 @@ export default function ({
     //let listQuery = undefined
     let syncForm = undefined
     let lists = undefined
-    if (getDetail()) {
+    if (getDetail() && form.alias) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
@@ -1666,7 +1669,9 @@ export default function ({
       return el.permissions.includes(permission.value)
     }
     if (typeof field.readonly === 'boolean')
-      return environment.readonlyAll ? true : field.readonly
+      return environment.readonlyAll && !form.notReadonly
+        ? true
+        : field.readonly
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
@@ -1701,21 +1706,14 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        console.log(
-          field.name,
-          environment.readonlyAll,
-          environment.readonlyAll ? true : field.readonly.value
-        )
-        if (field.name === 'name') {
-          console.log(
-            environment.readonlyAll,
-            environment.readonlyAll ? true : field.readonly.value
-          )
-        }
-        return environment.readonlyAll ? true : field.readonly.value
+        return environment.readonlyAll && !form.notReadonly
+          ? true
+          : field.readonly.value
       }
     } else if (typeof field.readonly === 'undefined') {
-      return environment.readonlyAll
+      return environment.readonlyAll && !form.notReadonly
+        ? true
+        : environment.readonlyAll
     }
   }
   const entityData = ref({})
