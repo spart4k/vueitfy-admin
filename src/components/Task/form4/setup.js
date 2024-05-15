@@ -110,7 +110,7 @@ const Form4 = defineComponent({
           fileName: fileName,
           file: form_data,
         }),
-      // successMessage: 'Файл успешно загружен',
+      successMessage: 'Файл успешно загружен',
     })
     const { makeRequest: updateFileData } = useRequest({
       context,
@@ -160,40 +160,41 @@ const Form4 = defineComponent({
     })
     let sendData = async () => {
       //
-      await pushSomeShit()
-      if (hasMigr.value && isGalkaVisible.value) {
-        await makeRequest()
-        if (data.data.migr_card?.id) {
-          await delInfoAFile()
-        }
-        await updateFileData().then((str) => {
-          const { makeRequest: startTask } = useRequest({
-            context,
-            request: () =>
-              store.dispatch('taskModule/startProcess', {
-                // status: 6,
-                // data: {
-                // personal_id: <?php echo $entity['id']; ?>,
-                // docs_id: {"10": data.result},
-                // parent_action: <?php echo $task['id']; ?>,
-                // type_parent_action: 2,
-
-                parent_process: data.task.process_id,
-                process_id: 1,
-                account_id: data.task.to_account_id,
-                task_id: data.task.id,
-                docs_id: [str.result],
-                personal_id: data.entity.id,
-                parent_action: data.task.id,
-                type_parent_action: 2,
-                // },
-              }),
-          })
-          startTask()
-        })
-      }
       const habitationRequest = await createHabitation()
+
       if (habitationRequest.code === 1) {
+        await pushSomeShit()
+        if (hasMigr.value && isGalkaVisible.value) {
+          await makeRequest()
+          if (data.data.migr_card?.id) {
+            await delInfoAFile()
+          }
+          await updateFileData().then((str) => {
+            const { makeRequest: startTask } = useRequest({
+              context,
+              request: () =>
+                store.dispatch('taskModule/startProcess', {
+                  // status: 6,
+                  // data: {
+                  // personal_id: <?php echo $entity['id']; ?>,
+                  // docs_id: {"10": data.result},
+                  // parent_action: <?php echo $task['id']; ?>,
+                  // type_parent_action: 2,
+
+                  parent_process: data.task.process_id,
+                  process_id: 1,
+                  account_id: data.task.to_account_id,
+                  task_id: data.task.id,
+                  docs_id: [str.result],
+                  personal_id: data.entity.id,
+                  parent_action: data.task.id,
+                  type_parent_action: 2,
+                  // },
+                }),
+            })
+            startTask()
+          })
+        }
         const { success } = await doneTask()
         if (success) {
           ctx.emit('closePopup')
