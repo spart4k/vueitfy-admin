@@ -8,7 +8,7 @@ export default {
   detail: false,
   isFilter: true,
   lists: [
-    { alias: 'direction_id', filter: [] },
+    { alias: 'directions', filter: [] },
     { alias: 'object_type', filter: [] },
     { alias: 'object_subtype', filter: [] },
     { alias: 'city_id', filter: [] },
@@ -19,7 +19,7 @@ export default {
     selectField({
       label: 'Направления',
       name: 'direction_id',
-      alias: 'direction_id',
+      alias: 'directions',
       subtype: 'array',
       placeholder: '',
       class: [''],

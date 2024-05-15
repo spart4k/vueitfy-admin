@@ -317,12 +317,9 @@ export default function ({
       }
       let res = result.code
       let contextData = formData
-      console.log(conditionContext)
       if (action.handlingResponse.result) res = action.handlingResponse.result
       if (action.handlingResponse.context)
         contextData = conditionContext[action.handlingResponse.context]
-      console.log(contextData)
-      console.log(conditionContext[action.handlingResponse.context], res)
       let { text, color } = action.handlingResponse[res]
       // /%\w{n}%/
       //const text = 'Объект с именем %name% уже существует'
@@ -331,10 +328,6 @@ export default function ({
 
       key?.forEach((item) => {
         const keyFormated = item.split('%')[1]
-        console.log(text)
-        console.log(contextData)
-        console.log(keyFormated)
-        console.log(item)
         text = text.replace(item, contextData[keyFormated])
       })
 
@@ -408,8 +401,7 @@ export default function ({
             }
           })
         action.isShow.value = condition()
-        console.log(action.isShow.value)
-        return environment.readonlyAll ? false : action.isShow.value
+        return environment.readonlyAll ? true : action.isShow.value
       }
     } else if (typeof action.isShow === 'undefined') {
       return environment.readonlyAll
@@ -1264,9 +1256,6 @@ export default function ({
 
       el.hideItems = el.items
 
-      if (el.putFirst && !formData[el.name] && el.items[0])
-        formData[el.name] = el.items[0][el.selectOption.value]
-
       if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
       }
@@ -1383,7 +1372,6 @@ export default function ({
   }
 
   const queryList = async (field, clear = true) => {
-    console.log(field.name)
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
@@ -1406,10 +1394,6 @@ export default function ({
       return element
     })
     field.loading = true
-    console.log(listData)
-    if (field.name === 'personal_object_zr') {
-      console.log(listData)
-    }
     const lists = await makeRequestList(listData)
     putSelectItems(lists)
     if (clear) formData[field.name] = ''
@@ -1429,7 +1413,7 @@ export default function ({
     //let listQuery = undefined
     let syncForm = undefined
     let lists = undefined
-    if (getDetail() && form.alias) {
+    if (getDetail()) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
@@ -1452,7 +1436,6 @@ export default function ({
           //     field,
           //   })
           // }
-          console.log(field, field.name)
           if (field.updateList && field.updateList.length) {
             await queryList(field, false)
           }
@@ -1478,9 +1461,7 @@ export default function ({
       }
 
       if (syncForm.hasOwnProperty('readonly')) {
-        console.log('READONLY')
         environment.readonlyAll = syncForm.readonly
-        console.log(environment.readonlyAll)
       }
 
       originalData = _.cloneDeep(formData)
@@ -1581,7 +1562,6 @@ export default function ({
             if (field.putFirst)
               formData[field.name] = field.items[0][field.selectOption.value]
           }
-          console.log(field.hasOwnProperty('dependence'), field.name)
           if (
             field.hasOwnProperty('dependence') ||
             field.hasOwnProperty('updateList')
@@ -1613,9 +1593,8 @@ export default function ({
     const checkIncludesPermissions = (el) => {
       return el.permissions.includes(permission.value)
     }
-    if (typeof button.isHide === 'boolean') {
-      return environment.readonlyAll ? true : button.isHide
-    } else if (typeof button.isHide === 'object') {
+    if (typeof button.isHide === 'boolean') return button.isHide
+    else if (typeof button.isHide === 'object') {
       if (button.isHide.condition?.length) {
         const condition = () =>
           button.isHide.condition.some((conditionEl) => {
@@ -1644,14 +1623,9 @@ export default function ({
             }
           })
         button.isHide.value = condition()
-        // return button.isHide.value
-        return environment.readonlyAll ? true : button.isHide.value
+        return button.isHide.value
       }
-    } else if (typeof button.isHide === 'undefined') {
-      return environment.readonlyAll && button.text === 'Сохранить'
-        ? true
-        : false
-    }
+    } else if (typeof button.isHide === 'undefined') return false
   }
 
   const readonlyField = (field) => {
@@ -1669,9 +1643,7 @@ export default function ({
       return el.permissions.includes(permission.value)
     }
     if (typeof field.readonly === 'boolean')
-      return environment.readonlyAll && !form.notReadonly
-        ? true
-        : field.readonly
+      return environment.readonlyAll ? true : field.readonly
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
@@ -1706,14 +1678,10 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        return environment.readonlyAll && !form.notReadonly
-          ? true
-          : field.readonly.value
+        return environment.readonlyAll ? true : field.readonly.value
       }
     } else if (typeof field.readonly === 'undefined') {
-      return environment.readonlyAll && !form.notReadonly
-        ? true
-        : environment.readonlyAll
+      return environment.readonlyAll
     }
   }
   const entityData = ref({})
