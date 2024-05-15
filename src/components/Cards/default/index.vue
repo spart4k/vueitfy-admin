@@ -11,7 +11,7 @@
       <div class="v-cards-wrapper-container_list">
         <CardsNew @createItem="createItem" />
         <CardsItem
-          v-for="item in options.data.rows"
+          v-for="item in items"
           :data="item"
           :key="item.id"
           :id="item.index ?? item.id"

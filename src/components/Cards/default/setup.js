@@ -34,6 +34,8 @@ export default {
       countRows: 5,
     })
 
+    const items = ref([])
+
     const createItem = () => {
       console.log('createItem')
     }
@@ -110,14 +112,13 @@ export default {
       if (data.rows?.length) {
         pagination.value.totalPages = data.totalPage
         pagination.value.totalRows = data.total
-        options.data.rows = data.rows
+        items.value = [...data.rows]
         for (let i = pagination.value.countRows; i < data.total; i++) {
-          options.data.rows.push({
+          items.value.push({
             loaded: false,
             index: i,
             page: Math.floor(i / pagination.value.countRows) + 1,
             intersecting: i % pagination.value.countRows === 0,
-            id: uuidv4(),
           })
         }
       }
@@ -126,7 +127,7 @@ export default {
     }
 
     const getPage = async (entries, observer, isIntersecting) => {
-      const obsObject = options.data.rows[entries[0].target.id]
+      const obsObject = items.value[entries[0].target.id]
       const data = await store.dispatch('table/get', {
         url: options.options.url,
         data: {
@@ -138,11 +139,11 @@ export default {
           sorts: [],
         },
       })
-      options.data.rows.forEach((item, index) => {
-        if (item.page === obsObject.page) {
-          Vue.set(item, 'zxc', 'zxc')
-          console.log(item)
-        }
+      data.rows.forEach((item) => {
+        const emptyObjectIndex = items.value.findIndex(
+          (x) => x.page === obsObject.page
+        )
+        Vue.set(items.value, emptyObjectIndex, item)
       })
     }
 
@@ -155,6 +156,7 @@ export default {
       loading,
       createItem,
       getPage,
+      items,
     }
   },
 }
