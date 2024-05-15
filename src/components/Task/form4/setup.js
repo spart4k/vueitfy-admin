@@ -133,8 +133,7 @@ const Form4 = defineComponent({
             data: {
               habitation_id: selectName.value,
               personal_id: data.entity.id,
-              with_check_in:
-                selectName.value !== 0 ? is_registration.value : false,
+              with_check_in: is_registration.value,
               date_in: date_in.value,
               comment: '',
             },
@@ -194,25 +193,32 @@ const Form4 = defineComponent({
         })
       }
       const habitationRequest = await createHabitation()
-      if (habitationRequest.code === '1') {
+      if (habitationRequest.code === 1) {
         const { success } = await doneTask()
         if (success) {
           ctx.emit('closePopup')
           ctx.emit('getItems')
         }
-      } else if (habitationRequest.code === '2') {
+      } else if (habitationRequest.code === 2) {
         store.dispatch('notifies/showMessage', {
           content: 'На объекте превышен лимит регистраций',
           timeout: 1000,
           color: 'error',
         })
-      } else if (habitationRequest.code === '3') {
+      } else if (habitationRequest.code === 3) {
         store.dispatch('notifies/showMessage', {
           content:
             'Дата заселения совпадает с периодом проживания на другом объекте',
           timeout: 1000,
           color: 'error',
         })
+      }
+    }
+
+    const changeObject = () => {
+      if (selectName.value === 0) {
+        date_in.value = ''
+        is_registration.value = ''
       }
     }
 
@@ -233,6 +239,7 @@ const Form4 = defineComponent({
       isGalkaVisible,
       hasMigr,
       autocompleteConfig,
+      changeObject,
     }
   },
 })

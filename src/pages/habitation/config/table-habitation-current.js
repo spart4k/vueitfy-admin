@@ -60,7 +60,7 @@ export const config = {
         ],
         isShow: true,
         width: '90',
-        alias: 'h.name',
+        alias: 'p.name',
         value: 'personal_name',
         search: {
           field: '',
@@ -85,7 +85,7 @@ export const config = {
         ],
         isShow: true,
         width: '150',
-        alias: 'ci.name',
+        alias: 'hh.date_in',
         value: 'date_in',
         search: {
           field: '',
@@ -110,7 +110,7 @@ export const config = {
         ],
         isShow: true,
         width: '150',
-        alias: 'gr.name',
+        alias: 'hha.date_out',
         value: 'date_out',
         search: {
           field: '',
@@ -135,7 +135,7 @@ export const config = {
         ],
         isShow: true,
         width: '90',
-        alias: 'ht.name',
+        alias: 'hha.why',
         value: 'why',
         search: {
           field: '',
@@ -160,7 +160,7 @@ export const config = {
         ],
         isShow: true,
         width: '90',
-        alias: 'h.address',
+        alias: 'hh.comment',
         value: 'comment',
         search: {
           field: '',
@@ -185,7 +185,7 @@ export const config = {
         ],
         isShow: true,
         width: '90',
-        alias: 'h.count_place',
+        alias: 'hh.with_check_in',
         value: 'with_check_in',
         search: {
           field: '',
