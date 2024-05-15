@@ -1800,14 +1800,19 @@ export default function ({
         environment,
       }
       let value = null
-      field.position.sm.condiiton.forEach((el) => {
+      field.position.sm.conditon.forEach((el) => {
         const resultFuncCondition = el.funcCondition(conditionContext)
         if (resultFuncCondition) {
           value = el.value[resultFuncCondition]
-        } else {
-          value = el.value[false]
         }
       })
+      if (
+        !field.position.sm.conditon.some((el) =>
+          el.funcCondition(conditionContext)
+        )
+      ) {
+        value = field.position.sm.default
+      }
       return value
     } else return field.position.sm
   }

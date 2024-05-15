@@ -23,7 +23,7 @@
           @changeDocs="changeDocs"
           :docsData="listDocuments"
           :listNames="data.data.docs_spr"
-          :docs="docs"
+          :docs="listDocuments"
           :entity="data.entity"
           :task="data.task"
           ref="docFormRef"

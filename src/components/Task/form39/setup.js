@@ -56,25 +56,7 @@ const Form7 = defineComponent({
     const osnConfirmed = ref(null)
 
     const isValid = computed(() => {
-      if (
-        status.value === 'Работает' &&
-        !formatedDopData.was_process &&
-        object.value
-      ) {
-        return true
-      }
-      if (
-        status.value === 'Работает' &&
-        formatedDopData.was_process &&
-        !object.value
-      ) {
-        return true
-      }
-      if (
-        status.value === 'Работает' &&
-        formatedDopData.was_process &&
-        object.value
-      ) {
+      if (status.value === 'Работает' && object.value) {
         return true
       } else if (status.value === 'Уволен') {
         return true
@@ -111,7 +93,7 @@ const Form7 = defineComponent({
       name: 'object',
       items: props.data.data.objects,
       solo: false,
-      // required: true,
+      required: true,
       selectOption: {
         text: 'name',
         value: 'id',
@@ -176,7 +158,7 @@ const Form7 = defineComponent({
           doc_id: JSON.parse(props.data.task.dop_data).doc_id,
           personal_id: props.data.entity.id,
           object_id: status.value === 'Работает' ? object.value : undefined,
-          rashod_id: rashod_id ? rashod_id : undefined,
+          rashod_id,
           ...testObject,
           // is_work:
           //   status.value === 'Работает' &&
@@ -196,45 +178,27 @@ const Form7 = defineComponent({
       },
     })
 
-    const { makeRequest: updateTmpRequest } = useRequest({
-      context,
-      request: () => {
-        const data = {
-          account_id: props.data.task.to_account_id,
-          status_id: status.value === 'Работает' ? 1 : 2,
-          process_id: props.data.task.process_id,
-          // is_work:
-          //   status.value === 'Работает' &&
-          //   JSON.parse(props.data.task.dop_data).doc_id !== 5
-          //     ? true
-          //     : false,
-          // is_fired: status.value === 'Уволен' ? true : false,
-          // is_patent:
-          //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
-          //   status.value === 'Работает',
-        }
-        console.log(data)
-        return store.dispatch('taskModule/updateTmp', {
-          data,
-        })
-      },
-    })
-
     const sendData = async () => {
-      let rashod_id = null
-      if (!formatedDopData.was_process && status.value === 'Работает') {
-        rashod_id = await createZayavka()
-        console.log(rashod_id)
-      }
-      const { code } = await updateTmpRequest()
-      if (code === 2) {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Ошибка сервера: Code 2',
-          timeout: 1000,
-        })
-      }
-      const { success } = await changeStatusTask(rashod_id?.id)
+      console.log(
+        !formatedDopData.was_process &&
+          status.value === 'Работает' &&
+          formatedDopData.doc_id !== 5
+          ? true
+          : false
+      )
+      console.log(
+        !formatedDopData.was_process &&
+          status.value === 'Работает' &&
+          formatedDopData.doc_id !== 5
+      )
+      console.log(
+        !formatedDopData.was_process,
+        status.value === 'Работает',
+        formatedDopData.doc_id !== 5
+      )
+      const rashod_id = await createZayavka()
+      console.log(rashod_id)
+      const { success } = await changeStatusTask(rashod_id.id)
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
