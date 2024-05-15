@@ -24,7 +24,7 @@
           block
           @click="handlerClick(action)"
           :disabled="isReadonly(action)"
-          v-if="isShow(action)"
+          v-if="!isShow(action)"
         >
           <v-icon left>
             {{ action.icon }}

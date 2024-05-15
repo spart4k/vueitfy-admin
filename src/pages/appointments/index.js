@@ -771,18 +771,6 @@ const config = {
         type: 'addItem',
         //function: consolePanel,
         backgroundColor: '#fff',
-        isShow: {
-          condition: [
-            {
-              permissions: [1, 15, 3, 4],
-              type: true,
-            },
-            {
-              permissions: [8, 17],
-              type: false,
-            },
-          ],
-        },
       },
       // {
       //   label: 'Скачать',
@@ -886,8 +874,8 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      value: 'personal_name',
-      alias: 'pers.name',
+      value: 'fio',
+      alias: "CONCAT(pers.surname, ' ', pers.name_n, ' ', pers.patronymic)",
       search: {
         field: '',
         isShow: true,
@@ -1811,7 +1799,7 @@ const config = {
                   type: false,
                 },
                 {
-                  permissions: [1, 3, 15, 4],
+                  permissions: [3, 15, 4],
                   field: 'status',
                   target: 'formData',
                   value: [3],

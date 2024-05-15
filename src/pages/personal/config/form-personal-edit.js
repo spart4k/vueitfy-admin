@@ -123,17 +123,16 @@ export default {
       bootstrapClass: [''],
       validations: { required },
       //isShow: false,
-      readonly: false,
-      // readonly: {
-      //   value: false,
-      //   condition: [
-      //     // editFormPermissions.brigadir,
-      //     // editFormPermissions.manager[1],
-      //     // editFormPermissions.rukFIlCUPDirector.denied,
-      //     // editFormPermissions.DBA.access,
-      //     // editFormPermissions.OBDandOKK.access,
-      //   ],
-      // },
+      readonly: {
+        value: false,
+        condition: [
+          // editFormPermissions.brigadir,
+          // editFormPermissions.manager[1],
+          // editFormPermissions.rukFIlCUPDirector.denied,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
     }),
     stringField({
       label: 'Имя',
@@ -147,17 +146,16 @@ export default {
       bootstrapClass: [''],
       validations: { required },
       //isShow: false,
-      readonly: false,
-      // readonly: {
-      //   value: false,
-      //   condition: [
-      //     // editFormPermissions.brigadir,
-      //     // editFormPermissions.manager[1],
-      //     // editFormPermissions.rukFIlCUPDirector.denied,
-      //     // editFormPermissions.DBA.access,
-      //     // editFormPermissions.OBDandOKK.access,
-      //   ],
-      // },
+      readonly: {
+        value: false,
+        condition: [
+          // editFormPermissions.brigadir,
+          // editFormPermissions.manager[1],
+          // editFormPermissions.rukFIlCUPDirector.denied,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
     }),
     stringField({
       label: 'Отчество',
@@ -171,17 +169,16 @@ export default {
       bootstrapClass: [''],
       validations: {},
       //isShow: false,
-      readonly: false,
-      // readonly: {
-      //   value: false,
-      //   condition: [
-      //     // editFormPermissions.brigadir,
-      //     // editFormPermissions.manager[1],
-      //     // editFormPermissions.rukFIlCUPDirector.denied,
-      //     // editFormPermissions.DBA.access,
-      //     // editFormPermissions.OBDandOKK.access,
-      //   ],
-      // },
+      readonly: {
+        value: false,
+        condition: [
+          // editFormPermissions.brigadir,
+          // editFormPermissions.manager[1],
+          // editFormPermissions.rukFIlCUPDirector.denied,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
     }),
     stringField({
       label: 'Телефон',
@@ -195,17 +192,16 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
-      readonly: false,
-      // readonly: {
-      //   value: false,
-      //   condition: [
-      //     // editFormPermissions.brigadir,
-      //     // editFormPermissions.manager[1],
-      //     // editFormPermissions.rukFIlCUPDirector.access,
-      //     // editFormPermissions.DBA.access,
-      //     // editFormPermissions.OBDandOKK.access,
-      //   ],
-      // },
+      readonly: {
+        value: false,
+        condition: [
+          // editFormPermissions.brigadir,
+          // editFormPermissions.manager[1],
+          // editFormPermissions.rukFIlCUPDirector.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
     }),
     selectField({
       label: 'Гражданство',
@@ -424,6 +420,26 @@ export default {
       bootstrapClass: [''],
       readonly: true,
     }),
+    selectField({
+      label: 'Объекты',
+      name: 'object_id',
+      alias: 'objects_personal',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+      readonly: true,
+    }),
     checkboxField({
       label: 'Штатный',
       name: 'in_state',
@@ -434,17 +450,16 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
-      readonly: false,
-      // readonly: {
-      //   value: false,
-      //   condition: [
-      //     // editFormPermissions.brigadir,
-      //     // editFormPermissions.manager[1],
-      //     // editFormPermissions.rukFIlCUPDirector.denied,
-      //     // editFormPermissions.DBA.access,
-      //     // editFormPermissions.OBDandOKK.access,
-      //   ],
-      // },
+      readonly: {
+        value: false,
+        condition: [
+          // editFormPermissions.brigadir,
+          // editFormPermissions.manager[1],
+          // editFormPermissions.rukFIlCUPDirector.denied,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
     }),
     autocompleteField({
       label: 'Проживание',
