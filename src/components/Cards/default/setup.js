@@ -4,6 +4,7 @@ import { useStore } from '@/store'
 import { useRoute, useRouter } from 'vue-router/composables'
 import CardsItem from '../item/default/index.vue'
 import CardsNew from '../item/new/index.vue'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'Cards',
@@ -94,10 +95,9 @@ export default {
 
     const getItems = async () => {
       loading.value = true
-      const { url } = options.options
 
       const data = await store.dispatch('table/get', {
-        url: url,
+        url: options.options.url,
         data: {
           countRows: pagination.value.countRows,
           currentPage: pagination.value.currentPage,
@@ -111,12 +111,39 @@ export default {
         pagination.value.totalPages = data.totalPage
         pagination.value.totalRows = data.total
         options.data.rows = data.rows
-        for (let i = data.total; i > data.rows.length; i--) {
-          options.data.rows.push({ loaded: false })
+        for (let i = pagination.value.countRows; i < data.total; i++) {
+          options.data.rows.push({
+            loaded: false,
+            index: i,
+            page: Math.floor(i / pagination.value.countRows) + 1,
+            intersecting: i % pagination.value.countRows === 0,
+            id: uuidv4(),
+          })
         }
       }
 
       loading.value = false
+    }
+
+    const getPage = async (entries, observer, isIntersecting) => {
+      const obsObject = options.data.rows[entries[0].target.id]
+      const data = await store.dispatch('table/get', {
+        url: options.options.url,
+        data: {
+          countRows: pagination.value.countRows,
+          currentPage: obsObject.page,
+          searchGlobal: searchField.value,
+          filter: [],
+          searchColumns: [],
+          sorts: [],
+        },
+      })
+      options.data.rows.forEach((item, index) => {
+        if (item.page === obsObject.page) {
+          Vue.set(item, 'zxc', 'zxc')
+          console.log(item)
+        }
+      })
     }
 
     onMounted(async () => {
@@ -127,6 +154,7 @@ export default {
       // cards,
       loading,
       createItem,
+      getPage,
     }
   },
 }

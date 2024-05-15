@@ -1,5 +1,6 @@
 <template>
   <div class="v-card-container">
+    {{ data }}
     <div class="v-card-container-card">
       <Card :data="data" />
       <div

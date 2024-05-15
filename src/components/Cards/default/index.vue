@@ -14,7 +14,9 @@
           v-for="item in options.data.rows"
           :data="item"
           :key="item.id"
+          :id="item.index ?? item.id"
           class=""
+          v-intersect.once="item.intersecting && getPage"
         />
       </div>
     </div>
