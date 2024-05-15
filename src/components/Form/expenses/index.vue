@@ -135,7 +135,9 @@
                   changeAutocomplete({ value: formData[field.name], field })
                 "
                 :disabled="
-                  readonlyField(field) || (item.value === 2 && formData.is_migr)
+                  readonlyField(field) ||
+                  (item.value === 2 && formData.is_migr) ||
+                  checkPermission(item.value)
                 "
               >
                 {{ item.text }}

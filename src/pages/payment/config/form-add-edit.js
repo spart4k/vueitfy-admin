@@ -358,7 +358,37 @@ export default {
       items: [],
       position: {
         cols: 12,
-        sm: 6,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 3,
+                false: 6,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 3,
+                false: 3,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 3,
+                false: 3,
+              },
+              // type: false,
+            },
+          ],
+        },
       },
       // validations: { required },
       bootstrapClass: [''],
@@ -390,7 +420,37 @@ export default {
       classes: [''],
       position: {
         cols: 12,
-        sm: 3,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 3,
+                false: 3,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 3,
+                false: 3,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 3,
+                false: 3,
+              },
+              // type: false,
+            },
+          ],
+        },
       },
       // validations: { required },
       bootstrapClass: [''],
@@ -436,12 +496,12 @@ export default {
         // sm: 6,
         // condition: []
         sm: {
-          condiiton: [
+          conditon: [
             {
               funcCondition: (context) =>
                 context.formData.vid_vedomost_id === 1,
               value: {
-                true: 3,
+                true: 5,
                 false: 6,
               },
               // type: false,
@@ -450,7 +510,16 @@ export default {
               funcCondition: (context) =>
                 context.formData.vid_vedomost_id === 5,
               value: {
-                true: 3,
+                true: 5,
+                false: 6,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 4,
                 false: 6,
               },
               // type: false,
@@ -499,7 +568,36 @@ export default {
       items: [],
       position: {
         cols: 12,
-        sm: 3,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 4,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 4,
+                false: 3,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 4,
+                false: 3,
+              },
+              // type: false,
+            },
+          ],
+        },
       },
       validations: { required },
       bootstrapClass: [''],
@@ -628,7 +726,37 @@ export default {
       url: 'get/pagination_list/payment_object_id',
       position: {
         cols: 12,
-        sm: 4,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 4,
+                false: 4,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 4,
+                false: 4,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 4,
+                false: 3,
+              },
+              // type: false,
+            },
+          ],
+        },
       },
       validations: { required },
       bootstrapClass: [''],
@@ -702,7 +830,46 @@ export default {
       url: 'get/pagination_list/payment_personal_id',
       position: {
         cols: 12,
-        sm: 4,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 4,
+                false: 4,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 4,
+                false: 4,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 4,
+                false: 3,
+              },
+              // type: false,
+            },
+            // {
+            //   funcCondition: (context) =>
+            //     context.formData.vid_vedomost_id === 5,
+            //   value: {
+            //     true: 3,
+            //     false: 6,
+            //   },
+            //   // type: false,
+            // },
+          ],
+        },
       },
       validations: { required },
       bootstrapClass: [''],
@@ -766,7 +933,37 @@ export default {
       items: [],
       position: {
         cols: 12,
-        sm: 4,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 4,
+                false: 4,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 4,
+                false: 3,
+              },
+              // type: false,
+            },
+            // {
+            //   funcCondition: (context) =>
+            //     context.formData.vid_vedomost_id === 5,
+            //   value: {
+            //     true: 3,
+            //     false: 6,
+            //   },
+            //   // type: false,
+            // },
+          ],
+        },
       },
       validations: { required },
       bootstrapClass: [''],
@@ -809,7 +1006,46 @@ export default {
       items: [],
       position: {
         cols: 12,
-        sm: 6,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 4,
+                false: 5,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 4,
+                false: 5,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 6,
+                false: 3,
+              },
+              // type: false,
+            },
+            // {
+            //   funcCondition: (context) =>
+            //     context.formData.vid_vedomost_id === 5,
+            //   value: {
+            //     true: 3,
+            //     false: 6,
+            //   },
+            //   // type: false,
+            // },
+          ],
+        },
       },
       validations: { required },
       bootstrapClass: [''],
@@ -942,7 +1178,47 @@ export default {
       class: [''],
       position: {
         cols: 12,
-        sm: 6,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 5,
+                false: 5,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 4,
+                false: 5,
+              },
+              // type: false,
+            },
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 5,
+              value: {
+                true: 6,
+                false: 3,
+              },
+              // type: false,
+            },
+            // {
+            //   funcCondition: (context) =>
+            //     context.formData.vid_vedomost_id === 5,
+            //   value: {
+            //     true: 3,
+            //     false: 6,
+            //   },
+            //   // type: false,
+            // },
+          ],
+          default: 5,
+        },
       },
       // validations: { required },
       bootstrapClass: [''],
@@ -971,19 +1247,14 @@ export default {
             condition: [
               {
                 funcCondition: (context) =>
+                  context.formData.vid_vedomost_id === 1 &&
                   (context.formData.status_id === 1 ||
                     context.formData.status_id === 2 ||
                     context.formData.status_id === 3) &&
                   (context.formData.direction_id === 1 ||
-                    context.formData.direction_id === 6) &&
-                  context.formData.vid_vedomost_id === 1,
+                    context.formData.direction_id === 6),
                 type: true,
               },
-              // {
-              //   funcCondition: (context) =>
-              //     context.formData.vid_vedomost_id !== 1,
-              //   type: false,
-              // },
             ],
           },
         },
@@ -1039,7 +1310,29 @@ export default {
       items: [],
       position: {
         cols: 12,
-        sm: 4,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 1,
+              value: {
+                true: 4,
+                false: 4,
+              },
+              // type: false,
+            },
+            // {
+            //   funcCondition: (context) =>
+            //     context.formData.vid_vedomost_id === 5,
+            //   value: {
+            //     true: 3,
+            //     false: 6,
+            //   },
+            //   // type: false,
+            // },
+          ],
+          default: 4,
+        },
       },
       defaultObjectData: [
         {
@@ -1096,7 +1389,29 @@ export default {
       class: [''],
       position: {
         cols: 12,
-        sm: 4,
+        sm: {
+          conditon: [
+            {
+              funcCondition: (context) =>
+                context.formData.vid_vedomost_id === 9,
+              value: {
+                true: 4,
+                false: 4,
+              },
+              // type: false,
+            },
+            // {
+            //   funcCondition: (context) =>
+            //     context.formData.vid_vedomost_id === 5,
+            //   value: {
+            //     true: 3,
+            //     false: 6,
+            //   },
+            //   // type: false,
+            // },
+          ],
+          default: 4,
+        },
       },
       // validations: { required },
       bootstrapClass: [''],

@@ -1,4 +1,11 @@
-import Vue, { computed, ref, onMounted, watch, onUnmounted } from 'vue'
+import Vue, {
+  computed,
+  ref,
+  onMounted,
+  watch,
+  onUnmounted,
+  nextTick,
+} from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/Autocomplete/form'
 import FormDefault from '@/components/Form/default/index.vue'
@@ -356,6 +363,38 @@ export default {
       }
     }
 
+    const checkPermission = (val) => {
+      if (store.state.user.permission_id === 19) {
+        if (val === 2 || val === 3) return true
+      }
+      if (store.state.user.permission_id === 8) {
+        const onYourself = proxyTab.value.fields.find(
+          (x) => x.name === 'on_yourself'
+        )
+        onYourself.readonly = true
+        if (formData.from_account_id !== store.state.user.id) {
+          formData.on_yourself = true
+          checkVector()
+          changeAutocomplete({
+            value: formData.on_yourself,
+            field: onYourself,
+          })
+        }
+      }
+      if (store.state.user.permission_id === 17) {
+        if (val === 1 || val === 2) {
+          if (formData.vector_id && formData.vector_id !== 3) {
+            formData.vector_id = 3
+            changeAutocomplete({
+              value: formData.vector_id,
+              field: proxyTab.value.fields.find((x) => x.name === 'vector_id'),
+            })
+          }
+          return true
+        }
+      }
+    }
+
     const downloadFile = ({ item }) => {
       const link = document.createElement('a')
       link.download = item.name
@@ -491,6 +530,7 @@ export default {
       changeCheckbox,
       rebuildFormData,
       readonlyField,
+      changeValue,
       isHideBtn,
       getDependies,
     } = useForm({
@@ -544,6 +584,8 @@ export default {
       imageFormat,
       isHideBtn,
       proxyTab,
+      checkPermission,
+      changeValue,
     }
   },
 }

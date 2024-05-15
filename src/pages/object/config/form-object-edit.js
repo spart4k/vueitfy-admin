@@ -133,12 +133,6 @@ export default {
               context.store.state.user.permission_id === 7,
             type: true,
           },
-          {
-            funcCondition: (context) =>
-              context.store.state.user.permission_id === 8 ||
-              context.store.state.user.permission_id === 17,
-            type: true,
-          },
         ],
       },
     }),
@@ -179,12 +173,6 @@ export default {
           {
             funcCondition: (context) =>
               context.store.state.user.permission_id === 7,
-            type: true,
-          },
-          {
-            funcCondition: (context) =>
-              context.store.state.user.permission_id === 8 ||
-              context.store.state.user.permission_id === 17,
             type: true,
           },
         ],
@@ -229,12 +217,6 @@ export default {
           {
             funcCondition: (context) =>
               context.store.state.user.permission_id === 7,
-            type: true,
-          },
-          {
-            funcCondition: (context) =>
-              context.store.state.user.permission_id === 8 ||
-              context.store.state.user.permission_id === 17,
             type: true,
           },
         ],
