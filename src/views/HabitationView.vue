@@ -304,6 +304,8 @@ export default {
     )
     config.tabs[0].detail.tabs[2].config.head.splice(2, 2)
     config.tabs[0].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[0].detail.tabs[3].config.head[1].alias = 'hha.date_in'
+    config.tabs[0].detail.tabs[3].config.head[4].alias = 'hha.with_check_in'
     config.tabs[0].detail.tabs[3].config.options.url =
       'get/pagination/habitation_history_archive'
     config.tabs[0].detail.tabs[3].config.options.alias = 'hha.habitation_id'
@@ -316,6 +318,8 @@ export default {
 
     config.tabs[3].detail.tabs[2].config.head.splice(2, 2)
     config.tabs[3].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[3].detail.tabs[3].config.head[1].alias = 'hha.date_in'
+    config.tabs[3].detail.tabs[3].config.head[4].alias = 'hha.with_check_in'
     config.tabs[3].detail.tabs[3].config.options.url =
       'get/pagination/habitation_history_archive'
     config.tabs[3].detail.tabs[3].config.options.alias = 'hha.habitation_id'
