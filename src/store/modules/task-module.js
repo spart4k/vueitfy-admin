@@ -16,6 +16,7 @@ import {
   createZayavka,
   sendZayavkaItems,
   setDataServices,
+  updateTmp,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -49,6 +50,11 @@ const taskModule = {
 
     async updateDopData(_, data) {
       const result = await updateDopData('task/update/dop_data', data)
+      return result
+    },
+
+    async updateTmp(_, data) {
+      const result = await updateTmp('update/process/long/tmp_data', data)
       return result
     },
 
