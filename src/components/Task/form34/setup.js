@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed, watch } from 'vue'
+import { defineComponent, ref, toRef, computed, watch, reactive } from 'vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
@@ -82,6 +82,38 @@ const Form7 = defineComponent({
       },
     })
 
+    const dopData = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data')).value
+    )
+
+    const formatedDopData = JSON.parse(dopData)
+
+    const testObject = reactive({
+      next_account: props.data.data.status_data.next_account,
+      start_process_other_doc:
+        formatedDopData.was_process &&
+        status.value === 'Работает' &&
+        formatedDopData.doc_id !== 5
+          ? true
+          : false,
+      start_process_patent:
+        formatedDopData.was_process &&
+        status.value === 'Работает' &&
+        formatedDopData.doc_id === 5
+          ? true
+          : false,
+      was_process: formatedDopData.was_process
+        ? formatedDopData.was_process
+        : !formatedDopData.was_process && status.value === 'Работает'
+        ? true
+        : false,
+    })
+    if (props.data.data.status_data.next_account) {
+      testObject.manager_id = props.data.data.status_data.next_account_id
+    } else {
+      testObject.account_id = props.data.data.status_data.next_account_id
+    }
+
     const { makeRequest: changeStatusTask } = useRequest({
       context,
       request: (rashod_id) => {
@@ -93,15 +125,16 @@ const Form7 = defineComponent({
           personal_id: props.data.entity.id,
           object_id: status.value === 'Работает' ? object.value : undefined,
           rashod_id,
-          is_work:
-            status.value === 'Работает' &&
-            JSON.parse(props.data.task.dop_data).doc_id !== 5
-              ? true
-              : false,
-          is_fired: status.value === 'Уволен' ? true : false,
-          is_patent:
-            JSON.parse(props.data.task.dop_data).doc_id === 5 &&
-            status.value === 'Работает',
+          ...testObject,
+          // is_work:
+          //   status.value === 'Работает' &&
+          //   JSON.parse(props.data.task.dop_data).doc_id !== 5
+          //     ? true
+          //     : false,
+          // is_fired: status.value === 'Уволен' ? true : false,
+          // is_patent:
+          //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
+          //   status.value === 'Работает',
         }
         return store.dispatch('taskModule/setPartTask', {
           status: 2,
