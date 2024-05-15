@@ -327,6 +327,24 @@ export const addFields = [
       },
       {
         type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'vector_id',
+          targetField: 'type_pay',
+          condition: [
+            {
+              value: 2,
+              options: [1],
+            },
+            {
+              value: 3,
+              options: [1],
+            },
+          ],
+        },
+      },
+      {
+        type: 'default',
         fillField: [
           {
             formKey: 'me',
@@ -518,6 +536,20 @@ export const addFields = [
       },
     ],
     dependence: [
+      {
+        type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'on_yourself',
+          targetField: 'type_pay',
+          condition: [
+            {
+              value: true,
+              options: [1],
+            },
+          ],
+        },
+      },
       {
         type: 'default',
         action: {
@@ -2284,6 +2316,24 @@ export const editFields = [
       },
       {
         type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'type_zayavka',
+          targetField: 'payment_type',
+          condition: [
+            {
+              value: 2,
+              options: [1],
+            },
+            {
+              value: 3,
+              options: [1],
+            },
+          ],
+        },
+      },
+      {
+        type: 'default',
         fillField: [
           {
             formKey: 'account_id',
@@ -2490,6 +2540,20 @@ export const editFields = [
       },
     ],
     dependence: [
+      {
+        type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'on_yourself',
+          targetField: 'payment_type',
+          condition: [
+            {
+              value: true,
+              options: [1],
+            },
+          ],
+        },
+      },
       {
         type: 'default',
         action: {

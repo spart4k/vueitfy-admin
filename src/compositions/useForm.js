@@ -317,12 +317,9 @@ export default function ({
       }
       let res = result.code
       let contextData = formData
-      console.log(conditionContext)
       if (action.handlingResponse.result) res = action.handlingResponse.result
       if (action.handlingResponse.context)
         contextData = conditionContext[action.handlingResponse.context]
-      console.log(contextData)
-      console.log(conditionContext[action.handlingResponse.context], res)
       let { text, color } = action.handlingResponse[res]
       // /%\w{n}%/
       //const text = 'Объект с именем %name% уже существует'
@@ -331,10 +328,6 @@ export default function ({
 
       key?.forEach((item) => {
         const keyFormated = item.split('%')[1]
-        console.log(text)
-        console.log(contextData)
-        console.log(keyFormated)
-        console.log(item)
         text = text.replace(item, contextData[keyFormated])
       })
 
@@ -1379,7 +1372,6 @@ export default function ({
   }
 
   const queryList = async (field, clear = true) => {
-    console.log(field.name)
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
@@ -1402,10 +1394,6 @@ export default function ({
       return element
     })
     field.loading = true
-    console.log(listData)
-    if (field.name === 'personal_object_zr') {
-      console.log(listData)
-    }
     const lists = await makeRequestList(listData)
     putSelectItems(lists)
     if (clear) formData[field.name] = ''
@@ -1448,7 +1436,6 @@ export default function ({
           //     field,
           //   })
           // }
-          console.log(field, field.name)
           if (field.updateList && field.updateList.length) {
             await queryList(field, false)
           }
@@ -1575,7 +1562,6 @@ export default function ({
             if (field.putFirst)
               formData[field.name] = field.items[0][field.selectOption.value]
           }
-          console.log(field.hasOwnProperty('dependence'), field.name)
           if (
             field.hasOwnProperty('dependence') ||
             field.hasOwnProperty('updateList')
