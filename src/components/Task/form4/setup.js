@@ -110,7 +110,7 @@ const Form4 = defineComponent({
           fileName: fileName,
           file: form_data,
         }),
-      successMessage: 'Файл успешно загружен',
+      // successMessage: 'Файл успешно загружен',
     })
     const { makeRequest: updateFileData } = useRequest({
       context,
@@ -200,13 +200,13 @@ const Form4 = defineComponent({
           ctx.emit('getItems')
         }
       } else if (habitationRequest.code === 2) {
-        store.dispatch('notifies/showMessage', {
+        store.commit('notifies/showMessage', {
           content: 'На объекте превышен лимит регистраций',
           timeout: 1000,
           color: 'error',
         })
       } else if (habitationRequest.code === 3) {
-        store.dispatch('notifies/showMessage', {
+        store.commit('notifies/showMessage', {
           content:
             'Дата заселения совпадает с периодом проживания на другом объекте',
           timeout: 1000,
