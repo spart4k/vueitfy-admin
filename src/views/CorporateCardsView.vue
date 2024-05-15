@@ -1,13 +1,13 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableDefault
+    <!-- <TableDefault
       v-if="tableView"
       @changeComp="changeComp"
       @changeheadershow="changeheadershow"
       :options="config"
-    />
-    <CorpCards :options="config" @changeComp="changeComp" v-else />
+    /> -->
+    <CorpCards :options="config" @changeComp="changeComp" />
   </div>
   <!--</Layout>-->
 </template>

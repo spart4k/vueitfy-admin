@@ -38,13 +38,13 @@ export const config = {
         type: 'changeUrl',
         backgroundColor: '#fff',
       },
-      // {
-      //   label: 'Сменить компонент',
-      //   class: ['v-table-button--custom'],
-      //   url: '$IconEdit',
-      //   type: 'changeComp',
-      //   backgroundColor: '#fff',
-      // },
+      {
+        label: 'Сменить компонент',
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        type: 'changeComp',
+        backgroundColor: '#fff',
+      },
     ],
   },
   head: [

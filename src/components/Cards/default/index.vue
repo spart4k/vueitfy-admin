@@ -1,10 +1,21 @@
 <template>
   <div class="v-cards-wrapper">
-    <!-- {{ $props.options }} -->
     <div class="v-cards-wrapper_panel"></div>
-    <div class="v-cards-wrapper-container">
+    <div
+      v-if="loading"
+      class="text-center d-flex align-center justify-center flex-grow-1"
+    >
+      <v-progress-circular color="primary" :size="80" indeterminate />
+    </div>
+    <div v-else class="v-cards-wrapper-container">
       <div class="v-cards-wrapper-container_list">
-        <CardsItem v-for="item in cards" :data="item" :key="item.id" />
+        <CardsNew @createItem="createItem" />
+        <CardsItem
+          v-for="item in options.data.rows"
+          :data="item"
+          :key="item.id"
+          class=""
+        />
       </div>
     </div>
   </div>

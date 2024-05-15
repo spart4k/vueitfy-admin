@@ -4,7 +4,7 @@ export default {
     border: '#D6DBE2',
     text: '#4CAF50',
     cvv: '#000000',
-    actions: '#D6DBE2',
+    actions: '#1C1B1F',
     image: 'sberbank.png',
   },
   2: {
