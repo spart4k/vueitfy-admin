@@ -192,6 +192,7 @@
               v-model="model"
             >
               <v-btn
+                v-if="!readonlyField(field)"
                 @click="formData[field.name].splice(model, 1)"
                 class="carousel_delete"
                 color="text"
@@ -228,7 +229,11 @@
                     <v-list-item-title v-text="item"></v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-icon>
-                    <v-btn @click="formData[field.name].splice(index, 1)" icon>
+                    <v-btn
+                      v-if="!readonlyField(field)"
+                      @click="formData[field.name].splice(index, 1)"
+                      icon
+                    >
                       <v-icon color="text">$IconDelete</v-icon></v-btn
                     >
                   </v-list-item-icon>

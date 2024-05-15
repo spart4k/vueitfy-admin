@@ -37,6 +37,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -57,7 +61,7 @@ export default {
       dictDefaultMessage:
         props?.options?.placeholder ?? 'Переместите или выберите файл',
       acceptedFiles: props.options?.acceptedFiles,
-      // clickable: props.readonly ? false : true,
+      clickable: props.readonly ? false : true,
       //dictRemoveFile: 'delete',
       //clickable: true,
       //previewsContainer: false,
