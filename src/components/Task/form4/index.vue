@@ -27,7 +27,7 @@
     >
       <v-icon
         class="mr-1"
-        v-if="selectName !== '' && date_in !== ''"
+        v-if="selectName !== '' && (date_in || selectName === 0)"
         x-small
         color="green"
         >$IconGalka</v-icon
@@ -41,6 +41,7 @@
           :field="autocompleteConfig"
           :filter="autocompleteConfig.filter"
           v-model="selectName"
+          @change="changeObject"
         />
       </v-col>
       <v-col :cols="12" :sm="4">
@@ -48,12 +49,14 @@
           :label="'Дата заселения'"
           :field="{}"
           v-model="date_in"
+          :readonly="selectName === 0"
         />
       </v-col>
       <v-col :cols="12" :sm="3">
         <v-checkbox
           v-model="is_registration"
           :label="'Регистрация'"
+          :readonly="selectName === 0"
         ></v-checkbox>
       </v-col>
     </v-row>
@@ -74,7 +77,11 @@
         small
         color="info"
         @click="sendData"
-        :disabled="(!selectName && selectName !== 0) || !hasMigr || !date_in"
+        :disabled="
+          (!selectName && selectName !== 0) ||
+          !hasMigr ||
+          (!date_in && selectName !== 0)
+        "
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

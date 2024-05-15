@@ -216,6 +216,13 @@ const Form4 = defineComponent({
       }
     }
 
+    const changeObject = () => {
+      if (selectName.value === 0) {
+        date_in.value = ''
+        is_registration.value = ''
+      }
+    }
+
     onMounted(() => {})
 
     // let widthTrasfer = ref('')
@@ -233,6 +240,7 @@ const Form4 = defineComponent({
       isGalkaVisible,
       hasMigr,
       autocompleteConfig,
+      changeObject,
     }
   },
 })
