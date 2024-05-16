@@ -486,7 +486,7 @@ export default {
         cols: 12,
         sm: 6,
       },
-      validations: { required },
+      // validations: { required },
       bootstrapClass: [''],
       filter: [
         {
