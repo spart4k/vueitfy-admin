@@ -9,8 +9,9 @@
       &_panel {
         padding: 0 22px;
         width: 100%;
-        height: 26px;
+        height: 70px;
         margin-bottom: 14px;
+        background-color: var(--v-cardBackground-base);
       }
       &-container {
         height: calc(100% - 26px);

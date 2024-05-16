@@ -68,7 +68,7 @@ export default {
       bootstrapClass: [''],
     }),
     stringField({
-      label: 'Название',
+      label: 'Наименование',
       name: 'org',
       placeholder: '',
       value: '',

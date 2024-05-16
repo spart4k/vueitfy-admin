@@ -65,7 +65,7 @@ export const config = {
         },
       ],
       width: '90',
-      alias: 'pers.name',
+      alias: 'cc.id',
       value: 'id',
       search: {
         field: '',
@@ -88,7 +88,7 @@ export const config = {
           isShow: false,
         },
       ],
-      alias: 'sac.name',
+      alias: 'scc.name',
       width: '40',
       value: 'status_name',
       search: {
@@ -112,7 +112,7 @@ export const config = {
           isShow: false,
         },
       ],
-      alias: 'sac.name',
+      alias: 'sa.name',
       width: '40',
       value: 'account_name',
       search: {
@@ -136,7 +136,7 @@ export const config = {
           isShow: false,
         },
       ],
-      alias: 'sac.name',
+      alias: 'b.name',
       width: '40',
       value: 'bank_name',
       search: {
@@ -160,7 +160,7 @@ export const config = {
           isShow: false,
         },
       ],
-      alias: 'sac.name',
+      alias: 'cc.org',
       width: '40',
       value: 'org',
       search: {
@@ -184,9 +184,33 @@ export const config = {
           isShow: false,
         },
       ],
-      alias: 'sac.name',
+      alias: 'cc.num',
       width: '40',
       value: 'num',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Создана',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'sas.name',
+      width: '40',
+      value: 'from_account_name',
       search: {
         field: '',
         isShow: true,
@@ -208,7 +232,7 @@ export const config = {
           isShow: false,
         },
       ],
-      alias: 'sac.name',
+      alias: 'cc.note',
       width: '40',
       value: 'note',
       search: {
