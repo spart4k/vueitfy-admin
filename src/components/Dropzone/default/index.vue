@@ -1,7 +1,11 @@
 <template>
   <div
     class="dropzone-wrap"
-    :class="[options.withoutSave ? 'without-api' : '', $props.name]"
+    :class="[
+      options.withoutSave ? 'without-api' : '',
+      $props.name,
+      readonly && 'readonly',
+    ]"
     :name="$props.name"
   >
     <v-list-item-title v-if="field?.label">{{ field.label }}</v-list-item-title>

@@ -36,6 +36,14 @@ export const config = {
             type: 'changeUrl',
             url: 'habitation/add',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [3, 4, 15],
+                  type: true,
+                },
+              ],
+            },
           },
         ],
         date: true,
@@ -244,6 +252,14 @@ export const config = {
       title: 'Персонал',
       selector: '#mainTable',
       type: 'TableDefault',
+      isShow: {
+        condition: [
+          {
+            permissions: [16, 19],
+            type: false,
+          },
+        ],
+      },
       options: {
         selecting: true,
         search: {

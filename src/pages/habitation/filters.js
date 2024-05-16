@@ -20,6 +20,10 @@ const filters = {
       filter: [],
     },
     { alias: 'managers', filter: [] },
+    {
+      alias: 'object_habitation',
+      filter: [],
+    },
   ],
   alias: 'habitation',
   active: false,
@@ -112,19 +116,19 @@ const filters = {
       subtype: 'num',
       placeholder: '',
       class: [''],
-      updateList: [
-        {
-          alias: 'object_habitation',
-          filter: [
-            {
-              field: 'account_json',
-              value: [],
-              type: 'num',
-              source: 'formData',
-            },
-          ],
-        },
-      ],
+      // updateList: [
+      //   {
+      //     alias: 'object_habitation',
+      //     filter: [
+      //       {
+      //         field: 'account_json',
+      //         value: [],
+      //         type: 'num',
+      //         source: 'formData',
+      //       },
+      //     ],
+      //   },
+      // ],
       selectOption: {
         text: 'name',
         value: 'id',
