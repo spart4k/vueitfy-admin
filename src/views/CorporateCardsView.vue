@@ -7,7 +7,7 @@
       @changeheadershow="changeheadershow"
       :options="config"
     />
-    <CorpCards :options="config" @changeComp="changeComp" v-else />
+    <CorpCards v-else :options="config" @changeComp="changeComp" />
   </div>
   <!--</Layout>-->
 </template>
