@@ -973,11 +973,29 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'corporate-cards/:card_id',
+        path: ':card_id',
+        meta: {
+          mode: ['give'],
+          label: 'Выдать карту',
+        },
+        component: Detail,
+      },
+      {
         name: 'corporate-cards/:id',
         path: ':id',
         meta: {
           mode: ['edit'],
           label: 'Редактировать карту',
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:history_id',
+        path: ':history_id',
+        meta: {
+          mode: ['history'],
+          label: 'История',
         },
         component: Detail,
       },
