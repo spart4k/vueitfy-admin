@@ -65,7 +65,7 @@
     </v-row>
     <v-row class="justify-end mt-4 topay">
       <p class="d-flex">
-        К начислению:
+        Начислено:
         <span class="ml-2" v-if="!loading">{{ info.total_payment }} р</span>
         <template v-else>
           <div

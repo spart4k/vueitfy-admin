@@ -13,7 +13,7 @@
                 color="green"
                 variant="flat"
               >
-                {{ row.sum }}р
+                {{ row.remainder }}р
               </v-chip>
             </div>
             <div class="type-head-panel"></div>
@@ -32,6 +32,7 @@
             <v-row v-for="row in objects" class="justify-space-between">
               <span>{{ convertData(row.date_target) }}</span>
               <span class="text-right">{{ row.sum }}р</span>
+              <span class="text-right">{{ row.remainder }}р</span>
               <!-- <span>{{ item.sum }}</span> -->
               <!-- asdads -->
             </v-row>

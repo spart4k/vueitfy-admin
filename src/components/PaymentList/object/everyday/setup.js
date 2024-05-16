@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, inject } from 'vue'
+import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 // import Row from '../row/index.vue'
@@ -10,23 +10,21 @@ import axios from 'axios'
 import moment from 'moment'
 import Info from '../info/index.vue'
 import InfoOutput from '../output/index.vue'
-import Everyday from '../everyday/index.vue'
 import InfoOverpayment from '../overpayment/default/index.vue'
 import InfoConsumption from '../consumption/index.vue'
 import Total from '../../total/index.vue'
+import Row from './row/index.vue'
 //import { tableApi } from '@/api'
-import Name1 from '../name1/index.vue'
 
 const table = {
-  name: 'PaymentList-Row-Object',
+  name: 'PaymentList-Row-Object-Output',
   components: {
     Info,
     InfoOutput,
     InfoOverpayment,
     InfoConsumption,
     Total,
-    Name1,
-    Everyday,
+    Row,
     //vTableButton,
     //vButton,
     //vInput,
@@ -69,35 +67,53 @@ const table = {
     }
     const total = ref({})
     const isOpen = ref(false)
+    const objects = ref(null)
     const isOpenObject = ref(false)
-    // const period = inject('period')
-    const { makeRequest } = useRequest({
+    const { makeRequest, loading } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/everyday`,
         }),
     })
+    let touched = false
+    const getObjects = async () => {
+      console.log(objects.value)
+      if (objects.value !== null) return
+      touched = true
+      isOpen.value = undefined
+      if (loading.value) {
+        return
+      } else {
+        try {
+          const { result } = await makeRequest()
+          if (result) {
+            objects.value = result
+            total.value = result
+            isOpen.value = 0
+            console.log('getItems')
+          }
+        } catch (err) {
+          console.log(err)
+        }
+        loading.value = false
+        // Vue.set(type, 'content', {})
+        // type.content = responseData.result
+        // Vue.set(type.content, 'edit', false)
+        // type.content.code = responseData.code
+        // detailPanels.value.push(index)
+      }
+    }
     watch(
       () => isOpen.value,
-      async (newVal) => {
-        if (newVal === 0) {
-          try {
-            const { result } = await makeRequest()
-            if (result) {
-              // objects.value = result.objects
-              total.value = result
-              // console.log('getItems')
-            }
-          } catch (err) {
-            console.log(err)
-          }
-        }
+      async () => {
+        await getObjects()
       }
     )
     return {
       isOpen,
       total,
+      objects,
     }
   },
 }

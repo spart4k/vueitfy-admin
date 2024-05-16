@@ -6,12 +6,15 @@
           <div class="type-head">
             <div class="type-head-info">
               <v-row class="type-head">
-                <v-col cols="12" sm="5">{{ row.category_name }}</v-col>
-                <v-col cols="12" sm="2">{{ row.qty }}</v-col>
-                <v-col cols="12" sm="2">{{ row.price }}</v-col>
-                <v-col class="red--text text-right" cols="12" sm="3">{{
-                  row.sum
-                }}</v-col>
+                <v-col cols="12" sm="6">{{ row.vid_vedomost_name }}</v-col>
+                <v-col class="green--text text-right" cols="12" sm="6">
+                  <v-chip
+                    class="type-head-info__total"
+                    color="green"
+                    variant="flat"
+                    >{{ row.sum }}</v-chip
+                  >
+                </v-col>
               </v-row>
               <!-- <span>{{ row.service_name }}</span> -->
             </div>
@@ -21,7 +24,7 @@
             <v-progress-circular
               v-if="loading"
               color="primary"
-              :size="20"
+              :size="28"
               indeterminate
             />
           </template>
@@ -33,12 +36,14 @@
           <template v-else>
             <v-row v-for="row in objects" class="justify-space-between">
               <v-row class="type-head">
-                <v-col cols="12" sm="3">{{ row.rashod_vid_name }}</v-col>
-                <v-col cols="12" sm="3">{{ row.count }}</v-col>
-                <v-col class="red--text text-right pr-8" cols="12" sm="3">{{
-                  row.remainder
-                }}</v-col>
-                <v-col class="red--text text-right pr-8" cols="12" sm="3">{{
+                <v-col cols="12" sm="5"
+                  ><span class="type-date">{{
+                    convertData(row.date_target)
+                  }}</span></v-col
+                >
+                <v-col cols="12" sm="2">{{ row.qty }}</v-col>
+                <v-col cols="12" sm="2">{{ row.price }}</v-col>
+                <v-col class="green--text text-right" cols="12" sm="3">{{
                   row.sum
                 }}</v-col>
               </v-row>
