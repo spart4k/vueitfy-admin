@@ -330,7 +330,7 @@ export default function ({
       // eslint-disable-next-line
       const key = text.match(/\%\w{1,}\%/g)
 
-      key.forEach((item) => {
+      key?.forEach((item) => {
         const keyFormated = item.split('%')[1]
         text = text.replace(item, contextData[keyFormated])
       })
@@ -790,7 +790,7 @@ export default function ({
         array
     }
     const { field } = params
-    if (field.updateList && field.updateList.length) {
+    if (field.updateList && field?.updateList.length) {
       const listData = field?.updateList?.flatMap((list) => {
         if (list.condition) {
           const conditionContext = {
@@ -896,6 +896,24 @@ export default function ({
     }
   }
 
+  const changeValue = (params) => {
+    const { value, field } = params
+    if (field.dependence) {
+      field.dependence?.forEach((dependence) => {
+        if (dependence?.type === 'computed' && dependence.funcComputed) {
+          const context = {
+            store,
+            formData,
+            originalData,
+            environment,
+            form,
+          }
+          dependence.funcComputed(context)
+        }
+      })
+    }
+  }
+
   const hasDepenceFieldsApi = () =>
     form?.fields.some(
       (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
@@ -903,7 +921,6 @@ export default function ({
 
   const getDependies = async (params) => {
     const { value, field } = params
-
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
@@ -1010,10 +1027,9 @@ export default function ({
           if (Array.isArray(condition.value)) cloneAi = [...condition.value]
           else cloneAi = [condition.value]
 
-          if (Array.isArray(condition.value)) {
+          if (Array.isArray(formData[dependence.action.field])) {
             cloneFieldEl = [...formData[dependence.action.field]]
           } else cloneFieldEl = [formData[dependence.action.field]]
-
           return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
         })
         if (dep) {
@@ -1025,6 +1041,15 @@ export default function ({
         }
 
         return
+      } else if (dependence?.type === 'computed' && dependence.funcComputed) {
+        const context = {
+          store,
+          formData,
+          originalData,
+          environment,
+          form,
+        }
+        dependence.funcComputed(context)
       }
       field.loading = true
       if (depField) targetField.loading = true
@@ -1040,7 +1065,6 @@ export default function ({
       }
       if (targetField) {
         //if (typeof data === 'object') data = [data]
-
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
@@ -1053,7 +1077,7 @@ export default function ({
         targetField.hideItems = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
-        card = targetField.items.find((el) => el.id === formData[depField])
+        card = targetField.items?.find((el) => el.id === formData[depField])
         if (targetField.hasOwnProperty('objectData')) {
           // const findedDep = targetField.dependence.find(
           //   (depTarget) => depTarget.type === 'update'
@@ -1203,7 +1227,7 @@ export default function ({
           filter.value = el.source ? eval(el.source) : formData[el.field]
         }
       } else if (el.routeKey) {
-        filter.value = +route.params[el.routeKey]
+        filter.value = [+route.params[el.routeKey]]
       } else {
         filter.value = formData[el.field]
       }
@@ -1229,10 +1253,16 @@ export default function ({
         filter: getDepFilters(el),
       })
 
+      if (el.defaultItems) el.items = [...el.defaultItems]
+
       if (data.rows) {
         el.items = [...el.items, ...data.rows]
-        el.items = data.rows
       }
+
+      el.hideItems = el.items
+
+      if (el.putFirst && !formData[el.name] && el.items[0])
+        formData[el.name] = el.items[0][el.selectOption.value]
 
       if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
@@ -1274,14 +1304,23 @@ export default function ({
             }
           }
         }
-        field.items = lists.data[keyList]
-        if (field.items.length === 1) {
+        // field.items = lists.data[keyList]
+        field.items = field.defaultItems
+          ? [...field.defaultItems, ...lists.data[keyList]]
+          : lists.data[keyList]
+        if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
-          // formData[field.name] = field.items[0][field.selectOption.value]
+          if (field.putFirst)
+            formData[field.name] =
+              lists.data[keyList][0][field.selectOption.value]
         }
         showField(field.type, field, true)
       }
     }
+  }
+
+  const refreshForm = () => {
+    getData()
   }
 
   const refreshSelectItems = async (field) => {
@@ -1379,7 +1418,7 @@ export default function ({
     //let listQuery = undefined
     let syncForm = undefined
     let lists = undefined
-    if (getDetail()) {
+    if (getDetail() && form.alias) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
@@ -1387,7 +1426,6 @@ export default function ({
     if (syncForm) {
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
-
         if (field) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
@@ -1433,6 +1471,7 @@ export default function ({
 
       originalData = _.cloneDeep(formData)
     }
+    await loadAutocompletes()
     if (hasSelect()) {
       const listQuery = form?.lists?.flatMap((list) => {
         if (list.condition) {
@@ -1517,7 +1556,9 @@ export default function ({
               }
             }
           }
-          field.items = lists.data[keyList]
+          field.items = field.defaultItems
+            ? [...field.defaultItems, ...lists.data[keyList]]
+            : lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)
@@ -1531,7 +1572,6 @@ export default function ({
       }
       putSelectItems(lists)
     }
-    await loadAutocompletes()
     loading.value = false
   }
 
@@ -1651,19 +1691,22 @@ export default function ({
             }
           } else if (el.target === 'value') {
             if (el.value === 'notEmpty') {
-              return formData[el.field]
+              return `${formData[el.field]}`
             }
           } else {
             return el.value.some((ai) => {
+              let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
                 const cloneFieldEl = [...formData[el.field]]
-                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
               } else {
-                return [ai].includes(
+                result = [ai].includes(
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
+              if (el.reverse) return !result
+              return result
             })
           }
         })
@@ -1676,26 +1719,31 @@ export default function ({
             }
           } else if (el.target === 'value') {
             if (el.value === 'notEmpty') {
-              return formData[el.field]
+              return `${formData[el.field]}`
             }
           } else {
             return el.value.some((ai) => {
+              let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
                 const cloneFieldEl = [...formData[el.field]]
-                return _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
               } else {
-                return [ai].includes(
+                result = [ai].includes(
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
+              if (el.reverse) return !result
+              return result
             })
           }
         })
       }
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
-      return (typeof field.isShow === 'boolean' && field.isShow) || func()
+
+      let funcResult = func()
+      return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
     if (field.isShow?.label) {
       const trueCondition = field.isShow.label.find((x) =>
@@ -1810,6 +1858,7 @@ export default function ({
     getDependies,
     changeSelect,
     changeAutocomplete,
+    changeValue,
     getData,
     showField,
     openMenu,
@@ -1828,5 +1877,6 @@ export default function ({
     popupForm,
     appendActionShow,
     refreshSelectItems,
+    refreshForm,
   }
 }

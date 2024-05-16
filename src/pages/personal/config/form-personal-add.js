@@ -874,6 +874,11 @@ export default {
                 type: 'error',
                 text: 'Необходимо приложить паспорт',
               },
+              {
+                value: 3,
+                type: 'error',
+                text: 'Необходимо приложить ID карту или паспорт',
+              },
             ],
           },
           // nextForm: true,

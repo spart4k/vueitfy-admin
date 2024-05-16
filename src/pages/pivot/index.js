@@ -101,13 +101,6 @@ export const config = {
         backgroundColor: '#ffffff',
       },
       {
-        label: 'Добавить',
-        class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        // function: consolePanel,
-        backgroundColor: '#fff',
-      },
-      {
         label: 'Выработка',
         class: ['v-table-button--custom'],
         url: 'pivot-output',

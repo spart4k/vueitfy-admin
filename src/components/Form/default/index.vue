@@ -73,9 +73,16 @@
               :placeholder="field?.placeholder"
               :error-messages="formErrors[field?.name]"
               clearable
+              @input="
+                changeValue({
+                  value: formData[field.name],
+                  field,
+                })
+              "
               :readonly="readonlyField(field)"
               :disabled="disabledField(field)"
               :name="field.name"
+              :class="[...field.class]"
             >
               <template v-if="field?.appendAction?.length" v-slot:append-outer>
                 <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->
@@ -111,6 +118,12 @@
               :readonly="readonlyField(field)"
               :name="field.name"
               :class="'checkbox_' + field.name"
+              @change="
+                changeValue({
+                  value: formData[field.name],
+                  field,
+                })
+              "
             ></v-checkbox>
             <Datepicker
               v-else-if="showField('date', field)"
@@ -179,6 +192,7 @@
               v-model="model"
             >
               <v-btn
+                v-if="!readonlyField(field)"
                 @click="formData[field.name].splice(model, 1)"
                 class="carousel_delete"
                 color="text"
@@ -215,7 +229,11 @@
                     <v-list-item-title v-text="item"></v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-icon>
-                    <v-btn @click="formData[field.name].splice(index, 1)" icon>
+                    <v-btn
+                      v-if="!readonlyField(field)"
+                      @click="formData[field.name].splice(index, 1)"
+                      icon
+                    >
                       <v-icon color="text">$IconDelete</v-icon></v-btn
                     >
                   </v-list-item-icon>

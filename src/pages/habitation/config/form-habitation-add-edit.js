@@ -19,7 +19,7 @@ import formRealtorAddEdit from './form-realtor-add-edit'
 
 export default {
   id: uuidv4(),
-  name: 'Добавить владельца',
+  name: 'Редактировать проживание',
   type: 'FormDefault',
   path: 'habitation-add',
   alias: 'habitation',
@@ -55,7 +55,10 @@ export default {
         },
       ],
     },
-    { alias: 'managers', filter: [] },
+    {
+      alias: 'managers',
+      filter: [{ alias: 'permission_id', value: [1], type: 'num' }],
+    },
     { alias: 'owner_habitation', filter: [] },
     { alias: 'realtors', filter: [] },
     { alias: 'owner_type', filter: [] },
@@ -63,38 +66,28 @@ export default {
       alias: 'object_habitation',
       filter: [
         {
-          field: 'region_id',
-          alias: 'o.regions_id',
-          value: '',
-          type: 'num',
-          source: 'formData',
-        },
-        {
-          field: 'city_id',
-          alias: 'o.city_id',
-          value: '',
+          field: 'account_json',
+          value: [],
           type: 'num',
           source: 'formData',
         },
       ],
     },
-    // {
-    //   alias: 'account_objects',
-    //   filter: [
-    //     {
-    //       source: 'formData',
-    //       type: 'num',
-    //       value: 'id',
-    //       field: 'region_id',
-    //       alias: 'regions_id',
-    //     },
-    //   ],
-    // },
   ],
   fields: [
     carouselField({
       name: 'photo_path',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -106,6 +99,16 @@ export default {
       notPut: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       toObject: {
         stash: 'photo_path',
       },
@@ -132,6 +135,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -159,6 +172,71 @@ export default {
       subtype: 'single',
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
+      dependence: [
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            const capacity = context.form.fields.find(
+              (x) => x.name === 'capacity'
+            )
+            if (
+              context.formData.habitation_type_id === 1 ||
+              context.formData.habitation_type_id === 2
+            ) {
+              context.formData.square = ''
+              if (context.formData.is_registration) {
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
+                capacity.readonly = false
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else if (context.formData.habitation_type_id === 3) {
+              if (context.formData.is_registration) {
+                if (
+                  Number(context.formData.square) &&
+                  Math.floor(Number(context.formData.square) / 8) > 0
+                ) {
+                  context.formData.capacity = Math.floor(
+                    Number(context.formData.square) / 8
+                  )
+                } else {
+                  if (
+                    context.formData.capacity !== context.originalData?.capacity
+                  ) {
+                    context.formData.capacity = ''
+                  }
+                }
+                capacity.readonly = true
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else {
+              if (
+                context.formData.capacity !== context.originalData?.capacity
+              ) {
+                context.formData.capacity = ''
+              }
+              capacity.readonly = true
+            }
+          },
+        },
+      ],
       selectOption: {
         text: 'name',
         value: 'id',
@@ -177,10 +255,103 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
+      dependence: [
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            const capacity = context.form.fields.find(
+              (x) => x.name === 'capacity'
+            )
+            if (
+              context.formData.habitation_type_id === 1 ||
+              context.formData.habitation_type_id === 2
+            ) {
+              context.formData.square = ''
+              if (context.formData.is_registration) {
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
+                capacity.readonly = false
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else if (context.formData.habitation_type_id === 3) {
+              if (context.formData.is_registration) {
+                if (
+                  Number(context.formData.square) &&
+                  Math.floor(Number(context.formData.square) / 8) > 0
+                ) {
+                  context.formData.capacity = Math.floor(
+                    Number(context.formData.square) / 8
+                  )
+                } else {
+                  if (
+                    context.formData.capacity !== context.originalData?.capacity
+                  ) {
+                    context.formData.capacity = ''
+                  }
+                }
+                capacity.readonly = true
+              } else {
+                context.formData.capacity = '0'
+                capacity.readonly = true
+              }
+            } else {
+              if (
+                context.formData.capacity !== context.originalData?.capacity
+              ) {
+                context.formData.capacity = ''
+              }
+              capacity.readonly = true
+            }
+          },
+        },
+      ],
       position: {
         cols: 12,
         sm: 12,
       },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'Цена регистрации за человека',
+      name: 'price_of_registration',
+      placeholder: '',
+      value: '',
+      requestType: 'number',
+      isShow: {
+        value: false,
+        conditions: [{ field: 'is_registration', value: [true] }],
+      },
+      class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
       bootstrapClass: [''],
     }),
     autocompleteField({
@@ -196,6 +367,16 @@ export default {
       },
       items: [],
       page: 1,
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       search: '',
       url: 'get/pagination_list/regions_id',
       position: {
@@ -216,18 +397,6 @@ export default {
             },
           ],
         },
-        // {
-        //   alias: 'account_objects',
-        //   filter: [
-        //     {
-        //       source: 'formData',
-        //       type: 'num',
-        //       value: 'id',
-        //       field: 'region_id',
-        //       alias: 'regions_id',
-        //     },
-        //   ],
-        // },
       ],
     }),
     selectField({
@@ -241,32 +410,21 @@ export default {
         value: 'id',
       },
       items: [],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 6,
       },
       bootstrapClass: [''],
-      updateList: [
-        {
-          alias: 'object_habitation',
-          filter: [
-            {
-              field: 'region_id',
-              alias: 'o.regions_id',
-              value: '',
-              type: 'num',
-              source: 'formData',
-            },
-            {
-              field: 'city_id',
-              alias: 'o.city_id',
-              value: '',
-              type: 'num',
-              source: 'formData',
-            },
-          ],
-        },
-      ],
       filter: [
         {
           field: 'region_id',
@@ -277,20 +435,6 @@ export default {
         },
       ],
     }),
-    stringField({
-      label: 'Цена регистрации за человека',
-      name: 'price_of_registration',
-      placeholder: '',
-      value: '',
-      requestType: 'number',
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
     selectField({
       label: 'Аккаунт',
       name: 'account_json',
@@ -299,6 +443,29 @@ export default {
       stringify: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
+      updateList: [
+        {
+          alias: 'object_habitation',
+          filter: [
+            {
+              field: 'account_json',
+              value: [],
+              type: 'num',
+              source: 'formData',
+            },
+          ],
+        },
+      ],
       selectOption: {
         text: 'name',
         value: 'id',
@@ -319,6 +486,16 @@ export default {
       stringify: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       selectOption: {
         text: 'name',
         value: 'id',
@@ -330,35 +507,6 @@ export default {
       },
       validations: {},
       bootstrapClass: [''],
-      filter: [
-        {
-          field: 'region_id',
-          alias: 'o.regions_id',
-          value: '',
-          type: 'num',
-          source: 'formData',
-        },
-        {
-          field: 'city_id',
-          alias: 'o.city_id',
-          value: '',
-          type: 'num',
-          source: 'formData',
-        },
-      ],
-      // updateList: [
-      //   {
-      //     alias: 'account_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_json',
-      //         value: '',
-      //         source: 'formData',
-      //         type: 'num',
-      //       },
-      //     ],
-      //   },
-      // ],
     }),
     checkboxField({
       label: 'Риэлтор',
@@ -366,6 +514,16 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1, 2] }],
@@ -384,6 +542,16 @@ export default {
       requestType: 'number',
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [
@@ -457,6 +625,16 @@ export default {
       stringify: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -479,6 +657,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [
@@ -498,6 +686,16 @@ export default {
       name: 'owner_inn',
       placeholder: '',
       value: '',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       class: [''],
       isShow: {
         value: false,
@@ -521,6 +719,16 @@ export default {
       subtype: 'single',
       stringify: true,
       placeholder: '',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       class: [''],
       appendAction: [
         {
@@ -596,6 +804,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -613,6 +831,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -630,6 +858,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -647,6 +885,16 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -658,11 +906,21 @@ export default {
       bootstrapClass: [''],
     }),
     stringField({
-      label: 'Администратор',
+      label: 'ФИО администратора',
       name: 'administrator_name',
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'is_administrator', value: [true] }],
@@ -684,6 +942,16 @@ export default {
         value: false,
         conditions: [{ field: 'is_administrator', value: [true] }],
       },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 6,
@@ -691,19 +959,55 @@ export default {
       validations: { required },
       bootstrapClass: [''],
     }),
+
     stringField({
       label: 'Площадь',
       name: 'square',
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [3] }],
       },
+      dependence: [
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            if (context.formData.is_registration) {
+              if (
+                Number(context.formData.square) &&
+                Math.floor(Number(context.formData.square) / 8) > 0
+              ) {
+                context.formData.capacity = Math.floor(
+                  Number(context.formData.square) / 8
+                )
+              } else {
+                if (
+                  context.formData.capacity !== context.originalData?.capacity
+                ) {
+                  context.formData.capacity = ''
+                }
+              }
+            } else {
+              context.formData.capacity = '0'
+            }
+          },
+        },
+      ],
       position: {
         cols: 12,
-        sm: 6,
+        sm: 12,
       },
       validations: { required },
       bootstrapClass: [''],
@@ -714,23 +1018,11 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
-      isShow: {
-        value: false,
-        conditions: [{ field: 'habitation_type_id', value: [3] }],
-      },
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
-    stringField({
-      label: 'Кол-во мест',
-      name: 'count_place',
-      placeholder: '',
-      value: '',
-      class: [''],
+      readonly: true,
+      // isShow: {
+      //   value: false,
+      //   conditions: [{ field: 'habitation_type_id', value: [3] }],
+      // },
       position: {
         cols: 12,
         sm: 12,
@@ -738,15 +1030,22 @@ export default {
       validations: { required },
       bootstrapClass: [''],
     }),
+
     stringField({
-      label: 'Кол-во зарегистрированных',
-      name: 'count_reserve',
+      label: 'Кол-во мест',
+      name: 'count_place',
       placeholder: '',
       value: '',
       class: [''],
-      isShow: {
+      readonly: {
         value: false,
-        conditions: [{ field: 'habitation_type_id', value: [3] }],
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
       },
       position: {
         cols: 12,
@@ -762,6 +1061,16 @@ export default {
       value: '',
       class: [''],
       requestType: 'number',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1] }],
@@ -780,6 +1089,16 @@ export default {
       value: '',
       class: [''],
       requestType: 'number',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2] }],
@@ -799,6 +1118,16 @@ export default {
       menu: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1, 2] }],
@@ -818,6 +1147,16 @@ export default {
       menu: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1] }],
@@ -837,6 +1176,16 @@ export default {
       menu: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2] }],
@@ -854,6 +1203,16 @@ export default {
       notPut: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       toObject: {
         stash: 'doc_path',
       },
@@ -877,6 +1236,16 @@ export default {
     docListField({
       name: 'doc_path',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -888,6 +1257,16 @@ export default {
       name: 'comment',
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
