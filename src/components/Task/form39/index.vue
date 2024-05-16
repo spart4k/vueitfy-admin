@@ -45,31 +45,58 @@
         <v-btn small @click="$emit('closePopup')" color="blue-grey" block>
           Закрыть
         </v-btn> -->
+        <div class="mb-4 mt-5">
+          <div class="d-flex justify-start">
+            <p class="font-weight-bold text-h7">Статус:</p>
+          </div>
+          <v-row class="mt-0 mb-1">
+            <v-col cols="12" sm="6">Менеджер</v-col>
+            <v-col cols="12" sm="6">Статус: </v-col>
+          </v-row>
+          <v-row
+            class="mt-0"
+            :key="manager.id"
+            v-for="manager in data.data.status_data"
+          >
+            <v-col cols="12" sm="6">{{ manager.account_name }}</v-col>
+            <v-col cols="12" sm="6">
+              {{ manager.status_id === 1 ? 'Работает' : 'Не работает' }}</v-col
+            >
+          </v-row>
+        </div>
       </div>
-      <div class="">
+      <div v-show="!isWire" class="">
         <Autocomplete
           class="mt-3"
-          :field="autocompleteConfig"
-          v-model="object"
+          :field="fieldsTemplate.direction_id"
+          v-model="formData.direction_id"
+          @change="changeAutocomplete"
         />
         <Autocomplete
           class="mt-3"
-          :field="autocompleteConfig"
-          v-model="object"
+          :field="fieldsTemplate.object_id"
+          v-model="formData.object_id"
+          @change="changeAutocomplete"
         />
         <Autocomplete
           class="mt-3"
-          :field="autocompleteConfig"
-          v-model="object"
+          :field="fieldsTemplate.account_json"
+          v-model="formData.account_json"
+          @change="changeAutocomplete"
         />
       </div>
+
       <div class="w-100 d-flex justify-end mt-5">
+        <v-btn class="mr-3" small color="error" @click="isWire = !isWire">
+          <v-icon small color="green" class="mr-2" v-if="isWire"
+            >$IconGalka</v-icon
+          >
+          Уволен</v-btn
+        >
         <v-btn small @click="$emit('closePopup')" color="transparent mr-3"
           >Закрыть</v-btn
         >
-        <v-btn small @click="sendData" :disabled="!isValid" color="primary"
-          >Завершить</v-btn
-        >
+        <v-btn small @click="sendData" color="primary">Завершить</v-btn>
       </div>
     </div>
   </div>

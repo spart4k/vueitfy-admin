@@ -17,6 +17,7 @@ import {
   sendZayavkaItems,
   setDataServices,
   updateTmp,
+  updatePersonalAccess,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -55,6 +56,11 @@ const taskModule = {
 
     async updateTmp(_, data) {
       const result = await updateTmp('update/process/long/tmp_data', data)
+      return result
+    },
+
+    async updatePersonalAccess(_, data) {
+      const result = await updatePersonalAccess('update/personal/access', data)
       return result
     },
 
