@@ -5,15 +5,17 @@ import { useRoute, useRouter } from 'vue-router/composables'
 import CardsItem from '../item/default/index.vue'
 import CardsNew from '../item/new/index.vue'
 import { v4 as uuidv4 } from 'uuid'
+import Popup from '@/components/Popup/index.vue'
 
 export default {
   name: 'Cards',
   components: {
     CardsItem,
     CardsNew,
+    Popup,
   },
   props: {
-    options: {
+    config: {
       type: Object,
       default: () => {},
     },
@@ -24,7 +26,14 @@ export default {
     const route = useRoute()
 
     const loading = ref(false)
-    const { options } = props
+    const isArchive = ref(false)
+    const [optionsActive, optionsArchive] = props.config.tabs
+    // let { options } = props.config.tabs[0]
+    let options = optionsActive
+
+    const popupForm = ref({
+      isShow: false,
+    })
     const searchField = ref('')
     const pagination = ref({
       totalRows: null,
@@ -33,11 +42,133 @@ export default {
       countRows: options.data.pageLength,
     })
 
+    const dialog = ref({
+      isShow: false,
+      text: '',
+      confirmFunc: null,
+      loading: false,
+    })
     const items = ref([])
 
-    const createItem = () => {
-      console.log('createItem')
+    const changeTab = () => {
+      isArchive.value = !isArchive.value
+      if (isArchive.value) options = optionsArchive
+      else options = optionsActive
+      getItems()
     }
+    const createItem = () => {
+      router.push({
+        name: options.panel.buttons[1].url,
+      })
+      popupForm.value.isShow = true
+    }
+
+    const openItem = (val, param) => {
+      let requestId = 'id'
+      if (param) requestId = param
+      // if (options.detail.requestId) requestId = options.detail.requestId
+
+      router.push({
+        name: `${route.name}/:${requestId}`,
+        params: {
+          [requestId]: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+
+    const actions = {
+      delete: (id) => {
+        dialog.value.isShow = true
+        dialog.value.text = 'Вы подтверждаете удаление карты?'
+        dialog.value.confirmFunc = async () => {
+          dialog.value.loading = true
+          await store.dispatch('form/putForm', {
+            url: `update/corp_card/archive/${id}`,
+            body: { data: { is_archive: true } },
+          })
+          dialog.value.isShow = false
+          dialog.value.loading = false
+          getItems()
+        }
+      },
+      restore: (id) => {
+        dialog.value.isShow = true
+        dialog.value.text = 'Вы подтверждаете восстановление карты?'
+        dialog.value.confirmFunc = async () => {
+          dialog.value.loading = true
+          await store.dispatch('form/putForm', {
+            url: `update/corp_card/archive/${id}`,
+            body: { data: { is_archive: false } },
+          })
+          dialog.value.isShow = false
+          dialog.value.loading = false
+          getItems()
+        }
+      },
+      lock: (id) => {
+        dialog.value.isShow = true
+        dialog.value.text = 'Вы подтверждаете блокировку карты?'
+        dialog.value.confirmFunc = async () => {
+          dialog.value.loading = true
+          await store.dispatch('form/putForm', {
+            url: `update/corp_card/block/${id}`,
+            body: { data: { is_block: true } },
+          })
+          dialog.value.isShow = false
+          dialog.value.loading = false
+          items.value.find((x) => x.id === id).status_id = 2
+        }
+      },
+      unlock: (id) => {
+        dialog.value.isShow = true
+        dialog.value.text = 'Вы подтверждаете разблокировку карты?'
+        dialog.value.confirmFunc = async () => {
+          dialog.value.loading = true
+          await store.dispatch('form/putForm', {
+            url: `update/corp_card/block/${id}`,
+            body: { data: { is_block: false } },
+          })
+          dialog.value.isShow = false
+          dialog.value.loading = false
+          items.value.find((x) => x.id === id).status_id = 1
+        }
+      },
+      history: (id) => {
+        openItem(id, 'history_id')
+      },
+      take: (id) => {
+        dialog.value.isShow = true
+        dialog.value.text = 'Вы подтверждаете изъятие карты?'
+        dialog.value.confirmFunc = async () => {
+          dialog.value.loading = true
+          await store.dispatch('form/putForm', {
+            url: 'update/bank/remove_assign',
+            body: { data: { card_id: id } },
+          })
+          dialog.value.isShow = false
+          dialog.value.loading = false
+          getItems()
+        }
+      },
+      give: (id) => {
+        openItem(id, 'card_id')
+      },
+    }
+    const cardChange = (obj) => {
+      const { id, action } = obj
+      const func = actions[action]
+      func(id)
+    }
+
+    const closePopupForm = () => {
+      router.push({ name: route.matched.at(-2).name })
+      popupForm.value.isShow = false
+    }
+
+    const addPermission = computed(() =>
+      [3, 4, 12, 16].includes(store.state.user.permission_id)
+    )
 
     let controller
     const getItems = async () => {
@@ -106,10 +237,19 @@ export default {
       // cards,
       loading,
       createItem,
+      openItem,
       getItems,
       getPage,
       items,
       searchField,
+      addPermission,
+      popupForm,
+      closePopupForm,
+      dialog,
+      cardChange,
+      options,
+      isArchive,
+      changeTab,
     }
   },
 }
