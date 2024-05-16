@@ -1,6 +1,31 @@
 <template>
   <div class="v-cards-wrapper">
-    <div class="v-cards-wrapper_panel"></div>
+    <div class="v-cards-wrapper-panel">
+      <div class="v-cards-wrapper-panel-left">
+        <!-- view-grid -->
+        <!-- view-list -->
+        <v-btn disabled elevation="0" plain color="primary">
+          <v-icon left> mdi-view-grid </v-icon>
+          Сетка
+        </v-btn>
+        <v-btn @click="$emit('changeComp')" plain elevation="0" class="ml-3">
+          <v-icon left> mdi-view-list </v-icon>
+          Список
+        </v-btn>
+      </div>
+      <div class="v-cards-wrapper-panel-right">
+        <v-text-field
+          label="Поиск"
+          prepend-inner-icon="mdi-magnify"
+          outlined
+          hide-details
+          dense
+          clearable
+          v-model="searchField"
+          @input="getItems"
+        ></v-text-field>
+      </div>
+    </div>
     <div
       v-if="loading"
       class="text-center d-flex align-center justify-center flex-grow-1"

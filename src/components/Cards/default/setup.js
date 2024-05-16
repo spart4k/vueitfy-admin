@@ -30,8 +30,7 @@ export default {
       totalRows: null,
       currentPage: 1,
       totalPages: null,
-      // countRows: options.data.pageLength,
-      countRows: 5,
+      countRows: options.data.pageLength,
     })
 
     const items = ref([])
@@ -40,62 +39,10 @@ export default {
       console.log('createItem')
     }
 
-    // const items = ref([
-    //   {
-    //     vidana: '20.01.2023',
-    //     block: '20.01.2024',
-    //     bik: '888 888 888',
-    //     lico: 'Координатор',
-    //     validity: '10/23',
-    //     cvv: '265',
-    //     name: 'Сафонов Евгений',
-    //     number: '1234 5678 9123 4567',
-    //     bank_id: 1,
-    //     id: 1,
-    //     status: 1,
-    //   },
-    //   {
-    //     vidana: '20.01.2023',
-    //     block: '20.01.2024',
-    //     bik: '888 888 888',
-    //     lico: 'Координатор',
-    //     validity: '10/23',
-    //     cvv: '265',
-    //     name: 'Сафонов Евгений',
-    //     number: '1234 5678 9123 4567',
-    //     bank_id: 1,
-    //     id: 1,
-    //     status: 2,
-    //   },
-    //   {
-    //     vidana: '20.01.2023',
-    //     block: '20.01.2024',
-    //     bik: '888 888 888',
-    //     lico: 'Координатор',
-    //     validity: '10/23',
-    //     cvv: '265',
-    //     name: 'Сафонов Евгений',
-    //     number: '1234 5678 9123 4567',
-    //     bank_id: 2,
-    //     id: 2,
-    //     status: 3,
-    //   },
-    //   {
-    //     vidana: '20.01.2023',
-    //     block: '20.01.2024',
-    //     bik: '888 888 888',
-    //     lico: 'Координатор',
-    //     validity: '10/23',
-    //     cvv: '265',
-    //     name: 'Сафонов Евгений',
-    //     number: '1234 5678 9123 4567',
-    //     bank_id: 2,
-    //     id: 2,
-    //     status: 4,
-    //   },
-    // ])
-
+    let controller
     const getItems = async () => {
+      if (controller) controller.abort()
+      controller = new AbortController()
       loading.value = true
 
       const data = await store.dispatch('table/get', {
@@ -108,8 +55,11 @@ export default {
           searchColumns: [],
           sorts: [],
         },
+        params: {
+          signal: controller.signal,
+        },
       })
-      if (data.rows?.length) {
+      if (data.rows) {
         pagination.value.totalPages = data.totalPage
         pagination.value.totalRows = data.total
         items.value = [...data.rows]
@@ -124,6 +74,7 @@ export default {
       }
 
       loading.value = false
+      controller = undefined
     }
 
     const getPage = async (entries, observer, isIntersecting) => {
@@ -155,8 +106,10 @@ export default {
       // cards,
       loading,
       createItem,
+      getItems,
       getPage,
       items,
+      searchField,
     }
   },
 }
