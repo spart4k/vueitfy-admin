@@ -1641,7 +1641,11 @@ export default function ({
         button.isHide.value = condition()
         return button.isHide.value
       }
-    } else if (typeof button.isHide === 'undefined') return false
+    } else if (typeof button.isHide === 'undefined') {
+      return environment.readonlyAll && button.text === 'Сохранить'
+        ? true
+        : false
+    }
   }
 
   const readonlyField = (field) => {
