@@ -9,9 +9,15 @@
                 <v-col cols="12" sm="5">{{ row.category_name }}</v-col>
                 <v-col cols="12" sm="2">{{ row.qty }}</v-col>
                 <v-col cols="12" sm="2">{{ row.price }}</v-col>
-                <v-col class="red--text text-right" cols="12" sm="3">{{
-                  row.sum
-                }}</v-col>
+                <v-col class="red--text text-right" cols="12" sm="3">
+                  <v-chip
+                    class="type-head-info__total mr-2"
+                    color="green"
+                    variant="flat"
+                  >
+                    {{ row.remainder }}р
+                  </v-chip></v-col
+                >
               </v-row>
               <!-- <span>{{ row.service_name }}</span> -->
             </div>
