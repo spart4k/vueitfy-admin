@@ -4306,6 +4306,14 @@ const config = {
         type: 'addItem',
         //function: consolePanel,
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [12],
+              type: false,
+            },
+          ],
+        },
       },
       {
         label: 'Бухгалтерия excel',
