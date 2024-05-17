@@ -73,7 +73,7 @@ const table = {
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/hold`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/type/hold`,
         }),
     })
     const getObjects = async () => {

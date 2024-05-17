@@ -2,7 +2,7 @@
 //document.adoptedStyleSheets.push(style)
 import Vue, { onMounted, ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
-import useRequest from '@/compositions/useRequest'
+// import useRequest from '@/compositions/useRequest'
 // import Row from '../row/index.vue'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
@@ -69,42 +69,42 @@ const table = {
     const isOpen = ref(false)
     const isOpenObject = ref(false)
     const objects = ref(null)
-    const { makeRequest, loading } = useRequest({
-      context,
-      request: () =>
-        store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/debit`,
-        }),
-    })
-    const getObjects = async () => {
-      console.log(objects.value)
-      if (objects.value !== null) return
-      isOpen.value = undefined
-      if (loading.value) {
-        return
-      } else {
-        try {
-          const { result } = await makeRequest()
-          if (result) {
-            objects.value = result
-            isOpen.value = 0
-            console.log('getItems')
-          }
-        } catch (err) {
-          console.log(err)
-        }
-        loading.value = false
-        // Vue.set(type, 'content', {})
-        // type.content = responseData.result
-        // Vue.set(type.content, 'edit', false)
-        // type.content.code = responseData.code
-        // detailPanels.value.push(index)
-      }
-    }
+    // const { makeRequest, loading } = useRequest({
+    //   context,
+    //   request: () =>
+    //     store.dispatch('form/getPaymentListObjects', {
+    //       url: `payment_list/personals/${props.period}/${props.personalId}/type//${props.object.id}/debit`,
+    //     }),
+    // })
+    // const getObjects = async () => {
+    //   console.log(objects.value)
+    //   if (objects.value !== null) return
+    //   isOpen.value = undefined
+    //   if (loading.value) {
+    //     return
+    //   } else {
+    //     try {
+    //       const { result } = await makeRequest()
+    //       if (result) {
+    //         objects.value = result
+    //         isOpen.value = 0
+    //         console.log('getItems')
+    //       }
+    //     } catch (err) {
+    //       console.log(err)
+    //     }
+    //     loading.value = false
+    //     // Vue.set(type, 'content', {})
+    //     // type.content = responseData.result
+    //     // Vue.set(type.content, 'edit', false)
+    //     // type.content.code = responseData.code
+    //     // detailPanels.value.push(index)
+    //   }
+    // }
     watch(
       () => isOpen.value,
       async () => {
-        await getObjects()
+        // await getObjects()
       }
     )
     return {
