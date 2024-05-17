@@ -13,6 +13,7 @@ import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormOutput from '@/components/Form/output/index.vue'
 import FormTarget from '@/components/Form/target/default/index.vue'
+import writeC3 from './config/write-c3.js'
 import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
 // import { fieldsBaseDefaultForm as personalFields } from '@/pages/personal/index.js'
 // import { defaultForm as personalConfig } from '@/pages/personal/index'
@@ -167,6 +168,20 @@ export const config = {
           condition: [
             {
               permissions: [4, 8, 17],
+              type: true,
+            },
+          ],
+        },
+      },
+      {
+        label: 'Печать СЗ',
+        class: ['v-table-button--custom'],
+        url: 'write-c3',
+        type: 'changeUrl',
+        isShow: {
+          condition: [
+            {
+              permissions: [1, 15, 3, 4],
               type: true,
             },
           ],
@@ -699,6 +714,7 @@ export const config = {
         ],
         formData: {},
       },
+      writeC3,
       // {
       //   id: 2,
       //   name: 'Расход',

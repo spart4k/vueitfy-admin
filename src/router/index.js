@@ -435,6 +435,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'write-c3',
+        path: '/pivot/write-c3',
+        meta: {
+          mode: ['write-c3'],
+          label: 'Объект',
+        },
+        component: Detail,
+      },
+      {
         name: 'pivot-edit',
         path: '/pivot/:id',
         meta: {
