@@ -35,6 +35,7 @@
               <v-row class="type-head">
                 <v-col cols="12" sm="3">{{ row.rashod_vid_name }}</v-col>
                 <v-col cols="12" sm="3">{{ row.count }}</v-col>
+                <v-col cols="12" sm="3">{{ row.object_name }}</v-col>
                 <v-col class="red--text text-right pr-8" cols="12" sm="3">{{
                   row.remainder
                 }}</v-col>

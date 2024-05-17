@@ -39,7 +39,9 @@
             >
             <span
               v-else-if="
-                ['total_hold', 'total_debit'].includes(fieldKey) &&
+                ['total_hold', 'total_debit', 'total_everyday'].includes(
+                  fieldKey
+                ) &&
                 info[fieldKey] !== 0 &&
                 fieldKey !== 'total'
               "
