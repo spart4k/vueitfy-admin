@@ -39,7 +39,9 @@
             >
             <span
               v-else-if="
-                ['total_hold', 'total_debit'].includes(fieldKey) &&
+                ['total_hold', 'total_debit', 'total_everyday'].includes(
+                  fieldKey
+                ) &&
                 info[fieldKey] !== 0 &&
                 fieldKey !== 'total'
               "
@@ -65,7 +67,7 @@
     </v-row>
     <v-row class="justify-end mt-4 topay">
       <p class="d-flex">
-        К начислению:
+        Начислено:
         <span class="ml-2" v-if="!loading">{{ info.total_payment }} р</span>
         <template v-else>
           <div

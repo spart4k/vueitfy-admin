@@ -8,11 +8,12 @@ import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import moment from 'moment'
-import Info from '../../info/index.vue'
-import InfoOutput from '../../output/index.vue'
-// import InfoOverpayment from '../default/index.vue'
-import InfoConsumption from '../../consumption/index.vue'
-import Total from '../../../total/index.vue'
+import Info from '../info/index.vue'
+import InfoOutput from '../output/index.vue'
+import InfoOverpayment from '../overpayment/default/index.vue'
+import InfoConsumption from '../consumption/index.vue'
+import Total from '../../total/index.vue'
+import Row from './row/index.vue'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -20,9 +21,10 @@ const table = {
   components: {
     Info,
     InfoOutput,
-    // InfoOverpayment,
+    InfoOverpayment,
     InfoConsumption,
     Total,
+    Row,
     //vTableButton,
     //vButton,
     //vInput,
@@ -67,20 +69,18 @@ const table = {
     const isOpen = ref(false)
     const objects = ref(null)
     const isOpenObject = ref(false)
-    // const loading = ref(true)
     const { makeRequest, loading } = useRequest({
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.personalId}/debit/${props.row.category_id}`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/everyday`,
         }),
     })
-    const convertData = (val) => {
-      return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
-    }
+    let touched = false
     const getObjects = async () => {
       console.log(objects.value)
       if (objects.value !== null) return
+      touched = true
       isOpen.value = undefined
       if (loading.value) {
         return
@@ -89,6 +89,7 @@ const table = {
           const { result } = await makeRequest()
           if (result) {
             objects.value = result
+            total.value = result
             isOpen.value = 0
             console.log('getItems')
           }
@@ -113,8 +114,6 @@ const table = {
       isOpen,
       total,
       objects,
-      convertData,
-      loading,
     }
   },
 }

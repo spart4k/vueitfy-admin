@@ -5,6 +5,7 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 import Autocomplete from '@/components/Autocomplete/default'
+import DateTimePicker from '@/components/Date/Default/index.vue'
 
 const Form4 = defineComponent({
   name: 'Form4',
@@ -12,6 +13,7 @@ const Form4 = defineComponent({
     Dropzone,
     PersTitle,
     Autocomplete,
+    DateTimePicker,
   },
   props: {
     data: {
@@ -32,6 +34,8 @@ const Form4 = defineComponent({
       },
     }
     let selectName = ref('')
+    const is_registration = ref(false)
+    const date_in = ref('')
     const isGalkaVisible = ref(false)
     let options = {
       withoutSave: false,
@@ -62,7 +66,6 @@ const Form4 = defineComponent({
       isShowBtn.value = true
       isGalkaVisible.value = true
     }
-    console.log(data)
     const autocompleteConfig = {
       label: 'Выберите проживание',
       name: 'habitaion',
@@ -121,6 +124,22 @@ const Form4 = defineComponent({
           },
         }),
     })
+    const { makeRequest: createHabitation } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/setTaskCustom', {
+          url: 'create/personal/habitation',
+          body: {
+            data: {
+              habitation_id: selectName.value,
+              personal_id: data.entity.id,
+              with_check_in: is_registration.value,
+              date_in: date_in.value,
+              comment: '',
+            },
+          },
+        }),
+    })
     const { makeRequest: doneTask } = useRequest({
       context,
       request: () =>
@@ -141,42 +160,66 @@ const Form4 = defineComponent({
     })
     let sendData = async () => {
       //
-      await pushSomeShit()
-      if (hasMigr.value && isGalkaVisible.value) {
-        await makeRequest()
-        if (data.data.migr_card?.id) {
-          await delInfoAFile()
-        }
-        await updateFileData().then((str) => {
-          const { makeRequest: startTask } = useRequest({
-            context,
-            request: () =>
-              store.dispatch('taskModule/startProcess', {
-                // status: 6,
-                // data: {
-                // personal_id: <?php echo $entity['id']; ?>,
-                // docs_id: {"10": data.result},
-                // parent_action: <?php echo $task['id']; ?>,
-                // type_parent_action: 2,
+      const habitationRequest = await createHabitation()
 
-                parent_process: data.task.process_id,
-                process_id: 1,
-                account_id: data.task.to_account_id,
-                task_id: data.task.id,
-                docs_id: [str.result],
-                personal_id: data.entity.id,
-                parent_action: data.task.id,
-                type_parent_action: 2,
-                // },
-              }),
+      if (habitationRequest.code === 1) {
+        await pushSomeShit()
+        if (hasMigr.value && isGalkaVisible.value) {
+          await makeRequest()
+          if (data.data.migr_card?.id) {
+            await delInfoAFile()
+          }
+          await updateFileData().then((str) => {
+            const { makeRequest: startTask } = useRequest({
+              context,
+              request: () =>
+                store.dispatch('taskModule/startProcess', {
+                  // status: 6,
+                  // data: {
+                  // personal_id: <?php echo $entity['id']; ?>,
+                  // docs_id: {"10": data.result},
+                  // parent_action: <?php echo $task['id']; ?>,
+                  // type_parent_action: 2,
+
+                  parent_process: data.task.process_id,
+                  process_id: 1,
+                  account_id: data.task.to_account_id,
+                  task_id: data.task.id,
+                  docs_id: [str.result],
+                  personal_id: data.entity.id,
+                  parent_action: data.task.id,
+                  type_parent_action: 2,
+                  // },
+                }),
+            })
+            startTask()
           })
-          startTask()
+        }
+        const { success } = await doneTask()
+        if (success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
+      } else if (habitationRequest.code === 2) {
+        store.commit('notifies/showMessage', {
+          content: 'На объекте превышен лимит регистраций',
+          timeout: 1000,
+          color: 'error',
+        })
+      } else if (habitationRequest.code === 3) {
+        store.commit('notifies/showMessage', {
+          content:
+            'Дата заселения совпадает с периодом проживания на другом объекте',
+          timeout: 1000,
+          color: 'error',
         })
       }
-      const { success } = await doneTask()
-      if (success) {
-        ctx.emit('closePopup')
-        ctx.emit('getItems')
+    }
+
+    const changeObject = () => {
+      if (selectName.value === 0) {
+        date_in.value = ''
+        is_registration.value = ''
       }
     }
 
@@ -188,6 +231,8 @@ const Form4 = defineComponent({
       sendData,
       options,
       selectName,
+      is_registration,
+      date_in,
       isShowBtn,
       addFiles,
       ticket: data.ticket,
@@ -195,6 +240,7 @@ const Form4 = defineComponent({
       isGalkaVisible,
       hasMigr,
       autocompleteConfig,
+      changeObject,
     }
   },
 })

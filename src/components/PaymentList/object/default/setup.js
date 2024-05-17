@@ -10,10 +10,12 @@ import axios from 'axios'
 import moment from 'moment'
 import Info from '../info/index.vue'
 import InfoOutput from '../output/index.vue'
+import Everyday from '../everyday/index.vue'
 import InfoOverpayment from '../overpayment/default/index.vue'
 import InfoConsumption from '../consumption/index.vue'
 import Total from '../../total/index.vue'
 //import { tableApi } from '@/api'
+import Name1 from '../name1/index.vue'
 
 const table = {
   name: 'PaymentList-Row-Object',
@@ -23,6 +25,8 @@ const table = {
     InfoOverpayment,
     InfoConsumption,
     Total,
+    Name1,
+    Everyday,
     //vTableButton,
     //vButton,
     //vInput,

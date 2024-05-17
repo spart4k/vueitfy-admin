@@ -78,6 +78,16 @@ export default {
     carouselField({
       name: 'photo_path',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -89,6 +99,16 @@ export default {
       notPut: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       toObject: {
         stash: 'photo_path',
       },
@@ -115,6 +135,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -142,6 +172,16 @@ export default {
       subtype: 'single',
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       dependence: [
         {
           type: 'computed',
@@ -215,6 +255,16 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       dependence: [
         {
           type: 'computed',
@@ -287,6 +337,16 @@ export default {
         conditions: [{ field: 'is_registration', value: [true] }],
       },
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -307,6 +367,16 @@ export default {
       },
       items: [],
       page: 1,
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       search: '',
       url: 'get/pagination_list/regions_id',
       position: {
@@ -340,6 +410,16 @@ export default {
         value: 'id',
       },
       items: [],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 6,
@@ -363,6 +443,16 @@ export default {
       stringify: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       updateList: [
         {
           alias: 'object_habitation',
@@ -396,6 +486,16 @@ export default {
       stringify: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       selectOption: {
         text: 'name',
         value: 'id',
@@ -414,6 +514,16 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1, 2] }],
@@ -432,6 +542,16 @@ export default {
       requestType: 'number',
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [
@@ -505,6 +625,16 @@ export default {
       stringify: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -527,6 +657,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [
@@ -546,6 +686,16 @@ export default {
       name: 'owner_inn',
       placeholder: '',
       value: '',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       class: [''],
       isShow: {
         value: false,
@@ -569,6 +719,16 @@ export default {
       subtype: 'single',
       stringify: true,
       placeholder: '',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       class: [''],
       appendAction: [
         {
@@ -644,6 +804,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -661,6 +831,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -678,6 +858,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -695,6 +885,16 @@ export default {
       value: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2, 3] }],
@@ -711,6 +911,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'is_administrator', value: [true] }],
@@ -732,6 +942,16 @@ export default {
         value: false,
         conditions: [{ field: 'is_administrator', value: [true] }],
       },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 6,
@@ -746,6 +966,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [3] }],
@@ -807,6 +1037,16 @@ export default {
       placeholder: '',
       value: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -821,6 +1061,16 @@ export default {
       value: '',
       class: [''],
       requestType: 'number',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1] }],
@@ -839,6 +1089,16 @@ export default {
       value: '',
       class: [''],
       requestType: 'number',
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2] }],
@@ -858,6 +1118,16 @@ export default {
       menu: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1, 2] }],
@@ -877,6 +1147,16 @@ export default {
       menu: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1] }],
@@ -896,6 +1176,16 @@ export default {
       menu: false,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       isShow: {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2] }],
@@ -913,6 +1203,16 @@ export default {
       notPut: true,
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       toObject: {
         stash: 'doc_path',
       },
@@ -936,6 +1236,16 @@ export default {
     docListField({
       name: 'doc_path',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -947,6 +1257,16 @@ export default {
       name: 'comment',
       placeholder: '',
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            field: 'status',
+            permissions: [16],
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,

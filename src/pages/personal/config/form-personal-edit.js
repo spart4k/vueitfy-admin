@@ -420,6 +420,7 @@ export default {
       subtype: 'single',
       placeholder: '',
       class: [''],
+      putFirst: true,
       selectOption: {
         text: 'name',
         value: 'id',
@@ -438,7 +439,7 @@ export default {
         cols: 12,
         sm: 6,
       },
-      validations: { required },
+      // validations: { required },
       bootstrapClass: [''],
       filter: [
         {

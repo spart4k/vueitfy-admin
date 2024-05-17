@@ -9,12 +9,12 @@
       color="basil"
       class="p-5"
     >
-      <v-tab v-for="item in config.tabs" :key="item.options.title">
+      <v-tab v-for="item in availableTabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="activeTab">
-      <v-tab-item v-for="item in config.tabs" :key="item.options.title">
+      <v-tab-item v-for="item in availableTabs" :key="item.options.title">
         <component
           :is="item.type"
           @changeheadershow="changeheadershow"
@@ -30,6 +30,7 @@
 import _ from 'lodash'
 import useView from '@/compositions/useView.js'
 import { ref, computed, onMounted } from 'vue'
+import store from '@/store'
 import { config as habitationConfigOrig } from '@/pages/habitation/index'
 import bankConfigOrig from '@/pages/personal/config/table-personal-bank'
 // import TableFixed from '@/components/Table/fixed/index.vue'
@@ -62,11 +63,36 @@ export default {
       convertFormConfig,
     } = useView()
     const activeTab = ref(0)
+    const permission = computed(() => store.state.user.permission_id)
+    const checkIncludesPermissions = (el) => {
+      if (!el.permissions) return true
+      return el.permissions.includes(permission.value)
+    }
+
+    const availableTabs = computed(() => {
+      return config.tabs.filter((tab) => {
+        if (!tab.isShow) return tab
+        else {
+          return tab.isShow.condition.some((el) => {
+            return checkIncludesPermissions(el) === el.type
+          })
+        }
+      })
+    })
 
     const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
       paymentConfigOrig,
       zayavkaConfigOrig
     )
+
+    zayavkaConfig.isShow = {
+      condition: [
+        {
+          permissions: [16, 19],
+          type: false,
+        },
+      ],
+    }
 
     const zayavkaConfig0 = _.cloneDeep(zayavkaConfig)
     const zayavkaConfig1 = _.cloneDeep(zayavkaConfig)
@@ -304,6 +330,8 @@ export default {
     )
     config.tabs[0].detail.tabs[2].config.head.splice(2, 2)
     config.tabs[0].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[0].detail.tabs[3].config.head[1].alias = 'hha.date_in'
+    config.tabs[0].detail.tabs[3].config.head[4].alias = 'hha.with_check_in'
     config.tabs[0].detail.tabs[3].config.options.url =
       'get/pagination/habitation_history_archive'
     config.tabs[0].detail.tabs[3].config.options.alias = 'hha.habitation_id'
@@ -316,6 +344,8 @@ export default {
 
     config.tabs[3].detail.tabs[2].config.head.splice(2, 2)
     config.tabs[3].detail.tabs[3].config.head.splice(4, 1)
+    config.tabs[3].detail.tabs[3].config.head[1].alias = 'hha.date_in'
+    config.tabs[3].detail.tabs[3].config.head[4].alias = 'hha.with_check_in'
     config.tabs[3].detail.tabs[3].config.options.url =
       'get/pagination/habitation_history_archive'
     config.tabs[3].detail.tabs[3].config.options.alias = 'hha.habitation_id'
@@ -377,6 +407,7 @@ export default {
     return {
       config,
       activeTab,
+      availableTabs,
     }
   },
 }

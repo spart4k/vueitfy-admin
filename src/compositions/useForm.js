@@ -319,7 +319,10 @@ export default function ({
       let contextData = formData
       if (action.handlingResponse.result) res = action.handlingResponse.result
       if (action.handlingResponse.context)
-        contextData = conditionContext[action.handlingResponse.context]
+        contextData = _.get(
+          conditionContext[action.handlingResponse.context],
+          res
+        )
       let { text, color } = action.handlingResponse[res]
       // /%\w{n}%/
       //const text = 'Объект с именем %name% уже существует'
@@ -1256,6 +1259,9 @@ export default function ({
 
       el.hideItems = el.items
 
+      if (el.putFirst && !formData[el.name] && el.items[0])
+        formData[el.name] = el.items[0][el.selectOption.value]
+
       if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
       }
@@ -1413,7 +1419,7 @@ export default function ({
     //let listQuery = undefined
     let syncForm = undefined
     let lists = undefined
-    if (getDetail()) {
+    if (getDetail() && form.alias) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }

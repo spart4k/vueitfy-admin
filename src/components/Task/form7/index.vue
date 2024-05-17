@@ -33,6 +33,8 @@
         :correct="true"
         :showFields="true"
         ref="docFormRef"
+        :bankCompleted="bankCompleted"
+        :taskInfo="data"
       ></DocForm>
       <!-- <FormComment /> -->
     </div>

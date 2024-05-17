@@ -72,12 +72,13 @@ const table = {
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.personalId}/debit/${props.row.category_id}`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/everyday/${props.object.id}`,
         }),
     })
     const convertData = (val) => {
       return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
     }
+    let touched = false
     const getObjects = async () => {
       console.log(objects.value)
       if (objects.value !== null) return
@@ -89,6 +90,7 @@ const table = {
           const { result } = await makeRequest()
           if (result) {
             objects.value = result
+            total.value = result
             isOpen.value = 0
             console.log('getItems')
           }
@@ -106,6 +108,7 @@ const table = {
     watch(
       () => isOpen.value,
       async () => {
+        touched = true
         await getObjects()
       }
     )

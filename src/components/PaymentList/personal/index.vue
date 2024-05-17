@@ -57,7 +57,11 @@
               :period="period"
               :showTotal="objects.length > 1"
             />
-
+            <Name1
+              :period="period"
+              :personalId="row.personal_id"
+              :object="object"
+            />
             <Total :loading="loading" :info="total" />
           </v-expansion-panel-content>
         </v-expansion-panel>

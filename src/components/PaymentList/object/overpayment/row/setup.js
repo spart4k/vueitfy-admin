@@ -71,7 +71,7 @@ const table = {
       context,
       request: () =>
         store.dispatch('form/getPaymentListObjects', {
-          url: `payment_list/personals/${props.period}/${props.personalId}/${props.object.id}/hold/${props.row.vv_id}`,
+          url: `payment_list/personals/${props.period}/${props.personalId}/type/hold/${props.row.vv_id}`,
         }),
     })
     const convertData = (val) => {
