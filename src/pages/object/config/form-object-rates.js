@@ -26,7 +26,7 @@ export default {
     value: true,
     condition: [
       {
-        permissions: [7],
+        permissions: [7, 19, 16],
         type: false,
       },
     ],

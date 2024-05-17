@@ -86,7 +86,24 @@ export default {
       paymentConfigOrig,
       zayavkaConfigOrig
     )
-
+    paymentConfig.isShow = {
+      value: true,
+      condition: [
+        {
+          permissions: [13],
+          type: false,
+        },
+      ],
+    }
+    zayavkaConfig.isShow = {
+      value: true,
+      condition: [
+        {
+          permissions: [13],
+          type: false,
+        },
+      ],
+    }
     configRouteConvert({
       config: paymentConfig.config,
       route: 'payment',

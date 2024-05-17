@@ -771,6 +771,14 @@ const config = {
         type: 'addItem',
         //function: consolePanel,
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [1, 13, 15, 3, 4],
+              type: true,
+            },
+          ],
+        },
       },
       // {
       //   label: 'Скачать',

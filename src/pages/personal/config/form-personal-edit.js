@@ -461,7 +461,7 @@ export default {
             value: false,
             condition: [
               {
-                permissions: [1, 3, 4, 5],
+                permissions: [1],
                 type: true,
               },
             ],

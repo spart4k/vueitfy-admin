@@ -61,13 +61,13 @@
                   <v-col cols="12" sm="12">
                     <v-row class="d-flex justify-space-between w-100">
                       <v-col cols="12" sm="6">
-                        <a
+                        <!-- <a
                           v-if="row.payment_id"
                           target="_blank"
                           :href="`/payment/${row.payment_id}`"
                           >Ссылка на начисления</a
                         >
-                        <div v-else class=""></div>
+                        <div v-else class=""></div> -->
                       </v-col>
                       <v-col class="d-flex justify-end pl-0" cols="12" sm="3">
                         <div

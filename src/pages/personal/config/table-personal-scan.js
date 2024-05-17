@@ -353,4 +353,13 @@ export default {
       }),
     ],
   },
+  isShow: {
+    value: true,
+    condition: [
+      {
+        permissions: [13],
+        type: false,
+      },
+    ],
+  },
 }
