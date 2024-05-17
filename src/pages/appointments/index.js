@@ -1793,6 +1793,7 @@ const config = {
                   type: true,
                 },
                 {
+                  permissions: [1, 3, 15, 4, 13],
                   field: 'status',
                   target: 'formData',
                   value: [1, 2],

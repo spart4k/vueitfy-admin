@@ -90,7 +90,7 @@
           </div>
           <div
             v-if="
-              tab.type !== 'not_active' && [4, 8, 17].includes(permission_id)
+              tab.type !== 'not_active' && [4, 8, 3, 17].includes(permission_id)
             "
             @click="openDialog"
             class="action"

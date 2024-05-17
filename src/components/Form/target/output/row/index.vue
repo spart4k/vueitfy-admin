@@ -75,7 +75,6 @@
                           class="output-summ"
                         >
                           {{ sum(row) }} р
-                          {{ row }}
                         </div>
                       </v-col>
                     </v-row>
