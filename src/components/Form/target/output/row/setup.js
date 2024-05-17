@@ -46,7 +46,7 @@ export default {
           result = 'Выработка по часам'
           break
         case 3:
-          result = 'Выработка по клирингу'
+          result = 'Выработка по клинингу'
           break
         default:
           result = key
