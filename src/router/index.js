@@ -435,6 +435,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'write-c3',
+        path: '/pivot/write-c3',
+        meta: {
+          mode: ['write-c3'],
+          label: 'Печать СЗ',
+        },
+        component: Detail,
+      },
+      {
         name: 'pivot-edit',
         path: '/pivot/:id',
         meta: {
@@ -990,11 +999,29 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'corporate-cards/:card_id',
+        path: ':card_id',
+        meta: {
+          mode: ['give'],
+          label: 'Выдать карту',
+        },
+        component: Detail,
+      },
+      {
         name: 'corporate-cards/:id',
         path: ':id',
         meta: {
           mode: ['edit'],
           label: 'Редактировать карту',
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:history_id',
+        path: ':history_id',
+        meta: {
+          mode: ['history'],
+          label: 'История',
         },
         component: Detail,
       },

@@ -275,7 +275,17 @@ export default function ({
           emit('closePopup')
         }
       }
-      if (action.download) Vue.downloadFile(result.path)
+      if (action.download && !Array.isArray(action.download))
+        Vue.downloadFile(result.path)
+      else if (Array.isArray(action.download)) {
+        console.log(result.path)
+        result.path.forEach((el, index) => {
+          setTimeout(() => {
+            console.log(el)
+            Vue.downloadFile(el)
+          }, 500 * (index + 1))
+        })
+      }
       //const message = action.handlingResponse[result.code].text
       //const color = action.handlingResponse[result.code].color
       if (action.handlingResponse) {

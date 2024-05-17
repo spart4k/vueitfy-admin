@@ -61,16 +61,16 @@ const _valuesConfigDefault = {
     totalPages: null,
     footer: null,
   },
-  [_keysConfigProperty.DETAIL]: {
-    type: 'popup', // String 'popup' or 'page'
-    classes: [''], // List class
-    width: '1000px',
-    method: 'get',
-    name: 'Основная',
-    bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-    activeTab: null,
-    // tabs: defaultForm,
-  },
+  // [_keysConfigProperty.DETAIL]: {
+  //   type: 'popup', // String 'popup' or 'page'
+  //   classes: [''], // List class
+  //   width: '1000px',
+  //   method: 'get',
+  //   name: 'Основная',
+  //   bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
+  //   activeTab: null,
+  //   // tabs: defaultForm,
+  // },
   [_keysConfigProperty.FILTER]: {},
 }
 
