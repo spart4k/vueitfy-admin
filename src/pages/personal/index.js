@@ -981,7 +981,7 @@ export const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [1, 15, 3],
+                  permissions: [1],
                   type: true,
                 },
               ],
