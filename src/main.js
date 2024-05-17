@@ -23,11 +23,11 @@ Vue.use(PortalVue)
 Vue.prototype.env = process.env
 
 Vue.downloadFile = function (val) {
-  console.log(val)
   const link = document.createElement('a')
   link.download = val
   link.href = process.env.VUE_APP_STORE + val
   document.body.appendChild(link)
+  console.log(link)
   link.click()
   document.body.removeChild(link)
 }
@@ -40,7 +40,7 @@ Vue.component('TableDefault', TableDefault)
 //     this.event = event => this.vm.$emit(this.expression, event)
 //     this.el.addEventListener('click', this.stopProp)
 //     document.body.addEventListener('click', this.event)
-//   },   
+//   },
 //   unbind() {
 //     this.el.removeEventListener('click', this.stopProp)
 //     document.body.removeEventListener('click', this.event)

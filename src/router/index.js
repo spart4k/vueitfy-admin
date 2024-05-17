@@ -439,7 +439,7 @@ const routes = [
         path: '/pivot/write-c3',
         meta: {
           mode: ['write-c3'],
-          label: 'Объект',
+          label: 'Печать СЗ',
         },
         component: Detail,
       },

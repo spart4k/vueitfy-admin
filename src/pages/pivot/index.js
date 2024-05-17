@@ -44,8 +44,8 @@ function searchInputing(field) {}
 function changeSort(config) {
   let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
   let heading = config.head.find((x) => x.changeable)
-  if (btn.label === 'Объекты') {
-    btn.label = 'ФИО'
+  if (btn.typeLabel === 'Объекты') {
+    btn.typeLabel = 'ФИО'
     heading.title = 'Объект'
     heading.alias = 'o.name'
     heading.value = 'object_name'
@@ -53,8 +53,8 @@ function changeSort(config) {
     heading.routeParam = 'object_id'
     heading.type = 'download'
     config.options.url = 'get/pagination_pivot/personal_target_object'
-  } else if (btn.label === 'ФИО') {
-    btn.label = 'Объекты'
+  } else if (btn.typeLabel === 'ФИО') {
+    btn.typeLabel = 'Объекты'
     heading.title = 'ФИО'
     heading.alias = "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)"
     heading.value = 'fio'
@@ -102,6 +102,16 @@ export const config = {
         backgroundColor: '#ffffff',
       },
       {
+        label: '',
+        class: ['v-table-button--custom'],
+        typeLabel: 'Объекты',
+        url: '$IconUpdate',
+        function: changeSort,
+        backgroundColor: '#ffffff',
+        type: 'refresh',
+        subtype: 'changeHeads',
+      },
+      {
         label: 'Выработка',
         class: ['v-table-button--custom'],
         url: 'pivot-output',
@@ -130,15 +140,6 @@ export const config = {
             },
           ],
         },
-      },
-      {
-        label: 'Объекты',
-        class: ['v-table-button--custom'],
-        url: '$IconUpdate',
-        function: changeSort,
-        backgroundColor: '#ffffff',
-        type: 'refresh',
-        subtype: 'changeHeads',
       },
       {
         label: 'Аванс',

@@ -40,6 +40,7 @@ export default {
     selectField({
       label: 'Бригадир',
       name: 'bigadirs_access',
+      requestKey: 'brigadir_id',
       // alias: 'brigadir_id',
       placeholder: '',
       class: [''],
@@ -59,7 +60,7 @@ export default {
           alias: 'brigadir_objects',
           filter: [
             {
-              alias: 'bigadirs_id',
+              alias: 'brigadir_id',
               value: '',
               type: 'num',
               source: 'formData.bigadirs_access',
@@ -71,6 +72,7 @@ export default {
     selectField({
       label: 'Объект',
       name: 'brigadir_objects',
+      requestKey: 'object_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -88,7 +90,7 @@ export default {
     selectField({
       label: 'Тип смены',
       name: 'shifts_without_day_night',
-      alias: 'shifts',
+      requestKey: 'type',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -103,6 +105,18 @@ export default {
       validations: { required },
       bootstrapClass: [''],
     }),
+    dateField({
+      label: 'Дата',
+      name: 'date',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 3,
+      },
+      bootstrapClass: [''],
+      validations: { required },
+    }),
   ],
   actions: [
     stringAction({
@@ -116,17 +130,10 @@ export default {
       text: 'Сохранить',
       type: 'submit',
       module: 'form/create',
-      url: 'create/pay/cleaning',
+      url: 'report/print_form',
       name: 'createForm',
       action: 'createForm',
-      handlingResponse: {
-        context: 'result',
-        result: 'data',
-        data: {
-          text: 'Создано начислений %count% <br/> Ошибок: %count_error%',
-          color: 'success',
-        },
-      },
+      download: ['url', 'url_real'],
     }),
   ],
   formData: {},
