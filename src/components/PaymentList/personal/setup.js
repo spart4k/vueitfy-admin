@@ -12,6 +12,7 @@ import Total from '../total/index.vue'
 
 //import { tableApi } from '@/api'
 import Object from '../object/default/index.vue'
+import Name1 from '../object/name1/index.vue'
 
 const table = {
   name: 'PaymentList-Row',
@@ -22,6 +23,7 @@ const table = {
     Row,
     Object,
     Total,
+    Name1,
   },
   props: {
     row: {

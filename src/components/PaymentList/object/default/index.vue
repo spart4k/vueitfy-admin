@@ -42,7 +42,7 @@
             :personalId="personalId"
             :object="object"
           /> -->
-          <Name1 :period="period" :personalId="personalId" :object="object" />
+          <!-- <Name1 :period="period" :personalId="personalId" :object="object" /> -->
           <!-- <ObjectInfo /> -->
           <Total v-if="showTotal" :info="total" />
         </v-expansion-panel-content>
