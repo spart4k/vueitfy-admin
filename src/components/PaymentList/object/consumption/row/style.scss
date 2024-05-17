@@ -19,6 +19,13 @@
       display: flex;
       align-items: center;
       width: 100%;
+      &__total {
+        color: #fff;
+        padding: 0 6px !important;
+        height: 14px;
+        font-weight: 400;
+        font-size: 12px;
+      }
     }
   }
 }
