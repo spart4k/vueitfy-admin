@@ -18,7 +18,10 @@
               :src="require(`@/assets/image/bank/${cardStyle?.image}`)"
             />
           </div>
-          <div :class="['v-card-side-actions', !data.id && 'gradient']">
+          <div
+            v-if="data.status_id !== 2"
+            :class="['v-card-side-actions', !data.id && 'gradient']"
+          >
             <v-menu v-if="data.note" open-on-hover left offset-y>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn v-bind="attrs" v-on="on" icon x-small>
@@ -34,13 +37,7 @@
                 </div>
               </div>
             </v-menu>
-            <v-btn
-              v-if="data.status_name !== 'Заблокирована'"
-              @click="flipped = !flipped"
-              class="ml-2"
-              icon
-              x-small
-            >
+            <v-btn @click="flipped = !flipped" class="ml-2" icon x-small>
               <v-icon small :color="cardStyle?.actions">$IconUpdate</v-icon>
             </v-btn>
           </div>
