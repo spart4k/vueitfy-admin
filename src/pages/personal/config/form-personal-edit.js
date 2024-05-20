@@ -70,6 +70,12 @@ const editFormPermissions = {
       type: true,
     },
   },
+  OBD: {
+    access: {
+      permissions: [7],
+      type: false,
+    },
+  },
   // Убрать ОКК
 }
 
@@ -125,6 +131,11 @@ export default {
       //isShow: false,
       readonly: {
         value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
       },
     }),
     stringField({
@@ -138,6 +149,14 @@ export default {
       },
       bootstrapClass: [''],
       validations: { required },
+      readonly: {
+        value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
       //isShow: false,
     }),
     stringField({
@@ -151,6 +170,14 @@ export default {
       },
       bootstrapClass: [''],
       validations: {},
+      readonly: {
+        value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
       //isShow: false,
     }),
     stringField({
@@ -163,6 +190,14 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
       //validations: { required },
       //isShow: false,
     }),
@@ -189,7 +224,7 @@ export default {
           editFormPermissions.brigadir,
           editFormPermissions.manager[1],
           editFormPermissions.rukFIlCUPDirector.denied,
-          // editFormPermissions.DBA.access,
+          editFormPermissions.DBA.denied,
           // editFormPermissions.OBDandOKK.access,
         ],
       },
@@ -212,13 +247,14 @@ export default {
           editFormPermissions.brigadir,
           editFormPermissions.manager[1],
           editFormPermissions.rukFIlCUPDirector.denied,
+          editFormPermissions.OBD.access,
           // editFormPermissions.DBA.access,
           // editFormPermissions.OBDandOKK.access,
         ],
       },
     }),
     dateField({
-      label: ' Дата рождения',
+      label: 'Дата рождения',
       name: 'data_rojd',
       subtype: 'date',
       placeholder: '',
@@ -235,6 +271,7 @@ export default {
           editFormPermissions.brigadir,
           editFormPermissions.manager[1],
           editFormPermissions.rukFIlCUPDirector.denied,
+          editFormPermissions.OBD.access,
           // editFormPermissions.DBA.access,
           // editFormPermissions.OBDandOKK.access,
         ],
@@ -383,26 +420,6 @@ export default {
       bootstrapClass: [''],
       readonly: true,
     }),
-    selectField({
-      label: 'Объекты',
-      name: 'object_id',
-      alias: 'objects_personal',
-      subtype: 'multiple',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-      readonly: true,
-    }),
     checkboxField({
       label: 'Штатный',
       name: 'in_state',
@@ -413,6 +430,14 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
     }),
     autocompleteField({
       label: 'Проживание',

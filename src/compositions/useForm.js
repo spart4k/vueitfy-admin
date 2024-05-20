@@ -868,6 +868,8 @@ export default function ({
         const element = {
           alias: list.alias,
           filter,
+          readonly: environment.readonlyAll,
+          id: getListField(list),
         }
         return element
       })
@@ -1379,6 +1381,8 @@ export default function ({
     const requestData = {
       alias: field.alias,
       filter,
+      readonly: environment.readonlyAll,
+      id: formData[field.name],
     }
 
     field.loading = true
@@ -1406,6 +1410,8 @@ export default function ({
       const element = {
         alias: list.alias,
         filter,
+        readonly: environment.readonlyAll,
+        id: formData[field.name],
       }
       return element
     })
@@ -1417,11 +1423,28 @@ export default function ({
   }
   //const readonlyAll = ref(false)
   const environment = reactive({
-    readonlyAll: false,
+    readonlyAll: 0,
     mode,
     ...store.state.user,
   })
+
+  const getListField = (list) => {
+    let listValue = undefined
+    const listField = form.fields.find((fieldEl) => {
+      return fieldEl.alias
+        ? fieldEl.alias === list.alias
+        : fieldEl.name === fieldEl.alias
+    })
+    console.log(list)
+    console.log(listField)
+    if (listField) {
+      listValue = formData[listField.name]
+    }
+    return listValue
+  }
+
   const getData = async () => {
+    console.log('get data!')
     //if (!initPreRequest()) {
     //  return false
     //}
@@ -1433,8 +1456,12 @@ export default function ({
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
-
+    console.log(syncForm)
     if (syncForm) {
+      if (syncForm.hasOwnProperty('readonly')) {
+        environment.readonlyAll = syncForm.readonly
+        console.log(environment.readonlyAll)
+      }
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
         if (field) {
@@ -1475,14 +1502,12 @@ export default function ({
           })
         })
       }
-
-      if (syncForm.hasOwnProperty('readonly')) {
-        environment.readonlyAll = syncForm.readonly
-      }
+      console.log('READONLY HAS', syncForm.hasOwnProperty('readonly'))
 
       originalData = _.cloneDeep(formData)
     }
     await loadAutocompletes()
+
     if (hasSelect()) {
       const listQuery = form?.lists?.flatMap((list) => {
         if (list.condition) {
@@ -1535,6 +1560,8 @@ export default function ({
         const element = {
           alias: list.alias,
           filter,
+          readonly: environment.readonlyAll,
+          id: getListField(list),
         }
         return element
       })
