@@ -379,7 +379,7 @@ export default function ({
       return el.permissions.includes(permission.value)
     }
     if (typeof action.isShow === 'boolean')
-      return environment.readonlyAll ? true : action.isShow
+      return environment.readonlyAll ? false : action.isShow
     else if (typeof action.isShow === 'object') {
       if (action.isShow.condition?.length) {
         const condition = () =>
@@ -414,7 +414,12 @@ export default function ({
             }
           })
         action.isShow.value = condition()
-        return environment.readonlyAll ? true : action.isShow.value
+        console.log(
+          action.isShow.value,
+          environment.readonlyAll,
+          environment.readonlyAll ? false : action.isShow.value
+        )
+        return environment.readonlyAll ? false : action.isShow.value
       }
     } else if (typeof action.isShow === 'undefined') {
       return environment.readonlyAll

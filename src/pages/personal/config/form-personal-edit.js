@@ -96,7 +96,17 @@ export default {
     tabs: [Object.assign({}, formPersonalHabitation)],
   },
   lists: [
-    { alias: 'user_keys', filter: [] },
+    {
+      alias: 'user_key',
+      filter: [
+        {
+          alias: 'personal_id',
+          value: '',
+          routeKey: 'id',
+          type: 'num',
+        },
+      ],
+    },
     { alias: 'account_id', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
