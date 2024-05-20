@@ -1150,6 +1150,7 @@ const config = {
                   sm: 6,
                 },
                 value: 1,
+                readonly: true,
                 disable: true,
                 validations: { required },
                 bootstrapClass: [''],
