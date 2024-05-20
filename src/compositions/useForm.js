@@ -1414,11 +1414,14 @@ export default function ({
         return acc
       }, [])
 
+      const targetItem = form.fields.find(
+        (x) => list.alias === x.alias || list.alias === x.name
+      )
       const element = {
         alias: list.alias,
         filter,
         readonly: environment.readonlyAll,
-        id: formData[field.name],
+        id: formData[targetItem.name],
       }
       return element
     })
@@ -1437,13 +1440,9 @@ export default function ({
 
   const getListField = (list) => {
     let listValue = undefined
-    const listField = form.fields.find((fieldEl) => {
-      return fieldEl.alias
-        ? fieldEl.alias === list.alias
-        : fieldEl.name === fieldEl.alias
-    })
-    console.log(list)
-    console.log(listField)
+    const listField = form.fields.find(
+      (fieldEl) => fieldEl.alias === list.alias || fieldEl.name === list.alias
+    )
     if (listField) {
       listValue = formData[listField.name]
     }
