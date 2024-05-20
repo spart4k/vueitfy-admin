@@ -84,10 +84,19 @@ export default {
             //
             return tabField[el.alias] === el.name
           })
+          console.log()
           if (el.type === 'list') {
-            formData[el.nameInTab] = findEl.items.find(
-              (elItem) => elItem.id === props.tab.formData[el.name]
-            ).name
+            if (Array.isArray(props.tab.formData[el.name])) {
+              formData[el.nameInTab] = props.tab.formData[el.name].map(
+                (mapEl) => {
+                  return findEl.items.find((elItem) => elItem.id === mapEl).name
+                }
+              )
+            } else {
+              formData[el.nameInTab] = findEl.items.find(
+                (elItem) => elItem.id === props.tab.formData[el.name]
+              ).name
+            }
           }
         })
       }

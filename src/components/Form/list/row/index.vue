@@ -1,6 +1,6 @@
 <template>
   <div class="form">
-    <v-row :key="row">
+    <v-row v-for="account in formData.account_name" :key="account">
       <!--{{ tab.fields }}-->
       <v-col
         v-for="field in cloneForm.fields"
@@ -131,7 +131,7 @@
           :formData="formData"
         />
         <div v-else-if="showField('textBlock', field)">
-          <p>{{ formData[field.name] }}</p>
+          <p>{{ account }}</p>
           <p>{{ formatedRow }}</p>
         </div>
       </v-col>

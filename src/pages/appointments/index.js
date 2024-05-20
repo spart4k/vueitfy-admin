@@ -1313,7 +1313,7 @@ const config = {
               autocompleteField({
                 label: 'Линейщик',
                 name: 'personal_id',
-                subtype: 'single',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
