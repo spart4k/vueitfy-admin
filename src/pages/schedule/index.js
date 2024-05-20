@@ -417,7 +417,7 @@ const consumptionConfig = {
                 ],
               }),
               selectField({
-                label: 'Вид ведомости:',
+                label: 'Вид ведомости',
                 name: 'vid_vedomost_id_logistic',
                 placeholder: '',
                 class: [''],
@@ -625,7 +625,7 @@ const consumptionConfig = {
                 ],
               }),
               stringField({
-                label: 'Стоимость питания:',
+                label: 'Стоимость питания',
                 name: 'sum_nutrition',
                 placeholder: '',
                 class: [''],

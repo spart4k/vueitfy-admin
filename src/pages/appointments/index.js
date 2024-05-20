@@ -148,7 +148,7 @@ export const editFields = [
     ],
   }),
   selectField({
-    label: 'Вид ведомости:',
+    label: 'Вид ведомости',
     name: 'vid_vedomost_id',
     alias: 'vid_vedomost_id_logistic',
     placeholder: '',
@@ -498,7 +498,7 @@ export const editFields = [
     //isShow: false,
   }),
   stringField({
-    label: 'Стоимость питания:',
+    label: 'Стоимость питания',
     name: 'sum_nutrition',
     placeholder: '',
     class: [''],
@@ -1234,7 +1234,7 @@ const config = {
               }),
 
               selectField({
-                label: 'Вид ведомости:',
+                label: 'Вид ведомости',
                 name: 'vid_vedomost_id_logistic',
                 placeholder: '',
                 class: [''],

@@ -37,7 +37,7 @@ export default {
   active: false,
   fields: [
     dateRangeField({
-      label: 'Дата начисления:',
+      label: 'Дата начисления',
       name: 'date_add',
       subtype: 'range',
       typeFilter: 'date',
@@ -65,7 +65,7 @@ export default {
     //   aliasFilter: 'p.date_status',
     // }),
     dateRangeField({
-      label: 'Дата назначения:',
+      label: 'Дата назначения',
       name: 'date_target',
       subtype: 'range',
       typeFilter: 'date',
@@ -97,7 +97,7 @@ export default {
       aliasFilter: 'p.status_id',
     }),
     selectField({
-      label: 'Вид ведомости:',
+      label: 'Вид ведомости',
       name: 'vid_vedomost_id',
       subtype: 'single',
       placeholder: '',
@@ -341,7 +341,7 @@ export default {
       aliasFilter: 'p.personal_id',
     }),
     selectField({
-      label: 'Должность:',
+      label: 'Должность',
       name: 'doljnost_id',
       subtype: 'single',
       placeholder: '',
