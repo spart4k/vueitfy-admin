@@ -22,6 +22,7 @@ export default {
   path: 'edit',
   alias: 'habitation',
   active: false,
+  notReadonly: true,
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class

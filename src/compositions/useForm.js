@@ -1696,7 +1696,9 @@ export default function ({
       return el.permissions.includes(permission.value)
     }
     if (typeof field.readonly === 'boolean')
-      return environment.readonlyAll ? true : field.readonly
+      return environment.readonlyAll && !form.notReadonly
+        ? true
+        : field.readonly
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
@@ -1731,10 +1733,14 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        return environment.readonlyAll ? true : field.readonly.value
+        return environment.readonlyAll && !form.notReadonly
+          ? true
+          : field.readonly.value
       }
     } else if (typeof field.readonly === 'undefined') {
-      return environment.readonlyAll
+      return environment.readonlyAll && !form.notReadonly
+        ? true
+        : environment.readonlyAll
     }
   }
   const entityData = ref({})
