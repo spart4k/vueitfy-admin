@@ -54,6 +54,15 @@ const filters = {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.account_json',
+      isShow: {
+        value: false,
+        condition: [
+          {
+            permissions: [13, 1],
+            type: false,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Объект',

@@ -101,6 +101,15 @@ const filters = {
       },
       bootstrapClass: [''],
       aliasFilter: 'pt.manager',
+      isShow: {
+        value: false,
+        condition: [
+          {
+            permissions: [13, 1],
+            type: false,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Объект',
