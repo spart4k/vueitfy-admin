@@ -1694,6 +1694,7 @@ export default {
         const element = {
           alias: list.alias,
           filter,
+          readonly: 0,
         }
         return element
       })
