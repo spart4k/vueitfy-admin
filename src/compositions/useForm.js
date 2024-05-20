@@ -984,6 +984,7 @@ export default function ({
                   targetField.name ? targetField.name : targetField.alias
                 ]
               : -1,
+            readonly: environment.readonlyAll,
             filter,
           }
         }
@@ -1260,6 +1261,7 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
+        readonly: environment.readonlyAll,
         filter: getDepFilters(el),
       })
 

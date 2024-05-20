@@ -150,6 +150,15 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.account_id',
+      isShow: {
+        value: false,
+        condition: [
+          {
+            permissions: [1],
+            type: false,
+          },
+        ],
+      },
       // dependence: [
       //   // {
       //   //   type: 'api',
