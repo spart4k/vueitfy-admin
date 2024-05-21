@@ -379,7 +379,7 @@ export default function ({
       return el.permissions.includes(permission.value)
     }
     if (typeof action.isShow === 'boolean')
-      return environment.readonlyAll ? true : action.isShow
+      return environment.readonlyAll ? false : action.isShow
     else if (typeof action.isShow === 'object') {
       if (action.isShow.condition?.length) {
         const condition = () =>
@@ -414,7 +414,9 @@ export default function ({
             }
           })
         action.isShow.value = condition()
-        return environment.readonlyAll ? true : action.isShow.value
+        return environment.readonlyAll && !action.notReadonly
+          ? false
+          : action.isShow.value
       }
     } else if (typeof action.isShow === 'undefined') {
       return environment.readonlyAll
@@ -868,6 +870,8 @@ export default function ({
         const element = {
           alias: list.alias,
           filter,
+          readonly: environment.readonlyAll,
+          id: getListField(list),
         }
         return element
       })
@@ -982,6 +986,7 @@ export default function ({
                   targetField.name ? targetField.name : targetField.alias
                 ]
               : -1,
+            readonly: environment.readonlyAll,
             filter,
           }
         }
@@ -1258,6 +1263,7 @@ export default function ({
         id: formData[el.name ? el.name : el.alias]
           ? formData[el.name ? el.name : el.alias]
           : -1,
+        readonly: environment.readonlyAll,
         filter: getDepFilters(el),
       })
 
@@ -1379,6 +1385,8 @@ export default function ({
     const requestData = {
       alias: field.alias,
       filter,
+      readonly: environment.readonlyAll,
+      id: formData[field.name],
     }
 
     field.loading = true
@@ -1391,7 +1399,12 @@ export default function ({
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
-        if (source[el.field] !== null && source[el.field] !== undefined) {
+        if (
+          source[el.field] !== null &&
+          source[el.field] !== undefined &&
+          ((Array.isArray(source[el.field]) && source[el.field].length) ||
+            (!Array.isArray(source[el.field]) && source[el.field]))
+        ) {
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
@@ -1403,9 +1416,14 @@ export default function ({
         return acc
       }, [])
 
+      const targetItem = form.fields.find(
+        (x) => list.alias === x.alias || list.alias === x.name
+      )
       const element = {
         alias: list.alias,
         filter,
+        readonly: environment.readonlyAll,
+        id: formData[targetItem.name] ? formData[targetItem.name] : undefined,
       }
       return element
     })
@@ -1417,11 +1435,24 @@ export default function ({
   }
   //const readonlyAll = ref(false)
   const environment = reactive({
-    readonlyAll: false,
+    readonlyAll: 0,
     mode,
     ...store.state.user,
   })
+
+  const getListField = (list) => {
+    let listValue = undefined
+    const listField = form.fields.find(
+      (fieldEl) => fieldEl.alias === list.alias || fieldEl.name === list.alias
+    )
+    if (listField) {
+      listValue = formData[listField.name]
+    }
+    return listValue
+  }
+
   const getData = async () => {
+    console.log('get data!')
     //if (!initPreRequest()) {
     //  return false
     //}
@@ -1433,8 +1464,12 @@ export default function ({
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
-
+    console.log(syncForm)
     if (syncForm) {
+      if (syncForm.hasOwnProperty('readonly')) {
+        environment.readonlyAll = syncForm.readonly
+        console.log(environment.readonlyAll)
+      }
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
         if (field) {
@@ -1452,11 +1487,19 @@ export default function ({
           //     field,
           //   })
           // }
+          // if (field.updateList && field.updateList.length) {
+          //   await queryList(field, false)
+          // }
+        }
+      }
+
+      await Promise.all(
+        form?.fields.map(async (field) => {
           if (field.updateList && field.updateList.length) {
             await queryList(field, false)
           }
-        }
-      }
+        })
+      )
 
       const prescription = form?.fields.find(
         (x) => x.prescription
@@ -1475,14 +1518,10 @@ export default function ({
           })
         })
       }
-
-      if (syncForm.hasOwnProperty('readonly')) {
-        environment.readonlyAll = syncForm.readonly
-      }
-
       originalData = _.cloneDeep(formData)
     }
     await loadAutocompletes()
+
     if (hasSelect()) {
       const listQuery = form?.lists?.flatMap((list) => {
         if (list.condition) {
@@ -1535,6 +1574,8 @@ export default function ({
         const element = {
           alias: list.alias,
           filter,
+          readonly: environment.readonlyAll,
+          id: getListField(list),
         }
         return element
       })
@@ -1663,7 +1704,9 @@ export default function ({
       return el.permissions.includes(permission.value)
     }
     if (typeof field.readonly === 'boolean')
-      return environment.readonlyAll ? true : field.readonly
+      return environment.readonlyAll && !form.notReadonly
+        ? true
+        : field.readonly
     else if (typeof field.readonly === 'object') {
       if (field.readonly.condition?.length) {
         const condition = () =>
@@ -1698,10 +1741,14 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        return environment.readonlyAll ? true : field.readonly.value
+        return environment.readonlyAll && !form.notReadonly
+          ? true
+          : field.readonly.value
       }
     } else if (typeof field.readonly === 'undefined') {
-      return environment.readonlyAll
+      return environment.readonlyAll && !form.notReadonly
+        ? true
+        : environment.readonlyAll
     }
   }
   const entityData = ref({})

@@ -36,6 +36,16 @@ export const editFields = [
     disable: true,
     validations: { required },
     bootstrapClass: [''],
+    hiding: {
+      conditions: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [1],
+          values: [1, 2],
+        },
+      ],
+    },
     readonly: {
       value: false,
       condition: [
@@ -148,7 +158,7 @@ export const editFields = [
     ],
   }),
   selectField({
-    label: 'Вид ведомости:',
+    label: 'Вид ведомости',
     name: 'vid_vedomost_id',
     alias: 'vid_vedomost_id_logistic',
     placeholder: '',
@@ -498,7 +508,7 @@ export const editFields = [
     //isShow: false,
   }),
   stringField({
-    label: 'Стоимость питания:',
+    label: 'Стоимость питания',
     name: 'sum_nutrition',
     placeholder: '',
     class: [''],
@@ -1150,6 +1160,7 @@ const config = {
                   sm: 6,
                 },
                 value: 1,
+                readonly: true,
                 disable: true,
                 validations: { required },
                 bootstrapClass: [''],
@@ -1233,7 +1244,7 @@ const config = {
               }),
 
               selectField({
-                label: 'Вид ведомости:',
+                label: 'Вид ведомости',
                 name: 'vid_vedomost_id_logistic',
                 placeholder: '',
                 class: [''],

@@ -213,6 +213,7 @@ const routes = [
         path: 'export',
         meta: {
           mode: ['export'],
+          label: 'Экспорт ЗП',
         },
         component: Detail,
       },

@@ -22,6 +22,10 @@ export default {
       type: Object,
       default: {},
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     return {}

@@ -692,7 +692,7 @@ export default {
                   bootstrapClass: [''],
                 }),
                 dropZoneField({
-                  label: 'Скан-копия/фото:',
+                  label: 'Скан-копия/фото',
                   name: 'path_doc',
                   placeholder: '',
                   notPut: true,
@@ -714,7 +714,7 @@ export default {
                   value: [],
                 }),
                 textareaField({
-                  label: 'Примечание:',
+                  label: 'Примечание',
                   name: 'note',
                   alias: 'pd.note',
                   placeholder: '',
@@ -781,7 +781,7 @@ export default {
                   bootstrapClass: [''],
                 }),
                 dropZoneField({
-                  label: 'Скан-копия/фото:',
+                  label: 'Скан-копия/фото',
                   name: 'path_doc',
                   placeholder: '',
                   readonly: false,
@@ -818,7 +818,7 @@ export default {
                   bootstrapClass: [''],
                 }),
                 textareaField({
-                  label: 'Примечание:',
+                  label: 'Примечание',
                   name: 'note',
                   alias: 'pd.note',
                   placeholder: '',

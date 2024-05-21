@@ -35,6 +35,7 @@ export default {
   ],
   alias: 'personal',
   active: false,
+  notReadonly: true,
   fields: [
     autocompleteField({
       label: 'Объект',

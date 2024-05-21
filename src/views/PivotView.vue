@@ -53,7 +53,25 @@ export default {
       paymentConfigOrig,
       zayavkaConfigOrig
     )
+    paymentConfig.isShow = {
+      value: true,
+      condition: [
+        {
+          permissions: [13],
+          type: false,
+        },
+      ],
+    }
 
+    zayavkaConfig.isShow = {
+      value: true,
+      condition: [
+        {
+          permissions: [13],
+          type: false,
+        },
+      ],
+    }
     configRouteConvert({
       config: paymentConfig.config,
       route: 'payment',
@@ -71,7 +89,7 @@ export default {
         oldPath: 'id',
       },
     })
-
+    console.log(paymentConfig)
     personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
 
     config.detail.tabs.push(...personalTabs)

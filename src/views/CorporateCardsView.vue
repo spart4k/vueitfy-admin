@@ -56,7 +56,7 @@ export default {
     },
   },
   setup() {
-    const tableView = ref(false)
+    const tableView = ref(true)
     const {
       initTableConfig,
       createHeadItem,

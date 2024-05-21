@@ -57,7 +57,7 @@ export default {
             text: 'name',
             value: 'id',
           },
-          disabled: true,
+          readonly: true,
           value: 0,
           items: [
             { id: 0, name: 'Новые' },

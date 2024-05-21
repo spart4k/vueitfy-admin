@@ -39,6 +39,10 @@ export default {
     })
     const detailPanels = ref([])
 
+    const disabled = computed(() =>
+      [3].includes(store.state.user.permission_id)
+    )
+
     const types = {
       1: 'К',
       2: 'Г',
@@ -161,6 +165,7 @@ export default {
       confirm,
       detailPanels,
       editedType,
+      disabled,
 
       stageBack,
       openDetail,
