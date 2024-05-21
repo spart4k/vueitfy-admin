@@ -302,6 +302,7 @@ const config = {
                 placeholder: '',
                 readonly: false,
                 class: [''],
+                value: 11,
                 position: {
                   cols: 12,
                   sm: 12,
@@ -470,7 +471,7 @@ const config = {
         active: false,
         fields: [
           autocompleteField({
-            label: 'Сотрудник2',
+            label: 'Сотрудник',
             name: 'account_id',
             disabled: true,
             subtype: 'single',
@@ -534,6 +535,7 @@ const config = {
             placeholder: '',
             readonly: false,
             class: [''],
+            value: 11,
             position: {
               cols: 12,
               sm: 12,
@@ -667,6 +669,7 @@ const config = {
             placeholder: '',
             readonly: false,
             class: [''],
+            value: 11,
             position: {
               cols: 12,
               sm: 12,

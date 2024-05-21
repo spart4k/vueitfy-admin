@@ -36,6 +36,16 @@ export const editFields = [
     disable: true,
     validations: { required },
     bootstrapClass: [''],
+    hiding: {
+      conditions: [
+        {
+          target: 'formData',
+          field: 'status',
+          value: [1],
+          values: [1, 2],
+        },
+      ],
+    },
     readonly: {
       value: false,
       condition: [
