@@ -1399,7 +1399,12 @@ export default function ({
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
-        if (source[el.field] !== null && source[el.field] !== undefined) {
+        if (
+          source[el.field] !== null &&
+          source[el.field] !== undefined &&
+          ((Array.isArray(source[el.field]) && source[el.field].length) ||
+            (!Array.isArray(source[el.field]) && source[el.field]))
+        ) {
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
@@ -1418,7 +1423,7 @@ export default function ({
         alias: list.alias,
         filter,
         readonly: environment.readonlyAll,
-        id: formData[targetItem.name],
+        id: formData[targetItem.name] ? formData[targetItem.name] : undefined,
       }
       return element
     })
@@ -1482,11 +1487,19 @@ export default function ({
           //     field,
           //   })
           // }
+          // if (field.updateList && field.updateList.length) {
+          //   await queryList(field, false)
+          // }
+        }
+      }
+
+      await Promise.all(
+        form?.fields.map(async (field) => {
           if (field.updateList && field.updateList.length) {
             await queryList(field, false)
           }
-        }
-      }
+        })
+      )
 
       const prescription = form?.fields.find(
         (x) => x.prescription
@@ -1505,8 +1518,6 @@ export default function ({
           })
         })
       }
-      console.log('READONLY HAS', syncForm.hasOwnProperty('readonly'))
-
       originalData = _.cloneDeep(formData)
     }
     await loadAutocompletes()
