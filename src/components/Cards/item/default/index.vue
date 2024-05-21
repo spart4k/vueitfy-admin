@@ -67,7 +67,7 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item v-if="!isArchive && editPermission">
+            <v-list-item v-if="!isArchive && editPermission && !accounting">
               <v-btn
                 color="transparent"
                 elevation="0"
@@ -77,7 +77,12 @@
               </v-btn>
             </v-list-item>
             <v-list-item
-              v-if="!isArchive && editPermission && data.account_id !== 0"
+              v-if="
+                !isArchive &&
+                editPermission &&
+                data.account_id !== 0 &&
+                !accounting
+              "
             >
               <v-btn
                 color="transparent"
