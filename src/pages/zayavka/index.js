@@ -597,6 +597,20 @@ export const addFields = [
           },
         ],
       },
+      {
+        type: 'computed',
+        funcComputed: (context) => {
+          context.formData.personal_zr = null
+          context.formData.personal_object_zr = null
+          context.formData.personal_account_zr = null
+          context.formData.type_objects = null
+          context.formData.object_zr = null
+          context.formData.permissions_zr = null
+          context.formData.permission_accounts_zr = null
+          context.formData.type_pay = null
+          context.formData.req_zr_id = null
+        },
+      },
     ],
     updateList: [
       {
@@ -1476,6 +1490,7 @@ export const addFields = [
     class: [''],
     position: { cols: 12, sm: 6 },
     notSend: true,
+    readonly: false,
     bootstrapClass: [''],
     label: '-',
     color: 'primary',
@@ -1492,6 +1507,7 @@ export const addFields = [
     class: [''],
     position: { cols: 12, sm: 6 },
     notSend: true,
+    readonly: false,
     bootstrapClass: [''],
     label: '+',
     color: 'success',
@@ -2600,6 +2616,20 @@ export const editFields = [
             targetKey: 'to_name',
           },
         ],
+      },
+      {
+        type: 'computed',
+        funcComputed: (context) => {
+          context.formData.personal_zr = null
+          context.formData.personal_object_zr = null
+          context.formData.personal_account_zr = null
+          context.formData.type_objects = null
+          context.formData.object_zr = null
+          context.formData.permissions_zr = null
+          context.formData.permission_accounts_zr = null
+          context.formData.payment_type = null
+          context.formData.rek_id = null
+        },
       },
     ],
     updateList: [

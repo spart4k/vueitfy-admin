@@ -131,8 +131,9 @@
                 v-for="item in field.items"
                 :key="item.id"
                 @click="
-                  formData[field.name] = item.value
-                  changeAutocomplete({ value: formData[field.name], field })
+                  formData[field.name] !== item.value &&
+                    ((formData[field.name] = item.value),
+                    changeAutocomplete({ value: formData[field.name], field }))
                 "
                 :disabled="
                   readonlyField(field) ||
