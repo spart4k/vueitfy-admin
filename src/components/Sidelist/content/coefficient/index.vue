@@ -16,7 +16,7 @@
                   @click.stop="item.footer = !item.footer"
                   icon
                   x-small
-                  v-if="permission && !item.readonly"
+                  v-if="permission && !item.readonly && !disabled"
                 >
                   <v-icon small :color="item.footer ? 'primary' : 'disabled'"
                     >$IconEtc</v-icon
@@ -118,6 +118,7 @@
                     small
                     block
                     color="success"
+                    :disabled="disabled"
                     >+</v-btn
                   >
                   <div
@@ -129,13 +130,13 @@
                       v-if="!person.edit.isShow"
                       class="v-object-item-person text--text"
                     >
-                      <span class="flex-grow-1">{{
+                      <span class="flex-grow-1 mr-2">{{
                         person.personal_name
                       }}</span>
-                      <div class="ml-2 d-flex align-center">
+                      <div class="d-flex align-center">
                         {{ person.coefficient
                         }}<v-btn
-                          v-if="permission && !item.readonly"
+                          v-if="permission && !item.readonly && !disabled"
                           class="ml-2 v-object-item-person_btn"
                           icon
                           x-small
@@ -144,9 +145,9 @@
                           <v-icon small color="gray">$IconEdit</v-icon></v-btn
                         >
                         <v-btn
-                          v-if="permission && !item.readonly"
+                          v-if="permission && !item.readonly && !disabled"
                           @click="confirmDelete(person, 'person')"
-                          class="v-object-item-person_btn"
+                          class="v-object-item-person_btn opacity-50"
                           icon
                           x-small
                         >

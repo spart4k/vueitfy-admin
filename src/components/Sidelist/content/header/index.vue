@@ -21,6 +21,7 @@
               v-on="on"
               class="v-heading_item v-heading_item__center"
               @click="$emit('changePeriod')"
+              :disabled="disabled"
             >
               <v-icon :color="$props.lock?.color" small
                 >$IconLock</v-icon
