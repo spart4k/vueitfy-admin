@@ -36,6 +36,10 @@ export default {
         store.state.user.id === props.data.from_account_id
     )
 
+    const accounting = computed(() =>
+      [12].includes(store.state.user.permission_id)
+    )
+
     const convertData = (val) => {
       return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
     }
@@ -43,6 +47,7 @@ export default {
     return {
       convertData,
       editPermission,
+      accounting,
     }
   },
 }
