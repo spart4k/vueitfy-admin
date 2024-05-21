@@ -1,5 +1,6 @@
 import filters from './filters'
 import formTaxiEdit from './config/form-taxi-edit.js'
+import _ from 'lodash'
 
 const config = {
   title: 'Такси',
@@ -227,7 +228,7 @@ const config = {
         tabs: [formTaxiEdit],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       title: 'Персонал',
@@ -305,7 +306,7 @@ const config = {
         tabs: [formTaxiEdit],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
   ],
 }
