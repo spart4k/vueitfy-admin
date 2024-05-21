@@ -52,6 +52,12 @@ function changeSort(config) {
     heading.routeName = 'pivot-object'
     heading.routeParam = 'object_id'
     heading.type = 'download'
+    heading.click = {
+      condition: {
+        access: [12],
+        type: true,
+      },
+    }
     config.options.url = 'get/pagination_pivot/personal_target_object'
   } else if (btn.typeLabel === 'ФИО') {
     btn.typeLabel = 'Объекты'
@@ -61,6 +67,7 @@ function changeSort(config) {
     heading.routeName = 'pivot-personal'
     heading.routeParam = 'personal_id'
     heading.type = 'default'
+    heading.click = undefined
     config.options.url = 'get/pagination_pivot/personal_target_personal'
   }
 }
@@ -215,6 +222,7 @@ export const config = {
         field: '',
         isShow: true,
       },
+      click: undefined,
       routeParam: 'personal_id',
       routeName: 'pivot-personal',
       sorts: [
