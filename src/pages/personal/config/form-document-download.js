@@ -20,7 +20,7 @@ export default {
   name: 'Запросить документ',
   type: 'FormDefault',
   path: 'edit',
-  alias: 'habitation',
+  // alias: 'habitation',
   active: false,
   notReadonly: true,
   detail: {
