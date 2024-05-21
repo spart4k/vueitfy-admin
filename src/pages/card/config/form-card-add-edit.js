@@ -101,6 +101,10 @@ export default {
             funcCondition: (context) => context.environment.mode !== 'edit',
             type: false,
           },
+          {
+            permissions: [12],
+            type: true,
+          },
         ],
       },
       position: {
