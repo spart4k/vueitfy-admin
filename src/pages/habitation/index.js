@@ -1,4 +1,5 @@
 import filters from './filters'
+import _ from 'lodash'
 
 import formHabitationAddEdit from './config/form-habitation-add-edit'
 import formOwnerAddEdit from './config/form-owner-add-edit'
@@ -246,7 +247,7 @@ export const config = {
         tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       title: 'Персонал',
@@ -411,7 +412,7 @@ export const config = {
         tabs: [formRealtorAddEdit, Object.assign({}, formRealtorAddEdit)],
         activeTab: null,
       },
-      filters,
+      // filters,
     },
     {
       title: 'Персонал',
@@ -593,7 +594,7 @@ export const config = {
         tabs: [formOwnerAddEdit, Object.assign({}, formOwnerAddEdit)],
         activeTab: null,
       },
-      filters,
+      // filters,
     },
     {
       title: 'Персонал',
@@ -817,7 +818,7 @@ export const config = {
         tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
   ],
 }

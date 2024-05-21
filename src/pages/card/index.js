@@ -273,7 +273,7 @@ export const config = {
         ],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -519,7 +519,7 @@ export const config = {
         tabs: [_.cloneDeep(formCardAddEdit), tableCardHistory, formCardGive],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
   ],
 }
