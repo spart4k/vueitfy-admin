@@ -422,7 +422,7 @@ const Form8 = defineComponent({
               name: `price%${index}`,
               notSend: true,
               placeholder: '',
-              readonly: undefined,
+              // readonly: undefined,
               prescription: 'items',
               class: [''],
               position: {
@@ -452,7 +452,7 @@ const Form8 = defineComponent({
               name: `exact_name%${index}`,
               notSend: true,
               placeholder: '',
-              readonly: undefined,
+              // readonly: undefined,
               prescription: 'items',
               class: [''],
               position: {
