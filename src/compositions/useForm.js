@@ -1652,6 +1652,8 @@ export default function ({
     }
     if (typeof button.isHide === 'boolean') return button.isHide
     else if (typeof button.isHide === 'object') {
+      if (environment.readonlyAll && button.text === 'Сохранить') return true
+
       if (button.isHide.condition?.length) {
         const condition = () =>
           button.isHide.condition.some((conditionEl) => {
