@@ -414,12 +414,9 @@ export default function ({
             }
           })
         action.isShow.value = condition()
-        console.log(
-          action.isShow.value,
-          environment.readonlyAll,
-          environment.readonlyAll ? false : action.isShow.value
-        )
-        return environment.readonlyAll ? false : action.isShow.value
+        return environment.readonlyAll && !action.notReadonly
+          ? false
+          : action.isShow.value
       }
     } else if (typeof action.isShow === 'undefined') {
       return environment.readonlyAll

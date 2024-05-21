@@ -492,6 +492,7 @@ export default {
             name: 'personal/:id/edit_habitation',
             refreshForm: true,
           },
+          notReadonly: true,
           isShow: {
             value: false,
             condition: [
