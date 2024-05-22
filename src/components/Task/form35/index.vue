@@ -148,7 +148,7 @@
         </div>
         <div class="mb-3 flex-column">
           <v-col class="" cols="12" sm="12">
-            <p class="font-weight-bold">Укажите стоимость документа</p>
+            <p class="font-weight-bold">Укажите исполняющего сотрудника</p>
           </v-col>
           <v-col class="" cols="12" sm="12">
             <Autocomplete
