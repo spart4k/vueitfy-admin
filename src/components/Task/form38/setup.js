@@ -683,10 +683,10 @@ const Form8 = defineComponent({
       //     }
       //   })
       // )
-      if (!loadedDocs) {
-        loadedDocs = []
+      if (!loadedDocs.value) {
+        loadedDocs.value = []
       }
-      loadedDocs.value = [...newDocIds, ...loadedDocs]
+      loadedDocs.value = [...newDocIds, ...loadedDocs.value]
       await updateDopData(loadedDocs.value)
       // newDocIds.value = []
       // attachedFile.value = false
@@ -731,7 +731,7 @@ const Form8 = defineComponent({
     const hasRashod = computed(
       () => JSON.parse(props.data.task.dop_data).rashod_id
     )
-    let loadedDocs = JSON.parse(dopData.value).doc_ids
+    const loadedDocs = ref(JSON.parse(dopData.value).doc_ids)
 
     // const { doc_ }
 
