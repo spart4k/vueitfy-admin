@@ -15,6 +15,7 @@
               :personalId="personal_id"
               :document="document"
               ref="rows"
+              :showActions="showActions"
             >
             </Row>
           </template>
@@ -39,7 +40,7 @@
               class="ml-2"
               :loading="loading"
               @click.prevent="sendDocuments"
-              v-if="canEdit"
+              v-if="showActions"
             >
               Сохранить
             </v-btn>

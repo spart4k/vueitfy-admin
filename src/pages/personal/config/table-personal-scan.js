@@ -61,6 +61,14 @@ export default {
           // function: addQuery,
           // type: 'nextStage',
           backgroundColor: '#fff',
+          isShow: {
+            condition: [
+              {
+                permissions: [4, 3, 15, 1, 16, 19],
+                type: true,
+              },
+            ],
+          },
         },
       ],
     },
