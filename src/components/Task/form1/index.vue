@@ -54,7 +54,6 @@
         <DocForm
           v-if="docs && docs.length"
           @changeDocs="changeDocs"
-          :docsData="docsData"
           :listNames="listNames"
           :docs="docs"
           :entity="entity"

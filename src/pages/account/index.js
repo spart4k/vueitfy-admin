@@ -17,6 +17,7 @@ import FormDocuments from '@/components/Form/documents/default/index.vue'
 import { userKeys } from '@/pages'
 import { stringify } from 'qs'
 import { readonly } from 'vue'
+import _ from 'lodash'
 
 function consoleText(row) {}
 
@@ -514,7 +515,7 @@ const consumptionConfig = {
     footer: null,
   },
   detail: undefined,
-  filters,
+  filters: _.cloneDeep(filters),
 }
 
 const fields = {
@@ -1416,7 +1417,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -1680,7 +1681,7 @@ const config = {
         ],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
   ],
 }

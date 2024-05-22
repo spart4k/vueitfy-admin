@@ -547,6 +547,12 @@ const table = {
     }
 
     const openRow = ($event, row) => {
+      if (options.detail?.click) {
+        if (options.detail.click.condition) {
+          const condition = options.detail.click.condition.permissions.includes(store.state.user.permission_id)
+          if (condition !== options.detail.click.condition.type) return
+        }
+      }
       if (options.detail.type === 'popup') {
         let requestId = 'id'
         if (props.options.detail.requestId)

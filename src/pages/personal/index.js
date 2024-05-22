@@ -318,7 +318,7 @@ export const config = {
         activeTab: null,
         formData: {},
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -551,7 +551,7 @@ export const config = {
         tabs: [...personalTabs, ...nonExportTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -749,7 +749,7 @@ export const config = {
         tabs: [...personalTabs, ...nonExportTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',

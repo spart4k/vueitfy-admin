@@ -870,11 +870,12 @@ export default function ({
           return acc
         }, [])
 
+        const targetId = getListField(list)
         const element = {
           alias: list.alias,
           filter,
           readonly: environment.readonlyAll,
-          id: getListField(list),
+          id: targetId ? targetId : undefined,
         }
         return element
       })
@@ -1393,7 +1394,7 @@ export default function ({
       alias: field.alias,
       filter,
       readonly: environment.readonlyAll,
-      id: formData[field.name],
+      id: formData[field.name] ? formData[field.name] : undefined,
     }
 
     field.loading = true
@@ -1578,11 +1579,12 @@ export default function ({
           return acc
         }, [])
 
+        const targetId = getListField(list)
         const element = {
           alias: list.alias,
           filter,
           readonly: environment.readonlyAll,
-          id: getListField(list),
+          id: targetId ? targetId : undefined,
         }
         return element
       })
@@ -1659,6 +1661,8 @@ export default function ({
     }
     if (typeof button.isHide === 'boolean') return button.isHide
     else if (typeof button.isHide === 'object') {
+      if (environment.readonlyAll && button.text === 'Сохранить') return true
+
       if (button.isHide.condition?.length) {
         const condition = () =>
           button.isHide.condition.some((conditionEl) => {

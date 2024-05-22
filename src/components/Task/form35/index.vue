@@ -110,107 +110,54 @@
             <v-col class="" cols="12" sm="12">
               <p class="font-weight-bold">Укажите стоимость документа</p>
             </v-col>
-            <v-col class="" cols="12" sm="12">
-              <!-- <Autocomplete
-              :field="fieldsTemplate.account"
-              v-model="formData.account"
-              :error-messages="formErrors.account"
-              :formData="formData"
-              ref="autocompleteRef"
-              @change="changeAutocomplete"
-              :readonly="readonlyField(fieldsTemplate.account)"
-              :class="[...fieldsTemplate.account.class]"
-            /> -->
-              <Autocomplete
-                :field="fieldsTemplate.account_id"
-                v-model="formData.account_id"
-                @change="changeAutocomplete"
-                :error-messages="formErrors.account_id"
-              />
-            </v-col>
+            <v-row class="mt-0">
+              <v-col cols="6">
+                <Autocomplete
+                  :field="fieldsTemplate.rashod_vid"
+                  v-model="formData.rashod_vid"
+                  :error-messages="formErrors.rashod_vid"
+                />
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  disabled
+                  v-model="formData.count"
+                  label="Кол-во"
+                ></v-text-field
+              ></v-col>
+              <v-col cols="3">
+                <v-text-field
+                  v-model="formData.price"
+                  :error-messages="formErrors.price"
+                  label="Цена"
+                ></v-text-field
+              ></v-col>
+            </v-row>
+            <v-row class="mt-0">
+              <v-col class="" cols="12">
+                <v-text-field
+                  v-model="formData.exact_name"
+                  label="Точное наименование"
+                  hide-details
+                  class=""
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </div>
           <v-row> </v-row>
         </div>
         <div class="mb-3 flex-column">
           <v-col class="" cols="12" sm="12">
-            <p class="font-weight-bold">Укажите стоимость документа</p>
+            <p class="font-weight-bold">Укажите исполняющего сотрудника</p>
           </v-col>
-          <!-- <v-row>
-            <v-col cols="12" sm="5">
-              <Autocomplete
-                :field="fieldsTemplate.account"
-                v-model="formData.rashod_vid"
-                :error-messages="formErrors.rashod_vid"
-                :formData="formData"
-                ref="autocompleteRef"
-                @change="changeAutocomplete"
-                :class="[...fieldsTemplate.account.class]"
-              />
-            </v-col>
-            <v-col cols="12" sm="3">
-              <v-text-field
-                v-model="formData.count"
-                :label="fieldsTemplate.count.label"
-                :placeholder="fieldsTemplate.count?.placeholder"
-                :error-messages="formErrors.count"
-                clearable
-                :name="fieldsTemplate.count"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="4">
-              <v-text-field
-                v-model="formData.count"
-                :label="fieldsTemplate.count.label"
-                :placeholder="fieldsTemplate.count?.placeholder"
-                :error-messages="formErrors.count"
-                clearable
-                :name="fieldsTemplate.count"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12">
-              <v-text-field
-                v-model="formData.exact_name"
-                :label="fieldsTemplate.exact_name.label"
-                :placeholder="fieldsTemplate.exact_name?.placeholder"
-                :error-messages="formErrors.exact_name"
-                clearable
-                :name="fieldsTemplate.exact_name"
-              ></v-text-field>
-            </v-col>
-          </v-row> -->
-          <v-row class="mt-0">
-            <v-col cols="6">
-              <Autocomplete
-                :field="fieldsTemplate.rashod_vid"
-                v-model="formData.rashod_vid"
-                :error-messages="formErrors.rashod_vid"
-              />
-            </v-col>
-            <v-col cols="3">
-              <v-text-field
-                disabled
-                v-model="formData.count"
-                label="Кол-во"
-              ></v-text-field
-            ></v-col>
-            <v-col cols="3">
-              <v-text-field
-                v-model="formData.price"
-                :error-messages="formErrors.price"
-                label="Цена"
-              ></v-text-field
-            ></v-col>
-          </v-row>
-          <v-row class="mt-0">
-            <v-col class="" cols="12">
-              <v-text-field
-                v-model="formData.exact_name"
-                label="Точное наименование"
-                hide-details
-                class=""
-              ></v-text-field>
-            </v-col>
-          </v-row>
+          <v-col class="" cols="12" sm="12">
+            <Autocomplete
+              :field="fieldsTemplate.account_id"
+              v-model="formData.account_id"
+              @change="changeAutocomplete"
+              :error-messages="formErrors.account_id"
+            />
+          </v-col>
         </div>
         <div class="flex-column">
           <v-col class="" cols="12" sm="12">

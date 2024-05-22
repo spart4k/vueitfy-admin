@@ -24,6 +24,7 @@ const filters = {
       alias: 'object_habitation',
       filter: [],
     },
+    { alias: 'city_id', filter: [] },
   ],
   alias: 'habitation',
   active: false,

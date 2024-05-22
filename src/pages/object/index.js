@@ -1,5 +1,6 @@
 import filters from './filters'
 import { required } from '@/utils/validation.js'
+import _ from 'lodash'
 import {
   stringField,
   selectField,
@@ -227,7 +228,7 @@ const config = {
         tabs: [formObjectAdd, ...objectTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -420,7 +421,7 @@ const config = {
         tabs: [formObjectAppoint, ...objectTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -592,7 +593,7 @@ const config = {
         tabs: [...objectTabs, tableObjectPayment],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
   ],
 }
