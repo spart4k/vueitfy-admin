@@ -119,7 +119,9 @@ const Form8 = defineComponent({
     const allDocsAttached = computed(() => {
       let counter = null
       docFormRef?.value?.docRows.forEach((el) => {
-        if (el.isCorrect) counter++
+        if (el.isCorrect) {
+          counter++
+        }
       })
       return docFormRef?.value?.docRows.length === counter
     })
@@ -222,9 +224,7 @@ const Form8 = defineComponent({
       })
       // const updateFileData()
       await loadImage()
-      console.log(patent[e.item])
       const { result } = await updateFileData()
-      console.log(result)
       patent[e.item] = result
       disableFinishState.value = disableFinishState.value + 1
     }
@@ -406,7 +406,6 @@ const Form8 = defineComponent({
       // const object_zr = addConfig.fields.find((el) => el.name === 'object_zr')
       // object_zr.value = 2
       const docsSpr = { 7: 51, 8: 52, 11: 55, 16: 54, 18: 43, 19: 50, 23: 44 }
-      // console.log(listDocuments.value)
       const filledDocs = docFormRef?.value?.docRows.flatMap((el) => {
         if (el.isCorrect) {
           return el.document
@@ -414,7 +413,6 @@ const Form8 = defineComponent({
           return []
         }
       })
-      console.log(filledDocs)
       const arr = filledDocs
       const filterArray = arr.reduce((acc, item) => {
         if (docsSpr[item.doc_id]) acc.push(docsSpr[item.doc_id])
@@ -423,7 +421,6 @@ const Form8 = defineComponent({
       const btnIndex = addConfig.fields.findIndex(
         (x) => x.id === 'btn-decrease'
       )
-      console.log(filterArray)
       filterArray?.forEach((item, index) => {
         if (!index) {
           const rashod_vid = addConfig.fields.find(
@@ -540,7 +537,6 @@ const Form8 = defineComponent({
         })
         setZayavkaItems()
       }
-      console.log(router, route)
       popupForm.value.isShow = true
     }
     const { makeRequest: createFillScanProcess } = useRequest({
@@ -559,7 +555,6 @@ const Form8 = defineComponent({
     })
     const attachedFile = ref(false)
     let addFiles = (e, document) => {
-      console.log(e, document)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -616,7 +611,6 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
-      console.log('process')
       listRequestsForUpload.value.push({
         delInfoAFile,
         updateFileData,
@@ -642,7 +636,6 @@ const Form8 = defineComponent({
     const sendDocuments = async () => {
       const newDocIds = []
       const attachedDocs = docFormRef.value.docRows.flatMap((doc) => {
-        console.log(doc, Object.keys(doc.basketFiles).length)
         if (Object.keys(doc.basketFiles).length) {
           return doc
         } else {
@@ -651,7 +644,6 @@ const Form8 = defineComponent({
       })
       await Promise.all(
         attachedDocs.map(async (doc) => {
-          console.log(doc)
           if (doc.document.path_doc) {
             await doc.listRequestsForUpload[0].delInfoAFile()
           }
@@ -669,10 +661,8 @@ const Form8 = defineComponent({
           }
         })
       )
-      console.log(newDocIds)
       // await Promise.all(
       //   listRequestsForUpload.value.map(async (doc, index) => {
-      //     console.log(doc)
       //     if (doc.document.path_doc) {
       //       await doc.delInfoAFile()
       //     }
@@ -686,7 +676,6 @@ const Form8 = defineComponent({
       //       searchedDoc.inProcess = false
       //       Vue.set(doc, 'document', doc.document)
       //       Vue.set(doc.document, 'inProcess', false)
-      //       console.log(doc.document.inProcess)
       //       doc.document.newId = docRes.result
       //       // doc.document.newId = docRes.result
       //       // await createFillScanProcess(docRes.result)
@@ -702,6 +691,7 @@ const Form8 = defineComponent({
       // newDocIds.value = []
       // attachedFile.value = false
     }
+
     const canAttach = computed(() => {
       return docFormRef.value?.docRows.some(
         (el) => Object.keys(el.basketFiles).length
@@ -714,8 +704,7 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
-      console.log(patent)
-      await createFillScanProcess([patent[5], patent[15]])
+      await createFillScanProcess([patent[5], patent[15], ...loadedDocs.value])
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -734,6 +723,7 @@ const Form8 = defineComponent({
         ctx.emit('getItems')
       }
     }
+
     const docs = ref([])
     const dopData = ref(
       Object.assign({}, toRef(props.data.task, 'dop_data')).value
@@ -758,9 +748,7 @@ const Form8 = defineComponent({
           listDisbledDocuments.value = listDisbledDocuments.value + 1
         }
         listDocuments.value.push(pasteObject)
-        console.log(listDocuments.value)
       })
-      // console.log(docFormRef.value)
 
       if (
         config.detail &&
