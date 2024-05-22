@@ -103,6 +103,10 @@ export default {
     taskInfo: {
       type: Object,
     },
+    showActions: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     Autocomplete,
