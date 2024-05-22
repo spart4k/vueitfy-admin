@@ -1,11 +1,11 @@
-import Vue, { ref, onMounted, computed, toRef, watch } from 'vue'
+import Vue, { ref, onMounted, computed, toRef, watch, provide } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
 import Autocomplete from '@/components/Autocomplete/form'
-import Row from './row/index.vue'
+import Row from '../row/default/index.vue'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -45,6 +45,8 @@ export default {
     }
     const { emit } = ctx
     const loading = ref(false)
+    const targets = ref([])
+    provide('targets', targets.value)
     // const fields = () => {
     //   const fields = {}
     //   props.tab.formData.date_target.forEach((date) => {
@@ -65,20 +67,34 @@ export default {
     //   return fields
     // }
     const prevTab = ref({})
-    const params = props.tab.lists
+    const params = props?.tab?.lists
     const data = params
     const { makeRequest: makeRequestList } = useRequest({
       context,
       request: (data) => store.dispatch('list/get', data),
     })
     const rows = ref([])
-    const targets = ref([])
     const changeForm = async ({ url, module }) => {
-      rows.value.forEach((el) => el.validate(true))
+      rows.value.forEach((el, index) => {
+        // validate = !el.validate()
+        el.personalRef.forEach((pers) => {
+          console.log(pers.vForm)
+          pers.validate(true)
+        })
+      })
+      // let valid = false
+      let valid = rows.value.every((el, index) => {
+        // validate = !el.validate()
+        return el.personalRef.every((pers) => {
+          return pers.validate(true)
+        })
+      })
+      if (!valid) return
+      // rows.value.forEach((el) => el.validate(true))
 
-      const isValid = rows.value.every((el) => el.validate(true))
+      // const isValid = rows.value.every((el) => el.validate(true))
 
-      if (!isValid) return
+      // if (!isValid) return
       const {
         object_id,
         personal_id,
@@ -109,19 +125,28 @@ export default {
         sum_nutrition,
       }
       let validate = null
-      const persons = rows.value.map((el, index) => {
+      const accum = []
+      const persons = []
+      rows.value.forEach((el, index) => {
         // validate = !el.validate()
-        const person = { ...defaultData }
-        person.avatar_with_user_key_id = el.formData.avatar_with_user_key_id
-        person.tid = targets.value[index].id
-
-        person.date_target = targets.value[index].date
-        if (el.formData.print_form_key) {
-          person.print_form_key = el.formData.print_form_key
-        }
-
-        return person
+        el.personalRef.forEach((pers) => {
+          const person = { ...defaultData, ...pers.formData }
+          person.tid = targets.value[index].date + '_' + pers.persId
+          person.date_target = targets.value[index].date
+          person.personal_id = pers.persId
+          person.vid_vedomost_id = pers.formData.vid_vedomost_id_logistic
+          person.vid_vedomost_id_logistic = undefined
+          person.print_form_key = person.print_form_key
+            ? person.print_form_key
+            : undefined
+          person.account_name = undefined
+          if (el.formData.print_form_key) {
+            person.print_form_key = el.formData.print_form_key
+          }
+          persons.push(person)
+        })
       })
+      console.log(persons, 'persons')
       const { makeRequest } = useRequest({
         context,
         request: () =>
@@ -129,9 +154,11 @@ export default {
             url,
             body: { persons },
           }),
-        successMessage: `Успешно создано ${rows.value.length} назначений`,
+        successMessage: `Успешно создано ${
+          rows.value.length * props?.tab?.formData.personal_id.length
+        } назначений`,
       })
-
+      console.log(accum)
       const result = await makeRequest()
 
       if (result?.data?.length) {
@@ -164,6 +191,8 @@ export default {
             ].error = `На объект ${name} на дату ${dateFormated} выбранная учётная запись уже назначена`
           }
           if (el.code === 2) {
+            console.log(findedIndex)
+            console.log(targets.value)
             targets.value[
               findedIndex
             ].error = `На объект ${name} на выбранную смену  ${dateFormated} числа выбранный сотрудник уже назначен`
@@ -220,13 +249,25 @@ export default {
     //   }
     // }
     const buildTargets = () => {
-      props.tab.formData.date_target.forEach((el) => {
-        const target = {
-          date: el,
-          error: '',
-          id: el + '_' + props.tab.formData.personal_id,
-        }
-        targets.value.push(target)
+      props?.tab?.formData.date_target.forEach((el) => {
+        props?.tab?.formData.personal_id.forEach((pers) => {
+          const replaced = el.replaceAll('-', '.')
+          const dateFormating = replaced.split('.')
+          const target = {
+            date: el,
+            error: '',
+            id: el + '_' + pers,
+            formatedDate:
+              dateFormating[2] +
+              '.' +
+              dateFormating[1] +
+              '.' +
+              dateFormating[0] +
+              '_' +
+              pers,
+          }
+          targets.value.push(target)
+        })
       })
     }
     onMounted(async () => {

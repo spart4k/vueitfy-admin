@@ -45,10 +45,11 @@ export default function ({
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
-
+  console.log(fields)
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       obj[key] = ref(fields[key].default)
+      console.log(obj.key)
       return obj
     }, {})
   )
@@ -61,6 +62,7 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
+      console.log(form?.fields)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -75,7 +77,8 @@ export default function ({
       ) {
         return obj
       }
-      if (form) obj[key] = { ...formFields[key].validations, $autoDirty }
+      console.log(formFields, key)
+      if (form) obj[key] = { ...formFields[key]?.validations, $autoDirty }
       else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
@@ -887,9 +890,11 @@ export default function ({
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
             if (field.hiding.conditions) {
+              console.log(mode)
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
+              console.log(condition, 'CONDITION ')
               lists.data[keyList] = lists.data[keyList].filter((el) => {
                 return !condition.values.includes(el.id)
               })
@@ -1254,6 +1259,7 @@ export default function ({
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
+      console.log(el)
       // const filters = []
       const { url } = el
       const data = await getList(url, {
@@ -1294,6 +1300,7 @@ export default function ({
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
+          console.log('HIDING')
           if (field.hiding.conditions) {
             const condition = field.hiding.conditions.find(
               (el) => mode === el.value && el.target !== 'formData'

@@ -1,6 +1,5 @@
 import filters from './filters'
 import { required } from '@/utils/validation.js'
-import FormStage from '@/components/Form/stage/index.vue'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import {
@@ -12,7 +11,6 @@ import {
   dateField,
   textBlock,
 } from '@/utils/fields.js'
-import FormList from '@/components/Form/list/index.vue'
 
 function consoleText(row) {}
 
@@ -303,6 +301,7 @@ const config = {
                 readonly: false,
                 class: [''],
                 value: 11,
+                validations: {},
                 position: {
                   cols: 12,
                   sm: 12,

@@ -1,6 +1,6 @@
 import filters from './filters'
 import FormDefault from '@/components/Form/default/index.vue'
-import FormList from '@/components/Form/list/index.vue'
+import TargetPersonal from '@/components/Form/targetPersonal/default/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
 import FormTarget from '@/components/Form/target/default/index.vue'
 
@@ -1112,7 +1112,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '750px',
+    width: '1000px',
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',
@@ -1212,7 +1212,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1255,7 +1255,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1275,6 +1275,9 @@ const config = {
                   ],
                 },
                 requiredFields: ['personal_id'],
+                // isShow: {
+                //   value: false,
+                // },
               }),
               autocompleteField({
                 label: 'Объект',
@@ -1292,7 +1295,7 @@ const config = {
                 url: 'get/pagination_list/target_object',
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1337,7 +1340,7 @@ const config = {
                 url: 'get/pagination_list/target_personal',
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 12,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1558,7 +1561,7 @@ const config = {
           {
             id: 1,
             name: 'Основные',
-            type: FormList,
+            type: TargetPersonal,
             //detail: true,
             lists: [
               {
@@ -1578,6 +1581,7 @@ const config = {
                   },
                 ],
               },
+              { alias: 'vid_vedomost_id_logistic', filter: [] },
             ],
             alias: 'personal_target',
             active: false,
@@ -1598,7 +1602,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 5,
+                  sm: 4,
                 },
                 bootstrapClass: [''],
                 //validations: { required },
@@ -1655,6 +1659,33 @@ const config = {
                 ],
               }),
               selectField({
+                label: 'Вид ведомости',
+                name: 'vid_vedomost_id_logistic',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 3,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
+                hiding: {
+                  conditions: [
+                    {
+                      target: 'mode',
+                      value: 'add',
+                      values: [2, 3, 4, 5, 6, 7],
+                    },
+                  ],
+                },
+              }),
+              selectField({
                 label: 'Ключ',
                 name: 'print_form_key',
                 //withoutList: true,
@@ -1668,7 +1699,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 3,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],

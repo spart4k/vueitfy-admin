@@ -33,7 +33,9 @@ Vue.downloadFile = function (val) {
 }
 
 import TableDefault from '@/components/Table/default/index.vue'
+// import TargetPersonal from '@/components/Form/target-personal/default/index.vue'
 Vue.component('TableDefault', TableDefault)
+// Vue.component('TableDefault', TargetPersonal)
 
 // Vue.directive('click-outside', {
 //   bind () {
