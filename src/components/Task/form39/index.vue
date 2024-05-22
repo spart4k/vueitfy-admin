@@ -59,8 +59,8 @@
               :key="manager.id"
               v-for="manager in data.data.status_data"
             >
-              &nbsp;{{ manager.account_name }} &nbsp;
-              {{ manager.status_id === 1 ? 'Работает' : 'Не работает' }}
+              &nbsp;{{ manager.account_name }} <br />
+              &nbsp;{{ manager.status_id === 1 ? 'Работает' : 'Не работает' }}
               <!-- <v-col class="pl-0 pr-0" cols="12" sm="6">{{
                 manager.account_name
               }}</v-col>

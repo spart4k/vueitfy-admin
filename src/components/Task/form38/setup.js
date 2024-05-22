@@ -116,6 +116,13 @@ const Form8 = defineComponent({
       () =>
         attachedDocsValid.value && patent[5] && patent[15] && hasRashod.value
     )
+    const allDocsAttached = computed(() => {
+      let counter = null
+      docFormRef?.value?.docRows.forEach((el) => {
+        if (el.isCorrect) counter++
+      })
+      return docFormRef?.value?.docRows.length === counter
+    })
     // const sendData = () => {
     //
     //   let fileExt = file.value.type.split('/')[1]
@@ -690,9 +697,7 @@ const Form8 = defineComponent({
       if (!loadedDocs) {
         loadedDocs = []
       }
-      console.log(loadedDocs, newDocIds)
       loadedDocs.value = [...newDocIds, ...loadedDocs]
-      console.log(loadedDocs)
       await updateDopData(loadedDocs.value)
       // newDocIds.value = []
       // attachedFile.value = false
@@ -733,9 +738,13 @@ const Form8 = defineComponent({
     const dopData = ref(
       Object.assign({}, toRef(props.data.task, 'dop_data')).value
     )
-    const hasRashod = ref(JSON.parse(dopData.value).rashod_id)
+    const hasRashod = computed(
+      () => JSON.parse(props.data.task.dop_data).rashod_id
+    )
     let loadedDocs = JSON.parse(dopData.value).doc_ids
+
     // const { doc_ }
+
     onMounted(() => {
       props.data.data.docs_id.forEach((item, index) => {
         let pasteObject = props.data.data.docs.find(
@@ -823,6 +832,7 @@ const Form8 = defineComponent({
       attachedDocsValid,
       hasRashod,
       dopData,
+      allDocsAttached,
     }
   },
 })
