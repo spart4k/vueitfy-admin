@@ -21,7 +21,7 @@
         </v-col>
       </v-row>
       <div class="position-relative">
-        <div class="mb-10">
+        <div :class="[!hasRashod ? 'overflow-inputs' : '']" class="mb-10">
           <!-- <span class="font-weight-bold">Приложите документы:</span> -->
           <DocForm
             v-if="listDocuments && listDocuments.length"
@@ -92,7 +92,7 @@
       <div>
         <span class="font-weight-bold">Патент:</span>
       </div>
-      <v-row>
+      <v-row :class="[!allDocsAttached || !hasRashod ? 'overflow-inputs' : '']">
         <v-col
           cols="6"
           :class="[
