@@ -60,6 +60,7 @@
           :task="JSON.parse(data.task.dop_data)"
           ref="docFormRef"
           :withoutSave="true"
+          :fromTask="true"
         ></DocForm>
       </div>
       <div class="w-100 d-flex justify-end mt-5">
