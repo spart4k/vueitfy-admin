@@ -867,11 +867,12 @@ export default function ({
           return acc
         }, [])
 
+        const targetId = getListField(list)
         const element = {
           alias: list.alias,
           filter,
           readonly: environment.readonlyAll,
-          id: getListField(list),
+          id: targetId ? targetId : undefined,
         }
         return element
       })
@@ -1386,7 +1387,7 @@ export default function ({
       alias: field.alias,
       filter,
       readonly: environment.readonlyAll,
-      id: formData[field.name],
+      id: formData[field.name] ? formData[field.name] : undefined,
     }
 
     field.loading = true
@@ -1571,11 +1572,12 @@ export default function ({
           return acc
         }, [])
 
+        const targetId = getListField(list)
         const element = {
           alias: list.alias,
           filter,
           readonly: environment.readonlyAll,
-          id: getListField(list),
+          id: targetId ? targetId : undefined,
         }
         return element
       })
