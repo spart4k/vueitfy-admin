@@ -530,8 +530,8 @@ const table = {
     const openCell = ($event, row, cell, card) => {
       if (cell?.click) {
         if (cell.click.condition) {
-          const condition = cell.click.condition.access.includes(store.state.user.permission_id)
-          if (condition === cell.click.condition.type) return
+          const condition = cell.click.condition.permissions.includes(store.state.user.permission_id)
+          if (condition !== cell.click.condition.type) return
         }
       }
       if (props.options.detail.type === 'popup' && !cell.noAction) {

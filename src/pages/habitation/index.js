@@ -244,7 +244,10 @@ export const config = {
         name: 'Проживание',
         requestId: 'habitation_id',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
+        tabs: [
+          _.cloneDeep(formHabitationAddEdit),
+          _.cloneDeep(formHabitationAddEdit),
+        ],
         activeTab: null,
       },
       filters: _.cloneDeep(filters),
@@ -285,6 +288,14 @@ export const config = {
             type: 'changeUrl',
             url: 'habitation-add-realtor',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1],
+                  type: false,
+                },
+              ],
+            },
           },
         ],
         date: true,
@@ -409,8 +420,17 @@ export const config = {
         name: 'Риэлторы',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         requestId: 'realtor_id',
-        tabs: [formRealtorAddEdit, Object.assign({}, formRealtorAddEdit)],
+        tabs: [
+          _.cloneDeep(formRealtorAddEdit),
+          _.cloneDeep(formRealtorAddEdit),
+        ],
         activeTab: null,
+        click: {
+          condition: {
+            permissions: [1],
+            type: false,
+          },
+        },
       },
       // filters,
     },
@@ -442,6 +462,14 @@ export const config = {
             type: 'changeUrl',
             url: 'habitation-add-owner',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1, 16, 19],
+                  type: false,
+                },
+              ],
+            },
           },
         ],
         date: true,
@@ -591,8 +619,14 @@ export const config = {
         name: 'Такси',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         requestId: 'owner_id',
-        tabs: [formOwnerAddEdit, Object.assign({}, formOwnerAddEdit)],
+        tabs: [_.cloneDeep(formOwnerAddEdit), _.cloneDeep(formOwnerAddEdit)],
         activeTab: null,
+        click: {
+          condition: {
+            permissions: [1, 16, 19],
+            type: false,
+          },
+        },
       },
       // filters,
     },
@@ -815,7 +849,10 @@ export const config = {
         url: '/get/form/',
         name: 'Такси',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [formHabitationAddEdit, Object.assign({}, formHabitationAddEdit)],
+        tabs: [
+          _.cloneDeep(formHabitationAddEdit),
+          _.cloneDeep(formHabitationAddEdit),
+        ],
         activeTab: null,
       },
       filters: _.cloneDeep(filters),
