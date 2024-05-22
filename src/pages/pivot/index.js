@@ -54,8 +54,8 @@ function changeSort(config) {
     heading.type = 'download'
     heading.click = {
       condition: {
-        access: [12],
-        type: true,
+        permissions: [12],
+        type: false,
       },
     }
     config.options.url = 'get/pagination_pivot/personal_target_object'
