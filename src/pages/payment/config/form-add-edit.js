@@ -260,10 +260,6 @@ export default {
       filter: [],
     },
     {
-      alias: 'payment_account_id',
-      filter: [],
-    },
-    {
       alias: 'payment_direction_id',
       filter: [
         {
@@ -484,7 +480,6 @@ export default {
     selectField({
       label: 'Менеджер',
       name: 'account_id',
-      alias: 'payment_account_id',
       subtype: 'single',
       placeholder: '',
       class: ['noWrap'],
