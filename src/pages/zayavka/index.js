@@ -2009,14 +2009,24 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            context.originalData.from_account_id !==
-              context.store.state.user.id &&
-            context.store.state.user.is_personal_vertical &&
+            (context.originalData.from_account_id !==
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4 ||
+              context.store.state.user.permission_id === 16) &&
             (context.originalData.status === 1 ||
               context.originalData.status === 2 ||
               context.originalData.status === 3),
-          type: false,
+          type: false, //могу при этих условиях
         },
+        // {
+        //   funcCondition: (context) =>
+        //     (context.originalData.from_account_id ===
+        //       context.store.state.user.id ||
+        //       context.store.state.user.permission_id === 4) &&
+        //     (context.originalData.status === 1 ||
+        //       context.originalData.status === 3),
+        //   type: false, //могу при этих условиях
+        // },
       ],
     },
     hiding: {
@@ -2393,9 +2403,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2528,9 +2541,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2819,9 +2835,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2962,9 +2981,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3029,9 +3051,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3111,9 +3136,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3183,9 +3211,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3331,9 +3362,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3388,9 +3422,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3480,9 +3517,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3525,9 +3565,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3559,9 +3602,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3585,9 +3631,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3612,9 +3661,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3637,9 +3689,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3666,9 +3721,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3693,9 +3751,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -4079,7 +4140,7 @@ export const editFields = [
           target: 'originalData',
           field: 'status',
           permissions: [12],
-          value: [5],
+          value: [4, 5],
           type: false,
         },
       ],
@@ -4100,9 +4161,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
