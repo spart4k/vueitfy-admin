@@ -18,6 +18,7 @@ import {
   setDataServices,
   updateTmp,
   updatePersonalAccess,
+  removeTmp,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -68,7 +69,10 @@ const taskModule = {
       const result = await sendAmmount('set/data/zayavka', data)
       return result
     },
-
+    async removeTmp(_, data) {
+      const result = await removeTmp('delete/personal/expired_document', data)
+      return result
+    },
     async delCloseSchet(_, id) {
       const result = await delCloseSchet(`delete/close_schet/${id}`)
       return result
