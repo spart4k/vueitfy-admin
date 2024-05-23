@@ -127,25 +127,33 @@ export default {
       let validate = null
       const accum = []
       const persons = []
+      const persRefs = []
       rows.value.forEach((el, index) => {
         // validate = !el.validate()
-        el.personalRef.forEach((pers) => {
-          const person = { ...defaultData, ...pers.formData }
-          person.tid = targets.value[index].date + '_' + pers.persId
-          person.date_target = targets.value[index].date
-          person.personal_id = pers.persId
-          person.vid_vedomost_id = pers.formData.vid_vedomost_id_logistic
-          person.vid_vedomost_id_logistic = undefined
-          person.print_form_key = person.print_form_key
-            ? person.print_form_key
-            : undefined
-          person.account_name = undefined
-          if (el.formData.print_form_key) {
-            person.print_form_key = el.formData.print_form_key
-          }
-          persons.push(person)
+        el.personalRef.forEach((pers, persIndex) => {
+          persRefs.push(pers)
         })
       })
+      console.log(persRefs)
+      targets.value.forEach((el, index) => {
+        // validate = !el.validate()
+        const person = { ...defaultData, ...persRefs[index].formData }
+        person.tid = el.date + '_' + el.persId
+        person.date_target = el.date
+        person.personal_id = el.persId
+        person.vid_vedomost_id =
+          persRefs[index].formData.vid_vedomost_id_logistic
+        person.vid_vedomost_id_logistic = undefined
+        person.print_form_key = person.print_form_key
+          ? person.print_form_key
+          : undefined
+        person.account_name = undefined
+        if (persRefs[index].formData.print_form_key) {
+          person.print_form_key = persRefs[index].formData.print_form_key
+        }
+        persons.push(person)
+      })
+
       console.log(persons, 'persons')
       const { makeRequest } = useRequest({
         context,
@@ -257,6 +265,7 @@ export default {
             date: el,
             error: '',
             id: el + '_' + pers,
+            persId: pers,
             formatedDate:
               dateFormating[2] +
               '.' +
@@ -279,7 +288,7 @@ export default {
     watch(
       () => activeTab.value,
       () => {
-        targets.value = []
+        if (activeTab.value === 1) targets.value = []
         buildTargets()
       }
     )

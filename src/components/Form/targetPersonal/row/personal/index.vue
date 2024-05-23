@@ -19,7 +19,7 @@
                 <v-icon size="20" color="red">mdi-alert</v-icon>
               </div>
             </template>
-            <span>{{ thisTarget.error }}</span>
+            <span v-if="thisTarget?.error">{{ thisTarget.error }}</span>
           </v-tooltip>
         </div>
       </v-col>

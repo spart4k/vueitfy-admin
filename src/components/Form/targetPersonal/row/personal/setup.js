@@ -79,7 +79,6 @@ export default {
     }
     const loading = ref(true)
     const targets = inject('targets')
-
     const fieldsConfig = ref([
       textBlock({
         label: 'Создал',
@@ -174,7 +173,11 @@ export default {
           cols: 12,
           sm: 3,
         },
-        value: props.account.with_everyday ? 1 : 8,
+        value:
+          props.account.with_everyday &&
+          props.lastFormData.vid_vedomost_id_logistic === 1
+            ? 1
+            : 8,
         validations: { required },
         bootstrapClass: [''],
         // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
