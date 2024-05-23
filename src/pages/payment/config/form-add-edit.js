@@ -321,11 +321,14 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              context.store.state.user.is_personal_vertical &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
-                context.formData.status_id === 3),
+              (context.formData.account_id !== context.store.state.user.id &&
+                context.store.state.user.is_personal_vertical &&
+                (context.formData.status_id === 2 ||
+                  context.formData.status_id === 1 ||
+                  context.formData.status_id === 3)) ||
+              (context.formData.status_id === 1 &&
+                (context.store.state.user.permission_id === 8 ||
+                  context.store.state.user.permission_id === 17)),
             type: false,
           },
         ],
@@ -336,7 +339,7 @@ export default {
             target: 'formData',
             field: 'status_id',
             value: [1, 2, 3],
-            values: [1, 2, 3],
+            values: [1, 2, 3, 6],
           },
         ],
       },
@@ -550,6 +553,10 @@ export default {
             value: [1, 5],
             type: true,
           },
+          {
+            permissions: [8, 17],
+            type: true,
+          },
         ],
       },
     }),
@@ -706,6 +713,10 @@ export default {
             value: [1, 5],
             type: true,
           },
+          {
+            permissions: [8, 17],
+            type: true,
+          },
         ],
       },
     }),
@@ -809,6 +820,10 @@ export default {
             target: 'formData',
             field: 'vid_vedomost_id',
             value: [1, 5],
+            type: true,
+          },
+          {
+            permissions: [8, 17],
             type: true,
           },
         ],
@@ -917,6 +932,10 @@ export default {
             target: 'formData',
             field: 'vid_vedomost_id',
             value: [1, 5],
+            type: true,
+          },
+          {
+            permissions: [8, 17],
             type: true,
           },
         ],
@@ -1060,6 +1079,10 @@ export default {
             target: 'formData',
             field: 'vid_vedomost_id',
             value: [1, 5],
+            type: true,
+          },
+          {
+            permissions: [8, 17],
             type: true,
           },
         ],
@@ -1235,6 +1258,10 @@ export default {
             value: [1, 5],
             type: true,
           },
+          {
+            permissions: [8, 17],
+            type: true,
+          },
         ],
       },
       appendAction: [
@@ -1370,11 +1397,15 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (context.formData.status_id === 3 ||
+              ((context.formData.status_id === 3 ||
                 context.formData.status_id === 2 ||
                 context.formData.status_id === 1 ||
                 context.formData.status_id === 6) &&
-              context.store.state.user.is_personal_vertical,
+                context.store.state.user.is_personal_vertical) ||
+              // Условия для того чтобы ОКК и РОКК могли менять карту
+              (context.formData.status_id === 6 &&
+                (context.store.state.user.permission_id === 8 ||
+                  context.store.state.user.permission_id === 17)),
             type: false,
           },
           // {
@@ -1470,6 +1501,15 @@ export default {
       },
       //validations: { required },
       bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            permissions: [8, 17],
+            type: true,
+          },
+        ],
+      },
     }),
     textBlock({
       label: 'Должность',
