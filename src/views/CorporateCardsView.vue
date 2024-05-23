@@ -84,8 +84,6 @@ export default {
       },
     })
 
-    console.log(config.tabs[0])
-
     const changeComp = () => {
       tableView.value = !tableView.value
     }

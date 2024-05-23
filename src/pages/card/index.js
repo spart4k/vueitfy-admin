@@ -28,6 +28,48 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/corp_card',
         title: 'Активные',
+        contextMenu: {
+          actions: [
+            {
+              icon: 'mdi-plus',
+              label: 'Выдать',
+              // isShow: {
+              //   condition: [
+              //     {
+              //       direction_id: [1, 6],
+              //       type: true,
+              //     },
+              //   ],
+              // },
+              action: {
+                type: 'toRoute',
+                url: 'personal',
+                routeName: 'corporate-cards/:card_id',
+                routeParam: 'id',
+                routeTarget: 'card_id',
+              },
+            },
+            {
+              icon: 'mdi-history',
+              label: 'История',
+              // isShow: {
+              //   condition: [
+              //     {
+              //       direction_id: [1, 6],
+              //       type: true,
+              //     },
+              //   ],
+              // },
+              action: {
+                type: 'toRoute',
+                url: 'personal',
+                routeName: 'corporate-cards/:history_id',
+                routeParam: 'id',
+                routeTarget: 'history_id',
+              },
+            },
+          ],
+        },
       },
       type: 'TableDefault',
       panel: {
