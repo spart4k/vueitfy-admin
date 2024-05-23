@@ -33,14 +33,14 @@ export const config = {
             {
               icon: 'mdi-plus',
               label: 'Выдать',
-              // isShow: {
-              //   condition: [
-              //     {
-              //       direction_id: [1, 6],
-              //       type: true,
-              //     },
-              //   ],
-              // },
+              isShow: {
+                condition: [
+                  {
+                    permissions: [4],
+                    type: true,
+                  },
+                ],
+              },
               action: {
                 type: 'toRoute',
                 url: 'personal',

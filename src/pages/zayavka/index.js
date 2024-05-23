@@ -327,6 +327,24 @@ export const addFields = [
       },
       {
         type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'vector_id',
+          targetField: 'type_pay',
+          condition: [
+            {
+              value: 2,
+              options: [1],
+            },
+            {
+              value: 3,
+              options: [1],
+            },
+          ],
+        },
+      },
+      {
+        type: 'default',
         fillField: [
           {
             formKey: 'me',
@@ -2287,6 +2305,24 @@ export const editFields = [
           condition: [
             {
               value: true,
+              options: [1],
+            },
+          ],
+        },
+      },
+      {
+        type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'type_zayavka',
+          targetField: 'payment_type',
+          condition: [
+            {
+              value: 2,
+              options: [1],
+            },
+            {
+              value: 3,
               options: [1],
             },
           ],
