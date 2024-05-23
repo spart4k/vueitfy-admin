@@ -3,7 +3,7 @@
     <div class="form-row">
       <v-form>
         <Row
-          v-for="row in targets"
+          v-for="row in tab.formData.date_target"
           :tab="tab"
           :tabs="tabs"
           :key="
@@ -20,8 +20,7 @@
             tab.formData.subtypr
           "
           :target="row"
-          :row="row.date"
-          :error="row.error"
+          :row="row"
           :formData="tab.formData"
           :formErrors="formErrors"
           :loading="loading"
