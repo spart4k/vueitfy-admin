@@ -300,7 +300,7 @@ export default {
   active: false,
   fields: [
     selectField({
-      label: 'Статус',
+      label: 'Статус1',
       name: 'status_id',
       placeholder: '',
       class: [''],
