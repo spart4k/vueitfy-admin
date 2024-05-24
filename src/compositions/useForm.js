@@ -41,6 +41,7 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
+  console.log(mode, 'MODE ALL')
   // const route = useRoute()
   const { route } = context.root
   const filesBasket = ref({})

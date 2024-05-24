@@ -332,6 +332,7 @@ export default {
                 (context.formData.status_id === 2 ||
                   context.formData.status_id === 1 ||
                   context.formData.status_id === 3)),
+            // asdasd
             type: false,
           },
           {
@@ -591,6 +592,15 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
+            type: true,
+          },
         ],
       },
     }),
@@ -751,6 +761,15 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
+            type: true,
+          },
         ],
       },
     }),
@@ -858,6 +877,15 @@ export default {
           },
           {
             permissions: [8, 17],
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
             type: true,
           },
         ],
@@ -972,6 +1000,15 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
+            type: true,
+          },
         ],
       },
     }),
@@ -1035,6 +1072,15 @@ export default {
             target: 'formData',
             field: 'vid_vedomost_id',
             value: [1, 5],
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
             type: true,
           },
         ],
@@ -1117,6 +1163,15 @@ export default {
           },
           {
             permissions: [8, 17],
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
             type: true,
           },
         ],
@@ -1296,6 +1351,15 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
+            type: true,
+          },
         ],
       },
       appendAction: [
@@ -1442,6 +1506,15 @@ export default {
                   context.store.state.user.permission_id === 17)),
             type: false,
           },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.environment.mode === 'add',
@@ -1540,6 +1613,15 @@ export default {
         condition: [
           {
             permissions: [8, 17],
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.account_id !== context.store.state.user.id &&
+              (context.formData.status_id === 2 ||
+                context.formData.status_id === 1 ||
+                context.formData.status_id === 3) &&
+              context.mode === 'edit',
             type: true,
           },
         ],
