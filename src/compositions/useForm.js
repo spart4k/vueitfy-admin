@@ -1672,7 +1672,11 @@ export default function ({
     }
     if (typeof button.isHide === 'boolean') return button.isHide
     else if (typeof button.isHide === 'object') {
-      if (environment.readonlyAll && button.text === 'Сохранить') return true
+      if (
+        environment.readonlyAll &&
+        (button.text === 'Сохранить' || button.text === 'Удалить')
+      )
+        return true
 
       if (button.isHide.condition?.length) {
         const condition = () =>
@@ -1705,7 +1709,8 @@ export default function ({
         return button.isHide.value
       }
     } else if (typeof button.isHide === 'undefined') {
-      return environment.readonlyAll && button.text === 'Сохранить'
+      return environment.readonlyAll &&
+        (button.text === 'Сохранить' || button.text === 'Удалить')
         ? true
         : false
     }
