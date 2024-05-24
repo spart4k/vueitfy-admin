@@ -1411,6 +1411,7 @@ export default function ({
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
+        console.log(source, field.name)
         if (
           source[el.field] !== null &&
           source[el.field] !== undefined &&
