@@ -11,6 +11,7 @@ import moment from 'moment'
 import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
 import router from '@/router'
+import { list } from 'postcss'
 
 /**
  * @param loading {boolean}
@@ -1301,14 +1302,17 @@ export default function ({
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
-          console.log('HIDING')
           if (field.hiding.conditions) {
             const condition = field.hiding.conditions.find(
               (el) => mode === el.value && el.target !== 'formData'
             )
             if (condition) {
               lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
+                return condition?.permissions?.length
+                  ? condition?.permissions.includes(
+                      environment.permission_id
+                    ) && !condition.values.includes(el.id)
+                  : !condition.values.includes(el.id)
               })
             }
             // Условие для скрытие по значению из формы
@@ -1407,6 +1411,7 @@ export default function ({
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
+        console.log(source, field.name)
         if (
           source[el.field] !== null &&
           source[el.field] !== undefined &&
@@ -1623,6 +1628,12 @@ export default function ({
           field.items = field.defaultItems
             ? [...field.defaultItems, ...lists.data[keyList]]
             : lists.data[keyList]
+          console.log(
+            field.items,
+            'field.items',
+            field.name,
+            lists.data[keyList]
+          )
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)
@@ -1661,7 +1672,11 @@ export default function ({
     }
     if (typeof button.isHide === 'boolean') return button.isHide
     else if (typeof button.isHide === 'object') {
-      if (environment.readonlyAll && button.text === 'Сохранить') return true
+      if (
+        environment.readonlyAll &&
+        (button.text === 'Сохранить' || button.text === 'Удалить')
+      )
+        return true
 
       if (button.isHide.condition?.length) {
         const condition = () =>
@@ -1694,7 +1709,8 @@ export default function ({
         return button.isHide.value
       }
     } else if (typeof button.isHide === 'undefined') {
-      return environment.readonlyAll && button.text === 'Сохранить'
+      return environment.readonlyAll &&
+        (button.text === 'Сохранить' || button.text === 'Удалить')
         ? true
         : false
     }
@@ -1741,6 +1757,7 @@ export default function ({
                 originalData,
                 environment,
               }
+              console.log('funcCond', field.name)
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1752,6 +1769,9 @@ export default function ({
             }
           })
         field.readonly.value = condition()
+        if (field.name === 'status_id') {
+          console.log(condition(), field.name)
+        }
         return environment.readonlyAll && !form.notReadonly
           ? true
           : field.readonly.value

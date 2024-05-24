@@ -288,7 +288,7 @@ export default {
       ],
     },
     {
-      alias: 'account_id',
+      alias: 'payment_account_id',
       filter: [],
     },
     {
@@ -326,11 +326,31 @@ export default {
                 (context.formData.status_id === 2 ||
                   context.formData.status_id === 1 ||
                   context.formData.status_id === 3)) ||
-              (context.formData.status_id === 1 &&
-                (context.store.state.user.permission_id === 8 ||
-                  context.store.state.user.permission_id === 17)),
+              // Условия для показа поля РОКК и ОКК
+              ((context.store.state.user.permission_id === 8 ||
+                context.store.state.user.permission_id === 17) &&
+                (context.formData.status_id === 2 ||
+                  context.formData.status_id === 1 ||
+                  context.formData.status_id === 3)),
             type: false,
           },
+          {
+            funcCondition: (context) =>
+              context.formData.status_id === 1 &&
+              context.store.state.user.id ===
+                context.formData.status_account_id &&
+              context.store.state.user.permission_id !== 4,
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) =>
+          //     (context.store.state.user.permission_id === 8 ||
+          //       context.store.state.user.permission_id === 18) &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3),
+          //   type: false,
+          // },
         ],
       },
       hiding: {
@@ -339,8 +359,21 @@ export default {
             target: 'formData',
             field: 'status_id',
             value: [1, 2, 3],
-            values: [1, 2, 3, 6],
+            values: [1, 2, 3],
           },
+          // {
+          //   target: 'formData',
+          //   field: 'status_id',
+          //   permissions: [3, 15],
+          //   value: [1, 2, 3],
+          //   values: [1, 3],
+          // },
+          // {
+          //   funcCondition: (context) => {
+          //     context.formData.status_id === 1 && context.store.state.user.id === context.formData.status_account_id && context.store.state.permission_id !== 4
+          //   },
+          //   values: [1, 3],
+          // },
         ],
       },
       // readonly: true,
@@ -483,6 +516,7 @@ export default {
     selectField({
       label: 'Менеджер',
       name: 'account_id',
+      alias: 'payment_account_id',
       subtype: 'single',
       placeholder: '',
       class: ['noWrap'],

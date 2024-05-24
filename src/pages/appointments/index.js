@@ -46,17 +46,6 @@ export const editFields = [
         },
       ],
     },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
-    },
   }),
   dateField({
     label: 'Дата статуса',
@@ -116,21 +105,14 @@ export const editFields = [
     readonly: {
       value: false,
       condition: [
+        // {
+        //   funcCondition: (context) =>
+        //     context.store.state.user.permission_id === 7,
+        //   type: true,
+        // },
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
@@ -174,28 +156,6 @@ export const editFields = [
     },
     validations: { required },
     bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
-    },
     // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
     hiding: {
       conditions: [
@@ -208,6 +168,16 @@ export const editFields = [
           target: 'mode',
           value: 'add',
           values: [2, 3, 4, 5, 6, 7],
+        },
+      ],
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
         },
       ],
     },
@@ -230,28 +200,6 @@ export const editFields = [
     position: {
       cols: 12,
       sm: 6,
-    },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
     },
     validations: { required },
     bootstrapClass: [''],
@@ -286,6 +234,16 @@ export const editFields = [
       fields: ['personal_id'],
     },
     requiredFields: ['direction_id'],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   autocompleteField({
     label: 'Линейщик',
@@ -304,28 +262,6 @@ export const editFields = [
     position: {
       cols: 12,
       sm: 6,
-    },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
     },
     validations: { required },
     bootstrapClass: [''],
@@ -360,6 +296,16 @@ export const editFields = [
         ],
       },
     ],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   selectField({
     label: 'Должность',
@@ -376,30 +322,18 @@ export const editFields = [
       cols: 12,
       sm: 6,
     },
+    validations: { required },
+    bootstrapClass: [''],
     readonly: {
       value: false,
       condition: [
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
     },
-    validations: { required },
-    bootstrapClass: [''],
   }),
   selectField({
     label: 'Тип смены',
@@ -416,30 +350,18 @@ export const editFields = [
       cols: 12,
       sm: 6,
     },
+    validations: { required },
+    bootstrapClass: [''],
     readonly: {
       value: false,
       condition: [
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
     },
-    validations: { required },
-    bootstrapClass: [''],
   }),
   dateField({
     label: 'На дату',
@@ -454,22 +376,21 @@ export const editFields = [
       cols: 12,
       sm: 12,
     },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
-    },
     validations: { required },
     bootstrapClass: [''],
     disable: false,
     //mode: 'edit',
     isShow: true,
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   checkboxField({
     label: 'Питание',
@@ -481,31 +402,19 @@ export const editFields = [
       cols: 12,
       sm: 6,
     },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
     readonly: {
       value: false,
       condition: [
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
     },
-    bootstrapClass: [''],
-    //validations: { required },
-    //isShow: false,
   }),
   stringField({
     label: 'Стоимость питания',
@@ -584,28 +493,6 @@ export const editFields = [
       cols: 12,
       sm: 12,
     },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
-    },
     validations: { required },
     bootstrapClass: [''],
     filter: [
@@ -634,6 +521,16 @@ export const editFields = [
         ],
       },
     ],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   textBlock({
     label: 'Создал',
@@ -720,6 +617,21 @@ export const editFields = [
     name: 'is_close',
     placeholder: '',
     readonly: true,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
+  }),
+  textBlock({
+    label: 'Создал',
+    name: 'account_id',
+    placeholder: '',
+    readonly: true,
+    notSend: true,
     class: [''],
     position: {
       cols: 12,
