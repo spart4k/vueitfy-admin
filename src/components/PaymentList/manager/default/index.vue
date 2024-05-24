@@ -54,7 +54,7 @@
                 @click.stop
                 class=""
               ></v-checkbox>
-              <span> {{ row.personal_name }} {{ row.personal_id }} </span>
+              <span> {{ row.personal_name }}</span>
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
