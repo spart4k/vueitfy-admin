@@ -74,6 +74,8 @@ export default {
           task_id: task.id,
           parent_action: task.id,
           docs_id: JSON.parse(props.data.task.dop_data).docs_id,
+          doc_id: JSON.parse(props.data.task.dop_data).doc_id,
+          object_id: JSON.parse(props.data.entity.object_id),
           personal_id: props.data.entity.id,
         }
         return store.dispatch('taskModule/setPartTask', {
