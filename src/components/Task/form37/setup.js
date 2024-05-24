@@ -94,6 +94,8 @@ export default {
           task_id: task.id,
           parent_action: task.id,
           doc_id: JSON.parse(props.data.task.dop_data).doc_id,
+          object_id: JSON.parse(props.data.entity.object_id),
+          docs_id: JSON.parse(props.data.task.dop_data).docs_id,
           personal_id: props.data.entity.id,
           comment: comment.value,
           account_id: props.data.task.from_account_id,
