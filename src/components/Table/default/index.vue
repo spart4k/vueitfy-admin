@@ -465,6 +465,35 @@
         />
       </keep-alive>
     </Sheet>
+    <v-dialog persistent v-model="confirmDialog.isShow" width="550">
+      <v-card>
+        <div class="pt-3 mb-4 text-h5 text-center">
+          {{ confirmDialog.text }}
+        </div>
+        <v-card-actions class="pb-4 flex justify-center">
+          <v-btn
+            v-if="!confirmDialog.loading"
+            color="primary mr-4"
+            @click="triggerDialogFunction"
+          >
+            Подтверждаю
+          </v-btn>
+          <v-btn
+            v-if="!confirmDialog.loading"
+            color="error"
+            @click="confirmDialog.isShow = false"
+          >
+            Отменить
+          </v-btn>
+          <v-progress-circular
+            v-if="confirmDialog.loading"
+            color="primary"
+            :size="30"
+            indeterminate
+          />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <Popup
       closeButton
       @close="closePopupForm"

@@ -101,6 +101,13 @@ const table = {
     const filter = ref({
       isShow: false,
     })
+    const confirmDialog = ref({
+      isShow: false,
+      text: '',
+      function: null,
+      context: null,
+      loading: false,
+    })
     const paramsQuery = ref({
       currentPage: pagination.value.currentPage,
       searchGlobal: searchField.value,
@@ -322,6 +329,15 @@ const table = {
           },
         })
         popupForm.value.isShow = true
+      } else if (action.action.type === 'confirm') {
+        const context = {
+          store,
+          data: row,
+        }
+        confirmDialog.value.text = action.action.dialog.text
+        confirmDialog.value.function = action.action.dialog.function
+        confirmDialog.value.context = context
+        confirmDialog.value.isShow = true
       } else {
         openRow(undefined, row)
       }
@@ -344,6 +360,14 @@ const table = {
     }
     const closeFilter = () => {
       filter.value.isShow = false
+    }
+
+    const triggerDialogFunction = async () => {
+      confirmDialog.value.loading = true
+      confirmDialog.value.function(confirmDialog.value.context)
+      confirmDialog.value.loading = false
+      confirmDialog.value.isShow = false
+      getItems()
     }
 
     // Something like this should work:
@@ -940,6 +964,8 @@ const table = {
       downloadFile,
       contextMenuRef,
       changeHeaders,
+      confirmDialog,
+      triggerDialogFunction,
     }
   },
 }
