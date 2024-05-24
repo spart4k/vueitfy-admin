@@ -1,4 +1,11 @@
-import Vue, { computed, ref, onMounted, watch, onUnmounted } from 'vue'
+import Vue, {
+  computed,
+  ref,
+  onMounted,
+  watch,
+  onUnmounted,
+  nextTick,
+} from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/Autocomplete/form'
 import FormDefault from '@/components/Form/default/index.vue'
@@ -375,8 +382,23 @@ export default {
     }
 
     const checkVector = () => {
-      const item = Object.keys(formData).find((x) => x === 'type_zayavka')
-      if (formData[item] === 4) formData[item] = 1
+      if (formData?.type_zayavka === 4) formData.type_zayavka = 1
+
+      nextTick(() => {
+        if (formData.on_yourself === false) {
+          if (formData.type_zayavka) {
+            const field = proxyTab.value.fields.find(
+              (x) => x.name === 'type_zayavka'
+            )
+            changeAutocomplete({ value: formData.type_zayavka, field })
+          } else if (formData.vector_id) {
+            const field = proxyTab.value.fields.find(
+              (x) => x.name === 'vector_id'
+            )
+            changeAutocomplete({ value: formData.vector_id, field })
+          }
+        }
+      })
     }
 
     const imageFormat = (val) => {
