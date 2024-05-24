@@ -34,8 +34,12 @@
                 v-model="button.value"
               />
               <v-btn v-else @click="panelHandler(button)" small>
-                <v-icon v-if="button.type === 'icon'" small class="mr-2">
-                  {{ button.url }}
+                <v-icon
+                  v-if="button.type === 'icon' || button.icon"
+                  small
+                  :class="[button.label && 'mr-2']"
+                >
+                  {{ button.url ?? button.icon }}
                 </v-icon>
                 <p v-if="true">{{ button.label }}</p>
               </v-btn>
