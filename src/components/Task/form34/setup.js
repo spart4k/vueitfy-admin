@@ -222,7 +222,7 @@ const Form7 = defineComponent({
 
     const sendData = async () => {
       let rashod_id = null
-      if (!formatedDopData.was_process && status.value === 'Работает') {
+      if (start_process_other_doc.value) {
         rashod_id = await createZayavka()
         console.log(rashod_id)
       }
