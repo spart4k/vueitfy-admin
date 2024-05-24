@@ -249,6 +249,13 @@ export const config = {
       panel: {
         buttons: [
           {
+            // label: 'Сменить компонент',
+            class: ['v-table-button--custom'],
+            icon: 'mdi-view-grid',
+            type: 'changeComp',
+            backgroundColor: '#fff',
+          },
+          {
             label: 'Обновить',
             class: ['v-table-button--custom'],
             url: '$IconEdit',
@@ -260,13 +267,6 @@ export const config = {
             class: ['v-table-button--custom'],
             url: 'corporate-cards/add',
             type: 'changeUrl',
-            backgroundColor: '#fff',
-          },
-          {
-            label: 'Сменить компонент',
-            class: ['v-table-button--custom'],
-            url: '$IconEdit',
-            type: 'changeComp',
             backgroundColor: '#fff',
           },
         ],
