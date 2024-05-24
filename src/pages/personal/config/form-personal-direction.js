@@ -43,6 +43,7 @@ export default {
   ],
   alias: 'personal',
   active: false,
+  notReadonly: true,
   fields: [
     selectField({
       label: 'Направление',
