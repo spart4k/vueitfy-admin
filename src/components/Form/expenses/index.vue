@@ -69,11 +69,12 @@
               :label="field.label"
               :disabled="disabledField(field)"
               @change="
-                checkVector()
+                field.name === 'on_yourself' && checkVector()
                 changeAutocomplete({ value: formData[field.name], field })
               "
               :readonly="readonlyField(field)"
-            ></v-checkbox>
+            >
+            </v-checkbox>
             <Datepicker
               v-else-if="showField('date', field)"
               v-model="formData[field.name]"
