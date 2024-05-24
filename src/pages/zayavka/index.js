@@ -326,24 +326,6 @@ export const addFields = [
       },
       {
         type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'vector_id',
-          targetField: 'type_pay',
-          condition: [
-            {
-              value: 2,
-              options: [1],
-            },
-            {
-              value: 3,
-              options: [1],
-            },
-          ],
-        },
-      },
-      {
-        type: 'default',
         fillField: [
           {
             formKey: 'me',
@@ -2341,24 +2323,6 @@ export const editFields = [
       },
       {
         type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'type_zayavka',
-          targetField: 'payment_type',
-          condition: [
-            {
-              value: 2,
-              options: [1],
-            },
-            {
-              value: 3,
-              options: [1],
-            },
-          ],
-        },
-      },
-      {
-        type: 'default',
         fillField: [
           {
             formKey: 'account_id',
@@ -3779,9 +3743,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
@@ -4031,9 +4001,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
@@ -4072,9 +4048,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
@@ -4114,9 +4096,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
