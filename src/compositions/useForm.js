@@ -1746,7 +1746,7 @@ export default function ({
                 originalData,
                 environment,
               }
-              console.log('funcCond', field.name, conditionEl.funcCondition)
+              console.log('funcCond', field.name)
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
