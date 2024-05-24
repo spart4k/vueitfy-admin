@@ -300,7 +300,7 @@ export default {
   active: false,
   fields: [
     selectField({
-      label: 'Статус1',
+      label: 'Статус',
       name: 'status_id',
       placeholder: '',
       class: [''],
@@ -328,7 +328,7 @@ export default {
                   context.formData.status_id === 3)) ||
               // Условия для показа поля РОКК и ОКК
               ((context.store.state.user.permission_id === 8 ||
-                context.store.state.user.permission_id === 18) &&
+                context.store.state.user.permission_id === 17) &&
                 (context.formData.status_id === 2 ||
                   context.formData.status_id === 1 ||
                   context.formData.status_id === 3)),
