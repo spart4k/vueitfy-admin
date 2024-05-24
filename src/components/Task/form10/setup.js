@@ -292,6 +292,10 @@ const form10 = defineComponent({
     const acceptSchets = async () => {
       await setDataZayavka()
       await updateDopData()
+      if (props.data.data.zayavka.payment_type === 3) {
+        await sendTaskFinish()
+      }
+
       accepted.value = true
     }
     const addUnconfirmed = (item) => {
