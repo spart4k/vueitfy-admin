@@ -8,6 +8,7 @@ import { useRouter, useRoute } from 'vue-router/composables'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import moment from 'moment'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form21 = defineComponent({
   name: 'Form21',
@@ -15,6 +16,7 @@ const Form21 = defineComponent({
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
+    PersTitle,
   },
   props: {
     data: {
@@ -108,7 +110,7 @@ const Form21 = defineComponent({
       }
       if (isKeyConfrmed.value) {
         await setUserKey()
-        await addKeyToPersonal()
+        // await addKeyToPersonal()
       }
       const { success } = await changeStatusTask()
       if (success) {

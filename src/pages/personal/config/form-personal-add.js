@@ -67,18 +67,45 @@ export default {
       ],
       alias: 'personal_target',
       active: false,
+      label: 'personal-add',
       fields: [
         stringField({
-          label: 'ФИО',
-          name: 'fio',
+          label: 'Фамилия',
+          name: 'surname',
           placeholder: '',
           value: '',
           class: [''],
           position: {
             cols: 12,
-            sm: 12,
+            sm: 4,
           },
           validations: { required },
+          bootstrapClass: [''],
+        }),
+        stringField({
+          label: 'Имя',
+          name: 'name_n',
+          placeholder: '',
+          value: '',
+          class: [''],
+          position: {
+            cols: 12,
+            sm: 4,
+          },
+          validations: { required },
+          bootstrapClass: [''],
+        }),
+        stringField({
+          label: 'Отчество',
+          name: 'patronymic',
+          placeholder: '',
+          value: '',
+          class: [''],
+          position: {
+            cols: 12,
+            sm: 4,
+          },
+          validations: {},
           bootstrapClass: [''],
         }),
         dateField({
@@ -498,6 +525,7 @@ export default {
       name: 'Документы',
       type: 'TableDefault',
       active: false,
+      label: 'personal-add-doc',
       config: {
         selector: '#mainTable',
         options: {
@@ -644,6 +672,7 @@ export default {
               lists: [{ alias: 'documents', filter: [] }],
               alias: 'personal_doc',
               active: false,
+              label: 'personal-add-doc-document',
               fields: [
                 selectField({
                   label: 'Тип документа',
@@ -663,7 +692,7 @@ export default {
                   bootstrapClass: [''],
                 }),
                 dropZoneField({
-                  label: 'Скан-копия/фото:',
+                  label: 'Скан-копия/фото',
                   name: 'path_doc',
                   placeholder: '',
                   notPut: true,
@@ -685,7 +714,7 @@ export default {
                   value: [],
                 }),
                 textareaField({
-                  label: 'Примечание:',
+                  label: 'Примечание',
                   name: 'note',
                   alias: 'pd.note',
                   placeholder: '',
@@ -732,6 +761,7 @@ export default {
               lists: [{ alias: 'documents', filter: [] }],
               alias: 'personal_doc',
               active: false,
+              label: 'personal-add-doc-document-new',
               fields: [
                 selectField({
                   label: 'Тип документа',
@@ -751,7 +781,7 @@ export default {
                   bootstrapClass: [''],
                 }),
                 dropZoneField({
-                  label: 'Скан-копия/фото:',
+                  label: 'Скан-копия/фото',
                   name: 'path_doc',
                   placeholder: '',
                   readonly: false,
@@ -788,7 +818,7 @@ export default {
                   bootstrapClass: [''],
                 }),
                 textareaField({
-                  label: 'Примечание:',
+                  label: 'Примечание',
                   name: 'note',
                   alias: 'pd.note',
                   placeholder: '',
@@ -873,6 +903,11 @@ export default {
                 value: 2,
                 type: 'error',
                 text: 'Необходимо приложить паспорт',
+              },
+              {
+                value: 3,
+                type: 'error',
+                text: 'Необходимо приложить ID карту или паспорт',
               },
             ],
           },

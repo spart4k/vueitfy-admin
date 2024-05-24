@@ -56,6 +56,7 @@
             <v-text-field
               v-else-if="showField('string', field)"
               v-model="formData[field.name]"
+              :name="field.name"
               :label="field.label"
               :error-messages="formErrors[field?.name]"
               clearable
@@ -68,11 +69,12 @@
               :label="field.label"
               :disabled="disabledField(field)"
               @change="
-                checkVector()
+                field.name === 'on_yourself' && checkVector()
                 changeAutocomplete({ value: formData[field.name], field })
               "
               :readonly="readonlyField(field)"
-            ></v-checkbox>
+            >
+            </v-checkbox>
             <Datepicker
               v-else-if="showField('date', field)"
               v-model="formData[field.name]"
@@ -130,11 +132,14 @@
                 v-for="item in field.items"
                 :key="item.id"
                 @click="
-                  formData[field.name] = item.value
-                  changeAutocomplete({ value: formData[field.name], field })
+                  formData[field.name] !== item.value &&
+                    ((formData[field.name] = item.value),
+                    changeAutocomplete({ value: formData[field.name], field }))
                 "
                 :disabled="
-                  readonlyField(field) || (item.value === 2 && formData.is_migr)
+                  readonlyField(field) ||
+                  (item.value === 2 && formData.is_migr) ||
+                  checkPermission(item.value)
                 "
               >
                 {{ item.text }}

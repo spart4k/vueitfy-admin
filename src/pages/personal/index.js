@@ -11,6 +11,7 @@ import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalEdit from './config/form-personal-edit.js'
 import formPersonalAdd from './config/form-personal-add.js'
 import formPersonalDirection from './config/form-personal-direction.js'
+import formDocumentDownload from './config/form-document-download.js'
 
 import formKeyAdd from './config/form-key-add.js'
 import formKeyEdit from './config/form-key-edit.js'
@@ -45,6 +46,7 @@ export const personalTabs = [
   tablePersonalScan,
   tablePersonalBank,
   tablePersonalDebt,
+  formDocumentDownload,
 ]
 
 const contextMenuPersonal = {
@@ -55,21 +57,8 @@ const contextMenuPersonal = {
       isShow: {
         condition: [
           {
-            direction_id: [1, 6],
+            permission_id: [1, 3, 15, 4],
             type: true,
-          },
-        ],
-      },
-      readonly: {
-        value: true,
-        condition: [
-          {
-            is_personal_vertical: [true],
-            type: true,
-          },
-          {
-            permission_id: [4],
-            type: false,
           },
         ],
       },
@@ -82,14 +71,14 @@ const contextMenuPersonal = {
     {
       icon: 'mdi-plus',
       label: 'Добавить направ-ие',
-      // isShow: {
-      //   condition: [
-      //     {
-      //       direction_id: [1, 6],
-      //       type: true,
-      //     },
-      //   ],
-      // },
+      isShow: {
+        condition: [
+          {
+            permission_id: [1, 3, 15, 4],
+            type: true,
+          },
+        ],
+      },
       readonly: {
         value: false,
         condition: [
@@ -224,8 +213,8 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -329,7 +318,7 @@ export const config = {
         activeTab: null,
         formData: {},
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -459,8 +448,8 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -562,7 +551,7 @@ export const config = {
         tabs: [...personalTabs, ...nonExportTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -657,8 +646,8 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -760,7 +749,7 @@ export const config = {
         tabs: [...personalTabs, ...nonExportTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -844,7 +833,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'p.name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
           value: 'personal_name',
           search: {
             field: '',
@@ -989,6 +978,14 @@ export const config = {
             type: 'changeUrl',
             url: 'personal-add-key',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1],
+                  type: true,
+                },
+              ],
+            },
           },
           // {
           //   label: 'Скачать',
@@ -1067,7 +1064,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'p.name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
           value: 'personal_name',
           search: {
             field: '',
@@ -1169,6 +1166,14 @@ export const config = {
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
         tabs: [formKeyAdd, formKeyEdit],
         activeTab: null,
+      },
+      isShow: {
+        condition: [
+          {
+            permissions: [16, 19],
+            type: false,
+          },
+        ],
       },
       filters: filtersKey,
     },

@@ -39,6 +39,10 @@ export default {
       [3, 4, 8, 17].includes(store.state.user.permission_id)
     )
 
+    const disabled = computed(() =>
+      [3].includes(store.state.user.permission_id)
+    )
+
     const rules = {
       required: (value) => !!value || 'Required.',
     }
@@ -269,6 +273,7 @@ export default {
       autocompleteConfig,
       rules,
       permission,
+      disabled,
 
       mask,
       addPerson,

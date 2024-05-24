@@ -3,14 +3,14 @@
     <div style="padding: 10px">
       <div v-if="isShow" style="margin-bottom: 30px">
         <!-- <TextInfo :infoObj="{ textInfo }"></TextInfo> -->
-        <FormTitle
+        <DocAccepting
           :docName="getDocName(item.doc_id)"
           v-for="(item, index) in docs"
           :docs="item"
           :key="index"
           @confirmed="addConfirmed"
           @unconfirmed="addUnconfirmed"
-        ></FormTitle>
+        ></DocAccepting>
         <FormComment v-model="comment" />
         <span class="danger" v-if="commentError"
           >Заполните поле комментарий!</span

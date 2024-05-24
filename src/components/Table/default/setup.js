@@ -101,6 +101,13 @@ const table = {
     const filter = ref({
       isShow: false,
     })
+    const confirmDialog = ref({
+      isShow: false,
+      text: '',
+      function: null,
+      context: null,
+      loading: false,
+    })
     const paramsQuery = ref({
       currentPage: pagination.value.currentPage,
       searchGlobal: searchField.value,
@@ -322,6 +329,15 @@ const table = {
           },
         })
         popupForm.value.isShow = true
+      } else if (action.action.type === 'confirm') {
+        const context = {
+          store,
+          data: row,
+        }
+        confirmDialog.value.text = action.action.dialog.text
+        confirmDialog.value.function = action.action.dialog.function
+        confirmDialog.value.context = context
+        confirmDialog.value.isShow = true
       } else {
         openRow(undefined, row)
       }
@@ -344,6 +360,14 @@ const table = {
     }
     const closeFilter = () => {
       filter.value.isShow = false
+    }
+
+    const triggerDialogFunction = async () => {
+      confirmDialog.value.loading = true
+      confirmDialog.value.function(confirmDialog.value.context)
+      confirmDialog.value.loading = false
+      confirmDialog.value.isShow = false
+      getItems()
     }
 
     // Something like this should work:
@@ -506,10 +530,7 @@ const table = {
         if (
           el.type === 'dateRange' &&
           filterData[el.name].every(
-            (el) =>
-              el === null ||
-              el === undefined ||
-              el === ''
+            (el) => el === null || el === undefined || el === ''
           )
         ) {
           return
@@ -550,6 +571,12 @@ const table = {
     }
 
     const openRow = ($event, row) => {
+      if (options.detail?.click) {
+        if (options.detail.click.condition) {
+          const condition = options.detail.click.condition.permissions.includes(store.state.user.permission_id)
+          if (condition !== options.detail.click.condition.type) return
+        }
+      }
       if (options.detail.type === 'popup') {
         let requestId = 'id'
         if (props.options.detail.requestId)
@@ -594,7 +621,9 @@ const table = {
     }
 
     const changeMonth = async (val) => {
-      currentDate.value.date = moment(`${currentDate.value.date}-10`).add(val, 'M').format('YYYY-MM')
+      currentDate.value.date = moment(`${currentDate.value.date}-10`)
+        .add(val, 'M')
+        .format('YYYY-MM')
       currentDate.value.year = currentDate.value.date.split('-')[0]
       currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
       await getItems()
@@ -649,8 +678,9 @@ const table = {
         link.click()
         document.body.removeChild(link)
         getItems()
+      } else if (type === 'changeComp') {
+        emit('changeComp')
       }
-      console.log(button)
       if (button.refreshTable) {
         getItems()
       }
@@ -798,29 +828,46 @@ const table = {
     })
 
     const permission = computed(() => store.state.user.permission_id)
+    const vertical = computed(() => store.state.user.is_personal_vertical)
     const directions = computed(() =>
       JSON.parse(store.state.user.direction_json)
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        return el.permissions.includes(permission.value)
+        if (!el.permissions) return true
+        else {
+          return el.permissions.includes(permission.value)
+        }
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
         }
       }
+      const checkIncludesVertical = (el) => {
+        if (!el.vertical) return true
+        else {
+          return vertical.value
+        }
+      }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some((el) => {
-            return (
-              checkIncludesPermissions(el) &&
-              checkIncludesDirections(el) === el.type
+          return btn.isShow.condition.every((el) => {
+            console.log(
+              checkIncludesPermissions(el),
+              checkIncludesVertical(el),
+              checkIncludesDirections(el),
+              el.type
             )
+            const result =
+              el.type === checkIncludesPermissions(el) &&
+              checkIncludesVertical(el) &&
+              checkIncludesDirections(el)
+            console.log(result)
+            return result
           })
           // if ()
         }
@@ -849,7 +896,7 @@ const table = {
     const downloadFile = (val) => {
       Vue.downloadFile(val)
     }
-    
+
     const changeHeaders = async () => {
       initHeadParams()
       await getItems()
@@ -917,6 +964,8 @@ const table = {
       downloadFile,
       contextMenuRef,
       changeHeaders,
+      confirmDialog,
+      triggerDialogFunction,
     }
   },
 }

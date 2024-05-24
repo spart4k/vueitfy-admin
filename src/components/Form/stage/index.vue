@@ -42,6 +42,7 @@
             type="submit"
             :color="action.color"
             class="ml-2"
+            :class="'formStageButton_' + action.text"
             :loading="loading"
             @click.prevent="clickHandler({ action })"
             v-for="action in item.actions"

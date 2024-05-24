@@ -28,8 +28,11 @@ export default new Vuetify({
         pageBackground: '#F5F6F8',
         disabled: '#C2CFE0',
         textDefault: '#000000',
+        textGray: '#A1A1A1',
         cardBackground: '#FFFFFF',
         red: '#FF5252',
+        gradient1: '#fafafa',
+        gradient2: '#ededed',
       },
       dark: {
         primary: '#007BFF',
@@ -46,6 +49,8 @@ export default new Vuetify({
         background: '#252525',
         textDefault: '#ffffff',
         cardBackground: '#1E1E1E',
+        gradient1: '#1d1d1d',
+        gradient2: '#333333',
       },
       blue: {
         primary: '#07e0f8',

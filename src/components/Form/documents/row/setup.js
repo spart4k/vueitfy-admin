@@ -1,4 +1,4 @@
-import Vue, { ref, onMounted, computed } from 'vue'
+import Vue, { ref, onMounted, computed, toRef } from 'vue'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
@@ -76,6 +76,37 @@ export default {
       type: Boolean,
       default: false,
     },
+    citizenship: {
+      type: Array,
+      default: () => [],
+    },
+    fromTask: {
+      type: Boolean,
+      default: false,
+    },
+    withoutSave: {
+      type: Boolean,
+      default: false,
+    },
+    delFile: {
+      type: Boolean,
+      default: true,
+    },
+    showFields: {
+      type: Boolean,
+      default: true,
+    },
+    bankCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    taskInfo: {
+      type: Object,
+    },
+    showActions: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     Autocomplete,
@@ -105,6 +136,7 @@ export default {
     //   }, [])
     //   return result
     // })
+    const folderPanel = ref(false)
     const documentName = computed(() => Object.keys(props.document)[0])
     const switchType = (key) => {
       let result = ''
@@ -123,6 +155,61 @@ export default {
               cols: 12,
               sm: 12,
             },
+            bootstrapClass: [''],
+          })
+          break
+        case 'date_rojd':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: '',
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'name':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'grajdanstvo_id':
+          result = selectField({
+            label: switchLabel(key),
+            name: key,
+            // alias: 'status_pt',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            defaultItems: props.citizenship,
+            items: props.citizenship,
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            value: 1,
+            disable: true,
+            // validations: { required },
             bootstrapClass: [''],
           })
           break
@@ -953,6 +1040,145 @@ export default {
             bootstrapClass: [''],
           })
           break
+        case 'dms_ser':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'dms_num':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'check_patent_period':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'dms_name':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'oms_name':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'oms_num':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'oms_ser':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
+        case 'dms_vidachi':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: null,
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
+        case 'oms_vidachi':
+          result = dateField({
+            label: switchLabel(key),
+            name: key,
+            value: null,
+            type: 'date',
+            //subtype: 'single',
+            menu: false,
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+          })
+          break
 
         default:
           result = stringField({
@@ -977,6 +1203,15 @@ export default {
       switch (key) {
         case 'pasp_data_vid':
           result = 'Дата выдачи'
+          break
+        case 'name':
+          result = 'ФИО'
+          break
+        case 'Дата рождения':
+          result = 'data_rojd'
+          break
+        case 'Гражданство':
+          result = 'grajdanstvo_id'
           break
         case 'pasp_ser':
           result = 'Серия'
@@ -1047,6 +1282,15 @@ export default {
         case 'fio':
           result = 'ФИО'
           break
+        case 'surname':
+          result = 'фамилия'
+          break
+        case 'name_n':
+          result = 'Имя'
+          break
+        case 'patronymic':
+          result = 'Отчество'
+          break
         case 'registration_date_c_docs_in':
           result = 'C'
           break
@@ -1107,9 +1351,38 @@ export default {
         case 'patent_date_docs_out':
           result = 'По'
           break
-        case 'patent_special_marks_date':
-          result = 'Специальные отметки'
+        case 'dms_ser':
+          result = 'Серия'
           break
+        case 'dms_num':
+          result = 'Номер'
+          break
+        case 'dms_vidachi':
+          result = 'Дата выдачи'
+          break
+        case 'check_patent_period':
+          result = 'Период оплаты'
+          break
+        case 'dms_name':
+          result = 'Наименование полиса'
+          break
+        case 'oms_name':
+          result = 'Наименование полиса'
+          break
+        case 'patent_special_marks_date':
+          result = 'Особые отметки'
+          break
+
+        case 'oms_num':
+          result = 'Номер'
+          break
+        case 'oms_ser':
+          result = 'Серия'
+          break
+        case 'oms_vidachi':
+          result = 'Дата выдачи'
+          break
+
         default:
           result = key
       }
@@ -1122,6 +1395,7 @@ export default {
         return store.dispatch('taskModule/setBankData', {
           data: {
             data: {
+              id: props.bankCompleted ? props.bankCompleted : undefined,
               bank_id: formData.bank_id,
               fio: formData.fio,
               invoice: formData.invoice,
@@ -1134,10 +1408,26 @@ export default {
       },
       successMessage: 'Банковские реквизиты успешно добавлены',
     })
+
     const isCorrect = ref(false)
     const sendBankCard = async () => {
       const { result } = await sendBankCardRequest()
-      const bankCardId = result
+      if (result && !props.bankCompleted) {
+        const { makeRequest: updateDopData } = useRequest({
+          context,
+          request: () => {
+            return store.dispatch('taskModule/updateDopData', {
+              id: props.taskInfo.task.id,
+              dop: {
+                bank_card_id: result,
+              },
+            })
+          },
+          successMessage: 'Успешно',
+        })
+        await updateDopData()
+      }
+      const bankCardId = result !== 0 ? result : props.bankCompleted
       ctx.emit('changeDocs', {
         bank_card_id: bankCardId,
         // formObj: formObj,
@@ -1185,7 +1475,6 @@ export default {
     }
     initFields()
     const docFields = {}
-    console.log()
     const fields = () => {
       const fields = {}
       const tabFields = fieldsData.value
@@ -1214,7 +1503,6 @@ export default {
       //   Vue.set(fields[tabFields[key].name], 'default', docs_data[key])
       // }
       // props.tab.fields.forEach((el) => {})
-      console.log(fields)
       return fields
     }
     fields()
@@ -1258,47 +1546,13 @@ export default {
       makeRequestList,
       //makeRequestList,
     })
-    const { makeRequest: delInfoAFile } = useRequest({
-      context,
-      request: (id) =>
-        store.dispatch('taskModule/updateFileData', {
-          data: {
-            id,
-            del: 1,
-          },
-        }),
-    })
-    const { makeRequest: loadImage } = useRequest({
-      context,
-      request: (file) =>
-        store.dispatch('storage/loadFilePut', {
-          // id: 1,
-          folder: 'personal_doc',
-          fileName: file.fileName,
-          file: file.file,
-        }),
-      successMessage: 'Файл успешно загружен',
-    })
-    const { makeRequest: updateFileData } = useRequest({
-      context,
-      request: (params) => {
-        console.log(params, 'path_doc')
-        const path_doc = `/personal_doc/${basketFiles.value.fileName}`
-        return store.dispatch('taskModule/updateFileData', {
-          data: {
-            personal_id: props.personalId,
-            doc_id: props.document.doc_id,
-            path_doc,
-          },
-        })
-      },
-    })
     let fileExt
     let fileName
     let form_data
     const isEdit = ref(false)
     let file = ref('')
     const basketFiles = ref({})
+    const dropZoneRef = ref(null)
     const pathDock = ref('')
     const toEdit = () => {
       isEdit.value = true
@@ -1306,7 +1560,9 @@ export default {
     const toPreview = () => {
       isEdit.value = false
     }
+    const listRequestsForUpload = ref([])
     let addFiles = async (e) => {
+      console.log(e[0])
       file.value = e[0]
       fileExt = file.value.type.split('/')[1]
       fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -1319,20 +1575,100 @@ export default {
         form_data,
         file,
       }
-      if (pathDock.value.length) {
-        await delInfoAFile(props.document.id)
+      const { makeRequest: delInfoAFile } = useRequest({
+        context,
+        request: (id) =>
+          store.dispatch('taskModule/updateFileData', {
+            data: {
+              id: props.document.id,
+              del: 1,
+            },
+          }),
+      })
+      const { makeRequest: loadImage } = useRequest({
+        context,
+        request: () => {
+          return store.dispatch('storage/loadFilePut', {
+            // id: 1,
+            folder: 'personal_doc',
+            fileName,
+            file: file.value,
+          })
+        },
+        successMessage: 'Файл успешно загружен',
+      })
+      const { makeRequest: updateFileData } = useRequest({
+        context,
+        request: () => {
+          const path_doc = `/personal_doc/${fileName}`
+          return store.dispatch('taskModule/updateFileData', {
+            data: {
+              personal_id: props.personalId,
+              doc_id: props.document.doc_id,
+              path_doc,
+              id: !props.delFile ? props.document.id : undefined,
+              from_task: props.fromTask ? props.fromTask : undefined,
+            },
+          })
+        },
+      })
+      if (!props.withoutSave) {
+        if (pathDock.value.length && props.delFile) {
+          await delInfoAFile(props.document.id)
+        }
+        await loadImage(basketFiles.value)
+        await updateFileData()
+        const path_doc = `/personal_doc/${basketFiles.value.fileName}`
+        pathDock.value = [path_doc]
+        props.document.path_doc = path_doc
+      } else {
+        const clearBasket = () => {
+          basketFiles.value = {}
+          dropZoneRef.value.clearDropzone()
+        }
+        listRequestsForUpload.value.push({
+          delInfoAFile,
+          loadImage,
+          updateFileData,
+          clearBasket,
+        })
+        pathDock.value = [e[0].dataURL]
       }
-      await loadImage(basketFiles.value)
-      await updateFileData()
-      const path_doc = `/personal_doc/${basketFiles.value.fileName}`
-      pathDock.value = [path_doc]
-      props.document.path_doc = path_doc
 
       toPreview()
     }
+    const listRequestsResult = ref([])
+    const document = toRef(props, 'document')
+    const loadDocument = async () => {
+      await Promise.all(
+        listRequestsForUpload.value.map(async (doc, index) => {
+          const objectResult = {}
+          if (pathDock.value.length) {
+            await doc.delInfoAFile()
+          }
+          const res = await doc.loadImage()
+          objectResult.imageId = res
+          const docRes = await doc.updateFileData()
+          objectResult.docId = docRes
+          if (docRes.result) {
+            listRequestsResult.push(docRes)
+            // doc.document.inProcess = false
+            // const searchedDoc = listDocuments.value.find(
+            //   (el) => el.id === doc.document.id
+            // )
+            // searchedDoc.inProcess = false
+            // Vue.set(doc, 'document', doc.document)
+            // Vue.set(doc.document, 'inProcess', false)
+            // console.log(doc.document.inProcess)
+            // doc.document.newId = docRes.result
+            // doc.document.newId = docRes.result
+            // await createFillScanProcess(docRes.result)
+          }
+        })
+      )
+    }
     const listData = ref({})
     const loadList = async () => {
-      console.log('loadList')
       const listQuery = form?.lists?.flatMap((list) => {
         let filter = list.filter.reduce((acc, el) => {
           const source = eval(el.source)
@@ -1362,6 +1698,7 @@ export default {
         const element = {
           alias: list.alias,
           filter,
+          readonly: 0,
         }
         return element
       })
@@ -1372,7 +1709,6 @@ export default {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
         if (field) {
-          console.log(field.name)
           field.hideItems = lists.data[keyList]
           // field.items =
           Vue.set(
@@ -1406,7 +1742,6 @@ export default {
       const fields = form?.fields
         .filter((el) => el.type === 'autocomplete' && el.isShow)
         .map((el) => el)
-      console.log(fields)
       const queryFields = fields.map(async (el) => {
         const filters = []
         const { url } = el
@@ -1445,7 +1780,6 @@ export default {
           el.items = [...el.items, ...data.rows]
           el.items = data.rows
         }
-        console.log(el.items)
 
         return data
       })
@@ -1458,11 +1792,13 @@ export default {
       // }
       // initFields()
       // initDocFields()
-      console.log('onMounted')
       loadList()
       loadAutocompletes()
       if (props.document.path_doc) {
         pathDock.value = [props.document.path_doc]
+      }
+      if (props.document.inProcess !== undefined) {
+        !props.document.inProcess ? (isCorrect.value = true) : false
       }
     })
     return {
@@ -1495,6 +1831,12 @@ export default {
       isRejected,
       rejectDoc,
       confirmDoc,
+      listRequestsForUpload,
+      listRequestsResult,
+      loadDocument,
+      document,
+      dropZoneRef,
+      folderPanel,
       // documentData,
     }
   },

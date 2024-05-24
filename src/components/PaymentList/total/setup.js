@@ -26,6 +26,7 @@ const table = {
   setup(props, ctx) {
     const fields = reactive({
       total_by_services: 'Сумма по выработке',
+      total_everyday: 'Ежедневная ведомость',
       total_hold: 'Начислено раннее',
       total_debit: 'Сумма к удержанию',
       total_coefficient: 'Коэффициент',

@@ -209,6 +209,15 @@ const routes = [
     component: PaymentListView,
     children: [
       {
+        name: 'payment_list/export',
+        path: 'export',
+        meta: {
+          mode: ['export'],
+          label: 'Экспорт ЗП',
+        },
+        component: Detail,
+      },
+      {
         name: 'payment_list/:object',
         path: ':object',
         meta: {
@@ -368,6 +377,14 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/edit_habitation',
+            path: 'edit_habitation',
+            meta: {
+              mode: ['edit', 'edit_habitation'],
+            },
+            component: Detail,
+          },
         ],
       },
       {
@@ -415,6 +432,15 @@ const routes = [
         meta: {
           mode: ['profit-cleaning'],
           label: 'Начислить',
+        },
+        component: Detail,
+      },
+      {
+        name: 'write-c3',
+        path: '/pivot/write-c3',
+        meta: {
+          mode: ['write-c3'],
+          label: 'Печать СЗ',
         },
         component: Detail,
       },
@@ -694,7 +720,143 @@ const routes = [
       layout: 'blank-layout',
     },
     component: HabitationView,
-    children: [],
+    children: [
+      {
+        name: 'habitation/add',
+        path: 'add',
+        meta: {
+          mode: ['habitation-add'],
+          label: 'Добавить проживание',
+        },
+        children: [],
+        component: Detail,
+      },
+      {
+        name: 'habitation/:habitation_id',
+        path: ':habitation_id',
+        meta: {
+          mode: ['habitation-edit'],
+          label: 'Редактировать проживание',
+        },
+        children: [
+          {
+            name: 'habitation/:habitation_id/add-owner',
+            path: 'add-owner',
+            meta: {
+              mode: ['habitation-edit', 'habitation-owner-add'],
+              label: 'Добавить владельца',
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:habitation_id/add-realtor',
+            path: 'add-realtor',
+            meta: {
+              mode: ['habitation-edit', 'habitation-realtor-add'],
+              label: 'Добавить риэлтора',
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:habitation_id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['habitation-edit', 'habitation-zayavka-edit'],
+            },
+            component: Detail,
+          },
+        ],
+        component: Detail,
+      },
+      {
+        name: 'habitation-add-owner',
+        path: 'add-owner',
+        meta: {
+          mode: ['habitation-owner-add'],
+          label: 'Добавить владельца',
+        },
+        component: Detail,
+      },
+      {
+        name: 'habitation/:owner_id',
+        path: ':owner_id',
+        meta: {
+          mode: ['habitation-owner-edit'],
+          label: 'Редактировать владельца',
+        },
+        children: [
+          {
+            name: 'habitation/:owner_id/:card_id',
+            path: ':card_id',
+            meta: {
+              mode: ['habitation-owner-edit', 'new_card'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:owner_id/add',
+            path: 'add',
+            meta: {
+              mode: ['habitation-owner-edit', 'add'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:owner_id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['habitation-owner-edit', 'habitation-zayavka-edit'],
+            },
+            component: Detail,
+          },
+        ],
+        component: Detail,
+      },
+      {
+        name: 'habitation-add-realtor',
+        path: 'add-realtor',
+        meta: {
+          mode: ['habitation-realtor-add'],
+          label: 'Добавить риэлтора',
+        },
+        component: Detail,
+      },
+      {
+        name: 'habitation/:realtor_id',
+        path: ':realtor_id',
+        meta: {
+          mode: ['habitation-realtor-edit'],
+          label: 'Редактировать риэлтора',
+        },
+        children: [
+          {
+            name: 'habitation/:realtor_id/:card_id',
+            path: ':card_id',
+            meta: {
+              mode: ['habitation-realtor-edit', 'new_card'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:realtor_id/add',
+            path: 'add',
+            meta: {
+              mode: ['habitation-realtor-edit', 'add'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'habitation/:realtor_id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['habitation-realtor-edit', 'habitation-zayavka-edit'],
+            },
+            component: Detail,
+          },
+        ],
+        component: Detail,
+      },
+    ],
   },
   {
     path: '/zayavka',
@@ -827,6 +989,44 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
+    children: [
+      {
+        name: 'corporate-cards/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить карту',
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:card_id',
+        path: ':card_id',
+        meta: {
+          mode: ['give'],
+          label: 'Выдать карту',
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать карту',
+        },
+        component: Detail,
+      },
+      {
+        name: 'corporate-cards/:history_id',
+        path: ':history_id',
+        meta: {
+          mode: ['history'],
+          label: 'История',
+        },
+        component: Detail,
+      },
+    ],
     component: CorporateCardsView,
   },
   {

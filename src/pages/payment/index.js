@@ -53,6 +53,14 @@ const config = {
         function: consolePanel,
         backgroundColor: '#fff',
         type: 'addItem',
+        isShow: {
+          condition: [
+            {
+              permissions: [1, 15, 3, 4],
+              type: true,
+            },
+          ],
+        },
       },
       {
         label: 'Бухгалтерия excel',
@@ -106,7 +114,7 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
+      alias: 'vv.name',
       value: 'vid_vedomost_name',
       backgroundColorKey: 'vv_color',
       spliceValue: 1,
@@ -308,8 +316,8 @@ const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'pers.name',
-      value: 'personal_name',
+      alias: "CONCAT(pers.surname, ' ', pers.name_n, ' ', pers.patronymic)",
+      value: 'fio',
       search: {
         field: '',
         isShow: true,

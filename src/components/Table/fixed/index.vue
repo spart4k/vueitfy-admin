@@ -134,7 +134,7 @@
               :color="button.color && 'rgb(255, 144, 0)'"
               small
             >
-              <v-icon small class="mr-2">
+              <v-icon small :class="[button.label && 'mr-2']">
                 {{ button.url }}
               </v-icon>
               <p v-if="true">{{ button.label }}</p>
@@ -371,9 +371,9 @@
                           class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
                         >
                           {{
-                            options.head[0].value === 'personal_name'
+                            options.head[0].value === 'fio'
                               ? card.object_name
-                              : card.personal_name ?? card.fio
+                              : card.fio
                           }}
                         </p>
                       </div>
@@ -473,7 +473,10 @@
       </div>
     </div>
 
-    <div class="v-table-footer pl-4">
+    <div
+      v-if="options.data.rows && options.data.rows.length"
+      class="v-table-footer pl-4"
+    >
       <div v-if="!options.data.footer?.length" class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
       </div>

@@ -9,6 +9,7 @@
               changePeriod({ type: 'month', object: data.period.data })
             "
             :data="$props.data"
+            :disabled="disabled"
             :lock="{
               color:
                 data.period?.data?.id &&
@@ -38,6 +39,7 @@
                         x-small
                         v-bind="attrs"
                         v-on="on"
+                        :disabled="disabled"
                       >
                         <v-icon
                           x-small
@@ -110,6 +112,7 @@
             "
             :data="data.detail"
             :date="$props.date"
+            :disabled="disabled"
             :lock="{
               color:
                 data.detail?.is_close === 2
@@ -125,6 +128,7 @@
             <v-btn
               @click=";(confirm.isShow = true), (confirm.object = data)"
               color="success"
+              :disabled="disabled"
               >Начать период</v-btn
             >
           </v-row>
@@ -149,6 +153,7 @@
                       v-bind="attrs"
                       v-on="on"
                       class="mr-1 flex-grow-0"
+                      :disabled="disabled"
                     >
                       <v-icon
                         small
@@ -253,7 +258,10 @@
                         </div>
                       </v-row>
                       <div
-                        @click="downloadFile(item.content?.filepath)"
+                        @click="
+                          item.content?.filepath &&
+                            downloadFile(item.content?.filepath)
+                        "
                         class="v-panel-item-doc mt-4 v-panel-item-doc__pointer"
                       >
                         <v-row
@@ -321,46 +329,6 @@
                           v-mask="'#########'"
                         />
                       </div>
-                      <!-- <template v-if="editedType.loading">
-                        <v-progress-circular
-                          color="primary"
-                          class="ml-2"
-                          :size="21"
-                          indeterminate
-                        />
-                      </template>
-                      <template v-else-if="!item.content?.edit">
-                        <v-btn
-                          @click="editTotalCount(item)"
-                          class="ml-2"
-                          icon
-                          x-small
-                        >
-                          <v-icon small color="gray">$IconEdit</v-icon></v-btn
-                        >
-                      </template>
-                      <template v-else-if="item.content?.edit">
-                        <v-btn
-                          @click="changeTotalCount()"
-                          class="ml-2"
-                          icon
-                          x-small
-                        >
-                          <v-icon small color="success"
-                            >$IconGalka</v-icon
-                          ></v-btn
-                        >
-                        <v-btn
-                          @click="item.content.edit = false"
-                          class="ml-2"
-                          icon
-                          x-small
-                        >
-                          <v-icon small color="gray"
-                            >$IconArrowCircleRight</v-icon
-                          ></v-btn
-                        >
-                      </template> -->
                     </v-row>
                     <template v-if="item.content?.history.length">
                       <div
@@ -392,7 +360,9 @@
                           </div>
                         </v-row>
                         <div
-                          @click="downloadFile(history.filepath)"
+                          @click="
+                            history.filepath && downloadFile(history.filepath)
+                          "
                           class="v-panel-item-doc mt-4 v-panel-item-doc__pointer"
                         >
                           <v-row

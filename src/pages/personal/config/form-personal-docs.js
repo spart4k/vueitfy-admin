@@ -114,4 +114,13 @@ export default {
       nextForm: true,
     }),
   ],
+  isShow: {
+    value: true,
+    condition: [
+      {
+        permissions: [13],
+        type: false,
+      },
+    ],
+  },
 }

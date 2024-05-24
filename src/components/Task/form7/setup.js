@@ -1,5 +1,4 @@
-import { defineComponent, ref, computed, watch } from 'vue'
-import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
+import { defineComponent, toRef, ref, reactive, computed, watch } from 'vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import useForm from '@/compositions/useForm'
@@ -9,14 +8,17 @@ import store from '@/store'
 import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import DocMain from '../el/DocMain/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form7 = defineComponent({
   name: 'Form7',
   components: {
     TextInfo,
     FormComment,
-    DocFormCorrect,
+    DocMain,
     DocForm,
+    PersTitle,
   },
   props: {
     data: {
@@ -35,6 +37,10 @@ const Form7 = defineComponent({
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
+    const dopData = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data')).value
+    )
+    const bankCompleted = ref(JSON.parse(dopData.value).bank_card_id)
     const context = {
       root: {
         store,
@@ -74,7 +80,11 @@ const Form7 = defineComponent({
         }
       }
     )
-
+    const docMainData = reactive({
+      name: props.data.entity.name,
+      data_rojd: props.data.entity.data_rojd,
+      grajdanstvo_id: props.data.entity.grajdanstvo_id,
+    })
     const formObj = ref(
       useForm({
         fields: {
@@ -94,6 +104,16 @@ const Form7 = defineComponent({
         context,
       })
     )
+    const docMainRef = ref(null)
+    const docMainValid = computed(() => {
+      if (isHasOsnDoc) {
+        return (
+          !docMainRef.value?.vForm.$invalid && docMainRef.value?.osnConfirmed
+        )
+      } else {
+        return true
+      }
+    })
     const allDocsValid = computed(() => {
       return docFormRef.value?.docRows?.every(
         (el) => !el.vForm.$invalid && el.isCorrect
@@ -102,18 +122,29 @@ const Form7 = defineComponent({
     const isValid = computed(() => {
       if (isHasOnlyCard.value && bankCardId.value) {
         return true
-      } else if (allDocsValid.value && (isHasCard ? bankCardId.value : true)) {
+      } else if (
+        allDocsValid.value &&
+        (isHasCard ? bankCardId.value : true) &&
+        (isHasOsnDoc ? docMainValid.value : true)
+      ) {
+        return true
+      } else if (
+        !props.data.data.docs_id.length &&
+        isHasOsnDoc &&
+        docMainValid.value
+      ) {
         return true
       } else {
         return false
       }
     })
+    const rejectedComment = JSON.parse(props.data.task.dop_data).comment
     const docFormRef = ref(null)
     const changeDocs = (data) => {
       console.log('changeDocs')
       console.log(data)
       finalData.value = isHasOsnDoc
-        ? { 0: formObj.value.formData, ...data.correctedDocs }
+        ? { 0: docMainRef.value.formData, ...data.correctedDocs }
         : data.correctedDocs
       bankCardId.value = data.bank_card_id
       const docsIdArr = [
@@ -132,7 +163,7 @@ const Form7 = defineComponent({
     const confirmOsnDoc = () => {
       const aidDocs = JSON.parse(props.data.task.dop_data).docs_id
       if (aidDocs.length === 1 && aidDocs[0] === 0) isFormValid.value = true
-      finalData.value = { ...finalData.value, 0: formObj.value.formData }
+      finalData.value = { ...finalData.value, 0: docMainRef.value.formData }
       osnConfirmed.value = true
     }
 
@@ -142,9 +173,7 @@ const Form7 = defineComponent({
         return store.dispatch('taskModule/setPersonalDataWithoutTarget', {
           data: {
             id: props.data.entity.id,
-            name: formObj.value.formData.name,
-            data_rojd: formObj.value.formData.data_rojd,
-            grajdanstvo_id: formObj.value.formData.grajdanstvo_id,
+            ...docMainRef.value.formData,
           },
         })
       },
@@ -265,6 +294,12 @@ const Form7 = defineComponent({
       docFormRef,
       isValid,
       bankCardId,
+      docMainData,
+      docMainRef,
+      rejectedComment,
+      allDocsValid,
+      docMainValid,
+      bankCompleted,
     }
   },
 })

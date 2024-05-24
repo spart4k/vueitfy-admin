@@ -1,6 +1,6 @@
 import filters from './filters'
 import FormDefault from '@/components/Form/default/index.vue'
-import FormList from '@/components/Form/list/index.vue'
+import TargetPersonal from '@/components/Form/targetPersonal/default/index.vue'
 import FormStage from '@/components/Form/stage/index.vue'
 import FormTarget from '@/components/Form/target/default/index.vue'
 
@@ -36,14 +36,13 @@ export const editFields = [
     disable: true,
     validations: { required },
     bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
+    hiding: {
+      conditions: [
         {
           target: 'formData',
-          field: 'readonly',
+          field: 'status',
           value: [1],
-          type: true,
+          values: [1, 2],
         },
       ],
     },
@@ -106,21 +105,14 @@ export const editFields = [
     readonly: {
       value: false,
       condition: [
+        // {
+        //   funcCondition: (context) =>
+        //     context.store.state.user.permission_id === 7,
+        //   type: true,
+        // },
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
@@ -148,7 +140,7 @@ export const editFields = [
     ],
   }),
   selectField({
-    label: 'Вид ведомости:',
+    label: 'Вид ведомости',
     name: 'vid_vedomost_id',
     alias: 'vid_vedomost_id_logistic',
     placeholder: '',
@@ -164,28 +156,6 @@ export const editFields = [
     },
     validations: { required },
     bootstrapClass: [''],
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
-    },
     // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
     hiding: {
       conditions: [
@@ -198,6 +168,16 @@ export const editFields = [
           target: 'mode',
           value: 'add',
           values: [2, 3, 4, 5, 6, 7],
+        },
+      ],
+    },
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
         },
       ],
     },
@@ -220,28 +200,6 @@ export const editFields = [
     position: {
       cols: 12,
       sm: 6,
-    },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
     },
     validations: { required },
     bootstrapClass: [''],
@@ -276,6 +234,16 @@ export const editFields = [
       fields: ['personal_id'],
     },
     requiredFields: ['direction_id'],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   autocompleteField({
     label: 'Линейщик',
@@ -294,28 +262,6 @@ export const editFields = [
     position: {
       cols: 12,
       sm: 6,
-    },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
     },
     validations: { required },
     bootstrapClass: [''],
@@ -350,6 +296,16 @@ export const editFields = [
         ],
       },
     ],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   selectField({
     label: 'Должность',
@@ -366,30 +322,18 @@ export const editFields = [
       cols: 12,
       sm: 6,
     },
+    validations: { required },
+    bootstrapClass: [''],
     readonly: {
       value: false,
       condition: [
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
     },
-    validations: { required },
-    bootstrapClass: [''],
   }),
   selectField({
     label: 'Тип смены',
@@ -406,30 +350,18 @@ export const editFields = [
       cols: 12,
       sm: 6,
     },
+    validations: { required },
+    bootstrapClass: [''],
     readonly: {
       value: false,
       condition: [
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
     },
-    validations: { required },
-    bootstrapClass: [''],
   }),
   dateField({
     label: 'На дату',
@@ -444,22 +376,21 @@ export const editFields = [
       cols: 12,
       sm: 12,
     },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
-    },
     validations: { required },
     bootstrapClass: [''],
     disable: false,
     //mode: 'edit',
     isShow: true,
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   checkboxField({
     label: 'Питание',
@@ -471,34 +402,22 @@ export const editFields = [
       cols: 12,
       sm: 6,
     },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
     readonly: {
       value: false,
       condition: [
         {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
           type: true,
         },
       ],
     },
-    bootstrapClass: [''],
-    //validations: { required },
-    //isShow: false,
   }),
   stringField({
-    label: 'Стоимость питания:',
+    label: 'Стоимость питания',
     name: 'sum_nutrition',
     placeholder: '',
     class: [''],
@@ -574,28 +493,6 @@ export const editFields = [
       cols: 12,
       sm: 12,
     },
-    readonly: {
-      value: false,
-      condition: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-        },
-        {
-          permissions: [3, 15],
-          field: 'status',
-          value: [3],
-          type: false,
-        },
-        {
-          target: 'formData',
-          field: 'readonly',
-          value: [1],
-          type: true,
-        },
-      ],
-    },
     validations: { required },
     bootstrapClass: [''],
     filter: [
@@ -624,6 +521,16 @@ export const editFields = [
         ],
       },
     ],
+    readonly: {
+      value: false,
+      condition: [
+        {
+          funcCondition: (context) =>
+            context.store.state.user.id !== context.formData.account_id,
+          type: true,
+        },
+      ],
+    },
   }),
   textBlock({
     label: 'Создал',
@@ -721,6 +628,21 @@ export const editFields = [
   }),
   textBlock({
     label: 'Создал',
+    name: 'account_id',
+    placeholder: '',
+    readonly: true,
+    notSend: true,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    //validations: { required },
+    //isShow: false,
+  }),
+  textBlock({
+    label: 'Создал',
     name: 'readonly',
     placeholder: '',
     readonly: true,
@@ -771,6 +693,14 @@ const config = {
         type: 'addItem',
         //function: consolePanel,
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [1, 13, 15, 3, 4],
+              type: true,
+            },
+          ],
+        },
       },
       // {
       //   label: 'Скачать',
@@ -874,8 +804,8 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      value: 'personal_name',
-      alias: 'pers.name',
+      value: 'fio',
+      alias: "CONCAT(pers.surname, ' ', pers.name_n, ' ', pers.patronymic)",
       search: {
         field: '',
         isShow: true,
@@ -1094,7 +1024,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '750px',
+    width: '1000px',
     method: 'get',
     alias: 'personal_target',
     url: '/get/form/',
@@ -1142,6 +1072,7 @@ const config = {
                   sm: 6,
                 },
                 value: 1,
+                readonly: true,
                 disable: true,
                 validations: { required },
                 bootstrapClass: [''],
@@ -1193,7 +1124,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1225,7 +1156,7 @@ const config = {
               }),
 
               selectField({
-                label: 'Вид ведомости:',
+                label: 'Вид ведомости',
                 name: 'vid_vedomost_id_logistic',
                 placeholder: '',
                 class: [''],
@@ -1236,7 +1167,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1256,6 +1187,9 @@ const config = {
                   ],
                 },
                 requiredFields: ['personal_id'],
+                // isShow: {
+                //   value: false,
+                // },
               }),
               autocompleteField({
                 label: 'Объект',
@@ -1273,7 +1207,7 @@ const config = {
                 url: 'get/pagination_list/target_object',
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1305,7 +1239,7 @@ const config = {
               autocompleteField({
                 label: 'Линейщик',
                 name: 'personal_id',
-                subtype: 'single',
+                subtype: 'multiple',
                 placeholder: '',
                 class: [''],
                 selectOption: {
@@ -1318,7 +1252,7 @@ const config = {
                 url: 'get/pagination_list/target_personal',
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 12,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1539,7 +1473,7 @@ const config = {
           {
             id: 1,
             name: 'Основные',
-            type: FormList,
+            type: TargetPersonal,
             //detail: true,
             lists: [
               {
@@ -1559,6 +1493,7 @@ const config = {
                   },
                 ],
               },
+              { alias: 'vid_vedomost_id_logistic', filter: [] },
             ],
             alias: 'personal_target',
             active: false,
@@ -1579,7 +1514,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 5,
+                  sm: 4,
                 },
                 bootstrapClass: [''],
                 //validations: { required },
@@ -1636,6 +1571,33 @@ const config = {
                 ],
               }),
               selectField({
+                label: 'Вид ведомости',
+                name: 'vid_vedomost_id_logistic',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 3,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+                // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
+                hiding: {
+                  conditions: [
+                    {
+                      target: 'mode',
+                      value: 'add',
+                      values: [2, 3, 4, 5, 6, 7],
+                    },
+                  ],
+                },
+              }),
+              selectField({
                 label: 'Ключ',
                 name: 'print_form_key',
                 //withoutList: true,
@@ -1649,7 +1611,7 @@ const config = {
                 items: [],
                 position: {
                   cols: 12,
-                  sm: 3,
+                  sm: 4,
                 },
                 validations: { required },
                 bootstrapClass: [''],
@@ -1793,6 +1755,7 @@ const config = {
                   type: true,
                 },
                 {
+                  permissions: [1, 3, 15, 4, 13],
                   field: 'status',
                   target: 'formData',
                   value: [1, 2],

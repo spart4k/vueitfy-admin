@@ -1,6 +1,9 @@
 <template>
   <div class="document">
-    <div class="document-wrap">
+    <div
+      class="document-wrap"
+      :class="'docAccordion_' + document.doc_name || docNames[document.doc_id]"
+    >
       <v-expansion-panels v-model="folderPanel" class="">
         <v-expansion-panel>
           <v-expansion-panel-header class="document-header">
@@ -21,7 +24,10 @@
               v-else-if="isRejected && confirm"
               >$IconClose</v-icon
             >
-            <div class="document-title text-h7 mb-2">
+            <div
+              :class="fromTask ? 'document-title--task' : ''"
+              class="document-title text-h7"
+            >
               {{
                 document.doc_name
                   ? document.doc_name
@@ -42,6 +48,7 @@
                 cols="12"
                 :sm="showDropzone ? 6 : 12"
                 class="document-fields"
+                v-if="showFields"
               >
                 <v-row>
                   <v-col
@@ -65,6 +72,8 @@
                       clearable
                       :readonly="field.readonly || confirm"
                       :disabled="field.readonly"
+                      :class="'docInput_' + field.name"
+                      :name="'docInput_' + field.name"
                     />
                     <Datepicker
                       v-else-if="field.type === 'date'"
@@ -73,12 +82,14 @@
                       :field="field"
                       :error-messages="formErrors[field?.name]"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     ></Datepicker>
                     <v-checkbox
                       v-else-if="field.type === 'checkbox'"
                       v-model="formData[field.name]"
                       :label="field.label"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     ></v-checkbox>
                     <Autocomplete
                       v-else-if="field.type === 'select'"
@@ -91,6 +102,7 @@
                       ref="autocompleteRef"
                       @change="changeAutocomplete"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     />
                     <Autocomplete
                       v-else-if="field.type === 'autocomplete'"
@@ -103,6 +115,7 @@
                       ref="autocompleteRef"
                       @change="changeAutocomplete"
                       :readonly="confirm"
+                      :class="'docInput_' + field.name"
                     />
                     <!-- <v-textarea
                 v-else-if="showField('textarea', field)"
@@ -116,13 +129,20 @@
                 </v-row>
               </v-col>
 
-              <v-col v-if="showDropzone" cols="12" sm="5">
+              <v-col
+                v-if="showDropzone"
+                cols="12"
+                :sm="showDropzone && !showFields ? 12 : 5"
+              >
                 <!-- {{ $root.env.VUE_APP_STORE + document.path_doc }}
           {{ pathDock }} -->
                 <!-- <img :src="$root.env.VUE_APP_STORE + document.path_doc" alt="" /> -->
                 <!-- <img :src="$root.env.VUE_APP_STORE + pathDock" alt="" /> -->
                 <div class="document-scan">
-                  <div class="document-scan-preview-panel">
+                  <div
+                    v-if="!withoutSave && showActions"
+                    class="document-scan-preview-panel"
+                  >
                     <v-icon
                       v-if="!isEdit && pathDock.length"
                       @click="toEdit"
@@ -139,7 +159,7 @@
                     </v-icon>
                   </div>
                   <div
-                    v-if="document.path_doc && !isEdit"
+                    v-if="document.path_doc && !isEdit && !showScan"
                     class="document-scan-preview"
                   >
                     <a
@@ -163,6 +183,7 @@
                     }"
                     @addFiles="addFiles($event, field)"
                     :error-messages="formErrors[field?.name]"
+                    ref="dropZoneRef"
                   />
                 </div>
                 <!--<img
@@ -186,7 +207,8 @@
               <v-btn
                 :disabled="vForm.$invalid"
                 @click="confirmCorrect"
-                color="primary"
+                color="warning"
+                :name="`${docNames[document.doc_id]}_correct_btn`"
                 small
               >
                 <!-- <v-icon left> $IconMain </v-icon> -->
@@ -194,11 +216,22 @@
               </v-btn>
             </v-row>
             <v-row v-if="confirm" justify="end">
-              <v-btn @click="rejectDoc" color="error" small>
+              <v-btn
+                :name="`${docNames[document.doc_id]}_reject_btn`"
+                @click="rejectDoc"
+                color="error"
+                small
+              >
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Отклонить
               </v-btn>
-              <v-btn @click="confirmDoc" color="primary" small class="ml-2">
+              <v-btn
+                :name="`${docNames[document.doc_id]}_accept_btn`"
+                @click="confirmDoc"
+                color="primary"
+                small
+                class="ml-2"
+              >
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Подтвердить
               </v-btn>
@@ -206,7 +239,6 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-
       <div class="document-file"></div>
     </div>
     <v-divider></v-divider>

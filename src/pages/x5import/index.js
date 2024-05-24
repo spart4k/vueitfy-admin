@@ -8,6 +8,7 @@ import {
   checkboxField,
   // dropZoneField,
 } from '@/utils/fields.js'
+import _ from 'lodash'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 
@@ -269,7 +270,7 @@ const consumptionConfig = {
     footer: null,
   },
   detail: undefined,
-  filters,
+  filters: _.cloneDeep(filters),
 }
 
 const config = {
@@ -738,7 +739,7 @@ const config = {
     ],
     activeTab: null,
   },
-  filters,
+  filters: _.cloneDeep(filters),
 }
 
 export default config

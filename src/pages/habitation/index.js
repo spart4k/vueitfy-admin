@@ -1,7 +1,11 @@
 import filters from './filters'
-import filtersArchive from './filtersArchive'
+import _ from 'lodash'
 
-const config = {
+import formHabitationAddEdit from './config/form-habitation-add-edit'
+import formOwnerAddEdit from './config/form-owner-add-edit'
+import formRealtorAddEdit from './config/form-realtor-add-edit'
+
+export const config = {
   title: 'Проживание',
   activeTab: 0,
   tabs: [
@@ -27,6 +31,21 @@ const config = {
             // function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          {
+            label: 'Добавить',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'habitation/add',
+            backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [3, 4, 15],
+                  type: true,
+                },
+              ],
+            },
+          },
         ],
         date: true,
       },
@@ -49,7 +68,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.id',
           value: 'id',
           search: {
             field: '',
@@ -74,7 +93,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.name',
           value: 'name',
           search: {
             field: '',
@@ -99,7 +118,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'ci.name',
           value: 'city',
           search: {
             field: '',
@@ -124,7 +143,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'gr.name',
           value: 'region',
           search: {
             field: '',
@@ -149,7 +168,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'ht.name',
           value: 'habitation_type',
           search: {
             field: '',
@@ -174,7 +193,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.address',
           value: 'address',
           search: {
             field: '',
@@ -199,7 +218,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.count_place',
           value: 'capacity',
           search: {
             field: '',
@@ -222,17 +241,29 @@ const config = {
         method: 'get',
         alias: 'documents',
         url: '/get/form/',
-        name: 'Такси',
+        name: 'Проживание',
+        requestId: 'habitation_id',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        tabs: [
+          _.cloneDeep(formHabitationAddEdit),
+          _.cloneDeep(formHabitationAddEdit),
+        ],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       title: 'Персонал',
       selector: '#mainTable',
       type: 'TableDefault',
+      isShow: {
+        condition: [
+          {
+            permissions: [16, 19],
+            type: false,
+          },
+        ],
+      },
       options: {
         selecting: true,
         search: {
@@ -250,6 +281,21 @@ const config = {
             url: '$IconEdit',
             // function: consolePanel,
             backgroundColor: '#ffffff',
+          },
+          {
+            label: 'Добавить',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'habitation-add-realtor',
+            backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1],
+                  type: false,
+                },
+              ],
+            },
           },
         ],
         date: true,
@@ -273,7 +319,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'r.id',
           value: 'id',
           search: {
             field: '',
@@ -298,7 +344,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'r.name',
           value: 'name',
           search: {
             field: '',
@@ -323,7 +369,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'gr.name',
           value: 'region',
           search: {
             field: '',
@@ -348,7 +394,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'r.telephone',
           value: 'telephone',
           search: {
             field: '',
@@ -371,12 +417,22 @@ const config = {
         method: 'get',
         alias: 'documents',
         url: '/get/form/',
-        name: 'Такси',
+        name: 'Риэлторы',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        requestId: 'realtor_id',
+        tabs: [
+          _.cloneDeep(formRealtorAddEdit),
+          _.cloneDeep(formRealtorAddEdit),
+        ],
         activeTab: null,
+        click: {
+          condition: {
+            permissions: [1],
+            type: false,
+          },
+        },
       },
-      filters,
+      // filters,
     },
     {
       title: 'Персонал',
@@ -400,6 +456,21 @@ const config = {
             // function: consolePanel,
             backgroundColor: '#ffffff',
           },
+          {
+            label: 'Добавить',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'habitation-add-owner',
+            backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [1, 16, 19],
+                  type: false,
+                },
+              ],
+            },
+          },
         ],
         date: true,
       },
@@ -422,7 +493,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'oh.id',
           value: 'id',
           search: {
             field: '',
@@ -447,7 +518,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'oh.name',
           value: 'name',
           search: {
             field: '',
@@ -522,7 +593,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'oh.telephone',
           value: 'telephone',
           search: {
             field: '',
@@ -547,10 +618,17 @@ const config = {
         url: '/get/form/',
         name: 'Такси',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        requestId: 'owner_id',
+        tabs: [_.cloneDeep(formOwnerAddEdit), _.cloneDeep(formOwnerAddEdit)],
         activeTab: null,
+        click: {
+          condition: {
+            permissions: [1, 16, 19],
+            type: false,
+          },
+        },
       },
-      filters,
+      // filters,
     },
     {
       title: 'Персонал',
@@ -562,7 +640,7 @@ const config = {
           //   function: searchInputing,
         },
         headerFixed: true,
-        url: 'get/pagination/habitation',
+        url: 'get/pagination/habitation_archive',
         title: 'Архив',
       },
       panel: {
@@ -596,7 +674,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.id',
           value: 'id',
           search: {
             field: '',
@@ -621,7 +699,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.name',
           value: 'name',
           search: {
             field: '',
@@ -646,7 +724,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'ci.name',
           value: 'city',
           search: {
             field: '',
@@ -671,7 +749,7 @@ const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'sy.name',
+          alias: 'gr.name',
           value: 'region',
           search: {
             field: '',
@@ -696,7 +774,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'ht.name',
           value: 'habitation_type',
           search: {
             field: '',
@@ -721,7 +799,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.address',
           value: 'address',
           search: {
             field: '',
@@ -746,7 +824,7 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'sy.name',
+          alias: 'h.count_place',
           value: 'capacity',
           search: {
             field: '',
@@ -771,10 +849,13 @@ const config = {
         url: '/get/form/',
         name: 'Такси',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [],
+        tabs: [
+          _.cloneDeep(formHabitationAddEdit),
+          _.cloneDeep(formHabitationAddEdit),
+        ],
         activeTab: null,
       },
-      filters: filtersArchive,
+      filters: _.cloneDeep(filters),
     },
   ],
 }

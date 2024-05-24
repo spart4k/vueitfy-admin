@@ -1,0 +1,43 @@
+.v {
+  &-wrapper {
+    width: 350px;
+    padding: 31px;
+    display: flex;
+    align-items: center;
+    &-btn {
+      height: 166px !important;
+      width: 100%;
+      background-color: var(--v-background-base) !important;
+      box-shadow: 0px 4px 4px 0px #00000040;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &-content {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        &-icon {
+          width: 75px;
+          height: 75px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(208, 208, 208, 0.5);
+
+          i {
+            font-size: 40px !important;
+          }
+        }
+        span {
+          color: var(--v-textGray-base);
+          font-size: 12px;
+          text-transform: none;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

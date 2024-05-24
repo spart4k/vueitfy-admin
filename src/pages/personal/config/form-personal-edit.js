@@ -12,6 +12,7 @@ import {
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
+import formPersonalHabitation from './form-personal-habitation'
 
 const editFormPermissions = {
   // Бригадир(id = 13) - все readonly
@@ -69,6 +70,12 @@ const editFormPermissions = {
       type: true,
     },
   },
+  OBD: {
+    access: {
+      permissions: [7],
+      type: false,
+    },
+  },
   // Убрать ОКК
 }
 
@@ -77,10 +84,29 @@ export default {
   path: 'edit',
   name: 'Основные',
   type: 'FormDefault',
-  detail: true,
+  detail: {
+    type: 'popup', // String 'popup' or 'page'
+    classes: [''], // List class
+    width: '780px',
+    method: 'get',
+    name: 'Редактировать проживание',
+    alias: 'payment',
+    url: '/get/form/',
+    bootstrapClass: [''],
+    tabs: [Object.assign({}, formPersonalHabitation)],
+  },
   lists: [
-    { alias: 'user_keys', filter: [] },
-    { alias: 'habitation_id', filter: [] },
+    {
+      alias: 'user_key',
+      filter: [
+        {
+          alias: 'personal_id',
+          value: '',
+          routeKey: 'id',
+          type: 'num',
+        },
+      ],
+    },
     { alias: 'account_id', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
@@ -102,13 +128,13 @@ export default {
   active: false,
   fields: [
     stringField({
-      label: 'ФИО',
-      name: 'name',
+      label: 'Фамилия',
+      name: 'surname',
       placeholder: '',
       class: [''],
       position: {
         cols: 12,
-        sm: 6,
+        sm: 4,
       },
       bootstrapClass: [''],
       validations: { required },
@@ -116,13 +142,53 @@ export default {
       readonly: {
         value: false,
         condition: [
-          // editFormPermissions.brigadir,
-          // editFormPermissions.manager[1],
-          // editFormPermissions.rukFIlCUPDirector.denied,
+          editFormPermissions.OBD.access,
           // editFormPermissions.DBA.access,
           // editFormPermissions.OBDandOKK.access,
         ],
       },
+    }),
+    stringField({
+      label: 'Имя',
+      name: 'name_n',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 4,
+      },
+      bootstrapClass: [''],
+      validations: { required },
+      readonly: {
+        value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
+      //isShow: false,
+    }),
+    stringField({
+      label: 'Отчество',
+      name: 'patronymic',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 4,
+      },
+      bootstrapClass: [''],
+      validations: {},
+      readonly: {
+        value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
+      //isShow: false,
     }),
     stringField({
       label: 'Телефон',
@@ -134,18 +200,16 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
-      //validations: { required },
-      //isShow: false,
       readonly: {
         value: false,
         condition: [
-          // editFormPermissions.brigadir,
-          // editFormPermissions.manager[1],
-          // editFormPermissions.rukFIlCUPDirector.access,
+          editFormPermissions.OBD.access,
           // editFormPermissions.DBA.access,
           // editFormPermissions.OBDandOKK.access,
         ],
       },
+      //validations: { required },
+      //isShow: false,
     }),
     selectField({
       label: 'Гражданство',
@@ -170,7 +234,7 @@ export default {
           editFormPermissions.brigadir,
           editFormPermissions.manager[1],
           editFormPermissions.rukFIlCUPDirector.denied,
-          // editFormPermissions.DBA.access,
+          editFormPermissions.DBA.denied,
           // editFormPermissions.OBDandOKK.access,
         ],
       },
@@ -193,13 +257,14 @@ export default {
           editFormPermissions.brigadir,
           editFormPermissions.manager[1],
           editFormPermissions.rukFIlCUPDirector.denied,
+          editFormPermissions.OBD.access,
           // editFormPermissions.DBA.access,
           // editFormPermissions.OBDandOKK.access,
         ],
       },
     }),
     dateField({
-      label: ' Дата рождения',
+      label: 'Дата рождения',
       name: 'data_rojd',
       subtype: 'date',
       placeholder: '',
@@ -216,6 +281,7 @@ export default {
           editFormPermissions.brigadir,
           editFormPermissions.manager[1],
           editFormPermissions.rukFIlCUPDirector.denied,
+          editFormPermissions.OBD.access,
           // editFormPermissions.DBA.access,
           // editFormPermissions.OBDandOKK.access,
         ],
@@ -309,62 +375,41 @@ export default {
         ],
       },
     }),
-    selectField({
-      label: 'Проживание',
-      name: 'habitation_id',
-      alias: 'direction_json',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      defaultItems: [
-        {
-          id: 11,
-          name: '--Самостоятельное--',
-          bank_id: 11,
-        },
-      ],
-      //validations: { required },
-      bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          editFormPermissions.brigadir,
-          editFormPermissions.manager[1],
-          editFormPermissions.rukFIlCUPDirector.denied,
-          editFormPermissions.DBA.denied,
-          editFormPermissions.OBDandOKK.access,
-        ],
-      },
-    }),
-    checkboxField({
-      label: 'Штатный',
-      name: 'in_state',
-      placeholder: '',
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          // editFormPermissions.brigadir,
-          // editFormPermissions.manager[1],
-          // editFormPermissions.rukFIlCUPDirector.denied,
-          // editFormPermissions.DBA.access,
-          // editFormPermissions.OBDandOKK.access,
-        ],
-      },
-    }),
+    // selectField({
+    //   label: 'Проживание',
+    //   name: 'habitation_id',
+    //   alias: 'habitation',
+    //   placeholder: '',
+    //   class: [''],
+    //   selectOption: {
+    //     text: 'name',
+    //     value: 'id',
+    //   },
+    //   items: [],
+    //   position: {
+    //     cols: 12,
+    //     sm: 6,
+    //   },
+    //   defaultItems: [
+    //     {
+    //       id: 11,
+    //       name: '--Самостоятельное--',
+    //       bank_id: 11,
+    //     },
+    //   ],
+    //   //validations: { required },
+    //   bootstrapClass: [''],
+    //   readonly: {
+    //     value: false,
+    //     condition: [
+    //       editFormPermissions.brigadir,
+    //       editFormPermissions.manager[1],
+    //       editFormPermissions.rukFIlCUPDirector.denied,
+    //       editFormPermissions.DBA.denied,
+    //       editFormPermissions.OBDandOKK.access,
+    //     ],
+    //   },
+    // }),
     selectField({
       label: 'Объекты',
       name: 'object_id',
@@ -384,6 +429,92 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       readonly: true,
+    }),
+    checkboxField({
+      label: 'Штатный',
+      name: 'in_state',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          editFormPermissions.OBD.access,
+          // editFormPermissions.DBA.access,
+          // editFormPermissions.OBDandOKK.access,
+        ],
+      },
+    }),
+    autocompleteField({
+      label: 'Проживание',
+      name: 'habitation_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      putFirst: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/habitation',
+      defaultItems: [
+        {
+          id: 0,
+          name: '--Самостоятельное--',
+        },
+      ],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      filter: [
+        {
+          field: 'object_id',
+          value: '',
+          type: 'num',
+        },
+      ],
+      appendAction: [
+        {
+          icon: '$IconHome',
+          label: 'Сменить проживание',
+          action: {
+            type: 'changeUrl',
+            name: 'personal/:id/edit_habitation',
+            refreshForm: true,
+          },
+          notReadonly: true,
+          isShow: {
+            value: false,
+            condition: [
+              {
+                permissions: [1],
+                type: true,
+              },
+            ],
+          },
+        },
+      ],
+      readonly: true,
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     editFormPermissions.brigadir,
+      //     editFormPermissions.manager[1],
+      //     editFormPermissions.rukFIlCUPDirector.denied,
+      //     editFormPermissions.DBA.denied,
+      //     editFormPermissions.OBDandOKK.access,
+      //   ],
+      // },
     }),
   ],
   actions: [

@@ -1,6 +1,5 @@
 import filters from './filters'
 import FormDefault from '@/components/Form/default/index.vue'
-import FormList from '@/components/Form/list/index.vue'
 import Expenses from '@/components/Form/expenses/index.vue'
 
 import { required } from '@/utils/validation.js'
@@ -442,6 +441,12 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
     ],
@@ -516,6 +521,20 @@ export const addFields = [
         type: 'default',
         action: {
           type: 'hideOptions',
+          field: 'on_yourself',
+          targetField: 'type_pay',
+          condition: [
+            {
+              value: true,
+              options: [1],
+            },
+          ],
+        },
+      },
+      {
+        type: 'default',
+        action: {
+          type: 'hideOptions',
           field: 'vector_id',
           targetField: 'type_pay',
           condition: [
@@ -558,6 +577,20 @@ export const addFields = [
             targetKey: 'name',
           },
         ],
+      },
+      {
+        type: 'computed',
+        funcComputed: (context) => {
+          context.formData.personal_zr = null
+          context.formData.personal_object_zr = null
+          context.formData.personal_account_zr = null
+          context.formData.type_objects = null
+          context.formData.object_zr = null
+          context.formData.permissions_zr = null
+          context.formData.permission_accounts_zr = null
+          context.formData.type_pay = null
+          context.formData.req_zr_id = null
+        },
       },
     ],
     updateList: [
@@ -674,6 +707,12 @@ export const addFields = [
           },
           {
             field: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'type_objects',
             value: '',
             source: 'formData',
             type: 'num',
@@ -1020,6 +1059,31 @@ export const addFields = [
     ],
     validations: { required },
     bootstrapClass: [''],
+    updateList: [
+      {
+        alias: 'type_pay',
+        filter: [
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'object_zr',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+        ],
+      },
+    ],
     isShow: {
       value: false,
       conditions: [
@@ -1062,6 +1126,29 @@ export const addFields = [
     bootstrapClass: [''],
     updateList: [
       {
+        alias: 'type_pay',
+        filter: [
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'object_zr',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+        ],
+      },
+      {
         alias: 'req_zr_id',
         condition: [
           {
@@ -1100,6 +1187,12 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
     ],
@@ -1112,6 +1205,12 @@ export const addFields = [
             compareKey: 'id',
             objectKey: 'name',
             targetKey: 'name',
+          },
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'id',
+            targetKey: 'habitation_id',
           },
           'regions_id',
           'city_id',
@@ -1372,6 +1471,7 @@ export const addFields = [
     class: [''],
     position: { cols: 12, sm: 6 },
     notSend: true,
+    readonly: false,
     bootstrapClass: [''],
     label: '-',
     color: 'primary',
@@ -1388,6 +1488,7 @@ export const addFields = [
     class: [''],
     position: { cols: 12, sm: 6 },
     notSend: true,
+    readonly: false,
     bootstrapClass: [''],
     label: '+',
     color: 'success',
@@ -1532,6 +1633,12 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
       {
@@ -1631,12 +1738,12 @@ export const addFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['rek1', 'rek2', 'bank_id'],
+        fillField: ['rek1', 'rek2', 'bank_id', 'owner_id', 'realtor_id'],
       },
     ],
     isShow: {
       value: true,
-      conditions: [{ field: 'type_pay', value: [1, 2, 3] }],
+      conditions: [{ field: 'type_pay', value: [1, 2, 3, 6, 7] }],
     },
   }),
   dropZoneField({
@@ -1809,6 +1916,57 @@ export const addFields = [
     // validations: { required },
     bootstrapClass: [''],
   }),
+  stringField({
+    label: 'owner_id',
+    name: 'owner_id',
+    placeholder: '',
+    class: [''],
+    requestType: 'number',
+    disabled: true,
+    isShow: {
+      value: true,
+    },
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    // validations: { required },
+    bootstrapClass: [''],
+  }),
+  stringField({
+    label: 'realtor_id',
+    name: 'realtor_id',
+    placeholder: '',
+    class: [''],
+    requestType: 'number',
+    disabled: true,
+    isShow: {
+      value: true,
+    },
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    // validations: { required },
+    bootstrapClass: [''],
+  }),
+  stringField({
+    label: 'habitation_id',
+    name: 'habitation_id',
+    placeholder: '',
+    class: [''],
+    requestType: 'number',
+    disabled: true,
+    isShow: {
+      value: true,
+    },
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    // validations: { required },
+    bootstrapClass: [''],
+  }),
 ]
 
 export const editFields = [
@@ -1833,14 +1991,24 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            context.originalData.from_account_id !==
-              context.store.state.user.id &&
-            context.store.state.user.is_personal_vertical &&
+            (context.originalData.from_account_id !==
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4 ||
+              context.store.state.user.permission_id === 16) &&
             (context.originalData.status === 1 ||
               context.originalData.status === 2 ||
               context.originalData.status === 3),
-          type: false,
+          type: false, //могу при этих условиях
         },
+        // {
+        //   funcCondition: (context) =>
+        //     (context.originalData.from_account_id ===
+        //       context.store.state.user.id ||
+        //       context.store.state.user.permission_id === 4) &&
+        //     (context.originalData.status === 1 ||
+        //       context.originalData.status === 3),
+        //   type: false, //могу при этих условиях
+        // },
       ],
     },
     hiding: {
@@ -2199,9 +2367,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2282,6 +2453,12 @@ export const editFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
     ],
@@ -2328,9 +2505,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2355,6 +2535,20 @@ export const editFields = [
       },
     ],
     dependence: [
+      {
+        type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'on_yourself',
+          targetField: 'payment_type',
+          condition: [
+            {
+              value: true,
+              options: [1],
+            },
+          ],
+        },
+      },
       {
         type: 'default',
         action: {
@@ -2401,6 +2595,20 @@ export const editFields = [
             targetKey: 'to_name',
           },
         ],
+      },
+      {
+        type: 'computed',
+        funcComputed: (context) => {
+          context.formData.personal_zr = null
+          context.formData.personal_object_zr = null
+          context.formData.personal_account_zr = null
+          context.formData.type_objects = null
+          context.formData.object_zr = null
+          context.formData.permissions_zr = null
+          context.formData.permission_accounts_zr = null
+          context.formData.payment_type = null
+          context.formData.rek_id = null
+        },
       },
     ],
     updateList: [
@@ -2527,6 +2735,12 @@ export const editFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
       {
@@ -2585,9 +2799,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2728,9 +2945,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2795,9 +3015,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2877,9 +3100,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2895,6 +3121,32 @@ export const editFields = [
       cols: 12,
       sm: 12,
     },
+    updateList: [
+      {
+        alias: 'type_pay',
+        filter: [
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'object_zr',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'type_zayavka',
+            alias: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+        ],
+      },
+    ],
     dependence: [
       {
         type: 'api',
@@ -2923,9 +3175,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -2998,6 +3253,36 @@ export const editFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+        ],
+      },
+      {
+        alias: 'type_pay',
+        filter: [
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'object_zr',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'type_zayavka',
+            alias: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
     ],
@@ -3010,6 +3295,12 @@ export const editFields = [
             compareKey: 'id',
             objectKey: 'name',
             targetKey: 'to_name',
+          },
+          {
+            formKey: 'object_zr',
+            compareKey: 'id',
+            objectKey: 'id',
+            targetKey: 'habitation_id',
           },
           'regions_id',
           'city_id',
@@ -3035,9 +3326,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3092,9 +3386,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3184,9 +3481,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3229,9 +3529,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3263,9 +3566,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3289,9 +3595,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3316,9 +3625,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3341,9 +3653,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3370,9 +3685,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3397,9 +3715,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3422,9 +3743,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
@@ -3570,6 +3897,12 @@ export const editFields = [
           {
             field: 'type_zayavka',
             alias: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'type_objects',
             value: '',
             source: 'formData',
             type: 'num',
@@ -3668,9 +4001,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
@@ -3690,12 +4029,12 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
-        fillField: ['rek1', 'rek2', 'bank_id'],
+        fillField: ['rek1', 'rek2', 'bank_id', 'owner_id', 'realtor_id'],
       },
     ],
     isShow: {
       value: false,
-      conditions: [{ field: 'payment_type', value: [1, 2, 3] }],
+      conditions: [{ field: 'payment_type', value: [1, 2, 3, 6, 7] }],
     },
   }),
   dropZoneField({
@@ -3709,9 +4048,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
@@ -3751,9 +4096,15 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1, 9],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id &&
+              (context.originalData.status === 1 ||
+                context.originalData.status === 3 ||
+                context.originalData.status === 9)) ||
+            (context.originalData.from_account_id !==
+              context.store.state.user.id &&
+              context.originalData.status === 9),
           type: false,
         },
       ],
@@ -3764,14 +4115,6 @@ export const editFields = [
     },
     bootstrapClass: [''],
   },
-  carouselField({
-    name: 'schet',
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-  }),
   textareaField({
     label: 'Ошибка',
     name: 'error_text',
@@ -3785,7 +4128,7 @@ export const editFields = [
           target: 'originalData',
           field: 'status',
           permissions: [12],
-          value: [5],
+          value: [4, 5],
           type: false,
         },
       ],
@@ -3806,9 +4149,12 @@ export const editFields = [
       value: false,
       condition: [
         {
-          target: 'originalData',
-          field: 'status',
-          value: [1],
+          funcCondition: (context) =>
+            (context.originalData.from_account_id ===
+              context.store.state.user.id ||
+              context.store.state.user.permission_id === 4) &&
+            (context.originalData.status === 1 ||
+              context.originalData.status === 3),
           type: false,
         },
       ],
@@ -3959,6 +4305,57 @@ export const editFields = [
     },
     bootstrapClass: [''],
   }),
+  stringField({
+    label: 'owner_id',
+    name: 'owner_id',
+    placeholder: '',
+    class: [''],
+    requestType: 'number',
+    disabled: true,
+    isShow: {
+      value: true,
+    },
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    // validations: { required },
+    bootstrapClass: [''],
+  }),
+  stringField({
+    label: 'realtor_id',
+    name: 'realtor_id',
+    placeholder: '',
+    class: [''],
+    requestType: 'number',
+    disabled: true,
+    isShow: {
+      value: true,
+    },
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    // validations: { required },
+    bootstrapClass: [''],
+  }),
+  stringField({
+    label: 'habitation_id',
+    name: 'habitation_id',
+    placeholder: '',
+    class: [''],
+    requestType: 'number',
+    disabled: true,
+    isShow: {
+      value: true,
+    },
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    // validations: { required },
+    bootstrapClass: [''],
+  }),
 ]
 
 const config = {
@@ -3990,6 +4387,14 @@ const config = {
         type: 'addItem',
         //function: consolePanel,
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [12],
+              type: false,
+            },
+          ],
+        },
       },
       {
         label: 'Бухгалтерия excel',

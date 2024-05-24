@@ -1,11 +1,13 @@
 <template>
   <div style="padding-top: 10px">
-    <div style="text-align: center">
-      <v-card-title class="d-flex justify-center text-h6">
-        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
-        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
-      </v-card-title>
-    </div>
+    <PersTitle
+      :data="{
+        surname: data.entity.surname,
+        name_n: data.entity.name_n,
+        patronymic: data.entity.patronymic,
+        dataRojd: data.entity.data_rojd.split('-').reverse().join('.'),
+      }"
+    />
     <!-- data.migr_card -->
     <div v-if="widthTrasfer" class="mb-2">
       <div style="font-size: 18px" class="font-weight-bold">
@@ -23,18 +25,41 @@
       style="font-size: 18px"
       class="d-flex align-center font-weight-bold mb-2"
     >
-      <v-icon class="mr-1" v-if="selectName !== ''" x-small color="green"
+      <v-icon
+        class="mr-1"
+        v-if="selectName !== '' && (date_in || selectName === 0)"
+        x-small
+        color="green"
         >$IconGalka</v-icon
       >
       Заселите:
     </div>
-    <v-select
-      label="Выберите проживание"
-      :items="[...data.data.habitations, { id: 0, name: '-Самостоятельное-' }]"
-      item-text="name"
-      item-value="id"
-      v-model="selectName"
-    ></v-select>
+    <v-row>
+      <v-col :cols="12" :sm="5">
+        <Autocomplete
+          :readonly="autocompleteConfig.readonly"
+          :field="autocompleteConfig"
+          :filter="autocompleteConfig.filter"
+          v-model="selectName"
+          @change="changeObject"
+        />
+      </v-col>
+      <v-col :cols="12" :sm="4">
+        <DateTimePicker
+          :label="'Дата заселения'"
+          :field="{}"
+          v-model="date_in"
+          :readonly="selectName === 0"
+        />
+      </v-col>
+      <v-col :cols="12" :sm="3">
+        <v-checkbox
+          v-model="is_registration"
+          :label="'Регистрация'"
+          :readonly="selectName === 0"
+        ></v-checkbox>
+      </v-col>
+    </v-row>
     <span style="font-size: 18px" class="font-weight-bold">
       <v-icon x-small color="green" v-if="isGalkaVisible || hasMigr"
         >$IconGalka</v-icon
@@ -52,7 +77,11 @@
         small
         color="info"
         @click="sendData"
-        :disabled="(!selectName && selectName !== 0) || !hasMigr"
+        :disabled="
+          (!selectName && selectName !== 0) ||
+          !hasMigr ||
+          (!date_in && selectName !== 0)
+        "
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

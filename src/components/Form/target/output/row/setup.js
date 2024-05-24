@@ -27,8 +27,10 @@ export default {
         route,
       },
     }
-    const sum = (row) =>
-      row.sum - (row.hold_sum + row.deduction_debit + row.deduction_hold)
+    const sum = (row) => {
+      console.log(row)
+      return row.sum - (row.hold_sum + row.deduction_debit + row.deduction_hold)
+    }
     const { makeRequest: makeRequestList } = useRequest({
       context,
       request: (data) =>
@@ -44,7 +46,7 @@ export default {
           result = 'Выработка по часам'
           break
         case 3:
-          result = 'Выработка по клирингу'
+          result = 'Выработка по клинингу'
           break
         default:
           result = key

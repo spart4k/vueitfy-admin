@@ -17,7 +17,17 @@ export default {
     { alias: 'status_zr', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'category_zr', filter: [] },
-    { alias: 'type_pay', filter: [] },
+    {
+      alias: 'type_pay',
+      filter: [
+        {
+          field: 'filter_type_pay',
+          sendEmpty: true,
+          value: [0],
+          type: 'num',
+        },
+      ],
+    },
   ],
   actions: [
     stringAction({

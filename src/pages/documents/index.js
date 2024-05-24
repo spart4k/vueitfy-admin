@@ -1,4 +1,5 @@
 import filters from './filters'
+import _ from 'lodash'
 
 import formDocumentsQuery from './config/form-documents-query.js'
 
@@ -21,6 +22,14 @@ const buttonsMixin = [
     function: consolePanel,
     url: 'documents/query',
     backgroundColor: '#fff',
+    isShow: {
+      condition: [
+        {
+          permissions: [16],
+          type: true,
+        },
+      ],
+    },
   },
 ]
 
@@ -76,8 +85,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -432,6 +441,33 @@ const config = {
           },
         },
         {
+          title: 'ОМС',
+          type: 'icon',
+          icon: '$IconDmc',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.oms',
+          value: 'oms',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
           title: 'ДМС',
           type: 'icon',
           icon: '$IconDmc',
@@ -654,6 +690,33 @@ const config = {
           },
         },
         {
+          title: 'ID карта',
+          type: 'icon',
+          icon: '$IconRekvizit',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
+          isShow: true,
+          width: '90',
+          alias: 'p.id_card',
+          value: 'id_card',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
           title: 'Действия',
           type: 'actions',
           align: 'center',
@@ -686,7 +749,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -738,8 +801,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -815,6 +878,60 @@ const config = {
           width: '90',
           alias: 'g.name',
           value: 'grajdanstvo',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'ОМС',
+          type: 'icon',
+          icon: '$IconDmc',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.oms',
+          value: 'oms',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'ДМС',
+          type: 'icon',
+          icon: '$IconDmc',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.dms',
+          value: 'dms',
           search: {
             field: '',
             isShow: true,
@@ -932,6 +1049,33 @@ const config = {
           },
         },
         {
+          title: 'ID карта',
+          type: 'icon',
+          icon: '$IconRekvizit',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
+          isShow: true,
+          width: '90',
+          alias: 'p.id_card',
+          value: 'id_card',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
           title: 'Счет',
           type: 'icon',
           icon: '$IconRekvizit',
@@ -978,7 +1122,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -1031,8 +1175,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -1190,6 +1334,60 @@ const config = {
           width: '90',
           alias: 'ps.migr_uch',
           value: 'migr_uch',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'ОМС',
+          type: 'icon',
+          icon: '$IconDmc',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.oms',
+          value: 'oms',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'ДМС',
+          type: 'icon',
+          icon: '$IconDmc',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [],
+          // sorts: [
+          //   {
+          //     type: 'text',
+          //     default: '',
+          //     value: '',
+          //     isShow: false,
+          //   },
+          // ],
+          isShow: true,
+          width: '90',
+          alias: 'ps.dms',
+          value: 'dms',
           search: {
             field: '',
             isShow: true,
@@ -1384,7 +1582,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -1436,8 +1634,8 @@ const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'p.name',
-          value: 'name',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'fio',
           search: {
             field: '',
             isShow: true,
@@ -1674,7 +1872,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
   ],
 }
