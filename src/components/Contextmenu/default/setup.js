@@ -81,7 +81,7 @@ export default {
         return result
       }
       const checkIncludesPermissions = (el) => {
-        return el.permission_id.includes(permission.value)
+        return el.permissions.includes(permission.value)
       }
       const checkIncludesVertical = (el) => {
         return el.is_personal_vertical.includes(is_personal_vertical.value)
@@ -97,7 +97,7 @@ export default {
               ) {
                 return checkIncludesData(conditionEl) && conditionEl.type
               } else if (
-                conditionEl.permission_id?.length &&
+                conditionEl.permissions?.length &&
                 !conditionEl.target
               ) {
                 return checkIncludesPermissions(conditionEl) && conditionEl.type
