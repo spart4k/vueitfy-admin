@@ -28,7 +28,6 @@ export default {
       },
     }
     const sum = (row) => {
-      console.log(row)
       return row.sum - (row.hold_sum + row.deduction_debit + row.deduction_hold)
     }
     const { makeRequest: makeRequestList } = useRequest({

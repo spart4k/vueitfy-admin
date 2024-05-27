@@ -123,7 +123,6 @@ export default {
       const checkIncludesPermissions = (el) => {
         return el.permissions.includes(permission.value)
       }
-      console.log(action.isShow)
       if (typeof action.isShow === 'boolean') return action.isShow
       else if (typeof action.isShow === 'object') {
         if (action.isShow.condition?.length) {

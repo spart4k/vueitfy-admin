@@ -91,13 +91,10 @@ export default {
     }
     const dopData = JSON.parse(props.data.task.dop_data)
     const sendData = async () => {
-      // console.log(docFormRef.value.docRows)
       const docFormRefsLoad = docFormRef.value.docRows.map(
         async (docRef, index) => {
-          console.log(doc)
           await Promise.all(
             docRef.listRequestsForUpload.map(async (doc) => {
-              console.log(docRef)
               if (docRef.pathDock.length) {
                 // await doc.delInfoAFile()
               }
@@ -108,7 +105,6 @@ export default {
           )
         }
       )
-      console.log(objectResult)
       await Promise.all(docFormRefsLoad)
       const { success } = await changeStatusTask()
       if (success) {
