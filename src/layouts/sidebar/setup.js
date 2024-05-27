@@ -24,6 +24,7 @@ export default {
     const isMobileDevice = useMobile()
     const openMenu = computed(() => store?.state?.openMenu)
     const miniMenu = computed(() => store?.state?.miniMenu)
+    const version = process.env.VUE_APP_VERSION
     // Then we set the value in the --vh custom property to the root of the document
 
     const setRouterPath = (val) => {
@@ -105,6 +106,7 @@ export default {
       changeMenuSize,
       setRouterPath,
       userInfo,
+      version,
     }
   },
 }
