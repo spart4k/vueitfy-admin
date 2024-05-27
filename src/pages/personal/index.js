@@ -57,7 +57,7 @@ const contextMenuPersonal = {
       isShow: {
         condition: [
           {
-            permission_id: [1, 3, 15, 4],
+            permissions: [1, 3, 15, 4],
             type: true,
           },
         ],
@@ -74,7 +74,7 @@ const contextMenuPersonal = {
       isShow: {
         condition: [
           {
-            permission_id: [1, 3, 15, 4],
+            permissions: [1, 3, 15, 4],
             type: true,
           },
         ],
@@ -87,7 +87,7 @@ const contextMenuPersonal = {
             type: true,
           },
           {
-            permission_id: [13],
+            permissions: [13],
             type: true,
           },
         ],
