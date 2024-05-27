@@ -78,7 +78,6 @@ export default {
       rows.value.forEach((el, index) => {
         // validate = !el.validate()
         el.personalRef.forEach((pers) => {
-          console.log(pers.vForm)
           pers.validate(true)
         })
       })
@@ -134,7 +133,6 @@ export default {
           persRefs.push(pers)
         })
       })
-      console.log(persRefs)
       targets.value.forEach((el, index) => {
         // validate = !el.validate()
         const person = { ...defaultData, ...persRefs[index].formData }
@@ -154,7 +152,6 @@ export default {
         persons.push(person)
       })
 
-      console.log(persons, 'persons')
       const { makeRequest } = useRequest({
         context,
         request: () =>
@@ -166,7 +163,6 @@ export default {
           rows.value.length * props?.tab?.formData.personal_id.length
         } назначений`,
       })
-      console.log(accum)
       const result = await makeRequest()
 
       if (result?.data?.length) {
@@ -199,8 +195,6 @@ export default {
             ].error = `На объект ${name} на дату ${dateFormated} выбранная учётная запись уже назначена`
           }
           if (el.code === 2) {
-            console.log(findedIndex)
-            console.log(targets.value)
             targets.value[
               findedIndex
             ].error = `На объект ${name} на выбранную смену  ${dateFormated} числа выбранный сотрудник уже назначен`

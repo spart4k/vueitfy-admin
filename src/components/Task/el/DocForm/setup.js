@@ -166,7 +166,6 @@ const docForm = defineComponent({
         pasp_data_vid: loadedData.pasp_data_vid ? loadedData.pasp_data_vid : '',
         pasp_kem: loadedData.pasp_kem ? loadedData.pasp_kem : '',
       }
-      console.log()
       if (grajdanstvo_id === 1) {
         fieldsPass.pasp_kod_podr = loadedData.pasp_kod_podr
           ? loadedData.pasp_kod_podr

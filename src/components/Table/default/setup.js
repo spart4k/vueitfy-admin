@@ -271,7 +271,6 @@ const table = {
         direction = 'right'
         clientX = window.innerWidth - $event.clientX
       }
-      console.log(contextMenuRef.value)
       // if (!contextMenuRef.value.availableContext.length) {
       //   return
       // }
@@ -672,7 +671,6 @@ const table = {
         const link = document.createElement('a')
         link.download = path.url
         link.setAttribute('target', '_blank')
-        console.log(process.env.VUE_APP_STORE)
         link.href = process.env.VUE_APP_STORE + path.url
         document.body.appendChild(link)
         link.click()
@@ -800,7 +798,7 @@ const table = {
             dateValue.getMonth() + 1
           }.${dateValue.getFullYear()}`
           return conditionValue
-            ? moment(dateValue).format('DD.MM.YYYY')
+            ? moment(dateValue, 'YYYY-MM-DD').format('DD.MM.YYYY')
             : 'mdi-check'
         } else {
           return 'mdi-check'
@@ -856,17 +854,10 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.every((el) => {
-            console.log(
-              checkIncludesPermissions(el),
-              checkIncludesVertical(el),
-              checkIncludesDirections(el),
-              el.type
-            )
             const result =
               el.type === checkIncludesPermissions(el) &&
               checkIncludesVertical(el) &&
               checkIncludesDirections(el)
-            console.log(result)
             return result
           })
           // if ()

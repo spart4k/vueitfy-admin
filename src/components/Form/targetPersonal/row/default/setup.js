@@ -227,7 +227,6 @@ export default {
       //   object[el.name] = el
       //   object[el.name].items = el.items
       // })
-      // // console.log(JSON.stringify(object.type_pay))
       // return object
       // // return fieldsConfig.value
     })
@@ -269,7 +268,6 @@ export default {
         Vue.set(fields[fieldName], 'validations', validations)
         Vue.set(fields[fieldName], 'default', el.value)
       })
-      console.log(fields)
       return fields
     }
     const personalsTarget = ref([])
@@ -284,7 +282,6 @@ export default {
             //
             return tabField[el.alias] === el.name
           })
-          console.log()
           if (el.type === 'list') {
             if (Array.isArray(props.tab.formData[el.name])) {
               personalsTarget.value = props.tab.formData[el.name].map(
@@ -313,7 +310,6 @@ export default {
     })
     const vidVedField = (personal) => {
       const newItems = cloneForm.value.fields[2].items.filter((el) => {
-        console.log(personal)
         if (personal.with_everyday) {
           return el.id === 1 || el.id === 8
         } else {
