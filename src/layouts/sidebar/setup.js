@@ -2,7 +2,6 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useMobile from '../Adaptive/checkMob.js'
-import { version } from '@/../package.json'
 
 // import { navmenuApi } from '@/api'
 // import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
@@ -25,6 +24,7 @@ export default {
     const isMobileDevice = useMobile()
     const openMenu = computed(() => store?.state?.openMenu)
     const miniMenu = computed(() => store?.state?.miniMenu)
+    const version = process.env.VUE_APP_VERSION
     // Then we set the value in the --vh custom property to the root of the document
 
     const setRouterPath = (val) => {
