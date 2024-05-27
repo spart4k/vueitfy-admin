@@ -87,7 +87,6 @@ const table = {
             if (result) {
               // objects.value = result.objects
               total.value = result
-              // console.log('getItems')
             }
           } catch (err) {
             console.log(err)

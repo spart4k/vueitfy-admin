@@ -27,7 +27,6 @@ Vue.downloadFile = function (val) {
   link.download = val
   link.href = process.env.VUE_APP_STORE + val
   document.body.appendChild(link)
-  console.log(link)
   link.click()
   document.body.removeChild(link)
 }

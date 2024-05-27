@@ -20,18 +20,11 @@ import formBind from './config/form-bind.js'
 import formLoad from './config/form-load.js'
 
 function consoleText(row) {
-  console.log(row, 2)
   //return 'test'
 }
-function consoleButton(row) {
-  console.log(row, 1)
-}
-function consolePanel() {
-  console.log('panel,button')
-}
-function searchInputing(field) {
-  console.log(field)
-}
+function consoleButton(row) {}
+function consolePanel() {}
+function searchInputing(field) {}
 
 const nonExportTabs = [
   formLoad,

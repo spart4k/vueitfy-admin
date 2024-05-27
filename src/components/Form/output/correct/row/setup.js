@@ -299,8 +299,6 @@ export default {
     // const fields = ref([])
     const initFields = () => {
       for (let key in props.service) {
-        console.log(key)
-        console.log(fieldsData.value)
         fieldsData.value.push(switchType(key))
       }
     }
@@ -309,7 +307,6 @@ export default {
       const fields = {}
       const tabFields = fieldsData.value
       tabFields.forEach((el) => {
-        console.log(el)
         const { validations } = el
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'default', props.service[el.name])
@@ -320,7 +317,6 @@ export default {
         )
       })
       // for (let key in tabFields) {
-      //   console.log(key, tabFields)
       //   const { validations } = tabFields[key]
       //   if (typeof tabFields[key].isShow === 'boolean' && tabFields[key].isShow)
       //     Vue.set(fields, tabFields[key].name, {})
@@ -328,18 +324,15 @@ export default {
       //     typeof tabFields[key].isShow === 'object' &&
       //     tabFields[key].isShow.value
       //   ) {
-      //     // console.log('CONDITION TRUE', el.name)
       //     Vue.set(fields, tabFields[key].name, {})
       //   } else {
       //     return
       //   }
-      //   console.log(tabFields[key], 'FIELD-EL')
       //   Vue.set(fields, tabFields[key].name, {})
       //   Vue.set(fields[tabFields[key].name], 'validations', validations)
       //   Vue.set(fields[tabFields[key].name], 'default', docs_data[key])
       // }
       // props.tab.fields.forEach((el) => {})
-      console.log(fields)
       return fields
     }
     const { makeRequest: makeRequestList } = useRequest({
@@ -414,7 +407,6 @@ export default {
         const field = form?.fields.find((el) => {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
-        console.log(field)
         if (field) {
           field.hideItems = lists.data[keyList]
           // field.items =
@@ -428,7 +420,6 @@ export default {
       }
     }
     const removeService = (id) => {
-      console.log(id)
       emit('removeService')
     }
     const isReject = ref(false)
@@ -436,7 +427,6 @@ export default {
     const changeAutocomplete = async ({ field, value }) => {
       rejectedPrice.value = ''
       isReject.value = false
-      console.log(field, value)
       const data = await getServiceInfo(value)
       if (!data.length) {
         rejectedPrice.value = ['Отсутствует тариф']
@@ -485,9 +475,7 @@ export default {
       }
     }
     const errorSerivce = computed(() => {
-      // console.log(vForm?.value?.service_id.$errors)
       let stack = []
-      console.log(formErrors.value)
       if (formErrors.value?.service_id?.length)
         stack.push(...formErrors.value.service_id)
       if (rejectedPrice.value) {

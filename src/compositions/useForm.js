@@ -41,17 +41,14 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
-  console.log(mode, 'MODE ALL')
   // const route = useRoute()
   const { route } = context.root
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
-  console.log(fields)
   const formData = reactive(
     Object.keys(fields).reduce((obj, key) => {
       obj[key] = ref(fields[key].default)
-      console.log(obj.key)
       return obj
     }, {})
   )
@@ -64,7 +61,6 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
-      console.log(form?.fields)
       form?.fields?.forEach((el) => {
         formFields[el.name] = el
       })
@@ -79,7 +75,6 @@ export default function ({
       ) {
         return obj
       }
-      console.log(formFields, key)
       if (form) obj[key] = { ...formFields[key]?.validations, $autoDirty }
       else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
@@ -283,10 +278,8 @@ export default function ({
       if (action.download && !Array.isArray(action.download))
         Vue.downloadFile(result.path)
       else if (Array.isArray(action.download)) {
-        console.log(result.path)
         result.path.forEach((el, index) => {
           setTimeout(() => {
-            console.log(el)
             Vue.downloadFile(el)
           }, 500 * (index + 1))
         })
@@ -893,11 +886,9 @@ export default function ({
           field.hideItems = lists.data[keyList]
           if (field.hiding) {
             if (field.hiding.conditions) {
-              console.log(mode)
               const condition = field.hiding.conditions.find(
                 (el) => mode === el.value
               )
-              console.log(condition, 'CONDITION ')
               lists.data[keyList] = lists.data[keyList].filter((el) => {
                 return !condition.values.includes(el.id)
               })
@@ -1262,7 +1253,6 @@ export default function ({
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
     const queryFields = fields.map(async (el) => {
-      console.log(el)
       // const filters = []
       const { url } = el
       const data = await getList(url, {
@@ -1412,7 +1402,6 @@ export default function ({
     const listData = field?.updateList?.map((list) => {
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
-        console.log(source, field.name)
         if (
           source[el.field] !== null &&
           source[el.field] !== undefined &&
@@ -1466,7 +1455,6 @@ export default function ({
   }
 
   const getData = async () => {
-    console.log('get data!')
     //if (!initPreRequest()) {
     //  return false
     //}
@@ -1478,11 +1466,9 @@ export default function ({
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }
-    console.log(syncForm)
     if (syncForm) {
       if (syncForm.hasOwnProperty('readonly')) {
         environment.readonlyAll = syncForm.readonly
-        console.log(environment.readonlyAll)
       }
       for (let formKey in syncForm.data) {
         const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
@@ -1629,12 +1615,6 @@ export default function ({
           field.items = field.defaultItems
             ? [...field.defaultItems, ...lists.data[keyList]]
             : lists.data[keyList]
-          console.log(
-            field.items,
-            'field.items',
-            field.name,
-            lists.data[keyList]
-          )
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)
@@ -1759,7 +1739,6 @@ export default function ({
                 environment,
                 mode,
               }
-              console.log('funcCond', field.name)
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1771,9 +1750,6 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        if (field.name === 'status_id') {
-          console.log(condition(), field.name)
-        }
         return environment.readonlyAll && !form.notReadonly
           ? true
           : field.readonly.value

@@ -195,7 +195,6 @@ const form10 = defineComponent({
         }
         return el.formData
       })
-      console.log(items)
       const { makeRequest: sendZayavkaItems } = useRequest({
         context,
         request: () =>
@@ -570,7 +569,6 @@ const form10 = defineComponent({
       popupForm.value.isShow = false
     }
     const openZayavka = () => {
-      console.log('zayavka')
       router.push({
         name: 'main/:id/:form_id',
         params: {

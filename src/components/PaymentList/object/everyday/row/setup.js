@@ -80,7 +80,6 @@ const table = {
     }
     let touched = false
     const getObjects = async () => {
-      console.log(objects.value)
       if (objects.value !== null) return
       isOpen.value = undefined
       if (loading.value) {
@@ -92,7 +91,6 @@ const table = {
             objects.value = result
             total.value = result
             isOpen.value = 0
-            console.log('getItems')
           }
         } catch (err) {
           console.log(err)
