@@ -2,6 +2,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useMobile from '../Adaptive/checkMob.js'
+import { version } from '@/../package.json'
 
 // import { navmenuApi } from '@/api'
 // import useMenuMobile from '../Adaptive/CloseOpenMenu.js'
@@ -105,6 +106,7 @@ export default {
       changeMenuSize,
       setRouterPath,
       userInfo,
+      version,
     }
   },
 }
