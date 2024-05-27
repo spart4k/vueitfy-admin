@@ -665,15 +665,7 @@ const Form7 = defineComponent({
         object[el.name] = el
         object[el.name].items = el.items
         // Vue.set(object, [el.name], el)
-        if (el?.items && el.name === 'type_pay') {
-          console.log(index)
-          console.log(1, JSON.stringify(fieldsConfig.value[4].items))
-          console.log(2, JSON.stringify(fieldsConfig.value[index].items))
-          console.log(el.name, JSON.stringify(el?.items))
-        }
       })
-      // console.log(JSON.stringify(object.type_pay))
-      console.log('asdasd')
       return object
       // return fieldsConfig.value
     })
@@ -846,10 +838,8 @@ const Form7 = defineComponent({
     const sendData = async () => {
       vForm.value.$touch()
       validate(true)
-      console.log(vForm.value$invalid)
       if (vForm.value.$invalid) return
       const resultZayavka = await sendZayavka()
-      console.log(resultZayavka)
       const { success } = await changeStatusTask()
       if (success) {
         ctx.emit('closePopup')

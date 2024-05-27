@@ -78,7 +78,6 @@ const table = {
       return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
     }
     const getObjects = async () => {
-      console.log(objects.value)
       if (objects.value !== null) return
       isOpen.value = undefined
       if (loading.value) {
@@ -89,7 +88,6 @@ const table = {
           if (result) {
             objects.value = result
             isOpen.value = 0
-            console.log('getItems')
           }
         } catch (err) {
           console.log(err)

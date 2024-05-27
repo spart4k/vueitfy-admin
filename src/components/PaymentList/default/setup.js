@@ -22,7 +22,6 @@ import Manager from '../manager/default/index.vue'
 import FormDefault from '@/components/Form/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
 import { dateField, stringField } from '@/utils/fields.js'
-console.log('CREATED PAYMENTS')
 //import { tableApi } from '@/api'
 
 const table = {
@@ -148,7 +147,6 @@ const table = {
       dateFieldExport.value = currentDate.value.date
       await getItems()
     }
-    console.log('CREATED PAYMENTS')
     const { makeRequest, loading } = useRequest({
       context,
       request: () =>
@@ -191,7 +189,6 @@ const table = {
             })
             managers.value = result
             // fakeInitManager()
-            console.log('getItems')
           }
         } catch (err) {
           console.log(err)
@@ -200,7 +197,6 @@ const table = {
     }
     const openExport = () => {}
     const openPersonal = (row) => {
-      console.log('row', row)
       popupForm.value.isShow = true
       activePerson.value = row
       router.push({
@@ -277,7 +273,6 @@ const table = {
     watch(
       () => searchInput.value,
       () => {
-        console.log('search')
         getItems()
       }
     )

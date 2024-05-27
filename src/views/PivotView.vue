@@ -89,7 +89,6 @@ export default {
         oldPath: 'id',
       },
     })
-    console.log(paymentConfig)
     personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
 
     config.detail.tabs.push(...personalTabs)

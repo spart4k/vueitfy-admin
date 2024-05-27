@@ -302,7 +302,6 @@ export default {
       emit('confirmDoc')
     }
     watch(formData, () => {
-      console.log(formData)
       osnConfirmed.value = false
     }),
       { deep: true }

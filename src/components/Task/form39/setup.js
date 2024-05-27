@@ -204,8 +204,6 @@ const Form7 = defineComponent({
         object[el.name].items = el.items
         // Vue.set(object, [el.name], el)
       })
-      // console.log(JSON.stringify(object.type_pay))
-      console.log('asdasd')
       return object
       // return fieldsConfig.value
     })
@@ -417,7 +415,6 @@ const Form7 = defineComponent({
           //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
           //   status.value === 'Работает',
         }
-        console.log(data)
         return store.dispatch('taskModule/setPartTask', {
           status: 2,
           data,
@@ -441,7 +438,6 @@ const Form7 = defineComponent({
           //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
           //   status.value === 'Работает',
         }
-        console.log(data)
         return store.dispatch('taskModule/removeTmp', {
           status: 2,
           data,
@@ -453,7 +449,6 @@ const Form7 = defineComponent({
       const { code: codeRemove } = await removeTmp()
       if (codeRemove) {
         const { code } = await updatePersonalAccess()
-        console.log(code)
         if (code === 1) {
           const { success } = await changeStatusTask()
           if (success) {

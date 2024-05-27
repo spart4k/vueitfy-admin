@@ -282,7 +282,6 @@ const table = {
         direction = 'right'
         clientX = window.innerWidth - $event.clientX
       }
-      console.log(contextMenuRef.value)
       // if (!contextMenuRef.value.availableContext.length) {
       //   return
       // }
@@ -631,14 +630,12 @@ const table = {
         const link = document.createElement('a')
         link.download = path.url
         link.setAttribute('target', '_blank')
-        console.log(process.env.VUE_APP_STORE)
         link.href = process.env.VUE_APP_STORE + path.url
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
         getItems()
       }
-      console.log(button)
       if (button.refreshTable) {
         getItems()
       }

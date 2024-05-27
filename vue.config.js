@@ -17,7 +17,6 @@ module.exports = {
       .loader('html-loader')
   },
   runtimeCompiler: true,
-  // filenameHashing: false,
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       config.output.filename = `js/[name].${process.env.npm_package_version}.min.js`
