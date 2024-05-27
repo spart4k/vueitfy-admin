@@ -83,6 +83,7 @@
               :disabled="disabledField(field)"
               :name="field.name"
               :class="[...field.class]"
+              v-mask="field.mask"
             >
               <template v-if="field?.appendAction?.length" v-slot:append-outer>
                 <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->

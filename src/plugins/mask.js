@@ -4,5 +4,6 @@ import VueMask from 'v-mask'
 Vue.use(VueMask, {
   placeholders: {
     $: /[0-2]/,
+    M: /[0-1]/,
   },
 })
