@@ -54,7 +54,6 @@ const table = {
     const period = toRef(props, 'period')
     const objects = ref(null)
     // const period = inject('period')
-    console.log(period)
     const { makeRequest, loading } = useRequest({
       context,
       request: () =>
@@ -68,7 +67,6 @@ const table = {
     })
 
     const getObjects = async (touching) => {
-      console.log('update')
       if (objects.value !== null) {
         if (touching) {
           objects.value.forEach((element) => {
@@ -92,7 +90,6 @@ const table = {
             })
             objects.value = result
             isOpen.value = 0
-            console.log('getItems')
           }
         } catch (err) {
           console.log(err)
@@ -118,7 +115,6 @@ const table = {
     watch(
       () => isOpen.value,
       async (newVal) => {
-        // console.log(newVal + '_' + props.row.personal_id)
         await getObjects()
       }
     )
@@ -127,7 +123,6 @@ const table = {
       async (newVal) => {
         isOpen.value = null
         objects.value = null
-        // console.log(newVal + '_' + props.row.personal_id)
         // await getObjects()
       }
     )

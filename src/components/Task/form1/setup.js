@@ -283,11 +283,9 @@ const Form1 = defineComponent({
     })
     const cardAccepted = ref(false)
     const changeDocs = (data, documentIndex) => {
-      console.log(documentIndex)
       if (data.bank_card_id) {
         bankCardId.value = data.bank_card_id
         cardAccepted.value = true
-        console.log(data.bank_card_id)
         bankCompleted.value = data.bank_card_id
       }
       // const docsId = props.data.data.docs_id.map((doc) => doc.doc_id)

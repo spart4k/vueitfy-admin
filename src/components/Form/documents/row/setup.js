@@ -1484,7 +1484,6 @@ export default {
         Vue.set(fields[el.name], 'default', docs_data[el.name])
       })
       // for (let key in tabFields) {
-      //   console.log(key, tabFields)
       //   const { validations } = tabFields[key]
       //   if (typeof tabFields[key].isShow === 'boolean' && tabFields[key].isShow)
       //     Vue.set(fields, tabFields[key].name, {})
@@ -1492,12 +1491,10 @@ export default {
       //     typeof tabFields[key].isShow === 'object' &&
       //     tabFields[key].isShow.value
       //   ) {
-      //     // console.log('CONDITION TRUE', el.name)
       //     Vue.set(fields, tabFields[key].name, {})
       //   } else {
       //     return
       //   }
-      //   console.log(tabFields[key], 'FIELD-EL')
       //   Vue.set(fields, tabFields[key].name, {})
       //   Vue.set(fields[tabFields[key].name], 'validations', validations)
       //   Vue.set(fields[tabFields[key].name], 'default', docs_data[key])
@@ -1562,7 +1559,6 @@ export default {
     }
     const listRequestsForUpload = ref([])
     let addFiles = async (e) => {
-      console.log(e[0])
       file.value = e[0]
       fileExt = file.value.type.split('/')[1]
       fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -1659,7 +1655,6 @@ export default {
             // searchedDoc.inProcess = false
             // Vue.set(doc, 'document', doc.document)
             // Vue.set(doc.document, 'inProcess', false)
-            // console.log(doc.document.inProcess)
             // doc.document.newId = docRes.result
             // doc.document.newId = docRes.result
             // await createFillScanProcess(docRes.result)

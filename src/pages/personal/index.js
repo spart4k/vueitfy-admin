@@ -20,18 +20,11 @@ import formBind from './config/form-bind.js'
 import formLoad from './config/form-load.js'
 
 function consoleText(row) {
-  console.log(row, 2)
   //return 'test'
 }
-function consoleButton(row) {
-  console.log(row, 1)
-}
-function consolePanel() {
-  console.log('panel,button')
-}
-function searchInputing(field) {
-  console.log(field)
-}
+function consoleButton(row) {}
+function consolePanel() {}
+function searchInputing(field) {}
 
 const nonExportTabs = [
   formLoad,
@@ -57,7 +50,7 @@ const contextMenuPersonal = {
       isShow: {
         condition: [
           {
-            permission_id: [1, 3, 15, 4],
+            permissions: [1, 3, 15, 4],
             type: true,
           },
         ],
@@ -74,7 +67,7 @@ const contextMenuPersonal = {
       isShow: {
         condition: [
           {
-            permission_id: [1, 3, 15, 4],
+            permissions: [1, 3, 15, 4],
             type: true,
           },
         ],
@@ -87,7 +80,7 @@ const contextMenuPersonal = {
             type: true,
           },
           {
-            permission_id: [13],
+            permissions: [13],
             type: true,
           },
         ],
@@ -961,6 +954,34 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/user_keys',
         title: 'Личные ключи',
+        contextMenu: {
+          actions: [
+            {
+              icon: '$IconDelete',
+              label: 'Удалить',
+              isShow: {
+                condition: [
+                  {
+                    permissions: [1, 3, 4, 15],
+                    type: true,
+                  },
+                ],
+              },
+              action: {
+                type: 'confirm',
+                dialog: {
+                  text: 'Вы подтверждаете удаление ключа?',
+                  function: (context) => {
+                    context.store.dispatch('form/update', {
+                      url: 'set/data/user_keys',
+                      body: { data: { id: context.data.row.id, del: 1 } },
+                    })
+                  },
+                },
+              },
+            },
+          ],
+        },
       },
       type: 'TableDefault',
       panel: {

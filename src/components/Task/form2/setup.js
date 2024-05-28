@@ -68,7 +68,6 @@ const Form2 = defineComponent({
     const newStatus = ref(0)
     const changeDocs = (data) => {
       finalData.value = data
-      console.log(data)
     }
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
@@ -99,7 +98,6 @@ const Form2 = defineComponent({
       isOsnDocConfirmed.value = true
     }
     const rejectOsnData = () => {
-      console.log('reject')
       isOsnDocConfirmed.value = false
     }
     const docFormRef = ref(null)

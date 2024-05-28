@@ -56,7 +56,6 @@ const table = {
     const objects = ref(null)
     const period = inject('period')
     const total = ref({})
-    console.log(period)
     const { makeRequest, loading } = useRequest({
       context,
       request: () =>
@@ -71,7 +70,6 @@ const table = {
           objects.value = result.objects
           total.value = result
           isOpen.value = 0
-          console.log('getItems')
         }
       } catch (err) {
         console.log(err)
@@ -88,7 +86,6 @@ const table = {
       () => isOpen.value,
       async (newVal) => {
         // isOpen.value = undefined
-        console.log(newVal + '_' + props.row.personal_id)
         await getObjects()
       }
     )
