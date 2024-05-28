@@ -16,6 +16,10 @@ import documents from './documents'
 import schedule from './schedule'
 import habitation from './habitation'
 import card from './card'
+import bank from './bank'
+import service from './service'
+import mvd from './mvd'
+import jurFace from './jur-face'
 
 export {
   schedule,
@@ -36,4 +40,8 @@ export {
   pivotx5,
   habitation,
   card,
+  service,
+  bank,
+  mvd,
+  jurFace,
 }

@@ -58,7 +58,7 @@ export default {
     }
     const createItem = () => {
       router.push({
-        name: options.panel.buttons[1].url,
+        name: options.panel.buttons[2].url,
       })
       popupForm.value.isShow = true
     }
