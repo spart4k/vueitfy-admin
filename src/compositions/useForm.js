@@ -1239,7 +1239,7 @@ export default function ({
           filter.value = el.source ? eval(el.source) : formData[el.field]
         }
       } else if (el.routeKey) {
-        filter.value = [+route.params[el.routeKey]]
+        filter.value = +route.params[el.routeKey]
       } else {
         filter.value = formData[el.field]
       }
