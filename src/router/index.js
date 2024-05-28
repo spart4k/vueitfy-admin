@@ -21,6 +21,8 @@ import BankView from '../views/BankView.vue'
 import JurFaceView from '../views/JurFaceView.vue'
 import MvdView from '../views/MvdView.vue'
 import ServiceView from '../views/ServiceView.vue'
+import RashodCategoryView from '../views/RashodCategoryView.vue'
+import RashodVidView from '../views/RashodVidView.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -768,6 +770,62 @@ const routes = [
         meta: {
           mode: ['edit'],
           label: 'Редактировать юр. лицо',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/rashod_vid',
+    name: 'rashod_vid',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: RashodVidView,
+    children: [
+      {
+        name: 'rashod_vid/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить расход',
+        },
+        component: Detail,
+      },
+      {
+        name: 'rashod_vid/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать расход',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/rashod_category',
+    name: 'rashod_category',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: RashodCategoryView,
+    children: [
+      {
+        name: 'rashod_category/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить расход',
+        },
+        component: Detail,
+      },
+      {
+        name: 'rashod_category/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать расход',
         },
         component: Detail,
       },
