@@ -17,6 +17,7 @@
       :personalId="entity?.id"
       :correct="correct"
       :confirm="confirm"
+      :rejecting="rejecting"
       :docsData="docsData"
       :fromTask="fromTask"
       :withoutSave="withoutSave"

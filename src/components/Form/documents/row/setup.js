@@ -107,6 +107,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    rejecting: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     Autocomplete,
@@ -1410,6 +1414,7 @@ export default {
     })
 
     const isCorrect = ref(false)
+    const isHold = ref(undefined)
     const sendBankCard = async () => {
       const { result } = await sendBankCardRequest()
       if (result && !props.bankCompleted) {
@@ -1617,6 +1622,10 @@ export default {
         const path_doc = `/personal_doc/${basketFiles.value.fileName}`
         pathDock.value = [path_doc]
         props.document.path_doc = path_doc
+        isCorrect.value = true
+        if (isRejected.value === true) {
+          isRejected.value = false
+        }
       } else {
         const clearBasket = () => {
           basketFiles.value = {}
@@ -1630,7 +1639,10 @@ export default {
         })
         pathDock.value = [e[0].dataURL]
       }
-
+      // if (isHold.value || isHold.value !== undefined) {
+      //   isHold.value !== undefined ? (isHold.value = false) : ''
+      //   isCorrect.value = true
+      // }
       toPreview()
     }
     const listRequestsResult = ref([])
@@ -1726,6 +1738,7 @@ export default {
       // }
       isRejected.value = true
       isCorrect.value = false
+      isHold.value !== undefined ? (isHold.value = false) : ''
       // confirmedDocs.value = confirmedDocs.value.filter((doc) => doc !== idDoc)
       // ctx.emit('change', {
       //   confirmed: confirmedDocs.value,
@@ -1780,6 +1793,12 @@ export default {
       })
       await Promise.all(queryFields)
     }
+    const removeFile = () => {
+      console.log('removed')
+      basketFiles.value = {}
+      // isCorrect.value = false
+      listRequestsForUpload.value = []
+    }
     // const docName = () =>
     onMounted(async () => {
       // if (props.document.path_doc) {
@@ -1794,6 +1813,9 @@ export default {
       }
       if (props.document.inProcess !== undefined) {
         !props.document.inProcess ? (isCorrect.value = true) : false
+      }
+      if (props.document.hold) {
+        isHold.value = true
       }
     })
     return {
@@ -1812,6 +1834,7 @@ export default {
       pathDock,
       addFiles,
       isEdit,
+      isHold,
       toEdit,
       toPreview,
       switchType,
@@ -1832,6 +1855,7 @@ export default {
       document,
       dropZoneRef,
       folderPanel,
+      removeFile,
       // documentData,
     }
   },

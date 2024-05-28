@@ -126,6 +126,10 @@ const docForm = defineComponent({
     taskInfo: {
       type: Object,
     },
+    rejecting: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: function () {
     return {
@@ -602,6 +606,7 @@ const docForm = defineComponent({
           id: el.id,
           path_doc: el.path_doc,
           inProcess: el.inProcess !== undefined ? el.inProcess : undefined,
+          hold: el.hold,
         }
       })
     }
