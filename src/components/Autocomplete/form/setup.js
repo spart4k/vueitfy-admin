@@ -74,7 +74,7 @@ export default {
               if (el.routeKey) {
                 filter.push({
                   alias: el.alias ?? el.field,
-                  value: [+route.params[el.routeKey]],
+                  value: +route.params[el.routeKey],
                   type: el.type,
                 })
               } else {
