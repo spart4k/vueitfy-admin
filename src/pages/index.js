@@ -20,6 +20,8 @@ import bank from './bank'
 import service from './service'
 import mvd from './mvd'
 import jurFace from './jur-face'
+import rashod_vid from './rashod_vid'
+import rashod_category from './rashod_category'
 
 export {
   schedule,
@@ -44,4 +46,6 @@ export {
   bank,
   mvd,
   jurFace,
+  rashod_category,
+  rashod_vid,
 }
