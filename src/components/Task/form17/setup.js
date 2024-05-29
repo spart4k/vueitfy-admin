@@ -303,6 +303,7 @@ const Form17 = defineComponent({
           request: () => {
             return store.dispatch('taskModule/setPartTask', {
               status: 2,
+              successMessage: 'Задача завершена',
               data: {
                 process_id: data.task.process_id,
                 manager_id: data.task.from_account_id,
@@ -319,33 +320,6 @@ const Form17 = defineComponent({
         })
         await setPersonalTarget()
         result = await changeStatus()
-        //   $.ajax('/common/save/personal_target', {
-        //     method: "POST",
-        // //     data: {id: <?php echo $entity['id']; ?>, services: `{"3": {"services": [{"service_id": <?php echo $services_spr[$entity['doljnost_id']]; ?>,
-        // "qty": ${$('#form_personal_target_qty').val()}, "price": ${$('#form_personal_target_price').val()}, "sum": ${$('#form_personal_target_sum').val()}"}]"],
-        // "payment_id": false, "is_pay": false, "sum": ${$('#form_personal_target_sum').val()}}}` },
-        //     success: function() {
-        //         $.ajax('/task/change_status_task', {
-        //             method: "POST",
-        //             data: {status: 2, data: {
-        //                 process_id: <?php echo $task['process_id']; ?>,
-        //                 manager_id: <?php echo $task['from_account_id']; ?>,
-        //                 task_id: <?php echo $task['id']; ?>,
-        //                 parent_action: <?php echo $task['id']; ?>,
-        //                 personal_target_id: <?php echo $entity['id']; ?>,
-        //                 have_price: <?php echo isset($service_price[0]) ? 1 : 0; ?>,
-        //                 object_id: <?php echo $entity['object_id']; ?>,
-        //                 service_id: <?php echo $services_spr[$entity['doljnost_id']]; ?>,
-        //                 date_target: '<?php echo $entity['date_target']; ?>'
-        //             }},
-        //             success: function (data) {
-        //                 slidePopup('Задача выполнена!', 'success');
-        //                 typeof dataTable['task'] != "undefined" ? dataTable['task'].ajax.reload() : dataTable[document.taskTable].ajax.reload();
-        //                 hideModal();
-        //             }
-        //         })
-        //     }
-        // })
       } else if (data.entity.direction_id == 7) {
         const { makeRequest: setDataPayment } = useRequest({
           context,
@@ -420,6 +394,7 @@ const Form17 = defineComponent({
           request: () => {
             return store.dispatch('taskModule/setPartTask', {
               status: 2,
+              successMessage: 'Задача завершена',
               data: {
                 process_id: data.task.process_id,
                 manager_id: data.task.from_account_id,
