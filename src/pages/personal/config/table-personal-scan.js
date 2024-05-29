@@ -177,7 +177,19 @@ export default {
           name: 'Основные',
           type: 'FormDefault',
           detail: true,
-          lists: [{ alias: 'documents', filter: [] }],
+          lists: [
+            {
+              alias: 'documents',
+              filter: [
+                {
+                  field: 'personal_id',
+                  value: '',
+                  routeKey: 'id',
+                  type: 'num',
+                },
+              ],
+            },
+          ],
           alias: 'personal_doc',
           active: false,
           fields: [
@@ -267,7 +279,19 @@ export default {
           name: 'Основные',
           type: 'FormDefault',
           detail: true,
-          lists: [{ alias: 'documents', filter: [] }],
+          lists: [
+            {
+              alias: 'documents',
+              filter: [
+                {
+                  field: 'personal_id',
+                  value: '',
+                  routeKey: 'id',
+                  type: 'num',
+                },
+              ],
+            },
+          ],
           alias: 'personal_doc',
           active: false,
           fields: [
