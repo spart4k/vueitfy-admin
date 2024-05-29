@@ -1149,6 +1149,21 @@ export default {
             // required: { required },
           })
           break
+        case 'patent_kem':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
         case 'dms_vidachi':
           result = dateField({
             label: switchLabel(key),
@@ -1376,7 +1391,9 @@ export default {
         case 'patent_special_marks_date':
           result = 'Особые отметки'
           break
-
+        case 'patent_kem':
+          result = 'Выдан кем'
+          break
         case 'oms_num':
           result = 'Номер'
           break
@@ -1816,6 +1833,9 @@ export default {
       }
       if (props.document.hold) {
         isHold.value = true
+      }
+      if (props.document.isRejected) {
+        isRejected.value = true
       }
     })
     return {

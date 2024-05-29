@@ -130,6 +130,10 @@ const docForm = defineComponent({
       type: Boolean,
       default: false,
     },
+    showCommentEmpty: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: function () {
     return {
@@ -260,6 +264,7 @@ const docForm = defineComponent({
         patent_date_docs_in: loadedData.patent_date_docs_in
           ? loadedData.patent_date_docs_in
           : '',
+        patent_kem: loadedData.patent_kem ? loadedData.patent_kem : '',
         patent_region: loadedData.patent_region ? loadedData.patent_region : '',
         patent_special_marks_date: loadedData.patent_special_marks_date
           ? loadedData.patent_special_marks_date
@@ -607,6 +612,7 @@ const docForm = defineComponent({
           path_doc: el.path_doc,
           inProcess: el.inProcess !== undefined ? el.inProcess : undefined,
           hold: el.hold,
+          isRejected: el.isRejected !== undefined ? el.isRejected : undefined,
         }
       })
     }

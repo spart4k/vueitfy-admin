@@ -75,12 +75,13 @@ export default {
       for (let key in sss.docs_id) {
         console.log(key)
         let pasteObject = data.data.docs.find((doc) => doc.doc_id == key)
-        console.log(pasteObject)
-        if (pasteObject) {
+        console.log(sss.docs_id[key])
+        if (sss.docs_id[key] == 1) {
           pasteObject['inProcess'] = false
         } else {
-          pasteObject = { doc_id: +key, inProcess: true, hold: true }
+          pasteObject['isRejected'] = true
         }
+        console.log(pasteObject)
         listDocuments.value.push(pasteObject)
       }
       // sss.docs_id.forEach((item) => {

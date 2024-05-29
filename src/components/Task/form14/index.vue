@@ -9,8 +9,8 @@
           dataRojd: data.entity.data_rojd.split('-').reverse().join('.'),
         }"
       />
-      <FormError class="mb-4" v-if="rejectedPrice">
-        Отсутствует тариф: {{ rejectedPrice }}
+      <FormError class="mb-4" v-if="commentData">
+        {{ commentData }}
       </FormError>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
 
@@ -22,9 +22,6 @@
           </v-btn></v-col
         >
       </v-row> -->
-      <v-row align="center">
-        <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
-      </v-row>
       <!-- <div class="w-100 d-flex justify-center mt-2">
         <v-btn
           small
@@ -54,11 +51,10 @@
             ref="docFormRef"
             title="Приложите документы:"
             :showFields="false"
-            :showDropzone="true"
-            :withoutSave="false"
-            :rejecting="true"
-            :showScan="false"
+            :confirm="true"
+            :showScan="true"
             :fromTask="true"
+            :showCommentEmpty="true"
           ></DocForm>
         </div>
         <v-row>

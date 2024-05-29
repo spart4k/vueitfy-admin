@@ -9,8 +9,8 @@
           dataRojd: data.entity.data_rojd.split('-').reverse().join('.'),
         }"
       />
-      <FormError class="mb-4" v-if="rejectedPrice">
-        Отсутствует тариф: {{ rejectedPrice }}
+      <FormError class="mb-4" v-if="commentData">
+        {{ commentData }}
       </FormError>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
 
