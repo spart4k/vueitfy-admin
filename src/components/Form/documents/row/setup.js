@@ -8,6 +8,7 @@ import DropZone from '@/components/Dropzone/default/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
 import { required } from '@/utils/validation.js'
 import { getList } from '@/api/selects'
+import FormError from '@/components/Task/el/FormError/index.vue'
 import {
   stringField,
   dateField,
@@ -115,11 +116,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    commentError: {
+      type: String,
+      default: '',
+    },
   },
   components: {
     Autocomplete,
     DropZone,
     Datepicker,
+    FormError,
   },
   setup(props, ctx) {
     const context = {

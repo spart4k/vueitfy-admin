@@ -196,7 +196,6 @@ export default {
       docFormRef.value.docRows.forEach((elem, index) => {
         keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
       })
-      console.log(keyOfObjectSend)
 
       const { makeRequest: changeStatus } = useRequest({
         context,

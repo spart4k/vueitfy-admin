@@ -54,7 +54,6 @@
             :confirm="true"
             :showScan="true"
             :fromTask="true"
-            :showCommentEmpty="true"
           ></DocForm>
         </div>
         <v-row>

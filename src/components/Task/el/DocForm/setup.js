@@ -130,13 +130,13 @@ const docForm = defineComponent({
       type: Boolean,
       default: false,
     },
-    showCommentEmpty: {
-      type: Boolean,
-      default: false,
-    },
     removeRejecting: {
       type: Boolean,
       default: false,
+    },
+    showCommentEmpty: {
+      type: String,
+      default: '',
     },
   },
   data: function () {
@@ -617,6 +617,8 @@ const docForm = defineComponent({
           inProcess: el.inProcess !== undefined ? el.inProcess : undefined,
           hold: el.hold,
           isRejected: el.isRejected !== undefined ? el.isRejected : undefined,
+          commentError:
+            el.commentError !== undefined ? el.commentError : undefined,
         }
       })
     }

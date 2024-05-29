@@ -71,17 +71,21 @@ export default {
     let comment = ref('')
     const commentData = JSON.parse(data.task.dop_data)['comment']
     onMounted(() => {
-      console.log(sss)
       for (let key in sss.docs_id) {
         console.log(key)
-        let pasteObject = data.data.docs.find((doc) => doc.doc_id == key)
-        console.log(sss.docs_id[key])
-        if (sss.docs_id[key] == 1) {
-          pasteObject['inProcess'] = false
-        } else {
-          pasteObject['isRejected'] = true
-        }
+        let pasteObject
+        pasteObject = data.data.docs.find((doc) => doc.doc_id == key)
         console.log(pasteObject)
+        if (sss.docs_id[key] == 1) {
+          pasteObject.inProcess = false
+        } else {
+          if (!pasteObject) {
+            pasteObject = {}
+            pasteObject.doc_id = key
+            pasteObject.commentError = 'Документ не приложен. См. комментарий!'
+          }
+          pasteObject.isRejected = true
+        }
         listDocuments.value.push(pasteObject)
       }
       // sss.docs_id.forEach((item) => {
@@ -209,7 +213,6 @@ export default {
       docFormRef.value.docRows.forEach((elem, index) => {
         keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
       })
-      console.log(keyOfObjectSend)
 
       const { makeRequest: changeStatus } = useRequest({
         context,

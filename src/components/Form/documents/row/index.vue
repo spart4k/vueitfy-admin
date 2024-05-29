@@ -200,6 +200,9 @@
             alt=""
           />-->
               </v-col>
+              <FormError class="mb-4" v-if="document.commentError">
+                {{ document.commentError }}
+              </FormError>
             </v-row>
             <v-row v-if="acceptDocPanel" justify="end">
               <v-btn

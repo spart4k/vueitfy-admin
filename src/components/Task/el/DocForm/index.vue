@@ -26,6 +26,7 @@
       :taskInfo="taskInfo"
       :bankCompleted="bankCompleted"
       :removeRejecting="removeRejecting"
+      :commentError="commentError"
     />
   </div>
 </template>
