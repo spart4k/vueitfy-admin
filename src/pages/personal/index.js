@@ -53,6 +53,15 @@ const contextMenuPersonal = {
             permissions: [1, 3, 15, 4],
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return directions.lenght === 1 && directions.includes(7)
+            },
+            type: false,
+          },
         ],
       },
       action: {
@@ -69,6 +78,15 @@ const contextMenuPersonal = {
           {
             permissions: [1, 3, 15, 4],
             type: true,
+          },
+          {
+            funcCondition: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return directions.lenght === 1 && directions.includes(7)
+            },
+            type: false,
           },
         ],
       },
@@ -757,6 +775,18 @@ export const config = {
         title: 'На добавлении',
         noTableAction: true,
       },
+      isShow: {
+        condition: [
+          {
+            funcComputed: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return !(directions.lenght === 1 && directions.includes(7))
+            },
+          },
+        ],
+      },
       type: 'TableDefault',
       panel: {
         buttons: [
@@ -1193,6 +1223,14 @@ export const config = {
           {
             permissions: [16, 19],
             type: false,
+          },
+          {
+            funcComputed: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return !(directions.lenght === 1 && directions.includes(7))
+            },
           },
         ],
       },
