@@ -58,7 +58,7 @@ const contextMenuPersonal = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return directions.lenght === 1 && directions.includes(7)
+              return directions.length === 1 && directions.includes(7)
             },
             type: false,
           },
@@ -84,7 +84,7 @@ const contextMenuPersonal = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return directions.lenght === 1 && directions.includes(7)
+              return directions.length === 1 && directions.includes(7)
             },
             type: false,
           },
@@ -782,7 +782,7 @@ export const config = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return !(directions.lenght === 1 && directions.includes(7))
+              return !(directions.length === 1 && directions.includes(7))
             },
           },
         ],
@@ -1229,7 +1229,7 @@ export const config = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return !(directions.lenght === 1 && directions.includes(7))
+              return !(directions.length === 1 && directions.includes(7))
             },
           },
         ],
