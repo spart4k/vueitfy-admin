@@ -220,6 +220,12 @@ export default {
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
+      } else {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Ошибка',
+          timeout: 1000,
+        })
       }
     }
 

@@ -181,7 +181,7 @@
                     </a>
                   </div>
                   <DropZone
-                    v-else
+                    v-show="!(document.path_doc && !isEdit && !showScan)"
                     :options="{
                       maxFiles: 1,
                       removeble: true,

@@ -134,6 +134,10 @@ const docForm = defineComponent({
       type: Boolean,
       default: false,
     },
+    removeRejecting: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: function () {
     return {

@@ -59,6 +59,7 @@
             :rejecting="true"
             :showScan="false"
             :fromTask="true"
+            :removeRejecting="true"
           ></DocForm>
         </div>
         <v-row>

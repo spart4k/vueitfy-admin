@@ -111,6 +111,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    removeRejecting: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     Autocomplete,
@@ -1635,7 +1639,8 @@ export default {
           await delInfoAFile(props.document.id)
         }
         await loadImage(basketFiles.value)
-        await updateFileData()
+        const { result } = await updateFileData()
+        document.value.id = result
         const path_doc = `/personal_doc/${basketFiles.value.fileName}`
         pathDock.value = [path_doc]
         props.document.path_doc = path_doc
@@ -1749,13 +1754,37 @@ export default {
       }
     }
     const isRejected = ref(false)
-    const rejectDoc = (idDoc) => {
+    const rejectDoc = async (idDoc) => {
       // if (!rejectedDocs.value.includes(idDoc)) {
       //   rejectedDocs.value = [...rejectedDocs.value, idDoc]
       // }
       isRejected.value = true
       isCorrect.value = false
       isHold.value !== undefined ? (isHold.value = false) : ''
+      if (props.removeRejecting && document.value.id) {
+        const { makeRequest: delInfoAFile } = useRequest({
+          context,
+          successMessage: 'Документ успешно удален',
+          request: (id) =>
+            store.dispatch('taskModule/updateFileData', {
+              data: {
+                id: document.value.id,
+                del: 1,
+              },
+            }),
+        })
+        const { result } = await delInfoAFile()
+        if (result) {
+          console.log(dropZoneRef.value)
+          dropZoneRef.value.clearDropzone()
+        } else {
+          store.commit('notifies/showMessage', {
+            color: 'error',
+            content: 'Не удалось удалить документ',
+            timeout: 1000,
+          })
+        }
+      }
       // confirmedDocs.value = confirmedDocs.value.filter((doc) => doc !== idDoc)
       // ctx.emit('change', {
       //   confirmed: confirmedDocs.value,

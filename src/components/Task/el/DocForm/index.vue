@@ -25,6 +25,7 @@
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
       :taskInfo="taskInfo"
       :bankCompleted="bankCompleted"
+      :removeRejecting="removeRejecting"
     />
   </div>
 </template>
