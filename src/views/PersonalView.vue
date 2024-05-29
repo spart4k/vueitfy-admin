@@ -75,8 +75,15 @@ export default {
       return config.tabs.filter((tab) => {
         if (!tab.isShow) return tab
         else {
-          return tab.isShow.condition.some((el) => {
-            return checkIncludesPermissions(el) === el.type
+          return tab.isShow.condition.every((el) => {
+            if (el.permissions) {
+              return checkIncludesPermissions(el) === el.type
+            } else if (el.funcComputed) {
+              const context = {
+                store,
+              }
+              return el.funcComputed(context)
+            }
           })
         }
       })
