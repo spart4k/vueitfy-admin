@@ -153,17 +153,74 @@ export default {
               url: 'get/pagination_list/object_logistic',
               alias: 'object_id',
             },
+            {
+              //fields: ['statement_card', 'cardowner'],
+              type: 'default',
+              action: {
+                type: 'hideOptions',
+                //values: [8],
+                field: 'direction_id',
+                condition: [
+                  {
+                    value: [7],
+                    options: [1, 2, 3, 4, 5, 6],
+                  },
+                  {
+                    value: [1],
+                    options: [7],
+                  },
+                  {
+                    value: [1, 6],
+                    options: [7],
+                  },
+                  {
+                    value: [6],
+                    options: [7],
+                  },
+                ],
+              },
+              //url: 'object_id/avatar_with_user_key_id',
+            },
+            {
+              //fields: ['statement_card', 'cardowner'],
+              type: 'default',
+              action: {
+                type: 'hideOptions',
+                field: 'direction_id',
+                targetField: 'grajdanstvo_id',
+                condition: [
+                  {
+                    value: [7],
+                    options: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+                  },
+                ],
+              },
+              //url: 'object_id/avatar_with_user_key_id',
+            },
+            {
+              type: 'computed',
+              funcComputed: (context) => {
+                if (context.formData.direction_id.includes(7)) {
+                  context.formData.transfer = false
+                  context.formData.start_point = ''
+                  context.formData.object_transfer_id = null
+                  context.formData.regions_id = null
+                  context.formData.city_id = null
+                  context.formData.end_point = ''
+                }
+              },
+            },
           ],
           updateList: [
             {
               alias: 'brigadirs',
               filter: [
-                {
-                  field: 'object_id',
-                  value: '',
-                  source: 'formData',
-                  type: 'array',
-                },
+                // {
+                //   field: 'object_id',
+                //   value: '',
+                //   source: 'formData',
+                //   type: 'array',
+                // },
                 {
                   field: 'direction_id',
                   //alias: 'direction_json',
@@ -264,7 +321,7 @@ export default {
           isShow: {
             value: false,
             conditions: [
-              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1], [7]] },
             ],
           },
         }),
@@ -298,6 +355,12 @@ export default {
           placeholder: '',
           readonly: false,
           class: [''],
+          isShow: {
+            value: false,
+            conditions: [
+              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+            ],
+          },
           position: {
             cols: 12,
             sm: 12,
@@ -317,7 +380,10 @@ export default {
           bootstrapClass: [''],
           isShow: {
             value: false,
-            conditions: [{ field: 'transfer', value: [true] }],
+            conditions: [
+              { field: 'transfer', value: [true] },
+              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+            ],
           },
         }),
         selectField({
@@ -352,7 +418,10 @@ export default {
           ],
           isShow: {
             value: false,
-            conditions: [{ field: 'transfer', value: [true] }],
+            conditions: [
+              { field: 'transfer', value: [true] },
+              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+            ],
           },
         }),
         autocompleteField({
@@ -397,7 +466,10 @@ export default {
           ],
           isShow: {
             value: false,
-            conditions: [{ field: 'transfer', value: [true] }],
+            conditions: [
+              { field: 'transfer', value: [true] },
+              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+            ],
           },
         }),
         selectField({
@@ -423,7 +495,10 @@ export default {
           ],
           isShow: {
             value: false,
-            conditions: [{ field: 'transfer', value: [true] }],
+            conditions: [
+              { field: 'transfer', value: [true] },
+              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+            ],
           },
           validations: { required },
           bootstrapClass: [''],
@@ -442,7 +517,10 @@ export default {
           bootstrapClass: [''],
           isShow: {
             value: false,
-            conditions: [{ field: 'transfer', value: [true] }],
+            conditions: [
+              { field: 'transfer', value: [true] },
+              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1]] },
+            ],
           },
         }),
         stringField({
