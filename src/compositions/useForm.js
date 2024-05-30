@@ -1739,6 +1739,13 @@ export default function ({
                 environment,
                 mode,
               }
+              if (field.name === 'status_id') {
+                console.log(
+                  conditionEl.funcCondition,
+                  conditionEl.funcCondition(conditionContext)
+                )
+              }
+
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )

@@ -323,8 +323,7 @@ export default {
             funcCondition: (context) =>
               (context.formData.account_id !== context.store.state.user.id &&
                 context.store.state.user.is_personal_vertical &&
-                (context.formData.status_id === 2 ||
-                  context.formData.status_id === 1 ||
+                (context.formData.status_id === 1 ||
                   context.formData.status_id === 3)) ||
               // Условия для показа поля РОКК и ОКК
               ((context.store.state.user.permission_id === 8 ||
@@ -338,8 +337,7 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.status_id === 1 &&
-              context.store.state.user.id ===
-                context.formData.status_account_id &&
+              context.store.state.user.id === context.formData.manager_id &&
               context.store.state.user.permission_id !== 4,
             type: true,
           },
