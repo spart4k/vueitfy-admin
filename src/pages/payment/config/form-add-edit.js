@@ -721,24 +721,12 @@ export default {
                 options: [1, 3, 5, 8],
               },
               {
-                value: 5,
+                value: 6,
                 options: [1, 3, 5, 8],
               },
               {
-                value: 6,
-                options: [2],
-              },
-              {
-                value: 1,
-                options: [2],
-              },
-              {
-                value: 5,
-                options: [2],
-              },
-              {
-                value: [1, 6],
-                options: [2],
+                value: 7,
+                options: [1, 3, 5, 8],
               },
             ],
           },
