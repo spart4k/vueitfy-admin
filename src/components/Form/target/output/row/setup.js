@@ -47,6 +47,9 @@ export default {
         case 3:
           result = 'Выработка по клинингу'
           break
+        case 4:
+          result = 'Выработка'
+          break
         default:
           result = key
       }
