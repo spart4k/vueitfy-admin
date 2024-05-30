@@ -190,10 +190,11 @@ export default {
 
       disabledDocumentsAcc.value + 1
     }
+    const was_process = JSON.parse(data.task.dop_data).was_process
 
     let sendTaskFinish = async () => {
       let keyOfObjectSend = {}
-      docFormRef.value.docRows.forEach((elem, index) => {
+      docFormRef?.value.docRows.forEach((elem, index) => {
         keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
       })
 
@@ -204,13 +205,30 @@ export default {
             status: 2,
             data: {
               process_id: data.task.process_id,
-              manager_id: account_id.value,
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_id: data.entity.id,
               comment: comment.value,
-              docs_id: keyOfObjectSend,
-              account_id: data.task.from_account_id,
+              docs_id:
+                status.value === 'Работает' ? keyOfObjectSend : undefined,
+              was_process:
+                status.value === 'Работает' && !was_process
+                  ? true
+                  : was_process
+                  ? true
+                  : undefined,
+              start_doc:
+                status.value === 'Работает' && !was_process
+                  ? true
+                  : was_process
+                  ? false
+                  : undefined,
+              manager_id: data.data.status_data.next_account
+                ? data.data.status_data.next_account_id
+                : undefined,
+              account_id: data.data.status_data.next_account
+                ? data.data.status_data.next_account_id
+                : data.data.status_data.next_account_id,
             },
           }),
       })
