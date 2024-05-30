@@ -627,14 +627,6 @@ const routes = [
     component: ShopRequestMagnitView,
     children: [
       {
-        name: 'shop-request-magnit/upload',
-        path: './upload',
-        meta: {
-          mode: 'upload',
-        },
-        component: Detail,
-      },
-      {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
         meta: {
