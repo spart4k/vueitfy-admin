@@ -594,12 +594,11 @@ export default {
           },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
@@ -728,6 +727,31 @@ export default {
           },
           //url: 'object_id/avatar_with_user_key_id',
         },
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'default',
+          action: {
+            type: 'hideOptions',
+            //values: [8],
+            field: 'direction_id',
+            targetField: 'vid_vedomost_id',
+            condition: [
+              {
+                value: 1,
+                options: [1, 3, 5, 8],
+              },
+              {
+                value: 6,
+                options: [1, 3, 5, 8],
+              },
+              {
+                value: [7],
+                options: [1, 3, 5, 8],
+              },
+            ],
+          },
+          //url: 'object_id/avatar_with_user_key_id',
+        },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -761,14 +785,22 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
@@ -879,14 +911,22 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
@@ -1000,14 +1040,22 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
@@ -1074,14 +1122,22 @@ export default {
             value: [1, 5],
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
@@ -1165,14 +1221,22 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
@@ -1351,14 +1415,22 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
@@ -1506,14 +1578,22 @@ export default {
                   context.store.state.user.permission_id === 17)),
             type: false,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
           // {
           //   funcCondition: (context) =>
@@ -1615,14 +1695,22 @@ export default {
             permissions: [8, 17],
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 2 ||
-                context.formData.status_id === 1 ||
+              context.store.state.user.is_personal_vertical &&
+              (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: true,
+            type: false,
           },
         ],
       },
