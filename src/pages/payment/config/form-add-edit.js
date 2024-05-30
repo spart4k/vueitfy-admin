@@ -592,11 +592,11 @@ export default {
           },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
@@ -794,11 +794,11 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
@@ -920,11 +920,11 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
@@ -1049,11 +1049,11 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
@@ -1131,11 +1131,11 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
@@ -1230,11 +1230,11 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
@@ -1424,11 +1424,11 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
@@ -1589,8 +1589,7 @@ export default {
             funcCondition: (context) =>
               context.store.state.user.is_personal_vertical &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
-              context.mode === 'edit',
+                context.formData.status_id === 3),
             type: false,
           },
           // {
@@ -1704,11 +1703,11 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
+              context.formData.account_id === context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3) &&
               context.mode === 'edit',
-            type: false,
+            type: true,
           },
         ],
       },
