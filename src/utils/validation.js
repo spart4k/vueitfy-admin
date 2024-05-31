@@ -108,6 +108,11 @@ const sameAs = (value) => ({
   $message: () => 'Пароли должны совпадать',
 })
 
+const number = {
+  $validator: (val) => Number(val) && !val.split('').includes(' '),
+  $message: () => 'Некорректные символы',
+}
+
 const password = {
   $validator: (val) => val.length > 7,
   $message: () => 'Не менее 8 символов',
@@ -135,5 +140,6 @@ export {
   numeric,
   hasBothDate,
   length,
+  number,
   // strongPassword
 }
