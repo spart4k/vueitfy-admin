@@ -98,6 +98,10 @@ const Form15 = defineComponent({
               ? 0
               : 0,
           ozon: data.entity === 2 ? 1 : 0,
+          postponed:
+            props.data.entity.vid_vedomost_id === 1
+              ? props.data.data.postponed
+              : undefined,
           need_input:
             data.entity.direction_id === 6 ||
             data.entity.direction_id === 7 ||
@@ -153,7 +157,11 @@ const Form15 = defineComponent({
 
     const confirm = async () => {
       isFormConfirmed.value = true
-
+      console.log(
+        props.data.entity.vid_vedomost_id === 1
+          ? props.data.data.postponed
+          : undefined
+      )
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {

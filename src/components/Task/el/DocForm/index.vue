@@ -17,6 +17,7 @@
       :personalId="entity?.id"
       :correct="correct"
       :confirm="confirm"
+      :rejecting="rejecting"
       :docsData="docsData"
       :fromTask="fromTask"
       :withoutSave="withoutSave"
@@ -24,6 +25,8 @@
       @changeDocs="$emit('changeDocs', $event, documentIndex)"
       :taskInfo="taskInfo"
       :bankCompleted="bankCompleted"
+      :removeRejecting="removeRejecting"
+      :commentError="commentError"
     />
   </div>
 </template>

@@ -1739,6 +1739,17 @@ export default function ({
                 environment,
                 mode,
               }
+              if (field.name === 'account_id') {
+                console.log(
+                  // conditionEl.funcCondition,
+                  conditionContext.store.state.user.is_personal_vertical,
+                  conditionContext.formData.status_id === 1 ||
+                    conditionContext.formData.status_id === 3,
+                  conditionContext.mode === 'edit',
+                  conditionEl.funcCondition(conditionContext)
+                )
+              }
+
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )

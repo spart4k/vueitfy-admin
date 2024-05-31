@@ -126,6 +126,18 @@ const docForm = defineComponent({
     taskInfo: {
       type: Object,
     },
+    rejecting: {
+      type: Boolean,
+      default: false,
+    },
+    removeRejecting: {
+      type: Boolean,
+      default: false,
+    },
+    showCommentEmpty: {
+      type: String,
+      default: '',
+    },
   },
   data: function () {
     return {
@@ -256,6 +268,7 @@ const docForm = defineComponent({
         patent_date_docs_in: loadedData.patent_date_docs_in
           ? loadedData.patent_date_docs_in
           : '',
+        patent_kem: loadedData.patent_kem ? loadedData.patent_kem : '',
         patent_region: loadedData.patent_region ? loadedData.patent_region : '',
         patent_special_marks_date: loadedData.patent_special_marks_date
           ? loadedData.patent_special_marks_date
@@ -602,6 +615,10 @@ const docForm = defineComponent({
           id: el.id,
           path_doc: el.path_doc,
           inProcess: el.inProcess !== undefined ? el.inProcess : undefined,
+          hold: el.hold,
+          isRejected: el.isRejected !== undefined ? el.isRejected : undefined,
+          commentError:
+            el.commentError !== undefined ? el.commentError : undefined,
         }
       })
     }

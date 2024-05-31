@@ -20,9 +20,17 @@
               x-small
               color="red"
               style="flex: 0"
-              class="mr-3 mb-1"
-              v-else-if="isRejected && confirm"
+              class="mr-3"
+              v-else-if="isRejected && (confirm || rejecting)"
               >$IconClose</v-icon
+            >
+            <v-icon
+              small
+              color="red"
+              style="flex: 0"
+              class="mr-2 iconWait"
+              v-else-if="isHold"
+              >mdi-sync</v-icon
             >
             <div
               :class="fromTask ? 'document-title--task' : ''"
@@ -168,12 +176,12 @@
                     >
                       <img
                         :src="$root.env.VUE_APP_STORE + pathDock[0]"
-                        alt=""
+                        :alt="$root.env.VUE_APP_STORE + pathDock[0]"
                       />
                     </a>
                   </div>
                   <DropZone
-                    v-else
+                    v-show="!(document.path_doc && !isEdit && !showScan)"
                     :options="{
                       maxFiles: 1,
                       removeble: true,
@@ -184,6 +192,7 @@
                     @addFiles="addFiles($event, field)"
                     :error-messages="formErrors[field?.name]"
                     ref="dropZoneRef"
+                    @removeFile="removeFile"
                   />
                 </div>
                 <!--<img
@@ -191,6 +200,9 @@
             alt=""
           />-->
               </v-col>
+              <FormError class="mb-4" v-if="document.commentError">
+                {{ document.commentError }}
+              </FormError>
             </v-row>
             <v-row v-if="acceptDocPanel" justify="end">
               <v-btn
@@ -234,6 +246,17 @@
               >
                 <!-- <v-icon left> $IconMain </v-icon> -->
                 Подтвердить
+              </v-btn>
+            </v-row>
+            <v-row v-if="rejecting" justify="end">
+              <v-btn
+                :name="`${docNames[document.doc_id]}_reject_btn`"
+                @click="rejectDoc"
+                color="error"
+                small
+              >
+                <!-- <v-icon left> $IconMain </v-icon> -->
+                Отклонить
               </v-btn>
             </v-row>
           </v-expansion-panel-content>
