@@ -385,20 +385,6 @@ export const addFields = [
         field: 'object_zr',
         url: 'get/pagination_list/object_zr',
       },
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'direction_id',
-          targetField: 'type_objects',
-          condition: [
-            {
-              value: 7,
-              options: [2],
-            },
-          ],
-        },
-      },
     ],
     // update: {
     //   module: 'selects/getList',
@@ -407,6 +393,17 @@ export const addFields = [
     updateList: [
       {
         alias: 'permissions_zr',
+        filter: [
+          {
+            field: 'direction_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+        ],
+      },
+      {
+        alias: 'type_objects',
         filter: [
           {
             field: 'direction_id',
@@ -2008,7 +2005,9 @@ export const editFields = [
             (context.originalData.from_account_id !==
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4 ||
-              context.store.state.user.permission_id === 16) &&
+              context.store.state.user.permission_id === 16 ||
+              (context.store.state.user.permission_id === 3 &&
+                context.originalData.direction_id === 7)) &&
             (context.originalData.status === 1 ||
               context.originalData.status === 2 ||
               context.originalData.status === 3),
@@ -2431,6 +2430,17 @@ export const editFields = [
     updateList: [
       {
         alias: 'permissions_zr',
+        filter: [
+          {
+            field: 'direction_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+        ],
+      },
+      {
+        alias: 'type_objects',
         filter: [
           {
             field: 'direction_id',
@@ -4914,7 +4924,17 @@ const config = {
           { alias: 'direction_id', filter: [] },
           { alias: 'category_zr', filter: [] },
           { alias: 'me', filter: [] },
-          { alias: 'type_objects', filter: [] },
+          {
+            alias: 'type_objects',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
           { alias: 'type_pay', filter: [] },
         ],
         alias: 'zayavka',
@@ -4953,7 +4973,17 @@ const config = {
           { alias: 'direction_id', filter: [] },
           { alias: 'category_zr', filter: [] },
           { alias: 'account_id', filter: [] },
-          { alias: 'type_objects', filter: [] },
+          {
+            alias: 'type_objects',
+            filter: [
+              {
+                field: 'direction_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+            ],
+          },
           { alias: 'type_pay', filter: [] },
           { alias: 'status_account_id', filter: [] },
           {
