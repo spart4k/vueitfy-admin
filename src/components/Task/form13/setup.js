@@ -194,12 +194,13 @@ export default {
 
     let sendTaskFinish = async () => {
       let keyOfObjectSend = {}
-      docFormRef?.value.docRows.forEach((elem, index) => {
+      docFormRef?.value?.docRows?.forEach((elem, index) => {
         keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
       })
 
       const { makeRequest: changeStatus } = useRequest({
         context,
+        successMessage: 'Задача завершена',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
@@ -214,8 +215,8 @@ export default {
               was_process:
                 status.value === 'Работает' && !was_process
                   ? true
-                  : was_process
-                  ? true
+                  : status.value === 'Уволен'
+                  ? was_process
                   : undefined,
               start_doc:
                 status.value === 'Работает' && !was_process
@@ -226,6 +227,7 @@ export default {
               manager_id: data.data.status_data.next_account
                 ? data.data.status_data.next_account_id
                 : undefined,
+              next_account: data.data.status_data.next_account,
               account_id: data.data.status_data.next_account
                 ? data.data.status_data.next_account_id
                 : data.data.status_data.next_account_id,
@@ -233,6 +235,8 @@ export default {
           }),
       })
       sendDocuments()
+      const result = await processQuery()
+      console.log(result)
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')
@@ -255,6 +259,20 @@ export default {
             id: data.task.id,
           },
         }),
+    })
+
+    const { makeRequest: processQuery } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/processQuery', {
+          status: 2,
+          data: {
+            personal_id: data.entity.id,
+            account_id: data.task.to_account_id,
+            status_id: status.value === 'Работает' ? 2 : 1,
+          },
+        }),
+      successMessage: 'Файл успешно загружен',
     })
 
     const { makeRequest: setStartStep } = useRequest({
