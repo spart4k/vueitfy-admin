@@ -8,6 +8,7 @@ import DropZone from '@/components/Dropzone/default/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
 import { required } from '@/utils/validation.js'
 import { getList } from '@/api/selects'
+import FormError from '@/components/Task/el/FormError/index.vue'
 import {
   stringField,
   dateField,
@@ -107,11 +108,24 @@ export default {
       type: Boolean,
       default: true,
     },
+    rejecting: {
+      type: Boolean,
+      default: false,
+    },
+    removeRejecting: {
+      type: Boolean,
+      default: false,
+    },
+    commentError: {
+      type: String,
+      default: '',
+    },
   },
   components: {
     Autocomplete,
     DropZone,
     Datepicker,
+    FormError,
   },
   setup(props, ctx) {
     const context = {
@@ -1145,6 +1159,21 @@ export default {
             // required: { required },
           })
           break
+        case 'patent_kem':
+          result = stringField({
+            label: switchLabel(key),
+            name: key,
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            bootstrapClass: [''],
+            // required: { required },
+          })
+          break
         case 'dms_vidachi':
           result = dateField({
             label: switchLabel(key),
@@ -1372,7 +1401,9 @@ export default {
         case 'patent_special_marks_date':
           result = 'Особые отметки'
           break
-
+        case 'patent_kem':
+          result = 'Выдан кем'
+          break
         case 'oms_num':
           result = 'Номер'
           break
@@ -1410,6 +1441,7 @@ export default {
     })
 
     const isCorrect = ref(false)
+    const isHold = ref(undefined)
     const sendBankCard = async () => {
       const { result } = await sendBankCardRequest()
       if (result && !props.bankCompleted) {
@@ -1613,10 +1645,15 @@ export default {
           await delInfoAFile(props.document.id)
         }
         await loadImage(basketFiles.value)
-        await updateFileData()
+        const { result } = await updateFileData()
+        document.value.id = result
         const path_doc = `/personal_doc/${basketFiles.value.fileName}`
         pathDock.value = [path_doc]
         props.document.path_doc = path_doc
+        isCorrect.value = true
+        if (isRejected.value === true) {
+          isRejected.value = false
+        }
       } else {
         const clearBasket = () => {
           basketFiles.value = {}
@@ -1630,7 +1667,10 @@ export default {
         })
         pathDock.value = [e[0].dataURL]
       }
-
+      // if (isHold.value || isHold.value !== undefined) {
+      //   isHold.value !== undefined ? (isHold.value = false) : ''
+      //   isCorrect.value = true
+      // }
       toPreview()
     }
     const listRequestsResult = ref([])
@@ -1720,12 +1760,37 @@ export default {
       }
     }
     const isRejected = ref(false)
-    const rejectDoc = (idDoc) => {
+    const rejectDoc = async (idDoc) => {
       // if (!rejectedDocs.value.includes(idDoc)) {
       //   rejectedDocs.value = [...rejectedDocs.value, idDoc]
       // }
       isRejected.value = true
       isCorrect.value = false
+      isHold.value !== undefined ? (isHold.value = false) : ''
+      if (props.removeRejecting && document.value.id) {
+        const { makeRequest: delInfoAFile } = useRequest({
+          context,
+          successMessage: 'Документ успешно удален',
+          request: (id) =>
+            store.dispatch('taskModule/updateFileData', {
+              data: {
+                id: document.value.id,
+                del: 1,
+              },
+            }),
+        })
+        const { result } = await delInfoAFile()
+        if (result) {
+          console.log(dropZoneRef.value)
+          dropZoneRef.value.clearDropzone()
+        } else {
+          store.commit('notifies/showMessage', {
+            color: 'error',
+            content: 'Не удалось удалить документ',
+            timeout: 1000,
+          })
+        }
+      }
       // confirmedDocs.value = confirmedDocs.value.filter((doc) => doc !== idDoc)
       // ctx.emit('change', {
       //   confirmed: confirmedDocs.value,
@@ -1780,6 +1845,12 @@ export default {
       })
       await Promise.all(queryFields)
     }
+    const removeFile = () => {
+      console.log('removed')
+      basketFiles.value = {}
+      // isCorrect.value = false
+      listRequestsForUpload.value = []
+    }
     // const docName = () =>
     onMounted(async () => {
       // if (props.document.path_doc) {
@@ -1794,6 +1865,12 @@ export default {
       }
       if (props.document.inProcess !== undefined) {
         !props.document.inProcess ? (isCorrect.value = true) : false
+      }
+      if (props.document.hold) {
+        isHold.value = true
+      }
+      if (props.document.isRejected) {
+        isRejected.value = true
       }
     })
     return {
@@ -1812,6 +1889,7 @@ export default {
       pathDock,
       addFiles,
       isEdit,
+      isHold,
       toEdit,
       toPreview,
       switchType,
@@ -1832,6 +1910,7 @@ export default {
       document,
       dropZoneRef,
       folderPanel,
+      removeFile,
       // documentData,
     }
   },
