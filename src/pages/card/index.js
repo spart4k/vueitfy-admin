@@ -268,6 +268,14 @@ export const config = {
             url: 'corporate-cards/add',
             type: 'changeUrl',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [3, 4, 12, 16],
+                  type: true,
+                },
+              ],
+            },
           },
         ],
       },
