@@ -100,6 +100,7 @@ const Form15 = defineComponent({
           ozon: data.entity === 2 ? 1 : 0,
           need_input:
             data.entity.direction_id === 6 ||
+            data.entity.direction_id === 7 ||
             data.entity.doljnost_id === 5 ||
             data.entity.doljnost_id === 7 ||
             // data.entity.doljnost_id === 6 ||
@@ -145,6 +146,10 @@ const Form15 = defineComponent({
                 manager_id: JSON.parse(props.data.task.dop_data).manager_id,
                 parent_action: props.data.task.id,
                 task_id: props.data.task.id,
+                postponed:
+                  props.data.entity.vid_vedomost_id === 1
+                    ? props.data.data.postponed
+                    : undefined,
               },
         })
       },
