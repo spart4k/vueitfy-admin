@@ -145,6 +145,10 @@ const Form15 = defineComponent({
                 manager_id: JSON.parse(props.data.task.dop_data).manager_id,
                 parent_action: props.data.task.id,
                 task_id: props.data.task.id,
+                postponed:
+                  props.data.entity.vid_vedomost_id === 1
+                    ? props.data.data.postponed
+                    : undefined,
               },
         })
       },
