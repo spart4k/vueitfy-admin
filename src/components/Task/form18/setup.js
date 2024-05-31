@@ -248,7 +248,6 @@ const Form18 = defineComponent({
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_target_id: data.entity.id,
-              postponed: data.data.postponed,
             },
           })
         },
