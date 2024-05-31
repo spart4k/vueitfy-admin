@@ -216,6 +216,7 @@ export default {
 
       const { makeRequest: changeStatus } = useRequest({
         context,
+        successMessage: 'Задача завершена',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
