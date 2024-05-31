@@ -2,7 +2,7 @@ import filters from './filters'
 import FormDefault from '@/components/Form/default/index.vue'
 import Expenses from '@/components/Form/expenses/index.vue'
 
-import { required } from '@/utils/validation.js'
+import { required, number } from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -384,6 +384,20 @@ export const addFields = [
         module: 'selects/getListUpdate',
         field: 'object_zr',
         url: 'get/pagination_list/object_zr',
+      },
+      {
+        type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'direction_id',
+          targetField: 'type_objects',
+          condition: [
+            {
+              value: 7,
+              options: [2],
+            },
+          ],
+        },
       },
     ],
     // update: {
@@ -1416,7 +1430,7 @@ export const addFields = [
       cols: 12,
       sm: 2,
     },
-    validations: { required },
+    validations: { required, number },
     bootstrapClass: [''],
   }),
   stringField({
@@ -1430,7 +1444,7 @@ export const addFields = [
       cols: 12,
       sm: 3,
     },
-    validations: { required },
+    validations: { required, number },
     bootstrapClass: [''],
   }),
   checkboxField({
@@ -2398,6 +2412,20 @@ export const editFields = [
         module: 'selects/getListUpdate',
         field: 'object_zr',
         url: 'get/pagination_list/object_zr',
+      },
+      {
+        type: 'default',
+        action: {
+          type: 'hideOptions',
+          field: 'direction_id',
+          targetField: 'type_objects',
+          condition: [
+            {
+              value: 7,
+              options: [2],
+            },
+          ],
+        },
       },
     ],
     updateList: [
@@ -3581,7 +3609,7 @@ export const editFields = [
       cols: 12,
       sm: 2,
     },
-    validations: { required },
+    validations: { required, number },
     bootstrapClass: [''],
   }),
   stringField({
@@ -3610,7 +3638,7 @@ export const editFields = [
       cols: 12,
       sm: 3,
     },
-    validations: { required },
+    validations: { required, number },
     bootstrapClass: [''],
   }),
   checkboxField({

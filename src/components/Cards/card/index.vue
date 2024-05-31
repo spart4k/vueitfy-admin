@@ -14,9 +14,10 @@
         <v-row class="justify-space-between">
           <div :class="['v-card-side_image', !data.id && 'gradient']">
             <img
-              v-if="cardStyle?.image"
+              v-if="cardStyle"
               :src="require(`@/assets/image/bank/${cardStyle?.image}`)"
             />
+            <div v-else>{{ data.bank_name }}</div>
           </div>
           <div
             v-if="data.status_id !== 2"

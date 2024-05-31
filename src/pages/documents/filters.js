@@ -119,7 +119,7 @@ const filters = {
         value: 'id',
       },
       items: [],
-      url: 'get/pagination_list/personals',
+      url: 'get/pagination_list/personal_document',
       position: {
         cols: 12,
         sm: 12,
