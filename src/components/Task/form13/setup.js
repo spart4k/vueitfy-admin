@@ -265,7 +265,6 @@ export default {
       context,
       request: () =>
         store.dispatch('taskModule/processQuery', {
-          status: 2,
           data: {
             personal_id: data.entity.id,
             account_id: data.task.to_account_id,
