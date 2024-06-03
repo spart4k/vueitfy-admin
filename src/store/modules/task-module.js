@@ -186,6 +186,18 @@ const taskModule = {
       return result
     },
 
+    async processQuery(_, data) {
+      const result = await updateTmp('update/tmp/process_query', data)
+
+      return result
+    },
+
+    async queryDoc(_, data) {
+      const result = await removeTmp('delete/personal/query_doc', data.data)
+
+      return result
+    },
+
     // не понял пока, что за метод)
     async setStartStep(_, data) {
       const result = await setTask('task/start/step', data)
