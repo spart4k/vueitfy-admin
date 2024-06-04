@@ -167,7 +167,7 @@ export default {
     }
 
     const addPermission = computed(() =>
-      [3, 4, 12, 16].includes(store.state.user.permission_id)
+      [3, 4, 12, 16, 22].includes(store.state.user.permission_id)
     )
 
     let controller

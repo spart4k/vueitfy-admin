@@ -4165,7 +4165,7 @@ export const editFields = [
         {
           target: 'originalData',
           field: 'status',
-          permissions: [12],
+          permissions: [12, 22],
           value: [4, 5],
           type: false,
         },
@@ -4428,7 +4428,7 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [12],
+              permissions: [12, 22],
               type: false,
             },
           ],
@@ -4444,7 +4444,7 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [4, 12],
+              permissions: [4, 12, 22],
               type: true,
             },
           ],
@@ -4459,7 +4459,7 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [4, 12],
+              permissions: [4, 12, 22],
               type: true,
             },
           ],

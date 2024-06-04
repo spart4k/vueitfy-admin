@@ -98,7 +98,7 @@ export const config = {
               isShow: {
                 condition: [
                   {
-                    permissions: [3, 4, 12, 16],
+                    permissions: [3, 4, 12, 16, 22],
                     type: true,
                   },
                   {
@@ -132,7 +132,7 @@ export const config = {
               isShow: {
                 condition: [
                   {
-                    permissions: [3, 4, 12, 16],
+                    permissions: [3, 4, 12, 16, 22],
                     type: true,
                   },
                   {
@@ -179,7 +179,7 @@ export const config = {
               isShow: {
                 condition: [
                   {
-                    permissions: [3, 4, 12, 16],
+                    permissions: [3, 4, 12, 16, 22],
                     type: true,
                   },
                   {
@@ -271,7 +271,7 @@ export const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [3, 4, 12, 16],
+                  permissions: [3, 4, 12, 16, 22],
                   type: true,
                 },
               ],
