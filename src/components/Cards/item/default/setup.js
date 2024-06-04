@@ -37,7 +37,7 @@ export default {
     )
 
     const accounting = computed(() =>
-      [12].includes(store.state.user.permission_id)
+      [12, 22].includes(store.state.user.permission_id)
     )
 
     const convertData = (val) => {

@@ -102,7 +102,7 @@ export default {
             type: false,
           },
           {
-            permissions: [12],
+            permissions: [12, 22],
             type: true,
           },
         ],
