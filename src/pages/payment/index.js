@@ -93,6 +93,38 @@ const config = {
           ],
         },
       },
+      {
+        label: 'Согласовать',
+        class: ['v-table-button--custom'],
+        backgroundColor: '#fff',
+        type: 'selectedItems',
+        refreshTable: true,
+        method: async (context) => {
+          const data = await context.store.dispatch('form/putForm', {
+            url: 'mass/payment/agree',
+            body: { data: { ids: context.idArray } },
+          })
+          if (data.code === 1) {
+            context.store.commit('notifies/showMessage', {
+              color: 'success',
+              content: 'Начисления согласованы',
+              timeout: 2000,
+            })
+          } else if (data.code === 2) {
+            context.store.commit('notifies/showMessage', {
+              color: 'warning',
+              content: 'Не выбрано ни одного начисления',
+              timeout: 2000,
+            })
+          } else if (data.code === 3) {
+            context.store.commit('notifies/showMessage', {
+              color: 'error',
+              content: 'Что-то пошло не так...',
+              timeout: 2000,
+            })
+          }
+        },
+      },
     ],
   },
   head: [

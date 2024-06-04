@@ -80,8 +80,8 @@ const table = {
     const filters = ref(options?.filters)
     const panel = ref(options?.panel)
     const lastSelected = ref({
-      indexRow: null,
-      row: {},
+      items: [],
+      indexRow: 0,
     })
     const rowCount = [5, 10, 15, 20, 25, 30]
     const contextmenu = ref({
@@ -169,54 +169,48 @@ const table = {
       }
     }
     const checkboxInput = (row, indexRow) => {
-      //
-      //
       let delta = null
       if (indexRow > lastSelected.value.indexRow) {
         delta = indexRow - lastSelected.value.indexRow
-        if (lastSelected.value.indexRow === null) {
-          lastSelected.value.indexRow = 0
-        }
         for (
           let i = lastSelected.value.indexRow;
           i < lastSelected.value.indexRow + delta;
           i++
         ) {
-          //
-          //
           if (!options.data.rows[i].row.selected) {
             options.data.rows[i].row.selected = true
+            lastSelected.value.items.push(options.data.rows[i])
           } else {
-            //
             //options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       } else {
-        //
         delta = lastSelected.value.indexRow - indexRow
         for (
           let i = lastSelected.value.indexRow;
           i > lastSelected.value.indexRow - delta;
           i--
         ) {
-          //
-          //
           if (!options.data.rows[i].row.selected) {
             options.data.rows[i].row.selected = true
+            lastSelected.value.items.push(options.data.rows[i])
           } else {
-            //
             //options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       }
-      //
-      //
     }
-    const saveLastSelected = (data) => {
-      lastSelected.value = {
-        ...data,
+    const saveLastSelected = (row, indexRow, value) => {
+      lastSelected.value.indexRow = indexRow
+      if (value) {
+        lastSelected.value.items.push(row)
+      } else {
+        const delIndex = lastSelected.value.items.findIndex(
+          (x) => x.row.id === row.row.id
+        )
+        lastSelected.value.items.splice(delIndex, 1)
       }
     }
     // Костыль для чистки инпута
@@ -474,6 +468,8 @@ const table = {
         paramsQuery.value.currentPage = 1
       }
       loading.value = false
+      lastSelected.value.items = []
+      lastSelected.value.indexRow = 0
       controller = undefined
     }
     const initHeadParams = () => {
@@ -678,6 +674,13 @@ const table = {
         getItems()
       } else if (type === 'changeComp') {
         emit('changeComp')
+      } else if (type === 'selectedItems') {
+        const context = {
+          store,
+          items: lastSelected.value.items,
+          idArray: lastSelected.value.items.map(x => x.row.id),
+        }
+        await button.method(context)
       }
       if (button.refreshTable) {
         getItems()
