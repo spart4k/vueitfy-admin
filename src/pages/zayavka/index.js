@@ -4466,17 +4466,35 @@ const config = {
         },
       },
       {
-        label: 'Тестовый',
+        label: 'Согласовать',
         class: ['v-table-button--custom'],
         backgroundColor: '#fff',
         type: 'selectedItems',
         refreshTable: true,
-        method: (context) => {
-          console.log(context)
-          // context.store.dispatch('form/update', {
-          //   url: 'set/data/mvd_spr',
-          //   body: { data: { id: context.data.row.id, del: 1 } },
-          // })
+        method: async (context) => {
+          const data = await context.store.dispatch('form/putForm', {
+            url: 'mass/zayavka/agree',
+            body: { data: { ids: context.idArray } },
+          })
+          if (data.code === 1) {
+            context.store.commit('notifies/showMessage', {
+              color: 'success',
+              content: 'Заявки согласованы',
+              timeout: 2000,
+            })
+          } else if (data.code === 2) {
+            context.store.commit('notifies/showMessage', {
+              color: 'warning',
+              content: 'Не выбрано ни одной записи',
+              timeout: 2000,
+            })
+          } else if (data.code === 3) {
+            context.store.commit('notifies/showMessage', {
+              color: 'error',
+              content: 'Что-то пошло не так...',
+              timeout: 2000,
+            })
+          }
         },
       },
       // {
