@@ -4465,6 +4465,20 @@ const config = {
           ],
         },
       },
+      {
+        label: 'Тестовый',
+        class: ['v-table-button--custom'],
+        backgroundColor: '#fff',
+        type: 'selectedItems',
+        refreshTable: true,
+        method: (context) => {
+          console.log(context)
+          // context.store.dispatch('form/update', {
+          //   url: 'set/data/mvd_spr',
+          //   body: { data: { id: context.data.row.id, del: 1 } },
+          // })
+        },
+      },
       // {
       //   label: 'Скачать',
       //   class: ['v-table-button--custom'],
