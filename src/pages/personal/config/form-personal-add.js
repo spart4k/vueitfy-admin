@@ -295,7 +295,7 @@ export default {
           },
         }),
         selectField({
-          label: 'Бригадир',
+          label: 'Доступ',
           name: 'personal_id',
           alias: 'brigadirs',
           requestKey: 'account_json',
@@ -321,7 +321,10 @@ export default {
           isShow: {
             value: false,
             conditions: [
-              { field: 'direction_id', value: [[1], [6], [1, 6], [6, 1], [7]] },
+              {
+                field: 'direction_id',
+                value: [[1], [6], [1, 6], [6, 1], [7], [2]],
+              },
             ],
           },
         }),
@@ -553,6 +556,38 @@ export default {
             value: true,
           },
           // validations: { required, nameLength },
+          bootstrapClass: [''],
+        }),
+        checkboxField({
+          label: 'Штатный',
+          name: 'in_state',
+          value: false,
+          placeholder: '',
+          class: [''],
+          isShow: {
+            value: false,
+            conditions: [{ field: 'direction_id', value: [[2]] }],
+          },
+          position: {
+            cols: 12,
+            sm: 12,
+          },
+          bootstrapClass: [''],
+        }),
+        stringField({
+          label: 'Псевдоним',
+          name: 'alias',
+          placeholder: '',
+          class: [''],
+          position: {
+            cols: 12,
+            sm: 12,
+          },
+          isShow: {
+            value: false,
+            conditions: [{ field: 'in_state', value: [true] }],
+          },
+          validations: { required },
           bootstrapClass: [''],
         }),
       ],

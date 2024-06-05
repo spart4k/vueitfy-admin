@@ -1,4 +1,12 @@
-import Vue, { ref, computed, watch, unref, reactive, readonly } from 'vue'
+import Vue, {
+  ref,
+  computed,
+  watch,
+  unref,
+  reactive,
+  readonly,
+  nextTick,
+} from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
 import store from '@/store'
@@ -1853,10 +1861,18 @@ export default function ({
       return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
     if (field.isShow?.label) {
-      const trueCondition = field.isShow.label.find((x) =>
-        x.value?.includes(formData[x.field])
-      )
-      if (trueCondition) field.label = trueCondition.label
+      nextTick(() => {
+        const trueCondition = field.isShow.label.find((x) => {
+          if (Array.isArray(formData[x.field])) {
+            return x.value.some((item) =>
+              _.isEqual([...formData[x.field]].sort(), item.sort())
+            )
+          } else {
+            return x.value?.includes(formData[x.field])
+          }
+        })
+        if (trueCondition) field.label = trueCondition.label
+      })
     }
     if (field.isShow?.location) {
       const trueCondition = field.isShow.location.find((x) =>
