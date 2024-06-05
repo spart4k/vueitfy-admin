@@ -54,7 +54,7 @@ function changeSort(config) {
     heading.type = 'download'
     heading.click = {
       condition: {
-        permissions: [12],
+        permissions: [12, 22],
         type: false,
       },
     }

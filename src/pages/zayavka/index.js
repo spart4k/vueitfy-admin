@@ -263,6 +263,12 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
       {
@@ -2275,6 +2281,12 @@ export const editFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
       {
@@ -4165,7 +4177,7 @@ export const editFields = [
         {
           target: 'originalData',
           field: 'status',
-          permissions: [12],
+          permissions: [12, 22],
           value: [4, 5],
           type: false,
         },
@@ -4428,7 +4440,7 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [12],
+              permissions: [12, 22],
               type: false,
             },
           ],
@@ -4444,7 +4456,7 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [4, 12],
+              permissions: [4, 12, 22],
               type: true,
             },
           ],
@@ -4459,12 +4471,84 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [4, 12],
+              permissions: [4, 12, 22],
               type: true,
             },
           ],
         },
       },
+      // {
+      //   label: 'Согласовать',
+      //   class: ['v-table-button--custom'],
+      //   backgroundColor: '#fff',
+      //   type: 'selectedItems',
+      //   refreshTable: true,
+      //   method: async (context) => {
+      //     const data = await context.store.dispatch('form/putForm', {
+      //       url: 'mass/zayavka/agree',
+      //       body: { data: { ids: context.idArray } },
+      //     })
+      //     if (data.code === 1) {
+      //       context.store.commit('notifies/showMessage', {
+      //         color: 'success',
+      //         content: 'Заявки согласованы',
+      //         timeout: 2000,
+      //       })
+      //     } else if (data.code === 2) {
+      //       context.store.commit('notifies/showMessage', {
+      //         color: 'warning',
+      //         content: 'Не выбрано ни одной записи',
+      //         timeout: 2000,
+      //       })
+      //     } else if (data.code === 3) {
+      //       context.store.commit('notifies/showMessage', {
+      //         color: 'error',
+      //         content: 'Что-то пошло не так...',
+      //         timeout: 2000,
+      //       })
+      //     }
+      //   },
+      // },
+      // {
+      //   label: 'Оплачено',
+      //   class: ['v-table-button--custom'],
+      //   backgroundColor: '#fff',
+      //   type: 'selectedItems',
+      //   refreshTable: true,
+      //   isShow: {
+      //     condition: [
+      //       {
+      //         permissions: [4, 12, 22],
+      //         type: true,
+      //       },
+      //     ],
+      //   },
+      //   method: async (context) => {
+      //     const data = await context.store.dispatch('form/putForm', {
+      //       url: 'mass/zayavka/pay',
+      //       body: { data: { ids: context.idArray } },
+      //     })
+      //     if (data.code === 1) {
+      //       context.store.commit('notifies/showMessage', {
+      //         color: 'success',
+      //         content: 'Заявки оплачены',
+      //         timeout: 2000,
+      //       })
+      //     } else if (data.code === 2) {
+      //       context.store.commit('notifies/showMessage', {
+      //         color: 'warning',
+      //         content: 'Не выбрано ни одной записи',
+      //         timeout: 2000,
+      //       })
+      //     } else if (data.code === 3) {
+      //       context.store.commit('notifies/showMessage', {
+      //         color: 'error',
+      //         content: 'Что-то пошло не так...',
+      //         timeout: 2000,
+      //       })
+      //     }
+      //   },
+      // },
       // {
       //   label: 'Скачать',
       //   class: ['v-table-button--custom'],
@@ -5188,6 +5272,12 @@ const config = {
               {
                 field: 'type_zayavka',
                 alias: 'vector_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'type_objects',
                 value: '',
                 source: 'formData',
                 type: 'num',

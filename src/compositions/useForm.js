@@ -1399,7 +1399,23 @@ export default function ({
   }
 
   const queryList = async (field, clear = true) => {
-    const listData = field?.updateList?.map((list) => {
+    const listData = field?.updateList?.flatMap((list) => {
+      if (list.condition) {
+        const conditionContext = {
+          store,
+          formData,
+          environment,
+        }
+        for (let i = 0; i < list.condition.length; i++) {
+          let item = list.condition[i]
+          if (item.hasOwnProperty('funcCondition')) {
+            if (!item.funcCondition(conditionContext)) {
+              return []
+            }
+          } else if (!item.value.includes(formData[item.key])) return []
+        }
+      }
+
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
         if (
