@@ -8,6 +8,7 @@ import Vue, {
 } from 'vue'
 import { useRoute } from 'vue-router/composables'
 import { getList } from '@/api/selects'
+import _ from 'lodash'
 
 export default {
   name: 'autocomplete',
@@ -37,6 +38,44 @@ export default {
     const route = useRoute()
     const proxyValue = toRef(props, 'value')
     const searchProps = ref(props.field.search)
+
+    const availableItems = computed(() => {
+      if (props.field.hideOption) {
+        let arr = [...props.field.items]
+        props.field.hideOption.forEach((option) => {
+          if (
+            _.differenceWith(
+              option.targetValue,
+              [props.formData[option.target]],
+              _.isEqual
+            ).length === option.targetValue.length
+          )
+            return
+
+          let itemOption = 'id'
+          if (option.itemOption) itemOption = option.itemOption
+
+          if (option.type) {
+            option.value.forEach((item) => {
+              _.remove(arr, (x) => x[itemOption] === item)
+            })
+          } else {
+            let arrCopy = []
+            option.value.forEach((item) => {
+              const remainingItems = _.remove(
+                arr,
+                (x) => x[itemOption] === item
+              )
+              arrCopy = [...arrCopy, ...remainingItems]
+            })
+            arr = [...arrCopy]
+          }
+        })
+        return arr
+      } else {
+        return props.field.items
+      }
+    })
 
     const queryData = {
       page: null,
@@ -211,6 +250,7 @@ export default {
       checkedAll,
       icon,
       parentComp,
+      availableItems,
     }
   },
 }
