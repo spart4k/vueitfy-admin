@@ -4483,6 +4483,14 @@ const config = {
         backgroundColor: '#fff',
         type: 'selectedItems',
         refreshTable: true,
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 8, 17],
+              type: true,
+            },
+          ],
+        },
         method: async (context) => {
           const data = await context.store.dispatch('form/putForm', {
             url: 'mass/zayavka/agree',
