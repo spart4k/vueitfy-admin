@@ -263,6 +263,12 @@ export const addFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'type_objects',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
       {
@@ -2271,6 +2277,12 @@ export const editFields = [
           {
             field: 'type_zayavka',
             alias: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'type_objects',
             value: '',
             source: 'formData',
             type: 'num',
@@ -5260,6 +5272,12 @@ const config = {
               {
                 field: 'type_zayavka',
                 alias: 'vector_id',
+                value: '',
+                source: 'formData',
+                type: 'num',
+              },
+              {
+                field: 'type_objects',
                 value: '',
                 source: 'formData',
                 type: 'num',
