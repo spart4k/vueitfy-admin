@@ -316,20 +316,20 @@ export const addFields = [
       sm: 12,
     },
     dependence: [
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'on_yourself',
-          targetField: 'type_pay',
-          condition: [
-            {
-              value: true,
-              options: [1],
-            },
-          ],
-        },
-      },
+      // {
+      //   type: 'default',
+      //   action: {
+      //     type: 'hideOptions',
+      //     field: 'on_yourself',
+      //     targetField: 'type_pay',
+      //     condition: [
+      //       {
+      //         value: true,
+      //         options: [1],
+      //       },
+      //     ],
+      //   },
+      // },
       {
         type: 'default',
         fillField: [
@@ -534,38 +534,38 @@ export const addFields = [
       },
     ],
     dependence: [
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'on_yourself',
-          targetField: 'type_pay',
-          condition: [
-            {
-              value: true,
-              options: [1],
-            },
-          ],
-        },
-      },
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'vector_id',
-          targetField: 'type_pay',
-          condition: [
-            {
-              value: 2,
-              options: [1],
-            },
-            {
-              value: 3,
-              options: [1],
-            },
-          ],
-        },
-      },
+      // {
+      //   type: 'default',
+      //   action: {
+      //     type: 'hideOptions',
+      //     field: 'on_yourself',
+      //     targetField: 'type_pay',
+      //     condition: [
+      //       {
+      //         value: true,
+      //         options: [1],
+      //       },
+      //     ],
+      //   },
+      // },
+      // {
+      //   type: 'default',
+      //   action: {
+      //     type: 'hideOptions',
+      //     field: 'vector_id',
+      //     targetField: 'type_pay',
+      //     condition: [
+      //       {
+      //         value: 2,
+      //         options: [1],
+      //       },
+      //       {
+      //         value: 3,
+      //         options: [1],
+      //       },
+      //     ],
+      //   },
+      // },
       {
         type: 'default',
         fillField: [
@@ -776,6 +776,16 @@ export const addFields = [
       value: true,
       conditions: [{ field: 'on_yourself', value: [false] }],
     },
+    // hiding: {
+    //   conditions: [
+    //     {
+    //       target: 'type_pay',
+    //       field: 'vector_id',
+    //       value: [2],
+    //       values: [1, 2, 3],
+    //     },
+    //   ],
+    // },
   }),
 
   autocompleteField({
@@ -1730,6 +1740,20 @@ export const addFields = [
         ],
       },
     ],
+    hideOption: [
+      {
+        target: 'vector_id',
+        targetValue: [2, 3],
+        value: [1],
+        type: true,
+      },
+      {
+        target: 'on_yourself',
+        targetValue: [true],
+        value: [1],
+        type: true,
+      },
+    ],
     validations: { required },
     bootstrapClass: [''],
   }),
@@ -2019,15 +2043,6 @@ export const editFields = [
               context.originalData.status === 3),
           type: false, //могу при этих условиях
         },
-        // {
-        //   funcCondition: (context) =>
-        //     (context.originalData.from_account_id ===
-        //       context.store.state.user.id ||
-        //       context.store.state.user.permission_id === 4) &&
-        //     (context.originalData.status === 1 ||
-        //       context.originalData.status === 3),
-        //   type: false, //могу при этих условиях
-        // },
       ],
     },
     hiding: {
@@ -2332,20 +2347,20 @@ export const editFields = [
       },
     ],
     dependence: [
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'on_yourself',
-          targetField: 'payment_type',
-          condition: [
-            {
-              value: true,
-              options: [1],
-            },
-          ],
-        },
-      },
+      // {
+      //   type: 'default',
+      //   action: {
+      //     type: 'hideOptions',
+      //     field: 'on_yourself',
+      //     targetField: 'payment_type',
+      //     condition: [
+      //       {
+      //         value: true,
+      //         options: [1],
+      //       },
+      //     ],
+      //   },
+      // },
       {
         type: 'default',
         fillField: [
@@ -2423,20 +2438,6 @@ export const editFields = [
         module: 'selects/getListUpdate',
         field: 'object_zr',
         url: 'get/pagination_list/object_zr',
-      },
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'direction_id',
-          targetField: 'type_objects',
-          condition: [
-            {
-              value: 7,
-              options: [2],
-            },
-          ],
-        },
       },
     ],
     updateList: [
@@ -2585,38 +2586,38 @@ export const editFields = [
       },
     ],
     dependence: [
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'on_yourself',
-          targetField: 'payment_type',
-          condition: [
-            {
-              value: true,
-              options: [1],
-            },
-          ],
-        },
-      },
-      {
-        type: 'default',
-        action: {
-          type: 'hideOptions',
-          field: 'type_zayavka',
-          targetField: 'payment_type',
-          condition: [
-            {
-              value: 2,
-              options: [1],
-            },
-            {
-              value: 3,
-              options: [1],
-            },
-          ],
-        },
-      },
+      // {
+      //   type: 'default',
+      //   action: {
+      //     type: 'hideOptions',
+      //     field: 'on_yourself',
+      //     targetField: 'payment_type',
+      //     condition: [
+      //       {
+      //         value: true,
+      //         options: [1],
+      //       },
+      //     ],
+      //   },
+      // },
+      // {
+      //   type: 'default',
+      //   action: {
+      //     type: 'hideOptions',
+      //     field: 'type_zayavka',
+      //     targetField: 'payment_type',
+      //     condition: [
+      //       {
+      //         value: 2,
+      //         options: [1],
+      //       },
+      //       {
+      //         value: 3,
+      //         options: [1],
+      //       },
+      //     ],
+      //   },
+      // },
       {
         type: 'default',
         fillField: [
@@ -4035,6 +4036,20 @@ export const editFields = [
             type: 'num',
           },
         ],
+      },
+    ],
+    hideOption: [
+      {
+        target: 'type_zayavka',
+        targetValue: [2, 3],
+        value: [1],
+        type: true,
+      },
+      {
+        target: 'on_yourself',
+        targetValue: [true],
+        value: [1],
+        type: true,
       },
     ],
     validations: { required },
