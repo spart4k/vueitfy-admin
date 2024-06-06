@@ -1140,6 +1140,7 @@ const config = {
                   sm: 6,
                 },
                 bootstrapClass: [''],
+                validations: { required },
               }),
               stringField({
                 label: 'Краткое имя',
@@ -1152,6 +1153,7 @@ const config = {
                   sm: 6,
                 },
                 bootstrapClass: [''],
+                validations: { required },
               }),
               stringField({
                 label: 'Телефон',
@@ -1164,6 +1166,7 @@ const config = {
                   sm: 6,
                 },
                 bootstrapClass: [''],
+                validations: { required },
               }),
               stringField({
                 label: 'Email',
@@ -1176,6 +1179,7 @@ const config = {
                   sm: 6,
                 },
                 bootstrapClass: [''],
+                validations: { required },
               }),
               stringField({
                 label: 'Логин',
@@ -1188,6 +1192,7 @@ const config = {
                   sm: 6,
                 },
                 bootstrapClass: [''],
+                validations: { required },
               }),
               stringField({
                 label: 'Пароль',
@@ -1200,6 +1205,7 @@ const config = {
                   sm: 6,
                 },
                 bootstrapClass: [''],
+                validations: { required },
               }),
               dateField({
                 label: 'Дата рождения',
@@ -1213,6 +1219,7 @@ const config = {
                 },
                 bootstrapClass: [''],
                 alias: 'p.date_status',
+                validations: { required },
               }),
               selectField({
                 label: 'Направления',
@@ -1369,6 +1376,7 @@ const config = {
                   sm: 6,
                 },
                 bootstrapClass: [''],
+                validations: { required },
               }),
               checkboxField({
                 label: 'Руководитель',
