@@ -1,4 +1,4 @@
-import Vue, { ref, onMounted, computed, toRef } from 'vue'
+import Vue, { ref, onMounted, computed, toRef, watch } from 'vue'
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
 
@@ -1651,6 +1651,7 @@ export default {
         pathDock.value = [path_doc]
         props.document.path_doc = path_doc
         isCorrect.value = true
+        console.log(isCorrect.value)
         if (isRejected.value === true) {
           isRejected.value = false
         }
@@ -1873,6 +1874,12 @@ export default {
         isRejected.value = true
       }
     })
+    watch(
+      () => isCorrect.value,
+      () => {
+        console.log('change', isCorrect.value)
+      }
+    )
     return {
       loading,
       showField,
