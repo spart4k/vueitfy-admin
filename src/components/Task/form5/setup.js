@@ -25,6 +25,7 @@ const Form5 = defineComponent({
   setup({ data }, ctx) {
     const route = useRoute()
     const router = useRouter()
+    const loading = ref(false)
     const context = {
       root: {
         store,
@@ -156,6 +157,7 @@ const Form5 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
+      loading.value = true
       listRequestsForUpload.value.forEach((elem, index) => {
         elem()
       })
@@ -222,6 +224,7 @@ const Form5 = defineComponent({
 
       ctx.emit('closePopup')
       ctx.emit('getItems')
+      loading.value = false
     }
     let spr = {
       1: 'Паспорт',
@@ -259,6 +262,7 @@ const Form5 = defineComponent({
       disableFinishState,
       sendTaskFinish,
       spr,
+      loading,
     }
   },
 })

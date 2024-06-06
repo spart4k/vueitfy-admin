@@ -2,13 +2,9 @@
   <div>
     <div style="padding-top: 20px">
       <v-row>
-        <v-textarea
-          v-model="dopData.comment"
-          placeholder="Комментарий ОКК"
-          disabled
-          class=""
-          rows="1"
-        ></v-textarea>
+        <FormError class="mb-4" v-if="dopData.comment">
+          {{ dopData.comment }}
+        </FormError>
       </v-row>
       <span class="font-weight-bold heading"
         >Проверьте закрывающие документы:</span
@@ -106,6 +102,7 @@
           :disabled="!comment && !attachedFile"
           color="info"
           @click="sendTaskFinish"
+          :loading="loading"
           small
         >
           <v-icon small>mdi-content-save</v-icon>

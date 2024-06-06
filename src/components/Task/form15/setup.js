@@ -29,6 +29,7 @@ const Form15 = defineComponent({
     const router = useRouter()
     const route = useRoute()
     const proxyConfig = ref(_.cloneDeep(config))
+    const loading = ref(false)
     const context = {
       root: {
         store,
@@ -151,6 +152,7 @@ const Form15 = defineComponent({
     })
 
     const confirm = async () => {
+      loading.value = true
       isFormConfirmed.value = true
 
       await setPersonalTarget()
@@ -159,8 +161,10 @@ const Form15 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     const reject = async () => {
+      loading.value = true
       isFormConfirmed.value = false
 
       await setPersonalTarget()
@@ -169,6 +173,7 @@ const Form15 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
 
     const pushToForm = (val) => {
@@ -210,6 +215,7 @@ const Form15 = defineComponent({
       proxyConfig,
       closePopupForm,
       Popup,
+      loading,
     }
   },
 })

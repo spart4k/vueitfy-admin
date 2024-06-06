@@ -142,6 +142,7 @@
         <v-btn
           small
           color="info"
+          :loading="loading"
           :disabled="
             !docsAttached ||
             (!data.data.zayavka.id && !patent[5] && needPatent) ||

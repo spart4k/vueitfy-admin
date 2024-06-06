@@ -33,6 +33,7 @@ const Form6 = defineComponent({
         route,
       },
     }
+    const loading = ref(false)
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -128,6 +129,7 @@ const Form6 = defineComponent({
         }),
     })
     let sendTaskFinish = async () => {
+      loading.value = true
       const { makeRequest: changeStatus } = useRequest({
         context,
         successMessage: 'Успешно',
@@ -167,6 +169,7 @@ const Form6 = defineComponent({
           ctx.emit('getItems')
         }
       }
+      loading.value = false
     }
     return {
       addFiles,
@@ -177,6 +180,7 @@ const Form6 = defineComponent({
       sendTaskFinish,
       isLoadedImage,
       textInfo,
+      loading,
     }
   },
 })

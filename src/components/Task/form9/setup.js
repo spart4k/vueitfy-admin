@@ -52,7 +52,7 @@ const Form8 = defineComponent({
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
     let listNewChet = ref([])
-
+    const loading = ref(false)
     let clearDropzone = ref(null)
 
     let listRequestsForUpload = ref([])
@@ -370,6 +370,7 @@ const Form8 = defineComponent({
     })
 
     let sendTaskFinish = async () => {
+      loading.value = true
       //   $.ajax('/common/save/personal', {
       //     method: "POST",
       //     data: {id: <?php echo $entity['id']; ?>, status: 5},
@@ -408,6 +409,7 @@ const Form8 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     return {
       addFiles,
@@ -430,6 +432,7 @@ const Form8 = defineComponent({
       getDocName,
       closeSchet,
       docsAttached,
+      loading,
     }
   },
 })

@@ -51,7 +51,7 @@ const Form14 = defineComponent({
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
-
+    const loading = ref(false)
     onMounted(() => {
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -167,6 +167,7 @@ const Form14 = defineComponent({
     }
 
     let sendTaskFinish = () => {
+      loading.value = true
       let keyOfObjectSend = {}
       listDocuments.value.forEach((elem, index) => {
         for (const key in elem) {
@@ -194,6 +195,7 @@ const Form14 = defineComponent({
       sendDocuments()
       changeStatus()
       ctx.emit('closePopup')
+      loading.value = false
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
@@ -226,9 +228,11 @@ const Form14 = defineComponent({
     })
 
     let emplyeeFired = async () => {
+      loading.value = true
       await changeStatusNew()
       await setStartStep()
       ctx.emit('closePopup')
+      loading.value = false
     }
 
     return {
@@ -245,6 +249,7 @@ const Form14 = defineComponent({
       disabledDocumentsAcc,
       emplyeeFired,
       refds,
+      loading,
     }
   },
 })

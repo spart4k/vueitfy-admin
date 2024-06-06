@@ -82,6 +82,7 @@
           color="info"
           @click="sendTaskFinish"
           small
+          :loading="loading"
           :disabled="!comment && !disabledDocumentsAcc"
         >
           <v-icon small>mdi-content-save</v-icon>

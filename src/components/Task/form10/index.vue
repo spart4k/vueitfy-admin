@@ -126,6 +126,7 @@
           color="info"
           @click="sendTaskFinish"
           small
+          :loading="loading"
           :disabled="!allChecked"
         >
           <v-icon small>mdi-content-save</v-icon>

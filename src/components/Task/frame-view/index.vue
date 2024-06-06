@@ -115,6 +115,7 @@
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
+          @refreshData="refreshData"
         ></Form11>
         <!--Подтверждение назначения-->
         <Form13

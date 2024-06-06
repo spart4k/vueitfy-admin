@@ -60,7 +60,13 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn small :disabled="!isValid" color="info" @click="sendData">
+      <v-btn
+        small
+        :disabled="!isValid"
+        color="info"
+        :loading="loading"
+        @click="sendData"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>

@@ -39,6 +39,8 @@ const form10 = defineComponent({
         route,
       },
     }
+
+    const loading = ref(false)
     const { configRouteConvert } = useView()
     const config = _.cloneDeep(zayavkaConfigOrig)
     configRouteConvert({
@@ -183,6 +185,7 @@ const form10 = defineComponent({
         }),
     })
     let sendTaskFinish = async () => {
+      loading.value = true
       // let keyOfObjectSend = {}
       // listDocuments.value.forEach((elem, index) => {
       //   for (const key in elem) {
@@ -239,6 +242,7 @@ const form10 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     const formRowsRef = ref([])
     const start_accepted_amount = toRef(
@@ -612,6 +616,7 @@ const form10 = defineComponent({
       config,
       popupForm,
       closePopupForm,
+      loading,
     }
   },
 })

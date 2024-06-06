@@ -40,6 +40,7 @@ const Form2 = defineComponent({
         route,
       },
     }
+    const loading = ref(false)
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -193,12 +194,13 @@ const Form2 = defineComponent({
       if (rejectedDocs.value.length && !comment.value) {
         commentErr.value = ['Заполните комментарий']
       } else {
+        loading.value = true
         const { success } = await changeStatusTask()
         if (success) {
           ctx.emit('closePopup')
           ctx.emit('getItems')
         }
-
+        loading.value = false
         if (
           props.data.entity.grajdanstvo_id === 1 &&
           newStatus.value === 2 &&
@@ -237,6 +239,7 @@ const Form2 = defineComponent({
       rejectedDocs,
       docMainValid,
       docMainRef,
+      loading,
     }
   },
 })

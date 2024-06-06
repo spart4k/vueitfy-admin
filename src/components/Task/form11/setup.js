@@ -6,6 +6,7 @@ import Vue, {
   onUpdated,
   reactive,
   toRef,
+  watch,
 } from 'vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -16,6 +17,7 @@ import DropZone from '@/components/Dropzone/default/index.vue'
 import IconDelete from '@/components/Icons/delete/delete.vue'
 import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import { methods } from 'vue2-dropzone'
+import FormError from '@/components/Task/el/FormError/index.vue'
 
 const Form11 = defineComponent({
   name: 'Form11',
@@ -42,6 +44,7 @@ const Form11 = defineComponent({
         route,
       },
     }
+    const loading = ref(false)
     const dropzoneOptions = ref({
       withoutSave: false,
       folder: 'tmp',
@@ -181,7 +184,18 @@ const Form11 = defineComponent({
         refds.value = 0
       }
     }
-
+    const propsSchets = toRef(props.data.data.zayavka, 'close_schet')
+    watch(
+      () => props.data.data.zayavka.close_schet,
+      () => {
+        formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
+          return {
+            ...el,
+            path_doc: el.name,
+          }
+        })
+      }
+    )
     let sendCloseDocsSchet = async (e) => {
       const { makeRequest: setDataZayavka } = useRequest({
         context,
@@ -205,7 +219,15 @@ const Form11 = defineComponent({
       await setDataZayavka()
       await updateDopData()
       JSON.parse(attached_amount.value).attached = true
-      // dropZone.value.clearDropzone()
+      ctx.emit('refreshData')
+      formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
+        return {
+          ...el,
+          path_doc: el.name,
+        }
+      })
+      console.log(formatedSchets.value)
+      dropZone.value.clearDropzone()
     }
 
     const checkIdenticalFiles = (newFile) => {
@@ -249,6 +271,7 @@ const Form11 = defineComponent({
     })
 
     let sendTaskFinish = async () => {
+      loading.value = true
       if (JSON.parse(attached_amount.value).attached && !comment.value) {
         store.commit('notifies/showMessage', {
           color: 'error',
@@ -278,6 +301,7 @@ const Form11 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
@@ -323,6 +347,7 @@ const Form11 = defineComponent({
           content: 'Документа ' + id + ' удален',
           timeout: 1000,
         })
+        ctx.emit('refreshData')
       }
     }
 
@@ -358,6 +383,9 @@ const Form11 = defineComponent({
       attachedFile,
       sendCloseDocsSchet,
       attached_amount,
+      loading,
+      FormError,
+      propsSchets,
     }
   },
 })

@@ -79,6 +79,7 @@
         :disabled="!isSetTask"
         class="mr-2"
         small
+        :loading="loading"
         color="info"
         @click="completeTask"
       >
@@ -90,6 +91,7 @@
         :disabled="!changeQTY"
         color="info"
         @click="completeTask"
+        :loading="loading"
         small
       >
         <v-icon left small> $IconMain </v-icon>
