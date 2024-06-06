@@ -74,6 +74,7 @@ export default {
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
     const commentData = JSON.parse(data.task.dop_data)['comment']
+    const loading = ref(false)
     onMounted(() => {
       for (let key in sss.docs_id) {
         console.log(key)
@@ -317,10 +318,12 @@ export default {
         }),
     })
 
-    let emplyeeFired = () => {
-      changeStatusNew()
-      setStartStep()
+    let emplyeeFired = async () => {
+      loading.value = true
+      await changeStatusNew()
+      await setStartStep()
       ctx.emit('closePopup')
+      loading.value = false
     }
 
     return {
@@ -346,6 +349,7 @@ export default {
       commentData,
       someReject,
       allTouched,
+      loading,
     }
   },
 }

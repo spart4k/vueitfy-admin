@@ -62,6 +62,7 @@ const Form1 = defineComponent({
     const bankCardId = ref(0)
     const isFormValid = ref(false)
     const docMainRef = ref(null)
+    const loading = ref(false)
     const docMainValid = computed(() => {
       if (isHasOsnDoc) {
         return !docMainRef.value.vForm.$invalid && docMainRef.value.osnConfirmed
@@ -134,7 +135,7 @@ const Form1 = defineComponent({
     watchEffect(() => {
       const arr = comment.value
     })
-    const { makeRequest, loading } = useRequest({
+    const { makeRequest } = useRequest({
       context,
       request: () =>
         store.dispatch('taskModule/setPartTask', {
@@ -317,6 +318,7 @@ const Form1 = defineComponent({
     }
 
     const sendData = async () => {
+      loading.value = true
       if (isHasOsnDoc) {
         await setPersonalData()
       }
@@ -330,6 +332,7 @@ const Form1 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
 
     return {

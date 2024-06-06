@@ -128,8 +128,9 @@ const Form18 = defineComponent({
     onMounted(() => {
       addGroup()
     })
-
+    const loading = ref(false)
     const confirmTask = async () => {
+      loading.value = true
       let total = 0
       const services = formGroup.value.map((group, i) => {
         const formData = group.formData
@@ -259,8 +260,10 @@ const Form18 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     const rejectTask = async () => {
+      loading.value = true
       formCommentError.value = ''
       if (confirm('Вы подтверждаете отклонение выработки?')) {
         if (!formComment.value) {
@@ -293,6 +296,7 @@ const Form18 = defineComponent({
           ctx.emit('getItems')
         }
       }
+      loading.value = false
     }
 
     const getServiceInfo = async (idService) => {
@@ -405,6 +409,7 @@ const Form18 = defineComponent({
       closePopupForm,
       Popup,
       autocompleteConfig,
+      loading,
     }
   },
 })

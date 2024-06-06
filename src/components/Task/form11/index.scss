@@ -1,4 +1,3 @@
-
 .file {
   width: 100%;
   height: 100px;
@@ -33,7 +32,6 @@
     width: 100%;
     height: auto;
   }
-
 
   &-input {
     display: none;
@@ -82,4 +80,10 @@
 
 .wrapp {
   min-height: 200px;
+}
+
+.form {
+  &-link {
+    text-decoration: underline;
+  }
 }

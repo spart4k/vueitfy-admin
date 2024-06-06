@@ -29,6 +29,7 @@ const Form3 = defineComponent({
       withoutSave: false,
       folder: 'tmp',
     }
+    const loading = ref(false)
     let selectName = ref('')
     let price = ref('')
     let nameComp = data.data.items[0].name
@@ -59,6 +60,7 @@ const Form3 = defineComponent({
       },
     }
     const sendData = async () => {
+      loading.value = true
       let fileExt = file.value.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -129,6 +131,7 @@ const Form3 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     return {
       options,
@@ -141,6 +144,7 @@ const Form3 = defineComponent({
       addFiles,
       sendData,
       autocompleteConfig,
+      loading,
     }
   },
 })

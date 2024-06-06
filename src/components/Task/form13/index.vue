@@ -85,8 +85,13 @@
           <v-icon small>mdi-close</v-icon>
           Закрыть
         </v-btn>
-
-        <v-btn color="info" @click="sendTaskFinish" small :disabled="!isValid">
+        <v-btn
+          color="info"
+          @click="sendTaskFinish"
+          small
+          :loading="loading"
+          :disabled="!refds || (!disabledDocumentsAcc && !comment)"
+        >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>

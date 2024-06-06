@@ -69,7 +69,7 @@ export default {
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
-
+    const loading = ref(false)
     onMounted(() => {
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -197,6 +197,7 @@ export default {
     const commentData = JSON.parse(data.task.dop_data)['comment']
     const hideSecondPart = was_process && !commentData
     let sendTaskFinish = async () => {
+      loading.value = true
       let keyOfObjectSend = {}
       docFormRef?.value?.docRows?.forEach((elem, index) => {
         keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
@@ -252,6 +253,7 @@ export default {
           timeout: 1000,
         })
       }
+      loading.value = false
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
@@ -326,6 +328,7 @@ export default {
       someReject,
       hideSecondPart,
       was_process,
+      loading,
     }
   },
 }
