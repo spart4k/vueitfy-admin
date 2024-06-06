@@ -106,19 +106,23 @@ export default {
             condition: [
               {
                 value: [2],
-                options: [1, 6],
+                options: [1, 6, 7],
               },
               {
                 value: [6],
-                options: [2],
+                options: [2, 7],
               },
               {
                 value: [1],
-                options: [2],
+                options: [2, 7],
               },
               {
                 value: [1, 6],
-                options: [2],
+                options: [2, 7],
+              },
+              {
+                value: [7],
+                options: [1, 2, 6],
               },
             ],
           },
@@ -208,6 +212,11 @@ export default {
             field: 'type',
             target: 'value',
             value: 'notEmpty',
+          },
+          {
+            field: 'type',
+            value: [1, 5, 6, 7],
+            reverse: true,
           },
         ],
       },
@@ -355,7 +364,7 @@ export default {
           {
             field: 'direction_json',
             type: 'array',
-            value: [[1], [6], [1, 6]],
+            value: [[1], [2], [6], [1, 6]],
           },
         ],
       },
@@ -379,7 +388,12 @@ export default {
           {
             field: 'direction_json',
             type: 'array',
-            value: [[1], [6], [1, 6]],
+            value: [[1], [2], [6], [1, 6]],
+          },
+          {
+            field: 'type',
+            value: [2, 3, 4, 5, 6, 7],
+            reverse: true,
           },
         ],
       },
@@ -561,6 +575,56 @@ export default {
           },
         ],
       },
+    }),
+    dateField({
+      label: 'Время с',
+      name: 'time_open',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_json',
+            type: 'array',
+            value: [[2]],
+          },
+        ],
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    dateField({
+      label: 'Время по',
+      name: 'time_close',
+      type: 'date',
+      value: '',
+      menu: false,
+      placeholder: '',
+      class: [''],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_json',
+            type: 'array',
+            value: [[2]],
+          },
+        ],
+      },
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      validations: { required },
+      bootstrapClass: [''],
     }),
   ],
   actions: [
