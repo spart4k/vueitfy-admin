@@ -41,7 +41,10 @@
           >Работает</v-btn
         >
       </div>
-      <div v-if="status === 'Работает'" class="position-relative">
+      <div
+        v-if="status === 'Работает' && !hideSecondPart"
+        class="position-relative"
+      >
         <div class="mb-10">
           <DocForm
             v-if="listDocuments && listDocuments.length"
