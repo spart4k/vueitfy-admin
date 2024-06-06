@@ -6,6 +6,7 @@
       :disabled="true"
       variant="underlined"
       :label="field.label"
+      :error-messages="errorMessages"
     >
       <template v-slot:append>
         <v-menu
