@@ -887,6 +887,32 @@ const table = {
       emit('closePopup', action.to)
     }
 
+    const showAction = (action, cell, row) => {
+      if (action.funcCondition) {
+        const conditionContext = {
+          store,
+          action,
+          cell,
+          row,
+        }
+        return action.funcCondition(conditionContext)
+      }
+      return true
+    }
+
+    const triggerAction = (action, cell, row) => {
+      if (action.method) {
+        const conditionContext = {
+          store,
+          action,
+          cell,
+          row,
+          Vue,
+        }
+        action.method(conditionContext)
+      }
+    }
+
     const downloadFile = (val) => {
       Vue.downloadFile(val)
     }
@@ -931,6 +957,8 @@ const table = {
       watchScroll,
       handlerContext,
       changeMonth,
+      showAction,
+      triggerAction,
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,
