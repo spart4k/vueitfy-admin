@@ -11,7 +11,7 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
+import { required, length } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -576,13 +576,11 @@ export default {
         ],
       },
     }),
-    dateField({
+    stringField({
       label: 'Время с',
       name: 'time_open',
-      type: 'date',
-      value: '',
-      menu: false,
       placeholder: '',
+      value: '',
       class: [''],
       position: {
         cols: 12,
@@ -598,17 +596,20 @@ export default {
           },
         ],
       },
-      validations: { required },
+      mask: '##:##',
+      validations: { required, length: length(5) },
       bootstrapClass: [''],
     }),
-    dateField({
+    stringField({
       label: 'Время по',
       name: 'time_close',
-      type: 'date',
-      value: '',
-      menu: false,
       placeholder: '',
+      value: '',
       class: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
       isShow: {
         value: false,
         conditions: [
@@ -619,11 +620,8 @@ export default {
           },
         ],
       },
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: { required },
+      mask: '##:##',
+      validations: { required, length: length(5) },
       bootstrapClass: [''],
     }),
   ],
