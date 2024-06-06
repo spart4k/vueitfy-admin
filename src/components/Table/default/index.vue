@@ -324,17 +324,20 @@
                       "
                       class="v-table-actions-wrap"
                     >
-                      <v-btn
+                      <div
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
-                        @click="
-                          downloadFile(Object.byString(row.row, cell.value))
-                        "
                       >
-                        <v-icon small>
-                          {{ action.url }}
-                        </v-icon>
-                      </v-btn>
+                        <v-btn
+                          v-if="showAction(action, cell, row)"
+                          @click="triggerAction(action, cell, row)"
+                        >
+                          <v-icon small>
+                            {{ action.url }}
+                          </v-icon>
+                        </v-btn>
+                        <div v-else>-</div>
+                      </div>
                     </div>
                   </template>
                 </td>
