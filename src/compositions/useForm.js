@@ -638,7 +638,9 @@ export default function ({
               const valueId =
                 formData[dropzone.options.valueId] ?? store?.state?.user.id
               const name =
-                eval(dropzone.options.name).split(' ').join('_') +
+                (dropzone.options.fileName
+                  ? file.name
+                  : eval(dropzone.options.name).split(' ').join('_')) +
                 '_' +
                 valueId +
                 '_' +
