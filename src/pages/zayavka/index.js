@@ -1805,6 +1805,7 @@ export const addFields = [
       withoutSave: false,
       folder: 'schet',
       name: '`zayavka_schet`',
+      fileName: true,
       paramsForEmit: this,
       countFiles: 10,
     },
@@ -4138,6 +4139,7 @@ export const editFields = [
       withoutSave: false,
       folder: 'schet',
       name: '`zayavka_schet`',
+      fileName: true,
       paramsForEmit: this,
       countFiles: 10,
     },
@@ -4434,6 +4436,40 @@ const config = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/zayavka',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: '$IconDelete',
+          label: 'Удалить',
+          isShow: {
+            condition: [
+              {
+                funcCondition: (context) => {
+                  return (
+                    context.store.state.user.id ===
+                      context.data.row.from_account_id &&
+                    context.data.row.status === 1
+                  )
+                },
+                type: true,
+              },
+            ],
+          },
+          action: {
+            type: 'confirm',
+            dialog: {
+              text: 'Вы подтверждаете удаление заявки?',
+              function: (context) => {
+                context.store.dispatch('form/update', {
+                  url: 'set/data/zayavka',
+                  body: { data: { id: context.data.row.id, del: 1 } },
+                })
+              },
+            },
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [

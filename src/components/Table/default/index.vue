@@ -331,6 +331,7 @@
                         <v-btn
                           v-if="showAction(action, cell, row)"
                           @click="triggerAction(action, cell, row)"
+                          color="primary"
                         >
                           <v-icon small>
                             {{ action.url }}
