@@ -400,6 +400,7 @@ const Form8 = defineComponent({
               task_id: props.data.task.id,
               parent_action: props.data.task.id,
               rashod_id: Number(JSON.parse(props.data.task.dop_data).rashod_id),
+              to_okk: true,
             },
           }),
       })

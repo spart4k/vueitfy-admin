@@ -21,7 +21,7 @@
           <v-icon>mdi-calendar</v-icon>
           <span>{{ formatDate(data.task.date_create) }}</span>
         </v-row>
-        <v-row
+        <!-- <v-row
           v-if="data.data?.zayavka?.id"
           class="task__info-row"
           align="center"
@@ -30,7 +30,7 @@
           <a target="_blank" :href="`/zayavka/${data.data.zayavka.id}`"
             >Заявка №{{ data.data.zayavka.id }}</a
           >
-        </v-row>
+        </v-row> -->
         <v-row class="task__info-row" align="center">
           <v-icon>mdi-checkbox-multiple-blank-outline</v-icon>
           <span :class="`circle circle--${data.task.status}`"></span>
