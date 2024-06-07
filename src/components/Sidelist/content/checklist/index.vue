@@ -1,6 +1,6 @@
 <template>
   <div class="w-100 h-100">
-    <v-tabs-items class="h-100" v-model="stage">
+    <v-tabs-items touchless class="h-100" v-model="stage">
       <v-tab-item class="h-100">
         <div class="v-panel d-flex flex-column pb-5">
           <SidelistHeader
