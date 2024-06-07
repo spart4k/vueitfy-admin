@@ -240,6 +240,7 @@ const Form11 = defineComponent({
         }
       })
       console.log(formatedSchets.value)
+      listNewChet.value = []
       dropZone.value.clearDropzone()
     }
 
