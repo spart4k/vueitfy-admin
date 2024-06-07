@@ -19,12 +19,12 @@
           :error-messages="errorMessages"
         ></v-text-field>
       </template>
-      <v-tabs grow v-model="activeTab">
+      <v-tabs mobile-breakpoint="0" grow v-model="activeTab">
         <v-tab v-for="item in tabs" :key="item.id">
           {{ item.name }}
         </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="activeTab">
+      <v-tabs-items touchless v-model="activeTab">
         <v-tab-item>
           <v-date-picker
             v-model="tabs.date.value"

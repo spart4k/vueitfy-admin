@@ -1,4 +1,12 @@
-import Vue, { ref, computed, watch, unref, reactive, readonly } from 'vue'
+import Vue, {
+  ref,
+  computed,
+  watch,
+  unref,
+  reactive,
+  readonly,
+  nextTick,
+} from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
 import store from '@/store'
@@ -630,7 +638,9 @@ export default function ({
               const valueId =
                 formData[dropzone.options.valueId] ?? store?.state?.user.id
               const name =
-                eval(dropzone.options.name).split(' ').join('_') +
+                (dropzone.options.fileName
+                  ? file.name
+                  : eval(dropzone.options.name).split(' ').join('_')) +
                 '_' +
                 valueId +
                 '_' +
@@ -1399,7 +1409,23 @@ export default function ({
   }
 
   const queryList = async (field, clear = true) => {
-    const listData = field?.updateList?.map((list) => {
+    const listData = field?.updateList?.flatMap((list) => {
+      if (list.condition) {
+        const conditionContext = {
+          store,
+          formData,
+          environment,
+        }
+        for (let i = 0; i < list.condition.length; i++) {
+          let item = list.condition[i]
+          if (item.hasOwnProperty('funcCondition')) {
+            if (!item.funcCondition(conditionContext)) {
+              return []
+            }
+          } else if (!item.value.includes(formData[item.key])) return []
+        }
+      }
+
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
         if (
@@ -1837,10 +1863,18 @@ export default function ({
       return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
     if (field.isShow?.label) {
-      const trueCondition = field.isShow.label.find((x) =>
-        x.value?.includes(formData[x.field])
-      )
-      if (trueCondition) field.label = trueCondition.label
+      nextTick(() => {
+        const trueCondition = field.isShow.label.find((x) => {
+          if (Array.isArray(formData[x.field])) {
+            return x.value.some((item) =>
+              _.isEqual([...formData[x.field]].sort(), item.sort())
+            )
+          } else {
+            return x.value?.includes(formData[x.field])
+          }
+        })
+        if (trueCondition) field.label = trueCondition.label
+      })
     }
     if (field.isShow?.location) {
       const trueCondition = field.isShow.location.find((x) =>

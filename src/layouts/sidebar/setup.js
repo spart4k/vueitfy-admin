@@ -46,27 +46,6 @@ export default {
       }
     })
 
-    watch(
-      () => isMobile.value,
-      () => {
-        if (isMobile.value) {
-          store.commit('changeMenuStatus', false)
-          store.commit('changeMenuSize', false)
-        } else if (!isMobile.value) {
-          store.commit('changeMenuStatus', true)
-          store.commit('changeMenuSize', false)
-          openCurrentRoute()
-        }
-      }
-    )
-
-    watch(
-      () => props.navData.length,
-      () => {
-        openCurrentRoute()
-      }
-    )
-
     const userInfo = computed(() => store.state.user)
 
     const openCurrentRoute = () => {
@@ -85,11 +64,15 @@ export default {
       }, 0)
     }
 
-    onMounted(async () => {
+    onMounted(() => {
       if (isMobile.value) {
         store.commit('changeMenuStatus', false)
         store.commit('changeMenuSize', false)
+      } else if (!isMobile.value) {
+        store.commit('changeMenuStatus', true)
+        store.commit('changeMenuSize', false)
       }
+      openCurrentRoute()
     })
 
     return {
