@@ -168,20 +168,27 @@
                     :class="index && 'mt-4'"
                   >
                     <v-avatar
-                      @click="downloadFile({ item })"
                       class="pointer"
                       tile
                       size="52"
                       v-if="imageFormat(item)"
                     >
-                      <v-img :src="$root.env.VUE_APP_STORE + item.name"></v-img>
+                      <a
+                        style="width: 100%; height: 100%"
+                        :href="$root.env.VUE_APP_STORE + item.name"
+                        target="_blank"
+                      >
+                        <v-img
+                          :src="$root.env.VUE_APP_STORE + item.name"
+                        ></v-img
+                      ></a>
                     </v-avatar>
                     <v-btn x-large v-else @click="downloadFile({ item })" icon>
-                      <v-icon small> $IconDownload </v-icon>
+                      <v-icon small> {{ item.name.split('.').at(-1) }} </v-icon>
                     </v-btn>
                     <v-list-item-content class="d-flex ml-4">
                       <v-list-item-title>
-                        {{ item.num }}
+                        {{ item.name.split('/')[2] }}
                       </v-list-item-title>
                     </v-list-item-content>
                     <v-btn
