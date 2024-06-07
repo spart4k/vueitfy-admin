@@ -14,12 +14,13 @@
       background-color="transparent"
       color="basil"
       class="p-5"
+      mobile-breakpoint="0"
     >
       <v-tab v-for="item in config.tabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-if="tableView" v-model="activeTab">
+    <v-tabs-items touchless v-if="tableView" v-model="activeTab">
       <v-tab-item v-for="item in config.tabs" :key="item.options.title">
         <component
           :is="item.type"
