@@ -51,21 +51,9 @@ const Form17 = defineComponent({
       'DD.MM.YYYY'
     )
 
-    const getServiceInfo = async (idService) => {
-      const { makeRequest } = useRequest({
-        context,
-        request: () => {
-          return store.dispatch(
-            'taskModule/getServicePrice',
-            `object_id=${data.entity.object_id}&service_id=${idService}&date_target=${data.entity.date_target}`
-          )
-        },
-      })
-      return await makeRequest()
-    }
     let selectName = ref('')
     let qty = ref(10.5)
-    let tariff
+    let tariff = ref()
     let changeQTY = computed(() => {
       if (qty.value) {
         return true
@@ -94,12 +82,10 @@ const Form17 = defineComponent({
         value: data.entity.object_name,
       },
     }
-    onMounted(() => {
-      tariff = getServiceInfo(data.entity.doljnost_id)
-    })
+    const account_id = computed(() => store.state.user.id)
     let sum = computed(() => {
-      if (tariff) {
-        return (tariff / 10.5) * qty
+      if (tariff.value) {
+        return Number(tariff.value) * Number(qty.value)
       } else {
         return 0
       }
@@ -108,13 +94,14 @@ const Form17 = defineComponent({
     let loadImage
     let changeStatusTask
     let isSetTask = ref(false)
+    const rejectedTarif = ref('')
     const autocompleteConfig = {
-      label: data.entity.doljnost_name,
+      label: 'Наименование',
       name: 'name',
-      items: [],
+      items: data.data.services,
       solo: false,
       required: true,
-      readonly: true,
+      readonly: data.entity.direction_id != 7,
       selectOption: {
         text: 'name',
         value: 'id',
@@ -162,7 +149,8 @@ const Form17 = defineComponent({
               parent_action: data.task.id,
               personal_target_id: data.entity.id,
               file_output: fileName,
-              have_price: 1,
+              have_price: data.entity.direction_id !== 7,
+              constructed: data.entity.direction_id === 7,
               object_id: data.entity.object_id,
               date_target: data.entity.date_target,
             },
@@ -237,6 +225,26 @@ const Form17 = defineComponent({
     //   { 50: 77 },
     //   { 51: 78 },
     // ]
+    const changeServiceDetail = async (obj) => {
+      tariff.value = null
+      rejectedTarif.value = ''
+      const { makeRequest } = useRequest({
+        context,
+        request: () => {
+          return store.dispatch(
+            'taskModule/getServicePrice',
+            `object_id=${data.entity.object_id}&service_id=${obj.value}&date_target=${data.entity.date_target}`
+          )
+        },
+      })
+      // const data = await makeRequest()
+      const response = await makeRequest()
+      if (response?.length) {
+        tariff.value = response[0].price
+      } else {
+        rejectedTarif.value = obj.item.name
+      }
+    }
     let services_spr = {
       24: 61,
       25: 62,
@@ -295,6 +303,7 @@ const Form17 = defineComponent({
           request: () => {
             return store.dispatch('taskModule/setPartTask', {
               status: 2,
+              successMessage: 'Задача завершена',
               data: {
                 process_id: data.task.process_id,
                 manager_id: data.task.from_account_id,
@@ -311,33 +320,98 @@ const Form17 = defineComponent({
         })
         await setPersonalTarget()
         result = await changeStatus()
-        //   $.ajax('/common/save/personal_target', {
-        //     method: "POST",
-        // //     data: {id: <?php echo $entity['id']; ?>, services: `{"3": {"services": [{"service_id": <?php echo $services_spr[$entity['doljnost_id']]; ?>,
-        // "qty": ${$('#form_personal_target_qty').val()}, "price": ${$('#form_personal_target_price').val()}, "sum": ${$('#form_personal_target_sum').val()}"}]"],
-        // "payment_id": false, "is_pay": false, "sum": ${$('#form_personal_target_sum').val()}}}` },
-        //     success: function() {
-        //         $.ajax('/task/change_status_task', {
-        //             method: "POST",
-        //             data: {status: 2, data: {
-        //                 process_id: <?php echo $task['process_id']; ?>,
-        //                 manager_id: <?php echo $task['from_account_id']; ?>,
-        //                 task_id: <?php echo $task['id']; ?>,
-        //                 parent_action: <?php echo $task['id']; ?>,
-        //                 personal_target_id: <?php echo $entity['id']; ?>,
-        //                 have_price: <?php echo isset($service_price[0]) ? 1 : 0; ?>,
-        //                 object_id: <?php echo $entity['object_id']; ?>,
-        //                 service_id: <?php echo $services_spr[$entity['doljnost_id']]; ?>,
-        //                 date_target: '<?php echo $entity['date_target']; ?>'
-        //             }},
-        //             success: function (data) {
-        //                 slidePopup('Задача выполнена!', 'success');
-        //                 typeof dataTable['task'] != "undefined" ? dataTable['task'].ajax.reload() : dataTable[document.taskTable].ajax.reload();
-        //                 hideModal();
-        //             }
-        //         })
-        //     }
-        // })
+      } else if (data.entity.direction_id == 7) {
+        const { makeRequest: setDataPayment } = useRequest({
+          context,
+          request: () => {
+            return store.dispatch('taskModule/setDataPayment', {
+              data: {
+                account_id: data.entity.manager,
+                personal_bank_id: data.data.rek.id,
+                status_id: 2,
+                status_account_id: account_id.value,
+                personal_id: data.entity.personal_id,
+                vid_vedomost_id: 1,
+                direction_id: data.entity.direction_id,
+                object_id: data.entity.object_id,
+                bank_id: data.data.rek.bank_id,
+                invoice: data.data.rek.invoice,
+                total: sum.value,
+                fio: data.data.rek.fio,
+                doljnost_id: data.entity.doljnost_id,
+                date_target: data.entity.date_target,
+                personal_target_id: data.entity.id,
+                date_add: moment(
+                  new Date().toLocaleString('en-US', {
+                    timeZone: 'Europe/Moscow',
+                  })
+                ).format('YYYY-MM-DD'),
+                date_status: moment(
+                  new Date().toLocaleString('en-US', {
+                    timeZone: 'Europe/Moscow',
+                  })
+                ).format('YYYY-MM-DD HH:mm:ss'),
+              },
+            })
+          },
+        })
+        const paymentResponse = await setDataPayment()
+        const { makeRequest: setPersonalTarget } = useRequest({
+          context,
+          request: () => {
+            return store.dispatch('taskModule/setPersonalData', {
+              data: {
+                id: data.entity.id,
+                services: JSON.stringify({
+                  4: [
+                    {
+                      service: [
+                        {
+                          service_id: selectName.value,
+                          qty: qty.value,
+                          price: tariff.value,
+                          sum: sum.value,
+                        },
+                      ],
+                      payment_id: paymentResponse.result,
+                      is_pay: false,
+                      sum: sum.value,
+                      is_hold: false,
+                      deduction_hold: 0,
+                      deduction_debit: 0,
+                      hold_sum: 0,
+                      hold_id: 0,
+                    },
+                  ],
+                }),
+                // payment_id: paymentData.result,
+              },
+            })
+          },
+        })
+        const { makeRequest: changeStatus } = useRequest({
+          context,
+          request: () => {
+            return store.dispatch('taskModule/setPartTask', {
+              status: 2,
+              successMessage: 'Задача завершена',
+              data: {
+                process_id: data.task.process_id,
+                manager_id: data.task.from_account_id,
+                task_id: data.task.id,
+                parent_action: data.task.id,
+                personal_target_id: data.entity.id,
+                object_id: data.entity.object_id,
+                service_id: services_spr[data.entity.doljnost_id],
+                date_target: data.entity.date_target,
+                have_price: data.entity.direction_id !== 7,
+                constructed: data.entity.direction_id === 7,
+              },
+            })
+          },
+        })
+        await setPersonalTarget()
+        result = await changeStatus()
       }
 
       // let { status } = result
@@ -404,6 +478,8 @@ const Form17 = defineComponent({
       closePopupForm,
       Popup,
       autocompleteConfig,
+      changeServiceDetail,
+      rejectedTarif,
     }
   },
 })
