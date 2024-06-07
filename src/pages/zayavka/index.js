@@ -1805,6 +1805,7 @@ export const addFields = [
       withoutSave: false,
       folder: 'schet',
       name: '`zayavka_schet`',
+      fileName: true,
       paramsForEmit: this,
       countFiles: 10,
     },
@@ -4138,6 +4139,7 @@ export const editFields = [
       withoutSave: false,
       folder: 'schet',
       name: '`zayavka_schet`',
+      fileName: true,
       paramsForEmit: this,
       countFiles: 10,
     },
@@ -4434,6 +4436,40 @@ const config = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/zayavka',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: '$IconDelete',
+          label: 'Удалить',
+          isShow: {
+            condition: [
+              {
+                funcCondition: (context) => {
+                  return (
+                    context.store.state.user.id ===
+                      context.data.row.from_account_id &&
+                    context.data.row.status === 1
+                  )
+                },
+                type: true,
+              },
+            ],
+          },
+          action: {
+            type: 'confirm',
+            dialog: {
+              text: 'Вы подтверждаете удаление заявки?',
+              function: (context) => {
+                context.store.dispatch('form/update', {
+                  url: 'set/data/zayavka',
+                  body: { data: { id: context.data.row.id, del: 1 } },
+                })
+              },
+            },
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [
@@ -4859,10 +4895,26 @@ const config = {
       },
       actions: [
         {
+          funcCondition: (context) => {
+            return JSON.parse(context.row.row.schets).length
+          },
           type: 'button',
           url: '$IconDownload',
-          function: downloadFile,
-          label: 'Скачать',
+          method: async (context) => {
+            const data = await context.store.dispatch('form/update', {
+              url: 'create/zayavka_archive',
+              body: { zayavka_id: context.row.row.id, type: 'schet' },
+            })
+            if (data.code === 1) {
+              context.Vue.downloadFile(data.result)
+            } else {
+              context.store.commit('notifies/showMessage', {
+                color: 'error',
+                content: 'Что-то пошло не так...',
+                timeout: 2000,
+              })
+            }
+          },
         },
       ],
     },
@@ -4893,9 +4945,26 @@ const config = {
       },
       actions: [
         {
+          funcCondition: (context) => {
+            return JSON.parse(context.row.row.close_schets).length
+          },
           type: 'button',
           url: '$IconDownload',
-          function: downloadFile,
+          method: async (context) => {
+            const data = await context.store.dispatch('form/update', {
+              url: 'create/zayavka_archive',
+              body: { zayavka_id: context.row.row.id, type: 'close_schet' },
+            })
+            if (data.code === 1) {
+              context.Vue.downloadFile(data.result)
+            } else {
+              context.store.commit('notifies/showMessage', {
+                color: 'error',
+                content: 'Что-то пошло не так...',
+                timeout: 2000,
+              })
+            }
+          },
           label: 'Скачать',
         },
       ],
