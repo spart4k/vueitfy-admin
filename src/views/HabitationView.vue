@@ -8,6 +8,7 @@
       background-color="transparent"
       color="basil"
       class="p-5"
+      mobile-breakpoint="0"
     >
       <v-tab v-for="item in availableTabs" :key="item.options.title">
         {{ item.options.title }}
