@@ -180,6 +180,7 @@
                           v-model="person.edit.coefficient"
                           v-mask="mask(person.edit.coefficient)"
                           outlined
+                          hide-details
                           :rules="[() => !!person.edit.coefficient || '']"
                           :readonly="person.loading"
                         />
