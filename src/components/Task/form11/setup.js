@@ -233,13 +233,15 @@ const Form11 = defineComponent({
       await updateDopData()
       JSON.parse(attached_amount.value).attached = true
       ctx.emit('refreshData')
-      formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
-        return {
-          ...el,
-          path_doc: el.name,
-        }
-      })
+      // formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
+      //   return {
+      //     ...el,
+      //     path_doc: el.name,
+      //   }
+      // })
       console.log(formatedSchets.value)
+      listNewChet.value = []
+      attachedFile.value = false
       dropZone.value.clearDropzone()
     }
 
@@ -364,15 +366,13 @@ const Form11 = defineComponent({
           },
         }),
     })
-    const removedDocs = ref([])
     const removeDoc = async ({ id }, index) => {
       let isConfirmed = confirm(
         'Вы подтверждаете удаление документа под номером ' + index
       )
       if (isConfirmed) {
         await delCloseSchet(id)
-        formatedSchets.value.splice(index, 1)
-        removedDocs.value.push(id)
+        // formatedSchets.value.splice(index, 1)
         store.commit('notifies/showMessage', {
           color: 'success',
           content: 'Документа ' + id + ' удален',
@@ -410,7 +410,6 @@ const Form11 = defineComponent({
       refds,
       formatedSchets,
       removeDoc,
-      removedDocs,
       attachedFile,
       sendCloseDocsSchet,
       attached_amount,
