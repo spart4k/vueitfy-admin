@@ -115,7 +115,8 @@ const sameAs = (value) => ({
 })
 
 const number = {
-  $validator: (val) => Number(val) && !val.toString().split('').includes(' '),
+  $validator: (val) =>
+    val === '' ? true : Number(val) && !val.toString().split('').includes(' '),
   $message: () => 'Некорректные символы',
 }
 
