@@ -54,6 +54,7 @@ export default {
       solo: true,
       required: true,
       url: 'get/pagination_list/personal_coef',
+      hideDetails: true,
       selectOption: {
         text: 'name',
         value: 'id',

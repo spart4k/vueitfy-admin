@@ -30,7 +30,7 @@
         />
       </v-tab-item>
     </v-tabs-items>
-    <CorpCards v-else :config="config" @changeComp="changeComp" />
+    <CorpCards v-else :config="configClone" @changeComp="changeComp" />
   </div>
   <!--</Layout>-->
 </template>
@@ -88,12 +88,14 @@ export default {
     const changeComp = () => {
       tableView.value = !tableView.value
     }
+    const configClone = _.cloneDeep(config)
     onMounted(() => {})
     return {
       config,
       changeComp,
       tableView,
       activeTab,
+      configClone,
     }
   },
 }

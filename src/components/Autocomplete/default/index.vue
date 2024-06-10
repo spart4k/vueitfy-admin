@@ -6,6 +6,7 @@
       :loading="loading"
       :items="field.items"
       :search-input.sync="search"
+      :hide-details="field.hideDetails"
       :error-messages="errorMessages"
       :label="field.label"
       :multiple="field.subtype === 'multiple'"

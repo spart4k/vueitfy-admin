@@ -64,6 +64,15 @@ export default {
         cols: 12,
         sm: 12,
       },
+      hideOption: [
+        {
+          func: (context) => {
+            return context.store.state.user.permission_id !== 4
+          },
+          value: [2],
+          type: true,
+        },
+      ],
       validations: { required },
       bootstrapClass: [''],
     }),
