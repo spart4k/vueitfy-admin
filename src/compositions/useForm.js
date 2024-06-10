@@ -668,18 +668,19 @@ export default function ({
               fileIndex += 1
             }
           }
-          await Promise.all(queries).then((data) => {
+          const promiseArray = queries.map((item) => item.request)
+          await Promise.all(promiseArray).then((data) => {
             if (dropzone.grouping) {
-              const fileArray = [...data]
+              const fileArray = [...queries]
               fileArray.forEach((file) => {
                 delete file.request
               })
               setFormData(fileArray, dropzone)
             } else if (dropzone.toObject) {
-              const fileArray = [...data]
+              const fileArray = [...queries]
               toObject(fileArray, dropzone)
             } else {
-              setFormData(data[0].path, dropzone)
+              setFormData(queries[0].path, dropzone)
             }
           })
         } else if (dropzone.toObject) {
@@ -697,6 +698,7 @@ export default function ({
       })
     )
 
+    console.log('zxc')
     if (update) {
       const result = await changeForm(queryParams)
     } else if (change) {
