@@ -1,5 +1,11 @@
 import filters from './filters'
-import { required, numeric, minLength } from '@/utils/validation.js'
+import {
+  required,
+  numeric,
+  number,
+  minLength,
+  maxLength,
+} from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -584,7 +590,7 @@ const fields = {
       class: [''],
       position: {
         cols: 12,
-        sm: 6,
+        sm: 4,
       },
       bootstrapClass: [''],
     }),
@@ -595,9 +601,22 @@ const fields = {
       class: [''],
       position: {
         cols: 12,
-        sm: 6,
+        sm: 4,
       },
       bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'Стац',
+      name: 'landline_phone',
+      placeholder: '',
+      readonly: false,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 4,
+      },
+      bootstrapClass: [''],
+      validations: { number, maxLength: maxLength(4) },
     }),
     stringField({
       label: 'Логин',
@@ -1163,7 +1182,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 bootstrapClass: [''],
                 validations: { required },
@@ -1176,10 +1195,23 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 bootstrapClass: [''],
                 validations: { required },
+              }),
+              stringField({
+                label: 'Стац',
+                name: 'landline_phone',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                bootstrapClass: [''],
+                validations: { number, maxLength: maxLength(4) },
               }),
               stringField({
                 label: 'Логин',
