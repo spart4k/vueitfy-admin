@@ -1,6 +1,7 @@
 import {
   required as vueRequired,
   minLength as vueMinLength,
+  maxLength as vueMaxLength,
   numeric as vueNumeric,
 } from '@vuelidate/validators'
 import moment from 'moment'
@@ -30,6 +31,11 @@ const length = (param) => {
 const minLength = (value) =>
   Object.assign({}, vueMinLength(value), {
     $message: () => `Недостаточно символов (${value})`,
+  })
+
+const maxLength = (value) =>
+  Object.assign({}, vueMaxLength(value), {
+    $message: () => `Максимум символов: ${value}`,
   })
 
 const requiredIf = (needValidation) => ({
@@ -141,5 +147,6 @@ export {
   hasBothDate,
   length,
   number,
+  maxLength,
   // strongPassword
 }
