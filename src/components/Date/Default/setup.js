@@ -48,6 +48,7 @@ export default {
     const dateValue = ref()
 
     const changeValue = () => {
+      console.log(dateValue.value)
       if (props.field.subtype === 'multiple') {
         dateValue.value = _.cloneDeep(proxyValue.value)
         dateValue.value.forEach((item, index) => {
@@ -95,8 +96,14 @@ export default {
         if (proxyValue.value?.includes('.'))
           dateValue.value = proxyValue.value.replaceAll('.', '-')
       }
+      if (proxyValue.value === '0000.00.00') {
+        proxyValue.value = ''
+      }
     })
 
+    const clearField = () => {
+      console.log('clear')
+    }
     watch(
       () => proxyValue.value,
       (newVal) => {
@@ -120,6 +127,7 @@ export default {
 
       changeDate,
       changeValue,
+      clearField,
     }
   },
 }
