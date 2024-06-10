@@ -29,6 +29,7 @@
           @blur="$emit('blur')"
           :error-messages="errorMessages"
           :name="field?.name"
+          @click:clear="clearField"
         ></v-text-field>
       </template>
       <v-date-picker
