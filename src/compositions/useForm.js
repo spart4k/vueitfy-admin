@@ -1522,13 +1522,13 @@ export default function ({
         }
       }
 
-      await Promise.all(
-        form?.fields.map(async (field) => {
-          if (field.updateList && field.updateList.length) {
-            await queryList(field, false)
-          }
-        })
-      )
+      // await Promise.all(
+      //   form?.fields.map(async (field) => {
+      //     if (field.updateList && field.updateList.length) {
+      //       queryList(field, false)
+      //     }
+      //   })
+      // )
 
       const prescription = form?.fields.find(
         (x) => x.prescription
