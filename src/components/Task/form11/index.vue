@@ -106,7 +106,7 @@
         </v-btn> -->
         <!-- FIXME: починить disabled -->
         <v-btn
-          :disabled="!comment && !attachedFile"
+          :disabled="!comment || !formatedSchets.length"
           color="info"
           @click="sendTaskFinish"
           :loading="loading"

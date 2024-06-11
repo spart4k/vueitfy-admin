@@ -324,7 +324,7 @@ const Form11 = defineComponent({
               task_id: props.data.task.id,
               parent_action: props.data.task.id,
               comment: comment.value,
-              okk_id: props.data.task.from_account_id,
+              okk_id: dopData.okk_id,
               rashod_id: props.data.data.zayavka.id,
               to_okk: true,
             },
