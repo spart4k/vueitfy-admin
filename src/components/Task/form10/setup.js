@@ -134,7 +134,7 @@ const form10 = defineComponent({
               // personal_id: props.data.entity.id,
               // docs_id: keyOfObjectSend,
               account_id: props.data.task.from_account_id,
-              okk_id: store.state.user.id,
+              okk_id: props.data.task.to_account_id,
               cancel_close: schets.value.filter((el) => el.valid === 1),
             },
           }),
