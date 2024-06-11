@@ -1,7 +1,7 @@
 import Vue, { onMounted, ref, watch, toRef, computed, inject } from 'vue'
 import useForm from '@/compositions/useForm.js'
 
-import Autocomplete from '@/components/Autocomplete/form'
+import Autocomplete from '@/components/Autocomplete/default'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import _, { clone } from 'lodash'
@@ -181,15 +181,6 @@ export default {
         validations: { required },
         bootstrapClass: [''],
         // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
-        hiding: {
-          conditions: [
-            {
-              target: 'mode',
-              value: 'add',
-              values: [2, 3, 4, 5, 6, 7],
-            },
-          ],
-        },
       }),
       selectField({
         label: 'Ключ',
