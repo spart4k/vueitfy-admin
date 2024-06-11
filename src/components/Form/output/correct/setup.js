@@ -38,7 +38,6 @@ export default {
         price: 0,
         sum: 0,
       })
-      console.log(services.service)
     }
     const removeLast = () => {
       services.value.service.pop()
@@ -77,13 +76,11 @@ export default {
     })
     const initData = () => {}
     const removeService = (serviceKey) => {
-      console.log('remove')
       services.value.service.splice(serviceKey, 1)
     }
     const save = async () => {
       const validate = servicesRow.value.forEach((el) => el.validate(true))
       if (canSend.value) {
-        console.log('send')
         const servicesFormated = servicesRow.value.map((el) => {
           const { price, qty, service_id, sum } = el.formData
           return { price, qty: +qty, service_id, sum }
@@ -98,7 +95,6 @@ export default {
           },
         }
 
-        console.log(body)
         loading.value = true
         const result = await updateServices(body)
         const { success } = result
@@ -120,7 +116,6 @@ export default {
         }
         loading.value = false
       }
-      console.log(validate)
     }
     const closePopup = () => {
       emit('closePopup')
@@ -137,7 +132,6 @@ export default {
     onMounted(async () => {
       loading.value = true
       const data = await makeRequest()
-      console.log(data)
       loading.value = false
       data.service.forEach((el) => {
         el.id = uuidv4()

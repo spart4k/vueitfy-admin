@@ -33,11 +33,22 @@
                 v-if="button.type === 'switch'"
                 v-model="button.value"
               />
-              <v-btn v-else @click="panelHandler(button)" small>
-                <v-icon v-if="button.type === 'icon'" small class="mr-2">
-                  {{ button.url }}
+              <v-btn
+                v-else
+                @click="panelHandler(button)"
+                :disabled="
+                  button.type === 'selectedItems' && !lastSelected.items.length
+                "
+                small
+              >
+                <v-icon
+                  v-if="button.type === 'icon' || button.icon"
+                  small
+                  :class="[button.label && 'mr-2']"
+                >
+                  {{ button.url ?? button.icon }}
                 </v-icon>
-                <p v-if="true">{{ button.label }}</p>
+                <p>{{ button.label }}</p>
               </v-btn>
             </div>
           </div>
@@ -214,7 +225,9 @@
                   <div @click.stop class="v-table-checkbox">
                     <label>
                       <input
-                        @change="saveLastSelected({ row, indexRow })"
+                        @change="
+                          saveLastSelected(row, indexRow, row.row.selected)
+                        "
                         @click.stop.shift="checkboxInput(row, indexRow)"
                         v-model="row.row.selected"
                         type="checkbox"
@@ -311,17 +324,21 @@
                       "
                       class="v-table-actions-wrap"
                     >
-                      <v-btn
+                      <div
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
-                        @click="
-                          downloadFile(Object.byString(row.row, cell.value))
-                        "
                       >
-                        <v-icon small>
-                          {{ action.url }}
-                        </v-icon>
-                      </v-btn>
+                        <v-btn
+                          v-if="showAction(action, cell, row)"
+                          @click="triggerAction(action, cell, row)"
+                          color="primary"
+                        >
+                          <v-icon small>
+                            {{ action.url }}
+                          </v-icon>
+                        </v-btn>
+                        <div v-else>-</div>
+                      </div>
                     </div>
                   </template>
                 </td>
@@ -465,6 +482,35 @@
         />
       </keep-alive>
     </Sheet>
+    <v-dialog persistent v-model="confirmDialog.isShow" width="550">
+      <v-card>
+        <div class="pt-3 mb-4 text-h5 text-center">
+          {{ confirmDialog.text }}
+        </div>
+        <v-card-actions class="pb-4 flex justify-center">
+          <v-btn
+            v-if="!confirmDialog.loading"
+            color="primary mr-4"
+            @click="triggerDialogFunction"
+          >
+            Подтверждаю
+          </v-btn>
+          <v-btn
+            v-if="!confirmDialog.loading"
+            color="error"
+            @click="confirmDialog.isShow = false"
+          >
+            Отменить
+          </v-btn>
+          <v-progress-circular
+            v-if="confirmDialog.loading"
+            color="primary"
+            :size="30"
+            indeterminate
+          />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <Popup
       closeButton
       @close="closePopupForm"

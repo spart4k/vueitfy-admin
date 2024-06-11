@@ -14,12 +14,13 @@
       background-color="transparent"
       color="basil"
       class="p-5"
+      mobile-breakpoint="0"
     >
       <v-tab v-for="item in config.tabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-if="tableView" v-model="activeTab">
+    <v-tabs-items touchless v-if="tableView" v-model="activeTab">
       <v-tab-item v-for="item in config.tabs" :key="item.options.title">
         <component
           :is="item.type"
@@ -29,7 +30,7 @@
         />
       </v-tab-item>
     </v-tabs-items>
-    <CorpCards v-else :config="config" @changeComp="changeComp" />
+    <CorpCards v-else :config="configClone" @changeComp="changeComp" />
   </div>
   <!--</Layout>-->
 </template>
@@ -56,7 +57,7 @@ export default {
     },
   },
   setup() {
-    const tableView = ref(true)
+    const tableView = ref(false)
     const {
       initTableConfig,
       createHeadItem,
@@ -84,17 +85,17 @@ export default {
       },
     })
 
-    console.log(config.tabs[0])
-
     const changeComp = () => {
       tableView.value = !tableView.value
     }
+    const configClone = _.cloneDeep(config)
     onMounted(() => {})
     return {
       config,
       changeComp,
       tableView,
       activeTab,
+      configClone,
     }
   },
 }

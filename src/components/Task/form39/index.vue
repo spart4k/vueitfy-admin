@@ -45,25 +45,29 @@
         <v-btn small @click="$emit('closePopup')" color="blue-grey" block>
           Закрыть
         </v-btn> -->
-        <div class="mb-4 mt-5">
-          <div class="d-flex justify-start">
-            <p class="font-weight-bold text-h7">Статус:</p>
-          </div>
-          <v-row class="mt-0 mb-1">
+        <v-row class="pl-0 pr-0" :cols="12" :sm="4">
+          <p class="font-weight-bold text-h7">Статусы от менеджеров:</p>
+        </v-row>
+        <!-- <v-row class="mt-0 mb-1">
             <v-col cols="12" sm="6">Менеджер</v-col>
             <v-col cols="12" sm="6">Статус: </v-col>
-          </v-row>
-          <v-row
-            class="mt-0"
-            :key="manager.id"
-            v-for="manager in data.data.status_data"
-          >
-            <v-col cols="12" sm="6">{{ manager.account_name }}</v-col>
-            <v-col cols="12" sm="6">
-              {{ manager.status_id === 1 ? 'Работает' : 'Не работает' }}</v-col
-            >
-          </v-row>
-        </div>
+          </v-row> -->
+        <v-row
+          class="mt-0"
+          :key="manager.id"
+          v-for="manager in data.data.status_data"
+        >
+          {{ manager.account_name }}:
+          {{ manager.status_id === 1 ? 'Работает' : 'Не работает' }}
+          <!-- <v-col class="pl-0 pr-0" cols="12" sm="6">{{
+                manager.account_name
+              }}</v-col>
+              <v-col class="pl-0 pr-0" cols="12" sm="6">
+                {{
+                  manager.status_id === 1 ? 'Работает' : 'Не работает'
+                }}</v-col
+              > -->
+        </v-row>
       </div>
       <div v-show="!isWire" class="">
         <Autocomplete

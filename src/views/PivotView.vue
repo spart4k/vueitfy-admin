@@ -57,8 +57,8 @@ export default {
       value: true,
       condition: [
         {
-          permissions: [13],
-          type: false,
+          permissions: [4, 3, 15, 1, 8, 17],
+          type: true,
         },
       ],
     }
@@ -67,8 +67,8 @@ export default {
       value: true,
       condition: [
         {
-          permissions: [13],
-          type: false,
+          permissions: [4, 3, 15, 1, 8, 17, 16, 19],
+          type: true,
         },
       ],
     }
@@ -89,7 +89,6 @@ export default {
         oldPath: 'id',
       },
     })
-    console.log(paymentConfig)
     personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
 
     config.detail.tabs.push(...personalTabs)

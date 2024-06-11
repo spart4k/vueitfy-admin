@@ -110,7 +110,7 @@ const Form21 = defineComponent({
       }
       if (isKeyConfrmed.value) {
         await setUserKey()
-        await addKeyToPersonal()
+        // await addKeyToPersonal()
       }
       const { success } = await changeStatusTask()
       if (success) {

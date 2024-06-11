@@ -1,4 +1,5 @@
 import filters from './filters'
+import _ from 'lodash'
 
 import formDocumentsQuery from './config/form-documents-query.js'
 
@@ -748,7 +749,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -1121,7 +1122,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -1581,7 +1582,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
     {
       selector: '#mainTable',
@@ -1871,7 +1872,7 @@ const config = {
         tabs: [...documentTabs],
         activeTab: null,
       },
-      filters,
+      filters: _.cloneDeep(filters),
     },
   ],
 }

@@ -24,6 +24,7 @@ export default {
     const isMobileDevice = useMobile()
     const openMenu = computed(() => store?.state?.openMenu)
     const miniMenu = computed(() => store?.state?.miniMenu)
+    const version = process.env.VUE_APP_VERSION
     // Then we set the value in the --vh custom property to the root of the document
 
     const setRouterPath = (val) => {
@@ -45,27 +46,6 @@ export default {
       }
     })
 
-    watch(
-      () => isMobile.value,
-      () => {
-        if (isMobile.value) {
-          store.commit('changeMenuStatus', false)
-          store.commit('changeMenuSize', false)
-        } else if (!isMobile.value) {
-          store.commit('changeMenuStatus', true)
-          store.commit('changeMenuSize', false)
-          openCurrentRoute()
-        }
-      }
-    )
-
-    watch(
-      () => props.navData.length,
-      () => {
-        openCurrentRoute()
-      }
-    )
-
     const userInfo = computed(() => store.state.user)
 
     const openCurrentRoute = () => {
@@ -84,11 +64,15 @@ export default {
       }, 0)
     }
 
-    onMounted(async () => {
+    onMounted(() => {
       if (isMobile.value) {
         store.commit('changeMenuStatus', false)
         store.commit('changeMenuSize', false)
+      } else if (!isMobile.value) {
+        store.commit('changeMenuStatus', true)
+        store.commit('changeMenuSize', false)
       }
+      openCurrentRoute()
     })
 
     return {
@@ -105,6 +89,7 @@ export default {
       changeMenuSize,
       setRouterPath,
       userInfo,
+      version,
     }
   },
 }

@@ -188,7 +188,6 @@ const Form7 = defineComponent({
           //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
           //   status.value === 'Работает',
         }
-        console.log(data)
         return store.dispatch('taskModule/setPartTask', {
           status: 2,
           data,
@@ -213,7 +212,6 @@ const Form7 = defineComponent({
           //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
           //   status.value === 'Работает',
         }
-        console.log(data)
         return store.dispatch('taskModule/updateTmp', {
           data,
         })
@@ -222,9 +220,8 @@ const Form7 = defineComponent({
 
     const sendData = async () => {
       let rashod_id = null
-      if (!formatedDopData.was_process && status.value === 'Работает') {
+      if (start_process_other_doc.value) {
         rashod_id = await createZayavka()
-        console.log(rashod_id)
       }
       const { code } = await updateTmpRequest()
       if (code === 2) {

@@ -195,7 +195,6 @@ const form10 = defineComponent({
         }
         return el.formData
       })
-      console.log(items)
       const { makeRequest: sendZayavkaItems } = useRequest({
         context,
         request: () =>
@@ -292,6 +291,10 @@ const form10 = defineComponent({
     const acceptSchets = async () => {
       await setDataZayavka()
       await updateDopData()
+      if (props.data.data.zayavka.payment_type === 3) {
+        await sendTaskFinish()
+      }
+
       accepted.value = true
     }
     const addUnconfirmed = (item) => {
@@ -566,7 +569,6 @@ const form10 = defineComponent({
       popupForm.value.isShow = false
     }
     const openZayavka = () => {
-      console.log('zayavka')
       router.push({
         name: 'main/:id/:form_id',
         params: {

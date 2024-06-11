@@ -8,12 +8,13 @@
       background-color="transparent"
       color="basil"
       class="p-5"
+      mobile-breakpoint="0"
     >
       <v-tab v-for="item in availableTabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="activeTab">
+    <v-tabs-items touchless v-model="activeTab">
       <v-tab-item v-for="item in availableTabs" :key="item.options.title">
         <component
           :is="item.type"
@@ -75,8 +76,15 @@ export default {
       return config.tabs.filter((tab) => {
         if (!tab.isShow) return tab
         else {
-          return tab.isShow.condition.some((el) => {
-            return checkIncludesPermissions(el) === el.type
+          return tab.isShow.condition.every((el) => {
+            if (el.permissions) {
+              return checkIncludesPermissions(el) === el.type
+            } else if (el.funcComputed) {
+              const context = {
+                store,
+              }
+              return el.funcComputed(context)
+            }
           })
         }
       })
@@ -89,9 +97,13 @@ export default {
     paymentConfig.isShow = {
       value: true,
       condition: [
+        // {
+        //   permissions: [13],
+        //   type: false,
+        // },
         {
-          permissions: [13],
-          type: false,
+          permissions: [4, 3, 15, 1, 8, 17],
+          type: true,
         },
       ],
     }
@@ -99,8 +111,8 @@ export default {
       value: true,
       condition: [
         {
-          permissions: [13],
-          type: false,
+          permissions: [4, 3, 15, 1, 8, 17, 16, 19],
+          type: true,
         },
       ],
     }

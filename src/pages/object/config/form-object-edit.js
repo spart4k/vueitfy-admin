@@ -349,6 +349,16 @@ export default {
       bootstrapClass: [''],
       validations: { required },
       //isShow: false,
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_json',
+            type: 'array',
+            value: [[1], [6], [1, 6]],
+          },
+        ],
+      },
     }),
     stringField({
       label: 'Телефон',
@@ -363,6 +373,16 @@ export default {
       bootstrapClass: [''],
       validations: { required },
       //isShow: false,
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_json',
+            type: 'array',
+            value: [[1], [6], [1, 6]],
+          },
+        ],
+      },
     }),
     checkboxField({
       label: 'Питание',

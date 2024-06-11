@@ -33,10 +33,26 @@ export default {
       ],
     },
   ],
-  alias: 'personal',
+  // alias: 'personal',
   active: false,
   notReadonly: true,
   fields: [
+    stringField({
+      label: 'rek1',
+      name: 'personal_id',
+      placeholder: '',
+      class: [''],
+      disabled: true,
+      isShow: {
+        value: true,
+      },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+    }),
     autocompleteField({
       label: 'Объект',
       //subtype: 'multiple',
@@ -65,6 +81,7 @@ export default {
         {
           field: 'personal_id',
           value: '',
+          // source: '+route.params.id',
           routeKey: 'id',
           type: 'num',
         },
@@ -85,6 +102,7 @@ export default {
             {
               field: 'personal_id',
               value: '',
+              // source: '+route.params.id',
               routeKey: 'id',
               type: 'num',
             },
@@ -113,7 +131,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/bind_objects',
+      url: 'get/pagination_list/bind_directions',
       // object
       position: {
         cols: 12,
@@ -142,8 +160,8 @@ export default {
             {
               field: 'personal_id',
               value: '',
-              // source: '+route.params.id',
-              routeKey: 'id',
+              source: '+route.params.id',
+              // routeKey: 'id',
               type: 'num',
             },
           ],
@@ -165,6 +183,7 @@ export default {
         {
           field: 'personal_id',
           value: '',
+          // source: '+route.params.id',
           routeKey: 'id',
           type: 'num',
         },

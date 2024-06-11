@@ -28,7 +28,6 @@ export default {
       },
     }
     const sum = (row) => {
-      console.log(row)
       return row.sum - (row.hold_sum + row.deduction_debit + row.deduction_hold)
     }
     const { makeRequest: makeRequestList } = useRequest({
@@ -47,6 +46,9 @@ export default {
           break
         case 3:
           result = 'Выработка по клинингу'
+          break
+        case 4:
+          result = 'Выработка'
           break
         default:
           result = key

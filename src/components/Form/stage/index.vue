@@ -6,12 +6,13 @@
       background-color="transparent"
       color="basil"
       class="p-5"
+      mobile-breakpoint="0"
     >
       <v-tab v-for="item in stages" :key="item.id">
         {{ item.name }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="activeTab">
+    <v-tabs-items touchless v-model="activeTab">
       <v-tab-item v-for="item in stages" :key="item.id">
         <component
           :is="item.type"

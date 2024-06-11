@@ -257,7 +257,6 @@ export default {
       //   object[el.name] = el
       //   object[el.name].items = el.items
       // })
-      // // console.log(JSON.stringify(object.type_pay))
       // return object
       // return fieldsConfig.value
     })
@@ -322,7 +321,6 @@ export default {
         Vue.set(fields[fieldName], 'validations', validations)
         Vue.set(fields[fieldName], 'default', el.value)
       })
-      console.log(fields)
       return fields
     }
     const personalsTarget = ref([])

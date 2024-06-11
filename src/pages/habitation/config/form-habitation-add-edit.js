@@ -379,6 +379,7 @@ export default {
       },
       search: '',
       url: 'get/pagination_list/regions_id',
+      validations: { required },
       position: {
         cols: 12,
         sm: 6,
@@ -424,6 +425,7 @@ export default {
         cols: 12,
         sm: 6,
       },
+      validations: { required },
       bootstrapClass: [''],
       filter: [
         {
@@ -475,7 +477,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     selectField({
@@ -505,7 +507,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     checkboxField({

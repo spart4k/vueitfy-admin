@@ -17,6 +17,12 @@ import UserKeysView from '../views/UserKeysView.vue'
 import TasksView from '../views/Tasks.vue'
 import ReportTaxiView from '../views/ReportTaxiView.vue'
 import HabitationView from '../views/HabitationView.vue'
+import BankView from '../views/BankView.vue'
+import JurFaceView from '../views/JurFaceView.vue'
+import MvdView from '../views/MvdView.vue'
+import ServiceView from '../views/ServiceView.vue'
+import RashodCategoryView from '../views/RashodCategoryView.vue'
+import RashodVidView from '../views/RashodVidView.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -621,14 +627,6 @@ const routes = [
     component: ShopRequestMagnitView,
     children: [
       {
-        name: 'shop-request-magnit/upload',
-        path: './upload',
-        meta: {
-          mode: 'upload',
-        },
-        component: Detail,
-      },
-      {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
         meta: {
@@ -708,6 +706,174 @@ const routes = [
         path: ':id',
         meta: {
           mode: ['edit'],
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/bank',
+    name: 'bank',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: BankView,
+    children: [
+      {
+        name: 'bank/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить банк',
+        },
+        component: Detail,
+      },
+      {
+        name: 'bank/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать банк',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/jur-face',
+    name: 'jur-face',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: JurFaceView,
+    children: [
+      {
+        name: 'jur-face/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить юр. лицо',
+        },
+        component: Detail,
+      },
+      {
+        name: 'jur-face/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать юр. лицо',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/rashod_vid',
+    name: 'rashod_vid',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: RashodVidView,
+    children: [
+      {
+        name: 'rashod_vid/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить расход',
+        },
+        component: Detail,
+      },
+      {
+        name: 'rashod_vid/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать расход',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/rashod_category',
+    name: 'rashod_category',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: RashodCategoryView,
+    children: [
+      {
+        name: 'rashod_category/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить расход',
+        },
+        component: Detail,
+      },
+      {
+        name: 'rashod_category/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать расход',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/mvd',
+    name: 'mvd',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: MvdView,
+    children: [
+      {
+        name: 'mvd/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить МВД',
+        },
+        component: Detail,
+      },
+      {
+        name: 'mvd/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать МВД',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/service',
+    name: 'service',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ServiceView,
+    children: [
+      {
+        name: 'service/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить сервис',
+        },
+        component: Detail,
+      },
+      {
+        name: 'service/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать сервис',
         },
         component: Detail,
       },

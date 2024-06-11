@@ -248,7 +248,6 @@ const Form18 = defineComponent({
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_target_id: data.entity.id,
-              postponed: data.data.postponed,
             },
           })
         },
@@ -310,7 +309,6 @@ const Form18 = defineComponent({
     }
     const isReject = ref(false)
     const changeServiceDetail = async (i, idService) => {
-      console.log(idService)
       rejectedPrice.value = ''
       isReject.value = false
 
@@ -374,7 +372,6 @@ const Form18 = defineComponent({
       formGroup,
       () => {
         if (formGroup) {
-          console.log(formGroup.value)
           isFormValid.value = formGroup.value.every((group) => group.validate())
         }
       },

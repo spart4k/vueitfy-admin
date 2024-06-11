@@ -29,7 +29,7 @@ export default {
     const isArchive = ref(false)
     const [optionsActive, optionsArchive] = props.config.tabs
     // let { options } = props.config.tabs[0]
-    let options = optionsActive
+    let options = props.config.tabs[0]
 
     const popupForm = ref({
       isShow: false,
@@ -52,13 +52,13 @@ export default {
 
     const changeTab = () => {
       isArchive.value = !isArchive.value
-      if (isArchive.value) options = optionsArchive
-      else options = optionsActive
+      if (isArchive.value) options = props.config.tabs[1]
+      else options = props.config.tabs[0]
       getItems()
     }
     const createItem = () => {
       router.push({
-        name: options.panel.buttons[1].url,
+        name: options.panel.buttons[2].url,
       })
       popupForm.value.isShow = true
     }
@@ -167,7 +167,7 @@ export default {
     }
 
     const addPermission = computed(() =>
-      [3, 4, 12, 16].includes(store.state.user.permission_id)
+      [3, 4, 12, 16, 22].includes(store.state.user.permission_id)
     )
 
     let controller

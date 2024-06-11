@@ -203,15 +203,7 @@ const Form7 = defineComponent({
         object[el.name] = el
         object[el.name].items = el.items
         // Vue.set(object, [el.name], el)
-        if (el?.items && el.name === 'type_pay') {
-          console.log(index)
-          console.log(1, JSON.stringify(fieldsConfig.value[4].items))
-          console.log(2, JSON.stringify(fieldsConfig.value[index].items))
-          console.log(el.name, JSON.stringify(el?.items))
-        }
       })
-      // console.log(JSON.stringify(object.type_pay))
-      console.log('asdasd')
       return object
       // return fieldsConfig.value
     })
@@ -423,7 +415,6 @@ const Form7 = defineComponent({
           //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
           //   status.value === 'Работает',
         }
-        console.log(data)
         return store.dispatch('taskModule/setPartTask', {
           status: 2,
           data,
@@ -431,19 +422,56 @@ const Form7 = defineComponent({
       },
     })
 
+    const { makeRequest: removeTmp } = useRequest({
+      context,
+      request: () => {
+        const data = {
+          personal_id: props.data.entity.id,
+          doc_id: formatedDopData.doc_id,
+          // is_work:
+          //   status.value === 'Работает' &&
+          //   JSON.parse(props.data.task.dop_data).doc_id !== 5
+          //     ? true
+          //     : false,
+          // is_fired: status.value === 'Уволен' ? true : false,
+          // is_patent:
+          //   JSON.parse(props.data.task.dop_data).doc_id === 5 &&
+          //   status.value === 'Работает',
+        }
+        return store.dispatch('taskModule/removeTmp', {
+          status: 2,
+          data,
+        })
+      },
+    })
+
     const sendData = async () => {
-      const { code } = await updatePersonalAccess()
-      console.log(code)
-      if (code === 1) {
-        const { success } = await changeStatusTask()
-        if (success) {
-          ctx.emit('closePopup')
-          ctx.emit('getItems')
+      const { code: codeRemove } = await removeTmp()
+      if (codeRemove) {
+        const { code } = await updatePersonalAccess()
+        if (code === 1) {
+          const { success } = await changeStatusTask()
+          if (success) {
+            ctx.emit('closePopup')
+            ctx.emit('getItems')
+          } else {
+            store.commit('notifies/showMessage', {
+              color: 'error',
+              content: 'Ошибка',
+              timeout: 1000,
+            })
+          }
+        } else {
+          store.commit('notifies/showMessage', {
+            color: 'error',
+            content: 'Ошибка, code ' + code,
+            timeout: 1000,
+          })
         }
       } else {
         store.commit('notifies/showMessage', {
           color: 'error',
-          content: 'Ошибка, code ' + code,
+          content: 'Ошибка, code ' + codeRemove,
           timeout: 1000,
         })
       }

@@ -20,7 +20,7 @@ import Datepicker from '@/components/Date/Default/index.vue'
 
 import _ from 'lodash'
 
-import { required } from '@/utils/validation.js'
+import { required, number } from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -198,7 +198,7 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             items: categoryItems,
             selectOption: {
               text: 'name',
@@ -229,14 +229,14 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
               cols: 12,
               sm: 2,
             },
-            validations: { required },
+            validations: { required, number },
             bootstrapClass: [''],
           }),
           stringField({
@@ -257,14 +257,14 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
               cols: 12,
               sm: 3,
             },
-            validations: { required },
+            validations: { required, number },
             bootstrapClass: [''],
           }),
           checkboxField({
@@ -291,7 +291,7 @@ export default {
                     }
                 : formData?.vector_id === 2
                 ? true
-                : undefined,
+                : false,
             class: [''],
             position: {
               cols: 12,
@@ -317,7 +317,7 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
@@ -414,8 +414,23 @@ export default {
     }
 
     const checkVector = () => {
-      const item = Object.keys(formData).find((x) => x === 'type_zayavka')
-      if (formData[item] === 4) formData[item] = 1
+      if (formData?.type_zayavka === 4) formData.type_zayavka = 1
+
+      nextTick(() => {
+        if (formData.on_yourself === false) {
+          if (formData.type_zayavka) {
+            const field = proxyTab.value.fields.find(
+              (x) => x.name === 'type_zayavka'
+            )
+            changeAutocomplete({ value: formData.type_zayavka, field })
+          } else if (formData.vector_id) {
+            const field = proxyTab.value.fields.find(
+              (x) => x.name === 'vector_id'
+            )
+            changeAutocomplete({ value: formData.vector_id, field })
+          }
+        }
+      })
     }
 
     const imageFormat = (val) => {

@@ -77,6 +77,12 @@
         }
       }
     }
+    &-version {
+      color: var(--v-text-base);
+      padding: 0 26px;
+      font-weight: 600;
+      font-size: 12px;
+    }
     &-link {
       display: flex;
       align-items: center;
