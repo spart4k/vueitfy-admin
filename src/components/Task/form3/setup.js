@@ -1,18 +1,17 @@
 import { defineComponent, ref, computed } from 'vue'
 import Dropzone from '@/components/Dropzone/default'
-// import DocFormCorrect from '@/components/Task/el/DocFormCorrect/index.vue'
 // import FormComment from '@/components/Task/el/FormComment/index.vue'
-import useForm from '@/compositions/useForm'
-import { required } from '@/utils/validation'
 // import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 // import moment from 'moment'
+import Autocomplete from '@/components/Autocomplete/default'
 
 const Form3 = defineComponent({
   name: 'Form3',
   components: {
     Dropzone,
+    Autocomplete,
   },
   props: {
     data: {
@@ -30,6 +29,7 @@ const Form3 = defineComponent({
       withoutSave: false,
       folder: 'tmp',
     }
+    const loading = ref(false)
     let selectName = ref('')
     let price = ref('')
     let nameComp = data.data.items[0].name
@@ -48,8 +48,19 @@ const Form3 = defineComponent({
     let addFiles = (e) => {
       file.value = e[0]
     }
-
+    const autocompleteConfig = {
+      label: 'Наименование',
+      name: 'status_zr',
+      items: data.data.rashod_vid_id,
+      solo: false,
+      required: true,
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+    }
     const sendData = async () => {
+      loading.value = true
       let fileExt = file.value.type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -86,7 +97,9 @@ const Form3 = defineComponent({
               task_id: data.task.id,
               parent_action: data.task.id,
               transfer: true,
-              manager_id: JSON.parse(data.entity.data_subvision)['leader'],
+              manager_id: JSON.parse(data.entity.data_subvision)[
+                'personal_account_zr'
+              ],
               personal_id: data.entity.personal_id,
               next: JSON.parse(data.task.dop_data).after_return
                 ? JSON.parse(data.task.dop_data).after_return
@@ -118,6 +131,7 @@ const Form3 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     return {
       options,
@@ -129,6 +143,8 @@ const Form3 = defineComponent({
       mobilePhone,
       addFiles,
       sendData,
+      autocompleteConfig,
+      loading,
     }
   },
 })

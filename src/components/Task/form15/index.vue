@@ -17,11 +17,17 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      <v-btn @click="confirm" class="mr-2" small color="info">
+      <v-btn
+        :loading="loading"
+        @click="confirm"
+        class="mr-2"
+        small
+        color="info"
+      >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="reject" small color="error">
+      <v-btn :loading="loading" @click="reject" small color="error">
         <v-icon small>mdi-close</v-icon>
         Отклонить
       </v-btn>
@@ -30,9 +36,7 @@
       :is="Popup"
       :options="{
         width: proxyConfig.detail.width,
-        portal: `table-detail${
-          proxyConfig?.detail?.popupIndex ? proxyConfig?.detail?.popupIndex : ''
-        }`,
+        portal: 'table-detail',
       }"
       v-if="
         proxyConfig.detail &&

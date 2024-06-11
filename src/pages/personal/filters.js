@@ -45,6 +45,15 @@ const filters = {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.account_json',
+      isShow: {
+        value: false,
+        condition: [
+          {
+            permissions: [13],
+            type: false,
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Направления',

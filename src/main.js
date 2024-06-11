@@ -30,6 +30,24 @@ Vue.downloadFile = function (val) {
   link.click()
   document.body.removeChild(link)
 }
+
+import TableDefault from '@/components/Table/default/index.vue'
+// import TargetPersonal from '@/components/Form/target-personal/default/index.vue'
+Vue.component('TableDefault', TableDefault)
+// Vue.component('TableDefault', TargetPersonal)
+
+// Vue.directive('click-outside', {
+//   bind () {
+//     this.event = event => this.vm.$emit(this.expression, event)
+//     this.el.addEventListener('click', this.stopProp)
+//     document.body.addEventListener('click', this.event)
+//   },
+//   unbind() {
+//     this.el.removeEventListener('click', this.stopProp)
+//     document.body.removeEventListener('click', this.event)
+//   },
+//   stopProp(event) { event.stopPropagation() }
+// })
 // Vue.use(VueCompositionApi)
 
 new Vue({

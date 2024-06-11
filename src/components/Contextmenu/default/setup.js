@@ -1,6 +1,6 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import store from '@/store'
 import _ from 'lodash'
 
@@ -19,7 +19,7 @@ export default {
   methods: {
     handlerOutside(e) {
       const context = document.querySelector('.v-contextmenu')
-      if (context.contains(e.target)) {
+      if (context?.contains(e.target)) {
         // Clicked in box
         return
       } else {
@@ -81,136 +81,76 @@ export default {
         return result
       }
       const checkIncludesPermissions = (el) => {
-        return el.permission_id.includes(permission.value)
-      }
-      const checkIncludesVertical = (el) => {
-        return el.is_personal_vertical.includes(is_personal_vertical.value)
-      }
-      if (typeof action.readonly === 'boolean') return action.readonly
-      else if (typeof action.readonly === 'object') {
-        if (action.readonly.condition?.length) {
-          const condition = () =>
-            action.readonly.condition.every((conditionEl) => {
-              if (
-                conditionEl.target === 'formData' &&
-                !conditionEl.permissions
-              ) {
-                return checkIncludesData(conditionEl) && conditionEl.type
-              } else if (
-                conditionEl.permission_id?.length &&
-                !conditionEl.target
-              ) {
-                return checkIncludesPermissions(conditionEl) && conditionEl.type
-              } else if (
-                conditionEl.is_personal_vertical?.length &&
-                !conditionEl.target
-              ) {
-                return checkIncludesVertical(conditionEl) && conditionEl.type
-              } else {
-                return (
-                  checkIncludesData(conditionEl) &&
-                  checkIncludesPermissions(conditionEl) === conditionEl.type
-                )
-              }
-            })
-
-          action.readonly.value = condition()
-          return action.readonly.value
-        }
-      }
-    }
-
-    const isShow = (action) => {
-      const checkIncludesData = (el) => {
-        const source = eval(el.target)
-        let result
-        if (el.array) {
-          result = _.isEqual(el.value, source[el.action])
-        } else {
-          result = el.value.includes(source[el.action])
-        }
-        return result
-      }
-      const checkIncludesPermissions = (el) => {
-        return el.permission_id.includes(permission.value)
-      }
-      const checkIncludesVertical = (el) => {
-        return el.is_personal_vertical.includes(is_personal_vertical.value)
-      }
-      if (typeof action.readonly === 'boolean') return action.readonly
-      else if (typeof action.readonly === 'object') {
-        if (action.readonly.condition?.length) {
-          const condition = () =>
-            action.readonly.condition.every((conditionEl) => {
-              if (
-                conditionEl.target === 'formData' &&
-                !conditionEl.permissions
-              ) {
-                return checkIncludesData(conditionEl) && conditionEl.type
-              } else if (
-                conditionEl.permission_id?.length &&
-                !conditionEl.target
-              ) {
-                return checkIncludesPermissions(conditionEl) && conditionEl.type
-              } else if (
-                conditionEl.is_personal_vertical?.length &&
-                !conditionEl.target
-              ) {
-                return checkIncludesVertical(conditionEl) && conditionEl.type
-              } else {
-                return (
-                  checkIncludesData(conditionEl) &&
-                  checkIncludesPermissions(conditionEl) === conditionEl.type
-                )
-              }
-            })
-
-          action.readonly.value = condition()
-          return action.readonly.value
-        }
-      }
-    }
-
-    const availablePanelBtn = computed(() => {
-      const checkIncludesData = (el) => {
-        let source = eval(el.target)
-        let result
-        if (el.array) {
-          result = _.isEqual(el.value, source[el.field])
-        } else {
-          result = el.value.includes(source[el.field])
-        }
-        return result
-      }
-      const checkIncludesPermissions = (el) => {
-        if (!el.permissions) return true
-
         return el.permissions.includes(permission.value)
       }
-      const checkIncludesDirections = (el) => {
-        //return el.direction_id.includes(directions.value)
+      const checkIncludesVertical = (el) => {
+        return el.is_personal_vertical.includes(is_personal_vertical.value)
+      }
+      if (typeof action.readonly === 'boolean') return action.readonly
+      else if (typeof action.readonly === 'object') {
+        if (action.readonly.condition?.length) {
+          const condition = () =>
+            action.readonly.condition.every((conditionEl) => {
+              if (
+                conditionEl.target === 'formData' &&
+                !conditionEl.permissions
+              ) {
+                return checkIncludesData(conditionEl) && conditionEl.type
+              } else if (
+                conditionEl.permissions?.length &&
+                !conditionEl.target
+              ) {
+                return checkIncludesPermissions(conditionEl) && conditionEl.type
+              } else if (
+                conditionEl.is_personal_vertical?.length &&
+                !conditionEl.target
+              ) {
+                return checkIncludesVertical(conditionEl) && conditionEl.type
+              } else {
+                return (
+                  checkIncludesData(conditionEl) &&
+                  checkIncludesPermissions(conditionEl) === conditionEl.type
+                )
+              }
+            })
 
-        if (!el.direction_id) return true
-        else {
-          return !!_.intersection(el.direction_id, directions.value).length
+          action.readonly.value = condition()
+          return action.readonly.value
         }
       }
-      return props.options.actions.actions.filter((btn) => {
-        if (!btn.isShow) return btn
-        else {
-          return btn.isShow.condition.some((el) => {
-            return (
-              checkIncludesPermissions(el) &&
-              checkIncludesDirections(el) === el.type
-            )
-          })
-          // if ()
+    }
+    const isShow = (action) => {
+      const checkIncludesPermissions = (el) => {
+        return el.permissions.includes(permission.value)
+      }
+      if (typeof action.isShow === 'boolean') return action.isShow
+      else if (typeof action.isShow === 'object') {
+        if (action.isShow.condition?.length) {
+          const condition = () =>
+            action.isShow.condition.every((conditionEl) => {
+              if (conditionEl.permissions) {
+                return (
+                  checkIncludesPermissions(conditionEl) === conditionEl.type
+                )
+              } else if (conditionEl.funcCondition) {
+                const conditionContext = {
+                  store,
+                  data: props.options.row,
+                }
+                return (
+                  conditionEl.funcCondition(conditionContext) ===
+                  conditionEl.type
+                )
+              }
+            })
+          action.isShow.value = condition()
+          return action.isShow.value
         }
-      })
-    })
+      }
+    }
+
     return {
       handlerClick,
-      availablePanelBtn,
       isReadonly,
       availableContext,
       isShow,

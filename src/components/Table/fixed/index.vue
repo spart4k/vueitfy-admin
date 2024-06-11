@@ -105,6 +105,7 @@
         @getItems="getItems"
       />
     </Popup>
+
     <div class="v-table-body-wrap d-flex flex-column flex-grow-1 h-100">
       <div
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
@@ -129,9 +130,11 @@
               :key="indexButton"
               @click="panelHandler(button)"
               :disabled="button.isDisabled"
+              class="mb-2"
+              :color="button.color && 'rgb(255, 144, 0)'"
               small
             >
-              <v-icon small class="mr-2">
+              <v-icon small :class="[button.label && 'mr-2']">
                 {{ button.url }}
               </v-icon>
               <p v-if="true">{{ button.label }}</p>
@@ -264,6 +267,11 @@
           </thead>
 
           <tbody v-if="!loading && options.data.rows" class="v-table-body">
+            <v-sidelist
+              v-if="$props.options.options.sideMenu"
+              :date="currentDate"
+              :data="$props.options.options.sideMenu"
+            />
             <template v-for="row in options.data.rows">
               <tr
                 :key="row.row.id"
@@ -309,38 +317,63 @@
                     <template
                       v-for="card in Object.byString(row.row, cell.value)"
                     >
-                      <!-- {{ card }} -->
                       <div
                         :key="card.id"
-                        class="v-table-body-row-cell-item"
+                        :class="[
+                          'v-table-body-row-cell-item',
+                          card.is_del && 'v-table-body-row-cell-item__deleted',
+                        ]"
                         :style="{
                           width: '150px',
-                          height: '60px',
+                          height: '80px',
                           background:
-                            card.type_shift === 1
+                            ((card?.type_shift === 1
                               ? '#c5ffc5'
-                              : card.type_shift === 2
+                              : card?.type_shift === 2
                               ? '#d0f6ff'
-                              : '#f4d0ff',
+                              : card?.type_shift === 3
+                              ? '#f4d0ff'
+                              : null) ??
+                              `${
+                                card?.status_color ? card?.status_color : ''
+                              }` +
+                                `${
+                                  card?.is_del
+                                    ? ' repeating-linear-gradient( -45deg, #cccccc5c 0 10px, #9999991a 10px 30px )'
+                                    : ''
+                                }`) ||
+                            '#c5ffc5',
                         }"
                         @dblclick.stop="
                           $props.options.options.doubleHandlerType === 'cell' &&
                             openCell($event, row, cell, card)
                         "
                       >
-                        <p class="v-table-body-row-cell-item_text">
-                          {{ card.hour }}
+                        <p
+                          v-if="card.tarif"
+                          class="v-table-body-row-cell-item_text"
+                        >
+                          {{ card.tarif }}
+                        </p>
+                        <p
+                          v-if="card.price"
+                          class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
+                        >
+                          {{ card.price }}
                         </p>
                         <p class="v-table-body-row-cell-item_text">
-                          {{ card.doljnost_name }}
+                          {{ card.hour ?? card.position }}
+                        </p>
+                        <p class="v-table-body-row-cell-item_text">
+                          {{ card.doljnost_name ?? card.smena }}
                         </p>
                         <p
                           class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
                         >
                           {{
-                            options.head[0].value === 'personal_name'
+                            options.head[0].value === 'fio'
                               ? card.object_name
-                              : card.personal_name
+                              : card.fio
                           }}
                         </p>
                       </div>
@@ -440,9 +473,71 @@
       </div>
     </div>
 
-    <div class="v-table-footer pl-4">
-      <div class="v-table-footer-total">
+    <div
+      v-if="options.data.rows && options.data.rows.length"
+      class="v-table-footer pl-4"
+    >
+      <div v-if="!options.data.footer?.length" class="v-table-footer-total">
         Итого: {{ options.data.totalRows }}
+      </div>
+      <div v-if="options.data?.footer?.length" class="text-center">
+        <span
+          v-for="footerInfo in options.data?.footer"
+          v-show="footerInfo.value"
+          :key="footerInfo.name"
+        >
+          {{ footerInfo.name }}: {{ footerInfo.value }}
+        </span>
+      </div>
+      <div v-if="options.data.footer" class="v-table-footer-state">
+        <div
+          class="v-table-footer-state-container"
+          v-if="options.data.footer.state"
+        >
+          <div class="v-table-footer-state-container-column">
+            <div
+              class="v-table-footer-state-container-column-item font-weight-bold"
+            >
+              Итого: {{ options.data.footer.all }}
+            </div>
+            <div
+              class="v-table-footer-state-container-column-item font-weight-bold"
+            >
+              Итого: {{ options.data.footer.del }}
+            </div>
+          </div>
+          <div
+            class="v-table-footer-state-container-column"
+            v-for="(item, index) in options.data.footer.state"
+            :key="index"
+          >
+            <div class="v-table-footer-state-container-column-item">
+              <div
+                class="v-table-footer-state-container-column-item_type mr-1"
+                :style="{ background: item.color }"
+              ></div>
+              <span class="v-table-footer-state-container-column-item_count">{{
+                item.count
+              }}</span>
+            </div>
+            <div class="v-table-footer-state-container-column-item">
+              <div
+                class="v-table-footer-state-container-column-item_type mr-1"
+                :style="{
+                  background:
+                    item.color +
+                    ' repeating-linear-gradient( -45deg, #cccccc5c 0 2px, #9999991a 2px 6px )',
+                }"
+              ></div>
+              <span class="v-table-footer-state-container-column-item_count">{{
+                getItemFromCompare({
+                  compareItem: item.color,
+                  cuttedArray: options.data.footer.del_state,
+                })
+              }}</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="v-table-footer-pagination">
         <div class="v-table-footer-pagination-length">
@@ -462,7 +557,9 @@
         </div>
       </div>
     </div>
+
     <v-contextmenu :options="contextmenu" />
+
     <portal v-if="filters" to="filter">
       <Sheet :isShow="filter.isShow">
         <keep-alive>

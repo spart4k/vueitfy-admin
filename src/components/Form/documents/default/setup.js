@@ -1,10 +1,10 @@
-import Vue, { ref, onMounted } from 'vue'
+import Vue, { ref, onMounted, computed } from 'vue'
 import useForm from '@/compositions/useForm.js'
 import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 
 import store from '@/store'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
 import Row from '../row/index.vue'
 import DocForm from '@/components/Task/el/DocForm/index.vue'
 
@@ -50,8 +50,10 @@ export default {
       const fields = {}
       return fields
     }
+    const showActions = computed(() => {
+      return [4, 7, 16].includes(store.state.user.permission_id)
+    })
     const personal_id = +route.params.id
-    const canEdit = [4, 7, 8, 16].includes(store.state.user.permission_id)
     const { makeRequest, loading } = useRequest({
       context,
       request: () => store.dispatch('personal/getDocuments', personal_id),
@@ -162,8 +164,8 @@ export default {
       docsData,
       rows,
       sendDocuments,
-      canEdit,
       personal_id,
+      showActions,
     }
   },
 }

@@ -1,20 +1,24 @@
 <template>
   <div>
     <div style="padding: 10px">
+      <PersTitle
+        :data="{
+          surname: data.entity.surname,
+          name_n: data.entity.name_n,
+          patronymic: data.entity.patronymic,
+          dataRojd,
+        }"
+      />
       <div style="margin-bottom: 30px" v-if="!showNextStep">
-        <v-card-title class="d-flex justify-center text-h6">
-          <span class="font-weight-bold text-h6">{{ entity.name }}</span
-          >&nbsp;({{ dataRojd }} г.р)
-        </v-card-title>
         <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-        <FormTitle
+        <DocAccepting
           :docName="getDocName(item.doc_id)"
           v-for="(item, index) in docs"
           :docs="item"
           :key="index"
           @confirmed="addConfirmed"
           @unconfirmed="addUnconfirmed"
-        ></FormTitle>
+        ></DocAccepting>
         <v-textarea
           v-model="comment"
           @input="commentError = ''"
@@ -39,10 +43,6 @@
         </v-btn>
       </div>
       <div v-if="showNextStep">
-        <v-card-title class="d-flex justify-center text-h6">
-          <span class="font-weight-bold text-h6">{{ entity.name }}</span
-          >&nbsp;({{ dataRojd }} г.р)
-        </v-card-title>
         <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
         <v-expansion-panels class="mb-5" v-if="isHasOsnDoc" accordion>
           <v-expansion-panel>

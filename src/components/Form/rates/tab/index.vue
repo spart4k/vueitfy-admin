@@ -7,15 +7,12 @@
       clearable
       class="search"
     />
-    <template v-if="loading">
+    <!-- <template v-if="loading">
       <div v-for="(position, index) in 10" :key="index" class="rates-position">
-        <!--<div class="rates-position__title">{{ position.key }}</div>-->
-        <!-- <row @openDialog="openDialog" :tab="tab" :row="position" /> -->
-        <!-- <p>loading</p> -->
         <div class="field-loading gradient"></div>
       </div>
-    </template>
-    <template v-else>
+    </template> -->
+    <template>
       <div v-for="position in items" :key="position.id" class="rates-position">
         <!--<div class="rates-position__title">{{ position.key }}</div>-->
         <row @openDialog="openDialog" :tab="tab" :row="position" />

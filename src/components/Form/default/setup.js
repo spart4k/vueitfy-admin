@@ -1,6 +1,8 @@
 import Vue, { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
+// import Autocomplete from '@/components/Autocomplete'
+import Popup from '@/components/Popup/index.vue'
 
 import _ from 'lodash'
 
@@ -23,6 +25,7 @@ export default {
     ColorPicker,
     DateRange,
     Datepicker,
+    Popup,
   },
   props: {
     content: {
@@ -57,6 +60,8 @@ export default {
     }
     const loading = ref(true)
     const { alias } = props.tab
+
+    const fieldsRef = ref(null)
 
     const isEdit = computed(() => {
       if (props.tab.routeParam) {
@@ -113,7 +118,7 @@ export default {
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         let routeParam
-        if (params.action.useRouteParam) {
+        if (params.action?.useRouteParam) {
           routeParam = params.action.useRouteParam
         } else {
           routeParam = 'id'
@@ -176,7 +181,33 @@ export default {
         props.tab.fields[6].value = props.content?.id
       }
     }
+    const closePopupForm = () => {
+      router.push({ name: route.matched.at(-2).name })
+      popupForm.value.isShow = false
+    }
 
+    const downloadFile = (link) => {
+      Vue.downloadFile(link)
+    }
+
+    const getItems = () => {
+      const refreshField = props.tab.fields.find((x) => {
+        if (x.appendAction) {
+          return x.appendAction.find(
+            (y) => y.action.name === route.name && y.action.refresh
+          )
+        }
+      })
+      const refreshFullForm = props.tab.fields.find((x) => {
+        if (x.appendAction) {
+          return x.appendAction.find(
+            (y) => y.action.name === route.name && y.action.refreshForm
+          )
+        }
+      })
+      if (refreshField) refreshSelectItems(refreshField)
+      if (refreshFullForm) refreshForm()
+    }
     const {
       formData,
       validate,
@@ -187,7 +218,10 @@ export default {
       getData,
       changeAutocomplete,
       changeSelect,
+      changeValue,
       showField,
+      refreshSelectItems,
+      refreshForm,
       openMenu,
       disabledField,
       hideField,
@@ -197,6 +231,9 @@ export default {
       refreshTable,
       isHideBtn,
       colsField,
+      appendFieldHandler,
+      popupForm,
+      appendActionShow,
     } = useForm({
       form: props.tab,
       context,
@@ -252,6 +289,14 @@ export default {
       isHideBtn,
       route,
       colsField,
+      appendFieldHandler,
+      popupForm,
+      closePopupForm,
+      appendActionShow,
+      getItems,
+      fieldsRef,
+      downloadFile,
+      changeValue,
     }
   },
 }

@@ -1,4 +1,4 @@
-import Vue, { onMounted, reactive, ref } from 'vue'
+import Vue, { onMounted, reactive, computed, ref } from 'vue'
 import row from './index.vue'
 import { useRouter, useRoute } from 'vue-router/composables'
 import useForm from '@/compositions/useForm.js'
@@ -26,6 +26,7 @@ export default {
     const { emit } = ctx
     const confirm = ref(false)
     const price_id = ref(null)
+    const permission_id = computed(() => store.state.user.permission_id)
     const route = useRoute()
     const router = useRouter()
     const confirmClick = async (value) => {
@@ -186,6 +187,7 @@ export default {
       confirm,
       confirmClick,
       price_id,
+      permission_id,
     }
   },
 }

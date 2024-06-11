@@ -20,18 +20,8 @@
     </v-row>
     <v-row class="mt-0">
       <v-col cols="6">
-        <v-select
-          label="Наименование"
-          :items="data.data.rashod_vid_id"
-          item-text="name"
-          item-value="id"
-          v-model="selectName"
-        >
-          <!-- <template v-slot:item="{ props, item }">
-            <v-list-item v-bind="props" :subtitle="item.name"></v-list-item>
-          </template>  -->
-        </v-select></v-col
-      >
+        <Autocomplete :field="autocompleteConfig" v-model="selectName" />
+      </v-col>
       <v-col cols="3">
         <v-text-field disabled value="1" label="Кол-во"></v-text-field
       ></v-col>
@@ -72,7 +62,7 @@
         <span>{{ data.data.account.name }}</span></v-col
       ><v-col cols="12 mb-4"
         ><span
-          ><span class="">Моб.</span> {{ mobilePhone }}
+          ><span class="font-weight-bold">Моб.</span> {{ mobilePhone }}
           <span class="font-weight-bold">Стац.</span> {{ landPhone }}</span
         ></v-col
       >
@@ -88,6 +78,7 @@
         :disabled="!selectName || !price || !file"
         color="info"
         @click="sendData"
+        :loading="loading"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

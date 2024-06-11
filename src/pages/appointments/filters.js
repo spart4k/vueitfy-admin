@@ -24,7 +24,7 @@ const filters = {
   active: false,
   fields: [
     dateRangeField({
-      label: 'Дата назначения:',
+      label: 'Дата назначения',
       name: 'date_target',
       subtype: 'range',
       typeFilter: 'date',
@@ -57,7 +57,7 @@ const filters = {
       aliasFilter: 'pt.status',
     }),
     selectField({
-      label: 'Вид ведомости:',
+      label: 'Вид ведомости',
       name: 'vid_vedomost_id',
       alias: 'filter_personal_target_vid_vedomost',
       subtype: 'single',
@@ -115,6 +115,15 @@ const filters = {
       },
       bootstrapClass: [''],
       aliasFilter: 'pt.manager',
+      isShow: {
+        value: false,
+        condition: [
+          {
+            permissions: [13, 1],
+            type: false,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Объект',
@@ -161,7 +170,7 @@ const filters = {
       aliasFilter: 'pt.personal_id',
     }),
     selectField({
-      label: 'Должность:',
+      label: 'Должность',
       name: 'doljnost_id',
       subtype: 'single',
       alias: 'filter_personal_target_doljnost',

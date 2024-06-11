@@ -1,72 +1,81 @@
 <template>
   <div>
     <div style="padding-top: 20px">
-      <v-card-title class="d-flex justify-center text-h6">
-        <span class="font-weight-bold text-h6">{{ data.entity.name }}</span
-        >&nbsp;({{ data.entity.data_rojd.split('-').reverse().join('.') }} г.р)
-      </v-card-title>
+      <PersTitle
+        :data="{
+          surname: data.entity.surname,
+          name_n: data.entity.name_n,
+          patronymic: data.entity.patronymic,
+          dataRojd: data.entity.data_rojd.split('-').reverse().join('.'),
+        }"
+      />
+      <FormError class="mb-4" v-if="commentData">
+        {{ commentData }}
+      </FormError>
       <TextInfo class="mb-3" :infoObj="textInfo"></TextInfo>
-      <div class="position-relative">
-        <div class="mb-10">
-          <span class="font-weight-bold">Приложите документы: </span>
-          <v-expansion-panels>
-            <v-expansion-panel
-              v-for="(item, index) in listDocuments"
-              :key="index"
-            >
-              <v-expansion-panel-header>
-                <span>
-                  <v-icon left v-if="!item.inProcess" small>
-                    $IconGalka
-                  </v-icon>
-                  <v-icon left v-if="item.inProcess" small> $IconClose </v-icon>
-                  {{ data.data.docs_spr[item.doc_id] }}
-                </span>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <Dropzone
-                  :options="{
-                    withoutSave: false,
-                    folder: 'tmp',
-                    removeble: false,
-                  }"
-                  :paramsForEmit="{ item: item.doc_id }"
-                  @addFiles="addFiles"
-                ></Dropzone>
-                <v-row class="py-2" justify="end">
-                  <v-btn
-                    color="error"
-                    class="mr-3"
-                    small
-                    @click="addDisabledDocuments({ item: item.doc_id })"
-                  >
-                    <v-icon small>mdi-close</v-icon>
-                    Отклонить
-                  </v-btn>
-                </v-row>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </div>
-      </div>
-      <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
-      <v-row class="pb-2 pt-1 px-0" justify="center">
+
+      <!-- <v-row class="pb-2 pt-1 px-0" justify="center">
         <v-col class="ps-0" cols="2" align-self="center"
           ><v-btn color="error" class="" small @click="emplyeeFired">
             <v-icon small>mdi-content-save</v-icon>
             Уволен
           </v-btn></v-col
         >
+      </v-row> -->
+      <v-row align="center">
+        <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
       </v-row>
-      <v-row>
-        <v-textarea
-          v-model="comment"
-          placeholder="Комментарий"
-          class="pt-0"
-          rows="2"
-        ></v-textarea>
-      </v-row>
-      <v-row class="py-2" justify="end">
+      <div class="w-100 d-flex justify-center mt-2">
+        <v-btn
+          small
+          @click="isFire"
+          :class="status === 'Работает' ? 'disabled' : ''"
+          color="error mr-3"
+          >Уволен</v-btn
+        >
+        <v-btn
+          small
+          @click="isWork"
+          :class="status === 'Уволен' ? 'disabled' : ''"
+          color="success"
+          >Работает</v-btn
+        >
+      </div>
+      <div
+        v-if="status === 'Работает' && !hideSecondPart"
+        class="position-relative"
+      >
+        <div class="mb-10">
+          <DocForm
+            v-if="listDocuments && listDocuments.length"
+            @changeDocs="changeDocs"
+            :docsData="listDocuments"
+            :listNames="listNames"
+            :docs="listDocuments"
+            :entity="data.entity"
+            :task="data.task"
+            ref="docFormRef"
+            title="Приложите документы:"
+            :showFields="false"
+            :showDropzone="true"
+            :withoutSave="false"
+            :rejecting="true"
+            :showScan="false"
+            :fromTask="true"
+            :removeRejecting="true"
+          ></DocForm>
+        </div>
+        <v-row>
+          <v-textarea
+            v-model="comment"
+            placeholder="Комментарий"
+            class="pt-0"
+            rows="2"
+          ></v-textarea>
+        </v-row>
+      </div>
+
+      <v-row class="mt-4 py-2" justify="end">
         <v-btn
           class="mr-3"
           @click="$emit('closePopup')"
@@ -80,6 +89,7 @@
           color="info"
           @click="sendTaskFinish"
           small
+          :loading="loading"
           :disabled="!refds || (!disabledDocumentsAcc && !comment)"
         >
           <v-icon small>mdi-content-save</v-icon>

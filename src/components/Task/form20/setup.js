@@ -6,12 +6,14 @@ import { required } from '@/utils/validation'
 import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import moment from 'moment/moment'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form20 = defineComponent({
   name: 'Form20',
   components: {
     FormError,
     FormComment,
+    PersTitle,
   },
   props: {
     data: {

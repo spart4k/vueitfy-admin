@@ -1,6 +1,13 @@
-import Vue, { computed, ref, onMounted, watch, onUnmounted } from 'vue'
+import Vue, {
+  computed,
+  ref,
+  onMounted,
+  watch,
+  onUnmounted,
+  nextTick,
+} from 'vue'
 import { useRouter, useRoute } from 'vue-router/composables'
-import Autocomplete from '@/components/Autocomplete'
+import Autocomplete from '@/components/Autocomplete/form'
 import FormDefault from '@/components/Form/default/index.vue'
 
 import useForm from '@/compositions/useForm.js'
@@ -13,7 +20,7 @@ import Datepicker from '@/components/Date/Default/index.vue'
 
 import _ from 'lodash'
 
-import { required } from '@/utils/validation.js'
+import { required, number } from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -191,7 +198,7 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             items: categoryItems,
             selectOption: {
               text: 'name',
@@ -222,14 +229,14 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
               cols: 12,
               sm: 2,
             },
-            validations: { required },
+            validations: { required, number },
             bootstrapClass: [''],
           }),
           stringField({
@@ -250,14 +257,14 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
               cols: 12,
               sm: 3,
             },
-            validations: { required },
+            validations: { required, number },
             bootstrapClass: [''],
           }),
           checkboxField({
@@ -268,19 +275,23 @@ export default {
             prescription: 'items',
             placeholder: '',
             readonly:
-              isEdit.value === 'edit'
-                ? {
-                    value: false,
-                    condition: [
-                      {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
-                        type: false,
-                      },
-                    ],
-                  }
-                : undefined,
+              proxyTab.value.path === 'id'
+                ? formData?.type_zayavka === 2
+                  ? true
+                  : {
+                      value: false,
+                      condition: [
+                        {
+                          target: 'originalData',
+                          field: 'status',
+                          value: [1],
+                          type: false,
+                        },
+                      ],
+                    }
+                : formData?.vector_id === 2
+                ? true
+                : false,
             class: [''],
             position: {
               cols: 12,
@@ -306,7 +317,7 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
@@ -352,6 +363,38 @@ export default {
       }
     }
 
+    const checkPermission = (val) => {
+      if (store.state.user.permission_id === 19) {
+        if (val === 2 || val === 3) return true
+      }
+      if (store.state.user.permission_id === 8) {
+        const onYourself = proxyTab.value.fields.find(
+          (x) => x.name === 'on_yourself'
+        )
+        onYourself.readonly = true
+        if (formData.from_account_id !== store.state.user.id) {
+          formData.on_yourself = true
+          checkVector()
+          changeAutocomplete({
+            value: formData.on_yourself,
+            field: onYourself,
+          })
+        }
+      }
+      if (store.state.user.permission_id === 17) {
+        if (val === 1 || val === 2) {
+          if (formData.vector_id && formData.vector_id !== 3) {
+            formData.vector_id = 3
+            changeAutocomplete({
+              value: formData.vector_id,
+              field: proxyTab.value.fields.find((x) => x.name === 'vector_id'),
+            })
+          }
+          return true
+        }
+      }
+    }
+
     const downloadFile = ({ item }) => {
       const link = document.createElement('a')
       link.download = item.name
@@ -371,8 +414,23 @@ export default {
     }
 
     const checkVector = () => {
-      const item = Object.keys(formData).find((x) => x === 'type_zayavka')
-      if (formData[item] === 4) formData[item] = 1
+      if (formData?.type_zayavka === 4) formData.type_zayavka = 1
+
+      nextTick(() => {
+        if (formData.on_yourself === false) {
+          if (formData.type_zayavka) {
+            const field = proxyTab.value.fields.find(
+              (x) => x.name === 'type_zayavka'
+            )
+            changeAutocomplete({ value: formData.type_zayavka, field })
+          } else if (formData.vector_id) {
+            const field = proxyTab.value.fields.find(
+              (x) => x.name === 'vector_id'
+            )
+            changeAutocomplete({ value: formData.vector_id, field })
+          }
+        }
+      })
     }
 
     const imageFormat = (val) => {
@@ -415,6 +473,54 @@ export default {
           formData[item] = true
         }
       }
+
+      if (proxyTab.value.path === 'add') {
+        watch(
+          () => formData?.vector_id,
+          () => {
+            const vdsArray = proxyTab.value.fields.filter((x) =>
+              x.name.includes('vds')
+            )
+            vdsArray.forEach((item) => {
+              if (formData?.vector_id === 2) {
+                item.readonly = true
+                formData[item.name] = false
+              } else {
+                item.readonly = false
+              }
+            })
+          },
+          { immediate: true, deep: true }
+        )
+      } else if (proxyTab.value.path === 'id') {
+        watch(
+          () => formData?.type_zayavka,
+          () => {
+            const vdsArray = proxyTab.value.fields.filter((x) =>
+              x.name.includes('vds')
+            )
+            vdsArray.forEach((item) => {
+              if (formData?.type_zayavka === 2) {
+                item.readonly = true
+                formData[item.name] = false
+              } else {
+                item.readonly = {
+                  value: false,
+                  condition: [
+                    {
+                      target: 'originalData',
+                      field: 'status',
+                      value: [1],
+                      type: false,
+                    },
+                  ],
+                }
+              }
+            })
+          },
+          { immediate: true, deep: true }
+        )
+      }
     })
 
     onUnmounted(() => {
@@ -439,6 +545,7 @@ export default {
       changeCheckbox,
       rebuildFormData,
       readonlyField,
+      changeValue,
       isHideBtn,
       getDependies,
     } = useForm({
@@ -492,6 +599,8 @@ export default {
       imageFormat,
       isHideBtn,
       proxyTab,
+      checkPermission,
+      changeValue,
     }
   },
 }

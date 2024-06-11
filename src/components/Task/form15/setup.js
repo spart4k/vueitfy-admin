@@ -29,6 +29,7 @@ const Form15 = defineComponent({
     const router = useRouter()
     const route = useRoute()
     const proxyConfig = ref(_.cloneDeep(config))
+    const loading = ref(false)
     const context = {
       root: {
         store,
@@ -98,13 +99,18 @@ const Form15 = defineComponent({
               ? 0
               : 0,
           ozon: data.entity === 2 ? 1 : 0,
+          postponed:
+            props.data.entity.vid_vedomost_id === 1
+              ? props.data.data.postponed
+              : undefined,
           need_input:
             data.entity.direction_id === 6 ||
+            data.entity.direction_id === 7 ||
             data.entity.doljnost_id === 5 ||
             data.entity.doljnost_id === 7 ||
-            data.entity.doljnost_id === 6 ||
+            // data.entity.doljnost_id === 6 ||
             data.entity.doljnost_id === 8 ||
-            data.entity.doljnost_id === 32 ||
+            data.entity.doljnost_id === 23 ||
             data.entity.doljnost_id === 33
               ? 1
               : 0,
@@ -112,9 +118,9 @@ const Form15 = defineComponent({
             data.entity.direction_id === 1 &&
             data.entity.doljnost_id !== 5 &&
             data.entity.doljnost_id !== 7 &&
-            data.entity.doljnost_id !== 6 &&
+            // data.entity.doljnost_id !== 6 &&
             data.entity.doljnost_id !== 8 &&
-            data.entity.doljnost_id !== 32 &&
+            data.entity.doljnost_id !== 23 &&
             data.entity.doljnost_id !== 33
               ? 1
               : 0,
@@ -151,16 +157,23 @@ const Form15 = defineComponent({
     })
 
     const confirm = async () => {
+      loading.value = true
       isFormConfirmed.value = true
-
+      console.log(
+        props.data.entity.vid_vedomost_id === 1
+          ? props.data.data.postponed
+          : undefined
+      )
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     const reject = async () => {
+      loading.value = true
       isFormConfirmed.value = false
 
       await setPersonalTarget()
@@ -169,6 +182,7 @@ const Form15 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
 
     const pushToForm = (val) => {
@@ -210,6 +224,7 @@ const Form15 = defineComponent({
       proxyConfig,
       closePopupForm,
       Popup,
+      loading,
     }
   },
 })

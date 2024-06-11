@@ -5,8 +5,11 @@ import {
   create,
   remove,
   putForm,
+  delForm,
   bindZayavka,
   loadParser,
+  getPaymentList,
+  getPaymentListObjects,
 } from '@/api/form'
 //import axios from 'axios'
 
@@ -33,12 +36,24 @@ const form = {
       const result = await remove(params)
       return result
     },
+    async delForm(_, params) {
+      const result = await delForm(params)
+      return result
+    },
     async bindZayavka(_, params) {
       const result = await bindZayavka(params.body)
       return result
     },
     async loadParser(_, params) {
       const result = await loadParser(params)
+      return result
+    },
+    async getPaymentList(_, params) {
+      const result = await getPaymentList(params)
+      return result
+    },
+    async getPaymentListObjects(_, params) {
+      const result = await getPaymentListObjects(params)
       return result
     },
   },

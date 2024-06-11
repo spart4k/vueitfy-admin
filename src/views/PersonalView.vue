@@ -8,12 +8,13 @@
       background-color="transparent"
       color="basil"
       class="p-5"
+      mobile-breakpoint="0"
     >
       <v-tab v-for="item in availableTabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="activeTab">
+    <v-tabs-items touchless v-model="activeTab">
       <v-tab-item v-for="item in availableTabs" :key="item.options.title">
         <component
           :is="item.type"
@@ -27,19 +28,24 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
-import { config } from '@/pages/personal/index'
 import store from '@/store'
+import { ref, computed, onMounted } from 'vue'
 import _ from 'lodash'
+import useView from '@/compositions/useView.js'
 
-//import TableDefault from '@/components/Table/default/index.vue'
+// import { stringAction } from '@/utils/actions'
+import { config as personalConfigOrig } from '@/pages/personal/index'
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { initPaymentZayavka } from '@/utils/helpers.js'
+// import personalTabs from '@/pages/zayavka/index'
+
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 
 export default {
   name: 'Personal-View',
   components: {
-    //TableDefault,
     //Layout,
   },
   methods: {
@@ -49,35 +55,89 @@ export default {
     },
   },
   setup() {
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+    } = useView()
+    const config = _.cloneDeep(personalConfigOrig)
+
     const activeTab = ref(0)
     const permission = computed(() => store.state.user.permission_id)
-    const directions = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
+
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
-
       return el.permissions.includes(permission.value)
     }
-    const checkIncludesDirections = (el) => {
-      //return el.direction_id.includes(directions.value)
 
-      if (!el.direction_id) return true
-      else {
-        return !!_.intersection(el.direction_id, directions.value).length
-      }
-    }
     const availableTabs = computed(() => {
       return config.tabs.filter((tab) => {
         if (!tab.isShow) return tab
         else {
-          return tab.isShow.condition.some((el) => {
-            return checkIncludesPermissions(el) === el.type
+          return tab.isShow.condition.every((el) => {
+            if (el.permissions) {
+              return checkIncludesPermissions(el) === el.type
+            } else if (el.funcComputed) {
+              const context = {
+                store,
+              }
+              return el.funcComputed(context)
+            }
           })
-          // if ()
         }
       })
     })
+
+    const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+      paymentConfigOrig,
+      zayavkaConfigOrig
+    )
+    paymentConfig.isShow = {
+      value: true,
+      condition: [
+        // {
+        //   permissions: [13],
+        //   type: false,
+        // },
+        {
+          permissions: [4, 3, 15, 1, 8, 17],
+          type: true,
+        },
+      ],
+    }
+    zayavkaConfig.isShow = {
+      value: true,
+      condition: [
+        {
+          permissions: [4, 3, 15, 1, 8, 17, 16, 19],
+          type: true,
+        },
+      ],
+    }
+    configRouteConvert({
+      config: paymentConfig.config,
+      route: 'payment',
+      newPath: 'edit-payment',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: zayavkaConfig.config,
+      route: 'zayavka',
+      newPath: 'edit-zayavka',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+
+    config.tabs[0].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    config.tabs[1].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    config.tabs[2].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+
     return {
       config,
       activeTab,

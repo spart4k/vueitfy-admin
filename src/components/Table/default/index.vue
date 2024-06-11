@@ -5,44 +5,71 @@
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
         class="v-table-panel"
       >
-        <div class="v-table-panel__actions flex-wrap">
-          <div class=""></div>
-          <div
-            v-for="(button, indexButton) in availablePanelBtn"
-            :key="indexButton"
-            class=""
-          >
-            <SwitchDefault
-              @getItems="changeHeaders"
-              :button="button"
-              v-if="button.type === 'switch'"
-              v-model="button.value"
-            />
-            <v-btn v-else @click="panelHandler(button)" small>
-              <v-icon v-if="button.type === 'icon'" small class="mr-2">
-                {{ button.url }}
-              </v-icon>
-              <p v-if="true">{{ button.label }}</p>
+        <!-- <div v-if="panel.date" class="v-table-panel-date">
+          <v-btn icon class="mr-4" @click="changeMonth(-1)">
+            <v-icon small> $IconArrowLeft </v-icon>
+          </v-btn>
+          <div class="v-table-panel-date_month">
+            {{ currentDate.monthArray[currentDate.month] }}
+            {{ currentDate.year }}
+          </div>
+          <v-btn icon class="ml-4" @click="changeMonth(1)">
+            <v-icon small> $IconArrowRight </v-icon>
+          </v-btn>
+        </div> -->
+        <div class="v-table-panel-items">
+          <div class="v-table-panel-items__actions flex-wrap">
+            <div class=""></div>
+            <div
+              v-for="(button, indexButton) in availablePanelBtn"
+              :key="indexButton"
+              :class="`panel-button_${button.label}`"
+              small
+            >
+              <SwitchDefault
+                @getItems="changeHeaders"
+                :button="button"
+                :config="options"
+                v-if="button.type === 'switch'"
+                v-model="button.value"
+              />
+              <v-btn
+                v-else
+                @click="panelHandler(button)"
+                :disabled="
+                  button.type === 'selectedItems' && !lastSelected.items.length
+                "
+                small
+              >
+                <v-icon
+                  v-if="button.type === 'icon' || button.icon"
+                  small
+                  :class="[button.label && 'mr-2']"
+                >
+                  {{ button.url ?? button.icon }}
+                </v-icon>
+                <p>{{ button.label }}</p>
+              </v-btn>
+            </div>
+          </div>
+
+          <div class="v-table-panel-items__search">
+            <v-text-field
+              label="Поиск"
+              hide-details="auto"
+              clearable
+              v-model="paramsQuery.searchGlobal"
+            ></v-text-field>
+            <v-btn
+              v-if="options.filters"
+              small
+              @click="openFilter($event)"
+              class="ml-2"
+              elevation="2"
+            >
+              Фильтры
             </v-btn>
           </div>
-        </div>
-
-        <div class="v-table-panel__search">
-          <v-text-field
-            label="Поиск"
-            hide-details="auto"
-            clearable
-            v-model="paramsQuery.searchGlobal"
-          ></v-text-field>
-          <v-btn
-            v-if="options.filters"
-            small
-            @click="openFilter($event)"
-            class="ml-2"
-            elevation="2"
-          >
-            Фильтры
-          </v-btn>
         </div>
       </div>
       <div class="v-table-wrap">
@@ -198,7 +225,9 @@
                   <div @click.stop class="v-table-checkbox">
                     <label>
                       <input
-                        @change="saveLastSelected({ row, indexRow })"
+                        @change="
+                          saveLastSelected(row, indexRow, row.row.selected)
+                        "
                         @click.stop.shift="checkboxInput(row, indexRow)"
                         v-model="row.row.selected"
                         type="checkbox"
@@ -295,17 +324,21 @@
                       "
                       class="v-table-actions-wrap"
                     >
-                      <v-btn
+                      <div
                         v-for="(action, indexAction) in cell.actions"
                         :key="indexAction"
-                        @click="
-                          action.function(Object.byString(row.row, cell.value))
-                        "
                       >
-                        <v-icon small>
-                          {{ action.url }}
-                        </v-icon>
-                      </v-btn>
+                        <v-btn
+                          v-if="showAction(action, cell, row)"
+                          @click="triggerAction(action, cell, row)"
+                          color="primary"
+                        >
+                          <v-icon small>
+                            {{ action.url }}
+                          </v-icon>
+                        </v-btn>
+                        <div v-else>-</div>
+                      </div>
                     </div>
                   </template>
                 </td>
@@ -384,9 +417,9 @@
       <div class="v-table-footer-info">
         <div class="v-table-footer-total">
           Итого: {{ options.data.totalRows }}
-          <div v-if="options.data.footer.length" class="">
+          <div v-if="options.data?.footer?.length" class="">
             <span
-              v-for="footerInfo in options.data.footer"
+              v-for="footerInfo in options.data?.footer"
               v-show="footerInfo.value"
               :key="footerInfo.name"
             >
@@ -449,14 +482,41 @@
         />
       </keep-alive>
     </Sheet>
+    <v-dialog persistent v-model="confirmDialog.isShow" width="550">
+      <v-card>
+        <div class="pt-3 mb-4 text-h5 text-center">
+          {{ confirmDialog.text }}
+        </div>
+        <v-card-actions class="pb-4 flex justify-center">
+          <v-btn
+            v-if="!confirmDialog.loading"
+            color="primary mr-4"
+            @click="triggerDialogFunction"
+          >
+            Подтверждаю
+          </v-btn>
+          <v-btn
+            v-if="!confirmDialog.loading"
+            color="error"
+            @click="confirmDialog.isShow = false"
+          >
+            Отменить
+          </v-btn>
+          <v-progress-circular
+            v-if="confirmDialog.loading"
+            color="primary"
+            :size="30"
+            indeterminate
+          />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <Popup
       closeButton
       @close="closePopupForm"
       :options="{
         width: options.detail.width,
-        portal: `table-detail${
-          options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
-        }`,
+        portal: 'table-detail',
       }"
       v-if="
         options.detail && options.detail.type === 'popup' && popupForm.isShow

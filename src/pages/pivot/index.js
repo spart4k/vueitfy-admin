@@ -12,34 +12,26 @@ import _ from 'lodash'
 import { stringAction } from '@/utils/actions'
 import FormDefault from '@/components/Form/default/index.vue'
 import FormOutput from '@/components/Form/output/index.vue'
-import TableDefault from '@/components/Table/default/index.vue'
 import FormTarget from '@/components/Form/target/default/index.vue'
+import writeC3 from './config/write-c3.js'
 import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
-import { fieldsBaseDefaulrForm as personalFields } from '@/pages/personal/index.js'
-import { objectEditField as objectFields } from '@/pages/object/index.js'
-import { defaultForm as personalConfig } from '@/pages/personal/index'
-import { defaultForm as objectConfig } from '@/pages/object/index.js'
+// import { fieldsBaseDefaultForm as personalFields } from '@/pages/personal/index.js'
+// import { defaultForm as personalConfig } from '@/pages/personal/index'
+// import { defaultForm as objectConfig } from '@/pages/object/index.js'
 
-const changeActionTo = (array, key, oldPath, newPath) => {
-  array.forEach((tab) => {
-    if (tab.path === oldPath) {
-      tab.path = newPath
-    }
-    if (tab.actions) {
-      tab.actions.forEach((el) => {
-        if (el.action === 'closePopup') {
-          el.to = key
-        }
-      })
-    }
-  })
-}
+// const changeActionTo = (array, oldPath, newPath) => {
+//   array.forEach((tab) => {
+//     if (tab.path === oldPath) {
+//       tab.path = newPath
+//     }
+//   })
+// }
 
-const personalConfigForms = _.cloneDeep(personalConfig)
-const objectConfigForm = _.cloneDeep(objectConfig)
+// const personalConfigForms = _.cloneDeep(personalConfig)
+// const objectConfigForm = _.cloneDeep(objectConfig)
 
-changeActionTo(personalConfigForms, 'pivot', 'edit', 'edit-personal')
-changeActionTo(objectConfigForm, 'pivot', 'edit', 'edit-object')
+// changeActionTo(personalConfigForms, 'edit', 'edit-personal')
+// changeActionTo(objectConfigForm, 'edit', 'edit-object')
 
 function consoleText(row) {}
 
@@ -49,31 +41,38 @@ function consolePanel() {}
 
 function searchInputing(field) {}
 
-function changeSort() {
-  let btn = config.panel.buttons.find((x) => x.function === changeSort)
+function changeSort(config) {
+  let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
   let heading = config.head.find((x) => x.changeable)
-  if (btn.label === 'Объекты') {
-    btn.label = 'ФИО'
+  if (btn.typeLabel === 'Объекты') {
+    btn.typeLabel = 'ФИО'
     heading.title = 'Объект'
     heading.alias = 'o.name'
     heading.value = 'object_name'
-    heading.routeName = 'pivot-edit-object'
+    heading.routeName = 'pivot-object'
     heading.routeParam = 'object_id'
     heading.type = 'download'
+    heading.click = {
+      condition: {
+        permissions: [12, 22],
+        type: false,
+      },
+    }
     config.options.url = 'get/pagination_pivot/personal_target_object'
-  } else if (btn.label === 'ФИО') {
-    btn.label = 'Объекты'
+  } else if (btn.typeLabel === 'ФИО') {
+    btn.typeLabel = 'Объекты'
     heading.title = 'ФИО'
-    heading.alias = 'p.name'
-    heading.value = 'personal_name'
-    heading.routeName = 'pivot-edit-personal'
+    heading.alias = "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)"
+    heading.value = 'fio'
+    heading.routeName = 'pivot-personal'
     heading.routeParam = 'personal_id'
     heading.type = 'default'
+    heading.click = undefined
     config.options.url = 'get/pagination_pivot/personal_target_personal'
   }
 }
 
-const config = {
+export const config = {
   selector: '#mainTable',
   options: {
     selecting: true,
@@ -85,6 +84,20 @@ const config = {
     url: 'get/pagination_pivot/personal_target_personal',
     title: 'This is an about page1',
     doubleHandlerType: 'cell',
+    sideMenu: [
+      {
+        component: 'Checklist',
+        name: 'План закрытия',
+        icon: '$IconGraphic',
+        condition: [3, 4, 8, 17],
+      },
+      {
+        component: 'Coefficient',
+        name: 'Коэффициент',
+        icon: '$IconGraphic',
+        condition: [3, 4, 8, 17],
+      },
+    ],
   },
   panel: {
     buttons: [
@@ -96,11 +109,14 @@ const config = {
         backgroundColor: '#ffffff',
       },
       {
-        label: 'Добавить',
+        label: '',
         class: ['v-table-button--custom'],
-        url: '$IconSetting',
-        // function: consolePanel,
-        backgroundColor: '#fff',
+        typeLabel: 'Объекты',
+        url: '$IconUpdate',
+        function: changeSort,
+        backgroundColor: '#ffffff',
+        type: 'refresh',
+        subtype: 'changeHeads',
       },
       {
         label: 'Выработка',
@@ -132,21 +148,6 @@ const config = {
           ],
         },
       },
-      // {
-      //   label: 'Скачать',
-      //   class: ['v-table-button--custom'],
-      //   // function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
-      {
-        label: 'Объекты',
-        class: ['v-table-button--custom'],
-        url: '$IconUpdate',
-        function: changeSort,
-        backgroundColor: '#ffffff',
-        type: 'refresh',
-        subtype: 'changeHeads',
-      },
       {
         label: 'Аванс',
         class: ['v-table-button--custom'],
@@ -159,6 +160,36 @@ const config = {
           condition: [
             {
               permissions: [4, 8, 17],
+              type: true,
+            },
+          ],
+        },
+      },
+      {
+        label: 'ЗП Клининг',
+        class: ['v-table-button--custom'],
+        url: 'pivot-profit-cleaning',
+        type: 'changeUrl',
+        color: 'warning',
+        backgroundColor: 'rgb(255, 144, 0)',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 8, 17],
+              type: true,
+            },
+          ],
+        },
+      },
+      {
+        label: 'Печать СЗ',
+        class: ['v-table-button--custom'],
+        url: 'write-c3',
+        type: 'changeUrl',
+        isShow: {
+          condition: [
+            {
+              permissions: [1, 15, 3, 4],
               type: true,
             },
           ],
@@ -178,8 +209,8 @@ const config = {
       type: 'default',
       isShow: true,
       width: '200',
-      alias: 'p.name',
-      value: 'personal_name',
+      alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+      value: 'fio',
       changeable: true,
       // routeParam: 'personal_id',
       // route
@@ -191,8 +222,9 @@ const config = {
         field: '',
         isShow: true,
       },
+      click: undefined,
       routeParam: 'personal_id',
-      routeName: 'pivot-edit-personal',
+      routeName: 'pivot-personal',
       sorts: [
         {
           type: 'string',
@@ -214,7 +246,7 @@ const config = {
   detail: {
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
-    width: '600px',
+    width: '800px',
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
@@ -230,46 +262,11 @@ const config = {
         initialRequestUrl: 'get/parser/active/',
         outputType: 3,
         lists: [
-          { alias: 'type_parser', filter: [] },
-          { alias: 'parser_objects', filter: [] },
-          { alias: 'service_spr', filter: [] },
+          // { alias: 'type_parser', filter: [] },
+          // { alias: 'object_period', filter: [] },
+          // { alias: 'service_spr', filter: [] },
         ],
         fields: [
-          selectField({
-            label: 'Тип',
-            name: 'type_parser',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
-          selectField({
-            label: 'Объект',
-            name: 'object_id',
-            alias: 'parser_objects',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 12,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
           dateField({
             label: 'Период',
             name: 'period',
@@ -280,9 +277,95 @@ const config = {
               cols: 12,
               sm: 12,
             },
+            updateList: [
+              {
+                alias: 'object_period',
+                filter: [
+                  {
+                    field: 'period',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
             validations: { required },
             bootstrapClass: [''],
           }),
+          selectField({
+            label: 'Объект',
+            name: 'object_id',
+            alias: 'object_period',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            updateList: [
+              {
+                alias: 'object_type_period',
+                filter: [
+                  {
+                    field: 'period',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                  {
+                    field: 'object_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'num',
+                  },
+                ],
+              },
+            ],
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          selectField({
+            label: 'Тип',
+            name: 'type_parser',
+            alias: 'object_type_period',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+          // selectField({
+          //   label: 'Период',
+          //   name: 'period',
+          //   alias: 'period',
+          //   placeholder: '',
+          //   class: [''],
+          //   selectOption: {
+          //     text: 'name',
+          //     value: 'id',
+          //   },
+          //   items: [],
+          //   position: {
+          //     cols: 12,
+          //     sm: 12,
+          //   },
+          //   validations: { required },
+          //   bootstrapClass: [''],
+          // }),
           dropZoneField({
             label: 'Файл',
             name: 'file',
@@ -422,7 +505,7 @@ const config = {
       {
         path: 'profit',
         id: 2,
-        name: 'Основные',
+        name: 'Профит',
         type: FormDefault,
         detail: true,
         lists: [],
@@ -471,8 +554,59 @@ const config = {
         formData: {},
       },
       {
+        path: 'profit-cleaning',
+        id: 2,
+        name: 'Профит',
+        type: FormDefault,
+        detail: true,
+        lists: [],
+        // alias: 'personal',
+        active: false,
+        fields: [
+          dateField({
+            label: 'Период',
+            name: 'period',
+            subtype: 'period',
+            placeholder: '',
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+          }),
+        ],
+        actions: [
+          stringAction({
+            text: 'Закрыть',
+            color: 'error',
+            name: 'closePopup',
+            action: 'closePopup',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Сохранить',
+            type: 'submit',
+            module: 'form/create',
+            url: 'create/pay/cleaning',
+            name: 'createForm',
+            action: 'createForm',
+            handlingResponse: {
+              context: 'result',
+              result: 'data',
+              data: {
+                text: 'Создано начислений %count% <br/> Ошибок: %count_error%',
+                color: 'success',
+              },
+            },
+          }),
+        ],
+        formData: {},
+      },
+      {
         id: 1,
-        name: 'Основные',
+        name: 'Редактирование выработки',
         type: FormTarget,
         detail: true,
         path: 'edit',
@@ -589,6 +723,7 @@ const config = {
         ],
         formData: {},
       },
+      writeC3,
       // {
       //   id: 2,
       //   name: 'Расход',
@@ -596,8 +731,8 @@ const config = {
       //   active: false,
       //   config: consumptionConfig,
       // },
-      ...objectConfigForm,
-      ...personalConfigForms,
+      // ...objectConfigForm,
+      // ...personalConfigForms,
     ],
     activeTab: null,
   },

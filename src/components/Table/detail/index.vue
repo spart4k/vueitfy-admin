@@ -18,17 +18,17 @@
           color="basil"
           class="p-5"
           v-show="availableTabsAll.length > 1"
+          mobile-breakpoint="0"
         >
           <v-tab v-for="item in availableTabsAll" :key="item.id">
             {{ item.name }}
           </v-tab>
         </v-tabs>
       </div>
-      <v-tabs-items v-model="activeTab">
+      <v-tabs-items touchless v-model="activeTab">
         <v-tab-item v-for="item in availableTabsAll" :key="item.id">
-          <!--{{ item.type }}-->
           <component
-            :content="porpsContent"
+            :content="propsContent"
             :loading="loading"
             :is="item.type"
             :tab="item"
@@ -36,15 +36,15 @@
             :detail="detail"
             :syncData="syncForm"
             :stages="item.stages"
-            :routeParam="id"
+            :routeParam="id || $route.params[item.routeParam]"
             @closePopup="(e) => $emit('closePopup', e)"
             @getItems="(e) => $emit('getItems', e)"
             @refreshData="$emit('refreshData')"
+            :formDataParent="formDataParent"
+            :class="item?.label"
           />
         </v-tab-item>
       </v-tabs-items>
-      <!--<TableDefault :options="detail.tabs[1].config"></TableDefault>-->
-      <!--{{ TableDefault }}-->
     </div>
   </div>
 </template>

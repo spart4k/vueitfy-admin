@@ -21,12 +21,22 @@
           <v-icon>mdi-calendar</v-icon>
           <span>{{ formatDate(data.task.date_create) }}</span>
         </v-row>
-        <v-row class="task__info-row" align="center">
+        <!-- <v-row
+          v-if="data.data?.zayavka?.id"
+          class="task__info-row"
+          align="center"
+        >
           <v-icon>mdi-tag</v-icon>
+          <a target="_blank" :href="`/zayavka/${data.data.zayavka.id}`"
+            >Заявка №{{ data.data.zayavka.id }}</a
+          >
+        </v-row> -->
+        <v-row class="task__info-row" align="center">
+          <v-icon>mdi-checkbox-multiple-blank-outline</v-icon>
           <span :class="`circle circle--${data.task.status}`"></span>
           <span>{{ data.task.status_name }}</span>
         </v-row>
-        <v-row v-if="taskDeadline" class="task__info-row" align="center">
+        <v-row v-if="false" class="task__info-row" align="center">
           <v-icon>mdi-timer</v-icon>
           <span class="timer" :class="{ 'timer-minus': timerDiff < 0 }">{{
             timerString
@@ -105,10 +115,17 @@
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
+          @refreshData="refreshData"
         ></Form11>
         <!--Подтверждение назначения-->
         <Form13
           v-if="data.task.task_type_id === 13"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form14
+          v-if="data.task.task_type_id === 14"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
@@ -183,6 +200,43 @@
         />
         <Form31
           v-if="data.task.task_type_id === 31"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form34
+          v-if="data.task.task_type_id === 34"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form35
+          v-if="data.task.task_type_id === 35"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form36
+          v-if="data.task.task_type_id === 36"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form37
+          v-if="data.task.task_type_id === 37"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form38
+          v-if="data.task.task_type_id === 38"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+          @refreshData="refreshData"
+        />
+        <Form39
+          v-if="data.task.task_type_id === 39"
           :data="data"
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"

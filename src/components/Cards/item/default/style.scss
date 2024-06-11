@@ -1,0 +1,100 @@
+.v {
+  &-card {
+    &-container {
+      width: 350px;
+      background-color: var(--v-background-base);
+      border-radius: 20px;
+      padding: 20px 20px 10px;
+      box-shadow: 3px 3px 7px 0px #17171b40;
+
+      &-card {
+        width: 100%;
+        height: 186px;
+        padding: 0 11px 20px;
+        position: relative;
+        &-disabled {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: #ffffffcc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          &-info {
+            padding: 14px 20px;
+            background-color: var(--v-secondary-base);
+            color: var(--v-cardBackground-base);
+            margin-bottom: 40px;
+            border-radius: 10px;
+            i {
+              cursor: default;
+            }
+          }
+        }
+      }
+      &-info {
+        line-height: normal;
+        &_item {
+          display: flex;
+          justify-content: space-between;
+
+          span {
+            width: 100%;
+            font-size: 14px;
+            position: relative;
+            white-space: nowrap;
+            // overflow: hidden;
+            // text-overflow: ellipsis;
+          }
+          span:nth-child(even) {
+            text-align: end;
+            margin-left: 20px;
+          }
+        }
+        &_item + &_item {
+          margin-top: 10px;
+        }
+      }
+      &-actions {
+        display: flex;
+        justify-content: flex-end;
+        button {
+          min-width: 44px !important;
+          padding: 0 !important;
+          border-radius: 10px !important;
+        }
+        &_item {
+        }
+        &_item + &_item {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+::v-deep .v-list {
+  padding: 8px 5px !important;
+  .v-list-item {
+    padding: 0 !important;
+    min-height: 38px !important;
+    button {
+      padding: 0 12px !important;
+      height: 38px !important;
+      width: 100% !important;
+      justify-content: flex-start !important;
+    }
+    .v-icon {
+      margin-right: 10px;
+    }
+    span {
+      color: var(--v-textDefault-base) !important;
+    }
+  }
+}
+
+.gradient {
+  @include gradient;
+}

@@ -3,6 +3,7 @@
 import Vue, { onMounted, ref, computed, watch, toRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
+import axios from 'axios'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -19,10 +20,10 @@ import vIconSort from '../../Icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
-import { post } from '@/api/axios'
 import useTable from '@/compositions/useTable.js'
-import { personal } from '@/pages/index.js'
 import moment from 'moment/moment'
+// import { post } from '@/api/axios'
+// import { personal } from '@/pages/index.js'
 //import { tableApi } from '@/api'
 
 const table = {
@@ -44,10 +45,6 @@ const table = {
       type: Object,
       default: () => {},
       require: true,
-    },
-    tab: {
-      type: Object,
-      default: () => {},
     },
     filtersConfig: {
       type: Object,
@@ -81,9 +78,10 @@ const table = {
     const proxyOptions = toRef(options, 'head')
     const detail = ref(options?.detail)
     const filters = ref(options?.filters)
+    const panel = ref(options?.panel)
     const lastSelected = ref({
-      indexRow: null,
-      row: {},
+      items: [],
+      indexRow: 0,
     })
     const rowCount = [5, 10, 15, 20, 25, 30]
     const contextmenu = ref({
@@ -103,6 +101,13 @@ const table = {
     const filter = ref({
       isShow: false,
     })
+    const confirmDialog = ref({
+      isShow: false,
+      text: '',
+      function: null,
+      context: null,
+      loading: false,
+    })
     const paramsQuery = ref({
       currentPage: pagination.value.currentPage,
       searchGlobal: searchField.value,
@@ -112,6 +117,25 @@ const table = {
     })
     const popupForm = ref({
       isShow: false,
+    })
+    const currentDate = ref({
+      monthArray: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      date: moment(new Date()).format('YYYY-MM'),
     })
     const wrapingRow = () => {
       const table = document.querySelector(options.selector)
@@ -145,54 +169,48 @@ const table = {
       }
     }
     const checkboxInput = (row, indexRow) => {
-      //
-      //
       let delta = null
       if (indexRow > lastSelected.value.indexRow) {
         delta = indexRow - lastSelected.value.indexRow
-        if (lastSelected.value.indexRow === null) {
-          lastSelected.value.indexRow = 0
-        }
         for (
           let i = lastSelected.value.indexRow;
           i < lastSelected.value.indexRow + delta;
           i++
         ) {
-          //
-          //
           if (!options.data.rows[i].row.selected) {
             options.data.rows[i].row.selected = true
+            lastSelected.value.items.push(options.data.rows[i])
           } else {
-            //
             //options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       } else {
-        //
         delta = lastSelected.value.indexRow - indexRow
         for (
           let i = lastSelected.value.indexRow;
           i > lastSelected.value.indexRow - delta;
           i--
         ) {
-          //
-          //
           if (!options.data.rows[i].row.selected) {
             options.data.rows[i].row.selected = true
+            lastSelected.value.items.push(options.data.rows[i])
           } else {
-            //
             //options.data[i].row.selected = false
             //if (i === lastSelected.value.indexRow) options.data[i].row.selected = true
           }
         }
       }
-      //
-      //
     }
-    const saveLastSelected = (data) => {
-      lastSelected.value = {
-        ...data,
+    const saveLastSelected = (row, indexRow, value) => {
+      lastSelected.value.indexRow = indexRow
+      if (value) {
+        lastSelected.value.items.push(row)
+      } else {
+        const delIndex = lastSelected.value.items.findIndex(
+          (x) => x.row.id === row.row.id
+        )
+        lastSelected.value.items.splice(delIndex, 1)
       }
     }
     // Костыль для чистки инпута
@@ -247,7 +265,6 @@ const table = {
         direction = 'right'
         clientX = window.innerWidth - $event.clientX
       }
-      console.log(contextMenuRef.value)
       // if (!contextMenuRef.value.availableContext.length) {
       //   return
       // }
@@ -301,10 +318,19 @@ const table = {
         router.push({
           name: action.action.routeName,
           params: {
-            [action.action.routeParam]: row.row[action.action.routeParam],
+            [action.action.routeTarget]: row.row[action.action.routeParam],
           },
         })
         popupForm.value.isShow = true
+      } else if (action.action.type === 'confirm') {
+        const context = {
+          store,
+          data: row,
+        }
+        confirmDialog.value.text = action.action.dialog.text
+        confirmDialog.value.function = action.action.dialog.function
+        confirmDialog.value.context = context
+        confirmDialog.value.isShow = true
       } else {
         openRow(undefined, row)
       }
@@ -328,7 +354,46 @@ const table = {
     const closeFilter = () => {
       filter.value.isShow = false
     }
+
+    const triggerDialogFunction = async () => {
+      confirmDialog.value.loading = true
+      confirmDialog.value.function(confirmDialog.value.context)
+      confirmDialog.value.loading = false
+      confirmDialog.value.isShow = false
+      getItems()
+    }
+
+    // Something like this should work:
+
+    // function makeRequestCreator() {
+    //     var call;
+    //     return function(url) {
+    //         if (call) {
+    //             call.cancel();
+    //         }
+    //         call = axios.CancelToken.source();
+    //         return axios.get(url, { cancelToken: call.token }).then((response) => {
+    //
+    //         }).catch(function(thrown) {
+    //             if (axios.isCancel(thrown)) {
+    //
+    //             } else {
+    //                 // handle error
+    //             }
+    //         });
+    //     }
+    // }
+    // You then use it with
+
+    //  var get = makeRequestCreator();
+    //  get('someurl');
+
+    //  Each new request will cancel the previous one
+
+    let controller
     const getItems = async () => {
+      if (controller) controller.abort()
+      controller = new AbortController()
       loading.value = true
       const { url } = props.options.options
       // Может быть без props. после merge cofilcts
@@ -368,10 +433,14 @@ const table = {
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
+          // period: props.options.panel.date ? currentDate.value.date : undefined,
           searchColumns,
           sorts,
           filter: filtersColumns.value,
           by,
+        },
+        params: {
+          signal: controller.signal,
         },
       })
       options.data.rows = data.rows
@@ -399,11 +468,12 @@ const table = {
         paramsQuery.value.currentPage = 1
       }
       loading.value = false
+      lastSelected.value.items = []
+      lastSelected.value.indexRow = 0
+      controller = undefined
     }
     const initHeadParams = () => {
       const { head } = options
-      paramsQuery.value.sorts = []
-      paramsQuery.value.searchColumns = []
       head.forEach((el) => {
         if (el.sorts?.length) {
           paramsQuery.value.sorts.push({
@@ -444,9 +514,9 @@ const table = {
         return false
       }
     }
-    const saveFilter = (filterData) => {
+    const saveFilter = async (filterData) => {
       filtersColumns.value = []
-      filters.value.fields.forEach((el) => {
+      filters.value?.fields?.forEach((el) => {
         if (!filterData[el.name]) {
           el.value = ''
           return
@@ -455,13 +525,7 @@ const table = {
         if (
           el.type === 'dateRange' &&
           filterData[el.name].every(
-            (el) =>
-              el === null ||
-              el === undefined ||
-              el === '' ||
-              el === '' ||
-              el === null ||
-              el === null
+            (el) => el === null || el === undefined || el === ''
           )
         ) {
           return
@@ -482,7 +546,7 @@ const table = {
         filtersColumns.value.push(obj)
       })
       paramsQuery.value.currentPage = 1
-      getItems()
+      await getItems()
     }
 
     const doubleHandler = (
@@ -494,27 +558,21 @@ const table = {
       activeIndexCells
     ) => {
       if (!options.detail || options.options.noTableAction) return
-
-      //проверка на существование ключа, если ключа нету тогда выставляет по умолчанию row
-      // по хорошему этот функционал нужно вынести в момент создание ключей, ПО УМОЛЧАНИЮ
-      if (!props.options.options.hasOwnProperty('doubleHandlerType')) {
-        props.options.options.doubleHandlerType = 'row'
-      }
-
       if (props.options.options.doubleHandlerType === 'cell') {
         openCell($event, row, cell, indexRow, indexCell, activeIndexCells)
-      }
-
-      if (props.options.options.doubleHandlerType === 'row') {
+      } else {
         openRow($event, row, cell)
       }
     }
 
     const openRow = ($event, row) => {
+      if (options.detail?.click) {
+        if (options.detail.click.condition) {
+          const condition = options.detail.click.condition.permissions.includes(store.state.user.permission_id)
+          if (condition !== options.detail.click.condition.type) return
+        }
+      }
       if (options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
         let requestId = 'id'
         if (props.options.detail.requestId)
           requestId = props.options.detail.requestId
@@ -539,11 +597,6 @@ const table = {
     ) => {
       if (options.detail.type === 'popup') {
         if (activeIndexCells.includes(indexCell)) {
-          // let requestId = 'id'
-          // if (props.options.detail.requestId)
-          //   requestId = props.options.detail.requestId
-          //documents/personal/id
-
           const name = `documents-personal-id`
 
           router.push({
@@ -552,18 +605,6 @@ const table = {
               id: row.personal_id,
             },
           })
-
-          //
-          //
-          //documents/personal/id
-          // router.push(
-          //   {
-          //     name: `${route.name}/:id`,
-          //     params: {
-          //       id: row.row.id
-          //     }
-          // })
-
           popupForm.value.isShow = true
         }
       }
@@ -574,11 +615,17 @@ const table = {
       popupForm.value.isShow = false
     }
 
+    const changeMonth = async (val) => {
+      currentDate.value.date = moment(`${currentDate.value.date}-10`)
+        .add(val, 'M')
+        .format('YYYY-MM')
+      currentDate.value.year = currentDate.value.date.split('-')[0]
+      currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
+      await getItems()
+    }
+
     const addItem = () => {
       if (options.detail.type === 'popup') {
-        //router.push({
-        //  path: `${route.}./1`
-        //})
         router.push({
           name: `${route.name}-add`,
         })
@@ -599,6 +646,7 @@ const table = {
     }
     const panelHandler = async (button) => {
       const { type, url } = button
+      if (button.function) button.function(props.options)
       if (type === 'addItem') {
         addItem()
       } else if (type === 'changeUrl') {
@@ -619,15 +667,26 @@ const table = {
         const link = document.createElement('a')
         link.download = path.url
         link.setAttribute('target', '_blank')
-
         link.href = process.env.VUE_APP_STORE + path.url
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)
         getItems()
+      } else if (type === 'changeComp') {
+        emit('changeComp')
+      } else if (type === 'selectedItems') {
+        const context = {
+          store,
+          items: lastSelected.value.items,
+          idArray: lastSelected.value.items.map(x => x.row.id),
+        }
+        await button.method(context)
       }
-      if (button.function) button.function()
+      if (button.refreshTable) {
+        getItems()
+      }
     }
+
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -652,9 +711,18 @@ const table = {
     // )
 
     // HOOKS
+    const initialFilter = () => {
+      const filter = {}
+      filters.value?.fields?.forEach((item) => {
+        filter[item.name] = item.value
+      })
+      return filter
+    }
+
     onMounted(async () => {
       initHeadParams()
-      await getItems()
+      await saveFilter(initialFilter())
+      // await getItems()
 
       watch(
         () => paramsQuery,
@@ -678,7 +746,6 @@ const table = {
           x,
           fixed: headCell.fixed,
         })
-        console.log(headerEl, headerEl.previousElementSibling)
         setTimeout(() => {
           //
           acumWidth = headerEl?.previousElementSibling?.offsetWidth + acumWidth
@@ -734,7 +801,7 @@ const table = {
             dateValue.getMonth() + 1
           }.${dateValue.getFullYear()}`
           return conditionValue
-            ? moment(dateValue).format('DD.MM.YYYY')
+            ? moment(dateValue, 'YYYY-MM-DD').format('DD.MM.YYYY')
             : 'mdi-check'
         } else {
           return 'mdi-check'
@@ -762,29 +829,39 @@ const table = {
     })
 
     const permission = computed(() => store.state.user.permission_id)
+    const vertical = computed(() => store.state.user.is_personal_vertical)
     const directions = computed(() =>
       JSON.parse(store.state.user.direction_json)
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        return el.permissions.includes(permission.value)
+        if (!el.permissions) return true
+        else {
+          return el.permissions.includes(permission.value)
+        }
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
         }
       }
+      const checkIncludesVertical = (el) => {
+        if (!el.vertical) return true
+        else {
+          return vertical.value
+        }
+      }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          return btn.isShow.condition.some((el) => {
-            return (
-              checkIncludesPermissions(el) &&
-              checkIncludesDirections(el) === el.type
-            )
+          return btn.isShow.condition.every((el) => {
+            const result =
+              el.type === checkIncludesPermissions(el) &&
+              checkIncludesVertical(el) &&
+              checkIncludesDirections(el)
+            return result
           })
           // if ()
         }
@@ -809,10 +886,42 @@ const table = {
     const clickHandler = ({ action }) => {
       emit('closePopup', action.to)
     }
+
+    const showAction = (action, cell, row) => {
+      if (action.funcCondition) {
+        const conditionContext = {
+          store,
+          action,
+          cell,
+          row,
+        }
+        return action.funcCondition(conditionContext)
+      }
+      return true
+    }
+
+    const triggerAction = (action, cell, row) => {
+      if (action.method) {
+        const conditionContext = {
+          store,
+          action,
+          cell,
+          row,
+          Vue,
+        }
+        action.method(conditionContext)
+      }
+    }
+
+    const downloadFile = (val) => {
+      Vue.downloadFile(val)
+    }
+
     const changeHeaders = async () => {
       initHeadParams()
       await getItems()
     }
+
     return {
       // DATA
       headerOptions,
@@ -824,6 +933,8 @@ const table = {
       filter,
       isMobile,
       proxyOptions,
+      panel,
+      currentDate,
       // METHODS
 
       addBackgroundClass,
@@ -845,6 +956,9 @@ const table = {
       getItems,
       watchScroll,
       handlerContext,
+      changeMonth,
+      showAction,
+      triggerAction,
       // COMPUTED PROPERTIES
       styleDate,
       checkFieldExist,
@@ -869,8 +983,11 @@ const table = {
       availablePanelBtn,
       clickHandler,
       insertStyle,
+      downloadFile,
       contextMenuRef,
       changeHeaders,
+      confirmDialog,
+      triggerDialogFunction,
     }
   },
 }

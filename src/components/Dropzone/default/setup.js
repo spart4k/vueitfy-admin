@@ -29,6 +29,18 @@ export default {
       type: Array,
       default: () => [],
     },
+    name: {
+      type: String,
+      default: () => '',
+    },
+    field: {
+      type: Object,
+      default: () => {},
+    },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -42,12 +54,14 @@ export default {
       //url: 'http://localhost:3031',
       autoDiscover: false,
       thumbnailWidth: 150,
+      hiddenInputContainer: props.name ? `.${props.name}` : 'body',
       maxFilesize: props.options.maxSize ? props.options.maxSize : 10,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
       addRemoveLinks: props?.options?.removeble ? true : false,
-      dictDefaultMessage: 'Переместите или выберите файл',
+      dictDefaultMessage:
+        props?.options?.placeholder ?? 'Переместите или выберите файл',
       acceptedFiles: props.options?.acceptedFiles,
-      // clickable: props.readonly ? false : true,
+      clickable: props.readonly ? false : true,
       //dictRemoveFile: 'delete',
       //clickable: true,
       //previewsContainer: false,
@@ -97,11 +111,12 @@ export default {
     }
     const removed = (file) => {
       if (!props.options.withoutSave) {
-        const index = proxyVal.value.findIndex(
+        const index = proxyVal.value?.findIndex(
           (x) => x[0].upload.uuid === file.upload.uuid
         )
-        proxyVal.value.splice(index, 1)
+        proxyVal.value?.splice(index, 1)
       }
+      emit('removeFile')
     }
     watch(
       () => proxyVal.value,

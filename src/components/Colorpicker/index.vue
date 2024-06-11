@@ -6,6 +6,7 @@
       :disabled="true"
       variant="underlined"
       :label="field.label"
+      :error-messages="errorMessages"
     >
       <template v-slot:append>
         <v-menu
@@ -16,7 +17,7 @@
           :close-on-content-click="false"
         >
           <template v-slot:activator="{ on }">
-            <div :style="swatchStyle" v-on="on" />
+            <div class="colorIcon" :style="swatchStyle" v-on="on" />
           </template>
           <v-card>
             <v-card-text class="pa-0">

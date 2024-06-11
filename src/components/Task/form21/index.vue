@@ -1,10 +1,14 @@
 <template>
   <div>
     <div style="padding-top: 20px">
-      <v-card-title class="d-flex justify-center text-h6">
-        <span class="font-weight-bold text-h6">{{ name }}</span
-        >&nbsp;({{ dataRojd }} г.р)
-      </v-card-title>
+      <PersTitle
+        :data="{
+          surname: data.data.personal.surname,
+          name_n: data.data.personal.name_n,
+          patronymic: data.data.personal.patronymic,
+          dataRojd,
+        }"
+      />
       <FormError v-if="data.data.dop_data" class="mb-5">
         {{ data.data.dop_data }}
       </FormError>

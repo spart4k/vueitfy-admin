@@ -4,6 +4,7 @@ import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form31 = defineComponent({
   name: 'Form31',
@@ -11,6 +12,7 @@ const Form31 = defineComponent({
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
+    PersTitle,
   },
   props: {
     data: {

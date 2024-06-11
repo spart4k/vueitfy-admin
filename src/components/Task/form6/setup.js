@@ -6,12 +6,14 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form6 = defineComponent({
   name: 'Form6',
   components: {
     Dropzone,
     TextInfo,
+    PersTitle,
   },
 
   props: {
@@ -31,6 +33,7 @@ const Form6 = defineComponent({
         route,
       },
     }
+    const loading = ref(false)
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -126,6 +129,7 @@ const Form6 = defineComponent({
         }),
     })
     let sendTaskFinish = async () => {
+      loading.value = true
       const { makeRequest: changeStatus } = useRequest({
         context,
         successMessage: 'Успешно',
@@ -165,6 +169,7 @@ const Form6 = defineComponent({
           ctx.emit('getItems')
         }
       }
+      loading.value = false
     }
     return {
       addFiles,
@@ -175,6 +180,7 @@ const Form6 = defineComponent({
       sendTaskFinish,
       isLoadedImage,
       textInfo,
+      loading,
     }
   },
 })

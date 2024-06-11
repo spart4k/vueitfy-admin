@@ -226,8 +226,10 @@ $borderColor: rgba(0, 0, 0, 0.3);
   &-input {
     &--is {
       &-readonly {
-        opacity: 0.5;
-        pointer-events: none;
+        .v-input__control {
+          opacity: 0.5;
+          pointer-events: none;
+        }
       }
     }
   }
@@ -592,7 +594,11 @@ input:-webkit-autofill {
 }
 
 .rightDate {
-  right: 0;
+  right: 35px;
   left: unset !important;
   transform-origin: right top !important;
+}
+
+.v-menu__content {
+  z-index: 350 !important;
 }

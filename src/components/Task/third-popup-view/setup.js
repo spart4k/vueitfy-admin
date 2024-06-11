@@ -4,6 +4,8 @@ import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import FormPopupPhoto from '@/components/Task/el/FormPopupPhoto/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+
 import store from '@/store'
 const ThirdPopupView = defineComponent({
   name: 'ThirdPopupView',
@@ -12,6 +14,7 @@ const ThirdPopupView = defineComponent({
     FormError: formError,
     FormComment: formComment,
     FormPopupPhoto,
+    PersTitle,
   },
   props: {
     objectData: {
@@ -161,6 +164,7 @@ const ThirdPopupView = defineComponent({
         await updateFileData()
         await loadImage()
       }
+      isLoadImage.value = true
     }
 
     return {

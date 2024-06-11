@@ -1,13 +1,12 @@
-import {
+import Dropzone from '@/components/Dropzone/default'
+import Vue, {
   defineComponent,
   ref,
   computed,
   onMounted,
   toRef,
   reactive,
-  onUpdated,
 } from 'vue'
-import Dropzone from '@/components/Dropzone/default'
 import { useRoute, useRouter } from 'vue-router/composables'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
@@ -16,10 +15,15 @@ import store from '@/store'
 import Popup from '@/components/Popup/index.vue'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import { stringField, selectField, checkboxField } from '@/utils/fields.js'
-import { addFields, editFields } from '@/pages/zayavka/index.js'
+// import { addFields, editFields } from '@/pages/zayavka/index.js'
 import _ from 'lodash'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
 
-import config from '@/components/Task/form8/form.js'
+import useView from '@/compositions/useView.js'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+
+// import config from '@/components/Task/form8/form.js'
 
 const Form8 = defineComponent({
   name: 'Form8',
@@ -27,6 +31,8 @@ const Form8 = defineComponent({
     Dropzone,
     TextInfo,
     Popup,
+    PersTitle,
+    DocForm,
   },
 
   props: {
@@ -36,15 +42,34 @@ const Form8 = defineComponent({
     },
   },
   setup(props, ctx) {
+    const router = useRouter()
+    const route = useRoute()
+    // const proxyConfig = ref(_.cloneDeep(config))
+    const { configRouteConvert } = useView()
+    const loading = ref(false)
+    const config = _.cloneDeep(zayavkaConfigOrig)
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-add',
+      settings: {
+        oldPath: 'add',
+      },
+    })
+
     const context = {
       root: {
         store,
       },
     }
-    const router = useRouter()
-    const route = useRoute()
-    const proxyConfig = ref(_.cloneDeep(config))
-
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -55,9 +80,8 @@ const Form8 = defineComponent({
       //   value: props.data.entity.object_name,
       // },
     }
-    const expensesActive = ref(true)
-    const patentsActive = ref(false)
-
+    const expensesForm = ref(null)
+    const docFormRef = ref(null)
     let listDocuments = ref([])
     let listDisbledDocuments = ref(0)
 
@@ -66,6 +90,7 @@ const Form8 = defineComponent({
     })
 
     let listRequestsForUpload = ref([])
+    let file = ref('')
     let disableFinishState = ref(0)
 
     // const sendData = () => {
@@ -133,11 +158,12 @@ const Form8 = defineComponent({
     //   pushSomeShit()
     //   changeStatus()
     // }
-
+    const hasZayavka = ref(
+      Object.assign({}, toRef(props.data.task, 'dop_data'))
+    )
+    const needPatent = toRef(props.data.data, 'need_patent').value
     let docs_ids = ref([])
-    let addFilesPatent = (e, options) => {
-      // console.log('SPR', props.data.data.docs_spr[1])
-
+    let addFilesPatent = async (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -147,10 +173,12 @@ const Form8 = defineComponent({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: props.data.entity.id,
-            doc_id: e.item,
-            path_doc: `/personal_doc/${fileName}`,
-            from_task: true,
+            data: {
+              personal_id: props.data.entity.id,
+              doc_id: e.item,
+              path_doc: `/personal_doc/${fileName}`,
+              from_task: true,
+            },
           }),
       })
 
@@ -165,54 +193,173 @@ const Form8 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      updateFileData()
-      loadImage()
+      // const updateFileData()
+      await loadImage()
+      const { result } = await updateFileData()
+      patent[e.item] = result
       disableFinishState.value = disableFinishState.value + 1
     }
 
-    const setZayavkaEdit = () => {
-      const editFieldsProxy = _.cloneDeep(editFields)
-      const editConfig = proxyConfig.value.detail.tabs[1]
-      editConfig.fields = editFieldsProxy
-    }
+    const patent = reactive({
+      5: null,
+      15: null,
+    })
 
     const setZayavkaItems = () => {
-      const addFieldsProxy = _.cloneDeep(addFields)
-      const addConfig = proxyConfig.value.detail.tabs[0]
-      addConfig.fields = addFieldsProxy
+      config.detail.tabs[0].fields = _.cloneDeep(
+        zayavkaConfigOrig.detail.tabs[0].fields
+      )
 
-      const category = addConfig.fields.find((x) => x.name === 'category_zr')
-      category.value = 8
-      category.readonly = true
+      const from_task_8 = stringField({
+        label: 'Кол-во',
+        name: 'from_task_8',
+        placeholder: '',
+        class: [''],
+        value: true,
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
 
-      const direction = addConfig.fields.find((x) => x.name === 'direction_id')
-      direction.value = JSON.parse(props.data.entity.direction_json)[0]
-      direction.readonly = true
+      const process_id = stringField({
+        label: 'Кол-во',
+        name: 'process_id',
+        placeholder: '',
+        value: props.data.task.process_id,
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
 
-      const vector = addConfig.fields.find((x) => x.name === 'vector_id')
-      vector.readonly = true
+      const task_id = stringField({
+        label: 'Кол-во',
+        name: 'task_id',
+        placeholder: '',
+        class: [''],
+        value: props.data.task.id,
+        position: {
+          cols: 12,
+          sm: 2,
+        },
+        bootstrapClass: [''],
+        isShow: {
+          value: true,
+        },
+      })
 
-      const personal = addConfig.fields.find((x) => x.name === 'personal_zr')
-      personal.readonly = true
-      personal.value = props.data.entity.id
+      config.detail.tabs[0].fields.push(from_task_8, process_id, task_id)
 
-      const yourself = addConfig.fields.find((x) => x.name === 'on_yourself')
-      yourself.readonly = true
+      const fieldsChanges = {
+        vector_id: {
+          readonly: true,
+        },
+        status_zr: {
+          value: 2,
+        },
+        category_zr: {
+          value: 8,
+          readonly: true,
+        },
+        direction_id: {
+          value: JSON.parse(props.data.entity.direction_json)[0],
+          readonly: true,
+        },
+        personal_zr: {
+          value: props.data.entity.id,
+          readonly: true,
+        },
+        on_yourself: {
+          readonly: true,
+        },
+        is_migr: {
+          value: true,
+        },
+        'btn-decrease': {
+          readonly: true,
+        },
+        'btn-increase': {
+          readonly: true,
+        },
+        from_task_8: {
+          value: true,
+        },
+      }
+      const addConfig = config.detail.tabs[0]
+      Object.keys(fieldsChanges).forEach((key) => {
+        let field = addConfig.fields.find((x) => x.name === key)
+        if (fieldsChanges[key].value) field.value = fieldsChanges[key].value
+        if (fieldsChanges[key].readonly)
+          field.readonly = fieldsChanges[key].readonly
+      })
+      addConfig.lists.push(
+        {
+          alias: 'rashod_vid',
+          filter: [
+            {
+              field: 'category_zr',
+              alias: 'rashod_category_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+        {
+          alias: 'permissions_zr',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+        {
+          alias: 'personal_object_zr',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_zr',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        }
+      )
 
-      // const name = addConfig.fields.find((x) => x.name === 'name')
-      // name.value = props.data.entity.name
-
-      const is_migr = addConfig.fields.find((x) => x.name === 'is_migr')
-      is_migr.value = true
-
-      const docsSpr = { 7: 51, 8: 52, 11: 55, 16: 54, 18: 43, 19: 50, 23: 44 }
-
+      const docsSpr = {
+        7: 51,
+        8: 52,
+        11: 55,
+        16: 54,
+        18: 43,
+        19: 50,
+        23: 44,
+        27: 67,
+      }
       const arr = listDocuments.value.filter((x) => x.inProcess)
       const filterArray = arr.reduce((acc, item) => {
         if (docsSpr[item.doc_id]) acc.push(docsSpr[item.doc_id])
         return acc
       }, [])
-
       const btnIndex = addConfig.fields.findIndex(
         (x) => x.id === 'btn-decrease'
       )
@@ -224,14 +371,6 @@ const Form8 = defineComponent({
           )
           const count = addConfig.fields.find((x) => x.name === 'count')
           const vds = addConfig.fields.find((x) => x.name === 'vds')
-          const btnDecrease = addConfig.fields.find(
-            (x) => x.name === 'btn-decrease'
-          )
-          const btnIncrease = addConfig.fields.find(
-            (x) => x.name === 'btn-increase'
-          )
-          btnDecrease.readonly = true
-          btnIncrease.readonly = true
           rashod_vid.value = item
           rashod_vid.readonly = true
           count.value = '1'
@@ -282,7 +421,7 @@ const Form8 = defineComponent({
               name: `price%${index}`,
               notSend: true,
               placeholder: '',
-              readonly: undefined,
+              // readonly: undefined,
               prescription: 'items',
               class: [''],
               position: {
@@ -312,7 +451,7 @@ const Form8 = defineComponent({
               name: `exact_name%${index}`,
               notSend: true,
               placeholder: '',
-              readonly: undefined,
+              // readonly: undefined,
               prescription: 'items',
               class: [''],
               position: {
@@ -332,11 +471,9 @@ const Form8 = defineComponent({
         router.push({
           name: 'main/:id/:form_id',
           params: {
-            id: route.params.id,
             form_id: props.data.data?.zayavka?.id,
           },
         })
-        setZayavkaEdit()
       } else {
         router.push({
           name: 'main/:id/add',
@@ -345,9 +482,22 @@ const Form8 = defineComponent({
       }
       popupForm.value.isShow = true
     }
-
-    let addFiles = (e, options) => {
-      console.log('ITEM', e)
+    const { makeRequest: createFillScanProcess } = useRequest({
+      context,
+      request: (doc_id) =>
+        store.dispatch('taskModule/startProcess', {
+          parent_process: props.data.task.process_id,
+          process_id: 1,
+          parent_action: props.data.task.process_id,
+          type_parent_action: 2,
+          account_id: props.data.task.to_account_id,
+          personal_id: props.data.entity.id,
+          docs_id: doc_id,
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
+    const attachedFile = ref(false)
+    let addFiles = (e, document) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -358,17 +508,21 @@ const Form8 = defineComponent({
       const { makeRequest: delInfoAFile } = useRequest({
         context,
         request: () =>
-          store.dispatch('taskModule/updateFileData', { id: e.item, del: 1 }),
+          store.dispatch('taskModule/updateFileData', {
+            data: { id: e.item, del: 1 },
+          }),
       })
 
       const { makeRequest: updateFileData } = useRequest({
         context,
         request: () =>
           store.dispatch('taskModule/updateFileData', {
-            personal_id: props.data.entity.id,
-            doc_id: e.item,
-            path_doc: `/personal_doc/${fileName}`,
-            from_task: true,
+            data: {
+              personal_id: props.data.entity.id,
+              doc_id: e.item,
+              path_doc: `/personal_doc/${fileName}`,
+              from_task: true,
+            },
           }),
       })
 
@@ -386,20 +540,6 @@ const Form8 = defineComponent({
 
       // Когда запрос будет готов от Миши, нужно сформировать его по примеру ниже из старого кода. Функцию эту запушить в переменную, которая при нажаити на кнопку вызывает функции запросов в цикле
       // Добавить эот запрос в массив запросов нужно по условию, код закомментирован
-      const { makeRequest: createFillScanProcess } = useRequest({
-        context,
-        request: () =>
-          store.dispatch('taskModule/startProcess', {
-            parent_process: props.data.task.process_id,
-            process_id: 1,
-            parent_action: props.data.task.process_id,
-            type_parent_action: 2,
-            account_id: props.data.task.to_account_id,
-            personal_id: props.data.entity.id,
-            docs_id: docs_ids.value,
-          }),
-        successMessage: 'Файл успешно загружен',
-      })
 
       let additionalRequestFlag
       if (
@@ -414,49 +554,80 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
+      listRequestsForUpload.value.push({
+        delInfoAFile,
+        updateFileData,
+        loadImage,
+        document,
+      })
+      document.inProcess = true
+      attachedFile.value = true
+    }
 
-      if (!currentDropzone.inProcess) {
-        listRequestsForUpload.value.push(
-          delInfoAFile,
-          updateFileData,
-          loadImage
-        )
-
-        listDocuments.value[
-          listDocuments.value.findIndex((x) => x.doc_id == e.item)
-        ].inProcess = false
-
-        if (additionalRequestFlag) {
-          listRequestsForUpload.value.push(createFillScanProcess)
+    const sendDocuments = async () => {
+      const newDocIds = []
+      const attachedDocs = docFormRef.value.docRows.flatMap((doc) => {
+        if (Object.keys(doc.basketFiles).length) {
+          return doc
+        } else {
+          return []
         }
+      })
+      await Promise.all(
+        attachedDocs.map(async (doc) => {
+          if (doc.document.path_doc) {
+            await doc.listRequestsForUpload[0].delInfoAFile()
+          }
+          const res = await doc.listRequestsForUpload[0].loadImage()
+          const docRes = await doc.listRequestsForUpload[0].updateFileData()
+          if (docRes.result) {
+            newDocIds.push(docRes.result)
+            doc.document.path_doc = '/personal_doc/' + doc.basketFiles.fileName
+            doc.listRequestsForUpload[0].clearBasket()
+            doc.isCorrect = true
+            // doc.document.newId = docRes.result
+            // await createFillScanProcess(docRes.result)
+            listDisbledDocuments.value--
+            doc.folderPanel = undefined
+          }
+        })
+      )
+      await createFillScanProcess(newDocIds)
+      newDocIds.value = []
+      // attachedFile.value = false
+    }
+    const canAttach = computed(() => {
+      return docFormRef.value?.docRows.some(
+        (el) => Object.keys(el.basketFiles).length
+      )
+    })
+    const docsAttached = computed(() => {
+      let result = false
+      const hasDmsAndOms =
+        props.data.data.docs_grajdanstvo.includes(27) &&
+        props.data.data.docs_grajdanstvo.includes(11)
+      const needDocumentsLength = hasDmsAndOms
+        ? props.data.data.docs_grajdanstvo.length - 1
+        : props.data.data.docs_grajdanstvo.length
+      const attached = docFormRef.value?.docRows.filter((el) => el.isCorrect)
+      if (hasDmsAndOms) {
+        const dms = attached?.find((el) => el.document.doc_id == 11)
+        const oms = attached?.find((el) => el.document.doc_id == 27)
+        if ((dms || oms) && attached.length >= needDocumentsLength) {
+          result = true
+        } else {
+          result = false
+        }
+      } else if (attached.length === needDocumentsLength) {
+        result = true
       } else {
-        listRequestsForUpload.value.push(updateFileData, loadImage)
-
-        if (additionalRequestFlag) {
-          listRequestsForUpload.value.push(createFillScanProcess)
-        }
-
-        listDocuments.value[
-          listDocuments.value.findIndex((x) => x.doc_id == e.item)
-        ].inProcess = false
+        result = false
       }
-      listDisbledDocuments.value++
-    }
-
-    const sendDocuments = () => {
-      // FIXME: Должен быть один запрос с данными на сервер
-      // listRequestsForUpload.value.forEach((elem, index) => {
-      //   elem()
-      // })
-
-      console.log('Requests', listRequestsForUpload.value)
-
-      listRequestsForUpload.value = []
-
-      patentsActive.value = true
-      expensesActive.value = false
-    }
-
+      return result
+      // return docFormRef.value?.docRows.some(
+      //   (el) => Object.keys(el.basketFiles).length
+      // )
+    })
     const closePopupForm = (route) => {
       if (route) router.push({ name: route })
       else router.back()
@@ -464,6 +635,18 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
+      loading.value = true
+      if (needPatent) await createFillScanProcess([patent[5], patent[15]])
+      const { makeRequest: preRequest } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/setPersonalDataWithoutTarget', {
+            data: {
+              id: props.data.task.entity_id,
+              status: 5,
+            },
+          }),
+      })
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -476,41 +659,40 @@ const Form8 = defineComponent({
             },
           }),
       })
+      await preRequest()
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
-
-      patentsActive.value = false
-      expensesActive.value = true
+      loading.value = false
     }
-
+    const refreshData = () => {
+      ctx.emit('refreshData')
+    }
     onMounted(() => {
-      // console.log('List', props.data.data)
-
-      // props.data.data.docs_grajdanstvo.forEach((item, index) => {
-      // TODO: обращение шло к props.data.data.docs_grajdanstvo
-      props.data.data.grajdanstvo.forEach((item, index) => {
-        let pasteObject = props.data.data?.docs?.find(
-          (doc) => doc.doc_id === item
-        )
-        if (pasteObject) {
-          pasteObject['inProcess'] = false
-        } else {
-          // TODO: было { doc_id: item }
-          pasteObject = { doc_id: item.id }
-          pasteObject['inProcess'] = true
+      listDocuments.value = props.data.data.docs_grajdanstvo.map(
+        (item, index) => {
+          let pasteObject = props.data.data.docs.find(
+            (doc) => doc.doc_id === item
+          )
+          if (pasteObject) {
+            pasteObject['inProcess'] = false
+          } else {
+            pasteObject = { doc_id: item }
+            pasteObject['inProcess'] = true
+            listDisbledDocuments.value = listDisbledDocuments.value + 1
+          }
+          return pasteObject
         }
-        listDocuments.value.push(pasteObject)
-      })
+      )
+
       if (
-        proxyConfig.value.detail &&
-        proxyConfig.value.detail.type === 'popup' &&
-        route.meta?.mode?.length === 2
+        config.detail &&
+        config.detail.type === 'popup' &&
+        route.meta?.mode?.length >= 2
       ) {
-        if (route.params.form_id) setZayavkaEdit()
-        else setZayavkaItems()
+        if (!route.params.form_id) setZayavkaItems()
         popupForm.value.isShow = true
       }
     })
@@ -522,8 +704,6 @@ const Form8 = defineComponent({
       sendDocuments,
       listDisbledDocuments,
       addFilesPatent,
-      patentsActive,
-      expensesActive,
       disableFinishState,
       textInfo,
       sendTaskFinish,
@@ -531,7 +711,19 @@ const Form8 = defineComponent({
       Popup,
       closePopupForm,
       pushToZayavka,
-      proxyConfig,
+      expensesForm,
+      config,
+      attachedFile,
+      patent,
+      docsData: props.data.data.docs,
+      listNames: props.data.data.docs_spr,
+      docFormRef,
+      canAttach,
+      needPatent,
+      refreshData,
+      hasZayavka,
+      docsAttached,
+      loading,
     }
   },
 })

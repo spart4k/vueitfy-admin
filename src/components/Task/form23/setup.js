@@ -1,5 +1,5 @@
 import { defineComponent, ref, unref } from 'vue'
-import FormTitle from '@/components/Task/el/FormTitle/index.vue'
+import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
@@ -8,7 +8,7 @@ import store from '@/store'
 const form23 = defineComponent({
   name: 'Form23',
   components: {
-    FormTitle,
+    DocAccepting,
   },
   props: {
     data: {

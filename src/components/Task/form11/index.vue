@@ -1,37 +1,55 @@
 <template>
   <div>
     <div style="padding-top: 20px">
+      <v-card-title class="py-1 justify-center font-weight-bold text-h6">
+        Заявка на расход&nbsp;
+        <span
+          @click="pushToForm(data.data.zayavka.id)"
+          class="col-btn form-link"
+          >№{{ data.data.zayavka.id }}&nbsp;</span
+        >
+      </v-card-title>
+      <v-row>
+        <FormError class="mb-4" v-if="dopData.comment">
+          {{ dopData.comment }}
+        </FormError>
+      </v-row>
       <span class="font-weight-bold heading"
         >Проверьте закрывающие документы:</span
       >
-      <div class="position-relative mb-8">
+      <div class="position-relative mb-4">
         <!-- TODO: LIST -->
-        <div v-if="listDocuments?.length && listDocuments">
+        <div v-if="true">
           <div class="alert text-center" v-if="errors.isActive">
             <span>{{ errors.message }}</span>
           </div>
 
-          <v-list lines="one" class="list overflow-y-auto" max-height="220">
-            <v-list-item
-              v-for="(file, fileID) in listDocuments"
-              :key="file"
-              class="file-item mb-3"
+          <DocAccepting
+            :docName="item.name"
+            v-for="(item, index) in formatedSchets"
+            :docs="item"
+            :key="index"
+            @confirmed="addConfirmed"
+            @unconfirmed="addUnconfirmed"
+            ref="formRowsRef"
+            class="mb-2"
+            :hideActions="true"
+            :isShowRemove="item.valid === 2 || item.valid === 0"
+            @remove="removeDoc($event, index)"
+          ></DocAccepting>
+          <div v-if="!formatedSchets?.length" class="text-center mt-4">
+            <span class="font-weight-regular text-subtitle-1"
+              >Документы не загружены</span
             >
-              <div class="file-img">
-                <v-img class="img" :src="file.dataURL"></v-img>
-              </div>
-              <div class="file-name">{{ file.name }}</div>
-              <div class="file-remove" @click="removeFile(fileID)">
-                <IconDelete />
-              </div>
-            </v-list-item>
-          </v-list>
-        </div>
-
-        <div v-if="!listDocuments?.length" class="text-center mt-4">
-          <span class="font-weight-regular text-subtitle-1"
-            >Документы не загружены</span
-          >
+          </div>
+          <v-row>
+            <v-textarea
+              v-model="comment"
+              placeholder="Комментарий"
+              class=""
+              rows="2"
+            ></v-textarea>
+          </v-row>
         </div>
       </div>
       <!-- TODO: INPUT -->
@@ -50,27 +68,23 @@
             @addFiles="addFiles"
             :options="dropzoneOptions"
           ></DropZone> -->
-          <div class="d-flex justify-end">
-            <v-btn
-              @click="sendDocuments"
-              small
-              variant="tonal"
-              color="orange"
-              :disabled="!isDocs"
-              >Приложить</v-btn
-            >
-          </div>
+          <v-row>
+            <v-col cols="12">
+              <div style="display: flex; justify-content: center">
+                <v-btn
+                  small
+                  color="success"
+                  :disabled="!attachedFile"
+                  @click="sendCloseDocsSchet"
+                >
+                  Приложить
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <!-- TODO: Комментарии -->
-      <v-row>
-        <v-textarea
-          v-model="comment"
-          placeholder="Комментарий"
-          class="pt-0"
-          rows="2"
-        ></v-textarea>
-      </v-row>
       <v-row class="py-2" justify="end">
         <v-btn
           class="mr-3"
@@ -92,16 +106,31 @@
         </v-btn> -->
         <!-- FIXME: починить disabled -->
         <v-btn
+          :disabled="!comment && !attachedFile"
           color="info"
           @click="sendTaskFinish"
+          :loading="loading"
           small
-          :disabled="comment && !refds"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
       </v-row>
     </div>
+    <Popup
+      :options="{
+        width: config.detail.width,
+        portal: 'table-detail',
+      }"
+      v-if="config.detail && config.detail.type === 'popup' && popupForm.isShow"
+    >
+      <router-view
+        :detail="config.detail"
+        :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+        @closePopup="closePopupForm"
+        @refreshData="refreshData"
+      />
+    </Popup>
   </div>
 </template>
 

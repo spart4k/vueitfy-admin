@@ -26,16 +26,14 @@
           class="px-0"
           style="height: 50px"
         >
-          <v-col class="px-0" cols="5">
-            <v-select
-              v-model="group.formData.name"
-              :items="servicesDetail"
-              @change="(idService) => changeServiceDetail(i, idService)"
-              item-text="name"
-              item-value="id"
+          <v-col class="px-0" cols="6">
+            <!-- {{ group.formData }} -->
+            <Autocomplete
+              :field="autocompleteConfig"
               class="mr-1"
-              label="Наименование"
-            ></v-select>
+              @change="(idService) => changeServiceDetail(i, idService.value)"
+              v-model="group.formData.name"
+            />
           </v-col>
           <v-col class="px-0">
             <v-text-field
@@ -104,11 +102,19 @@
         @click="confirmTask"
         small
         color="info"
+        class="mr-2"
+        :loading="loading"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="rejectTask" class="mr-2" small color="error">
+      <v-btn
+        :loading="loading"
+        @click="rejectTask"
+        class="mr-2"
+        small
+        color="error"
+      >
         <v-icon small>mdi-close</v-icon>
         Отклонить
       </v-btn>

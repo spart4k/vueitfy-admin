@@ -54,6 +54,15 @@ const filters = {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.account_json',
+      isShow: {
+        value: false,
+        condition: [
+          {
+            permissions: [13, 1],
+            type: false,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Объект',
@@ -110,7 +119,7 @@ const filters = {
         value: 'id',
       },
       items: [],
-      url: 'get/pagination_list/personals',
+      url: 'get/pagination_list/personal_document',
       position: {
         cols: 12,
         sm: 12,

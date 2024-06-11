@@ -1,10 +1,11 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import FormError from '../FormError/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import DateTimePicker from '@/components/Date/Datetimepicker/index.vue'
 import useRequest from '@/compositions/useRequest'
 import { useRouter, useRoute } from 'vue-router/composables'
+import FormDocumentsRow from '@/components/Form/documents/row/index.vue'
 import store from '@/store'
 
 const bankItemsSpr = {
@@ -55,6 +56,7 @@ const docForm = defineComponent({
   components: {
     FormError,
     DateTimePicker,
+    FormDocumentsRow,
   },
   props: {
     listNames: {
@@ -70,6 +72,71 @@ const docForm = defineComponent({
     },
     entity: {
       type: Object,
+    },
+    correct: {
+      type: Boolean,
+      default: false,
+    },
+    acceptDocPanel: {
+      type: Boolean,
+      default: false,
+    },
+    task: {
+      type: Object,
+    },
+    confirm: {
+      type: Boolean,
+      default: false,
+    },
+    bankData: {
+      type: Object,
+    },
+    showDropzone: {
+      type: Boolean,
+      default: false,
+    },
+    showFields: {
+      type: Boolean,
+      default: false,
+    },
+    showScan: {
+      type: Boolean,
+      default: true,
+    },
+    withoutSave: {
+      type: Boolean,
+      default: false,
+    },
+    delFile: {
+      type: Boolean,
+      default: true,
+    },
+    title: {
+      type: String,
+      default: 'Приложенные документы:',
+    },
+    fromTask: {
+      type: Boolean,
+      default: false,
+    },
+    bankCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    taskInfo: {
+      type: Object,
+    },
+    rejecting: {
+      type: Boolean,
+      default: false,
+    },
+    removeRejecting: {
+      type: Boolean,
+      default: false,
+    },
+    showCommentEmpty: {
+      type: String,
+      default: '',
     },
   },
   data: function () {
@@ -100,29 +167,188 @@ const docForm = defineComponent({
       },
     }
     const bankItems = Object.values(bankItemsSpr)
+    const loadedData = {
+      ...props.docsData,
+      ...props.bankData,
+    }
+    const getPassportField = (grajdanstvo_id) => {
+      const fieldsPass = {
+        pasp_ser: loadedData.pasp_ser ? loadedData.pasp_ser : '',
+        pasp_num: loadedData.pasp_num ? loadedData.pasp_num : '',
+        pasp_data_vid: loadedData.pasp_data_vid ? loadedData.pasp_data_vid : '',
+        pasp_kem: loadedData.pasp_kem ? loadedData.pasp_kem : '',
+      }
+      if (grajdanstvo_id === 1) {
+        fieldsPass.pasp_kod_podr = loadedData.pasp_kod_podr
+          ? loadedData.pasp_kod_podr
+          : ''
+      } else {
+        fieldsPass.citizenship = loadedData.citizenship
+          ? loadedData.citizenship
+          : ''
+        fieldsPass.sex = loadedData.sex ? loadedData.sex : ''
+        fieldsPass.pasp_date_in = loadedData.pasp_date_in
+          ? loadedData.pasp_date_in
+          : ''
+        fieldsPass.pasp_date_out = loadedData.pasp_date_out
+          ? loadedData.pasp_date_out
+          : ''
+      }
+      return fieldsPass
+    }
+
+    const docFields = {
+      1: getPassportField(props.entity?.grajdanstvo_id),
+      2: { snils: loadedData.snils ? loadedData.snils : '' },
+      3: {
+        invoice: loadedData.invoice ? loadedData.invoice : '',
+        priority: false,
+        bank_id: loadedData.bank_id ? loadedData.bank_id : '',
+        fio: loadedData.fio ? loadedData.fio : '',
+        comment: '',
+      },
+      4: {
+        registration_address: loadedData.registration_address
+          ? loadedData.registration_address
+          : '',
+      },
+      5: {
+        patent_num: loadedData.patent_num ? loadedData.patent_num : '',
+        patent_prof: loadedData.patent_prof ? loadedData.patent_prof : '',
+        patent_ser: loadedData.patent_ser ? loadedData.patent_ser : '',
+      },
+      6: {
+        pasp_address_reg: loadedData.pasp_address_reg
+          ? loadedData.pasp_address_reg
+          : '',
+      },
+      7: {},
+      8: {
+        med_book_date: loadedData.med_book_date ? loadedData.med_book_date : '',
+      },
+      9: {
+        view_home_ser: loadedData.view_home_ser ? loadedData.view_home_ser : '',
+        view_home_num: loadedData.view_home_num ? loadedData.view_home_num : '',
+        view_home_podr: loadedData.view_home_podr
+          ? loadedData.view_home_podr
+          : '',
+        view_home_data_vid: loadedData.view_home_data_vid
+          ? loadedData.view_home_data_vid
+          : '',
+        vew_home_kem: loadedData.vew_home_kem ? loadedData.vew_home_kem : '',
+      },
+      10: {
+        goal_visit: loadedData.goal_visit ? loadedData.goal_visit : '',
+        migr_card_data_in: loadedData.migr_card_data_in
+          ? loadedData.migr_card_data_in
+          : '',
+        migr_card_data_out: loadedData.migr_card_data_out
+          ? loadedData.migr_card_data_out
+          : '',
+        migr_card_num: loadedData.migr_card_num ? loadedData.migr_card_num : '',
+        migr_card_ser: loadedData.migr_card_ser ? loadedData.migr_card_ser : '',
+      },
+      11: {
+        dms_name: loadedData.dms_name ? loadedData.dms_name : '',
+      },
+      13: {
+        check_patent_date_pay: loadedData.check_patent_date_pay
+          ? loadedData.check_patent_date_pay
+          : '',
+      },
+      14: {
+        registration_date_c_docs_in: loadedData.registration_date_c_docs_in
+          ? loadedData.registration_date_c_docs_in
+          : '',
+        registration_date_do_docs_in: loadedData.registration_date_do_docs_in
+          ? loadedData.registration_date_do_docs_in
+          : '',
+      },
+      15: {
+        patent_date_docs_in: loadedData.patent_date_docs_in
+          ? loadedData.patent_date_docs_in
+          : '',
+        patent_kem: loadedData.patent_kem ? loadedData.patent_kem : '',
+        patent_region: loadedData.patent_region ? loadedData.patent_region : '',
+        patent_special_marks_date: loadedData.patent_special_marks_date
+          ? loadedData.patent_special_marks_date
+          : null,
+      },
+      16: {},
+      17: { inn: loadedData.inn ? loadedData.inn : '' },
+      18: {},
+      19: {
+        check_patent_date_pay_now: loadedData.check_patent_date_pay_now
+          ? loadedData.check_patent_date_pay_now
+          : '',
+        check_patent_period: loadedData.check_patent_period
+          ? loadedData.check_patent_period
+          : '',
+      },
+      20: {},
+      21: {},
+      22: {
+        view_home_address_reg: loadedData.view_home_address_reg
+          ? loadedData.view_home_address_reg
+          : '',
+      },
+      23: {
+        med_view_docs_in: loadedData.med_view_docs_in
+          ? loadedData.med_view_docs_in
+          : '',
+      },
+      24: {
+        sex: loadedData.sex ? loadedData.sex : '',
+        card_id_num: loadedData.card_id_num ? loadedData.card_id_num : '',
+        card_id_ser: loadedData.card_id_ser ? loadedData.card_id_ser : '',
+        card_id_period_date_in: loadedData.card_id_period_date_in
+          ? loadedData.card_id_period_date_in
+          : '',
+        card_id_period_date_out: loadedData.card_id_period_date_out
+          ? loadedData.card_id_period_date_out
+          : '',
+        citizenship: loadedData.citizenship ? loadedData.citizenship : '',
+      },
+      25: {},
+      26: {
+        card_id_kem: loadedData.card_id_kem ? loadedData.card_id_kem : '',
+        card_id_date_vid: loadedData.card_id_date_vid
+          ? loadedData.card_id_date_vid
+          : '',
+        card_id_pers_num: loadedData.card_id_pers_num
+          ? loadedData.card_id_pers_num
+          : '',
+      },
+      27: {
+        oms_name: loadedData.oms_name ? loadedData.oms_name : '',
+        oms_num: loadedData.oms_num ? loadedData.oms_num : '',
+        oms_ser: loadedData.oms_ser ? loadedData.oms_ser : '',
+        oms_vidachi: loadedData.oms_vidachi ? loadedData.oms_vidachi : '',
+      },
+    }
     const formObj = ref({
       // Паспорт
       1: useForm({
         fields: {
           pasp_ser: {
             validations: { required },
-            default: props.docsData.pasp_ser,
+            default: props.docsData?.pasp_ser,
           },
           pasp_num: {
             validations: { required },
-            default: props.docsData.pasp_num,
+            default: props.docsData?.pasp_num,
           },
           pasp_kod_podr: {
             validations: { required },
-            default: props.docsData.pasp_kod_podr,
+            default: props.docsData?.pasp_kod_podr,
           },
           pasp_data_vid: {
             validations: { required },
-            default: props.docsData.pasp_data_vid,
+            default: props.docsData?.pasp_data_vid,
           },
           pasp_kem: {
             validations: { required },
-            default: props.docsData.pasp_kem,
+            default: props.docsData?.pasp_kem,
           },
         },
         context,
@@ -132,7 +358,7 @@ const docForm = defineComponent({
         fields: {
           snils: {
             validations: { required },
-            default: props.docsData.snils,
+            default: props.docsData?.snils,
           },
         },
         context,
@@ -142,7 +368,7 @@ const docForm = defineComponent({
         fields: {
           invoice: {
             validations: { required },
-            default: '',
+            default: loadedData.patent_num ? loadedData.patent_num : '',
           },
           priority: {
             default: false,
@@ -152,10 +378,10 @@ const docForm = defineComponent({
           },
           fio: {
             validations: { required },
-            default: '',
+            default: loadedData.patent_num ? loadedData.patent_num : '',
           },
           comment: {
-            default: '',
+            default: loadedData.patent_num ? loadedData.patent_num : '',
           },
         },
         context,
@@ -165,7 +391,7 @@ const docForm = defineComponent({
         fields: {
           registration_address: {
             validations: { required },
-            default: props.docsData.registration_address,
+            default: props.docsData?.registration_address,
           },
         },
         context,
@@ -175,15 +401,15 @@ const docForm = defineComponent({
         fields: {
           patent_ser: {
             validations: { required },
-            default: props.docsData.patent_ser,
+            default: props.docsData?.patent_ser,
           },
           patent_num: {
             validations: { required },
-            default: props.docsData.patent_num,
+            default: props.docsData?.patent_num,
           },
           patent_prof: {
             validations: { required },
-            default: props.docsData.patent_prof,
+            default: props.docsData?.patent_prof,
           },
         },
         context,
@@ -193,7 +419,7 @@ const docForm = defineComponent({
         fields: {
           pasp_address_reg: {
             validations: { required },
-            default: props.docsData.pasp_address_reg,
+            default: props.docsData?.pasp_address_reg,
           },
         },
         context,
@@ -203,7 +429,7 @@ const docForm = defineComponent({
         fields: {
           med_book_date: {
             validations: { required },
-            default: props.docsData.med_book_date,
+            default: props.docsData?.med_book_date,
           },
         },
         context,
@@ -213,23 +439,23 @@ const docForm = defineComponent({
         fields: {
           view_home_ser: {
             validations: { required },
-            default: props.docsData.view_home_ser,
+            default: props.docsData?.view_home_ser,
           },
           view_home_num: {
             validations: { required },
-            default: props.docsData.view_home_num,
+            default: props.docsData?.view_home_num,
           },
           view_home_podr: {
             validations: { required },
-            default: props.docsData.view_home_podr,
+            default: props.docsData?.view_home_podr,
           },
           view_home_data_vid: {
             validations: { required },
-            default: props.docsData.view_home_data_vid,
+            default: props.docsData?.view_home_data_vid,
           },
           view_home_kem: {
             validations: { required },
-            default: props.docsData.view_home_kem,
+            default: props.docsData?.view_home_kem,
           },
         },
         context,
@@ -239,19 +465,19 @@ const docForm = defineComponent({
         fields: {
           migr_card_ser: {
             validations: { required },
-            default: props.docsData.migr_card_ser,
+            default: props.docsData?.migr_card_ser,
           },
           migr_card_num: {
             validations: { required },
-            default: props.docsData.migr_card_num,
+            default: props.docsData?.migr_card_num,
           },
           migr_card_data_in: {
             validations: { required },
-            default: props.docsData.migr_card_data_in,
+            default: props.docsData?.migr_card_data_in,
           },
           migr_card_data_out: {
             validations: { required },
-            default: props.docsData.migr_card_data_out,
+            default: props.docsData?.migr_card_data_out,
           },
         },
         context,
@@ -261,7 +487,7 @@ const docForm = defineComponent({
         fields: {
           check_patent_date_pay: {
             validations: { required },
-            default: props.docsData.check_patent_date_pay,
+            default: props.docsData?.check_patent_date_pay,
           },
         },
         context,
@@ -271,11 +497,11 @@ const docForm = defineComponent({
         fields: {
           registration_date_do_docs_in: {
             validations: { required },
-            default: props.docsData.registration_date_do_docs_in,
+            default: props.docsData?.registration_date_do_docs_in,
           },
           registration_date_c_docs_in: {
             validations: { required },
-            default: props.docsData.registration_date_c_docs_in,
+            default: props.docsData?.registration_date_c_docs_in,
           },
         },
         context,
@@ -285,11 +511,11 @@ const docForm = defineComponent({
         fields: {
           patent_region: {
             validations: { required },
-            default: props.docsData.patent_region,
+            default: props.docsData?.patent_region,
           },
           patent_date_docs_in: {
             validations: { required },
-            default: props.docsData.patent_date_docs_in,
+            default: props.docsData?.patent_date_docs_in,
           },
         },
         context,
@@ -297,14 +523,14 @@ const docForm = defineComponent({
       // ИНН
       17: useForm({
         fields: {
-          inn: { validations: { required }, default: props.docsData.inn },
+          inn: { validations: { required }, default: props.docsData?.inn },
         },
         context,
       }),
       // Экзамен РФ
       18: useForm({
         fields: {
-          ekz_rf: { default: props.docsData.ekz_rf ?? false },
+          ekz_rf: { default: props.docsData?.ekz_rf ?? false },
         },
         context,
       }),
@@ -313,7 +539,7 @@ const docForm = defineComponent({
         fields: {
           check_patent_date_pay_now: {
             validations: { required },
-            default: props.docsData.check_patent_date_pay_now,
+            default: props.docsData?.check_patent_date_pay_now,
           },
         },
         context,
@@ -323,7 +549,7 @@ const docForm = defineComponent({
         fields: {
           view_home_address_reg: {
             validations: { required },
-            default: props.docsData.view_home_address_reg,
+            default: props.docsData?.view_home_address_reg,
           },
         },
         context,
@@ -333,7 +559,7 @@ const docForm = defineComponent({
         fields: {
           med_view_docs_in: {
             validations: { required },
-            default: props.docsData.med_view_docs_in,
+            default: props.docsData?.med_view_docs_in,
           },
         },
         context,
@@ -343,7 +569,7 @@ const docForm = defineComponent({
         fields: {
           id_card: {
             validations: { required },
-            default: props.docsData.id_card,
+            default: props.docsData?.id_card,
           },
         },
         context,
@@ -370,7 +596,7 @@ const docForm = defineComponent({
       },
       successMessage: 'Банковские реквизиты успешно добавлены',
     })
-
+    const docRows = ref([])
     const sendBankCard = async () => {
       const { result } = await makeRequest()
       bankCardId.value = result
@@ -379,7 +605,23 @@ const docForm = defineComponent({
         formObj: formObj,
       })
     }
-
+    const docsData = ref([])
+    const initDocData = () => {
+      docsData.value = props.docs.map((el) => {
+        return {
+          doc_id: el.doc_id,
+          doc_name: props.listNames[el.doc_id],
+          docs_data: docFields[el.doc_id],
+          id: el.id,
+          path_doc: el.path_doc,
+          inProcess: el.inProcess !== undefined ? el.inProcess : undefined,
+          hold: el.hold,
+          isRejected: el.isRejected !== undefined ? el.isRejected : undefined,
+          commentError:
+            el.commentError !== undefined ? el.commentError : undefined,
+        }
+      })
+    }
     watch(
       formObj,
       () => {
@@ -390,12 +632,16 @@ const docForm = defineComponent({
       },
       { deep: true }
     )
-
+    onMounted(() => {
+      initDocData()
+    })
     return {
       formObj,
       bankItems,
       sendBankCard,
       bankCardId,
+      docsDataFormated: docsData,
+      docRows,
     }
   },
 })

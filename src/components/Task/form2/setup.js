@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import DocFormWithConfirm from '@/components/Task/el/DocFormWithConfirm/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import { useRouter, useRoute } from 'vue-router/composables'
@@ -6,8 +6,12 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment/moment'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
+import DocMain from '../el/DocMain/index.vue'
+import docForm from '../el/DocForm/setup'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
 
 const Form2 = defineComponent({
   name: 'Form2',
@@ -15,6 +19,9 @@ const Form2 = defineComponent({
     TextInfo,
     DocFormWithConfirm,
     FormComment,
+    DocForm,
+    DocMain,
+    PersTitle,
   },
   props: {
     data: {
@@ -33,6 +40,7 @@ const Form2 = defineComponent({
         route,
       },
     }
+    const loading = ref(false)
     const textInfo = {
       manager: {
         key: 'Менеджер',
@@ -44,23 +52,23 @@ const Form2 = defineComponent({
       // },
     }
     const finalData = ref({})
-    const isFormValid = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
-    const isHasOsnDoc = ref(
-      JSON.parse(props.data.task.dop_data).docs_id.includes(0)
-    )
-    const isOsnDocConfirmed = ref(false)
-    const isOsnDocTouched = ref(isHasOsnDoc.value ? false : true)
+    const isHasOsnDoc = JSON.parse(props.data.task.dop_data).docs_id.includes(0)
+    const isHasCard = props.data.data.docs_id.filter(
+      (el) => el.doc_id === 3
+    ).length
+    const isHasOnlyCard =
+      JSON.parse(props.data.task.dop_data).docs_id.length === 1 && isHasCard
+    const isOsnDocConfirmed = ref(null)
+    const bankCardId = ref(0)
+    // const isOsnDocTouched = ref(isHasOsnDoc.value ? false : true)
     const commentErr = ref('')
     const comment = ref('')
     const newStatus = ref(0)
     const changeDocs = (data) => {
       finalData.value = data
-
-      isFormValid.value =
-        data.confirmed.length + data.rejected.length === data.confirmDocsLength
     }
 
     const citizenItems = Object.values(props.data.data.grajdanstvo).map(
@@ -77,24 +85,31 @@ const Form2 = defineComponent({
       data_rojd: props.data.entity.data_rojd,
       grajdanstvo_id: props.data.entity.grajdanstvo_id,
     }
-
+    const docMainRef = ref(null)
+    const docMainValid = computed(() => {
+      if (isHasOsnDoc) {
+        return !docMainRef.value.isOsnDocConfirmed !== null
+      } else {
+        return true
+      }
+    })
     const confirmOsnData = () => {
       const doscId = JSON.parse(props.data.task.dop_data).docs_id
-      isOsnDocTouched.value = true
+      // isOsnDocTouched.value = true
       isOsnDocConfirmed.value = true
-      if (doscId.length === 1 && doscId[0] === 0) {
-        isFormValid.value = true
-      }
     }
     const rejectOsnData = () => {
-      const doscId = JSON.parse(props.data.task.dop_data).docs_id
-      isOsnDocTouched.value = true
       isOsnDocConfirmed.value = false
-      if (doscId.length === 1 && doscId[0] === 0) {
-        isFormValid.value = true
-      }
     }
-
+    const docFormRef = ref(null)
+    const allDocsTouched = computed(() => {
+      return docFormRef.value?.docRows?.every(
+        (el) => el.isCorrect || el.isRejected
+      )
+    })
+    const isValid = computed(() => {
+      return allDocsTouched.value && docMainValid.value
+    })
     const { makeRequest: setPersonalData } = useRequest({
       context,
       request: () => {
@@ -114,7 +129,19 @@ const Form2 = defineComponent({
         // }
       },
     })
-
+    const rejectedDocs = computed(() => {
+      let rejectedRows = docFormRef.value?.docRows?.flatMap((el) => {
+        if (el.isRejected) {
+          return el.document.id
+        } else {
+          return []
+        }
+      })
+      if (docMainRef.value.isOsnDocConfirmed === false) {
+        rejectedRows.push(0)
+      }
+      return rejectedRows
+    })
     const { makeRequest: setStartStep } = useRequest({
       context,
       request: () => {
@@ -136,11 +163,7 @@ const Form2 = defineComponent({
         if (!finalData.value.rejected) {
           finalData.value.rejected = []
         }
-        newStatus.value =
-          finalData.value.rejected.length ||
-          (isHasOsnDoc.value && !isOsnDocConfirmed.value)
-            ? 6
-            : 2
+        newStatus.value = rejectedDocs.value.length ? 6 : 2
         // let status
         // if ()
         let data = {
@@ -148,10 +171,7 @@ const Form2 = defineComponent({
           personal_id: props.data.entity.id,
           task_id: props.data.task.id,
           parent_action: props.data.task.id,
-          docs_id:
-            isHasOsnDoc && isOsnDocConfirmed.value
-              ? [0, ...finalData.value.rejected]
-              : finalData.value.rejected,
+          docs_id: rejectedDocs.value,
           account_id: props.data.task.to_account_id,
           obd_id: props.data.task.from_account_id,
           comment: comment.value,
@@ -169,20 +189,16 @@ const Form2 = defineComponent({
     })
 
     const sendData = async () => {
-      if (
-        (finalData.value.rejected &&
-          finalData.value.rejected.length &&
-          !comment.value) ||
-        (isHasOsnDoc.value && !isOsnDocConfirmed.value && !comment.value)
-      ) {
-        commentErr.value = 'Заполните комментарий'
+      if (rejectedDocs.value.length && !comment.value) {
+        commentErr.value = ['Заполните комментарий']
       } else {
+        loading.value = true
         const { success } = await changeStatusTask()
         if (success) {
           ctx.emit('closePopup')
           ctx.emit('getItems')
         }
-
+        loading.value = false
         if (
           props.data.entity.grajdanstvo_id === 1 &&
           newStatus.value === 2 &&
@@ -203,7 +219,6 @@ const Form2 = defineComponent({
       listNames: props.data.data.docs_spr,
       changeDocs,
       sendData,
-      isFormValid,
       finalData,
       textInfo,
       isHasOsnDoc,
@@ -212,9 +227,17 @@ const Form2 = defineComponent({
       confirmOsnData,
       rejectOsnData,
       isOsnDocConfirmed,
-      isOsnDocTouched,
+      // isOsnDocTouched,
       commentErr,
       comment,
+      // isValid,
+      allDocsTouched,
+      docFormRef,
+      isValid,
+      rejectedDocs,
+      docMainValid,
+      docMainRef,
+      loading,
     }
   },
 })
