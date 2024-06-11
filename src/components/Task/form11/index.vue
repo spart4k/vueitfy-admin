@@ -105,13 +105,7 @@
           Завершить
         </v-btn> -->
         <!-- FIXME: починить disabled -->
-        <v-btn
-          :disabled="!comment || !formatedSchets.length"
-          color="info"
-          @click="sendTaskFinish"
-          :loading="loading"
-          small
-        >
+        <v-btn color="info" @click="sendTaskFinish" :loading="loading" small>
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
