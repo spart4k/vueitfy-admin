@@ -77,11 +77,11 @@
           Закрыть
         </v-btn>
         <v-btn
+          :loading="loading"
           color="info"
           @click="sendTaskFinish"
           small
-          :loading="loading"
-          :disabled="!comment && !disabledDocumentsAcc"
+          :disabled="!isValid"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

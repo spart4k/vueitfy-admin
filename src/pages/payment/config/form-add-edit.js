@@ -330,6 +330,10 @@ export default {
                 context.store.state.user.permission_id === 17) &&
                 (context.formData.status_id === 2 ||
                   context.formData.status_id === 1 ||
+                  context.formData.status_id === 3)) ||
+              (context.store.state.user.permission_id === 4 &&
+                (context.formData.status_id === 2 ||
+                  context.formData.status_id === 1 ||
                   context.formData.status_id === 3)),
             // asdasd
             type: false,

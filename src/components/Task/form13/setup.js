@@ -70,6 +70,7 @@ export default {
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
     const loading = ref(false)
+    const commentData = JSON.parse(data.task.dop_data)['comment']
     onMounted(() => {
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -194,7 +195,6 @@ export default {
       disabledDocumentsAcc.value + 1
     }
     const was_process = JSON.parse(data.task.dop_data).was_process
-    const commentData = JSON.parse(data.task.dop_data)['comment']
     const hideSecondPart = was_process && !commentData
     let sendTaskFinish = async () => {
       loading.value = true
@@ -326,9 +326,6 @@ export default {
       isWork,
       commentData,
       someReject,
-      hideSecondPart,
-      was_process,
-      loading,
     }
   },
 }

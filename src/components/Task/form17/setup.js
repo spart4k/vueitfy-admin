@@ -481,9 +481,9 @@ const Form17 = defineComponent({
       closePopupForm,
       Popup,
       autocompleteConfig,
+      loading,
       changeServiceDetail,
       rejectedTarif,
-      loading,
     }
   },
 })
