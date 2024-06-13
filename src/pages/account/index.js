@@ -1303,6 +1303,7 @@ const config = {
                 label: 'Тип',
                 name: 'type',
                 alias: 'account_object_types',
+                requestKey: 'object_types',
                 subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
@@ -1443,6 +1444,19 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'Аккаунт создан',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Такой аккаунт уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },
