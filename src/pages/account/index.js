@@ -1264,6 +1264,7 @@ const config = {
                 label: 'Тип',
                 name: 'type',
                 alias: 'account_object_types',
+                requestKey: 'object_types',
                 subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
