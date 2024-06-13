@@ -456,7 +456,6 @@ export default {
         shareItems()
         if (zayavkaFirstLoad.value) {
           zayavkaFirstLoad.value = false
-          compareBlockCount()
         }
       },
       { deep: true }
@@ -521,6 +520,14 @@ export default {
           { immediate: true, deep: true }
         )
       }
+
+      watch(
+        () => formData,
+        () => {
+          compareBlockCount()
+        },
+        { deep: true }
+      )
     })
 
     onUnmounted(() => {
