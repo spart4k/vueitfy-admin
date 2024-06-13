@@ -5517,9 +5517,9 @@ const config = {
               type: 'every',
               condition: [
                 {
-                  field: 'status',
-                  target: 'formData',
-                  value: [9],
+                  funcCondition: (context) =>
+                    context.originalData?.status === 9 &&
+                    !context.environment.readonlyAll,
                   type: false,
                 },
               ],
@@ -5539,10 +5539,10 @@ const config = {
               type: 'every',
               condition: [
                 {
-                  field: 'status',
-                  target: 'formData',
-                  value: [9],
-                  type: true,
+                  funcCondition: (context) =>
+                    context.originalData?.status !== 9 &&
+                    !context.environment.readonlyAll,
+                  type: false,
                 },
               ],
             },
