@@ -6,12 +6,18 @@ import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
+import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
+import FormError from '@/components/Task/el/FormError/index.vue'
 
-const Form14 = defineComponent({
-  name: 'Form14',
+export default {
+  name: 'Form13',
   components: {
     Dropzone,
     TextInfo,
+    PersTitle,
+    DocForm,
+    FormError,
   },
 
   props: {
@@ -36,32 +42,62 @@ const Form14 = defineComponent({
         key: 'Менеджер',
         value: data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: data.entity.object_name,
-      },
     }
     //
     // onMounted(() => {
     //
     // })
-    const account_id = computed(() => store.state.user.account_id)
+    const account_id = computed(() => store.state.user.id)
     const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
+    const docFormRef = ref(null)
+    const someReject = computed(() =>
+      docFormRef?.value?.docRows?.some((el) => el.isRejected)
+    )
+    const isValid = computed(() => {
+      if (status.value === 'Работает') {
+        return someReject.value
+          ? docFormRef?.value?.docRows?.every((el) => !el.isHold) &&
+              comment.value
+          : docFormRef?.value?.docRows?.every((el) => !el.isHold)
+      } else if (status.value === 'Уволен') {
+        return true
+      } else {
+        return false
+      }
+    })
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
     const loading = ref(false)
+    const commentData = JSON.parse(data.task.dop_data)['comment']
     onMounted(() => {
-      sss.docs_id.forEach((item) => {
-        let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
-        if (pasteObject) {
-          pasteObject['inProcess'] = false
+      for (let key in sss.docs_id) {
+        console.log(key)
+        let pasteObject
+        pasteObject = data.data.docs.find((doc) => doc.doc_id == key)
+        console.log(pasteObject)
+        if (sss.docs_id[key] == 1) {
+          pasteObject.inProcess = false
         } else {
-          pasteObject = { doc_id: item, inProcess: true }
+          if (!pasteObject) {
+            pasteObject = {}
+            pasteObject.doc_id = key
+            pasteObject.commentError = 'Документ не приложен. См. комментарий!'
+          }
+          pasteObject.isRejected = true
         }
         listDocuments.value.push(pasteObject)
-      })
+      }
+      // sss.docs_id.forEach((item) => {
+      //   let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
+      //   if (pasteObject) {
+      //     pasteObject['inProcess'] = false
+      //   } else {
+      //     pasteObject = { doc_id: item, inProcess: true, hold: true }
+      //   }
+      //   listDocuments.value.push(pasteObject)
+      // })
     })
 
     let listRequestsForUpload = ref([])
@@ -99,6 +135,13 @@ const Form14 = defineComponent({
       loadImage()
     }
     let refds = ref(0)
+    const status = ref('')
+    const isFire = () => {
+      status.value = 'Уволен'
+    }
+    const isWork = () => {
+      status.value = 'Работает'
+    }
     let addFiles = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -134,7 +177,7 @@ const Form14 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      if (!currentDropzone.inProcess) {
+      if (currentDropzone.inProcess) {
         listRequestsForUpload.value.push(
           delInfoAFile,
           updateFileData,
@@ -166,23 +209,22 @@ const Form14 = defineComponent({
       disabledDocumentsAcc.value + 1
     }
 
-    let sendTaskFinish = () => {
+    let sendTaskFinish = async () => {
       loading.value = true
       let keyOfObjectSend = {}
-      listDocuments.value.forEach((elem, index) => {
-        for (const key in elem) {
-          keyOfObjectSend[elem.doc_id] = !!elem.inProcess
-        }
+      docFormRef.value.docRows.forEach((elem, index) => {
+        keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
       })
 
       const { makeRequest: changeStatus } = useRequest({
         context,
+        successMessage: 'Задача завершена',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
               process_id: data.task.process_id,
-              manager_id: account_id,
+              manager_id: account_id.value,
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_id: data.entity.id,
@@ -193,9 +235,12 @@ const Form14 = defineComponent({
           }),
       })
       sendDocuments()
-      changeStatus()
-      ctx.emit('closePopup')
+      const { success } = await changeStatus()
       loading.value = false
+      if (success) {
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
+      }
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
@@ -246,11 +291,18 @@ const Form14 = defineComponent({
       comment,
       sendTaskFinish,
       addDisabledDocuments,
+      listNames: data.data.docs_spr,
       disabledDocumentsAcc,
       emplyeeFired,
       refds,
       loading,
+      isValid,
+      docFormRef,
+      status,
+      isFire,
+      isWork,
+      commentData,
+      someReject,
     }
   },
-})
-export default Form14
+}

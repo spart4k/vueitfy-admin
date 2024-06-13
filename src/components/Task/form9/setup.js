@@ -117,7 +117,6 @@ const Form8 = defineComponent({
             name: el.path_doc,
           }
         })
-      console.log('newSchet')
       newSchets.forEach((el) => {
         closeSchet.value.push(el)
       })
@@ -129,14 +128,12 @@ const Form8 = defineComponent({
     let addFilesPatent = (e, options) => {
       let objectForCloseChet
       let lastElem
-      console.log(e)
       Object.values(e).forEach((elem, index) => {
         // if (listNewChet.value.length) {
         lastElem = listNewChet.value.length
         objectForCloseChet = lastElem + 1
         // }
         let fileExt = elem.type.split('/')[1]
-        console.log(store.state.user)
         let fileName =
           `close_schet_` +
           Number(JSON.parse(props.data.task.dop_data).rashod_id) +
@@ -149,7 +146,6 @@ const Form8 = defineComponent({
           fileExt
         let form_data = new FormData()
         form_data.append('file', elem)
-        console.log(listNewChet.value)
         listNewChet.value.push({
           index: objectForCloseChet,
           path_doc: '/close_schet' + '/' + fileName,
@@ -221,7 +217,6 @@ const Form8 = defineComponent({
     const attachedFile = ref(false)
     let docs_ids = ref([])
     let addFiles = (e, document) => {
-      console.log(e, document)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -278,7 +273,6 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
-      console.log('process')
       listRequestsForUpload.value.push({
         delInfoAFile,
         updateFileData,
@@ -292,7 +286,6 @@ const Form8 = defineComponent({
     const sendDocuments = async () => {
       const newDocIds = []
       const attachedDocs = docFormRef.value.docRows.flatMap((doc) => {
-        console.log(doc, Object.keys(doc.basketFiles).length)
         if (Object.keys(doc.basketFiles).length) {
           return doc
         } else {
@@ -301,7 +294,6 @@ const Form8 = defineComponent({
       })
       await Promise.all(
         attachedDocs.map(async (doc) => {
-          console.log(doc)
           if (doc.document.path_doc) {
             await doc.listRequestsForUpload[0].delInfoAFile()
           }
@@ -319,7 +311,6 @@ const Form8 = defineComponent({
           }
         })
       )
-      console.log(newDocIds)
       await createFillScanProcess(newDocIds)
       newDocIds.value = []
       // attachedFile.value = false

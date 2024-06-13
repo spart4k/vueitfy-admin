@@ -97,7 +97,9 @@ const Form3 = defineComponent({
               task_id: data.task.id,
               parent_action: data.task.id,
               transfer: true,
-              manager_id: JSON.parse(data.entity.data_subvision)['leader'],
+              manager_id: JSON.parse(data.entity.data_subvision)[
+                'personal_account_zr'
+              ],
               personal_id: data.entity.personal_id,
               next: JSON.parse(data.task.dop_data).after_return
                 ? JSON.parse(data.task.dop_data).after_return

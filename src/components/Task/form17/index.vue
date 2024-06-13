@@ -31,33 +31,49 @@
         ></Dropzone>
       </div>
       <!-- <div v-if="data.entity.doljnost_id == 6 || data.entity.doljnost_id == 49"> -->
-      <div v-else-if="data.entity.direction_id === 6">
-        <div style="display: flex; gap: 5px">
-          <div style="width: 500px">
-            <span>Наименование:</span>
-            <!-- <v-select
+      <div
+        v-else-if="
+          data.entity.direction_id === 6 || data.entity.direction_id === 7
+        "
+      >
+        <FormError class="mb-4" v-if="rejectedTarif">
+          Отсутствует тариф на услугу: {{ rejectedTarif }}
+        </FormError>
+        <div>
+          <v-row>
+            <div>
+              <span>Укажите выработку за смену:</span>
+              <!-- <v-select
               :label="data.entity.doljnost_name"
               v-model="selectName"
               disabled
             >
             </v-select> -->
-            <Autocomplete
-              :readonly="autocompleteConfig.readonly"
-              :field="autocompleteConfig"
-              v-model="selectName"
-            />
-          </div>
-          <div>
-            <span>QTY:</span><v-text-field v-model="qty"></v-text-field>
-          </div>
-          <div>
-            <span>Тариф</span
-            ><v-text-field disabled label="Не определен"></v-text-field>
-          </div>
-          <div>
-            <span>Сумма:</span
-            ><v-text-field v-model="sum" disabled></v-text-field>
-          </div>
+            </div>
+          </v-row>
+          <v-row class="mt-0">
+            <v-col class="pl-0" cols="12" sm="6">
+              <Autocomplete
+                :readonly="autocompleteConfig.readonly"
+                :field="autocompleteConfig"
+                @change="(idService) => changeServiceDetail(idService)"
+                v-model="selectName"
+              />
+            </v-col>
+            <v-col cols="12" sm="2">
+              <v-text-field label="QTY" v-model="qty"></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="2">
+              <v-text-field
+                v-model="tariff"
+                disabled
+                label="Тариф"
+              ></v-text-field>
+            </v-col>
+            <v-col class="pr-0" cols="12" sm="2">
+              <v-text-field label="Сумма" v-model="sum" disabled></v-text-field>
+            </v-col>
+          </v-row>
         </div>
       </div>
     </div>
@@ -76,7 +92,7 @@
           data.entity.doljnost_id === 32 ||
           data.entity.doljnost_id === 33
         "
-        :disabled="!isSetTask"
+        :disabled="!isSetTask && tariff"
         class="mr-2"
         small
         :loading="loading"
@@ -87,8 +103,8 @@
         Завершить
       </v-btn>
       <v-btn
-        v-if="data.entity.direction_id == 6"
-        :disabled="!changeQTY"
+        v-if="data.entity.direction_id == 6 || data.entity.direction_id == 7"
+        :disabled="!changeQTY || (data.entity.direction_id == 7 && !tariff)"
         color="info"
         @click="completeTask"
         :loading="loading"

@@ -142,8 +142,6 @@ const Form7 = defineComponent({
     const rejectedComment = JSON.parse(props.data.task.dop_data).comment
     const docFormRef = ref(null)
     const changeDocs = (data) => {
-      console.log('changeDocs')
-      console.log(data)
       finalData.value = isHasOsnDoc
         ? { 0: docMainRef.value.formData, ...data.correctedDocs }
         : data.correctedDocs

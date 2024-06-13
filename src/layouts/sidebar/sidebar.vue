@@ -218,30 +218,35 @@
         </v-expansion-panels>
       </div>
 
-      <v-btn
-        :class="[
-          'v-sidebar-container-btn',
-          !isMobileDevice && 'v-sidebar-container-btn__hover',
-        ]"
-        @click="isMobile ? changeMenuStatus() : changeMenuSize()"
-        text
-        color="navbar"
-      >
-        <v-icon v-if="!miniMenu" class="v-sidebar-container-btn_icon">
-          $IconArrowLeft
-        </v-icon>
-        <v-icon
-          v-if="miniMenu"
-          class="v-sidebar-container-btn_icon"
-          padding="0"
-          width="12"
+      <span class="d-flex align-end">
+        <v-btn
+          :class="[
+            'v-sidebar-container-btn',
+            !isMobileDevice && 'v-sidebar-container-btn__hover',
+          ]"
+          @click="isMobile ? changeMenuStatus() : changeMenuSize()"
+          text
+          color="navbar"
         >
-          $IconOpenMenu
-        </v-icon>
-        <div v-if="!miniMenu" class="v-sidebar-container-btn_text">
-          Свернуть
-        </div>
-      </v-btn>
+          <v-icon v-if="!miniMenu" class="v-sidebar-container-btn_icon">
+            $IconArrowLeft
+          </v-icon>
+          <v-icon
+            v-if="miniMenu"
+            class="v-sidebar-container-btn_icon"
+            padding="0"
+            width="12"
+          >
+            $IconOpenMenu
+          </v-icon>
+          <div v-if="!miniMenu" class="v-sidebar-container-btn_text">
+            Свернуть
+          </div>
+        </v-btn>
+        <span v-if="!miniMenu && version" class="v-sidebar-container-version">{{
+          version
+        }}</span>
+      </span>
     </v-navigation-drawer>
   </div>
 </template>

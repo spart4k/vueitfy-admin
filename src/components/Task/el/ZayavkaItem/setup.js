@@ -34,7 +34,6 @@ const docsRequired = {
     },
   },
   setup(props) {
-    console.log(props.list)
     const fields = ref([
       selectField({
         label: 'Наименование',

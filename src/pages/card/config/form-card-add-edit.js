@@ -64,6 +64,15 @@ export default {
         cols: 12,
         sm: 12,
       },
+      hideOption: [
+        {
+          func: (context) => {
+            return context.store.state.user.permission_id !== 4
+          },
+          value: [2],
+          type: true,
+        },
+      ],
       validations: { required },
       bootstrapClass: [''],
     }),
@@ -102,7 +111,7 @@ export default {
             type: false,
           },
           {
-            permissions: [12],
+            permissions: [12, 22],
             type: true,
           },
         ],
@@ -142,6 +151,7 @@ export default {
         cols: 12,
         sm: 12,
       },
+      mask: '#########',
       validations: { required, length: length(9), numeric },
       bootstrapClass: [''],
     }),
@@ -168,6 +178,7 @@ export default {
         cols: 12,
         sm: 6,
       },
+      mask: '################',
       validations: { required, length: length(16), numeric },
       bootstrapClass: [''],
     }),
@@ -181,6 +192,7 @@ export default {
         cols: 12,
         sm: 3,
       },
+      mask: '###',
       validations: { required, length: length(3), numeric },
       bootstrapClass: [''],
     }),
@@ -194,6 +206,7 @@ export default {
         cols: 12,
         sm: 3,
       },
+      mask: '##/##',
       validations: { required, length: length(5) },
       bootstrapClass: [''],
     }),

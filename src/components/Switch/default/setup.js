@@ -24,7 +24,6 @@ export default {
     const handlerSwitch = (tab) => {
       tab.action && tab.action(props.config, tab)
       button.value.refreshTable && emit('getItems')
-      console.log(tab.value)
       testTask.value = tab.value
       proxyValue.value = tab.value
     }
@@ -34,7 +33,6 @@ export default {
       if (props.value === undefined) {
         proxyValue.value = button.value.values[0].value
         // Vue.set()
-        console.log(proxyValue.value)
       }
     })
     const widthThumb = computed(

@@ -20,7 +20,7 @@ import Datepicker from '@/components/Date/Default/index.vue'
 
 import _ from 'lodash'
 
-import { required } from '@/utils/validation.js'
+import { required, number } from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -198,7 +198,7 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             items: categoryItems,
             selectOption: {
               text: 'name',
@@ -229,14 +229,14 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
               cols: 12,
               sm: 2,
             },
-            validations: { required },
+            validations: { required, number },
             bootstrapClass: [''],
           }),
           stringField({
@@ -257,14 +257,14 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {
               cols: 12,
               sm: 3,
             },
-            validations: { required },
+            validations: { required, number },
             bootstrapClass: [''],
           }),
           checkboxField({
@@ -291,7 +291,7 @@ export default {
                     }
                 : formData?.vector_id === 2
                 ? true
-                : undefined,
+                : false,
             class: [''],
             position: {
               cols: 12,
@@ -317,7 +317,7 @@ export default {
                       },
                     ],
                   }
-                : undefined,
+                : false,
             prescription: 'items',
             class: [''],
             position: {

@@ -116,6 +116,7 @@ export default {
         )
         proxyVal.value?.splice(index, 1)
       }
+      emit('removeFile')
     }
     watch(
       () => proxyVal.value,

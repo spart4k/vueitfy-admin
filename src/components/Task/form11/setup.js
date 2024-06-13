@@ -128,14 +128,12 @@ const Form11 = defineComponent({
     let addFiles = (e, options) => {
       let objectForCloseChet
       let lastElem
-      console.log(e)
       Object.values(e).forEach((elem, index) => {
         // if (listNewChet.value.length) {
         lastElem = listNewChet.value.length
         objectForCloseChet = lastElem + 1
         // }
         let fileExt = elem.type.split('/')[1]
-        console.log(store.state.user)
         let fileName =
           `close_schet_` +
           props.data.data.zayavka.id +
@@ -148,7 +146,6 @@ const Form11 = defineComponent({
           fileExt
         let form_data = new FormData()
         form_data.append('file', elem)
-        console.log(listNewChet.value)
         listNewChet.value.push({
           index: objectForCloseChet,
           path_doc: '/close_schet' + '/' + fileName,
@@ -369,7 +366,6 @@ const Form11 = defineComponent({
     })
     const removedDocs = ref([])
     const removeDoc = async ({ id }, index) => {
-      console.log(id, index)
       let isConfirmed = confirm(
         'Вы подтверждаете удаление документа под номером ' + index
       )

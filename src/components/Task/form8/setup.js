@@ -195,9 +195,7 @@ const Form8 = defineComponent({
       })
       // const updateFileData()
       await loadImage()
-      console.log(patent[e.item])
       const { result } = await updateFileData()
-      console.log(result)
       patent[e.item] = result
       disableFinishState.value = disableFinishState.value + 1
     }
@@ -500,7 +498,6 @@ const Form8 = defineComponent({
     })
     const attachedFile = ref(false)
     let addFiles = (e, document) => {
-      console.log(e, document)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
@@ -557,7 +554,6 @@ const Form8 = defineComponent({
       ) {
         additionalRequestFlag = true
       }
-      console.log('process')
       listRequestsForUpload.value.push({
         delInfoAFile,
         updateFileData,
@@ -571,7 +567,6 @@ const Form8 = defineComponent({
     const sendDocuments = async () => {
       const newDocIds = []
       const attachedDocs = docFormRef.value.docRows.flatMap((doc) => {
-        console.log(doc, Object.keys(doc.basketFiles).length)
         if (Object.keys(doc.basketFiles).length) {
           return doc
         } else {
@@ -580,7 +575,6 @@ const Form8 = defineComponent({
       })
       await Promise.all(
         attachedDocs.map(async (doc) => {
-          console.log(doc)
           if (doc.document.path_doc) {
             await doc.listRequestsForUpload[0].delInfoAFile()
           }
@@ -598,7 +592,6 @@ const Form8 = defineComponent({
           }
         })
       )
-      console.log(newDocIds)
       await createFillScanProcess(newDocIds)
       newDocIds.value = []
       // attachedFile.value = false
@@ -675,7 +668,6 @@ const Form8 = defineComponent({
       loading.value = false
     }
     const refreshData = () => {
-      console.log('refreshData')
       ctx.emit('refreshData')
     }
     onMounted(() => {

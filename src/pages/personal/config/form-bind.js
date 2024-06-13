@@ -131,7 +131,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/bind_objects',
+      url: 'get/pagination_list/bind_directions',
       // object
       position: {
         cols: 12,

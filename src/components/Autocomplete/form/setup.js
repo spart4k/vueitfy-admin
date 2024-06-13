@@ -8,6 +8,8 @@ import Vue, {
 } from 'vue'
 import { useRoute } from 'vue-router/composables'
 import { getList } from '@/api/selects'
+import _ from 'lodash'
+import store from '@/store'
 
 export default {
   name: 'autocomplete',
@@ -36,7 +38,51 @@ export default {
     const loading = ref(false)
     const route = useRoute()
     const proxyValue = toRef(props, 'value')
+    const proxyItems = toRef(props.field, 'items')
     const searchProps = ref(props.field.search)
+
+    const availableItems = computed(() => {
+      if (props.field.hideOption) {
+        let arr = [...proxyItems.value]
+        props.field.hideOption.forEach((option) => {
+          if (option.func) {
+            const context = {
+              store,
+            }
+            if (!option.func(context)) return
+          } else if (
+            _.differenceWith(
+              option.targetValue,
+              [props.formData[option.target]],
+              _.isEqual
+            ).length === option.targetValue.length
+          )
+            return
+
+          let itemOption = 'id'
+          if (option.itemOption) itemOption = option.itemOption
+
+          if (option.type) {
+            option.value.forEach((item) => {
+              _.remove(arr, (x) => x[itemOption] === item)
+            })
+          } else {
+            let arrCopy = []
+            option.value.forEach((item) => {
+              const remainingItems = _.remove(
+                arr,
+                (x) => x[itemOption] === item
+              )
+              arrCopy = [...arrCopy, ...remainingItems]
+            })
+            arr = [...arrCopy]
+          }
+        })
+        return arr
+      } else {
+        return proxyItems.value
+      }
+    })
 
     const queryData = {
       page: null,
@@ -45,13 +91,13 @@ export default {
       countRows: null,
     }
     const checkedAll = computed(
-      () => proxyValue.value.length === props.field.items.length
+      () => proxyValue.value.length === proxyItems.value.length
     )
     const selectAll = () => {
       if (checkedAll.value) {
         proxyValue.value = []
       } else {
-        proxyValue.value = props.field.items.slice()
+        proxyValue.value = proxyItems.value.slice()
       }
     }
     let controller
@@ -74,7 +120,7 @@ export default {
               if (el.routeKey) {
                 filter.push({
                   alias: el.alias ?? el.field,
-                  value: [+route.params[el.routeKey]],
+                  value: +route.params[el.routeKey],
                   type: el.type,
                 })
               } else {
@@ -109,9 +155,9 @@ export default {
             data.page > data.totalPage ||
             data.totalPage === 0
           ) {
-            Vue.set(props.field, 'items', [...props.field.items, ...data.rows])
+            Vue.set(proxyItems, 'value', [...proxyItems.value, ...data.rows])
           } else {
-            Vue.set(props.field, 'items', [])
+            Vue.set(proxyItems, 'value', [])
           }
 
           loading.value = false
@@ -129,7 +175,7 @@ export default {
         : queryData.totalPage > queryData.page
       if (isIntersecting) {
         if (
-          props.field?.items?.length &&
+          proxyItems.value?.length &&
           !props.field?.loading &&
           isAtFinalPage
         ) {
@@ -157,7 +203,7 @@ export default {
     const update = (value) => {
       if (Array.isArray(proxyValue.value) && props.field.valueLength)
         if (value.length > props.field.valueLength) proxyValue.value.shift()
-      const item = props.field.items.find((el) => el.id === value)
+      const item = proxyItems.value.find((el) => el.id === value)
       emit('input', value)
       emit('change', { value, field: props.field, item })
     }
@@ -211,6 +257,8 @@ export default {
       checkedAll,
       icon,
       parentComp,
+      availableItems,
+      proxyItems,
     }
   },
 }

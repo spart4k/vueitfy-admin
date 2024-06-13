@@ -7,13 +7,17 @@ import store from '@/store'
 import { useRouter, useRoute } from 'vue-router/composables'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+import DocForm from '@/components/Task/el/DocForm/index.vue'
+import FormError from '@/components/Task/el/FormError/index.vue'
 
-const Form13 = defineComponent({
+export default {
   name: 'Form13',
   components: {
     Dropzone,
     TextInfo,
     PersTitle,
+    DocForm,
+    FormError,
   },
 
   props: {
@@ -38,29 +42,42 @@ const Form13 = defineComponent({
         key: 'Менеджер',
         value: data.entity.account_name,
       },
-      obj: {
-        key: 'Объект',
-        value: data.entity.object_name,
-      },
     }
     //
     // onMounted(() => {
     //
     // })
-    const account_id = computed(() => store.state.user.account_id)
+    const account_id = computed(() => store.state.user.id)
     const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
+    const docFormRef = ref(null)
+    const someReject = computed(() =>
+      docFormRef?.value?.docRows?.some((el) => el.isRejected)
+    )
+    const isValid = computed(() => {
+      if (status.value === 'Работает') {
+        return someReject.value
+          ? docFormRef?.value?.docRows?.every((el) => !el.isHold) &&
+              comment.value
+          : docFormRef?.value?.docRows?.every((el) => !el.isHold)
+      } else if (status.value === 'Уволен') {
+        return true
+      } else {
+        return false
+      }
+    })
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
     const loading = ref(false)
+    const commentData = JSON.parse(data.task.dop_data)['comment']
     onMounted(() => {
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
         if (pasteObject) {
-          pasteObject['inProcess'] = true
+          pasteObject['inProcess'] = false
         } else {
-          pasteObject = { doc_id: item, inProcess: false }
+          pasteObject = { doc_id: item, inProcess: true, hold: true }
         }
         listDocuments.value.push(pasteObject)
       })
@@ -101,6 +118,13 @@ const Form13 = defineComponent({
       loadImage()
     }
     let refds = ref(0)
+    const status = ref('')
+    const isFire = () => {
+      status.value = 'Уволен'
+    }
+    const isWork = () => {
+      status.value = 'Работает'
+    }
     let addFiles = (e, options) => {
       let fileExt = e[0].type.split('/')[1]
       let fileName = `personal_doc_` + Date.now() + '.' + fileExt
@@ -167,38 +191,64 @@ const Form13 = defineComponent({
 
       disabledDocumentsAcc.value + 1
     }
+    const was_process = JSON.parse(data.task.dop_data).was_process
 
     let sendTaskFinish = async () => {
       loading.value = true
       let keyOfObjectSend = {}
-      listDocuments.value.forEach((elem, index) => {
-        for (const key in elem) {
-          keyOfObjectSend[elem.doc_id] = !elem.inProcess
-        }
+      docFormRef?.value?.docRows?.forEach((elem, index) => {
+        keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
       })
 
       const { makeRequest: changeStatus } = useRequest({
         context,
+        successMessage: 'Задача завершена',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
             data: {
               process_id: data.task.process_id,
-              manager_id: account_id,
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_id: data.entity.id,
               comment: comment.value,
-              docs_id: keyOfObjectSend,
-              account_id: data.task.from_account_id,
+              docs_id:
+                status.value === 'Работает' ? keyOfObjectSend : undefined,
+              was_process:
+                status.value === 'Работает' && !was_process
+                  ? true
+                  : status.value === 'Уволен'
+                  ? was_process
+                  : undefined,
+              start_doc:
+                status.value === 'Работает' && !was_process
+                  ? true
+                  : was_process
+                  ? false
+                  : undefined,
+              manager_id: data.data.status_data.next_account
+                ? data.data.status_data.next_account_id
+                : undefined,
+              next_account: data.data.status_data.next_account,
+              account_id: data.data.status_data.next_account
+                ? data.data.status_data.next_account_id
+                : data.data.status_data.next_account_id,
             },
           }),
       })
       sendDocuments()
+      const result = await processQuery()
+      console.log(result)
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
+      } else {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Ошибка',
+          timeout: 1000,
+        })
       }
       loading.value = false
     }
@@ -212,6 +262,20 @@ const Form13 = defineComponent({
             id: data.task.id,
           },
         }),
+    })
+
+    const { makeRequest: processQuery } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/processQuery', {
+          status: 2,
+          data: {
+            personal_id: data.entity.id,
+            account_id: data.task.to_account_id,
+            status_id: status.value === 'Работает' ? 2 : 1,
+          },
+        }),
+      successMessage: 'Файл успешно загружен',
     })
 
     const { makeRequest: setStartStep } = useRequest({
@@ -249,11 +313,18 @@ const Form13 = defineComponent({
       comment,
       sendTaskFinish,
       addDisabledDocuments,
+      listNames: data.data.docs_spr,
       disabledDocumentsAcc,
       emplyeeFired,
       refds,
       loading,
+      isValid,
+      docFormRef,
+      status,
+      isFire,
+      isWork,
+      commentData,
+      someReject,
     }
   },
-})
-export default Form13
+}
