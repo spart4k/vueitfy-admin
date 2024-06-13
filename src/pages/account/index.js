@@ -708,8 +708,7 @@ const fields = {
     }),
     selectField({
       label: 'Тип',
-      name: 'object_types',
-      alias: 'object_type',
+      name: 'object_type',
       subtype: 'multiple',
       stringify: true,
       placeholder: '',
@@ -1301,9 +1300,8 @@ const config = {
               }),
               selectField({
                 label: 'Тип',
-                name: 'type',
+                name: 'object_type',
                 alias: 'account_object_types',
-                requestKey: 'object_types',
                 subtype: 'multiple',
                 stringify: true,
                 placeholder: '',
