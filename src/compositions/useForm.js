@@ -1297,7 +1297,7 @@ export default function ({
     await Promise.all(queryFields)
   }
 
-  const putSelectItems = (lists) => {
+  const putSelectItems = async (lists) => {
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
         el.alias ? el.alias === keyList : el.name === keyList
@@ -1345,6 +1345,13 @@ export default function ({
           if (field.putFirst)
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
+        }
+        if (
+          field.hasOwnProperty('dependence') ||
+          field.hasOwnProperty('updateList')
+        ) {
+          const value = formData[field.name]
+          await getDependies({ value, field })
         }
         showField(field.type, field, true)
       }
