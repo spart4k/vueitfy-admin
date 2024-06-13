@@ -1436,6 +1436,19 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'Аккаунт создан',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Такой аккаунт уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },
