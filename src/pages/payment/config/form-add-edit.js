@@ -1863,7 +1863,7 @@ export default {
           },
           {
             funcCondition: (context) =>
-              context.formData.status_id === 6 &&
+              context.originalData?.status_id === 6 &&
               !context.environment.readonlyAll,
             type: false,
           },
@@ -1891,7 +1891,7 @@ export default {
           {
             funcCondition: (context) =>
               !context.environment.readonlyAll &&
-              context.formData.status_id !== 6,
+              context.originalData?.status_id !== 6,
             type: false,
           },
         ],
