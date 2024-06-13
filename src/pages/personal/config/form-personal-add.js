@@ -9,6 +9,7 @@ import {
   checkboxField,
   textBlock,
 } from '@/utils/fields.js'
+import Vue from 'vue'
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
@@ -727,6 +728,10 @@ export default {
                 type: 'download',
                 url: '$IconDownload',
                 label: 'Скачать',
+                method: async (context) => {
+                  console.log(context)
+                  Vue.downloadFile(context.row.row.path_doc)
+                },
               },
             ],
           },
