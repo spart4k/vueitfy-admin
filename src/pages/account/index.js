@@ -1,5 +1,11 @@
 import filters from './filters'
-import { required, numeric, minLength } from '@/utils/validation.js'
+import {
+  required,
+  numeric,
+  number,
+  minLength,
+  maxLength,
+} from '@/utils/validation.js'
 import {
   stringField,
   selectField,
@@ -532,7 +538,14 @@ const fields = {
     { alias: 'grajdanstvo_id', filter: [] },
     {
       alias: 'object_type',
-      filter: [],
+      filter: [
+        {
+          field: 'direction_json',
+          value: '',
+          source: 'formData',
+          type: 'array',
+        },
+      ],
     },
     {
       alias: 'account_objects',
@@ -584,7 +597,7 @@ const fields = {
       class: [''],
       position: {
         cols: 12,
-        sm: 6,
+        sm: 4,
       },
       bootstrapClass: [''],
     }),
@@ -595,9 +608,22 @@ const fields = {
       class: [''],
       position: {
         cols: 12,
-        sm: 6,
+        sm: 4,
       },
       bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'Стац',
+      name: 'landline_phone',
+      placeholder: '',
+      readonly: false,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 4,
+      },
+      bootstrapClass: [''],
+      validations: { number, maxLength: maxLength(4) },
     }),
     stringField({
       label: 'Логин',
@@ -689,8 +715,7 @@ const fields = {
     }),
     selectField({
       label: 'Тип',
-      name: 'object_types',
-      alias: 'object_type',
+      name: 'object_type',
       subtype: 'multiple',
       stringify: true,
       placeholder: '',
@@ -1163,7 +1188,7 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 bootstrapClass: [''],
                 validations: { required },
@@ -1176,10 +1201,23 @@ const config = {
                 class: [''],
                 position: {
                   cols: 12,
-                  sm: 6,
+                  sm: 4,
                 },
                 bootstrapClass: [''],
                 validations: { required },
+              }),
+              stringField({
+                label: 'Стац',
+                name: 'landline_phone',
+                placeholder: '',
+                readonly: false,
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 4,
+                },
+                bootstrapClass: [''],
+                validations: { number, maxLength: maxLength(4) },
               }),
               stringField({
                 label: 'Логин',
@@ -1269,7 +1307,7 @@ const config = {
               }),
               selectField({
                 label: 'Тип',
-                name: 'type',
+                name: 'object_type',
                 alias: 'account_object_types',
                 subtype: 'multiple',
                 stringify: true,
@@ -1411,6 +1449,19 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'Аккаунт создан',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Такой аккаунт уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },
