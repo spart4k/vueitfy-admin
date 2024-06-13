@@ -1890,8 +1890,8 @@ export default {
           },
           {
             funcCondition: (context) =>
-              !context.environment.readonlyAll &&
-              context.originalData?.status_id !== 6,
+              context.originalData?.status_id !== 6 &&
+              !context.environment.readonlyAll,
             type: false,
           },
         ],

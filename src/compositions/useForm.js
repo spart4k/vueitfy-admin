@@ -1703,6 +1703,7 @@ export default function ({
                 store,
                 formData,
                 environment,
+                originalData,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
