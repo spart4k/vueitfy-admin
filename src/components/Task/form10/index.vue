@@ -51,7 +51,7 @@
               ></DocAccepting>
             </div>
             <div
-              v-show="
+              v-if="
                 zayavkaNameList.length && data.data.zayavka.payment_type === 3
               "
               class="zayavka-items"

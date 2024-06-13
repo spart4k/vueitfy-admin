@@ -283,7 +283,7 @@ const form10 = defineComponent({
               filter: [
                 {
                   alias: 'rashod_category_id',
-                  value: [8],
+                  value: [props.data.entity.rashod_category_id],
                   type: 'num',
                 },
               ],
