@@ -538,7 +538,14 @@ const fields = {
     { alias: 'grajdanstvo_id', filter: [] },
     {
       alias: 'object_type',
-      filter: [],
+      filter: [
+        {
+          field: 'direction_json',
+          value: '',
+          source: 'formData',
+          type: 'array',
+        },
+      ],
     },
     {
       alias: 'account_objects',
