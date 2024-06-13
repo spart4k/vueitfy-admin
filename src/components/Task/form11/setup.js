@@ -243,6 +243,7 @@ const Form11 = defineComponent({
       listNewChet.value = []
       attachedFile.value = false
       dropZone.value.clearDropzone()
+      notAttached.value = false
     }
 
     const checkIdenticalFiles = (newFile) => {
@@ -304,8 +305,7 @@ const Form11 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
-      loading.value = true
-      if (JSON.parse(attached_amount.value).attached && !comment.value) {
+      if (notAttached.value || removed.value) {
         store.commit('notifies/showMessage', {
           color: 'error',
           content: 'Введите комментарий',
@@ -313,6 +313,15 @@ const Form11 = defineComponent({
         })
         return
       }
+      loading.value = true
+      // if (JSON.parse(attached_amount.value).attached && !comment.value) {
+      //   store.commit('notifies/showMessage', {
+      //     color: 'error',
+      //     content: 'Введите комментарий',
+      //     timeout: 1000,
+      //   })
+      //   return
+      // }
       const { makeRequest: changeStatus } = useRequest({
         context,
         request: () =>
@@ -324,7 +333,7 @@ const Form11 = defineComponent({
               task_id: props.data.task.id,
               parent_action: props.data.task.id,
               comment: comment.value,
-              okk_id: props.data.task.from_account_id,
+              okk_id: dopData.okk_id,
               rashod_id: props.data.data.zayavka.id,
               to_okk: true,
             },
@@ -348,7 +357,8 @@ const Form11 = defineComponent({
           },
         }),
     })
-
+    const removed = ref(false)
+    const notAttached = ref(true)
     const { makeRequest: setStartStep } = useRequest({
       context,
       request: () =>
@@ -379,6 +389,7 @@ const Form11 = defineComponent({
           timeout: 1000,
         })
         ctx.emit('refreshData')
+        removed.value = true
       }
     }
 
@@ -420,6 +431,7 @@ const Form11 = defineComponent({
       popupForm,
       config,
       closePopupForm,
+      notAttached,
     }
   },
 })

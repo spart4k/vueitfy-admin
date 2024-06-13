@@ -73,8 +73,8 @@ export default {
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
-    const commentData = JSON.parse(data.task.dop_data)['comment']
     const loading = ref(false)
+    const commentData = JSON.parse(data.task.dop_data)['comment']
     onMounted(() => {
       for (let key in sss.docs_id) {
         console.log(key)
@@ -283,6 +283,7 @@ export default {
       }
       console.log(startProcessStatus)
       const { success } = await changeStatus()
+      loading.value = false
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
@@ -348,8 +349,6 @@ export default {
       isWork,
       commentData,
       someReject,
-      allTouched,
-      loading,
     }
   },
 }

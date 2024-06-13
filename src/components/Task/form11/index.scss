@@ -85,5 +85,8 @@
 .form {
   &-link {
     text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

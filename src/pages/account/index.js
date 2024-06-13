@@ -538,7 +538,14 @@ const fields = {
     { alias: 'grajdanstvo_id', filter: [] },
     {
       alias: 'object_type',
-      filter: [],
+      filter: [
+        {
+          field: 'direction_json',
+          value: '',
+          source: 'formData',
+          type: 'array',
+        },
+      ],
     },
     {
       alias: 'account_objects',
@@ -708,8 +715,7 @@ const fields = {
     }),
     selectField({
       label: 'Тип',
-      name: 'object_types',
-      alias: 'object_type',
+      name: 'object_type',
       subtype: 'multiple',
       stringify: true,
       placeholder: '',
@@ -1301,7 +1307,7 @@ const config = {
               }),
               selectField({
                 label: 'Тип',
-                name: 'type',
+                name: 'object_type',
                 alias: 'account_object_types',
                 subtype: 'multiple',
                 stringify: true,
@@ -1443,6 +1449,19 @@ const config = {
                 name: 'createForm',
                 action: 'createForm',
                 color: 'primary',
+                handlingResponse: {
+                  1: {
+                    text: 'Аккаунт создан',
+                    color: 'success',
+                  },
+                  2: {
+                    text: 'Такой аккаунт уже существует',
+                    color: 'error',
+                  },
+                  3: {
+                    text: '',
+                  },
+                },
               }),
             ],
           },
