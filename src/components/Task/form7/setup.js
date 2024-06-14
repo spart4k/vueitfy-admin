@@ -34,6 +34,7 @@ const Form7 = defineComponent({
   setup(props, ctx) {
     const route = useRoute()
     const router = useRouter()
+    const loading = ref(false)
     const dataRojd = moment(props.data.entity.data_rojd, 'YYYY-MM-DD').format(
       'DD.MM.YYYY'
     )
@@ -241,6 +242,7 @@ const Form7 = defineComponent({
     })
 
     const sendData = async () => {
+      loading.value = true
       if (isHasOsnDoc) {
         await setPersonalData()
       }
@@ -257,6 +259,7 @@ const Form7 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
 
     watch(
@@ -298,6 +301,7 @@ const Form7 = defineComponent({
       allDocsValid,
       docMainValid,
       bankCompleted,
+      loading,
     }
   },
 })

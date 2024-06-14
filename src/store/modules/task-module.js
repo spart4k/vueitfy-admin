@@ -193,7 +193,7 @@ const taskModule = {
     },
 
     async queryDoc(_, data) {
-      const result = await removeTmp('delete/personal/query_doc', data.data)
+      const result = await removeTmp('delete/personal/query_doc', data)
 
       return result
     },

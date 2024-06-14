@@ -25,6 +25,7 @@ const Form4 = defineComponent({
   setup({ data }, ctx) {
     const route = useRoute()
     const router = useRouter()
+    const loading = ref(false)
     const context = {
       root: {
         store,
@@ -160,6 +161,7 @@ const Form4 = defineComponent({
     })
     let sendData = async () => {
       //
+      loading.value = true
       const habitationRequest = await createHabitation()
 
       if (habitationRequest.code === 1) {
@@ -214,6 +216,7 @@ const Form4 = defineComponent({
           color: 'error',
         })
       }
+      loading.value = false
     }
 
     const changeObject = () => {
@@ -241,6 +244,7 @@ const Form4 = defineComponent({
       hasMigr,
       autocompleteConfig,
       changeObject,
+      loading,
     }
   },
 })

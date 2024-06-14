@@ -103,11 +103,18 @@
         small
         color="info"
         class="mr-2"
+        :loading="loading"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
       </v-btn>
-      <v-btn @click="rejectTask" class="mr-2" small color="error">
+      <v-btn
+        :loading="loading"
+        @click="rejectTask"
+        class="mr-2"
+        small
+        color="error"
+      >
         <v-icon small>mdi-close</v-icon>
         Отклонить
       </v-btn>

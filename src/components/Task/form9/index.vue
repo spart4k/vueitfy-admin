@@ -112,6 +112,7 @@
         <v-btn
           small
           color="info"
+          :loading="loading"
           :disabled="!docsAttached || !data.data.zayavka.close_schet.length"
           @click="sendTaskFinish"
         >

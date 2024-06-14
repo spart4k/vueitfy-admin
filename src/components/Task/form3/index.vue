@@ -78,6 +78,7 @@
         :disabled="!selectName || !price || !file"
         color="info"
         @click="sendData"
+        :loading="loading"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить

@@ -69,7 +69,7 @@ export default {
     let listDisbledDocuments = ref(0)
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
-    const commentData = JSON.parse(data.task.dop_data)['comment']
+    const loading = ref(false)
     onMounted(() => {
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -80,6 +80,9 @@ export default {
         }
         listDocuments.value.push(pasteObject)
       })
+      if (was_process && commentData) {
+        status.value === 'Работает'
+      }
     })
 
     let listRequestsForUpload = ref([])
@@ -191,8 +194,10 @@ export default {
       disabledDocumentsAcc.value + 1
     }
     const was_process = JSON.parse(data.task.dop_data).was_process
-
+    const commentData = JSON.parse(data.task.dop_data)['comment']
+    const hideSecondPart = was_process && !commentData
     let sendTaskFinish = async () => {
+      loading.value = true
       let keyOfObjectSend = {}
       docFormRef?.value?.docRows?.forEach((elem, index) => {
         keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
@@ -248,6 +253,7 @@ export default {
           timeout: 1000,
         })
       }
+      loading.value = false
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
@@ -265,7 +271,6 @@ export default {
       context,
       request: () =>
         store.dispatch('taskModule/processQuery', {
-          status: 2,
           data: {
             personal_id: data.entity.id,
             account_id: data.task.to_account_id,
@@ -321,6 +326,9 @@ export default {
       isWork,
       commentData,
       someReject,
+      hideSecondPart,
+      was_process,
+      loading,
     }
   },
 }

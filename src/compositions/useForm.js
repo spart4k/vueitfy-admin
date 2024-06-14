@@ -1803,7 +1803,7 @@ export default function ({
               return `${formData[el.field]}`
             }
           } else {
-            return el.value.some((ai) => {
+            const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
@@ -1814,9 +1814,10 @@ export default function ({
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
-              if (el.reverse) return !result
               return result
             })
+            if (el.reverse) return !res
+            return res
           }
         })
       }
@@ -1831,7 +1832,7 @@ export default function ({
               return `${formData[el.field]}`
             }
           } else {
-            return el.value.some((ai) => {
+            const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
                 const cloneAi = [...ai]
@@ -1842,9 +1843,10 @@ export default function ({
                   el.source ? eval(el.source) : formData[el.field]
                 )
               }
-              if (el.reverse) return !result
               return result
             })
+            if (el.reverse) return !res
+            return res
           }
         })
       }
