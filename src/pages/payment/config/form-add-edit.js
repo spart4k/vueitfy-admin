@@ -1434,7 +1434,7 @@ export default {
           default: 5,
         },
       },
-      // validations: { required },
+      validations: { required },
       bootstrapClass: [''],
       round: true,
       readonly: {

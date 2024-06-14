@@ -326,6 +326,9 @@ export default {
       isWork,
       commentData,
       someReject,
+      hideSecondPart,
+      was_process,
+      loading,
     }
   },
 }
