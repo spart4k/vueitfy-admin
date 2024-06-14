@@ -85,8 +85,11 @@ const table = {
     watch(
       () => isOpen.value,
       async (newVal) => {
+        console.log(newVal)
+        // if (newVal === 0) {
+        // await getObjects()
+        // }
         // isOpen.value = undefined
-        await getObjects()
       }
     )
     onMounted(() => {
