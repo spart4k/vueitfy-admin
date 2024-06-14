@@ -134,7 +134,7 @@ const form10 = defineComponent({
               // personal_id: props.data.entity.id,
               // docs_id: keyOfObjectSend,
               account_id: props.data.task.from_account_id,
-              okk_id: store.state.user.id,
+              okk_id: props.data.task.to_account_id,
               cancel_close: schets.value.filter((el) => el.valid === 1),
             },
           }),
@@ -217,7 +217,16 @@ const form10 = defineComponent({
         return
       } else if (zayavkaValid.value) {
         // send
-        await sendZayavkaItems()
+        const resultZayavka = await sendZayavkaItems()
+        console.log(resultZayavka)
+        if (resultZayavka.code === 2) {
+          store.commit('notifies/showMessage', {
+            color: 'success',
+            content: 'Что то пошло не так',
+            timeout: 1000,
+          })
+          return
+        }
       }
       const { makeRequest: changeStatus } = useRequest({
         context,
@@ -295,7 +304,7 @@ const form10 = defineComponent({
     const acceptSchets = async () => {
       await setDataZayavka()
       await updateDopData()
-      if (props.data.data.zayavka.payment_type === 3) {
+      if (props.data.data.zayavka.payment_type !== 3) {
         await sendTaskFinish()
       }
 

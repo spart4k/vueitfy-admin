@@ -41,7 +41,10 @@
           >Работает</v-btn
         >
       </div>
-      <div v-if="status === 'Работает'" class="position-relative">
+      <div
+        v-if="status === 'Работает' && !hideSecondPart"
+        class="position-relative"
+      >
         <div class="mb-10">
           <DocForm
             v-if="listDocuments && listDocuments.length"
@@ -83,7 +86,13 @@
           Закрыть
         </v-btn>
 
-        <v-btn color="info" @click="sendTaskFinish" small :disabled="!isValid">
+        <v-btn
+          color="info"
+          :loading="loading"
+          @click="sendTaskFinish"
+          small
+          :disabled="!isValid"
+        >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>

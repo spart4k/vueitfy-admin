@@ -127,6 +127,7 @@ export default {
           field: 'personal_id',
           value: '',
           routeKey: 'id',
+          toArray: true,
           type: 'num',
         },
         {

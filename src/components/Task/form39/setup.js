@@ -444,8 +444,32 @@ const Form7 = defineComponent({
         })
       },
     })
+    const showError = () => {
+      store.commit('notifies/showMessage', {
+        color: 'error',
+        content: 'Ошибка',
+        timeout: 1000,
+      })
+    }
+
+    const { makeRequest: queryDoc } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/queryDoc', {
+          data: {
+            personal_id: props.data.entity.id,
+          },
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
 
     const sendData = async () => {
+      if (
+        props.data.task.process === 5 &&
+        JSON.parse(props.data.task.dop_data).was_process
+      ) {
+        await queryDoc()
+      }
       const { code: codeRemove } = await removeTmp()
       if (codeRemove) {
         const { code } = await updatePersonalAccess()
@@ -455,25 +479,13 @@ const Form7 = defineComponent({
             ctx.emit('closePopup')
             ctx.emit('getItems')
           } else {
-            store.commit('notifies/showMessage', {
-              color: 'error',
-              content: 'Ошибка',
-              timeout: 1000,
-            })
+            showError()
           }
         } else {
-          store.commit('notifies/showMessage', {
-            color: 'error',
-            content: 'Ошибка, code ' + code,
-            timeout: 1000,
-          })
+          showError()
         }
       } else {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Ошибка, code ' + codeRemove,
-          timeout: 1000,
-        })
+        showError()
       }
     }
     onMounted(async () => {

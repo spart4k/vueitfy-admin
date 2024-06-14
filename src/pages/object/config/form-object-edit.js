@@ -11,7 +11,7 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
+import { required, length } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -106,19 +106,23 @@ export default {
             condition: [
               {
                 value: [2],
-                options: [1, 6],
+                options: [1, 6, 7],
               },
               {
                 value: [6],
-                options: [2],
+                options: [2, 7],
               },
               {
                 value: [1],
-                options: [2],
+                options: [2, 7],
               },
               {
                 value: [1, 6],
-                options: [2],
+                options: [2, 7],
+              },
+              {
+                value: [7],
+                options: [1, 2, 6],
               },
             ],
           },
@@ -208,6 +212,11 @@ export default {
             field: 'type',
             target: 'value',
             value: 'notEmpty',
+          },
+          {
+            field: 'type',
+            value: [1, 5, 6, 7],
+            reverse: true,
           },
         ],
       },
@@ -355,7 +364,7 @@ export default {
           {
             field: 'direction_json',
             type: 'array',
-            value: [[1], [6], [1, 6]],
+            value: [[1], [2], [6], [1, 6]],
           },
         ],
       },
@@ -379,7 +388,12 @@ export default {
           {
             field: 'direction_json',
             type: 'array',
-            value: [[1], [6], [1, 6]],
+            value: [[1], [2], [6], [1, 6]],
+          },
+          {
+            field: 'type',
+            value: [2, 3, 4, 5, 6, 7],
+            reverse: true,
           },
         ],
       },
@@ -561,6 +575,54 @@ export default {
           },
         ],
       },
+    }),
+    stringField({
+      label: 'Время с',
+      name: 'time_open',
+      placeholder: '',
+      value: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_json',
+            type: 'array',
+            value: [[2]],
+          },
+        ],
+      },
+      mask: '##:##',
+      validations: { required, length: length(5) },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'Время по',
+      name: 'time_close',
+      placeholder: '',
+      value: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_json',
+            type: 'array',
+            value: [[2]],
+          },
+        ],
+      },
+      mask: '##:##',
+      validations: { required, length: length(5) },
+      bootstrapClass: [''],
     }),
   ],
   actions: [

@@ -233,14 +233,17 @@ const Form11 = defineComponent({
       await updateDopData()
       JSON.parse(attached_amount.value).attached = true
       ctx.emit('refreshData')
-      formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
-        return {
-          ...el,
-          path_doc: el.name,
-        }
-      })
+      // formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
+      //   return {
+      //     ...el,
+      //     path_doc: el.name,
+      //   }
+      // })
       console.log(formatedSchets.value)
+      listNewChet.value = []
+      attachedFile.value = false
       dropZone.value.clearDropzone()
+      notAttached.value = false
     }
 
     const checkIdenticalFiles = (newFile) => {
@@ -302,8 +305,7 @@ const Form11 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
-      loading.value = true
-      if (JSON.parse(attached_amount.value).attached && !comment.value) {
+      if ((notAttached.value || removed.value) && !comment.value) {
         store.commit('notifies/showMessage', {
           color: 'error',
           content: 'Введите комментарий',
@@ -311,8 +313,18 @@ const Form11 = defineComponent({
         })
         return
       }
+      loading.value = true
+      // if (JSON.parse(attached_amount.value).attached && !comment.value) {
+      //   store.commit('notifies/showMessage', {
+      //     color: 'error',
+      //     content: 'Введите комментарий',
+      //     timeout: 1000,
+      //   })
+      //   return
+      // }
       const { makeRequest: changeStatus } = useRequest({
         context,
+        successMessage: 'Успешно',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
@@ -322,7 +334,7 @@ const Form11 = defineComponent({
               task_id: props.data.task.id,
               parent_action: props.data.task.id,
               comment: comment.value,
-              okk_id: props.data.task.from_account_id,
+              okk_id: dopData.okk_id,
               rashod_id: props.data.data.zayavka.id,
               to_okk: true,
             },
@@ -346,7 +358,8 @@ const Form11 = defineComponent({
           },
         }),
     })
-
+    const removed = ref(false)
+    const notAttached = ref(true)
     const { makeRequest: setStartStep } = useRequest({
       context,
       request: () =>
@@ -364,21 +377,20 @@ const Form11 = defineComponent({
           },
         }),
     })
-    const removedDocs = ref([])
     const removeDoc = async ({ id }, index) => {
       let isConfirmed = confirm(
         'Вы подтверждаете удаление документа под номером ' + index
       )
       if (isConfirmed) {
         await delCloseSchet(id)
-        formatedSchets.value.splice(index, 1)
-        removedDocs.value.push(id)
+        // formatedSchets.value.splice(index, 1)
         store.commit('notifies/showMessage', {
           color: 'success',
           content: 'Документа ' + id + ' удален',
           timeout: 1000,
         })
         ctx.emit('refreshData')
+        removed.value = true
       }
     }
 
@@ -410,7 +422,6 @@ const Form11 = defineComponent({
       refds,
       formatedSchets,
       removeDoc,
-      removedDocs,
       attachedFile,
       sendCloseDocsSchet,
       attached_amount,
@@ -421,6 +432,7 @@ const Form11 = defineComponent({
       popupForm,
       config,
       closePopupForm,
+      notAttached,
     }
   },
 })

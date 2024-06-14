@@ -2,7 +2,7 @@
   <div>
     <div class="mb-2 font-weight-bold">{{ title }}</div>
     <FormDocumentsRow
-      :key="document.id"
+      :key="document.doc_id"
       v-for="(document, documentIndex) in docsDataFormated"
       :document="document"
       :docNames="listNames"

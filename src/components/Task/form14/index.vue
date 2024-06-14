@@ -76,7 +76,6 @@
           <v-icon small>mdi-close</v-icon>
           Закрыть
         </v-btn>
-
         <v-btn
           :loading="loading"
           color="info"
