@@ -1255,6 +1255,9 @@ export default function ({
       } else {
         filter.value = formData[el.field]
       }
+      if (el.toArray && !Array.isArray(filter.value)) {
+        filter.value = [filter.value]
+      }
       return filter
     })
     return filters
