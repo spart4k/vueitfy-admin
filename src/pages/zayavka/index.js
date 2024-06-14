@@ -2044,47 +2044,91 @@ export const editFields = [
                 context.originalData.status === 3)) ||
             ((context.store.state.user.permission_id === 12 ||
               context.store.state.user.permission_id === 22) &&
-              context.originalData.status === 4),
+              context.originalData.status === 4) ||
+            context.originalData.status === 2,
           type: false, //могу при этих условиях
         },
       ],
     },
-    // hideOption: [
-    //   {
-    //     target: 'status_id',
-    //     targetValue: [1, 2, 3],
-    //     value: [1, 2, 3],
-    //     type: false,
-    //   },
-    //   {
-    //     target: 'status_id',
-    //     targetValue: [4],
-    //     value: [4, 9],
-    //     type: false,
-    //   },
-    //   {
-    //     target: 'status_id',
-    //     targetValue: [9],
-    //     value: [9],
-    //     type: false,
-    //   },
-    // ],
-    hiding: {
-      conditions: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [1, 2, 3],
-          values: [1, 2, 3],
+    hideOption: [
+      // {
+      //   target: 'status',
+      //   targetValue: [1, 2, 3],
+      //   value: [1, 2, 3],
+      //   type: false,
+      // },
+      // {
+      //   target: 'status',
+      //   targetValue: [4],
+      //   value: [4, 9],
+      //   type: false,
+      // },
+      // {
+      //   target: 'status',
+      //   targetValue: [9],
+      //   value: [9],
+      //   type: false,
+      // },
+      {
+        func: (context) => {
+          return (
+            (context.formData?.status === 1 ||
+              context.formData?.status === 2 ||
+              context.formData?.status === 3) &&
+            !(
+              context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22
+            )
+          )
         },
-        {
-          target: 'formData',
-          field: 'status',
-          value: [4],
-          values: [4, 9],
+        value: [1, 2, 3],
+        type: false,
+      },
+      {
+        func: (context) => {
+          return (
+            context.originalData?.status === 2 &&
+            (context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22)
+          )
         },
-      ],
-    },
+        value: [2, 4],
+        type: false,
+      },
+      {
+        func: (context) => {
+          return (
+            context.originalData?.status === 4 &&
+            (context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22)
+          )
+        },
+        value: [4, 9],
+        type: false,
+      },
+    ],
+    // hiding: {
+    //   conditions: [
+    //     {
+    //       target: 'formData',
+    //       field: 'status',
+    //       value: [1, 2, 3],
+    //       values: [1, 2, 3, 4],
+    //     },
+    //     {
+    //       target: 'formData',
+    //       field: 'status',
+    //       value: [4],
+    //       values: [4, 9],
+    //     },
+    //     {
+    //       target: 'formData',
+    //       field: 'status',
+    //       value: [2],
+    //       values: [2, 4],
+    //     },
+    //   ],
+    // },
     validations: { required },
     bootstrapClass: [''],
   }),
