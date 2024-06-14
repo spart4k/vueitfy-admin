@@ -39,6 +39,7 @@
               v-model="formData[field.name]"
               :error-messages="formErrors[field?.name]"
               :formData="formData"
+              :originalData="originalData"
               ref="autocompleteRef"
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"

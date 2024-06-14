@@ -60,7 +60,7 @@ export default function ({
       return obj
     }, {})
   )
-  let originalData
+  const originalData = ref()
 
   const computedFormData = computed(() => formData)
 
@@ -406,7 +406,7 @@ export default function ({
               const conditionContext = {
                 store,
                 formData,
-                originalData,
+                originalData: originalData.value,
                 environment,
               }
               return (
@@ -611,9 +611,9 @@ export default function ({
       arr?.forEach((item) => {
         obj.new.push(item.path)
       })
-      if (originalData) {
+      if (originalData.value) {
         const stash = dropzone.toObject?.stash
-        obj.del = _.difference(originalData[stash], formData[stash])
+        obj.del = _.difference(originalData.value[stash], formData[stash])
       }
       setFormData(obj, dropzone)
     }
@@ -928,7 +928,7 @@ export default function ({
           const context = {
             store,
             formData,
-            originalData,
+            originalData: originalData.value,
             environment,
             form,
           }
@@ -1070,7 +1070,7 @@ export default function ({
         const context = {
           store,
           formData,
-          originalData,
+          originalData: originalData.value,
           environment,
           form,
         }
@@ -1553,7 +1553,7 @@ export default function ({
           })
         })
       }
-      originalData = _.cloneDeep(formData)
+      originalData.value = _.cloneDeep(formData)
     }
     await loadAutocompletes()
 
@@ -1566,7 +1566,7 @@ export default function ({
               const conditionContext = {
                 store,
                 formData,
-                originalData,
+                originalData: originalData.value,
                 environment,
               }
               if (item.funcCondition(conditionContext) === item.type) return []
@@ -1710,7 +1710,7 @@ export default function ({
                 store,
                 formData,
                 environment,
-                originalData,
+                originalData: originalData.value,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1771,7 +1771,7 @@ export default function ({
               const conditionContext = {
                 store,
                 formData,
-                originalData,
+                originalData: originalData.value,
                 environment,
                 mode,
               }
@@ -1983,6 +1983,7 @@ export default function ({
     touchedForm: $touched,
     validate,
     formData,
+    originalData,
     getDataForm,
     reset,
     update,

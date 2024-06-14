@@ -536,6 +536,7 @@ export default {
 
     const {
       formData,
+      originalData,
       validate,
       formErrors,
       vForm,
@@ -576,6 +577,7 @@ export default {
     return {
       //endIntersect,
       formData,
+      originalData,
       validate,
       //$errors,
       vForm,
