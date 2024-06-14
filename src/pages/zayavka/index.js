@@ -2033,19 +2033,42 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id !==
+            ((context.originalData.from_account_id !==
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4 ||
               context.store.state.user.permission_id === 16 ||
               (context.store.state.user.permission_id === 3 &&
                 context.originalData.direction_id === 7)) &&
-            (context.originalData.status === 1 ||
-              context.originalData.status === 2 ||
-              context.originalData.status === 3),
+              (context.originalData.status === 1 ||
+                context.originalData.status === 2 ||
+                context.originalData.status === 3)) ||
+            ((context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22) &&
+              context.originalData.status === 4),
           type: false, //могу при этих условиях
         },
       ],
     },
+    // hideOption: [
+    //   {
+    //     target: 'status_id',
+    //     targetValue: [1, 2, 3],
+    //     value: [1, 2, 3],
+    //     type: false,
+    //   },
+    //   {
+    //     target: 'status_id',
+    //     targetValue: [4],
+    //     value: [4, 9],
+    //     type: false,
+    //   },
+    //   {
+    //     target: 'status_id',
+    //     targetValue: [9],
+    //     value: [9],
+    //     type: false,
+    //   },
+    // ],
     hiding: {
       conditions: [
         {
@@ -2053,6 +2076,12 @@ export const editFields = [
           field: 'status',
           value: [1, 2, 3],
           values: [1, 2, 3],
+        },
+        {
+          target: 'formData',
+          field: 'status',
+          value: [4],
+          values: [4, 9],
         },
       ],
     },
@@ -5488,9 +5517,9 @@ const config = {
               type: 'every',
               condition: [
                 {
-                  field: 'status',
-                  target: 'formData',
-                  value: [9],
+                  funcCondition: (context) =>
+                    context.originalData?.status === 9 &&
+                    !context.environment.readonlyAll,
                   type: false,
                 },
               ],
@@ -5510,10 +5539,10 @@ const config = {
               type: 'every',
               condition: [
                 {
-                  field: 'status',
-                  target: 'formData',
-                  value: [9],
-                  type: true,
+                  funcCondition: (context) =>
+                    context.originalData?.status !== 9 &&
+                    !context.environment.readonlyAll,
+                  type: false,
                 },
               ],
             },
