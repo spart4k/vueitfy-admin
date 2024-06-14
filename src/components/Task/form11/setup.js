@@ -6,16 +6,22 @@ import Vue, {
   onUpdated,
   reactive,
   toRef,
+  watch,
 } from 'vue'
 import useForm from '@/compositions/useForm'
 import { required } from '@/utils/validation'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import useView from '@/compositions/useView.js'
 import { useRouter, useRoute } from 'vue-router/composables'
 import DropZone from '@/components/Dropzone/default/index.vue'
 import IconDelete from '@/components/Icons/delete/delete.vue'
 import DocAccepting from '@/components/Task/el/DocAccepting/index.vue'
 import { methods } from 'vue2-dropzone'
+import FormError from '@/components/Task/el/FormError/index.vue'
+import Popup from '@/components/Popup/index.vue'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import _ from 'lodash'
 
 const Form11 = defineComponent({
   name: 'Form11',
@@ -23,6 +29,8 @@ const Form11 = defineComponent({
     DropZone,
     IconDelete,
     DocAccepting,
+    Popup,
+    FormError,
   },
   props: {
     data: {
@@ -42,6 +50,17 @@ const Form11 = defineComponent({
         route,
       },
     }
+    const { configRouteConvert } = useView()
+    const config = _.cloneDeep(zayavkaConfigOrig)
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-edit',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    const loading = ref(false)
     const dropzoneOptions = ref({
       withoutSave: false,
       folder: 'tmp',
@@ -178,7 +197,18 @@ const Form11 = defineComponent({
         refds.value = 0
       }
     }
-
+    const propsSchets = toRef(props.data.data.zayavka, 'close_schet')
+    watch(
+      () => props.data.data.zayavka.close_schet,
+      () => {
+        formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
+          return {
+            ...el,
+            path_doc: el.name,
+          }
+        })
+      }
+    )
     let sendCloseDocsSchet = async (e) => {
       const { makeRequest: setDataZayavka } = useRequest({
         context,
@@ -202,7 +232,18 @@ const Form11 = defineComponent({
       await setDataZayavka()
       await updateDopData()
       JSON.parse(attached_amount.value).attached = true
-      // dropZone.value.clearDropzone()
+      ctx.emit('refreshData')
+      // formatedSchets.value = props.data.data.zayavka.close_schet.map((el) => {
+      //   return {
+      //     ...el,
+      //     path_doc: el.name,
+      //   }
+      // })
+      console.log(formatedSchets.value)
+      listNewChet.value = []
+      attachedFile.value = false
+      dropZone.value.clearDropzone()
+      notAttached.value = false
     }
 
     const checkIdenticalFiles = (newFile) => {
@@ -231,7 +272,9 @@ const Form11 = defineComponent({
     const attached_amount = ref(
       Object.assign({}, toRef(props.data.task, 'dop_data')).value
     )
-
+    const popupForm = ref({
+      isShow: false,
+    })
     const { makeRequest: updateDopData } = useRequest({
       context,
       request: () => {
@@ -244,9 +287,25 @@ const Form11 = defineComponent({
       },
       successMessage: 'Успешно',
     })
+    const pushToForm = (val) => {
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          id: route.params.id,
+          form_id: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+
+    const closePopupForm = (route) => {
+      if (route) router.push({ name: route })
+      else router.back()
+      popupForm.value.isShow = false
+    }
 
     let sendTaskFinish = async () => {
-      if (JSON.parse(attached_amount.value).attached && !comment.value) {
+      if ((notAttached.value || removed.value) && !comment.value) {
         store.commit('notifies/showMessage', {
           color: 'error',
           content: 'Введите комментарий',
@@ -254,8 +313,18 @@ const Form11 = defineComponent({
         })
         return
       }
+      loading.value = true
+      // if (JSON.parse(attached_amount.value).attached && !comment.value) {
+      //   store.commit('notifies/showMessage', {
+      //     color: 'error',
+      //     content: 'Введите комментарий',
+      //     timeout: 1000,
+      //   })
+      //   return
+      // }
       const { makeRequest: changeStatus } = useRequest({
         context,
+        successMessage: 'Успешно',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
@@ -265,8 +334,9 @@ const Form11 = defineComponent({
               task_id: props.data.task.id,
               parent_action: props.data.task.id,
               comment: comment.value,
-              okk_id: props.data.task.from_account_id,
+              okk_id: dopData.okk_id,
               rashod_id: props.data.data.zayavka.id,
+              to_okk: true,
             },
           }),
       })
@@ -275,6 +345,7 @@ const Form11 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
 
     const { makeRequest: changeStatusNew } = useRequest({
@@ -287,7 +358,8 @@ const Form11 = defineComponent({
           },
         }),
     })
-
+    const removed = ref(false)
+    const notAttached = ref(true)
     const { makeRequest: setStartStep } = useRequest({
       context,
       request: () =>
@@ -305,20 +377,20 @@ const Form11 = defineComponent({
           },
         }),
     })
-    const removedDocs = ref([])
     const removeDoc = async ({ id }, index) => {
       let isConfirmed = confirm(
         'Вы подтверждаете удаление документа под номером ' + index
       )
       if (isConfirmed) {
         await delCloseSchet(id)
-        formatedSchets.value.splice(index, 1)
-        removedDocs.value.push(id)
+        // formatedSchets.value.splice(index, 1)
         store.commit('notifies/showMessage', {
           color: 'success',
           content: 'Документа ' + id + ' удален',
           timeout: 1000,
         })
+        ctx.emit('refreshData')
+        removed.value = true
       }
     }
 
@@ -350,10 +422,17 @@ const Form11 = defineComponent({
       refds,
       formatedSchets,
       removeDoc,
-      removedDocs,
       attachedFile,
       sendCloseDocsSchet,
       attached_amount,
+      loading,
+      FormError,
+      propsSchets,
+      pushToForm,
+      popupForm,
+      config,
+      closePopupForm,
+      notAttached,
     }
   },
 })

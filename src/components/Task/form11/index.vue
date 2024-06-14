@@ -1,14 +1,18 @@
 <template>
   <div>
     <div style="padding-top: 20px">
+      <v-card-title class="py-1 justify-center font-weight-bold text-h6">
+        Заявка на расход&nbsp;
+        <span
+          @click="pushToForm(data.data.zayavka.id)"
+          class="col-btn form-link"
+          >№{{ data.data.zayavka.id }}&nbsp;</span
+        >
+      </v-card-title>
       <v-row>
-        <v-textarea
-          v-model="dopData.comment"
-          placeholder="Комментарий ОКК"
-          disabled
-          class=""
-          rows="1"
-        ></v-textarea>
+        <FormError class="mb-4" v-if="dopData.comment">
+          {{ dopData.comment }}
+        </FormError>
       </v-row>
       <span class="font-weight-bold heading"
         >Проверьте закрывающие документы:</span
@@ -33,6 +37,11 @@
             :isShowRemove="item.valid === 2 || item.valid === 0"
             @remove="removeDoc($event, index)"
           ></DocAccepting>
+          <div v-if="!formatedSchets?.length" class="text-center mt-4">
+            <span class="font-weight-regular text-subtitle-1"
+              >Документы не загружены</span
+            >
+          </div>
           <v-row>
             <v-textarea
               v-model="comment"
@@ -41,12 +50,6 @@
               rows="2"
             ></v-textarea>
           </v-row>
-        </div>
-
-        <div v-if="!formatedSchets?.length" class="text-center mt-4">
-          <span class="font-weight-regular text-subtitle-1"
-            >Документы не загружены</span
-          >
         </div>
       </div>
       <!-- TODO: INPUT -->
@@ -102,17 +105,26 @@
           Завершить
         </v-btn> -->
         <!-- FIXME: починить disabled -->
-        <v-btn
-          :disabled="!comment && !attachedFile"
-          color="info"
-          @click="sendTaskFinish"
-          small
-        >
+        <v-btn color="info" @click="sendTaskFinish" :loading="loading" small>
           <v-icon small>mdi-content-save</v-icon>
           Завершить
         </v-btn>
       </v-row>
     </div>
+    <Popup
+      :options="{
+        width: config.detail.width,
+        portal: 'table-detail',
+      }"
+      v-if="config.detail && config.detail.type === 'popup' && popupForm.isShow"
+    >
+      <router-view
+        :detail="config.detail"
+        :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+        @closePopup="closePopupForm"
+        @refreshData="refreshData"
+      />
+    </Popup>
   </div>
 </template>
 

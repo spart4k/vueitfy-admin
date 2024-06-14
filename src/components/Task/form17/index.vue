@@ -95,6 +95,7 @@
         :disabled="!isSetTask && tariff"
         class="mr-2"
         small
+        :loading="loading"
         color="info"
         @click="completeTask"
       >
@@ -106,6 +107,7 @@
         :disabled="!changeQTY || (data.entity.direction_id == 7 && !tariff)"
         color="info"
         @click="completeTask"
+        :loading="loading"
         small
       >
         <v-icon left small> $IconMain </v-icon>

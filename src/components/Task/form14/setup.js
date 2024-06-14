@@ -54,14 +54,18 @@ export default {
     const someReject = computed(() =>
       docFormRef?.value?.docRows?.some((el) => el.isRejected)
     )
+    const allTouched = computed(() =>
+      docFormRef?.value?.docRows?.every((el) => el.isCorrect || el.isRejected)
+    )
     const isValid = computed(() => {
-      if (status.value === 'Работает') {
-        return someReject.value
-          ? docFormRef?.value?.docRows?.every((el) => !el.isHold) &&
-              comment.value
-          : docFormRef?.value?.docRows?.every((el) => !el.isHold)
-      } else if (status.value === 'Уволен') {
-        return true
+      if (allTouched.value) {
+        if (someReject.value && comment.value) {
+          return true
+        } else if (someReject.value && !comment.value) {
+          return false
+        } else {
+          return true
+        }
       } else {
         return false
       }
@@ -70,6 +74,7 @@ export default {
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
     const commentData = JSON.parse(data.task.dop_data)['comment']
+    const loading = ref(false)
     onMounted(() => {
       for (let key in sss.docs_id) {
         console.log(key)
@@ -77,14 +82,14 @@ export default {
         pasteObject = data.data.docs.find((doc) => doc.doc_id == key)
         console.log(pasteObject)
         if (sss.docs_id[key] == 1) {
-          pasteObject.inProcess = false
+          // pasteObject.inProcess = false
         } else {
           if (!pasteObject) {
             pasteObject = {}
             pasteObject.doc_id = key
             pasteObject.commentError = 'Документ не приложен. См. комментарий!'
           }
-          pasteObject.isRejected = true
+          // pasteObject.isRejected = true
         }
         listDocuments.value.push(pasteObject)
       }
@@ -208,31 +213,75 @@ export default {
       disabledDocumentsAcc.value + 1
     }
 
-    let sendTaskFinish = async () => {
-      let keyOfObjectSend = {}
-      docFormRef.value.docRows.forEach((elem, index) => {
-        keyOfObjectSend[elem.document.doc_id] = elem.isCorrect ? 1 : 2
-      })
+    const { makeRequest: queryDoc } = useRequest({
+      context,
+      request: () =>
+        store.dispatch('taskModule/queryDoc', {
+          data: {
+            personal_id: data.entity.id,
+          },
+        }),
+      successMessage: 'Файл успешно загружен',
+    })
 
+    let sendTaskFinish = async () => {
+      let docs_add = []
+      let docs_cancel = []
+      docFormRef.value.docRows.forEach((elem, index) => {
+        if (elem.isCorrect) {
+          if (elem.document.id) {
+            docs_add.push(elem.document.id)
+          }
+        } else {
+          if (!document.id) {
+            docs_cancel.push(+elem.document.doc_id)
+          } else {
+            docs_cancel.push(elem.document.id)
+          }
+        }
+      })
+      console.log(docs_cancel)
+      console.log(docs_add)
+      const { makeRequest: createFillScanProcess } = useRequest({
+        context,
+        request: () =>
+          store.dispatch('taskModule/startProcess', {
+            parent_process: data.task.process_id,
+            process_id: 1,
+            parent_action: data.task.process_id,
+            type_parent_action: 2,
+            account_id: data.task.from_account_id,
+            personal_id: data.entity.id,
+            docs_id: docs_add,
+          }),
+        successMessage: 'Файл успешно загружен',
+      })
       const { makeRequest: changeStatus } = useRequest({
         context,
         successMessage: 'Задача завершена',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
-            status: 2,
+            status: docs_cancel.length ? 6 : 2,
             data: {
               process_id: data.task.process_id,
-              manager_id: account_id.value,
+              manager_id: data.task.from_account_id,
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_id: data.entity.id,
               comment: comment.value,
-              docs_id: keyOfObjectSend,
-              account_id: data.task.from_account_id,
+              docs_id: docs_cancel,
+              was_process: true,
             },
           }),
       })
-      sendDocuments()
+      if (!docs_cancel.length) {
+        await queryDoc()
+      }
+      let startProcessStatus = null
+      if (docs_add) {
+        startProcessStatus = await createFillScanProcess()
+      }
+      console.log(startProcessStatus)
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')
@@ -269,10 +318,12 @@ export default {
         }),
     })
 
-    let emplyeeFired = () => {
-      changeStatusNew()
-      setStartStep()
+    let emplyeeFired = async () => {
+      loading.value = true
+      await changeStatusNew()
+      await setStartStep()
       ctx.emit('closePopup')
+      loading.value = false
     }
 
     return {
@@ -297,6 +348,8 @@ export default {
       isWork,
       commentData,
       someReject,
+      allTouched,
+      loading,
     }
   },
 }

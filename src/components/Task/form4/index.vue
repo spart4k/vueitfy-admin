@@ -77,6 +77,7 @@
         small
         color="info"
         @click="sendData"
+        :loading="loading"
         :disabled="
           (!selectName && selectName !== 0) ||
           !hasMigr ||

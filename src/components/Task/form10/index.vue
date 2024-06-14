@@ -1,6 +1,14 @@
 <template>
   <div class="form">
     <div style="padding-top: 20px">
+      <v-card-title class="py-1 justify-center font-weight-bold text-h6">
+        Заявка на расход&nbsp;
+        <span
+          @click="openZayavka(data.data.zayavka.id)"
+          class="col-btn form-link"
+          >№{{ data.data.zayavka.id }}&nbsp;</span
+        >
+      </v-card-title>
       <v-row>
         <v-col>
           <span class="font-weight-bold heading"
@@ -116,16 +124,17 @@
           Закрыть
         </v-btn>
 
-        <v-btn class="mr-3" @click="openZayavka" color="info" small>
+        <!-- <v-btn class="mr-3" @click="openZayavka" color="info" small>
           <v-icon small>mdi-subdirectory-arrow-right</v-icon>
           Перейти
-        </v-btn>
+        </v-btn> -->
 
         <!-- FIXME: починить disabled -->
         <v-btn
           color="info"
           @click="sendTaskFinish"
           small
+          :loading="loading"
           :disabled="!allChecked"
         >
           <v-icon small>mdi-content-save</v-icon>

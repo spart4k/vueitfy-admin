@@ -131,6 +131,7 @@
           class="action_save"
           :disabled="listDisbledDocuments !== 0"
           @click="sendTaskFinish"
+          :loading="loading"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить

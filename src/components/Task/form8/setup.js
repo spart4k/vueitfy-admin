@@ -46,6 +46,7 @@ const Form8 = defineComponent({
     const route = useRoute()
     // const proxyConfig = ref(_.cloneDeep(config))
     const { configRouteConvert } = useView()
+    const loading = ref(false)
     const config = _.cloneDeep(zayavkaConfigOrig)
     configRouteConvert({
       config: config,
@@ -634,6 +635,7 @@ const Form8 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
+      loading.value = true
       if (needPatent) await createFillScanProcess([patent[5], patent[15]])
       const { makeRequest: preRequest } = useRequest({
         context,
@@ -663,6 +665,7 @@ const Form8 = defineComponent({
         ctx.emit('closePopup')
         ctx.emit('getItems')
       }
+      loading.value = false
     }
     const refreshData = () => {
       ctx.emit('refreshData')
@@ -720,6 +723,7 @@ const Form8 = defineComponent({
       refreshData,
       hasZayavka,
       docsAttached,
+      loading,
     }
   },
 })

@@ -254,7 +254,9 @@ const Form17 = defineComponent({
       50: 77,
       51: 78,
     }
+    const loading = ref(false)
     const completeTask = async () => {
+      loading.value = true
       // await setUserKey()
       // const { success } = await changeStatusTask()
       let result
@@ -426,6 +428,7 @@ const Form17 = defineComponent({
       //     timeout: 1000,
       //   })
       // }
+      loading.value = false
     }
 
     const pushToForm = (val) => {
@@ -480,6 +483,7 @@ const Form17 = defineComponent({
       autocompleteConfig,
       changeServiceDetail,
       rejectedTarif,
+      loading,
     }
   },
 })
