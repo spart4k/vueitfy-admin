@@ -28,6 +28,9 @@ export default {
     formData: {
       type: Object,
     },
+    originalData: {
+      type: Object,
+    },
     readonly: {
       type: Boolean,
       default: false,
@@ -48,6 +51,8 @@ export default {
           if (option.func) {
             const context = {
               store,
+              formData: props.formData,
+              originalData: props.originalData,
             }
             if (!option.func(context)) return
           } else if (
