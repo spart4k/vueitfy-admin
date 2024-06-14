@@ -331,6 +331,10 @@ export default {
                 (context.formData.status_id === 2 ||
                   context.formData.status_id === 1 ||
                   context.formData.status_id === 3)) ||
+              (context.store.state.user.permission_id === 4 &&
+                (context.formData.status_id === 2 ||
+                  context.formData.status_id === 1 ||
+                  context.formData.status_id === 3)) ||
               ((context.store.state.user.permission_id === 12 ||
                 context.store.state.user.permission_id === 22) &&
                 context.originalData?.status_id === 4),
@@ -1430,7 +1434,7 @@ export default {
           default: 5,
         },
       },
-      // validations: { required },
+      validations: { required },
       bootstrapClass: [''],
       round: true,
       readonly: {

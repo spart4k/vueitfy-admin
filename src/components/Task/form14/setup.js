@@ -283,6 +283,7 @@ export default {
       }
       console.log(startProcessStatus)
       const { success } = await changeStatus()
+      loading.value = false
       if (success) {
         ctx.emit('closePopup')
         ctx.emit('getItems')
