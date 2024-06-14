@@ -117,7 +117,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      // validations: { required },
+      validations: { required },
       options: {
         removeble: true,
         withoutSave: false,
@@ -650,7 +650,7 @@ export default {
         cols: 12,
         sm: 12,
       },
-      validations: {},
+      validations: { required },
       bootstrapClass: [''],
     }),
     stringField({
@@ -1134,6 +1134,7 @@ export default {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1, 2] }],
       },
+      validations: { required },
       position: {
         cols: 12,
         sm: 6,
@@ -1163,6 +1164,7 @@ export default {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [1] }],
       },
+      validations: { required },
       position: {
         cols: 12,
         sm: 6,
@@ -1192,6 +1194,7 @@ export default {
         value: false,
         conditions: [{ field: 'habitation_type_id', value: [2] }],
       },
+      validations: { required },
       position: {
         cols: 12,
         sm: 6,
