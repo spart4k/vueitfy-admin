@@ -39,6 +39,7 @@
               v-model="formData[field.name]"
               :error-messages="formErrors[field?.name]"
               :formData="formData"
+              :originalData="originalData"
               ref="autocompleteRef"
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
@@ -113,6 +114,7 @@
               @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
               :class="readonlyField(field) && 'clickless'"
+              :readonly="readonlyField(field)"
             />
             <ColorPicker
               v-else-if="showField('colorPicker', field)"

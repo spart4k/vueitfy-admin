@@ -28,6 +28,9 @@ export default {
     formData: {
       type: Object,
     },
+    originalData: {
+      type: Object,
+    },
     readonly: {
       type: Boolean,
       default: false,
@@ -48,6 +51,8 @@ export default {
           if (option.func) {
             const context = {
               store,
+              formData: props.formData,
+              originalData: props.originalData,
             }
             if (!option.func(context)) return
           } else if (
@@ -120,14 +125,18 @@ export default {
               if (el.routeKey) {
                 filter.push({
                   alias: el.alias ?? el.field,
-                  value: +route.params[el.routeKey],
+                  value: el.toArray
+                    ? [+route.params[el.routeKey]]
+                    : +route.params[el.routeKey],
                   type: el.type,
                 })
               } else {
                 if (!props.formData[el.field]) return
                 filter.push({
                   alias: el.alias ?? el.field,
-                  value: props.formData[el.field],
+                  value: el.toArray
+                    ? [props.formData[el.field]]
+                    : props.formData[el.field],
                   type: el.type,
                 })
               }
