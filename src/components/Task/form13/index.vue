@@ -22,29 +22,28 @@
           </v-btn></v-col
         >
       </v-row> -->
-      <v-row align="center">
-        <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
-      </v-row>
-      <div class="w-100 d-flex justify-center mt-2">
-        <v-btn
-          small
-          @click="isFire"
-          :class="status === 'Работает' ? 'disabled' : ''"
-          color="error mr-3"
-          >Уволен</v-btn
-        >
-        <v-btn
-          small
-          @click="isWork"
-          :class="status === 'Уволен' ? 'disabled' : ''"
-          color="success"
-          >Работает</v-btn
-        >
+      <div v-if="!hideSecondPart" class="">
+        <v-row align="center">
+          <span class="font-weight-bold">Уточните работает ли сотрудник: </span>
+        </v-row>
+        <div class="w-100 d-flex justify-center mt-2">
+          <v-btn
+            small
+            @click="isFire"
+            :class="status === 'Работает' ? 'disabled' : ''"
+            color="error mr-3"
+            >Уволен</v-btn
+          >
+          <v-btn
+            small
+            @click="isWork"
+            :class="status === 'Уволен' ? 'disabled' : ''"
+            color="success"
+            >Работает</v-btn
+          >
+        </div>
       </div>
-      <div
-        v-if="status === 'Работает' && !hideSecondPart"
-        class="position-relative"
-      >
+      <div v-if="status === 'Работает'" class="position-relative">
         <div class="mb-10">
           <DocForm
             v-if="listDocuments && listDocuments.length"
