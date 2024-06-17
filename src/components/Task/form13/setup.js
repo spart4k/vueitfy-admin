@@ -50,6 +50,7 @@ export default {
     const account_id = computed(() => store.state.user.id)
     const chied_id = computed(() => store.state.user.chied_id)
     let listDocuments = ref([])
+    const status = ref('')
     const docFormRef = ref(null)
     const someReject = computed(() =>
       docFormRef?.value?.docRows?.some((el) => el.isRejected)
@@ -81,9 +82,12 @@ export default {
         }
         listDocuments.value.push(pasteObject)
       })
+      console.log(was_process && commentData)
       if (was_process && commentData) {
-        status.value === 'Работает'
+        status.value = 'Работает'
+        console.log(status.value)
       }
+      console.log(status.value)
     })
 
     let listRequestsForUpload = ref([])
@@ -121,7 +125,6 @@ export default {
       loadImage()
     }
     let refds = ref(0)
-    const status = ref('')
     const isFire = () => {
       status.value = 'Уволен'
     }
@@ -195,7 +198,7 @@ export default {
       disabledDocumentsAcc.value + 1
     }
     const was_process = JSON.parse(data.task.dop_data).was_process
-    const hideSecondPart = was_process && !commentData
+    const hideSecondPart = was_process && commentData
     let sendTaskFinish = async () => {
       loading.value = true
       let keyOfObjectSend = {}
