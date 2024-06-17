@@ -1652,6 +1652,7 @@ export default {
         props.document.path_doc = path_doc
         isCorrect.value = true
         console.log(isCorrect.value)
+        isHold.value = false
         if (isRejected.value === true) {
           isRejected.value = false
         }

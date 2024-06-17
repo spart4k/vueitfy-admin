@@ -305,7 +305,7 @@ const Form11 = defineComponent({
     }
 
     let sendTaskFinish = async () => {
-      if (notAttached.value || removed.value) {
+      if ((notAttached.value || removed.value) && !comment.value) {
         store.commit('notifies/showMessage', {
           color: 'error',
           content: 'Введите комментарий',
@@ -324,6 +324,7 @@ const Form11 = defineComponent({
       // }
       const { makeRequest: changeStatus } = useRequest({
         context,
+        successMessage: 'Успешно',
         request: () =>
           store.dispatch('taskModule/setPartTask', {
             status: 2,
