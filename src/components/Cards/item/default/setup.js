@@ -33,7 +33,8 @@ export default {
     const editPermission = computed(
       () =>
         props.addPermission &&
-        store.state.user.id === props.data.from_account_id
+        (store.state.user.id === props.data.from_account_id ||
+          store.state.user.permission_id === 4)
     )
 
     const accounting = computed(() =>
