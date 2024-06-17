@@ -89,7 +89,7 @@
           @click="sendTaskFinish"
           small
           :loading="loading"
-          :disabled="!refds || (!disabledDocumentsAcc && !comment)"
+          :disabled="!isValid"
         >
           <v-icon small>mdi-content-save</v-icon>
           Завершить
