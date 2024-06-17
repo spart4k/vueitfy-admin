@@ -102,7 +102,7 @@
       closeButto
       @close="closePopupForm"
       :options="{
-        width: '600px',
+        width: '650px',
         portal: `table-detail${
           options?.detail?.popupIndex ? options?.detail?.popupIndex : ''
         }`,
