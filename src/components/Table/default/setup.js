@@ -521,10 +521,6 @@ const table = {
           el.value = ''
           return
         }
-        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
-          el.value = null
-          return
-        }
         el.value = filterData[el.name]
         if (
           el.type === 'dateRange' &&
@@ -572,7 +568,9 @@ const table = {
     const openRow = ($event, row) => {
       if (options.detail?.click) {
         if (options.detail.click.condition) {
-          const condition = options.detail.click.condition.permissions.includes(store.state.user.permission_id)
+          const condition = options.detail.click.condition.permissions.includes(
+            store.state.user.permission_id
+          )
           if (condition !== options.detail.click.condition.type) return
         }
       }
@@ -682,7 +680,7 @@ const table = {
         const context = {
           store,
           items: lastSelected.value.items,
-          idArray: lastSelected.value.items.map(x => x.row.id),
+          idArray: lastSelected.value.items.map((x) => x.row.id),
         }
         await button.method(context)
       }
@@ -748,7 +746,7 @@ const table = {
           headCell,
           width,
           x,
-          fixed: headCell.fixed,
+          fixed: headCell?.fixed,
         })
         setTimeout(() => {
           //
@@ -761,6 +759,9 @@ const table = {
       pagination.value = {
         ...options.data,
       }
+      console.log(
+        options.detail && options.detail.type === 'popup' && route.meta.mode
+      )
       if (
         options.detail &&
         options.detail.type === 'popup' &&
@@ -905,6 +906,7 @@ const table = {
     }
 
     const triggerAction = (action, cell, row) => {
+      console.log('method', cell, row, action)
       if (action.method) {
         const conditionContext = {
           store,
@@ -992,6 +994,7 @@ const table = {
       changeHeaders,
       confirmDialog,
       triggerDialogFunction,
+      route,
     }
   },
 }
