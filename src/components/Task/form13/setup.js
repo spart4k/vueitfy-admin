@@ -225,6 +225,8 @@ export default {
                   ? true
                   : status.value === 'Уволен'
                   ? was_process
+                  : !was_process
+                  ? true
                   : undefined,
               start_doc:
                 status.value === 'Работает' && !was_process
