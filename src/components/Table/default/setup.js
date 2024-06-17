@@ -521,10 +521,6 @@ const table = {
           el.value = ''
           return
         }
-        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
-          el.value = null
-          return
-        }
         el.value = filterData[el.name]
         if (
           el.type === 'dateRange' &&
@@ -750,7 +746,7 @@ const table = {
           headCell,
           width,
           x,
-          fixed: headCell.fixed,
+          fixed: headCell?.fixed,
         })
         setTimeout(() => {
           //
@@ -763,6 +759,9 @@ const table = {
       pagination.value = {
         ...options.data,
       }
+      console.log(
+        options.detail && options.detail.type === 'popup' && route.meta.mode
+      )
       if (
         options.detail &&
         options.detail.type === 'popup' &&
@@ -995,6 +994,7 @@ const table = {
       changeHeaders,
       confirmDialog,
       triggerDialogFunction,
+      route,
     }
   },
 }
