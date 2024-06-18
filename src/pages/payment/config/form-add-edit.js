@@ -334,7 +334,10 @@ export default {
               (context.store.state.user.permission_id === 4 &&
                 (context.formData.status_id === 2 ||
                   context.formData.status_id === 1 ||
-                  context.formData.status_id === 3)),
+                  context.formData.status_id === 3)) ||
+              ((context.store.state.user.permission_id === 12 ||
+                context.store.state.user.permission_id === 22) &&
+                context.originalData?.status_id === 4),
             // asdasd
             type: false,
           },
@@ -363,6 +366,12 @@ export default {
             field: 'status_id',
             value: [1, 2, 3],
             values: [1, 2, 3],
+          },
+          {
+            target: 'formData',
+            field: 'status_id',
+            value: [4],
+            values: [4, 6],
           },
           // {
           //   target: 'formData',
@@ -601,14 +610,38 @@ export default {
           //       context.formData.status_id === 3),
           //   type: false,
           // },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3 ||
+          //       ((context.store.state.user.permission_id === 12 ||
+          //         context.store.state.user.permission_id === 22) &&
+          //         context.originalData?.status_id === 4)) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     (context.store.state.user.id !== context.formData.manager_id ||
@@ -807,8 +840,16 @@ export default {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
         ],
@@ -924,8 +965,16 @@ export default {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
           // {
@@ -1061,8 +1110,16 @@ export default {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
         ],
@@ -1143,7 +1200,10 @@ export default {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
             type: true,
           },
@@ -1242,8 +1302,16 @@ export default {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
         ],
@@ -1407,7 +1475,7 @@ export default {
           default: 5,
         },
       },
-      // validations: { required },
+      validations: { required },
       bootstrapClass: [''],
       round: true,
       readonly: {
@@ -1436,8 +1504,16 @@ export default {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
         ],
@@ -1583,7 +1659,11 @@ export default {
               // Условия для того чтобы ОКК и РОКК могли менять карту
               (context.formData.status_id === 6 &&
                 (context.store.state.user.permission_id === 8 ||
-                  context.store.state.user.permission_id === 17)),
+                  context.store.state.user.permission_id === 17)) ||
+              (context.store.state.user.is_personal_vertical &&
+                (context.formData.status_id === 1 ||
+                  context.formData.status_id === 3)) ||
+              (context.formData.status_id === 6 && context.mode === 'edit'),
             type: false,
           },
           // {
@@ -1595,13 +1675,13 @@ export default {
           //     context.mode === 'edit',
           //   type: true,
           // },
-          {
-            funcCondition: (context) =>
-              context.store.state.user.is_personal_vertical &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3),
-            type: false,
-          },
+          // {
+          //   funcCondition: (context) =>
+          //     context.store.state.user.is_personal_vertical &&
+          //     (context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3),
+          //   type: false,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.environment.mode === 'add',
@@ -1667,9 +1747,21 @@ export default {
         cols: 12,
         sm: 12,
       },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              (context.store.state.user.permission_id === 12 ||
+                context.store.state.user.permission_id === 22) &&
+              context.originalData?.status_id === 4,
+
+            type: false, //могу при этих условиях
+          },
+        ],
+      },
       //validations: { required },
       bootstrapClass: [''],
-      readonly: true,
     }),
     textareaField({
       label: 'Комментарий ОКК',
@@ -1715,7 +1807,10 @@ export default {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
-                context.formData.status_id === 3) &&
+                context.formData.status_id === 3 ||
+                ((context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
             type: true,
           },
@@ -1822,7 +1917,7 @@ export default {
           },
           {
             funcCondition: (context) =>
-              context.formData.status_id === 6 &&
+              context.originalData?.status_id === 6 &&
               !context.environment.readonlyAll,
             type: false,
           },
@@ -1849,8 +1944,8 @@ export default {
           },
           {
             funcCondition: (context) =>
-              !context.environment.readonlyAll &&
-              context.formData.status_id !== 6,
+              context.originalData?.status_id !== 6 &&
+              !context.environment.readonlyAll,
             type: false,
           },
         ],

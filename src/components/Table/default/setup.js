@@ -521,6 +521,10 @@ const table = {
           el.value = ''
           return
         }
+        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
+          el.value = null
+          return
+        }
         el.value = filterData[el.name]
         if (
           el.type === 'dateRange' &&

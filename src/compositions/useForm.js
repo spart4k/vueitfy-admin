@@ -61,7 +61,7 @@ export default function ({
       return obj
     }, {})
   )
-  let originalData
+  const originalData = ref()
 
   const computedFormData = computed(() => formData)
 
@@ -409,7 +409,7 @@ export default function ({
               const conditionContext = {
                 store,
                 formData,
-                originalData,
+                originalData: originalData.value,
                 environment,
               }
               return (
@@ -614,9 +614,9 @@ export default function ({
       arr?.forEach((item) => {
         obj.new.push(item.path)
       })
-      if (originalData) {
+      if (originalData.value) {
         const stash = dropzone.toObject?.stash
-        obj.del = _.difference(originalData[stash], formData[stash])
+        obj.del = _.difference(originalData.value[stash], formData[stash])
       }
       setFormData(obj, dropzone)
     }
@@ -929,7 +929,7 @@ export default function ({
           const context = {
             store,
             formData,
-            originalData,
+            originalData: originalData.value,
             environment,
             form,
           }
@@ -1071,7 +1071,7 @@ export default function ({
         const context = {
           store,
           formData,
-          originalData,
+          originalData: originalData.value,
           environment,
           form,
         }
@@ -1117,9 +1117,11 @@ export default function ({
             targetField.defaultObjectData.forEach((el) =>
               targetField.objectData.push(el)
             )
+            console.log()
             // findedDep.fields.forEach((el) => (formData[el] = ))
           }
-          if (data.length) {
+          console.log(data.length)
+          if (data.length || targetField.objectData.length) {
             targetField.objectData = [...data, ...targetField.objectData]
           } else {
             const findedDep = targetField.dependence.find(
@@ -1177,29 +1179,33 @@ export default function ({
         }
       }
       if (dependence.type === 'update') {
+        console.log('update', field.name)
         // dependence
-        if (field.hasOwnProperty('objectData')) {
-          if (field.objectData?.length) {
-            const findedEl = field.objectData?.find((el) => el.id === value)
+        if (field.hasOwnProperty('defaultItems')) {
+          if (field.defaultItems?.length) {
+            const findedEl = field.defaultItems?.find((el) => el.id === value)
+            console.log(findedEl)
             if (findedEl) {
               dependence.fields.forEach((el) => {
                 formData[el] = findedEl[el]
+                console.log(formData[el], el)
               })
             }
           } else {
             dependence.fields.forEach((el) => {
-              formData[el] = ''
+              // formData[el] = ''
             })
           }
         }
-
+        console.log(formData[field.name])
         if (
           formData[field.name] === '' ||
           formData[field.name] === null ||
           formData[field.name] === undefined
         ) {
+          console.log(formData[field.name])
           dependence.fields.forEach((el) => {
-            formData[el] = ''
+            // formData[el] = ''
           })
         }
       }
@@ -1256,6 +1262,9 @@ export default function ({
       } else {
         filter.value = formData[el.field]
       }
+      if (el.toArray && !Array.isArray(filter.value)) {
+        filter.value = [filter.value]
+      }
       return filter
     })
     return filters
@@ -1298,7 +1307,7 @@ export default function ({
     await Promise.all(queryFields)
   }
 
-  const putSelectItems = (lists) => {
+  const putSelectItems = async (lists) => {
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
         el.alias ? el.alias === keyList : el.name === keyList
@@ -1346,6 +1355,13 @@ export default function ({
           if (field.putFirst)
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
+        }
+        if (
+          field.hasOwnProperty('dependence') ||
+          field.hasOwnProperty('updateList')
+        ) {
+          const value = formData[field.name]
+          await getDependies({ value, field })
         }
         showField(field.type, field, true)
       }
@@ -1547,7 +1563,7 @@ export default function ({
           })
         })
       }
-      originalData = _.cloneDeep(formData)
+      originalData.value = _.cloneDeep(formData)
     }
     await loadAutocompletes()
 
@@ -1560,7 +1576,7 @@ export default function ({
               const conditionContext = {
                 store,
                 formData,
-                originalData,
+                originalData: originalData.value,
                 environment,
               }
               if (item.funcCondition(conditionContext) === item.type) return []
@@ -1654,6 +1670,9 @@ export default function ({
             field.hasOwnProperty('updateList')
           ) {
             const value = formData[field.name]
+            if (field.name === 'personal_bank_id') {
+              console.log(field.name)
+            }
             await getDependies({ value, field })
           }
           if (field.hasOwnProperty('updateList')) {
@@ -1704,6 +1723,7 @@ export default function ({
                 store,
                 formData,
                 environment,
+                originalData: originalData.value,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1764,7 +1784,7 @@ export default function ({
               const conditionContext = {
                 store,
                 formData,
-                originalData,
+                originalData: originalData.value,
                 environment,
                 mode,
               }
@@ -1986,6 +2006,7 @@ export default function ({
     touchedForm: $touched,
     validate,
     formData,
+    originalData,
     getDataForm,
     reset,
     update,

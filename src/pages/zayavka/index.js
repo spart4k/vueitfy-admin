@@ -2033,29 +2033,102 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id !==
+            ((Number(context.originalData.from_account_id) !==
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4 ||
               context.store.state.user.permission_id === 16 ||
               (context.store.state.user.permission_id === 3 &&
                 context.originalData.direction_id === 7)) &&
-            (context.originalData.status === 1 ||
-              context.originalData.status === 2 ||
-              context.originalData.status === 3),
+              (context.originalData.status === 1 ||
+                context.originalData.status === 2 ||
+                context.originalData.status === 3)) ||
+            ((context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22) &&
+              context.originalData.status === 4) ||
+            context.originalData.status === 2,
           type: false, //могу при этих условиях
         },
       ],
     },
-    hiding: {
-      conditions: [
-        {
-          target: 'formData',
-          field: 'status',
-          value: [1, 2, 3],
-          values: [1, 2, 3],
+    hideOption: [
+      // {
+      //   target: 'status',
+      //   targetValue: [1, 2, 3],
+      //   value: [1, 2, 3],
+      //   type: false,
+      // },
+      // {
+      //   target: 'status',
+      //   targetValue: [4],
+      //   value: [4, 9],
+      //   type: false,
+      // },
+      // {
+      //   target: 'status',
+      //   targetValue: [9],
+      //   value: [9],
+      //   type: false,
+      // },
+      {
+        func: (context) => {
+          return (
+            (context.formData?.status === 1 ||
+              context.formData?.status === 2 ||
+              context.formData?.status === 3) &&
+            !(
+              context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22
+            )
+          )
         },
-      ],
-    },
+        value: [1, 2, 3],
+        type: false,
+      },
+      {
+        func: (context) => {
+          return (
+            context.originalData?.status === 2 &&
+            (context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22)
+          )
+        },
+        value: [2, 4],
+        type: false,
+      },
+      {
+        func: (context) => {
+          return (
+            context.originalData?.status === 4 &&
+            (context.store.state.user.permission_id === 12 ||
+              context.store.state.user.permission_id === 22)
+          )
+        },
+        value: [4, 9],
+        type: false,
+      },
+    ],
+    // hiding: {
+    //   conditions: [
+    //     {
+    //       target: 'formData',
+    //       field: 'status',
+    //       value: [1, 2, 3],
+    //       values: [1, 2, 3, 4],
+    //     },
+    //     {
+    //       target: 'formData',
+    //       field: 'status',
+    //       value: [4],
+    //       values: [4, 9],
+    //     },
+    //     {
+    //       target: 'formData',
+    //       field: 'status',
+    //       value: [2],
+    //       values: [2, 4],
+    //     },
+    //   ],
+    // },
     validations: { required },
     bootstrapClass: [''],
   }),
@@ -2118,7 +2191,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            context.originalData.from_account_id ===
+            Number(context.originalData.from_account_id) ===
               context.store.state.user.id && context.originalData.status === 1,
           type: false,
         },
@@ -2409,7 +2482,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -2558,7 +2631,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -2852,7 +2925,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -2998,7 +3071,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3068,7 +3141,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3153,7 +3226,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3228,7 +3301,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3379,7 +3452,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3439,7 +3512,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3534,7 +3607,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3582,7 +3655,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3619,7 +3692,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3648,7 +3721,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3678,7 +3751,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3706,7 +3779,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3738,7 +3811,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3768,7 +3841,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -3796,12 +3869,12 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id &&
               (context.originalData.status === 1 ||
                 context.originalData.status === 3 ||
                 context.originalData.status === 9)) ||
-            (context.originalData.from_account_id !==
+            (Number(context.originalData.from_account_id) !==
               context.store.state.user.id &&
               context.originalData.status === 9),
           type: false,
@@ -4068,12 +4141,12 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id &&
               (context.originalData.status === 1 ||
                 context.originalData.status === 3 ||
                 context.originalData.status === 9)) ||
-            (context.originalData.from_account_id !==
+            (Number(context.originalData.from_account_id) !==
               context.store.state.user.id &&
               context.originalData.status === 9),
           type: false,
@@ -4115,12 +4188,12 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id &&
               (context.originalData.status === 1 ||
                 context.originalData.status === 3 ||
                 context.originalData.status === 9)) ||
-            (context.originalData.from_account_id !==
+            (Number(context.originalData.from_account_id) !==
               context.store.state.user.id &&
               context.originalData.status === 9),
           type: false,
@@ -4164,12 +4237,12 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id &&
               (context.originalData.status === 1 ||
                 context.originalData.status === 3 ||
                 context.originalData.status === 9)) ||
-            (context.originalData.from_account_id !==
+            (Number(context.originalData.from_account_id) !==
               context.store.state.user.id &&
               context.originalData.status === 9),
           type: false,
@@ -4217,7 +4290,7 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (context.originalData.from_account_id ===
+            (Number(context.originalData.from_account_id) ===
               context.store.state.user.id ||
               context.store.state.user.permission_id === 4) &&
             (context.originalData.status === 1 ||
@@ -4350,23 +4423,23 @@ export const editFields = [
     // validations: { required },
     bootstrapClass: [''],
   }),
-  selectField({
+  stringField({
     label: 'from_account_id',
     name: 'from_account_id',
     placeholder: '',
     class: [''],
     notSend: true,
     readonly: true,
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
+    // selectOption: {
+    //   text: 'name',
+    //   value: 'id',
+    // },
     position: {
       cols: 12,
       sm: 12,
     },
-    putFirst: true,
-    disabled: true,
+    // putFirst: true,
+    // disabled: true,
     isShow: {
       value: false,
     },
@@ -5456,7 +5529,7 @@ const config = {
                 field: 'from_account_id',
                 alias: 'account_id',
                 value: '',
-                source: 'originalData',
+                source: 'formData',
                 type: 'num',
               },
             ],
@@ -5488,9 +5561,9 @@ const config = {
               type: 'every',
               condition: [
                 {
-                  field: 'status',
-                  target: 'formData',
-                  value: [9],
+                  funcCondition: (context) =>
+                    context.originalData?.status === 9 &&
+                    !context.environment.readonlyAll,
                   type: false,
                 },
               ],
@@ -5510,10 +5583,10 @@ const config = {
               type: 'every',
               condition: [
                 {
-                  field: 'status',
-                  target: 'formData',
-                  value: [9],
-                  type: true,
+                  funcCondition: (context) =>
+                    context.originalData?.status !== 9 &&
+                    !context.environment.readonlyAll,
+                  type: false,
                 },
               ],
             },
