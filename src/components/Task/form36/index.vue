@@ -67,7 +67,7 @@
         <v-btn small @click="$emit('closePopup')" color="transparent mr-3"
           >Закрыть</v-btn
         >
-        <v-btn small :disabled="false" @click="sendData" color="primary"
+        <v-btn small :disabled="!isValid" @click="sendData" color="primary"
           >Завершить</v-btn
         >
       </div>
