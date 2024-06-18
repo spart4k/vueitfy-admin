@@ -52,6 +52,11 @@ export default {
       },
     }
     const docFormRef = ref(null)
+    const isValid = computed(() => {
+      return docFormRef?.value?.docRows?.every(
+        (el) => el.listRequestsForUpload.length
+      )
+    })
     const doc = JSON.parse(props.data.task.dop_data).doc_id
     const docs =
       doc === 4 ? [{ doc_id: doc }, { doc_id: 14 }] : [{ doc_id: doc }]
@@ -151,6 +156,7 @@ export default {
       docs,
       docFormRef,
       dopData,
+      isValid,
     }
   },
 }
