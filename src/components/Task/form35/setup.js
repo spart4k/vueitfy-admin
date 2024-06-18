@@ -836,9 +836,11 @@ const Form7 = defineComponent({
       })
     }
     const sendData = async () => {
-      vForm.value.$touch()
+      // vForm.value.$touch()
       validate(true)
-      if (vForm.value.$invalid) return
+      if (!(formData.type_pay === 4 && !formData.req_zr_id)) {
+        if (vForm.value.$invalid) return
+      }
       const resultZayavka = await sendZayavka()
       const { success } = await changeStatusTask()
       if (success) {
