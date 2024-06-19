@@ -1075,13 +1075,34 @@ export default {
           value: '',
         },
       ],
-      dependence: [
+      // dependence: [
+      //   {
+      //     //fields: ['statement_card', 'cardowner'],
+      //     fillField: ['fio', 'invoice', 'bank_id'],
+      //     type: 'api',
+      //     module: 'personal/getCard',
+      //     field: 'personal_bank_id',
+      //   },
+      // ],
+      updateList: [
         {
-          //fields: ['statement_card', 'cardowner'],
-          fillField: ['fio', 'invoice', 'bank_id'],
-          type: 'api',
-          module: 'personal/getCard',
-          field: 'personal_bank_id',
+          alias: 'personal_bank_id',
+          filter: [
+            {
+              field: 'personal_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'vid_vedomost_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
         },
       ],
       requiredFields: ['object_id'],
