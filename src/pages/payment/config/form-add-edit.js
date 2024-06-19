@@ -1071,7 +1071,7 @@ export default {
       dependence: [
         {
           //fields: ['statement_card', 'cardowner'],
-          fillField: ['fio', 'invoice'],
+          fillField: ['fio', 'invoice', 'bank_id'],
           type: 'api',
           module: 'personal/getCard',
           field: 'personal_bank_id',
@@ -1620,7 +1620,7 @@ export default {
       },
       defaultObjectData: [
         {
-          id: 11,
+          id: 0,
           name: '--Наличные--',
           bank_id: 11,
           invoice: '',
@@ -1630,7 +1630,7 @@ export default {
       objectData: [],
       defaultItems: [
         {
-          id: 11,
+          id: 0,
           name: '--Наличные--',
           bank_id: 11,
           invoice: '',

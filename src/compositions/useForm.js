@@ -1144,7 +1144,7 @@ export default function ({
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
           }
         } else if (data.length === 0) {
-          formData[depField] = 11
+          formData[depField] = 0
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = ''))
           }
