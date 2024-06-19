@@ -81,7 +81,7 @@ export default {
     selectField({
       label: 'Статус',
       name: 'status_id',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -99,7 +99,7 @@ export default {
     selectField({
       label: 'Вид ведомости',
       name: 'vid_vedomost_id',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -117,7 +117,7 @@ export default {
     selectField({
       label: 'Вид оплаты',
       name: 'bank_id',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -136,7 +136,7 @@ export default {
       label: 'Менеджеры',
       name: 'account_id',
       alias: 'managers',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -189,7 +189,7 @@ export default {
     selectField({
       label: 'Направления',
       name: 'direction_id',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -226,7 +226,7 @@ export default {
       label: 'Объект',
       name: 'object_id',
       typeFilter: 'select',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -302,7 +302,7 @@ export default {
       label: 'Персонал',
       name: 'personal_id',
       typeFilter: 'select',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -343,7 +343,7 @@ export default {
     selectField({
       label: 'Должность',
       name: 'doljnost_id',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
