@@ -285,6 +285,13 @@ export default {
           source: 'formData',
           type: 'num',
         },
+        {
+          field: 'vid_vedomost_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
       ],
     },
     {
@@ -1635,6 +1642,14 @@ export default {
           bank_id: 11,
           invoice: '',
           fio: '',
+        },
+      ],
+      hideOption: [
+        {
+          target: 'vid_vedomost_id',
+          targetValue: [1],
+          value: [0],
+          type: true,
         },
       ],
       validations: { required },
