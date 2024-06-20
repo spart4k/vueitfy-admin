@@ -99,8 +99,8 @@
                 :style="{
                   width: head.width,
                 }"
-                v-show="head.isShow"
-                :id="head.value + '-table-header'"
+                v-show="head?.isShow"
+                :id="head?.value + '-table-header'"
                 class="v-table-header-row-cell"
                 v-for="(head, index) in proxyOptions"
                 :key="index"
