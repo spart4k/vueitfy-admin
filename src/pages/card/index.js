@@ -43,7 +43,8 @@ export const config = {
                     funcCondition: (context) => {
                       return (
                         context.store.state.user.id ===
-                        context.data.row.from_account_id
+                          context.data.row.from_account_id ||
+                        context.store.state.user.permission_id === 4
                       )
                     },
                     type: true,
@@ -71,8 +72,9 @@ export const config = {
                     funcCondition: (context) => {
                       return (
                         context.data.row.account_id !== 0 &&
-                        context.store.state.user.id ===
-                          context.data.row.from_account_id
+                        (context.store.state.user.id ===
+                          context.data.row.from_account_id ||
+                          context.store.state.user.permission_id === 4)
                       )
                     },
                     type: true,
@@ -105,8 +107,9 @@ export const config = {
                     funcCondition: (context) => {
                       return (
                         context.data.row.status_id !== 2 &&
-                        context.store.state.user.id ===
-                          context.data.row.from_account_id
+                        (context.store.state.user.id ===
+                          context.data.row.from_account_id ||
+                          context.store.state.user.permission_id === 4)
                       )
                     },
                     type: true,
@@ -139,8 +142,9 @@ export const config = {
                     funcCondition: (context) => {
                       return (
                         context.data.row.status_id === 2 &&
-                        context.store.state.user.id ===
-                          context.data.row.from_account_id
+                        (context.store.state.user.id ===
+                          context.data.row.from_account_id ||
+                          context.store.state.user.permission_id === 4)
                       )
                     },
                     type: true,
@@ -186,8 +190,9 @@ export const config = {
                     funcCondition: (context) => {
                       return (
                         !context.data.row.is_archive &&
-                        context.store.state.user.id ===
-                          context.data.row.from_account_id
+                        (context.store.state.user.id ===
+                          context.data.row.from_account_id ||
+                          context.store.state.user.permission_id === 4)
                       )
                     },
                     type: true,
@@ -221,8 +226,9 @@ export const config = {
                     funcCondition: (context) => {
                       return (
                         context.data.row.is_archive &&
-                        context.store.state.user.id ===
-                          context.data.row.from_account_id
+                        (context.store.state.user.id ===
+                          context.data.row.from_account_id ||
+                          context.store.state.user.permission_id === 4)
                       )
                     },
                     type: true,

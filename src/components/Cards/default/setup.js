@@ -199,7 +199,7 @@ export default {
             loaded: false,
             index: i,
             page: Math.floor(i / pagination.value.countRows) + 1,
-            intersecting: i % pagination.value.countRows === 0,
+            intersecting: true,
           })
         }
       }
@@ -209,23 +209,31 @@ export default {
     }
 
     const getPage = async (entries, observer, isIntersecting) => {
-      const obsObject = items.value[entries[0].target.id]
-      const data = await store.dispatch('table/get', {
-        url: options.options.url,
-        data: {
-          countRows: pagination.value.countRows,
-          currentPage: obsObject.page,
-          searchGlobal: searchField.value,
-          filter: [],
-          searchColumns: [],
-          sorts: [],
-        },
-      })
-      data.rows.forEach((item) => {
-        const emptyObjectIndex = items.value.findIndex(
-          (x) => x.page === obsObject.page
-        )
-        Vue.set(items.value, emptyObjectIndex, item)
+      queueMicrotask(async () => {
+        const obsObject = items.value[entries[0].target.id]
+        if (!obsObject.intersecting) return
+        items.value.forEach((item) => {
+          if (item.page === obsObject.page) {
+            item.intersecting = false
+          }
+        })
+        const data = await store.dispatch('table/get', {
+          url: options.options.url,
+          data: {
+            countRows: pagination.value.countRows,
+            currentPage: obsObject.page,
+            searchGlobal: searchField.value,
+            filter: [],
+            searchColumns: [],
+            sorts: [],
+          },
+        })
+        data.rows.forEach((item) => {
+          const emptyObjectIndex = items.value.findIndex(
+            (x) => x.page === obsObject.page
+          )
+          Vue.set(items.value, emptyObjectIndex, item)
+        })
       })
     }
 

@@ -47,7 +47,6 @@
           :key="item.id"
           :id="item.index ?? item.id"
           :isArchive="isArchive"
-          class=""
           :addPermission="addPermission"
           v-intersect.once="item.intersecting && getPage"
         />

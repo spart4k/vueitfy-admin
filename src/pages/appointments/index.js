@@ -955,7 +955,7 @@ const config = {
       isShow: true,
       width: '150',
       value: 'print_form_key',
-      alias: 'pt.print_form_key',
+      alias: 'uk.print_form_key',
       search: {
         field: '',
         isShow: true,
