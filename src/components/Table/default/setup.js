@@ -684,7 +684,7 @@ const table = {
             filter: filtersColumns.value,
             searchColumns,
             sorts,
-            ountRows: paramsQuery.value.countRows,
+            countRows: paramsQuery.value.countRows,
             currentPage: paramsQuery.value.currentPage,
           },
         })
