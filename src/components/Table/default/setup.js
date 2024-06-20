@@ -536,7 +536,7 @@ const table = {
         ) {
           return
         }
-        if (!filterData[el.name].length) {
+        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
           return
         }
         let type = el.typeFilter ? el.typeFilter : el.type
@@ -577,7 +577,9 @@ const table = {
     const openRow = ($event, row) => {
       if (options.detail?.click) {
         if (options.detail.click.condition) {
-          const condition = options.detail.click.condition.permissions.includes(store.state.user.permission_id)
+          const condition = options.detail.click.condition.permissions.includes(
+            store.state.user.permission_id
+          )
           if (condition !== options.detail.click.condition.type) return
         }
       }
@@ -687,7 +689,7 @@ const table = {
         const context = {
           store,
           items: lastSelected.value.items,
-          idArray: lastSelected.value.items.map(x => x.row.id),
+          idArray: lastSelected.value.items.map((x) => x.row.id),
         }
         await button.method(context)
       }
