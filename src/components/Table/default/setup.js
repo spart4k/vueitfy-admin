@@ -684,6 +684,8 @@ const table = {
             filter: filtersColumns.value,
             searchColumns,
             sorts,
+            ountRows: paramsQuery.value.countRows,
+            currentPage: paramsQuery.value.currentPage,
           },
         })
         const link = document.createElement('a')
