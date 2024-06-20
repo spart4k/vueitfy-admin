@@ -92,19 +92,6 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'o.regions_id',
-      updateList: [
-        {
-          alias: 'city_id',
-          filter: [
-            {
-              field: 'regions_id',
-              value: '',
-              source: 'formData',
-              type: 'num',
-            },
-          ],
-        },
-      ],
     }),
     selectField({
       label: 'Город',

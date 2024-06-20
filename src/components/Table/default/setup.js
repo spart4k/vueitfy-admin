@@ -515,6 +515,7 @@ const table = {
       }
     }
     const saveFilter = async (filterData) => {
+      console.log(filterData)
       filtersColumns.value = []
       filters.value?.fields?.forEach((el) => {
         if (!filterData[el.name]) {
@@ -522,12 +523,16 @@ const table = {
           return
         }
         el.value = filterData[el.name]
+        console.log(filterData[el.name], el.name)
         if (
           el.type === 'dateRange' &&
           filterData[el.name].every(
             (el) => el === null || el === undefined || el === ''
           )
         ) {
+          return
+        }
+        if (!filterData[el.name].length) {
           return
         }
         let type = el.typeFilter ? el.typeFilter : el.type
