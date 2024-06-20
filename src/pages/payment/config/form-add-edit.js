@@ -285,6 +285,13 @@ export default {
           source: 'formData',
           type: 'num',
         },
+        {
+          field: 'vid_vedomost_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
       ],
     },
     {
@@ -1068,13 +1075,34 @@ export default {
           value: '',
         },
       ],
-      dependence: [
+      // dependence: [
+      //   {
+      //     //fields: ['statement_card', 'cardowner'],
+      //     fillField: ['fio', 'invoice', 'bank_id'],
+      //     type: 'api',
+      //     module: 'personal/getCard',
+      //     field: 'personal_bank_id',
+      //   },
+      // ],
+      updateList: [
         {
-          //fields: ['statement_card', 'cardowner'],
-          fillField: ['fio', 'invoice'],
-          type: 'api',
-          module: 'personal/getCard',
-          field: 'personal_bank_id',
+          alias: 'personal_bank_id',
+          filter: [
+            {
+              field: 'personal_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'vid_vedomost_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
         },
       ],
       requiredFields: ['object_id'],
@@ -1620,7 +1648,7 @@ export default {
       },
       defaultObjectData: [
         {
-          id: 11,
+          id: 0,
           name: '--Наличные--',
           bank_id: 11,
           invoice: '',
@@ -1630,11 +1658,19 @@ export default {
       objectData: [],
       defaultItems: [
         {
-          id: 11,
+          id: 0,
           name: '--Наличные--',
           bank_id: 11,
           invoice: '',
           fio: '',
+        },
+      ],
+      hideOption: [
+        {
+          target: 'vid_vedomost_id',
+          targetValue: [1],
+          value: [0],
+          type: true,
         },
       ],
       validations: { required },

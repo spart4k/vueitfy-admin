@@ -1145,7 +1145,7 @@ export default function ({
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
           }
         } else if (data.length === 0) {
-          formData[depField] = 11
+          formData[depField] = 0
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = ''))
           }
@@ -1183,7 +1183,8 @@ export default function ({
         // dependence
         if (field.hasOwnProperty('defaultItems')) {
           if (field.defaultItems?.length) {
-            const findedEl = field.defaultItems?.find((el) => el.id === value)
+            console.log(JSON.stringify(field.items))
+            const findedEl = field.items?.find((el) => el.id === value)
             console.log(findedEl)
             if (findedEl) {
               dependence.fields.forEach((el) => {
