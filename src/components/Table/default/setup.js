@@ -532,7 +532,7 @@ const table = {
         ) {
           return
         }
-        if (!filterData[el.name].length) {
+        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
           return
         }
         let type = el.typeFilter ? el.typeFilter : el.type
