@@ -34,6 +34,7 @@ import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
+import GanttaView from '@/views/GanttaView.vue'
 
 Vue.use(VueRouter)
 
@@ -116,6 +117,17 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/gantta',
+    name: 'gantta',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: GanttaView,
   },
   {
     path: '/payment',
