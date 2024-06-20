@@ -1738,7 +1738,7 @@ export default {
       bootstrapClass: [''],
       readonly: true,
     }),
-    textareaField({
+    stringField({
       label: 'Текст ошибки',
       name: 'error_text',
       placeholder: '',

@@ -660,10 +660,30 @@ const table = {
       } else if (button.label === 'Обновить') {
         await getItems()
       } else if (type === 'sendPage') {
+        let sorts = []
+        let searchColumns = []
+
+        paramsQuery.value.sorts.forEach((el) => {
+          if (!el.value) {
+            return
+          } else {
+            sorts.push(el)
+          }
+        })
+        paramsQuery.value.searchColumns.forEach((el) => {
+          if (!el.value) {
+            return
+          } else {
+            searchColumns.push(el)
+          }
+        })
         const path = await store.dispatch('table/sendPage', {
           page: button.requestPage,
           content: {
+            searchGlobal: paramsQuery.value.searchGlobal,
             filter: filtersColumns.value,
+            searchColumns,
+            sorts,
           },
         })
         const link = document.createElement('a')
