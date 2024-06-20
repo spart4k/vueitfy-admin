@@ -521,10 +521,6 @@ const table = {
           el.value = ''
           return
         }
-        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
-          el.value = null
-          return
-        }
         el.value = filterData[el.name]
         if (
           el.type === 'dateRange' &&
@@ -664,10 +660,30 @@ const table = {
       } else if (button.label === 'Обновить') {
         await getItems()
       } else if (type === 'sendPage') {
+        let sorts = []
+        let searchColumns = []
+
+        paramsQuery.value.sorts.forEach((el) => {
+          if (!el.value) {
+            return
+          } else {
+            sorts.push(el)
+          }
+        })
+        paramsQuery.value.searchColumns.forEach((el) => {
+          if (!el.value) {
+            return
+          } else {
+            searchColumns.push(el)
+          }
+        })
         const path = await store.dispatch('table/sendPage', {
           page: button.requestPage,
           content: {
+            searchGlobal: paramsQuery.value.searchGlobal,
             filter: filtersColumns.value,
+            searchColumns,
+            sorts,
           },
         })
         const link = document.createElement('a')
@@ -750,7 +766,7 @@ const table = {
           headCell,
           width,
           x,
-          fixed: headCell.fixed,
+          fixed: headCell?.fixed,
         })
         setTimeout(() => {
           //
@@ -763,6 +779,9 @@ const table = {
       pagination.value = {
         ...options.data,
       }
+      console.log(
+        options.detail && options.detail.type === 'popup' && route.meta.mode
+      )
       if (
         options.detail &&
         options.detail.type === 'popup' &&
@@ -995,6 +1014,7 @@ const table = {
       changeHeaders,
       confirmDialog,
       triggerDialogFunction,
+      route,
     }
   },
 }
