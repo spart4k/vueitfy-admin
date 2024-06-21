@@ -119,8 +119,8 @@ const routes = [
     ],
   },
   {
-    path: '/gantta',
-    name: 'gantta',
+    path: '/vacations',
+    name: 'vacations',
     meta: {
       layout: 'blank-layout',
     },
