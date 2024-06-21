@@ -602,3 +602,22 @@ input:-webkit-autofill {
 .v-menu__content {
   z-index: 350 !important;
 }
+.gstc__chart-timeline-items-row-item {
+  // pointer-events: none !important;
+  border-radius: 5px;
+}
+.gstc__list-toggle {
+  display: none;
+}
+.employ {
+  display: flex;
+  align-items: center;
+  &-img {
+    height: 40px;
+    margin-right: 10px;
+  }
+}
+
+.gstc {
+  height: 100% !important;
+}
