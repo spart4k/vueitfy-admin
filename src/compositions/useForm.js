@@ -54,9 +54,11 @@ export default function ({
   const filesBasket = ref({})
   const { emit } = context.root.ctx
   const permission = computed(() => store.state.user.permission_id)
+  const tabFields = form.fields
   const formData = reactive(
-    Object.keys(fields).reduce((obj, key) => {
-      obj[key] = ref(fields[key].default)
+    Object.keys(tabFields).reduce((obj, key) => {
+      console.log(tabFields)
+      if (tabFields[key].default) obj[key] = ref(tabFields[key].default)
       return obj
     }, {})
   )
@@ -69,9 +71,9 @@ export default function ({
   const validations = () => {
     const formFields = {}
     if (form) {
-      form?.fields?.forEach((el) => {
-        formFields[el.name] = el
-      })
+      for (let key in tabFields) {
+        formFields[tabFields[key].name] = tabFields[key]
+      }
       if (!form) return
     }
     return Object.keys(formData || fields).reduce((obj, key) => {
@@ -698,7 +700,6 @@ export default function ({
       })
     )
 
-    console.log('zxc')
     if (update) {
       const result = await changeForm(queryParams)
     } else if (change) {
@@ -724,7 +725,7 @@ export default function ({
   }
 
   const hasSelect = () => {
-    return form?.fields.some(
+    return Object.values(tabFields).some(
       (field) => field.type === 'select' && field.isShow && !field.withoutList
     )
   }
@@ -890,9 +891,7 @@ export default function ({
       field.loading = true
       const lists = await makeRequestList(listData)
       for (let keyList in lists.data) {
-        const field = form?.fields.find((el) =>
-          el.alias ? el.alias === keyList : el.name === keyList
-        )
+        const field = tabFields[keyList]
         if (field) {
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
@@ -1116,10 +1115,8 @@ export default function ({
             targetField.defaultObjectData.forEach((el) =>
               targetField.objectData.push(el)
             )
-            console.log()
             // findedDep.fields.forEach((el) => (formData[el] = ))
           }
-          console.log(data.length)
           if (data.length || targetField.objectData.length) {
             targetField.objectData = [...data, ...targetField.objectData]
           } else {
@@ -1178,16 +1175,13 @@ export default function ({
         }
       }
       if (dependence.type === 'update') {
-        console.log('update', field.name)
         // dependence
         if (field.hasOwnProperty('defaultItems')) {
           if (field.defaultItems?.length) {
             const findedEl = field.defaultItems?.find((el) => el.id === value)
-            console.log(findedEl)
             if (findedEl) {
               dependence.fields.forEach((el) => {
                 formData[el] = findedEl[el]
-                console.log(formData[el], el)
               })
             }
           } else {
@@ -1196,13 +1190,11 @@ export default function ({
             })
           }
         }
-        console.log(formData[field.name])
         if (
           formData[field.name] === '' ||
           formData[field.name] === null ||
           formData[field.name] === undefined
         ) {
-          console.log(formData[field.name])
           dependence.fields.forEach((el) => {
             // formData[el] = ''
           })
@@ -1515,12 +1507,13 @@ export default function ({
         environment.readonlyAll = syncForm.readonly
       }
       for (let formKey in syncForm.data) {
-        const field = form?.fields.find((fieldEl) => fieldEl.name === formKey)
-        if (field) {
+        const field = formData[formKey]
+        if (field !== undefined) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
           if (!field.notPut) {
-            Vue.set(formData, field.name, syncForm.data[formKey])
+            formData[formKey] = syncForm.data[formKey]
+            // Vue.set(formData, field.name, syncForm.data[formKey])
             if (field.type === 'checkbox')
               formData[field.name] = !!syncForm.data[formKey]
           }
@@ -1545,7 +1538,7 @@ export default function ({
         })
       )
 
-      const prescription = form?.fields.find(
+      const prescription = Object.values(tabFields).find(
         (x) => x.prescription
       )?.prescription
       if (prescription) {
@@ -1669,9 +1662,6 @@ export default function ({
             field.hasOwnProperty('updateList')
           ) {
             const value = formData[field.name]
-            if (field.name === 'personal_bank_id') {
-              console.log(field.name)
-            }
             await getDependies({ value, field })
           }
           if (field.hasOwnProperty('updateList')) {
@@ -1977,9 +1967,9 @@ export default function ({
   watch(
     () => wrapFormData,
     () => {
-      form?.fields?.forEach((el) => {
-        showField(el.type, el)
-      })
+      for (let key in tabFields) {
+        showField(tabFields[key].type, tabFields[key])
+      }
       if ($touched.value) {
         errorsCount()
       }
