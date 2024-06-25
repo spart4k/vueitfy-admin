@@ -169,6 +169,28 @@ const filters = {
       bootstrapClass: [''],
       aliasFilter: 'pt.personal_id',
     }),
+    autocompleteField({
+      label: 'Аватар',
+      name: 'user_key',
+      subtype: 'single',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_personal_target_personal',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.user_key',
+    }),
     selectField({
       label: 'Должность',
       name: 'doljnost_id',
