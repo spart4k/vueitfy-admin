@@ -3,7 +3,7 @@
     <component :is="layout">
       <router-view />
     </component>
-    <Notifier />
+    <Notifier /> </
     <portal-target name="filter" />
     <portal-target name="table-detail" multiple />
     <!-- <portal-target name="table-detail2" /> -->
