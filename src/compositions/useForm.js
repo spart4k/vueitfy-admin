@@ -1626,60 +1626,60 @@ export default function ({
         return element
       })
       lists = await makeRequestList(listQuery)
-      for (let keyList in lists.data) {
-        const field = form?.fields.find((el) => {
-          return el.alias ? el.alias === keyList : el.name === keyList
-        })
-        const listObject = form?.lists?.find((el) => {
-          return el.alias ? el.alias === keyList : el.name === keyList
-        })
-        if (field) {
-          field.hideItems = lists.data[keyList]
-          if (!lists.data[keyList].length && listObject.emptyWarning) {
-            store.commit('notifies/showMessage', {
-              color: 'warning',
-              content: listObject.emptyWarning.text,
-              // timeout: 3000,
-            })
-          }
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value && el.target !== 'formData'
-              )
-              if (condition) {
-                lists.data[keyList] = lists.data[keyList].filter((el) => {
-                  return !condition.values.includes(el.id)
-                })
-              }
-            }
-          }
-          // field.items = lists.data[keyList]
-          // Vue.set(field, 'items', lists.data[keyList])
-          Vue.set(field, 'items', [])
-          field.items = field.defaultItems
-            ? [...field.defaultItems, ...lists.data[keyList]]
-            : lists.data[keyList]
-          if (field.items.length === 1) {
-            // Если массив, вставить массив
-            if (field.putFirst)
-              formData[field.name] = field.items[0][field.selectOption.value]
-          }
-          if (
-            field.hasOwnProperty('dependence') ||
-            field.hasOwnProperty('updateList')
-          ) {
-            const value = formData[field.name]
-            if (field.name === 'personal_bank_id') {
-              console.log(field.name)
-            }
-            await getDependies({ value, field })
-          }
-          if (field.hasOwnProperty('updateList')) {
-            // await queryList(field, false)
-          }
-        }
-      }
+      // for (let keyList in lists.data) {
+      //   const field = form?.fields.find((el) => {
+      //     return el.alias ? el.alias === keyList : el.name === keyList
+      //   })
+      //   const listObject = form?.lists?.find((el) => {
+      //     return el.alias ? el.alias === keyList : el.name === keyList
+      //   })
+      //   if (field) {
+      //     field.hideItems = lists.data[keyList]
+      //     if (!lists.data[keyList].length && listObject.emptyWarning) {
+      //       store.commit('notifies/showMessage', {
+      //         color: 'warning',
+      //         content: listObject.emptyWarning.text,
+      //         // timeout: 3000,
+      //       })
+      //     }
+      //     if (field.hiding) {
+      //       if (field.hiding.conditions) {
+      //         const condition = field.hiding.conditions.find(
+      //           (el) => mode === el.value && el.target !== 'formData'
+      //         )
+      //         if (condition) {
+      //           lists.data[keyList] = lists.data[keyList].filter((el) => {
+      //             return !condition.values.includes(el.id)
+      //           })
+      //         }
+      //       }
+      //     }
+      //     // field.items = lists.data[keyList]
+      //     // Vue.set(field, 'items', lists.data[keyList])
+      //     Vue.set(field, 'items', [])
+      //     field.items = field.defaultItems
+      //       ? [...field.defaultItems, ...lists.data[keyList]]
+      //       : lists.data[keyList]
+      //     if (field.items.length === 1) {
+      //       // Если массив, вставить массив
+      //       if (field.putFirst)
+      //         formData[field.name] = field.items[0][field.selectOption.value]
+      //     }
+      //     if (
+      //       field.hasOwnProperty('dependence') ||
+      //       field.hasOwnProperty('updateList')
+      //     ) {
+      //       const value = formData[field.name]
+      //       if (field.name === 'personal_bank_id') {
+      //         console.log(field.name)
+      //       }
+      //       await getDependies({ value, field })
+      //     }
+      //     if (field.hasOwnProperty('updateList')) {
+      //       // await queryList(field, false)
+      //     }
+      //   }
+      // }
       putSelectItems(lists)
     }
     loading.value = false
