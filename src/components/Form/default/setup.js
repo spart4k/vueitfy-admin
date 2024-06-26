@@ -71,23 +71,23 @@ export default {
         return route.params.id ? 'edit' : 'add'
       }
     })
-    const fields = () => {
-      const fields = {}
-      const tabFields = {}
-      for (let i = 0; i < props.tab.fields.length; i++) {
-        tabFields[props.tab.fields[i].name] = props.tab.fields[i]
-      }
-      for (let key in tabFields) {
-        const { validations } = tabFields[key]
-        Vue.set(fields, tabFields[key].name, {})
-        Vue.set(fields[tabFields[key].name], 'validations', validations)
-        Vue.set(fields[tabFields[key].name], 'default', tabFields[key].value)
-      }
-      return fields
-    }
+    // const fields = () => {
+    //   const fields = {}
+    //   const tabFields = {}
+    //   for (let i = 0; i < props.tab.fields.length; i++) {
+    //     tabFields[props.tab.fields[i].name] = props.tab.fields[i]
+    //   }
+    //   for (let key in tabFields) {
+    //     const { validations } = tabFields[key]
+    //     Vue.set(fields, tabFields[key].name, {})
+    //     Vue.set(fields[tabFields[key].name], 'validations', validations)
+    //     Vue.set(fields[tabFields[key].name], 'default', tabFields[key].value)
+    //   }
+    //   return fields
+    // }
 
     const params = props.tab.lists
-    const data = params
+    // const data = params
     const getRequestParam = () => {
       if (props.detail?.requestId) {
         return _.get(route.params, props.detail.requestId)
@@ -230,8 +230,8 @@ export default {
       context,
       detail: props.detail,
       loading,
-      fields: fields(),
-      setFields: fields,
+      // fields: fields(),
+      // setFields: fields,
       makeRequest,
       makeRequestList,
       isEdit,

@@ -6,6 +6,7 @@ import Vue, {
   reactive,
   readonly,
   nextTick,
+  onMounted,
 } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 // import { required } from '@vuelidate/validators'
@@ -28,7 +29,7 @@ import { list } from 'postcss'
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
 export default function ({
-  fields = {},
+  // fields = {},
   watcher,
   context,
   loading,
@@ -39,7 +40,7 @@ export default function ({
   makeRequestList,
   isEdit,
   prevTab,
-  setFields,
+  // setFields,
   mode,
   createForm,
   detail,
@@ -49,30 +50,36 @@ export default function ({
   const $touched = ref(false)
   const $invalid = ref(false)
   const $autoDirty = true
-  // const route = useRoute()
+
   const { route } = context.root
-  const filesBasket = ref({})
   const { emit } = context.root.ctx
+
   const permission = computed(() => store.state.user.permission_id)
-  const tabFields = form.fields
+
+  const fields = {}
+  const initFields = () => {
+    for (let i = 0; i < form.fields.length; i++) {
+      fields[form.fields[i].name] = form.fields[i]
+    }
+    for (let key in fields) {
+      if (formData.hasOwnProperty(key)) continue
+      Vue.set(formData, key, ref(fields[key].value))
+    }
+  }
+
+  const originalData = ref()
   const formData = reactive(
-    Object.keys(tabFields).reduce((obj, key) => {
-      console.log(tabFields)
-      if (tabFields[key].default) obj[key] = ref(tabFields[key].default)
+    Object.keys(form.fields).reduce((obj, key) => {
+      obj[form.fields[key].name] = ref(form.fields[key].value)
       return obj
     }, {})
   )
-  const originalData = ref()
-
-  const computedFormData = computed(() => formData)
-
-  let startFormData = formData
 
   const validations = () => {
     const formFields = {}
     if (form) {
-      for (let key in tabFields) {
-        formFields[tabFields[key].name] = tabFields[key]
+      for (let key in fields) {
+        formFields[fields[key].name] = fields[key]
       }
       if (!form) return
     }
@@ -91,25 +98,8 @@ export default function ({
     }, {})
   }
 
-  let $v = useVuelidate(validations(), computedFormData.value)
+  let $v = useVuelidate(validations(), formData)
 
-  const rebuildFormData = () => {
-    // Object.assign(
-    //   formData,
-    //   reactive(
-    //     Object.keys(setFields()).reduce((obj, key) => {
-    //       if (formData[key]) obj[key] = ref(formData[key])
-    //       else obj[key] = Vue.set(formData, key, ref(fields[key].default))
-    //       return obj
-    //     }, {})
-    //   )
-    // )
-    const fields = setFields()
-    for (let key in fields) {
-      if (formData.hasOwnProperty(key)) continue
-      Vue.set(formData, key, ref(fields[key].default))
-    }
-  }
   const popupForm = ref({
     isShow: false,
   })
@@ -126,7 +116,7 @@ export default function ({
   }
 
   const validate = (touch) => {
-    if (touch) $v = useVuelidate(validations(), computedFormData.value)
+    if (touch) $v = useVuelidate(validations(), formData)
     unref($v).$touch()
     if (touch) {
       $touched.value = true
@@ -135,27 +125,11 @@ export default function ({
     return !unref($v).$invalid
   }
 
-  const getDataForm = () =>
-    Object.keys(formData).reduce((obj, key) => {
-      obj[key] = unref(formData[key])
-
-      return obj
-    }, {})
-
   const reset = () => {
     Object.keys(formData).forEach((key) => {
-      formData[key] = fields[key].default
+      formData[key] = fields[key].value
     })
-
     $touched.value = false
-  }
-
-  const update = (data) => {
-    Object.keys(data).forEach((key) => {
-      if (formData[key]) {
-        formData[key].value = data[key]
-      }
-    })
   }
 
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
@@ -433,9 +407,6 @@ export default function ({
 
   const appendFieldHandler = ({ action, field }) => {
     if (form.detail.type === 'popup') {
-      //router.push({
-      //  path: `${route.}./1`
-      //})
       let requestId = 'id'
       if (form.detail.requestId) requestId = form.detail.requestId
 
@@ -579,18 +550,6 @@ export default function ({
     })
     return newForm
   }
-  const addFiles = (files, field) => {
-    // if (field.options.countFiles?.length > 1) {
-    //   // Vue.set(filesBasket.value, field.name, files)
-    // } else {
-    //   filesBasket.value[field.name] = { name: '', files, field }
-    // }
-    // filesBasket.value.push(files)
-  }
-
-  const getStoreQueries = async () => {
-    return await store.dispatch('storage/loadFile')
-  }
 
   const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
@@ -725,75 +684,10 @@ export default function ({
   }
 
   const hasSelect = () => {
-    return Object.values(tabFields).some(
+    return Object.values(fields).some(
       (field) => field.type === 'select' && field.isShow && !field.withoutList
     )
   }
-
-  //const initPreRequest = async () => {
-  //  //if (hasSelect()) {
-  //  //  listData = form?.lists?.map((list) => {
-  //  //    let filter = list.filter.reduce((acc, el) => {
-  //  //      const source = eval(el.source)
-  //  //      if (source[el.field] !== null && source[el.field] !== undefined) {
-  //  //        acc.push({
-  //  //          alias: el.alias ?? el.field,
-  //  //          value: Array.isArray(source[el.field])
-  //  //            ? source[el.field]
-  //  //            : [source[el.field]],
-  //  //          type: el.type,
-  //  //        })
-  //  //      }
-  //  //      return acc
-  //  //    }, [])
-
-  //  //    const element = {
-  //  //      alias: list.alias,
-  //  //      filter,
-  //  //    }
-  //  //    return element
-  //  //  })
-  //  //}
-  //  //const getListData = () => {
-  //  //  listData = form?.lists?.map((list) => {
-  //  //    let filter = list.filter.reduce((acc, el) => {
-  //  //      const source = eval(el.source)
-  //  //      if (source[el.field] !== null && source[el.field] !== undefined) {
-  //  //        acc.push({
-  //  //          alias: el.alias ?? el.field,
-  //  //          value: Array.isArray(source[el.field])
-  //  //            ? source[el.field]
-  //  //            : [source[el.field]],
-  //  //          type: el.type,
-  //  //        })
-  //  //      }
-  //  //      return acc
-  //  //    }, [])
-
-  //  //    const element = {
-  //  //      alias: list.alias,
-  //  //      filter,
-  //  //    }
-  //  //    return element
-  //  //  })
-  //  //}
-  //  //if (hasSelect() && getDetail()) {
-
-  //  //  getListData()
-  //  //  const lists = await makeRequestList(listData)
-  //  //  queries = [syncForm, lists]
-  //  //  return queries
-  //  //} else if (getDetail() && !hasSelect()) {
-  //  //  const syncForm = makeRequest()
-  //  //  queries = [syncForm, undefined]
-  //  //  return queries
-  //  //} else if (!getDetail() && hasSelect()) {
-  //  //  const lists = makeRequestList(listData)
-  //  //  queries = [undefined, lists]
-  //  //  return queries
-  //  //} else return [undefined, undefined]
-  //  const syncForm = await makeRequest()
-  //}
 
   const changeAutocomplete = async (params) => {
     queueMicrotask(async () => {
@@ -891,7 +785,7 @@ export default function ({
       field.loading = true
       const lists = await makeRequestList(listData)
       for (let keyList in lists.data) {
-        const field = tabFields[keyList]
+        const field = fields[keyList]
         if (field) {
           formData[field.name] = ''
           field.hideItems = lists.data[keyList]
@@ -936,11 +830,6 @@ export default function ({
       })
     }
   }
-
-  const hasDepenceFieldsApi = () =>
-    form?.fields.some(
-      (el) => el.hasOwnProperty('dependence') && el.dependence.type === 'api'
-    )
 
   const getDependies = async (params) => {
     const { value, field } = params
@@ -1207,11 +1096,6 @@ export default function ({
     //formData[dependence.field] = data
   }
 
-  const checkInvalidSelect = (field) => {
-    const result = field.items.find((el) => el.id === formData[field.name])
-    if (!result) formData[field.name] = ''
-  }
-
   const changeSelect = async ({ value, field }) => {
     if (field.dependence) {
       await getDependies({ value, field })
@@ -1472,7 +1356,7 @@ export default function ({
     if (clear) formData[field.name] = ''
     field.loading = false
   }
-  //const readonlyAll = ref(false)
+
   const environment = reactive({
     readonlyAll: 0,
     mode,
@@ -1538,7 +1422,7 @@ export default function ({
         })
       )
 
-      const prescription = Object.values(tabFields).find(
+      const prescription = Object.values(fields).find(
         (x) => x.prescription
       )?.prescription
       if (prescription) {
@@ -1897,7 +1781,7 @@ export default function ({
       //}
       field.isShow.value = condition()
       //$v = useVuelidate(validations.value, formData)
-      rebuildFormData()
+      // rebuildFormData()
     }
     return (
       type === field.type &&
@@ -1967,16 +1851,18 @@ export default function ({
   watch(
     () => wrapFormData,
     () => {
-      for (let key in tabFields) {
-        showField(tabFields[key].type, tabFields[key])
+      for (let key in fields) {
+        showField(fields[key].type, fields[key])
       }
       if ($touched.value) {
         errorsCount()
       }
-      startFormData = formData
     },
     { immediate: true, deep: true }
   )
+  onMounted(() => {
+    initFields()
+  })
 
   return {
     vForm: $v,
@@ -1986,9 +1872,8 @@ export default function ({
     validate,
     formData,
     originalData,
-    getDataForm,
     reset,
-    update,
+    // update,
     clickHandler,
     getDependies,
     changeSelect,
@@ -1998,9 +1883,8 @@ export default function ({
     showField,
     openMenu,
     disabledField,
-    addFiles,
     sortData,
-    rebuildFormData,
+    initFields,
     tabStorageChange,
     stageRequest,
     responseHandler,

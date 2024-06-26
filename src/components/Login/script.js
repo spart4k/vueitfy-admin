@@ -25,10 +25,9 @@ export default {
       },
     }
     //const loading = ref(null)
-
     const { loading, makeRequest } = useRequest({
       context,
-      request: () => store.dispatch('auth/auth', { ...getDataForm() }),
+      request: () => store.dispatch('auth/auth', formData),
       successMessage: 'Вы успешно авторизовались',
     })
     const { makeRequest: makeRequestMe } = useRequest({
@@ -123,7 +122,6 @@ export default {
       formErrors,
       vForm,
       touchedForm,
-      getDataForm,
     } = useForm({
       fields: fields(),
       context,
