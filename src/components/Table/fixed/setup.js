@@ -75,7 +75,12 @@ const table = {
       row: {},
     })
     const rowCount = [5, 10, 15, 20, 25, 30]
-    const availibleTitlesForSortIcons = ['ФИО', 'Объект', 'Должность']
+    const availibleTitlesForSortIcons = [
+      'ФИО',
+      'Объект',
+      'Должность',
+      'Менеджер',
+    ]
     const contextmenu = ref({
       isShow: false,
       x: null,
@@ -460,12 +465,11 @@ const table = {
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        
         return el.permissions.includes(permission.value)
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        
+
         if (!el.direction_id) return true
         else {
           return !!_.intersection(el.direction_id, directions.value).length
@@ -475,7 +479,6 @@ const table = {
         if (!btn.isShow) return btn
         else {
           return btn.isShow.condition.some((el) => {
-            
             return (
               checkIncludesPermissions(el) &&
               checkIncludesDirections(el) === el.type
@@ -486,7 +489,6 @@ const table = {
       })
     })
     const saveFilter = (filterData) => {
-      
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
         if (!filterData[el.name]) {
@@ -512,7 +514,7 @@ const table = {
         type = type === 'autocomplete' ? 'select' : type
         type = type === 'dateRange' && 'date'
         type = type === 'datetime' ? 'date' : type
-        
+
         const obj = {
           //field: el.name,
           value: filterData[el.name],
@@ -530,7 +532,9 @@ const table = {
     const openCell = ($event, row, cell, card) => {
       if (cell?.click) {
         if (cell.click.condition) {
-          const condition = cell.click.condition.permissions.includes(store.state.user.permission_id)
+          const condition = cell.click.condition.permissions.includes(
+            store.state.user.permission_id
+          )
           if (condition !== cell.click.condition.type) return
         }
       }
@@ -629,6 +633,12 @@ const table = {
       })
       popupForm.value.isShow = true
     }
+    const pushUrl = (url) => {
+      router.push({
+        path: router.history.name + url,
+      })
+      popupForm.value.isShow = true
+    }
     const panelHandler = async (button) => {
       const { type, url } = button
 
@@ -641,13 +651,15 @@ const table = {
         acceptData.value.popup = true
       } else if (type === 'changeUrl') {
         changeUrl(url)
+      } else if (type === 'pushUrl') {
+        pushUrl(url)
       } else if (type === 'confirmPayment') {
         confirmPayment.value = true
       } else if (button.label === 'Обновить' || type === 'refresh') {
-        await getItems()
         if (button?.subtype === 'changeHeads') {
           initHeadParams()
         }
+        await getItems()
       }
     }
     const countingDistances = () => {
@@ -791,7 +803,9 @@ const table = {
       })
     }
     const changeMonth = async (val) => {
-      currentDate.value.date = moment(`${currentDate.value.date}-10`).add(val, 'M').format('YYYY-MM')
+      currentDate.value.date = moment(`${currentDate.value.date}-10`)
+        .add(val, 'M')
+        .format('YYYY-MM')
       currentDate.value.year = currentDate.value.date.split('-')[0]
       currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
       setTimeout(() => {
@@ -822,8 +836,8 @@ const table = {
       globalLoading.value = false
     }
 
-    const getItemFromCompare = ({ compareItem, cuttedArray,}) => {
-      const item = cuttedArray.find(x => x.color === compareItem)
+    const getItemFromCompare = ({ compareItem, cuttedArray }) => {
+      const item = cuttedArray.find((x) => x.color === compareItem)
       if (item?.count) return item.count
       else return 0
     }
