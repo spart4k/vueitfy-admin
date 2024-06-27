@@ -6,6 +6,7 @@ import PaymentListPersonalView from '../components/PaymentList/personal/index.vu
 import PersonalView from '../views/PersonalView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
+import PivotRetailView from '../views/PivotRetailView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -485,6 +486,7 @@ const routes = [
             path: '/pivot/:id/:payment',
             meta: {
               mode: ['personal', 'personal-payment'],
+              label: 'Начисление',
             },
             component: Detail,
           },
@@ -493,6 +495,25 @@ const routes = [
             path: '/pivot/:id/:zayavka',
             meta: {
               mode: ['personal', 'personal-zayavka'],
+              label: 'Заявка',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot-personal/:scan',
+            path: '/pivot/:id/:scan',
+            meta: {
+              mode: ['personal', 'personal-scan'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot-personal/:card',
+            path: '/pivot/:id/:card',
+            meta: {
+              mode: ['personal', 'personal-card'],
+              label: 'Банковская карта',
             },
             component: Detail,
           },
@@ -519,6 +540,113 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: Pivotx5View,
+  },
+  {
+    path: '/pivot_retail',
+    name: 'pivot_retail',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PivotRetailView,
+    children: [
+      {
+        name: 'pivot_retail-edit',
+        path: '/pivot_retail/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Начисление',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot_retail-personal',
+        path: '/pivot_retail/:id',
+        meta: {
+          mode: ['personal'],
+          label: 'Персонал',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'pivot_retail-personal/:payment',
+            path: '/pivot_retail/:id/:payment',
+            meta: {
+              mode: ['personal', 'personal-payment'],
+              label: 'Начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_retail-personal/:zayavka',
+            path: '/pivot_retail/:id/:zayavka',
+            meta: {
+              mode: ['personal', 'personal-zayavka'],
+              label: 'Заявка на расход',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_retail-personal/:scan',
+            path: '/pivot_retail/:id/:scan',
+            meta: {
+              mode: ['personal', 'personal-scan'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_retail-personal/:card',
+            path: '/pivot_retail/:id/:card',
+            meta: {
+              mode: ['personal', 'personal-card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'pivot_retail-object',
+        path: '/pivot_retail/:id',
+        meta: {
+          mode: ['object'],
+          label: 'Объект',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot_retail-account',
+        path: '/pivot_retail/:id',
+        meta: {
+          mode: ['account'],
+          label: 'Аккаунт',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'pivot_retail-account/:card_id',
+            path: '/pivot_retail/:id/:card_id',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_retail-account/new_card',
+            path: '/pivot_retail/:id/new_card',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+    ],
   },
   {
     path: '/x5import',

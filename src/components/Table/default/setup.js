@@ -651,6 +651,12 @@ const table = {
       })
       popupForm.value.isShow = true
     }
+    const pushUrl = (url) => {
+      router.push({
+        name: router.history.current.name + url,
+      })
+      popupForm.value.isShow = true
+    }
     const panelHandler = async (button) => {
       const { type, url } = button
       if (button.function) button.function(props.options)
@@ -658,6 +664,8 @@ const table = {
         addItem()
       } else if (type === 'changeUrl') {
         changeUrl(url)
+      } else if (type === 'pushUrl') {
+        pushUrl(url)
       } else if (type === 'getFilters') {
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
