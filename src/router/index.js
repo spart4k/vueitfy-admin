@@ -23,6 +23,7 @@ import MvdView from '../views/MvdView.vue'
 import ServiceView from '../views/ServiceView.vue'
 import RashodCategoryView from '../views/RashodCategoryView.vue'
 import RashodVidView from '../views/RashodVidView.vue'
+import PivotVedeniaX5View from '../views/PivotVedeniaX5View.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -519,6 +520,17 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: Pivotx5View,
+  },
+  {
+    path: '/pivot-vedenia-x5',
+    name: 'pivot-vedenia-x5',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PivotVedeniaX5View,
   },
   {
     path: '/x5import',

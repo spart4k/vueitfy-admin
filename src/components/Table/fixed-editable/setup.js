@@ -1,6 +1,14 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, nextTick, provide } from 'vue'
+import Vue, {
+  onMounted,
+  toRef,
+  ref,
+  computed,
+  watch,
+  nextTick,
+  provide,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import { v4 as uuidv4 } from 'uuid'
@@ -21,6 +29,13 @@ import vIconSort from '../../Icons/sort/index.vue'
 import TableFilter from '../filter/index.vue'
 import Detail from '../detail/index.vue'
 import useMobile from '@/layouts/Adaptive/checkMob.js'
+import { head } from 'lodash'
+
+import Autocomplete from '@/components/Autocomplete/default'
+import Datetimepicker from '@/components/Date/Datetimepicker/index.vue'
+import Datepicker from '@/components/Date/Default/index.vue'
+import ColorPicker from '@/components/Colorpicker/index.vue'
+import DateRange from '@/components/Date/Daterange/index.vue'
 
 //import { tableApi } from '@/api'
 
@@ -37,8 +52,13 @@ const table = {
     TableFilter,
     Popup,
     Detail,
-    DropZone,
     Checklist,
+    Datetimepicker,
+    Autocomplete,
+    DropZone,
+    ColorPicker,
+    DateRange,
+    Datepicker,
   },
   props: {
     options: {
@@ -70,6 +90,7 @@ const table = {
     const filters = ref(props.options?.filters)
     const panel = ref(props.options?.panel)
     const confirmPayment = ref(false)
+    const options = toRef(props, 'options')
     const lastSelected = ref({
       indexRow: null,
       row: {},
@@ -88,7 +109,7 @@ const table = {
       totalRows: null,
       currentPage: 1,
       totalPages: null,
-      countRows: props.options.data.pageLength,
+      countRows: options.value.data.pageLength,
     })
     const filter = ref({
       isShow: false,
@@ -104,6 +125,11 @@ const table = {
       isShow: false,
       isShowCellForm: true,
       dataCellForm: {},
+    })
+    const adding = ref({
+      isShow: false,
+      rows: [],
+      formData: {},
     })
     const currentDate = ref({
       monthArray: [
@@ -126,6 +152,7 @@ const table = {
     })
     const cells = ref(null)
     const cellItems = ref(null)
+    const cellItemsEditable = ref(null)
     const mainTable = ref(null)
     const dropzone = ref(null)
     const acceptData = ref({
@@ -180,12 +207,12 @@ const table = {
         ) {
           //
           //
-          if (!props.options.data.rows[i].row.selected) {
-            props.options.data.rows[i].row.selected = true
+          if (!options.value.data.rows[i].row.selected) {
+            options.value.data.rows[i].row.selected = true
           } else {
             //
-            //props.options.data[i].row.selected = false
-            //if (i === lastSelected.value.indexRow) props.options.data[i].row.selected = true
+            //options.value.data[i].row.selected = false
+            //if (i === lastSelected.value.indexRow) options.value.data[i].row.selected = true
           }
         }
       } else {
@@ -198,12 +225,12 @@ const table = {
         ) {
           //
           //
-          if (!props.options.data.rows[i].row.selected) {
-            props.options.data.rows[i].row.selected = true
+          if (!options.value.data.rows[i].row.selected) {
+            options.value.data.rows[i].row.selected = true
           } else {
             //
-            //props.options.data[i].row.selected = false
-            //if (i === lastSelected.value.indexRow) props.options.data[i].row.selected = true
+            //options.value.data[i].row.selected = false
+            //if (i === lastSelected.value.indexRow) options.value.data[i].row.selected = true
           }
         }
       }
@@ -380,17 +407,31 @@ const table = {
           signal: controller.signal,
         },
       })
-      props.options.data.rows = data.rows
-      if (props.options.data.rows?.length && props.options.data.rows) {
-        props.options.data.totalPages = data.totalPage
-        props.options.data.totalRows = data.total
-        props.options.data.footer = data.footer
-        const structuredArray = []
-        props.options.data.rows.forEach((row) => {
+      options.value.data.rows = data.rows
+      if (options.value.data.rows?.length && options.value.data.rows) {
+        options.value.data.totalPages = data.totalPage
+        options.value.data.totalRows = data.total
+        options.value.data.footer = data.footer
+        const structuredArray = ref([])
+        // Vue.set(row, 'selected', false)
+        options.value.data.rows.forEach((row, rowIndex) => {
+          row.index = paramsQuery.value.currentPage * rowIndex + 1
+          Vue.set(row, 'addingShow', false)
+          // row.forEach((date) => {
+          //   if (Array.isArray(date)) {
+          //     Vue.set(row, 'addingShow', false)
+          //   }
+          // })
+          for (let date in row) {
+            if (Array.isArray(row[date])) {
+              Vue.set(row[date], 0, row[date][0])
+              Vue.set(row[date][0], 'addingShow', false)
+            }
+          }
           if (props.options.options.selecting) {
             Vue.set(row, 'selected', false)
           }
-          structuredArray.push({
+          structuredArray.value.push({
             row,
             child: {
               isShow: true,
@@ -398,14 +439,14 @@ const table = {
             },
           })
         })
-        props.options.data.rows = structuredArray
+        options.value.data.rows = structuredArray.value
       } else {
         paramsQuery.value.currentPage = 1
       }
       loading.value = false
       controller = undefined
       setTimeout(() => {
-        coutingCells()
+        coutingCells(cellItems.value)
       }, 0)
     }
 
@@ -673,13 +714,13 @@ const table = {
       mainTable.value.style.width = `${all}px`
     }
 
-    const coutingCells = () => {
+    const coutingCells = (arrCell) => {
       let left = 0
       let right = 0
 
       cells?.value?.forEach((item, index) => {
         if (props?.options?.head[index]?.fixed?.position === 'left') {
-          cellItems?.value?.forEach((element) => {
+          arrCell?.forEach((element) => {
             element.children[index].style.left = `${left}px`
           })
           left += Number(getComputedStyle(item).width.replace('px', ''))
@@ -691,7 +732,7 @@ const table = {
           const item = cells.value.find(
             (x) => x.innerText === props?.options?.head[index]?.title
           )
-          cellItems?.value?.forEach((element) => {
+          arrCell?.forEach((element) => {
             element.children[index].style.right = `${right}px`
           })
           right += Number(getComputedStyle(item).width.replace('px', ''))
@@ -720,6 +761,9 @@ const table = {
             isShow: true,
             width: '75',
             added: true,
+            editable: {
+              active: false,
+            },
             alias: `p.${new Date(date).getDate()}`,
             value: `${new Date(date).getDate() < 10 ? '0' : ''}${new Date(
               date
@@ -796,7 +840,7 @@ const table = {
       currentDate.value.year = currentDate.value.date.split('-')[0]
       currentDate.value.month = Number(currentDate.value.date.split('-')[1]) - 1
       setTimeout(() => {
-        countingDistances()
+        // countingDistances()
       }, 0)
       addDayOfMonth()
       await getItems()
@@ -855,7 +899,68 @@ const table = {
       confirmPayment.value = false
       prepaymentLoading.value = false
     }
-
+    const showField = (type, field) => {
+      return type === field.type
+    }
+    const createEditable = () => {
+      const heads = props.options.head.flatMap((el) => {
+        if (el.fixed.value) {
+          return el
+        } else {
+          return []
+        }
+      })
+      const headsKeys = heads.reduce((acc, el, elIndex) => {
+        acc[el.value] = ''
+        return acc
+      }, {})
+      console.log(heads, headsKeys)
+      headsKeys.index =
+        options.value.data.totalRows + adding.value.rows.length + 1
+      adding.value.rows.push({
+        row: headsKeys,
+        child: {
+          isShow: true,
+          data: headsKeys,
+        },
+        id: uuidv4(),
+        formData: headsKeys,
+      })
+      // adding.value.formData = headsKeys
+      adding.value.isShow = true
+      setTimeout(() => {
+        // countingDistances()
+        coutingCells(cellItemsEditable.value)
+      }, 0)
+      // setTimeout(() => {
+      //   coutingCells()
+      // }, 0)
+      // options.value.data.rows.push({
+      //   headsKeys,
+      //   child: {
+      //     isShow: true,
+      //     data: headsKeys,
+      //   },
+      // })
+    }
+    const removeEditable = (row, index) => {
+      adding.value.rows.splice(index, 1)
+    }
+    const openEditableCell = ($event, row, cell) => {
+      console.log(row, cell)
+      Vue.set(row.row, cell.value, [
+        {
+          addingShow: true,
+        },
+      ])
+      // Vue.set(row.row[cell.value], 'addingShow', true)
+      // row.row[cell.value][0].addingShow = true
+      // row.row[cell.value] = [
+      //   {
+      //     doljnost_name: '100',
+      //   },
+      // ]
+    }
     // COMPUTED PROPERTIES
     const width = computed(() => {
       return window.innerWidth
@@ -922,7 +1027,7 @@ const table = {
       window.addEventListener('resize', () => watchScroll())
       watchScroll()
       pagination.value = {
-        ...props.options.data,
+        ...options.value.data,
       }
       // .includes('add')
       if (
@@ -951,6 +1056,11 @@ const table = {
       dropzone,
       acceptData,
       availibleTitlesForSortIcons,
+      createEditable,
+      adding,
+      showField,
+      cellItemsEditable,
+      options,
       // METHODS
       wrapingRow,
       openChildRow,
@@ -974,6 +1084,8 @@ const table = {
       changeMonth,
       fileUpload,
       acceptForm,
+      removeEditable,
+      openEditableCell,
       // COMPUTED PROPERTIES
       width,
       colspanLength,

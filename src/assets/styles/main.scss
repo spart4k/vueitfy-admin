@@ -621,3 +621,26 @@ input:-webkit-autofill {
 .gstc {
   height: 100% !important;
 }
+
+.table-td-checkbox {
+  // margin-top: 0;
+  // padding-top: 0;
+  .v-input__slot {
+    justify-content: center;
+    margin-bottom: 0;
+  }
+  .v-input--selection-controls__input {
+    margin-right: 0;
+  }
+  .v-messages {
+    display: none;
+  }
+}
+
+.input-editable {
+  text-align: center;
+  min-width: 8rem;
+  input {
+    text-align: center;
+  }
+}

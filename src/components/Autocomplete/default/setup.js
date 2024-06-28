@@ -35,11 +35,13 @@ export default {
 
     let controller
     const querySelections = async () => {
+      console.log('query')
       if (!props.field?.url) return
       try {
         if (controller) controller.abort()
         controller = new AbortController()
         loading.value = true
+        console.log('send')
         const data = await getList(
           props.field.url,
           {
