@@ -27,6 +27,7 @@ import { list } from 'postcss'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
+
 export default function ({
   fields = {},
   watcher,
@@ -111,7 +112,9 @@ export default function ({
   const popupForm = ref({
     isShow: false,
   })
+
   const $errors = ref({})
+
   const errorsCount = () => {
     $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
@@ -668,19 +671,18 @@ export default function ({
               fileIndex += 1
             }
           }
-          const promiseArray = queries.map((item) => item.request)
-          await Promise.all(promiseArray).then((data) => {
+          await Promise.all(queries).then((data) => {
             if (dropzone.grouping) {
-              const fileArray = [...queries]
+              const fileArray = [...data]
               fileArray.forEach((file) => {
                 delete file.request
               })
               setFormData(fileArray, dropzone)
             } else if (dropzone.toObject) {
-              const fileArray = [...queries]
+              const fileArray = [...data]
               toObject(fileArray, dropzone)
             } else {
-              setFormData(queries[0].path, dropzone)
+              setFormData(data[0].path, dropzone)
             }
           })
         } else if (dropzone.toObject) {
@@ -698,7 +700,6 @@ export default function ({
       })
     )
 
-    console.log('zxc')
     if (update) {
       const result = await changeForm(queryParams)
     } else if (change) {
@@ -1538,13 +1539,13 @@ export default function ({
         }
       }
 
-      await Promise.all(
-        form?.fields.map(async (field) => {
-          if (field.updateList && field.updateList.length) {
-            await queryList(field, false)
-          }
-        })
-      )
+      // await Promise.all(
+      //   form?.fields.map(async (field) => {
+      //     if (field.updateList && field.updateList.length) {
+      //       queryList(field, false)
+      //     }
+      //   })
+      // )
 
       const prescription = form?.fields.find(
         (x) => x.prescription
@@ -1787,6 +1788,16 @@ export default function ({
                 originalData: originalData.value,
                 environment,
                 mode,
+              }
+              if (field.name === 'account_id') {
+                console.log(
+                  // conditionEl.funcCondition,
+                  conditionContext.store.state.user.is_personal_vertical,
+                  conditionContext.formData.status_id === 1 ||
+                    conditionContext.formData.status_id === 3,
+                  conditionContext.mode === 'edit',
+                  conditionEl.funcCondition(conditionContext)
+                )
               }
 
               return (

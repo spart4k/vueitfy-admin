@@ -97,6 +97,15 @@ export default {
       emit('change', { value, field: props.field, item })
     }
 
+    const clearField = () => {
+      console.log('clearField')
+      if (props.field.subtype) {
+        proxyValue.value = []
+      } else {
+        proxyValue.value = ''
+      }
+    }
+
     watch(
       () => search.value,
       () => {
@@ -123,7 +132,7 @@ export default {
       querySelections,
       update,
       search,
-
+      clearField,
       loading,
     }
   },
