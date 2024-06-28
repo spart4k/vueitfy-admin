@@ -120,21 +120,21 @@ export default {
     const { alias } = proxyTab.value
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
 
-    const fields = () => {
-      const fields = {}
-      proxyTab.value.fields?.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
-          Vue.set(fields, el.name, {})
-        } else return
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
-      })
-      return fields
-    }
+    // const fields = () => {
+    //   const fields = {}
+    //   proxyTab.value.fields?.forEach((el) => {
+    //     const { validations } = el
+    //     if (typeof el.isShow === 'boolean' && el.isShow)
+    //       Vue.set(fields, el.name, {})
+    //     else if (typeof el.isShow === 'object' && el.isShow.value) {
+    //       Vue.set(fields, el.name, {})
+    //     } else return
+    //     Vue.set(fields, el.name, {})
+    //     Vue.set(fields[el.name], 'validations', validations)
+    //     Vue.set(fields[el.name], 'default', el.value)
+    //   })
+    //   return fields
+    // }
 
     const params = proxyTab.value.lists
     const getRequestParam = () => {
@@ -387,8 +387,8 @@ export default {
       context,
       detail: props.detail,
       loading,
-      fields: fields(),
-      setFields: fields,
+      // fields: fields(),
+      // setFields: fields,
       makeRequest,
       makeRequestList,
       isEdit,

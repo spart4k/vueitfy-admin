@@ -746,7 +746,7 @@ const table = {
           headCell,
           width,
           x,
-          fixed: headCell?.fixed,
+          fixed: headCell.fixed,
         })
         setTimeout(() => {
           //
@@ -759,9 +759,6 @@ const table = {
       pagination.value = {
         ...options.data,
       }
-      console.log(
-        options.detail && options.detail.type === 'popup' && route.meta.mode
-      )
       if (
         options.detail &&
         options.detail.type === 'popup' &&

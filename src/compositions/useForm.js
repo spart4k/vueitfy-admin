@@ -66,10 +66,9 @@ export default function ({
       Vue.set(formData, key, ref(fields[key].value))
     }
   }
-
   const originalData = ref()
   const formData = reactive(
-    Object.keys(form.fields).reduce((obj, key) => {
+    Object.keys(form?.fields).reduce((obj, key) => {
       obj[form.fields[key].name] = ref(form.fields[key].value)
       return obj
     }, {})
