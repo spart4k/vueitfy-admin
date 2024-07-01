@@ -768,7 +768,7 @@ const table = {
           headCell,
           width,
           x,
-          fixed: headCell?.fixed,
+          fixed: headCell.fixed,
         })
         setTimeout(() => {
           //
