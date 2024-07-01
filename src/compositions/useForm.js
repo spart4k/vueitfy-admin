@@ -1022,6 +1022,9 @@ export default function ({
           value: formData[depField],
           field: fields[depField],
         })
+        if (fields[depField].updateList && fields[depField].updateList.length) {
+          await queryList(fields[depField], false)
+        }
       }
 
       if (card) {
@@ -1240,9 +1243,16 @@ export default function ({
           // Если массив, вставить массив
           formData[field.name] =
             lists.data[keyList][0][field.selectOption.value]
-          if (field.putFirst)
-            formData[field.name] =
-              lists.data[keyList][0][field.selectOption.value]
+          await getDependies({
+            value: formData[field.name],
+            field,
+          })
+          if (field.updateList && field.updateList.length) {
+            await queryList(field, false)
+          }
+          // if (field.putFirst)
+          //   formData[field.name] =
+          //     lists.data[keyList][0][field.selectOption.value]
         }
         if (
           field.hasOwnProperty('dependence') ||
