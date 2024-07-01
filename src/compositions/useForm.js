@@ -701,8 +701,7 @@ export default function ({
       params.value?.forEach((item) => {
         array.push(params.field.items.find((x) => x.id === item))
       })
-      form.fields.find((x) => x.name === params.field.putValueInItems).items =
-        array
+      fields[params.field.putValueInItems].items = array
     }
     const { field } = params
     if (field.updateList && field?.updateList.length) {
@@ -841,7 +840,7 @@ export default function ({
       }
       const depField = dependence.field
       let fieldValue, targetField, card, body
-      targetField = form.fields.find((el) => el.name === depField)
+      targetField = fields[depField]
       let url = ''
       if (dependence.url && Array.isArray(dependence.url)) {
         //const splitedUrl = dependence.url.split('/')
@@ -901,9 +900,7 @@ export default function ({
             else if (formData[el] && params.hasOwnProperty('item'))
               formData[el] = null
           } else if (typeof el === 'object') {
-            const targetObject = form.fields.find((item) => {
-              return item.name === el.formKey
-            })
+            const targetObject = fields[el.formKey]
             if (
               (typeof targetObject?.isShow === 'boolean' &&
                 targetObject.isShow) ||
@@ -924,13 +921,8 @@ export default function ({
       ) {
         let selectField
         if (dependence.action.targetField)
-          selectField = form.fields.find(
-            (el) => el.name === dependence.action.targetField
-          )
-        else
-          selectField = form.fields.find(
-            (el) => el.name === dependence.action.field
-          )
+          selectField = fields[dependence.action.targetField]
+        else selectField = fields[dependence.action.field]
 
         const dep = dependence.action.condition.find((condition) => {
           let cloneAi
@@ -1042,9 +1034,7 @@ export default function ({
 
       if (dependence.action) {
         if (dependence.action.type === 'hideOptions') {
-          const selectField = form.fields.find(
-            (el) => el.name === dependence.action.field
-          )
+          const selectField = fields[dependence.action.field]
           selectField.items = selectField.hideItems.filter((el) => {
             return el.id !== dependence.action.condition[data.result]
           })
