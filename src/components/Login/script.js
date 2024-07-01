@@ -25,17 +25,16 @@ export default {
       },
     }
     //const loading = ref(null)
-
     const { loading, makeRequest } = useRequest({
       context,
-      request: () => store.dispatch('auth/auth', { ...getDataForm() }),
+      request: () => store.dispatch('auth/auth', formData),
       successMessage: 'Вы успешно авторизовались',
     })
     const { makeRequest: makeRequestMe } = useRequest({
       context,
       request: () => store.dispatch('auth/checkMe'),
     })
-    const listFields = ref([
+    const listFields = [
       stringField({
         label: 'Логин',
         subtype: 'text',
@@ -66,28 +65,42 @@ export default {
         bootstrapClass: [''],
         validations: { required },
       }),
-    ])
+    ]
+    // const fields = () => {
+    //   //
+    //   const fields = {}
+    //   listFields.value.forEach((el) => {
+    //     const { validations } = el
+    //     if (typeof el.isShow === 'boolean' && el.isShow)
+    //       Vue.set(fields, el.name, {})
+    //     else if (typeof el.isShow === 'object' && el.isShow.value) {
+    //       //
+    //       Vue.set(fields, el.name, {})
+    //     } else return
+    //     Vue.set(fields, el.name, {})
+    //     Vue.set(fields[el.name], 'validations', validations)
+    //     Vue.set(fields[el.name], 'default', el.value)
+    //   })
+    //   //
+    //   return fields
+    // }
     const fields = () => {
-      //
       const fields = {}
-      listFields.value.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
-          //
-          Vue.set(fields, el.name, {})
-        } else return
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
-      })
-      //
+      const tabFields = {}
+      for (let i = 0; i < listFields.length; i++) {
+        tabFields[listFields[i].name] = listFields[i]
+      }
+      for (let key in tabFields) {
+        const { validations } = tabFields[key]
+        Vue.set(fields, tabFields[key].name, {})
+        Vue.set(fields[tabFields[key].name], 'validations', validations)
+        Vue.set(fields[tabFields[key].name], 'default', tabFields[key].value)
+      }
       return fields
     }
     const tryLoading = ref(false)
     const auth = async () => {
-      if (!validate()) return
+      if (!validate(true)) return
       try {
         const result = await makeRequest()
 
@@ -109,11 +122,13 @@ export default {
       formErrors,
       vForm,
       touchedForm,
-      getDataForm,
     } = useForm({
       fields: fields(),
       context,
       loading,
+      form: {
+        fields: listFields,
+      },
     })
     return {
       auth,

@@ -28,13 +28,6 @@
           @getItems="(e) => $emit('getItems', e)"
           :class="item?.label"
         />
-        <!--<v-progress-circular
-          v-else
-          :size="20"
-          :width="2"
-          color="primary"
-          indeterminate
-        />-->
         <v-row
           v-if="item.type === 'TableDefault'"
           class="justify-end align-end"

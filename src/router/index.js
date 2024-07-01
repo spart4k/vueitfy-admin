@@ -356,6 +356,7 @@ const routes = [
             path: '/personal/:id/:payment',
             meta: {
               mode: ['edit', 'edit-payment'],
+              label: 'Начисление',
             },
             component: Detail,
           },

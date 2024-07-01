@@ -46,10 +46,10 @@ export default {
     }
     const docsData = ref(null)
     // const loading = ref(false)
-    const fields = () => {
-      const fields = {}
-      return fields
-    }
+    // const fields = () => {
+    //   const fields = {}
+    //   return fields
+    // }
     const showActions = computed(() => {
       return [4, 7, 16].includes(store.state.user.permission_id)
     })
@@ -126,7 +126,7 @@ export default {
       showField,
     } = useForm({
       form: props.tab,
-      fields: fields(),
+      // fields: fields(),
       context,
       loading,
       //makeRequestList,

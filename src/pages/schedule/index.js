@@ -20,81 +20,6 @@ function consolePanel() {}
 
 function searchInputing(field) {}
 
-function changeSort() {
-  let btn = config.panel.buttons.find((x) => x.function === changeSort)
-  let heading = config.head.find((x) => x.changeable)
-  if (btn.label === 'Объекты') {
-    btn.label = 'ФИО'
-    heading.title = 'Объект'
-    heading.alias = 'p.object_name'
-    heading.value = 'object_name'
-    config.options.url = 'get/pagination_pivot/personal_target_object'
-  } else if (btn.label === 'ФИО') {
-    btn.label = 'Объекты'
-    heading.title = 'ФИО'
-    heading.alias = 'p.personal_name'
-    heading.value = 'personal_name'
-    config.options.url = 'get/pagination_pivot/personal_target_personal'
-  }
-}
-
-// const fieldsAddToEdit = [
-//   selectField({
-//     label: 'Сотрудник',
-//     name: 'account_name',
-//     alias: 'p.account_name',
-//     placeholder: '',
-//     class: [''],
-//     selectOption: {
-//       text: 'name',
-//       value: 'id',
-//     },
-//     disabled: false,
-//     value: 0,
-//     // items: [
-//     //   { id: 0, name: '' },
-
-//     // ],
-//     position: {
-//       cols: 12,
-//       sm: 12,
-//     },
-//     validations: { required },
-//     bootstrapClass: [''],
-//     update: {
-//       module: 'selects/getList',
-//       fields: ['object_id'],
-//     },
-//   }),
-//   dateField({
-//     label: ' Дата',
-//     name: 'data_rojd',
-//     subtype: 'date',
-//     placeholder: '',
-//     classes: [''],
-//     position: {
-//       cols: 12,
-//       sm: 12,
-//     },
-//     validations: { required },
-//     bootstrapClass: ['changeSelect'],
-//   }),
-//   stringField({
-//     label: 'Рабочие часы',
-//     name: 'seriya',
-//     placeholder: '',
-//     readonly: false,
-//     class: [''],
-//     position: {
-//       cols: 12,
-//       sm: 12,
-//     },
-//     bootstrapClass: [''],
-//     //validations: { required },
-//     //isShow: false,
-//   }),
-// ]
-
 const config = {
   selector: '#mainTable',
   options: {
@@ -118,13 +43,6 @@ const config = {
         // function: consolePanel,
         backgroundColor: '#ffffff',
       },
-      // {
-      //   label: 'Добавить',
-      //   class: ['v-table-button--custom'],
-      //   url: '$IconSetting',
-      //   function: consolePanel,
-      //   backgroundColor: '#fff',
-      // },
       {
         label: 'Добавить',
         class: ['v-table-button--custom'],

@@ -311,18 +311,18 @@ export default {
       formData: {},
     }
 
-    const fields = () => {
-      const fields = {}
-      fieldsConfig.value.forEach((el) => {
-        const { validations } = el
-        if (!el.isShow) return
-        const fieldName = el.name
-        Vue.set(fields, fieldName, {})
-        Vue.set(fields[fieldName], 'validations', validations)
-        Vue.set(fields[fieldName], 'default', el.value)
-      })
-      return fields
-    }
+    // const fields = () => {
+    //   const fields = {}
+    //   fieldsConfig.value.forEach((el) => {
+    //     const { validations } = el
+    //     if (!el.isShow) return
+    //     const fieldName = el.name
+    //     Vue.set(fields, fieldName, {})
+    //     Vue.set(fields[fieldName], 'validations', validations)
+    //     Vue.set(fields[fieldName], 'default', el.value)
+    //   })
+    //   return fields
+    // }
     const personalsTarget = ref([])
     const propsActiveTab = toRef(props, 'activeTab')
     const prevTab = ref({})
@@ -358,11 +358,11 @@ export default {
       showField,
     } = useForm({
       form,
-      fields: fieldsConfig.value,
+      // fields: fieldsConfig.value,
       isEdit: {
         value: true,
       },
-      setFields: fields,
+      // setFields: fields,
       context,
       loading,
       prevTab,
@@ -384,7 +384,7 @@ export default {
       clickHandler,
       getData,
       changeSelect,
-      fields: fields(),
+      // fields: fields(),
       prevTab,
       cloneForm,
       propsActiveTab,
