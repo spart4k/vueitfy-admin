@@ -1414,7 +1414,7 @@ export default function ({
         environment.readonlyAll = syncForm.readonly
       }
       for (let formKey in syncForm.data) {
-        const field = formData[formKey]
+        const field = fields[formKey]
         if (field !== undefined) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
