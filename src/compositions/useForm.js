@@ -1023,7 +1023,8 @@ export default function ({
           field: fields[depField],
         })
         if (fields[depField].updateList && fields[depField].updateList.length) {
-          await queryList(fields[depField], false)
+          // await queryList(fields[depField], false)
+          await getFieldsList(fields[depField].updateList)
         }
       }
 
@@ -1109,7 +1110,8 @@ export default function ({
       await getDependies({ value, field })
     }
     if (field.updateList && field.updateList.length) {
-      await queryList(field, false)
+      // await queryList(field, false)
+      await getFieldsList(field.updateList)
     }
   }
 
@@ -1248,7 +1250,8 @@ export default function ({
             field,
           })
           if (field.updateList && field.updateList.length) {
-            await queryList(field, false)
+            // await queryList(field, false)
+            await getFieldsList(field.updateList)
           }
           // if (field.putFirst)
           //   formData[field.name] =
