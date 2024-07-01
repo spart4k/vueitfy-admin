@@ -409,7 +409,7 @@ const Form7 = defineComponent({
           },
         ],
         isShow: {
-          value: true,
+          value: false,
           conditions: [{ field: 'type_pay', value: [1, 2, 3] }],
         },
       }),
@@ -837,10 +837,8 @@ const Form7 = defineComponent({
     }
     const sendData = async () => {
       // vForm.value.$touch()
-      validate(true)
-      if (!(formData.type_pay === 4 && !formData.req_zr_id)) {
-        if (vForm.value.$invalid) return
-      }
+      console.log(validate(true))
+      if (!validate(true)) return
       const resultZayavka = await sendZayavka()
       const { success } = await changeStatusTask()
       if (success) {

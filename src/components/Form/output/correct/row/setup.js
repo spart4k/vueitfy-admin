@@ -96,7 +96,7 @@ export default {
           break
         case 'service_id':
           result = selectField({
-            label: switchLabel(key),
+            label: 'Наименование',
             alias: 'service_spr',
             name: key,
             // alias: 'status_pt',
@@ -408,6 +408,9 @@ export default {
           return el.alias ? el.alias === keyList : el.name === keyList
         })
         if (field) {
+          if (field.name === 'service_id') {
+            serviceField.value.items = lists.data[keyList]
+          }
           field.hideItems = lists.data[keyList]
           // field.items =
           Vue.set(field, 'items', lists.data[keyList])
@@ -422,6 +425,7 @@ export default {
     const removeService = (id) => {
       emit('removeService')
     }
+    const serviceField = ref({ ...switchType('service_id') })
     const isReject = ref(false)
     const rejectedPrice = ref('')
     const changeAutocomplete = async ({ field, value }) => {
@@ -459,8 +463,9 @@ export default {
         formData.sum = 0
       }
     }
-    const fieldService = () =>
+    const fieldService = computed(() =>
       fieldsData.value.find((el) => el.name === 'service_id')
+    )
     const isNumber = (evt) => {
       evt = evt ? evt : window.event
       var charCode = evt.which ? evt.which : evt.keyCode
@@ -514,6 +519,7 @@ export default {
       isReject,
       fields: fields(),
       fieldService,
+      serviceField,
       isNumber,
       errorSerivce,
     }

@@ -18,10 +18,7 @@
         -->
         <!-- {{ fieldsData[2] }} -->
         <Autocomplete
-          :field="{
-            ...fieldService(),
-            label: 'Наименование',
-          }"
+          :field="serviceField"
           v-model="formData.service_id"
           :error-messages="errorSerivce"
           :formData="formData"

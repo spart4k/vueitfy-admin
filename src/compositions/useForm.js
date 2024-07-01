@@ -28,6 +28,7 @@ import { list } from 'postcss'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
+
 export default function ({
   // fields = {},
   watcher,
@@ -103,7 +104,9 @@ export default function ({
   const popupForm = ref({
     isShow: false,
   })
+
   const $errors = ref({})
+
   const errorsCount = () => {
     $errors.value = Object.keys(formData).reduce((obj, key) => {
       if ($touched.value && $v.value[key]) {
@@ -629,19 +632,18 @@ export default function ({
               fileIndex += 1
             }
           }
-          const promiseArray = queries.map((item) => item.request)
-          await Promise.all(promiseArray).then((data) => {
+          await Promise.all(queries).then((data) => {
             if (dropzone.grouping) {
-              const fileArray = [...queries]
+              const fileArray = [...data]
               fileArray.forEach((file) => {
                 delete file.request
               })
               setFormData(fileArray, dropzone)
             } else if (dropzone.toObject) {
-              const fileArray = [...queries]
+              const fileArray = [...data]
               toObject(fileArray, dropzone)
             } else {
-              setFormData(queries[0].path, dropzone)
+              setFormData(data[0].path, dropzone)
             }
           })
         } else if (dropzone.toObject) {
@@ -706,108 +708,8 @@ export default function ({
     }
     const { field } = params
     if (field.updateList && field?.updateList.length) {
-      const listData = field?.updateList?.flatMap((list) => {
-        if (list.condition) {
-          const conditionContext = {
-            store,
-            formData,
-            environment,
-          }
-          for (let i = 0; i < list.condition.length; i++) {
-            let item = list.condition[i]
-            if (item.hasOwnProperty('funcCondition')) {
-              if (!item.funcCondition(conditionContext)) {
-                return []
-              }
-            } else if (!item.value.includes(formData[item.key])) return []
-          }
-        }
-
-        // if (list.condition) return []
-        let filter = list.filter.reduce((acc, el) => {
-          const source = eval(el.source)
-          if (el.routeKey) {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: [+route.params[el.routeKey]],
-              type: el.type,
-            })
-          } else if (
-            !el.sendEmpty &&
-            source[el.field] !== null &&
-            source[el.field] !== undefined
-          ) {
-            let value = source[el.field]
-            if (moment(value, 'YYYY.MM', true).isValid())
-              value = moment(value, 'YYYY.MM').format('YYYY-MM')
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: Array.isArray(source[el.field])
-                ? source[el.field]
-                : [value],
-              type: el.type,
-            })
-          } else if (el.source !== 'formData') {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: Array.isArray(source) ? source : [source],
-              type: el.type,
-            })
-          } else if (el.source === 'formData') {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: Array.isArray(source[el.field])
-                ? source[el.field]
-                : [source[el.field]],
-              type: el.type,
-            })
-          } else if (el.sendEmpty) {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: null,
-              type: el.type,
-            })
-          }
-          return acc
-        }, [])
-
-        const targetId = getListField(list)
-        const element = {
-          alias: list.alias,
-          filter,
-          readonly: environment.readonlyAll,
-          id: targetId ? targetId : undefined,
-        }
-        return element
-      })
-
-      field.loading = true
-      const lists = await makeRequestList(listData)
-      for (let keyList in lists.data) {
-        const field = fields[keyList]
-        if (field) {
-          formData[field.name] = ''
-          field.hideItems = lists.data[keyList]
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value
-              )
-              lists.data[keyList] = lists.data[keyList].filter((el) => {
-                return !condition.values.includes(el.id)
-              })
-            }
-          }
-          field.items = lists.data[keyList]
-          if (field.items.length === 1) {
-            // Если массив, вставить массив
-            if (field.putFirst)
-              formData[field.name] = field.items[0][field.selectOption.value]
-          }
-          showField(field.type, field, true)
-        }
-      }
-
+      console.log('update')
+      await getFieldsList(field?.updateList)
       field.loading = false
     }
   }
@@ -829,7 +731,68 @@ export default function ({
       })
     }
   }
+  const getFieldsList = async (arrayList) => {
+    const listQuery = arrayList.flatMap((list) => {
+      if (list.condition) {
+        for (let i = 0; i < list.condition.length; i++) {
+          let item = list.condition[i]
+          if (item.hasOwnProperty('funcCondition')) {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            if (item.funcCondition(conditionContext) === item.type) return []
+          } else {
+            if (!item.value.includes(formData[item.key])) return []
+          }
+        }
+      }
+      let filter = list.filter.reduce((acc, el) => {
+        const source = eval(el.source)
+        if (
+          source &&
+          source[el.field] !== null &&
+          source[el.field] !== undefined &&
+          source[el.field] !== ''
+        ) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source[el.field])
+              ? source[el.field]
+              : [source[el.field]],
+            type: el.type,
+          })
+        } else if (el.routeKey) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: [+route.params[el.routeKey]],
+            type: el.type,
+          })
+        } else if (el.sendEmpty) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: el.value,
+            type: el.type,
+          })
+        }
+        return acc
+      }, [])
 
+      const targetId = getListField(list)
+      const element = {
+        alias: list.alias,
+        filter,
+        readonly: environment.readonlyAll,
+        id: targetId ? targetId : undefined,
+      }
+      return element
+    })
+    const lists = await makeRequestList(listQuery)
+    console.log(lists)
+    putSelectItems(lists)
+  }
   const getDependies = async (params) => {
     const { value, field } = params
     field.dependence?.forEach(async (dependence) => {
@@ -1008,8 +971,14 @@ export default function ({
           }
         }
       }
+      console.log(data, targetField)
       if (data?.length === 1) {
-        // formData[depField] = card.id
+        formData[depField] = data[0].id
+        console.log(depField, fields[depField])
+        await getDependies({
+          value: formData[depField],
+          field: fields[depField],
+        })
       }
 
       if (card) {
@@ -1022,7 +991,7 @@ export default function ({
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
           }
         } else if (data.length === 0) {
-          formData[depField] = 11
+          formData[depField] = 0
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = ''))
           }
@@ -1057,7 +1026,9 @@ export default function ({
         // dependence
         if (field.hasOwnProperty('defaultItems')) {
           if (field.defaultItems?.length) {
-            const findedEl = field.defaultItems?.find((el) => el.id === value)
+            console.log(JSON.stringify(field.items))
+            const findedEl = field.items?.find((el) => el.id === value)
+            console.log(findedEl)
             if (findedEl) {
               dependence.fields.forEach((el) => {
                 formData[el] = findedEl[el]
@@ -1087,6 +1058,7 @@ export default function ({
   }
 
   const changeSelect = async ({ value, field }) => {
+    console.log('change')
     if (field.dependence) {
       await getDependies({ value, field })
     }
@@ -1160,7 +1132,10 @@ export default function ({
       }
 
       el.hideItems = el.items
-
+      console.log(data)
+      if (data.rows.length === 1 && data.totalPage === 1) {
+        formData[el.name] = el.items[0][el.selectOption.value]
+      }
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
 
@@ -1172,7 +1147,7 @@ export default function ({
     await Promise.all(queryFields)
   }
 
-  const putSelectItems = async (lists) => {
+  const putSelectItems = async (lists, field) => {
     for (let keyList in lists.data) {
       const field = form?.fields.find((el) =>
         el.alias ? el.alias === keyList : el.name === keyList
@@ -1217,6 +1192,8 @@ export default function ({
           : lists.data[keyList]
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
+          formData[field.name] =
+            lists.data[keyList][0][field.selectOption.value]
           if (field.putFirst)
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
@@ -1293,6 +1270,7 @@ export default function ({
   }
 
   const queryList = async (field, clear = true) => {
+    console.log('query')
     const listData = field?.updateList?.flatMap((list) => {
       if (list.condition) {
         const conditionContext = {
@@ -1342,6 +1320,7 @@ export default function ({
     })
     field.loading = true
     const lists = await makeRequestList(listData)
+    console.log(lists)
     putSelectItems(lists)
     if (clear) formData[field.name] = ''
     field.loading = false
@@ -1365,13 +1344,7 @@ export default function ({
   }
 
   const getData = async () => {
-    //if (!initPreRequest()) {
-    //  return false
-    //}
-    //const [syncForm] = await initPreRequest()
-    //let listQuery = undefined
     let syncForm = undefined
-    let lists = undefined
     if (getDetail() && form.alias) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
@@ -1404,14 +1377,6 @@ export default function ({
         }
       }
 
-      await Promise.all(
-        form?.fields.map(async (field) => {
-          if (field.updateList && field.updateList.length) {
-            await queryList(field, false)
-          }
-        })
-      )
-
       const prescription = Object.values(fields).find(
         (x) => x.prescription
       )?.prescription
@@ -1434,116 +1399,7 @@ export default function ({
     await loadAutocompletes()
 
     if (hasSelect()) {
-      const listQuery = form?.lists?.flatMap((list) => {
-        if (list.condition) {
-          for (let i = 0; i < list.condition.length; i++) {
-            let item = list.condition[i]
-            if (item.hasOwnProperty('funcCondition')) {
-              const conditionContext = {
-                store,
-                formData,
-                originalData: originalData.value,
-                environment,
-              }
-              if (item.funcCondition(conditionContext) === item.type) return []
-            } else {
-              if (!item.value.includes(formData[item.key])) return []
-            }
-          }
-        }
-        let filter = list.filter.reduce((acc, el) => {
-          const source = eval(el.source)
-          if (
-            source &&
-            source[el.field] !== null &&
-            source[el.field] !== undefined &&
-            source[el.field] !== ''
-          ) {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: Array.isArray(source[el.field])
-                ? source[el.field]
-                : [source[el.field]],
-              type: el.type,
-            })
-          } else if (el.routeKey) {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: [+route.params[el.routeKey]],
-              type: el.type,
-            })
-          } else if (el.sendEmpty) {
-            acc.push({
-              alias: el.alias ?? el.field,
-              value: el.value,
-              type: el.type,
-            })
-          }
-          return acc
-        }, [])
-
-        const targetId = getListField(list)
-        const element = {
-          alias: list.alias,
-          filter,
-          readonly: environment.readonlyAll,
-          id: targetId ? targetId : undefined,
-        }
-        return element
-      })
-      lists = await makeRequestList(listQuery)
-      for (let keyList in lists.data) {
-        const field = form?.fields.find((el) => {
-          return el.alias ? el.alias === keyList : el.name === keyList
-        })
-        const listObject = form?.lists?.find((el) => {
-          return el.alias ? el.alias === keyList : el.name === keyList
-        })
-        if (field) {
-          field.hideItems = lists.data[keyList]
-          if (!lists.data[keyList].length && listObject.emptyWarning) {
-            store.commit('notifies/showMessage', {
-              color: 'warning',
-              content: listObject.emptyWarning.text,
-              // timeout: 3000,
-            })
-          }
-          if (field.hiding) {
-            if (field.hiding.conditions) {
-              const condition = field.hiding.conditions.find(
-                (el) => mode === el.value && el.target !== 'formData'
-              )
-              if (condition) {
-                lists.data[keyList] = lists.data[keyList].filter((el) => {
-                  return !condition.values.includes(el.id)
-                })
-              }
-            }
-          }
-          // field.items = lists.data[keyList]
-          // Vue.set(field, 'items', lists.data[keyList])
-          Vue.set(field, 'items', [])
-          field.items = field.defaultItems
-            ? [...field.defaultItems, ...lists.data[keyList]]
-            : lists.data[keyList]
-          if (field.items.length === 1) {
-            // Если массив, вставить массив
-            if (field.putFirst)
-              formData[field.name] = field.items[0][field.selectOption.value]
-          }
-          if (
-            field.hasOwnProperty('dependence') ||
-            field.hasOwnProperty('updateList')
-          ) {
-            const value = formData[field.name]
-            await getDependies({ value, field })
-          }
-          if (field.hasOwnProperty('updateList')) {
-            // await queryList(field, false)
-          }
-        }
-      }
-      putSelectItems(lists)
+      await getFieldsList(form.lists)
     }
     loading.value = false
   }
@@ -1650,6 +1506,16 @@ export default function ({
                 originalData: originalData.value,
                 environment,
                 mode,
+              }
+              if (field.name === 'account_id') {
+                console.log(
+                  // conditionEl.funcCondition,
+                  conditionContext.store.state.user.is_personal_vertical,
+                  conditionContext.formData.status_id === 1 ||
+                    conditionContext.formData.status_id === 3,
+                  conditionContext.mode === 'edit',
+                  conditionEl.funcCondition(conditionContext)
+                )
               }
 
               return (

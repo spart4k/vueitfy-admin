@@ -45,7 +45,10 @@ const auth = {
       return result
     },
     async sendPage(_, data) {
-      const result = await sendPage(data.page, data.content)
+      const body = {
+        data: data.content,
+      }
+      const result = await sendPage(data.page, body)
       return result
     },
     async loadStatus({ commit }, data) {
