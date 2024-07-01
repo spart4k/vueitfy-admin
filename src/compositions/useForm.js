@@ -58,6 +58,7 @@ export default function ({
 
   const fields = {}
   const initFields = () => {
+    if (!form) return
     for (let i = 0; i < form.fields.length; i++) {
       fields[form.fields[i].name] = form.fields[i]
     }
@@ -68,7 +69,7 @@ export default function ({
   }
   const originalData = ref()
   const formData = reactive(
-    Object.keys(form?.fields).reduce((obj, key) => {
+    Object.keys(form?.fields || []).reduce((obj, key) => {
       obj[form.fields[key].name] = ref(form.fields[key].value)
       return obj
     }, {})

@@ -12,7 +12,6 @@ import {
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
-import FormDocuments from '@/components/Form/documents/default/index.vue'
 
 export default {
   id: uuidv4(),
@@ -29,6 +28,7 @@ export default {
   ],
   alias: 'personal',
   active: false,
+  fields: [],
   documents: [
     {
       type: 'passport',

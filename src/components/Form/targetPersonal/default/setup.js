@@ -56,14 +56,14 @@ export default {
     //       const fieldName = date + '/' + el.name
     //       Vue.set(fields, fieldName, {})
     //       Vue.set(fields[fieldName], 'validations', validations)
-    //
+
     //       Vue.set(fields[fieldName], 'default', props.tab.formData[el.name])
     //       if (el.type === 'autocomplete' && el.alias) {
     //         Vue.set(fields[fieldName], 'default', props.tab.formData[el.alias])
     //       }
     //     })
     //   })
-    //
+
     //   return fields
     // }
     const prevTab = ref({})
