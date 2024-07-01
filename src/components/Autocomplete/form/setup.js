@@ -176,7 +176,6 @@ export default {
         return e
       }
     }
-
     const endIntersect = (entries, observer, isIntersecting) => {
       if (loading.value) return
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)

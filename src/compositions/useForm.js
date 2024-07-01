@@ -748,14 +748,64 @@ export default function ({
           }
         }
       }
+      // let filter = list.filter.reduce((acc, el) => {
+      //   const source = eval(el.source)
+      //   if (
+      //     source &&
+      //     source[el.field] !== null &&
+      //     source[el.field] !== undefined &&
+      //     source[el.field] !== ''
+      //   ) {
+      //     acc.push({
+      //       alias: el.alias ?? el.field,
+      //       value: Array.isArray(source[el.field])
+      //         ? source[el.field]
+      //         : [source[el.field]],
+      //       type: el.type,
+      //     })
+      //   } else if (el.routeKey) {
+      //     acc.push({
+      //       alias: el.alias ?? el.field,
+      //       value: [+route.params[el.routeKey]],
+      //       type: el.type,
+      //     })
+      //   } else if (el.sendEmpty) {
+      //     acc.push({
+      //       alias: el.alias ?? el.field,
+      //       value: el.value,
+      //       type: el.type,
+      //     })
+      //   }
+      //   return acc
+      // }, [])
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
-        if (
-          source &&
+        if (el.routeKey) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: [+route.params[el.routeKey]],
+            type: el.type,
+          })
+        } else if (
+          !el.sendEmpty &&
           source[el.field] !== null &&
-          source[el.field] !== undefined &&
-          source[el.field] !== ''
+          source[el.field] !== undefined
         ) {
+          let value = source[el.field]
+          if (moment(value, 'YYYY.MM', true).isValid())
+            value = moment(value, 'YYYY.MM').format('YYYY-MM')
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source[el.field]) ? source[el.field] : [value],
+            type: el.type,
+          })
+        } else if (el.source !== 'formData') {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: Array.isArray(source) ? source : [source],
+            type: el.type,
+          })
+        } else if (el.source === 'formData') {
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
@@ -763,16 +813,10 @@ export default function ({
               : [source[el.field]],
             type: el.type,
           })
-        } else if (el.routeKey) {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: [+route.params[el.routeKey]],
-            type: el.type,
-          })
         } else if (el.sendEmpty) {
           acc.push({
             alias: el.alias ?? el.field,
-            value: el.value,
+            value: null,
             type: el.type,
           })
         }
@@ -1101,6 +1145,9 @@ export default function ({
       if (el.toArray && !Array.isArray(filter.value)) {
         filter.value = [filter.value]
       }
+      if (Array.isArray(filter.value) && filter.value.length === 0) {
+        return []
+      }
       return filter
     })
     return filters
@@ -1123,7 +1170,7 @@ export default function ({
         readonly: environment.readonlyAll,
         filter: getDepFilters(el),
       })
-
+      console.log(getDepFilters(el))
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
