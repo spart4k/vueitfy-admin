@@ -239,7 +239,6 @@ const Form11 = defineComponent({
       //     path_doc: el.name,
       //   }
       // })
-      console.log(formatedSchets.value)
       listNewChet.value = []
       attachedFile.value = false
       dropZone.value.clearDropzone()

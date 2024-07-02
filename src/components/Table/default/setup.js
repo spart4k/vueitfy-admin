@@ -925,7 +925,6 @@ const table = {
     }
 
     const triggerAction = (action, cell, row) => {
-      console.log('method', cell, row, action)
       if (action.method) {
         const conditionContext = {
           store,

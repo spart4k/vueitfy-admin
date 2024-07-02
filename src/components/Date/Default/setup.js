@@ -48,12 +48,9 @@ export default {
     const dateValue = ref()
 
     const changeValue = () => {
-      console.log(dateValue.value)
       if (props.field.subtype === 'multiple') {
         dateValue.value = _.cloneDeep(proxyValue.value)
         dateValue.value?.forEach((item, index) => {
-          console.log(index)
-          console.log(JSON.stringify(dateValue.value))
           dateValue.value[index] = item.replaceAll('.', '-')
         })
       } else {

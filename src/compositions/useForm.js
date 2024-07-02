@@ -712,7 +712,6 @@ export default function ({
     }
     const { field } = params
     if (field.updateList && field?.updateList.length) {
-      console.log('update')
       await getFieldsList(field?.updateList)
       field.loading = false
     }
@@ -817,11 +816,10 @@ export default function ({
       return element
     })
     const lists = await makeRequestList(listQuery)
-    console.log(lists)
     putSelectItems(lists)
   }
   const getDependies = async (params) => {
-    const { value, field } = params
+    const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
@@ -862,14 +860,28 @@ export default function ({
             // query(dependence)
             filter = getDepFilters(dependence)
           }
+          console.log(clearId)
+          console.log(
+            clearId
+              ? -1
+              : formData[
+                  targetField.name ? targetField.name : targetField.alias
+                ]
+              ? formData[
+                  targetField.name ? targetField.name : targetField.alias
+                ]
+              : -1
+          )
           body = {
             countRows: 10,
             currentPage: 1,
             searchValue: '',
             //id: params.id ? params.id : -1,
-            id: formData[
-              targetField.name ? targetField.name : targetField.alias
-            ]
+            id: clearId
+              ? -1
+              : formData[
+                  targetField.name ? targetField.name : targetField.alias
+                ]
               ? formData[
                   targetField.name ? targetField.name : targetField.alias
                 ]
@@ -998,20 +1010,24 @@ export default function ({
           }
         }
       }
-      console.log(data, targetField)
       if (data?.length === 1) {
         formData[depField] = data[0].id
-        console.log(depField, fields[depField])
         await getDependies({
           value: formData[depField],
           field: fields[depField],
+          clearId: true,
         })
         if (fields[depField].updateList && fields[depField].updateList.length) {
           // await queryList(fields[depField], false)
           await getFieldsList(fields[depField].updateList)
         }
       }
-
+      console.log(JSON.stringify(fields[depField]))
+      if (
+        !hasValue(formData[depField], fields[depField]?.items, fields[depField])
+      ) {
+        formData[field.name] = ''
+      }
       if (card) {
         if (dependence.fillField) {
           dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -1057,9 +1073,7 @@ export default function ({
         // dependence
         if (field.hasOwnProperty('defaultItems')) {
           if (field.defaultItems?.length) {
-            console.log(JSON.stringify(field.items))
             const findedEl = field.items?.find((el) => el.id === value)
-            console.log(findedEl)
             if (findedEl) {
               dependence.fields.forEach((el) => {
                 formData[el] = findedEl[el]
@@ -1089,7 +1103,6 @@ export default function ({
   }
 
   const changeSelect = async ({ value, field }) => {
-    console.log('change')
     if (field.dependence) {
       await getDependies({ value, field })
     }
@@ -1159,7 +1172,6 @@ export default function ({
         readonly: environment.readonlyAll,
         filter: getDepFilters(el),
       })
-      console.log(getDepFilters(el))
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
@@ -1167,7 +1179,6 @@ export default function ({
       }
 
       el.hideItems = el.items
-      console.log(data)
       if (data.rows.length === 1 && data.totalPage === 1) {
         formData[el.name] = el.items[0][el.selectOption.value]
       }
@@ -1230,6 +1241,7 @@ export default function ({
           await getDependies({
             value: formData[field.name],
             field,
+            // clearId: true,
           })
           if (field.updateList && field.updateList.length) {
             await getFieldsList(field.updateList)
