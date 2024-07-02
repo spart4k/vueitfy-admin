@@ -22,8 +22,8 @@ module.exports = {
       config.output.filename = `js/[name].${process.env.npm_package_version}.min.js`
       config.output.chunkFilename = `js/[name].${process.env.npm_package_version}.min.js`
     } else {
-      config.output.filename = 'js/[name].js'
-      config.output.chunkFilename = 'js/[name].js'
+      config.output.filename = 'js/[name].[fullhash].js'
+      config.output.chunkFilename = 'js/[name].[fullhash].js'
     }
   },
 }
