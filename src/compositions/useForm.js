@@ -790,6 +790,7 @@ export default function ({
         } else if (
           !el.sendEmpty &&
           source[el.field] !== null &&
+          source[el.field] !== '' &&
           source[el.field] !== undefined
         ) {
           let value = source[el.field]
@@ -801,12 +802,14 @@ export default function ({
             type: el.type,
           })
         } else if (el.source !== 'formData') {
+          if (!source) return
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source) ? source : [source],
             type: el.type,
           })
         } else if (el.source === 'formData') {
+          if (!source[el.field]) return acc
           acc.push({
             alias: el.alias ?? el.field,
             value: Array.isArray(source[el.field])
@@ -815,6 +818,12 @@ export default function ({
             type: el.type,
           })
         } else if (el.sendEmpty) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: null,
+            type: el.type,
+          })
+        } else {
           acc.push({
             alias: el.alias ?? el.field,
             value: null,
@@ -1251,12 +1260,17 @@ export default function ({
             field,
           })
           if (field.updateList && field.updateList.length) {
-            // await queryList(field, false)
             await getFieldsList(field.updateList)
           }
-          // if (field.putFirst)
-          //   formData[field.name] =
-          //     lists.data[keyList][0][field.selectOption.value]
+        } else if (
+          lists.data[keyList].length === 0 &&
+          field.hasOwnProperty('defaultItems') &&
+          field.defaultItems.length === 1
+        ) {
+          formData[field.name] = field.defaultItems[0][field.selectOption.value]
+        }
+        if (!hasValue(formData[field.name], lists.data[keyList], field)) {
+          formData[field.name] = ''
         }
         if (
           field.hasOwnProperty('dependence') ||
@@ -1269,7 +1283,12 @@ export default function ({
       }
     }
   }
-
+  const hasValue = (value, list, field) => {
+    if (!value) return true
+    else {
+      return list.find((el) => el[field.selectOption.value] === value)
+    }
+  }
   const refreshForm = () => {
     getData()
   }
@@ -1326,63 +1345,6 @@ export default function ({
     field.loading = true
     const lists = await makeRequestList([requestData])
     field.items = lists.data[field.alias ?? field.name]
-    field.loading = false
-  }
-
-  const queryList = async (field, clear = true) => {
-    console.log('query')
-    const listData = field?.updateList?.flatMap((list) => {
-      if (list.condition) {
-        const conditionContext = {
-          store,
-          formData,
-          environment,
-        }
-        for (let i = 0; i < list.condition.length; i++) {
-          let item = list.condition[i]
-          if (item.hasOwnProperty('funcCondition')) {
-            if (!item.funcCondition(conditionContext)) {
-              return []
-            }
-          } else if (!item.value.includes(formData[item.key])) return []
-        }
-      }
-
-      let filter = list.filter.reduce((acc, el) => {
-        const source = eval(el.source)
-        if (
-          source[el.field] !== null &&
-          source[el.field] !== undefined &&
-          ((Array.isArray(source[el.field]) && source[el.field].length) ||
-            (!Array.isArray(source[el.field]) && source[el.field]))
-        ) {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: Array.isArray(source[el.field])
-              ? source[el.field]
-              : [source[el.field]],
-            type: el.type,
-          })
-        }
-        return acc
-      }, [])
-
-      const targetItem = form.fields.find(
-        (x) => list.alias === x.alias || list.alias === x.name
-      )
-      const element = {
-        alias: list.alias,
-        filter,
-        readonly: environment.readonlyAll,
-        id: formData[targetItem.name] ? formData[targetItem.name] : undefined,
-      }
-      return element
-    })
-    field.loading = true
-    const lists = await makeRequestList(listData)
-    console.log(lists)
-    putSelectItems(lists)
-    if (clear) formData[field.name] = ''
     field.loading = false
   }
 
