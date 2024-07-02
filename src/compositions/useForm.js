@@ -58,10 +58,14 @@ export default function ({
   const permission = computed(() => store.state.user.permission_id)
 
   const fields = {}
+  const fieldAliases = {}
   const initFields = () => {
     if (!form) return
     for (let i = 0; i < form.fields.length; i++) {
       fields[form.fields[i].name] = form.fields[i]
+      if (form.fields[i].alias)
+        fieldAliases[form.fields[i].alias] = form.fields[i].name
+      else fieldAliases[form.fields[i].name] = form.fields[i].name
     }
     for (let key in fields) {
       if (formData.hasOwnProperty(key)) continue
@@ -70,7 +74,7 @@ export default function ({
   }
   const originalData = ref()
   const formData = reactive(
-    Object.keys(form?.fields || []).reduce((obj, key) => {
+    Object.keys(form.fields || []).reduce((obj, key) => {
       obj[form.fields[key].name] = ref(form.fields[key].value)
       return obj
     }, {})
@@ -464,7 +468,7 @@ export default function ({
 
     if (!form) return
     Object.keys(formData).forEach((key) => {
-      const item = form?.fields?.find((x) => x.name === key)
+      const item = fields[key]
       if (item?.prescription) {
         if (!newForm[item.prescription]) newForm[item.prescription] = []
         let itemIndex = item.name.split('%')[1]
@@ -749,36 +753,6 @@ export default function ({
           }
         }
       }
-      // let filter = list.filter.reduce((acc, el) => {
-      //   const source = eval(el.source)
-      //   if (
-      //     source &&
-      //     source[el.field] !== null &&
-      //     source[el.field] !== undefined &&
-      //     source[el.field] !== ''
-      //   ) {
-      //     acc.push({
-      //       alias: el.alias ?? el.field,
-      //       value: Array.isArray(source[el.field])
-      //         ? source[el.field]
-      //         : [source[el.field]],
-      //       type: el.type,
-      //     })
-      //   } else if (el.routeKey) {
-      //     acc.push({
-      //       alias: el.alias ?? el.field,
-      //       value: [+route.params[el.routeKey]],
-      //       type: el.type,
-      //     })
-      //   } else if (el.sendEmpty) {
-      //     acc.push({
-      //       alias: el.alias ?? el.field,
-      //       value: el.value,
-      //       type: el.type,
-      //     })
-      //   }
-      //   return acc
-      // }, [])
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
         if (el.routeKey) {
@@ -1210,9 +1184,7 @@ export default function ({
 
   const putSelectItems = async (lists, field) => {
     for (let keyList in lists.data) {
-      const field = form?.fields.find((el) =>
-        el.alias ? el.alias === keyList : el.name === keyList
-      )
+      const field = fields[fieldAliases[keyList]]
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1356,9 +1328,7 @@ export default function ({
 
   const getListField = (list) => {
     let listValue = undefined
-    const listField = form.fields.find(
-      (fieldEl) => fieldEl.alias === list.alias || fieldEl.name === list.alias
-    )
+    const listField = fields[fieldAliases[list.alias]]
     if (listField) {
       listValue = formData[listField.name]
     }
@@ -1376,26 +1346,15 @@ export default function ({
         environment.readonlyAll = syncForm.readonly
       }
       for (let formKey in syncForm.data) {
-        const field = formData[formKey]
+        const field = fields[formKey]
         if (field !== undefined) {
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
           if (!field.notPut) {
             formData[formKey] = syncForm.data[formKey]
-            // Vue.set(formData, field.name, syncForm.data[formKey])
             if (field.type === 'checkbox')
               formData[field.name] = !!syncForm.data[formKey]
           }
-          // Подгрузка полей с дополнительными зависимостями ( Например загрузка банк-их карт по id сотрудника)
-          // if (field.hasOwnProperty('dependence')) {
-          //   await getDependies({
-          //     value: formData[field.name],
-          //     field,
-          //   })
-          // }
-          // if (field.updateList && field.updateList.length) {
-          //   await queryList(field, false)
-          // }
         }
       }
 
