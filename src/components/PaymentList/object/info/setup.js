@@ -39,9 +39,7 @@ const table = {
     const isOpenObject = ref(false)
     watch(
       () => isOpen.value,
-      (newVal) => {
-        console.log(newVal + '_' + props.row.personal_id)
-      }
+      (newVal) => {}
     )
     return {
       isOpen,

@@ -122,7 +122,6 @@ export default {
             url: '$IconDownload',
             label: 'Скачать',
             method: async (context) => {
-              console.log(context)
               Vue.downloadFile(context.row.row.path_doc)
             },
           },

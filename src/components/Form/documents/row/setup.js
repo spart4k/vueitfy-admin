@@ -1783,7 +1783,6 @@ export default {
         })
         const { result } = await delInfoAFile()
         if (result) {
-          console.log(dropZoneRef.value)
           dropZoneRef.value.clearDropzone()
         } else {
           store.commit('notifies/showMessage', {

@@ -712,7 +712,6 @@ export default function ({
     }
     const { field } = params
     if (field.updateList && field?.updateList.length) {
-      console.log('update')
       await getFieldsList(field?.updateList)
       field.loading = false
     }
@@ -817,7 +816,6 @@ export default function ({
       return element
     })
     const lists = await makeRequestList(listQuery)
-    console.log(lists)
     putSelectItems(lists)
   }
   const getDependies = async (params) => {
@@ -998,10 +996,8 @@ export default function ({
           }
         }
       }
-      console.log(data, targetField)
       if (data?.length === 1) {
         formData[depField] = data[0].id
-        console.log(depField, fields[depField])
         await getDependies({
           value: formData[depField],
           field: fields[depField],
@@ -1057,9 +1053,7 @@ export default function ({
         // dependence
         if (field.hasOwnProperty('defaultItems')) {
           if (field.defaultItems?.length) {
-            console.log(JSON.stringify(field.items))
             const findedEl = field.items?.find((el) => el.id === value)
-            console.log(findedEl)
             if (findedEl) {
               dependence.fields.forEach((el) => {
                 formData[el] = findedEl[el]
@@ -1089,7 +1083,6 @@ export default function ({
   }
 
   const changeSelect = async ({ value, field }) => {
-    console.log('change')
     if (field.dependence) {
       await getDependies({ value, field })
     }
@@ -1159,7 +1152,6 @@ export default function ({
         readonly: environment.readonlyAll,
         filter: getDepFilters(el),
       })
-      console.log(getDepFilters(el))
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
@@ -1167,7 +1159,6 @@ export default function ({
       }
 
       el.hideItems = el.items
-      console.log(data)
       if (data.rows.length === 1 && data.totalPage === 1) {
         formData[el.name] = el.items[0][el.selectOption.value]
       }
@@ -1488,17 +1479,6 @@ export default function ({
                 environment,
                 mode,
               }
-              if (field.name === 'account_id') {
-                console.log(
-                  // conditionEl.funcCondition,
-                  conditionContext.store.state.user.is_personal_vertical,
-                  conditionContext.formData.status_id === 1 ||
-                    conditionContext.formData.status_id === 3,
-                  conditionContext.mode === 'edit',
-                  conditionEl.funcCondition(conditionContext)
-                )
-              }
-
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1614,11 +1594,7 @@ export default function ({
       }
     }
     if (field.isShow.conditions && field.isShow.conditions.length) {
-      //if (field.name === 'print_form_key') {
-      //}
       field.isShow.value = condition()
-      //$v = useVuelidate(validations.value, formData)
-      // rebuildFormData()
     }
     return (
       type === field.type &&
