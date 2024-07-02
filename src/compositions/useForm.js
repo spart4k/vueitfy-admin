@@ -58,10 +58,14 @@ export default function ({
   const permission = computed(() => store.state.user.permission_id)
 
   const fields = {}
+  const fieldAliases = {}
   const initFields = () => {
     if (!form) return
     for (let i = 0; i < form.fields.length; i++) {
       fields[form.fields[i].name] = form.fields[i]
+      if (form.fields[i].alias)
+        fieldAliases[form.fields[i].alias] = form.fields[i].name
+      else fieldAliases[form.fields[i].name] = form.fields[i].name
     }
     for (let key in fields) {
       if (formData.hasOwnProperty(key)) continue
@@ -70,7 +74,7 @@ export default function ({
   }
   const originalData = ref()
   const formData = reactive(
-    Object.keys(form?.fields || []).reduce((obj, key) => {
+    Object.keys(form.fields || []).reduce((obj, key) => {
       obj[form.fields[key].name] = ref(form.fields[key].value)
       return obj
     }, {})
@@ -464,7 +468,7 @@ export default function ({
 
     if (!form) return
     Object.keys(formData).forEach((key) => {
-      const item = form?.fields?.find((x) => x.name === key)
+      const item = fields[key]
       if (item?.prescription) {
         if (!newForm[item.prescription]) newForm[item.prescription] = []
         let itemIndex = item.name.split('%')[1]
@@ -1201,9 +1205,7 @@ export default function ({
 
   const putSelectItems = async (lists, field) => {
     for (let keyList in lists.data) {
-      const field = form?.fields.find((el) =>
-        el.alias ? el.alias === keyList : el.name === keyList
-      )
+      const field = fields[fieldAliases[keyList]]
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1367,9 +1369,7 @@ export default function ({
         return acc
       }, [])
 
-      const targetItem = form.fields.find(
-        (x) => list.alias === x.alias || list.alias === x.name
-      )
+      const targetItem = fields[fieldAliases[list.alias]]
       const element = {
         alias: list.alias,
         filter,
@@ -1394,9 +1394,7 @@ export default function ({
 
   const getListField = (list) => {
     let listValue = undefined
-    const listField = form.fields.find(
-      (fieldEl) => fieldEl.alias === list.alias || fieldEl.name === list.alias
-    )
+    const listField = fields[fieldAliases[list.alias]]
     if (listField) {
       listValue = formData[listField.name]
     }
