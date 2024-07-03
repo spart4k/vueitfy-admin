@@ -1,0 +1,155 @@
+import {
+  dateField,
+  selectField,
+  autocompleteField,
+  dateRangeField,
+} from '@/utils/fields.js'
+import { stringAction } from '@/utils/actions.js'
+
+const filters = {
+  id: 0,
+  name: 'Основные',
+  type: 'FormDefault',
+  detail: false,
+  isFilter: true,
+  lists: [
+    { alias: 'status_id', filter: [] },
+    { alias: 'vid_vedomost_id', filter: [] },
+    { alias: 'doljnost_retail_id', filter: [] },
+  ],
+  alias: 'payment',
+  active: false,
+  fields: [
+    selectField({
+      label: 'Статус',
+      name: 'status_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.status_id',
+    }),
+    selectField({
+      label: 'Вид ведомости',
+      name: 'vid_vedomost_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.vid_vedomost_id',
+    }),
+    autocompleteField({
+      label: 'Линейщик',
+      name: 'personal_id',
+      subtype: 'single',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_personal_retail',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.personal_id',
+    }),
+    autocompleteField({
+      label: 'Объект',
+      name: 'object_id',
+      subtype: 'single',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_object_retail',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.object_id',
+    }),
+    selectField({
+      label: 'Должность',
+      name: 'doljnost_retail_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.doljnost_id',
+    }),
+    autocompleteField({
+      label: 'Менеджеры',
+      name: 'account_id',
+      subtype: 'single',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_manager_retail',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.account_id',
+    }),
+  ],
+  actions: [
+    stringAction({
+      text: 'Сохранить',
+      type: 'submit',
+      action: 'saveFilter',
+      name: 'saveFilter',
+      nextForm: true,
+    }),
+  ],
+}
+
+export default filters
