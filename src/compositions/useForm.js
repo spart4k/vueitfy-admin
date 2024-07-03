@@ -696,7 +696,15 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
+    getRecursiveDependes(params.field)
     queueMicrotask(async () => {
+      params.field.dependence?.forEach((dependence) => {
+        const depField = dependence.field
+        const targetField = fields[depField]
+        if (targetField) {
+          // formData[targetField.name ? targetField.name : targetField.alias] = ''
+        }
+      })
       await getDependies(params)
     })
     if (params.field.hasOwnProperty('selectOptionName')) {
@@ -712,11 +720,51 @@ export default function ({
     }
     const { field } = params
     if (field.updateList && field?.updateList.length) {
+      field?.updateList.forEach((el) => {
+        // formData[fieldAliases[el.alias]] = ''
+      })
       await getFieldsList(field?.updateList)
       field.loading = false
     }
   }
-
+  const getRecursiveDependes = (field) => {
+    const formDataNames = []
+    const findFieldName = (field) => {
+      field?.dependence?.forEach((el) => {
+        console.log(el)
+        if (el?.module) {
+          const depField = el.field
+          const targetField = fields[depField]
+          const name = targetField.name ? targetField.name : targetField.alias
+          if (!formDataNames.includes(name)) {
+            formDataNames.push(name)
+          }
+          if (
+            targetField.hasOwnProperty('updateList') ||
+            targetField.hasOwnProperty('dependence')
+          ) {
+            findFieldName(targetField)
+          }
+        }
+      })
+      field?.updateList?.forEach((el) => {
+        if (!formDataNames.includes(fieldAliases[el.alias])) {
+          formDataNames.push(fieldAliases[el.alias])
+        }
+        if (
+          fields[fieldAliases[el.alias]].hasOwnProperty('updateList') ||
+          fields[fieldAliases[el.alias]].hasOwnProperty('dependence')
+        ) {
+          findFieldName(fieldAliases[el.alias])
+        }
+      })
+    }
+    findFieldName(field)
+    formDataNames.forEach((el) => {
+      formData[el] = ''
+    })
+    console.log(formDataNames)
+  }
   const changeValue = (params) => {
     const { value, field } = params
     if (field.dependence) {
@@ -754,6 +802,7 @@ export default function ({
       }
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
+        console.log(source)
         if (el.routeKey) {
           acc.push({
             alias: el.alias ?? el.field,
@@ -762,6 +811,7 @@ export default function ({
           })
         } else if (
           !el.sendEmpty &&
+          source &&
           source[el.field] !== null &&
           source[el.field] !== '' &&
           source[el.field] !== undefined
@@ -860,18 +910,11 @@ export default function ({
             // query(dependence)
             filter = getDepFilters(dependence)
           }
-          console.log(clearId)
-          console.log(
-            clearId
-              ? -1
-              : formData[
-                  targetField.name ? targetField.name : targetField.alias
-                ]
-              ? formData[
-                  targetField.name ? targetField.name : targetField.alias
-                ]
-              : -1
-          )
+          // if (clearId) {
+          //   formData[targetField.name ? targetField.name : targetField.alias] =
+          //     ''
+          // }
+          // formData[targetField.name ? targetField.name : targetField.alias] = ''
           body = {
             countRows: 10,
             currentPage: 1,
@@ -1015,14 +1058,13 @@ export default function ({
         await getDependies({
           value: formData[depField],
           field: fields[depField],
-          clearId: true,
+          // clearId: true,
         })
         if (fields[depField].updateList && fields[depField].updateList.length) {
           // await queryList(fields[depField], false)
           await getFieldsList(fields[depField].updateList)
         }
       }
-      console.log(JSON.stringify(fields[depField]))
       if (
         !hasValue(formData[depField], fields[depField]?.items, fields[depField])
       ) {
@@ -1499,16 +1541,6 @@ export default function ({
                 originalData: originalData.value,
                 environment,
                 mode,
-              }
-              if (field.name === 'account_id') {
-                console.log(
-                  // conditionEl.funcCondition,
-                  conditionContext.store.state.user.is_personal_vertical,
-                  conditionContext.formData.status_id === 1 ||
-                    conditionContext.formData.status_id === 3,
-                  conditionContext.mode === 'edit',
-                  conditionEl.funcCondition(conditionContext)
-                )
               }
 
               return (

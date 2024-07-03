@@ -57,7 +57,14 @@ export default {
     },
     {
       alias: 'managers',
-      filter: [{ alias: 'permission_id', value: [1], type: 'num' }],
+      filter: [
+        {
+          alias: 'permission_id',
+          value: [1],
+          type: 'num',
+          source: 'environment',
+        },
+      ],
     },
     { alias: 'owner_habitation', filter: [] },
     { alias: 'realtors', filter: [] },
