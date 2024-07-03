@@ -720,9 +720,6 @@ export default function ({
     }
     const { field } = params
     if (field.updateList && field?.updateList.length) {
-      field?.updateList.forEach((el) => {
-        // formData[fieldAliases[el.alias]] = ''
-      })
       await getFieldsList(field?.updateList)
       field.loading = false
     }
@@ -1542,7 +1539,6 @@ export default function ({
                 environment,
                 mode,
               }
-
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1658,11 +1654,7 @@ export default function ({
       }
     }
     if (field.isShow.conditions && field.isShow.conditions.length) {
-      //if (field.name === 'print_form_key') {
-      //}
       field.isShow.value = condition()
-      //$v = useVuelidate(validations.value, formData)
-      // rebuildFormData()
     }
     return (
       type === field.type &&

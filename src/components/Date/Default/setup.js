@@ -100,9 +100,7 @@ export default {
       }
     })
 
-    const clearField = () => {
-      console.log('clear')
-    }
+    const clearField = () => {}
     watch(
       () => proxyValue.value,
       (newVal) => {

@@ -243,15 +243,7 @@ export default {
     })
 
     onMounted(async () => {
-      var start = performance.now()
-
       await getData()
-
-      var end = performance.now()
-
-      var time = end - start
-
-      console.log('Время выполнения = ' + time)
     })
 
     return {
