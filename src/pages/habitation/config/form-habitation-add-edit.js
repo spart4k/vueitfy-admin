@@ -62,7 +62,7 @@ export default {
           alias: 'permission_id',
           value: [1],
           type: 'num',
-          source: 'environment',
+          source: 'environment.permission_id',
         },
       ],
     },
