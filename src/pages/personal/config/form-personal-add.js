@@ -216,12 +216,12 @@ export default {
             {
               alias: 'brigadirs',
               filter: [
-                // {
-                //   field: 'object_id',
-                //   value: '',
-                //   source: 'formData',
-                //   type: 'array',
-                // },
+                {
+                  field: 'object_id',
+                  value: '',
+                  source: 'formData',
+                  type: 'array',
+                },
                 {
                   field: 'direction_id',
                   //alias: 'direction_json',
@@ -319,6 +319,7 @@ export default {
             module: 'selects/getList',
             fields: ['object_id'],
           },
+          requiredFields: ['object_id', 'direction_id'],
           isShow: {
             value: false,
             conditions: [
