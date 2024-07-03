@@ -729,9 +729,10 @@ export default function ({
     const findFieldName = (field) => {
       field?.dependence?.forEach((el) => {
         console.log(el)
-        if (el?.module) {
+        if (el?.module && el?.field) {
           const depField = el.field
           const targetField = fields[depField]
+          console.log(el.field, targetField, el)
           const name = targetField.name ? targetField.name : targetField.alias
           if (!formDataNames.includes(name)) {
             formDataNames.push(name)
@@ -1309,13 +1310,7 @@ export default function ({
   const hasValue = (value, list, field) => {
     if (!value) return true
     else {
-      if (Array.isArray(value)) {
-        return list.find((el) =>
-          _.intersection(el[field.selectOption.value], value)
-        )
-      } else {
-        return list.find((el) => el[field.selectOption.value] === value)
-      }
+      return list.find((el) => el[field.selectOption.value] === value)
     }
   }
   const refreshForm = () => {
@@ -1381,6 +1376,7 @@ export default function ({
     readonlyAll: 0,
     mode,
     ...store.state.user,
+    ...formData,
   })
 
   const getListField = (list) => {
