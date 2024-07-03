@@ -368,6 +368,7 @@ const routes = [
             path: '/personal/:id/:payment',
             meta: {
               mode: ['edit', 'edit-payment'],
+              label: 'Начисление',
             },
             component: Detail,
           },
@@ -588,15 +589,6 @@ const routes = [
     component: AccountView,
     children: [
       {
-        name: 'account-add',
-        path: '/account/add',
-        meta: {
-          mode: 'add',
-          label: 'Добавление аккаунта',
-        },
-        component: Detail,
-      },
-      {
         name: 'account/:id',
         path: ':id',
         component: Detail,
@@ -624,6 +616,15 @@ const routes = [
             component: Detail,
           },
         ],
+      },
+      {
+        name: 'account-add',
+        path: '/account/add',
+        meta: {
+          mode: 'add',
+          label: 'Добавление аккаунта',
+        },
+        component: Detail,
       },
     ],
   },

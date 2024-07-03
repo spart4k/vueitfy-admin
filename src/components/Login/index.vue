@@ -13,7 +13,6 @@
               class="field-col"
               :class="field.type"
             >
-              <!-- {{ vForm[field?.name].$errors }} -->
               <v-text-field
                 v-if="showField('string', field)"
                 :type="field.subtype"
@@ -21,9 +20,7 @@
                 :label="field.label"
                 :readonly="field.readonly"
                 :name="field.name"
-                :error-messages="
-                  vForm[field?.name].$errors.map((el) => el.$message)
-                "
+                :error-messages="formErrors[field?.name]"
               />
             </v-col>
           </v-row>

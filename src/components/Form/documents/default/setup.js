@@ -45,11 +45,6 @@ export default {
       },
     }
     const docsData = ref(null)
-    // const loading = ref(false)
-    const fields = () => {
-      const fields = {}
-      return fields
-    }
     const showActions = computed(() => {
       return [4, 7, 16].includes(store.state.user.permission_id)
     })
@@ -58,25 +53,7 @@ export default {
       context,
       request: () => store.dispatch('personal/getDocuments', personal_id),
     })
-    const prevTab = ref({})
     const rows = ref([])
-    //const params = props.tab.lists
-    //const queryString = '?lists=' + [...params]
-    //const { makeRequest: makeRequestList } = useRequest({
-    //  context,
-    //  request: () => store.dispatch('list/get', `get/lists${queryString}`),
-    //})
-
-    const { makeRequest: delInfoAFile } = useRequest({
-      context,
-      request: (id) =>
-        store.dispatch('taskModule/updateFileData', {
-          data: {
-            id,
-            del: 1,
-          },
-        }),
-    })
 
     const { makeRequest: updateFields } = useRequest({
       context,
@@ -86,31 +63,6 @@ export default {
           url: personal_id,
           body,
         }),
-    })
-
-    const { makeRequest: loadImage } = useRequest({
-      context,
-      request: (file) =>
-        store.dispatch('storage/loadFilePut', {
-          // id: 1,
-          folder: 'personal_doc',
-          fileName: file.fileName,
-          file: file.file,
-        }),
-      successMessage: 'Файл успешно загружен',
-    })
-
-    const { makeRequest: updateFileData } = useRequest({
-      context,
-      request: (params) => {
-        return store.dispatch('taskModule/updateFileData', {
-          data: {
-            personal_id,
-            doc_id: params.doc_id,
-            path_doc: params.path_doc,
-          },
-        })
-      },
     })
 
     const {
@@ -126,7 +78,7 @@ export default {
       showField,
     } = useForm({
       form: props.tab,
-      fields: fields(),
+      // fields: fields(),
       context,
       loading,
       //makeRequestList,
@@ -160,7 +112,6 @@ export default {
       changeAutocomplete,
       getData,
       changeSelect,
-      prevTab,
       docsData,
       rows,
       sendDocuments,

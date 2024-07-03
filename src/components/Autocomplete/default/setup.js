@@ -98,7 +98,6 @@ export default {
     }
 
     const clearField = () => {
-      console.log('clearField')
       if (props.field.subtype) {
         proxyValue.value = []
       } else {

@@ -82,12 +82,9 @@ export default {
         }
         listDocuments.value.push(pasteObject)
       })
-      console.log(was_process && commentData)
       if (was_process && commentData) {
         status.value = 'Работает'
-        console.log(status.value)
       }
-      console.log(status.value)
     })
 
     let listRequestsForUpload = ref([])
@@ -244,7 +241,6 @@ export default {
       })
       sendDocuments()
       const result = await processQuery()
-      console.log(result)
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')

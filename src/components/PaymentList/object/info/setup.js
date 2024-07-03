@@ -37,12 +37,6 @@ const table = {
     const route = useRoute()
     const isOpen = ref(false)
     const isOpenObject = ref(false)
-    watch(
-      () => isOpen.value,
-      (newVal) => {
-        console.log(newVal + '_' + props.row.personal_id)
-      }
-    )
     return {
       isOpen,
     }

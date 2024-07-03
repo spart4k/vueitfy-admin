@@ -786,9 +786,6 @@ const table = {
       pagination.value = {
         ...options.data,
       }
-      console.log(
-        options.detail && options.detail.type === 'popup' && route.meta.mode
-      )
       if (
         options.detail &&
         options.detail.type === 'popup' &&
@@ -933,7 +930,6 @@ const table = {
     }
 
     const triggerAction = (action, cell, row) => {
-      console.log('method', cell, row, action)
       if (action.method) {
         const conditionContext = {
           store,

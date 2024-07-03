@@ -597,6 +597,56 @@ export default {
           ],
         },
       ],
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          //filter: [
+          //  {
+          //    field: 'direction_id',
+          //    value: '',
+          //  },
+          //],
+          url: 'get/pagination_list/payment_object_id',
+        },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'personal_id',
+          //filter: [
+          //  {
+          //    field: 'direction_id',
+          //    value: '',
+          //  },
+          //],
+          condition: [
+            {
+              field: 'direction_id',
+              value: [2],
+            },
+          ],
+          url: 'get/pagination_list/personal',
+        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'object_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [1],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/payment_personal_id',
+        // },
+      ],
       readonly: {
         value: false,
         condition: [
