@@ -25,6 +25,14 @@
   flex-direction: column;
   gap: 5px;
   margin-left: 5px;
+  a {
+    color: #000000;
+    text-decoration: none;
+    span {
+      color: #000000;
+      text-decoration: none;
+    }
+  }
 }
 
 .is-unconfirmed {
