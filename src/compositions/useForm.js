@@ -1310,7 +1310,13 @@ export default function ({
   const hasValue = (value, list, field) => {
     if (!value) return true
     else {
-      return list.find((el) => el[field.selectOption.value] === value)
+      if (Array.isArray(value)) {
+        return list.find((el) =>
+          _.intersection(el[field.selectOption.value], value)
+        )
+      } else {
+        return list.find((el) => el[field.selectOption.value] === value)
+      }
     }
   }
   const refreshForm = () => {
