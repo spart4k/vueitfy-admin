@@ -207,13 +207,6 @@ export const config = {
             function: null,
             backgroundColor: '#ffffff',
           },
-          {
-            label: 'Добавить',
-            class: ['v-table-button--custom'],
-            type: 'changeUrl',
-            url: 'realty/add',
-            backgroundColor: '#fff',
-          },
         ],
       },
       head: [
@@ -334,7 +327,7 @@ export const config = {
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [_.cloneDeep(formRealtyAddEdit), _.cloneDeep(formRealtyAddEdit)],
+        tabs: [_.cloneDeep(formRealtyAddEdit)],
         clearStore: true,
         activeTab: null,
         formData: {},
