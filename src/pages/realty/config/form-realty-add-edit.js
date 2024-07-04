@@ -256,7 +256,7 @@ export default {
         sm: 6,
       },
       validations: { required, number },
-      mask: 'Z#',
+      mask: '##',
       bootstrapClass: [''],
     }),
     stringField({
