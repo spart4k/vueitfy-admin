@@ -695,7 +695,7 @@ export default function ({
             })
           })
         }
-        if (dropzone.options.stash) {
+        if (dropzone.options.stash && formData[dropzone.options.stash]) {
           formData[dropzone.options.stash].forEach((file, index) => {
             queryParams.formData[dropzone.requestKey || dropzone.name].push({
               path: file.path,
