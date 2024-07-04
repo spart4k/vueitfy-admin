@@ -12,7 +12,7 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, number, hasTime } from '@/utils/validation.js'
+import { required, number, hasTime, dayOfMonth } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -255,8 +255,8 @@ export default {
         cols: 12,
         sm: 6,
       },
-      validations: { required, number },
-      mask: '##',
+      validations: { required, number, dayOfMonth },
+      mask: 'X#',
       bootstrapClass: [''],
     }),
     stringField({
