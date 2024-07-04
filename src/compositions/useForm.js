@@ -597,7 +597,7 @@ export default function ({
 
     const setFormData = (val, dropzone) => {
       if (queryParams && queryParams.formData) {
-        queryParams.formData[dropzone.name] = val
+        queryParams.formData[dropzone.requestKey || dropzone.name] = val
       } else {
         formData[dropzone.name] = val
       }
@@ -695,10 +695,19 @@ export default function ({
             })
           })
         }
+        if (dropzone.options.stash) {
+          formData[dropzone.options.stash].forEach((file, index) => {
+            queryParams.formData[dropzone.requestKey || dropzone.name].push({
+              path: file.path,
+              index:
+                queryParams.formData[dropzone.requestKey || dropzone.name]
+                  .length + 1,
+            })
+          })
+        }
       })
     )
 
-    console.log('zxc')
     if (update) {
       const result = await changeForm(queryParams)
     } else if (change) {
@@ -853,7 +862,7 @@ export default function ({
                 : [value],
               type: el.type,
             })
-          } else if (el.source !== 'formData') {
+          } else if (!el.sendEmpty && el.source !== 'formData') {
             acc.push({
               alias: el.alias ?? el.field,
               value: Array.isArray(source) ? source : [source],
@@ -870,7 +879,7 @@ export default function ({
           } else if (el.sendEmpty) {
             acc.push({
               alias: el.alias ?? el.field,
-              value: null,
+              value: el.value,
               type: el.type,
             })
           }
@@ -906,7 +915,8 @@ export default function ({
               })
             }
           }
-          field.items = lists.data[keyList]
+          Vue.set(field, 'items', lists.data[keyList])
+          // field.items = lists.data[keyList]
           if (field.items.length === 1) {
             // Если массив, вставить массив
             if (field.putFirst)
@@ -1077,7 +1087,7 @@ export default function ({
         dependence.funcComputed(context)
       }
       field.loading = true
-      if (depField) targetField.loading = true
+      if (depField && targetField) targetField.loading = true
       let data
 
       if (dependence.module) {
@@ -1116,10 +1126,8 @@ export default function ({
             targetField.defaultObjectData.forEach((el) =>
               targetField.objectData.push(el)
             )
-            console.log()
             // findedDep.fields.forEach((el) => (formData[el] = ))
           }
-          console.log(data.length)
           if (data.length || targetField.objectData.length) {
             targetField.objectData = [...data, ...targetField.objectData]
           } else {
@@ -1178,17 +1186,13 @@ export default function ({
         }
       }
       if (dependence.type === 'update') {
-        console.log('update', field.name)
         // dependence
         if (field.hasOwnProperty('defaultItems')) {
           if (field.defaultItems?.length) {
-            console.log(JSON.stringify(field.items))
             const findedEl = field.items?.find((el) => el.id === value)
-            console.log(findedEl)
             if (findedEl) {
               dependence.fields.forEach((el) => {
                 formData[el] = findedEl[el]
-                console.log(formData[el], el)
               })
             }
           } else {
@@ -1197,13 +1201,11 @@ export default function ({
             })
           }
         }
-        console.log(formData[field.name])
         if (
           formData[field.name] === '' ||
           formData[field.name] === null ||
           formData[field.name] === undefined
         ) {
-          console.log(formData[field.name])
           dependence.fields.forEach((el) => {
             // formData[el] = ''
           })
@@ -1445,9 +1447,16 @@ export default function ({
         }
       }
 
+      // if (list.condition) return []
       let filter = list.filter.reduce((acc, el) => {
         const source = eval(el.source)
-        if (
+        if (el.sendEmpty) {
+          acc.push({
+            alias: el.alias ?? el.field,
+            value: el.value,
+            type: el.type,
+          })
+        } else if (
           source[el.field] !== null &&
           source[el.field] !== undefined &&
           ((Array.isArray(source[el.field]) && source[el.field].length) ||
@@ -1670,9 +1679,6 @@ export default function ({
             field.hasOwnProperty('updateList')
           ) {
             const value = formData[field.name]
-            if (field.name === 'personal_bank_id') {
-              console.log(field.name)
-            }
             await getDependies({ value, field })
           }
           if (field.hasOwnProperty('updateList')) {

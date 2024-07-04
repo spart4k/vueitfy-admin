@@ -4,6 +4,7 @@ import PaymentView from '../views/PaymentView.vue'
 import PaymentListView from '../views/PaymentListView.vue'
 import PaymentListPersonalView from '../components/PaymentList/personal/index.vue'
 import PersonalView from '../views/PersonalView.vue'
+import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
 import PivotRetailView from '../views/PivotRetailView.vue'
@@ -270,6 +271,34 @@ const routes = [
         path: ':id',
         meta: {
           mode: ['edit'],
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/realty',
+    name: 'realty',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: RealtyView,
+    children: [
+      {
+        name: 'realty/add',
+        path: '/realty/add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить недвижимость',
+        },
+        component: Detail,
+      },
+      {
+        name: 'realty/:id',
+        path: '/realty/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать недвижимость',
         },
         component: Detail,
       },
