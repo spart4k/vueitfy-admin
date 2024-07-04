@@ -245,7 +245,7 @@ export default {
       bootstrapClass: [''],
     }),
     stringField({
-      label: 'Дата платежа',
+      label: 'День платежа',
       name: 'date_pay',
       placeholder: '',
       requestType: 'number',
