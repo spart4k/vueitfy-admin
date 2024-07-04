@@ -61,6 +61,13 @@ export default {
         index: [1],
       },
     })
+    configRouteConvert({
+      config: config.tabs[1],
+      newPath: 'edit',
+      settings: {
+        index: [0],
+      },
+    })
 
     return {
       config,
