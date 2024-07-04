@@ -20,6 +20,10 @@ const required = Object.assign({}, vueRequired, {
 //     $message: () => 'Не менее 11 символов',
 //   }
 // }
+const dayOfMonth = {
+  $validator: (value) => Number(value) > 0 && Number(value) < 32,
+  $message: () => 'Выберите день от 1 до 31',
+}
 
 const length = (param) => {
   return {
@@ -151,5 +155,6 @@ export {
   length,
   number,
   maxLength,
+  dayOfMonth,
   // strongPassword
 }

@@ -4,6 +4,7 @@ import PaymentView from '../views/PaymentView.vue'
 import PaymentListView from '../views/PaymentListView.vue'
 import PaymentListPersonalView from '../components/PaymentList/personal/index.vue'
 import PersonalView from '../views/PersonalView.vue'
+import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
 import X5importView from '../views/X5importView.vue'
@@ -34,6 +35,7 @@ import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
+// import GanttaView from '@/views/GanttaView.vue'
 
 Vue.use(VueRouter)
 
@@ -117,6 +119,17 @@ const routes = [
       },
     ],
   },
+  // {
+  //   path: '/vacations',
+  //   name: 'vacations',
+  //   meta: {
+  //     layout: 'blank-layout',
+  //   },
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: GanttaView,
+  // },
   {
     path: '/payment',
     name: 'payment',
@@ -257,6 +270,34 @@ const routes = [
         path: ':id',
         meta: {
           mode: ['edit'],
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/realty',
+    name: 'realty',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: RealtyView,
+    children: [
+      {
+        name: 'realty/add',
+        path: '/realty/add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить недвижимость',
+        },
+        component: Detail,
+      },
+      {
+        name: 'realty/:id',
+        path: '/realty/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать недвижимость',
         },
         component: Detail,
       },
