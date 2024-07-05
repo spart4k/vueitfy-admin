@@ -107,12 +107,12 @@ const nameLength = {
   $message: () => 'Не менее 5 символов',
 }
 
-const minFileLength = (value) => ({
+const minFileLength = {
   $validator: (val, formData) => {
     return formData.schet_loader.length || formData.schet.length
   },
   $message: () => 'Необходимо приложить минимум 1 счет',
-})
+}
 
 const sameAs = (value) => ({
   $validator: (val, formData) => {

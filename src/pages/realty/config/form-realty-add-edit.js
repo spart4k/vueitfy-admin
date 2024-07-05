@@ -384,7 +384,7 @@ export default {
       bootstrapClass: [''],
       validations: {
         // required,
-        minFileLength: minFileLength(),
+        minFileLength,
       },
       options: {
         removeble: true,
