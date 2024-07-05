@@ -12,7 +12,13 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, number, hasTime, dayOfMonth } from '@/utils/validation.js'
+import {
+  required,
+  number,
+  hasTime,
+  dayOfMonth,
+  minFileLength,
+} from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -376,7 +382,10 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      // validations: { required },
+      validations: {
+        // required,
+        minFileLength: minFileLength(),
+      },
       options: {
         removeble: true,
         withoutSave: false,
