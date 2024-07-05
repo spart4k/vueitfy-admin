@@ -12,7 +12,13 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, number, hasTime, dayOfMonth } from '@/utils/validation.js'
+import {
+  required,
+  number,
+  hasTime,
+  dayOfMonth,
+  minFileLength,
+} from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -273,6 +279,35 @@ export default {
       validations: { required, number },
       bootstrapClass: [''],
     }),
+    dateField({
+      label: 'Дата следующего платежа',
+      name: 'next_rent_date',
+      type: 'date',
+      value: '',
+      notSend: true,
+      menu: false,
+      placeholder: '',
+      class: [''],
+      readonly: true,
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'price_of_registration',
+            target: 'value',
+            value: 'notEmpty',
+          },
+        ],
+      },
+      // disable: false,
+      //mode: 'edit',
+    }),
     selectField({
       label: 'Тип оплаты',
       name: 'payment_type',
@@ -376,7 +411,10 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      // validations: { required },
+      validations: {
+        // required,
+        minFileLength,
+      },
       options: {
         removeble: true,
         withoutSave: false,
