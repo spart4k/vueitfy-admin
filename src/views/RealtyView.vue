@@ -31,6 +31,9 @@ import useView from '@/compositions/useView.js'
 
 import { config as realtyConfigOrig } from '@/pages/realty/index'
 import _ from 'lodash'
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { initPaymentZayavka } from '@/utils/helpers.js'
 
 export default {
   name: 'Realty-View',
@@ -70,6 +73,24 @@ export default {
     })
 
     config.tabs[0].detail.tabs[0].fields.splice(9, 1)
+
+    const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+      paymentConfigOrig,
+      zayavkaConfigOrig
+    )
+
+    configRouteConvert({
+      config: zayavkaConfig.config,
+      route: 'zayavka',
+      newPath: 'realty-zayavka',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    config.tabs[0].detail.tabs.push(zayavkaConfig)
+    config.tabs[1].detail.tabs.push(zayavkaConfig)
+
+    console.log(config.tabs[0].detail.tabs)
 
     return {
       config,
