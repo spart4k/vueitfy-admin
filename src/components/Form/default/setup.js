@@ -59,13 +59,14 @@ export default {
       },
     }
     const loading = ref(true)
-    const { alias } = props.tab
+    const tab = _.cloneDeep(props.tab)
+    const { alias } = tab
 
     const fieldsRef = ref(null)
 
     const isEdit = computed(() => {
-      if (props.tab.routeParam) {
-        return route.params[props.tab.routeParam] ? 'edit' : 'add'
+      if (tab.routeParam) {
+        return route.params[tab.routeParam] ? 'edit' : 'add'
         // return 'add'
       } else {
         return route.params.id ? 'edit' : 'add'
@@ -73,7 +74,7 @@ export default {
     })
     const fields = () => {
       const fields = {}
-      props.tab.fields.forEach((el) => {
+      tab.fields.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
@@ -83,13 +84,14 @@ export default {
         } else {
           return
         }
+        console.log(fields[el.name], 'default', el.value)
         Vue.set(fields, el.name, {})
         Vue.set(fields[el.name], 'validations', validations)
         Vue.set(fields[el.name], 'default', el.value)
       })
       return fields
     }
-    const params = props.tab.lists
+    const params = tab.lists
     const data = params
     const getRequestParam = () => {
       if (props.detail?.requestId) {
@@ -128,8 +130,8 @@ export default {
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         let id
-        if (props.tab.routeParam) {
-          id = route.params[props.tab.routeParam]
+        if (tab.routeParam) {
+          id = route.params[tab.routeParam]
         } else {
           id = route.params.id
         }
@@ -164,15 +166,15 @@ export default {
       },
     })
 
-    if (props.tab.hasOwnProperty('content')) {
-      props.tab.fields[0].items[0].id = props.content.account_id
-      props.tab.fields[0].items[0].name = props.content.account_name
-      props.tab.fields[0].value = props.content.account_id
-      props.tab.fields[2].value = Number(props.content.hour)
-      props.tab.fields[1].value = props.content.date
-      props.tab.fields[4].value = props.content.date.slice(0, -3)
+    if (tab.hasOwnProperty('content')) {
+      tab.fields[0].items[0].id = props.content.account_id
+      tab.fields[0].items[0].name = props.content.account_name
+      tab.fields[0].value = props.content.account_id
+      tab.fields[2].value = Number(props.content.hour)
+      tab.fields[1].value = props.content.date
+      tab.fields[4].value = props.content.date.slice(0, -3)
       if (props.content.id) {
-        props.tab.fields[6].value = props.content?.id
+        tab.fields[6].value = props.content?.id
       }
     }
     const closePopupForm = () => {
@@ -185,14 +187,14 @@ export default {
     }
 
     const getItems = () => {
-      const refreshField = props.tab.fields.find((x) => {
+      const refreshField = tab.fields.find((x) => {
         if (x.appendAction) {
           return x.appendAction.find(
             (y) => y.action.name === route.name && y.action.refresh
           )
         }
       })
-      const refreshFullForm = props.tab.fields.find((x) => {
+      const refreshFullForm = tab.fields.find((x) => {
         if (x.appendAction) {
           return x.appendAction.find(
             (y) => y.action.name === route.name && y.action.refreshForm
@@ -229,7 +231,7 @@ export default {
       popupForm,
       appendActionShow,
     } = useForm({
-      form: props.tab,
+      form: tab,
       context,
       detail: props.detail,
       loading,
