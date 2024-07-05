@@ -48,7 +48,7 @@ export default {
     const router = useRouter()
     const { id } = route?.params
     const loading = ref(false)
-    const detail = _.cloneDeep(props.detail)
+    const detail = props.detail
     const syncForm = ref({})
     const activeTab = ref(0)
     const permission = computed(() => store.state.user.permission_id)
