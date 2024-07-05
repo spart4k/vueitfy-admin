@@ -299,6 +299,16 @@ const routes = [
           mode: ['edit'],
           label: 'Редактировать недвижимость',
         },
+        children: [
+          {
+            name: 'realty/:id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['edit', 'realty-zayavka'],
+            },
+            component: Detail,
+          },
+        ],
         component: Detail,
       },
     ],

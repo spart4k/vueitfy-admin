@@ -59,6 +59,14 @@ export const config = {
             type: 'changeUrl',
             url: 'realty/add',
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [3, 4, 15],
+                  type: true,
+                },
+              ],
+            },
           },
         ],
       },

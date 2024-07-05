@@ -107,8 +107,15 @@ const nameLength = {
   $message: () => 'Не менее 5 символов',
 }
 
+const minFileLength = {
+  $validator: (val, formData) => {
+    return formData.schet_loader.length || formData.schet.length
+  },
+  $message: () => 'Необходимо приложить минимум 1 счет',
+}
+
 const sameAs = (value) => ({
-  $validator: (val) => {
+  $validator: (val, formData) => {
     try {
       return val === value()
     } catch (err) {
@@ -156,5 +163,6 @@ export {
   number,
   maxLength,
   dayOfMonth,
+  minFileLength,
   // strongPassword
 }
