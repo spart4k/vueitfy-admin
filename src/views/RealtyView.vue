@@ -69,6 +69,8 @@ export default {
       },
     })
 
+    config.tabs[0].detail.tabs[0].fields.splice(9, 1)
+
     return {
       config,
       activeTab,

@@ -73,13 +73,11 @@ export default {
     })
     const fields = () => {
       const fields = {}
-      const originalFields = _.cloneDeep(props.tab.fields)
-      originalFields.forEach((el) => {
+      props.tab.fields.forEach((el) => {
         const { validations } = el
         if (typeof el.isShow === 'boolean' && el.isShow)
           Vue.set(fields, el.name, {})
         else if (typeof el.isShow === 'object' && el.isShow.value) {
-          //
           Vue.set(fields, el.name, {})
         } else {
           return
