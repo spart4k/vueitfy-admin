@@ -279,6 +279,35 @@ export default {
       validations: { required, number },
       bootstrapClass: [''],
     }),
+    dateField({
+      label: 'Дата следующего платежа',
+      name: 'next_rent_date',
+      type: 'date',
+      value: '',
+      notSend: true,
+      menu: false,
+      placeholder: '',
+      class: [''],
+      readonly: true,
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'price_of_registration',
+            target: 'value',
+            value: 'notEmpty',
+          },
+        ],
+      },
+      // disable: false,
+      //mode: 'edit',
+    }),
     selectField({
       label: 'Тип оплаты',
       name: 'payment_type',
