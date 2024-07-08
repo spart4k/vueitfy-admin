@@ -11,6 +11,7 @@ import form from '@/store/modules/form'
 import { required } from '@/utils/validation'
 import moment from 'moment/moment'
 import Popup from '@/components/Popup/index.vue'
+import Service from '@/components/Task/el/Service/default/index.vue'
 import _ from 'lodash'
 import {
   dateField,
@@ -40,6 +41,7 @@ const Form18 = defineComponent({
     FormComment,
     Popup,
     Autocomplete,
+    Service,
   },
   props: {
     data: {
