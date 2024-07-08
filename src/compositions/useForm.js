@@ -728,11 +728,9 @@ export default function ({
     const formDataNames = []
     const findFieldName = (field) => {
       field?.dependence?.forEach((el) => {
-        console.log(el)
         if (el?.module && el?.field) {
           const depField = el.field
           const targetField = fields[depField]
-          console.log(el.field, targetField, el)
           const name = targetField.name ? targetField.name : targetField.alias
           if (!formDataNames.includes(name)) {
             formDataNames.push(name)
@@ -761,7 +759,6 @@ export default function ({
     formDataNames.forEach((el) => {
       formData[el] = ''
     })
-    console.log(formDataNames)
   }
   const changeValue = (params) => {
     const { value, field } = params
@@ -780,6 +777,51 @@ export default function ({
       })
     }
   }
+  const listValue = (value) => {
+    return Array.isArray(value) ? value : [value]
+  }
+  const convertFilter = (acc, el) => {
+    let value = ''
+    if (!value && el.source === 'formData') {
+      value = formData[el.field]
+    } else {
+      value = el.value
+    }
+    if (el.routeKey) {
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [+route.params[el.routeKey]],
+        type: el.type,
+      })
+    } else if (
+      !el.sendEmpty &&
+      value !== null &&
+      value !== '' &&
+      value !== undefined
+    ) {
+      if (moment(value, 'YYYY.MM', true).isValid())
+        value = moment(value, 'YYYY.MM').format('YYYY-MM')
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: listValue(value),
+        type: el.type,
+      })
+    } else if (el.sendEmpty) {
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [],
+        type: el.type,
+      })
+    } else {
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [],
+        type: el.type,
+      })
+    }
+    return acc
+  }
+
   const getFieldsList = async (arrayList) => {
     const listQuery = arrayList.flatMap((list) => {
       if (list.condition) {
@@ -798,61 +840,8 @@ export default function ({
           }
         }
       }
-      let filter = list.filter.reduce((acc, el) => {
-        const source = eval(el.source)
-        console.log(source)
-        if (el.routeKey) {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: [+route.params[el.routeKey]],
-            type: el.type,
-          })
-        } else if (
-          !el.sendEmpty &&
-          source &&
-          source[el.field] !== null &&
-          source[el.field] !== '' &&
-          source[el.field] !== undefined
-        ) {
-          let value = source[el.field]
-          if (moment(value, 'YYYY.MM', true).isValid())
-            value = moment(value, 'YYYY.MM').format('YYYY-MM')
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: Array.isArray(source[el.field]) ? source[el.field] : [value],
-            type: el.type,
-          })
-        } else if (el.source !== 'formData') {
-          if (!source) return
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: Array.isArray(source) ? source : [source],
-            type: el.type,
-          })
-        } else if (el.source === 'formData') {
-          if (!source[el.field]) return acc
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: Array.isArray(source[el.field])
-              ? source[el.field]
-              : [source[el.field]],
-            type: el.type,
-          })
-        } else if (el.sendEmpty) {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: null,
-            type: el.type,
-          })
-        } else {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: null,
-            type: el.type,
-          })
-        }
-        return acc
-      }, [])
+
+      let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
 
       const targetId = getListField(list)
       const element = {
@@ -1326,43 +1315,7 @@ export default function ({
   const refreshSelectItems = async (field) => {
     let filter = []
     if (field.filter) {
-      filter = field.filter.reduce((acc, el) => {
-        const source = eval(el.source)
-        if (el.routeKey) {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: [+route.params[el.routeKey]],
-            type: el.type,
-          })
-        } else if (
-          source[el.field] !== null &&
-          source[el.field] !== undefined
-        ) {
-          let value = source[el.field]
-          if (moment(value, 'YYYY.MM', true).isValid())
-            value = moment(value, 'YYYY.MM').format('YYYY-MM')
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: Array.isArray(source[el.field]) ? source[el.field] : [value],
-            type: el.type,
-          })
-        } else if (el.source !== 'formData') {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: Array.isArray(source) ? source : [source],
-            type: el.type,
-          })
-        } else if (el.source === 'formData') {
-          acc.push({
-            alias: el.alias ?? el.field,
-            value: Array.isArray(source[el.field])
-              ? source[el.field]
-              : [source[el.field]],
-            type: el.type,
-          })
-        }
-        return acc
-      }, [])
+      filter = field.filter.reduce((acc, el) => convertFilter(acc, el), [])
     }
 
     const requestData = {
@@ -1374,7 +1327,8 @@ export default function ({
 
     field.loading = true
     const lists = await makeRequestList([requestData])
-    field.items = lists.data[field.alias ?? field.name]
+    putSelectItems(lists)
+    // field.items = lists.data[field.alias ?? field.name]
     field.loading = false
   }
 
@@ -1676,6 +1630,9 @@ export default function ({
     field.menu = true
   }
 
+  const isRequired = (field) =>
+    field?.validations && Object.keys(field?.validations) ? true : false
+
   const disabledField = (field) => {
     return field.disabled || field.requiredFields
       ? field.disabled || field.requiredFields.some((el) => !formData[el])
@@ -1778,5 +1735,6 @@ export default function ({
     appendActionShow,
     refreshSelectItems,
     refreshForm,
+    isRequired,
   }
 }

@@ -225,6 +225,7 @@ export default {
       appendFieldHandler,
       popupForm,
       appendActionShow,
+      isRequired,
     } = useForm({
       form: props.tab,
       context,
@@ -280,6 +281,7 @@ export default {
       fieldsRef,
       downloadFile,
       changeValue,
+      isRequired,
     }
   },
 }
