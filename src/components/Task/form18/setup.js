@@ -186,6 +186,19 @@ const Form18 = defineComponent({
           context,
         }),
       ]
+      const currentForm = formGroup.value[formGroup.value.length - 1].formData
+      watch(
+        currentForm,
+        () => {
+          if (currentForm) {
+            isFormValid.value = formGroup.value.every((group) => {
+              console.log('group.validate(true)', group.validate(true))
+              return group.validate(true)
+            })
+          }
+        },
+        { deep: true, immediate: true }
+      )
     }
     const removeGroup = () => {
       if (formGroup.value.length > 1) {
@@ -439,16 +452,6 @@ const Form18 = defineComponent({
         popupForm.value.isShow = true
       }
     })
-
-    watch(
-      formGroup,
-      () => {
-        if (formGroup) {
-          isFormValid.value = formGroup.value.every((group) => group.validate())
-        }
-      },
-      { deep: true }
-    )
 
     return {
       textInfo,

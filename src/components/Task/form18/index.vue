@@ -40,7 +40,7 @@
               label="QTY"
               class="mr-1"
               v-model="group.formData.qty"
-              @blur="() => changeSum(i)"
+              @input="() => changeSum(i)"
             ></v-text-field>
           </v-col>
           <v-col class="px-0">
@@ -97,6 +97,7 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
+      {{ !isFormValid }}{{ isReject }}
       <v-btn
         :disabled="!isFormValid || isReject"
         @click="confirmTask"
