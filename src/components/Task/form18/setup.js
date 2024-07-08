@@ -12,6 +12,17 @@ import { required } from '@/utils/validation'
 import moment from 'moment/moment'
 import Popup from '@/components/Popup/index.vue'
 import _ from 'lodash'
+import {
+  dateField,
+  stringField,
+  selectField,
+  autocompleteField,
+  textareaField,
+  datetimeField,
+  dropZoneField,
+  checkboxField,
+  textBlock,
+} from '@/utils/fields.js'
 
 import config from '@/components/Task/form15/form.js'
 import Autocomplete from '@/components/Autocomplete/default'
@@ -97,27 +108,97 @@ const Form18 = defineComponent({
       formGroup.value = [
         ...formGroup.value,
         useForm({
-          fields: {
-            name: {
-              validations: { required },
-              default: undefined,
-            },
-            qty: {
-              validations: { required },
-              default: undefined,
-            },
-            price: {
-              validations: { required },
-              default: undefined,
-            },
-            sum: {
-              validations: { required },
-              default: undefined,
-            },
+          // fields: {
+          //   name: {
+          //     validations: { required },
+          //     default: undefined,
+          //   },
+          //   qty: {
+          //     validations: { required },
+          //     default: undefined,
+          //   },
+          //   price: {
+          //     validations: { required },
+          //     default: undefined,
+          //   },
+          //   sum: {
+          //     validations: { required },
+          //     default: undefined,
+          //   },
+          // },
+          form: {
+            fields: [
+              selectField({
+                label: '',
+                name: 'name',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: '',
+                name: 'qty',
+                placeholder: '',
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: '',
+                name: 'price',
+                placeholder: '',
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+              stringField({
+                label: '',
+                name: 'sum',
+                placeholder: '',
+                class: [''],
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                validations: { required },
+                bootstrapClass: [''],
+              }),
+            ],
           },
           context,
         }),
       ]
+      const currentForm = formGroup.value[formGroup.value.length - 1].formData
+      watch(
+        currentForm,
+        () => {
+          if (currentForm) {
+            isFormValid.value = formGroup.value.every((group) => {
+              console.log('group.validate(true)', group.validate(true))
+              return group.validate(true)
+            })
+          }
+        },
+        { deep: true, immediate: true }
+      )
     }
     const removeGroup = () => {
       if (formGroup.value.length > 1) {
@@ -371,16 +452,6 @@ const Form18 = defineComponent({
         popupForm.value.isShow = true
       }
     })
-
-    watch(
-      formGroup,
-      () => {
-        if (formGroup) {
-          isFormValid.value = formGroup.value.every((group) => group.validate())
-        }
-      },
-      { deep: true }
-    )
 
     return {
       textInfo,

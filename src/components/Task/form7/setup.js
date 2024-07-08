@@ -86,25 +86,24 @@ const Form7 = defineComponent({
       data_rojd: props.data.entity.data_rojd,
       grajdanstvo_id: props.data.entity.grajdanstvo_id,
     })
-    const formObj = ref(
-      useForm({
-        fields: {
-          name: {
-            validations: { required },
-            default: props.data.entity.name,
-          },
-          data_rojd: {
-            validations: { required },
-            default: props.data.entity.data_rojd,
-          },
-          grajdanstvo_id: {
-            validations: { required },
-            default: props.data.entity.grajdanstvo_id,
-          },
-        },
-        context,
-      })
-    )
+    // const formObj = ref()
+    // useForm({
+    //   fields: {
+    //     name: {
+    //       validations: { required },
+    //       default: props.data.entity.name,
+    //     },
+    //     data_rojd: {
+    //       validations: { required },
+    //       default: props.data.entity.data_rojd,
+    //     },
+    //     grajdanstvo_id: {
+    //       validations: { required },
+    //       default: props.data.entity.grajdanstvo_id,
+    //     },
+    //   },
+    //   context,
+    // })
     const docMainRef = ref(null)
     const docMainValid = computed(() => {
       if (isHasOsnDoc) {
@@ -262,15 +261,15 @@ const Form7 = defineComponent({
       loading.value = false
     }
 
-    watch(
-      formObj,
-      () => {
-        isOsnDocValid.value = Object.values(formObj.value.formData).every(
-          Boolean
-        )
-      },
-      { deep: true }
-    )
+    // watch(
+    //   formObj,
+    //   () => {
+    //     isOsnDocValid.value = Object.values(formObj.value.formData).every(
+    //       Boolean
+    //     )
+    //   },
+    //   { deep: true }
+    // )
 
     return {
       dataRojd,
@@ -283,7 +282,7 @@ const Form7 = defineComponent({
       isFormValid,
       finalData,
       isHasOsnDoc,
-      formObj,
+      // formObj,
       textInfo,
       citizenItems,
       osnConfirmed,

@@ -6,6 +6,17 @@ import {
   watchEffect,
   computed,
 } from 'vue'
+import {
+  dateField,
+  stringField,
+  selectField,
+  autocompleteField,
+  textareaField,
+  datetimeField,
+  dropZoneField,
+  checkboxField,
+  textBlock,
+} from '@/utils/fields.js'
 import TextInfo from '@/components/Task/el/TextInfo/index.vue'
 import DocScan from '@/components/Task/el/DocScan/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
@@ -265,23 +276,6 @@ const Form1 = defineComponent({
       }
     )
 
-    const { formData, validate: osnValidate } = useForm({
-      fields: {
-        name: {
-          validations: { required },
-          default: props.data.entity.name,
-        },
-        data_rojd: {
-          validations: { required },
-          default: props.data.entity.data_rojd,
-        },
-        grajdanstvo_id: {
-          validations: { required },
-          default: props.data.entity.grajdanstvo_id,
-        },
-      },
-      context,
-    })
     const cardAccepted = ref(false)
     const changeDocs = (data, documentIndex) => {
       if (data.bank_card_id) {
@@ -357,8 +351,6 @@ const Form1 = defineComponent({
       isFormValid,
       finalData,
       sendData,
-      formData,
-      osnValidate,
       isHasOsnDoc,
       showNextStep,
       isActiveBtnFirst,
