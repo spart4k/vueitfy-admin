@@ -63,6 +63,7 @@ export default {
         // console.log(el.rejectedPrice)
         if (el.rejectedPrice) {
           acc.push(el.rejectedPrice)
+          return acc
           // console.log(acc)
         } else {
           return acc

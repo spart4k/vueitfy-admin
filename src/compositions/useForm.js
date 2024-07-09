@@ -79,11 +79,15 @@ export default function ({
       return obj
     }, {})
   )
-
+  console.log(fields)
+  initFields()
   const validations = () => {
     const formFields = {}
+    console.log(form)
     if (form) {
+      console.log(fields)
       for (let key in fields) {
+        console.log(fields[key], key)
         formFields[fields[key].name] = fields[key]
       }
       if (!form) return
@@ -97,12 +101,13 @@ export default function ({
       ) {
         return obj
       }
+      console.log(formFields)
       if (form) obj[key] = { ...formFields[key]?.validations, $autoDirty }
       else obj[key] = { ...fields[key].validations, $autoDirty }
       return obj
     }, {})
   }
-
+  console.log(validations())
   let $v = useVuelidate(validations(), formData)
 
   const popupForm = ref({
@@ -1700,6 +1705,7 @@ export default function ({
   )
   onMounted(() => {
     initFields()
+    console.log(fields)
   })
 
   return {

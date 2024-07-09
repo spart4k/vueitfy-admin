@@ -183,7 +183,6 @@ export default {
       context,
       // detail: props.detail,
       loading: ref(false),
-      setFields: fields,
       mode: 'add',
     })
     const rejectedPrice = ref('')
@@ -242,6 +241,8 @@ export default {
       changeSum,
       removeRow,
       rejectedPrice,
+      vForm,
+      validate,
     }
   },
 }

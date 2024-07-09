@@ -1,7 +1,10 @@
 <template>
   <div>
-    <FormError class="mb-4" v-if="rejectedPrices.length">
-      Отсутствует тариф: {{ rejectedPrices }}
+    <FormError class="mb-4" v-if="rejectedPrices?.length">
+      <div class="rate-error">
+        <p>Отсутствует тариф:</p>
+        <p v-for="(name, i) in rejectedPrices" :key="i">{{ name }}<br /></p>
+      </div>
     </FormError>
     <ServiceRow
       v-for="(group, i) in services"

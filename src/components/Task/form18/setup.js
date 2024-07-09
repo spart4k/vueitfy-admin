@@ -81,6 +81,7 @@ const Form18 = defineComponent({
         value: data.entity.doljnost_name,
       },
     }
+    const service = ref(null)
     const account_id = computed(() => store.state.user.id)
     const formGroup = ref([])
     const idDirection = data.entity.direction_id
@@ -94,7 +95,12 @@ const Form18 = defineComponent({
     const formComment = ref('')
     const servicesDetail = data.data.services
     const rejectedPrice = ref('')
-    const isFormValid = ref(false)
+    const isFormValid = computed((el) => {
+      return (
+        service?.value?.serviceRows?.every((el) => !el.vForm.$invalid) &&
+        !service?.value?.rejectedPrices.length
+      )
+    })
     const autocompleteConfig = {
       label: 'Наименование',
       name: 'name',
@@ -106,116 +112,25 @@ const Form18 = defineComponent({
         value: 'id',
       },
     }
-    const addGroup = async () => {
-      formGroup.value = [
-        ...formGroup.value,
-        useForm({
-          // fields: {
-          //   name: {
-          //     validations: { required },
-          //     default: undefined,
-          //   },
-          //   qty: {
-          //     validations: { required },
-          //     default: undefined,
-          //   },
-          //   price: {
-          //     validations: { required },
-          //     default: undefined,
-          //   },
-          //   sum: {
-          //     validations: { required },
-          //     default: undefined,
-          //   },
-          // },
-          form: {
-            fields: [
-              selectField({
-                label: '',
-                name: 'name',
-                placeholder: '',
-                class: [''],
-                selectOption: {
-                  text: 'name',
-                  value: 'id',
-                },
-                items: [],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              stringField({
-                label: '',
-                name: 'qty',
-                placeholder: '',
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              stringField({
-                label: '',
-                name: 'price',
-                placeholder: '',
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-              stringField({
-                label: '',
-                name: 'sum',
-                placeholder: '',
-                class: [''],
-                position: {
-                  cols: 12,
-                  sm: 6,
-                },
-                validations: { required },
-                bootstrapClass: [''],
-              }),
-            ],
-          },
-          context,
-        }),
-      ]
-      const currentForm = formGroup.value[formGroup.value.length - 1].formData
-      watch(
-        currentForm,
-        () => {
-          if (currentForm) {
-            isFormValid.value = formGroup.value.every((group) => {
-              console.log('group.validate(true)', group.validate(true))
-              return group.validate(true)
-            })
-          }
-        },
-        { deep: true, immediate: true }
-      )
-    }
+
     const removeGroup = () => {
       if (formGroup.value.length > 1) {
         formGroup.value = formGroup.value.slice(0, formGroup.value.length - 1)
       }
     }
 
-    onMounted(() => {
-      addGroup()
-    })
+    onMounted(() => {})
     const loading = ref(false)
     const confirmTask = async () => {
+      console.log('start')
+      service.value.serviceRows.forEach((el) => {
+        console.log(el)
+        el.validate(true)
+        console.log(el.vForm)
+      })
       loading.value = true
       let total = 0
-      const services = formGroup.value.map((group, i) => {
+      const services = service?.value?.serviceRows.map((group, i) => {
         const formData = group.formData
         total += formData.sum ?? 0
         return {
@@ -457,7 +372,6 @@ const Form18 = defineComponent({
 
     return {
       textInfo,
-      addGroup,
       removeGroup,
       formGroup,
       entity: data.entity,
@@ -483,6 +397,7 @@ const Form18 = defineComponent({
       Popup,
       autocompleteConfig,
       loading,
+      service,
     }
   },
 })

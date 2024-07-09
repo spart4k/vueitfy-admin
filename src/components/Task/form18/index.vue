@@ -23,6 +23,7 @@
         :task="data"
         :serviceDetail="data.data.services"
         :formGroup="formGroup"
+        ref="service"
       />
       <!-- <div>
         <v-row
@@ -101,7 +102,6 @@
         <v-icon small>mdi-close</v-icon>
         Закрыть
       </v-btn>
-      {{ !isFormValid }}{{ isReject }}
       <v-btn
         :disabled="!isFormValid || isReject"
         @click="confirmTask"
