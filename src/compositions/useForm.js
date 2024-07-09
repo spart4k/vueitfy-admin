@@ -786,6 +786,7 @@ export default function ({
     } else {
       value = el.value
     }
+    if (value === '' || value === null || value === undefined) return acc
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
@@ -1040,7 +1041,12 @@ export default function ({
         }
       }
       if (data?.length === 1) {
-        formData[depField] = data[0].id
+        if (fields[depField]?.subtype === 'multiple') {
+          formData[depField] = [data[0][fields[depField].selectOption.value]]
+        } else {
+          formData[depField] = data[0][fields[depField].selectOption.value]
+        }
+        console.log(depField)
         await getDependies({
           value: formData[depField],
           field: fields[depField],
@@ -1060,7 +1066,11 @@ export default function ({
         if (dependence.fillField) {
           dependence.fillField.forEach((el) => (formData[el] = card[el]))
         } else if (data.length === 1) {
-          formData[depField] = data[0].id
+          if (fields[depField]?.subtype === 'multiple') {
+            formData[depField] = [data[0][fields[depField].selectOption.value]]
+          } else {
+            formData[depField] = data[0]?.id
+          }
           card = targetField.items.find((el) => el.id === formData[depField])
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
@@ -1208,7 +1218,11 @@ export default function ({
 
       el.hideItems = el.items
       if (data.rows.length === 1 && data.totalPage === 1) {
-        formData[el.name] = el.items[0][el.selectOption.value]
+        if (fields[el.name]?.subtype === 'multiple') {
+          formData[el.name] = [el.items[0][el.selectOption.value]]
+        } else {
+          formData[el.name] = el.items[0][el.selectOption.value]
+        }
       }
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
@@ -1264,8 +1278,14 @@ export default function ({
           : lists.data[keyList]
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
-          formData[field.name] =
-            lists.data[keyList][0][field.selectOption.value]
+          if (fields[field.name]?.subtype === 'multiple') {
+            formData[field.name] = [
+              lists.data[keyList][0][field.selectOption.value],
+            ]
+          } else {
+            formData[field.name] =
+              lists.data[keyList][0][field.selectOption.value]
+          }
           await getDependies({
             value: formData[field.name],
             field,
@@ -1279,7 +1299,14 @@ export default function ({
           field.hasOwnProperty('defaultItems') &&
           field.defaultItems.length === 1
         ) {
-          formData[field.name] = field.defaultItems[0][field.selectOption.value]
+          if (fields[field.name]?.subtype === 'multiple') {
+            formData[field.name] = [
+              field.defaultItems[0][field.selectOption.value],
+            ]
+          } else {
+            formData[field.name] =
+              field.defaultItems[0][field.selectOption.value]
+          }
         }
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
           formData[field.name] = ''
