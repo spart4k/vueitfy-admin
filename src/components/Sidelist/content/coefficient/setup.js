@@ -28,7 +28,7 @@ export default {
     const loading = ref(false)
     const initLoading = ref(true)
     const search = ref('')
-    const data = ref([])
+    const objects = ref([])
     const panel = ref([])
     const deletedObject = ref({})
     const confirm = ref({
@@ -42,10 +42,6 @@ export default {
     const disabled = computed(() =>
       [3].includes(store.state.user.permission_id)
     )
-
-    const rules = {
-      required: (value) => !!value || 'Required.',
-    }
 
     const autocompleteConfig = {
       label: 'Линейщик',
@@ -68,7 +64,7 @@ export default {
     }
 
     let controller
-    const getData = async () => {
+    const getObjects = async () => {
       try {
         panel.value = []
         if (controller) controller.abort()
@@ -84,14 +80,18 @@ export default {
             signal: controller.signal,
           },
         }
-        data.value = await store.dispatch('table/get', requestData)
-        data.value.forEach((item) => {
-          Vue.set(item, 'content', [])
-          Vue.set(item, 'loaded', false)
-          Vue.set(item, 'footer', false)
-          Vue.set(item, 'method', null)
-          Vue.set(item, 'methodLoading', false)
-          Vue.set(item, 'coef', '')
+        objects.value = await store.dispatch('table/get', requestData)
+        objects.value.forEach((item, index) => {
+          Vue.set(objects.value, index, {
+            content: null,
+            loading: false,
+            footer: false,
+            method: null,
+            methodLoading: false,
+            coef: '',
+            objectPanel: [],
+            ...item,
+          })
         })
         loading.value = false
         initLoading.value = false
@@ -101,35 +101,92 @@ export default {
       }
     }
 
-    const getObjectPersonal = async (id) => {
-      let object = data.value.find((x) => x.id === id)
-      object.loaded = false
+    const getServices = async (index, refresh = false) => {
+      const object = objects.value[index]
+      if (!refresh) {
+        if (object.content) return
+        panel.value = _.without(panel.value, index)
+        if (object.loading) return
+      }
+      const requestData = {
+        url: 'get/coefficient/services',
+        data: {
+          period: props.date.date,
+          search: search.value,
+          object_id: object.id,
+        },
+      }
+      object.loading = true
+      object.content = await store.dispatch('table/get', requestData)
+      object.loading = false
+      object.content?.forEach((service, index) => {
+        Vue.set(object.content, index, {
+          content: null,
+          loading: false,
+          footer: false,
+          method: null,
+          methodLoading: false,
+          object_id: object.id,
+          coef: '',
+          ...service,
+        })
+      })
+      if (!refresh) {
+        panel.value.push(index)
+
+        watch(
+          () => object.objectPanel,
+          (newVal, oldVal) => {
+            let index
+            if (newVal.length > oldVal.length)
+              index = _.difference(newVal, oldVal)[0]
+            else index = _.difference(oldVal, newVal)[0]
+            if (object.content[index]?.id) getPersonal(index, object.id)
+          },
+          { deep: true }
+        )
+      }
+    }
+
+    const getPersonal = async (index, object_id, refresh = false) => {
+      const object = objects.value.find((x) => x.id === object_id)
+      const service = object.content[index]
+      if (!refresh) {
+        if (service.content) return
+        object.objectPanel = _.without(object.objectPanel, index)
+        if (service.loading) return
+      }
       const requestData = {
         url: 'get/coefficient/personals',
         data: {
           period: props.date.date,
           search: search.value,
-          object_id: id,
+          object_id: object.id,
+          service_id: service.id,
         },
       }
-      object.content = await store.dispatch('table/get', requestData)
-      object.content?.forEach((item) => {
+      service.loading = true
+      service.content = await store.dispatch('table/get', requestData)
+      service.loading = false
+      service.content?.forEach((item) => {
         Vue.set(item, 'edit', {})
+        Vue.set(item, 'service_id', service.id)
         Vue.set(item.edit, 'isShow', false)
         Vue.set(item.edit, 'loading', false)
         Vue.set(item.edit, 'name_id')
         Vue.set(item.edit, 'coefficient')
-        Vue.set(item.edit, 'filter', [])
-        item.edit.filter.push(
-          { alias: 'object_id', value: item.object_id },
-          { alias: 'period', value: props.date.date }
-        )
+        Vue.set(item.edit, 'filter', [
+          { alias: 'service_id', value: service.id },
+          { alias: 'object_id', value: object.id },
+          { alias: 'period', value: props.date.date },
+        ])
       })
-      object.loaded = true
+      if (!refresh) object.objectPanel.push(index)
     }
 
-    const addPerson = (object) => {
-      object.content.unshift({
+    const addPerson = (service, object) => {
+      service.content.unshift({
+        service_id: service.id,
         object_id: object.id,
         added: true,
         edit: {
@@ -138,6 +195,7 @@ export default {
           coefficient: null,
           loading: false,
           filter: [
+            { alias: 'service_id', value: service.id },
             { alias: 'object_id', value: object.id },
             { alias: 'period', value: props.date.date },
           ],
@@ -168,7 +226,7 @@ export default {
       confirm.value.isShow = false
     }
 
-    const changeObjectCoef = async (object) => {
+    const changeObjectCoef = async (object, service = false) => {
       const modules = {
         add: 'form/update',
         edit: 'form/putForm',
@@ -178,14 +236,27 @@ export default {
         url: 'coefficient/object',
         body: {
           period: props.date.date,
-          object_id: object.id,
+          object_id: service ? object.object_id : object.id,
+          service_id: service ? object.id : undefined,
           coefficient: object.method === 'delete' ? 1 : Number(object.coef),
         },
       }
       object.methodLoading = true
       const data = await store.dispatch(modules[object.method], requestData)
       object.methodLoading = false
-      if (data.code === 1) getObjectPersonal(object.id)
+      if (data.code === 1) {
+        if (service) {
+          const obj = objects.value.find((x) => x.id === object.object_id)
+          const serviceIndex = obj.content.findIndex((x) => x.id === object.id)
+          getPersonal(serviceIndex, object.object_id, true)
+        } else {
+          const objIndex = objects.value.findIndex((x) => x.id === object.id)
+          await getServices(objIndex, true)
+          object.objectPanel.forEach((item) => {
+            getPersonal(item, object.id, true)
+          })
+        }
+      }
     }
 
     const changePerson = async (person, method) => {
@@ -221,6 +292,7 @@ export default {
             personal_id: methods[method].personal_id,
             coefficient: methods[method].coefficient,
             object_id: person.object_id,
+            service_id: person.service_id,
           },
         }
         person.edit.loading = true
@@ -230,7 +302,11 @@ export default {
         )
         person.edit.loading = false
         if (responseData.code !== 2) {
-          getObjectPersonal(person.object_id)
+          const object = objects.value.find((x) => x.id === person.object_id)
+          const serviceIndex = object.content.findIndex(
+            (x) => x.id === person.service_id
+          )
+          getPersonal(serviceIndex, person.object_id, true)
         } else {
           store.commit('notifies/showMessage', {
             content: `Коэффециент на данного линейщика уже существует`,
@@ -241,15 +317,12 @@ export default {
       }
     }
 
-    onMounted(() => {
-      getData()
-    })
-
     watch(
       () => search.value,
       () => {
-        getData()
-      }
+        getObjects()
+      },
+      { deep: true, immediate: true }
     )
 
     watch(
@@ -259,20 +332,19 @@ export default {
         if (newVal.length > oldVal.length)
           index = _.difference(newVal, oldVal)[0]
         else index = _.difference(oldVal, newVal)[0]
-        if (!data.value[index]?.loaded && data.value[index]?.id)
-          getObjectPersonal(data.value[index].id)
+        if (objects.value[index]?.id) getServices(index)
       },
       { deep: true }
     )
+
     return {
       loading,
       initLoading,
-      data,
+      objects,
       search,
       confirm,
       panel,
       autocompleteConfig,
-      rules,
       permission,
       disabled,
 
