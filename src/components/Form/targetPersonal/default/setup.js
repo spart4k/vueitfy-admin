@@ -85,7 +85,7 @@ export default {
       let valid = rows.value.every((el, index) => {
         // validate = !el.validate()
         return el.personalRef.every((pers) => {
-          return pers.validate(true)
+          return !pers.vForm.$invalid
         })
       })
       if (!valid) return

@@ -1540,7 +1540,7 @@ const config = {
                   sm: 4,
                 },
                 //: true,
-                validations: { required },
+                // validations: { required },
                 bootstrapClass: [''],
                 filter: [
                   {
@@ -1584,7 +1584,7 @@ const config = {
                   cols: 12,
                   sm: 3,
                 },
-                validations: { required },
+                // validations: { required },
                 bootstrapClass: [''],
                 // Прятать option от условия, target - цель условия, value - значение, value - значения которые нужно прятать
                 hiding: {
@@ -1613,7 +1613,7 @@ const config = {
                   cols: 12,
                   sm: 4,
                 },
-                validations: { required },
+                // validations: { required },
                 bootstrapClass: [''],
                 customList: {
                   type: 'api',
@@ -1656,11 +1656,12 @@ const config = {
             actions: [
               stringAction({
                 text: 'Назад',
-                type: 'cancel',
+                type: 'submit',
                 module: '',
                 name: 'prevStage',
                 action: 'prevStage',
                 color: 'normal',
+                skipValidation: true,
               }),
               stringAction({
                 text: 'Создать',

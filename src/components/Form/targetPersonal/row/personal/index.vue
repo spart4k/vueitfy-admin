@@ -11,7 +11,7 @@
           <v-tooltip left>
             <template v-slot:activator="{ on, attrs }">
               <div
-                v-show="thisTarget.error"
+                v-show="thisTarget?.error"
                 class="accountName-tooltip"
                 v-bind="attrs"
                 v-on="on"
