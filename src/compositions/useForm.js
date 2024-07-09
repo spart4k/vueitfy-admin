@@ -786,6 +786,7 @@ export default function ({
     } else {
       value = el.value
     }
+    if (value === '' || value === null || value === undefined) return acc
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
