@@ -139,9 +139,10 @@ export default function ({
   }
 
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
+    console.log('clickhand', skipValidation, validate(true))
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
-
+    console.log('cliasdad')
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -153,6 +154,7 @@ export default function ({
       emit('setStageData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
+      console.log('prev')
       if (action.url) {
         const response = await stageRequest(action)
         if (!response) return

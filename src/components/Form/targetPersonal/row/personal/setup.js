@@ -219,7 +219,7 @@ export default {
           ],
         },
         isShow: {
-          value: false,
+          value: true,
           conditions: [
             {
               field: 'type',
