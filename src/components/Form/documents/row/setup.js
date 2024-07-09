@@ -146,7 +146,7 @@ export default {
     //       name: Object.keys(item)[0],
     //       value: Object.values(item)[0],
     //     })
-    //     return acc
+    //     return accf
     //   }, [])
     //   return result
     // })
@@ -1502,39 +1502,40 @@ export default {
             field.validations = { required }
           }
         }
+        field.value = docs_data[key]
         fieldsData.value.push(field)
       }
     }
     initFields()
     const docFields = {}
-    const fields = () => {
-      const fields = {}
-      const tabFields = fieldsData.value
-      tabFields.forEach((el) => {
-        // const { validations } = tabFields[key]
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'default', docs_data[el.name])
-      })
-      // for (let key in tabFields) {
-      //   const { validations } = tabFields[key]
-      //   if (typeof tabFields[key].isShow === 'boolean' && tabFields[key].isShow)
-      //     Vue.set(fields, tabFields[key].name, {})
-      //   else if (
-      //     typeof tabFields[key].isShow === 'object' &&
-      //     tabFields[key].isShow.value
-      //   ) {
-      //     Vue.set(fields, tabFields[key].name, {})
-      //   } else {
-      //     return
-      //   }
-      //   Vue.set(fields, tabFields[key].name, {})
-      //   Vue.set(fields[tabFields[key].name], 'validations', validations)
-      //   Vue.set(fields[tabFields[key].name], 'default', docs_data[key])
-      // }
-      // props.tab.fields.forEach((el) => {})
-      return fields
-    }
-    fields()
+    // const fields = () => {
+    //   const fields = {}
+    //   const tabFields = fieldsData.value
+    //   tabFields.forEach((el) => {
+    //     // const { validations } = tabFields[key]
+    //     Vue.set(fields, el.name, {})
+    //     Vue.set(fields[el.name], 'default', docs_data[el.name])
+    //   })
+    //   // for (let key in tabFields) {
+    //   //   const { validations } = tabFields[key]
+    //   //   if (typeof tabFields[key].isShow === 'boolean' && tabFields[key].isShow)
+    //   //     Vue.set(fields, tabFields[key].name, {})
+    //   //   else if (
+    //   //     typeof tabFields[key].isShow === 'object' &&
+    //   //     tabFields[key].isShow.value
+    //   //   ) {
+    //   //     Vue.set(fields, tabFields[key].name, {})
+    //   //   } else {
+    //   //     return
+    //   //   }
+    //   //   Vue.set(fields, tabFields[key].name, {})
+    //   //   Vue.set(fields[tabFields[key].name], 'validations', validations)
+    //   //   Vue.set(fields[tabFields[key].name], 'default', docs_data[key])
+    //   // }
+    //   // props.tab.fields.forEach((el) => {})
+    //   return fields
+    // }
+    // fields()
     const form = {
       id: 0,
       name: 'Данные документов',
@@ -1568,7 +1569,7 @@ export default {
       openMenu,
     } = useForm({
       // form: props.document,
-      fields: fields(),
+      // fields: fields(),
       context,
       loading,
       form,
@@ -1651,7 +1652,6 @@ export default {
         pathDock.value = [path_doc]
         props.document.path_doc = path_doc
         isCorrect.value = true
-        console.log(isCorrect.value)
         isHold.value = false
         if (isRejected.value === true) {
           isRejected.value = false
@@ -1783,7 +1783,6 @@ export default {
         })
         const { result } = await delInfoAFile()
         if (result) {
-          console.log(dropZoneRef.value)
           dropZoneRef.value.clearDropzone()
         } else {
           store.commit('notifies/showMessage', {
@@ -1848,12 +1847,10 @@ export default {
       await Promise.all(queryFields)
     }
     const removeFile = () => {
-      console.log('removed')
       basketFiles.value = {}
       // isCorrect.value = false
       listRequestsForUpload.value = []
     }
-    // const docName = () =>
     onMounted(async () => {
       // if (props.document.path_doc) {
       //   isEdit.value = false
@@ -1875,12 +1872,7 @@ export default {
         isRejected.value = true
       }
     })
-    watch(
-      () => isCorrect.value,
-      () => {
-        console.log('change', isCorrect.value)
-      }
-    )
+
     return {
       loading,
       showField,
@@ -1902,7 +1894,7 @@ export default {
       toPreview,
       switchType,
       context,
-      fields: fields(),
+      // fields: fields(),
       fieldsData,
       docFields,
       listData,

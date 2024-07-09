@@ -198,24 +198,24 @@ export default {
     ])
     const activeTab = ref(0)
     const loading = ref(false)
-    const fields = () => {
-      //
-      const fields = {}
-      listFields.value.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
-          //
-          Vue.set(fields, el.name, {})
-        } else return
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
-      })
-      //
-      return fields
-    }
+    // const fields = () => {
+    //   //
+    //   const fields = {}
+    //   listFields.value.forEach((el) => {
+    //     const { validations } = el
+    //     if (typeof el.isShow === 'boolean' && el.isShow)
+    //       Vue.set(fields, el.name, {})
+    //     else if (typeof el.isShow === 'object' && el.isShow.value) {
+    //       //
+    //       Vue.set(fields, el.name, {})
+    //     } else return
+    //     Vue.set(fields, el.name, {})
+    //     Vue.set(fields[el.name], 'validations', validations)
+    //     Vue.set(fields[el.name], 'default', el.value)
+    //   })
+    //   //
+    //   return fields
+    // }
     const { makeRequest: createForm } = useRequest({
       context,
       successMessage: 'Сохранено',
@@ -261,8 +261,8 @@ export default {
       clickHandler,
     } = useForm({
       form: { fields: listFields.value },
-      fields: fields(),
-      setFields: fields,
+      // fields: fields(),
+      // setFields: fields,
       context,
       loading,
       createForm,

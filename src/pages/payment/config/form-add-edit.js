@@ -259,18 +259,18 @@ export default {
       alias: 'status_id',
       filter: [],
     },
-    {
-      alias: 'payment_direction_id',
-      filter: [
-        {
-          field: 'account_id',
-          // alias: 'account_id',
-          value: '',
-          source: 'formData',
-          type: 'num',
-        },
-      ],
-    },
+    // {
+    //   alias: 'payment_direction_id',
+    //   filter: [
+    //     {
+    //       field: 'account_id',
+    //       // alias: 'account_id',
+    //       value: '',
+    //       source: 'formData',
+    //       type: 'num',
+    //     },
+    //   ],
+    // },
     {
       alias: 'doljnost_id',
       filter: [],
@@ -596,6 +596,56 @@ export default {
             },
           ],
         },
+      ],
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          //filter: [
+          //  {
+          //    field: 'direction_id',
+          //    value: '',
+          //  },
+          //],
+          url: 'get/pagination_list/payment_object_id',
+        },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'personal_id',
+          //filter: [
+          //  {
+          //    field: 'direction_id',
+          //    value: '',
+          //  },
+          //],
+          condition: [
+            {
+              field: 'direction_id',
+              value: [2],
+            },
+          ],
+          url: 'get/pagination_list/personal',
+        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'object_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [1],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/payment_personal_id',
+        // },
       ],
       readonly: {
         value: false,

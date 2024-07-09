@@ -19,8 +19,8 @@ module.exports = {
   runtimeCompiler: true,
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
-      config.output.filename = `js/[name].${process.env.npm_package_version}.min.js`
-      config.output.chunkFilename = `js/[name].${process.env.npm_package_version}.min.js`
+      config.output.filename = `js/[name].${process.env.npm_package_version}.[fullhash].min.js`
+      config.output.chunkFilename = `js/[name].${process.env.npm_package_version}.[fullhash].min.js`
     } else {
       config.output.filename = 'js/[name].js'
       config.output.chunkFilename = 'js/[name].js'

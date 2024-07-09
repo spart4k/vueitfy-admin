@@ -25,6 +25,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const isShowAdd = ref(true)
+    const isImgPopupOpen = ref(false)
     const isShowCansel = ref(true)
     const clickAdd = () => {
       isShowAdd.value = false
@@ -54,6 +55,7 @@ export default {
       clickAdd,
       clickDel,
       clickRemove,
+      isImgPopupOpen,
     }
   },
 }
