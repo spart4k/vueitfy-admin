@@ -84,7 +84,6 @@ const poeples = ref([
     background: '#A600A6',
   },
 ])
-console.log(poeples.value)
 import GSTC from 'gantt-schedule-timeline-calendar/dist/gstc.wasm.esm.min.js'
 import { Plugin as TimelinePointer } from 'gantt-schedule-timeline-calendar/dist/plugins/timeline-pointer.esm.min.js'
 import { Plugin as Selection } from 'gantt-schedule-timeline-calendar/dist/plugins/selection.esm.min.js'
@@ -158,12 +157,9 @@ function generateItems() {
         background: poeples.value[i].background,
       },
     }
-    console.log(items)
   }
   return items
 }
-
-console.log(generateItems())
 
 // main component
 
