@@ -237,7 +237,7 @@ export default {
         body: {
           period: props.date.date,
           object_id: service ? object.object_id : object.id,
-          service_id: service ? object.id : undefined,
+          service_id: service ? object.id : 0,
           coefficient: object.method === 'delete' ? 1 : Number(object.coef),
         },
       }

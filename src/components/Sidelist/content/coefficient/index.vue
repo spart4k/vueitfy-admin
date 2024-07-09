@@ -205,7 +205,7 @@
                       </div>
                       <v-divider></v-divider>
                     </div>
-                    <v-expansion-panel-content>
+                    <v-expansion-panel-content class="pl-3">
                       <div>
                         <v-btn
                           @click="addPerson(service, object)"
