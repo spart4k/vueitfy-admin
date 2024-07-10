@@ -139,10 +139,8 @@ export default function ({
   }
 
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
-    console.log('clickhand', skipValidation, validate(true))
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
-    console.log('cliasdad')
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -154,7 +152,6 @@ export default function ({
       emit('setStageData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
-      console.log('prev')
       if (action.url) {
         const response = await stageRequest(action)
         if (!response) return
@@ -798,7 +795,8 @@ export default function ({
     } else {
       value = el.value
     }
-    if (value === '' || value === null || value === undefined) return acc
+    if ((value === '' || value === null || value === undefined) && !el.routeKey)
+      return acc
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
@@ -1058,7 +1056,6 @@ export default function ({
         } else {
           formData[depField] = data[0][fields[depField].selectOption.value]
         }
-        console.log(depField)
         await getDependies({
           value: formData[depField],
           field: fields[depField],
