@@ -137,7 +137,7 @@
                     ></v-expansion-panel-header>
                     <div
                       v-if="service.footer"
-                      class="d-flex flex-column pb-4 v-object-methods"
+                      class="d-flex flex-column pb-4 v-object-methods pl-3"
                     >
                       <div class="d-flex mb-4">
                         <v-btn
