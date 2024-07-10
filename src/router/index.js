@@ -1302,6 +1302,24 @@ const routes = [
         component: Detail,
         children: [
           {
+            name: 'documents/:id/new_card',
+            path: '/documents/:id/new_card',
+            meta: {
+              mode: ['personal', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents/:id/:card_id',
+            path: '/documents/:id/:card_id',
+            meta: {
+              mode: ['personal', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
             name: 'documents/:id/:payment',
             path: '/documents/:id/:payment',
             meta: {
@@ -1317,6 +1335,89 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'documents/:id/new',
+            path: '/documents/:id/new',
+            meta: {
+              mode: ['personal', 'new'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents/:id/:object_id',
+            path: '/documents/:id/:object_id',
+            meta: {
+              mode: ['personal', 'object_id'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents/:id/edit_habitation',
+            path: 'edit_habitation',
+            meta: {
+              mode: ['personal', 'edit_habitation'],
+            },
+            component: Detail,
+          },
+
+          // {
+          //   name: 'documents/:id/new_card',
+          //   path: '/documents/:id/new_card',
+          //   meta: {
+          //     mode: ['personal', 'new_card'],
+          //     // label: 'Добавить аккаунта',
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:card_id',
+          //   path: '/documents/:id/:card_id',
+          //   meta: {
+          //     mode: ['personal', 'new_card'],
+          //     // label: 'Добавить аккаунта',
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/new',
+          //   path: '/documents/:id/new',
+          //   meta: {
+          //     mode: ['personal', 'new'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:object_id',
+          //   path: '/documents/:id/:object_id',
+          //   meta: {
+          //     mode: ['personal', 'object_id'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/edit_habitation',
+          //   path: '/documents/:id/edit_habitation',
+          //   meta: {
+          //     mode: ['personal', 'edit_habitation'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:payment',
+          //   path: '/documents/:id/:payment',
+          //   meta: {
+          //     mode: ['personal', 'personal-payment'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:zayavka',
+          //   path: '/documents/:id/:zayavka',
+          //   meta: {
+          //     mode: ['personal', 'personal-zayavka'],
+          //   },
+          //   component: Detail,
+          // },
         ],
       },
     ],
