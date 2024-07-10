@@ -19,6 +19,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    'error-messages': {
+      type: Array,
+      default: () => [],
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
