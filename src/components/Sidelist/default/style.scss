@@ -16,7 +16,7 @@
     }
     &-panel {
       width: 450px;
-      height: 590px;
+      height: calc(100vh - 350px);
       position: absolute;
       display: flex;
       flex-direction: column;
