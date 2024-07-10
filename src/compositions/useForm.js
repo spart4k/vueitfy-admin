@@ -220,9 +220,9 @@ export default function ({
         module: action.module,
       })
       emit('closePopup')
-      if (action.actionKey) {
-        emit('getItems')
-      }
+      // if (action.actionKey) {
+      emit('getItems')
+      // }
       loading.value = false
     } else if (action.action === 'updateFormStore') {
       loading.value = true
