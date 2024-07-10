@@ -91,6 +91,7 @@ export default {
           sm: 4,
         },
         bootstrapClass: [''],
+        // validations: { required },
         //isShow: false,
       }),
       textBlock({
@@ -219,22 +220,22 @@ export default {
           ],
         },
         isShow: {
-          value: true,
+          value: false,
           conditions: [
             {
               field: 'type',
               value: [11, 12],
-              source: 'form.formData[el.field]',
+              source: 'form.lastFormData[el.field]',
             },
             {
               field: 'direction_id',
               value: [1],
-              source: 'form.formData[el.field]',
+              source: 'form.lastFormData[el.field]',
             },
             {
               field: 'doljnost_id',
               value: [5, 7, 8, 23, 33],
-              source: 'form.formData[el.field]',
+              source: 'form.lastFormData[el.field]',
             },
           ],
         },
@@ -264,17 +265,17 @@ export default {
       {
         field: 'type',
         value: [11, 12],
-        source: 'form.formData[el.field]',
+        source: 'form.lastFormData[el.field]',
       },
       {
         field: 'direction_id',
         value: [1],
-        source: 'form.formData[el.field]',
+        source: 'form.lastFormData[el.field]',
       },
       {
         field: 'doljnost_id',
         value: [5, 7, 8, 23, 33],
-        source: 'form.formData[el.field]',
+        source: 'form.lastFormData[el.field]',
       },
     ]
     const showKey = computed(() => {
@@ -309,6 +310,7 @@ export default {
       ],
       fields: fieldsConfig.value,
       formData: {},
+      lastFormData: props.lastFormData,
     }
 
     // const fields = () => {

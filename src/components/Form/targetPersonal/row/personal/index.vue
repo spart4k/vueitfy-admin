@@ -43,9 +43,13 @@
           @change="changeAutocomplete"
         />
       </v-col>
-      <v-col cols="12" sm="3" class="field-col">
+      <v-col
+        v-if="showField('select', fieldsTemplate.print_form_key)"
+        cols="12"
+        sm="3"
+        class="field-col"
+      >
         <Autocomplete
-          v-if="showKey"
           :field="fieldsTemplate.print_form_key"
           v-model="formData.print_form_key"
           :error-messages="formErrors.print_form_key"
