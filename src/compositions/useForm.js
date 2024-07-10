@@ -1656,7 +1656,6 @@ export default function ({
     if (field.isShow.conditions && field.isShow.conditions.length) {
       field.isShow.value = condition()
     }
-    console.log(condition(), field.name)
     return (
       type === field.type &&
       !loading.value &&

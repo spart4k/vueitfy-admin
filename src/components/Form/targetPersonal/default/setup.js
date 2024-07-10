@@ -85,10 +85,13 @@ export default {
       let valid = rows.value.every((el, index) => {
         // validate = !el.validate()
         return el.personalRef.every((pers) => {
-          return !pers.vForm.$invalid
+          // return !pers.vForm.$invalid
+          return pers.validate(true)
         })
       })
+      console.log(valid, 'valid')
       if (!valid) return
+
       // rows.value.forEach((el) => el.validate(true))
 
       // const isValid = rows.value.every((el) => el.validate(true))
@@ -251,6 +254,7 @@ export default {
     //   }
     // }
     const buildTargets = () => {
+      // targets.value = []
       props?.tab?.formData.date_target.forEach((el) => {
         props?.tab?.formData.personal_id.forEach((pers) => {
           const replaced = el.replaceAll('-', '.')
