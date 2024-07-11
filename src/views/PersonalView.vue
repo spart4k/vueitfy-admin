@@ -105,6 +105,10 @@ export default {
           permissions: [4, 3, 15, 1, 8, 17],
           type: true,
         },
+        {
+          direction_id: [2],
+          type: true,
+        },
       ],
     }
     zayavkaConfig.isShow = {
@@ -112,6 +116,10 @@ export default {
       condition: [
         {
           permissions: [4, 3, 15, 1, 8, 17, 16, 19],
+          type: true,
+        },
+        {
+          direction_id: [2],
           type: true,
         },
       ],
