@@ -122,7 +122,7 @@ export default {
         sm: 4,
       },
       bootstrapClass: [''],
-      validations: { number, maxLength: maxLength(4) },
+      validations: { number, maxLength: maxLength(4), required },
     }),
     stringField({
       label: 'Логин',

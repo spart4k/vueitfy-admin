@@ -785,6 +785,10 @@ export const config = {
               return !(directions.length === 1 && directions.includes(7))
             },
           },
+          {
+            direction_id: [2],
+            type: false,
+          },
         ],
       },
       type: 'TableDefault',
@@ -1231,6 +1235,10 @@ export const config = {
               )
               return !(directions.length === 1 && directions.includes(7))
             },
+          },
+          {
+            direction_id: [2],
+            type: false,
           },
         ],
       },

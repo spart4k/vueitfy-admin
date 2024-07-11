@@ -49,11 +49,21 @@ export default {
     const { detail } = props
     const syncForm = ref({})
     const activeTab = ref(0)
+    const directions = computed(() =>
+      JSON.parse(store.state.user.direction_json)
+    )
     const permission = computed(() => store.state.user.permission_id)
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
 
       return el.permissions.includes(permission.value)
+    }
+    const checkIncludesDirections = (el) => {
+      //return el.direction_id.includes(directions.value)
+      if (!el.direction_id) return true
+      else {
+        return !!_.intersection(el.direction_id, directions.value).length
+      }
     }
     const availableTabs = computed(() => {
       return detail.tabs.filter((item) => {
@@ -71,7 +81,10 @@ export default {
         if (!tab.isShow) return tab
         else {
           return tab.isShow.condition.some((el) => {
-            return checkIncludesPermissions(el) === el.type
+            return (
+              el.type === checkIncludesPermissions(el) &&
+              checkIncludesDirections(el)
+            )
           })
           // if ()
         }
