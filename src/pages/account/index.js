@@ -123,6 +123,16 @@ const config = {
             type: 'addItem',
             //function: consolePanel,
             backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  direction_id: [2],
+                  permissions: [1],
+                  vertical: false,
+                  type: false,
+                },
+              ],
+            },
           },
         ],
       },

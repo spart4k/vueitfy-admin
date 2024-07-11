@@ -1560,6 +1560,16 @@ export default function ({
   const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+        console.log(
+          _.intersection(el.value, store.state.user.direction_id).length
+        )
+        return !!_.intersection(
+          el.value,
+          JSON.parse(store.state.user.direction_json)
+        ).length
+      }
       const everyMethod = () => {
         return field.isShow.conditions?.every((el) => {
           if (el.target === 'items') {
@@ -1570,6 +1580,17 @@ export default function ({
             if (el.value === 'notEmpty') {
               return `${formData[el.field]}`
             }
+          } else if (el.target === 'funcCondition') {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            console.log('fq')
+            return el.funcCondition(conditionContext)
+          } else if (el.target === 'direction_id') {
+            return checkIncludesDirections(el)
           } else {
             const res = el.value.some((ai) => {
               let result
@@ -1620,7 +1641,6 @@ export default function ({
       }
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
-
       let funcResult = func()
       return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }

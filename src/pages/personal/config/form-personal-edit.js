@@ -507,6 +507,16 @@ export default {
         },
       ],
       readonly: true,
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'direction_id',
+            value: [1, 6],
+            type: true,
+          },
+        ],
+      },
       // readonly: {
       //   value: false,
       //   condition: [
