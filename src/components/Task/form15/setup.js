@@ -89,6 +89,9 @@ const Form15 = defineComponent({
           task_id: data.task.id,
           parent_action: data.task.id,
           personal_target_id: data.entity.id,
+          doljnost_id: JSON.parse(data.task.dop_data).doljnost_id
+            ? JSON.parse(data.task.dop_data).doljnost_id
+            : data.entity.doljnost_id,
           auto:
             data.entity.vid_vedomost_id === 3 ||
             data.entity.vid_vedomost_id === 5
