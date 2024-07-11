@@ -316,6 +316,9 @@ const Form17 = defineComponent({
                 object_id: data.entity.object_id,
                 service_id: services_spr[data.entity.doljnost_id],
                 date_target: data.entity.date_target,
+                doljnost_id: JSON.parse(data.task.dop_data).doljnost_id
+                  ? JSON.parse(data.task.dop_data).doljnost_id
+                  : data.entity.doljnost_id,
               },
             })
           },
@@ -408,6 +411,9 @@ const Form17 = defineComponent({
                 date_target: data.entity.date_target,
                 have_price: data.entity.direction_id !== 7,
                 constructed: data.entity.direction_id === 7,
+                doljnost_id: JSON.parse(data.task.dop_data).doljnost_id
+                  ? JSON.parse(data.task.dop_data).doljnost_id
+                  : data.entity.doljnost_id,
               },
             })
           },
