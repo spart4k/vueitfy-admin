@@ -203,7 +203,7 @@ export default {
         const sum = formData.price * formData.qty
         formData.sum = Math.round(sum * 100) / 100
       } else {
-        formData.sum = 0
+        formData.sum = null
       }
     }
     const changeServiceDetail = async (i, idService) => {
@@ -243,6 +243,7 @@ export default {
       rejectedPrice,
       vForm,
       validate,
+      formErrors,
     }
   },
 }
