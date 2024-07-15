@@ -416,6 +416,70 @@
                     <!-- <div class="v-panel-item-doc mt-4"></div> -->
                   </v-col>
                 </template>
+
+                <template v-if="item.type_id === 6">
+                  <v-col class="p-0" cols="12" sm="12">
+                    <v-row>
+                      <v-row class="align-center">
+                        <span class="v-panel-item_text v-panel-item_text__bold"
+                          >{{ item.content?.count }}/</span
+                        >
+                        <v-text-field
+                          v-if="item.content?.max !== undefined"
+                          class="v-panel-item_field"
+                          v-model="item.content.max"
+                          dense
+                          color="primary"
+                          hide-details
+                          maxlength="8"
+                        ></v-text-field>
+                        <v-btn
+                          @click="changeBin(item.content?.max, item)"
+                          class="ml-6"
+                          elevation="0"
+                          :disabled="!Number(item.content?.max)"
+                          color="primary"
+                          small
+                          >Изменить</v-btn
+                        >
+                      </v-row>
+                    </v-row>
+                    <v-row>
+                      <div class="v-panel-item_text">
+                        Назначений: {{ item.content?.target_count }}
+                      </div>
+                    </v-row>
+                    <v-row>
+                      <div class="v-panel-item_text v-panel-item_text__bold">
+                        На сумму: {{ item.content?.sum }}р
+                      </div>
+                    </v-row>
+                    <div class="v-panel-item-doc mt-4">
+                      <v-row>
+                        <div class="v-panel-item_text">
+                          Последнее значение установлено: <br />
+                          {{ item.content?.okk_name }}
+                          {{ item.content?.last_date }}
+                        </div>
+                      </v-row>
+                      <v-row>
+                        <div class="v-panel-item_text v-panel-item_text__bold">
+                          Распределил: <br />
+                          {{
+                            item.content?.account_name
+                              ? item.content?.account_name
+                              : '-'
+                          }}
+                          {{
+                            item.content?.account_name
+                              ? item.content?.diff_date
+                              : ''
+                          }}
+                        </div>
+                      </v-row>
+                    </div>
+                  </v-col>
+                </template>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>

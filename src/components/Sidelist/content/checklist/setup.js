@@ -142,6 +142,29 @@ export default {
       return moment(date).format('YYYY.MM.DD')
     }
 
+    const changeBin = async (bin, object) => {
+      const requestData = {
+        url: `total/bin/${object.period}/${object.object_id}`,
+        body: {
+          total: Number(bin),
+        },
+      }
+      const data = await store.dispatch('form/putForm', requestData)
+      if (data.code === 2) {
+        store.commit('notifies/showMessage', {
+          content: 'Что-то пошло не так...',
+          color: 'error',
+          timeout: 3000,
+        })
+      } else if (data.code === 3) {
+        store.commit('notifies/showMessage', {
+          content: 'На объект не назначен менеджер',
+          color: 'error',
+          timeout: 3000,
+        })
+      }
+    }
+
     onMounted(() => {
       getData()
     })
@@ -175,6 +198,7 @@ export default {
       downloadFile,
       formatDate,
       changeTotalCount,
+      changeBin,
     }
   },
 }
