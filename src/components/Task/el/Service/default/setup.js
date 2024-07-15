@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch, nextTick } from 'vue'
 import FormError from '@/components/Task/el/FormError/index.vue'
 import FormComment from '@/components/Task/el/FormComment/index.vue'
 import store from '@/store'
@@ -55,27 +55,28 @@ export default {
       type: Object,
       default: () => {},
     },
+    comment: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const serviceRows = ref([])
     const rejectedPrices = computed(() => {
       return serviceRows.value.reduce((acc, el) => {
-        // console.log(el.rejectedPrice)
         if (el.rejectedPrice) {
           acc.push(el.rejectedPrice)
           return acc
-          // console.log(acc)
         } else {
           return acc
         }
       }, [])
     })
-    const services = ref([{}])
+    const services = ref([])
     const addGroup = () => {
       services.value.push({})
     }
     const removeGroup = (index) => {
-      console.log(index)
       if (index !== undefined) {
         services.value.splice(index, 1)
       } else {
@@ -85,6 +86,22 @@ export default {
     const changeRejectedPrice = (reject) => {
       // rejectedPrice.value = reject
     }
+    onMounted(() => {
+      if (props.formGroup.length) {
+        props.formGroup.forEach((item, index) => {
+          addGroup()
+          nextTick(() => {
+            const formData = serviceRows.value[0].formData
+            formData.name = item.service_id
+            formData.price = item.price
+            formData.qty = item.qty
+            formData.sum = item.sum
+          })
+        })
+      } else {
+        addGroup()
+      }
+    })
     return {
       services,
       addGroup,

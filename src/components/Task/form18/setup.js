@@ -122,11 +122,8 @@ const Form18 = defineComponent({
     onMounted(() => {})
     const loading = ref(false)
     const confirmTask = async () => {
-      console.log('start')
       service.value.serviceRows.forEach((el) => {
-        console.log(el)
         el.validate(true)
-        console.log(el.vForm)
       })
       loading.value = true
       let total = 0

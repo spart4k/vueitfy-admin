@@ -7,6 +7,7 @@
         class="mr-1"
         @change="(idService) => changeServiceDetail(i, idService.value)"
         v-model="formData.name"
+        :error-messages="formErrors.name"
       />
     </v-col>
     <v-col sm="2">
@@ -15,6 +16,7 @@
         class="mr-1"
         v-model="formData.qty"
         @input="() => changeSum(i)"
+        :error-messages="formErrors.qty"
       ></v-text-field>
     </v-col>
     <v-col sm="2">
@@ -24,6 +26,7 @@
         disabled
         class="mr-1"
         readonly
+        :error-messages="formErrors.price"
       ></v-text-field>
     </v-col>
     <v-col sm="2">
@@ -32,6 +35,7 @@
         label="Сумма"
         disabled
         readonly
+        :error-messages="formErrors.sum"
       ></v-text-field>
     </v-col>
     <!-- <v-col class="px-0 d-flex justify-center">
