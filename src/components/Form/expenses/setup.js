@@ -192,11 +192,11 @@ export default {
                     condition: [
                       {
                         funcCondition: (context) =>
-                          (Number(context.originalData.from_account_id) ===
+                          (Number(context.originalData?.from_account_id) ===
                             context.store.state.user.id ||
                             context.store.state.user.permission_id === 4) &&
-                          (context.originalData.status === 1 ||
-                            context.originalData.status === 3),
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -226,11 +226,11 @@ export default {
                     condition: [
                       {
                         funcCondition: (context) =>
-                          (Number(context.originalData.from_account_id) ===
+                          (Number(context.originalData?.from_account_id) ===
                             context.store.state.user.id ||
                             context.store.state.user.permission_id === 4) &&
-                          (context.originalData.status === 1 ||
-                            context.originalData.status === 3),
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -257,11 +257,11 @@ export default {
                     condition: [
                       {
                         funcCondition: (context) =>
-                          (Number(context.originalData.from_account_id) ===
+                          (Number(context.originalData?.from_account_id) ===
                             context.store.state.user.id ||
                             context.store.state.user.permission_id === 4) &&
-                          (context.originalData.status === 1 ||
-                            context.originalData.status === 3),
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -284,7 +284,8 @@ export default {
             prescription: 'items',
             placeholder: '',
             readonly:
-              proxyTab.value.path === 'id'
+              proxyTab.value.path === 'id' ||
+              proxyTab.value.path === 'zayavka-edit'
                 ? formData?.type_zayavka === 2
                   ? true
                   : {
@@ -292,11 +293,11 @@ export default {
                       condition: [
                         {
                           funcCondition: (context) =>
-                            (Number(context.originalData.from_account_id) ===
+                            (Number(context.originalData?.from_account_id) ===
                               context.store.state.user.id ||
                               context.store.state.user.permission_id === 4) &&
-                            (context.originalData.status === 1 ||
-                              context.originalData.status === 3),
+                            (context.originalData?.status === 1 ||
+                              context.originalData?.status === 3),
                           type: false,
                         },
                       ],
@@ -323,11 +324,11 @@ export default {
                     condition: [
                       {
                         funcCondition: (context) =>
-                          (Number(context.originalData.from_account_id) ===
+                          (Number(context.originalData?.from_account_id) ===
                             context.store.state.user.id ||
                             context.store.state.user.permission_id === 4) &&
-                          (context.originalData.status === 1 ||
-                            context.originalData.status === 3),
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -346,9 +347,9 @@ export default {
       } else {
         if (itemIndex) {
           proxyTab.value.fields.splice(btnIndex - 5, 5)
-          Object.keys(formData).map((x) => {
-            if (x.includes(`%${itemIndex}`)) delete formData[x]
-          })
+          // Object.keys(formData).map((x) => {
+          //   if (x.includes(`%${itemIndex}`)) delete formData[x]
+          // })
         }
       }
       initFields()
