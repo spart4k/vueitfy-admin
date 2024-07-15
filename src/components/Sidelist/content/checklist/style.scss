@@ -77,6 +77,16 @@
           cursor: pointer;
         }
       }
+      &_field {
+        max-width: 72px !important;
+        margin-top: 0px !important;
+        .v-input__slot {
+          margin: 0;
+          input {
+            padding: 0;
+          }
+        }
+      }
     }
     &-item + &-item {
       padding-top: 10px;
