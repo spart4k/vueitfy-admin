@@ -639,13 +639,13 @@ export const config = {
               {
                 field: 'object_id',
                 value: '',
-                source: 'form.formData',
+                source: 'formData',
                 type: 'num',
               },
               {
                 field: 'personal_id',
                 value: '',
-                source: 'form.formData',
+                source: 'formData',
                 type: 'num',
               },
             ],

@@ -18,6 +18,7 @@
       no-data-text="Нет объектов"
       @change="update"
       :readonly="$props.readonly"
+      @click:clear="clearField"
     >
       <template v-slot:append>
         <v-progress-circular

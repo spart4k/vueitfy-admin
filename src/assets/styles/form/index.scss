@@ -17,6 +17,7 @@
     &-col {
       // height: 70px;
       height: fit-content;
+      position: relative;
       &.flexFlow {
         display: flex;
         flex-flow: row wrap;
@@ -48,6 +49,11 @@
             //font-weight: 600;
           }
         }
+      }
+      .isRequired {
+        position: absolute;
+        right: calc(12px + 4px);
+        top: 4px;
       }
       .noWrap {
         .v-select__selections {

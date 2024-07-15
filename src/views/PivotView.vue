@@ -92,6 +92,25 @@ export default {
     personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
 
     config.detail.tabs.push(...personalTabs)
+
+    configRouteConvert({
+      config: config.detail.tabs[7].config,
+      route: 'scan',
+      newPath: 'personal-scan',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: config.detail.tabs[8].config,
+      route: 'card',
+      newPath: 'personal-card',
+      settings: {
+        index: [0],
+      },
+    })
+
     configRouteConvert({
       config: config,
       newPath: 'personal',
@@ -110,6 +129,8 @@ export default {
         exceptName: ['Редактирование выработки'],
       },
     })
+
+    console.log(config)
 
     return {
       config,

@@ -218,7 +218,6 @@ const form10 = defineComponent({
       } else if (zayavkaValid.value) {
         // send
         const resultZayavka = await sendZayavkaItems()
-        console.log(resultZayavka)
         if (resultZayavka.code === 2) {
           store.commit('notifies/showMessage', {
             color: 'success',

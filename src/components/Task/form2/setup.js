@@ -87,8 +87,10 @@ const Form2 = defineComponent({
     }
     const docMainRef = ref(null)
     const docMainValid = computed(() => {
+      console.log(isHasOsnDoc)
       if (isHasOsnDoc) {
-        return !docMainRef.value.isOsnDocConfirmed !== null
+        console.log(docMainRef.value?.isOsnDocConfirmed)
+        return docMainRef.value?.isOsnDocConfirmed !== null
       } else {
         return true
       }
@@ -103,9 +105,13 @@ const Form2 = defineComponent({
     }
     const docFormRef = ref(null)
     const allDocsTouched = computed(() => {
-      return docFormRef.value?.docRows?.every(
-        (el) => el.isCorrect || el.isRejected
-      )
+      if (!props.data.data?.docs_id?.length) {
+        return true
+      } else {
+        return docFormRef.value?.docRows?.every(
+          (el) => el.isCorrect || el.isRejected
+        )
+      }
     })
     const isValid = computed(() => {
       return allDocsTouched.value && docMainValid.value
@@ -163,7 +169,7 @@ const Form2 = defineComponent({
         if (!finalData.value.rejected) {
           finalData.value.rejected = []
         }
-        newStatus.value = rejectedDocs.value.length ? 6 : 2
+        newStatus.value = rejectedDocs?.value?.length ? 6 : 2
         // let status
         // if ()
         let data = {
@@ -189,7 +195,7 @@ const Form2 = defineComponent({
     })
 
     const sendData = async () => {
-      if (rejectedDocs.value.length && !comment.value) {
+      if (rejectedDocs.value?.length && !comment.value) {
         commentErr.value = ['Заполните комментарий']
       } else {
         loading.value = true

@@ -515,6 +515,7 @@ const table = {
       }
     }
     const saveFilter = async (filterData) => {
+      console.log(filterData)
       filtersColumns.value = []
       filters.value?.fields?.forEach((el) => {
         if (!filterData[el.name]) {
@@ -522,12 +523,16 @@ const table = {
           return
         }
         el.value = filterData[el.name]
+        console.log(filterData[el.name], el.name)
         if (
           el.type === 'dateRange' &&
           filterData[el.name].every(
             (el) => el === null || el === undefined || el === ''
           )
         ) {
+          return
+        }
+        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
           return
         }
         let type = el.typeFilter ? el.typeFilter : el.type
@@ -646,6 +651,12 @@ const table = {
       })
       popupForm.value.isShow = true
     }
+    const pushUrl = (url) => {
+      router.push({
+        name: router.history.current.name + url,
+      })
+      popupForm.value.isShow = true
+    }
     const panelHandler = async (button) => {
       const { type, url } = button
       if (button.function) button.function(props.options)
@@ -653,6 +664,8 @@ const table = {
         addItem()
       } else if (type === 'changeUrl') {
         changeUrl(url)
+      } else if (type === 'pushUrl') {
+        pushUrl(url)
       } else if (type === 'getFilters') {
         axios.post(url, filtersColumns.value)
       } else if (type === 'nextStage') {
@@ -781,9 +794,6 @@ const table = {
       pagination.value = {
         ...options.data,
       }
-      console.log(
-        options.detail && options.detail.type === 'popup' && route.meta.mode
-      )
       if (
         options.detail &&
         options.detail.type === 'popup' &&
@@ -928,7 +938,6 @@ const table = {
     }
 
     const triggerAction = (action, cell, row) => {
-      console.log('method', cell, row, action)
       if (action.method) {
         const conditionContext = {
           store,

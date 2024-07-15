@@ -328,252 +328,252 @@ const docForm = defineComponent({
     }
     const formObj = ref({
       // Паспорт
-      1: useForm({
-        fields: {
-          pasp_ser: {
-            validations: { required },
-            default: props.docsData?.pasp_ser,
-          },
-          pasp_num: {
-            validations: { required },
-            default: props.docsData?.pasp_num,
-          },
-          pasp_kod_podr: {
-            validations: { required },
-            default: props.docsData?.pasp_kod_podr,
-          },
-          pasp_data_vid: {
-            validations: { required },
-            default: props.docsData?.pasp_data_vid,
-          },
-          pasp_kem: {
-            validations: { required },
-            default: props.docsData?.pasp_kem,
-          },
-        },
-        context,
-      }),
-      // Снилс
-      2: useForm({
-        fields: {
-          snils: {
-            validations: { required },
-            default: props.docsData?.snils,
-          },
-        },
-        context,
-      }),
-      // Банковская карта
-      3: useForm({
-        fields: {
-          invoice: {
-            validations: { required },
-            default: loadedData.patent_num ? loadedData.patent_num : '',
-          },
-          priority: {
-            default: false,
-          },
-          bank_id: {
-            validations: { required },
-          },
-          fio: {
-            validations: { required },
-            default: loadedData.patent_num ? loadedData.patent_num : '',
-          },
-          comment: {
-            default: loadedData.patent_num ? loadedData.patent_num : '',
-          },
-        },
-        context,
-      }),
-      // Адрес регистрации
-      4: useForm({
-        fields: {
-          registration_address: {
-            validations: { required },
-            default: props.docsData?.registration_address,
-          },
-        },
-        context,
-      }),
-      // Патент
-      5: useForm({
-        fields: {
-          patent_ser: {
-            validations: { required },
-            default: props.docsData?.patent_ser,
-          },
-          patent_num: {
-            validations: { required },
-            default: props.docsData?.patent_num,
-          },
-          patent_prof: {
-            validations: { required },
-            default: props.docsData?.patent_prof,
-          },
-        },
-        context,
-      }),
-      // Паспорт, страница 2
-      6: useForm({
-        fields: {
-          pasp_address_reg: {
-            validations: { required },
-            default: props.docsData?.pasp_address_reg,
-          },
-        },
-        context,
-      }),
-      // Мед.книжка
-      8: useForm({
-        fields: {
-          med_book_date: {
-            validations: { required },
-            default: props.docsData?.med_book_date,
-          },
-        },
-        context,
-      }),
-      // Вид на жительство
-      9: useForm({
-        fields: {
-          view_home_ser: {
-            validations: { required },
-            default: props.docsData?.view_home_ser,
-          },
-          view_home_num: {
-            validations: { required },
-            default: props.docsData?.view_home_num,
-          },
-          view_home_podr: {
-            validations: { required },
-            default: props.docsData?.view_home_podr,
-          },
-          view_home_data_vid: {
-            validations: { required },
-            default: props.docsData?.view_home_data_vid,
-          },
-          view_home_kem: {
-            validations: { required },
-            default: props.docsData?.view_home_kem,
-          },
-        },
-        context,
-      }),
-      // Миграционная карта
-      10: useForm({
-        fields: {
-          migr_card_ser: {
-            validations: { required },
-            default: props.docsData?.migr_card_ser,
-          },
-          migr_card_num: {
-            validations: { required },
-            default: props.docsData?.migr_card_num,
-          },
-          migr_card_data_in: {
-            validations: { required },
-            default: props.docsData?.migr_card_data_in,
-          },
-          migr_card_data_out: {
-            validations: { required },
-            default: props.docsData?.migr_card_data_out,
-          },
-        },
-        context,
-      }),
-      // Чек-патент первичный
-      13: useForm({
-        fields: {
-          check_patent_date_pay: {
-            validations: { required },
-            default: props.docsData?.check_patent_date_pay,
-          },
-        },
-        context,
-      }),
-      // Регистрация стр. 2
-      14: useForm({
-        fields: {
-          registration_date_do_docs_in: {
-            validations: { required },
-            default: props.docsData?.registration_date_do_docs_in,
-          },
-          registration_date_c_docs_in: {
-            validations: { required },
-            default: props.docsData?.registration_date_c_docs_in,
-          },
-        },
-        context,
-      }),
-      // Патент стр. 2
-      15: useForm({
-        fields: {
-          patent_region: {
-            validations: { required },
-            default: props.docsData?.patent_region,
-          },
-          patent_date_docs_in: {
-            validations: { required },
-            default: props.docsData?.patent_date_docs_in,
-          },
-        },
-        context,
-      }),
-      // ИНН
-      17: useForm({
-        fields: {
-          inn: { validations: { required }, default: props.docsData?.inn },
-        },
-        context,
-      }),
-      // Экзамен РФ
-      18: useForm({
-        fields: {
-          ekz_rf: { default: props.docsData?.ekz_rf ?? false },
-        },
-        context,
-      }),
-      // Чек-патент текущий
-      19: useForm({
-        fields: {
-          check_patent_date_pay_now: {
-            validations: { required },
-            default: props.docsData?.check_patent_date_pay_now,
-          },
-        },
-        context,
-      }),
-      // Вид на жительство стр. 2
-      22: useForm({
-        fields: {
-          view_home_address_reg: {
-            validations: { required },
-            default: props.docsData?.view_home_address_reg,
-          },
-        },
-        context,
-      }),
-      // мед осмотр
-      23: useForm({
-        fields: {
-          med_view_docs_in: {
-            validations: { required },
-            default: props.docsData?.med_view_docs_in,
-          },
-        },
-        context,
-      }),
-      // мед осмотр ID
-      24: useForm({
-        fields: {
-          id_card: {
-            validations: { required },
-            default: props.docsData?.id_card,
-          },
-        },
-        context,
-      }),
+      // 1: useForm({
+      //   fields: {
+      //     pasp_ser: {
+      //       validations: { required },
+      //       default: props.docsData?.pasp_ser,
+      //     },
+      //     pasp_num: {
+      //       validations: { required },
+      //       default: props.docsData?.pasp_num,
+      //     },
+      //     pasp_kod_podr: {
+      //       validations: { required },
+      //       default: props.docsData?.pasp_kod_podr,
+      //     },
+      //     pasp_data_vid: {
+      //       validations: { required },
+      //       default: props.docsData?.pasp_data_vid,
+      //     },
+      //     pasp_kem: {
+      //       validations: { required },
+      //       default: props.docsData?.pasp_kem,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Снилс
+      // 2: useForm({
+      //   fields: {
+      //     snils: {
+      //       validations: { required },
+      //       default: props.docsData?.snils,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Банковская карта
+      // 3: useForm({
+      //   fields: {
+      //     invoice: {
+      //       validations: { required },
+      //       default: loadedData.patent_num ? loadedData.patent_num : '',
+      //     },
+      //     priority: {
+      //       default: false,
+      //     },
+      //     bank_id: {
+      //       validations: { required },
+      //     },
+      //     fio: {
+      //       validations: { required },
+      //       default: loadedData.patent_num ? loadedData.patent_num : '',
+      //     },
+      //     comment: {
+      //       default: loadedData.patent_num ? loadedData.patent_num : '',
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Адрес регистрации
+      // 4: useForm({
+      //   fields: {
+      //     registration_address: {
+      //       validations: { required },
+      //       default: props.docsData?.registration_address,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Патент
+      // 5: useForm({
+      //   fields: {
+      //     patent_ser: {
+      //       validations: { required },
+      //       default: props.docsData?.patent_ser,
+      //     },
+      //     patent_num: {
+      //       validations: { required },
+      //       default: props.docsData?.patent_num,
+      //     },
+      //     patent_prof: {
+      //       validations: { required },
+      //       default: props.docsData?.patent_prof,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Паспорт, страница 2
+      // 6: useForm({
+      //   fields: {
+      //     pasp_address_reg: {
+      //       validations: { required },
+      //       default: props.docsData?.pasp_address_reg,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Мед.книжка
+      // 8: useForm({
+      //   fields: {
+      //     med_book_date: {
+      //       validations: { required },
+      //       default: props.docsData?.med_book_date,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Вид на жительство
+      // 9: useForm({
+      //   fields: {
+      //     view_home_ser: {
+      //       validations: { required },
+      //       default: props.docsData?.view_home_ser,
+      //     },
+      //     view_home_num: {
+      //       validations: { required },
+      //       default: props.docsData?.view_home_num,
+      //     },
+      //     view_home_podr: {
+      //       validations: { required },
+      //       default: props.docsData?.view_home_podr,
+      //     },
+      //     view_home_data_vid: {
+      //       validations: { required },
+      //       default: props.docsData?.view_home_data_vid,
+      //     },
+      //     view_home_kem: {
+      //       validations: { required },
+      //       default: props.docsData?.view_home_kem,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Миграционная карта
+      // 10: useForm({
+      //   fields: {
+      //     migr_card_ser: {
+      //       validations: { required },
+      //       default: props.docsData?.migr_card_ser,
+      //     },
+      //     migr_card_num: {
+      //       validations: { required },
+      //       default: props.docsData?.migr_card_num,
+      //     },
+      //     migr_card_data_in: {
+      //       validations: { required },
+      //       default: props.docsData?.migr_card_data_in,
+      //     },
+      //     migr_card_data_out: {
+      //       validations: { required },
+      //       default: props.docsData?.migr_card_data_out,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Чек-патент первичный
+      // 13: useForm({
+      //   fields: {
+      //     check_patent_date_pay: {
+      //       validations: { required },
+      //       default: props.docsData?.check_patent_date_pay,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Регистрация стр. 2
+      // 14: useForm({
+      //   fields: {
+      //     registration_date_do_docs_in: {
+      //       validations: { required },
+      //       default: props.docsData?.registration_date_do_docs_in,
+      //     },
+      //     registration_date_c_docs_in: {
+      //       validations: { required },
+      //       default: props.docsData?.registration_date_c_docs_in,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Патент стр. 2
+      // 15: useForm({
+      //   fields: {
+      //     patent_region: {
+      //       validations: { required },
+      //       default: props.docsData?.patent_region,
+      //     },
+      //     patent_date_docs_in: {
+      //       validations: { required },
+      //       default: props.docsData?.patent_date_docs_in,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // ИНН
+      // 17: useForm({
+      //   fields: {
+      //     inn: { validations: { required }, default: props.docsData?.inn },
+      //   },
+      //   context,
+      // }),
+      // // Экзамен РФ
+      // 18: useForm({
+      //   fields: {
+      //     ekz_rf: { default: props.docsData?.ekz_rf ?? false },
+      //   },
+      //   context,
+      // }),
+      // // Чек-патент текущий
+      // 19: useForm({
+      //   fields: {
+      //     check_patent_date_pay_now: {
+      //       validations: { required },
+      //       default: props.docsData?.check_patent_date_pay_now,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // Вид на жительство стр. 2
+      // 22: useForm({
+      //   fields: {
+      //     view_home_address_reg: {
+      //       validations: { required },
+      //       default: props.docsData?.view_home_address_reg,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // мед осмотр
+      // 23: useForm({
+      //   fields: {
+      //     med_view_docs_in: {
+      //       validations: { required },
+      //       default: props.docsData?.med_view_docs_in,
+      //     },
+      //   },
+      //   context,
+      // }),
+      // // мед осмотр ID
+      // 24: useForm({
+      //   fields: {
+      //     id_card: {
+      //       validations: { required },
+      //       default: props.docsData?.id_card,
+      //     },
+      //   },
+      //   context,
+      // }),
     })
 
     const bankCardId = ref(0)

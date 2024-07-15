@@ -84,7 +84,6 @@ const poeples = ref([
     background: '#A600A6',
   },
 ])
-console.log(poeples.value)
 import GSTC from 'gantt-schedule-timeline-calendar/dist/gstc.wasm.esm.min.js'
 import { Plugin as TimelinePointer } from 'gantt-schedule-timeline-calendar/dist/plugins/timeline-pointer.esm.min.js'
 import { Plugin as Selection } from 'gantt-schedule-timeline-calendar/dist/plugins/selection.esm.min.js'
@@ -158,12 +157,9 @@ function generateItems() {
         background: poeples.value[i].background,
       },
     }
-    console.log(items)
   }
   return items
 }
-
-console.log(generateItems())
 
 // main component
 
@@ -175,7 +171,7 @@ export default {
      */
     const config = {
       licenseKey:
-        '====BEGIN LICENSE KEY====\np6N2PKqlT4kRv44C6o0ivOUZ/TWnW+rV2/9/oG5JivS4stgRIqz0ae7wHucszdAykShrqBGjW+t4kOmABtBdkyBtTHt1eOSbPfogWm0SB7xWCv+NnfYRkOIZ0iQcfvUAdU8PhDS8WJ9YbO73PEVoVZ8VujSGP0YXrvUi+UMomeazFRKzPn2V7xDcdB7UlTVWALMuDD9NcfmnQg+2mb6oa/KKj2U0Hs6ObovztCrqhBXwX/tKM3pG01YTjaHGQ2dxyvSvOf6PdGRGcfPldcks08aJvS4wKQRkMpNSrsKDNQN6NiwoBjCl9nMjW4KL6NgRhCh7ge3mL6ZF92kF1Ba1pg==||U2FsdGVkX19ibdn6v0Peht+SluMey70Mbuxh3mRareC1VRdhywJhAHS8rhE1YNpomRv/hhql4TB9jApwLuzfGujASzP39xWNBPKTeoiLRmc=\na8btmpgpzRjYjAnPJYbsgQ57CSYh9A+/TlFOaSEmL0YYhlo4lm9SAL63hapEVWEhKGewwDTDr4dPCyxO1xosTSOU9y87++tk25Kp03JWes47ztI/hk/GFekwKPeyas6yXR/75OiI/+e/rL5+GP/ZrpMxFffnzxX/oV3zyMA84zWNx+mgwIZgH4hIAk9eSfEEpWLfqMbbQW4WJ+i0s08KOiUW+gtxWH+BeUMH6XcbdqAt54cZHTF3eCC8mJ6daFTFSHlKIyDkfZOX25JGSCJE+APvadZQyDpN7a7eHZASt5E1uj1adSpzFUncjfsKN6GVBOvVsCV/bSuiEjotw6HYUg==\n====END LICENSE KEY====',
+        '====BEGIN LICENSE KEY====\nTGfvT7F/N3IZIs+Q9pkM6RRghSDMe95TGSx5O41f6W/ZpvPNettRBxL8pLyvTD9RsNmBIOdWgT6oqSeLPTAW7YX0YGu5Ly+3pF5Z9MKI021uK/h/K2eWYydhY6NmX58D/0vLY78i3KgYdgrMiDoA3OSv5dlCrRw+DsXZfXJlIx8rVFZ/h1J2ghxC1CSa3G1pJaM+nDsqSzTSaM61zdisFFN0VYiAG3weIBtxksWwN23ru2+9WnY1UxySWcsOWGKMG9HX6MIw61aQmNJg9DBtu7CiEN4nqV/m7TbNUSV4KrNnW6pXBYL/GMUm9H3ON1DDRs9rPWLek60pVpD7542SgQ==||U2FsdGVkX18pHDSS9cY23gxkytlLoLcPOJ+vSi+CVZZrZoTNQrUMiemwLLEfWcfiP+JwP0eHzIo2Ot3hjaJ5Prk7BQnkkdJLagsLNNbL08c=\nPaMJ6y+qx0YJkvulQ5Naii4hZqJvJuJ3lHcrQSqUAMebZm73nRcygmD8IYUBQiyfmYUhCj/D4JgYwXkdmhlUKChliMjpU1PgKmLhm57SFzuymTaDJNs6kDyi3OCj/rYpcwqt/jj4R7hrZNZTjNgTa2yGD4P4DfxkTWyXAeRfwpIzi6jP8KcLXJDjv+yNibjHRcYqN9aGBxdVSmAPW36a0QM1LDWeREgtUbIfM6naPRQAihfFkCHNyRbtjXuiRyMybHBldliM8FlGNaLHSwqhGJ2lTmUNSTQ4XXCJhw0Juccovfu0yCKS0DlR0h2jyIZ1UZsSCQ0R8EIGe6yeptljuA==\n====END LICENSE KEY====',
       plugins: [
         TimelinePointer(),
         Selection(),

@@ -89,6 +89,9 @@ const Form15 = defineComponent({
           task_id: data.task.id,
           parent_action: data.task.id,
           personal_target_id: data.entity.id,
+          doljnost_id: JSON.parse(data.task.dop_data).doljnost_id
+            ? JSON.parse(data.task.dop_data).doljnost_id
+            : data.entity.doljnost_id,
           auto:
             data.entity.vid_vedomost_id === 3 ||
             data.entity.vid_vedomost_id === 5
@@ -159,11 +162,6 @@ const Form15 = defineComponent({
     const confirm = async () => {
       loading.value = true
       isFormConfirmed.value = true
-      console.log(
-        props.data.entity.vid_vedomost_id === 1
-          ? props.data.data.postponed
-          : undefined
-      )
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {

@@ -35,6 +35,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    fields: {
+      type: Object,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -176,7 +179,6 @@ export default {
         return e
       }
     }
-
     const endIntersect = (entries, observer, isIntersecting) => {
       if (loading.value) return
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)
@@ -220,7 +222,9 @@ export default {
     const disabled = computed(() => {
       return props.field.disabled || props.field.requiredFields
         ? props.field.disabled ||
-            props.field.requiredFields.some((el) => !props.formData[el])
+            props.field.requiredFields.some((el) => {
+              return !props.formData[el] && props.fields[el].isShow.value
+            })
         : false
     })
 

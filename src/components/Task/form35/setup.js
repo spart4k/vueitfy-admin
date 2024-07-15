@@ -837,7 +837,6 @@ const Form7 = defineComponent({
     }
     const sendData = async () => {
       // vForm.value.$touch()
-      console.log(validate(true))
       if (!validate(true)) return
       const resultZayavka = await sendZayavka()
       const { success } = await changeStatusTask()

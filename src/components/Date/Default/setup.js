@@ -50,7 +50,7 @@ export default {
     const changeValue = () => {
       if (props.field.subtype === 'multiple') {
         dateValue.value = _.cloneDeep(proxyValue.value)
-        dateValue.value.forEach((item, index) => {
+        dateValue.value?.forEach((item, index) => {
           dateValue.value[index] = item.replaceAll('.', '-')
         })
       } else {
@@ -71,7 +71,7 @@ export default {
     const changeDate = () => {
       if (props.field.subtype === 'multiple') {
         proxyValue.value = _.cloneDeep(dateValue.value)
-        proxyValue.value.forEach((item, index) => {
+        proxyValue.value?.forEach((item, index) => {
           proxyValue.value[index] = item.replaceAll('-', '.')
         })
       } else {
@@ -82,7 +82,7 @@ export default {
 
     onMounted(() => {
       if (props.field.subtype === 'multiple') {
-        proxyValue.value.forEach((item, index) => {
+        proxyValue.value?.forEach((item, index) => {
           proxyValue.value[index] = item.replaceAll('-', '.')
         })
         dateValue.value = _.cloneDeep(proxyValue.value)
@@ -95,13 +95,17 @@ export default {
         if (proxyValue.value?.includes('.'))
           dateValue.value = proxyValue.value.replaceAll('.', '-')
       }
+      if (proxyValue.value === '0000.00.00') {
+        proxyValue.value = ''
+      }
     })
 
+    const clearField = () => {}
     watch(
       () => proxyValue.value,
       (newVal) => {
         if (props.field.subtype === 'multiple') {
-          proxyValue.value.forEach((item, index) => {
+          proxyValue.value?.forEach((item, index) => {
             proxyValue.value[index] = item.replaceAll('-', '.')
           })
         } else {
@@ -120,6 +124,7 @@ export default {
 
       changeDate,
       changeValue,
+      clearField,
     }
   },
 }

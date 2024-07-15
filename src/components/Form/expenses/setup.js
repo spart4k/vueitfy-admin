@@ -83,22 +83,22 @@ export default {
     const { alias } = proxyTab.value
     const dropzone = ref()
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
-    const fields = () => {
-      const fields = {}
-      proxyTab.value.fields.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
-          Vue.set(fields, el.name, {})
-        } else return
-        // if (el.name === 'vector') return
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
-      })
-      return fields
-    }
+    // const fields = () => {
+    //   const fields = {}
+    //   proxyTab.value.fields.forEach((el) => {
+    //     const { validations } = el
+    //     if (typeof el.isShow === 'boolean' && el.isShow)
+    //       Vue.set(fields, el.name, {})
+    //     else if (typeof el.isShow === 'object' && el.isShow.value) {
+    //       Vue.set(fields, el.name, {})
+    //     } else return
+    //     // if (el.name === 'vector') return
+    //     Vue.set(fields, el.name, {})
+    //     Vue.set(fields[el.name], 'validations', validations)
+    //     Vue.set(fields[el.name], 'default', el.value)
+    //   })
+    //   return fields
+    // }
     const params = proxyTab.value.lists
     const data = params
     const getRequestParam = () => {
@@ -191,9 +191,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData?.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -222,9 +225,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData?.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -250,9 +256,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData?.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -275,16 +284,20 @@ export default {
             prescription: 'items',
             placeholder: '',
             readonly:
-              proxyTab.value.path === 'id'
+              proxyTab.value.path === 'id' ||
+              proxyTab.value.path === 'zayavka-edit'
                 ? formData?.type_zayavka === 2
                   ? true
                   : {
                       value: false,
                       condition: [
                         {
-                          target: 'originalData',
-                          field: 'status',
-                          value: [1],
+                          funcCondition: (context) =>
+                            (Number(context.originalData?.from_account_id) ===
+                              context.store.state.user.id ||
+                              context.store.state.user.permission_id === 4) &&
+                            (context.originalData?.status === 1 ||
+                              context.originalData?.status === 3),
                           type: false,
                         },
                       ],
@@ -310,9 +323,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData?.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData?.status === 1 ||
+                            context.originalData?.status === 3),
                         type: false,
                       },
                     ],
@@ -331,12 +347,12 @@ export default {
       } else {
         if (itemIndex) {
           proxyTab.value.fields.splice(btnIndex - 5, 5)
-          Object.keys(formData).map((x) => {
-            if (x.includes(`%${itemIndex}`)) delete formData[x]
-          })
+          // Object.keys(formData).map((x) => {
+          //   if (x.includes(`%${itemIndex}`)) delete formData[x]
+          // })
         }
       }
-      rebuildFormData()
+      initFields()
     }
 
     const compareBlockCount = () => {
@@ -551,7 +567,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
-      rebuildFormData,
+      initFields,
       readonlyField,
       changeValue,
       isHideBtn,
@@ -561,8 +577,8 @@ export default {
       context,
       detail: props.detail,
       loading,
-      fields: fields(),
-      setFields: fields,
+      // fields: fields(),
+      // setFields: fields,
       makeRequest,
       makeRequestList,
       isEdit,

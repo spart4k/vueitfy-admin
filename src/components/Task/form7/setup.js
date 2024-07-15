@@ -69,7 +69,7 @@ const Form7 = defineComponent({
 
     const finalData = ref({})
     const isFormValid = ref(false)
-    const bankCardId = ref(0)
+    const bankCardId = ref(props.data.data?.bank_card?.id)
     const osnConfirmed = ref(false)
     const isOsnDocValid = ref(true)
 
@@ -86,25 +86,24 @@ const Form7 = defineComponent({
       data_rojd: props.data.entity.data_rojd,
       grajdanstvo_id: props.data.entity.grajdanstvo_id,
     })
-    const formObj = ref(
-      useForm({
-        fields: {
-          name: {
-            validations: { required },
-            default: props.data.entity.name,
-          },
-          data_rojd: {
-            validations: { required },
-            default: props.data.entity.data_rojd,
-          },
-          grajdanstvo_id: {
-            validations: { required },
-            default: props.data.entity.grajdanstvo_id,
-          },
-        },
-        context,
-      })
-    )
+    // const formObj = ref()
+    // useForm({
+    //   fields: {
+    //     name: {
+    //       validations: { required },
+    //       default: props.data.entity.name,
+    //     },
+    //     data_rojd: {
+    //       validations: { required },
+    //       default: props.data.entity.data_rojd,
+    //     },
+    //     grajdanstvo_id: {
+    //       validations: { required },
+    //       default: props.data.entity.grajdanstvo_id,
+    //     },
+    //   },
+    //   context,
+    // })
     const docMainRef = ref(null)
     const docMainValid = computed(() => {
       if (isHasOsnDoc) {
@@ -145,7 +144,7 @@ const Form7 = defineComponent({
       finalData.value = isHasOsnDoc
         ? { 0: docMainRef.value.formData, ...data.correctedDocs }
         : data.correctedDocs
-      bankCardId.value = data.bank_card_id
+      // bankCardId.value = data.bank_card_id
       const docsIdArr = [
         ...new Set(props.data.data.docs_id.map((doc) => doc.doc_id)),
       ]
@@ -182,7 +181,7 @@ const Form7 = defineComponent({
       context,
       request: () => {
         let bodyData = {}
-        docFormRef.value.docRows.forEach((el) => {
+        docFormRef?.value?.docRows.forEach((el) => {
           if (el.document.doc_id !== 3) {
             bodyData = {
               ...bodyData,
@@ -230,9 +229,7 @@ const Form7 = defineComponent({
           account_id: task.to_account_id,
           personal_id: props.data.entity.id,
           okk_id: props.data.task.from_account_id,
-        }
-        if (bankCardId.value) {
-          data.bank_card_id = bankCardId.value
+          bank_card_id: bankCardId.value ? bankCardId.value : undefined,
         }
         return store.dispatch('taskModule/setPartTask', {
           status: taskDeadline > 0 ? 2 : 3,
@@ -262,15 +259,15 @@ const Form7 = defineComponent({
       loading.value = false
     }
 
-    watch(
-      formObj,
-      () => {
-        isOsnDocValid.value = Object.values(formObj.value.formData).every(
-          Boolean
-        )
-      },
-      { deep: true }
-    )
+    // watch(
+    //   formObj,
+    //   () => {
+    //     isOsnDocValid.value = Object.values(formObj.value.formData).every(
+    //       Boolean
+    //     )
+    //   },
+    //   { deep: true }
+    // )
 
     return {
       dataRojd,
@@ -283,7 +280,7 @@ const Form7 = defineComponent({
       isFormValid,
       finalData,
       isHasOsnDoc,
-      formObj,
+      // formObj,
       textInfo,
       citizenItems,
       osnConfirmed,

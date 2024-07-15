@@ -77,10 +77,8 @@ export default {
     const loading = ref(false)
     onMounted(() => {
       for (let key in sss.docs_id) {
-        console.log(key)
         let pasteObject
         pasteObject = data.data.docs.find((doc) => doc.doc_id == key)
-        console.log(pasteObject)
         if (sss.docs_id[key] == 1) {
           // pasteObject.inProcess = false
         } else {
@@ -240,8 +238,6 @@ export default {
           }
         }
       })
-      console.log(docs_cancel)
-      console.log(docs_add)
       const { makeRequest: createFillScanProcess } = useRequest({
         context,
         request: () =>
@@ -281,7 +277,6 @@ export default {
       if (docs_add) {
         startProcessStatus = await createFillScanProcess()
       }
-      console.log(startProcessStatus)
       const { success } = await changeStatus()
       loading.value = false
       if (success) {

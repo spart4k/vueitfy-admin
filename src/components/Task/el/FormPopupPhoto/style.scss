@@ -14,6 +14,11 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    // padding: 10px;
+    img {
+      max-width: 100%;
+      // margin: -10px;
+    }
   }
 
   &__close {

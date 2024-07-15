@@ -315,6 +315,16 @@ export default {
       //    editFormPermissions.OBDandOKK.access,
       //  ],
       //},
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_id',
+            value: [1, 6],
+            type: true,
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Направление',
@@ -429,6 +439,16 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       readonly: true,
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_id',
+            value: [1, 6],
+            type: true,
+          },
+        ],
+      },
     }),
     checkboxField({
       label: 'Штатный',
@@ -494,10 +514,12 @@ export default {
           },
           notReadonly: true,
           isShow: {
-            value: false,
+            value: true,
             condition: [
               {
-                permissions: [1],
+                funcCondition: (context) =>
+                  context.formData.grajdanstvo_id !== 1 &&
+                  context.store.state.user.permission_id === 1,
                 type: true,
               },
             ],
@@ -505,6 +527,16 @@ export default {
         },
       ],
       readonly: true,
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            field: 'direction_id',
+            value: [1, 6],
+            type: true,
+          },
+        ],
+      },
       // readonly: {
       //   value: false,
       //   condition: [

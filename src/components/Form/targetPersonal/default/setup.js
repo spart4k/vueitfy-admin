@@ -56,14 +56,14 @@ export default {
     //       const fieldName = date + '/' + el.name
     //       Vue.set(fields, fieldName, {})
     //       Vue.set(fields[fieldName], 'validations', validations)
-    //
+
     //       Vue.set(fields[fieldName], 'default', props.tab.formData[el.name])
     //       if (el.type === 'autocomplete' && el.alias) {
     //         Vue.set(fields[fieldName], 'default', props.tab.formData[el.alias])
     //       }
     //     })
     //   })
-    //
+
     //   return fields
     // }
     const prevTab = ref({})
@@ -85,10 +85,13 @@ export default {
       let valid = rows.value.every((el, index) => {
         // validate = !el.validate()
         return el.personalRef.every((pers) => {
+          // return !pers.vForm.$invalid
           return pers.validate(true)
         })
       })
+      console.log(valid, 'valid')
       if (!valid) return
+
       // rows.value.forEach((el) => el.validate(true))
 
       // const isValid = rows.value.every((el) => el.validate(true))
@@ -251,6 +254,7 @@ export default {
     //   }
     // }
     const buildTargets = () => {
+      // targets.value = []
       props?.tab?.formData.date_target.forEach((el) => {
         props?.tab?.formData.personal_id.forEach((pers) => {
           const replaced = el.replaceAll('-', '.')

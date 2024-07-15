@@ -71,6 +71,7 @@ export default {
     let sss = JSON.parse(data.task.dop_data)
     let comment = ref('')
     const loading = ref(false)
+    const commentData = JSON.parse(data.task.dop_data)['comment']
     onMounted(() => {
       sss.docs_id.forEach((item) => {
         let pasteObject = data.data.docs.find((doc) => doc.doc_id === item)
@@ -81,12 +82,9 @@ export default {
         }
         listDocuments.value.push(pasteObject)
       })
-      console.log(was_process && commentData)
       if (was_process && commentData) {
         status.value = 'Работает'
-        console.log(status.value)
       }
-      console.log(status.value)
     })
 
     let listRequestsForUpload = ref([])
@@ -197,7 +195,6 @@ export default {
       disabledDocumentsAcc.value + 1
     }
     const was_process = JSON.parse(data.task.dop_data).was_process
-    const commentData = JSON.parse(data.task.dop_data)['comment']
     const hideSecondPart = was_process && commentData
     let sendTaskFinish = async () => {
       loading.value = true
@@ -244,7 +241,6 @@ export default {
       })
       sendDocuments()
       const result = await processQuery()
-      console.log(result)
       const { success } = await changeStatus()
       if (success) {
         ctx.emit('closePopup')

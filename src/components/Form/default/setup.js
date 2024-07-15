@@ -71,25 +71,23 @@ export default {
         return route.params.id ? 'edit' : 'add'
       }
     })
-    const fields = () => {
-      const fields = {}
-      props.tab.fields.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
-          Vue.set(fields, el.name, {})
-        } else {
-          return
-        }
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
-      })
-      return fields
-    }
+    // const fields = () => {
+    //   const fields = {}
+    //   const tabFields = {}
+    //   for (let i = 0; i < props.tab.fields.length; i++) {
+    //     tabFields[props.tab.fields[i].name] = props.tab.fields[i]
+    //   }
+    //   for (let key in tabFields) {
+    //     const { validations } = tabFields[key]
+    //     Vue.set(fields, tabFields[key].name, {})
+    //     Vue.set(fields[tabFields[key].name], 'validations', validations)
+    //     Vue.set(fields[tabFields[key].name], 'default', tabFields[key].value)
+    //   }
+    //   return fields
+    // }
+
     const params = props.tab.lists
-    const data = params
+    // const data = params
     const getRequestParam = () => {
       if (props.detail?.requestId) {
         return _.get(route.params, props.detail.requestId)
@@ -227,13 +225,15 @@ export default {
       appendFieldHandler,
       popupForm,
       appendActionShow,
+      isRequired,
+      fields,
     } = useForm({
       form: props.tab,
       context,
       detail: props.detail,
       loading,
-      fields: fields(),
-      setFields: fields,
+      // fields: fields(),
+      // setFields: fields,
       makeRequest,
       makeRequestList,
       isEdit,
@@ -282,6 +282,8 @@ export default {
       fieldsRef,
       downloadFile,
       changeValue,
+      isRequired,
+      fields,
     }
   },
 }
