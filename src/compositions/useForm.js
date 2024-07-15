@@ -1238,7 +1238,7 @@ export default function ({
       }
 
       el.hideItems = el.items
-      if (data.rows.length === 1 && data.totalPage === 1) {
+      if (data.rows?.length === 1 && data.totalPage === 1) {
         if (fields[el.name]?.subtype === 'multiple') {
           formData[el.name] = [el.items[0][el.selectOption.value]]
         } else {
