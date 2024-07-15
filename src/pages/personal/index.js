@@ -58,7 +58,10 @@ const contextMenuPersonal = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return directions.length === 1 && directions.includes(7)
+              return (
+                (directions.length === 1 && directions.includes(7)) ||
+                directions.includes(2)
+              )
             },
             type: false,
           },
@@ -84,7 +87,10 @@ const contextMenuPersonal = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return directions.length === 1 && directions.includes(7)
+              return (
+                (directions.length === 1 && directions.includes(7)) ||
+                directions.includes(2)
+              )
             },
             type: false,
           },

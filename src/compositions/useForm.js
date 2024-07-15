@@ -1689,8 +1689,15 @@ export default function ({
     field?.validations && Object.keys(field?.validations) ? true : false
 
   const disabledField = (field) => {
+    console.log(field, field.name)
+    if (field.requiredFields) {
+      console.log('disabled')
+    }
     return field.disabled || field.requiredFields
-      ? field.disabled || field.requiredFields.some((el) => !formData[el])
+      ? field.disabled ||
+          field.requiredFields.some((el) => {
+            return !formData[el] && fields[el].isShow.value
+          })
       : false
   }
 
@@ -1788,5 +1795,6 @@ export default function ({
     refreshSelectItems,
     refreshForm,
     isRequired,
+    fields,
   }
 }
