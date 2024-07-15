@@ -122,11 +122,8 @@ const Form18 = defineComponent({
     onMounted(() => {})
     const loading = ref(false)
     const confirmTask = async () => {
-      console.log('start')
       service.value.serviceRows.forEach((el) => {
-        console.log(el)
         el.validate(true)
-        console.log(el.vForm)
       })
       loading.value = true
       let total = 0
@@ -193,6 +190,8 @@ const Form18 = defineComponent({
             : 1
       } else if (data.entity.direction_id === 6) {
         targetServicesKey = 3
+      } else if (data.entity.doljnost_id === 32) {
+        targetServicesKey = 5
       }
 
       const targetServices = {

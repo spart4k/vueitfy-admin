@@ -60,6 +60,7 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
               :class="[...field.class]"
+              :fields="fields"
             />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
@@ -71,6 +72,7 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
               :class="[...field.class]"
+              :fields="fields"
             />
 
             <v-text-field

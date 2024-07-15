@@ -57,10 +57,12 @@ export default function ({
 
   const permission = computed(() => store.state.user.permission_id)
 
-  const fields = {}
-  const fieldAliases = {}
+  let fields = {}
+  let fieldAliases = {}
   const initFields = () => {
     if (!form) return
+    fields = {}
+    fieldAliases = {}
     for (let i = 0; i < form.fields.length; i++) {
       fields[form.fields[i].name] = form.fields[i]
       if (form.fields[i].alias)
@@ -71,6 +73,12 @@ export default function ({
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].value))
     }
+    queueMicrotask(() => {
+      for (let key in formData) {
+        if (fields.hasOwnProperty(key)) continue
+        delete formData[key]
+      }
+    })
   }
   const originalData = ref()
   const formData = reactive(
@@ -139,10 +147,8 @@ export default function ({
   }
 
   const clickHandler = async ({ action, skipValidation, notClose = false }) => {
-    console.log('clickhand', skipValidation, validate(true))
     if (!skipValidation) if (!validate(true)) return
     const sortedData = sortData({ action })
-    console.log('cliasdad')
     if (action.action === 'saveFilter') {
       emit('sendFilter', formData)
     } else if (action.action === 'nextStage') {
@@ -154,7 +160,6 @@ export default function ({
       emit('setStageData', formData)
       emit('nextStage', { formData, action })
     } else if (action.action === 'prevStage') {
-      console.log('prev')
       if (action.url) {
         const response = await stageRequest(action)
         if (!response) return
@@ -255,6 +260,9 @@ export default function ({
         formData: sortedData,
         params: action,
       })
+      console.log('getItems')
+      emit('getItems')
+      emit('closePopup')
       loading.value = false
       if (result.code && result.code === 1) {
         if (!notClose) {
@@ -439,6 +447,7 @@ export default function ({
       }
       if (response?.emit === 'closePopup') {
         emit('closePopup', response?.to)
+        emit('getItems')
       }
     } else if (response?.type === 'error') {
       store.commit('notifies/showMessage', {
@@ -798,7 +807,8 @@ export default function ({
     } else {
       value = el.value
     }
-    if (value === '' || value === null || value === undefined) return acc
+    if ((value === '' || value === null || value === undefined) && !el.routeKey)
+      return acc
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
@@ -1058,7 +1068,6 @@ export default function ({
         } else {
           formData[depField] = data[0][fields[depField].selectOption.value]
         }
-        console.log(depField)
         await getDependies({
           value: formData[depField],
           field: fields[depField],
@@ -1563,6 +1572,16 @@ export default function ({
   const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+        console.log(
+          _.intersection(el.value, store.state.user.direction_id).length
+        )
+        return !!_.intersection(
+          el.value,
+          JSON.parse(store.state.user.direction_json)
+        ).length
+      }
       const everyMethod = () => {
         return field.isShow.conditions?.every((el) => {
           if (el.target === 'items') {
@@ -1573,6 +1592,17 @@ export default function ({
             if (el.value === 'notEmpty') {
               return `${formData[el.field]}`
             }
+          } else if (el.target === 'funcCondition') {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            console.log('fq')
+            return el.funcCondition(conditionContext)
+          } else if (el.target === 'direction_id') {
+            return checkIncludesDirections(el)
           } else {
             const res = el.value.some((ai) => {
               let result
@@ -1623,7 +1653,6 @@ export default function ({
       }
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
-
       let funcResult = func()
       return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
@@ -1672,8 +1701,15 @@ export default function ({
     field?.validations && Object.keys(field?.validations) ? true : false
 
   const disabledField = (field) => {
+    console.log(field, field.name)
+    if (field.requiredFields) {
+      console.log('disabled')
+    }
     return field.disabled || field.requiredFields
-      ? field.disabled || field.requiredFields.some((el) => !formData[el])
+      ? field.disabled ||
+          field.requiredFields.some((el) => {
+            return !formData[el] && fields[el].isShow.value
+          })
       : false
   }
 
@@ -1771,5 +1807,6 @@ export default function ({
     refreshSelectItems,
     refreshForm,
     isRequired,
+    fields,
   }
 }
