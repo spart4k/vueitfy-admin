@@ -425,7 +425,7 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                validations: { number, maxLength: maxLength(4) },
+                validations: { number, maxLength: maxLength(4), required },
               }),
               stringField({
                 label: 'Логин',
@@ -508,6 +508,17 @@ const config = {
                         value: '',
                         source: 'formData',
                         type: 'array',
+                      },
+                    ],
+                  },
+                  {
+                    alias: 'permissions_account',
+                    filter: [
+                      {
+                        field: 'direction_json',
+                        type: 'array',
+                        source: 'formData',
+                        value: '',
                       },
                     ],
                   },
