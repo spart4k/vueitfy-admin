@@ -57,10 +57,12 @@ export default function ({
 
   const permission = computed(() => store.state.user.permission_id)
 
-  const fields = {}
-  const fieldAliases = {}
+  let fields = {}
+  let fieldAliases = {}
   const initFields = () => {
     if (!form) return
+    fields = {}
+    fieldAliases = {}
     for (let i = 0; i < form.fields.length; i++) {
       fields[form.fields[i].name] = form.fields[i]
       if (form.fields[i].alias)
@@ -71,6 +73,12 @@ export default function ({
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].value))
     }
+    queueMicrotask(() => {
+      for (let key in formData) {
+        if (fields.hasOwnProperty(key)) continue
+        delete formData[key]
+      }
+    })
   }
   const originalData = ref()
   const formData = reactive(
