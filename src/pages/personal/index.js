@@ -59,8 +59,8 @@ const contextMenuPersonal = {
                 context.store.state.user.direction_json
               )
               return (
-                (directions.length === 1 && directions.includes(7)) ||
-                directions.includes(2)
+                directions.length === 1 &&
+                (directions.includes(7) || directions.includes(2))
               )
             },
             type: false,
@@ -88,8 +88,8 @@ const contextMenuPersonal = {
                 context.store.state.user.direction_json
               )
               return (
-                (directions.length === 1 && directions.includes(7)) ||
-                directions.includes(2)
+                directions.length === 1 &&
+                (directions.includes(7) || directions.includes(2))
               )
             },
             type: false,
