@@ -159,11 +159,6 @@ const Form15 = defineComponent({
     const confirm = async () => {
       loading.value = true
       isFormConfirmed.value = true
-      console.log(
-        props.data.entity.vid_vedomost_id === 1
-          ? props.data.data.postponed
-          : undefined
-      )
       await setPersonalTarget()
       const { success } = await changeStatusTask()
       if (success) {

@@ -11,7 +11,19 @@ import form from '@/store/modules/form'
 import { required } from '@/utils/validation'
 import moment from 'moment/moment'
 import Popup from '@/components/Popup/index.vue'
+import Service from '@/components/Task/el/Service/default/index.vue'
 import _ from 'lodash'
+import {
+  dateField,
+  stringField,
+  selectField,
+  autocompleteField,
+  textareaField,
+  datetimeField,
+  dropZoneField,
+  checkboxField,
+  textBlock,
+} from '@/utils/fields.js'
 
 import config from '@/components/Task/form15/form.js'
 import Autocomplete from '@/components/Autocomplete/default'
@@ -29,6 +41,7 @@ const Form18 = defineComponent({
     FormComment,
     Popup,
     Autocomplete,
+    Service,
   },
   props: {
     data: {
@@ -68,6 +81,7 @@ const Form18 = defineComponent({
         value: data.entity.doljnost_name,
       },
     }
+    const service = ref(null)
     const account_id = computed(() => store.state.user.id)
     const formGroup = ref([])
     const idDirection = data.entity.direction_id
@@ -81,7 +95,12 @@ const Form18 = defineComponent({
     const formComment = ref('')
     const servicesDetail = data.data.services
     const rejectedPrice = ref('')
-    const isFormValid = ref(false)
+    const isFormValid = computed((el) => {
+      return (
+        service?.value?.serviceRows?.every((el) => !el.vForm.$invalid) &&
+        !service?.value?.rejectedPrices.length
+      )
+    })
     const autocompleteConfig = {
       label: 'Наименование',
       name: 'name',
@@ -93,46 +112,25 @@ const Form18 = defineComponent({
         value: 'id',
       },
     }
-    const addGroup = async () => {
-      formGroup.value = [
-        ...formGroup.value,
-        useForm({
-          fields: {
-            name: {
-              validations: { required },
-              default: undefined,
-            },
-            qty: {
-              validations: { required },
-              default: undefined,
-            },
-            price: {
-              validations: { required },
-              default: undefined,
-            },
-            sum: {
-              validations: { required },
-              default: undefined,
-            },
-          },
-          context,
-        }),
-      ]
-    }
+
     const removeGroup = () => {
       if (formGroup.value.length > 1) {
         formGroup.value = formGroup.value.slice(0, formGroup.value.length - 1)
       }
     }
 
-    onMounted(() => {
-      addGroup()
-    })
+    onMounted(() => {})
     const loading = ref(false)
     const confirmTask = async () => {
+      console.log('start')
+      service.value.serviceRows.forEach((el) => {
+        console.log(el)
+        el.validate(true)
+        console.log(el.vForm)
+      })
       loading.value = true
       let total = 0
-      const services = formGroup.value.map((group, i) => {
+      const services = service?.value?.serviceRows.map((group, i) => {
         const formData = group.formData
         total += formData.sum ?? 0
         return {
@@ -372,19 +370,8 @@ const Form18 = defineComponent({
       }
     })
 
-    watch(
-      formGroup,
-      () => {
-        if (formGroup) {
-          isFormValid.value = formGroup.value.every((group) => group.validate())
-        }
-      },
-      { deep: true }
-    )
-
     return {
       textInfo,
-      addGroup,
       removeGroup,
       formGroup,
       entity: data.entity,
@@ -410,6 +397,7 @@ const Form18 = defineComponent({
       Popup,
       autocompleteConfig,
       loading,
+      service,
     }
   },
 })

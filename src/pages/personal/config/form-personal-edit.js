@@ -494,10 +494,12 @@ export default {
           },
           notReadonly: true,
           isShow: {
-            value: false,
+            value: true,
             condition: [
               {
-                permissions: [1],
+                funcCondition: (context) =>
+                  context.formData.grajdanstvo_id !== 1 &&
+                  context.store.state.user.permission_id === 1,
                 type: true,
               },
             ],

@@ -83,22 +83,22 @@ export default {
     const { alias } = proxyTab.value
     const dropzone = ref()
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
-    const fields = () => {
-      const fields = {}
-      proxyTab.value.fields.forEach((el) => {
-        const { validations } = el
-        if (typeof el.isShow === 'boolean' && el.isShow)
-          Vue.set(fields, el.name, {})
-        else if (typeof el.isShow === 'object' && el.isShow.value) {
-          Vue.set(fields, el.name, {})
-        } else return
-        // if (el.name === 'vector') return
-        Vue.set(fields, el.name, {})
-        Vue.set(fields[el.name], 'validations', validations)
-        Vue.set(fields[el.name], 'default', el.value)
-      })
-      return fields
-    }
+    // const fields = () => {
+    //   const fields = {}
+    //   proxyTab.value.fields.forEach((el) => {
+    //     const { validations } = el
+    //     if (typeof el.isShow === 'boolean' && el.isShow)
+    //       Vue.set(fields, el.name, {})
+    //     else if (typeof el.isShow === 'object' && el.isShow.value) {
+    //       Vue.set(fields, el.name, {})
+    //     } else return
+    //     // if (el.name === 'vector') return
+    //     Vue.set(fields, el.name, {})
+    //     Vue.set(fields[el.name], 'validations', validations)
+    //     Vue.set(fields[el.name], 'default', el.value)
+    //   })
+    //   return fields
+    // }
     const params = proxyTab.value.lists
     const data = params
     const getRequestParam = () => {
@@ -336,7 +336,7 @@ export default {
           })
         }
       }
-      rebuildFormData()
+      initFields()
     }
 
     const compareBlockCount = () => {
@@ -551,7 +551,7 @@ export default {
       hideField,
       addFiles,
       changeCheckbox,
-      rebuildFormData,
+      initFields,
       readonlyField,
       changeValue,
       isHideBtn,
@@ -561,8 +561,8 @@ export default {
       context,
       detail: props.detail,
       loading,
-      fields: fields(),
-      setFields: fields,
+      // fields: fields(),
+      // setFields: fields,
       makeRequest,
       makeRequestList,
       isEdit,

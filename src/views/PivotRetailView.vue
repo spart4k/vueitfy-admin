@@ -10,7 +10,7 @@
 import _ from 'lodash'
 import useView from '@/compositions/useView.js'
 
-import { config as pivotConfigOrig } from '@/pages/pivot/index'
+import { config as pivotRetailConfigOrig } from '@/pages/pivot_retail/index'
 import TableFixed from '@/components/Table/fixed/index.vue'
 
 import paymentConfigOrig from '@/pages/payment/index'
@@ -18,15 +18,13 @@ import zayavkaConfigOrig from '@/pages/zayavka/index'
 import { personalTabs as personalTabsOrig } from '@/pages/personal/index'
 import { initPaymentZayavka } from '@/utils/helpers.js'
 import { objectTabs as objectTabsOrig } from '@/pages/object/index'
-// import { config as personalConfigOrig } from '@/pages/personal/index'
-// import paymentConfigOrig from '@/pages/payment/index'
-// import zayavkaConfigOrig from '@/pages/zayavka/index'
-
+import tableAccountBankOrig from '@/pages/account/config/table-account-bank'
+import formAccountEditOrig from '@/pages/account/config/form-account-edit'
+import formPaymentEditOrig from '@/pages/payment/config/form-add-edit'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
-
 export default {
-  name: 'Pivot-View',
+  name: 'PivotxRetail-View',
   components: {
     TableFixed,
     //Layout,
@@ -45,9 +43,13 @@ export default {
       addCloseButton,
       configRouteConvert,
     } = useView()
-    const config = _.cloneDeep(pivotConfigOrig)
+    const config = _.cloneDeep(pivotRetailConfigOrig)
     const personalTabs = _.cloneDeep(personalTabsOrig)
     const objectTabs = _.cloneDeep(objectTabsOrig)
+
+    const formAccountEdit = _.cloneDeep(formAccountEditOrig)
+    const tableAccountBank = _.cloneDeep(tableAccountBankOrig)
+    const formPaymentEdit = _.cloneDeep(formPaymentEditOrig)
 
     const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
       paymentConfigOrig,
@@ -62,7 +64,6 @@ export default {
         },
       ],
     }
-
     zayavkaConfig.isShow = {
       value: true,
       condition: [
@@ -94,7 +95,7 @@ export default {
     config.detail.tabs.push(...personalTabs)
 
     configRouteConvert({
-      config: config.detail.tabs[7].config,
+      config: config.detail.tabs[2].config,
       route: 'scan',
       newPath: 'personal-scan',
       settings: {
@@ -103,7 +104,7 @@ export default {
     })
 
     configRouteConvert({
-      config: config.detail.tabs[8].config,
+      config: config.detail.tabs[3].config,
       route: 'card',
       newPath: 'personal-card',
       settings: {
@@ -116,7 +117,6 @@ export default {
       newPath: 'personal',
       settings: {
         oldPath: 'edit',
-        exceptName: ['Редактирование выработки'],
       },
     })
 
@@ -126,11 +126,25 @@ export default {
       newPath: 'object',
       settings: {
         oldPath: 'edit',
-        exceptName: ['Редактирование выработки'],
       },
     })
 
-    console.log(config)
+    config.detail.tabs.push(formAccountEdit, tableAccountBank)
+    configRouteConvert({
+      config: config,
+      newPath: 'account',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+    config.detail.tabs.push(formPaymentEdit)
+    configRouteConvert({
+      config: config,
+      newPath: 'edit',
+      settings: {
+        oldPath: 'add-edit-logistic',
+      },
+    })
 
     return {
       config,

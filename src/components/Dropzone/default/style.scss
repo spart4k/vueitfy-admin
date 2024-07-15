@@ -13,7 +13,8 @@
     }
   }
   &--error {
-    border-color: var(--v-error-base);
+    border-color: var(--v-error-base) !important;
+    cursor: pointer;
     :global(.dz-message) {
       // color: var(--v-error-base);
     }

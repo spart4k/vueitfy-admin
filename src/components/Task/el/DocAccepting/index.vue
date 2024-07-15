@@ -20,7 +20,9 @@
         />
       </div>
       <div class="docs-required__name-container">
-        <span>{{ docName }}</span>
+        <a :href="$root.env.VUE_APP_STORE + docName"
+          ><span>{{ docName }}</span></a
+        >
         <span>{{ docs.personal_id }}</span>
       </div>
     </div>

@@ -19,6 +19,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    'error-messages': {
+      type: Array,
+      default: () => [],
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -97,6 +101,14 @@ export default {
       emit('change', { value, field: props.field, item })
     }
 
+    const clearField = () => {
+      if (props.field.subtype) {
+        proxyValue.value = []
+      } else {
+        proxyValue.value = ''
+      }
+    }
+
     watch(
       () => search.value,
       () => {
@@ -123,7 +135,7 @@ export default {
       querySelections,
       update,
       search,
-
+      clearField,
       loading,
     }
   },

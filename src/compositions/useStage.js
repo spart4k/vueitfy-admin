@@ -21,6 +21,7 @@ export default function ({ context, loading, activeTab, createForm, form }) {
     context,
     loading,
     createForm,
+    form: { fields: [] },
   })
 
   const clickHandler = async ({ action }) => {

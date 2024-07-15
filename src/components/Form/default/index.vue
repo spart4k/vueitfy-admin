@@ -20,6 +20,13 @@
             ref="fieldsRef"
           >
             <div
+              class="isRequired d-flex justify-end color-red"
+              :class="formErrors[field?.name]?.length ? 'error--text' : ''"
+              v-if="isRequired(field)"
+            >
+              *
+            </div>
+            <div
               v-if="
                 loading &&
                 field.isShow &&

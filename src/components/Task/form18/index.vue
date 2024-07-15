@@ -16,10 +16,16 @@
         >
       </div>
       <TextInfo class="mb-3" :infoObj="textInfo" />
-      <FormError class="mb-4" v-if="rejectedPrice">
+      <!-- <FormError class="mb-4" v-if="rejectedPrice">
         Отсутствует тариф: {{ rejectedPrice }}
-      </FormError>
-      <div>
+      </FormError> -->
+      <Service
+        :task="data"
+        :serviceDetail="data.data.services"
+        :formGroup="formGroup"
+        ref="service"
+      />
+      <!-- <div>
         <v-row
           v-for="(group, i) in formGroup"
           :key="i"
@@ -27,7 +33,6 @@
           style="height: 50px"
         >
           <v-col class="px-0" cols="6">
-            <!-- {{ group.formData }} -->
             <Autocomplete
               :field="autocompleteConfig"
               class="mr-1"
@@ -40,7 +45,7 @@
               label="QTY"
               class="mr-1"
               v-model="group.formData.qty"
-              @blur="() => changeSum(i)"
+              @input="() => changeSum(i)"
             ></v-text-field>
           </v-col>
           <v-col class="px-0">
@@ -89,7 +94,7 @@
           clearable
           label="Комментарий"
         ></v-textarea>
-      </div>
+      </div> -->
     </div>
     <v-divider></v-divider>
     <v-row class="pb-0 pt-3" justify="end">
