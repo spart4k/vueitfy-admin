@@ -23,6 +23,7 @@
         :task="data"
         :serviceDetail="data.data.services"
         :formGroup="formGroup"
+        comment
         ref="service"
       />
       <!-- <div>
