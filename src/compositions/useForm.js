@@ -439,6 +439,7 @@ export default function ({
       }
       if (response?.emit === 'closePopup') {
         emit('closePopup', response?.to)
+        emit('getItems')
       }
     } else if (response?.type === 'error') {
       store.commit('notifies/showMessage', {

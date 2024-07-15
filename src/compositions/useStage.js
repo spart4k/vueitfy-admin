@@ -55,8 +55,6 @@ export default function ({ context, loading, activeTab, createForm, form }) {
       })
       loading.value = false
       responseHandler({ action, data })
-      emit('getItems')
-      emit('closePopup')
     }
   }
 
