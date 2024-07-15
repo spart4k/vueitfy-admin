@@ -87,7 +87,9 @@ const Form2 = defineComponent({
     }
     const docMainRef = ref(null)
     const docMainValid = computed(() => {
+      console.log(isHasOsnDoc)
       if (isHasOsnDoc) {
+        console.log(docMainRef.value?.isOsnDocConfirmed)
         return docMainRef.value?.isOsnDocConfirmed !== null
       } else {
         return true
