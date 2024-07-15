@@ -18,7 +18,7 @@
       @changeRejectedPrice="changeRejectedPrice"
       ref="serviceRows"
     />
-    <v-row class="justify-space-between">
+    <v-row class="justify-space-between mt-8">
       <v-col style="padding: 0" cols="6">
         <v-btn
           @click="removeGroup"
@@ -39,6 +39,7 @@
       </v-col>
     </v-row>
     <v-textarea
+      v-if="comment"
       v-model="formComment"
       @input="formCommentError = ''"
       :error-messages="formCommentError"

@@ -191,9 +191,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData.status === 1 ||
+                            context.originalData.status === 3),
                         type: false,
                       },
                     ],
@@ -222,9 +225,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData.status === 1 ||
+                            context.originalData.status === 3),
                         type: false,
                       },
                     ],
@@ -250,9 +256,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData.status === 1 ||
+                            context.originalData.status === 3),
                         type: false,
                       },
                     ],
@@ -282,9 +291,12 @@ export default {
                       value: false,
                       condition: [
                         {
-                          target: 'originalData',
-                          field: 'status',
-                          value: [1],
+                          funcCondition: (context) =>
+                            (Number(context.originalData.from_account_id) ===
+                              context.store.state.user.id ||
+                              context.store.state.user.permission_id === 4) &&
+                            (context.originalData.status === 1 ||
+                              context.originalData.status === 3),
                           type: false,
                         },
                       ],
@@ -310,9 +322,12 @@ export default {
                     value: false,
                     condition: [
                       {
-                        target: 'originalData',
-                        field: 'status',
-                        value: [1],
+                        funcCondition: (context) =>
+                          (Number(context.originalData.from_account_id) ===
+                            context.store.state.user.id ||
+                            context.store.state.user.permission_id === 4) &&
+                          (context.originalData.status === 1 ||
+                            context.originalData.status === 3),
                         type: false,
                       },
                     ],
