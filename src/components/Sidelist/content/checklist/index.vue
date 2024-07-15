@@ -312,7 +312,7 @@
                   </v-col>
                 </template>
 
-                <template v-if="item.type_id === 3">
+                <template v-else-if="item.type_id === 3">
                   <v-col class="p-0" cols="12" sm="12">
                     <v-row class="mb-4 align-center">
                       <div

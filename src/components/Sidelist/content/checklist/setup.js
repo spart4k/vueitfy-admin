@@ -49,6 +49,7 @@ export default {
       3: 'Б/П',
       4: 'А',
       5: 'Кл',
+      6: 'Б',
     }
 
     const getType = async (index) => {
