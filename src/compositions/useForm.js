@@ -874,7 +874,8 @@ export default function ({
       return element
     })
     const lists = await makeRequestList(listQuery)
-    putSelectItems(lists)
+    // console.log('time', new Date(), lists)
+    await putSelectItems(lists)
   }
   const getDependies = async (params) => {
     const { value, field, clearId } = params
@@ -1255,9 +1256,11 @@ export default function ({
     await Promise.all(queryFields)
   }
 
-  const putSelectItems = async (lists, field) => {
+  const putSelectItems = async (lists) => {
+    const stackDep = []
     for (let keyList in lists.data) {
       const field = fields[fieldAliases[keyList]]
+      console.log(field?.name)
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1293,6 +1296,7 @@ export default function ({
         Vue.set(field, 'items', [])
         // if (field.items.length === 1) {
         // field.items = lists.data[keyList]
+        console.log('items', lists.data[keyList], field.name)
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
@@ -1306,13 +1310,15 @@ export default function ({
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
           }
-          await getDependies({
-            value: formData[field.name],
-            field,
-            // clearId: true,
-          })
+          stackDep.push(
+            getDependies({
+              value: formData[field.name],
+              field,
+              // clearId: true,
+            })
+          )
           if (field.updateList && field.updateList.length) {
-            await getFieldsList(field.updateList)
+            stackDep.push(getFieldsList(field.updateList))
           }
         } else if (
           lists.data[keyList].length === 0 &&
@@ -1341,6 +1347,7 @@ export default function ({
         showField(field.type, field, true)
       }
     }
+    await Promise.all(stackDep)
   }
   const hasValue = (value, list, field) => {
     if (!value) return true
