@@ -1049,7 +1049,17 @@ const config = {
               // { alias: 'object_id_logistic', filter: [] },
               // { alias: 'account_id_logistic', filter: [] },
               { alias: 'direction_id_logistic', filter: [] },
-              { alias: 'doljnost_id_logistic', filter: [] },
+              {
+                alias: 'doljnost_id_logistic',
+                filter: [
+                  {
+                    field: 'direction_id',
+                    value: '',
+                    source: 'formData',
+                    type: 'array',
+                  },
+                ],
+              },
               { alias: 'shifts', filter: [] },
               { alias: 'nutritions', filter: [] },
             ],
