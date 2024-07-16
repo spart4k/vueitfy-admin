@@ -167,6 +167,7 @@ const Form40 = defineComponent({
 
     const { makeRequest: changeStatus } = useRequest({
       context,
+      successMessage: 'Успешно',
       request: () =>
         store.dispatch('taskModule/setPartTask', {
           status: 2,
