@@ -422,22 +422,33 @@
                     <v-row>
                       <v-row class="align-center">
                         <span class="v-panel-item_text v-panel-item_text__bold"
-                          >{{ item.content?.count }}/</span
+                          >{{ item.content?.count }}/{{
+                            ![4, 8, 17].includes(permission)
+                              ? item.content?.max
+                              : ''
+                          }}</span
                         >
                         <v-text-field
-                          v-if="item.content?.max !== undefined"
+                          v-if="
+                            item.content?.max !== undefined &&
+                            [4, 8, 17].includes(permission)
+                          "
                           class="v-panel-item_field"
-                          v-model="item.content.max"
+                          v-model="maxBin"
                           dense
                           color="primary"
                           hide-details
                           maxlength="8"
                         ></v-text-field>
                         <v-btn
-                          @click="changeBin(item.content?.max, item)"
+                          v-if="[4, 8, 17].includes(permission)"
+                          @click="changeBin(maxBin, item)"
                           class="ml-6"
                           elevation="0"
-                          :disabled="!Number(item.content?.max)"
+                          :disabled="
+                            !Number(maxBin) ||
+                            Number(maxBin) === Number(item.content?.max)
+                          "
                           color="primary"
                           small
                           >Изменить</v-btn

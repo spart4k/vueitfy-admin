@@ -43,6 +43,8 @@ export default {
       [3].includes(store.state.user.permission_id)
     )
 
+    const permission = computed(() => store.state.user.permission_id)
+
     const types = {
       1: 'К',
       2: 'Г',
@@ -51,7 +53,7 @@ export default {
       5: 'Кл',
       6: 'Б',
     }
-
+    const maxBin = ref(0)
     const getType = async (index) => {
       const type = data.value.detail.types[index]
       if (type.content) return
@@ -70,6 +72,7 @@ export default {
         Vue.set(type.content, 'edit', false)
         type.content.code = responseData.code
         detailPanels.value.push(index)
+        if (responseData.result.max) maxBin.value = responseData.result.max
       }
     }
 
@@ -162,6 +165,13 @@ export default {
           color: 'error',
           timeout: 3000,
         })
+      } else if (data.code === 1) {
+        object.content.max = bin
+        store.commit('notifies/showMessage', {
+          content: 'Сохранено',
+          color: 'success',
+          timeout: 3000,
+        })
       }
     }
 
@@ -199,6 +209,8 @@ export default {
       formatDate,
       changeTotalCount,
       changeBin,
+      permission,
+      maxBin,
     }
   },
 }
