@@ -1,5 +1,5 @@
 <template>
-  <v-row class="d-flex align-baseline">
+  <v-row class="d-flex align-center">
     <v-col class="px-0" cols="12" sm="6">
       <!-- {{ group.formData }} -->
       <Autocomplete
