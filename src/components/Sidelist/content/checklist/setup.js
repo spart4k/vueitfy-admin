@@ -53,7 +53,7 @@ export default {
       5: 'Кл',
       6: 'Б',
     }
-
+    const maxBin = ref(0)
     const getType = async (index) => {
       const type = data.value.detail.types[index]
       if (type.content) return
@@ -72,6 +72,7 @@ export default {
         Vue.set(type.content, 'edit', false)
         type.content.code = responseData.code
         detailPanels.value.push(index)
+        if (responseData.result.max) maxBin.value = responseData.result.max
       }
     }
 
@@ -164,6 +165,8 @@ export default {
           color: 'error',
           timeout: 3000,
         })
+      } else {
+        object.content.max = bin
       }
     }
 
@@ -202,6 +205,7 @@ export default {
       changeTotalCount,
       changeBin,
       permission,
+      maxBin,
     }
   },
 }

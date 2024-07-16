@@ -434,7 +434,7 @@
                             [4, 8, 17].includes(permission)
                           "
                           class="v-panel-item_field"
-                          v-model="item.content.max"
+                          v-model="maxBin"
                           dense
                           color="primary"
                           hide-details
@@ -442,10 +442,13 @@
                         ></v-text-field>
                         <v-btn
                           v-if="[4, 8, 17].includes(permission)"
-                          @click="changeBin(item.content?.max, item)"
+                          @click="changeBin(maxBin, item)"
                           class="ml-6"
                           elevation="0"
-                          :disabled="!Number(item.content?.max)"
+                          :disabled="
+                            !Number(maxBin) ||
+                            Number(maxBin) === Number(item.content?.max)
+                          "
                           color="primary"
                           small
                           >Изменить</v-btn
