@@ -707,6 +707,7 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
+    console.log(params)
     getRecursiveDependes(params.field)
     queueMicrotask(async () => {
       params.field.dependence?.forEach((dependence) => {
@@ -872,6 +873,7 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
+      console.log(dependence)
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -941,6 +943,9 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
+        if (dependence.fillField) {
+          console.log(params)
+        }
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
@@ -1060,9 +1065,13 @@ export default function ({
         } else {
           formData[depField] = data[0][fields[depField].selectOption.value]
         }
+        const fieldItems = fields[depField].items.find(
+          (el) => el.id === formData[depField]
+        )
         await getDependies({
           value: formData[depField],
           field: fields[depField],
+          item: fieldItems,
           // clearId: true,
         })
         if (fields[depField].updateList && fields[depField].updateList.length) {
@@ -1252,7 +1261,6 @@ export default function ({
     const stackDep = []
     for (let keyList in lists.data) {
       const field = fields[fieldAliases[keyList]]
-      console.log(field?.name)
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1288,7 +1296,6 @@ export default function ({
         Vue.set(field, 'items', [])
         // if (field.items.length === 1) {
         // field.items = lists.data[keyList]
-        console.log('items', lists.data[keyList], field.name)
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
@@ -1302,10 +1309,12 @@ export default function ({
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
           }
+          const fieldItem = field.find((el) => el.id === formData[field.name])
           stackDep.push(
             getDependies({
               value: formData[field.name],
               field,
+              item: fieldItem,
               // clearId: true,
             })
           )
@@ -1333,8 +1342,9 @@ export default function ({
           field.hasOwnProperty('dependence') ||
           field.hasOwnProperty('updateList')
         ) {
+          const fieldItem = field.find((el) => el.id === formData[field.name])
           const value = formData[field.name]
-          await getDependies({ value, field })
+          await getDependies({ value, field, item: fieldItem })
         }
         showField(field.type, field, true)
       }
@@ -1695,9 +1705,6 @@ export default function ({
     field?.validations && Object.keys(field?.validations) ? true : false
 
   const disabledField = (field) => {
-    if (field.requiredFields) {
-      console.log('disabled')
-    }
     return field.disabled || field.requiredFields
       ? field.disabled ||
           field.requiredFields.some((el) => {
