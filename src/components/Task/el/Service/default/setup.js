@@ -59,6 +59,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    minLength: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const serviceRows = ref([])
@@ -77,10 +81,12 @@ export default {
       services.value.push({})
     }
     const removeGroup = (index) => {
-      if (index !== undefined) {
-        services.value.splice(index, 1)
-      } else {
-        services.value.splice(services.value.length - 1, 1)
+      if (!props.minLength || (props.minLength && services.value.length > 1)) {
+        if (index !== undefined) {
+          services.value.splice(index, 1)
+        } else {
+          services.value.splice(services.value.length - 1, 1)
+        }
       }
     }
     const changeRejectedPrice = (reject) => {
