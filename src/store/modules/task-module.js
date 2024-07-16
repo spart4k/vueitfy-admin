@@ -19,6 +19,7 @@ import {
   updateTmp,
   updatePersonalAccess,
   removeTmp,
+  addTargetService,
 } from '@/api/TaskService'
 //import axios from 'axios'
 
@@ -96,6 +97,11 @@ const taskModule = {
 
     async setDataServices(_, data) {
       const result = await setDataServices('set/target/services', data)
+      return result
+    },
+
+    async addTargetService(_, data) {
+      const result = await addTargetService('add/target/service/0', data)
       return result
     },
     //     POST /set/data/zayavka_items
