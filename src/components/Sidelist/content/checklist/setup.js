@@ -43,6 +43,8 @@ export default {
       [3].includes(store.state.user.permission_id)
     )
 
+    const permission = computed(() => store.state.user.permission_id)
+
     const types = {
       1: 'К',
       2: 'Г',
@@ -199,6 +201,7 @@ export default {
       formatDate,
       changeTotalCount,
       changeBin,
+      permission,
     }
   },
 }
