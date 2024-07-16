@@ -845,29 +845,29 @@ export const addFields = [
           },
         ],
       },
-      {
-        alias: 'personal_account_zr',
-        filter: [
-          {
-            field: 'direction_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'personal_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'personal_object_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-        ],
-      },
+      // {
+      //   alias: 'personal_account_zr',
+      //   filter: [
+      //     {
+      //       field: 'direction_id',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //     {
+      //       field: 'personal_zr',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //     {
+      //       field: 'personal_object_zr',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //   ],
+      // },
       {
         alias: 'req_zr_id',
         condition: [
@@ -1588,10 +1588,12 @@ export const addFields = [
           },
           {
             key: 'type_pay',
-            // value: [2, 3],
-            funcCondition: (context) =>
-              [2, 3].includes(context.formData.type_pay) &&
-              !context.formData.on_yourself,
+            funcCondition: (context) => {
+              return (
+                [2, 3].includes(context.formData.type_pay) &&
+                !context.formData.on_yourself
+              )
+            },
           },
         ],
         filter: [
