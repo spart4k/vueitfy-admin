@@ -1712,11 +1712,17 @@ export const addFields = [
           },
         ],
         filter: [
+          // {
+          //   field: 'id',
+          //   alias: 'account_id',
+          //   value: '',
+          //   source: 'environment',
+          //   type: 'num',
+          // },
           {
-            field: 'id',
-            alias: 'account_id',
+            field: 'me',
             value: '',
-            source: 'environment',
+            source: 'formData',
             type: 'num',
           },
           {
@@ -2207,11 +2213,17 @@ export const editFields = [
           },
         ],
         filter: [
+          // {
+          //   field: 'id',
+          //   alias: 'account_id',
+          //   value: '',
+          //   source: 'environment',
+          //   type: 'num',
+          // },
           {
-            field: 'id',
-            alias: 'account_id',
+            field: 'me',
             value: '',
-            source: 'environment',
+            source: 'formData',
             type: 'num',
           },
           {
@@ -2983,29 +2995,29 @@ export const editFields = [
           },
         ],
       },
-      {
-        alias: 'personal_account_zr',
-        filter: [
-          {
-            field: 'direction_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'personal_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'personal_object_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-        ],
-      },
+      // {
+      //   alias: 'personal_account_zr',
+      //   filter: [
+      //     {
+      //       field: 'direction_id',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //     {
+      //       field: 'personal_zr',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //     {
+      //       field: 'personal_object_zr',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //   ],
+      // },
       {
         alias: 'req_zr_id',
         condition: [
@@ -4084,8 +4096,14 @@ export const editFields = [
           },
         ],
         filter: [
+          // {
+          //   field: 'account_id',
+          //   value: '',
+          //   source: 'formData',
+          //   type: 'num',
+          // },
           {
-            field: 'account_id',
+            field: 'me',
             value: '',
             source: 'formData',
             type: 'num',
@@ -5495,8 +5513,14 @@ const config = {
               },
             ],
             filter: [
+              // {
+              //   field: 'account_id',
+              //   value: '',
+              //   source: 'formData',
+              //   type: 'num',
+              // },
               {
-                field: 'account_id',
+                field: 'me',
                 value: '',
                 source: 'formData',
                 type: 'num',
