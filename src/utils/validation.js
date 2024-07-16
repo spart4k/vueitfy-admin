@@ -20,6 +20,10 @@ const required = Object.assign({}, vueRequired, {
 //     $message: () => 'Не менее 11 символов',
 //   }
 // }
+const dayOfMonth = {
+  $validator: (value) => Number(value) > 0 && Number(value) < 32,
+  $message: () => 'Выберите день от 1 до 31',
+}
 
 const length = (param) => {
   return {
@@ -103,8 +107,15 @@ const nameLength = {
   $message: () => 'Не менее 5 символов',
 }
 
+const minFileLength = {
+  $validator: (val, formData) => {
+    return formData.schet_loader.length || formData.schet.length
+  },
+  $message: () => 'Необходимо приложить минимум 1 счет',
+}
+
 const sameAs = (value) => ({
-  $validator: (val) => {
+  $validator: (val, formData) => {
     try {
       return val === value()
     } catch (err) {
@@ -151,5 +162,7 @@ export {
   length,
   number,
   maxLength,
+  dayOfMonth,
+  minFileLength,
   // strongPassword
 }

@@ -260,6 +260,9 @@ export default function ({
         formData: sortedData,
         params: action,
       })
+      console.log('getItems')
+      emit('getItems')
+      emit('closePopup')
       loading.value = false
       if (result.code && result.code === 1) {
         if (!notClose) {
@@ -444,6 +447,7 @@ export default function ({
       }
       if (response?.emit === 'closePopup') {
         emit('closePopup', response?.to)
+        emit('getItems')
       }
     } else if (response?.type === 'error') {
       store.commit('notifies/showMessage', {
@@ -571,7 +575,7 @@ export default function ({
 
     const setFormData = (val, dropzone) => {
       if (queryParams && queryParams.formData) {
-        queryParams.formData[dropzone.name] = val
+        queryParams.formData[dropzone.requestKey || dropzone.name] = val
       } else {
         formData[dropzone.name] = val
       }
@@ -665,6 +669,16 @@ export default function ({
             queryParams.formData[dropzone.name].push({
               path: file.name,
               index: queryParams.formData[dropzone.name].length + 1,
+            })
+          })
+        }
+        if (dropzone.options.stash && formData[dropzone.options.stash]) {
+          formData[dropzone.options.stash].forEach((file, index) => {
+            queryParams.formData[dropzone.requestKey || dropzone.name].push({
+              path: file.path,
+              index:
+                queryParams.formData[dropzone.requestKey || dropzone.name]
+                  .length + 1,
             })
           })
         }
@@ -997,7 +1011,7 @@ export default function ({
         dependence.funcComputed(context)
       }
       field.loading = true
-      if (depField) targetField.loading = true
+      if (depField && targetField) targetField.loading = true
       let data
 
       if (dependence.module) {
@@ -1224,7 +1238,7 @@ export default function ({
       }
 
       el.hideItems = el.items
-      if (data.rows.length === 1 && data.totalPage === 1) {
+      if (data.rows?.length === 1 && data.totalPage === 1) {
         if (fields[el.name]?.subtype === 'multiple') {
           formData[el.name] = [el.items[0][el.selectOption.value]]
         } else {
@@ -1558,6 +1572,16 @@ export default function ({
   const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
+      const checkIncludesDirections = (el) => {
+        //return el.direction_id.includes(directions.value)
+        console.log(
+          _.intersection(el.value, store.state.user.direction_id).length
+        )
+        return !!_.intersection(
+          el.value,
+          JSON.parse(store.state.user.direction_json)
+        ).length
+      }
       const everyMethod = () => {
         return field.isShow.conditions?.every((el) => {
           if (el.target === 'items') {
@@ -1568,6 +1592,17 @@ export default function ({
             if (el.value === 'notEmpty') {
               return `${formData[el.field]}`
             }
+          } else if (el.target === 'funcCondition') {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            console.log('fq')
+            return el.funcCondition(conditionContext)
+          } else if (el.target === 'direction_id') {
+            return checkIncludesDirections(el)
           } else {
             const res = el.value.some((ai) => {
               let result
@@ -1618,7 +1653,6 @@ export default function ({
       }
       let func = everyMethod
       if (field.isShow?.type === 'some') func = someMethod
-
       let funcResult = func()
       return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
@@ -1667,8 +1701,15 @@ export default function ({
     field?.validations && Object.keys(field?.validations) ? true : false
 
   const disabledField = (field) => {
+    console.log(field, field.name)
+    if (field.requiredFields) {
+      console.log('disabled')
+    }
     return field.disabled || field.requiredFields
-      ? field.disabled || field.requiredFields.some((el) => !formData[el])
+      ? field.disabled ||
+          field.requiredFields.some((el) => {
+            return !formData[el] && fields[el].isShow.value
+          })
       : false
   }
 
@@ -1766,5 +1807,6 @@ export default function ({
     refreshSelectItems,
     refreshForm,
     isRequired,
+    fields,
   }
 }

@@ -60,6 +60,7 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
               :class="[...field.class]"
+              :fields="fields"
             />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
@@ -71,6 +72,7 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
               :class="[...field.class]"
+              :fields="fields"
             />
 
             <v-text-field
@@ -229,12 +231,14 @@
                   v-for="(item, index) in formData[field.name]"
                 >
                   <v-list-item-icon>
-                    <v-btn icon @click="downloadFile(item)">
+                    <v-btn icon @click="downloadFile(item.path || item)">
                       <v-icon color="text">$IconDownload</v-icon></v-btn
                     >
                   </v-list-item-icon>
                   <v-list-item-content>
-                    <v-list-item-title v-text="item"></v-list-item-title>
+                    <v-list-item-title
+                      v-text="item.path || item"
+                    ></v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-icon>
                     <v-btn

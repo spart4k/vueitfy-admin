@@ -190,6 +190,8 @@ const Form18 = defineComponent({
             : 1
       } else if (data.entity.direction_id === 6) {
         targetServicesKey = 3
+      } else if (data.entity.doljnost_id === 32) {
+        targetServicesKey = 5
       }
 
       const targetServices = {

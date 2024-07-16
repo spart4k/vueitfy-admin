@@ -226,6 +226,7 @@ export default {
       popupForm,
       appendActionShow,
       isRequired,
+      fields,
     } = useForm({
       form: props.tab,
       context,
@@ -282,6 +283,7 @@ export default {
       downloadFile,
       changeValue,
       isRequired,
+      fields,
     }
   },
 }

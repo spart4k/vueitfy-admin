@@ -10,6 +10,7 @@ import TableFixed from '@/components/Table/fixed/index.vue'
 import FormOutputCorrect from '@/components/Form/output/correct/index.vue'
 // import TableDefault from '@/components/Table/default/index.vue'
 import FrameView from '@/components/Task/frame-view/index.vue'
+import _ from 'lodash'
 
 //import { form, list } from '@/api/index.js'
 import store from '@/store'
@@ -45,16 +46,27 @@ export default {
     const router = useRouter()
     const { id } = route?.params
     const loading = ref(false)
+    const { detail } = props
     const syncForm = ref({})
     const activeTab = ref(0)
+    const directions = computed(() =>
+      JSON.parse(store.state.user.direction_json)
+    )
     const permission = computed(() => store.state.user.permission_id)
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
 
       return el.permissions.includes(permission.value)
     }
+    const checkIncludesDirections = (el) => {
+      //return el.direction_id.includes(directions.value)
+      if (!el.direction_id) return true
+      else {
+        return !!_.intersection(el.direction_id, directions.value).length
+      }
+    }
     const availableTabs = computed(() => {
-      return props.detail.tabs.filter((item) => {
+      return detail.tabs.filter((item) => {
         return (
           (route.meta.mode && route.meta.mode.includes(item.path)) ||
           (!route.meta.mode && !item.path)
@@ -69,7 +81,10 @@ export default {
         if (!tab.isShow) return tab
         else {
           return tab.isShow.condition.some((el) => {
-            return checkIncludesPermissions(el) === el.type
+            return (
+              el.type === checkIncludesPermissions(el) &&
+              checkIncludesDirections(el)
+            )
           })
           // if ()
         }
@@ -77,12 +92,13 @@ export default {
     })
 
     onUnmounted(() => {
-      if (props?.detail?.clearStore) store.commit('clearFormStorage')
+      if (detail?.clearStore) store.commit('clearFormStorage')
     })
     return {
       loading,
       syncForm,
       propsContent,
+      detail,
       id,
       availableTabs,
       activeTab,

@@ -4,6 +4,7 @@ import PaymentView from '../views/PaymentView.vue'
 import PaymentListView from '../views/PaymentListView.vue'
 import PaymentListPersonalView from '../components/PaymentList/personal/index.vue'
 import PersonalView from '../views/PersonalView.vue'
+import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
 import PivotRetailView from '../views/PivotRetailView.vue'
@@ -35,7 +36,7 @@ import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
 //import TestTs from '@/views/testts'
-import GanttaView from '@/views/GanttaView.vue'
+// import GanttaView from '@/views/GanttaView.vue'
 
 Vue.use(VueRouter)
 
@@ -119,17 +120,17 @@ const routes = [
       },
     ],
   },
-  {
-    path: '/vacations',
-    name: 'vacations',
-    meta: {
-      layout: 'blank-layout',
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: GanttaView,
-  },
+  // {
+  //   path: '/vacations',
+  //   name: 'vacations',
+  //   meta: {
+  //     layout: 'blank-layout',
+  //   },
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: GanttaView,
+  // },
   {
     path: '/payment',
     name: 'payment',
@@ -271,6 +272,44 @@ const routes = [
         meta: {
           mode: ['edit'],
         },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/realty',
+    name: 'realty',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: RealtyView,
+    children: [
+      {
+        name: 'realty/add',
+        path: '/realty/add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить недвижимость',
+        },
+        component: Detail,
+      },
+      {
+        name: 'realty/:id',
+        path: '/realty/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать недвижимость',
+        },
+        children: [
+          {
+            name: 'realty/:id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['edit', 'realty-zayavka'],
+            },
+            component: Detail,
+          },
+        ],
         component: Detail,
       },
     ],
@@ -1263,6 +1302,24 @@ const routes = [
         component: Detail,
         children: [
           {
+            name: 'documents/:id/new_card',
+            path: '/documents/:id/new_card',
+            meta: {
+              mode: ['personal', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents/:id/:card_id',
+            path: '/documents/:id/:card_id',
+            meta: {
+              mode: ['personal', 'new_card'],
+              // label: 'Добавить аккаунта',
+            },
+            component: Detail,
+          },
+          {
             name: 'documents/:id/:payment',
             path: '/documents/:id/:payment',
             meta: {
@@ -1278,6 +1335,89 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'documents/:id/new',
+            path: '/documents/:id/new',
+            meta: {
+              mode: ['personal', 'new'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents/:id/:object_id',
+            path: '/documents/:id/:object_id',
+            meta: {
+              mode: ['personal', 'object_id'],
+            },
+            component: Detail,
+          },
+          {
+            name: 'documents/:id/edit_habitation',
+            path: 'edit_habitation',
+            meta: {
+              mode: ['personal', 'edit_habitation'],
+            },
+            component: Detail,
+          },
+
+          // {
+          //   name: 'documents/:id/new_card',
+          //   path: '/documents/:id/new_card',
+          //   meta: {
+          //     mode: ['personal', 'new_card'],
+          //     // label: 'Добавить аккаунта',
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:card_id',
+          //   path: '/documents/:id/:card_id',
+          //   meta: {
+          //     mode: ['personal', 'new_card'],
+          //     // label: 'Добавить аккаунта',
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/new',
+          //   path: '/documents/:id/new',
+          //   meta: {
+          //     mode: ['personal', 'new'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:object_id',
+          //   path: '/documents/:id/:object_id',
+          //   meta: {
+          //     mode: ['personal', 'object_id'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/edit_habitation',
+          //   path: '/documents/:id/edit_habitation',
+          //   meta: {
+          //     mode: ['personal', 'edit_habitation'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:payment',
+          //   path: '/documents/:id/:payment',
+          //   meta: {
+          //     mode: ['personal', 'personal-payment'],
+          //   },
+          //   component: Detail,
+          // },
+          // {
+          //   name: 'documents/:id/:zayavka',
+          //   path: '/documents/:id/:zayavka',
+          //   meta: {
+          //     mode: ['personal', 'personal-zayavka'],
+          //   },
+          //   component: Detail,
+          // },
         ],
       },
     ],

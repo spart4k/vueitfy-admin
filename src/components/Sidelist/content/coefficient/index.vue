@@ -1,7 +1,7 @@
 <template>
   <div class="v-object d-flex flex-column h-100 w-100 pb-5">
     <SidelistHeader @closePanel="$emit('closePanel')" :data="$props.data" />
-    <template v-if="data?.length && !initLoading">
+    <template v-if="objects?.length && !initLoading">
       <div class="flex-grow-1 d-flex flex-column overflow-hidden">
         <SidelistSearch class="ml-7 mr-7 flex-grow-0" v-model="search" />
         <div
@@ -9,56 +9,64 @@
           class="overflow-auto d-block flex-grow-1 pl-7 pr-7"
         >
           <v-expansion-panels multiple v-model="panel">
-            <v-expansion-panel v-for="item in data" :key="data.id">
+            <v-expansion-panel v-for="object in objects" :key="object.id">
               <v-expansion-panel-header>
                 <v-btn
                   class="mr-2"
-                  @click.stop="item.footer = !item.footer"
+                  @click.stop="object.footer = !object.footer"
                   icon
                   x-small
-                  v-if="permission && !item.readonly && !disabled"
+                  v-if="permission && !object.readonly && !disabled"
                 >
-                  <v-icon small :color="item.footer ? 'primary' : 'disabled'"
+                  <v-icon small :color="object.footer ? 'primary' : 'disabled'"
                     >$IconEtc</v-icon
                   ></v-btn
                 >
                 <span>
-                  {{ item.name }}
+                  {{ object.name }}
                 </span>
+                <template v-slot:actions>
+                  <v-progress-circular
+                    v-if="object.loading"
+                    color="primary"
+                    :size="28"
+                    indeterminate
+                  />
+                </template>
               </v-expansion-panel-header>
               <div
-                v-if="item.footer"
+                v-if="object.footer"
                 class="d-flex flex-column pb-4 v-object-methods"
               >
                 <div class="d-flex mb-4">
                   <v-btn
-                    @click="changeMethod(item, 'add')"
+                    @click="changeMethod(object, 'add')"
                     class="flex-grow-1"
                     small
                     :color="
-                      item.method === 'add' || !item.method
+                      object.method === 'add' || !object.method
                         ? 'success'
                         : 'disabled'
                     "
                     >+</v-btn
                   >
                   <v-btn
-                    @click="changeMethod(item, 'edit')"
+                    @click="changeMethod(object, 'edit')"
                     class="flex-grow-1 ml-5 mr-5"
                     small
                     :color="
-                      item.method === 'edit' || !item.method
+                      object.method === 'edit' || !object.method
                         ? 'primary'
                         : 'disabled'
                     "
                     ><v-icon x-small>$IconEdit</v-icon></v-btn
                   >
                   <v-btn
-                    @click="changeMethod(item, 'delete')"
+                    @click="changeMethod(object, 'delete')"
                     class="flex-grow-1"
                     small
                     :color="
-                      item.method === 'delete' || !item.method
+                      object.method === 'delete' || !object.method
                         ? 'error'
                         : 'disabled'
                     "
@@ -66,25 +74,24 @@
                   >
                 </div>
                 <div
-                  v-if="item.method"
+                  v-if="object.method"
                   class="d-flex justify-space-between align-end mb-4"
                 >
                   <div>
-                    <template v-if="item.method !== 'delete'">
+                    <template v-if="object.method !== 'delete'">
                       <span class="text--text">Коэффициент</span>
                       <v-text-field
                         class="mt-1"
-                        v-model="item.coef"
-                        v-mask="mask(item.coef)"
+                        v-model="object.coef"
+                        v-mask="mask(object.coef)"
                         outlined
-                        :rules="[() => !!item.coef || '']"
                       />
                     </template>
                   </div>
                   <v-btn
-                    v-if="!item.methodLoading"
+                    v-if="!object.methodLoading"
                     color="success"
-                    @click="changeObjectCoef(item)"
+                    @click="changeObjectCoef(object)"
                     ><v-icon small class="mr-2">$IconGalka</v-icon
                     >Применить</v-btn
                   >
@@ -98,146 +105,256 @@
                 <v-divider></v-divider>
               </div>
               <v-expansion-panel-content>
-                <div
-                  v-if="!item?.loaded"
-                  class="d-flex align-center justify-center h-100 mb-3"
-                >
-                  <v-progress-circular
-                    color="primary"
-                    :size="28"
-                    indeterminate
-                  />
-                </div>
-                <div v-else>
-                  <v-btn
-                    @click="addPerson(item)"
-                    class="mb-3"
-                    v-if="
-                      !item?.content[0]?.added && permission && !item.readonly
-                    "
-                    small
-                    block
-                    color="success"
-                    :disabled="disabled"
-                    >+</v-btn
+                <v-expansion-panels multiple v-model="object.objectPanel">
+                  <v-expansion-panel
+                    v-for="service in object.content"
+                    :key="service.id"
                   >
-                  <div
-                    v-for="person in item.content"
-                    :key="person.personal_id"
-                    class="v-object-item"
-                  >
+                    <v-expansion-panel-header class="pl-3">
+                      <v-btn
+                        class="mr-2"
+                        @click.stop="service.footer = !service.footer"
+                        icon
+                        x-small
+                        v-if="permission && !service.readonly && !disabled"
+                      >
+                        <v-icon
+                          small
+                          :color="service.footer ? 'primary' : 'disabled'"
+                          >$IconEtc</v-icon
+                        ></v-btn
+                      >
+                      <span>
+                        {{ service.name }}
+                      </span>
+                      <template v-slot:actions>
+                        <v-progress-circular
+                          v-if="service.loading"
+                          color="primary"
+                          :size="28"
+                          indeterminate
+                        /> </template
+                    ></v-expansion-panel-header>
                     <div
-                      v-if="!person.edit.isShow"
-                      class="v-object-item-person text--text"
+                      v-if="service.footer"
+                      class="d-flex flex-column pb-4 v-object-methods pl-3"
                     >
-                      <span class="flex-grow-1 mr-2">{{
-                        person.personal_name
-                      }}</span>
-                      <div class="d-flex align-center">
-                        {{ person.coefficient
-                        }}<v-btn
-                          v-if="permission && !item.readonly && !disabled"
-                          class="ml-2 v-object-item-person_btn"
-                          icon
-                          x-small
-                          @click="editPerson(person)"
-                        >
-                          <v-icon small color="gray">$IconEdit</v-icon></v-btn
+                      <div class="d-flex mb-4">
+                        <v-btn
+                          @click="changeMethod(service, 'add')"
+                          class="flex-grow-1"
+                          small
+                          :color="
+                            service.method === 'add' || !service.method
+                              ? 'success'
+                              : 'disabled'
+                          "
+                          >+</v-btn
                         >
                         <v-btn
-                          v-if="permission && !item.readonly && !disabled"
-                          @click="confirmDelete(person, 'person')"
-                          class="v-object-item-person_btn opacity-50"
-                          icon
-                          x-small
+                          @click="changeMethod(service, 'edit')"
+                          class="flex-grow-1 ml-5 mr-5"
+                          small
+                          :color="
+                            service.method === 'edit' || !service.method
+                              ? 'primary'
+                              : 'disabled'
+                          "
+                          ><v-icon x-small>$IconEdit</v-icon></v-btn
                         >
-                          <v-icon small color="error">$IconClose</v-icon></v-btn
+                        <v-btn
+                          @click="changeMethod(service, 'delete')"
+                          class="flex-grow-1"
+                          small
+                          :color="
+                            service.method === 'delete' || !service.method
+                              ? 'error'
+                              : 'disabled'
+                          "
+                          ><v-icon x-small>$IconDelete</v-icon></v-btn
                         >
                       </div>
-                    </div>
-                    <div
-                      class="d-flex align-center v-object-item-edit mb-1 mt-1"
-                      v-else
-                    >
-                      <v-col
-                        cols="12"
-                        sm="8"
-                        class="pl-0 pr-0 flex-grow-1 v-object-item-edit_select"
+                      <div
+                        v-if="service.method"
+                        class="d-flex justify-space-between align-end mb-4"
                       >
-                        <Autocomplete
-                          :field="autocompleteConfig"
-                          v-model="person.edit.name_id"
-                          :filter="person.edit.filter"
-                          :readonly="person.loading"
-                        />
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        sm="2"
-                        class="pl-0 pr-0 mr-3 ml-3 v-object-item-edit_coef"
-                      >
-                        <v-text-field
-                          v-model="person.edit.coefficient"
-                          v-mask="mask(person.edit.coefficient)"
-                          outlined
-                          hide-details
-                          :rules="[() => !!person.edit.coefficient || '']"
-                          :readonly="person.loading"
-                        />
-                      </v-col>
-                      <v-col
-                        v-if="!person.edit.loading"
-                        class="pl-0 pr-0"
-                        cols="12"
-                        sm="1"
-                      >
+                        <div>
+                          <template v-if="service.method !== 'delete'">
+                            <span class="text--text">Коэффициент</span>
+                            <v-text-field
+                              class="mt-1"
+                              v-model="service.coef"
+                              v-mask="mask(service.coef)"
+                              outlined
+                            />
+                          </template>
+                        </div>
                         <v-btn
-                          @click="
-                            changePerson(person, person.added ? 'add' : 'edit')
-                          "
-                          icon
-                          x-small
+                          v-if="!service.methodLoading"
+                          color="success"
+                          @click="changeObjectCoef(service, true)"
+                          ><v-icon small class="mr-2">$IconGalka</v-icon
+                          >Применить</v-btn
                         >
-                          <v-icon small color="success"
-                            >$IconGalka</v-icon
-                          ></v-btn
-                        >
-                      </v-col>
-                      <v-col
-                        v-if="!person.edit.loading"
-                        class="pl-0 pr-0"
-                        cols="12"
-                        sm="1"
-                      >
-                        <v-btn
-                          icon
-                          x-small
-                          @click="
-                            person.added
-                              ? item.content.shift()
-                              : (person.edit.isShow = false)
-                          "
-                        >
-                          <v-icon small color="gray"
-                            >$IconArrowCircleRight</v-icon
-                          ></v-btn
-                        >
-                      </v-col>
-                      <v-col
-                        v-if="person.edit.loading"
-                        class="pl-0 pr-0 d-flex justify-center"
-                        cols="12"
-                        sm="2"
-                      >
                         <v-progress-circular
+                          v-else
                           color="primary"
-                          :size="26"
+                          :size="28"
                           indeterminate
                         />
-                      </v-col>
+                      </div>
+                      <v-divider></v-divider>
                     </div>
-                  </div>
-                </div>
+                    <v-expansion-panel-content class="pl-3">
+                      <div>
+                        <v-btn
+                          @click="addPerson(service, object)"
+                          class="mb-3"
+                          v-if="
+                            !(
+                              service?.content?.length &&
+                              service?.content[0]?.added
+                            ) &&
+                            permission &&
+                            !service.readonly
+                          "
+                          small
+                          block
+                          color="success"
+                          :disabled="disabled"
+                          >+</v-btn
+                        >
+                        <div
+                          v-for="person in service.content"
+                          :key="person.personal_id"
+                          class="v-object-item"
+                        >
+                          <div
+                            v-if="!person.edit.isShow"
+                            class="v-object-item-person text--text"
+                          >
+                            <span class="flex-grow-1 mr-2">{{
+                              person.personal_name
+                            }}</span>
+                            <div class="d-flex align-center">
+                              {{ person.coefficient
+                              }}<v-btn
+                                v-if="
+                                  permission && !service.readonly && !disabled
+                                "
+                                class="ml-2 v-object-item-person_btn"
+                                icon
+                                x-small
+                                @click="editPerson(person)"
+                              >
+                                <v-icon small color="gray"
+                                  >$IconEdit</v-icon
+                                ></v-btn
+                              >
+                              <v-btn
+                                v-if="
+                                  permission && !service.readonly && !disabled
+                                "
+                                @click="confirmDelete(person, 'person')"
+                                class="v-object-item-person_btn opacity-50"
+                                icon
+                                x-small
+                              >
+                                <v-icon small color="error"
+                                  >$IconClose</v-icon
+                                ></v-btn
+                              >
+                            </div>
+                          </div>
+                          <div
+                            class="d-flex align-center v-object-item-edit mb-1 mt-1"
+                            v-else
+                          >
+                            <v-col
+                              cols="12"
+                              sm="8"
+                              class="pl-0 pr-0 flex-grow-1 v-object-item-edit_select"
+                            >
+                              <Autocomplete
+                                :field="autocompleteConfig"
+                                v-model="person.edit.name_id"
+                                :filter="person.edit.filter"
+                                :readonly="person.loading"
+                              />
+                            </v-col>
+                            <v-col
+                              cols="12"
+                              sm="2"
+                              class="pl-0 pr-0 mr-3 ml-3 v-object-item-edit_coef"
+                            >
+                              <v-text-field
+                                v-model="person.edit.coefficient"
+                                v-mask="mask(person.edit.coefficient)"
+                                outlined
+                                hide-details
+                                :rules="[() => !!person.edit.coefficient || '']"
+                                :readonly="person.loading"
+                              />
+                            </v-col>
+                            <v-col
+                              v-if="!person.edit.loading"
+                              class="pl-0 pr-0"
+                              cols="12"
+                              sm="1"
+                            >
+                              <v-btn
+                                @click="
+                                  changePerson(
+                                    person,
+                                    person.added ? 'add' : 'edit'
+                                  )
+                                "
+                                icon
+                                x-small
+                              >
+                                <v-icon small color="success"
+                                  >$IconGalka</v-icon
+                                ></v-btn
+                              >
+                            </v-col>
+                            <v-col
+                              v-if="!person.edit.loading"
+                              class="pl-0 pr-0"
+                              cols="12"
+                              sm="1"
+                            >
+                              <v-btn
+                                icon
+                                x-small
+                                @click="
+                                  person.added
+                                    ? service.content.shift()
+                                    : (person.edit.isShow = false)
+                                "
+                              >
+                                <v-icon small color="gray"
+                                  >$IconArrowCircleRight</v-icon
+                                ></v-btn
+                              >
+                            </v-col>
+                            <v-col
+                              v-if="person.edit.loading"
+                              class="pl-0 pr-0 d-flex justify-center"
+                              cols="12"
+                              sm="2"
+                            >
+                              <v-progress-circular
+                                color="primary"
+                                :size="26"
+                                indeterminate
+                              />
+                            </v-col>
+                          </div>
+                        </div>
+                      </div>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>

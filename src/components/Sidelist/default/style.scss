@@ -16,12 +16,12 @@
     }
     &-panel {
       width: 450px;
-      height: 590px;
+      height: calc(100vh - 150px);
       position: absolute;
       display: flex;
       flex-direction: column;
       right: 0;
-      top: 0;
+      top: -150px;
       overflow: hidden;
       filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.2));
       background-color: var(--v-navbar-base);

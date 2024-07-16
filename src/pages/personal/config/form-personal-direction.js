@@ -41,7 +41,7 @@ export default {
     // 'direction_id',
     // 'grajdanstvo_id',
   ],
-  alias: 'personal',
+  // alias: 'personal',
   active: false,
   notReadonly: true,
   fields: [
