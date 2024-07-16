@@ -9,7 +9,7 @@ import Vue, {
 } from 'vue'
 // import DocForm from '@/components/Task/el/DocForm/index.vue'
 // import FormComment from '@/components/Task/el/FormComment/index.vue'
-// import useRequest from '@/compositions/useRequest'
+import useRequest from '@/compositions/useRequest'
 import store from '@/store'
 import moment from 'moment'
 import { useRouter, useRoute } from 'vue-router/composables'
@@ -49,18 +49,24 @@ const Form40 = defineComponent({
     //   'DD.MM.YYYY'
     // )
     const currentQty = computed(() => {
-      return service.value?.reduce((acc, item) => {
-        const rowQty = item.serviceRows.reduce((rowAcc, qty) => {
-          rowAcc += Number(qty.formData.qty)
-          return rowAcc
-        }, 0)
-        acc += rowQty
+      return service?.value?.reduce((acc, item, index) => {
+        if (targets.value[index].active) {
+          const rowQty = item.serviceRows.reduce((rowAcc, qty) => {
+            rowAcc += Number(qty.formData.qty)
+            return rowAcc
+          }, 0)
+          acc += rowQty
+        }
         return acc
       }, 0)
     })
-    const isFormValid = computed((el) => {
-      return service?.value?.every((item) => {
-        return item.serviceRows?.every((el) => !el.vForm.$invalid)
+    const isFormValid = computed(() => {
+      return service?.value?.every((item, index) => {
+        if (targets.value[index].active) {
+          return item.serviceRows?.every((el) => !el.vForm.$invalid)
+        } else {
+          return true
+        }
       })
     })
     const loading = ref(false)
@@ -83,7 +89,9 @@ const Form40 = defineComponent({
             'DD.MM.YYYY'
           ),
           personal_name: item.personal_name,
-          services: item.services.service,
+          services: item.services?.service,
+          active: true,
+          vid_vedomost_id: item.vid_vedomost_id,
           task: {
             entity: {
               object_id: item.object_id,
@@ -95,235 +103,82 @@ const Form40 = defineComponent({
       }, [])
     )
 
-    const confirmTask = () => {
-      service.value.forEach((item) => {
-        item.serviceRows.forEach((el) => {
-          el.validate(true)
-        })
-      })
+    const confirmTask = async () => {
+      const services = targets.value.reduce((acc, item, index) => {
+        const ser = service.value[index].serviceRows.reduce((acc, item) => {
+          acc.push({
+            service_id: item.formData.name,
+            price: Number(item.formData.price),
+            qty: Number(item.formData.qty),
+            sum: Number(item.formData.sum),
+            sum_without_coefficient: Number(item.formData.sum),
+            coefficient: 1,
+          })
+          return acc
+        }, [])
+        if (ser.length && item.active) {
+          const sum = ser.reduce((acc, item) => {
+            acc += item.sum
+            return acc
+          }, 0)
+          const obj = {
+            target_id: item.id,
+            type: 5,
+            service: JSON.stringify({
+              service: ser,
+              payment_id: 0,
+              is_pay: false,
+              is_hold: false,
+              sum,
+              deduction_hold: 0,
+              deduction_debit: 0,
+              hold_sum: 0,
+              hold_id: 0,
+            }),
+          }
+          acc.push(obj)
+        }
+        return acc
+      }, [])
+      const requestData = {
+        data: {
+          is_bin: true,
+          services,
+        },
+      }
+      loading.value = true
+      const { success } = await finishTask(requestData)
+      if (success) {
+        const status = await changeStatus()
+        if (status.success) {
+          ctx.emit('closePopup')
+          ctx.emit('getItems')
+        }
+      }
+      loading.value = false
     }
-    // const formGroup = ref([])
-    // const textInfo = {
-    //   manager: {
-    //     key: 'Менеджер',
-    //     value: props.data.entity.account_name,
-    //   },
-    //   // obj: {
-    //   //   key: 'Объект',
-    //   //   value: props.data.entity.object_name,
-    //   // },
-    // }
-    // const osnConfirmed = ref(null)
-    // const docFormRef = ref(null)
-    // const isWire = ref(false)
-    // const fieldsConfig = ref([
-    //   selectField({
-    //     label: 'Направления',
-    //     subtype: 'multiple',
-    //     name: 'direction_id',
-    //     alias: 'direction_id_logistic',
-    //     requestKey: 'direction_json',
-    //     placeholder: '',
-    //     class: [''],
-    //     selectOption: {
-    //       text: 'name',
-    //       value: 'id',
-    //     },
-    //     items: [],
-    //     value: JSON.parse(props.data.entity.direction_json),
-    //     position: {
-    //       cols: 12,
-    //       sm: 12,
-    //     },
-    //     validations: { required },
-    //     bootstrapClass: [''],
-    //     dependence: [
-    //       {
-    //         type: 'api',
-    //         module: 'selects/getListUpdate',
-    //         field: 'object_id',
-    //         url: 'get/pagination_list/object_logistic',
-    //         alias: 'object_id',
-    //       },
-    //     ],
-    //     updateList: [
-    //       {
-    //         alias: 'brigadirs',
-    //         filter: [
-    //           {
-    //             field: 'object_id',
-    //             value: '',
-    //             source: 'formData',
-    //             type: 'array',
-    //           },
-    //           {
-    //             field: 'direction_id',
-    //             //alias: 'direction_json',
-    //             value: '',
-    //             source: 'formData',
-    //             type: 'array',
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   }),
-    //   autocompleteField({
-    //     label: 'Объект',
-    //     subtype: 'multiple',
-    //     name: 'object_id',
-    //     alias: 'object_json',
-    //     requestKey: 'object_json',
-    //     //subtype: 'single',
-    //     placeholder: '',
-    //     class: [''],
-    //     selectOption: {
-    //       text: 'name',
-    //       value: 'id',
-    //     },
-    //     items: [],
-    //     page: 1,
-    //     search: '',
-    //     url: 'get/pagination_list/object_logistic',
-    //     // object
-    //     position: {
-    //       cols: 12,
-    //       sm: 12,
-    //     },
-    //     value: JSON.parse(props.data.entity.object_id),
-    //     validations: { required },
-    //     bootstrapClass: [''],
-    //     filter: [
-    //       {
-    //         field: 'direction_id',
-    //         value: '',
-    //       },
-    //     ],
-    //     updateList: [
-    //       {
-    //         alias: 'brigadirs',
-    //         filter: [
-    //           {
-    //             field: 'object_id',
-    //             value: '',
-    //             source: 'formData',
-    //             type: 'array',
-    //           },
-    //           {
-    //             field: 'direction_id',
-    //             //alias: 'direction_json',
-    //             value: '',
-    //             source: 'formData',
-    //             type: 'array',
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   }),
-    //   selectField({
-    //     label: 'Доступ',
-    //     name: 'account_json',
-    //     alias: 'brigadirs',
-    //     subtype: 'multiple',
-    //     placeholder: '',
-    //     class: [''],
-    //     selectOption: {
-    //       text: 'name',
-    //       value: 'id',
-    //     },
-    //     items: [],
-    //     value: JSON.parse(props.data.entity.account_json),
-    //     position: {
-    //       cols: 12,
-    //       sm: 6,
-    //     },
-    //     validations: { required },
-    //     bootstrapClass: [''],
-    //   }),
-    // ])
-    // const fieldsTemplate = computed(() => {
-    //   // return fieldsConfig.value.reduce((acc, el) => {
-    //   //   acc[el.name] = el
-    //   //   // Vue.set(acc, [el.name], el)
-    //   //   return acc
-    //   // }, {})
-    //   const object = {}
-    //   fieldsConfig.value.forEach((el, index) => {
-    //     object[el.name] = el
-    //     object[el.name].items = el.items
-    //     // Vue.set(object, [el.name], el)
-    //   })
-    //   return object
-    //   // return fieldsConfig.value
-    // })
-    // const tab = {
-    //   path: 'add',
-    //   id: 0,
-    //   name: 'Заявка на расход',
-    //   detail: false,
-    //   lists: [
-    //     { alias: 'direction_id_logistic', filter: [] },
-    //     {
-    //       alias: 'brigadirs',
-    //       filter: [
-    //         {
-    //           field: 'object_id',
-    //           value: '',
-    //           source: 'formData',
-    //           type: 'array',
-    //         },
-    //         {
-    //           field: 'direction_id',
-    //           //alias: 'direction_json',
-    //           value: '',
-    //           source: 'formData',
-    //           type: 'array',
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   alias: 'zayavka',
-    //   active: false,
-    //   fields: fieldsConfig.value,
-    //   actions: [
-    //     stringAction({
-    //       text: 'Закрыть',
-    //       type: 'submit',
-    //       color: 'disabled',
-    //       name: 'closePopup',
-    //       action: 'closePopup',
-    //       skipValidation: true,
-    //     }),
-    //     stringAction({
-    //       text: 'Сохранить',
-    //       type: 'submit',
-    //       color: 'primary',
-    //       module: 'form/create',
-    //       url: 'create/zayavka',
-    //       name: 'saveFormStore',
-    //       action: 'saveFormStore',
-    //       // useStorageKey: [{ requestKey: 'personal_id', storageKey: 'id' }],
-    //     }),
-    //   ],
-    //   formData: {},
-    // }
-    // const fields = () => {
-    //   const fields = {}
-    //   fieldsConfig.value.forEach((el) => {
-    //     const { validations } = el
-    //     if (typeof el.isShow === 'boolean' && el.isShow)
-    //       Vue.set(fields, el.name, {})
-    //     else if (typeof el.isShow === 'object' && el.isShow.value) {
-    //       //
-    //       Vue.set(fields, el.name, {})
-    //     } else {
-    //       return
-    //     }
-    //     Vue.set(fields, el.name, {})
-    //     Vue.set(fields[el.name], 'validations', validations)
-    //     Vue.set(fields[el.name], 'default', el.value)
-    //   })
-    //   return fields
-    // }
+
+    const { makeRequest: finishTask } = useRequest({
+      context,
+      request: (params) => {
+        return store.dispatch('taskModule/addTargetService', params)
+      },
+    })
+
+    const { makeRequest: changeStatus } = useRequest({
+      context,
+      successMessage: 'Успешно',
+      request: () =>
+        store.dispatch('taskModule/setPartTask', {
+          status: 2,
+          data: {
+            process_id: props.data.task.process_id,
+            task_id: props.data.task.id,
+            parent_action: props.data.task.id,
+          },
+        }),
+    })
+
     // const { makeRequest: makeRequestList } = useRequest({
     //   context,
     //   request: (data) => store.dispatch('list/get', data),
