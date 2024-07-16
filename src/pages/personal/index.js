@@ -796,7 +796,7 @@ export const config = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return !(directions.length >= 1 && directions.includes(2))
+              return directions.includes(1)
             },
           },
         ],
@@ -1243,7 +1243,7 @@ export const config = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return !(directions.length >= 1 && directions.includes(7))
+              return !(directions.length === 1 && directions.includes(7))
             },
           },
           {
@@ -1251,7 +1251,7 @@ export const config = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return !(directions.length >= 1 && directions.includes(2))
+              return directions.includes(1)
             },
           },
           // {
