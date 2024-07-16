@@ -260,7 +260,6 @@ export default function ({
         formData: sortedData,
         params: action,
       })
-      console.log('getItems')
       emit('getItems')
       emit('closePopup')
       loading.value = false
@@ -856,7 +855,7 @@ export default function ({
               originalData: originalData.value,
               environment,
             }
-            if (item.funcCondition(conditionContext) === item.type) return []
+            if (!item.funcCondition(conditionContext)) return []
           } else {
             if (!item.value.includes(formData[item.key])) return []
           }
@@ -1574,9 +1573,6 @@ export default function ({
     const condition = () => {
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        console.log(
-          _.intersection(el.value, store.state.user.direction_id).length
-        )
         return !!_.intersection(
           el.value,
           JSON.parse(store.state.user.direction_json)
@@ -1599,7 +1595,6 @@ export default function ({
               originalData: originalData.value,
               environment,
             }
-            console.log('fq')
             return el.funcCondition(conditionContext)
           } else if (el.target === 'direction_id') {
             return checkIncludesDirections(el)
@@ -1701,10 +1696,6 @@ export default function ({
     field?.validations && Object.keys(field?.validations) ? true : false
 
   const disabledField = (field) => {
-    console.log(field, field.name)
-    if (field.requiredFields) {
-      console.log('disabled')
-    }
     return field.disabled || field.requiredFields
       ? field.disabled ||
           field.requiredFields.some((el) => {

@@ -1588,10 +1588,12 @@ export const addFields = [
           },
           {
             key: 'type_pay',
-            // value: [2, 3],
-            funcCondition: (context) =>
-              [2, 3].includes(context.formData.type_pay) &&
-              !context.formData.on_yourself,
+            funcCondition: (context) => {
+              return (
+                [2, 3].includes(context.formData.type_pay) &&
+                !context.formData.on_yourself
+              )
+            },
           },
         ],
         filter: [
