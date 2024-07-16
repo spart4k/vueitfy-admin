@@ -1,17 +1,14 @@
 <template>
   <!--<Layout>-->
   <div class="d-flex flex-column flex-grow-1 h-100">
-    <TableDefault
-      @changeheadershow="changeheadershow"
-      :options="appointments"
-    />
+    <TableDefault @changeheadershow="changeheadershow" :options="config" />
   </div>
   <!--</Layout>-->
 </template>
 
 <script type="module">
 import { appointments } from '@/pages'
-
+import _ from 'lodash'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 export default {
@@ -26,8 +23,10 @@ export default {
     },
   },
   setup() {
+    const config = _.cloneDeep(appointments)
     return {
       appointments,
+      config,
     }
   },
 }

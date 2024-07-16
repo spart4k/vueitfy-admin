@@ -77,6 +77,7 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     stringField({
       label: 'Краткое имя',
@@ -99,6 +100,7 @@ export default {
         sm: 4,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     stringField({
       label: 'Email',
@@ -110,6 +112,7 @@ export default {
         sm: 4,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     stringField({
       label: 'Стац',
@@ -134,6 +137,7 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     stringField({
       label: 'Пароль',
@@ -145,6 +149,7 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     dateField({
       label: 'Дата рождения',
@@ -158,6 +163,7 @@ export default {
       },
       bootstrapClass: [''],
       alias: 'p.date_status',
+      validations: { required },
     }),
     selectField({
       label: 'Направления',
