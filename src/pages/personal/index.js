@@ -792,8 +792,12 @@ export const config = {
             },
           },
           {
-            direction_id: [2],
-            type: false,
+            funcComputed: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return directions.includes(1)
+            },
           },
         ],
       },
@@ -1243,9 +1247,17 @@ export const config = {
             },
           },
           {
-            direction_id: [2],
-            type: false,
+            funcComputed: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return directions.includes(1)
+            },
           },
+          // {
+          //   direction_id: [2],
+          //   type: false,
+          // },
         ],
       },
       filters: filtersKey,
