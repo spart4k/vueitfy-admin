@@ -66,12 +66,17 @@ export default {
 
     const activeTab = ref(0)
     const permission = computed(() => store.state.user.permission_id)
-
+    const direction_id = computed(() =>
+      JSON.parse(store.state.user.direction_json)
+    )
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
       return el.permissions.includes(permission.value)
     }
-
+    const checkIncludesDirections = (el) => {
+      if (!el.direction_id) return true
+      return el.direction_id.includes(direction_id.value)
+    }
     const availableTabs = computed(() => {
       return config.tabs.filter((tab) => {
         if (!tab.isShow) return tab
