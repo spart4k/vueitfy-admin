@@ -1309,7 +1309,10 @@ export default function ({
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
           }
-          const fieldItem = field.find((el) => el.id === formData[field.name])
+          console.log(field)
+          const fieldItem = field?.items?.find(
+            (el) => el.id === formData[field.name]
+          )
           stackDep.push(
             getDependies({
               value: formData[field.name],
@@ -1342,7 +1345,10 @@ export default function ({
           field.hasOwnProperty('dependence') ||
           field.hasOwnProperty('updateList')
         ) {
-          const fieldItem = field.find((el) => el.id === formData[field.name])
+          console.log(field)
+          const fieldItem = field?.items?.find(
+            (el) => el.id === formData[field.name]
+          )
           const value = formData[field.name]
           await getDependies({ value, field, item: fieldItem })
         }
