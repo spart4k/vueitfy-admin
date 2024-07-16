@@ -845,29 +845,29 @@ export const addFields = [
           },
         ],
       },
-      {
-        alias: 'personal_account_zr',
-        filter: [
-          {
-            field: 'direction_id',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'personal_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-          {
-            field: 'personal_object_zr',
-            value: '',
-            source: 'formData',
-            type: 'num',
-          },
-        ],
-      },
+      // {
+      //   alias: 'personal_account_zr',
+      //   filter: [
+      //     {
+      //       field: 'direction_id',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //     {
+      //       field: 'personal_zr',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //     {
+      //       field: 'personal_object_zr',
+      //       value: '',
+      //       source: 'formData',
+      //       type: 'num',
+      //     },
+      //   ],
+      // },
       {
         alias: 'req_zr_id',
         condition: [
