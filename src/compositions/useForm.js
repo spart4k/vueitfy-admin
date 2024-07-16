@@ -771,7 +771,7 @@ export default function ({
           fields[fieldAliases[el.alias]].hasOwnProperty('updateList') ||
           fields[fieldAliases[el.alias]].hasOwnProperty('dependence')
         ) {
-          findFieldName(fieldAliases[el.alias])
+          findFieldName(fields[fieldAliases[el.alias]])
         }
       })
     }
