@@ -165,8 +165,13 @@ export default {
           color: 'error',
           timeout: 3000,
         })
-      } else {
+      } else if (data.code === 1) {
         object.content.max = bin
+        store.commit('notifies/showMessage', {
+          content: 'Сохранено',
+          color: 'success',
+          timeout: 3000,
+        })
       }
     }
 
