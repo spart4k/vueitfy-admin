@@ -489,6 +489,13 @@
                         </div>
                       </v-row>
                     </div>
+                    <v-row class="justify-end">
+                      <div
+                        class="v-panel-item_text v-panel-item_text__bold mt-2"
+                      >
+                        Итого: {{ item.content?.payment_sum }}р
+                      </div>
+                    </v-row>
                   </v-col>
                 </template>
               </v-expansion-panel-content>
