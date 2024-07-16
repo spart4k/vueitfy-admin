@@ -770,7 +770,7 @@ export default function ({
           fields[fieldAliases[el.alias]].hasOwnProperty('updateList') ||
           fields[fieldAliases[el.alias]].hasOwnProperty('dependence')
         ) {
-          findFieldName(fieldAliases[el.alias])
+          findFieldName(fields[fieldAliases[el.alias]])
         }
       })
     }
@@ -855,7 +855,7 @@ export default function ({
               originalData: originalData.value,
               environment,
             }
-            if (item.funcCondition(conditionContext) === item.type) return []
+            if (!item.funcCondition(conditionContext)) return []
           } else {
             if (!item.value.includes(formData[item.key])) return []
           }
@@ -1703,9 +1703,6 @@ export default function ({
     field?.validations && Object.keys(field?.validations) ? true : false
 
   const disabledField = (field) => {
-    if (field.requiredFields) {
-      console.log('disabled')
-    }
     return field.disabled || field.requiredFields
       ? field.disabled ||
           field.requiredFields.some((el) => {
