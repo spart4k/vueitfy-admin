@@ -792,8 +792,12 @@ export const config = {
             },
           },
           {
-            direction_id: [2],
-            type: false,
+            funcComputed: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return !(directions.length >= 1 && directions.includes(2))
+            },
           },
         ],
       },
@@ -1239,13 +1243,21 @@ export const config = {
               const directions = JSON.parse(
                 context.store.state.user.direction_json
               )
-              return !(directions.length === 1 && directions.includes(7))
+              return !(directions.length >= 1 && directions.includes(7))
             },
           },
           {
-            direction_id: [2],
-            type: false,
+            funcComputed: (context) => {
+              const directions = JSON.parse(
+                context.store.state.user.direction_json
+              )
+              return !(directions.length >= 1 && directions.includes(2))
+            },
           },
+          // {
+          //   direction_id: [2],
+          //   type: false,
+          // },
         ],
       },
       filters: filtersKey,
