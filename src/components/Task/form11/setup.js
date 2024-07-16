@@ -71,6 +71,7 @@ const Form11 = defineComponent({
       autoDiscover: false,
       acceptedFiles: 'image/*',
       thumbnailWidth: 150,
+      countFiles: 20,
       // maxFilesize: props.options.maxSize ? props.options.maxSize : 10,
       // maxFiles: props.options.countFiles ? props.options.countFiles : 1,
       // addRemoveLinks: props?.options?.removeble ? true : false,
