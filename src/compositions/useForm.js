@@ -260,8 +260,6 @@ export default function ({
         formData: sortedData,
         params: action,
       })
-      emit('getItems')
-      emit('closePopup')
       loading.value = false
       if (result.code && result.code === 1) {
         if (!notClose) {

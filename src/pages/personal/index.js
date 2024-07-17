@@ -32,6 +32,7 @@ const nonExportTabs = [
   formBind,
   formPersonalAdd,
   formPersonalDirection,
+  tablePersonalX5,
 ]
 
 export const personalTabs = [
@@ -41,7 +42,6 @@ export const personalTabs = [
   tablePersonalBank,
   tablePersonalDebt,
   formDocumentDownload,
-  tablePersonalX5,
 ]
 
 const contextMenuPersonal = {
