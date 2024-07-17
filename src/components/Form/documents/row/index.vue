@@ -206,7 +206,7 @@
             </v-row>
             <v-row v-if="acceptDocPanel" justify="end">
               <v-btn
-                :disabled="false"
+                :disabled="vForm.$invalid"
                 @click="sendBankCard"
                 color="primary"
                 small
