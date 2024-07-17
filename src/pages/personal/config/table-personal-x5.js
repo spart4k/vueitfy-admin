@@ -218,7 +218,7 @@ export default {
                 },
                 3: {
                   text: 'Ключ с таким номером уже существует',
-                  color: 'error',
+                  color: 'warning',
                 },
               },
             }),
@@ -319,7 +319,7 @@ export default {
                 },
                 3: {
                   text: 'Ключ с таким номером уже существует',
-                  color: 'error',
+                  color: 'warning',
                 },
               },
             }),
