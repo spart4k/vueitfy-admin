@@ -173,8 +173,19 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-      emit('getItems')
-      emit('closePopup')
+      if (result.code === 1) {
+        emit('closePopup')
+        emit('getItems')
+      } else if (result.result === 1) {
+        emit('closePopup')
+        emit('getItems')
+      } else if (result.success) {
+        emit('closePopup')
+        emit('getItems')
+      }
+      if (action.handlingResponse) {
+        handlingResponse(action, result)
+      }
     } else if (action.action === 'saveForm') {
       loading.value = true
       let result
