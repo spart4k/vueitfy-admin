@@ -56,7 +56,10 @@ export default {
     const maxBin = ref(0)
     const getType = async (index) => {
       const type = data.value.detail.types[index]
-      if (type.content) return
+      if (type.content) {
+        if (type.type_id === 6) maxBin.value = type.content.max
+        return
+      }
       detailPanels.value = _.without(detailPanels.value, index)
       if (type.loading) {
         return
@@ -72,7 +75,8 @@ export default {
         Vue.set(type.content, 'edit', false)
         type.content.code = responseData.code
         detailPanels.value.push(index)
-        if (responseData.result.max) maxBin.value = responseData.result.max
+        if (responseData.result.hasOwnProperty('max'))
+          maxBin.value = responseData.result.max
       }
     }
 
