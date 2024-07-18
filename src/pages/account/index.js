@@ -126,7 +126,6 @@ const config = {
             isShow: {
               condition: [
                 {
-                  direction_id: [2],
                   permissions: [1],
                   vertical: false,
                   type: false,
