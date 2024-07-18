@@ -41,27 +41,40 @@
         <v-row>
           <v-col>
             <v-text-field
-              readonly
-              v-model="keyForm.key"
+              :error-messages="keyFormErrors.key"
+              v-model="formData.user_key"
               label="Ключ"
+              :readonly="true"
             ></v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
             <v-text-field
-              readonly
-              v-model="keyForm.name"
+              :error-messages="keyFormErrors.name"
+              v-model="formData.fio"
               label="ФИО"
+              :readonly="true"
             ></v-text-field>
           </v-col>
         </v-row>
+        <!-- <v-row>
+          <v-col>
+            <v-textarea
+              v-model="comment"
+              rows="2"
+              clearable
+              label="Комментарий"
+              class="mb-2"
+            ></v-textarea>
+          </v-col>
+        </v-row> -->
         <v-row>
           <v-col>
             <v-checkbox
-              readonly
-              v-model="keyForm.trainee"
+              v-model="formData.is_stager"
               label="Стажерская"
+              :readonly="true"
             ></v-checkbox>
           </v-col>
         </v-row>

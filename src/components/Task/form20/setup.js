@@ -7,6 +7,7 @@ import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import moment from 'moment/moment'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+import { stringField, checkboxField } from '@/utils/fields.js'
 
 const Form20 = defineComponent({
   name: 'Form20',
@@ -35,26 +36,60 @@ const Form20 = defineComponent({
       'DD.MM.YYYY'
     )
     const name = personal.name
-
+    const fields = ref([
+      stringField({
+        label: 'Фио',
+        name: 'fio',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 3,
+        },
+        value: props.data.entity.fio ? props.data.entity.fio : '',
+        bootstrapClass: [''],
+        validations: { required },
+      }),
+      stringField({
+        label: 'Ключ',
+        name: 'user_key',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 3,
+        },
+        value: props.data.entity.user_key ? props.data.entity.user_key : '',
+        bootstrapClass: [''],
+        validations: { required },
+      }),
+      checkboxField({
+        label: 'Стажерская',
+        name: 'is_stager',
+        value: props.data.entity.is_stager
+          ? props.data.entity.is_stager
+          : false,
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        disabled: true,
+        isShow: {
+          value: true,
+        },
+        bootstrapClass: [''],
+      }),
+    ])
     const {
-      formData: keyForm,
+      formData,
       validate: keyFormValidate,
       formErrors: keyFormErrors,
+      vForm,
     } = useForm({
       form: {
-        fields: {
-          key: {
-            validations: { required },
-            default: '',
-          },
-          name: {
-            validations: { required },
-            default: '',
-          },
-          trainee: {
-            default: false,
-          },
-        },
+        fields: fields.value,
       },
       context,
     })
@@ -86,8 +121,8 @@ const Form20 = defineComponent({
         return store.dispatch('taskModule/setUserKey', {
           data: {
             id: props.data.entity.id,
-            user_key: keyForm.key,
-            fio: keyForm.name,
+            ...formData,
+            is_stager: formData.is_stager ? 1 : 0,
           },
         })
       },
@@ -103,7 +138,7 @@ const Form20 = defineComponent({
     }
 
     return {
-      keyForm,
+      formData,
       keyFormErrors,
       keyFormValidate,
       completeTask,
@@ -111,6 +146,7 @@ const Form20 = defineComponent({
       personal,
       dataRojd,
       name,
+      vForm,
     }
   },
 })
