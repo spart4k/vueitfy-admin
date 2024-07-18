@@ -91,6 +91,10 @@ export default {
       })
     })
 
+    const getMainData = (data) => {
+      console.log('data', data)
+    }
+
     onUnmounted(() => {
       if (detail?.clearStore) store.commit('clearFormStorage')
     })
@@ -103,6 +107,8 @@ export default {
       availableTabs,
       activeTab,
       availableTabsAll,
+
+      getMainData,
     }
   },
 }

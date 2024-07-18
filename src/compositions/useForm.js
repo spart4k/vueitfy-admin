@@ -724,7 +724,6 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
-    console.log(params)
     getRecursiveDependes(params.field)
     queueMicrotask(async () => {
       params.field.dependence?.forEach((dependence) => {
@@ -884,13 +883,11 @@ export default function ({
       return element
     })
     const lists = await makeRequestList(listQuery)
-    // console.log('time', new Date(), lists)
     await putSelectItems(lists)
   }
   const getDependies = async (params) => {
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
-      console.log(dependence)
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -960,9 +957,6 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
-        if (dependence.fillField) {
-          console.log(params)
-        }
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
@@ -1326,7 +1320,6 @@ export default function ({
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
           }
-          console.log(field)
           const fieldItem = field?.items?.find(
             (el) => el.id === formData[field.name]
           )
@@ -1362,7 +1355,6 @@ export default function ({
           field.hasOwnProperty('dependence') ||
           field.hasOwnProperty('updateList')
         ) {
-          console.log(field)
           const fieldItem = field?.items?.find(
             (el) => el.id === formData[field.name]
           )
