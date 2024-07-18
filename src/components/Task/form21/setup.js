@@ -9,6 +9,7 @@ import store from '@/store'
 import useRequest from '@/compositions/useRequest'
 import moment from 'moment'
 import PersTitle from '@/components/Task/el/PersTitle/index.vue'
+import { stringField, checkboxField } from '@/utils/fields.js'
 
 const Form21 = defineComponent({
   name: 'Form21',
@@ -45,19 +46,56 @@ const Form21 = defineComponent({
     )
     const name = personal.name
     const dopData = JSON.parse(props.data.task.dop_data)
-    const { formData: keyForm, formErrors: keyFormErrors } = useForm({
-      form: {
-        fields: {
-          key: {
-            default: props.data.entity.user_key,
-          },
-          name: {
-            default: props.data.entity.fio,
-          },
-          trainee: {
-            default: false,
-          },
+    const fields = ref([
+      stringField({
+        label: 'Фио',
+        name: 'fio',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 3,
         },
+        value: props.data.entity.fio,
+        bootstrapClass: [''],
+        validations: { required },
+        readonly: true,
+      }),
+      stringField({
+        label: 'Ключ',
+        name: 'user_key',
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 3,
+        },
+        value: props.data.entity.user_key,
+        bootstrapClass: [''],
+        validations: { required },
+        readonly: true,
+      }),
+      checkboxField({
+        label: 'Стажерская',
+        name: 'is_stager',
+        value: props.data.entity.is_stager,
+        placeholder: '',
+        class: [''],
+        position: {
+          cols: 12,
+          sm: 12,
+        },
+        disabled: true,
+        isShow: {
+          value: true,
+        },
+        bootstrapClass: [''],
+        readonly: true,
+      }),
+    ])
+    const { formData, formErrors: keyFormErrors } = useForm({
+      form: {
+        fields: fields.value,
       },
       context,
     })
@@ -131,7 +169,7 @@ const Form21 = defineComponent({
     }
 
     return {
-      keyForm,
+      formData,
       isBtnDisabled,
       isKeyConfrmed,
       confirmKey,
