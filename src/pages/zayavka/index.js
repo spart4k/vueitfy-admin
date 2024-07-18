@@ -2221,7 +2221,8 @@ export const editFields = [
           //   type: 'num',
           // },
           {
-            field: 'me',
+            field: 'from_account_id',
+            alias: 'me',
             value: '',
             source: 'formData',
             type: 'num',
@@ -4103,7 +4104,8 @@ export const editFields = [
           //   type: 'num',
           // },
           {
-            field: 'me',
+            field: 'from_account_id',
+            alias: 'me',
             value: '',
             source: 'formData',
             type: 'num',
@@ -5520,7 +5522,8 @@ const config = {
               //   type: 'num',
               // },
               {
-                field: 'me',
+                field: 'from_account_id',
+                alias: 'me',
                 value: '',
                 source: 'formData',
                 type: 'num',
