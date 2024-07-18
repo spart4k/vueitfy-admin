@@ -444,6 +444,24 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/add-x5',
+            path: '/personal/:id/add-x5',
+            meta: {
+              mode: ['edit', 'add-x5'],
+              label: 'ID X5',
+            },
+            component: Detail,
+          },
+          {
+            name: 'personal/:id/:x5',
+            path: '/personal/:id/:x5',
+            meta: {
+              mode: ['edit', 'edit-x5'],
+              label: 'ID X5',
+            },
+            component: Detail,
+          },
         ],
       },
       {
