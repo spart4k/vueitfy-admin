@@ -1467,6 +1467,7 @@ export default {
     }
     const confirmDoc = () => {
       isCorrect.value = true
+      isRejected.value = false
     }
     const confirmCorrect = async (doc) => {
       isCorrect.value = true
@@ -1851,6 +1852,23 @@ export default {
       // isCorrect.value = false
       listRequestsForUpload.value = []
     }
+    watch(
+      () => formData,
+      () => {
+        if (props.correct) {
+          console.log(vForm)
+          isCorrect.value = false
+          // if (vForm.value.$invalid) {
+
+          // }
+          // vForm.$invalid ? (isCorrect.value = false) : ''
+        }
+        console.log('formData')
+      },
+      {
+        deep: true,
+      }
+    )
     onMounted(async () => {
       // if (props.document.path_doc) {
       //   isEdit.value = false
