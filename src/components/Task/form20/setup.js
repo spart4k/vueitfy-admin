@@ -41,17 +41,19 @@ const Form20 = defineComponent({
       validate: keyFormValidate,
       formErrors: keyFormErrors,
     } = useForm({
-      fields: {
-        key: {
-          validations: { required },
-          default: '',
-        },
-        name: {
-          validations: { required },
-          default: '',
-        },
-        trainee: {
-          default: false,
+      form: {
+        fields: {
+          key: {
+            validations: { required },
+            default: '',
+          },
+          name: {
+            validations: { required },
+            default: '',
+          },
+          trainee: {
+            default: false,
+          },
         },
       },
       context,
