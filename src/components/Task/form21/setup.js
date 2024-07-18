@@ -46,15 +46,17 @@ const Form21 = defineComponent({
     const name = personal.name
     const dopData = JSON.parse(props.data.task.dop_data)
     const { formData: keyForm, formErrors: keyFormErrors } = useForm({
-      fields: {
-        key: {
-          default: props.data.entity.user_key,
-        },
-        name: {
-          default: props.data.entity.fio,
-        },
-        trainee: {
-          default: false,
+      form: {
+        fields: {
+          key: {
+            default: props.data.entity.user_key,
+          },
+          name: {
+            default: props.data.entity.fio,
+          },
+          trainee: {
+            default: false,
+          },
         },
       },
       context,
