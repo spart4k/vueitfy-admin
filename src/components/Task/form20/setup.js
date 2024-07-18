@@ -46,7 +46,7 @@ const Form20 = defineComponent({
           cols: 12,
           sm: 3,
         },
-        value: '',
+        value: props.data.entity.fio ? props.data.entity.fio : '',
         bootstrapClass: [''],
         validations: { required },
       }),
@@ -59,14 +59,16 @@ const Form20 = defineComponent({
           cols: 12,
           sm: 3,
         },
-        value: '',
+        value: props.data.entity.user_key ? props.data.entity.user_key : '',
         bootstrapClass: [''],
         validations: { required },
       }),
       checkboxField({
         label: 'Стажерская',
         name: 'is_stager',
-        value: false,
+        value: props.data.entity.is_stager
+          ? props.data.entity.is_stager
+          : false,
         placeholder: '',
         class: [''],
         position: {
