@@ -32,7 +32,7 @@
           <v-col>
             <v-text-field
               :error-messages="keyFormErrors.key"
-              v-model="keyForm.key"
+              v-model="formData.user_key"
               label="Ключ"
             ></v-text-field>
           </v-col>
@@ -41,7 +41,7 @@
           <v-col>
             <v-text-field
               :error-messages="keyFormErrors.name"
-              v-model="keyForm.name"
+              v-model="formData.fio"
               label="ФИО"
             ></v-text-field>
           </v-col>
@@ -60,7 +60,7 @@
         <v-row>
           <v-col>
             <v-checkbox
-              v-model="keyForm.trainee"
+              v-model="formData.is_stager"
               label="Стажерская"
             ></v-checkbox>
           </v-col>
@@ -75,7 +75,7 @@
         Закрыть
       </v-btn>
       <v-btn
-        :disabled="!keyFormValidate()"
+        :disabled="vForm.$invalid"
         @click="completeTask"
         color="info"
         small
