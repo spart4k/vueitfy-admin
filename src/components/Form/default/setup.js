@@ -102,7 +102,6 @@ export default {
           'form/get',
           `get/form/${alias}/${getRequestParam()}`
         )
-        emit('getMainData', data.data)
         return data
       },
     })
