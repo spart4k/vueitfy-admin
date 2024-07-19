@@ -48,7 +48,6 @@
               ref="service"
               :serviceDetail="data.data.services"
               :formGroup="target.services"
-              :minLength="target.vid_vedomost_id === 1"
             />
           </v-expansion-panel-content>
         </v-expansion-panel>
