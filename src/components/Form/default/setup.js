@@ -97,8 +97,14 @@ export default {
     }
     const { makeRequest } = useRequest({
       context,
-      request: () =>
-        store.dispatch('form/get', `get/form/${alias}/${getRequestParam()}`),
+      request: async () => {
+        const data = await store.dispatch(
+          'form/get',
+          `get/form/${alias}/${getRequestParam()}`
+        )
+        emit('getMainData', data.data)
+        return data
+      },
     })
     const { makeRequest: makeRequestList } = useRequest({
       context,

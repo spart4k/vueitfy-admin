@@ -7,6 +7,7 @@ import _ from 'lodash'
 import tablePersonalDebt from './config/table-personal-debt.js'
 import tablePersonalBank from './config/table-personal-bank.js'
 import tablePersonalScan from './config/table-personal-scan.js'
+import tablePersonalX5 from './config/table-personal-x5.js'
 import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalEdit from './config/form-personal-edit.js'
 import formPersonalAdd from './config/form-personal-add.js'
@@ -31,6 +32,7 @@ const nonExportTabs = [
   formBind,
   formPersonalAdd,
   formPersonalDirection,
+  tablePersonalX5,
 ]
 
 export const personalTabs = [

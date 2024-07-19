@@ -146,6 +146,8 @@ export default {
           action.isShow.value = condition()
           return action.isShow.value
         }
+      } else {
+        return true
       }
     }
 
