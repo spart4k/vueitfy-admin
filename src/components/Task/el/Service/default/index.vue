@@ -14,7 +14,6 @@
       :group="group"
       :serviceDetail="serviceDetail"
       :task="task"
-      @removeRow="removeGroup(i)"
       @changeRejectedPrice="changeRejectedPrice"
       ref="serviceRows"
     />
