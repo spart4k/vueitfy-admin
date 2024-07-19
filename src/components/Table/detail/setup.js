@@ -1,4 +1,4 @@
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, computed, onUnmounted, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 
 import FormDefault from '@/components/Form/default/index.vue'
@@ -53,6 +53,7 @@ export default {
       JSON.parse(store.state.user.direction_json)
     )
     const permission = computed(() => store.state.user.permission_id)
+    const mainData = ref({})
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
 
@@ -63,6 +64,19 @@ export default {
       if (!el.direction_id) return true
       else {
         return !!_.intersection(el.direction_id, directions.value).length
+      }
+    }
+    const checkMainData = (el) => {
+      console.log(JSON.stringify(mainData.value), 'checkdata')
+      //return el.direction_id.includes(directions.value)
+      if (!el.mainData) return true
+      else {
+        if (el.mainData === 'direction_json') {
+          return !!_.intersection(el.value, mainData.value.direction_json)
+            .length
+        } else {
+          return mainData.value[el.mainData] === el.value
+        }
       }
     }
     const availableTabs = computed(() => {
@@ -80,10 +94,12 @@ export default {
       return availableTabs.value.filter((tab) => {
         if (!tab.isShow) return tab
         else {
-          return tab.isShow.condition.some((el) => {
+          return tab.isShow.condition.every((el) => {
+            console.log(checkMainData(el))
             return (
               el.type === checkIncludesPermissions(el) &&
-              checkIncludesDirections(el)
+              checkIncludesDirections(el) &&
+              checkMainData(el)
             )
           })
           // if ()
@@ -94,7 +110,14 @@ export default {
     const getMainData = (data) => {
       console.log('data', data)
     }
-
+    const setFormData = (formData) => {
+      console.log(JSON.stringify(formData), 'formData', { ...formData })
+      // mainData.value = Object.assign(mainData.value, formData)
+      mainData.value = {
+        ...mainData.value,
+        ...formData,
+      }
+    }
     onUnmounted(() => {
       if (detail?.clearStore) store.commit('clearFormStorage')
     })
@@ -107,8 +130,9 @@ export default {
       availableTabs,
       activeTab,
       availableTabsAll,
-
+      setFormData,
       getMainData,
+      mainData,
     }
   },
 }

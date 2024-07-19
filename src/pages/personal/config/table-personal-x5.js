@@ -31,7 +31,8 @@ export default {
     value: true,
     condition: [
       {
-        direction_id: [2],
+        mainData: 'direction_json',
+        value: [2],
         type: true,
       },
     ],

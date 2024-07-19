@@ -79,6 +79,7 @@ export default function ({
         delete formData[key]
       }
     })
+    // emit('setFormData', formData)
   }
   const originalData = ref()
   const formData = reactive(
@@ -1466,6 +1467,7 @@ export default function ({
       await getFieldsList(form.lists)
     }
     loading.value = false
+    emit('setFormData', formData)
   }
 
   const isHideBtn = (button) => {
