@@ -41,7 +41,6 @@
             @getItems="(e) => $emit('getItems', e)"
             @refreshData="$emit('refreshData')"
             @setFormData="setFormData"
-            @getMainData="getMainData"
             :formDataParent="formDataParent"
             :class="item?.label"
           />
