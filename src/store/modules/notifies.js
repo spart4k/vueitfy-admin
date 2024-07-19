@@ -1,7 +1,7 @@
 const notifies = {
   namespaced: true,
   state: {
-    content: 'ыфвф',
+    content: '',
     color: 'success',
     timeout: null,
     isShow: false,
