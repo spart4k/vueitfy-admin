@@ -444,12 +444,12 @@ const tablePersonalDebt = {
     condition: [
       {
         permissions: [16, 19, 7, 13, 9],
-        direction_id: [1, 6],
         type: false,
       },
       {
-        direction_id: [2],
-        type: false,
+        mainData: 'direction_json',
+        value: [1, 6],
+        type: true,
       },
     ],
   },

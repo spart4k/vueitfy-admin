@@ -31,7 +31,8 @@ export default {
     value: true,
     condition: [
       {
-        direction_id: [2],
+        mainData: 'direction_json',
+        value: [2],
         type: true,
       },
     ],
@@ -49,6 +50,25 @@ export default {
       urlDetail: 'personal_id',
       alias: 'personal_id',
       title: 'This is an about page1',
+      contextMenu: {
+        actions: [
+          {
+            icon: '$IconDelete',
+            label: 'Удалить',
+            action: {
+              type: 'confirm',
+              dialog: {
+                text: 'Вы подтверждаете удаление?',
+                function: (context) => {
+                  context.store.dispatch('form/delForm', {
+                    url: `delete/personal/num_x5/${context.data.row.id}`,
+                  })
+                },
+              },
+            },
+          },
+        ],
+      },
     },
     panel: {
       buttons: [
