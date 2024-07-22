@@ -23,6 +23,7 @@
         :task="data"
         :serviceDetail="data.data.services"
         :formGroup="formGroup"
+        @removeLast="removeLast"
         comment
         ref="service"
       />
@@ -104,7 +105,7 @@
         Закрыть
       </v-btn>
       <v-btn
-        :disabled="!isFormValid || isReject"
+        :disabled="!isFormValid"
         @click="confirmTask"
         small
         color="info"

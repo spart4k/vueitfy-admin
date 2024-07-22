@@ -95,12 +95,12 @@ const Form18 = defineComponent({
     const formComment = ref('')
     const servicesDetail = data.data.services
     const rejectedPrice = ref('')
-    const isFormValid = computed((el) => {
-      return (
-        service?.value?.serviceRows?.every((el) => !el.vForm.$invalid) &&
-        !service?.value?.rejectedPrices.length
-      )
+    const isFormValid = computed(() => {
+      return service?.value?.serviceRows.every((el) => !el.vForm.$invalid)
     })
+    const removeLast = () => {
+      service?.value?.serviceRows.pop()
+    }
     const autocompleteConfig = {
       label: 'Наименование',
       name: 'name',
@@ -113,13 +113,6 @@ const Form18 = defineComponent({
       },
     }
 
-    const removeGroup = () => {
-      if (formGroup.value.length > 1) {
-        formGroup.value = formGroup.value.slice(0, formGroup.value.length - 1)
-      }
-    }
-
-    onMounted(() => {})
     const loading = ref(false)
     const confirmTask = async () => {
       service.value.serviceRows.forEach((el) => {
@@ -308,26 +301,26 @@ const Form18 = defineComponent({
       })
       return await makeRequest()
     }
-    const isReject = ref(false)
-    const changeServiceDetail = async (i, idService) => {
-      rejectedPrice.value = ''
-      isReject.value = false
+    // const isReject = ref(false)
+    // const changeServiceDetail = async (i, idService) => {
+    //   rejectedPrice.value = ''
+    //   isReject.value = false
 
-      const data = await getServiceInfo(idService)
+    //   const data = await getServiceInfo(idService)
 
-      if (!data.length) {
-        rejectedPrice.value = servicesDetail.find(
-          (item) => item.id == idService
-        ).name
-        rejectedPrice.value ? (isReject.value = true) : (isReject.value = false)
-        formGroup.value[i].formData.price = 0
-        return false
-      } else {
-        formGroup.value[i].formData.price = data[0]?.price ?? ''
-      }
+    //   if (!data.length) {
+    //     rejectedPrice.value = servicesDetail.find(
+    //       (item) => item.id == idService
+    //     ).name
+    //     rejectedPrice.value ? (isReject.value = true) : (isReject.value = false)
+    //     formGroup.value[i].formData.price = 0
+    //     return false
+    //   } else {
+    //     formGroup.value[i].formData.price = data[0]?.price ?? ''
+    //   }
 
-      changeSum(i)
-    }
+    //   changeSum(i)
+    // }
 
     const changeSum = (i) => {
       if (
@@ -371,7 +364,7 @@ const Form18 = defineComponent({
 
     return {
       textInfo,
-      removeGroup,
+      // removeGroup,
       formGroup,
       entity: data.entity,
       typeShift: data.entity.type_shift,
@@ -382,12 +375,12 @@ const Form18 = defineComponent({
       formComment,
       formCommentError,
       servicesDetail,
-      changeServiceDetail,
+      // changeServiceDetail,
       changeSum,
       rejectedPrice,
       isFormValid,
       dateTarget,
-      isReject,
+      // isReject,
 
       pushToForm,
       popupForm,
@@ -397,6 +390,7 @@ const Form18 = defineComponent({
       autocompleteConfig,
       loading,
       service,
+      removeLast,
     }
   },
 })

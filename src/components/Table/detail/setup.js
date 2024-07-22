@@ -107,11 +107,7 @@ export default {
       })
     })
 
-    const getMainData = (data) => {
-      console.log('data', data)
-    }
     const setFormData = (formData) => {
-      console.log(JSON.stringify(formData), 'formData', { ...formData })
       // mainData.value = Object.assign(mainData.value, formData)
       mainData.value = {
         ...mainData.value,
@@ -131,7 +127,6 @@ export default {
       activeTab,
       availableTabsAll,
       setFormData,
-      getMainData,
       mainData,
     }
   },
