@@ -24,7 +24,6 @@ export default function ({ context, loading, activeTab, createForm, form }) {
     form: { fields: [] },
   })
   const { emit } = context.root.ctx
-  console.log(context)
   const clickHandler = async ({ action }) => {
     if (action.action === 'nextStage') {
       const response = await stageRequest(action)

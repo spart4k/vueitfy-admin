@@ -17,6 +17,7 @@
     <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="item in reportTaxi.tabs" :key="item.options.title">
         <component
+          ref="tabs"
           :is="item.type"
           @changeheadershow="changeheadershow"
           :options="item"
@@ -31,7 +32,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { reportTaxi } from '@/pages'
 import TableFixed from '@/components/Table/fixed/index.vue'
-
+import useView from '@/compositions/useView.js'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 export default {
@@ -48,9 +49,15 @@ export default {
   },
   setup() {
     const activeTab = ref(0)
+    const tabs = ref([])
+    useView({
+      tabs,
+      activeTab,
+    })
     return {
       reportTaxi,
       activeTab,
+      tabs,
     }
   },
 }

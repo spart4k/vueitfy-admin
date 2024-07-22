@@ -50,7 +50,7 @@ const Form11 = defineComponent({
         route,
       },
     }
-    const { configRouteConvert } = useView()
+    const { configRouteConvert } = useView({})
     const config = _.cloneDeep(zayavkaConfigOrig)
     configRouteConvert({
       config: config,

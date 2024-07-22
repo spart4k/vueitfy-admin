@@ -26,7 +26,7 @@ export default {
       addCloseButton,
       configRouteConvert,
       convertFormConfig,
-    } = useView()
+    } = useView({})
     configRouteConvert({
       config: config,
       newPath: 'edit',
