@@ -36,7 +36,7 @@ export default {
       convertConfigPanel,
       addCloseButton,
       configRouteConvert,
-    } = useView()
+    } = useView({})
     const config = _.cloneDeep(paymentConfigOrig)
     const personalTabs = _.cloneDeep(personalTabsOrig)
 

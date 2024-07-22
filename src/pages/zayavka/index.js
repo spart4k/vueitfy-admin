@@ -789,7 +789,7 @@ export const addFields = [
   }),
 
   autocompleteField({
-    label: 'Персонаж',
+    label: 'Сотрудник',
     name: 'personal_zr',
     requestKey: 'personal_id',
     // subtype: 'single',
@@ -2927,7 +2927,7 @@ export const editFields = [
   }),
 
   autocompleteField({
-    label: 'Персонаж',
+    label: 'Сотрудник',
     name: 'personal_zr',
     requestKey: 'personal_id',
     // subtype: 'single',
