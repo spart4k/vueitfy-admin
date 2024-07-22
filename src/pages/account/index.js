@@ -126,9 +126,9 @@ const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [1],
-                  vertical: false,
-                  type: false,
+                  // permissions: [1],
+                  vertical: true,
+                  type: true,
                 },
               ],
             },
