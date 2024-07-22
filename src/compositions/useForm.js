@@ -811,17 +811,29 @@ export default function ({
   }
   const convertFilter = (acc, el) => {
     let value = ''
+    console.log(store.state.formStorage)
     if (!value && el.source === 'formData') {
       value = formData[el.field]
     } else {
       value = el.value
     }
-    if ((value === '' || value === null || value === undefined) && !el.routeKey)
+    store?.state?.formStorage
+    if (
+      (value === '' || value === null || value === undefined) &&
+      !el.routeKey &&
+      !el.formStorage
+    )
       return acc
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
         value: [+route.params[el.routeKey]],
+        type: el.type,
+      })
+    } else if (el.hasOwnProperty('formStorage')) {
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [store.state.formStorage.id],
         type: el.type,
       })
     } else if (
@@ -873,7 +885,7 @@ export default function ({
       }
 
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
-
+      console.log(filter)
       const targetId = getListField(list)
       const element = {
         alias: list.alias,
