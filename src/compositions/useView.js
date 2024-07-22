@@ -1,4 +1,12 @@
-import Vue, { ref, computed, watch, unref, reactive, readonly } from 'vue'
+import Vue, {
+  ref,
+  computed,
+  watch,
+  unref,
+  reactive,
+  readonly,
+  onMounted,
+} from 'vue'
 import store from '@/store'
 import moment from 'moment'
 import _ from 'lodash'
@@ -11,7 +19,7 @@ import { stringAction } from '@/utils/actions'
  * @param watcher {function} - Используется для ленивой подгрузки данных из стора. Должно быть реактивным. Например computed
  * @returns {{$v: *, $invalid: *, reset: *, $errors: *, formData: *, getDataForm: *, validate: *, update: *}}
  */
-export default function () {
+export default function ({ tabs = [], activeTab }) {
   const initTableConfig = (config) => {
     const defaultConfig = {
       id: uuidv4(),
@@ -125,6 +133,17 @@ export default function () {
       })
     }
   }
+
+  onMounted(() => {
+    if (activeTab.value !== undefined) {
+      watch(
+        () => activeTab.value,
+        (newVal) => {
+          if (tabs.value[newVal]) tabs.value[newVal].getItems()
+        }
+      )
+    }
+  })
 
   return {
     initTableConfig,

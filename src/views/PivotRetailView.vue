@@ -42,7 +42,7 @@ export default {
       convertConfigPanel,
       addCloseButton,
       configRouteConvert,
-    } = useView()
+    } = useView({})
     const config = _.cloneDeep(pivotRetailConfigOrig)
     const personalTabs = _.cloneDeep(personalTabsOrig)
     const objectTabs = _.cloneDeep(objectTabsOrig)

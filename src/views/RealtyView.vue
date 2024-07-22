@@ -16,6 +16,7 @@
     <v-tabs-items touchless v-model="activeTab" value="1">
       <v-tab-item v-for="item in config.tabs" :key="item.options.title">
         <component
+          ref="tabs"
           :is="item.type"
           @changeheadershow="changeheadershow"
           :options="item"
@@ -49,6 +50,7 @@ export default {
   setup() {
     const config = _.cloneDeep(realtyConfigOrig)
     const activeTab = ref(0)
+    const tabs = ref([])
     const {
       initTableConfig,
       createHeadItem,
@@ -56,7 +58,10 @@ export default {
       addCloseButton,
       configRouteConvert,
       convertFormConfig,
-    } = useView()
+    } = useView({
+      tabs,
+      activeTab,
+    })
     configRouteConvert({
       config: config.tabs[0],
       newPath: 'edit',
@@ -90,11 +95,10 @@ export default {
     config.tabs[0].detail.tabs.push(zayavkaConfig)
     config.tabs[1].detail.tabs.push(zayavkaConfig)
 
-    console.log(config.tabs[0].detail.tabs)
-
     return {
       config,
       activeTab,
+      tabs,
     }
   },
 }

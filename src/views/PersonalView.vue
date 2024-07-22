@@ -17,6 +17,7 @@
     <v-tabs-items touchless v-model="activeTab">
       <v-tab-item v-for="item in availableTabs" :key="item.options.title">
         <component
+          ref="tabs"
           :is="item.type"
           @changeheadershow="changeheadershow"
           :options="item"
@@ -54,17 +55,21 @@ export default {
       headerEl.isShow = value
     },
   },
-  setup() {
+  setup(props, ctx) {
+    const config = _.cloneDeep(personalConfigOrig)
+    const tabs = ref([])
+    const activeTab = ref(0)
     const {
       initTableConfig,
       createHeadItem,
       convertConfigPanel,
       addCloseButton,
       configRouteConvert,
-    } = useView()
-    const config = _.cloneDeep(personalConfigOrig)
+    } = useView({
+      tabs,
+      activeTab,
+    })
 
-    const activeTab = ref(0)
     const permission = computed(() => store.state.user.permission_id)
     const direction_id = computed(() =>
       JSON.parse(store.state.user.direction_json)
@@ -155,6 +160,7 @@ export default {
       config,
       activeTab,
       availableTabs,
+      tabs,
     }
   },
 }
