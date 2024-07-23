@@ -433,7 +433,7 @@ const config = {
                   sm: 4,
                 },
                 bootstrapClass: [''],
-                validations: { number, maxLength: maxLength(4), required },
+                validations: { number, maxLength: maxLength(4) },
               }),
               stringField({
                 label: 'Логин',
