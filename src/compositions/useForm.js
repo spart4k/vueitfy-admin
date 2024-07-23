@@ -613,14 +613,13 @@ export default function ({
         ((typeof x.isShow === 'boolean' && x.isShow) ||
           (typeof x.isShow === 'object' && x.isShow.value))
     )
-
     await Promise.all(
       dropzoneArray.map(async (dropzone) => {
         if (dropzone.value.length) {
           let fileIndex = 1
           const queries = []
           for (const item of dropzone.value) {
-            const file = item[0]
+            const file = item
             if (file?.accepted) {
               const valueId =
                 formData[dropzone.options.valueId] ?? store?.state?.user.id
