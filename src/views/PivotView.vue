@@ -44,7 +44,7 @@ export default {
       convertConfigPanel,
       addCloseButton,
       configRouteConvert,
-    } = useView()
+    } = useView({})
     const config = _.cloneDeep(pivotConfigOrig)
     const personalTabs = _.cloneDeep(personalTabsOrig)
     const objectTabs = _.cloneDeep(objectTabsOrig)
@@ -129,8 +129,6 @@ export default {
         exceptName: ['Редактирование выработки'],
       },
     })
-
-    console.log(config)
 
     return {
       config,

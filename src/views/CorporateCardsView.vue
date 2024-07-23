@@ -23,6 +23,7 @@
     <v-tabs-items touchless v-if="tableView" v-model="activeTab">
       <v-tab-item v-for="item in config.tabs" :key="item.options.title">
         <component
+          ref="tabs"
           :is="item.type"
           @changeheadershow="changeheadershow"
           @changeComp="changeComp"
@@ -58,6 +59,8 @@ export default {
   },
   setup() {
     const tableView = ref(false)
+    const activeTab = ref(0)
+    const tabs = ref([])
     const {
       initTableConfig,
       createHeadItem,
@@ -65,9 +68,11 @@ export default {
       addCloseButton,
       configRouteConvert,
       convertFormConfig,
-    } = useView()
+    } = useView({
+      tabs,
+      activeTab,
+    })
     const config = _.cloneDeep(cardConfigOrig)
-    const activeTab = ref(0)
 
     configRouteConvert({
       config: config.tabs[0],
@@ -96,6 +101,7 @@ export default {
       tableView,
       activeTab,
       configClone,
+      tabs,
     }
   },
 }

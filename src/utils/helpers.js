@@ -6,7 +6,7 @@ const {
   convertConfigPanel,
   addCloseButton,
   configRouteConvert,
-} = useView()
+} = useView({})
 
 const initPaymentZayavka = (paymentConfigOrig, zayavkaConfigOrig) => {
   const paymentConfig = initTableConfig({
