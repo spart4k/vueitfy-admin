@@ -125,10 +125,19 @@ const config = {
             backgroundColor: '#fff',
             isShow: {
               condition: [
+                // {
+                //   // permissions: [1],
+                //   vertical: true,
+                //   type: true,
+                // },
                 {
-                  permissions: [1],
-                  vertical: false,
-                  type: false,
+                  funcCondition: (ctx) => {
+                    return !(
+                      ctx.store.state.user.permission_id === 1 &&
+                      !!_.intersection([2], ctx.directions.value).length
+                    )
+                  },
+                  type: true,
                 },
               ],
             },

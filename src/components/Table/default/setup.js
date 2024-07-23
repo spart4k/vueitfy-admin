@@ -890,12 +890,25 @@ const table = {
           return vertical.value
         }
       }
+      const funcCondition = (el) => {
+        console.log(el, 'el')
+        if (!el.funcCondition) return true
+        const conditionContext = {
+          store,
+          permission,
+          vertical,
+          directions,
+        }
+        return el.funcCondition(conditionContext)
+      }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
+          console.log(btn.isShow.condition)
           return btn.isShow.condition.every((el) => {
             const result =
-              el.type === checkIncludesPermissions(el) &&
+              el.type === funcCondition(el) &&
+              checkIncludesPermissions(el) &&
               checkIncludesVertical(el) &&
               checkIncludesDirections(el)
             return result
