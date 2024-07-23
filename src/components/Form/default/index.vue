@@ -169,7 +169,6 @@
               :formData="formData"
               :disabled="disabledField(field)"
               :field="field"
-              @addFiles="addFiles($event, field)"
               :error-messages="formErrors[field?.name]"
               :readonly="readonlyField(field)"
             />
