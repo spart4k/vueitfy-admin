@@ -613,14 +613,13 @@ export default function ({
         ((typeof x.isShow === 'boolean' && x.isShow) ||
           (typeof x.isShow === 'object' && x.isShow.value))
     )
-
     await Promise.all(
       dropzoneArray.map(async (dropzone) => {
         if (dropzone.value.length) {
           let fileIndex = 1
           const queries = []
           for (const item of dropzone.value) {
-            const file = item[0]
+            const file = item
             if (file?.accepted) {
               const valueId =
                 formData[dropzone.options.valueId] ?? store?.state?.user.id
@@ -811,7 +810,6 @@ export default function ({
   }
   const convertFilter = (acc, el) => {
     let value = ''
-    console.log(store.state.formStorage)
     if (!value && el.source === 'formData') {
       value = formData[el.field]
     } else {
@@ -885,7 +883,6 @@ export default function ({
       }
 
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
-      console.log(filter)
       const targetId = getListField(list)
       const element = {
         alias: list.alias,

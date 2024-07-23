@@ -71,7 +71,7 @@ export default {
     const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
       // dropzone.value.removeAllFiles()
-
+      console.log(files)
       if (props.options.withoutSave) {
         await loadFile(files)
         if (props.options.callbacks) {
@@ -83,7 +83,7 @@ export default {
           proxyVal.value = []
         }
 
-        proxyVal.value.push(files)
+        proxyVal.value.push(...files)
         //
         emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
