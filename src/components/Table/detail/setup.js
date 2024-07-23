@@ -67,7 +67,6 @@ export default {
       }
     }
     const checkMainData = (el) => {
-      console.log(JSON.stringify(mainData.value), 'checkdata')
       //return el.direction_id.includes(directions.value)
       if (!el.mainData) return true
       else {
@@ -95,7 +94,6 @@ export default {
         if (!tab.isShow) return tab
         else {
           return tab.isShow.condition.every((el) => {
-            console.log(checkMainData(el))
             return (
               el.type === checkIncludesPermissions(el) &&
               checkIncludesDirections(el) &&
@@ -107,11 +105,7 @@ export default {
       })
     })
 
-    const getMainData = (data) => {
-      console.log('data', data)
-    }
     const setFormData = (formData) => {
-      console.log(JSON.stringify(formData), 'formData', { ...formData })
       // mainData.value = Object.assign(mainData.value, formData)
       mainData.value = {
         ...mainData.value,
@@ -131,7 +125,6 @@ export default {
       activeTab,
       availableTabsAll,
       setFormData,
-      getMainData,
       mainData,
     }
   },

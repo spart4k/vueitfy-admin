@@ -613,14 +613,13 @@ export default function ({
         ((typeof x.isShow === 'boolean' && x.isShow) ||
           (typeof x.isShow === 'object' && x.isShow.value))
     )
-
     await Promise.all(
       dropzoneArray.map(async (dropzone) => {
         if (dropzone.value.length) {
           let fileIndex = 1
           const queries = []
           for (const item of dropzone.value) {
-            const file = item[0]
+            const file = item
             if (file?.accepted) {
               const valueId =
                 formData[dropzone.options.valueId] ?? store?.state?.user.id
@@ -816,12 +815,23 @@ export default function ({
     } else {
       value = el.value
     }
-    if ((value === '' || value === null || value === undefined) && !el.routeKey)
+    store?.state?.formStorage
+    if (
+      (value === '' || value === null || value === undefined) &&
+      !el.routeKey &&
+      !el.formStorage
+    )
       return acc
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
         value: [+route.params[el.routeKey]],
+        type: el.type,
+      })
+    } else if (el.hasOwnProperty('formStorage')) {
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [store.state.formStorage.id],
         type: el.type,
       })
     } else if (
@@ -873,7 +883,6 @@ export default function ({
       }
 
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
-
       const targetId = getListField(list)
       const element = {
         alias: list.alias,

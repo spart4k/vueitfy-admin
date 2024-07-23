@@ -1856,14 +1856,12 @@ export default {
       () => formData,
       () => {
         if (props.correct) {
-          console.log(vForm)
           isCorrect.value = false
           // if (vForm.value.$invalid) {
 
           // }
           // vForm.$invalid ? (isCorrect.value = false) : ''
         }
-        console.log('formData')
       },
       {
         deep: true,

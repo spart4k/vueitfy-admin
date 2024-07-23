@@ -10,6 +10,11 @@
         >
       </v-card-title>
       <v-row>
+        <FormError class="mb-4" v-if="dopData.comment">
+          {{ dopData.comment }}
+        </FormError>
+      </v-row>
+      <v-row>
         <v-col>
           <span class="font-weight-bold heading"
             >Проверьте закрывающие документы:</span

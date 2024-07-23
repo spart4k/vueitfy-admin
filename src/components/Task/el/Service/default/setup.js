@@ -59,13 +59,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    minLength: {
-      type: Boolean,
-      default: false,
-    },
   },
   setup(props, ctx) {
     const serviceRows = ref([])
+    const { emit } = ctx
     const rejectedPrices = computed(() => {
       return serviceRows.value.reduce((acc, el) => {
         if (el.rejectedPrice) {
@@ -80,13 +77,10 @@ export default {
     const addGroup = () => {
       services.value.push({})
     }
-    const removeGroup = (index) => {
-      if (!props.minLength || (props.minLength && services.value.length > 1)) {
-        if (index !== undefined) {
-          services.value.splice(index, 1)
-        } else {
-          services.value.splice(services.value.length - 1, 1)
-        }
+    const removeGroup = () => {
+      if (services.value.length > 1) {
+        services.value.pop()
+        emit('removeLast')
       }
     }
     const changeRejectedPrice = (reject) => {

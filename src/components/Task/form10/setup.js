@@ -11,6 +11,7 @@ import { stringField, selectField, checkboxField } from '@/utils/fields.js'
 import _ from 'lodash'
 import { required } from '@/utils/validation'
 import Popup from '@/components/Popup/index.vue'
+import FormError from '@/components/Task/el/FormError/index.vue'
 
 const form10 = defineComponent({
   name: 'Form10',
@@ -19,6 +20,7 @@ const form10 = defineComponent({
     DocAccepting,
     ZayavkaItem,
     Popup,
+    FormError,
   },
   props: {
     data: {
@@ -41,7 +43,7 @@ const form10 = defineComponent({
     }
 
     const loading = ref(false)
-    const { configRouteConvert } = useView()
+    const { configRouteConvert } = useView({})
     const config = _.cloneDeep(zayavkaConfigOrig)
     configRouteConvert({
       config: config,
@@ -67,6 +69,7 @@ const form10 = defineComponent({
       isShow: false,
     })
     const zayavkaItems = ref([])
+    let dopData = JSON.parse(props.data.task.dop_data)
     // Моковые данные
     let files = ref([
       {
@@ -96,7 +99,8 @@ const form10 = defineComponent({
       },
     ])
     // const accepted_amount = ref('')
-    const accepted = ref(JSON.parse(props.data.task.dop_data).accept)
+    console.log(props?.data?.task?.dop_data)
+    const accepted = ref(JSON.parse(props.data?.task?.dop_data)?.accept)
     // Удаление файла
     const removeFile = (fileID) => {
       // TODO: доделать
@@ -623,6 +627,7 @@ const form10 = defineComponent({
       popupForm,
       closePopupForm,
       loading,
+      dopData,
     }
   },
 })

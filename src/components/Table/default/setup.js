@@ -515,7 +515,6 @@ const table = {
       }
     }
     const saveFilter = async (filterData) => {
-      console.log(filterData)
       filtersColumns.value = []
       filters.value?.fields?.forEach((el) => {
         if (!filterData[el.name]) {
@@ -523,7 +522,6 @@ const table = {
           return
         }
         el.value = filterData[el.name]
-        console.log(filterData[el.name], el.name)
         if (
           el.type === 'dateRange' &&
           filterData[el.name].every(
@@ -887,17 +885,30 @@ const table = {
       const checkIncludesVertical = (el) => {
         if (!el.vertical) return true
         else {
-          return vertical.value
+          return vertical.value === el.vertical
         }
+      }
+      const funcCondition = (el) => {
+        console.log(el, 'el')
+        if (!el.funcCondition) return true
+        const conditionContext = {
+          store,
+          permission,
+          vertical,
+          directions,
+        }
+        return el.funcCondition(conditionContext)
       }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
+          console.log(btn.isShow.condition)
           return btn.isShow.condition.every((el) => {
             const result =
               el.type === checkIncludesPermissions(el) &&
               checkIncludesVertical(el) &&
-              checkIncludesDirections(el)
+              checkIncludesDirections(el) &&
+              funcCondition(el)
             return result
           })
           // if ()

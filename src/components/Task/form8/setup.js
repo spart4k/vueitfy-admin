@@ -45,7 +45,7 @@ const Form8 = defineComponent({
     const router = useRouter()
     const route = useRoute()
     // const proxyConfig = ref(_.cloneDeep(config))
-    const { configRouteConvert } = useView()
+    const { configRouteConvert } = useView({})
     const loading = ref(false)
     const config = _.cloneDeep(zayavkaConfigOrig)
     configRouteConvert({

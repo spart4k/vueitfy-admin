@@ -876,7 +876,19 @@ export default {
               name: 'Основные',
               type: 'FormDefault',
               detail: true,
-              lists: [{ alias: 'documents', filter: [] }],
+              lists: [
+                {
+                  alias: 'documents',
+                  filter: [
+                    {
+                      field: 'personal_id',
+                      value: '',
+                      formStorage: 'id',
+                      type: 'array',
+                    },
+                  ],
+                },
+              ],
               alias: 'personal_doc',
               active: false,
               label: 'personal-add-doc-document-new',

@@ -17,6 +17,7 @@
     <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="item in availableTabs" :key="item.options.title">
         <component
+          ref="tabs"
           :is="item.type"
           @changeheadershow="changeheadershow"
           :options="item"
@@ -55,6 +56,8 @@ export default {
   },
   setup() {
     const config = _.cloneDeep(habitationConfigOrig)
+    const activeTab = ref(0)
+    const tabs = ref([])
     const {
       initTableConfig,
       createHeadItem,
@@ -62,8 +65,10 @@ export default {
       addCloseButton,
       configRouteConvert,
       convertFormConfig,
-    } = useView()
-    const activeTab = ref(0)
+    } = useView({
+      tabs,
+      activeTab,
+    })
     const permission = computed(() => store.state.user.permission_id)
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
@@ -409,6 +414,7 @@ export default {
       config,
       activeTab,
       availableTabs,
+      tabs,
     }
   },
 }
