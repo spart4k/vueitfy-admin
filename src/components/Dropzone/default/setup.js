@@ -55,7 +55,7 @@ export default {
       autoDiscover: false,
       thumbnailWidth: 150,
       hiddenInputContainer: props.name ? `.${props.name}` : 'body',
-      maxFilesize: props.options.maxSize ? props.options.maxSize : 10,
+      maxFilesize: props.options.maxSize ? props.options.maxSize : 20,
       maxFiles: props.options.countFiles ? props.options.countFiles : 1,
       addRemoveLinks: props?.options?.removeble ? true : false,
       dictDefaultMessage:
@@ -82,10 +82,7 @@ export default {
         if (proxyVal.value === undefined) {
           proxyVal.value = []
         }
-
         proxyVal.value.push(...files)
-        //
-        emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //
       ////const progress = document.querySelector('.dz-progress')

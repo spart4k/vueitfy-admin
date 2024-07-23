@@ -3884,14 +3884,9 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (Number(context.originalData.from_account_id) ===
-              context.store.state.user.id &&
-              (context.originalData.status === 1 ||
-                context.originalData.status === 3 ||
-                context.originalData.status === 9)) ||
-            (Number(context.originalData.from_account_id) !==
-              context.store.state.user.id &&
-              context.originalData.status === 9),
+            context.originalData.status === 1 ||
+            context.originalData.status === 3 ||
+            context.originalData.status === 9,
           type: false,
         },
       ],
@@ -4163,14 +4158,9 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (Number(context.originalData.from_account_id) ===
-              context.store.state.user.id &&
-              (context.originalData.status === 1 ||
-                context.originalData.status === 3 ||
-                context.originalData.status === 9)) ||
-            (Number(context.originalData.from_account_id) !==
-              context.store.state.user.id &&
-              context.originalData.status === 9),
+            context.originalData.status === 1 ||
+            context.originalData.status === 3 ||
+            context.originalData.status === 9,
           type: false,
         },
       ],
@@ -4210,14 +4200,9 @@ export const editFields = [
       condition: [
         {
           funcCondition: (context) =>
-            (Number(context.originalData.from_account_id) ===
-              context.store.state.user.id &&
-              (context.originalData.status === 1 ||
-                context.originalData.status === 3 ||
-                context.originalData.status === 9)) ||
-            (Number(context.originalData.from_account_id) !==
-              context.store.state.user.id &&
-              context.originalData.status === 9),
+            context.originalData.status === 1 ||
+            context.originalData.status === 3 ||
+            context.originalData.status === 9,
           type: false,
         },
       ],

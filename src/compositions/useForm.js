@@ -673,7 +673,7 @@ export default function ({
         }
 
         if (dropzone.stash) {
-          formData[dropzone.stash].forEach((file, index) => {
+          formData[dropzone.stash]?.forEach((file, index) => {
             queryParams.formData[dropzone.name].push({
               path: file.name,
               index: queryParams.formData[dropzone.name].length + 1,
@@ -681,7 +681,7 @@ export default function ({
           })
         }
         if (dropzone.options.stash && formData[dropzone.options.stash]) {
-          formData[dropzone.options.stash].forEach((file, index) => {
+          formData[dropzone.options.stash]?.forEach((file, index) => {
             queryParams.formData[dropzone.requestKey || dropzone.name].push({
               path: file.path,
               index:
