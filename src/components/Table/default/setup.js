@@ -907,10 +907,10 @@ const table = {
           console.log(btn.isShow.condition)
           return btn.isShow.condition.every((el) => {
             const result =
-              el.type === funcCondition(el) &&
-              checkIncludesPermissions(el) &&
+              el.type === checkIncludesPermissions(el) &&
               checkIncludesVertical(el) &&
-              checkIncludesDirections(el)
+              checkIncludesDirections(el) &&
+              funcCondition(el)
             return result
           })
           // if ()
