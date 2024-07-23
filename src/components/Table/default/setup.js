@@ -885,7 +885,7 @@ const table = {
       const checkIncludesVertical = (el) => {
         if (!el.vertical) return true
         else {
-          return vertical.value
+          return vertical.value === el.vertical
         }
       }
       const funcCondition = (el) => {
