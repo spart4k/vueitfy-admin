@@ -83,6 +83,7 @@ export default {
           proxyVal.value = []
         }
         proxyVal.value.push(...files)
+        emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
       //
       ////const progress = document.querySelector('.dz-progress')
