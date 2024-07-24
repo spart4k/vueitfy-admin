@@ -24,8 +24,8 @@ import {
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
+  path: 'add',
   id: uuidv4(),
-  path: 'edit',
   name: 'Основные',
   type: 'FormDefault',
   detail: true,
@@ -36,41 +36,18 @@ export default {
     { alias: 'direction_id', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
     {
-      alias: 'object_type',
-      filter: [
-        {
-          field: 'direction_json',
-          value: '',
-          source: 'formData',
-          type: 'array',
-        },
-      ],
-    },
-    {
-      alias: 'account_objects',
-      filter: [{ source: 'formData', type: 'num', value: 'id', field: 'id' }],
+      alias: 'account_object_types',
+      filter: [],
     },
   ],
   alias: 'account',
   active: false,
   fields: [
-    textBlock({
-      label: 'Создал',
-      name: 'id',
-      placeholder: '',
-      notSend: true,
-      readonly: true,
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-    }),
     stringField({
       label: 'ФИО',
       name: 'fio',
       placeholder: '',
+      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -83,17 +60,20 @@ export default {
       label: 'Краткое имя',
       name: 'name',
       placeholder: '',
+      readonly: false,
       class: [''],
       position: {
         cols: 12,
         sm: 6,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     stringField({
       label: 'Телефон',
       name: 'telefon',
       placeholder: '',
+      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -106,6 +86,7 @@ export default {
       label: 'Email',
       name: 'email',
       placeholder: '',
+      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -125,12 +106,13 @@ export default {
         sm: 4,
       },
       bootstrapClass: [''],
-      validations: { number, maxLength: maxLength(4), required },
+      validations: { number, maxLength: maxLength(4) },
     }),
     stringField({
       label: 'Логин',
       name: 'username',
       placeholder: '',
+      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -143,6 +125,7 @@ export default {
       label: 'Пароль',
       name: 'password',
       placeholder: '',
+      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -184,9 +167,22 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
+      // updateList: [
+      //   {
+      //     alias: 'doljnost_id',
+      //     filter: [
+      //       {
+      //         field: 'direction_id',
+      //         value: '',
+      //         source: 'formData',
+      //         type: 'num',
+      //       },
+      //     ],
+      //   },
+      // ],
       updateList: [
         {
-          alias: 'object_type',
+          alias: 'account_object_types',
           filter: [
             {
               field: 'direction_json',
@@ -196,22 +192,13 @@ export default {
             },
           ],
         },
-      ],
-      dependence: [
         {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'chief_id',
-          url: 'get/pagination_list/chief_id',
+          alias: 'permissions_account',
           filter: [
-            {
-              field: 'permission_id',
-              type: 'num',
-              value: '',
-            },
             {
               field: 'direction_json',
               type: 'array',
+              source: 'formData',
               value: '',
             },
           ],
@@ -221,6 +208,7 @@ export default {
     selectField({
       label: 'Тип',
       name: 'object_type',
+      alias: 'account_object_types',
       subtype: 'multiple',
       stringify: true,
       placeholder: '',
@@ -279,7 +267,7 @@ export default {
     autocompleteField({
       label: 'Руководитель',
       name: 'chief_id',
-      alias: 'permission_id',
+      // alias: 'permission_id',
       subtype: 'single',
       placeholder: '',
       class: [''],
@@ -301,13 +289,13 @@ export default {
         {
           field: 'permission_id',
           type: 'num',
-          source: 'formData',
+          source: null,
           value: '',
         },
         {
           field: 'direction_json',
           type: 'array',
-          source: 'formData',
+          source: null,
           value: '',
         },
       ],
@@ -316,21 +304,25 @@ export default {
     colorPicker({
       label: 'Цвет',
       name: 'color',
-      //value: '#ffffff',
+      value: '#000000',
       placeholder: '',
+      readonly: false,
+      disabled: false,
       class: [''],
       position: {
         cols: 12,
         sm: 6,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     checkboxField({
       label: 'Руководитель',
       name: 'is_chief',
       placeholder: '',
-      // readonly: true,
+      readonly: false,
       class: [''],
+      value: false,
       position: {
         cols: 12,
         sm: 6,
@@ -338,41 +330,6 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
-    }),
-    selectField({
-      label: 'Объекты',
-      name: 'object_json',
-      alias: 'account_objects',
-      subtype: 'multiple',
-      readonly: true,
-      // requestKey: 'direction_json',
-      stringify: true,
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: {},
-      bootstrapClass: [''],
-      // updateList: [
-      //   {
-      //     alias: 'account_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_json',
-      //         value: '',
-      //         source: 'formData',
-      //         type: 'num',
-      //       },
-      //     ],
-      //   },
-      // ],
     }),
   ],
   actions: [
@@ -382,16 +339,30 @@ export default {
       color: 'text',
       name: 'closePopup',
       action: 'closePopup',
+      to: 'account',
       skipValidation: true,
     }),
     stringAction({
-      text: 'Сохранить',
+      text: 'Создать',
       type: 'submit',
-      module: 'form/putForm',
-      name: 'saveFormId',
-      url: 'v1/user/edit',
-      action: 'saveFormId',
+      module: 'account/createData',
+      url: 'v1/user/registration',
+      name: 'createForm',
+      action: 'createForm',
       color: 'primary',
+      handlingResponse: {
+        1: {
+          text: 'Аккаунт создан',
+          color: 'success',
+        },
+        2: {
+          text: 'Такой аккаунт уже существует',
+          color: 'error',
+        },
+        3: {
+          text: '',
+        },
+      },
     }),
   ],
 }

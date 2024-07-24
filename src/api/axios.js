@@ -1,7 +1,11 @@
 import axios from 'axios'
 import setupInterceptors from './utils/interceptor'
 
-export const instance = setupInterceptors(axios.create())
+export const instance = setupInterceptors(
+  axios.create({
+    withCredentials: true,
+  })
+)
 
 const sendData = ({ data }) => data
 

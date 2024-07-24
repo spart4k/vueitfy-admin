@@ -130,8 +130,6 @@ export default {
       },
     })
 
-    console.log(config)
-
     return {
       config,
     }

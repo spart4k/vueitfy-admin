@@ -89,7 +89,6 @@ export default {
           return pers.validate(true)
         })
       })
-      console.log(valid, 'valid')
       if (!valid) return
 
       // rows.value.forEach((el) => el.validate(true))

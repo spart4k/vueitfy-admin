@@ -67,7 +67,6 @@ export default {
       }
     }
     const checkMainData = (el) => {
-      console.log(JSON.stringify(mainData.value), 'checkdata')
       //return el.direction_id.includes(directions.value)
       if (!el.mainData) return true
       else {
@@ -95,7 +94,6 @@ export default {
         if (!tab.isShow) return tab
         else {
           return tab.isShow.condition.every((el) => {
-            console.log(checkMainData(el))
             return (
               el.type === checkIncludesPermissions(el) &&
               checkIncludesDirections(el) &&
