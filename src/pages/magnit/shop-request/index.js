@@ -874,10 +874,15 @@ const config = {
             },
             {
               name: 'account_id',
-              readonly: true,
+              // readonly: true,
             },
             {
               name: 'hour',
+              readonly: true,
+            },
+            {
+              name: 'direction_id',
+              value: 2,
               readonly: true,
             },
           ],

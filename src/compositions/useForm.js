@@ -464,6 +464,8 @@ export default function ({
           if (targetField.name === field.name) {
             console.log(targetField, formData[field.name])
             targetField.value = formData[field.name]
+            if (field.value) targetField.value = field.value
+            if (field.readonly === true) targetField.readonly = true
           }
         })
       })
@@ -1299,7 +1301,8 @@ export default function ({
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
-        el.items = [...el.items, ...data.rows]
+        console.log(el)
+        el.items = [el.items, ...data.rows]
       }
 
       el.hideItems = el.items
