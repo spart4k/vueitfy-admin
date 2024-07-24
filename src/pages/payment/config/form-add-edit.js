@@ -681,6 +681,24 @@ export default {
           {
             funcCondition: (context) => {
               console.log(context, context.formData.status_id === 1)
+              console.log(
+                context.formData.account_id !== context.store.state.user.id,
+                (context.store.state.user.permission_id === 12 ||
+                  context.store.state.user.permission_id === 22) &&
+                  context.formData?.status_id === 4,
+                context.formData.status_id === 1 ||
+                  context.formData.status_id === 3,
+                context.mode === 'edit'
+              )
+              console.log(
+                context.formData.account_id !== context.store.state.user.id &&
+                  (context.formData.status_id === 1 ||
+                    context.formData.status_id === 3 ||
+                    ((context.store.state.user.permission_id === 12 ||
+                      context.store.state.user.permission_id === 22) &&
+                      context.formData?.status_id === 4)) &&
+                  context.mode === 'edit'
+              )
               return (
                 context.formData.account_id !== context.store.state.user.id &&
                 (context.formData.status_id === 1 ||

@@ -80,8 +80,6 @@ export default {
     }
     const availableTabs = computed(() => {
       return detail.tabs.filter((item) => {
-        console.log(route.meta)
-        console.log(route.meta.mode.includes(item.path), route.meta.mode)
         return (
           (route.meta.mode && route.meta.mode.includes(item.path)) ||
           (!route.meta.mode && !item.path)
