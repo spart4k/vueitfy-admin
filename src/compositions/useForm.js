@@ -21,6 +21,7 @@ import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
 import router from '@/router'
 import { list } from 'postcss'
+import { props } from 'vue2-dropzone'
 
 /**
  * @param loading {boolean}
@@ -60,6 +61,7 @@ export default function ({
   let fields = {}
   let fieldAliases = {}
   const initFields = () => {
+    console.log('INIT FIELDS')
     if (!form) return
     fields = {}
     fieldAliases = {}
@@ -69,8 +71,11 @@ export default function ({
         fieldAliases[form.fields[i].alias] = form.fields[i].name
       else fieldAliases[form.fields[i].name] = form.fields[i].name
     }
+    console.log(fields, formData)
     for (let key in fields) {
+      console.log(JSON.stringify(formData))
       if (formData.hasOwnProperty(key)) continue
+      console.log(formData)
       Vue.set(formData, key, ref(fields[key].value))
     }
     queueMicrotask(() => {
@@ -450,6 +455,19 @@ export default function ({
 
   const openForm = ({ action }) => {
     console.log(action)
+    console.log(form)
+    const sharedFields = form?.sharedFields
+    if (sharedFields) {
+      sharedFields.fields.forEach((field) => {
+        sharedFields.target.fields.forEach((targetField) => {
+          // console.log(targetField.name, field.name)
+          if (targetField.name === field.name) {
+            console.log(targetField, formData[field.name])
+            targetField.value = formData[field.name]
+          }
+        })
+      })
+    }
     if (form.detail.type === 'popup') {
       let requestId = 'id'
       if (action.target.requestKey) requestId = action.target.requestKey
@@ -921,6 +939,7 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
+      console.log('dependence', dependence)
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -1068,6 +1087,7 @@ export default function ({
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
+        console.log(targetField?.items, targetField.name)
         if (targetField?.items?.length === 1) {
           // Если массив, вставить массив
           // formData[targetField.name] = targetField.items[0].id
@@ -1454,6 +1474,7 @@ export default function ({
   const getData = async () => {
     let syncForm = undefined
     if (getDetail() && form.alias) {
+      console.log('GET DATA')
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }

@@ -14,8 +14,9 @@ import { stringAction } from '@/utils/actions'
 import formAddEditPayment from '../../payment/config/form-add-edit.js'
 import _ from 'lodash'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
-console.log(paymentConfig, 'paymentConfig')
-paymentConfig.detail.requestId = 'payment_id'
+console.log(paymentConfig, paymentConfig.id, 'paymentConfig')
+paymentConfig.requestId = 'payment_id'
+paymentConfig.routeParam = 'payment_id'
 // _.cloneDeep(filters)
 
 console.log(formAddEditPayment)
@@ -853,6 +854,35 @@ const config = {
           }),
         ],
         path: 'edit',
+        sharedFields: {
+          fields: [
+            {
+              name: 'date_target',
+              readonly: true,
+            },
+            {
+              name: 'personal_id',
+              readonly: true,
+            },
+            {
+              name: 'object_id',
+              readonly: true,
+            },
+            {
+              name: 'doljnost_id',
+              readonly: true,
+            },
+            {
+              name: 'account_id',
+              readonly: true,
+            },
+            {
+              name: 'hour',
+              readonly: true,
+            },
+          ],
+          target: paymentConfig,
+        },
         detail: {
           type: 'popup', // String 'popup' or 'page'
           classes: [''], // List class
