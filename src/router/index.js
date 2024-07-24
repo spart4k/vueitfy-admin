@@ -831,11 +831,45 @@ const routes = [
           mode: ['add'],
         },
         component: Detail,
+        children: [
+          {
+            name: 'shop-request-magnit-add-payment-add',
+            path: 'payment/add',
+            meta: {
+              mode: ['add', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/:id',
         path: ':id',
         component: Detail,
+        meta: {
+          mode: ['edit'],
+        },
+        children: [
+          {
+            name: 'shop-request-magnit/:id/payment-add',
+            path: 'payment/add',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'shop-request-magnit/:id/payment/:payment_id',
+            path: 'payment/:payment_id',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/upload',

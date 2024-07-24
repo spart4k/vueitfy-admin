@@ -11,7 +11,14 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
+import formAddEditPayment from '../../payment/config/form-add-edit.js'
+import _ from 'lodash'
+const paymentConfig = _.cloneDeep(formAddEditPayment)
+console.log(paymentConfig, 'paymentConfig')
+paymentConfig.detail.requestId = 'payment_id'
+// _.cloneDeep(filters)
 
+console.log(formAddEditPayment)
 function consoleText(row) {}
 
 function consoleButton(row) {}
@@ -538,7 +545,7 @@ const config = {
         id: 0,
         name: 'Основные',
         type: 'FormDefault',
-        detail: true,
+        // detail: true,
         lists: [
           { alias: 'status_srm', filter: [] },
           { alias: 'habitation_id', filter: [] },
@@ -773,16 +780,91 @@ const config = {
             //validations: { required },
             //isShow: false,
           }),
+          textBlock({
+            label: 'payment',
+            name: 'payment_id',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
         ],
         actions: [
           stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'text',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'account',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Начислить',
+            type: 'submit',
+            action: 'openForm',
+            target: {
+              route: 'shop-request-magnit/:id/payment',
+              requestKey: 'payment_id',
+            },
+            color: 'primary',
+            skipValidation: true,
+            handlingResponse: {
+              1: {
+                text: 'Аккаунт создан',
+                color: 'success',
+              },
+              2: {
+                text: 'Такой аккаунт уже существует',
+                color: 'error',
+              },
+              3: {
+                text: '',
+              },
+            },
+          }),
+          stringAction({
             text: 'Сохранить',
             type: 'submit',
-            module: '',
-            name: 'saveForm',
-            nextForm: true,
+            module: 'account/createData',
+            url: 'set/account',
+            name: 'createForm',
+            action: 'createForm',
+            color: 'primary',
+            handlingResponse: {
+              1: {
+                text: 'Аккаунт создан',
+                color: 'success',
+              },
+              2: {
+                text: 'Такой аккаунт уже существует',
+                color: 'error',
+              },
+              3: {
+                text: '',
+              },
+            },
           }),
         ],
+        path: 'edit',
+        detail: {
+          type: 'popup', // String 'popup' or 'page'
+          classes: [''], // List class
+          width: '780px',
+          method: 'get',
+          name: 'Редактировать проживание',
+          alias: 'payment',
+          requestId: 'payment_id',
+          url: '/get/form/',
+          bootstrapClass: [''],
+          tabs: [Object.assign({}, paymentConfig)],
+        },
       },
       {
         id: 1,

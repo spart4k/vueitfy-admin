@@ -221,6 +221,8 @@ export default function ({
       if (action.handlingResponse) {
         handlingResponse(action, result)
       }
+    } else if (action.action === 'openForm') {
+      openForm({ action })
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -441,6 +443,27 @@ export default function ({
         // params: {
         //   [requestId]: row.id,
         // },
+      })
+      popupForm.value.isShow = true
+    }
+  }
+
+  const openForm = ({ action }) => {
+    console.log(action)
+    if (form.detail.type === 'popup') {
+      let requestId = 'id'
+      if (action.target.requestKey) requestId = action.target.requestKey
+      console.log(formData, action.target.requestKey)
+      let routeRequest = formData[action.target.requestKey]
+        ? `/:${action.target.requestKey}`
+        : '-add'
+      console.log(requestId, formData[action.target.requestKey])
+      router.push({
+        name: action.target.route + routeRequest,
+        // name: `${route.name}/:${requestId}`,
+        params: {
+          [requestId]: formData[action.target.requestKey],
+        },
       })
       popupForm.value.isShow = true
     }

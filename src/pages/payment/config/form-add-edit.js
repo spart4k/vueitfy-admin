@@ -679,14 +679,18 @@ export default {
           //   type: true,
           // },
           {
-            funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              console.log(context, context.formData.status_id === 1)
+              return (
+                context.formData.account_id !== context.store.state.user.id &&
+                (context.formData.status_id === 1 ||
+                  context.formData.status_id === 3 ||
+                  ((context.store.state.user.permission_id === 12 ||
+                    context.store.state.user.permission_id === 22) &&
+                    context.formData?.status_id === 4)) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
           {
