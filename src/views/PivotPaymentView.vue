@@ -10,7 +10,7 @@
 import _ from 'lodash'
 import useView from '@/compositions/useView.js'
 
-import { config as pivotRetailConfigOrig } from '@/pages/pivot_retail/index'
+import { config as pivotPaymentConfigOrig } from '@/pages/pivot_payment/index'
 import TableFixed from '@/components/Table/fixed/index.vue'
 
 import paymentConfigOrig from '@/pages/payment/index'
@@ -24,7 +24,7 @@ import formPaymentEditOrig from '@/pages/payment/config/form-add-edit'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 export default {
-  name: 'PivotxRetail-View',
+  name: 'PivotPayment-View',
   components: {
     TableFixed,
     //Layout,
@@ -43,7 +43,7 @@ export default {
       addCloseButton,
       configRouteConvert,
     } = useView({})
-    const config = _.cloneDeep(pivotRetailConfigOrig)
+    const config = _.cloneDeep(pivotPaymentConfigOrig)
     const personalTabs = _.cloneDeep(personalTabsOrig)
     const objectTabs = _.cloneDeep(objectTabsOrig)
 
@@ -95,7 +95,7 @@ export default {
     config.detail.tabs.push(...personalTabs)
 
     configRouteConvert({
-      config: config.detail.tabs[2].config,
+      config: config.detail.tabs[3].config,
       route: 'scan',
       newPath: 'personal-scan',
       settings: {
@@ -104,7 +104,7 @@ export default {
     })
 
     configRouteConvert({
-      config: config.detail.tabs[3].config,
+      config: config.detail.tabs[4].config,
       route: 'card',
       newPath: 'personal-card',
       settings: {

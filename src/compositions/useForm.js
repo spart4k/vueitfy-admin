@@ -850,7 +850,7 @@ export default function ({
     } else if (el.sendEmpty) {
       acc.push({
         alias: el.alias ?? el.field,
-        value: [],
+        value: el.value,
         type: el.type,
       })
     } else {
