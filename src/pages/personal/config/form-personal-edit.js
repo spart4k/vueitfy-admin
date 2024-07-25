@@ -203,9 +203,20 @@ export default {
       readonly: {
         value: false,
         condition: [
-          editFormPermissions.OBD.access,
+          // editFormPermissions.OBD.access,
           // editFormPermissions.DBA.access,
           // editFormPermissions.OBDandOKK.access,
+          {
+            funcCondition: (context) => {
+              return (
+                context.formData?.direction_json.includes(2) ||
+                editFormPermissions.OBD.access.permissions.includes(
+                  context.store.state.user.permission_id
+                )
+              )
+            },
+            type: false,
+          },
         ],
       },
       //validations: { required },

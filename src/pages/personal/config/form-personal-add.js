@@ -167,16 +167,20 @@ export default {
                     options: [1, 2, 3, 4, 5, 6],
                   },
                   {
+                    value: [2],
+                    options: [1, 3, 4, 5, 6, 7],
+                  },
+                  {
                     value: [1],
-                    options: [7],
+                    options: [7, 2],
                   },
                   {
                     value: [1, 6],
-                    options: [7],
+                    options: [7, 2],
                   },
                   {
                     value: [6],
-                    options: [7],
+                    options: [7, 2],
                   },
                 ],
               },
@@ -232,6 +236,22 @@ export default {
               ],
             },
           ],
+        }),
+        stringField({
+          label: 'Телефон',
+          name: 'telefon',
+          placeholder: '',
+          class: [''],
+          position: {
+            cols: 12,
+            sm: 12,
+          },
+          validations: { required },
+          bootstrapClass: [''],
+          isShow: {
+            value: false,
+            conditions: [{ field: 'direction_id', value: [[2]] }],
+          },
         }),
         autocompleteField({
           label: 'Объект',
@@ -1051,6 +1071,7 @@ export default {
           url: 'delete/unfinished_personal',
           name: 'prevStage',
           action: 'prevStage',
+          escapeTrigger: true,
           // conditionCode: {
           //   key: 'code',
           //   results: [
