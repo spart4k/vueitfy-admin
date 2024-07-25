@@ -47,7 +47,8 @@
         <v-app-bar-title class="current pl-3 mt-4"
           >Детализация:
         </v-app-bar-title>
-        <v-list class="overflow-auto mt-2 mb-2" max-height="400">
+        <component :is="proxyTab.lastStage" :stage="stage" />
+        <!-- <v-list class="overflow-auto mt-2 mb-2" max-height="400">
           <v-row
             class="mt-0"
             v-for="(item, index) in stage.targets"
@@ -160,7 +161,7 @@
               </v-expansion-panel>
             </v-expansion-panels>
           </v-row>
-        </v-list>
+        </v-list> -->
       </template>
     </v-container>
 

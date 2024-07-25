@@ -9,6 +9,8 @@ import Vue, {
 import { useRouter, useRoute } from 'vue-router/composables'
 import Autocomplete from '@/components/Autocomplete/form'
 import FormDefault from '@/components/Form/default/index.vue'
+import DefaultStage from './LastStage/default/index.vue'
+import PaymentStage from './LastStage/payment/index.vue'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -17,7 +19,6 @@ import DropZone from '@/components/Dropzone/default/index.vue'
 import Datetimepicker from '@/components/Date/Datetimepicker/index.vue'
 import ColorPicker from '@/components/Colorpicker/index.vue'
 import Datepicker from '@/components/Date/Default/index.vue'
-import moment from 'moment'
 
 import _ from 'lodash'
 
@@ -32,6 +33,8 @@ export default {
     DropZone,
     ColorPicker,
     Datepicker,
+    DefaultStage,
+    PaymentStage,
   },
   props: {
     tab: {
@@ -87,10 +90,6 @@ export default {
         },
       ],
     })
-    const list = ref({
-      service: [],
-      personal: [],
-    })
     const confirm = ref({
       isShow: false,
       text: '',
@@ -120,22 +119,6 @@ export default {
     const { alias } = proxyTab.value
     const isEdit = computed(() => (route.params.id ? 'edit' : 'add'))
 
-    // const fields = () => {
-    //   const fields = {}
-    //   proxyTab.value.fields?.forEach((el) => {
-    //     const { validations } = el
-    //     if (typeof el.isShow === 'boolean' && el.isShow)
-    //       Vue.set(fields, el.name, {})
-    //     else if (typeof el.isShow === 'object' && el.isShow.value) {
-    //       Vue.set(fields, el.name, {})
-    //     } else return
-    //     Vue.set(fields, el.name, {})
-    //     Vue.set(fields[el.name], 'validations', validations)
-    //     Vue.set(fields[el.name], 'default', el.value)
-    //   })
-    //   return fields
-    // }
-
     const params = proxyTab.value.lists
     const getRequestParam = () => {
       if (props.detail?.requestId) {
@@ -152,16 +135,6 @@ export default {
           'form/get',
           `get/form/${alias}/${getRequestParam()}`
         )
-      },
-    })
-
-    const { makeRequest: makeRequestList } = useRequest({
-      context,
-      request: async (data) => {
-        const response = await store.dispatch('list/get', data)
-        if (response.data.service_spr)
-          list.value.service = response.data.service_spr
-        return response
       },
     })
 
@@ -213,9 +186,6 @@ export default {
         stage.value.targets = response.targets
         stage.value.type = response.subtype
         setOutputData(response.data)
-        if (stage.value.value === 2 && !list.value.personal.length) {
-          getPersonal()
-        }
       } else {
         stage.value.firstLoad = false
       }
@@ -236,6 +206,14 @@ export default {
       },
     })
 
+    const { makeRequest: makeRequestList } = useRequest({
+      context,
+      request: async (data) => {
+        const response = await store.dispatch('list/get', data)
+        return response
+      },
+    })
+
     const changeStage = async (val) => {
       stage.value.value = stage.value.value + val
       await changeOutputStage({
@@ -247,33 +225,29 @@ export default {
           },
         },
       })
-      if (stage.value.value === 2 && !list.value.personal.length) {
-        getPersonal()
-      }
-    }
-
-    const loadingPersonal = ref(false)
-    const getPersonal = async () => {
-      const requestList = Object.keys(stage.value.targets).map((item) => {
-        return +item
-      })
-      loadingPersonal.value = true
-      const responseData = await makeRequestList([
-        {
-          alias: 'parser_personal_id',
-          filter: [{ alias: 'personal_id', value: requestList }],
-        },
-      ])
-      list.value.personal = responseData.data.parser_personal_id
-      loadingPersonal.value = false
     }
 
     const loadParser = async () => {
-      const firstReq = await changeOutputStage({
-        url: `add/target/service/${stage.value.outputId}`,
-        body: { data: {} },
-      })
-      stage.value.count = firstReq.count
+      if (stage.value.type === 1) {
+        const firstReq = await changeOutputStage({
+          url: 'create/pay/by_import',
+          body: {
+            data: {
+              parser_id: stage.value.outputId,
+              type_parser: 1,
+            },
+          },
+        })
+        if (firstReq.code !== 1) return
+      } else if (stage.value.type === 2) {
+        console.log('zxc')
+      } else if (stage.value.type === 3) {
+        const firstReq = await changeOutputStage({
+          url: `add/target/service/${stage.value.outputId}`,
+          body: { data: {} },
+        })
+        if (firstReq.code !== 1) return
+      }
       const secondReq = await setFinalOutput({
         url: 'set/data/active_parsers',
         body: {
@@ -337,18 +311,6 @@ export default {
         if (val + nextStage !== stage.value.value) equateStages(val + nextStage)
         else if (stage.value.firstLoad) stage.value.firstLoad = false
       }
-    }
-
-    const convertData = (val) => {
-      return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
-    }
-
-    const getPersonalName = (val) => {
-      return list.value.personal.find((x) => x.id === +val)?.name
-    }
-
-    const getFinalSum = (val) => {
-      return val.reduce((acc, item) => acc + item.sum, 0)
     }
 
     watch(
@@ -425,12 +387,9 @@ export default {
       buttonHandler,
       subButtons,
       changeStage,
-      convertData,
-      list,
-      getPersonalName,
-      loadingPersonal,
-      getFinalSum,
       getDownloadPath,
+
+      DefaultStage,
     }
   },
 }

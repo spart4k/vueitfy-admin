@@ -713,6 +713,15 @@ const routes = [
         },
         component: Detail,
       },
+      {
+        name: 'pivot_payment-zayavka',
+        path: '/pivot_payment/zayavka',
+        meta: {
+          mode: ['zayavka'],
+          label: 'Парсер заявок',
+        },
+        component: Detail,
+      },
     ],
   },
   {

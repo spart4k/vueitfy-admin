@@ -12,14 +12,14 @@ import { stringAction } from '@/utils/actions'
 import FormOutput from '@/components/Form/output/index.vue'
 
 export default {
-  path: 'output',
+  path: 'zayavka',
   id: 1,
   name: 'Парсер X5',
   type: FormOutput,
   detail: true,
   initialRequestUrl: 'get/parser/active/',
-  outputType: 1,
-  lastStage: 'PaymentStage',
+  outputType: 2,
+  lastStage: 'PaymentZayavka',
   lists: [
     {
       alias: 'object_type_period',
@@ -27,7 +27,7 @@ export default {
         {
           alias: 'type_parser',
           sendEmpty: true,
-          value: [1],
+          value: [2],
           type: 'num',
         },
       ],
@@ -85,7 +85,7 @@ export default {
         maxSize: 500,
         valueId: 'parser_objects',
         folder: 'parser',
-        name: '`parser_payment`',
+        name: '`parser_zayavka`',
         paramsForEmit: this,
         countFiles: 1,
       },
