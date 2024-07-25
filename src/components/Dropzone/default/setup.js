@@ -67,10 +67,8 @@ export default {
       //previewsContainer: false,
       // headers: { "My-Awesome-Header": "header value" }
     })
-    //const value = ref([]
     const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
-      // dropzone.value.removeAllFiles()
       if (Array.isArray(files)) {
         files.forEach((item) => {
           if (!item.hasOwnProperty('upload')) {
@@ -85,7 +83,6 @@ export default {
         if (props.options.callbacks) {
           props.options.callbacks()
         }
-        //dropzone.value.processQueue()
       } else {
         if (proxyVal.value === undefined) {
           proxyVal.value = []
@@ -93,28 +90,12 @@ export default {
         proxyVal.value.push(...files)
         emit('addFiles', { ...files, ...props.paramsForEmit }, props.options)
       }
-      //
-      ////const progress = document.querySelector('.dz-progress')
-      ////progress.style.opacity = 0
-      //setTimeout(() => {
-      //
-      //  //dropzone.value.processQueue()
-      //}, 1000)
-      //
-      //)
-      //)
-      //dropzone.value.processQueue()
-      //value.value.push(files)
-      //
     }
+
     let clearDropzone = () => {
       dropzone.value.removeAllFiles()
-      //
     }
-    const showSuccess = () => {
-      //
-      //dropzone.value.processQueue()
-    }
+
     const removed = (file) => {
       if (!props.options.withoutSave) {
         const index = proxyVal.value?.findIndex(
@@ -124,10 +105,12 @@ export default {
       }
       emit('removeFile')
     }
+
     watch(
       () => proxyVal.value,
       () => emit('input', proxyVal.value)
     )
+
     const getUrlExtension = (url) =>
       url.split(/[#?]/)[0].split('.').pop().trim()
     const fillPreview = () => {
@@ -136,18 +119,14 @@ export default {
         //url = 'https://personal-crm.ru' + url
         url = process.env.VUE_APP_STORE + url
 
-        // alert(url, 'STORE')
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
 
         const file = { name: filename, size: 12322, type: 'image/' + type }
         dropzone.value.manuallyAddFile(file, url)
       }
-      //proxyVal.value.forEach((el) => (el = 'https://api.personal-crm.ru' + el))
     }
-    //const nameFile = () => {
 
-    //}
     const loadFile = async (files) => {
       const formData = new FormData()
       const fileType =
@@ -173,24 +152,12 @@ export default {
       }
     }
     onMounted(() => {
-      if (proxyVal.value) {
-        fillPreview()
-      }
-      //value.value = dropzone.value.dropzone.files
-      //const file = { size: 123, name: 'Icon', type: 'image/png' }
-      //const url =
-      //  'https://upload.wikimedia.org/wikipedia/commons/5/50/1_%D0%9A%D0%B0%D1%81%D1%82%D0%B0_photo_%40katya_mozina_001.jpg'
-      //dropzone.value.manuallyAddFile(file, url)
-      //dropzone.value.emit(
-      //  'addedfile',
-      //  'https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg'
-      //)
+      if (proxyVal.value) fillPreview()
     })
     return {
       dropzoneOptions,
       sendingFile,
       dropzone,
-      showSuccess,
       removed,
       proxyVal,
       fillPreview,
