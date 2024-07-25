@@ -2,7 +2,7 @@ import { ref, onMounted, watch, toRef } from 'vue'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import store from '@/store'
-//import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'DropZone',
@@ -71,7 +71,16 @@ export default {
     const proxyVal = toRef(props, 'value')
     const sendingFile = async (files) => {
       // dropzone.value.removeAllFiles()
-      console.log(files)
+      if (Array.isArray(files)) {
+        files.forEach((item) => {
+          if (!item.hasOwnProperty('upload')) {
+            item.upload = {
+              uuid: uuidv4(),
+            }
+            item.accepted = true
+          }
+        })
+      }
       if (props.options.withoutSave) {
         await loadFile(files)
         if (props.options.callbacks) {
@@ -110,7 +119,7 @@ export default {
     const removed = (file) => {
       if (!props.options.withoutSave) {
         const index = proxyVal.value?.findIndex(
-          (x) => x[0].upload.uuid === file.upload.uuid
+          (x) => x.upload.uuid === file.upload.uuid
         )
         proxyVal.value?.splice(index, 1)
       }
