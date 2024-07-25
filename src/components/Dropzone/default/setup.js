@@ -77,7 +77,6 @@ export default {
             item.upload = {
               uuid: uuidv4(),
             }
-            item.accepted = true
           }
         })
       }
