@@ -1,4 +1,4 @@
-import { ref, onMounted, watch, toRef } from 'vue'
+import { ref, onMounted, watch, toRef, nextTick } from 'vue'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import store from '@/store'
@@ -86,7 +86,9 @@ export default {
         if (proxyVal.value === undefined) proxyVal.value = []
         proxyVal.value.push(...arr)
         emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
-        fileValidation()
+        nextTick(() => {
+          fileValidation()
+        })
       }
     }
 
@@ -98,7 +100,6 @@ export default {
           timeout: 3000,
         })
       }
-
       for (let i = proxyVal.value.length - 1; i > -1; i--) {
         const file = proxyVal.value[i]
         if (
