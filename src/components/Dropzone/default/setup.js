@@ -100,7 +100,6 @@ export default {
           timeout: 3000,
         })
       }
-      console.log(proxyVal.value)
       for (let i = proxyVal.value.length - 1; i > -1; i--) {
         const file = proxyVal.value[i]
         if (
