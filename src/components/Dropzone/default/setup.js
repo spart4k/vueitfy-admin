@@ -68,20 +68,22 @@ export default {
       // headers: { "My-Awesome-Header": "header value" }
     })
     const proxyVal = toRef(props, 'value')
+
     const sendingFile = async (files) => {
       let arr = []
       if (Array.isArray(files)) arr = files
       else arr = Object.values(files)
 
       if (props.options.withoutSave) {
-        await loadFile(files)
-        if (props.options.callbacks) {
-          props.options.callbacks()
-        }
+        const filePromise = arr.map(async (file) => {
+          const response = await loadFile(file)
+          return response
+        })
+        await Promise.all(filePromise).then((data) => {
+          if (props.options.callbacks) props.options.callbacks(data)
+        })
       } else {
-        if (proxyVal.value === undefined) {
-          proxyVal.value = []
-        }
+        if (proxyVal.value === undefined) proxyVal.value = []
         proxyVal.value.push(...arr)
         emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
         fileValidation()
@@ -89,6 +91,14 @@ export default {
     }
 
     const fileValidation = () => {
+      const throwError = (message) => {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: message,
+          timeout: 3000,
+        })
+      }
+
       for (let i = proxyVal.value.length - 1; i > -1; i--) {
         const file = proxyVal.value[i]
         if (
@@ -96,33 +106,23 @@ export default {
           file.size / 1000000 > props.options.maxSize
         ) {
           dropzone.value.removeFile(file)
-          store.commit('notifies/showMessage', {
-            color: 'error',
-            content: `Файл ${file.name} превышает допустимый вес (${props.options.maxSize}мб)`,
-            timeout: 3000,
-          })
+          throwError(
+            `Файл ${file.name} превышает допустимый вес (${props.options.maxSize}мб)`
+          )
         }
         if (
           props.options.countFiles &&
           proxyVal.value.length > props.options.countFiles
         ) {
           dropzone.value.removeFile(file)
-          store.commit('notifies/showMessage', {
-            color: 'error',
-            content: `Превышено кол-во файлов (${props.options.countFiles})`,
-            timeout: 3000,
-          })
+          throwError(`Превышено кол-во файлов (${props.options.countFiles})`)
         }
         if (
           props.options.type &&
           !props.options.type.includes(file.name.split('.').at(-1))
         ) {
           dropzone.value.removeFile(file)
-          store.commit('notifies/showMessage', {
-            color: 'error',
-            content: `Допустимые форматы: ${props.options.type.toString()}`,
-            timeout: 3000,
-          })
+          throwError(`Допустимые форматы: ${props.options.type.toString()}`)
         }
       }
     }
@@ -162,17 +162,16 @@ export default {
       }
     }
 
-    const loadFile = async (files) => {
+    const loadFile = async (file) => {
       const formData = new FormData()
-      const fileType =
-        files[0].name.split('.')[files[0].name.split('.').length - 1]
+      const fileType = file.name.split('.').at(-1)
       if (!props.options.formats || props.options.formats.includes(fileType)) {
         const name = `${
           props.options.folder
         }_25_${new Date().getTime()}.${fileType}`
         const folder = props.options.folder + '/' + name
-        formData.append('name', files[0].name)
-        formData.append('file', ...files)
+        formData.append('name', file.name)
+        formData.append('file', file)
         const params = {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -186,6 +185,7 @@ export default {
         emit('fileUpload', folder)
       }
     }
+
     onMounted(() => {
       if (proxyVal.value) fillPreview()
     })
