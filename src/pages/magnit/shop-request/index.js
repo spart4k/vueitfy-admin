@@ -594,9 +594,10 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           datetimeField({
-            label: 'Последний статус',
+            label: 'Дата статуса',
             name: 'date_status',
             value: '',
             type: 'datetime',
@@ -614,12 +615,11 @@ const config = {
             disable: false,
           }),
           datetimeField({
-            label: 'Создана',
+            label: 'Создано',
             name: 'date_create',
             value: '',
             type: 'datetime',
             subtype: 'datetime',
-            readonly: true,
             menu: false,
             placeholder: '',
             class: [''],
@@ -629,7 +629,7 @@ const config = {
             },
             validations: { hasDate, hasTime },
             bootstrapClass: [''],
-            disable: false,
+            readonly: true,
           }),
           datetimeField({
             label: 'На дату',
@@ -648,24 +648,6 @@ const config = {
             validations: { hasDate, hasTime },
             bootstrapClass: [''],
             disable: false,
-          }),
-          selectField({
-            label: 'В работе у',
-            name: 'account_id',
-            alias: 'manager_magnit_id',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
           }),
           autocompleteField({
             label: 'Линейщик',
@@ -695,6 +677,25 @@ const config = {
             //   field: 'personal_bank_id',
             // },
           }),
+          selectField({
+            label: 'В работе у',
+            name: 'account_id',
+            alias: 'account_id',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            readonly: true,
+          }),
           autocompleteField({
             label: 'Объект',
             name: 'object_id',
@@ -708,13 +709,14 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'get/pagination_list/object',
+            url: 'get/pagination_list/object_id',
             position: {
               cols: 12,
-              sm: 12,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           selectField({
             label: 'Должность',
@@ -733,12 +735,12 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           stringField({
             label: 'Часы',
-            name: 'name',
+            name: 'hour',
             placeholder: '',
-            readonly: false,
             class: [''],
             position: {
               cols: 12,
@@ -747,6 +749,7 @@ const config = {
             bootstrapClass: [''],
             //validations: { required },
             //isShow: false,
+            readonly: true,
           }),
           dropZoneField({
             label: 'Файл акта',
@@ -853,7 +856,6 @@ const config = {
             },
           }),
         ],
-        path: 'edit',
         sharedFields: {
           fields: [
             {
@@ -874,7 +876,7 @@ const config = {
             },
             {
               name: 'account_id',
-              // readonly: true,
+              readonly: true,
             },
             {
               name: 'hour',

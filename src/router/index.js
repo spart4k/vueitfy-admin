@@ -827,16 +827,16 @@ const routes = [
       {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
-        meta: {
-          mode: ['add'],
-        },
         component: Detail,
+        meta: {
+          label: 'Добавление заявки на Магнит',
+        },
         children: [
           {
             name: 'shop-request-magnit-add-payment-add',
             path: 'payment/add',
             meta: {
-              mode: ['add', 'add-edit-logistic'],
+              mode: ['add-edit-logistic'],
               label: 'Добавить начисление',
             },
             component: Detail,
@@ -847,15 +847,12 @@ const routes = [
         name: 'shop-request-magnit/:id',
         path: ':id',
         component: Detail,
-        meta: {
-          mode: ['edit'],
-        },
         children: [
           {
             name: 'shop-request-magnit/:id/payment-add',
             path: 'payment/add',
             meta: {
-              mode: ['edit', 'add-edit-logistic'],
+              mode: ['add-edit-logistic'],
               label: 'Добавить начисление',
             },
             component: Detail,
@@ -864,7 +861,7 @@ const routes = [
             name: 'shop-request-magnit/:id/payment/:payment_id',
             path: 'payment/:payment_id',
             meta: {
-              mode: ['edit', 'add-edit-logistic'],
+              mode: ['add-edit-logistic'],
               label: 'Добавить начисление',
             },
             component: Detail,

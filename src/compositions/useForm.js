@@ -61,7 +61,6 @@ export default function ({
   let fields = {}
   let fieldAliases = {}
   const initFields = () => {
-    console.log('INIT FIELDS')
     if (!form) return
     fields = {}
     fieldAliases = {}
@@ -71,11 +70,9 @@ export default function ({
         fieldAliases[form.fields[i].alias] = form.fields[i].name
       else fieldAliases[form.fields[i].name] = form.fields[i].name
     }
-    console.log(fields, formData)
     for (let key in fields) {
       console.log(JSON.stringify(formData))
       if (formData.hasOwnProperty(key)) continue
-      console.log(formData)
       Vue.set(formData, key, ref(fields[key].value))
     }
     queueMicrotask(() => {
@@ -462,7 +459,7 @@ export default function ({
         sharedFields.target.fields.forEach((targetField) => {
           // console.log(targetField.name, field.name)
           if (targetField.name === field.name) {
-            console.log(targetField, formData[field.name])
+            console.log(formData, targetField, formData[field.name])
             targetField.value = formData[field.name]
             if (field.value) targetField.value = field.value
             if (field.readonly === true) targetField.readonly = true
@@ -477,7 +474,6 @@ export default function ({
       let routeRequest = formData[action.target.requestKey]
         ? `/:${action.target.requestKey}`
         : '-add'
-      console.log(requestId, formData[action.target.requestKey])
       router.push({
         name: action.target.route + routeRequest,
         // name: `${route.name}/:${requestId}`,
@@ -941,7 +937,6 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
-      console.log('dependence', dependence)
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -1089,7 +1084,6 @@ export default function ({
         targetField.items = targetField.defaultItems
           ? [...targetField.defaultItems, ...data]
           : data
-        console.log(targetField?.items, targetField.name)
         if (targetField?.items?.length === 1) {
           // Если массив, вставить массив
           // formData[targetField.name] = targetField.items[0].id
@@ -1301,7 +1295,6 @@ export default function ({
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
-        console.log(el)
         el.items = [el.items, ...data.rows]
       }
 
@@ -1325,8 +1318,10 @@ export default function ({
   }
 
   const putSelectItems = async (lists) => {
+    // console.log(JSON.stringify(lists.data))
     const stackDep = []
     for (let keyList in lists.data) {
+      console.log(keyList, 'KEYLIST', lists.data[keyList], mode)
       const field = fields[fieldAliases[keyList]]
       if (field) {
         field.hideItems = lists.data[keyList]
@@ -1404,7 +1399,14 @@ export default function ({
               field.defaultItems[0][field.selectOption.value]
           }
         }
+        // console.log(JSON.stringify(lists.data))
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
+          // console.log(
+          //   'field HAS VALIE',
+          //   formData[field.name],
+          //   field,
+          //   lists.data
+          // )
           formData[field.name] = ''
         }
         if (
@@ -1430,6 +1432,7 @@ export default function ({
           _.intersection(el[field.selectOption.value], value)
         )
       } else {
+        console.log(list, value)
         return list.find((el) => el[field.selectOption.value] === value)
       }
     }
@@ -1477,7 +1480,6 @@ export default function ({
   const getData = async () => {
     let syncForm = undefined
     if (getDetail() && form.alias) {
-      console.log('GET DATA')
       syncForm = await makeRequest()
       entityData.value = syncForm.data
     }

@@ -259,18 +259,18 @@ export default {
       alias: 'status_id',
       filter: [],
     },
-    // {
-    //   alias: 'payment_direction_id',
-    //   filter: [
-    //     {
-    //       field: 'account_id',
-    //       // alias: 'account_id',
-    //       value: '',
-    //       source: 'formData',
-    //       type: 'num',
-    //     },
-    //   ],
-    // },
+    {
+      alias: 'payment_direction_id',
+      filter: [
+        {
+          field: 'account_id',
+          // alias: 'account_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+      ],
+    },
     {
       alias: 'doljnost_id',
       filter: [],
@@ -610,24 +610,24 @@ export default {
           //],
           url: 'get/pagination_list/payment_object_id',
         },
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'personal_id',
-          //filter: [
-          //  {
-          //    field: 'direction_id',
-          //    value: '',
-          //  },
-          //],
-          condition: [
-            {
-              field: 'direction_id',
-              value: [2],
-            },
-          ],
-          url: 'get/pagination_list/personal',
-        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'personal_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [2],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/personal',
+        // },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -680,25 +680,6 @@ export default {
           // },
           {
             funcCondition: (context) => {
-              console.log(context, context.formData.status_id === 1)
-              console.log(
-                context.formData.account_id !== context.store.state.user.id,
-                (context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.formData?.status_id === 4,
-                context.formData.status_id === 1 ||
-                  context.formData.status_id === 3,
-                context.mode === 'edit'
-              )
-              console.log(
-                context.formData.account_id !== context.store.state.user.id &&
-                  (context.formData.status_id === 1 ||
-                    context.formData.status_id === 3 ||
-                    ((context.store.state.user.permission_id === 12 ||
-                      context.store.state.user.permission_id === 22) &&
-                      context.formData?.status_id === 4)) &&
-                  context.mode === 'edit'
-              )
               return (
                 context.formData.account_id !== context.store.state.user.id &&
                 (context.formData.status_id === 1 ||
@@ -783,15 +764,15 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      hiding: {
-        conditions: [
-          {
-            target: 'mode',
-            value: 'add',
-            values: [2],
-          },
-        ],
-      },
+      // hiding: {
+      //   conditions: [
+      //     {
+      //       target: 'mode',
+      //       value: 'add',
+      //       values: [2],
+      //     },
+      //   ],
+      // },
       dependence: [
         {
           type: 'api',
@@ -805,24 +786,24 @@ export default {
           //],
           url: 'get/pagination_list/payment_object_id',
         },
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'personal_id',
-          //filter: [
-          //  {
-          //    field: 'direction_id',
-          //    value: '',
-          //  },
-          //],
-          condition: [
-            {
-              field: 'direction_id',
-              value: [2],
-            },
-          ],
-          url: 'get/pagination_list/personal',
-        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'personal_id',
+        //   //filter: [
+        //   //  {
+        //   //    field: 'direction_id',
+        //   //    value: '',
+        //   //  },
+        //   //],
+        //   condition: [
+        //     {
+        //       field: 'direction_id',
+        //       value: [2],
+        //     },
+        //   ],
+        //   url: 'get/pagination_list/personal',
+        // },
         {
           //fields: ['statement_card', 'cardowner'],
           type: 'default',
