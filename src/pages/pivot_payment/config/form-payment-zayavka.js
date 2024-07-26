@@ -123,13 +123,13 @@ export default {
       value: null,
       stage: 1,
     },
-    sum: {
-      text: 'Сумма:',
+    count: {
+      text: 'Начислений:',
       value: null,
       stage: 2,
     },
-    count: {
-      text: 'На назначений:',
+    sum: {
+      text: 'На сумму:',
       value: null,
       stage: 2,
     },

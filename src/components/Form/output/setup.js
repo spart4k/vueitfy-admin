@@ -70,6 +70,7 @@ export default {
     const stage = ref({
       value: 0,
       count: 0,
+      count_payment: null,
       type: null,
       showForm: true,
       errors: [],
@@ -200,7 +201,6 @@ export default {
 
     const { makeRequest: setFinalOutput } = useRequest({
       context,
-      successMessage: `Добавлена выработка на ${stage.value.count} назначений`,
       request: (data) => {
         return store.dispatch('form/update', data)
       },
@@ -228,20 +228,21 @@ export default {
     }
 
     const loadParser = async () => {
-      if (stage.value.type === 1) {
+      if (proxyTab.value.outputType === 1) {
         const firstReq = await changeOutputStage({
           url: 'create/pay/by_import',
           body: {
             data: {
               parser_id: stage.value.outputId,
-              type_parser: 1,
+              type_parser: stage.value.type,
             },
           },
         })
         if (firstReq.code !== 1) return
-      } else if (stage.value.type === 2) {
+        stage.value.count_payment = firstReq.data.count_payment
+      } else if (proxyTab.value.outputType === 2) {
         console.log('zxc')
-      } else if (stage.value.type === 3) {
+      } else if (proxyTab.value.outputType === 3) {
         const firstReq = await changeOutputStage({
           url: `add/target/service/${stage.value.outputId}`,
           body: { data: {} },
@@ -257,6 +258,18 @@ export default {
           },
         },
       })
+      if (secondReq.result === 1) {
+        store.commit('notifies/showMessage', {
+          color: 'success',
+          content:
+            proxyTab.value.outputType === 1
+              ? `Создано ${stage.value.count_payment} начислений`
+              : proxyTab.value.outputType === 2
+              ? ''
+              : `Добавлена выработка на ${stage.value.count} назначений`,
+          timeout: 3000,
+        })
+      }
       if (secondReq.type === 'success') {
         emit('getItems')
         emit('closePopup')
