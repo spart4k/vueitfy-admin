@@ -135,10 +135,10 @@ export default {
       },
     }
     const loading = ref(false)
-    const dropZoneOptions = {
-      withoutSave: true,
-      folder: 'personal_doc',
-    }
+    // const dropZoneOptions = {
+    //   withoutSave: true,
+    //   folder: 'personal_doc',
+    // }
     // const documentData = computed(() => {
     //   let result = []
     //   result = Object.values(props.document)[0].reduce((acc, item) => {
@@ -1898,7 +1898,7 @@ export default {
       vForm,
       touchedForm,
       openMenu,
-      dropZoneOptions,
+      // dropZoneOptions,
       documentName,
       switchLabel,
       basketFiles,
