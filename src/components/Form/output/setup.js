@@ -72,7 +72,6 @@ export default {
     const stage = ref({
       value: 0,
       count: 0,
-      count_payment: null,
       type: null,
       showForm: true,
       errors: [],
@@ -252,6 +251,7 @@ export default {
           },
         })
         if (firstReq.code !== 1) return
+        stage.value.count_query = firstReq.data.count_query
       } else if (proxyTab.value.outputType === 3) {
         const firstReq = await changeOutputStage({
           url: `add/target/service/${stage.value.outputId}`,
@@ -275,7 +275,7 @@ export default {
             proxyTab.value.outputType === 1
               ? `Создано ${stage.value.count_payment} начислений`
               : proxyTab.value.outputType === 2
-              ? ''
+              ? `Создано ${stage.value.count_query} заявок`
               : `Добавлена выработка на ${stage.value.count} назначений`,
           timeout: 3000,
         })
