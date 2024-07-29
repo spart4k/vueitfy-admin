@@ -19,7 +19,7 @@ export default {
   detail: true,
   initialRequestUrl: 'get/parser/active/',
   outputType: 2,
-  lastStage: 'PaymentZayavka',
+  lastStage: 'ZayavkaStage',
   lists: [
     {
       alias: 'object_type_period',
@@ -36,19 +36,6 @@ export default {
     // { alias: 'service_spr', filter: [] },
   ],
   fields: [
-    dateField({
-      label: 'Период',
-      name: 'period',
-      subtype: 'period',
-      placeholder: '',
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-    }),
     selectField({
       label: 'Тип',
       name: 'type_parser',
@@ -124,12 +111,7 @@ export default {
       stage: 1,
     },
     count: {
-      text: 'Начислений:',
-      value: null,
-      stage: 2,
-    },
-    sum: {
-      text: 'На сумму:',
+      text: 'Заявок:',
       value: null,
       stage: 2,
     },
@@ -193,7 +175,7 @@ export default {
           type: 'submit',
           color: 'primary',
           confirm: {
-            text: '`Вы подтверждаете начисления на сумму ${outputData.value.sum.value}р?`',
+            text: '`Подтверждаете создание заявок?`',
             width: 650,
           },
           action: 'loadParser',
