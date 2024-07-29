@@ -11,6 +11,7 @@ import Autocomplete from '@/components/Autocomplete/form'
 import FormDefault from '@/components/Form/default/index.vue'
 import DefaultStage from './LastStage/default/index.vue'
 import PaymentStage from './LastStage/payment/index.vue'
+import ZayavkaStage from './LastStage/zayavka/index.vue'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -35,6 +36,7 @@ export default {
     Datepicker,
     DefaultStage,
     PaymentStage,
+    ZayavkaStage,
   },
   props: {
     tab: {
@@ -170,7 +172,7 @@ export default {
     const setOutputData = (data) => {
       Object.keys(data)?.forEach((item) => {
         Object.entries(data[item])?.forEach((key) => {
-          outputData.value[key[0]].value = key[1]
+          if (outputData.value[key[0]]) outputData.value[key[0]].value = key[1]
         })
       })
     }
@@ -241,7 +243,15 @@ export default {
         if (firstReq.code !== 1) return
         stage.value.count_payment = firstReq.data.count_payment
       } else if (proxyTab.value.outputType === 2) {
-        console.log('zxc')
+        const firstReq = await changeOutputStage({
+          url: 'create/magnit/query/by_parser',
+          body: {
+            data: {
+              parser_id: stage.value.outputId,
+            },
+          },
+        })
+        if (firstReq.code !== 1) return
       } else if (proxyTab.value.outputType === 3) {
         const firstReq = await changeOutputStage({
           url: `add/target/service/${stage.value.outputId}`,
@@ -403,6 +413,8 @@ export default {
       getDownloadPath,
 
       DefaultStage,
+      ZayavkaStage,
+      PaymentStage,
     }
   },
 }
