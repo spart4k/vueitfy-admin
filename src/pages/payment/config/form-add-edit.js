@@ -12,6 +12,55 @@ import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
+const conditionLogistik = (context) => {
+  return (
+    [1, 6, 7].includes(context.formData.direction_id) &&
+    context.formData.account_id !== context.store.state.user.id &&
+    (context.formData.status_id === 1 ||
+      context.formData.status_id === 3 ||
+      ((context.store.state.user.permission_id === 12 ||
+        context.store.state.user.permission_id === 22) &&
+        context.originalData?.status_id === 4)) &&
+    context.mode === 'edit'
+  )
+}
+const conditionX5 = (context) => {
+  return !(
+    context.formData.direction_id === 2 &&
+    context.store.state.user.permission_id === 1 &&
+    context.formData.status_id === 1 &&
+    context.formData.bank_id === 1 &&
+    context.mode === 'edit'
+  )
+}
+
+const statusReject = (context) => {
+  return context.formData.status_id === 6 && context.mode === 'edit'
+}
+
+const ROKKdOKKLogistika = (context) => {
+  return (
+    [8, 17].includes(context.store.state.user.permission_id) &&
+    context.originalData.status_id !== 2 &&
+    [1, 6, 7].includes(context.formData.direction_id)
+  )
+}
+
+const ROKKdOKKRoznicd = (context) => {
+  return (
+    [8, 17].includes(context.store.state.user.permission_id) &&
+    context.originalData.status_id !== 2 &&
+    context.formData.direction_id === 2
+  )
+}
+
+const AvansEjednLogistik = (context) => {
+  return (
+    [1, 6, 7].includes(context.formData.direction_id) &&
+    [1, 5].includes(context.formData.vid_vedomost_id)
+  )
+}
+
 export default {
   id: uuidv4(),
   name: 'Добавить начисление',
@@ -259,18 +308,18 @@ export default {
       alias: 'status_id',
       filter: [],
     },
-    // {
-    //   alias: 'payment_direction_id',
-    //   filter: [
-    //     {
-    //       field: 'account_id',
-    //       // alias: 'account_id',
-    //       value: '',
-    //       source: 'formData',
-    //       type: 'num',
-    //     },
-    //   ],
-    // },
+    {
+      alias: 'payment_direction_id',
+      filter: [
+        {
+          field: 'account_id',
+          // alias: 'account_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+      ],
+    },
     {
       alias: 'doljnost_id',
       filter: [],
@@ -364,6 +413,12 @@ export default {
           //       context.formData.status_id === 3),
           //   type: false,
           // },
+          {
+            funcCondition: (context) => {
+              return AvansEjednLogistik(context)
+            },
+            type: true,
+          },
         ],
       },
       hiding: {
@@ -626,7 +681,7 @@ export default {
               value: [2],
             },
           ],
-          url: 'get/pagination_list/personal',
+          url: 'get/pagination_list/payment_personal_id',
         },
         // {
         //   type: 'api',
@@ -761,15 +816,6 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      hiding: {
-        conditions: [
-          {
-            target: 'mode',
-            value: 'add',
-            values: [2],
-          },
-        ],
-      },
       dependence: [
         {
           type: 'api',
@@ -799,7 +845,7 @@ export default {
               value: [2],
             },
           ],
-          url: 'get/pagination_list/personal',
+          url: 'get/pagination_list/payment_personal_id',
         },
         {
           //fields: ['statement_card', 'cardowner'],
@@ -989,6 +1035,10 @@ export default {
           //   },
           // ],
           url: 'get/pagination_list/payment_personal_id',
+        },
+        {
+          type: 'default',
+          fillField: ['type'],
         },
         // {
         //   type: 'api',
@@ -1357,16 +1407,16 @@ export default {
       readonly: {
         value: false,
         condition: [
-          {
-            target: 'formData',
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-            type: true,
-          },
-          {
-            permissions: [8, 17],
-            type: true,
-          },
+          // {
+          //   funcCondition: (context) =>
+          //     [1, 6, 7].includes(context.formData.direction_id) &&
+          //     [1, 5].includes(context.formData.vid_vedomost_id),
+          //   type: true,
+          // },
+          // {
+          //   permissions: [8, 17],
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -1377,23 +1427,109 @@ export default {
           //   type: true,
           // },
           {
-            funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                conditionLogistik(context) ||
+                // conditionX5(context) ||
+                statusReject(context) ||
+                ROKKdOKKLogistika(context)
+                // ROKKdOKKRoznicd(context)
+              )
+            },
             type: true,
           },
-          {
-            funcCondition: (context) =>
-              context.formData.status_id === 6 && context.mode === 'edit',
-            type: true,
-          },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.direction_id === 2 &&
+          //     context.store.state.user.permission_id === 1 &&
+          //     context.formData.status_id === 1 &&
+          //     context.formData.bank_id === 1 &&
+          //     context.mode === 'edit',
+          //   type: false,
+          // },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
         ],
       },
+      hideOption: [
+        {
+          target: 'type',
+          targetValue: [1],
+          value: [9],
+          type: true,
+          func: (ctx) => {
+            if (
+              ctx.mode === 'add' &&
+              ctx.formData.type === 1 &&
+              ctx.formData.direction_id === 2
+            ) {
+              return true
+            } else {
+              return false
+            }
+          },
+        },
+        {
+          target: 'type',
+          targetValue: [1],
+          value: [10],
+          type: true,
+          func: (ctx) => {
+            if (
+              ctx.mode === 'add' &&
+              ctx.formData.type === 1 &&
+              ctx.formData.direction_id === 2
+            ) {
+              return false
+            } else {
+              return true
+            }
+          },
+        },
+        {
+          value: [1, 3, 5, 8],
+          type: true,
+          func: (ctx) => {
+            if (ctx.mode === 'add') {
+              return true
+            } else {
+              return false
+            }
+          },
+        },
+      ],
+      // hiding: {
+      //   conditions: [
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'type',
+      //     //   value: [1],
+      //     //   values: [10],
+      //     // },
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'status_id',
+      //     //   value: [4],
+      //     //   values: [4, 6],
+      //     // },
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'status_id',
+      //     //   permissions: [3, 15],
+      //     //   value: [1, 2, 3],
+      //     //   values: [1, 3],
+      //     // },
+      //     // {
+      //     //   funcCondition: (context) => {
+      //     //     context.formData.status_id === 1 && context.store.state.user.id === context.formData.status_account_id && context.store.state.permission_id !== 4
+      //     //   },
+      //     //   values: [1, 3],
+      //     // },
+      //   ],
+      // },
     }),
     //selectField({
     //  label: 'Статья расхода',
@@ -1945,6 +2081,23 @@ export default {
         value: true,
       },
     }),
+    stringField({
+      label: 'Тип магазина',
+      name: 'type',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      value: 1,
+      isShow: {
+        value: true,
+      },
+    }),
   ],
   actions: [
     stringAction({
@@ -2039,3 +2192,4 @@ export default {
     }),
   ],
 }
+//

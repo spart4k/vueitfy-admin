@@ -287,6 +287,7 @@ export default {
       changeValue,
       isRequired,
       fields,
+      mode: isEdit.value,
     }
   },
 }

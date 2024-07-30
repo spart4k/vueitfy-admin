@@ -1114,7 +1114,7 @@ export default function ({
           } else {
             formData[depField] = data[0]?.id
           }
-          card = targetField.items.find((el) => el.id === formData[depField])
+          card = targetField.items?.find((el) => el.id === formData[depField])
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
           }
@@ -1302,6 +1302,7 @@ export default function ({
             const formTargets = field.hiding.conditions.filter(
               (el) => el.target === 'formData'
             )
+            console.log(JSON.stringify(formData))
             if (formTargets?.length) {
               formTargets.forEach((formTarget) => {
                 if (formTarget.value.includes(formData[formTarget.field])) {
@@ -1359,6 +1360,7 @@ export default function ({
           }
         }
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
+          console.log(field.name)
           formData[field.name] = ''
         }
         if (
@@ -1377,6 +1379,7 @@ export default function ({
     await Promise.all(stackDep)
   }
   const hasValue = (value, list, field) => {
+    console.log(value, list, field, field?.name)
     if (!value) return true
     else {
       if (Array.isArray(value)) {
