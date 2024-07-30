@@ -23,18 +23,51 @@
             </template>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <div v-for="(item, index) in object" :key="index">
-              <v-divider class="mt-7 mb-8" v-if="index"></v-divider>
+            <div
+              v-for="(item, index) in object"
+              :key="index"
+              :class="index && 'mt-3'"
+            >
               <v-row>
-                <v-col cols="12" sm="5">
-                  <v-list-item-title class="textDefault--text">
-                    {{ list.account[item.account_id] }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="textGray--text">
-                    {{ list.doljnost[item.doljnost_id] }}
-                  </v-list-item-subtitle>
-                </v-col>
+                <div class="text--text mr-3">{{ index + 1 }}.</div>
+                <v-row class="d-block">
+                  <v-row>
+                    <v-icon class="mr-3" color="textGray">
+                      mdi-account-outline
+                    </v-icon>
+                    <span class="text--text font-weight-bold">{{
+                      list.account[item.account_id]
+                    }}</span>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="5" class="pl-0 pr-0">
+                      <v-icon class="mr-3" color="textGray">
+                        mdi-calendar-clock-outline
+                      </v-icon>
+                      <span class="text--text">{{
+                        convertData(item.date_request)
+                      }}</span></v-col
+                    >
+                    <v-col cols="12" sm="3">
+                      <span class="text--text">
+                        {{ list.doljnost[item.doljnost_id] }}
+                      </span>
+                    </v-col>
+                    <v-col cols="12" sm="4" class="pl-0 pr-0">
+                      <v-row class="justify-end">
+                        <v-icon class="mr-3" color="textGray">
+                          mdi-clock-outline
+                        </v-icon>
+                        <span class="text--text">{{ item.hour }}.00</span>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                  <v-row v-if="item.note">
+                    <span class="text--text">Примечание: {{ item.note }}</span>
+                  </v-row>
+                </v-row>
               </v-row>
+              <v-divider class="mt-3"></v-divider>
             </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
