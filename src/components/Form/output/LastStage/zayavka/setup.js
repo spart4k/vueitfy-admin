@@ -80,7 +80,9 @@ export default {
     }
 
     const convertData = (val) => {
-      return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
+      const time = val.split(' ')
+      const date = moment(time[0], 'YYYY-MM-DD').format('DD.MM.YYYY')
+      return `${date}, ${time[1].slice(0, 5)}`
     }
 
     onMounted(() => {
