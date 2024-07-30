@@ -11,7 +11,15 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
+import formAddEditPayment from '../../payment/config/form-add-edit.js'
+import _ from 'lodash'
+const paymentConfig = _.cloneDeep(formAddEditPayment)
+console.log(paymentConfig, paymentConfig.id, 'paymentConfig')
+paymentConfig.requestId = 'payment_id'
+paymentConfig.routeParam = 'payment_id'
+// _.cloneDeep(filters)
 
+console.log(formAddEditPayment)
 function consoleText(row) {}
 
 function consoleButton(row) {}
@@ -526,6 +534,7 @@ const config = {
     footer: null,
   },
   detail: {
+    name: 'Заявка на Магнит',
     type: 'popup', // String 'popup' or 'page'
     classes: [''], // List class
     width: '900px',
@@ -538,16 +547,13 @@ const config = {
         id: 0,
         name: 'Основные',
         type: 'FormDefault',
-        detail: true,
+        path: 'add-or-edit',
+        // detail: true,
         lists: [
           { alias: 'status_srm', filter: [] },
-          { alias: 'habitation_id', filter: [] },
-          // { alias: 'object_id_logistic', filter: [] },
-          // { alias: 'account_id_logistic', filter: [] },
-          { alias: 'manager_magnit_id', filter: [] },
           { alias: 'account_id', filter: [] },
+          { alias: 'status_account_id', filter: [] },
           { alias: 'personal_id', filter: [] },
-          { alias: 'grajdanstvo_id', filter: [] },
           { alias: 'doljnost_magnit_id', filter: [] },
         ],
         alias: 'shop_request_magnit',
@@ -556,6 +562,7 @@ const config = {
           selectField({
             label: 'Статус',
             name: 'status',
+            alias: 'status_srm',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -569,9 +576,10 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           selectField({
-            label: 'От',
+            label: 'Статус от',
             name: 'status_account_id',
             placeholder: '',
             class: [''],
@@ -586,9 +594,10 @@ const config = {
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           datetimeField({
-            label: 'Последний статус',
+            label: 'Дата статуса',
             name: 'date_status',
             value: '',
             type: 'datetime',
@@ -606,12 +615,11 @@ const config = {
             disable: false,
           }),
           datetimeField({
-            label: 'Создана',
+            label: 'Создано',
             name: 'date_create',
             value: '',
             type: 'datetime',
             subtype: 'datetime',
-            readonly: true,
             menu: false,
             placeholder: '',
             class: [''],
@@ -621,7 +629,7 @@ const config = {
             },
             validations: { hasDate, hasTime },
             bootstrapClass: [''],
-            disable: false,
+            readonly: true,
           }),
           datetimeField({
             label: 'На дату',
@@ -641,24 +649,6 @@ const config = {
             bootstrapClass: [''],
             disable: false,
           }),
-          selectField({
-            label: 'В работе у',
-            name: 'account_id',
-            alias: 'manager_magnit_id',
-            placeholder: '',
-            class: [''],
-            selectOption: {
-              text: 'name',
-              value: 'id',
-            },
-            items: [],
-            position: {
-              cols: 12,
-              sm: 6,
-            },
-            validations: { required },
-            bootstrapClass: [''],
-          }),
           autocompleteField({
             label: 'Линейщик',
             name: 'personal_id',
@@ -672,7 +662,43 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'get/pagination_list/personal',
+            url: 'get/pagination_list/personal_magnit_id',
+            position: {
+              cols: 12,
+              sm: 6,
+            },
+            validations: { required },
+            bootstrapClass: [''],
+            filter: [
+              {
+                field: 'account_id',
+                // source: 'formData',
+                type: 'array',
+                value: '',
+              },
+            ],
+            // dependence: {
+            //   //fields: ['statement_card', 'cardowner'],
+            //   fillField: ['fio', 'invoice'],
+            //   type: 'api',
+            //   module: 'personal/getCard',
+            //   field: 'personal_bank_id',
+            // },
+          }),
+          autocompleteField({
+            label: 'В работе у',
+            name: 'account_id',
+            alias: 'account_id',
+            subtype: 'single',
+            placeholder: '',
+            class: [''],
+            selectOption: {
+              text: 'name',
+              value: 'id',
+            },
+            items: [],
+            search: '',
+            url: 'get/pagination_list/manager_magnit_id',
             position: {
               cols: 12,
               sm: 6,
@@ -686,6 +712,16 @@ const config = {
             //   module: 'personal/getCard',
             //   field: 'personal_bank_id',
             // },
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  funcCondition: (context) => context.mode === 'edit',
+                  // asdasd
+                  type: true,
+                },
+              ],
+            },
           }),
           autocompleteField({
             label: 'Объект',
@@ -700,18 +736,20 @@ const config = {
             items: [],
             page: 1,
             search: '',
-            url: 'get/pagination_list/object',
+            url: 'get/pagination_list/object_id',
             position: {
               cols: 12,
-              sm: 12,
+              sm: 6,
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
-          selectField({
+          autocompleteField({
             label: 'Должность',
             name: 'doljnost_id',
             alias: 'doljnost_magnit_id',
+            subtype: 'single',
             placeholder: '',
             class: [''],
             selectOption: {
@@ -719,18 +757,21 @@ const config = {
               value: 'id',
             },
             items: [],
+            page: 1,
+            search: '',
+            url: 'get/pagination_list/doljnost_magnit_id',
             position: {
               cols: 12,
               sm: 9,
             },
             validations: { required },
             bootstrapClass: [''],
+            readonly: true,
           }),
           stringField({
             label: 'Часы',
-            name: 'name',
+            name: 'hour',
             placeholder: '',
-            readonly: false,
             class: [''],
             position: {
               cols: 12,
@@ -739,6 +780,7 @@ const config = {
             bootstrapClass: [''],
             //validations: { required },
             //isShow: false,
+            readonly: true,
           }),
           dropZoneField({
             label: 'Файл акта',
@@ -773,23 +815,135 @@ const config = {
             //validations: { required },
             //isShow: false,
           }),
+          textBlock({
+            label: 'payment',
+            name: 'payment_id',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
         ],
         actions: [
           stringAction({
+            text: 'Закрыть',
+            type: 'submit',
+            color: 'text',
+            name: 'closePopup',
+            action: 'closePopup',
+            to: 'account',
+            skipValidation: true,
+          }),
+          stringAction({
+            text: 'Начислить',
+            type: 'submit',
+            action: 'openForm',
+            target: {
+              route: 'shop-request-magnit/:id/payment',
+              requestKey: 'payment_id',
+            },
+            color: 'primary',
+            skipValidation: true,
+            handlingResponse: {
+              1: {
+                text: 'Аккаунт создан',
+                color: 'success',
+              },
+              2: {
+                text: 'Такой аккаунт уже существует',
+                color: 'error',
+              },
+              3: {
+                text: '',
+              },
+            },
+            isHide: {
+              value: false,
+              type: 'every',
+              condition: [
+                {
+                  funcCondition: (context) => context.mode === 'edit',
+                  type: false,
+                },
+              ],
+            },
+          }),
+
+          stringAction({
             text: 'Сохранить',
             type: 'submit',
-            module: '',
-            name: 'saveForm',
-            nextForm: true,
+            module: 'account/createData',
+            url: 'set/account',
+            name: 'createForm',
+            action: 'createForm',
+            color: 'primary',
+            handlingResponse: {
+              1: {
+                text: 'Аккаунт создан',
+                color: 'success',
+              },
+              2: {
+                text: 'Такой аккаунт уже существует',
+                color: 'error',
+              },
+              3: {
+                text: '',
+              },
+            },
           }),
         ],
-      },
-      {
-        id: 1,
-        name: 'Расход',
-        type: 'TableDefault',
-        active: false,
-        config: tableConsumptionConfig,
+        sharedFields: {
+          fields: [
+            {
+              name: 'date_target',
+              readonly: true,
+            },
+            {
+              name: 'personal_id',
+              readonly: true,
+            },
+            {
+              name: 'object_id',
+              readonly: true,
+            },
+            {
+              name: 'doljnost_id',
+              readonly: true,
+            },
+            {
+              name: 'account_id',
+              readonly: true,
+            },
+            {
+              name: 'hour',
+              readonly: true,
+            },
+            {
+              name: 'direction_id',
+              value: 2,
+              readonly: true,
+            },
+          ],
+          target: paymentConfig,
+        },
+        detail: {
+          type: 'popup', // String 'popup' or 'page'
+          classes: [''], // List class
+          width: '780px',
+          method: 'get',
+          name: 'Редактировать проживание',
+          alias: 'payment',
+          requestId: 'payment_id',
+          url: '/get/form/',
+          bootstrapClass: [''],
+          tabs: [Object.assign({}, paymentConfig)],
+        },
       },
       {
         path: 'upload',
