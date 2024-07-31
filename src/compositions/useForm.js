@@ -659,39 +659,37 @@ export default function ({
           const queries = []
           for (const item of dropzone.value) {
             const file = item
-            if (file?.accepted) {
-              const valueId =
-                formData[dropzone.options.valueId] ?? store?.state?.user.id
-              const name =
-                (dropzone.options.fileName
-                  ? file.name
-                  : eval(dropzone.options.name).split(' ').join('_')) +
-                '_' +
-                valueId +
-                '_' +
-                fileIndex +
-                '_' +
-                new Date().getTime()
-              const ext = file.name.split('.').pop()
-              const storeForm = new FormData()
-              storeForm.append('name', name + '.' + ext)
-              storeForm.append('file', file)
-              const params = {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              }
-              queries.push({
-                request: store.dispatch('file/create', {
-                  data: storeForm,
-                  folder: `${dropzone.options.folder}/${name}.${ext}`,
-                  params,
-                }),
-                path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
-                index: fileIndex,
-              })
-              fileIndex += 1
+            const valueId =
+              formData[dropzone.options.valueId] ?? store?.state?.user.id
+            const name =
+              (dropzone.options.fileName
+                ? file.name
+                : eval(dropzone.options.name).split(' ').join('_')) +
+              '_' +
+              valueId +
+              '_' +
+              fileIndex +
+              '_' +
+              new Date().getTime()
+            const ext = file.name.split('.').pop()
+            const storeForm = new FormData()
+            storeForm.append('name', name + '.' + ext)
+            storeForm.append('file', file)
+            const params = {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
             }
+            queries.push({
+              request: store.dispatch('file/create', {
+                data: storeForm,
+                folder: `${dropzone.options.folder}/${name}.${ext}`,
+                params,
+              }),
+              path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
+              index: fileIndex,
+            })
+            fileIndex += 1
           }
           await Promise.all(queries).then((data) => {
             if (dropzone.grouping) {
