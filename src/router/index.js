@@ -857,7 +857,7 @@ const routes = [
             name: 'shop-request-magnit/:id/payment-add',
             path: 'payment/add',
             meta: {
-              mode: ['add-edit-logistic'],
+              mode: ['add-or-edit', 'add-edit-logistic'],
               label: 'Добавить начисление',
             },
             component: Detail,
@@ -866,7 +866,7 @@ const routes = [
             name: 'shop-request-magnit/:id/payment/:payment_id',
             path: 'payment/:payment_id',
             meta: {
-              mode: ['add-edit-logistic'],
+              mode: ['add-or-edit', 'add-edit-logistic'],
               label: 'Добавить начисление',
             },
             component: Detail,

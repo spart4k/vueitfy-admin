@@ -661,16 +661,21 @@ export default function ({
             const file = item
             const valueId =
               formData[dropzone.options.valueId] ?? store?.state?.user.id
-            const name =
-              (dropzone.options.fileName
-                ? file.name
-                : eval(dropzone.options.name).split(' ').join('_')) +
-              '_' +
-              valueId +
-              '_' +
-              fileIndex +
-              '_' +
-              new Date().getTime()
+            let name = ''
+            if (dropzone.options.customName) {
+              name = dropzone.options.customName(formData)
+            } else {
+              name =
+                (dropzone.options.fileName
+                  ? file.name
+                  : eval(dropzone.options.name).split(' ').join('_')) +
+                '_' +
+                valueId +
+                '_' +
+                fileIndex +
+                '_' +
+                new Date().getTime()
+            }
             const ext = file.name.split('.').pop()
             const storeForm = new FormData()
             storeForm.append('name', name + '.' + ext)
