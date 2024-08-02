@@ -7,6 +7,7 @@ import PersonalView from '../views/PersonalView.vue'
 import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
+import MagnitPivot from '../views/Magnit/PivotView.vue'
 import PivotRetailView from '../views/PivotRetailView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
@@ -598,6 +599,17 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: Pivotx5View,
+  },
+  {
+    path: '/magnit_pivot',
+    name: 'magnit_pivot',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: MagnitPivot,
   },
   {
     path: '/pivot_retail',
