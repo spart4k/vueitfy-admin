@@ -551,7 +551,7 @@ const config = {
         // detail: true,
         lists: [
           { alias: 'status_srm', filter: [] },
-          { alias: 'account_id', filter: [] },
+          // { alias: 'account_id', filter: [] },
           { alias: 'status_account_id', filter: [] },
           // { alias: 'doljnost_magnit_id', filter: [] },
         ],
@@ -633,7 +633,6 @@ const config = {
           autocompleteField({
             label: 'В работе у',
             name: 'account_id',
-            alias: 'account_id',
             subtype: 'single',
             placeholder: '',
             class: [''],
@@ -680,7 +679,6 @@ const config = {
             value: '',
             type: 'datetime',
             subtype: 'datetime',
-            readonly: true,
             menu: false,
             placeholder: '',
             class: [''],
@@ -691,6 +689,16 @@ const config = {
             validations: { hasDate, hasTime },
             bootstrapClass: [''],
             disable: false,
+            readonly: {
+              value: false,
+              condition: [
+                {
+                  funcCondition: (context) => context.mode === 'edit',
+                  // asdasd
+                  type: true,
+                },
+              ],
+            },
           }),
           autocompleteField({
             label: 'Объект',
@@ -702,8 +710,6 @@ const config = {
               text: 'name',
               value: 'id',
             },
-            items: [],
-            page: 1,
             search: '',
             url: 'get/pagination_list/object_magnit_id',
             position: {
@@ -757,6 +763,7 @@ const config = {
               cols: 12,
               sm: 6,
             },
+            page: 1,
             validations: { required },
             bootstrapClass: [''],
             filter: [
@@ -792,9 +799,6 @@ const config = {
               text: 'name',
               value: 'id',
             },
-            items: [],
-            page: 1,
-            search: '',
             url: 'get/pagination_list/doljnost_magnit_id',
             position: {
               cols: 12,
@@ -895,6 +899,21 @@ const config = {
               cols: 12,
               sm: 12,
             },
+            bootstrapClass: [''],
+            //validations: { required },
+            //isShow: false,
+          }),
+          textBlock({
+            label: 'type',
+            name: 'type',
+            placeholder: '',
+            readonly: false,
+            class: [''],
+            position: {
+              cols: 12,
+              sm: 12,
+            },
+            value: 2,
             bootstrapClass: [''],
             //validations: { required },
             //isShow: false,

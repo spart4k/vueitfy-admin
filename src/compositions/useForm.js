@@ -1009,8 +1009,10 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
+        console.log(field)
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
+            console.log(params)
             if (params?.item) formData[el] = params?.item[el]
             else if (formData[el] && params.hasOwnProperty('item'))
               formData[el] = null
@@ -1298,9 +1300,13 @@ export default function ({
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
-        el.items = [el.items, ...data.rows]
+        console.log(el.items)
+        if (el.items?.length) {
+          el.items = [...el.items, ...data.rows]
+        } else {
+          el.items = [...data.rows]
+        }
       }
-
       el.hideItems = el.items
       if (data.rows?.length === 1 && data.totalPage === 1) {
         if (fields[el.name]?.subtype === 'multiple') {
@@ -1365,6 +1371,10 @@ export default function ({
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
+        console.log(field.name)
+        if (field.name === 'personal_id') {
+          console.log(JSON.stringify(field.items), 'JSON')
+        }
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
