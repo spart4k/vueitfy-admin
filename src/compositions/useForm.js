@@ -605,89 +605,99 @@ export default function ({
       setFormData(obj, dropzone)
     }
 
-    // const queries = []
-
     const dropzoneArray = form.fields.filter(
       (x) =>
         x.type === 'dropzone' &&
         ((typeof x.isShow === 'boolean' && x.isShow) ||
           (typeof x.isShow === 'object' && x.isShow.value))
     )
-    await Promise.all(
-      dropzoneArray.map(async (dropzone) => {
-        if (dropzone.value.length) {
-          let fileIndex = 1
-          const queries = []
-          for (const item of dropzone.value) {
-            const file = item
-            const valueId =
-              formData[dropzone.options.valueId] ?? store?.state?.user.id
-            const name =
-              (dropzone.options.fileName
-                ? file.name
-                : eval(dropzone.options.name).split(' ').join('_')) +
-              '_' +
-              valueId +
-              '_' +
-              fileIndex +
-              '_' +
-              new Date().getTime()
-            const ext = file.name.split('.').pop()
-            const storeForm = new FormData()
-            storeForm.append('name', name + '.' + ext)
-            storeForm.append('file', file)
-            const params = {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            }
-            queries.push({
-              request: store.dispatch('file/create', {
-                data: storeForm,
-                folder: `${dropzone.options.folder}/${name}.${ext}`,
-                params,
-              }),
-              path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
-              index: fileIndex,
-            })
-            fileIndex += 1
-          }
-          await Promise.all(queries).then((data) => {
-            if (dropzone.grouping) {
-              const fileArray = [...data]
-              fileArray.forEach((file) => {
-                delete file.request
-              })
-              setFormData(fileArray, dropzone)
-            } else if (dropzone.toObject) {
-              const fileArray = [...data]
-              toObject(fileArray, dropzone)
-            } else {
-              setFormData(data[0].path, dropzone)
-            }
-          })
-        } else if (dropzone.toObject) {
-          toObject(null, dropzone)
-        }
 
-        if (dropzone.stash) {
-          formData[dropzone.stash]?.forEach((file, index) => {
-            queryParams.formData[dropzone.name].push({
-              path: file.name,
-              index: queryParams.formData[dropzone.name].length + 1,
-            })
-          })
+    const loadDropzone = async (dropzone) => {
+      if (dropzone.value.length) {
+        let fileIndex = 1
+        const queries = {
+          requestArr: [],
+          fileArr: [],
         }
-        if (dropzone.options.stash && formData[dropzone.options.stash]) {
-          formData[dropzone.options.stash]?.forEach((file, index) => {
-            queryParams.formData[dropzone.requestKey || dropzone.name].push({
-              path: file.path,
-              index:
-                queryParams.formData[dropzone.requestKey || dropzone.name]
-                  .length + 1,
-            })
+        for (const item of dropzone.value) {
+          const file = item
+          const valueId =
+            formData[dropzone.options.valueId] ?? store?.state?.user.id
+          const name =
+            (dropzone.options.fileName
+              ? file.name
+              : eval(dropzone.options.name).split(' ').join('_')) +
+            '_' +
+            valueId +
+            '_' +
+            fileIndex +
+            '_' +
+            new Date().getTime()
+          const ext = file.name.split('.').pop()
+          const storeForm = new FormData()
+          storeForm.append('name', name + '.' + ext)
+          storeForm.append('file', file)
+          const params = {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+          queries.fileArr.push({
+            path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
+            index: fileIndex,
           })
+          queries.requestArr.push(
+            store.dispatch('file/create', {
+              data: storeForm,
+              folder: `${dropzone.options.folder}/${name}.${ext}`,
+              params,
+            })
+          )
+          fileIndex += 1
         }
+        await Promise.all(queries.requestArr)
+        if (dropzone.grouping) {
+          const fileArray = [...queries.fileArr]
+          fileArray.forEach((file) => {
+            delete file.request
+          })
+          setFormData(fileArray, dropzone)
+        } else if (dropzone.toObject) {
+          const fileArray = [...queries.fileArr]
+          toObject(fileArray, dropzone)
+        } else {
+          setFormData(queries.fileArr[0].path, dropzone)
+        }
+      } else if (dropzone.toObject) {
+        toObject(null, dropzone)
+      }
+
+      if (dropzone.stash) {
+        formData[dropzone.stash]?.forEach((file, index) => {
+          queryParams.formData[dropzone.name].push({
+            path: file.name,
+            index: queryParams.formData[dropzone.name].length + 1,
+          })
+        })
+      }
+      if (dropzone.options.stash && formData[dropzone.options.stash]) {
+        formData[dropzone.options.stash]?.forEach((file, index) => {
+          queryParams.formData[dropzone.requestKey || dropzone.name].push({
+            path: file.path,
+            index:
+              queryParams.formData[dropzone.requestKey || dropzone.name]
+                .length + 1,
+          })
+        })
+      }
+      return true
+    }
+
+    await Promise.all(
+      dropzoneArray.map((dropzone) => {
+        return new Promise((resolve) => {
+          resolve(loadDropzone(dropzone))
+        })
       })
     )
 
@@ -848,7 +858,7 @@ export default function ({
     } else if (el.sendEmpty) {
       acc.push({
         alias: el.alias ?? el.field,
-        value: [],
+        value: el.value,
         type: el.type,
       })
     } else {
