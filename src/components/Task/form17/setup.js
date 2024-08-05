@@ -114,6 +114,7 @@ const Form17 = defineComponent({
       let form_data = new FormData()
       form_data.append('file', e[0])
       isSetTask.value = true
+      console.log('load')
       // updateFileData = useRequest({
       //   context,
       //   request: () =>
@@ -124,7 +125,7 @@ const Form17 = defineComponent({
       //       from_task: true,
       //     }),
       // })
-
+      console.log(loadImage)
       loadImage = useRequest({
         context,
         request: () =>
@@ -136,7 +137,7 @@ const Form17 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-
+      console.log(loadImage)
       changeStatusTask = useRequest({
         context,
         request: () => {
@@ -269,6 +270,7 @@ const Form17 = defineComponent({
         data.entity.doljnost_id === 33
       ) {
         // updateFileData.makeRequest()
+        console.log(loadImage)
         await loadImage.makeRequest()
         result = await changeStatusTask.makeRequest()
       } else if (data.entity.direction_id == 6) {
