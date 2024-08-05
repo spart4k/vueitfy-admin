@@ -260,6 +260,7 @@ export const config = {
         type: FormOutput,
         detail: true,
         initialRequestUrl: 'get/parser/active/',
+        lastStage: 'DefaultStage',
         outputType: 3,
         lists: [
           // { alias: 'type_parser', filter: [] },
