@@ -261,7 +261,7 @@ const config = {
       ],
       isShow: true,
       width: '150',
-      alias: 'o.city_id',
+      alias: 'c.name',
       value: 'city_name',
       search: {
         field: '',
@@ -287,7 +287,7 @@ const config = {
       isShow: true,
       width: '150',
       value: 'office_manager',
-      alias: 'o.office_manager_id',
+      alias: 'sy.name',
       search: {
         field: '',
         isShow: true,
