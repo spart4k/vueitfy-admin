@@ -50,9 +50,10 @@ export const config = {
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination_pivot/request_magnit_new',
-    title: 'This is an about page1',
+    title: 'Новые',
     // doubleHandlerType: 'cell',
   },
+  type: 'TableFixed',
   panel: {
     buttons: [
       {
