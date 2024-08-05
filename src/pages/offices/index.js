@@ -115,41 +115,41 @@ export const editFields = [
     bootstrapClass: [''],
     requiredFields: ['regions_id'],
   }),
-  autocompleteField({
-    label: 'Офис-менеджер',
-    name: 'office_manager_id',
-    subtype: 'single',
-    placeholder: '',
-    class: [''],
-    selectOption: {
-      text: 'name',
-      value: 'id',
-    },
-    items: [],
-    page: 1,
-    search: '',
-    url: 'get/pagination_list/office_manager',
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    value: null,
-    readonly: {
-      value: false,
-      condition: [
-        {
-          funcCondition: (context) => {
-            console.log(context.store.state.user)
-            return context.store.state.user.permission_id !== 4
-          },
-          type: true,
-        },
-      ],
-    },
-    // value: null,
-    // validations: { required },
-    bootstrapClass: [''],
-  }),
+  // autocompleteField({
+  //   label: 'Офис-менеджер',
+  //   name: 'office_manager_id',
+  //   subtype: 'single',
+  //   placeholder: '',
+  //   class: [''],
+  //   selectOption: {
+  //     text: 'name',
+  //     value: 'id',
+  //   },
+  //   items: [],
+  //   page: 1,
+  //   search: '',
+  //   url: 'get/pagination_list/office_manager',
+  //   position: {
+  //     cols: 12,
+  //     sm: 12,
+  //   },
+  //   value: null,
+  //   readonly: {
+  //     value: false,
+  //     condition: [
+  //       {
+  //         funcCondition: (context) => {
+  //           console.log(context.store.state.user)
+  //           return context.store.state.user.permission_id !== 4
+  //         },
+  //         type: true,
+  //       },
+  //     ],
+  //   },
+  //   // value: null,
+  //   // validations: { required },
+  //   bootstrapClass: [''],
+  // }),
 ]
 
 function consoleText(row) {}
