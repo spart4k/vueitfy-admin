@@ -314,6 +314,26 @@ export default {
       ],
       requiredFields: ['direction_json', 'permission_id'],
     }),
+    autocompleteField({
+      label: 'Офис',
+      name: 'office_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/office_id',
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      bootstrapClass: [''],
+    }),
     colorPicker({
       label: 'Цвет',
       name: 'color',
