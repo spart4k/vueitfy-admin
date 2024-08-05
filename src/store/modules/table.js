@@ -51,6 +51,15 @@ const auth = {
       const result = await sendPage(data.page, body)
       return result
     },
+    async sendHyu(_, data) {
+      const result = await fetch('http://localhost:5500/get/hui', {
+        method: 'GET',
+        body: {
+          hyu: 'hyu',
+        },
+      })
+      console.log(result)
+    },
     async loadStatus({ commit }, data) {
       const result = await putForm(data)
       if (result.code === 1) {
