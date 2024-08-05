@@ -18,6 +18,50 @@ import {
 import { stringAction } from '@/utils/actions'
 
 export const editFields = [
+  stringField({
+    label: 'Название',
+    name: 'name',
+    placeholder: '',
+    readonly: false,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    // validations: { required },
+    validations: { required },
+    //isShow: false,
+  }),
+  colorPicker({
+    label: 'Цвет',
+    name: 'color',
+    value: '#000000',
+    placeholder: '',
+    readonly: false,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    // validations: { required },
+  }),
+  stringField({
+    label: 'Адрес',
+    name: 'address',
+    placeholder: '',
+    readonly: false,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 12,
+    },
+    bootstrapClass: [''],
+    // validations: { required },
+    validations: { required },
+    //isShow: false,
+  }),
   autocompleteField({
     label: 'Регион',
     name: 'regions_id',
@@ -71,50 +115,6 @@ export const editFields = [
     bootstrapClass: [''],
     requiredFields: ['regions_id'],
   }),
-  stringField({
-    label: 'Название',
-    name: 'name',
-    placeholder: '',
-    readonly: false,
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    bootstrapClass: [''],
-    // validations: { required },
-    validations: { required },
-    //isShow: false,
-  }),
-  stringField({
-    label: 'Адрес',
-    name: 'address',
-    placeholder: '',
-    readonly: false,
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    bootstrapClass: [''],
-    // validations: { required },
-    validations: { required },
-    //isShow: false,
-  }),
-  colorPicker({
-    label: 'Цвет',
-    name: 'color',
-    value: '#000000',
-    placeholder: '',
-    readonly: false,
-    class: [''],
-    position: {
-      cols: 12,
-      sm: 12,
-    },
-    bootstrapClass: [''],
-    // validations: { required },
-  }),
   autocompleteField({
     label: 'Офис-менеджер',
     name: 'office_manager_id',
@@ -157,6 +157,34 @@ const config = {
     headerFixed: true,
     url: 'get/pagination/office',
     title: 'This is an about page1',
+    contextMenu: {
+      actions: [
+        {
+          icon: '$IconDelete',
+          label: 'Удалить',
+          isShow: {
+            condition: [
+              {
+                permissions: [4],
+                type: true,
+              },
+            ],
+          },
+          action: {
+            type: 'confirm',
+            dialog: {
+              text: 'Вы подтверждаете удаление офиса??',
+              function: (context) => {
+                context.store.dispatch('form/update', {
+                  url: 'set/data/office',
+                  body: { data: { id: context.data.row.id, del: 1 } },
+                })
+              },
+            },
+          },
+        },
+      ],
+    },
   },
   panel: {
     buttons: [
@@ -462,25 +490,25 @@ const config = {
               ],
             },
           }),
-          stringAction({
-            text: 'Удалить',
-            type: 'submit',
-            module: 'form/del',
-            color: 'error',
-            url: 'delete/office',
-            name: 'deleteFormById',
-            action: 'deleteFormById',
-            isHide: {
-              value: false,
-              type: 'every',
-              condition: [
-                {
-                  permissions: [4],
-                  type: false,
-                },
-              ],
-            },
-          }),
+          // stringAction({
+          //   text: 'Удалить',
+          //   type: 'submit',
+          //   module: 'form/del',
+          //   color: 'error',
+          //   url: 'delete/office',
+          //   name: 'deleteFormById',
+          //   action: 'deleteFormById',
+          //   isHide: {
+          //     value: false,
+          //     type: 'every',
+          //     condition: [
+          //       {
+          //         permissions: [4],
+          //         type: false,
+          //       },
+          //     ],
+          //   },
+          // }),
           stringAction({
             text: 'Сохранить',
             type: 'submit',
@@ -500,6 +528,28 @@ const config = {
                   type: true,
                 },
               ],
+            },
+            handlingResponse: {
+              1: {
+                text: 'Информация сохранена',
+                color: 'success',
+              },
+              2: {
+                text: 'Ошибка',
+                color: 'error',
+              },
+              3: {
+                text: 'На указанный офис уже назначен офис-менеджер',
+                color: 'error',
+              },
+              4: {
+                text: 'Офис с таким названием уже существует',
+                color: 'error',
+              },
+              5: {
+                text: 'Удаление запрещено',
+                color: 'error',
+              },
             },
           }),
         ],
