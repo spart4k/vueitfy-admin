@@ -781,7 +781,6 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_on_add',
         title: 'На добавлении',
-        noTableAction: true,
       },
       isShow: {
         condition: [
@@ -987,7 +986,20 @@ export const config = {
         currentPage: 1,
         totalPages: null,
       },
-      detail: false,
+      detail: {
+        type: 'popup', // String 'popup' or 'page'
+        classes: [''], // List class
+        width: '1000px',
+        method: 'get',
+        alias: 'personal',
+        url: '/get/form/',
+        name: 'Персонал',
+        bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
+        tabs: [...personalTabs, ...nonExportTabs],
+        clearStore: true,
+        activeTab: null,
+        formData: {},
+      },
     },
     {
       selector: '#mainTable',

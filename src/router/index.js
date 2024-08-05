@@ -25,6 +25,7 @@ import MvdView from '../views/MvdView.vue'
 import ServiceView from '../views/ServiceView.vue'
 import RashodCategoryView from '../views/RashodCategoryView.vue'
 import RashodVidView from '../views/RashodVidView.vue'
+import OfficeView from '../views/OfficeView.vue'
 
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
@@ -268,6 +269,35 @@ const routes = [
       },
       {
         name: 'personal_target/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/office',
+    name: 'office',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: OfficeView,
+    children: [
+      {
+        name: 'office-add',
+        path: '/office/add',
+        meta: {
+          mode: ['add'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'office/:id',
         path: ':id',
         meta: {
           mode: ['edit'],
