@@ -65,7 +65,7 @@ export default {
           isShow: {
             condition: [
               {
-                permissions: [4, 3, 15, 1, 16, 19],
+                permissions: [4, 3, 15, 1, 16, 19, 2, 9],
                 type: true,
               },
             ],
