@@ -508,7 +508,7 @@ const config = {
     ],
     activeTab: null,
   },
-  filters,
+  // filters,
 }
 
 export default config
