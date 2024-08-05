@@ -133,6 +133,7 @@ export const editFields = [
       cols: 12,
       sm: 12,
     },
+    value: null,
     // value: null,
     // validations: { required },
     bootstrapClass: [''],
