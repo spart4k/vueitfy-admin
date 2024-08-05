@@ -79,21 +79,21 @@ export const config = {
           ],
         },
       },
-      {
-        label: 'Парсер заявка',
-        class: ['v-table-button--custom'],
-        url: 'pivot_payment-zayavka',
-        type: 'changeUrl',
-        backgroundColor: '#fff',
-        isShow: {
-          condition: [
-            {
-              permissions: [3, 4, 8, 17],
-              type: true,
-            },
-          ],
-        },
-      },
+      // {
+      //   label: 'Парсер заявка',
+      //   class: ['v-table-button--custom'],
+      //   url: 'pivot_payment-zayavka',
+      //   type: 'changeUrl',
+      //   backgroundColor: '#fff',
+      //   isShow: {
+      //     condition: [
+      //       {
+      //         permissions: [3, 4, 8, 17],
+      //         type: true,
+      //       },
+      //     ],
+      //   },
+      // },
     ],
     filters: true,
     search: true,
