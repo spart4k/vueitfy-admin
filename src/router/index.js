@@ -304,6 +304,15 @@ const routes = [
         },
         component: Detail,
       },
+      {
+        name: 'office/:office_id',
+        path: ':office_id',
+        meta: {
+          mode: ['target'],
+          label: 'Назначить',
+        },
+        component: Detail,
+      },
     ],
   },
   {
