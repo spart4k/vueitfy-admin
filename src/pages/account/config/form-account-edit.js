@@ -359,6 +359,17 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
+      // isShow: {
+      //   value: false,
+      //   conditions: [
+      //     {
+      //       funcCondition: (ctx) => {
+      //         return ctx.formData.permission_id !== 23
+      //       },
+      //       type: true,
+      //     },
+      //   ],
+      // },
     }),
     selectField({
       label: 'Объекты',
