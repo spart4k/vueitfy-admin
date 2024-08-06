@@ -115,6 +115,21 @@ export const editFields = [
     bootstrapClass: [''],
     requiredFields: ['regions_id'],
   }),
+  textBlock({
+    label: 'Создал',
+    name: 'from_account_id',
+    notSend: true,
+    placeholder: '',
+    readonly: true,
+    class: [''],
+    position: {
+      cols: 12,
+      sm: 4,
+    },
+    bootstrapClass: [''],
+    // validations: { required },
+    //isShow: false,
+  }),
   // autocompleteField({
   //   label: 'Офис-менеджер',
   //   name: 'office_manager_id',
@@ -179,7 +194,7 @@ const config = {
           isShow: {
             condition: [
               {
-                permissions: [4],
+                permissions: [4, 3],
                 type: true,
               },
             ],
@@ -188,11 +203,30 @@ const config = {
             type: 'confirm',
             dialog: {
               text: 'Вы подтверждаете архивацию офиса?',
-              function: (context) => {
-                context.store.dispatch('form/putForm', {
+              function: async (context) => {
+                const { code } = await context.store.dispatch('form/putForm', {
                   url: 'update/office/archive ',
                   body: { data: { office_id: context.data.row.id } },
                 })
+                if (code === 1) {
+                  context.store.commit('notifies/showMessage', {
+                    color: 'success',
+                    content: 'Успешно',
+                    timeout: 1000,
+                  })
+                } else if (code === 2) {
+                  context.store.commit('notifies/showMessage', {
+                    color: 'error',
+                    content: 'Ошибка на стороне сервера',
+                    timeout: 1000,
+                  })
+                } else if (code === 3) {
+                  context.store.commit('notifies/showMessage', {
+                    color: 'error',
+                    content: 'Доступ запрещен',
+                    timeout: 1000,
+                  })
+                }
               },
             },
           },
@@ -203,7 +237,7 @@ const config = {
           isShow: {
             condition: [
               {
-                permissions: [4],
+                permissions: [4, 3],
                 type: true,
               },
               // {
@@ -249,8 +283,18 @@ const config = {
         backgroundColor: '#fff',
         isShow: {
           condition: [
+            // {
+            //   permissions: [4],
+            //   type: true,
+            // },
             {
-              permissions: [4],
+              funcCondition: (ctx) => {
+                console.log('TEST FUNC')
+                return (
+                  ctx.store.state.user.permission_id === 4 ||
+                  ctx.store.state.user.permission_id === 3
+                )
+              },
               type: true,
             },
           ],
@@ -316,6 +360,31 @@ const config = {
       },
     },
     {
+      title: 'Адрес',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'address',
+      alias: 'o.address',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
       title: 'Город',
       type: 'default',
       align: 'center',
@@ -335,31 +404,6 @@ const config = {
       width: '150',
       alias: 'c.name',
       value: 'city_name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Офис-менеджер',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: undefined,
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '150',
-      value: 'office_manager',
-      alias: 'sy.name',
       search: {
         field: '',
         isShow: true,
@@ -436,26 +480,40 @@ const config = {
                 },
               ],
             },
-          }),
-          stringAction({
-            text: 'Удалить',
-            type: 'submit',
-            module: 'form/del',
-            color: 'error',
-            url: 'delete/personal_target',
-            name: 'deleteFormById',
-            action: 'deleteFormById',
-            isHide: {
-              value: false,
-              type: 'every',
-              condition: [
-                {
-                  permissions: [1],
-                  type: false,
-                },
-              ],
+            handlingResponse: {
+              1: {
+                text: 'Успешно',
+                color: 'success',
+              },
+              2: {
+                text: 'Ошибка на стороне сервера',
+                color: 'error',
+              },
+              3: {
+                text: 'Офис с таким именем уже существует',
+                color: 'error',
+              },
             },
           }),
+          // stringAction({
+          //   text: 'Удалить',
+          //   type: 'submit',
+          //   module: 'form/del',
+          //   color: 'error',
+          //   url: 'delete/personal_target',
+          //   name: 'deleteFormById',
+          //   action: 'deleteFormById',
+          //   isHide: {
+          //     value: false,
+          //     type: 'every',
+          //     condition: [
+          //       {
+          //         permissions: [1],
+          //         type: false,
+          //       },
+          //     ],
+          //   },
+          // }),
           stringAction({
             text: 'Сохранить',
             type: 'submit',
@@ -475,6 +533,20 @@ const config = {
                   type: true,
                 },
               ],
+            },
+            handlingResponse: {
+              1: {
+                text: 'Успешно',
+                color: 'success',
+              },
+              2: {
+                text: 'Ошибка на стороне сервера',
+                color: 'error',
+              },
+              3: {
+                text: 'Офис с таким именем уже существует',
+                color: 'error',
+              },
             },
           }),
         ],

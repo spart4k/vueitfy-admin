@@ -58,6 +58,10 @@ const table = {
       type: [String, Number],
       default: '',
     },
+    mainData: {
+      type: Object,
+      default: () => {},
+    },
   },
   methods: {
     update() {
@@ -326,6 +330,7 @@ const table = {
         const context = {
           store,
           data: row,
+          route,
         }
         confirmDialog.value.text = action.action.dialog.text
         confirmDialog.value.function = action.action.dialog.function

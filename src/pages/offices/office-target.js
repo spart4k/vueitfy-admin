@@ -83,6 +83,24 @@ export default {
       url: 'create/office/assign',
       name: 'createForm',
       action: 'createForm',
+      handlingResponse: {
+        1: {
+          text: 'Успешно',
+          color: 'success',
+        },
+        2: {
+          text: 'Ошибка на стороне сервера',
+          color: 'error',
+        },
+        3: {
+          text: 'Доступ запрещен',
+          color: 'error',
+        },
+        4: {
+          text: 'Менеджер уже назначен на офис',
+          color: 'error',
+        },
+      },
     }),
   ],
 }
