@@ -12,6 +12,10 @@ export default {
       type: Object,
       defualt: () => {},
     },
+    mainData: {
+      type: Object,
+      defualt: () => {},
+    },
   },
   data() {
     return {}
@@ -136,6 +140,7 @@ export default {
                 const conditionContext = {
                   store,
                   data: props.options.row,
+                  mainData: props.mainData,
                 }
                 return (
                   conditionEl.funcCondition(conditionContext) ===

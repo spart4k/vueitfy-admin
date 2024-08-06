@@ -341,6 +341,7 @@ const config = {
       search: {
         function: searchInputing,
       },
+      alias: 'tom.office_id',
       headerFixed: true,
       url: 'get/pagination/target_office_manager',
       title: 'Назначения',
@@ -352,7 +353,20 @@ const config = {
             isShow: {
               condition: [
                 {
-                  permissions: [4],
+                  funcCondition: (ctx) => {
+                    console.log(ctx)
+                    console.log(
+                      ctx.store.state.user.permission_id === 4,
+                      (ctx.store.state.user.permission_id === 3,
+                      ctx.mainData.from_account_id === ctx.store.state.user.id)
+                    )
+                    return (
+                      ctx.store.state.user.permission_id === 4 ||
+                      (ctx.store.state.user.permission_id === 3 &&
+                        ctx.mainData.from_account_id ===
+                          ctx.store.state.user.id)
+                    )
+                  },
                   type: true,
                 },
               ],
@@ -361,16 +375,39 @@ const config = {
               type: 'confirm',
               dialog: {
                 text: 'Вы подтверждаете удаление назначения?',
-                function: (context) => {
-                  context.store.dispatch('form/update', {
-                    url: 'update/office/remove_assign',
-                    body: {
-                      data: {
-                        office_id: context.data.row.id,
-                        account_id: context.data.row.account_id,
+                function: async (context) => {
+                  console.log(context)
+                  const { code } = await context.store.dispatch(
+                    'form/putForm',
+                    {
+                      url: 'update/office/remove_assign',
+                      body: {
+                        data: {
+                          office_id: context.route.params.id,
+                          account_id: context.data.row.account_id,
+                        },
                       },
-                    },
-                  })
+                    }
+                  )
+                  if (code === 1) {
+                    context.store.commit('notifies/showMessage', {
+                      color: 'success',
+                      content: 'Успешно',
+                      timeout: 1000,
+                    })
+                  } else if (code === 2) {
+                    context.store.commit('notifies/showMessage', {
+                      color: 'error',
+                      content: 'Ошибка на стороне сервера',
+                      timeout: 1000,
+                    })
+                  } else if (code === 3) {
+                    context.store.commit('notifies/showMessage', {
+                      color: 'error',
+                      content: 'Доступ запрещен',
+                      timeout: 1000,
+                    })
+                  }
                 },
               },
             },
@@ -428,7 +465,7 @@ const config = {
             isShow: false,
           },
         ],
-        alias: 'o.id',
+        alias: 'sy.name',
         isShow: true,
         width: '40',
         value: 'account_name',
@@ -455,7 +492,7 @@ const config = {
         ],
         isShow: true,
         width: '90',
-        alias: 'o.name',
+        alias: 'tom.date_target_start',
         value: 'date_target_start',
         search: {
           field: '',
@@ -480,7 +517,7 @@ const config = {
         ],
         isShow: true,
         width: '150',
-        alias: 'c.name',
+        alias: 'tom.date_target_end',
         value: 'date_target_end',
         search: {
           field: '',
@@ -496,6 +533,17 @@ const config = {
       totalPages: null,
       footer: null,
     },
+    actions: [
+      stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'textDefault',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
+    ],
     // filters,
   },
 }
