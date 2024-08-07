@@ -9,13 +9,19 @@ import {
   checkboxField,
   textBlock,
 } from '@/utils/fields.js'
-import Vue from 'vue'
+import Vue, { toRef } from 'vue'
+import { useRoute, useRouter } from 'vue-router/composables'
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
+import tablePersonalScan from './table-personal-scan.js'
+import formPersonalEdit from './form-personal-edit.js'
+import _ from 'lodash'
+import store from '@/store'
 
 export default {
-  id: uuidv4(),
+  id: 'personal-add',
+  uuid: uuidv4(),
   path: 'add',
   name: 'Заявка на персонал',
   type: 'FormStage',
@@ -24,9 +30,19 @@ export default {
   stages: [
     {
       id: uuidv4(),
+      uuid: uuidv4(),
       name: 'Основные',
       type: 'FormDefault',
-      detail: true,
+      detail: {
+        type: 'popup', // String 'popup' or 'page'
+        classes: [''], // List class
+        width: '780px',
+        method: 'get',
+        alias: 'payment',
+        url: '/get/form/',
+        bootstrapClass: [''],
+        tabs: [_.cloneDeep(formPersonalEdit), _.cloneDeep(tablePersonalScan)],
+      },
       lists: [
         // 'vid_vedomost_id',
         // 'status_pt',
@@ -74,7 +90,7 @@ export default {
           label: 'Фамилия',
           name: 'surname',
           placeholder: '',
-          value: '',
+          value: 'zxc',
           class: [''],
           position: {
             cols: 12,
@@ -87,7 +103,7 @@ export default {
           label: 'Имя',
           name: 'name_n',
           placeholder: '',
-          value: '',
+          value: 'zxc',
           class: [''],
           position: {
             cols: 12,
@@ -100,7 +116,7 @@ export default {
           label: 'Отчество',
           name: 'patronymic',
           placeholder: '',
-          value: '',
+          value: 'zxc',
           class: [''],
           position: {
             cols: 12,
@@ -113,7 +129,7 @@ export default {
           label: 'Дата рождения',
           name: 'date_rojd',
           type: 'date',
-          value: '',
+          value: '1111-11-11',
           menu: false,
           placeholder: '',
           class: [''],
@@ -242,6 +258,7 @@ export default {
           name: 'telefon',
           placeholder: '',
           class: [''],
+          value: '111',
           position: {
             cols: 12,
             sm: 12,
@@ -646,8 +663,47 @@ export default {
               },
               {
                 value: 3,
-                type: 'error',
-                text: 'Сотрудник уже есть в системе',
+                type: 'warning',
+                text: '',
+                component: Vue.component('component', {
+                  template:
+                    '<template><p>Сотрудник уже есть в системе, <a @click="changeRoute">перейти</a></p></template>',
+                  props: {
+                    data: {
+                      type: Object,
+                      default: () => {},
+                    },
+                  },
+                  setup(props, ctx) {
+                    const router = useRouter()
+                    const route = useRoute()
+                    const proxyValue = toRef(props, 'data')
+                    const changeRoute = () => {
+                      store.commit('changeFormStorage', {
+                        key: 'account_json',
+                        value: proxyValue.value.formData.personal_id || [],
+                      })
+                      store.commit('changeFormStorage', {
+                        key: 'direction_json',
+                        value: proxyValue.value.formData.direction_id || [],
+                      })
+                      store.commit('changeFormStorage', {
+                        key: 'object_json',
+                        value: proxyValue.value.formData.object_id || [],
+                      })
+                      router.push({
+                        name: `${route.name}/:id`,
+                        params: {
+                          id: proxyValue.value.response.id,
+                        },
+                      })
+                      proxyValue.value.popupForm.isShow = true
+                    }
+                    return {
+                      changeRoute,
+                    }
+                  },
+                }),
               },
             ],
           },
