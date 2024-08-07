@@ -257,7 +257,6 @@ export default {
           url: `add/target/service/${stage.value.outputId}`,
           body: { data: {} },
         })
-        if (firstReq.code !== 1) return
       }
       const secondReq = await setFinalOutput({
         url: 'set/data/active_parsers',
