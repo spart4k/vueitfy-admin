@@ -552,6 +552,23 @@ const config = {
                 validations: { required },
                 bootstrapClass: [''],
                 requiredFields: ['direction_json'],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      target: 'funcCondition',
+                      funcCondition: (ctx) => {
+                        return (
+                          !(
+                            ctx.formData.direction_json?.includes(4) &&
+                            ctx.formData.direction_json?.length === 1
+                          ) && ctx.formData.permission_id !== 23
+                        )
+                        // console.log(ctx, 'CONTEXT')
+                      },
+                    },
+                  ],
+                },
               }),
               selectField({
                 label: 'Роль',
@@ -676,6 +693,18 @@ const config = {
                 bootstrapClass: [''],
                 //validations: { required },
                 //isShow: false,
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      target: 'funcCondition',
+                      funcCondition: (ctx) => {
+                        return ctx.formData.permission_id !== 23
+                        // console.log(ctx, 'CONTEXT')
+                      },
+                    },
+                  ],
+                },
               }),
             ],
             actions: [
