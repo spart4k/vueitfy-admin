@@ -7,7 +7,7 @@ import PersonalView from '../views/PersonalView.vue'
 import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
-import PivotRetailView from '../views/PivotRetailView.vue'
+import PivotPaymentView from '../views/PivotPaymentView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -600,19 +600,19 @@ const routes = [
     component: Pivotx5View,
   },
   {
-    path: '/pivot_retail',
-    name: 'pivot_retail',
+    path: '/pivot_payment',
+    name: 'pivot_payment',
     meta: {
       layout: 'blank-layout',
     },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: PivotRetailView,
+    component: PivotPaymentView,
     children: [
       {
-        name: 'pivot_retail-edit',
-        path: '/pivot_retail/:id',
+        name: 'pivot_payment-edit',
+        path: '/pivot_payment/:id',
         meta: {
           mode: ['edit'],
           label: 'Начисление',
@@ -620,8 +620,8 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'pivot_retail-personal',
-        path: '/pivot_retail/:id',
+        name: 'pivot_payment-personal',
+        path: '/pivot_payment/:id',
         meta: {
           mode: ['personal'],
           label: 'Персонал',
@@ -629,8 +629,8 @@ const routes = [
         component: Detail,
         children: [
           {
-            name: 'pivot_retail-personal/:payment',
-            path: '/pivot_retail/:id/:payment',
+            name: 'pivot_payment-personal/:payment',
+            path: '/pivot_payment/:id/:payment',
             meta: {
               mode: ['personal', 'personal-payment'],
               label: 'Начисление',
@@ -638,8 +638,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-personal/:zayavka',
-            path: '/pivot_retail/:id/:zayavka',
+            name: 'pivot_payment-personal/:zayavka',
+            path: '/pivot_payment/:id/:zayavka',
             meta: {
               mode: ['personal', 'personal-zayavka'],
               label: 'Заявка на расход',
@@ -647,8 +647,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-personal/:scan',
-            path: '/pivot_retail/:id/:scan',
+            name: 'pivot_payment-personal/:scan',
+            path: '/pivot_payment/:id/:scan',
             meta: {
               mode: ['personal', 'personal-scan'],
               label: 'Скан',
@@ -656,8 +656,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-personal/:card',
-            path: '/pivot_retail/:id/:card',
+            name: 'pivot_payment-personal/:card',
+            path: '/pivot_payment/:id/:card',
             meta: {
               mode: ['personal', 'personal-card'],
               label: 'Банковская карта',
@@ -667,8 +667,8 @@ const routes = [
         ],
       },
       {
-        name: 'pivot_retail-object',
-        path: '/pivot_retail/:id',
+        name: 'pivot_payment-object',
+        path: '/pivot_payment/:id',
         meta: {
           mode: ['object'],
           label: 'Объект',
@@ -676,8 +676,8 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'pivot_retail-account',
-        path: '/pivot_retail/:id',
+        name: 'pivot_payment-account',
+        path: '/pivot_payment/:id',
         meta: {
           mode: ['account'],
           label: 'Аккаунт',
@@ -685,8 +685,8 @@ const routes = [
         component: Detail,
         children: [
           {
-            name: 'pivot_retail-account/:card_id',
-            path: '/pivot_retail/:id/:card_id',
+            name: 'pivot_payment-account/:card_id',
+            path: '/pivot_payment/:id/:card_id',
             meta: {
               mode: ['account', 'new_card'],
               label: 'Банковская карта',
@@ -694,8 +694,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-account/new_card',
-            path: '/pivot_retail/:id/new_card',
+            name: 'pivot_payment-account/new_card',
+            path: '/pivot_payment/:id/new_card',
             meta: {
               mode: ['account', 'new_card'],
               label: 'Банковская карта',
@@ -703,6 +703,24 @@ const routes = [
             component: Detail,
           },
         ],
+      },
+      {
+        name: 'pivot_payment-output',
+        path: '/pivot_payment/output',
+        meta: {
+          mode: ['output'],
+          label: 'Парсер Х5',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot_payment-zayavka',
+        path: '/pivot_payment/zayavka',
+        meta: {
+          mode: ['zayavka'],
+          label: 'Парсер заявок',
+        },
+        component: Detail,
       },
     ],
   },
