@@ -90,7 +90,7 @@ export default {
           label: 'Фамилия',
           name: 'surname',
           placeholder: '',
-          value: 'zxc',
+          value: '',
           class: [''],
           position: {
             cols: 12,
@@ -103,7 +103,7 @@ export default {
           label: 'Имя',
           name: 'name_n',
           placeholder: '',
-          value: 'zxc',
+          value: '',
           class: [''],
           position: {
             cols: 12,
@@ -116,7 +116,7 @@ export default {
           label: 'Отчество',
           name: 'patronymic',
           placeholder: '',
-          value: 'zxc',
+          value: '',
           class: [''],
           position: {
             cols: 12,
@@ -129,7 +129,7 @@ export default {
           label: 'Дата рождения',
           name: 'date_rojd',
           type: 'date',
-          value: '1111-11-11',
+          value: '',
           menu: false,
           placeholder: '',
           class: [''],
@@ -258,7 +258,7 @@ export default {
           name: 'telefon',
           placeholder: '',
           class: [''],
-          value: '111',
+          value: '',
           position: {
             cols: 12,
             sm: 12,
