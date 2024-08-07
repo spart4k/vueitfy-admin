@@ -330,12 +330,12 @@ function searchInputing(field) {}
 const config = {
   path: 'edit',
   id: uuidv4(),
-  name: 'Аккаунты',
+  name: 'Сотрудники',
   type: 'TableDefault',
   active: false,
   config: {
     selector: '#mainTable',
-    name: 'Аккаунты',
+    name: 'Сотрудники',
     options: {
       selecting: true,
       search: {
@@ -344,7 +344,7 @@ const config = {
       alias: 'o.id',
       headerFixed: true,
       url: 'get/pagination/office_accounts',
-      title: 'Аккаунты',
+      title: 'Сотрудники',
       // contextMenu: {
       //   actions: [
       //     {
@@ -450,6 +450,31 @@ const config = {
     },
     head: [
       {
+        title: 'id',
+        type: 'default',
+        align: 'center',
+        fixed: {
+          value: false,
+          position: 'left',
+        },
+        sorts: [
+          {
+            type: 'string',
+            default: '',
+            value: '',
+            isShow: false,
+          },
+        ],
+        alias: 'sy.id',
+        isShow: true,
+        width: '40',
+        value: 'account_id',
+        search: {
+          field: '',
+          isShow: true,
+        },
+      },
+      {
         title: 'Аккаунт',
         type: 'default',
         align: 'center',
@@ -469,56 +494,6 @@ const config = {
         isShow: true,
         width: '40',
         value: 'account_name',
-        search: {
-          field: '',
-          isShow: true,
-        },
-      },
-      {
-        title: 'Адрес',
-        type: 'default',
-        align: 'center',
-        fixed: {
-          value: false,
-          position: 'left',
-        },
-        sorts: [
-          {
-            type: 'date',
-            default: '',
-            value: '',
-            isShow: false,
-          },
-        ],
-        isShow: true,
-        width: '90',
-        alias: 'o.address',
-        value: 'address',
-        search: {
-          field: '',
-          isShow: true,
-        },
-      },
-      {
-        title: 'Город',
-        type: 'default',
-        align: 'center',
-        fixed: {
-          value: false,
-          position: 'left',
-        },
-        sorts: [
-          {
-            type: 'string',
-            default: '',
-            value: '',
-            isShow: false,
-          },
-        ],
-        isShow: true,
-        width: '150',
-        alias: 'c.name',
-        value: 'city_name',
         search: {
           field: '',
           isShow: true,
