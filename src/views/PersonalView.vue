@@ -33,7 +33,7 @@ import store from '@/store'
 import { ref, computed, onMounted } from 'vue'
 import _ from 'lodash'
 import useView from '@/compositions/useView.js'
-
+import { stringAction } from '@/utils/actions'
 // import { stringAction } from '@/utils/actions'
 import { config as personalConfigOrig } from '@/pages/personal/index'
 import paymentConfigOrig from '@/pages/payment/index'
@@ -156,6 +156,38 @@ export default {
     config.tabs[1].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
     config.tabs[2].detail.tabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
 
+    const addTabs = config.tabs[0].detail.tabs.find(
+      (x) => x.id === 'personal-add'
+    ).stages[0].detail.tabs
+
+    addTabs.forEach((item) => {
+      item.path = 'id'
+    })
+    addTabs[0].actions.pop()
+    addTabs[0].fields.forEach((item) => {
+      item.readonly = true
+      item.notSend = true
+    })
+    addTabs[0].actions.push(
+      stringAction({
+        text: 'Добавить себе',
+        type: 'submit',
+        module: 'form/update',
+        url: 'set/expand_access',
+        name: 'saveForm',
+        action: 'saveForm',
+        color: 'primary',
+        closeDouble: true,
+        useStorageKey: [
+          { requestKey: 'account_json', storageKey: 'account_json' },
+          { requestKey: 'direction_json', storageKey: 'direction_json' },
+          { requestKey: 'object_json', storageKey: 'object_json' },
+        ],
+      })
+    )
+
+    addTabs[1].config.panel.buttons.pop()
+    addTabs[1].config.detail = null
     return {
       config,
       activeTab,
