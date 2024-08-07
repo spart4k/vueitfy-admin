@@ -33,6 +33,9 @@ import { ref } from 'vue'
 import officesConfig from '@/pages/offices/index'
 import _ from 'lodash'
 import useView from '@/compositions/useView.js'
+import { initPaymentZayavka } from '@/utils/helpers.js'
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 export default {
@@ -50,10 +53,63 @@ export default {
     const config = _.cloneDeep(officesConfig)
     const activeTab = ref(0)
     const tabs = ref([])
-    useView({
-      tabs,
-      activeTab,
+    // const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+    //   paymentConfigOrig,
+    //   zayavkaConfigOrig
+    // )
+    const { configRouteConvert, initTableConfig, convertConfigPanel } = useView(
+      {
+        tabs,
+        activeTab,
+      }
+    )
+
+    const zayavkaConfig = initTableConfig({
+      path: 'edit',
+      name: 'Расход',
+      config: _.cloneDeep(zayavkaConfigOrig),
+      isShow: {
+        value: true,
+        condition: [
+          {
+            permissions: [7],
+            type: false,
+          },
+        ],
+      },
     })
+
+    configRouteConvert({
+      config: zayavkaConfig.config,
+      route: 'zayavka',
+      newPath: 'edit-zayavka',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    zayavkaConfig.config.options = {
+      ...zayavkaConfig.config.options,
+      // urlDetail: 'office_id',
+      alias: 'z.office_id',
+    }
+    const LIST_HEAD_ZAYAVKA = [
+      'status_name',
+      'category_name',
+      'schet',
+      'date_create',
+      'total',
+      'price',
+    ]
+    const LIST_PANEL = ['Обновить']
+    convertConfigPanel({
+      config: zayavkaConfig.config,
+      listHead: LIST_HEAD_ZAYAVKA,
+      listPanel: LIST_PANEL,
+    })
+
+    // zayavkaConfig.options.alias = 'office_id'
+    console.log(zayavkaConfig)
+    config.detail.tabs.push(zayavkaConfig)
     return {
       officesConfig,
       config,
