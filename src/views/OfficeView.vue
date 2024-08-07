@@ -36,6 +36,8 @@ import useView from '@/compositions/useView.js'
 import { initPaymentZayavka } from '@/utils/helpers.js'
 import paymentConfigOrig from '@/pages/payment/index'
 import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { stringAction } from '@/utils/actions'
+
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
 export default {
@@ -109,7 +111,18 @@ export default {
 
     // zayavkaConfig.options.alias = 'office_id'
     console.log(zayavkaConfig)
-    config.detail.tabs.push(zayavkaConfig)
+    ;(zayavkaConfig.config.actions = [
+      stringAction({
+        text: 'Закрыть',
+        type: 'submit',
+        color: 'textDefault',
+        name: 'closePopup',
+        action: 'closePopup',
+        to: 'personal',
+        skipValidation: true,
+      }),
+    ]),
+      config.detail.tabs.push(zayavkaConfig)
     return {
       officesConfig,
       config,
