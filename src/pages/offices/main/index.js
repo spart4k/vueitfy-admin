@@ -167,6 +167,7 @@ export const editFields = [
   // }),
 ]
 import TargetOffice from '../target/index'
+import AccountOffice from '../account/index'
 
 function consoleText(row) {}
 
@@ -680,6 +681,7 @@ const config = {
       },
       target,
       TargetOffice,
+      AccountOffice,
     ],
     activeTab: null,
   },

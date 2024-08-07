@@ -452,6 +452,7 @@ export default {
       readonly: true,
       isShow: {
         value: false,
+        // type: 'some',
         conditions: [
           {
             field: 'direction_id',

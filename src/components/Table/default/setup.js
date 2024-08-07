@@ -565,6 +565,7 @@ const table = {
       indexCell,
       activeIndexCells
     ) => {
+      console.log(options.detail, options)
       if (!options.detail || options.options.noTableAction) return
       if (props.options.options.doubleHandlerType === 'cell') {
         openCell($event, row, cell, indexRow, indexCell, activeIndexCells)
