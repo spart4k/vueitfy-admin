@@ -238,6 +238,23 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       requiredFields: ['direction_json'],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return (
+                !(
+                  ctx.formData.direction_json.includes(4) &&
+                  ctx.formData.direction_json.length === 1
+                ) && ctx.formData.permission_id !== 23
+              )
+              // console.log(ctx, 'CONTEXT')
+            },
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Роль',
@@ -327,6 +344,7 @@ export default {
       items: [],
       page: 1,
       search: '',
+      value: null,
       url: 'get/pagination_list/office_id',
       position: {
         cols: 12,
@@ -370,6 +388,18 @@ export default {
       //     },
       //   ],
       // },
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.permission_id !== 23
+              // console.log(ctx, 'CONTEXT')
+            },
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Объекты',
@@ -405,6 +435,18 @@ export default {
       //     ],
       //   },
       // ],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.permission_id !== 23
+              // console.log(ctx, 'CONTEXT')
+            },
+          },
+        ],
+      },
     }),
   ],
   actions: [

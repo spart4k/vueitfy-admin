@@ -41,6 +41,7 @@ const selectField = (properties) => {
     type: 'select',
     hideItems: [],
     ...defaultProperties(properties),
+    value: null,
   }
   return {
     ...data,
@@ -50,7 +51,7 @@ const selectField = (properties) => {
 const autocompleteField = (properties) => {
   return {
     type: 'autocomplete',
-    value: '',
+    value: null,
     loading: false,
     hideItems: [],
     ...defaultProperties(properties),
