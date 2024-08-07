@@ -781,6 +781,7 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_on_add',
         title: 'На добавлении',
+        contextMenu: contextMenuPersonal,
       },
       isShow: {
         condition: [
