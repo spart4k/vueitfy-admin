@@ -9,7 +9,11 @@
       class="p-5"
       mobile-breakpoint="0"
     >
-      <v-tab v-for="item in account.tabs" :key="item.options.title">
+      <v-tab
+        :name="`tab_${item.options.title}`"
+        v-for="item in account.tabs"
+        :key="item.options.title"
+      >
         {{ item.options.title }}
       </v-tab>
     </v-tabs>

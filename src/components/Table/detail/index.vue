@@ -20,7 +20,11 @@
           v-show="availableTabsAll.length > 1"
           mobile-breakpoint="0"
         >
-          <v-tab v-for="item in availableTabsAll" :key="item.id">
+          <v-tab
+            v-for="item in availableTabsAll"
+            :name="`tab_${item.name}`"
+            :key="item.id"
+          >
             {{ item.name }}
           </v-tab>
         </v-tabs>
