@@ -13,7 +13,7 @@ const filters = {
   type: 'FormDefault',
   detail: false,
   isFilter: true,
-  lists: [{ alias: 'status_x5', filter: [] }],
+  lists: [{ alias: 'status_srm', filter: [] }],
   alias: 'pivotx5',
   active: false,
   fields: [
