@@ -173,6 +173,7 @@ export default {
         const name = `${
           props.options.folder
         }_25_${new Date().getTime()}.${fileType}`
+        console.log(name)
         const folder = props.options.folder + '/' + name
         formData.append('name', file.name)
         formData.append('file', file)

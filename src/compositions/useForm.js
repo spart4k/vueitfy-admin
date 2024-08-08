@@ -21,6 +21,7 @@ import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
 import router from '@/router'
 import { list } from 'postcss'
+import { props } from 'vue2-dropzone'
 
 /**
  * @param loading {boolean}
@@ -70,6 +71,7 @@ export default function ({
       else fieldAliases[form.fields[i].name] = form.fields[i].name
     }
     for (let key in fields) {
+      console.log(JSON.stringify(formData))
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].value))
     }
@@ -221,6 +223,8 @@ export default function ({
       if (action.handlingResponse) {
         handlingResponse(action, result)
       }
+    } else if (action.action === 'openForm') {
+      openForm({ action })
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -441,6 +445,41 @@ export default function ({
         // params: {
         //   [requestId]: row.id,
         // },
+      })
+      popupForm.value.isShow = true
+    }
+  }
+
+  const openForm = ({ action }) => {
+    console.log(action)
+    console.log(form)
+    const sharedFields = form?.sharedFields
+    if (sharedFields) {
+      sharedFields.fields.forEach((field) => {
+        sharedFields.target.fields.forEach((targetField) => {
+          // console.log(targetField.name, field.name)
+          if (targetField.name === field.name) {
+            console.log(formData, targetField, formData[field.name])
+            targetField.value = formData[field.name]
+            if (field.value) targetField.value = field.value
+            if (field.readonly === true) targetField.readonly = true
+          }
+        })
+      })
+    }
+    if (form.detail.type === 'popup') {
+      let requestId = 'id'
+      if (action.target.requestKey) requestId = action.target.requestKey
+      console.log(formData, action.target.requestKey)
+      let routeRequest = formData[action.target.requestKey]
+        ? `/:${action.target.requestKey}`
+        : '-add'
+      router.push({
+        name: action.target.route + routeRequest,
+        // name: `${route.name}/:${requestId}`,
+        params: {
+          [requestId]: formData[action.target.requestKey],
+        },
       })
       popupForm.value.isShow = true
     }
@@ -832,6 +871,8 @@ export default function ({
     let value = ''
     if (!value && el.source === 'formData') {
       value = formData[el.field]
+    } else if (!value && el.source === 'mode') {
+      value = mode
     } else {
       value = el.value
     }
@@ -987,8 +1028,10 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
+        console.log(field)
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
+            console.log(params)
             if (params?.item) formData[el] = params?.item[el]
             else if (formData[el] && params.hasOwnProperty('item'))
               formData[el] = null
@@ -1276,9 +1319,13 @@ export default function ({
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
-        el.items = [...el.items, ...data.rows]
+        console.log(el.items)
+        if (el.items?.length) {
+          el.items = [...el.items, ...data.rows]
+        } else {
+          el.items = [...data.rows]
+        }
       }
-
       el.hideItems = el.items
       console.log(mode, 'MODE')
       if (data.rows?.length === 1 && data.totalPage === 1) {
@@ -1305,8 +1352,10 @@ export default function ({
   }
 
   const putSelectItems = async (lists) => {
+    // console.log(JSON.stringify(lists.data))
     const stackDep = []
     for (let keyList in lists.data) {
+      console.log(keyList, 'KEYLIST', lists.data[keyList], mode)
       const field = fields[fieldAliases[keyList]]
       if (field) {
         field.hideItems = lists.data[keyList]
@@ -1328,6 +1377,7 @@ export default function ({
             const formTargets = field.hiding.conditions.filter(
               (el) => el.target === 'formData'
             )
+            console.log(JSON.stringify(formData))
             if (formTargets?.length) {
               formTargets.forEach((formTarget) => {
                 if (formTarget.value.includes(formData[formTarget.field])) {
@@ -1346,6 +1396,10 @@ export default function ({
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
+        console.log(field.name)
+        if (field.name === 'personal_id') {
+          console.log(JSON.stringify(field.items), 'JSON')
+        }
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
@@ -1384,6 +1438,7 @@ export default function ({
               field.defaultItems[0][field.selectOption.value]
           }
         }
+        // console.log(JSON.stringify(lists.data))
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
           formData[field.name] = ''
         }
@@ -1403,6 +1458,7 @@ export default function ({
     await Promise.all(stackDep)
   }
   const hasValue = (value, list, field) => {
+    console.log(value, list, field, field?.name)
     if (!value) return true
     else {
       if (Array.isArray(value)) {
@@ -1410,6 +1466,7 @@ export default function ({
           _.intersection(el[field.selectOption.value], value)
         )
       } else {
+        console.log(list, value)
         return list.find((el) => el[field.selectOption.value] === value)
       }
     }
@@ -1544,6 +1601,7 @@ export default function ({
                 formData,
                 environment,
                 originalData: originalData.value,
+                mode,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
