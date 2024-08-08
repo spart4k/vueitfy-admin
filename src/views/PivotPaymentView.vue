@@ -95,7 +95,7 @@ export default {
     config.detail.tabs.push(...personalTabs)
 
     configRouteConvert({
-      config: config.detail.tabs[4].config,
+      config: config.detail.tabs[3].config,
       route: 'scan',
       newPath: 'personal-scan',
       settings: {
@@ -104,7 +104,7 @@ export default {
     })
 
     configRouteConvert({
-      config: config.detail.tabs[5].config,
+      config: config.detail.tabs[4].config,
       route: 'card',
       newPath: 'personal-card',
       settings: {

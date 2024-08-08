@@ -7,6 +7,7 @@ import PersonalView from '../views/PersonalView.vue'
 import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
+import MagnitPivot from '../views/Magnit/PivotView.vue'
 import PivotPaymentView from '../views/PivotPaymentView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
@@ -639,6 +640,28 @@ const routes = [
     component: Pivotx5View,
   },
   {
+    path: '/magnit_pivot',
+    name: 'magnit_pivot',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    children: [
+      {
+        name: 'magnit_pivot-zayavka',
+        path: '/magnit_pivot/zayavka',
+        meta: {
+          mode: ['zayavka'],
+          label: 'Парсер заявок',
+        },
+        component: Detail,
+      },
+    ],
+    component: MagnitPivot,
+  },
+  {
     path: '/pivot_payment',
     name: 'pivot_payment',
     meta: {
@@ -749,15 +772,6 @@ const routes = [
         meta: {
           mode: ['output'],
           label: 'Парсер Х5',
-        },
-        component: Detail,
-      },
-      {
-        name: 'pivot_payment-zayavka',
-        path: '/pivot_payment/zayavka',
-        meta: {
-          mode: ['zayavka'],
-          label: 'Парсер заявок',
         },
         component: Detail,
       },
