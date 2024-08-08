@@ -128,6 +128,14 @@ export default {
           type: 'default',
           fillField: ['permission_id'],
         },
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            if (context.formData.permission_id !== 9) {
+              context.formData.with_target = false
+            }
+          },
+        },
       ],
     }),
     textBlock({
@@ -143,6 +151,22 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
+    }),
+    checkboxField({
+      label: 'С назначением',
+      name: 'with_target',
+      value: false,
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      isShow: {
+        value: false,
+        conditions: [{ field: 'permission_id', value: [9] }],
+      },
+      bootstrapClass: [''],
     }),
   ],
   actions: [
@@ -169,11 +193,12 @@ export default {
           color: 'success',
         },
         2: {
-          text: 'Объект с именем %name% уже существует',
+          text: 'Ошибка сервера',
           color: 'error',
         },
         3: {
-          text: '',
+          text: 'Объект уже назначен',
+          color: 'error',
         },
       },
     }),
