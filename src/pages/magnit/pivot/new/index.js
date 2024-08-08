@@ -1,32 +1,6 @@
 import filters from './filters'
 import formMagnitZayavka from './config/form-magnit-zayavka.js'
 
-function changeSort(config) {
-  let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
-  let heading = config.head.find((x) => x.changeable)
-  if (btn.typeLabel === 'Объекты') {
-    btn.typeLabel = 'ФИО'
-    heading.title = 'Объект'
-    heading.alias = 'o.name'
-    heading.value = 'object_name'
-    heading.routeName = 'pivot_payment-object'
-    heading.routeParam = 'object_id'
-    heading.click = undefined
-    heading.type = 'default'
-    config.options.url = 'get/pagination_pivot/payment_object_retail'
-  } else if (btn.typeLabel === 'ФИО') {
-    btn.typeLabel = 'Объекты'
-    heading.title = 'ФИО'
-    heading.alias = "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)"
-    heading.value = 'fio'
-    heading.routeName = 'pivot_payment-personal'
-    heading.routeParam = 'personal_id'
-    heading.click = undefined
-    heading.type = 'default'
-    config.options.url = 'get/pagination_pivot/payment_personal_retail'
-  }
-}
-
 export const config = {
   selector: '#mainTable',
   options: {

@@ -62,7 +62,6 @@ export default {
       tabs,
       activeTab,
     })
-    console.log(pivotMagnit)
     const config = _.cloneDeep(pivotMagnit)
 
     return {
