@@ -177,9 +177,10 @@ export default {
         props.tab.fields[6].value = props.content?.id
       }
     }
-    const closePopupForm = () => {
+    const closePopupForm = (double) => {
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
+      if (double) emit('closePopup')
     }
 
     const downloadFile = (link) => {

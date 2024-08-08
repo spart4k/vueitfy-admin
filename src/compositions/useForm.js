@@ -212,7 +212,7 @@ export default function ({
       emit('getItems')
       //if (action.actionKey === 'schedule') {
       if (result.code === 1) {
-        emit('closePopup')
+        emit('closePopup', action.closeDouble)
       } else if (result.result === 1) {
         emit('closePopup')
       } else if (result.success) {
@@ -464,6 +464,18 @@ export default function ({
         content: unref(response.text),
       })
       return false
+    } else if (response?.type === 'warning') {
+      store.commit('notifies/showMessage', {
+        color: 'warning',
+        content: unref(response.text),
+        component: response.component,
+        data: {
+          response: data,
+          popupForm,
+          formData,
+        },
+      })
+      return false
     }
     return true
   }
@@ -504,19 +516,6 @@ export default function ({
       ) {
         if (item.requestKey) newForm[item.requestKey] = formData[key]
         else newForm[key] = formData[key]
-
-        if (action?.useStorageKey?.length) {
-          action.useStorageKey.forEach((item) => {
-            newForm[item.requestKey] =
-              store?.state?.formStorage?.[item?.storageKey]
-          })
-        }
-
-        if (action?.useRouteKey?.length) {
-          action.useRouteKey.forEach((item) => {
-            newForm[item.requestKey] = +route.params?.[item?.storageKey]
-          })
-        }
 
         if (item.requestType === 'number') {
           if (item.requestKey)
@@ -565,6 +564,19 @@ export default function ({
               )
           })
         }
+      }
+
+      if (action?.useStorageKey?.length) {
+        action.useStorageKey.forEach((item) => {
+          newForm[item.requestKey] =
+            store?.state?.formStorage?.[item?.storageKey]
+        })
+      }
+
+      if (action?.useRouteKey?.length) {
+        action.useRouteKey.forEach((item) => {
+          newForm[item.requestKey] = +route.params?.[item?.storageKey]
+        })
       }
 
       // if (item.round) {
@@ -1122,7 +1134,7 @@ export default function ({
           } else {
             formData[depField] = data[0]?.id
           }
-          card = targetField.items.find((el) => el.id === formData[depField])
+          card = targetField.items?.find((el) => el.id === formData[depField])
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
           }
