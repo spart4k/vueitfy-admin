@@ -70,21 +70,12 @@ export default {
       path: 'edit',
       name: 'Расход',
       config: _.cloneDeep(zayavkaConfigOrig),
-      isShow: {
-        value: true,
-        condition: [
-          {
-            permissions: [7],
-            type: false,
-          },
-        ],
-      },
     })
 
     configRouteConvert({
       config: zayavkaConfig.config,
       route: 'zayavka',
-      newPath: 'edit-zayavka',
+      newPath: 'office-zayavka',
       settings: {
         oldPath: 'id',
       },

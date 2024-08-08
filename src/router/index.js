@@ -302,6 +302,16 @@ const routes = [
         meta: {
           mode: ['edit'],
         },
+        children: [
+          {
+            name: 'office/:id/:zayavka',
+            path: ':zayavka',
+            meta: {
+              mode: ['edit', 'office-zayavka'],
+            },
+            component: Detail,
+          },
+        ],
         component: Detail,
       },
       {
