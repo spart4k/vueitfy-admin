@@ -1,46 +1,5 @@
 import filters from './filters'
-import { required } from '@/utils/validation.js'
-import {
-  stringField,
-  selectField,
-  // autocompleteField,
-  dateField,
-  checkboxField,
-  dropZoneField,
-} from '@/utils/fields.js'
-import _ from 'lodash'
-import { stringAction } from '@/utils/actions'
-import FormDefault from '@/components/Form/default/index.vue'
-import FormOutput from '@/components/Form/output/index.vue'
-import FormTarget from '@/components/Form/target/default/index.vue'
-import { editFields as appointmentsFields } from '@/pages/appointments/index.js'
-// import { fieldsBaseDefaultForm as personalFields } from '@/pages/personal/index.js'
-// import { defaultForm as personalConfig } from '@/pages/personal/index'
-// import { defaultForm as objectConfig } from '@/pages/object/index.js'
-
-// const changeActionTo = (array, oldPath, newPath) => {
-//   array.forEach((tab) => {
-//     if (tab.path === oldPath) {
-//       tab.path = newPath
-//     }
-//   })
-// }
-
-// const personalConfigForms = _.cloneDeep(personalConfig)
-// const objectConfigForm = _.cloneDeep(objectConfig)
-
-// changeActionTo(personalConfigForms, 'edit', 'edit-personal')
-// changeActionTo(objectConfigForm, 'edit', 'edit-object')
-
 import formMagnitZayavka from './config/form-magnit-zayavka.js'
-
-function consoleText(row) {}
-
-function consoleButton(row) {}
-
-function consolePanel() {}
-
-function searchInputing(field) {}
 
 function changeSort(config) {
   let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
@@ -73,7 +32,7 @@ export const config = {
   options: {
     selecting: true,
     search: {
-      function: searchInputing,
+      function: null,
     },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
