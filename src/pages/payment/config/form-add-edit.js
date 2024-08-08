@@ -301,8 +301,34 @@ export default {
   //lists: [],
   lists: [
     {
-      alias: 'vid_vedomost_id',
-      filter: [],
+      alias: 'payment_vid_vedomost_id',
+      filter: [
+        {
+          field: 'direction_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'type',
+          alias: 'type_object_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'date_target',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
     },
     {
       alias: 'status_id',
@@ -316,6 +342,11 @@ export default {
           // alias: 'account_id',
           value: '',
           source: 'formData',
+          type: 'num',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
           type: 'num',
         },
       ],
@@ -1353,6 +1384,7 @@ export default {
     selectField({
       label: 'Вид ведомости',
       name: 'vid_vedomost_id',
+      alias: 'payment_vid_vedomost_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -1457,51 +1489,64 @@ export default {
           // },
         ],
       },
-      hideOption: [
+      // hideOption: [
+      //   {
+      //     target: 'type',
+      //     targetValue: [1],
+      //     value: [9],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (
+      //         ctx.mode === 'add' &&
+      //         ctx.formData.type === 1 &&
+      //         ctx.formData.direction_id === 2
+      //       ) {
+      //         return true
+      //       } else {
+      //         return false
+      //       }
+      //     },
+      //   },
+      //   {
+      //     target: 'type',
+      //     targetValue: [1],
+      //     value: [10],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (
+      //         ctx.mode === 'add' &&
+      //         ctx.formData.type === 1 &&
+      //         ctx.formData.direction_id === 2
+      //       ) {
+      //         return false
+      //       } else {
+      //         return true
+      //       }
+      //     },
+      //   },
+      //   {
+      //     value: [1, 3, 5, 8],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (ctx.mode === 'add') {
+      //         return true
+      //       } else {
+      //         return false
+      //       }
+      //     },
+      //   },
+      // ],
+      filter: [
         {
-          target: 'type',
-          targetValue: [1],
-          value: [9],
-          type: true,
-          func: (ctx) => {
-            if (
-              ctx.mode === 'add' &&
-              ctx.formData.type === 1 &&
-              ctx.formData.direction_id === 2
-            ) {
-              return true
-            } else {
-              return false
-            }
-          },
+          field: 'direction_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
         },
         {
-          target: 'type',
-          targetValue: [1],
-          value: [10],
-          type: true,
-          func: (ctx) => {
-            if (
-              ctx.mode === 'add' &&
-              ctx.formData.type === 1 &&
-              ctx.formData.direction_id === 2
-            ) {
-              return false
-            } else {
-              return true
-            }
-          },
-        },
-        {
-          value: [1, 3, 5, 8],
-          type: true,
-          func: (ctx) => {
-            if (ctx.mode === 'add') {
-              return true
-            } else {
-              return false
-            }
-          },
+          source: 'mode',
+          type: 'num',
         },
       ],
       // hiding: {

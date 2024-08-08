@@ -854,6 +854,8 @@ export default function ({
     let value = ''
     if (!value && el.source === 'formData') {
       value = formData[el.field]
+    } else if (!value && el.source === 'mode') {
+      value = mode
     } else {
       value = el.value
     }
