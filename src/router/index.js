@@ -609,6 +609,17 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
+    children: [
+      {
+        name: 'magnit_pivot-zayavka',
+        path: '/magnit_pivot/zayavka',
+        meta: {
+          mode: ['zayavka'],
+          label: 'Парсер заявок',
+        },
+        component: Detail,
+      },
+    ],
     component: MagnitPivot,
   },
   {
@@ -722,15 +733,6 @@ const routes = [
         meta: {
           mode: ['output'],
           label: 'Парсер Х5',
-        },
-        component: Detail,
-      },
-      {
-        name: 'pivot_payment-zayavka',
-        path: '/pivot_payment/zayavka',
-        meta: {
-          mode: ['zayavka'],
-          label: 'Парсер заявок',
         },
         component: Detail,
       },
