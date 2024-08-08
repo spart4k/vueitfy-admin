@@ -99,7 +99,6 @@ const form10 = defineComponent({
       },
     ])
     // const accepted_amount = ref('')
-    console.log(props?.data?.task?.dop_data)
     const accepted = ref(JSON.parse(props.data?.task?.dop_data)?.accept)
     // Удаление файла
     const removeFile = (fileID) => {

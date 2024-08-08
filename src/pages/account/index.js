@@ -552,6 +552,23 @@ const config = {
                 validations: { required },
                 bootstrapClass: [''],
                 requiredFields: ['direction_json'],
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      target: 'funcCondition',
+                      funcCondition: (ctx) => {
+                        return (
+                          !(
+                            ctx.formData.direction_json?.includes(4) &&
+                            ctx.formData.direction_json?.length === 1
+                          ) && ctx.formData.permission_id !== 23
+                        )
+                        // console.log(ctx, 'CONTEXT')
+                      },
+                    },
+                  ],
+                },
               }),
               selectField({
                 label: 'Роль',
@@ -628,6 +645,26 @@ const config = {
                 ],
                 requiredFields: ['direction_json', 'permission_id'],
               }),
+              autocompleteField({
+                label: 'Офис',
+                name: 'office_id',
+                subtype: 'single',
+                placeholder: '',
+                class: [''],
+                selectOption: {
+                  text: 'name',
+                  value: 'id',
+                },
+                items: [],
+                page: 1,
+                search: '',
+                url: 'get/pagination_list/office_id',
+                position: {
+                  cols: 12,
+                  sm: 6,
+                },
+                bootstrapClass: [''],
+              }),
               colorPicker({
                 label: 'Цвет',
                 name: 'color',
@@ -656,6 +693,18 @@ const config = {
                 bootstrapClass: [''],
                 //validations: { required },
                 //isShow: false,
+                isShow: {
+                  value: false,
+                  conditions: [
+                    {
+                      target: 'funcCondition',
+                      funcCondition: (ctx) => {
+                        return ctx.formData.permission_id !== 23
+                        // console.log(ctx, 'CONTEXT')
+                      },
+                    },
+                  ],
+                },
               }),
             ],
             actions: [

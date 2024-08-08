@@ -50,10 +50,10 @@ const selectField = (properties) => {
 const autocompleteField = (properties) => {
   return {
     type: 'autocomplete',
-    value: '',
     loading: false,
     hideItems: [],
     ...defaultProperties(properties),
+    value: null,
   }
 }
 
