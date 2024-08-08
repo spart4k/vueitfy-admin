@@ -1280,11 +1280,17 @@ export default function ({
       }
 
       el.hideItems = el.items
+      console.log(mode, 'MODE')
       if (data.rows?.length === 1 && data.totalPage === 1) {
+        console.log(mode, 'MODE')
         if (fields[el.name]?.subtype === 'multiple') {
-          formData[el.name] = [el.items[0][el.selectOption.value]]
+          if (mode === 'add') {
+            formData[el.name] = [el.items[0][el.selectOption.value]]
+          }
         } else {
-          formData[el.name] = el.items[0][el.selectOption.value]
+          if (mode === 'add') {
+            formData[el.name] = el.items[0][el.selectOption.value]
+          }
         }
       }
       if (el.putFirst && !formData[el.name] && el.items[0])
