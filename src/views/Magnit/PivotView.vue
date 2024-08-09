@@ -43,6 +43,7 @@ import { objectTabs as objectTabsOrig } from '@/pages/object/index'
 import tableAccountBankOrig from '@/pages/account/config/table-account-bank'
 import formAccountEditOrig from '@/pages/account/config/form-account-edit'
 import formPaymentEditOrig from '@/pages/payment/config/form-add-edit'
+import formMagnitRequestAddEditOrig from '@/pages/magnit/shop-request/config/form-magnit-request-add-edit'
 
 // import { config as personalConfigOrig } from '@/pages/personal/index'
 
@@ -79,8 +80,8 @@ export default {
     const objectTabs = _.cloneDeep(objectTabsOrig)
 
     const formAccountEdit = _.cloneDeep(formAccountEditOrig)
+    const formMagnitRequestAddEdit = _.cloneDeep(formMagnitRequestAddEditOrig)
     const tableAccountBank = _.cloneDeep(tableAccountBankOrig)
-    const formPaymentEdit = _.cloneDeep(formPaymentEditOrig)
 
     const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
       paymentConfigOrig,
@@ -141,12 +142,67 @@ export default {
         oldPath: 'edit',
       },
     })
-    tabNew.detail.tabs.push(formPaymentEdit)
+    tabNew.detail.tabs.push(formMagnitRequestAddEdit)
     configRouteConvert({
       config: tabNew,
       newPath: 'edit',
       settings: {
-        oldPath: 'add-edit-logistic',
+        oldPath: 'add-or-edit',
+      },
+    })
+
+    tabWorked.detail.tabs.push(...personalTabs)
+    configRouteConvert({
+      config: tabWorked.detail.tabs[2].config,
+      route: 'scan',
+      newPath: 'personal-scan',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: tabWorked.detail.tabs[3].config,
+      route: 'card',
+      newPath: 'personal-card',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'personal',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+
+    tabWorked.detail.tabs.push(..._.cloneDeep(objectTabs))
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'object',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+    tabWorked.detail.tabs.push(
+      _.cloneDeep(formAccountEdit),
+      _.cloneDeep(tableAccountBank)
+    )
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'account',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+    tabWorked.detail.tabs.push(_.cloneDeep(formMagnitRequestAddEdit))
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'edit',
+      settings: {
+        oldPath: 'add-or-edit',
       },
     })
 

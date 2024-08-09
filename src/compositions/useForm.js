@@ -458,11 +458,25 @@ export default function ({
       sharedFields.fields.forEach((field) => {
         sharedFields.target.fields.forEach((targetField) => {
           // console.log(targetField.name, field.name)
-          if (targetField.name === field.name) {
-            console.log(formData, targetField, formData[field.name])
-            targetField.value = formData[field.name]
-            if (field.value) targetField.value = field.value
-            if (field.readonly === true) targetField.readonly = true
+          if (Array.isArray(field.alias)) {
+            console.log(field, 'FIELD_ALIAS')
+            field.alias.forEach((el) => {
+              if (targetField.name === el) {
+                targetField.value = formData[field.name]
+              }
+            })
+          } else {
+            if (targetField.name === field.alias) {
+              console.log(formData, targetField, formData[field.name])
+              targetField.value = formData[field.name]
+              if (field.value) targetField.value = field.value
+              if (field.readonly === true) targetField.readonly = true
+            } else if (targetField.name === field.name) {
+              console.log(formData, targetField, formData[field.name])
+              targetField.value = formData[field.name]
+              if (field.value) targetField.value = field.value
+              if (field.readonly === true) targetField.readonly = true
+            }
           }
         })
       })
@@ -850,7 +864,7 @@ export default function ({
   const changeValue = (params) => {
     const { value, field } = params
     if (field.dependence) {
-      field.dependence?.forEach((dependence) => {
+      field.dependence?.forEach(async (dependence) => {
         if (dependence?.type === 'computed' && dependence.funcComputed) {
           const context = {
             store,
@@ -860,6 +874,22 @@ export default function ({
             form,
           }
           dependence.funcComputed(context)
+        } else if (dependence.type === 'api') {
+          const { url, body: bodyData, field: targetField } = dependence
+          const acc = {}
+          bodyData.forEach((el) => {
+            acc[el] = +formData[el]
+          })
+          const { result } = await store.dispatch(dependence.module, {
+            value,
+            field,
+            url,
+            body: {
+              data: acc,
+            },
+          })
+          formData[targetField] = result
+          // console.log(data)
         }
       })
     }
@@ -942,7 +972,7 @@ export default function ({
           }
         }
       }
-
+      // console.log(list, 'LISTLIST')
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
       const element = {
@@ -1020,6 +1050,8 @@ export default function ({
             readonly: environment.readonlyAll,
             filter,
           }
+        } else {
+          console.log('computed!!')
         }
       }
       //if (dependence && (dependence.type !== 'api' || !dependence.type)) {
@@ -1280,6 +1312,8 @@ export default function ({
           filter.value = source
         } else if (el.source === 'formData') {
           filter.value = formData[el.field]
+        } else if (el.source === 'mode') {
+          filter.value = mode
         } else {
           filter.value = el.source ? eval(el.source) : formData[el.field]
         }
@@ -1718,6 +1752,7 @@ export default function ({
           } else if (el.target === 'direction_id') {
             return checkIncludesDirections(el)
           } else {
+            console.log(el.value)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
@@ -1746,7 +1781,16 @@ export default function ({
             if (el.value === 'notEmpty') {
               return `${formData[el.field]}`
             }
+          } else if (el.target === 'funcCondition') {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            return el.funcCondition(conditionContext)
           } else {
+            console.log(el)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
