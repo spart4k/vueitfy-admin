@@ -658,6 +658,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
+    component: MagnitPivot,
     children: [
       {
         name: 'magnit_pivot-zayavka',
@@ -668,8 +669,101 @@ const routes = [
         },
         component: Detail,
       },
+      {
+        name: 'magnit_pivot-edit',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Заявка "Магнит"',
+        },
+        component: Detail,
+      },
+      {
+        name: 'magnit_pivot-personal',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['personal'],
+          label: 'Персонал',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-personal/:payment',
+            path: '/magnit_pivot/:id/:payment',
+            meta: {
+              mode: ['personal', 'personal-payment'],
+              label: 'Начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:zayavka',
+            path: '/magnit_pivot/:id/:zayavka',
+            meta: {
+              mode: ['personal', 'personal-zayavka'],
+              label: 'Заявка на расход',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:scan',
+            path: '/magnit_pivot/:id/:scan',
+            meta: {
+              mode: ['personal', 'personal-scan'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:card',
+            path: '/magnit_pivot/:id/:card',
+            meta: {
+              mode: ['personal', 'personal-card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'magnit_pivot-object',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['object'],
+          label: 'Объект',
+        },
+        component: Detail,
+      },
+      {
+        name: 'magnit_pivot-account',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['account'],
+          label: 'Аккаунт',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-account/:card_id',
+            path: '/magnit_pivot/:id/:card_id',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-account/new_card',
+            path: '/magnit_pivot/:id/new_card',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
     ],
-    component: MagnitPivot,
   },
   {
     path: '/pivot_payment',
