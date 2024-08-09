@@ -136,7 +136,6 @@ export default {
           {
             field: 'object_id',
             value: '',
-            source: 'fromPrev',
           },
         ],
         updateList: [
