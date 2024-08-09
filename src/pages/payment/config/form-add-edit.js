@@ -331,8 +331,14 @@ export default {
       ],
     },
     {
-      alias: 'status_id',
-      filter: [],
+      alias: 'payment_status_id',
+      filter: [
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
     },
     {
       alias: 'payment_direction_id',
@@ -389,6 +395,7 @@ export default {
     selectField({
       label: 'Статус',
       name: 'status_id',
+      alias: 'payment_status_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -1128,6 +1135,38 @@ export default {
           // },
         ],
       },
+      updateList: [
+        {
+          alias: 'payment_vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -1207,6 +1246,11 @@ export default {
           source: 'formData',
           type: 'array',
           value: '',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
         },
       ],
       // dependence: [
@@ -1612,45 +1656,65 @@ export default {
     //  validations: { required },
     //  bootstrapClass: [''],
     //}),
-    // stringField({
-    //   label: 'Часы (план)',
-    //   name: 'hour_plan',
-    //   placeholder: '',
-    //   readonly: true,
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы(факт)',
-    //   name: 'hour_fact',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы',
-    //   name: 'hour',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   validations: { required },
-    //   bootstrapClass: [''],
-    // }),
+    stringField({
+      label: 'Часы (план)',
+      name: 'hour_plan',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      //isShow: false,
+    }),
+    stringField({
+      label: 'Часы(факт)',
+      name: 'hour_fact',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      //isShow: false,
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'api',
+          module: 'form/create',
+          // action: {
+          //   type: 'hideOptions',
+          //   //values: [8],
+          //   field: 'vid_vedomost_id',
+          //   condition: {
+          //     true: [],
+          //     false: 1,
+          //   },
+          // },
+          //url: 'object_id/avatar_with_user_key_id',
+          url: 'calculate/magnit/hour',
+          body: ['object_id', 'doljnost_id', 'hour_fact'],
+          field: 'hour',
+        },
+      ],
+    }),
+    stringField({
+      label: 'Часы',
+      name: 'hour',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
     // stringField({
     //   label: 'Тариф',
     //   name: 'price',
@@ -2141,7 +2205,6 @@ export default {
       },
       bootstrapClass: [''],
       //validations: { required },
-      value: 1,
       isShow: {
         value: true,
       },

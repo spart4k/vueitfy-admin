@@ -1026,6 +1026,7 @@ const config = {
             },
             {
               name: 'hour',
+              alias: 'hour_plan',
               readonly: true,
             },
             {
