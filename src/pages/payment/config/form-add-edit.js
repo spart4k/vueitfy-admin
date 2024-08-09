@@ -259,18 +259,18 @@ export default {
       alias: 'status_id',
       filter: [],
     },
-    // {
-    //   alias: 'payment_direction_id',
-    //   filter: [
-    //     {
-    //       field: 'account_id',
-    //       // alias: 'account_id',
-    //       value: '',
-    //       source: 'formData',
-    //       type: 'num',
-    //     },
-    //   ],
-    // },
+    {
+      alias: 'payment_direction_id',
+      filter: [
+        {
+          field: 'account_id',
+          // alias: 'account_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+      ],
+    },
     {
       alias: 'doljnost_id',
       filter: [],
