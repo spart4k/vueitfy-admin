@@ -212,7 +212,7 @@ const config = {
       isShow: true,
       width: '150',
       value: 'personal_name',
-      alias: 'pers.name',
+      alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
       search: {
         field: '',
         isShow: true,
