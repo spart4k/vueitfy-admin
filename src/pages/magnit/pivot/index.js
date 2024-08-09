@@ -1,8 +1,9 @@
 import New from './new/index'
-const config = {
+import Worked from './worked/index'
+export const config = {
   title: 'Добавление аккаунта',
   activeTab: 2,
-  tabs: [New],
+  tabs: [New, Worked],
 }
 
 export default config

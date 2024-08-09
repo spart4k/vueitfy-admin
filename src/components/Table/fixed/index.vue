@@ -362,10 +362,10 @@
                           {{ card.price }}
                         </p>
                         <p class="v-table-body-row-cell-item_text">
-                          {{ card.hour ?? card.position }}
+                          {{ card.doljnost_name ?? card.smena }}
                         </p>
                         <p class="v-table-body-row-cell-item_text">
-                          {{ card.doljnost_name ?? card.smena }}
+                          {{ card.hour ?? card.position }}
                         </p>
                         <p
                           class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
