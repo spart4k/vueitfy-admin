@@ -457,6 +457,16 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return (
+                context.mode === 'add' &&
+                context.formData.type === 2 &&
+                context.formData.direction_id === 2
+              )
+            },
+            type: true,
+          },
         ],
       },
       hiding: {
@@ -601,29 +611,6 @@ export default {
       // validations: { required },
       bootstrapClass: [''],
       readonly: true,
-    }),
-    dateField({
-      label: 'Дата назн',
-      name: 'date_target',
-      subtype: 'datetime',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 3,
-      },
-      // validations: { required },
-      bootstrapClass: [''],
-      readonly: true,
-      isShow: {
-        value: false,
-        conditions: [
-          {
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-          },
-        ],
-      },
     }),
     selectField({
       label: 'Менеджер',
@@ -1622,6 +1609,36 @@ export default {
       //     // },
       //   ],
       // },
+    }),
+    dateField({
+      label: 'Дата назн',
+      name: 'date_target',
+      subtype: 'datetime',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      readonly: true,
+      isShow: {
+        value: false,
+        type: 'some',
+        conditions: [
+          {
+            field: 'vid_vedomost_id',
+            value: [1, 5],
+          },
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.direction_id === 2 && ctx.formData.type === 2
+            },
+          },
+        ],
+      },
     }),
     //selectField({
     //  label: 'Статья расхода',

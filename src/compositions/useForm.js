@@ -458,17 +458,25 @@ export default function ({
       sharedFields.fields.forEach((field) => {
         sharedFields.target.fields.forEach((targetField) => {
           // console.log(targetField.name, field.name)
-          if (targetField.name === field.name) {
-            console.log(formData, targetField, formData[field.name])
-            targetField.value = formData[field.name]
-            if (field.value) targetField.value = field.value
-            if (field.readonly === true) targetField.readonly = true
-          }
-          if (field.alias === targetField.name) {
-            console.log(formData, targetField, formData[field.name])
-            targetField.value = formData[field.name]
-            if (field.value) targetField.value = field.value
-            if (field.readonly === true) targetField.readonly = true
+          if (Array.isArray(field.alias)) {
+            console.log(field, 'FIELD_ALIAS')
+            field.alias.forEach((el) => {
+              if (targetField.name === el) {
+                targetField.value = formData[field.name]
+              }
+            })
+          } else {
+            if (targetField.name === field.alias) {
+              console.log(formData, targetField, formData[field.name])
+              targetField.value = formData[field.name]
+              if (field.value) targetField.value = field.value
+              if (field.readonly === true) targetField.readonly = true
+            } else if (targetField.name === field.name) {
+              console.log(formData, targetField, formData[field.name])
+              targetField.value = formData[field.name]
+              if (field.value) targetField.value = field.value
+              if (field.readonly === true) targetField.readonly = true
+            }
           }
         })
       })
@@ -1721,6 +1729,7 @@ export default function ({
           } else if (el.target === 'direction_id') {
             return checkIncludesDirections(el)
           } else {
+            console.log(el.value)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
@@ -1749,7 +1758,16 @@ export default function ({
             if (el.value === 'notEmpty') {
               return `${formData[el.field]}`
             }
+          } else if (el.target === 'funcCondition') {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            return el.funcCondition(conditionContext)
           } else {
+            console.log(el)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
