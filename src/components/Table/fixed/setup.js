@@ -489,8 +489,10 @@ const table = {
       })
     })
     const saveFilter = (filterData) => {
+      console.log('filterData', filterData)
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
+        console.log(filterData[el.name])
         if (!filterData[el.name]) {
           el.value = ''
           return
@@ -508,6 +510,9 @@ const table = {
               el === null
           )
         ) {
+          return
+        }
+        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
           return
         }
         let type = el.typeFilter ? el.typeFilter : el.type
