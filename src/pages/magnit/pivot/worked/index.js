@@ -6,7 +6,7 @@ function changeSort(config) {
     heading.title = 'Объект'
     heading.alias = 'o.name'
     heading.value = 'object_name'
-    heading.routeName = 'pivot_payment-object'
+    heading.routeName = 'magnit_pivot-object'
     heading.routeParam = 'object_id'
     heading.click = undefined
     heading.type = 'default'
@@ -15,7 +15,7 @@ function changeSort(config) {
     heading.title = 'Линейщик'
     heading.alias = "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)"
     heading.value = 'personal_name'
-    heading.routeName = 'pivot_payment-personal'
+    heading.routeName = 'magnit_pivot-personal'
     heading.routeParam = 'personal_id'
     heading.click = undefined
     heading.type = 'default'
@@ -34,7 +34,7 @@ export const config = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination_pivot/request_magnit_personal',
     title: 'Отработанные',
-    // doubleHandlerType: 'cell',
+    doubleHandlerType: 'cell',
   },
   type: 'TableFixed',
   panel: {
@@ -89,7 +89,7 @@ export const config = {
         },
       ],
       routeParam: 'account_id',
-      routeName: 'pivot_payment-account',
+      routeName: 'magnit_pivot-account',
     },
     {
       id: 2,
@@ -117,6 +117,8 @@ export const config = {
           isShow: false,
         },
       ],
+      routeParam: 'personal_id',
+      routeName: 'magnit_pivot-personal',
     },
   ],
   data: {
@@ -134,7 +136,7 @@ export const config = {
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
-    name: 'Выработка X5',
+    name: '',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [],
     activeTab: null,

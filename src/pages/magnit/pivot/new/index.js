@@ -120,7 +120,7 @@ export const config = {
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
-    name: 'Выработка X5',
+    name: '',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [formMagnitZayavka],
     activeTab: null,

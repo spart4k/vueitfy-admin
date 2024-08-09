@@ -371,7 +371,8 @@
                           class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
                         >
                           {{
-                            options.head[0].value === 'fio'
+                            options.head[0].value === 'fio' ||
+                            options.head[1].value === 'personal_name'
                               ? card.object_name
                               : card.fio
                           }}
