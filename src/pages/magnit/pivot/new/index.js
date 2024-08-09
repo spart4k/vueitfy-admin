@@ -12,7 +12,7 @@ export const config = {
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination_pivot/request_magnit_new',
     title: 'Новые',
-    // doubleHandlerType: 'cell',
+    doubleHandlerType: 'cell',
   },
   type: 'TableFixed',
   panel: {
@@ -71,8 +71,9 @@ export const config = {
           isShow: false,
         },
       ],
+      click: undefined,
       routeParam: 'account_id',
-      routeName: 'pivot_payment-account',
+      routeName: 'magnit_pivot-account',
     },
     {
       id: 2,
@@ -99,6 +100,9 @@ export const config = {
           isShow: false,
         },
       ],
+      click: undefined,
+      routeParam: 'object_id',
+      routeName: 'magnit_pivot-object',
     },
   ],
   data: {
