@@ -50,6 +50,7 @@ export default {
       //url: '/save/:folder/:file',
       url: 'http://10.63.1.132:5000/file/save/act/TESTFILE.jpg',
       autoProcessQueue: false,
+      autoProcess: true,
       // url
       //url: 'http://localhost:3031',
       autoDiscover: false,
@@ -69,28 +70,33 @@ export default {
     })
     const proxyVal = toRef(props, 'value')
 
-    const sendingFile = async (files) => {
+    const sendingFile = (files) => {
       let arr = []
       if (Array.isArray(files)) arr = files
       else arr = Object.values(files)
-
-      if (props.options.withoutSave) {
-        const filePromise = arr.map(async (file) => {
-          const response = await loadFile(file)
-          return response
-        })
-        await Promise.all(filePromise).then((data) => {
-          if (props.options.callbacks) props.options.callbacks(data)
-        })
-      } else {
-        if (proxyVal.value === undefined || proxyVal.value === null)
-          proxyVal.value = []
-        proxyVal.value.push(...arr)
-        emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
-        nextTick(() => {
-          fileValidation()
-        })
-      }
+      nextTick(async () => {
+        arr = dropzone.value.dropzone.files.slice(-arr.length)
+        if (props.options.withoutSave) {
+          const filePromise = arr.map(async (file) => {
+            const response = await loadFile(file)
+            return response
+          })
+          await Promise.all(filePromise).then((data) => {
+            if (props.options.callbacks) props.options.callbacks(data)
+          })
+        } else {
+          if (proxyVal.value === undefined || proxyVal.value === null) {
+            proxyVal.value = []
+            props.field.value = []
+          }
+          proxyVal.value.push(...arr)
+          props.field.value.push(...arr)
+          emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
+          nextTick(() => {
+            fileValidation()
+          })
+        }
+      })
     }
 
     const fileValidation = () => {

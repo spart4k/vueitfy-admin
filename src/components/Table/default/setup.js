@@ -58,6 +58,10 @@ const table = {
       type: [String, Number],
       default: '',
     },
+    mainData: {
+      type: Object,
+      default: () => {},
+    },
   },
   methods: {
     update() {
@@ -326,6 +330,7 @@ const table = {
         const context = {
           store,
           data: row,
+          route,
         }
         confirmDialog.value.text = action.action.dialog.text
         confirmDialog.value.function = action.action.dialog.function
@@ -560,6 +565,7 @@ const table = {
       indexCell,
       activeIndexCells
     ) => {
+      console.log(options.detail, options)
       if (!options.detail || options.options.noTableAction) return
       if (props.options.options.doubleHandlerType === 'cell') {
         openCell($event, row, cell, indexRow, indexCell, activeIndexCells)

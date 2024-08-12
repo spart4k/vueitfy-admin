@@ -42,6 +42,7 @@
             @refreshData="$emit('refreshData')"
             @setFormData="setFormData"
             :formDataParent="formDataParent"
+            :mainData="mainData"
             :class="item?.label"
             @emitFormData="$emit('emitFormData', $event)"
           />

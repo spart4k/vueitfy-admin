@@ -830,6 +830,7 @@ const config = {
                   formData.date_target
                 }_${formData.name_without_space}_${new Date().getTime()}`
               },
+              toObjectCustom: 'request_data',
             },
             value: [],
           }),

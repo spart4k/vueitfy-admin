@@ -471,6 +471,7 @@
       @handlerContext="handlerContext"
       ref="contextMenuRef"
       :options="contextmenu"
+      :mainData="mainData"
     />
     <Sheet class="v-table-filter-sheet" :isShow="filter.isShow">
       <keep-alive>

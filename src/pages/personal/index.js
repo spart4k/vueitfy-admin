@@ -7,10 +7,10 @@ import _ from 'lodash'
 import tablePersonalDebt from './config/table-personal-debt.js'
 import tablePersonalBank from './config/table-personal-bank.js'
 import tablePersonalScan from './config/table-personal-scan.js'
-import tablePersonalX5 from './config/table-personal-x5.js'
-import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalEdit from './config/form-personal-edit.js'
 import formPersonalAdd from './config/form-personal-add.js'
+import tablePersonalX5 from './config/table-personal-x5.js'
+import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalDirection from './config/form-personal-direction.js'
 import formDocumentDownload from './config/form-document-download.js'
 
@@ -781,6 +781,7 @@ export const config = {
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/personal_on_add',
         title: 'На добавлении',
+        contextMenu: contextMenuPersonal,
       },
       isShow: {
         condition: [
