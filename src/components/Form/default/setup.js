@@ -44,6 +44,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    formDataParent: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -131,6 +135,7 @@ export default {
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         let id
+        console.log(route)
         if (props.tab.routeParam) {
           id = route.params[props.tab.routeParam]
         } else {
@@ -232,6 +237,7 @@ export default {
       appendActionShow,
       isRequired,
       fields,
+      emitFormData,
     } = useForm({
       form: props.tab,
       context,
@@ -247,6 +253,7 @@ export default {
       createForm,
       deleteFormById,
       changeFormId,
+      formDataParent: props.formDataParent,
     })
 
     onMounted(async () => {
@@ -289,6 +296,7 @@ export default {
       isRequired,
       fields,
       mode: isEdit.value,
+      emitFormData,
     }
   },
 }

@@ -48,6 +48,7 @@ export default function ({
   detail,
   deleteFormById,
   changeFormId,
+  formDataParent,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
@@ -60,6 +61,23 @@ export default function ({
 
   let fields = {}
   let fieldAliases = {}
+  const handlerEmit = undefined
+  const emitFormData = async ({ rootCtx, handlerEmit }) => {
+    const conditionContext = {
+      store,
+      formData,
+      originalData: originalData.value,
+      environment,
+      mode,
+      rootCtx,
+      changeFormId,
+      createForm,
+      loadStoreFile,
+    }
+    console.log('EMIT ROOT', rootCtx)
+    console.log(form)
+    await handlerEmit(conditionContext)
+  }
   const initFields = () => {
     if (!form) return
     fields = {}
@@ -71,7 +89,6 @@ export default function ({
       else fieldAliases[form.fields[i].name] = form.fields[i].name
     }
     for (let key in fields) {
-      console.log(JSON.stringify(formData))
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].value))
     }
@@ -315,6 +332,20 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
+    } else if (action.action === 'func') {
+      loading.value = true
+      await action.func({
+        ...conditionContext,
+        sortedData,
+        changeFormId,
+        createForm,
+        emit,
+        sortData,
+        formDataParent,
+        context,
+        loadStoreFile,
+      })
+      loading.value = false
     }
   }
   const handlingResponse = (action, result) => {
@@ -451,15 +482,12 @@ export default function ({
   }
 
   const openForm = ({ action }) => {
-    console.log(action)
-    console.log(form)
     const sharedFields = form?.sharedFields
     if (sharedFields) {
       sharedFields.fields.forEach((field) => {
         sharedFields.target.fields.forEach((targetField) => {
           // console.log(targetField.name, field.name)
           if (Array.isArray(field.alias)) {
-            console.log(field, 'FIELD_ALIAS')
             field.alias.forEach((el) => {
               if (targetField.name === el) {
                 targetField.value = formData[field.name]
@@ -467,12 +495,10 @@ export default function ({
             })
           } else {
             if (targetField.name === field.alias) {
-              console.log(formData, targetField, formData[field.name])
               targetField.value = formData[field.name]
               if (field.value) targetField.value = field.value
               if (field.readonly === true) targetField.readonly = true
             } else if (targetField.name === field.name) {
-              console.log(formData, targetField, formData[field.name])
               targetField.value = formData[field.name]
               if (field.value) targetField.value = field.value
               if (field.readonly === true) targetField.readonly = true
@@ -484,7 +510,6 @@ export default function ({
     if (form.detail.type === 'popup') {
       let requestId = 'id'
       if (action.target.requestKey) requestId = action.target.requestKey
-      console.log(formData, action.target.requestKey)
       let routeRequest = formData[action.target.requestKey]
         ? `/:${action.target.requestKey}`
         : '-add'
@@ -605,6 +630,10 @@ export default function ({
             })
           } else if (item.subtype === 'period') {
             newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
+          } else if (item.subtype === 'datetime') {
+            newForm[key] = moment(newForm[key], 'YYYY.MM.DD HH.MM.SS').format(
+              'YYYY-MM-DD HH-MM-SS'
+            )
           } else {
             newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format(
               'YYYY-MM-DD'
@@ -632,6 +661,7 @@ export default function ({
 
   const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
+    console.log('loadStoreFile')
     const { update } = params
     const { change } = params
 
@@ -666,6 +696,7 @@ export default function ({
         ((typeof x.isShow === 'boolean' && x.isShow) ||
           (typeof x.isShow === 'object' && x.isShow.value))
     )
+    console.log(dropzoneArray, form.fields)
     await Promise.all(
       dropzoneArray.map(async (dropzone) => {
         if (dropzone.value.length) {
@@ -873,6 +904,14 @@ export default function ({
           })
           formData[targetField] = result
           // console.log(data)
+        } else if (dependence.type === 'custom') {
+          const conditionContext = {
+            store,
+            formData,
+            originalData: originalData.value,
+            environment,
+          }
+          await dependence.func(conditionContext)
         }
       })
     }
@@ -889,7 +928,6 @@ export default function ({
     } else {
       value = el.value
     }
-    store?.state?.formStorage
     if (
       (value === '' || value === null || value === undefined) &&
       !el.routeKey &&
@@ -916,6 +954,8 @@ export default function ({
     ) {
       if (moment(value, 'YYYY.MM', true).isValid())
         value = moment(value, 'YYYY.MM').format('YYYY-MM')
+      if (moment(value, 'YYYY.MM.DD', true).isValid())
+        value = moment(value, 'YYYY.MM.DD').format('YYYY-MM-DD')
       acc.push({
         alias: el.alias ?? el.field,
         value: listValue(value),
@@ -999,6 +1039,14 @@ export default function ({
           //  url = url + '/' + formData[fieldValue]
           //}
         })
+      } else if (dependence.type === 'custom') {
+        const conditionContext = {
+          store,
+          formData,
+          originalData: originalData.value,
+          environment,
+        }
+        await dependence.func(conditionContext)
       } else if (dependence.url && typeof dependence.url === 'string') {
         url = dependence.url
 
@@ -1043,10 +1091,8 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
-        console.log(field)
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
-            console.log(params)
             if (params?.item) formData[el] = params?.item[el]
             else if (formData[el] && params.hasOwnProperty('item'))
               formData[el] = null
@@ -1336,7 +1382,6 @@ export default function ({
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
-        console.log(el.items)
         if (el.items?.length) {
           el.items = [...el.items, ...data.rows]
         } else {
@@ -1366,7 +1411,6 @@ export default function ({
     // console.log(JSON.stringify(lists.data))
     const stackDep = []
     for (let keyList in lists.data) {
-      console.log(keyList, 'KEYLIST', lists.data[keyList], mode)
       const field = fields[fieldAliases[keyList]]
       if (field) {
         field.hideItems = lists.data[keyList]
@@ -1388,7 +1432,6 @@ export default function ({
             const formTargets = field.hiding.conditions.filter(
               (el) => el.target === 'formData'
             )
-            console.log(JSON.stringify(formData))
             if (formTargets?.length) {
               formTargets.forEach((formTarget) => {
                 if (formTarget.value.includes(formData[formTarget.field])) {
@@ -1407,10 +1450,6 @@ export default function ({
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
-        console.log(field.name)
-        if (field.name === 'personal_id') {
-          console.log(JSON.stringify(field.items), 'JSON')
-        }
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
@@ -1469,7 +1508,6 @@ export default function ({
     await Promise.all(stackDep)
   }
   const hasValue = (value, list, field) => {
-    console.log(value, list, field, field?.name)
     if (!value) return true
     else {
       if (Array.isArray(value)) {
@@ -1477,7 +1515,6 @@ export default function ({
           _.intersection(el[field.selectOption.value], value)
         )
       } else {
-        console.log(list, value)
         return list.find((el) => el[field.selectOption.value] === value)
       }
     }
@@ -1511,6 +1548,14 @@ export default function ({
     mode,
     ...store.state.user,
     ...formData,
+  })
+
+  const conditionContext = reactive({
+    store,
+    formData,
+    originalData: originalData.value,
+    environment,
+    mode,
   })
 
   const getListField = (list) => {
@@ -1729,7 +1774,6 @@ export default function ({
           } else if (el.target === 'direction_id') {
             return checkIncludesDirections(el)
           } else {
-            console.log(el.value)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
@@ -1767,7 +1811,6 @@ export default function ({
             }
             return el.funcCondition(conditionContext)
           } else {
-            console.log(el)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
@@ -1939,5 +1982,7 @@ export default function ({
     refreshForm,
     isRequired,
     fields,
+    emitFormData,
+    handlerEmit,
   }
 }

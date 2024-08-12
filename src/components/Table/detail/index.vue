@@ -43,6 +43,7 @@
             @setFormData="setFormData"
             :formDataParent="formDataParent"
             :class="item?.label"
+            @emitFormData="$emit('emitFormData', $event)"
           />
         </v-tab-item>
       </v-tabs-items>

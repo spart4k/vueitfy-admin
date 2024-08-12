@@ -810,7 +810,7 @@ const config = {
           }),
           dropZoneField({
             label: 'Файл',
-            name: 'file_path',
+            name: 'path_act',
             placeholder: '',
             readonly: false,
             class: [''],
@@ -965,7 +965,7 @@ const config = {
                     return (
                       context.mode === 'add' ||
                       !context.formData.personal_id ||
-                      !context.formData.file_path.length
+                      !context.formData.path_act?.length
                     )
                   },
                   type: true,

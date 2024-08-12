@@ -83,7 +83,8 @@ export default {
           if (props.options.callbacks) props.options.callbacks(data)
         })
       } else {
-        if (proxyVal.value === undefined) proxyVal.value = []
+        if (proxyVal.value === undefined || proxyVal.value === null)
+          proxyVal.value = []
         proxyVal.value.push(...arr)
         emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
         nextTick(() => {

@@ -9,8 +9,9 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { required, notValue } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
+import moment from 'moment'
 
 const conditionLogistik = (context) => {
   return (
@@ -1068,6 +1069,35 @@ export default {
           type: 'default',
           fillField: ['type'],
         },
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                date_target: moment(
+                  ctx.formData.date_target,
+                  'YYYY.MM.DD'
+                ).format('YYYY-MM-DD'),
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'get/object/price',
+            })
+            if (code) {
+              ctx.formData.object_price = result.price
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+              ctx.formData.object_price_id = result.id
+            } else {
+              ctx.formData.object_price = 0
+              ctx.formData.object_price_id = 0
+            }
+            console.log(result)
+          },
+        },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -1412,6 +1442,30 @@ export default {
         ],
       },
     }),
+    stringField({
+      label: 'Тариф',
+      name: 'object_price',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 3,
+      },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.direction_id === 2 && ctx.formData.type === 2
+            },
+          },
+        ],
+      },
+      validations: { notValue: notValue({ value: 0, text: 'Тариф' }) },
+    }),
     selectField({
       label: 'Вид ведомости',
       name: 'vid_vedomost_id',
@@ -1702,21 +1756,26 @@ export default {
       dependence: [
         {
           //fields: ['statement_card', 'cardowner'],
-          type: 'api',
-          module: 'form/create',
-          // action: {
-          //   type: 'hideOptions',
-          //   //values: [8],
-          //   field: 'vid_vedomost_id',
-          //   condition: {
-          //     true: [],
-          //     false: 1,
-          //   },
-          // },
-          //url: 'object_id/avatar_with_user_key_id',
-          url: 'calculate/magnit/hour',
-          body: ['object_id', 'doljnost_id', 'hour_fact'],
-          field: 'hour',
+          type: 'custom',
+          func: async (ctx) => {
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                hour_fact: ctx.formData.hour_fact,
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'calculate/magnit/hour',
+            })
+            if (code) {
+              ctx.formData.hour = result
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+            }
+
+            console.log(result)
+          },
         },
       ],
     }),
@@ -1731,6 +1790,7 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
+      readonly: true,
     }),
     // stringField({
     //   label: 'Тариф',
@@ -1827,7 +1887,7 @@ export default {
           {
             target: 'formData',
             field: 'vid_vedomost_id',
-            value: [1, 5],
+            value: [1],
             type: true,
           },
           {
@@ -2226,6 +2286,22 @@ export default {
         value: true,
       },
     }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'object_price_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
   ],
   actions: [
     stringAction({
@@ -2238,7 +2314,7 @@ export default {
       skipValidation: true,
     }),
     stringAction({
-      text: 'Сохранить',
+      text: 'Создать',
       type: 'submit',
       module: 'form/create',
       name: 'createForm',
@@ -2261,7 +2337,93 @@ export default {
             value: [6],
             type: true,
           },
+          {
+            funcCondition: (ctx) => {
+              return (
+                ctx.formData.direction_id === 2 &&
+                ctx.formData.type === 2 &&
+                ctx.mode === 'add'
+              )
+            },
+            type: true,
+          },
         ],
+      },
+    }),
+    stringAction({
+      text: 'Создатьroot',
+      type: 'submit',
+      module: 'form/create',
+      name: 'createForm',
+      url: 'create/payment',
+      action: 'func',
+      color: 'primary',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (ctx) => {
+              return (
+                ctx.formData.direction_id !== 2 ||
+                ctx.formData.type !== 2 ||
+                ctx.mode !== 'add'
+              )
+            },
+            type: true,
+          },
+        ],
+      },
+      func: async (ctx) => {
+        console.log(ctx)
+        // ctx.$emit('emitFormData')
+        const payment_data = ctx.sortData({ action: this })
+        const request_data = {
+          ...ctx.formDataParent,
+          id: +ctx.context.root.route.params.id,
+        }
+        console.log(this)
+        // try {
+        // const { code, id } = await ctx.createForm({
+        //   url: 'create/payment',
+        //   module: 'form/create',
+        //   formData: {
+        //     payment_data,
+        //     request_data,
+        //     from_request_magnit: true,
+        //   },
+        //   params: this,
+        // })
+        // if (code) {
+        const handlerEmit = async (rootCtx) => {
+          console.log(rootCtx, 'CONTEXT')
+          await rootCtx.loadStoreFile({
+            url: 'create/payment',
+            module: 'form/create',
+            formData: {
+              payment_data,
+              request_data,
+              from_request_magnit: true,
+            },
+            action: this,
+          })
+          // ctx.emit('closePopup')
+          // clickHandler
+          // const payment_data = sortData()
+          // const { code, id } = await ctx.createForm({
+          //   url: 'create/payment',
+          //   module: 'update/payment',
+          //   formData: ctx.sortedData,
+          //   params: this,
+          // })
+        }
+        await ctx.emit('emitFormData', { rootCtx: {}, handlerEmit })
+        // }
+        // } catch (err) {
+        //   console.log(err)
+        // }
+
+        // console.log(result)
       },
     }),
     stringAction({
