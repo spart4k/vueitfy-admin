@@ -10,6 +10,13 @@ const numeric = Object.assign({}, vueNumeric, {
   $message: () => 'Только числа',
 })
 
+const notValue = (param) => {
+  return {
+    $validator: (value) => param.value !== +value,
+    $message: () => `${param.text} не должен быть равен ${param.value}`,
+  }
+}
+
 const required = Object.assign({}, vueRequired, {
   $message: () => 'Обязательное поле',
 })
@@ -164,5 +171,6 @@ export {
   maxLength,
   dayOfMonth,
   minFileLength,
+  notValue,
   // strongPassword
 }

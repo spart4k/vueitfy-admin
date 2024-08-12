@@ -303,6 +303,7 @@
         @getItems="getItems"
         @refreshData="getData"
         :formDataParent="formData"
+        @emitFormData="emitFormData($event)"
       />
     </Popup>
   </div>

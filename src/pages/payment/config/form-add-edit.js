@@ -9,8 +9,9 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { required, notValue } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
+import moment from 'moment'
 
 const conditionLogistik = (context) => {
   return (
@@ -331,8 +332,14 @@ export default {
       ],
     },
     {
-      alias: 'status_id',
-      filter: [],
+      alias: 'payment_status_id',
+      filter: [
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
     },
     {
       alias: 'payment_direction_id',
@@ -347,6 +354,18 @@ export default {
         {
           alias: 'mode',
           source: 'mode',
+          type: 'num',
+        },
+      ],
+    },
+    {
+      alias: 'payment_direction_id',
+      filter: [
+        {
+          field: 'account_id',
+          // alias: 'account_id',
+          value: '',
+          source: 'formData',
           type: 'num',
         },
       ],
@@ -375,10 +394,6 @@ export default {
       ],
     },
     {
-      alias: 'payment_account_id',
-      filter: [],
-    },
-    {
       alias: 'status_account_id',
       filter: [],
     },
@@ -389,6 +404,7 @@ export default {
     selectField({
       label: 'Статус',
       name: 'status_id',
+      alias: 'payment_status_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -447,6 +463,16 @@ export default {
           {
             funcCondition: (context) => {
               return AvansEjednLogistik(context)
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                context.mode === 'add' &&
+                context.formData.type === 2 &&
+                context.formData.direction_id === 2
+              )
             },
             type: true,
           },
@@ -595,30 +621,192 @@ export default {
       bootstrapClass: [''],
       readonly: true,
     }),
-    dateField({
-      label: 'Дата назн',
-      name: 'date_target',
-      subtype: 'datetime',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 3,
-      },
-      // validations: { required },
-      bootstrapClass: [''],
-      readonly: true,
-      isShow: {
-        value: false,
-        conditions: [
-          {
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-          },
-        ],
-      },
-    }),
-    selectField({
+    // selectField({
+    //   label: 'Менеджер',
+    //   name: 'account_id',
+    //   alias: 'payment_account_id',
+    //   subtype: 'single',
+    //   placeholder: '',
+    //   class: ['noWrap'],
+    //   selectOption: {
+    //     text: 'name',
+    //     value: 'id',
+    //   },
+    //   items: [],
+    //   position: {
+    //     cols: 12,
+    //     // sm: 6,
+    //     // condition: []
+    //     sm: {
+    //       conditon: [
+    //         {
+    //           funcCondition: (context) =>
+    //             context.formData.vid_vedomost_id === 1,
+    //           value: {
+    //             true: 5,
+    //             false: 6,
+    //           },
+    //           // type: false,
+    //         },
+    //         {
+    //           funcCondition: (context) =>
+    //             context.formData.vid_vedomost_id === 5,
+    //           value: {
+    //             true: 5,
+    //             false: 6,
+    //           },
+    //           // type: false,
+    //         },
+    //         {
+    //           funcCondition: (context) =>
+    //             context.formData.vid_vedomost_id === 9,
+    //           value: {
+    //             true: 4,
+    //             false: 6,
+    //           },
+    //           // type: false,
+    //         },
+    //       ],
+    //       default: 4,
+    //     },
+    //   },
+    //   validations: { required },
+    //   bootstrapClass: [''],
+    //   updateList: [
+    //     {
+    //       alias: 'payment_direction_id',
+    //       filter: [
+    //         {
+    //           field: 'account_id',
+    //           // alias: 'account_id',
+    //           value: '',
+    //           source: 'formData',
+    //           type: 'num',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   dependence: [
+    //     {
+    //       type: 'api',
+    //       module: 'selects/getListUpdate',
+    //       field: 'object_id',
+    //       //filter: [
+    //       //  {
+    //       //    field: 'direction_id',
+    //       //    value: '',
+    //       //  },
+    //       //],
+    //       url: 'get/pagination_list/payment_object_id',
+    //     },
+    //     {
+    //       type: 'api',
+    //       module: 'selects/getListUpdate',
+    //       field: 'personal_id',
+    //       //filter: [
+    //       //  {
+    //       //    field: 'direction_id',
+    //       //    value: '',
+    //       //  },
+    //       //],
+    //       condition: [
+    //         {
+    //           field: 'direction_id',
+    //           value: [2],
+    //         },
+    //       ],
+    //       url: 'get/pagination_list/payment_personal_id',
+    //     },
+    //     // {
+    //     //   type: 'api',
+    //     //   module: 'selects/getListUpdate',
+    //     //   field: 'object_id',
+    //     //   //filter: [
+    //     //   //  {
+    //     //   //    field: 'direction_id',
+    //     //   //    value: '',
+    //     //   //  },
+    //     //   //],
+    //     //   condition: [
+    //     //     {
+    //     //       field: 'direction_id',
+    //     //       value: [1],
+    //     //     },
+    //     //   ],
+    //     //   url: 'get/pagination_list/payment_personal_id',
+    //     // },
+    //   ],
+    //   readonly: {
+    //     value: false,
+    //     condition: [
+    //       // {
+    //       //   target: 'formData',
+    //       //   field: 'vid_vedomost_id',
+    //       //   value: [1, 5],
+    //       //   type: true,
+    //       // },
+    //       // {
+    //       //   permissions: [8, 17],
+    //       //   type: true,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     context.formData.account_id === context.store.state.user.id &&
+    //       //     (context.formData.status_id === 1 ||
+    //       //       context.formData.status_id === 3),
+    //       //   type: false,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     context.formData.account_id !== context.store.state.user.id &&
+    //       //     (context.formData.status_id === 1 ||
+    //       //       context.formData.status_id === 3 ||
+    //       //       ((context.store.state.user.permission_id === 12 ||
+    //       //         context.store.state.user.permission_id === 22) &&
+    //       //         context.originalData?.status_id === 4)) &&
+    //       //     context.mode === 'edit',
+    //       //   type: true,
+    //       // },
+    //       {
+    //         funcCondition: (context) => {
+    //           return (
+    //             context.formData.account_id !== context.store.state.user.id &&
+    //             (context.formData.status_id === 1 ||
+    //               context.formData.status_id === 3 ||
+    //               ((context.store.state.user.permission_id === 12 ||
+    //                 context.store.state.user.permission_id === 22) &&
+    //                 context.formData?.status_id === 4)) &&
+    //             context.mode === 'edit'
+    //           )
+    //         },
+    //         type: true,
+    //       },
+    //       {
+    //         funcCondition: (context) =>
+    //           context.formData.status_id === 6 && context.mode === 'edit',
+    //         type: true,
+    //       },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     context.formData.status_id === 6 && context.mode === 'edit',
+    //       //   type: true,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     (context.store.state.user.id !== context.formData.manager_id ||
+    //       //       context.store.state.user.is_personal_vertical) &&
+    //       //     (context.formData.status_id === 1 ||
+    //       //       context.formData.status_id === 3),
+    //       //   type: false,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) => context.mode === 'add',
+    //       //   type: false,
+    //       // },
+    //     ],
+    //   },
+    // }),
+    autocompleteField({
       label: 'Менеджер',
       name: 'account_id',
       alias: 'payment_account_id',
@@ -630,6 +818,9 @@ export default {
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/account_payment_id',
       position: {
         cols: 12,
         // sm: 6,
@@ -803,6 +994,9 @@ export default {
         ],
       },
     }),
+
+    ///////
+
     selectField({
       label: 'Направление',
       name: 'direction_id',
@@ -1074,6 +1268,35 @@ export default {
           type: 'default',
           fillField: ['type'],
         },
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                date_target: moment(
+                  ctx.formData.date_target,
+                  'YYYY.MM.DD'
+                ).format('YYYY-MM-DD'),
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'get/object/price',
+            })
+            if (code) {
+              ctx.formData.object_price = result.price
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+              ctx.formData.object_price_id = result.id
+            } else {
+              ctx.formData.object_price = 0
+              ctx.formData.object_price_id = 0
+            }
+            console.log(result)
+          },
+        },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -1128,6 +1351,38 @@ export default {
           // },
         ],
       },
+      updateList: [
+        {
+          alias: 'payment_vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -1207,6 +1462,11 @@ export default {
           source: 'formData',
           type: 'array',
           value: '',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
         },
       ],
       // dependence: [
@@ -1380,6 +1640,30 @@ export default {
           },
         ],
       },
+    }),
+    stringField({
+      label: 'Тариф',
+      name: 'object_price',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 3,
+      },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.direction_id === 2 && ctx.formData.type === 2
+            },
+          },
+        ],
+      },
+      validations: { notValue: notValue({ value: 0, text: 'Тариф' }) },
     }),
     selectField({
       label: 'Вид ведомости',
@@ -1579,6 +1863,36 @@ export default {
       //   ],
       // },
     }),
+    dateField({
+      label: 'Дата назн',
+      name: 'date_target',
+      subtype: 'datetime',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      readonly: true,
+      isShow: {
+        value: false,
+        type: 'some',
+        conditions: [
+          {
+            field: 'vid_vedomost_id',
+            value: [1, 5],
+          },
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.direction_id === 2 && ctx.formData.type === 2
+            },
+          },
+        ],
+      },
+    }),
     //selectField({
     //  label: 'Статья расхода',
     //  name: 'st_rashod_id',
@@ -1612,45 +1926,71 @@ export default {
     //  validations: { required },
     //  bootstrapClass: [''],
     //}),
-    // stringField({
-    //   label: 'Часы (план)',
-    //   name: 'hour_plan',
-    //   placeholder: '',
-    //   readonly: true,
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы(факт)',
-    //   name: 'hour_fact',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы',
-    //   name: 'hour',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   validations: { required },
-    //   bootstrapClass: [''],
-    // }),
+    stringField({
+      label: 'Часы (план)',
+      name: 'hour_plan',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      //isShow: false,
+    }),
+    stringField({
+      label: 'Часы(факт)',
+      name: 'hour_fact',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      //isShow: false,
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                hour_fact: ctx.formData.hour_fact,
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'calculate/magnit/hour',
+            })
+            if (code) {
+              ctx.formData.hour = result
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+            }
+
+            console.log(result)
+          },
+        },
+      ],
+    }),
+    stringField({
+      label: 'Часы',
+      name: 'hour',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+      readonly: true,
+    }),
     // stringField({
     //   label: 'Тариф',
     //   name: 'price',
@@ -1746,7 +2086,7 @@ export default {
           {
             target: 'formData',
             field: 'vid_vedomost_id',
-            value: [1, 5],
+            value: [1],
             type: true,
           },
           {
@@ -2141,7 +2481,22 @@ export default {
       },
       bootstrapClass: [''],
       //validations: { required },
-      value: 1,
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'object_price_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
       isShow: {
         value: true,
       },
@@ -2158,7 +2513,7 @@ export default {
       skipValidation: true,
     }),
     stringAction({
-      text: 'Сохранить',
+      text: 'Создать',
       type: 'submit',
       module: 'form/create',
       name: 'createForm',
@@ -2181,7 +2536,95 @@ export default {
             value: [6],
             type: true,
           },
+          {
+            funcCondition: (ctx) => {
+              return (
+                ctx.formData.direction_id === 2 &&
+                ctx.formData.type === 2 &&
+                ctx.mode === 'add'
+              )
+            },
+            type: true,
+          },
         ],
+      },
+    }),
+    stringAction({
+      text: 'Создать',
+      type: 'submit',
+      module: 'form/create',
+      name: 'createForm',
+      url: 'create/payment',
+      action: 'func',
+      color: 'primary',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (ctx) => {
+              return (
+                ctx.formData.direction_id !== 2 ||
+                ctx.formData.type !== 2 ||
+                ctx.mode !== 'add'
+              )
+            },
+            type: true,
+          },
+        ],
+      },
+      func: async (ctx) => {
+        console.log(ctx)
+        // ctx.$emit('emitFormData')
+        const payment_data = ctx.sortData({ action: this })
+        const request_data = {
+          ...ctx.formDataParent,
+          id: +ctx.context.root.route.params.id,
+        }
+        console.log(this)
+        // try {
+        // const { code, id } = await ctx.createForm({
+        //   url: 'create/payment',
+        //   module: 'form/create',
+        //   formData: {
+        //     payment_data,
+        //     request_data,
+        //     from_request_magnit: true,
+        //   },
+        //   params: this,
+        // })
+        // if (code) {
+        const handlerEmit = async (rootCtx) => {
+          console.log(rootCtx, 'CONTEXT')
+          await rootCtx.loadStoreFile({
+            url: 'create/payment',
+            module: 'form/create',
+            formData: {
+              payment_data,
+              request_data,
+              from_request_magnit: true,
+            },
+            action: this,
+          })
+          rootCtx.emit('closePopup')
+          // ctx.emit('closePopup')
+          // clickHandler
+          // const payment_data = sortData()
+          // const { code, id } = await ctx.createForm({
+          //   url: 'create/payment',
+          //   module: 'update/payment',
+          //   formData: ctx.sortedData,
+          //   params: this,
+          // })
+        }
+        await ctx.emit('emitFormData', { rootCtx: {}, handlerEmit })
+        ctx.emit('closePopup')
+        // }
+        // } catch (err) {
+        //   console.log(err)
+        // }
+
+        // console.log(result)
       },
     }),
     stringAction({
