@@ -9,7 +9,7 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, notValue } from '@/utils/validation.js'
+import { required, notValue, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 import text from '@/components/Mails/letter/text/setup'
@@ -1866,7 +1866,7 @@ export default {
     }),
     dateField({
       label: 'Дата назн',
-      name: 'date_request',
+      name: 'date_target',
       type: 'datetime',
       subtype: 'datetime',
       placeholder: '',
@@ -1952,7 +1952,7 @@ export default {
         sm: 2,
       },
       bootstrapClass: [''],
-      //validations: { required },
+      validations: { interval },
       //isShow: false,
       dependence: [
         {
@@ -2630,6 +2630,7 @@ export default {
         // if (code) {
         const handlerEmit = async (rootCtx) => {
           console.log(rootCtx, 'CONTEXT')
+          rootCtx.fields.act_path.options.toObjectCustom = 'request_data'
           await rootCtx.loadStoreFile({
             url: 'create/payment',
             module: 'form/create',

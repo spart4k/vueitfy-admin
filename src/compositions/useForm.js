@@ -74,6 +74,7 @@ export default function ({
       createForm,
       loadStoreFile,
       emit,
+      fields,
     }
     console.log('EMIT ROOT', rootCtx)
     console.log(form)

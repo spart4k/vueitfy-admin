@@ -377,7 +377,7 @@ export default {
     }),
     dropZoneField({
       label: 'Файл',
-      name: 'path_act',
+      name: 'act_path',
       placeholder: '',
       readonly: false,
       class: [''],
@@ -397,7 +397,6 @@ export default {
             formData.date_target
           }_${formData.name_without_space}_${new Date().getTime()}`
         },
-        toObjectCustom: 'request_data',
       },
       value: [],
       isShow: {
@@ -544,7 +543,7 @@ export default {
               return (
                 context.mode === 'add' ||
                 !context.formData.personal_id ||
-                !context.formData.path_act?.length
+                !context.formData.act_path?.length
               )
             },
             type: true,

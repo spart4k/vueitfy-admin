@@ -140,6 +140,14 @@ const number = {
   $message: () => 'Некорректные символы',
 }
 
+const interval = {
+  $validator: (val) => {
+    console.log(val)
+    return +val > 0 && +val < 16
+  },
+  $message: () => 'Больше 0 и не больше 15',
+}
+
 const password = {
   $validator: (val) => val.length > 7,
   $message: () => 'Не менее 8 символов',
@@ -172,5 +180,6 @@ export {
   dayOfMonth,
   minFileLength,
   notValue,
+  interval,
   // strongPassword
 }
