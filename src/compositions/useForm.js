@@ -1041,8 +1041,10 @@ export default function ({
     await putSelectItems(lists)
   }
   const getDependies = async (params) => {
+    console.log('DEP DEPENDES')
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
+      console.log('TYPE_DEP', dependence)
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -1451,7 +1453,7 @@ export default function ({
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
 
-      if (mode === 'edit') {
+      if (mode === 'add') {
         await getDependies({ field: el, value: formData[el.name] })
       }
       return data

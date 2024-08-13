@@ -52,6 +52,7 @@ const autocompleteField = (properties) => {
     type: 'autocomplete',
     loading: false,
     hideItems: [],
+    page: 1,
     ...defaultProperties(properties),
     // value: null,
   }

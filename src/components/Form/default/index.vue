@@ -266,7 +266,7 @@
                 </v-list-item>
               </v-list>
             </v-card>
-            <v-text-field
+            <!-- <v-text-field
               v-else-if="showField('textBlock', field)"
               v-show="false"
               v-model="formData[field.name]"
@@ -282,7 +282,6 @@
               v-mask="field.mask"
             >
               <template v-if="field?.appendAction?.length" v-slot:append-outer>
-                <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->
                 <v-tooltip
                   v-for="action in field.appendAction"
                   :key="action.label"
@@ -306,7 +305,7 @@
                   <span>{{ action.label }}</span>
                 </v-tooltip>
               </template>
-            </v-text-field>
+            </v-text-field> -->
           </v-col>
         </v-row>
         <v-divider class="mt-0 mb-3" v-if="tab.actions.length"></v-divider>

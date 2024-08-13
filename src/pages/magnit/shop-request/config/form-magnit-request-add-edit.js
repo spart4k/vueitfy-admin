@@ -126,6 +126,7 @@ export default {
         cols: 12,
         sm: 6,
       },
+      page: 1,
       validations: { required },
       bootstrapClass: [''],
       // dependence: {
