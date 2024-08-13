@@ -265,7 +265,9 @@ export default {
       }
     )
 
-    onMounted(() => {})
+    onMounted(() => {
+      props.field.page = 1
+    })
 
     return {
       proxyValue,

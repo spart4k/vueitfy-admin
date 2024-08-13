@@ -1041,10 +1041,10 @@ export default function ({
     await putSelectItems(lists)
   }
   const getDependies = async (params) => {
-    console.log('DEP DEPENDES')
+    console.log('DEP DEPENDES', params.field.name)
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
-      console.log('TYPE_DEP', dependence)
+      console.log('TYPE_DEP', dependence, dependence.type)
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -1126,6 +1126,7 @@ export default function ({
       if (dependence && dependence.type === 'default' && dependence.fillField) {
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
+            console.log(params, 'PARAMS')
             if (params?.item) formData[el] = params?.item[el]
             else if (formData[el] && params.hasOwnProperty('item'))
               formData[el] = null
@@ -1414,6 +1415,7 @@ export default function ({
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
+    console.log(fields, 'loadAutocompletes')
     const queryFields = fields.map(async (el) => {
       // const filters = []
       const { url } = el
@@ -1452,9 +1454,30 @@ export default function ({
       }
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
-
-      if (mode === 'edit') {
-        await getDependies({ field: el, value: formData[el.name] })
+      console.log(form, mode === 'edit', form.initDepStart, 'getDEP LOAD AUTO')
+      if (mode === 'edit' || form.initDepStart) {
+        console.log(
+          el.name,
+          'getDEP LOAD AUTO',
+          el.items,
+          JSON.stringify(el.items),
+          formData[el.name]
+        )
+        const fieldItems = el.items.find((elItem) => {
+          console.log(elItem.id === formData[el.name])
+          console.log(elItem.id, formData[el.name])
+          return elItem.id === formData[el.name]
+        })
+        console.log('fieldItems', fieldItems, el.name)
+        await getDependies({
+          field: el,
+          value: formData[el.name],
+          item: fieldItems,
+        })
+        if (el.updateList && el?.updateList.length) {
+          await getFieldsList(el?.updateList)
+          el.loading = false
+        }
       }
       return data
     })

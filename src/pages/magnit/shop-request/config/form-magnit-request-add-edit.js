@@ -20,6 +20,7 @@ import _ from 'lodash'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
+paymentConfig.initDepStart = true
 
 export default {
   id: uuidv4(),

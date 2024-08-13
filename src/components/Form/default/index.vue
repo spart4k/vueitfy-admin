@@ -160,6 +160,9 @@
               rows="1"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
             />
             <Datetimepicker
               v-else-if="showField('datetime', field)"
