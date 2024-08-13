@@ -50,6 +50,14 @@ const config = {
         function: consolePanel,
         backgroundColor: '#fff',
         type: 'addItem',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 5],
+              type: true,
+            },
+          ],
+        },
       },
       // {
       //   label: 'Скачать',

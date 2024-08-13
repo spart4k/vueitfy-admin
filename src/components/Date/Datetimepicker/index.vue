@@ -18,6 +18,7 @@
           v-mask="mask"
           v-on="on"
           :error-messages="errorMessages"
+          @click:append="menu = true"
         ></v-text-field>
       </template>
       <v-tabs mobile-breakpoint="0" grow v-model="activeTab">
