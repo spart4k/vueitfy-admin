@@ -90,7 +90,7 @@ export default {
             props.field.value = []
           }
           proxyVal.value.push(...arr)
-          props.field.value.push(...arr)
+          // props.field.value.push(...arr)
           emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
           nextTick(() => {
             fileValidation()
@@ -100,6 +100,16 @@ export default {
     }
 
     const fileValidation = () => {
+      console.log(
+        proxyVal.value.length,
+        props.options.countFiles &&
+          proxyVal.value.length > props.options.countFiles
+      )
+      console.log(
+        props.options.countFiles,
+        proxyVal.value.length,
+        props.options.countFiles
+      )
       const throwError = (message) => {
         store.commit('notifies/showMessage', {
           color: 'error',
