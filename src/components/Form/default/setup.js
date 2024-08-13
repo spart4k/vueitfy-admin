@@ -239,6 +239,7 @@ export default {
       isRequired,
       fields,
       emitFormData,
+      environment,
     } = useForm({
       form: props.tab,
       context,
@@ -298,6 +299,7 @@ export default {
       fields,
       mode: isEdit.value,
       emitFormData,
+      environment,
     }
   },
 }

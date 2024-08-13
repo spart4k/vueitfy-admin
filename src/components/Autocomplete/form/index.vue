@@ -4,7 +4,7 @@
       clearable
       v-model="proxyValue"
       :loading="loading"
-      :items="availableItems"
+      :items="field.hideOption ? availableItems : proxyItems"
       :search-input.sync="searchProps"
       :error-messages="errorMessages"
       :label="field.label"

@@ -46,6 +46,7 @@ export default {
         text: 'name',
         value: 'id',
       },
+      value: 1,
       items: [],
       position: {
         cols: 12,
@@ -69,7 +70,7 @@ export default {
         cols: 12,
         sm: 6,
       },
-      validations: { hasDate, hasTime },
+      // validations: { hasDate, hasTime },
       bootstrapClass: [''],
       disable: false,
     }),
@@ -87,7 +88,7 @@ export default {
         cols: 12,
         sm: 6,
       },
-      validations: { required },
+      // validations: { required },
       bootstrapClass: [''],
       readonly: true,
     }),
@@ -104,7 +105,7 @@ export default {
         cols: 12,
         sm: 6,
       },
-      validations: { hasDate, hasTime },
+      // validations: { hasDate, hasTime },
       bootstrapClass: [''],
       readonly: true,
     }),
@@ -149,12 +150,31 @@ export default {
           type: 'default',
           fillField: ['surname'],
         },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          url: 'get/pagination_list/object_magnit_id',
+          filter: [
+            {
+              field: 'account_id',
+              // source: 'formData',
+              type: 'array',
+              value: '',
+            },
+            {
+              field: 'date_target',
+              source: 'formData.date_request.split(" ")[0]',
+              type: 'date',
+              value: '',
+            },
+          ],
+        },
       ],
     }),
     datetimeField({
       label: 'На дату',
       name: 'date_request',
-      value: '',
       type: 'datetime',
       subtype: 'datetime',
       menu: false,
@@ -166,7 +186,6 @@ export default {
       },
       validations: { hasDate, hasTime },
       bootstrapClass: [''],
-      disable: false,
       readonly: {
         value: false,
         condition: [
@@ -177,6 +196,32 @@ export default {
           },
         ],
       },
+      dependence: [
+        {
+          type: 'default',
+          fillField: ['surname'],
+        },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          url: 'get/pagination_list/object_magnit_id',
+          filter: [
+            {
+              field: 'account_id',
+              alias: 'account_id',
+              value: '',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              source: 'formData.date_request.split(" ")[0]',
+              type: 'date',
+              value: '',
+            },
+          ],
+        },
+      ],
     }),
     autocompleteField({
       label: 'Объект',
@@ -203,14 +248,28 @@ export default {
         },
         {
           field: 'date_target',
-          // source: 'formData',
+          source: 'formData.date_request.split(" ")[0]',
           type: 'date',
           value: '',
         },
       ],
+      page: 1,
       validations: { required },
       bootstrapClass: [''],
-      readonly: true,
+      requiredFields: ['date_request', 'account_id'],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              context.mode === 'edit' ||
+              !context.formData.account_id ||
+              !context.formData.date_request,
+            // asdasd
+            type: true,
+          },
+        ],
+      },
     }),
     stringField({
       label: 'Часы',
@@ -224,7 +283,16 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
-      readonly: true,
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => context.mode === 'edit',
+            // asdasd
+            type: true,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -242,7 +310,7 @@ export default {
         sm: 6,
       },
       page: 1,
-      validations: { required },
+      validations: {},
       bootstrapClass: [''],
       filter: [
         {
@@ -252,6 +320,16 @@ export default {
           value: '',
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => context.mode === 'add',
+            // asdasd
+            type: true,
+          },
+        ],
+      },
       // dependence: {
       //   //fields: ['statement_card', 'cardowner'],
       //   fillField: ['fio', 'invoice'],
@@ -284,7 +362,16 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      readonly: true,
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => context.mode === 'edit',
+            // asdasd
+            type: true,
+          },
+        ],
+      },
     }),
     dropZoneField({
       label: 'Файл',
@@ -297,7 +384,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      validations: { required },
+      validations: {},
       options: {
         withoutSave: false,
         folder: 'magnit_path_act',
@@ -311,6 +398,17 @@ export default {
         toObjectCustom: 'request_data',
       },
       value: [],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.personal_id
+            },
+          },
+        ],
+      },
     }),
     stringField({
       label: 'Примечание',
@@ -474,7 +572,8 @@ export default {
           color: 'error',
         },
         3: {
-          text: '',
+          text: 'Не хватает информации',
+          color: 'error',
         },
       },
       name: 'saveFormStore',

@@ -12,6 +12,7 @@ import { stringAction } from '@/utils/actions'
 import { required, notValue } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
+import text from '@/components/Mails/letter/text/setup'
 
 const conditionLogistik = (context) => {
   return (
@@ -1865,7 +1866,8 @@ export default {
     }),
     dateField({
       label: 'Дата назн',
-      name: 'date_target',
+      name: 'date_request',
+      type: 'datetime',
       subtype: 'datetime',
       placeholder: '',
       classes: [''],
@@ -2469,7 +2471,7 @@ export default {
         value: true,
       },
     }),
-    stringField({
+    textBlock({
       label: 'Тип магазина',
       name: 'type',
       placeholder: '',
@@ -2484,6 +2486,38 @@ export default {
       isShow: {
         value: true,
       },
+      updateList: [
+        {
+          alias: 'payment_vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
     }),
     stringField({
       label: 'ID тарифа',

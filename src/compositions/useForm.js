@@ -841,6 +841,7 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
+    console.log(params)
     getRecursiveDependes(params.field)
     queueMicrotask(async () => {
       params.field.dependence?.forEach((dependence) => {
@@ -1356,21 +1357,32 @@ export default function ({
   }
 
   const getDepFilters = (target) => {
+    console.log('GETDEP')
+    console.log('target', target)
     if (!target.filter) return []
+    console.log('target', target)
     const filters = target?.filter?.flatMap((el) => {
       const filter = {
         alias: el.alias ?? el.field,
         type: el.type,
       }
       if (!formData[el.field] && !el.source && !el.routeKey) return []
+      console.log(el.source)
       if (el.source) {
         if (el.source === 'fromPrev') {
           filter.value = form?.formData[el.field]
         } else if (el.source && el.source !== 'formData') {
           const source = eval(el.source)
+          console.log('EVAL'), source
           filter.value = source
         } else if (el.source === 'formData') {
           filter.value = formData[el.field]
+          if (moment(filter.value, 'YYYY.MM', true).isValid())
+            filter.value = moment(filter.value, 'YYYY.MM').format('YYYY-MM')
+          if (moment(filter.value, 'YYYY.MM.DD', true).isValid())
+            filter.value = moment(filter.value, 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
         } else if (el.source === 'mode') {
           filter.value = mode
         } else {
@@ -1380,6 +1392,10 @@ export default function ({
         filter.value = +route.params[el.routeKey]
       } else {
         filter.value = formData[el.field]
+        if (moment(filter.value, 'YYYY.MM', true).isValid())
+          filter.value = moment(filter.value, 'YYYY.MM').format('YYYY-MM')
+        if (moment(filter.value, 'YYYY.MM.DD', true).isValid())
+          filter.value = moment(filter.value, 'YYYY.MM.DD').format('YYYY-MM-DD')
       }
       if (el.toArray && !Array.isArray(filter.value)) {
         filter.value = [filter.value]
@@ -2020,5 +2036,6 @@ export default function ({
     fields,
     emitFormData,
     handlerEmit,
+    environment,
   }
 }

@@ -62,6 +62,7 @@
               :class="[...field.class]"
               :fields="fields"
               :mode="mode"
+              :environment="environment"
             />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
@@ -75,6 +76,7 @@
               :class="[...field.class]"
               :fields="fields"
               :mode="mode"
+              :environment="environment"
             />
 
             <v-text-field
@@ -145,6 +147,9 @@
               :error-messages="formErrors[field?.name]"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
             ></Datepicker>
             <v-textarea
               v-else-if="showField('textarea', field)"
@@ -163,6 +168,10 @@
               clearable
               :error-messages="formErrors[field?.name]"
               :readonly="readonlyField(field)"
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
+              :field="field"
             />
             <DropZone
               v-else-if="showField('dropzone', field)"
@@ -257,6 +266,47 @@
                 </v-list-item>
               </v-list>
             </v-card>
+            <v-text-field
+              v-else-if="showField('textBlock', field)"
+              v-show="false"
+              v-model="formData[field.name]"
+              :label="field.label"
+              :placeholder="field?.placeholder"
+              :error-messages="formErrors[field?.name]"
+              clearable
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
+              :name="field.name"
+              :class="[...field.class]"
+              v-mask="field.mask"
+            >
+              <template v-if="field?.appendAction?.length" v-slot:append-outer>
+                <!-- <v-icon> {{ field.appendAction.icon }} </v-icon> -->
+                <v-tooltip
+                  v-for="action in field.appendAction"
+                  :key="action.label"
+                  top
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="appendFieldHandler({ action, field })"
+                      class=""
+                      small
+                      v-if="appendActionShow(action)"
+                    >
+                      <v-tooltip activator="parent" location="top"
+                        >Tooltip</v-tooltip
+                      >
+                      <v-icon> {{ action.icon }} </v-icon></v-btn
+                    >
+                  </template>
+                  <span>{{ action.label }}</span>
+                </v-tooltip>
+              </template>
+            </v-text-field>
           </v-col>
         </v-row>
         <v-divider class="mt-0 mb-3" v-if="tab.actions.length"></v-divider>

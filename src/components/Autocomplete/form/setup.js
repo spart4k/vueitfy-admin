@@ -41,6 +41,9 @@ export default {
     mode: {
       type: String,
     },
+    environment: {
+      type: Object,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -51,6 +54,7 @@ export default {
     const searchProps = ref(props.field.search)
 
     const availableItems = computed(() => {
+      console.log(props.field.hideOption, 'COMPUTED availableItems')
       if (props.field.hideOption) {
         let arr = [...proxyItems.value]
         props.field.hideOption.forEach((option) => {
@@ -158,6 +162,7 @@ export default {
               searchValue: params.search ? params.search : '',
               id: params.id ? params.id : -1,
               filter,
+              readonly: props.environment?.readonlyAll,
             },
             {
               signal: controller.signal,
@@ -187,13 +192,14 @@ export default {
       if (loading.value) return
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)
         ? true
-        : queryData.totalPage > queryData.page
+        : queryData.totalPage >= queryData.page
       if (isIntersecting) {
         if (
           proxyItems.value?.length &&
           !props.field?.loading &&
           isAtFinalPage
         ) {
+          console.log(props.field.page)
           props.field.page = props.field.page + 1
           // (queryData?.totalPage > queryData?.page || queryData.page === null)
           const params = {
