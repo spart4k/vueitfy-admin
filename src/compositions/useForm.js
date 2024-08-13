@@ -1453,7 +1453,7 @@ export default function ({
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
 
-      if (mode === 'add') {
+      if (mode === 'edit') {
         await getDependies({ field: el, value: formData[el.name] })
       }
       return data

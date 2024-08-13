@@ -65,14 +65,14 @@ const config = {
       //   function: consolePanel,
       //   backgroundColor: '#fff',
       // },
-      {
-        label: 'Загрузить',
-        class: ['v-table-button--custom'],
-        // function: consolePanel,
-        type: 'changeUrl',
-        url: 'shop-request-magnit/upload',
-        backgroundColor: '#fff',
-      },
+      // {
+      //   label: 'Загрузить',
+      //   class: ['v-table-button--custom'],
+      //   // function: consolePanel,
+      //   type: 'changeUrl',
+      //   url: 'shop-request-magnit/upload',
+      //   backgroundColor: '#fff',
+      // },
     ],
   },
   head: [
