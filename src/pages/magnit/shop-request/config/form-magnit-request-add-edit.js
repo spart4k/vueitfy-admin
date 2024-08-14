@@ -669,7 +669,7 @@ export default {
     classes: [''], // List class
     width: '780px',
     method: 'get',
-    name: 'Редактировать проживание',
+    name: 'Начисление',
     alias: 'payment',
     requestId: 'payment_id',
     url: '/get/form/',

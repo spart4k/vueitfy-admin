@@ -18,7 +18,7 @@ import { getList } from '@/api/selects'
 // import { filter } from 'lodash'
 import moment from 'moment'
 import useRequest from '@/compositions/useRequest'
-import _ from 'lodash'
+import _, { cloneDeep } from 'lodash'
 import router from '@/router'
 import { list } from 'postcss'
 import { props } from 'vue2-dropzone'
@@ -94,6 +94,7 @@ export default function ({
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].value))
     }
+    originalData.value = _.cloneDeep(formData)
     queueMicrotask(() => {
       for (let key in formData) {
         if (fields.hasOwnProperty(key)) continue
@@ -1765,7 +1766,7 @@ export default function ({
               )
             }
           })
-        button.isHide.value = condition()
+        button.isHide.value = environment.readonlyAll ? true : condition()
         return button.isHide.value
       }
     } else if (typeof button.isHide === 'undefined') {
@@ -1811,6 +1812,7 @@ export default function ({
               // }
               return checkIncludesPermissions(conditionEl) === conditionEl.type
             } else if (conditionEl.hasOwnProperty('funcCondition')) {
+              console.log(originalData.value, 'originalData.value')
               const conditionContext = {
                 store,
                 formData,

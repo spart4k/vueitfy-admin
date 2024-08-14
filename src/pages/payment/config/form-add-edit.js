@@ -13,7 +13,7 @@ import { required, notValue, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 import text from '@/components/Mails/letter/text/setup'
-
+import { isAllBug } from '@/utils/permissions'
 const isMagnit = (ctx) => {
   return ctx.formData.direction_id === 2 && ctx.formData.type === 2
 }
@@ -1988,6 +1988,7 @@ export default {
         condition: [
           {
             funcCondition: (context) => {
+              console.log(context, context.originalData)
               return isMagnit(context) && context.originalData.status_id === 2
             },
             type: true,
@@ -2667,6 +2668,7 @@ export default {
             action: this,
           })
           rootCtx.emit('closePopup')
+          rootCtx.emit('refreshData')
           // ctx.emit('closePopup')
           // clickHandler
           // const payment_data = sortData()
@@ -2734,7 +2736,7 @@ export default {
           },
           {
             funcCondition: (context) =>
-              context.originalData?.status_id !== 6 &&
+              context.formData?.status_id !== 6 &&
               !context.environment.readonlyAll,
             type: false,
           },
@@ -2749,11 +2751,17 @@ export default {
       name: 'saveFormId',
       url: 'update/payment',
       action: 'saveFormId',
-      color: 'primary',
+      color: 'yellow',
       isHide: {
         value: false,
         type: 'every',
         condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
           {
             funcCondition: (context) => {
               return isMagnit(context)
@@ -2763,8 +2771,8 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                ![1, 2, 3].includes(context.originalData?.status_id) ||
-                context.originalData.status_id === 1
+                ![1, 2, 3].includes(context.formData?.status_id) ||
+                context.formData.status_id === 1
               )
             },
             type: true,
@@ -2780,11 +2788,17 @@ export default {
       name: 'saveFormId',
       url: 'update/payment',
       action: 'saveFormId',
-      color: 'primary',
+      color: 'green',
       isHide: {
         value: false,
         type: 'every',
         condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
           {
             funcCondition: (context) => {
               return isMagnit(context)
@@ -2795,14 +2809,14 @@ export default {
             funcCondition: (context) =>
               (isMagnit(context) &&
                 ![1, 2, 3].includes(context.originalData?.status_id)) ||
-              context.originalData.status_id === 2,
+              context.formData.status_id === 2,
             type: true,
           },
         ],
       },
     }),
     stringAction({
-      text: 'Отклонить',
+      text: 'Не согласовать',
       status_id: 3,
       type: 'submit',
       module: 'form/putForm',
@@ -2816,15 +2830,131 @@ export default {
         condition: [
           {
             funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
               return isMagnit(context)
             },
             type: false,
           },
           {
             funcCondition: (context) =>
-              ![1, 2, 3].includes(context.originalData?.status_id) ||
-              context.originalData.status_id === 3,
+              ![1, 2, 3].includes(context.formData?.status_id) ||
+              context.formData.status_id === 3,
             type: true,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'В ошибку',
+      status_id: 6,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'error',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              console.log(isAllBug(context), 'isAllBug(context)')
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) =>
+              // [22, 12].includes(context.store.state.user.permission_id),
+              isAllBug(context) && context.formData.status_id === 4,
+            type: false,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'На оплату',
+      status_id: 4,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'green',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              console.log(isAllBug(context), 'isAllBug(context)')
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) => {
+              console.log(
+                isAllBug(context),
+                context.formData.status_id === 2,
+                'isAllBug(context), context.formData.status_id === 2'
+              )
+              return isAllBug(context) && context.formData.status_id === 2
+            },
+            type: false,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Оплачено',
+      status_id: 5,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'green',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              console.log(isAllBug(context), 'isAllBug(context)')
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) =>
+              // [22, 12].includes(context.store.state.user.permission_id),
+              isAllBug(context) && context.formData.status_id === 4,
+            type: false,
           },
         ],
       },
