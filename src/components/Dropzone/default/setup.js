@@ -87,7 +87,7 @@ export default {
         } else {
           if (proxyVal.value === undefined || proxyVal.value === null) {
             proxyVal.value = []
-            props.field.value = []
+            // props.field.value = []
           }
           proxyVal.value.push(...arr)
           // props.field.value.push(...arr)

@@ -189,6 +189,10 @@ export default function ({
       emit('prevStage')
     } else if (action.action === 'saveFormId') {
       loading.value = true
+      // sortedData
+      if (action.status_id) {
+        sortedData.status_id = action.status_id
+      }
       const result = await changeFormId({
         url: action.url,
         module: action.module,
@@ -283,6 +287,7 @@ export default function ({
           url: action.url,
           module: action.module,
           formData: sortedData,
+          action,
         },
         { change: true }
       )
@@ -675,10 +680,10 @@ export default function ({
 
   const loadStoreFile = async (queryParams, params = {}) => {
     // const promises = []
-    console.log('loadStoreFile')
+    console.log('loadStoreFile', params)
     const { update } = params
     const { change } = params
-
+    const { action } = queryParams
     const setFormData = (val, dropzone) => {
       if (queryParams && queryParams.formData) {
         queryParams.formData[dropzone.requestKey || dropzone.name] = val
@@ -711,13 +716,22 @@ export default function ({
 
     const loadDropzone = async (dropzone) => {
       console.log(dropzone, 'DROPZONE VALUE')
-      if (dropzone.value.length) {
+      if (
+        dropzone.value?.length ||
+        (Array.isArray(formData[dropzone.name]) &&
+          formData[dropzone.name]?.length)
+      ) {
         let fileIndex = 1
         const queries = {
           requestArr: [],
           fileArr: [],
         }
-        for (const item of dropzone.value) {
+        for (const item of dropzone.value.length
+          ? dropzone.value
+          : Array.isArray(formData[dropzone.name]) &&
+            formData[dropzone.name].length
+          ? formData[dropzone.name]
+          : false) {
           const file = item
           let name = ''
           const valueId =
@@ -770,7 +784,7 @@ export default function ({
           const fileArray = [...queries.fileArr]
           toObject(fileArray, dropzone)
         } else if (dropzone.options.toObjectCustom) {
-          console.log('queryParamsqueryParams')
+          console.log('queryParamsqueryParams', queries.fileArr)
           queryParams.formData[dropzone.options.toObjectCustom][dropzone.name] =
             queries.fileArr[0].path
           // setFormData(data[0].path, dropzone)
@@ -810,20 +824,24 @@ export default function ({
         })
       })
     )
-
+    console.log(queryParams)
+    let result = null
     if (update) {
-      const result = await changeForm(queryParams)
+      result = await changeForm(queryParams)
     } else if (change) {
-      const result = await changeFormId(queryParams)
+      result = await changeFormId(queryParams)
     } else {
-      const result = await createForm(queryParams, params)
+      result = await createForm(queryParams, params)
     }
-    if (!queryParams?.action?.notClose) {
-      emit('getItems')
-      emit('closePopup')
-    } else {
-      $v.value.$reset()
-      errorsCount()
+    if (action.handlingResponse) {
+      handlingResponse(action, result)
+      if (!queryParams?.action?.notClose && result?.cody) {
+        emit('getItems')
+        emit('closePopup')
+      } else {
+        $v.value.$reset()
+        errorsCount()
+      }
     }
   }
 
@@ -1989,7 +2007,9 @@ export default function ({
       return value
     } else return field.position.sm
   }
-
+  const addFiles = (e) => {
+    console.log(e)
+  }
   watch(
     () => watcher,
     (wtch) => {
@@ -2063,5 +2083,6 @@ export default function ({
     emitFormData,
     handlerEmit,
     environment,
+    addFiles,
   }
 }

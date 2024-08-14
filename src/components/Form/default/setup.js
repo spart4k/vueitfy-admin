@@ -92,6 +92,7 @@ export default {
 
     const params = props.tab.lists
     // const data = params
+    console.log(params, 'PARAMS PARAM')
     const getRequestParam = () => {
       console.log(alias, props.detail, props.detail?.requestId, 'request')
       if (props.detail?.requestId) {
@@ -240,6 +241,7 @@ export default {
       fields,
       emitFormData,
       environment,
+      addFiles,
     } = useForm({
       form: props.tab,
       context,
@@ -300,6 +302,7 @@ export default {
       mode: isEdit.value,
       emitFormData,
       environment,
+      addFiles,
     }
   },
 }

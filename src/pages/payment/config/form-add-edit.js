@@ -14,6 +14,10 @@ import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 import text from '@/components/Mails/letter/text/setup'
 
+const isMagnit = (ctx) => {
+  return ctx.formData.direction_id === 2 && ctx.formData.type === 2
+}
+
 const conditionLogistik = (context) => {
   return (
     [1, 6, 7].includes(context.formData.direction_id) &&
@@ -1979,6 +1983,17 @@ export default {
           },
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+        ],
+      },
     }),
     stringField({
       label: 'Часы',
@@ -2118,6 +2133,10 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => isMagnit(context),
             type: true,
           },
         ],
@@ -2277,6 +2296,12 @@ export default {
                   context.formData.status_id === 3)) ||
               (context.formData.status_id === 6 && context.mode === 'edit'),
             type: false,
+          },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
           },
           // {
           //   funcCondition: (context) =>
@@ -2716,6 +2741,122 @@ export default {
         ],
       },
     }),
+    stringAction({
+      text: 'На проверку',
+      type: 'submit',
+      status_id: 1,
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'primary',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                ![1, 2, 3].includes(context.originalData?.status_id) ||
+                context.originalData.status_id === 1
+              )
+            },
+            type: true,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Согласовать',
+      status_id: 2,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'primary',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) =>
+              (isMagnit(context) &&
+                ![1, 2, 3].includes(context.originalData?.status_id)) ||
+              context.originalData.status_id === 2,
+            type: true,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Отклонить',
+      status_id: 3,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'error',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) =>
+              ![1, 2, 3].includes(context.originalData?.status_id) ||
+              context.originalData.status_id === 3,
+            type: true,
+          },
+        ],
+      },
+    }),
+    // stringAction({
+    //   text: 'Исправлено1',
+    //   status_id: 7,
+    //   type: 'submit',
+    //   module: 'form/putForm',
+    //   name: 'saveFormId',
+    //   url: 'correct/payment',
+    //   action: 'saveFormId',
+    //   color: 'primary',
+    //   isHide: {
+    //     value: false,
+    //     type: 'every',
+    //     condition: [
+    //       {
+    //         funcCondition: (context) => {
+    //           return isMagnit(context)
+    //         },
+    //         type: false,
+    //       },
+    //       {
+    //         funcCondition: (context) =>
+    //           context.originalData?.status_id === 6 &&
+    //           context.store.state.user.is_personal_vertical,
+    //         type: false,
+    //       },
+    //     ],
+    //   },
+    // }),
   ],
 }
 //

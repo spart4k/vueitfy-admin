@@ -13,7 +13,7 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
@@ -283,7 +283,7 @@ export default {
         sm: 3,
       },
       bootstrapClass: [''],
-      //validations: { required },
+      validations: { required, interval },
       //isShow: false,
       readonly: {
         value: false,
@@ -392,6 +392,7 @@ export default {
         folder: 'magnit_path_act',
         name: '`accounting_zayavka`',
         paramsForEmit: this,
+        countFiles: 1,
         customName: (formData) => {
           return `${formData.surname}_${formData.type}_${
             formData.date_target
@@ -558,18 +559,18 @@ export default {
     }),
 
     stringAction({
-      text: 'Сохранить',
+      text: 'Создать',
       type: 'submit',
       module: 'account/createData',
       url: 'create/request/magnit',
       color: 'primary',
       handlingResponse: {
         1: {
-          text: 'Аккаунт создан',
+          text: 'Заявка создана',
           color: 'success',
         },
         2: {
-          text: 'Такой аккаунт уже существует',
+          text: 'Ошибка сервера',
           color: 'error',
         },
         3: {
@@ -579,6 +580,53 @@ export default {
       },
       name: 'saveFormStore',
       action: 'saveFormStore',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            field: 'mode',
+            target: 'environment',
+            value: ['edit'],
+            type: true,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Сохранить',
+      type: 'submit',
+      module: 'form/putForm',
+      url: 'update/request/magnit',
+      color: 'primary',
+      name: 'customFormStore',
+      action: 'customFormStore',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            field: 'mode',
+            target: 'environment',
+            value: ['add'],
+            type: true,
+          },
+        ],
+      },
+      handlingResponse: {
+        1: {
+          text: 'Заявка сохранена',
+          color: 'success',
+        },
+        2: {
+          text: 'Ошибка сервера',
+          color: 'error',
+        },
+        3: {
+          text: 'Не хватает информации',
+          color: 'error',
+        },
+      },
     }),
   ],
   sharedFields: {
