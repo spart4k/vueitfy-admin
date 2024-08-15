@@ -1299,7 +1299,6 @@ export default {
               ctx.formData.object_price = 0
               ctx.formData.object_price_id = 0
             }
-            console.log(result)
           },
         },
         // {
@@ -1978,8 +1977,6 @@ export default {
               ctx.formData.hour = result
               ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
             }
-
-            console.log(result)
           },
         },
       ],
@@ -1988,7 +1985,6 @@ export default {
         condition: [
           {
             funcCondition: (context) => {
-              console.log(context, context.originalData)
               return isMagnit(context) && context.originalData.status_id === 2
             },
             type: true,
@@ -2569,7 +2565,6 @@ export default {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'payment',
       skipValidation: true,
     }),
     stringAction({
@@ -2634,14 +2629,12 @@ export default {
         ],
       },
       func: async (ctx) => {
-        console.log(ctx)
         // ctx.$emit('emitFormData')
         const payment_data = ctx.sortData({ action: this })
         const request_data = {
           ...ctx.formDataParent,
           id: +ctx.context.root.route.params.id,
         }
-        console.log(this)
         // try {
         // const { code, id } = await ctx.createForm({
         //   url: 'create/payment',
@@ -2655,7 +2648,6 @@ export default {
         // })
         // if (code) {
         const handlerEmit = async (rootCtx) => {
-          console.log(rootCtx, 'CONTEXT')
           rootCtx.fields.act_path.options.toObjectCustom = 'request_data'
           await rootCtx.loadStoreFile({
             url: 'create/payment',
@@ -2665,7 +2657,22 @@ export default {
               request_data,
               from_request_magnit: true,
             },
-            action: this,
+            action: {
+              handlingResponse: {
+                1: {
+                  text: 'Заявка создана',
+                  color: 'success',
+                },
+                2: {
+                  text: 'Ошибка сервера',
+                  color: 'error',
+                },
+                3: {
+                  text: 'Не хватает информации',
+                  color: 'error',
+                },
+              },
+            },
           })
           rootCtx.emit('closePopup')
           rootCtx.emit('refreshData')
@@ -2870,7 +2877,6 @@ export default {
           },
           {
             funcCondition: (context) => {
-              console.log(isAllBug(context), 'isAllBug(context)')
               return isMagnit(context)
             },
             type: false,
@@ -2905,18 +2911,12 @@ export default {
           },
           {
             funcCondition: (context) => {
-              console.log(isAllBug(context), 'isAllBug(context)')
               return isMagnit(context)
             },
             type: false,
           },
           {
             funcCondition: (context) => {
-              console.log(
-                isAllBug(context),
-                context.formData.status_id === 2,
-                'isAllBug(context), context.formData.status_id === 2'
-              )
               return isAllBug(context) && context.formData.status_id === 2
             },
             type: false,
@@ -2945,7 +2945,6 @@ export default {
           },
           {
             funcCondition: (context) => {
-              console.log(isAllBug(context), 'isAllBug(context)')
               return isMagnit(context)
             },
             type: false,

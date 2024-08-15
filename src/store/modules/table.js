@@ -58,7 +58,6 @@ const auth = {
           hyu: 'hyu',
         },
       })
-      console.log(result)
     },
     async loadStatus({ commit }, data) {
       const result = await putForm(data)

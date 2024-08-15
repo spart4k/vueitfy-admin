@@ -54,7 +54,6 @@ export default {
     const searchProps = ref(props.field.search)
 
     const availableItems = computed(() => {
-      console.log(props.field.hideOption, 'COMPUTED availableItems')
       if (props.field.hideOption) {
         let arr = [...proxyItems.value]
         props.field.hideOption.forEach((option) => {
@@ -199,7 +198,6 @@ export default {
           !props.field?.loading &&
           isAtFinalPage
         ) {
-          console.log(props.field.page)
           props.field.page = props.field.page + 1
           // (queryData?.totalPage > queryData?.page || queryData.page === null)
           const params = {

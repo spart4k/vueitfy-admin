@@ -92,9 +92,7 @@ export default {
 
     const params = props.tab.lists
     // const data = params
-    console.log(params, 'PARAMS PARAM')
     const getRequestParam = () => {
-      console.log(alias, props.detail, props.detail?.requestId, 'request')
       if (props.detail?.requestId) {
         return _.get(route.params, props.detail.requestId)
       } else if (route.params.id) {
@@ -136,7 +134,6 @@ export default {
       successMessage: params?.successMessage === false ? false : 'Сохранено',
       request: (params) => {
         let id
-        console.log(route)
         if (props.tab.routeParam) {
           id = route.params[props.tab.routeParam]
         } else {
@@ -185,6 +182,7 @@ export default {
       }
     }
     const closePopupForm = (double) => {
+      console.log(route.matched)
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
       if (double) emit('closePopup')

@@ -489,10 +489,8 @@ const table = {
       })
     })
     const saveFilter = (filterData) => {
-      console.log('filterData', filterData)
       filtersColumns.value = []
       filters.value.fields.forEach((el) => {
-        console.log(filterData[el.name])
         if (!filterData[el.name]) {
           el.value = ''
           return

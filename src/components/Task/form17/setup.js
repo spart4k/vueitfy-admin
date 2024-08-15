@@ -109,13 +109,11 @@ const Form17 = defineComponent({
     }
     const dopData = JSON.stringify(data.task.dop_data)
     const addFiles = (e) => {
-      console.log(e)
       let fileExt = e[0].type.split('/')[1]
       let fileName = `workout_25_` + Date.now() + '.' + fileExt
       let form_data = new FormData()
       form_data.append('file', e[0])
       isSetTask.value = true
-      console.log('load')
       // updateFileData = useRequest({
       //   context,
       //   request: () =>
@@ -126,7 +124,6 @@ const Form17 = defineComponent({
       //       from_task: true,
       //     }),
       // })
-      console.log(loadImage)
       loadImage = useRequest({
         context,
         request: () =>
@@ -138,7 +135,6 @@ const Form17 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      console.log(loadImage)
       changeStatusTask = useRequest({
         context,
         request: () => {
@@ -271,7 +267,6 @@ const Form17 = defineComponent({
         data.entity.doljnost_id === 33
       ) {
         // updateFileData.makeRequest()
-        console.log(loadImage)
         await loadImage.makeRequest()
         result = await changeStatusTask.makeRequest()
       } else if (data.entity.direction_id == 6) {

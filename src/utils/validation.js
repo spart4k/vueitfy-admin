@@ -142,7 +142,6 @@ const number = {
 
 const interval = {
   $validator: (val) => {
-    console.log(val)
     return +val > 0 && +val < 16
   },
   $message: () => 'Больше 0 и не больше 15',

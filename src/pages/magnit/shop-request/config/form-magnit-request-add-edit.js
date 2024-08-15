@@ -12,7 +12,7 @@ import {
   colorPicker,
   textBlock,
 } from '@/utils/fields.js'
-import { stringAction } from '@/utils/actions'
+import { stringAction, stringActionDop } from '@/utils/actions'
 import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
@@ -21,7 +21,9 @@ const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
 paymentConfig.initDepStart = true
-
+// const btnClose = paymentConfig.actions.find((el) => el.action !== 'closePopup')
+// console.log(btnClose)
+console.log(paymentConfig)
 export default {
   id: uuidv4(),
   name: 'Основные',
@@ -508,7 +510,7 @@ export default {
       to: 'account',
       skipValidation: true,
     }),
-    stringAction({
+    stringActionDop({
       text: 'Начислить',
       type: 'submit',
       action: 'openForm',
@@ -537,10 +539,6 @@ export default {
         condition: [
           {
             funcCondition: (context) => {
-              console.log(this)
-              console.log(
-                context.formData.personal_id && context.mode === 'edit'
-              )
               return (
                 context.mode === 'add' ||
                 !context.formData.personal_id ||
@@ -557,7 +555,6 @@ export default {
         ],
       },
     }),
-
     stringAction({
       text: 'Создать',
       type: 'submit',
