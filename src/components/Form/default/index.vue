@@ -185,6 +185,7 @@
               :field="field"
               :error-messages="formErrors[field?.name]"
               :readonly="readonlyField(field)"
+              :originalData="originalData[field.name]"
               @addFiles="addFiles($event, field)"
             />
             <ColorPicker

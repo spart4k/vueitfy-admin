@@ -395,11 +395,13 @@ export default {
         name: '`accounting_zayavka`',
         paramsForEmit: this,
         countFiles: 1,
+        removeble: true,
         customName: (formData) => {
           return `${formData.surname}_${formData.type}_${
             formData.date_target
           }_${formData.name_without_space}_${new Date().getTime()}`
         },
+        showScan: true,
       },
       value: [],
       isShow: {

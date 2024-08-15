@@ -829,7 +829,8 @@ export default function ({
     console.log(queryParams, action)
     if (action.handlingResponse) {
       handlingResponse(action, result)
-      if (!queryParams?.action?.notClose && result?.cody) {
+      console.log(!queryParams?.action?.notClose && result?.cody)
+      if (!queryParams?.action?.notClose && result?.code === 1) {
         emit('getItems')
         emit('closePopup')
       } else {

@@ -41,6 +41,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    originalData: {
+      type: String,
+      default: () => '',
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -85,10 +89,15 @@ export default {
             if (props.options.callbacks) props.options.callbacks(data)
           })
         } else {
-          if (proxyVal.value === undefined || proxyVal.value === null) {
+          if (
+            proxyVal.value === undefined ||
+            proxyVal.value === null ||
+            proxyVal.value === ''
+          ) {
             proxyVal.value = []
             // props.field.value = []
           }
+          console.log(proxyVal.value)
           proxyVal.value.push(...arr)
           // props.field.value.push(...arr)
           emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
@@ -150,13 +159,17 @@ export default {
     }
 
     const removed = (file) => {
-      if (!props.options.withoutSave) {
-        const index = proxyVal.value?.findIndex(
-          (x) => x.upload.uuid === file.upload.uuid
-        )
-        proxyVal.value?.splice(index, 1)
-      }
-      emit('removeFile')
+      // if (!props.options.withoutSave) {
+      //   if (typeof proxyVal.value === 'string') {
+      //     proxyVal.value = []
+      //   } else {
+      //     const index = proxyVal.value?.findIndex(
+      //       (x) => x.upload.uuid === file.upload.uuid
+      //     )
+      //     proxyVal.value?.splice(index, 1)
+      //   }
+      // }
+      // emit('removeFile')
     }
 
     watch(

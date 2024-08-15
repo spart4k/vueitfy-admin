@@ -979,6 +979,12 @@ export default {
               context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.status_id === 6 && context.mode === 'edit',
@@ -1188,6 +1194,12 @@ export default {
               context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
         ],
       },
     }),
@@ -1343,6 +1355,12 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
             type: true,
           },
           // {
