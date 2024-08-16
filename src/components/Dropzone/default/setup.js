@@ -159,17 +159,17 @@ export default {
     }
 
     const removed = (file) => {
-      // if (!props.options.withoutSave) {
-      //   if (typeof proxyVal.value === 'string') {
-      //     proxyVal.value = []
-      //   } else {
-      //     const index = proxyVal.value?.findIndex(
-      //       (x) => x.upload.uuid === file.upload.uuid
-      //     )
-      //     proxyVal.value?.splice(index, 1)
-      //   }
-      // }
-      // emit('removeFile')
+      if (!props.options.withoutSave) {
+        if (typeof proxyVal.value === 'string') {
+          proxyVal.value = []
+        } else {
+          const index = proxyVal.value?.findIndex(
+            (x) => x.upload.uuid === file.upload.uuid
+          )
+          proxyVal.value?.splice(index, 1)
+        }
+      }
+      emit('removeFile')
     }
 
     watch(
