@@ -1675,7 +1675,18 @@ export default function ({
       }
       originalData.value = _.cloneDeep(formData)
     }
+    const loadWithDeps = async () => {
+      form?.fields.forEach(async (el) => {
+        if (el.hasOwnProperty('dependence')) {
+          await getDependies({
+            field: el,
+            value: formData[el.name],
+          })
+        }
+      })
+    }
     await loadAutocompletes()
+    await loadWithDeps()
 
     if (hasSelect()) {
       await getFieldsList(form.lists)
