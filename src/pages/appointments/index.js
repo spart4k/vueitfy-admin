@@ -1786,13 +1786,6 @@ const config = {
                   value: [3],
                   type: false,
                 },
-                {
-                  permissions: [4],
-                  field: 'status',
-                  target: 'formData',
-                  value: [2],
-                  type: false,
-                },
               ],
             },
           }),
