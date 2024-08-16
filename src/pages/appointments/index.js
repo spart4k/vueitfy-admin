@@ -1766,10 +1766,17 @@ const config = {
                   type: true,
                 },
                 {
+                  permissions: [3, 15, 4],
+                  field: 'status',
+                  target: 'formData',
+                  value: [2],
+                  type: false,
+                },
+                {
                   permissions: [1, 3, 15, 4, 13],
                   field: 'status',
                   target: 'formData',
-                  value: [1, 2],
+                  value: [1],
                   type: false,
                 },
                 {
@@ -1777,6 +1784,13 @@ const config = {
                   field: 'status',
                   target: 'formData',
                   value: [3],
+                  type: false,
+                },
+                {
+                  permissions: [4],
+                  field: 'status',
+                  target: 'formData',
+                  value: [2],
                   type: false,
                 },
               ],
