@@ -223,7 +223,7 @@ export default {
       return props.field.disabled || props.field.requiredFields
         ? props.field.disabled ||
             props.field.requiredFields.some((el) => {
-              return !props.formData[el] && props.fields[el].isShow.value
+              return !props.formData[el] && props?.fields[el]?.isShow.value
             })
         : false
     })
