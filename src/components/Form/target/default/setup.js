@@ -16,7 +16,7 @@ import store from '@/store'
 import Output from '../output/default/index.vue'
 
 export default {
-  name: 'Form-Default',
+  name: 'Form-Target-Default',
   components: {
     Datetimepicker,
     Autocomplete,
@@ -194,6 +194,7 @@ export default {
       isHideBtn,
       colsField,
       entityData,
+      fields,
     } = useForm({
       form: props.tab,
       context,
@@ -222,6 +223,8 @@ export default {
       validate,
       //$errors,
       vForm,
+      fields,
+
       touchedForm,
       formErrors,
       getData,

@@ -64,6 +64,7 @@ export default function ({
     fields = {}
     fieldAliases = {}
     for (let i = 0; i < form.fields.length; i++) {
+      console.log()
       fields[form.fields[i].name] = form.fields[i]
       if (form.fields[i].alias)
         fieldAliases[form.fields[i].alias] = form.fields[i].name
@@ -1096,7 +1097,7 @@ export default function ({
             const findedDep = targetField.dependence.find(
               (depTarget) => depTarget.type === 'update'
             )
-            findedDep.fields.forEach((el) => (formData[el] = ''))
+            // findedDep.fields.forEach((el) => (formData[el] = ''))
           }
         }
       }
@@ -1120,10 +1121,11 @@ export default function ({
           await getFieldsList(fields[depField].updateList)
         }
       }
+      console.log(formData[depField], fields[depField]?.items, fields[depField])
       if (
         !hasValue(formData[depField], fields[depField]?.items, fields[depField])
       ) {
-        formData[field.name] = ''
+        formData[depField] = ''
       }
       if (card) {
         if (dependence.fillField) {
@@ -1308,6 +1310,8 @@ export default function ({
     const stackDep = []
     for (let keyList in lists.data) {
       const field = fields[fieldAliases[keyList]]
+      console.log(fieldAliases, keyList)
+      console.log(field)
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1403,6 +1407,7 @@ export default function ({
     await Promise.all(stackDep)
   }
   const hasValue = (value, list, field) => {
+    // console.log(value, list, field, field?.name)
     if (!value) return true
     else {
       if (Array.isArray(value)) {
