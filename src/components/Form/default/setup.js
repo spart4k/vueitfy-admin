@@ -264,6 +264,7 @@ export default {
     })
 
     return {
+      fieldss: 'asda',
       readonlyField,
       //endIntersect,
       formData,
