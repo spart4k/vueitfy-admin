@@ -622,12 +622,8 @@ const table = {
     }
 
     const closePopupForm = () => {
-      console.log('route', route)
-      console.log(route.matched)
-      console.log(route.matched.at(-2))
-      console.log(route.matched.at(-1))
-      // router.push({ name: route.matched.at(-2).name })
-      // popupForm.value.isShow = false
+      router.push({ name: route.matched.at(-2).name })
+      popupForm.value.isShow = false
     }
 
     const changeMonth = async (val) => {
