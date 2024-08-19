@@ -171,15 +171,16 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              isWR(context) && context.formData.status !== 1,
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status !== 1,
             // asdasd
             type: true,
           },
-          {
-            funcCondition: (context) => isDBA(context) || isWR(context),
-            // asdasd
-            type: false,
-          },
+          // {
+          //   funcCondition: (context) => isDBA(context) || isWR(context),
+          //   // asdasd
+          //   type: false,
+          // },
         ],
       },
     }),
@@ -227,10 +228,17 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => isDBA(context) || isWR(context),
+            funcCondition: (context) =>
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status !== 1,
             // asdasd
-            type: false,
+            type: true,
           },
+          // {
+          //   funcCondition: (context) => isDBA(context) || isWR(context),
+          //   // asdasd
+          //   type: false,
+          // },
         ],
       },
     }),
@@ -285,9 +293,11 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => isDBA(context) || isWR(context),
+            funcCondition: (context) =>
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status !== 1,
             // asdasd
-            type: false,
+            type: true,
           },
         ],
       },
@@ -389,9 +399,11 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => isDBA(context) || isWR(context),
+            funcCondition: (context) =>
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status !== 1,
             // asdasd
-            type: false,
+            type: true,
           },
         ],
       },
