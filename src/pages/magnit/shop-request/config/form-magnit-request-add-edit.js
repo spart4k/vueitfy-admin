@@ -318,9 +318,11 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => isDBA(context) || isWR(context),
+            funcCondition: (context) =>
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status !== 1,
             // asdasd
-            type: false,
+            type: true,
           },
         ],
       },
