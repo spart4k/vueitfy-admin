@@ -456,7 +456,7 @@ export default {
         conditions: [
           {
             field: 'direction_json',
-            value: [1, 6],
+            value: [1, 6, 7],
             type: true,
           },
         ],
