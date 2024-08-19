@@ -25,6 +25,7 @@ export default {
       root: {
         store,
         router,
+        route,
         ctx,
       },
     }
