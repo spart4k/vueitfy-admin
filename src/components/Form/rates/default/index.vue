@@ -27,6 +27,7 @@
         type="submit"
         :color="action.color"
         class="ml-2"
+        :text="action.action === 'closePopup' ? true : false"
         :loading="loading"
         @click.prevent="
           clickHandler({

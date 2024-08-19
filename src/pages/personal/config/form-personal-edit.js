@@ -568,7 +568,6 @@ export default {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
       skipValidation: true,
     }),
     stringAction({
