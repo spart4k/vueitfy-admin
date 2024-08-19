@@ -17,6 +17,7 @@ import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
+import { isWR } from '@/utils/permissions.js'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
@@ -241,19 +242,19 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       requiredFields: ['date_request', 'account_id'],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) =>
-              context.mode === 'edit' ||
-              !context.formData.account_id ||
-              !context.formData.date_request,
-            // asdasd
-            type: true,
-          },
-        ],
-      },
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     {
+      //       funcCondition: (context) =>
+      //         context.mode === 'edit' ||
+      //         !context.formData.account_id ||
+      //         !context.formData.date_request,
+      //       // asdasd
+      //       type: true,
+      //     },
+      //   ],
+      // },
     }),
     stringField({
       label: 'Часы',
@@ -307,6 +308,18 @@ export default {
           fillField: ['name_without_space'],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isWR(context)
+            },
+            // asdasd
+            type: true,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Должность',
@@ -326,16 +339,16 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'edit',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     {
+      //       funcCondition: (context) => context.mode === 'edit',
+      //       // asdasd
+      //       type: true,
+      //     },
+      //   ],
+      // },
     }),
     dropZoneField({
       label: 'Файл',
