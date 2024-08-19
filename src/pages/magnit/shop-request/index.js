@@ -348,7 +348,7 @@ const config = {
     tabs: [formMagnitRequestAddEdit, formMagnitRequestUpload],
     activeTab: null,
   },
-  filters,
+  // filters,
 }
 
 export default config

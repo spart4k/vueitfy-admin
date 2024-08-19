@@ -241,19 +241,19 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       requiredFields: ['date_request', 'account_id'],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) =>
-              context.mode === 'edit' ||
-              !context.formData.account_id ||
-              !context.formData.date_request,
-            // asdasd
-            type: true,
-          },
-        ],
-      },
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     {
+      //       funcCondition: (context) =>
+      //         context.mode === 'edit' ||
+      //         !context.formData.account_id ||
+      //         !context.formData.date_request,
+      //       // asdasd
+      //       type: true,
+      //     },
+      //   ],
+      // },
     }),
     stringField({
       label: 'Часы',
@@ -326,16 +326,16 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'edit',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     {
+      //       funcCondition: (context) => context.mode === 'edit',
+      //       // asdasd
+      //       type: true,
+      //     },
+      //   ],
+      // },
     }),
     dropZoneField({
       label: 'Файл',
