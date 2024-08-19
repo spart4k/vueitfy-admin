@@ -17,6 +17,7 @@ import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
+import { isWR } from '@/utils/permissions.js'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
@@ -307,6 +308,18 @@ export default {
           fillField: ['name_without_space'],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isWR(context)
+            },
+            // asdasd
+            type: true,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Должность',
