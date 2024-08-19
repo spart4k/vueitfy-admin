@@ -17,7 +17,7 @@ import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
-import { isWR } from '@/utils/permissions.js'
+import { isDBA, isRG, isWR } from '@/utils/permissions.js'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
@@ -166,6 +166,22 @@ export default {
           ],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              isWR(context) && context.formData.status !== 1,
+            // asdasd
+            type: true,
+          },
+          {
+            funcCondition: (context) => isDBA(context) || isWR(context),
+            // asdasd
+            type: false,
+          },
+        ],
+      },
     }),
     datetimeField({
       label: 'На дату',
@@ -207,6 +223,16 @@ export default {
           ],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => isDBA(context) || isWR(context),
+            // asdasd
+            type: false,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Объект',
@@ -255,6 +281,16 @@ export default {
       //     },
       //   ],
       // },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => isDBA(context) || isWR(context),
+            // asdasd
+            type: false,
+          },
+        ],
+      },
     }),
     stringField({
       label: 'Часы',
@@ -268,6 +304,16 @@ export default {
       bootstrapClass: [''],
       validations: { required, interval },
       //isShow: false,
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => isDBA(context) || isWR(context),
+            // asdasd
+            type: false,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -313,7 +359,7 @@ export default {
         condition: [
           {
             funcCondition: (context) => {
-              return isWR(context)
+              return isWR(context) || context.mode === 'add'
             },
             // asdasd
             type: true,
@@ -339,16 +385,16 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      // readonly: {
-      //   value: false,
-      //   condition: [
-      //     {
-      //       funcCondition: (context) => context.mode === 'edit',
-      //       // asdasd
-      //       type: true,
-      //     },
-      //   ],
-      // },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => isDBA(context) || isWR(context),
+            // asdasd
+            type: false,
+          },
+        ],
+      },
     }),
     dropZoneField({
       label: 'Файл',
@@ -517,7 +563,8 @@ export default {
               return (
                 context.mode === 'add' ||
                 !context.formData.personal_id ||
-                !context.formData.act_path?.length
+                !context.formData.act_path?.length ||
+                isWR(context)
               )
             },
             type: true,
@@ -536,20 +583,6 @@ export default {
       module: 'account/createData',
       url: 'create/request/magnit',
       color: 'primary',
-      handlingResponse: {
-        1: {
-          text: 'Заявка создана',
-          color: 'success',
-        },
-        2: {
-          text: 'Ошибка сервера',
-          color: 'error',
-        },
-        3: {
-          text: 'Не хватает информации',
-          color: 'error',
-        },
-      },
       name: 'saveFormStore',
       action: 'saveFormStore',
       isHide: {
@@ -563,6 +596,24 @@ export default {
             type: true,
           },
         ],
+      },
+      handlingResponse: {
+        1: {
+          text: 'Заявка сохранена',
+          color: 'success',
+        },
+        2: {
+          text: 'Ошибка сервера',
+          color: 'error',
+        },
+        3: {
+          text: 'Не хватает информации',
+          color: 'error',
+        },
+        4: {
+          text: 'Нет доступа',
+          color: 'error',
+        },
       },
     }),
     stringAction({
@@ -596,6 +647,10 @@ export default {
         },
         3: {
           text: 'Не хватает информации',
+          color: 'error',
+        },
+        4: {
+          text: 'Нет доступа',
           color: 'error',
         },
       },
