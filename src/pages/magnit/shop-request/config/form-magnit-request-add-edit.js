@@ -139,16 +139,6 @@ export default {
       //   module: 'personal/getCard',
       //   field: 'personal_bank_id',
       // },
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'edit',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
       dependence: [
         {
           type: 'default',
@@ -190,16 +180,6 @@ export default {
       },
       validations: { hasDate, hasTime },
       bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'edit',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
       dependence: [
         {
           type: 'default',
@@ -287,16 +267,6 @@ export default {
       bootstrapClass: [''],
       validations: { required, interval },
       //isShow: false,
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'edit',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -324,16 +294,6 @@ export default {
           value: '',
         },
       ],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'add',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
       // dependence: {
       //   //fields: ['statement_card', 'cardowner'],
       //   fillField: ['fio', 'invoice'],
