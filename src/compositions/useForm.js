@@ -327,7 +327,6 @@ export default function ({
       }
       //emit('closePopup')
     } else if (action.action === 'closePopup') {
-      console.log(route, route.matched, 'route.matched')
       if (!notClose) emit('closePopup', action.to)
     } else if (action.action === 'turnOff') {
       action.variable = false
@@ -837,6 +836,15 @@ export default function ({
         $v.value.$reset()
         errorsCount()
       }
+    } else if (
+      result.result ||
+      (result.cody && !queryParams?.action?.notClose && result?.code === 1)
+    ) {
+      emit('getItems')
+      emit('closePopup')
+    } else {
+      $v.value.$reset()
+      errorsCount()
     }
   }
 
