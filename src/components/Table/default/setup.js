@@ -622,7 +622,7 @@ const table = {
     }
 
     const closePopupForm = () => {
-      console.log('route')
+      console.log('route', route)
       console.log(route.matched)
       console.log(route.matched.at(-2))
       console.log(route.matched.at(-1))
