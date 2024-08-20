@@ -67,3 +67,7 @@ export const isRukBuh = (ctx) => {
 export const isAllBug = (ctx) => {
   return isRukBuh(ctx) || isBuhg(ctx)
 }
+
+export const isVertical = (ctx) => {
+  return ctx.store.state.user.is_personal_vertical
+}

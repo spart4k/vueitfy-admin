@@ -17,7 +17,13 @@ import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
-import { isDBA, isManager, isRG, isWR } from '@/utils/permissions.js'
+import {
+  isDBA,
+  isManager,
+  isRG,
+  isWR,
+  isVertical,
+} from '@/utils/permissions.js'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
@@ -173,7 +179,7 @@ export default {
             funcCondition: (context) =>
               ((isWR(context) || isDBA(context)) &&
                 context.formData.status !== 1) ||
-              isManager(context),
+              isVertical(context),
             // asdasd
             type: true,
           },
@@ -232,7 +238,7 @@ export default {
             funcCondition: (context) =>
               ((isWR(context) || isDBA(context)) &&
                 context.formData.status !== 1) ||
-              isManager(context),
+              isVertical(context),
             // asdasd
             type: true,
           },
@@ -298,7 +304,7 @@ export default {
             funcCondition: (context) =>
               ((isWR(context) || isDBA(context)) &&
                 context.formData.status !== 1) ||
-              isManager(context),
+              isVertical(context),
             // asdasd
             type: true,
           },
@@ -324,7 +330,7 @@ export default {
             funcCondition: (context) =>
               ((isWR(context) || isDBA(context)) &&
                 context.formData.status !== 1) ||
-              isManager(context),
+              isVertical(context),
             // asdasd
             type: true,
           },
@@ -408,7 +414,7 @@ export default {
             funcCondition: (context) =>
               ((isWR(context) || isDBA(context)) &&
                 context.formData.status !== 1) ||
-              isManager(context),
+              isVertical(context),
             // asdasd
             type: true,
           },
@@ -468,7 +474,7 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => isManager(context),
+            funcCondition: (context) => isVertical(context),
             // asdasd
             type: true,
           },
