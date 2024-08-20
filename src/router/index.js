@@ -677,6 +677,26 @@ const routes = [
           label: 'Заявка "Магнит"',
         },
         component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-edit/payment-add',
+            path: '/magnit_pivot/:id/payment-add',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-edit/payment/:payment_id',
+            path: '/magnit_pivot:id/payment/:payment_id',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'magnit_pivot-personal',
