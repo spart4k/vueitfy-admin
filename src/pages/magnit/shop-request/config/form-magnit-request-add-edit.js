@@ -17,6 +17,7 @@ import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
+import { isDBA, isManager, isRG, isWR } from '@/utils/permissions.js'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
@@ -139,16 +140,6 @@ export default {
       //   module: 'personal/getCard',
       //   field: 'personal_bank_id',
       // },
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'edit',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
       dependence: [
         {
           type: 'default',
@@ -175,6 +166,24 @@ export default {
           ],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
+            // asdasd
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) => isDBA(context) || isWR(context),
+          //   // asdasd
+          //   type: false,
+          // },
+        ],
+      },
     }),
     datetimeField({
       label: 'На дату',
@@ -190,16 +199,6 @@ export default {
       },
       validations: { hasDate, hasTime },
       bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'edit',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
       dependence: [
         {
           type: 'default',
@@ -226,6 +225,24 @@ export default {
           ],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
+            // asdasd
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) => isDBA(context) || isWR(context),
+          //   // asdasd
+          //   type: false,
+          // },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Объект',
@@ -261,14 +278,27 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       requiredFields: ['date_request', 'account_id'],
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     {
+      //       funcCondition: (context) =>
+      //         context.mode === 'edit' ||
+      //         !context.formData.account_id ||
+      //         !context.formData.date_request,
+      //       // asdasd
+      //       type: true,
+      //     },
+      //   ],
+      // },
       readonly: {
         value: false,
         condition: [
           {
             funcCondition: (context) =>
-              context.mode === 'edit' ||
-              !context.formData.account_id ||
-              !context.formData.date_request,
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -291,7 +321,10 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => context.mode === 'edit',
+            funcCondition: (context) =>
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -324,16 +357,6 @@ export default {
           value: '',
         },
       ],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => context.mode === 'add',
-            // asdasd
-            type: true,
-          },
-        ],
-      },
       // dependence: {
       //   //fields: ['statement_card', 'cardowner'],
       //   fillField: ['fio', 'invoice'],
@@ -347,6 +370,18 @@ export default {
           fillField: ['name_without_space'],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isWR(context) || context.mode === 'add'
+            },
+            // asdasd
+            type: true,
+          },
+        ],
+      },
     }),
     autocompleteField({
       label: 'Должность',
@@ -370,7 +405,10 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => context.mode === 'edit',
+            funcCondition: (context) =>
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -420,13 +458,22 @@ export default {
       label: 'Примечание',
       name: 'note',
       placeholder: '',
-      readonly: false,
       class: [''],
       position: {
         cols: 12,
         sm: 12,
       },
       bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => isManager(context),
+            // asdasd
+            type: true,
+          },
+        ],
+      },
       //validations: { required },
       //isShow: false,
     }),
@@ -544,7 +591,8 @@ export default {
               return (
                 context.mode === 'add' ||
                 !context.formData.personal_id ||
-                !context.formData.act_path?.length
+                !context.formData.act_path?.length ||
+                isWR(context)
               )
             },
             type: true,
@@ -563,20 +611,6 @@ export default {
       module: 'account/createData',
       url: 'create/request/magnit',
       color: 'primary',
-      handlingResponse: {
-        1: {
-          text: 'Заявка создана',
-          color: 'success',
-        },
-        2: {
-          text: 'Ошибка сервера',
-          color: 'error',
-        },
-        3: {
-          text: 'Не хватает информации',
-          color: 'error',
-        },
-      },
       name: 'saveFormStore',
       action: 'saveFormStore',
       isHide: {
@@ -590,6 +624,24 @@ export default {
             type: true,
           },
         ],
+      },
+      handlingResponse: {
+        1: {
+          text: 'Заявка сохранена',
+          color: 'success',
+        },
+        2: {
+          text: 'Ошибка сервера',
+          color: 'error',
+        },
+        3: {
+          text: 'Не хватает информации',
+          color: 'error',
+        },
+        4: {
+          text: 'Нет доступа',
+          color: 'error',
+        },
       },
     }),
     stringAction({
@@ -623,6 +675,10 @@ export default {
         },
         3: {
           text: 'Не хватает информации',
+          color: 'error',
+        },
+        4: {
+          text: 'Нет доступа',
           color: 'error',
         },
       },

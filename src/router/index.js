@@ -1010,7 +1010,7 @@ const routes = [
         children: [
           {
             name: 'shop-request-magnit-add-payment-add',
-            path: 'shop-request-magnitpayment/add',
+            path: '/shop-request-magnitpayment/add',
             meta: {
               mode: ['add-edit-logistic'],
               label: 'Добавить начисление',
