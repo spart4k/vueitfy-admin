@@ -459,7 +459,6 @@ export default {
       label: 'Файл',
       name: 'act_path',
       placeholder: '',
-      readonly: false,
       class: [''],
       position: {
         cols: 12,
@@ -490,6 +489,17 @@ export default {
             funcCondition: (ctx) => {
               return ctx.formData.personal_id
             },
+          },
+        ],
+      },
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) =>
+              isVertical(context) && [1, 2].includes(context.formData.status),
+            // asdasd
+            type: false,
           },
         ],
       },
