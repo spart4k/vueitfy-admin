@@ -520,8 +520,9 @@ export default function ({
       let routeRequest = formData[action.target.requestKey]
         ? `/:${action.target.requestKey}`
         : '-add'
+      console.log(route)
       router.push({
-        name: action.target.route + routeRequest,
+        name: route.name + '/' + action.target.route + routeRequest,
         // name: `${route.name}/:${requestId}`,
         params: {
           [requestId]: formData[action.target.requestKey],

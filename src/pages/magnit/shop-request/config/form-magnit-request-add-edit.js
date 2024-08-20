@@ -564,7 +564,7 @@ export default {
       type: 'submit',
       action: 'openForm',
       target: {
-        route: 'shop-request-magnit/:id/payment',
+        route: 'payment',
         requestKey: 'payment_id',
       },
       color: 'primary',
