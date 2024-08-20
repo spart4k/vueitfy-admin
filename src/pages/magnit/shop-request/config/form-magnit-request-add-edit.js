@@ -175,13 +175,20 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   funcCondition: (context) =>
+          //     ((isWR(context) || isDBA(context)) &&
+          //       context.formData.status !== 1) ||
+          //     isVertical(context),
+          //   // asdasd
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              ((isWR(context) || isDBA(context)) &&
-                context.formData.status !== 1) ||
-              isVertical(context),
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status === 1,
             // asdasd
-            type: true,
+            type: false,
           },
           // {
           //   funcCondition: (context) => isDBA(context) || isWR(context),
@@ -234,13 +241,20 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   funcCondition: (context) =>
+          //     ((isWR(context) || isDBA(context)) &&
+          //       context.formData.status !== 1) ||
+          //     isVertical(context),
+          //   // asdasd
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              ((isWR(context) || isDBA(context)) &&
-                context.formData.status !== 1) ||
-              isVertical(context),
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status === 1,
             // asdasd
-            type: true,
+            type: false,
           },
           // {
           //   funcCondition: (context) => isDBA(context) || isWR(context),
@@ -300,13 +314,20 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   funcCondition: (context) =>
+          //     ((isWR(context) || isDBA(context)) &&
+          //       context.formData.status !== 1) ||
+          //     isVertical(context),
+          //   // asdasd
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              ((isWR(context) || isDBA(context)) &&
-                context.formData.status !== 1) ||
-              isVertical(context),
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status === 1,
             // asdasd
-            type: true,
+            type: false,
           },
         ],
       },
@@ -326,13 +347,20 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   funcCondition: (context) =>
+          //     ((isWR(context) || isDBA(context)) &&
+          //       context.formData.status !== 1) ||
+          //     isVertical(context),
+          //   // asdasd
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              ((isWR(context) || isDBA(context)) &&
-                context.formData.status !== 1) ||
-              isVertical(context),
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status === 1,
             // asdasd
-            type: true,
+            type: false,
           },
         ],
       },
@@ -380,11 +408,10 @@ export default {
         value: false,
         condition: [
           {
-            funcCondition: (context) => {
-              return isWR(context) || context.mode === 'add'
-            },
+            funcCondition: (context) =>
+              isVertical(context) && [1, 2].includes(context.formData.status),
             // asdasd
-            type: true,
+            type: false,
           },
         ],
       },
@@ -410,13 +437,20 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   funcCondition: (context) =>
+          //     ((isWR(context) || isDBA(context)) &&
+          //       context.formData.status !== 1) ||
+          //     isVertical(context),
+          //   // asdasd
+          //   type: true,
+          // },
           {
             funcCondition: (context) =>
-              ((isWR(context) || isDBA(context)) &&
-                context.formData.status !== 1) ||
-              isVertical(context),
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status === 1,
             // asdasd
-            type: true,
+            type: false,
           },
         ],
       },
@@ -473,10 +507,17 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   funcCondition: (context) => isVertical(context),
+          //   // asdasd
+          //   type: true,
+          // },
           {
-            funcCondition: (context) => isVertical(context),
+            funcCondition: (context) =>
+              (isWR(context) || isDBA(context)) &&
+              context.formData.status === 1,
             // asdasd
-            type: true,
+            type: false,
           },
         ],
       },
