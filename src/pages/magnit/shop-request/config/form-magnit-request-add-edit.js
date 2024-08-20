@@ -23,6 +23,8 @@ import {
   isRG,
   isWR,
   isVertical,
+  isOKK,
+  isROKK,
 } from '@/utils/permissions.js'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
@@ -409,7 +411,9 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              isVertical(context) && [1, 2].includes(context.formData.status),
+              isVertical(context) &&
+              [1, 2].includes(context.formData.status) &&
+              context.mode === 'edit',
             // asdasd
             type: false,
           },
@@ -649,7 +653,9 @@ export default {
                 context.mode === 'add' ||
                 !context.formData.personal_id ||
                 !context.formData.act_path?.length ||
-                isWR(context)
+                isWR(context) ||
+                isOKK(context) ||
+                isROKK(context)
               )
             },
             type: true,

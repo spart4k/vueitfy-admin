@@ -400,8 +400,21 @@ export default {
       ],
     },
     {
-      alias: 'doljnost_id',
-      filter: [],
+      alias: 'doljnost_payment_id',
+      filter: [
+        {
+          field: 'direction_id',
+          // alias: 'pb.id',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'type_id',
+          // alias: 'pb.id',
+          source: 'formData',
+          type: 'num',
+        },
+      ],
     },
     {
       alias: 'personal_bank_id',
@@ -1047,6 +1060,7 @@ export default {
       label: 'Направление',
       name: 'direction_id',
       alias: 'payment_direction_id',
+
       placeholder: '',
       class: [''],
       selectOption: {
@@ -1237,6 +1251,25 @@ export default {
           },
         ],
       },
+      updateList: [
+        {
+          alias: 'doljnost_payment_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type_id',
+              // alias: 'pb.id',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+      ],
     }),
     autocompleteField({
       label: 'Объект',
@@ -1445,6 +1478,23 @@ export default {
             },
           ],
         },
+        {
+          alias: 'doljnost_payment_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type_id',
+              // alias: 'pb.id',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
       ],
     }),
     autocompleteField({
@@ -1611,16 +1661,20 @@ export default {
         ],
       },
     }),
-    selectField({
+    autocompleteField({
       label: 'Должность',
       name: 'doljnost_id',
+      subtype: 'single',
       placeholder: '',
-      class: [''],
+      class: ['noWrap'],
       selectOption: {
         text: 'name',
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/doljnost_payment_id',
       position: {
         cols: 12,
         sm: {
@@ -1658,6 +1712,21 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
+      filter: [
+        {
+          field: 'direction_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+        {
+          field: 'type',
+          alias: 'type_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+      ],
       readonly: {
         value: false,
         condition: [
@@ -2802,6 +2871,20 @@ export default {
           ],
         },
       ],
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'doljnost_id',
+          // filter: [
+          //   {
+          //     field: 'direction_id',
+          //     value: '',
+          //   },
+          // ],
+          url: 'get/pagination_list/doljnost_payment_id',
+        },
+      ],
     }),
     stringField({
       label: 'ID тарифа',
@@ -2986,33 +3069,6 @@ export default {
       },
     }),
     stringAction({
-      text: 'Сохранить',
-      type: 'submit',
-      module: 'form/putForm',
-      name: 'saveFormId',
-      url: 'update/payment',
-      action: 'saveFormId',
-      color: 'primary',
-      isHide: {
-        value: false,
-        type: 'every',
-        condition: [
-          {
-            field: 'mode',
-            target: 'environment',
-            value: ['add'],
-            type: true,
-          },
-          {
-            funcCondition: (context) =>
-              context.formData?.status_id !== 6 &&
-              !context.environment.readonlyAll,
-            type: false,
-          },
-        ],
-      },
-    }),
-    stringAction({
       text: 'На проверку',
       type: 'submit',
       status_id: 1,
@@ -3180,13 +3236,11 @@ export default {
             funcCondition: (context) => {
               return (
                 isMagnit(context) ||
-                (isAllBug(context) && context.formData.status_id === 4) ||
+                isAllBug(context) ||
+                (isDBA(context) && context.formData.status_id === 4) ||
                 (isX5(context) &&
-                  (isOKK(context) ||
-                    isROKK(context) ||
-                    isDBA(context) ||
-                    isDirector(context)) &&
-                  context.formData.status_id === 3)
+                  (isAllBug(context) || isDBA(context)) &&
+                  context.formData.status_id === 4)
               )
             },
             type: false,
@@ -3263,6 +3317,33 @@ export default {
             funcCondition: (context) =>
               // [22, 12].includes(context.store.state.user.permission_id),
               isAllBug(context) && context.formData.status_id === 4,
+            type: false,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Сохранить',
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'primary',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            field: 'mode',
+            target: 'environment',
+            value: ['add'],
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              context.formData?.status_id !== 6 &&
+              !context.environment.readonlyAll,
             type: false,
           },
         ],
