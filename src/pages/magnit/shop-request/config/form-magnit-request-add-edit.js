@@ -17,7 +17,7 @@ import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
-import { isDBA, isRG, isWR } from '@/utils/permissions.js'
+import { isDBA, isManager, isRG, isWR } from '@/utils/permissions.js'
 const paymentConfig = _.cloneDeep(formAddEditPayment)
 paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
@@ -171,7 +171,7 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context)) &&
+              (isWR(context) || isDBA(context) || isManager(context)) &&
               context.formData.status !== 1,
             // asdasd
             type: true,
@@ -229,7 +229,7 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context)) &&
+              (isWR(context) || isDBA(context) || isManager(context)) &&
               context.formData.status !== 1,
             // asdasd
             type: true,
@@ -294,7 +294,7 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context)) &&
+              (isWR(context) || isDBA(context) || isManager(context)) &&
               context.formData.status !== 1,
             // asdasd
             type: true,
@@ -319,7 +319,7 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context)) &&
+              (isWR(context) || isDBA(context) || isManager(context)) &&
               context.formData.status !== 1,
             // asdasd
             type: true,
@@ -402,7 +402,7 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context)) &&
+              (isWR(context) || isDBA(context) || isManager(context)) &&
               context.formData.status !== 1,
             // asdasd
             type: true,
