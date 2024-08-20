@@ -171,8 +171,9 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context) || isManager(context)) &&
-              context.formData.status !== 1,
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -229,8 +230,9 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context) || isManager(context)) &&
-              context.formData.status !== 1,
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -294,8 +296,9 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context) || isManager(context)) &&
-              context.formData.status !== 1,
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -319,8 +322,9 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context) || isManager(context)) &&
-              context.formData.status !== 1,
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -402,8 +406,9 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (isWR(context) || isDBA(context) || isManager(context)) &&
-              context.formData.status !== 1,
+              ((isWR(context) || isDBA(context)) &&
+                context.formData.status !== 1) ||
+              isManager(context),
             // asdasd
             type: true,
           },
@@ -453,13 +458,22 @@ export default {
       label: 'Примечание',
       name: 'note',
       placeholder: '',
-      readonly: false,
       class: [''],
       position: {
         cols: 12,
         sm: 12,
       },
       bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => isManager(context),
+            // asdasd
+            type: true,
+          },
+        ],
+      },
       //validations: { required },
       //isShow: false,
     }),
