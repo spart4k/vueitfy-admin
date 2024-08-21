@@ -27,7 +27,8 @@ import ServiceView from '../views/ServiceView.vue'
 import RashodCategoryView from '../views/RashodCategoryView.vue'
 import RashodVidView from '../views/RashodVidView.vue'
 import OfficeView from '../views/OfficeView.vue'
-
+import ReportMagnit from '../views/Magnit/ReportMagnit.vue'
+import ReportFilial from '../views/Magnit/ReportFilial.vue'
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
@@ -1095,6 +1096,24 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/report_magnit',
+    name: 'report_magnit',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ReportMagnit,
+    children: [],
+  },
+  {
+    path: '/report_filial',
+    name: 'report_filial',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ReportFilial,
+    children: [],
   },
   {
     path: '/user-keys',

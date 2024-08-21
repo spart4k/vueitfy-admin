@@ -514,6 +514,17 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      persistent
+      v-model="customContent.popup.isShow"
+      :width="customContent.popup.width"
+    >
+      <component
+        v-if="customContent.popup.isShow"
+        :data="customContent.data"
+        :is="customContent.component"
+      ></component>
+    </v-dialog>
     <Popup
       closeButton
       @close="closePopupForm"
