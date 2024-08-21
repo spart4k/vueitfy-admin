@@ -19,7 +19,7 @@ import { userKeys } from '@/pages'
 import formObjectEdit from './config/form-object-edit.js'
 import formObjectRates from './config/form-object-rates.js'
 import tableObjectUnassigned from './config/table-object-unassigned.js'
-
+import formObjectTarif from './config/form-object-tarif.js'
 import formObjectAdd from './config/form-object-add.js'
 import formObjectAppoint from './config/form-object-appoint.js'
 import tableObjectPayment from './config/table-object-payment.js'
@@ -604,7 +604,7 @@ export const config = {
         headerFixed: true,
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/object_price',
-        title: 'Тариф',
+        title: 'Тарифы',
       },
       type: 'TableDefault',
       isShow: {
@@ -626,6 +626,13 @@ export const config = {
             class: ['v-table-button--custom'],
             url: '$IconEdit',
             function: consolePanel,
+            backgroundColor: '#ffffff',
+          },
+          {
+            label: 'Смена тарифа',
+            class: ['v-table-button--custom'],
+            url: 'object-tarif',
+            type: 'changeUrl',
             backgroundColor: '#ffffff',
           },
         ],
@@ -798,10 +805,10 @@ export const config = {
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [...objectTabs, tableObjectPayment],
+        tabs: [formObjectTarif],
         activeTab: null,
       },
-      filters: _.cloneDeep(filters),
+      filters: null,
     },
   ],
 }
