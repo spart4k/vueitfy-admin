@@ -182,7 +182,8 @@ export default {
             (x) => x.upload?.uuid === file.upload?.uuid
           )
           if (props.options.countFiles === 1) {
-            proxyVal.value = ''
+            // proxyVal.value = ''
+            proxyVal.value = props.originalData
           } else {
             proxyVal.value?.splice(index, 1)
           }
