@@ -1663,7 +1663,16 @@ export default function ({
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
           if (!field.notPut) {
-            formData[formKey] = syncForm.data[formKey]
+            console.log(field, field.name, formData[formKey])
+            if (
+              field.type === 'dropzone' &&
+              typeof syncForm.data[formKey] === 'string' &&
+              syncForm.data[formKey].length
+            ) {
+              formData[formKey] = syncForm.data[formKey]
+            } else {
+              formData[formKey] = syncForm.data[formKey]
+            }
             if (field.type === 'checkbox')
               formData[field.name] = !!syncForm.data[formKey]
           }

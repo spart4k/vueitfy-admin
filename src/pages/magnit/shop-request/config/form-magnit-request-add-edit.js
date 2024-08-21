@@ -13,7 +13,13 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction, stringActionDop } from '@/utils/actions'
-import { required, hasDate, hasTime, interval } from '@/utils/validation.js'
+import {
+  required,
+  hasDate,
+  hasTime,
+  interval,
+  requiredFile,
+} from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import formAddEditPayment from '../../../payment/config/form-add-edit.js'
 import _ from 'lodash'
@@ -469,7 +475,6 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      validations: {},
       options: {
         withoutSave: false,
         folder: 'magnit_path_act',

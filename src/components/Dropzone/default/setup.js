@@ -96,9 +96,14 @@ export default {
           ) {
             proxyVal.value = []
             // props.field.value = []
+          } else if (
+            typeof proxyVal.value === 'string' &&
+            proxyVal.value.length
+          ) {
+            proxyVal.value = [proxyVal.value]
           }
           console.log(proxyVal.value)
-          proxyVal.value.push(...arr)
+          proxyVal.value = [...arr]
           // props.field.value.push(...arr)
           emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
           nextTick(() => {
@@ -161,12 +166,16 @@ export default {
     const removed = (file) => {
       if (!props.options.withoutSave) {
         if (typeof proxyVal.value === 'string') {
-          proxyVal.value = []
+          // proxyVal.value = []
+          proxyVal.value = ''
         } else {
           const index = proxyVal.value?.findIndex(
-            (x) => x.upload.uuid === file.upload.uuid
+            (x) => x.upload?.uuid === file.upload?.uuid
           )
           proxyVal.value?.splice(index, 1)
+          if (!proxyVal.value.length) {
+            proxyVal.value = ''
+          }
         }
       }
       emit('removeFile')
@@ -188,7 +197,12 @@ export default {
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
 
-        const file = { name: filename, size: 12322, type: 'image/' + type }
+        const file = {
+          name: filename,
+          size: 12322,
+          type: 'image/' + type.toLowerCase(),
+        }
+        console.log(file, url)
         dropzone.value.manuallyAddFile(file, url)
       }
     }
@@ -218,7 +232,7 @@ export default {
     }
 
     onMounted(() => {
-      if (proxyVal.value) fillPreview()
+      // if (proxyVal.value) fillPreview()
     })
     return {
       dropzoneOptions,

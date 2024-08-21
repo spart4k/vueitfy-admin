@@ -121,6 +121,20 @@ const minFileLength = {
   $message: () => 'Необходимо приложить минимум 1 счет',
 }
 
+const requiredFile = {
+  $validator: (val, formData) => {
+    console.log(val)
+    if (formData.status === 1 && !val) {
+      return true
+    } else if (formData.status === 2 && !val) {
+      return false
+    } else {
+      return true
+    }
+  },
+  $message: () => 'Необходимо приложить минимум 1 счет',
+}
+
 const sameAs = (value) => ({
   $validator: (val, formData) => {
     try {
@@ -180,5 +194,6 @@ export {
   minFileLength,
   notValue,
   interval,
+  requiredFile,
   // strongPassword
 }
