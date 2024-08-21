@@ -181,9 +181,10 @@ export default {
           const index = proxyVal.value?.findIndex(
             (x) => x.upload?.uuid === file.upload?.uuid
           )
-          proxyVal.value?.splice(index, 1)
-          if (!proxyVal.value.length) {
+          if (props.options.countFiles === 1) {
             proxyVal.value = ''
+          } else {
+            proxyVal.value?.splice(index, 1)
           }
         }
       }
