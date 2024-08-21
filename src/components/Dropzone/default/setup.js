@@ -89,22 +89,31 @@ export default {
             if (props.options.callbacks) props.options.callbacks(data)
           })
         } else {
+          // if (
+          //   proxyVal.value === undefined ||
+          //   proxyVal.value === null ||
+          //   proxyVal.value === ''
+          // ) {
+          //   proxyVal.value = []
+          //   // props.field.value = []
+          // } else if (
+          //   typeof proxyVal.value === 'string' &&
+          //   proxyVal.value.length
+          // ) {
+          //   proxyVal.value = [proxyVal.value]
+          // }
           if (
-            proxyVal.value === undefined ||
-            proxyVal.value === null ||
-            proxyVal.value === ''
+            proxyVal.value?.length &&
+            Array.isArray(proxyVal.value) &&
+            props.options.countFiles === 1
           ) {
-            proxyVal.value = []
-            // props.field.value = []
-          } else if (
-            typeof proxyVal.value === 'string' &&
-            proxyVal.value.length
-          ) {
-            proxyVal.value = [proxyVal.value]
+            await dropzone.value.removeFile(proxyVal.value[0])
           }
+          proxyVal.value = []
           console.log(proxyVal.value)
-          proxyVal.value = [...arr]
+          // proxyVal.value = [...arr]
           // props.field.value.push(...arr)
+          proxyVal.value.push(...arr)
           emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
           nextTick(() => {
             fileValidation()
