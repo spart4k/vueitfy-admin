@@ -112,6 +112,14 @@ const table = {
       context: null,
       loading: false,
     })
+    const customContent = ref({
+      popup: {
+        width: '400px',
+        isShow: false,
+      },
+      component: null,
+      data: null,
+    })
     const paramsQuery = ref({
       currentPage: pagination.value.currentPage,
       searchGlobal: searchField.value,
@@ -721,6 +729,21 @@ const table = {
           idArray: lastSelected.value.items.map((x) => x.row.id),
         }
         await button.method(context)
+      } else if (button.customContent) {
+        if (button.customContent.component) {
+          customContent.value.popup.width = button.customContent.popupWidth
+          customContent.value.component = button.customContent.component
+          customContent.value.popup.isShow = true
+          customContent.value.data = {
+            store,
+            route,
+            router,
+            button,
+            customContent,
+            paramsQuery,
+            filtersColumns,
+          }
+        }
       }
       if (button.refreshTable) {
         getItems()
@@ -1040,6 +1063,7 @@ const table = {
       confirmDialog,
       triggerDialogFunction,
       route,
+      customContent,
     }
   },
 }
