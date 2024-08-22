@@ -12,7 +12,7 @@ import {
   dateRangeField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, numeric } from '@/utils/validation.js'
+import { required, numeric, dateRange } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -313,7 +313,10 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
-      validations: { required },
+      validations: {
+        required,
+        dateRange: dateRange('date_active_s', 'date_active_po'),
+      },
     }),
     dateField({
       label: 'Период по',
@@ -328,7 +331,10 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
-      validations: { required },
+      validations: {
+        required,
+        dateRange: dateRange('date_active_s', 'date_active_po'),
+      },
     }),
     stringField({
       label: 'Сумма',
