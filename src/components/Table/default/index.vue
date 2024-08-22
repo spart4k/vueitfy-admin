@@ -5,7 +5,7 @@
         :class="options.options.headerFixed ? 'v-table-panel--fixed' : ''"
         class="v-table-panel"
       >
-        <!-- <div v-if="panel.date" class="v-table-panel-date">
+        <div v-if="panel.date" class="v-table-panel-date">
           <v-btn icon class="mr-4" @click="changeMonth(-1)">
             <v-icon small> $IconArrowLeft </v-icon>
           </v-btn>
@@ -16,7 +16,7 @@
           <v-btn icon class="ml-4" @click="changeMonth(1)">
             <v-icon small> $IconArrowRight </v-icon>
           </v-btn>
-        </div> -->
+        </div>
         <div class="v-table-panel-items">
           <div class="v-table-panel-items__actions flex-wrap">
             <div class=""></div>

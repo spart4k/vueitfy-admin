@@ -60,7 +60,6 @@ export const config = {
         backgroundColor: '#fff',
       },
     ],
-    date: true,
   },
   head: [
     {
