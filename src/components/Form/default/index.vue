@@ -110,14 +110,14 @@
                       v-bind="attrs"
                       v-on="on"
                       @click="appendFieldHandler({ action, field })"
-                      class=""
+                      :class="action.class"
                       small
                       v-if="appendActionShow(action)"
                     >
                       <v-tooltip activator="parent" location="top"
                         >Tooltip</v-tooltip
                       >
-                      <v-icon> {{ action.icon }} </v-icon></v-btn
+                      <v-icon>{{ action.icon }}</v-icon></v-btn
                     >
                   </template>
                   <span>{{ action.label }}</span>

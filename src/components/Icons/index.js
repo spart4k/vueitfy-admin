@@ -68,10 +68,14 @@ import IconSamolet from './samolet/samolet.vue'
 import IconSnils from './snils/snils.vue'
 import IconFinger2 from './finger/finger2.vue'
 import IconGroups from './groups/groups.vue'
+import IconAccoutSync from './account-sync/account-sync.vue'
 
 export default {
   IconAdd: {
     component: IconAdd,
+  },
+  IconAccoutSync: {
+    component: IconAccoutSync,
   },
   IconLock: {
     component: IconLock,

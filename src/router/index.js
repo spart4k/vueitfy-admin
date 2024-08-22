@@ -172,6 +172,15 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'payment/:id/change-personal',
+            path: 'change-personal',
+            meta: {
+              mode: ['add-edit-logistic', 'change-personal'],
+              label: 'Сменить линейщика',
+            },
+            component: Detail,
+          },
         ],
       },
       {
