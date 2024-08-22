@@ -29,7 +29,6 @@ const config = {
             backgroundColor: '#ffffff',
           },
         ],
-        date: true,
       },
       head: [
         {

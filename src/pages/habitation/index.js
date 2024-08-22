@@ -47,7 +47,6 @@ export const config = {
             },
           },
         ],
-        date: true,
       },
       head: [
         {
@@ -298,7 +297,6 @@ export const config = {
             },
           },
         ],
-        date: true,
       },
       head: [
         {
@@ -472,7 +470,6 @@ export const config = {
             },
           },
         ],
-        date: true,
       },
       head: [
         {
@@ -653,7 +650,6 @@ export const config = {
             backgroundColor: '#ffffff',
           },
         ],
-        date: true,
       },
       head: [
         {
