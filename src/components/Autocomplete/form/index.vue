@@ -83,9 +83,11 @@
               @click="parentComp.appendFieldHandler({ action, field })"
               v-if="parentComp.appendActionShow(action)"
               text
+              :type="action.type"
+              :color="action.color"
               v-bind="attrs"
               v-on="on"
-              class=""
+              :class="appendClass(action.class)"
               small
             >
               <v-tooltip activator="parent" location="top">Tooltip</v-tooltip>

@@ -10,6 +10,7 @@ import { useRoute } from 'vue-router/composables'
 import { getList } from '@/api/selects'
 import _ from 'lodash'
 import store from '@/store'
+import form from '@/store/modules/form'
 
 export default {
   name: 'autocomplete',
@@ -235,7 +236,19 @@ export default {
             })
         : false
     })
-
+    const appendClass = (classes) => {
+      return classes.reduce((acc, el) => {
+        console.log(typeof el)
+        if (typeof el === 'string') {
+          acc.push(el)
+        } else if (typeof el === 'function') {
+          console.log(el(props.formData))
+          acc.push(el(props.formData))
+        }
+        // acc.push(el)
+        return acc
+      }, [])
+    }
     const parentComp = getCurrentInstance().proxy.$parent.$parent
 
     //const styleChip = computed(() =>)
@@ -282,6 +295,7 @@ export default {
       parentComp,
       availableItems,
       proxyItems,
+      appendClass,
     }
   },
 }

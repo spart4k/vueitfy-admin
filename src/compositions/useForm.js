@@ -198,15 +198,17 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-      if (result.code === 1) {
+      console.log(action, 'refreshData')
+      const responseSuccess = (result) => {
+        return result?.code === 1 || result.result === 1 || result.success
+      }
+      if (responseSuccess(result)) {
         emit('closePopup')
         emit('getItems')
-      } else if (result.result === 1) {
-        emit('closePopup')
-        emit('getItems')
-      } else if (result.success) {
-        emit('closePopup')
-        emit('getItems')
+        if (action.refreshData) {
+          console.log('emit')
+          emit('refreshData')
+        }
       }
       if (action.handlingResponse) {
         handlingResponse(action, result)
@@ -475,7 +477,32 @@ export default function ({
     if (form.detail.type === 'popup') {
       let requestId = 'id'
       if (form.detail.requestId) requestId = form.detail.requestId
-
+      const sharedFields = form?.sharedFields
+      console.log(sharedFields)
+      if (sharedFields) {
+        sharedFields.fields.forEach((field) => {
+          sharedFields.target.fields.forEach((targetField) => {
+            // console.log(targetField.name, field.name)
+            if (Array.isArray(field.alias)) {
+              field.alias.forEach((el) => {
+                if (targetField.name === el) {
+                  targetField.value = formData[field.name]
+                }
+              })
+            } else {
+              if (targetField.name === field.alias) {
+                targetField.value = formData[field.name]
+                if (field.value) targetField.value = field.value
+                if (field.readonly === true) targetField.readonly = true
+              } else if (targetField.name === field.name) {
+                targetField.value = formData[field.name]
+                if (field.value) targetField.value = field.value
+                if (field.readonly === true) targetField.readonly = true
+              }
+            }
+          })
+        })
+      }
       router.push({
         name: action.action.name,
         // name: `${route.name}/:${requestId}`,
@@ -978,6 +1005,9 @@ export default function ({
       value = formData[el.field]
     } else if (!value && el.source === 'mode') {
       value = mode
+    } else if (el.source === 'formDataParent') {
+      console.log(JSON.stringify(formDataParent), props.formDataParent)
+      value = [formDataParent[el.field]]
     } else {
       value = el.value
     }
@@ -997,6 +1027,12 @@ export default function ({
       acc.push({
         alias: el.alias ?? el.field,
         value: [store.state.formStorage.id],
+        type: el.type,
+      })
+    } else if (el.source === 'formDataParent') {
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [formDataParent[el.field]],
         type: el.type,
       })
     } else if (

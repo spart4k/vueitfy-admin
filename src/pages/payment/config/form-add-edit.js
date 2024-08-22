@@ -22,7 +22,9 @@ import {
   isOKK,
   isRG,
   isROKK,
+  isVertical,
 } from '@/utils/permissions'
+import formChangePersonal from './form-change-personal.js'
 
 const isMagnit = (ctx) => {
   return ctx.formData.direction_id === 2 && ctx.formData.type === 2
@@ -174,7 +176,7 @@ export default {
                   },
                   {
                     field: 'personal_id',
-                    value: '',
+                    alias: 'personal_id',
                     // source: '+route.params.id',
                     type: 'num',
                     routeKey: 'id',
@@ -232,7 +234,7 @@ export default {
                   },
                   {
                     field: 'personal_id',
-                    value: '',
+                    alias: 'personal_id',
                     // source: '+route.params.id',
                     routeKey: 'id',
                     type: 'num',
@@ -255,7 +257,7 @@ export default {
               },
               {
                 field: 'personal_id',
-                value: '',
+                alias: 'personal_id',
                 // source: '+route.params.id',
                 routeKey: 'id',
                 type: 'num',
@@ -320,6 +322,7 @@ export default {
           }),
         ],
       },
+      formChangePersonal,
     ],
   },
   //lists: [],
@@ -421,6 +424,7 @@ export default {
       filter: [
         {
           field: 'personal_id',
+          alias: 'personal_id',
           // alias: 'pb.id',
           value: '',
           source: 'formData',
@@ -1597,6 +1601,7 @@ export default {
           filter: [
             {
               field: 'personal_id',
+              alias: 'personal_id',
               // alias: 'pb.id',
               value: '',
               source: 'formData',
@@ -1660,6 +1665,32 @@ export default {
           // },
         ],
       },
+      appendAction: [
+        {
+          icon: '$IconAccoutSync',
+          label: 'Смешить линейщика',
+          class: [
+            (formData) => (formData.real_personal_id ? 'orange' : 'primary'),
+          ],
+          color: 'white',
+          action: {
+            type: 'changeUrl',
+            name: 'payment/:id/change-personal',
+          },
+          isShow: {
+            value: true,
+            condition: [
+              {
+                funcCondition: (context) =>
+                  [1, 2, 3].includes(context.formData.status_id) &&
+                  isVertical(context) &&
+                  context.formData.type === 1,
+                type: true,
+              },
+            ],
+          },
+        },
+      ],
     }),
     autocompleteField({
       label: 'Должность',
@@ -2206,6 +2237,7 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
+            if (!isMagnit(ctx)) return
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -2902,7 +2934,131 @@ export default {
         value: true,
       },
     }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_personal_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_personal_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_personal_bank_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_invoice',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_fio',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_bank_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
   ],
+  sharedFields: {
+    fields: [
+      {
+        name: 'real_personal_id',
+        alias: 'personal_id',
+      },
+      {
+        name: 'vid_vedomost_id',
+      },
+      {
+        name: 'real_personal_bank_id',
+        alias: 'personal_bank_id',
+      },
+      {
+        name: 'real_invoice',
+        alias: 'invoice',
+      },
+      {
+        name: 'real_fio',
+        alias: 'fio',
+      },
+      {
+        name: 'real_bank_id',
+        alias: 'bank_id',
+      },
+    ],
+    target: formChangePersonal,
+  },
   actions: [
     stringAction({
       text: 'Закрыть',
