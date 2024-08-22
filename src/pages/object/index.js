@@ -1,4 +1,5 @@
 import filters from './filters'
+import filtersTarif from './filtersTarif'
 import { required } from '@/utils/validation.js'
 import _ from 'lodash'
 import {
@@ -681,7 +682,7 @@ export const config = {
           ],
           isShow: true,
           width: '90',
-          alias: 'o.address',
+          alias: 'd.name',
           value: 'doljnost_name',
           search: {
             field: '',
@@ -706,7 +707,7 @@ export const config = {
           ],
           isShow: true,
           width: '150',
-          alias: 'd.name',
+          alias: 'op.price',
           value: 'price',
           search: {
             field: '',
@@ -732,7 +733,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'category',
-          alias: 'o.tel_director',
+          alias: 'op.category',
           search: {
             field: '',
             isShow: true,
@@ -757,7 +758,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'date_active_s',
-          alias: 'o.square',
+          alias: 'op.date_active_s',
           search: {
             field: '',
             isShow: true,
@@ -782,7 +783,7 @@ export const config = {
           isShow: true,
           width: '150',
           value: 'date_active_po',
-          alias: 'o.square',
+          alias: 'op.date_active_po',
           search: {
             field: '',
             isShow: true,
@@ -808,7 +809,7 @@ export const config = {
         tabs: [formObjectTarif],
         activeTab: null,
       },
-      filters: null,
+      filters: _.cloneDeep(filtersTarif),
     },
   ],
 }

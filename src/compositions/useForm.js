@@ -1001,10 +1001,12 @@ export default function ({
         type: el.type,
       })
     } else if (
-      !el.sendEmpty &&
-      value !== null &&
-      value !== '' &&
-      value !== undefined
+      (!el.sendEmpty &&
+        !Array.isArray(value) &&
+        value !== null &&
+        value !== '' &&
+        value !== undefined) ||
+      (Array.isArray(value) && value.length)
     ) {
       if (moment(value, 'YYYY.MM', true).isValid())
         value = moment(value, 'YYYY.MM').format('YYYY-MM')
@@ -1019,12 +1021,6 @@ export default function ({
       acc.push({
         alias: el.alias ?? el.field,
         value: el.value,
-        type: el.type,
-      })
-    } else {
-      acc.push({
-        alias: el.alias ?? el.field,
-        value: [],
         type: el.type,
       })
     }
@@ -1052,6 +1048,7 @@ export default function ({
       // console.log(list, 'LISTLIST')
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
+
       const element = {
         alias: list.alias,
         filter,
