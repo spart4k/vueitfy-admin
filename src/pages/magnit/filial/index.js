@@ -77,7 +77,57 @@ const config = {
       },
     },
     {
-      title: 'Часы',
+      title: 'Часы план',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'hour_plan',
+      alias: 'IF(r.hour_plan IS NULL, 0, r.hour_plan)',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Часы факт',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'hour_fact',
+      alias: 'IF(r.hour_fact IS NULL, 0, r.hour_fact)',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
+      title: 'Часы после вычета',
       type: 'default',
       align: 'center',
       fixed: {
