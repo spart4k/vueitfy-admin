@@ -207,9 +207,6 @@ $tableFooterHeight: 100px;
     }
     &-wrap {
       min-height: 110px;
-      &::-webkit-scrollbar {
-        display: none;
-      }
       min-height: 110px;
       display: flex;
       // flex: 1;
