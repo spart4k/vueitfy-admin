@@ -403,23 +403,6 @@ export default {
       ],
     },
     {
-      alias: 'doljnost_payment_id',
-      filter: [
-        {
-          field: 'direction_id',
-          // alias: 'pb.id',
-          source: 'formData',
-          type: 'num',
-        },
-        {
-          field: 'type_id',
-          // alias: 'pb.id',
-          source: 'formData',
-          type: 'num',
-        },
-      ],
-    },
-    {
       alias: 'personal_bank_id',
       filter: [
         {
@@ -1189,6 +1172,18 @@ export default {
           },
           //url: 'object_id/avatar_with_user_key_id',
         },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'doljnost_id',
+          // filter: [
+          //   {
+          //     field: 'direction_id',
+          //     value: '',
+          //   },
+          // ],
+          url: 'get/pagination_list/doljnost_payment_id',
+        },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -1255,25 +1250,6 @@ export default {
           },
         ],
       },
-      updateList: [
-        {
-          alias: 'doljnost_payment_id',
-          filter: [
-            {
-              field: 'direction_id',
-              // alias: 'pb.id',
-              source: 'formData',
-              type: 'num',
-            },
-            {
-              field: 'type_id',
-              // alias: 'pb.id',
-              source: 'formData',
-              type: 'num',
-            },
-          ],
-        },
-      ],
     }),
     autocompleteField({
       label: 'Объект',
@@ -1385,6 +1361,18 @@ export default {
             }
           },
         },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'doljnost_id',
+          // filter: [
+          //   {
+          //     field: 'direction_id',
+          //     value: '',
+          //   },
+          // ],
+          url: 'get/pagination_list/doljnost_payment_id',
+        },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -1478,23 +1466,6 @@ export default {
             {
               alias: 'mode',
               source: 'mode',
-              type: 'num',
-            },
-          ],
-        },
-        {
-          alias: 'doljnost_payment_id',
-          filter: [
-            {
-              field: 'direction_id',
-              // alias: 'pb.id',
-              source: 'formData',
-              type: 'num',
-            },
-            {
-              field: 'type_id',
-              // alias: 'pb.id',
-              source: 'formData',
               type: 'num',
             },
           ],
