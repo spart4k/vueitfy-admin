@@ -88,6 +88,10 @@ export default {
       })
     })
 
+    formLoad.fields[0].name = 'path'
+    formLoad.fields[0].options.folder = 'tmp'
+    formLoad.fields[0].options.name = '`tmp_tarif`'
+    formLoad.actions[1].url = 'parser/object_price/xls/list'
     config.tabs[3].detail.tabs.push(formLoad)
     return {
       config,

@@ -49,7 +49,6 @@ export const config = {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'payment',
       skipValidation: true,
     }),
     stringAction({

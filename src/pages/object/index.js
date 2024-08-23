@@ -637,7 +637,7 @@ export const config = {
             backgroundColor: '#ffffff',
           },
           {
-            label: 'Выгрузка',
+            label: 'Выгрузить тариф',
             class: ['v-table-button--custom'],
             url: '$IconSetting',
             backgroundColor: '#fff',
@@ -645,7 +645,7 @@ export const config = {
             requestUrl: 'report/object_price/xls/list',
           },
           {
-            label: 'Загрузка',
+            label: 'Загрузить тариф',
             class: ['v-table-button--custom'],
             backgroundColor: '#fff',
             type: 'changeUrl',
