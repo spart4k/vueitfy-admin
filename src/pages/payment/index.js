@@ -68,7 +68,7 @@ const config = {
         url: '$IconSetting',
         backgroundColor: '#fff',
         type: 'sendPage',
-        requestPage: 'payment',
+        requestUrl: 'accounting/payment/export',
         isShow: {
           condition: [
             {

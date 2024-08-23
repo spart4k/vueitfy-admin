@@ -39,6 +39,7 @@
                 :disabled="
                   button.type === 'selectedItems' && !lastSelected.items.length
                 "
+                :loading="button.loading"
                 small
               >
                 <v-icon

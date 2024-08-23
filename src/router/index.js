@@ -779,6 +779,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'object-load',
+        path: '/object/load',
+        meta: {
+          mode: ['load'],
+          label: 'Смена тарифа',
+        },
+        component: Detail,
+      },
+      {
         name: 'object/:id',
         path: ':id',
         meta: {
