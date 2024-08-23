@@ -1710,6 +1710,7 @@ export default {
     autocompleteField({
       label: 'Должность',
       name: 'doljnost_id',
+      alias: 'doljnost_payment_id',
       subtype: 'single',
       placeholder: '',
       class: ['noWrap'],
