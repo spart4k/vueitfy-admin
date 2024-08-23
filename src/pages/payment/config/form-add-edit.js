@@ -1669,6 +1669,7 @@ export default {
         {
           icon: '$IconAccoutSync',
           label: 'Смешить линейщика',
+          notReadonly: true,
           class: [
             (formData) => (formData.real_personal_id ? 'orange' : 'primary'),
           ],
@@ -1681,10 +1682,24 @@ export default {
             value: true,
             condition: [
               {
-                funcCondition: (context) =>
-                  [1, 2, 3].includes(context.formData.status_id) &&
-                  isVertical(context) &&
-                  context.formData.type === 1,
+                funcCondition: (context) => {
+                  console.log(context, 'context')
+                  if (!context.environment.readonlyAll) {
+                    return !!(
+                      [1, 2, 3].includes(context.formData.status_id) &&
+                      isVertical(context) &&
+                      isX5(context)
+                    )
+                  } else {
+                    console.log(
+                      'must show',
+                      isX5(context) && context.formData.real_personal_id
+                    )
+                    return !!(
+                      isX5(context) && context.formData.real_personal_id
+                    )
+                  }
+                },
                 type: true,
               },
             ],
