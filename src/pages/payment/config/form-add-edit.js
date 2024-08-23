@@ -1710,6 +1710,7 @@ export default {
     autocompleteField({
       label: 'Должность',
       name: 'doljnost_id',
+      alias: 'doljnost_payment_id',
       subtype: 'single',
       placeholder: '',
       class: ['noWrap'],
@@ -2334,6 +2335,7 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
+            console.log(ctx.formData.hour * ctx.formData.object_price)
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
           },
         },
