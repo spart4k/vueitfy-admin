@@ -32,6 +32,7 @@ import store from '@/store'
 import { ref, computed, onMounted } from 'vue'
 import _ from 'lodash'
 import { config as objectConfig } from '@/pages/object/index'
+import { config as formLoadOrig } from '@/pages/payment/config/form-load.js'
 import useView from '@/compositions/useView.js'
 // import TableFixed from '@/components/Table/fixed/index.vue'
 
@@ -52,6 +53,7 @@ export default {
   },
   setup() {
     const config = _.cloneDeep(objectConfig)
+    const formLoad = _.cloneDeep(formLoadOrig)
     const activeTab = ref(0)
     const tabs = ref([])
     useView({
@@ -85,6 +87,12 @@ export default {
         }
       })
     })
+
+    formLoad.fields[0].name = 'path'
+    formLoad.fields[0].options.folder = 'tmp'
+    formLoad.fields[0].options.name = '`tmp_tarif`'
+    formLoad.actions[1].url = 'parser/object_price/xls/list'
+    config.tabs[3].detail.tabs.push(formLoad)
     return {
       config,
       activeTab,

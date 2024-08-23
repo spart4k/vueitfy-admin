@@ -636,6 +636,21 @@ export const config = {
             type: 'changeUrl',
             backgroundColor: '#ffffff',
           },
+          {
+            label: 'Выгрузить тариф',
+            class: ['v-table-button--custom'],
+            url: '$IconSetting',
+            backgroundColor: '#fff',
+            type: 'sendPage',
+            requestUrl: 'report/object_price/xls/list',
+          },
+          {
+            label: 'Загрузить тариф',
+            class: ['v-table-button--custom'],
+            backgroundColor: '#fff',
+            type: 'changeUrl',
+            url: 'object-load',
+          },
         ],
       },
       head: [

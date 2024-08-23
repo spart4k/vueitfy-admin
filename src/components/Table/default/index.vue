@@ -41,6 +41,7 @@
                   button.type === 'selectedItems' && !lastSelected.items.length
                 "
                 :name="`btn_${button.label}`"
+                :loading="button.loading"
                 small
               >
                 <v-icon
