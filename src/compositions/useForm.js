@@ -1912,11 +1912,9 @@ export default function ({
                   let formField
                   if (el.source) formField = eval(el.source)
                   else formField = formData[el.field]
-                  if (formField) {
-                    if (Array.isArray(formField))
-                      result = formField.includes(ai)
-                    else result = [formField].includes(ai)
-                  }
+
+                  if (Array.isArray(formField)) result = formField.includes(ai)
+                  else result = [formField].includes(ai)
                 }
                 return result
               })
