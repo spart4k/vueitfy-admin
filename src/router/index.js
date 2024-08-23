@@ -970,7 +970,7 @@ const routes = [
         path: '/object/load',
         meta: {
           mode: ['load'],
-          label: 'Смена тарифа',
+          label: 'Загрузить тариф',
         },
         component: Detail,
       },
