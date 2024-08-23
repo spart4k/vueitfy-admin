@@ -261,6 +261,31 @@ const config = {
       },
     },
     {
+      title: 'Часы(план)',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'hour_plan',
+      alias: 'p.hour_plan',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
+    {
       title: 'Часы(факт)',
       type: 'default',
       align: 'center',
@@ -372,6 +397,31 @@ const config = {
           },
         },
       ],
+    },
+    {
+      title: 'Комментарий',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'comment',
+      alias: 'srm.note',
+      search: {
+        field: '',
+        isShow: true,
+      },
     },
   ],
   data: {
