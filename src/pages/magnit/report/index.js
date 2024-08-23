@@ -24,6 +24,14 @@ const config = {
         backgroundColor: '#ffffff',
       },
       buttonArchive,
+      {
+        label: 'Отчет',
+        class: ['v-table-button--custom'],
+        url: '$IconSetting',
+        backgroundColor: '#fff',
+        type: 'sendPage',
+        requestUrl: 'report/magnit/revise',
+      },
     ],
   },
   head: [
