@@ -702,8 +702,9 @@ const table = {
             searchColumns.push(el)
           }
         })
+        Vue.set(button, 'loading', true)
         const path = await store.dispatch('table/sendPage', {
-          page: button.requestPage,
+          url: button.requestUrl,
           content: {
             searchGlobal: paramsQuery.value.searchGlobal,
             filter: filtersColumns.value,
@@ -713,13 +714,8 @@ const table = {
             currentPage: paramsQuery.value.currentPage,
           },
         })
-        const link = document.createElement('a')
-        link.download = path.url
-        link.setAttribute('target', '_blank')
-        link.href = process.env.VUE_APP_STORE + path.url
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+        button.loading = false
+        Vue.downloadFile(path.url)
         getItems()
       } else if (type === 'changeComp') {
         emit('changeComp')

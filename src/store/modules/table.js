@@ -48,7 +48,7 @@ const auth = {
       const body = {
         data: data.content,
       }
-      const result = await sendPage(data.page, body)
+      const result = await sendPage(data.url, body)
       return result
     },
     async sendHyu(_, data) {
