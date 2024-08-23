@@ -943,6 +943,8 @@ export default function ({
         if (!formDataNames.includes(fieldAliases[el.alias])) {
           formDataNames.push(fieldAliases[el.alias])
         }
+        console.log(fields, fieldAliases, el.alias, fieldAliases[el.alias])
+        console.log(fields[fieldAliases])
         if (
           fields[fieldAliases[el.alias]].hasOwnProperty('updateList') ||
           fields[fieldAliases[el.alias]].hasOwnProperty('dependence')
