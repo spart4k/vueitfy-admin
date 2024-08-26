@@ -121,18 +121,6 @@ const minFileLength = {
   $message: () => 'Необходимо приложить минимум 1 счет',
 }
 
-const dateRange = (dateFrom, dateTo) => {
-  return {
-    $validator: (val, formData) => {
-      return (
-        moment(formData[dateFrom], 'YYYY.MM.DD').valueOf() <=
-        moment(formData[dateTo], 'YYYY.MM.DD').valueOf()
-      )
-    },
-    $message: () => 'Неверно указан период',
-  }
-}
-
 const requiredFile = {
   $validator: (val, formData) => {
     if (formData.status === 1 && !val) {
@@ -144,6 +132,18 @@ const requiredFile = {
     }
   },
   $message: () => 'Необходимо приложить минимум 1 счет',
+}
+
+const dateRange = (dateFrom, dateTo) => {
+  return {
+    $validator: (val, formData) => {
+      return (
+        moment(formData[dateFrom], 'YYYY.MM.DD').valueOf() <=
+        moment(formData[dateTo], 'YYYY.MM.DD').valueOf()
+      )
+    },
+    $message: () => 'Неверно указан период',
+  }
 }
 
 const sameAs = (value) => ({
@@ -203,9 +203,9 @@ export {
   maxLength,
   dayOfMonth,
   minFileLength,
-  dateRange,
   notValue,
   interval,
   requiredFile,
+  dateRange,
   // strongPassword
 }

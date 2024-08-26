@@ -209,40 +209,18 @@ export default {
         value: false,
         condition: [
           {
-            target: 'formData',
-            field: 'status_id',
-            value: [2, 3, 6],
-            type: true,
-          },
-          {
-            permissions: [8, 17],
-            type: true,
-          },
-          // {
-          //   funcCondition: (context) =>
-          //     context.formData.account_id !== context.store.state.user.id &&
-          //     (context.formData.status_id === 2 ||
-          //       context.formData.status_id === 1 ||
-          //       context.formData.status_id === 3) &&
-          //     context.mode === 'edit',
-          //   type: true,
-          // },
-          {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              [1, 5].includes(context.originalData.vid_vedomost_id) &&
-              context.mode === 'edit',
-            type: true,
-          },
-          {
             funcCondition: (context) =>
               context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              console.log(
+                context.formData.readonly,
+                'context.formData.readonly'
+              )
+              return !!context.formData.readonly
+            },
             type: true,
           },
           // {
@@ -361,6 +339,27 @@ export default {
           ],
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
+          {
+            funcCondition: (context) => {
+              return !!context.formData.readonly
+            },
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
+        ],
+      },
     }),
     stringField({
       label: 'Р/С',
@@ -483,6 +482,27 @@ export default {
           type: 'num',
         },
       ],
+      readonly: {
+        value: false,
+        condition: [
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
+          {
+            funcCondition: (context) => {
+              return !!context.formData.readonly
+            },
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
+        ],
+      },
       // hiding: {
       //   conditions: [
       //     // {
@@ -516,6 +536,24 @@ export default {
     stringField({
       label: 'Должность',
       name: 'bank_id',
+      requestKey: 'real_bank_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      value: 0,
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'Должность',
+      name: 'readonly',
       requestKey: 'real_bank_id',
       placeholder: '',
       readonly: true,
@@ -571,6 +609,18 @@ export default {
           text: 'Не найдено начисление с данным id',
           color: 'error',
         },
+      },
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return !!context.formData.readonly
+            },
+            type: true,
+          },
+        ],
       },
     }),
 
