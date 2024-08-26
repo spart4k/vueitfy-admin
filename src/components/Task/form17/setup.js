@@ -146,11 +146,14 @@ const Form17 = defineComponent({
               task_id: data.task.id,
               parent_action: data.task.id,
               personal_target_id: data.entity.id,
-              file_output: fileName,
+              object_id: data.entity.object_id,
+              service_id: services_spr[data.entity.doljnost_id],
+              date_target: data.entity.date_target,
               have_price: data.entity.direction_id !== 7,
               constructed: data.entity.direction_id === 7,
-              object_id: data.entity.object_id,
-              date_target: data.entity.date_target,
+              doljnost_id: JSON.parse(data.task.dop_data).doljnost_id
+                ? JSON.parse(data.task.dop_data).doljnost_id
+                : data.entity.doljnost_id,
             },
           })
         },
@@ -416,6 +419,10 @@ const Form17 = defineComponent({
             })
           },
         })
+        console.log(
+          JSON.parse(data.task.dop_data).doljnost_id,
+          data.entity.doljnost_id
+        )
         await setPersonalTarget()
         result = await changeStatus()
       }
