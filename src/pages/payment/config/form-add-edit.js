@@ -2244,6 +2244,7 @@ export default {
           init: true,
           type: 'custom',
           func: async (ctx) => {
+            console.log('CUSTOM HOUR')
             if (!isMagnit(ctx) || isLogistik(ctx)) return
             const body = {
               data: {
@@ -2340,6 +2341,7 @@ export default {
           type: 'custom',
           init: true,
           func: async (ctx) => {
+            console.log('CUSTOM DEP')
             if (isLogistik(ctx)) return
             console.log(ctx.formData.hour * ctx.formData.object_price)
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
@@ -2547,7 +2549,6 @@ export default {
     selectField({
       label: 'Банки.карта/нал',
       name: 'personal_bank_id',
-      alias: 'real_personal_bank_id',
       placeholder: '',
       class: ['noWrap'],
       selectOption: {
@@ -2600,14 +2601,14 @@ export default {
           fio: '',
         },
       ],
-      hideOption: [
-        {
-          target: 'vid_vedomost_id',
-          targetValue: [1],
-          value: [0],
-          type: true,
-        },
-      ],
+      // hideOption: [
+      //   {
+      //     target: 'vid_vedomost_id',
+      //     targetValue: [1],
+      //     value: [0],
+      //     type: true,
+      //   },
+      // ],
       validations: { required, onlyCard },
       bootstrapClass: [''],
       dependence: [
