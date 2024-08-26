@@ -1335,6 +1335,7 @@ export default {
         },
         {
           //fields: ['statement_card', 'cardowner'],
+          init: true,
           type: 'custom',
           func: async (ctx) => {
             const body = {
@@ -1789,6 +1790,7 @@ export default {
       dependence: [
         {
           //fields: ['statement_card', 'cardowner'],
+          init: true,
           type: 'custom',
           func: async (ctx) => {
             const body = {
@@ -2115,6 +2117,7 @@ export default {
       dependence: [
         {
           //fields: ['statement_card', 'cardowner'],
+          init: true,
           type: 'custom',
           func: async (ctx) => {
             const body = {
@@ -2217,6 +2220,7 @@ export default {
       dependence: [
         {
           //fields: ['statement_card', 'cardowner'],
+          init: true,
           type: 'custom',
           func: async (ctx) => {
             if (!isMagnit(ctx)) return
@@ -2300,6 +2304,7 @@ export default {
         {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
+          init: true,
           func: async (ctx) => {
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
           },
@@ -2888,6 +2893,7 @@ export default {
       dependence: [
         {
           type: 'api',
+          init: true,
           module: 'selects/getListUpdate',
           field: 'doljnost_id',
           // filter: [

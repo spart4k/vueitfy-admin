@@ -1069,7 +1069,7 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
-      if (dependence.isChange && params.init) return
+      if (params.init && !dependence.init) return
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -1695,9 +1695,10 @@ export default function ({
       }
       originalData.value = _.cloneDeep(formData)
     }
+
     const loadWithDeps = async () => {
       form?.fields.forEach(async (el) => {
-        if (el.hasOwnProperty('dependence')) {
+        if (el.dependence?.some((item) => item.init)) {
           await getDependies({
             field: el,
             value: formData[el.name],
