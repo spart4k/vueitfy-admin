@@ -1,35 +1,25 @@
 import filters from './filters'
-import formPaymentOutput from './config/form-payment-output.js'
 
 function changeSort(config) {
-  let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
   let heading = config.head.find((x) => x.changeable)
-  if (btn.typeLabel === 'Объекты') {
-    btn.typeLabel = 'ФИО'
+  if (heading.title === 'Линейщик') {
     heading.title = 'Объект'
     heading.alias = 'o.name'
     heading.value = 'object_name'
-    heading.routeName = 'pivot_payment-object'
+    heading.routeName = 'magnit_pivot-object'
     heading.routeParam = 'object_id'
-    // heading.click = {
-    //   condition: {
-    //     permissions: [12, 22],
-    //     type: false,
-    //   },
-    // }
     heading.click = undefined
     heading.type = 'default'
-    config.options.url = 'get/pagination_pivot/payment_object_retail'
-  } else if (btn.typeLabel === 'ФИО') {
-    btn.typeLabel = 'Объекты'
-    heading.title = 'ФИО'
+    config.options.url = 'get/pagination_pivot/request_magnit_object'
+  } else if (heading.title === 'Объект') {
+    heading.title = 'Линейщик'
     heading.alias = "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)"
-    heading.value = 'fio'
-    heading.routeName = 'pivot_payment-personal'
+    heading.value = 'personal_name'
+    heading.routeName = 'magnit_pivot-personal'
     heading.routeParam = 'personal_id'
     heading.click = undefined
     heading.type = 'default'
-    config.options.url = 'get/pagination_pivot/payment_personal_retail'
+    config.options.url = 'get/pagination_pivot/request_magnit_personal'
   }
 }
 
@@ -37,13 +27,16 @@ export const config = {
   selector: '#mainTable',
   options: {
     selecting: true,
-    search: {},
+    search: {
+      function: null,
+    },
     headerFixed: true,
     //url: 'https://dummyjson.com/users',
-    url: 'get/pagination_pivot/payment_personal_retail',
-    title: 'This is an about page1',
+    url: 'get/pagination_pivot/request_magnit_personal',
+    title: 'Отработанные',
     doubleHandlerType: 'cell',
   },
+  type: 'TableFixed',
   panel: {
     buttons: [
       {
@@ -63,21 +56,6 @@ export const config = {
         type: 'refresh',
         subtype: 'changeHeads',
       },
-      {
-        label: 'Парсер Х5',
-        class: ['v-table-button--custom'],
-        url: 'pivot_payment-output',
-        type: 'changeUrl',
-        backgroundColor: '#fff',
-        isShow: {
-          condition: [
-            {
-              permissions: [3, 4, 8, 17],
-              type: true,
-            },
-          ],
-        },
-      },
     ],
     filters: true,
     search: true,
@@ -87,36 +65,6 @@ export const config = {
   head: [
     {
       id: 1,
-      title: 'ФИО',
-      align: 'center',
-      type: 'default',
-      isShow: true,
-      width: '200',
-      alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
-      value: 'fio',
-      changeable: true,
-      fixed: {
-        value: true,
-        position: 'left',
-      },
-      search: {
-        field: '',
-        isShow: true,
-      },
-      sorts: [
-        {
-          type: 'string',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      click: undefined,
-      routeParam: 'personal_id',
-      routeName: 'pivot_payment-personal',
-    },
-    {
-      id: 2,
       title: 'Менеджер',
       align: 'center',
       type: 'default',
@@ -141,7 +89,36 @@ export const config = {
         },
       ],
       routeParam: 'account_id',
-      routeName: 'pivot_payment-account',
+      routeName: 'magnit_pivot-account',
+    },
+    {
+      id: 2,
+      title: 'Линейщик',
+      align: 'center',
+      type: 'default',
+      isShow: true,
+      width: '200',
+      alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+      value: 'personal_name',
+      changeable: true,
+      fixed: {
+        value: true,
+        position: 'left',
+      },
+      search: {
+        field: '',
+        isShow: true,
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      routeParam: 'personal_id',
+      routeName: 'magnit_pivot-personal',
     },
   ],
   data: {
@@ -159,9 +136,9 @@ export const config = {
     method: 'get',
     alias: 'personal',
     url: '/get/form/',
-    name: 'Табель розница',
+    name: '',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-    tabs: [formPaymentOutput],
+    tabs: [],
     activeTab: null,
   },
   filters,

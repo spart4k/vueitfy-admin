@@ -23,6 +23,8 @@ export default {
     { alias: 'bank_id', filter: [] },
     { alias: 'bank_id', filter: [] },
     { alias: 'doljnost_id', filter: [] },
+    { alias: 'object_type', filter: [] },
+    { alias: 'object_subtype', filter: [] },
   ],
   actions: [
     stringAction({
@@ -203,6 +205,19 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.direction_id',
+      updateList: [
+        {
+          alias: 'object_type',
+          filter: [
+            {
+              field: 'direction_json',
+              value: '',
+              source: 'formData',
+              type: 'array',
+            },
+          ],
+        },
+      ],
       // dependence: [
       //   {
       //     type: 'api',
@@ -297,6 +312,57 @@ export default {
       //   //   url: 'get/pagination_list/object',
       //   // },
       // ],
+    }),
+    selectField({
+      label: 'Тип',
+      name: 'object_type',
+      typeFilter: 'select',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'o.type',
+      updateList: [
+        {
+          alias: 'object_subtype',
+          filter: [
+            {
+              field: 'object_type',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+      ],
+    }),
+    selectField({
+      label: 'Подтип',
+      name: 'object_subtype',
+      typeFilter: 'select',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'o.subtype',
     }),
     autocompleteField({
       label: 'Персонал',

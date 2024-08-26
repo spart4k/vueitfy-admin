@@ -9,8 +9,83 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, hasDate, hasTime } from '@/utils/validation.js'
+import { required, notValue, interval } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
+import moment from 'moment'
+import text from '@/components/Mails/letter/text/setup'
+import {
+  isAllBug,
+  isCUP,
+  isDBA,
+  isDirector,
+  isManager,
+  isOKK,
+  isRG,
+  isROKK,
+  isVertical,
+} from '@/utils/permissions'
+import formChangePersonal from './form-change-personal.js'
+
+const isMagnit = (ctx) => {
+  return ctx.formData.direction_id === 2 && ctx.formData.type === 2
+}
+
+const isX5 = (ctx) => {
+  return ctx.formData.direction_id === 2 && ctx.formData.type === 1
+}
+
+const isLogistik = (ctx) => {
+  return ctx.formData.direction_id === 1
+}
+
+const conditionLogistik = (context) => {
+  return (
+    [1, 6, 7].includes(context.formData.direction_id) &&
+    context.formData.account_id !== context.store.state.user.id &&
+    (context.formData.status_id === 1 ||
+      context.formData.status_id === 3 ||
+      ((context.store.state.user.permission_id === 12 ||
+        context.store.state.user.permission_id === 22) &&
+        context.originalData?.status_id === 4)) &&
+    context.mode === 'edit'
+  )
+}
+const conditionX5 = (context) => {
+  return !(
+    context.formData.direction_id === 2 &&
+    context.store.state.user.permission_id === 1 &&
+    context.formData.status_id === 1 &&
+    context.formData.bank_id === 1 &&
+    context.mode === 'edit'
+  )
+}
+
+const statusReject = (context) => {
+  return context.formData.status_id === 6 && context.mode === 'edit'
+}
+
+const ROKKdOKKLogistika = (context) => {
+  return (
+    [8, 17].includes(context.store.state.user.permission_id) &&
+    context.originalData.status_id !== 2 &&
+    [1, 6, 7].includes(context.formData.direction_id)
+  )
+}
+
+const ROKKdOKKRoznicd = (context) => {
+  return (
+    [8, 17].includes(context.store.state.user.permission_id) &&
+    context.originalData.status_id !== 2 &&
+    context.formData.direction_id === 2
+  )
+}
+
+const AvansEjednLogistik = (context) => {
+  return (
+    [1, 6, 7].includes(context.formData.direction_id) &&
+    [1, 5].includes(context.formData.vid_vedomost_id)
+  )
+}
 
 export default {
   id: uuidv4(),
@@ -101,7 +176,7 @@ export default {
                   },
                   {
                     field: 'personal_id',
-                    value: '',
+                    alias: 'personal_id',
                     // source: '+route.params.id',
                     type: 'num',
                     routeKey: 'id',
@@ -159,7 +234,7 @@ export default {
                   },
                   {
                     field: 'personal_id',
-                    value: '',
+                    alias: 'personal_id',
                     // source: '+route.params.id',
                     routeKey: 'id',
                     type: 'num',
@@ -182,7 +257,7 @@ export default {
               },
               {
                 field: 'personal_id',
-                value: '',
+                alias: 'personal_id',
                 // source: '+route.params.id',
                 routeKey: 'id',
                 type: 'num',
@@ -247,17 +322,73 @@ export default {
           }),
         ],
       },
+      formChangePersonal,
     ],
   },
   //lists: [],
   lists: [
     {
-      alias: 'vid_vedomost_id',
-      filter: [],
+      alias: 'payment_vid_vedomost_id',
+      filter: [
+        {
+          field: 'direction_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'type',
+          alias: 'type_object_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'date_target',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'personal_bank_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
     },
     {
-      alias: 'status_id',
-      filter: [],
+      alias: 'payment_status_id',
+      filter: [
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
+    },
+    {
+      alias: 'payment_direction_id',
+      filter: [
+        {
+          field: 'account_id',
+          // alias: 'account_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
     },
     {
       alias: 'payment_direction_id',
@@ -272,14 +403,11 @@ export default {
       ],
     },
     {
-      alias: 'doljnost_id',
-      filter: [],
-    },
-    {
       alias: 'personal_bank_id',
       filter: [
         {
           field: 'personal_id',
+          alias: 'personal_id',
           // alias: 'pb.id',
           value: '',
           source: 'formData',
@@ -295,10 +423,6 @@ export default {
       ],
     },
     {
-      alias: 'payment_account_id',
-      filter: [],
-    },
-    {
       alias: 'status_account_id',
       filter: [],
     },
@@ -309,6 +433,7 @@ export default {
     selectField({
       label: 'Статус',
       name: 'status_id',
+      alias: 'payment_status_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -323,49 +448,66 @@ export default {
       value: +1,
       validations: { required },
       bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) =>
-              (context.formData.account_id !== context.store.state.user.id &&
-                context.store.state.user.is_personal_vertical &&
-                (context.formData.status_id === 1 ||
-                  context.formData.status_id === 3)) ||
-              // Условия для показа поля РОКК и ОКК
-              ((context.store.state.user.permission_id === 8 ||
-                context.store.state.user.permission_id === 17) &&
-                (context.formData.status_id === 2 ||
-                  context.formData.status_id === 1 ||
-                  context.formData.status_id === 3)) ||
-              (context.store.state.user.permission_id === 4 &&
-                (context.formData.status_id === 2 ||
-                  context.formData.status_id === 1 ||
-                  context.formData.status_id === 3)) ||
-              ((context.store.state.user.permission_id === 12 ||
-                context.store.state.user.permission_id === 22) &&
-                context.originalData?.status_id === 4),
-            // asdasd
-            type: false,
-          },
-          {
-            funcCondition: (context) =>
-              context.formData.status_id === 1 &&
-              context.store.state.user.id === context.formData.manager_id &&
-              context.store.state.user.permission_id !== 4,
-            type: true,
-          },
-          // {
-          //   funcCondition: (context) =>
-          //     (context.store.state.user.permission_id === 8 ||
-          //       context.store.state.user.permission_id === 18) &&
-          //     (context.formData.status_id === 2 ||
-          //       context.formData.status_id === 1 ||
-          //       context.formData.status_id === 3),
-          //   type: false,
-          // },
-        ],
-      },
+      // readonly: {
+      //   value: false,
+      //   condition: [
+      //     {
+      //       funcCondition: (context) =>
+      //         (context.formData.account_id !== context.store.state.user.id &&
+      //           context.store.state.user.is_personal_vertical &&
+      //           (context.formData.status_id === 1 ||
+      //             context.formData.status_id === 3)) ||
+      //         // Условия для показа поля РОКК и ОКК
+      //         ((context.store.state.user.permission_id === 8 ||
+      //           context.store.state.user.permission_id === 17) &&
+      //           (context.formData.status_id === 2 ||
+      //             context.formData.status_id === 1 ||
+      //             context.formData.status_id === 3)) ||
+      //         (context.store.state.user.permission_id === 4 &&
+      //           (context.formData.status_id === 2 ||
+      //             context.formData.status_id === 1 ||
+      //             context.formData.status_id === 3)) ||
+      //         ((context.store.state.user.permission_id === 12 ||
+      //           context.store.state.user.permission_id === 22) &&
+      //           context.originalData?.status_id === 4),
+      //       // asdasd
+      //       type: false,
+      //     },
+      //     {
+      //       funcCondition: (context) =>
+      //         context.formData.status_id === 1 &&
+      //         context.store.state.user.id === context.formData.manager_id &&
+      //         context.store.state.user.permission_id !== 4,
+      //       type: true,
+      //     },
+      //     // {
+      //     //   funcCondition: (context) =>
+      //     //     (context.store.state.user.permission_id === 8 ||
+      //     //       context.store.state.user.permission_id === 18) &&
+      //     //     (context.formData.status_id === 2 ||
+      //     //       context.formData.status_id === 1 ||
+      //     //       context.formData.status_id === 3),
+      //     //   type: false,
+      //     // },
+      //     {
+      //       funcCondition: (context) => {
+      //         return AvansEjednLogistik(context)
+      //       },
+      //       type: true,
+      //     },
+      //     {
+      //       funcCondition: (context) => {
+      //         return (
+      //           context.mode === 'add' &&
+      //           context.formData.type === 2 &&
+      //           context.formData.direction_id === 2
+      //         )
+      //       },
+      //       type: true,
+      //     },
+      //   ],
+      // },
+      readonly: true,
       hiding: {
         conditions: [
           {
@@ -509,30 +651,192 @@ export default {
       bootstrapClass: [''],
       readonly: true,
     }),
-    dateField({
-      label: 'Дата назн',
-      name: 'date_target',
-      subtype: 'datetime',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 3,
-      },
-      // validations: { required },
-      bootstrapClass: [''],
-      readonly: true,
-      isShow: {
-        value: false,
-        conditions: [
-          {
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-          },
-        ],
-      },
-    }),
-    selectField({
+    // selectField({
+    //   label: 'Менеджер',
+    //   name: 'account_id',
+    //   alias: 'payment_account_id',
+    //   subtype: 'single',
+    //   placeholder: '',
+    //   class: ['noWrap'],
+    //   selectOption: {
+    //     text: 'name',
+    //     value: 'id',
+    //   },
+    //   items: [],
+    //   position: {
+    //     cols: 12,
+    //     // sm: 6,
+    //     // condition: []
+    //     sm: {
+    //       conditon: [
+    //         {
+    //           funcCondition: (context) =>
+    //             context.formData.vid_vedomost_id === 1,
+    //           value: {
+    //             true: 5,
+    //             false: 6,
+    //           },
+    //           // type: false,
+    //         },
+    //         {
+    //           funcCondition: (context) =>
+    //             context.formData.vid_vedomost_id === 5,
+    //           value: {
+    //             true: 5,
+    //             false: 6,
+    //           },
+    //           // type: false,
+    //         },
+    //         {
+    //           funcCondition: (context) =>
+    //             context.formData.vid_vedomost_id === 9,
+    //           value: {
+    //             true: 4,
+    //             false: 6,
+    //           },
+    //           // type: false,
+    //         },
+    //       ],
+    //       default: 4,
+    //     },
+    //   },
+    //   validations: { required },
+    //   bootstrapClass: [''],
+    //   updateList: [
+    //     {
+    //       alias: 'payment_direction_id',
+    //       filter: [
+    //         {
+    //           field: 'account_id',
+    //           // alias: 'account_id',
+    //           value: '',
+    //           source: 'formData',
+    //           type: 'num',
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   dependence: [
+    //     {
+    //       type: 'api',
+    //       module: 'selects/getListUpdate',
+    //       field: 'object_id',
+    //       //filter: [
+    //       //  {
+    //       //    field: 'direction_id',
+    //       //    value: '',
+    //       //  },
+    //       //],
+    //       url: 'get/pagination_list/payment_object_id',
+    //     },
+    //     {
+    //       type: 'api',
+    //       module: 'selects/getListUpdate',
+    //       field: 'personal_id',
+    //       //filter: [
+    //       //  {
+    //       //    field: 'direction_id',
+    //       //    value: '',
+    //       //  },
+    //       //],
+    //       condition: [
+    //         {
+    //           field: 'direction_id',
+    //           value: [2],
+    //         },
+    //       ],
+    //       url: 'get/pagination_list/personal_payment_id',
+    //     },
+    //     // {
+    //     //   type: 'api',
+    //     //   module: 'selects/getListUpdate',
+    //     //   field: 'object_id',
+    //     //   //filter: [
+    //     //   //  {
+    //     //   //    field: 'direction_id',
+    //     //   //    value: '',
+    //     //   //  },
+    //     //   //],
+    //     //   condition: [
+    //     //     {
+    //     //       field: 'direction_id',
+    //     //       value: [1],
+    //     //     },
+    //     //   ],
+    //     //   url: 'get/pagination_list/personal_payment_id',
+    //     // },
+    //   ],
+    //   readonly: {
+    //     value: false,
+    //     condition: [
+    //       // {
+    //       //   target: 'formData',
+    //       //   field: 'vid_vedomost_id',
+    //       //   value: [1, 5],
+    //       //   type: true,
+    //       // },
+    //       // {
+    //       //   permissions: [8, 17],
+    //       //   type: true,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     context.formData.account_id === context.store.state.user.id &&
+    //       //     (context.formData.status_id === 1 ||
+    //       //       context.formData.status_id === 3),
+    //       //   type: false,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     context.formData.account_id !== context.store.state.user.id &&
+    //       //     (context.formData.status_id === 1 ||
+    //       //       context.formData.status_id === 3 ||
+    //       //       ((context.store.state.user.permission_id === 12 ||
+    //       //         context.store.state.user.permission_id === 22) &&
+    //       //         context.originalData?.status_id === 4)) &&
+    //       //     context.mode === 'edit',
+    //       //   type: true,
+    //       // },
+    //       {
+    //         funcCondition: (context) => {
+    //           return (
+    //             context.formData.account_id !== context.store.state.user.id &&
+    //             (context.formData.status_id === 1 ||
+    //               context.formData.status_id === 3 ||
+    //               ((context.store.state.user.permission_id === 12 ||
+    //                 context.store.state.user.permission_id === 22) &&
+    //                 context.formData?.status_id === 4)) &&
+    //             context.mode === 'edit'
+    //           )
+    //         },
+    //         type: true,
+    //       },
+    //       {
+    //         funcCondition: (context) =>
+    //           context.formData.status_id === 6 && context.mode === 'edit',
+    //         type: true,
+    //       },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     context.formData.status_id === 6 && context.mode === 'edit',
+    //       //   type: true,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) =>
+    //       //     (context.store.state.user.id !== context.formData.manager_id ||
+    //       //       context.store.state.user.is_personal_vertical) &&
+    //       //     (context.formData.status_id === 1 ||
+    //       //       context.formData.status_id === 3),
+    //       //   type: false,
+    //       // },
+    //       // {
+    //       //   funcCondition: (context) => context.mode === 'add',
+    //       //   type: false,
+    //       // },
+    //     ],
+    //   },
+    // }),
+    autocompleteField({
       label: 'Менеджер',
       name: 'account_id',
       alias: 'payment_account_id',
@@ -544,6 +848,9 @@ export default {
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/account_payment_id',
       position: {
         cols: 12,
         // sm: 6,
@@ -626,7 +933,7 @@ export default {
               value: [2],
             },
           ],
-          url: 'get/pagination_list/personal',
+          url: 'get/pagination_list/personal_payment_id',
         },
         // {
         //   type: 'api',
@@ -644,7 +951,7 @@ export default {
         //       value: [1],
         //     },
         //   ],
-        //   url: 'get/pagination_list/payment_personal_id',
+        //   url: 'get/pagination_list/personal_payment_id',
         // },
       ],
       readonly: {
@@ -679,19 +986,38 @@ export default {
           //   type: true,
           // },
           {
-            funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                context.formData.account_id !== context.store.state.user.id &&
+                (context.formData.status_id === 1 ||
+                  context.formData.status_id === 3 ||
+                  ((context.store.state.user.permission_id === 12 ||
+                    context.store.state.user.permission_id === 22) &&
+                    context.formData?.status_id === 4)) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
           {
             funcCondition: (context) =>
               context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                [2, 3].includes(context.formData.status_id) &&
+                [3, 5, 1].includes(context.originalData.vid_vedomost_id)
+              )
+            },
             type: true,
           },
           // {
@@ -714,10 +1040,14 @@ export default {
         ],
       },
     }),
+
+    ///////
+
     selectField({
       label: 'Направление',
       name: 'direction_id',
       alias: 'payment_direction_id',
+
       placeholder: '',
       class: [''],
       selectOption: {
@@ -761,15 +1091,6 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      hiding: {
-        conditions: [
-          {
-            target: 'mode',
-            value: 'add',
-            values: [2],
-          },
-        ],
-      },
       dependence: [
         {
           type: 'api',
@@ -799,7 +1120,7 @@ export default {
               value: [2],
             },
           ],
-          url: 'get/pagination_list/personal',
+          url: 'get/pagination_list/personal_payment_id',
         },
         {
           //fields: ['statement_card', 'cardowner'],
@@ -851,6 +1172,18 @@ export default {
           },
           //url: 'object_id/avatar_with_user_key_id',
         },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'doljnost_id',
+          // filter: [
+          //   {
+          //     field: 'direction_id',
+          //     value: '',
+          //   },
+          // ],
+          url: 'get/pagination_list/doljnost_payment_id',
+        },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -867,7 +1200,7 @@ export default {
         //       value: [1],
         //     },
         //   ],
-        //   url: 'get/pagination_list/payment_personal_id',
+        //   url: 'get/pagination_list/personal_payment_id',
         // },
       ],
       requiredFields: ['account_id'],
@@ -907,6 +1240,12 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
             type: true,
           },
         ],
@@ -988,7 +1327,51 @@ export default {
           //     value: '',
           //   },
           // ],
-          url: 'get/pagination_list/payment_personal_id',
+          url: 'get/pagination_list/personal_payment_id',
+        },
+        {
+          type: 'default',
+          fillField: ['type'],
+        },
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                date_target: moment(
+                  ctx.formData.date_target,
+                  'YYYY.MM.DD'
+                ).format('YYYY-MM-DD'),
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'get/object/price',
+            })
+            if (code) {
+              ctx.formData.object_price = result.price
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+              ctx.formData.object_price_id = result.id
+            } else {
+              ctx.formData.object_price = 0
+              ctx.formData.object_price_id = 0
+            }
+          },
+        },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'doljnost_id',
+          // filter: [
+          //   {
+          //     field: 'direction_id',
+          //     value: '',
+          //   },
+          // ],
+          url: 'get/pagination_list/doljnost_payment_id',
         },
         // {
         //   type: 'api',
@@ -1034,6 +1417,12 @@ export default {
               context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id === context.store.state.user.id &&
@@ -1044,6 +1433,44 @@ export default {
           // },
         ],
       },
+      updateList: [
+        {
+          alias: 'payment_vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -1058,7 +1485,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/payment_personal_id',
+      url: 'get/pagination_list/personal_payment_id',
       position: {
         cols: 12,
         sm: {
@@ -1124,6 +1551,11 @@ export default {
           type: 'array',
           value: '',
         },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
       ],
       // dependence: [
       //   {
@@ -1140,6 +1572,7 @@ export default {
           filter: [
             {
               field: 'personal_id',
+              alias: 'personal_id',
               // alias: 'pb.id',
               value: '',
               source: 'formData',
@@ -1166,12 +1599,6 @@ export default {
             type: true,
           },
           {
-            target: 'formData',
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-            type: true,
-          },
-          {
             permissions: [8, 17],
             type: true,
           },
@@ -1186,12 +1613,14 @@ export default {
           // },
           {
             funcCondition: (context) =>
+              isLogistik(context) &&
               context.formData.account_id !== context.store.state.user.id &&
               (context.formData.status_id === 1 ||
                 context.formData.status_id === 3 ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
+              [1, 5].includes(context.originalData.vid_vedomost_id) &&
               context.mode === 'edit',
             type: true,
           },
@@ -1200,19 +1629,70 @@ export default {
               context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
         ],
       },
+      appendAction: [
+        {
+          icon: '$IconAccoutSync',
+          label: 'Смешить линейщика',
+          notReadonly: true,
+          class: [
+            (formData) => (formData.real_personal_id ? 'orange' : 'primary'),
+          ],
+          color: 'white',
+          action: {
+            type: 'changeUrl',
+            name: 'payment/:id/change-personal',
+          },
+          isShow: {
+            value: true,
+            condition: [
+              {
+                funcCondition: (context) => {
+                  console.log(context, 'context')
+                  if (!context.environment.readonlyAll) {
+                    return !!(
+                      [1, 2, 3].includes(context.formData.status_id) &&
+                      isVertical(context) &&
+                      isX5(context)
+                    )
+                  } else {
+                    console.log(
+                      'must show',
+                      isX5(context) && context.formData.real_personal_id
+                    )
+                    return !!(
+                      isX5(context) && context.formData.real_personal_id
+                    )
+                  }
+                },
+                type: true,
+              },
+            ],
+          },
+        },
+      ],
     }),
-    selectField({
+    autocompleteField({
       label: 'Должность',
       name: 'doljnost_id',
+      alias: 'doljnost_payment_id',
+      subtype: 'single',
       placeholder: '',
-      class: [''],
+      class: ['noWrap'],
       selectOption: {
         text: 'name',
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/doljnost_payment_id',
       position: {
         cols: 12,
         sm: {
@@ -1250,6 +1730,21 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
+      filter: [
+        {
+          field: 'direction_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+        {
+          field: 'type',
+          alias: 'type_id',
+          // source: 'formData',
+          type: 'array',
+          value: '',
+        },
+      ],
       readonly: {
         value: false,
         condition: [
@@ -1292,14 +1787,69 @@ export default {
         conditions: [
           {
             field: 'vid_vedomost_id',
-            value: [1, 5, 3],
+            value: [1, 5, 3, 10],
           },
         ],
       },
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                date_target: moment(
+                  ctx.formData.date_target,
+                  'YYYY.MM.DD'
+                ).format('YYYY-MM-DD'),
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'get/object/price',
+            })
+            if (code) {
+              ctx.formData.object_price = result.price
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+              ctx.formData.object_price_id = result.id
+            } else {
+              ctx.formData.object_price = 0
+              ctx.formData.object_price_id = 0
+            }
+          },
+        },
+      ],
+    }),
+    stringField({
+      label: 'Тариф',
+      name: 'object_price',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 3,
+      },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return isMagnit(ctx) || isX5(ctx)
+            },
+          },
+        ],
+      },
+      validations: { notValue: notValue({ value: 0, text: 'Тариф' }) },
     }),
     selectField({
       label: 'Вид ведомости',
       name: 'vid_vedomost_id',
+      alias: 'payment_vid_vedomost_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -1357,16 +1907,16 @@ export default {
       readonly: {
         value: false,
         condition: [
-          {
-            target: 'formData',
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-            type: true,
-          },
-          {
-            permissions: [8, 17],
-            type: true,
-          },
+          // {
+          //   funcCondition: (context) =>
+          //     [1, 6, 7].includes(context.formData.direction_id) &&
+          //     [1, 5].includes(context.formData.vid_vedomost_id),
+          //   type: true,
+          // },
+          // {
+          //   permissions: [8, 17],
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -1377,23 +1927,226 @@ export default {
           //   type: true,
           // },
           {
-            funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                conditionLogistik(context) ||
+                // conditionX5(context) ||
+                statusReject(context) ||
+                ROKKdOKKLogistika(context)
+                // (isX5(context) &&
+                //   [2, 3].includes(context.formData.status_id) &&
+                //   [3, 5, 1].includes(context.originalData.vid_vedomost_id))
+                // ROKKdOKKRoznicd(context)
+              )
+            },
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.direction_id === 2 &&
+          //     context.store.state.user.permission_id === 1 &&
+          //     context.formData.status_id === 1 &&
+          //     context.formData.bank_id === 1 &&
+          //     context.mode === 'edit',
+          //   type: false,
+          // },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
+        ],
+      },
+      // hideOption: [
+      //   {
+      //     target: 'type',
+      //     targetValue: [1],
+      //     value: [9],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (
+      //         ctx.mode === 'add' &&
+      //         ctx.formData.type === 1 &&
+      //         ctx.formData.direction_id === 2
+      //       ) {
+      //         return true
+      //       } else {
+      //         return false
+      //       }
+      //     },
+      //   },
+      //   {
+      //     target: 'type',
+      //     targetValue: [1],
+      //     value: [10],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (
+      //         ctx.mode === 'add' &&
+      //         ctx.formData.type === 1 &&
+      //         ctx.formData.direction_id === 2
+      //       ) {
+      //         return false
+      //       } else {
+      //         return true
+      //       }
+      //     },
+      //   },
+      //   {
+      //     value: [1, 3, 5, 8],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (ctx.mode === 'add') {
+      //         return true
+      //       } else {
+      //         return false
+      //       }
+      //     },
+      //   },
+      // ],
+      filter: [
+        {
+          field: 'direction_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'type',
+          alias: 'type_object_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'date_target',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'personal_bank_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
+      // hiding: {
+      //   conditions: [
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'type',
+      //     //   value: [1],
+      //     //   values: [10],
+      //     // },
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'status_id',
+      //     //   value: [4],
+      //     //   values: [4, 6],
+      //     // },
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'status_id',
+      //     //   permissions: [3, 15],
+      //     //   value: [1, 2, 3],
+      //     //   values: [1, 3],
+      //     // },
+      //     // {
+      //     //   funcCondition: (context) => {
+      //     //     context.formData.status_id === 1 && context.store.state.user.id === context.formData.status_account_id && context.store.state.permission_id !== 4
+      //     //   },
+      //     //   values: [1, 3],
+      //     // },
+      //   ],
+      // },
+    }),
+    dateField({
+      label: 'Дата назн',
+      name: 'date_target',
+      type: 'datetime',
+      subtype: 'datetime',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
           {
-            funcCondition: (context) =>
-              context.formData.status_id === 6 && context.mode === 'edit',
+            funcCondition: (context) => {
+              return isX5(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                [2, 3, 6].includes(context.formData.status_id) &&
+                [3, 5, 1].includes(context.originalData.vid_vedomost_id)
+              )
+            },
             type: true,
           },
         ],
       },
+      isShow: {
+        value: false,
+        type: 'some',
+        conditions: [
+          {
+            field: 'vid_vedomost_id',
+            value: [1, 5],
+          },
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return isMagnit(ctx) || isX5(ctx)
+            },
+          },
+        ],
+      },
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                date_target: moment(
+                  ctx.formData.date_target,
+                  'YYYY.MM.DD'
+                ).format('YYYY-MM-DD'),
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'get/object/price',
+            })
+            if (code) {
+              ctx.formData.object_price = result.price
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+              ctx.formData.object_price_id = result.id
+            } else {
+              ctx.formData.object_price = 0
+              ctx.formData.object_price_id = 0
+            }
+          },
+        },
+      ],
     }),
     //selectField({
     //  label: 'Статья расхода',
@@ -1428,45 +2181,137 @@ export default {
     //  validations: { required },
     //  bootstrapClass: [''],
     //}),
-    // stringField({
-    //   label: 'Часы (план)',
-    //   name: 'hour_plan',
-    //   placeholder: '',
-    //   readonly: true,
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы(факт)',
-    //   name: 'hour_fact',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы',
-    //   name: 'hour',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   validations: { required },
-    //   bootstrapClass: [''],
-    // }),
+    stringField({
+      label: 'Часы (план)',
+      name: 'hour_plan',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      //isShow: false,
+      isShow: {
+        value: false,
+        type: 'every',
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+          },
+        ],
+      },
+    }),
+    stringField({
+      label: 'Часы(факт)',
+      name: 'hour_fact',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      validations: { interval },
+      //isShow: false,
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            if (!isMagnit(ctx)) return
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                hour_fact: ctx.formData.hour_fact,
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'calculate/magnit/hour',
+            })
+            if (code) {
+              ctx.formData.hour = result
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+            }
+          },
+        },
+      ],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+        ],
+      },
+      isShow: {
+        value: false,
+        type: 'every',
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+            type: true,
+          },
+        ],
+      },
+    }),
+    stringField({
+      label: 'Часы',
+      name: 'hour',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                [2, 3, 6].includes(context.formData.status_id) &&
+                [3, 5, 1].includes(context.originalData.vid_vedomost_id)
+              )
+            },
+            type: true,
+          },
+        ],
+      },
+      requestType: 'number',
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'custom',
+          func: async (ctx) => {
+            console.log(ctx.formData.hour * ctx.formData.object_price)
+            ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+          },
+        },
+      ],
+    }),
     // stringField({
     //   label: 'Тариф',
     //   name: 'price',
@@ -1562,7 +2407,7 @@ export default {
           {
             target: 'formData',
             field: 'vid_vedomost_id',
-            value: [1, 5],
+            value: [1],
             type: true,
           },
           {
@@ -1592,6 +2437,10 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => isMagnit(context),
             type: true,
           },
         ],
@@ -1752,6 +2601,12 @@ export default {
               (context.formData.status_id === 6 && context.mode === 'edit'),
             type: false,
           },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -1775,6 +2630,44 @@ export default {
           // },
         ],
       },
+      updateList: [
+        {
+          alias: 'payment_vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
     }),
     stringField({
       label: 'Р/С',
@@ -1945,7 +2838,215 @@ export default {
         value: true,
       },
     }),
+    textBlock({
+      label: 'Тип магазина',
+      name: 'type',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+      updateList: [
+        {
+          alias: 'payment_vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'doljnost_id',
+          // filter: [
+          //   {
+          //     field: 'direction_id',
+          //     value: '',
+          //   },
+          // ],
+          url: 'get/pagination_list/doljnost_payment_id',
+        },
+      ],
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'object_price_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_personal_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_personal_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_personal_bank_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_invoice',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_fio',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'real_bank_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
   ],
+  sharedFields: {
+    fields: [
+      {
+        name: 'real_personal_id',
+        alias: 'personal_id',
+      },
+      {
+        name: 'vid_vedomost_id',
+      },
+      {
+        name: 'real_personal_bank_id',
+        alias: 'personal_bank_id',
+      },
+      {
+        name: 'real_invoice',
+        alias: 'invoice',
+      },
+      {
+        name: 'real_fio',
+        alias: 'fio',
+      },
+      {
+        name: 'real_bank_id',
+        alias: 'bank_id',
+      },
+    ],
+    target: formChangePersonal,
+  },
   actions: [
     stringAction({
       text: 'Закрыть',
@@ -1953,11 +3054,10 @@ export default {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'payment',
       skipValidation: true,
     }),
     stringAction({
-      text: 'Сохранить',
+      text: 'Создать',
       type: 'submit',
       module: 'form/create',
       name: 'createForm',
@@ -1980,7 +3080,109 @@ export default {
             value: [6],
             type: true,
           },
+          {
+            funcCondition: (ctx) => {
+              return (
+                ctx.formData.direction_id === 2 &&
+                ctx.formData.type === 2 &&
+                ctx.mode === 'add'
+              )
+            },
+            type: true,
+          },
         ],
+      },
+    }),
+    stringAction({
+      text: 'Создать',
+      type: 'submit',
+      module: 'form/create',
+      name: 'createForm',
+      url: 'create/payment',
+      action: 'func',
+      color: 'primary',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (ctx) => {
+              return (
+                ctx.formData.direction_id !== 2 ||
+                ctx.formData.type !== 2 ||
+                ctx.mode !== 'add'
+              )
+            },
+            type: true,
+          },
+        ],
+      },
+      func: async (ctx) => {
+        // ctx.$emit('emitFormData')
+        const payment_data = ctx.sortData({ action: this })
+        const request_data = {
+          ...ctx.formDataParent,
+          id: +ctx.context.root.route.params.id,
+        }
+        // try {
+        // const { code, id } = await ctx.createForm({
+        //   url: 'create/payment',
+        //   module: 'form/create',
+        //   formData: {
+        //     payment_data,
+        //     request_data,
+        //     from_request_magnit: true,
+        //   },
+        //   params: this,
+        // })
+        // if (code) {
+        const handlerEmit = async (rootCtx) => {
+          rootCtx.fields.act_path.options.toObjectCustom = 'request_data'
+          await rootCtx.loadStoreFile({
+            url: 'create/payment',
+            module: 'form/create',
+            formData: {
+              payment_data,
+              request_data,
+              from_request_magnit: true,
+            },
+            action: {
+              handlingResponse: {
+                1: {
+                  text: 'Заявка создана',
+                  color: 'success',
+                },
+                2: {
+                  text: 'Ошибка сервера',
+                  color: 'error',
+                },
+                3: {
+                  text: 'Не хватает информации',
+                  color: 'error',
+                },
+              },
+            },
+          })
+          rootCtx.emit('closePopup')
+          rootCtx.emit('refreshData')
+          // ctx.emit('closePopup')
+          // clickHandler
+          // const payment_data = sortData()
+          // const { code, id } = await ctx.createForm({
+          //   url: 'create/payment',
+          //   module: 'update/payment',
+          //   formData: ctx.sortedData,
+          //   params: this,
+          // })
+        }
+        await ctx.emit('emitFormData', { rootCtx: {}, handlerEmit })
+        ctx.emit('closePopup')
+        // }
+        // } catch (err) {
+        //   console.log(err)
+        // }
+
+        // console.log(result)
       },
     }),
     stringAction({
@@ -2011,6 +3213,260 @@ export default {
       },
     }),
     stringAction({
+      text: 'На проверку',
+      type: 'submit',
+      status_id: 1,
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'yellow',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                (isX5(context) &&
+                  (isOKK(context) || isROKK(context)) &&
+                  [2, 3].includes(context.formData.status_id)) ||
+                isMagnit(context)
+              )
+            },
+            type: false,
+          },
+          // {
+          //   funcCondition: (context) => {
+          //     return isMagnit(context)
+          //   },
+          //   type: false,
+          // },
+          {
+            funcCondition: (context) => {
+              return (
+                ![1, 2, 3].includes(context.formData?.status_id) ||
+                context.formData.status_id === 1
+              )
+            },
+            type: true,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Согласовать',
+      status_id: 2,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'green',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return (
+                (isX5(context) && (isOKK(context) || isROKK(context))) ||
+                isDBA(context) ||
+                isDirector(context) ||
+                isMagnit(context)
+              )
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) => {
+          //     console.log('isMagnit')
+          //     return isMagnit(context)
+          //   },
+          //   type: false,
+          // },
+          {
+            funcCondition: (context) =>
+              (isMagnit(context) &&
+                ![1, 2, 3].includes(context.originalData?.status_id)) ||
+              context.formData.status_id === 2,
+            type: true,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Не согласован',
+      status_id: 3,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'error',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                (isX5(context) &&
+                  (isOKK(context) ||
+                    isROKK(context) ||
+                    isDBA(context) ||
+                    isRG(context) ||
+                    isManager(context) ||
+                    isCUP(context)) &&
+                  context.formData.status_id === 1) ||
+                isMagnit(context)
+              )
+            },
+            type: false,
+          },
+          // {
+          //   funcCondition: (context) => {
+          //     return isMagnit(context)
+          //   },
+          //   type: false,
+          // },
+          {
+            funcCondition: (context) =>
+              ![1, 2, 3].includes(context.formData?.status_id) ||
+              context.formData.status_id === 3,
+            type: true,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'В ошибку',
+      status_id: 6,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'error',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isMagnit(context) ||
+                isAllBug(context) ||
+                (isDBA(context) && context.formData.status_id === 4) ||
+                (isX5(context) &&
+                  (isAllBug(context) || isDBA(context)) &&
+                  context.formData.status_id === 4)
+              )
+            },
+            type: false,
+          },
+          // {
+          //   funcCondition: (context) =>
+          //     // [22, 12].includes(context.store.state.user.permission_id),
+          //     isAllBug(context) && context.formData.status_id === 4,
+          //   type: false,
+          // },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'На оплату',
+      status_id: 4,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'green',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) => {
+              return isAllBug(context) && context.formData.status_id === 2
+            },
+            type: false,
+          },
+        ],
+      },
+    }),
+    stringAction({
+      text: 'Оплачено',
+      status_id: 5,
+      type: 'submit',
+      module: 'form/putForm',
+      name: 'saveFormId',
+      url: 'update/payment',
+      action: 'saveFormId',
+      color: 'green',
+      isHide: {
+        value: false,
+        type: 'every',
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isMagnit(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) =>
+              // [22, 12].includes(context.store.state.user.permission_id),
+              isAllBug(context) && context.formData.status_id === 4,
+            type: false,
+          },
+        ],
+      },
+    }),
+    stringAction({
       text: 'Сохранить',
       type: 'submit',
       module: 'form/putForm',
@@ -2030,12 +3486,41 @@ export default {
           },
           {
             funcCondition: (context) =>
-              context.originalData?.status_id !== 6 &&
+              context.formData?.status_id !== 6 &&
               !context.environment.readonlyAll,
             type: false,
           },
         ],
       },
     }),
+    // stringAction({
+    //   text: 'Исправлено1',
+    //   status_id: 7,
+    //   type: 'submit',
+    //   module: 'form/putForm',
+    //   name: 'saveFormId',
+    //   url: 'correct/payment',
+    //   action: 'saveFormId',
+    //   color: 'primary',
+    //   isHide: {
+    //     value: false,
+    //     type: 'every',
+    //     condition: [
+    //       {
+    //         funcCondition: (context) => {
+    //           return isMagnit(context)
+    //         },
+    //         type: false,
+    //       },
+    //       {
+    //         funcCondition: (context) =>
+    //           context.originalData?.status_id === 6 &&
+    //           context.store.state.user.is_personal_vertical,
+    //         type: false,
+    //       },
+    //     ],
+    //   },
+    // }),
   ],
 }
+//

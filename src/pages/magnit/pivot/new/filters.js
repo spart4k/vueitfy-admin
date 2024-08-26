@@ -1,0 +1,130 @@
+import {
+  dateField,
+  selectField,
+  autocompleteField,
+  dateRangeField,
+  checkboxField,
+} from '@/utils/fields.js'
+import { stringAction } from '@/utils/actions.js'
+
+const filters = {
+  id: 0,
+  name: 'Основные',
+  type: 'FormDefault',
+  detail: false,
+  isFilter: true,
+  lists: [{ alias: 'status_srm', filter: [] }],
+  alias: 'pivotx5',
+  active: false,
+  fields: [
+    dateRangeField({
+      label: 'Дата назначения',
+      name: 'date_target',
+      subtype: 'range',
+      typeFilter: 'date',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'srm.date_request',
+    }),
+    selectField({
+      label: 'Статус',
+      name: 'status_srm',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'srm.status',
+    }),
+    autocompleteField({
+      label: 'В работе у',
+      name: 'account_id',
+      subtype: 'multiple',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_manager_retail',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'srm.account_id',
+    }),
+    autocompleteField({
+      label: 'Объект',
+      name: 'object_id',
+      subtype: 'multiple',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_object_retail',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'srm.object_id',
+    }),
+    autocompleteField({
+      label: 'Должность',
+      name: 'doljnost_id',
+      subtype: 'multiple',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/position_retail',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'srm.doljnost_id',
+    }),
+  ],
+  actions: [
+    stringAction({
+      text: 'Сохранить',
+      type: 'submit',
+      action: 'saveFilter',
+      name: 'saveFilter',
+      nextForm: true,
+    }),
+  ],
+}
+
+export default filters

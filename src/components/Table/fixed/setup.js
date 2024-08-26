@@ -510,6 +510,9 @@ const table = {
         ) {
           return
         }
+        if (Array.isArray(filterData[el.name]) && !filterData[el.name].length) {
+          return
+        }
         let type = el.typeFilter ? el.typeFilter : el.type
         type = type === 'autocomplete' ? 'select' : type
         type = type === 'dateRange' && 'date'

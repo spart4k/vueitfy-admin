@@ -10,6 +10,7 @@ import { useRoute } from 'vue-router/composables'
 import { getList } from '@/api/selects'
 import _ from 'lodash'
 import store from '@/store'
+import form from '@/store/modules/form'
 
 export default {
   name: 'autocomplete',
@@ -38,6 +39,12 @@ export default {
     fields: {
       type: Object,
     },
+    mode: {
+      type: String,
+    },
+    environment: {
+      type: Object,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -56,6 +63,7 @@ export default {
               store,
               formData: props.formData,
               originalData: props.originalData,
+              mode: props.mode,
             }
             if (!option.func(context)) return
           } else if (
@@ -154,6 +162,7 @@ export default {
               searchValue: params.search ? params.search : '',
               id: params.id ? params.id : -1,
               filter,
+              readonly: props.environment?.readonlyAll,
             },
             {
               signal: controller.signal,
@@ -183,7 +192,7 @@ export default {
       if (loading.value) return
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)
         ? true
-        : queryData.totalPage > queryData.page
+        : queryData.totalPage >= queryData.page
       if (isIntersecting) {
         if (
           proxyItems.value?.length &&
@@ -227,7 +236,19 @@ export default {
             })
         : false
     })
-
+    const appendClass = (classes) => {
+      return classes.reduce((acc, el) => {
+        console.log(typeof el)
+        if (typeof el === 'string') {
+          acc.push(el)
+        } else if (typeof el === 'function') {
+          console.log(el(props.formData))
+          acc.push(el(props.formData))
+        }
+        // acc.push(el)
+        return acc
+      }, [])
+    }
     const parentComp = getCurrentInstance().proxy.$parent.$parent
 
     //const styleChip = computed(() =>)
@@ -255,7 +276,9 @@ export default {
       }
     )
 
-    onMounted(() => {})
+    onMounted(() => {
+      props.field.page = 1
+    })
 
     return {
       proxyValue,
@@ -272,6 +295,7 @@ export default {
       parentComp,
       availableItems,
       proxyItems,
+      appendClass,
     }
   },
 }
