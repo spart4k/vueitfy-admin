@@ -199,7 +199,6 @@ export default function ({
         formData: sortedData,
       })
       loading.value = false
-      console.log(action, 'refreshData')
       const responseSuccess = (result) => {
         return result?.code === 1 || result.result === 1 || result.success
       }
@@ -207,7 +206,6 @@ export default function ({
         emit('closePopup')
         emit('getItems')
         if (action.refreshData) {
-          console.log('emit')
           emit('refreshData')
         }
       }
@@ -473,36 +471,37 @@ export default function ({
       return environment.readonlyAll
     }
   }
-
+  const sharingFields = (sharedFields) => {
+    sharedFields.fields.forEach((field) => {
+      sharedFields.target.fields.forEach((targetField) => {
+        // console.log(targetField.name, field.name)
+        if (Array.isArray(field.alias)) {
+          field.alias.forEach((el) => {
+            if (targetField.name === el) {
+              targetField.value = formData[field.name]
+            }
+          })
+        } else {
+          if (targetField.name === field.alias) {
+            targetField.value = formData[field.name]
+            if (field.value) targetField.value = field.value
+            if (field.readonly === true) targetField.readonly = true
+          } else if (targetField.name === field.name) {
+            targetField.value = formData[field.name]
+            if (field.value) targetField.value = field.value
+            if (field.readonly === true) targetField.readonly = true
+          }
+        }
+      })
+    })
+  }
   const appendFieldHandler = ({ action, field }) => {
     if (form.detail.type === 'popup') {
       let requestId = 'id'
       if (form.detail.requestId) requestId = form.detail.requestId
       const sharedFields = form?.sharedFields
-      console.log(sharedFields)
       if (sharedFields) {
-        sharedFields.fields.forEach((field) => {
-          sharedFields.target.fields.forEach((targetField) => {
-            // console.log(targetField.name, field.name)
-            if (Array.isArray(field.alias)) {
-              field.alias.forEach((el) => {
-                if (targetField.name === el) {
-                  targetField.value = formData[field.name]
-                }
-              })
-            } else {
-              if (targetField.name === field.alias) {
-                targetField.value = formData[field.name]
-                if (field.value) targetField.value = field.value
-                if (field.readonly === true) targetField.readonly = true
-              } else if (targetField.name === field.name) {
-                targetField.value = formData[field.name]
-                if (field.value) targetField.value = field.value
-                if (field.readonly === true) targetField.readonly = true
-              }
-            }
-          })
-        })
+        sharingFields(sharedFields)
       }
       router.push({
         name: action.action.name,
@@ -518,28 +517,7 @@ export default function ({
   const openForm = ({ action }) => {
     const sharedFields = form?.sharedFields
     if (sharedFields) {
-      sharedFields.fields.forEach((field) => {
-        sharedFields.target.fields.forEach((targetField) => {
-          // console.log(targetField.name, field.name)
-          if (Array.isArray(field.alias)) {
-            field.alias.forEach((el) => {
-              if (targetField.name === el) {
-                targetField.value = formData[field.name]
-              }
-            })
-          } else {
-            if (targetField.name === field.alias) {
-              targetField.value = formData[field.name]
-              if (field.value) targetField.value = field.value
-              if (field.readonly === true) targetField.readonly = true
-            } else if (targetField.name === field.name) {
-              targetField.value = formData[field.name]
-              if (field.value) targetField.value = field.value
-              if (field.readonly === true) targetField.readonly = true
-            }
-          }
-        })
-      })
+      sharingFields(sharedFields)
     }
     if (form.detail.type === 'popup') {
       let requestId = 'id'
@@ -867,7 +845,7 @@ export default function ({
       }
     } else if (
       result.result ||
-      (result.cody && !queryParams?.action?.notClose && result?.code === 1)
+      (result.code && !queryParams?.action?.notClose && result?.code === 1)
     ) {
       emit('getItems')
       emit('closePopup')
@@ -892,7 +870,7 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
-    getRecursiveDependes(params.field)
+    console.log(JSON.stringify(formData))
     queueMicrotask(async () => {
       params.field.dependence?.forEach((dependence) => {
         const depField = dependence.field
@@ -915,6 +893,7 @@ export default function ({
       fields[params.field.putValueInItems].items = array
     }
     const { field } = params
+    getRecursiveDependes(params.field)
     if (field.updateList && field?.updateList.length) {
       await getFieldsList(field?.updateList)
       field.loading = false
@@ -943,8 +922,6 @@ export default function ({
         if (!formDataNames.includes(fieldAliases[el.alias])) {
           formDataNames.push(fieldAliases[el.alias])
         }
-        console.log(fields, fieldAliases, el.alias, fieldAliases[el.alias])
-        console.log(fields[fieldAliases])
         if (
           fields[fieldAliases[el.alias]].hasOwnProperty('updateList') ||
           fields[fieldAliases[el.alias]].hasOwnProperty('dependence')
@@ -954,6 +931,7 @@ export default function ({
       })
     }
     findFieldName(field)
+    console.log(formDataNames)
     formDataNames.forEach((el) => {
       formData[el] = ''
     })
@@ -1566,6 +1544,7 @@ export default function ({
           : lists.data[keyList]
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
+          console.log('length 1')
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
               lists.data[keyList][0][field.selectOption.value],
@@ -1573,6 +1552,7 @@ export default function ({
           } else {
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
+            console.log(formData[field.name])
           }
           const fieldItem = field?.items?.find(
             (el) => el.id === formData[field.name]
@@ -1675,9 +1655,13 @@ export default function ({
 
   const getListField = (list) => {
     let listValue = undefined
+    console.log(fields, fieldAliases, list.alias)
     const listField = fields[fieldAliases[list.alias]]
+    console.log(listField)
     if (listField) {
       listValue = formData[listField.name]
+      console.log(formData)
+      console.log(listValue)
     }
     return listValue
   }
@@ -1698,7 +1682,6 @@ export default function ({
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
           if (!field.notPut) {
-            console.log(field, field.name, formData[formKey])
             if (
               field.type === 'dropzone' &&
               typeof syncForm.data[formKey] === 'string' &&
