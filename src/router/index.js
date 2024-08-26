@@ -7,6 +7,7 @@ import PersonalView from '../views/PersonalView.vue'
 import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
+import MagnitPivot from '../views/Magnit/PivotView.vue'
 import PivotPaymentView from '../views/PivotPaymentView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
@@ -168,6 +169,15 @@ const routes = [
             meta: {
               mode: ['add-edit-logistic', 'output'],
               label: 'Редактировать начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'payment/:id/change-personal',
+            path: 'change-personal',
+            meta: {
+              mode: ['add-edit-logistic', 'change-personal'],
+              label: 'Сменить линейщика',
             },
             component: Detail,
           },
@@ -650,6 +660,142 @@ const routes = [
     component: Pivotx5View,
   },
   {
+    path: '/magnit_pivot',
+    name: 'magnit_pivot',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: MagnitPivot,
+    children: [
+      {
+        name: 'magnit_pivot-zayavka',
+        path: '/magnit_pivot/zayavka',
+        meta: {
+          mode: ['zayavka'],
+          label: 'Парсер заявок',
+        },
+        component: Detail,
+      },
+      {
+        name: 'magnit_pivot-edit',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Заявка "Магнит"',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-edit/payment-add',
+            path: '/magnit_pivot/:id/payment-add',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-edit/payment/:payment_id',
+            path: '/magnit_pivot:id/payment/:payment_id',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'magnit_pivot-personal',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['personal'],
+          label: 'Персонал',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-personal/:payment',
+            path: '/magnit_pivot/:id/:payment',
+            meta: {
+              mode: ['personal', 'personal-payment'],
+              label: 'Начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:zayavka',
+            path: '/magnit_pivot/:id/:zayavka',
+            meta: {
+              mode: ['personal', 'personal-zayavka'],
+              label: 'Заявка на расход',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:scan',
+            path: '/magnit_pivot/:id/:scan',
+            meta: {
+              mode: ['personal', 'personal-scan'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:card',
+            path: '/magnit_pivot/:id/:card',
+            meta: {
+              mode: ['personal', 'personal-card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'magnit_pivot-object',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['object'],
+          label: 'Объект',
+        },
+        component: Detail,
+      },
+      {
+        name: 'magnit_pivot-account',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['account'],
+          label: 'Аккаунт',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-account/:card_id',
+            path: '/magnit_pivot/:id/:card_id',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-account/new_card',
+            path: '/magnit_pivot/:id/new_card',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+    ],
+  },
+  {
     path: '/pivot_payment',
     name: 'pivot_payment',
     meta: {
@@ -760,15 +906,6 @@ const routes = [
         meta: {
           mode: ['output'],
           label: 'Парсер Х5',
-        },
-        component: Detail,
-      },
-      {
-        name: 'pivot_payment-zayavka',
-        path: '/pivot_payment/zayavka',
-        meta: {
-          mode: ['zayavka'],
-          label: 'Парсер заявок',
         },
         component: Detail,
       },
@@ -913,15 +1050,51 @@ const routes = [
       {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
-        meta: {
-          mode: ['add'],
-        },
         component: Detail,
+        meta: {
+          label: 'Добавление заявки на Магнит',
+          mode: ['add-or-edit'],
+        },
+        children: [
+          {
+            name: 'shop-request-magnit-add-payment-add',
+            path: '/shop-request-magnitpayment/add',
+            meta: {
+              mode: ['add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/:id',
-        path: ':id',
+        path: '/shop-request-magnit/:id',
         component: Detail,
+        meta: {
+          label: 'Редактирование заявки на Магнит',
+          mode: ['add-or-edit'],
+        },
+        children: [
+          {
+            name: 'shop-request-magnit/:id/payment-add',
+            path: '/shop-request-magnit/:id/payment-add',
+            meta: {
+              mode: ['add-or-edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'shop-request-magnit/:id/payment/:payment_id',
+            path: '/shop-request-magnit/:id/payment/:payment_id',
+            meta: {
+              mode: ['add-or-edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/upload',

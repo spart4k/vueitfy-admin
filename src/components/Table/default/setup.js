@@ -573,7 +573,6 @@ const table = {
       indexCell,
       activeIndexCells
     ) => {
-      console.log(options.detail, options)
       if (!options.detail || options.options.noTableAction) return
       if (props.options.options.doubleHandlerType === 'cell') {
         openCell($event, row, cell, indexRow, indexCell, activeIndexCells)
@@ -630,6 +629,7 @@ const table = {
     }
 
     const closePopupForm = () => {
+      console.log(route)
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
@@ -914,7 +914,6 @@ const table = {
         }
       }
       const funcCondition = (el) => {
-        console.log(el, 'el')
         if (!el.funcCondition) return true
         const conditionContext = {
           store,
@@ -927,7 +926,6 @@ const table = {
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
-          console.log(btn.isShow.condition)
           return btn.isShow.condition.every((el) => {
             const result =
               el.type === checkIncludesPermissions(el) &&

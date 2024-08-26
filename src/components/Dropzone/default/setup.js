@@ -41,6 +41,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    originalData: {
+      type: String,
+      default: () => '',
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -85,7 +89,30 @@ export default {
             if (props.options.callbacks) props.options.callbacks(data)
           })
         } else {
-          if (proxyVal.value === undefined) proxyVal.value = []
+          // if (
+          //   proxyVal.value === undefined ||
+          //   proxyVal.value === null ||
+          //   proxyVal.value === ''
+          // ) {
+          //   proxyVal.value = []
+          //   // props.field.value = []
+          // } else if (
+          //   typeof proxyVal.value === 'string' &&
+          //   proxyVal.value.length
+          // ) {
+          //   proxyVal.value = [proxyVal.value]
+          // }
+          if (
+            proxyVal.value?.length &&
+            Array.isArray(proxyVal.value) &&
+            props.options.countFiles === 1
+          ) {
+            await dropzone.value.removeFile(proxyVal.value[0])
+          }
+          proxyVal.value = []
+          console.log(proxyVal.value)
+          // proxyVal.value = [...arr]
+          // props.field.value.push(...arr)
           proxyVal.value.push(...arr)
           emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
           nextTick(() => {
@@ -96,6 +123,16 @@ export default {
     }
 
     const fileValidation = () => {
+      console.log(
+        proxyVal.value.length,
+        props.options.countFiles &&
+          proxyVal.value.length > props.options.countFiles
+      )
+      console.log(
+        props.options.countFiles,
+        proxyVal.value.length,
+        props.options.countFiles
+      )
       const throwError = (message) => {
         store.commit('notifies/showMessage', {
           color: 'error',
@@ -137,10 +174,20 @@ export default {
 
     const removed = (file) => {
       if (!props.options.withoutSave) {
-        const index = proxyVal.value?.findIndex(
-          (x) => x.upload.uuid === file.upload.uuid
-        )
-        proxyVal.value?.splice(index, 1)
+        if (typeof proxyVal.value === 'string') {
+          // proxyVal.value = []
+          proxyVal.value = ''
+        } else {
+          const index = proxyVal.value?.findIndex(
+            (x) => x.upload?.uuid === file.upload?.uuid
+          )
+          if (props.options.countFiles === 1) {
+            // proxyVal.value = ''
+            proxyVal.value = props.originalData
+          } else {
+            proxyVal.value?.splice(index, 1)
+          }
+        }
       }
       emit('removeFile')
     }
@@ -161,7 +208,12 @@ export default {
         const type = getUrlExtension(url)
         const filename = url.split('/').pop()
 
-        const file = { name: filename, size: 12322, type: 'image/' + type }
+        const file = {
+          name: filename,
+          size: 12322,
+          type: 'image/' + type.toLowerCase(),
+        }
+        console.log(file, url)
         dropzone.value.manuallyAddFile(file, url)
       }
     }
@@ -191,7 +243,7 @@ export default {
     }
 
     onMounted(() => {
-      if (proxyVal.value) fillPreview()
+      // if (proxyVal.value) fillPreview()
     })
     return {
       dropzoneOptions,

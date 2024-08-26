@@ -18,9 +18,10 @@ import { getList } from '@/api/selects'
 // import { filter } from 'lodash'
 import moment from 'moment'
 import useRequest from '@/compositions/useRequest'
-import _ from 'lodash'
+import _, { cloneDeep } from 'lodash'
 import router from '@/router'
 import { list } from 'postcss'
+import { props } from 'vue2-dropzone'
 
 /**
  * @param loading {boolean}
@@ -47,6 +48,7 @@ export default function ({
   detail,
   deleteFormById,
   changeFormId,
+  formDataParent,
 }) {
   const $touched = ref(false)
   const $invalid = ref(false)
@@ -59,6 +61,23 @@ export default function ({
 
   let fields = {}
   let fieldAliases = {}
+  const handlerEmit = undefined
+  const emitFormData = async ({ rootCtx, handlerEmit }) => {
+    const conditionContext = {
+      store,
+      formData,
+      originalData: originalData.value,
+      environment,
+      mode,
+      rootCtx,
+      changeFormId,
+      createForm,
+      loadStoreFile,
+      emit,
+      fields,
+    }
+    await handlerEmit(conditionContext)
+  }
   const initFields = () => {
     if (!form) return
     fields = {}
@@ -74,6 +93,7 @@ export default function ({
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].value))
     }
+    originalData.value = _.cloneDeep(formData)
     queueMicrotask(() => {
       for (let key in formData) {
         if (fields.hasOwnProperty(key)) continue
@@ -169,21 +189,25 @@ export default function ({
       emit('prevStage')
     } else if (action.action === 'saveFormId') {
       loading.value = true
+      // sortedData
+      if (action.status_id) {
+        sortedData.status_id = action.status_id
+      }
       const result = await changeFormId({
         url: action.url,
         module: action.module,
         formData: sortedData,
       })
       loading.value = false
-      if (result.code === 1) {
+      const responseSuccess = (result) => {
+        return result?.code === 1 || result.result === 1 || result.success
+      }
+      if (responseSuccess(result)) {
         emit('closePopup')
         emit('getItems')
-      } else if (result.result === 1) {
-        emit('closePopup')
-        emit('getItems')
-      } else if (result.success) {
-        emit('closePopup')
-        emit('getItems')
+        if (action.refreshData) {
+          emit('refreshData')
+        }
       }
       if (action.handlingResponse) {
         handlingResponse(action, result)
@@ -222,6 +246,8 @@ export default function ({
       if (action.handlingResponse) {
         handlingResponse(action, result)
       }
+    } else if (action.action === 'openForm') {
+      openForm({ action })
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -261,6 +287,7 @@ export default function ({
           url: action.url,
           module: action.module,
           formData: sortedData,
+          action,
         },
         { change: true }
       )
@@ -310,6 +337,20 @@ export default function ({
         url: action.url,
         module: action.module,
         formData: sortedData,
+      })
+      loading.value = false
+    } else if (action.action === 'func') {
+      loading.value = true
+      await action.func({
+        ...conditionContext,
+        sortedData,
+        changeFormId,
+        createForm,
+        emit,
+        sortData,
+        formDataParent,
+        context,
+        loadStoreFile,
       })
       loading.value = false
     }
@@ -430,18 +471,67 @@ export default function ({
       return environment.readonlyAll
     }
   }
-
+  const sharingFields = (sharedFields) => {
+    sharedFields.fields.forEach((field) => {
+      sharedFields.target.fields.forEach((targetField) => {
+        // console.log(targetField.name, field.name)
+        if (Array.isArray(field.alias)) {
+          field.alias.forEach((el) => {
+            if (targetField.name === el) {
+              targetField.value = formData[field.name]
+            }
+          })
+        } else {
+          if (targetField.name === field.alias) {
+            targetField.value = formData[field.name]
+            if (field.value) targetField.value = field.value
+            if (field.readonly === true) targetField.readonly = true
+          } else if (targetField.name === field.name) {
+            targetField.value = formData[field.name]
+            if (field.value) targetField.value = field.value
+            if (field.readonly === true) targetField.readonly = true
+          }
+        }
+      })
+    })
+  }
   const appendFieldHandler = ({ action, field }) => {
     if (form.detail.type === 'popup') {
       let requestId = 'id'
       if (form.detail.requestId) requestId = form.detail.requestId
-
+      const sharedFields = form?.sharedFields
+      if (sharedFields) {
+        sharingFields(sharedFields)
+      }
       router.push({
         name: action.action.name,
         // name: `${route.name}/:${requestId}`,
         // params: {
         //   [requestId]: row.id,
         // },
+      })
+      popupForm.value.isShow = true
+    }
+  }
+
+  const openForm = ({ action }) => {
+    const sharedFields = form?.sharedFields
+    if (sharedFields) {
+      sharingFields(sharedFields)
+    }
+    if (form.detail.type === 'popup') {
+      let requestId = 'id'
+      if (action.target.requestKey) requestId = action.target.requestKey
+      let routeRequest = formData[action.target.requestKey]
+        ? `/:${action.target.requestKey}`
+        : '-add'
+      console.log(route)
+      router.push({
+        name: route.name + '/' + action.target.route + routeRequest,
+        // name: `${route.name}/:${requestId}`,
+        params: {
+          [requestId]: formData[action.target.requestKey],
+        },
       })
       popupForm.value.isShow = true
     }
@@ -552,6 +642,10 @@ export default function ({
             })
           } else if (item.subtype === 'period') {
             newForm[key] = moment(newForm[key], 'YYYY.MM').format('YYYY-MM')
+          } else if (item.subtype === 'datetime') {
+            newForm[key] = moment(newForm[key], 'YYYY.MM.DD HH.MM.SS').format(
+              'YYYY-MM-DD HH-MM-SS'
+            )
           } else {
             newForm[key] = moment(newForm[key], 'YYYY.MM.DD').format(
               'YYYY-MM-DD'
@@ -594,7 +688,7 @@ export default function ({
     // const promises = []
     const { update } = params
     const { change } = params
-
+    const { action } = queryParams
     const setFormData = (val, dropzone) => {
       if (queryParams && queryParams.formData) {
         queryParams.formData[dropzone.requestKey || dropzone.name] = val
@@ -626,26 +720,40 @@ export default function ({
     )
 
     const loadDropzone = async (dropzone) => {
-      if (dropzone.value.length) {
+      if (
+        dropzone.value?.length ||
+        (Array.isArray(formData[dropzone.name]) &&
+          formData[dropzone.name]?.length)
+      ) {
         let fileIndex = 1
         const queries = {
           requestArr: [],
           fileArr: [],
         }
-        for (const item of dropzone.value) {
+        for (const item of dropzone.value.length
+          ? dropzone.value
+          : Array.isArray(formData[dropzone.name]) &&
+            formData[dropzone.name].length
+          ? formData[dropzone.name]
+          : false) {
           const file = item
+          let name = ''
           const valueId =
             formData[dropzone.options.valueId] ?? store?.state?.user.id
-          const name =
-            (dropzone.options.fileName
-              ? file.name
-              : eval(dropzone.options.name).split(' ').join('_')) +
-            '_' +
-            valueId +
-            '_' +
-            fileIndex +
-            '_' +
-            new Date().getTime()
+          if (dropzone.options.customName) {
+            name = dropzone.options.customName(formData)
+          } else {
+            name =
+              (dropzone.options.fileName
+                ? file.name
+                : eval(dropzone.options.name).split(' ').join('_')) +
+              '_' +
+              valueId +
+              '_' +
+              fileIndex +
+              '_' +
+              new Date().getTime()
+          }
           const ext = file.name.split('.').pop()
           const storeForm = new FormData()
           storeForm.append('name', name + '.' + ext)
@@ -678,6 +786,10 @@ export default function ({
         } else if (dropzone.toObject) {
           const fileArray = [...queries.fileArr]
           toObject(fileArray, dropzone)
+        } else if (dropzone.options.toObjectCustom) {
+          queryParams.formData[dropzone.options.toObjectCustom][dropzone.name] =
+            queries.fileArr[0].path
+          // setFormData(data[0].path, dropzone)
         } else {
           setFormData(queries.fileArr[0].path, dropzone)
         }
@@ -705,7 +817,6 @@ export default function ({
       }
       return true
     }
-
     await Promise.all(
       dropzoneArray.map((dropzone) => {
         return new Promise((resolve) => {
@@ -713,15 +824,29 @@ export default function ({
         })
       })
     )
-
+    let result = null
     if (update) {
-      const result = await changeForm(queryParams)
+      result = await changeForm(queryParams)
     } else if (change) {
-      const result = await changeFormId(queryParams)
+      result = await changeFormId(queryParams)
     } else {
-      const result = await createForm(queryParams, params)
+      result = await createForm(queryParams, params)
     }
-    if (!queryParams?.action?.notClose) {
+    console.log(queryParams, action)
+    if (action.handlingResponse) {
+      handlingResponse(action, result)
+      console.log(!queryParams?.action?.notClose && result?.cody)
+      if (!queryParams?.action?.notClose && result?.code === 1) {
+        emit('getItems')
+        emit('closePopup')
+      } else {
+        $v.value.$reset()
+        errorsCount()
+      }
+    } else if (
+      result.result ||
+      (result.cody && !queryParams?.action?.notClose && result?.code === 1)
+    ) {
       emit('getItems')
       emit('closePopup')
     } else {
@@ -745,7 +870,7 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
-    getRecursiveDependes(params.field)
+    console.log(JSON.stringify(formData))
     queueMicrotask(async () => {
       params.field.dependence?.forEach((dependence) => {
         const depField = dependence.field
@@ -768,6 +893,7 @@ export default function ({
       fields[params.field.putValueInItems].items = array
     }
     const { field } = params
+    getRecursiveDependes(params.field)
     if (field.updateList && field?.updateList.length) {
       await getFieldsList(field?.updateList)
       field.loading = false
@@ -805,6 +931,7 @@ export default function ({
       })
     }
     findFieldName(field)
+    console.log(formDataNames)
     formDataNames.forEach((el) => {
       formData[el] = ''
     })
@@ -812,7 +939,7 @@ export default function ({
   const changeValue = (params) => {
     const { value, field } = params
     if (field.dependence) {
-      field.dependence?.forEach((dependence) => {
+      field.dependence?.forEach(async (dependence) => {
         if (dependence?.type === 'computed' && dependence.funcComputed) {
           const context = {
             store,
@@ -822,6 +949,30 @@ export default function ({
             form,
           }
           dependence.funcComputed(context)
+        } else if (dependence.type === 'api') {
+          const { url, body: bodyData, field: targetField } = dependence
+          const acc = {}
+          bodyData.forEach((el) => {
+            acc[el] = +formData[el]
+          })
+          const { result } = await store.dispatch(dependence.module, {
+            value,
+            field,
+            url,
+            body: {
+              data: acc,
+            },
+          })
+          formData[targetField] = result
+          // console.log(data)
+        } else if (dependence.type === 'custom') {
+          const conditionContext = {
+            store,
+            formData,
+            originalData: originalData.value,
+            environment,
+          }
+          await dependence.func(conditionContext)
         }
       })
     }
@@ -833,10 +984,14 @@ export default function ({
     let value = ''
     if (!value && el.source === 'formData') {
       value = formData[el.field]
+    } else if (!value && el.source === 'mode') {
+      value = mode
+    } else if (el.source === 'formDataParent') {
+      console.log(JSON.stringify(formDataParent), props.formDataParent)
+      value = [formDataParent[el.field]]
     } else {
       value = el.value
     }
-    store?.state?.formStorage
     if (
       (value === '' || value === null || value === undefined) &&
       !el.routeKey &&
@@ -855,6 +1010,12 @@ export default function ({
         value: [store.state.formStorage.id],
         type: el.type,
       })
+    } else if (el.source === 'formDataParent') {
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [formDataParent[el.field]],
+        type: el.type,
+      })
     } else if (
       (!el.sendEmpty &&
         !Array.isArray(value) &&
@@ -865,6 +1026,8 @@ export default function ({
     ) {
       if (moment(value, 'YYYY.MM', true).isValid())
         value = moment(value, 'YYYY.MM').format('YYYY-MM')
+      if (moment(value, 'YYYY.MM.DD', true).isValid())
+        value = moment(value, 'YYYY.MM.DD').format('YYYY-MM-DD')
       acc.push({
         alias: el.alias ?? el.field,
         value: listValue(value),
@@ -898,7 +1061,7 @@ export default function ({
           }
         }
       }
-
+      // console.log(list, 'LISTLIST')
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
 
@@ -943,6 +1106,14 @@ export default function ({
           //  url = url + '/' + formData[fieldValue]
           //}
         })
+      } else if (dependence.type === 'custom') {
+        const conditionContext = {
+          store,
+          formData,
+          originalData: originalData.value,
+          environment,
+        }
+        await dependence.func(conditionContext)
       } else if (dependence.url && typeof dependence.url === 'string') {
         url = dependence.url
 
@@ -1133,7 +1304,7 @@ export default function ({
           } else {
             formData[depField] = data[0]?.id
           }
-          card = targetField.items.find((el) => el.id === formData[depField])
+          card = targetField.items?.find((el) => el.id === formData[depField])
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
           }
@@ -1236,6 +1407,14 @@ export default function ({
           filter.value = source
         } else if (el.source === 'formData') {
           filter.value = formData[el.field]
+          if (moment(filter.value, 'YYYY.MM', true).isValid())
+            filter.value = moment(filter.value, 'YYYY.MM').format('YYYY-MM')
+          if (moment(filter.value, 'YYYY.MM.DD', true).isValid())
+            filter.value = moment(filter.value, 'YYYY.MM.DD').format(
+              'YYYY-MM-DD'
+            )
+        } else if (el.source === 'mode') {
+          filter.value = mode
         } else {
           filter.value = el.source ? eval(el.source) : formData[el.field]
         }
@@ -1243,6 +1422,10 @@ export default function ({
         filter.value = +route.params[el.routeKey]
       } else {
         filter.value = formData[el.field]
+        if (moment(filter.value, 'YYYY.MM', true).isValid())
+          filter.value = moment(filter.value, 'YYYY.MM').format('YYYY-MM')
+        if (moment(filter.value, 'YYYY.MM.DD', true).isValid())
+          filter.value = moment(filter.value, 'YYYY.MM.DD').format('YYYY-MM-DD')
       }
       if (el.toArray && !Array.isArray(filter.value)) {
         filter.value = [filter.value]
@@ -1275,13 +1458,14 @@ export default function ({
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
-        el.items = [...el.items, ...data.rows]
+        if (el.items?.length) {
+          el.items = [...el.items, ...data.rows]
+        } else {
+          el.items = [...data.rows]
+        }
       }
-
       el.hideItems = el.items
-      console.log(mode, 'MODE')
       if (data.rows?.length === 1 && data.totalPage === 1) {
-        console.log(mode, 'MODE')
         if (fields[el.name]?.subtype === 'multiple') {
           if (mode === 'add') {
             formData[el.name] = [el.items[0][el.selectOption.value]]
@@ -1294,9 +1478,19 @@ export default function ({
       }
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
-
-      if (mode === 'edit') {
-        await getDependies({ field: el, value: formData[el.name] })
+      if (mode === 'edit' || form.initDepStart) {
+        const fieldItems = el.items.find((elItem) => {
+          return elItem.id === formData[el.name]
+        })
+        await getDependies({
+          field: el,
+          value: formData[el.name],
+          item: fieldItems,
+        })
+        if (el.updateList && el?.updateList.length) {
+          await getFieldsList(el?.updateList)
+          el.loading = false
+        }
       }
       return data
     })
@@ -1304,6 +1498,7 @@ export default function ({
   }
 
   const putSelectItems = async (lists) => {
+    // console.log(JSON.stringify(lists.data))
     const stackDep = []
     for (let keyList in lists.data) {
       const field = fields[fieldAliases[keyList]]
@@ -1349,6 +1544,7 @@ export default function ({
           : lists.data[keyList]
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
+          console.log('length 1')
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
               lists.data[keyList][0][field.selectOption.value],
@@ -1356,6 +1552,7 @@ export default function ({
           } else {
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
+            console.log(formData[field.name])
           }
           const fieldItem = field?.items?.find(
             (el) => el.id === formData[field.name]
@@ -1385,6 +1582,7 @@ export default function ({
               field.defaultItems[0][field.selectOption.value]
           }
         }
+        // console.log(JSON.stringify(lists.data))
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
           formData[field.name] = ''
         }
@@ -1447,11 +1645,23 @@ export default function ({
     ...formData,
   })
 
+  const conditionContext = reactive({
+    store,
+    formData,
+    originalData: originalData.value,
+    environment,
+    mode,
+  })
+
   const getListField = (list) => {
     let listValue = undefined
+    console.log(fields, fieldAliases, list.alias)
     const listField = fields[fieldAliases[list.alias]]
+    console.log(listField)
     if (listField) {
       listValue = formData[listField.name]
+      console.log(formData)
+      console.log(listValue)
     }
     return listValue
   }
@@ -1472,7 +1682,15 @@ export default function ({
           if (stringIsArray(syncForm.data[formKey]))
             syncForm.data[formKey] = JSON.parse(syncForm.data[formKey])
           if (!field.notPut) {
-            formData[formKey] = syncForm.data[formKey]
+            if (
+              field.type === 'dropzone' &&
+              typeof syncForm.data[formKey] === 'string' &&
+              syncForm.data[formKey].length
+            ) {
+              formData[formKey] = syncForm.data[formKey]
+            } else {
+              formData[formKey] = syncForm.data[formKey]
+            }
             if (field.type === 'checkbox')
               formData[field.name] = !!syncForm.data[formKey]
           }
@@ -1498,7 +1716,18 @@ export default function ({
       }
       originalData.value = _.cloneDeep(formData)
     }
+    const loadWithDeps = async () => {
+      form?.fields.forEach(async (el) => {
+        if (el.hasOwnProperty('dependence')) {
+          await getDependies({
+            field: el,
+            value: formData[el.name],
+          })
+        }
+      })
+    }
     await loadAutocompletes()
+    await loadWithDeps()
 
     if (hasSelect()) {
       await getFieldsList(form.lists)
@@ -1546,6 +1775,7 @@ export default function ({
                 formData,
                 environment,
                 originalData: originalData.value,
+                mode,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1557,7 +1787,8 @@ export default function ({
               )
             }
           })
-        button.isHide.value = condition()
+        button.isHide.value =
+          environment.readonlyAll && !button.secondary ? true : condition()
         return button.isHide.value
       }
     } else if (typeof button.isHide === 'undefined') {
@@ -1690,6 +1921,14 @@ export default function ({
             if (el.value === 'notEmpty') {
               return `${formData[el.field]}`
             }
+          } else if (el.target === 'funcCondition') {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            return el.funcCondition(conditionContext)
           } else {
             const res = el.value.some((ai) => {
               let result
@@ -1791,7 +2030,9 @@ export default function ({
       return value
     } else return field.position.sm
   }
-
+  const addFiles = (e) => {
+    console.log(e)
+  }
   watch(
     () => watcher,
     (wtch) => {
@@ -1862,5 +2103,9 @@ export default function ({
     refreshForm,
     isRequired,
     fields,
+    emitFormData,
+    handlerEmit,
+    environment,
+    addFiles,
   }
 }

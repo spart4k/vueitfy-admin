@@ -455,7 +455,7 @@ export default {
         // type: 'some',
         conditions: [
           {
-            field: 'direction_id',
+            field: 'direction_json',
             value: [1, 6],
             type: true,
           },

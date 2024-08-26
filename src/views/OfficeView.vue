@@ -101,7 +101,6 @@ export default {
     })
 
     // zayavkaConfig.options.alias = 'office_id'
-    console.log(zayavkaConfig)
     ;(zayavkaConfig.config.actions = [
       stringAction({
         text: 'Закрыть',

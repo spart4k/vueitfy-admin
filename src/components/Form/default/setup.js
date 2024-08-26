@@ -44,6 +44,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    formDataParent: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -178,6 +182,7 @@ export default {
       }
     }
     const closePopupForm = (double) => {
+      console.log(route.matched)
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
       if (double) emit('closePopup')
@@ -232,6 +237,10 @@ export default {
       appendActionShow,
       isRequired,
       fields,
+      emitFormData,
+      environment,
+      addFiles,
+      originalData,
     } = useForm({
       form: props.tab,
       context,
@@ -247,6 +256,7 @@ export default {
       createForm,
       deleteFormById,
       changeFormId,
+      formDataParent: props.formDataParent,
     })
 
     onMounted(async () => {
@@ -289,6 +299,11 @@ export default {
       changeValue,
       isRequired,
       fields,
+      mode: isEdit.value,
+      emitFormData,
+      environment,
+      addFiles,
+      originalData,
     }
   },
 }

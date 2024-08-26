@@ -61,6 +61,8 @@
               :readonly="readonlyField(field)"
               :class="[...field.class]"
               :fields="fields"
+              :mode="mode"
+              :environment="environment"
             />
             <Autocomplete
               v-else-if="showField('autocomplete', field)"
@@ -73,6 +75,8 @@
               :readonly="readonlyField(field)"
               :class="[...field.class]"
               :fields="fields"
+              :mode="mode"
+              :environment="environment"
             />
 
             <v-text-field
@@ -106,14 +110,14 @@
                       v-bind="attrs"
                       v-on="on"
                       @click="appendFieldHandler({ action, field })"
-                      class=""
+                      :class="action.class"
                       small
                       v-if="appendActionShow(action)"
                     >
                       <v-tooltip activator="parent" location="top"
                         >Tooltip</v-tooltip
                       >
-                      <v-icon> {{ action.icon }} </v-icon></v-btn
+                      <v-icon>{{ action.icon }}</v-icon></v-btn
                     >
                   </template>
                   <span>{{ action.label }}</span>
@@ -143,6 +147,9 @@
               :error-messages="formErrors[field?.name]"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
             ></Datepicker>
             <v-textarea
               v-else-if="showField('textarea', field)"
@@ -153,6 +160,9 @@
               rows="1"
               :disabled="disabledField(field)"
               :readonly="readonlyField(field)"
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
             />
             <Datetimepicker
               v-else-if="showField('datetime', field)"
@@ -161,6 +171,10 @@
               clearable
               :error-messages="formErrors[field?.name]"
               :readonly="readonlyField(field)"
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
+              :field="field"
             />
             <DropZone
               v-else-if="showField('dropzone', field)"
@@ -171,6 +185,7 @@
               :field="field"
               :error-messages="formErrors[field?.name]"
               :readonly="readonlyField(field)"
+              :originalData="originalData[field.name]"
               @addFiles="addFiles($event, field)"
             />
             <ColorPicker
@@ -255,6 +270,46 @@
                 </v-list-item>
               </v-list>
             </v-card>
+            <!-- <v-text-field
+              v-else-if="showField('textBlock', field)"
+              v-show="false"
+              v-model="formData[field.name]"
+              :label="field.label"
+              :placeholder="field?.placeholder"
+              :error-messages="formErrors[field?.name]"
+              clearable
+              @change="
+                changeAutocomplete({ field, value: formData[field.name] })
+              "
+              :name="field.name"
+              :class="[...field.class]"
+              v-mask="field.mask"
+            >
+              <template v-if="field?.appendAction?.length" v-slot:append-outer>
+                <v-tooltip
+                  v-for="action in field.appendAction"
+                  :key="action.label"
+                  top
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="appendFieldHandler({ action, field })"
+                      class=""
+                      small
+                      v-if="appendActionShow(action)"
+                    >
+                      <v-tooltip activator="parent" location="top"
+                        >Tooltip</v-tooltip
+                      >
+                      <v-icon> {{ action.icon }} </v-icon></v-btn
+                    >
+                  </template>
+                  <span>{{ action.label }}</span>
+                </v-tooltip>
+              </template>
+            </v-text-field> -->
           </v-col>
         </v-row>
         <v-divider class="mt-0 mb-3" v-if="tab.actions.length"></v-divider>
@@ -301,6 +356,7 @@
         @getItems="getItems"
         @refreshData="getData"
         :formDataParent="formData"
+        @emitFormData="emitFormData($event)"
       />
     </Popup>
   </div>

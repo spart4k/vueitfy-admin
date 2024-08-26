@@ -10,6 +10,13 @@ const numeric = Object.assign({}, vueNumeric, {
   $message: () => 'Только числа',
 })
 
+const notValue = (param) => {
+  return {
+    $validator: (value) => param.value !== +value,
+    $message: () => `${param.text} не должен быть равен ${param.value}`,
+  }
+}
+
 const required = Object.assign({}, vueRequired, {
   $message: () => 'Обязательное поле',
 })
@@ -126,6 +133,20 @@ const dateRange = (dateFrom, dateTo) => {
   }
 }
 
+const requiredFile = {
+  $validator: (val, formData) => {
+    console.log(val)
+    if (formData.status === 1 && !val) {
+      return true
+    } else if (formData.status === 2 && !val) {
+      return false
+    } else {
+      return true
+    }
+  },
+  $message: () => 'Необходимо приложить минимум 1 счет',
+}
+
 const sameAs = (value) => ({
   $validator: (val, formData) => {
     try {
@@ -143,6 +164,13 @@ const number = {
       ? true
       : Number(val) && !val.toString().split('').includes(' '),
   $message: () => 'Некорректные символы',
+}
+
+const interval = {
+  $validator: (val) => {
+    return +val > 0 && +val < 16
+  },
+  $message: () => 'Больше 0 и не больше 15',
 }
 
 const password = {
@@ -177,5 +205,8 @@ export {
   dayOfMonth,
   minFileLength,
   dateRange,
+  notValue,
+  interval,
+  requiredFile,
   // strongPassword
 }

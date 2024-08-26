@@ -32,6 +32,7 @@
                 :config="options"
                 v-if="button.type === 'switch'"
                 v-model="button.value"
+                :name="`btn_${button.label || button.type}`"
               />
               <v-btn
                 v-else
@@ -40,6 +41,7 @@
                   button.type === 'selectedItems' && !lastSelected.items.length
                 "
                 :loading="button.loading"
+                :name="`btn_${button.label}`"
                 small
               >
                 <v-icon
