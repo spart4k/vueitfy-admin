@@ -3437,7 +3437,7 @@ export default {
                   context.formData.status_id === 1) ||
                 isMagnit(context) ||
                 (isLogistik(context) &&
-                  context.formData.status_id === 1 &&
+                  [1, 2].includes(context.formData.status_id) &&
                   (isDBA(context) ||
                     isOKK(context) ||
                     isROKK(context) ||
