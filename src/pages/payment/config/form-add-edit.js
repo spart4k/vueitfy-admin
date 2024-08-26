@@ -46,7 +46,7 @@ const isRoznica = (ctx) => {
 }
 
 const isLogistik = (ctx) => {
-  return [1, 6].includes(ctx.formData.direction_id)
+  return [1, 6, 7].includes(ctx.formData.direction_id)
 }
 
 const conditionLogistik = (context) => {
@@ -1029,6 +1029,12 @@ export default {
           },
           {
             funcCondition: (context) => {
+              return isLogistik(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
               return (
                 isX5(context) &&
                 [2, 3].includes(context.formData.status_id) &&
@@ -1965,6 +1971,12 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return isLogistik(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.direction_id === 2 &&
@@ -2481,6 +2493,12 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.status_id === 6 && context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isLogistik(context) && context.originalData.status_id === 2
+            },
             type: true,
           },
           {
@@ -3355,7 +3373,12 @@ export default {
                 isDBA(context) ||
                 isDirector(context) ||
                 isMagnit(context) ||
-                isLogistik(context)
+                (isLogistik(context) &&
+                  context.formData.status_id === 1 &&
+                  (isDBA(context) ||
+                    isOKK(context) ||
+                    isROKK(context) ||
+                    isDirector(context)))
               )
             },
             type: false,
@@ -3413,7 +3436,12 @@ export default {
                     isCUP(context)) &&
                   context.formData.status_id === 1) ||
                 isMagnit(context) ||
-                isLogistik(context)
+                (isLogistik(context) &&
+                  context.formData.status_id === 1 &&
+                  (isDBA(context) ||
+                    isOKK(context) ||
+                    isROKK(context) ||
+                    isDirector(context)))
               )
             },
             type: false,
