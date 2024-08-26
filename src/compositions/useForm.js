@@ -844,7 +844,7 @@ export default function ({
       }
     } else if (
       result.result ||
-      (result.cody && !queryParams?.action?.notClose && result?.code === 1)
+      (result.code && !queryParams?.action?.notClose && result?.code === 1)
     ) {
       emit('getItems')
       emit('closePopup')
