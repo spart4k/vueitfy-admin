@@ -135,6 +135,18 @@ const requiredFile = {
   $message: () => 'Необходимо приложить минимум 1 счет',
 }
 
+const dateRange = (dateFrom, dateTo) => {
+  return {
+    $validator: (val, formData) => {
+      return (
+        moment(formData[dateFrom], 'YYYY.MM.DD').valueOf() <=
+        moment(formData[dateTo], 'YYYY.MM.DD').valueOf()
+      )
+    },
+    $message: () => 'Неверно указан период',
+  }
+}
+
 const sameAs = (value) => ({
   $validator: (val, formData) => {
     try {
@@ -195,5 +207,6 @@ export {
   notValue,
   interval,
   requiredFile,
+  dateRange,
   // strongPassword
 }

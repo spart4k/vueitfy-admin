@@ -4583,7 +4583,7 @@ const config = {
         url: '$IconSetting',
         backgroundColor: '#fff',
         type: 'sendPage',
-        requestPage: 'zayavka',
+        requestUrl: 'accounting/zayavka/export',
         isShow: {
           condition: [
             {

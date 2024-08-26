@@ -1,47 +1,19 @@
-import _ from 'lodash'
+import filters from './filters'
+import buttonArchive from './config/button-archive'
 
-import formJurFaceAddEdit from './config/form-jur-face-add-edit'
+function consoleText(row) {}
 
-export const config = {
-  title: 'Юр. лица',
+function consoleButton(row) {}
+
+const config = {
   selector: '#mainTable',
-  type: 'TableDefault',
   options: {
     selecting: true,
-    search: {
-      //   function: searchInputing,
-    },
+    search: {},
     headerFixed: true,
-    url: 'get/pagination/juridical_person',
-    title: 'Юр. лица',
-    contextMenu: {
-      actions: [
-        {
-          icon: '$IconDelete',
-          label: 'Удалить',
-          isShow: {
-            condition: [
-              {
-                permissions: [4],
-                type: true,
-              },
-            ],
-          },
-          action: {
-            type: 'confirm',
-            dialog: {
-              text: 'Вы подтверждаете удаление юр.лица?',
-              function: (context) => {
-                context.store.dispatch('form/update', {
-                  url: 'set/data/juridical_person',
-                  body: { data: { id: context.data.row.id, del: 1 } },
-                })
-              },
-            },
-          },
-        },
-      ],
-    },
+    //url: 'https://dummyjson.com/users',
+    url: 'get/pagination/report_magnit',
+    title: 'This is an about page1',
   },
   panel: {
     buttons: [
@@ -49,21 +21,22 @@ export const config = {
         label: 'Обновить',
         class: ['v-table-button--custom'],
         url: '$IconEdit',
-        // function: consolePanel,
         backgroundColor: '#ffffff',
       },
+      buttonArchive,
       {
-        label: 'Добавить',
+        label: 'Отчет',
         class: ['v-table-button--custom'],
-        type: 'changeUrl',
-        url: 'jur-face/add',
+        url: '$IconSetting',
         backgroundColor: '#fff',
+        type: 'sendPage',
+        requestUrl: 'report/magnit/revise',
       },
     ],
   },
   head: [
     {
-      title: 'id',
+      title: 'Статус',
       type: 'default',
       align: 'center',
       fixed: {
@@ -72,23 +45,23 @@ export const config = {
       },
       sorts: [
         {
-          type: 'text',
+          type: 'string',
           default: '',
           value: '',
           isShow: false,
         },
       ],
+      alias: 'srm.status',
       isShow: true,
-      width: '90',
-      alias: 'id',
-      value: 'id',
+      width: '40',
+      value: 'status_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Название',
+      title: 'На дату',
       type: 'default',
       align: 'center',
       fixed: {
@@ -97,7 +70,7 @@ export const config = {
       },
       sorts: [
         {
-          type: 'text',
+          type: 'date',
           default: '',
           value: '',
           isShow: false,
@@ -105,15 +78,15 @@ export const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'name',
-      value: 'name',
+      alias: 'srm.date_request',
+      value: 'date_request',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Сокращенное название',
+      title: 'В работе у',
       type: 'default',
       align: 'center',
       fixed: {
@@ -122,28 +95,28 @@ export const config = {
       },
       sorts: [
         {
-          type: 'text',
+          type: 'date',
           default: '',
           value: '',
           isShow: false,
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'name_reduced',
-      value: 'name_reduced',
+      width: '150',
+      alias: 'sy.name',
+      value: 'account_name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Адрес',
+      title: 'Сотрудник',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -154,21 +127,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'address',
-      value: 'address',
+      width: '150',
+      value: 'personal_name',
+      alias: 'pers.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'ФИО директора',
+      title: 'Филиал',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -179,21 +152,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'director_fio',
-      value: 'director_fio',
+      width: '150',
+      value: 'filial_name',
+      alias: 'f.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Банк',
+      title: 'Округ',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -204,21 +177,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'bank_name',
-      value: 'bank_name',
+      width: '150',
+      value: 'district_name',
+      alias: 'gd.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'БИК',
+      title: 'Подтип',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -229,21 +202,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'bik',
-      value: 'bik',
+      width: '150',
+      value: 'subtype_name',
+      alias: 'os.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'ИНН',
+      title: 'Объект',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -254,21 +227,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'inn',
-      value: 'inn',
+      width: '150',
+      value: 'object_name',
+      alias: 'o.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'КПП',
+      title: 'Должность',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -279,21 +252,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'kpp',
-      value: 'kpp',
+      width: '150',
+      value: 'doljnost_name',
+      alias: 'd.name',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'КС',
+      title: 'Часы(план)',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -304,21 +277,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'ks',
-      value: 'ks',
+      width: '150',
+      value: 'hour_plan',
+      alias: 'p.hour_plan',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'ОГРН',
+      title: 'Часы(факт)',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -329,21 +302,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'ogrn',
-      value: 'ogrn',
+      width: '150',
+      value: 'hour_fact',
+      alias: 'p.hour_fact',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'ОКВЕД',
+      title: 'Часы',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -354,21 +327,21 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'okved',
-      value: 'okved',
+      width: '150',
+      value: 'hour',
+      alias: 'p.hour',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Расчетный счет',
+      title: 'Разница часов',
       type: 'default',
       align: 'center',
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -379,21 +352,22 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'rs',
-      value: 'rs',
+      width: '150',
+      value: 'different_hour',
+      alias: 'IF(p.del = 0, (srm.hour - p.hour), srm.hour)',
       search: {
         field: '',
         isShow: true,
       },
     },
     {
-      title: 'Телефон',
-      type: 'default',
+      title: 'Файл акта',
+      type: 'download',
       align: 'center',
+      actionCondition: false,
       fixed: {
         value: false,
-        position: 'left',
+        position: undefined,
       },
       sorts: [
         {
@@ -404,9 +378,46 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'telephone',
-      value: 'telephone',
+      width: '150',
+      value: 'path_act',
+      alias: 'srm.path_act',
+      search: {
+        field: '',
+        isShow: true,
+      },
+      actions: [
+        {
+          funcCondition: (context) => {
+            return context.row.row.path_act
+          },
+          type: 'button',
+          url: '$IconDownload',
+          method: (context) => {
+            context.Vue.downloadFile(context.row.row.path_act)
+          },
+        },
+      ],
+    },
+    {
+      title: 'Комментарий',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: undefined,
+      },
+      sorts: [
+        {
+          type: 'text',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      isShow: true,
+      width: '150',
+      value: 'comment',
+      alias: 'srm.note',
       search: {
         field: '',
         isShow: true,
@@ -421,18 +432,8 @@ export const config = {
     totalPages: null,
     footer: null,
   },
-  detail: {
-    type: 'popup', // String 'popup' or 'page'
-    classes: [''], // List class
-    width: '1000px',
-    method: 'get',
-    alias: 'juridical_person',
-    url: '/get/form/',
-    name: 'Юр. лица',
-    bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-    tabs: [_.cloneDeep(formJurFaceAddEdit), _.cloneDeep(formJurFaceAddEdit)],
-    activeTab: null,
-  },
+  detail: null,
+  filters,
 }
 
 export default config

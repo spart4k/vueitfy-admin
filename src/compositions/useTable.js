@@ -26,7 +26,6 @@ const _valuesConfigDefault = {
     buttons: [],
     filters: true,
     search: true,
-    date: true,
     addedItemsChildrenType: 'object',
   },
   [_keysConfigProperty.HEAD]: [

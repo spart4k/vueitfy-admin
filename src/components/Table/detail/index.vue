@@ -47,7 +47,7 @@
             @setFormData="setFormData"
             :formDataParent="formDataParent"
             :mainData="mainData"
-            :class="item?.label"
+            :class="'form_' + item?.name"
             @emitFormData="$emit('emitFormData', $event)"
           />
         </v-tab-item>

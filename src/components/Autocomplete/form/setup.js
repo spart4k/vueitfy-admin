@@ -142,7 +142,11 @@ export default {
                   type: el.type,
                 })
               } else {
-                if (!props.formData[el.field]) return
+                if (Array.isArray(props.formData[el.field])) {
+                  if (!props.formData[el.field].length) return
+                } else {
+                  if (!props.formData[el.field]) return
+                }
                 filter.push({
                   alias: el.alias ?? el.field,
                   value: el.toArray
@@ -153,7 +157,6 @@ export default {
               }
             })
           }
-
           const data = await getList(
             url,
             {

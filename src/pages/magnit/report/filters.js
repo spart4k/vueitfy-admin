@@ -13,12 +13,27 @@ const filters = {
   type: 'FormDefault',
   detail: false,
   isFilter: true,
-  lists: [{ alias: 'status_srm', filter: [] }],
-  alias: 'pivotx5',
+  lists: [
+    { alias: 'status_srm', filter: [] },
+    { alias: 'district', filter: [] },
+    { alias: 'filial_id', filter: [] },
+    {
+      alias: 'object_subtype',
+      filter: [
+        {
+          field: 'type',
+          sendEmpty: true,
+          value: [2],
+          type: 'num',
+        },
+      ],
+    },
+  ],
+  alias: 'report_magnit',
   active: false,
   fields: [
     dateRangeField({
-      label: 'Дата назначения',
+      label: 'На дату',
       name: 'date_target',
       subtype: 'range',
       typeFilter: 'date',
@@ -31,6 +46,7 @@ const filters = {
       bootstrapClass: [''],
       aliasFilter: 'srm.date_request',
     }),
+
     selectField({
       label: 'Статус',
       name: 'status_srm',
@@ -49,11 +65,10 @@ const filters = {
       bootstrapClass: [''],
       aliasFilter: 'srm.status',
     }),
-    autocompleteField({
-      label: 'Линейщик',
-      name: 'personal_id',
+    selectField({
+      label: 'Подтип',
+      name: 'object_subtype',
       subtype: 'multiple',
-      typeFilter: 'select',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -61,15 +76,30 @@ const filters = {
         value: 'id',
       },
       items: [],
-      page: 1,
-      search: '',
-      url: 'get/pagination_list/filter_personal_retail',
       position: {
         cols: 12,
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'srm.personal_id',
+      aliasFilter: 'o.subtype',
+    }),
+    selectField({
+      label: 'Округ',
+      name: 'district',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'gr.district_id',
     }),
     autocompleteField({
       label: 'В работе у',
@@ -92,6 +122,46 @@ const filters = {
       },
       bootstrapClass: [''],
       aliasFilter: 'srm.account_id',
+    }),
+    autocompleteField({
+      label: 'Сотрудник',
+      name: 'personal_id',
+      subtype: 'multiple',
+      typeFilter: 'select',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_personal_retail',
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'srm.personal_id',
+    }),
+    selectField({
+      label: 'Филиал',
+      name: 'filial_id',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'o.filial',
     }),
     autocompleteField({
       label: 'Объект',

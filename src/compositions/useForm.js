@@ -845,7 +845,7 @@ export default function ({
       }
     } else if (
       result.result ||
-      (result.cody && !queryParams?.action?.notClose && result?.code === 1)
+      (result.code && !queryParams?.action?.notClose && result?.code === 1)
     ) {
       emit('getItems')
       emit('closePopup')
@@ -1017,10 +1017,12 @@ export default function ({
         type: el.type,
       })
     } else if (
-      !el.sendEmpty &&
-      value !== null &&
-      value !== '' &&
-      value !== undefined
+      (!el.sendEmpty &&
+        !Array.isArray(value) &&
+        value !== null &&
+        value !== '' &&
+        value !== undefined) ||
+      (Array.isArray(value) && value.length)
     ) {
       if (moment(value, 'YYYY.MM', true).isValid())
         value = moment(value, 'YYYY.MM').format('YYYY-MM')
@@ -1035,12 +1037,6 @@ export default function ({
       acc.push({
         alias: el.alias ?? el.field,
         value: el.value,
-        type: el.type,
-      })
-    } else {
-      acc.push({
-        alias: el.alias ?? el.field,
-        value: [],
         type: el.type,
       })
     }
@@ -1068,6 +1064,7 @@ export default function ({
       // console.log(list, 'LISTLIST')
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
+
       const element = {
         alias: list.alias,
         filter,
@@ -1844,6 +1841,14 @@ export default function ({
                 environment,
                 mode,
               }
+              if (form.path === 'change-personal') {
+                console.log(
+                  field.readonly.value,
+                  field.name,
+                  conditionEl.funcCondition(conditionContext) ===
+                    conditionEl.type
+                )
+              }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1855,6 +1860,9 @@ export default function ({
             }
           })
         field.readonly.value = condition()
+        if (form.path === 'change-personal') {
+          console.log(field.readonly.value, field.name)
+        }
         return environment.readonlyAll && !form.notReadonly
           ? true
           : field.readonly.value
@@ -1868,92 +1876,49 @@ export default function ({
   const entityData = ref({})
   const showField = (type, field, loaded) => {
     const condition = () => {
-      const checkIncludesDirections = (el) => {
-        //return el.direction_id.includes(directions.value)
-        return !!_.intersection(
-          el.value,
-          JSON.parse(store.state.user.direction_json)
-        ).length
-      }
-      const everyMethod = () => {
-        return field.isShow.conditions?.every((el) => {
-          if (el.target === 'items') {
-            if (el.value === 'notEmpty') {
-              return field.items.length
-            }
-          } else if (el.target === 'value') {
-            if (el.value === 'notEmpty') {
-              return `${formData[el.field]}`
-            }
-          } else if (el.target === 'funcCondition') {
-            const conditionContext = {
-              store,
-              formData,
-              originalData: originalData.value,
-              environment,
-            }
-            return el.funcCondition(conditionContext)
-          } else if (el.target === 'direction_id') {
-            return checkIncludesDirections(el)
-          } else {
-            const res = el.value.some((ai) => {
-              let result
-              if (Array.isArray(ai)) {
-                const cloneAi = [...ai]
-                const cloneFieldEl = [...formData[el.field]]
-                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
-              } else {
-                result = [ai].includes(
-                  el.source ? eval(el.source) : formData[el.field]
-                )
+      const compareFunction = (compareType) => {
+        if (field.isShow?.conditions) {
+          return field.isShow.conditions[compareType]((el) => {
+            if (el.target === 'items') {
+              if (el.value === 'notEmpty') {
+                return field.items.length
               }
-              return result
-            })
-            if (el.reverse) return !res
-            return res
-          }
-        })
-      }
-      const someMethod = () => {
-        return field.isShow.conditions?.some((el) => {
-          if (el.target === 'items') {
-            if (el.value === 'notEmpty') {
-              return field.items.length
-            }
-          } else if (el.target === 'value') {
-            if (el.value === 'notEmpty') {
-              return `${formData[el.field]}`
-            }
-          } else if (el.target === 'funcCondition') {
-            const conditionContext = {
-              store,
-              formData,
-              originalData: originalData.value,
-              environment,
-            }
-            return el.funcCondition(conditionContext)
-          } else {
-            const res = el.value.some((ai) => {
-              let result
-              if (Array.isArray(ai)) {
-                const cloneAi = [...ai]
-                const cloneFieldEl = [...formData[el.field]]
-                result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
-              } else {
-                result = [ai].includes(
-                  el.source ? eval(el.source) : formData[el.field]
-                )
+            } else if (el.target === 'value') {
+              if (el.value === 'notEmpty') {
+                return `${formData[el.field]}`
               }
-              return result
-            })
-            if (el.reverse) return !res
-            return res
-          }
-        })
+            } else if (el.target === 'funcCondition') {
+              const conditionContext = {
+                store,
+                formData,
+                originalData: originalData.value,
+                environment,
+              }
+              return el.funcCondition(conditionContext)
+            } else {
+              const res = el.value.some((ai) => {
+                let result
+                if (Array.isArray(ai)) {
+                  const cloneAi = [...ai]
+                  const cloneFieldEl = [...formData[el.field]]
+                  result = _.isEqual(cloneAi.sort(), cloneFieldEl.sort())
+                } else {
+                  let formField
+                  if (el.source) formField = eval(el.source)
+                  else formField = formData[el.field]
+
+                  if (Array.isArray(formField)) result = formField.includes(ai)
+                  else result = [formField].includes(ai)
+                }
+                return result
+              })
+              if (el.reverse) return !res
+              return res
+            }
+          })
+        } else return false
       }
-      let func = everyMethod
-      if (field.isShow?.type === 'some') func = someMethod
-      let funcResult = func()
+      const funcResult = compareFunction(field.isShow?.type || 'every')
       return (typeof field.isShow === 'boolean' && field.isShow) || funcResult
     }
     if (field.isShow?.label) {

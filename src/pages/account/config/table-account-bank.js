@@ -275,7 +275,7 @@ export default {
         {
           path: 'new_card',
           id: 1,
-          name: 'Основные',
+          name: 'Банковские карты',
           type: 'FormDefault',
           detail: true,
           lists: [{ alias: 'bank_id_without_nal', filter: [] }],

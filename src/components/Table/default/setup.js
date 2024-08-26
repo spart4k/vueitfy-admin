@@ -112,6 +112,14 @@ const table = {
       context: null,
       loading: false,
     })
+    const customContent = ref({
+      popup: {
+        width: '400px',
+        isShow: false,
+      },
+      component: null,
+      data: null,
+    })
     const paramsQuery = ref({
       currentPage: pagination.value.currentPage,
       searchGlobal: searchField.value,
@@ -438,7 +446,7 @@ const table = {
           countRows: paramsQuery.value.countRows,
           currentPage: paramsQuery.value.currentPage,
           searchGlobal: paramsQuery.value.searchGlobal,
-          // period: props.options.panel.date ? currentDate.value.date : undefined,
+          period: props.options.panel.date ? currentDate.value.date : undefined,
           searchColumns,
           sorts,
           filter: filtersColumns.value,
@@ -621,7 +629,6 @@ const table = {
     }
 
     const closePopupForm = () => {
-      console.log(route)
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
@@ -694,8 +701,9 @@ const table = {
             searchColumns.push(el)
           }
         })
+        Vue.set(button, 'loading', true)
         const path = await store.dispatch('table/sendPage', {
-          page: button.requestPage,
+          url: button.requestUrl,
           content: {
             searchGlobal: paramsQuery.value.searchGlobal,
             filter: filtersColumns.value,
@@ -705,13 +713,8 @@ const table = {
             currentPage: paramsQuery.value.currentPage,
           },
         })
-        const link = document.createElement('a')
-        link.download = path.url
-        link.setAttribute('target', '_blank')
-        link.href = process.env.VUE_APP_STORE + path.url
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
+        button.loading = false
+        Vue.downloadFile(path.url)
         getItems()
       } else if (type === 'changeComp') {
         emit('changeComp')
@@ -722,6 +725,21 @@ const table = {
           idArray: lastSelected.value.items.map((x) => x.row.id),
         }
         await button.method(context)
+      } else if (button.customContent) {
+        if (button.customContent.component) {
+          customContent.value.popup.width = button.customContent.popupWidth
+          customContent.value.component = button.customContent.component
+          customContent.value.popup.isShow = true
+          customContent.value.data = {
+            store,
+            route,
+            router,
+            button,
+            customContent,
+            paramsQuery,
+            filtersColumns,
+          }
+        }
       }
       if (button.refreshTable) {
         getItems()
@@ -1041,6 +1059,7 @@ const table = {
       confirmDialog,
       triggerDialogFunction,
       route,
+      customContent,
     }
   },
 }

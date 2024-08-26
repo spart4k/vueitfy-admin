@@ -9,12 +9,12 @@
       class="p-5"
       mobile-breakpoint="0"
     >
-      <v-tab v-for="item in object.tabs" :key="item.options.title">
+      <v-tab v-for="item in availableTabs" :key="item.options.title">
         {{ item.options.title }}
       </v-tab>
     </v-tabs>
     <v-tabs-items touchless v-model="activeTab">
-      <v-tab-item v-for="item in object.tabs" :key="item.options.title">
+      <v-tab-item v-for="item in availableTabs" :key="item.options.title">
         <component
           ref="tabs"
           :is="item.type"
@@ -28,8 +28,11 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { object } from '@/pages'
+import store from '@/store'
+import { ref, computed, onMounted } from 'vue'
+import _ from 'lodash'
+import { config as objectConfig } from '@/pages/object/index'
+import { config as formLoadOrig } from '@/pages/payment/config/form-load.js'
 import useView from '@/compositions/useView.js'
 // import TableFixed from '@/components/Table/fixed/index.vue'
 
@@ -49,16 +52,52 @@ export default {
     },
   },
   setup() {
+    const config = _.cloneDeep(objectConfig)
+    const formLoad = _.cloneDeep(formLoadOrig)
     const activeTab = ref(0)
     const tabs = ref([])
     useView({
       tabs,
       activeTab,
     })
+
+    // const checkIncludesPermissions = (el) => {
+    //   if (!el.permissions) return true
+    //   return el.permissions.includes(permission.value)
+    // }
+    // const checkIncludesDirections = (el) => {
+    //   if (!el.direction_id) return true
+    //   return el.direction_id.includes(direction_id.value)
+    // }
+    const availableTabs = computed(() => {
+      return config.tabs.filter((tab) => {
+        if (!tab.isShow) return tab
+        else {
+          return tab.isShow.condition.every((el) => {
+            // if (el.permissions) {
+            //   return checkIncludesPermissions(el) === el.type
+            // } else
+            if (el.funcComputed) {
+              const context = {
+                store,
+              }
+              return el.funcComputed(context)
+            }
+          })
+        }
+      })
+    })
+
+    formLoad.fields[0].name = 'path'
+    formLoad.fields[0].options.folder = 'tmp'
+    formLoad.fields[0].options.name = '`tmp_tarif`'
+    formLoad.actions[1].url = 'parser/object_price/xls/list'
+    config.tabs[3].detail.tabs.push(formLoad)
     return {
-      object,
+      config,
       activeTab,
       tabs,
+      availableTabs,
     }
   },
 }
