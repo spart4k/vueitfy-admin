@@ -1666,7 +1666,7 @@ export default {
       appendAction: [
         {
           icon: '$IconAccoutSync',
-          label: 'Смешить линейщика',
+          label: 'Сменить линейщика',
           notReadonly: true,
           class: [
             (formData) => (formData.real_personal_id ? 'orange' : 'primary'),
