@@ -3355,7 +3355,12 @@ export default {
                 isDBA(context) ||
                 isDirector(context) ||
                 isMagnit(context) ||
-                isLogistik(context)
+                (isLogistik(context) &&
+                  context.formData.status_id === 1 &&
+                  (isDBA(context) ||
+                    isOKK(context) ||
+                    isROKK(context) ||
+                    isDirector(context)))
               )
             },
             type: false,
@@ -3413,7 +3418,12 @@ export default {
                     isCUP(context)) &&
                   context.formData.status_id === 1) ||
                 isMagnit(context) ||
-                isLogistik(context)
+                (isLogistik(context) &&
+                  context.formData.status_id === 1 &&
+                  (isDBA(context) ||
+                    isOKK(context) ||
+                    isROKK(context) ||
+                    isDirector(context)))
               )
             },
             type: false,
