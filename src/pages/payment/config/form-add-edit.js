@@ -3018,6 +3018,22 @@ export default {
         value: true,
       },
     }),
+    stringField({
+      label: 'ID тарифа',
+      name: 'readonly',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
   ],
   sharedFields: {
     fields: [
@@ -3043,6 +3059,9 @@ export default {
       {
         name: 'real_bank_id',
         alias: 'bank_id',
+      },
+      {
+        name: 'readonly',
       },
     ],
     target: formChangePersonal,
