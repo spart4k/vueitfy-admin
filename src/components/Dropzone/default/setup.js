@@ -110,9 +110,6 @@ export default {
             await dropzone.value.removeFile(proxyVal.value[0])
           }
           proxyVal.value = []
-          console.log(proxyVal.value)
-          // proxyVal.value = [...arr]
-          // props.field.value.push(...arr)
           proxyVal.value.push(...arr)
           emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
           nextTick(() => {
@@ -123,16 +120,6 @@ export default {
     }
 
     const fileValidation = () => {
-      console.log(
-        proxyVal.value.length,
-        props.options.countFiles &&
-          proxyVal.value.length > props.options.countFiles
-      )
-      console.log(
-        props.options.countFiles,
-        proxyVal.value.length,
-        props.options.countFiles
-      )
       const throwError = (message) => {
         store.commit('notifies/showMessage', {
           color: 'error',
@@ -213,7 +200,6 @@ export default {
           size: 12322,
           type: 'image/' + type.toLowerCase(),
         }
-        console.log(file, url)
         dropzone.value.manuallyAddFile(file, url)
       }
     }

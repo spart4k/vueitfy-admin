@@ -123,7 +123,6 @@ const minFileLength = {
 
 const requiredFile = {
   $validator: (val, formData) => {
-    console.log(val)
     if (formData.status === 1 && !val) {
       return true
     } else if (formData.status === 2 && !val) {

@@ -241,11 +241,9 @@ export default {
     })
     const appendClass = (classes) => {
       return classes.reduce((acc, el) => {
-        console.log(typeof el)
         if (typeof el === 'string') {
           acc.push(el)
         } else if (typeof el === 'function') {
-          console.log(el(props.formData))
           acc.push(el(props.formData))
         }
         // acc.push(el)

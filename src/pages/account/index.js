@@ -564,7 +564,6 @@ const config = {
                             ctx.formData.direction_json?.length === 1
                           ) && ctx.formData.permission_id !== 23
                         )
-                        // console.log(ctx, 'CONTEXT')
                       },
                     },
                   ],
@@ -700,7 +699,6 @@ const config = {
                       target: 'funcCondition',
                       funcCondition: (ctx) => {
                         return ctx.formData.permission_id !== 23
-                        // console.log(ctx, 'CONTEXT')
                       },
                     },
                   ],
