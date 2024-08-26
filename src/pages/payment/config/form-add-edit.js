@@ -361,6 +361,12 @@ export default {
           type: 'num',
         },
         {
+          field: 'real_personal_bank_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
           alias: 'mode',
           source: 'mode',
           type: 'num',
@@ -1341,6 +1347,9 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
+            if (isLogistik(ctx)) {
+              return
+            }
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -1463,6 +1472,12 @@ export default {
             },
             {
               field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'real_personal_bank_id',
               value: '',
               source: 'formData',
               type: 'num',
@@ -1800,6 +1815,7 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
+            if (isLogistik(ctx)) return
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -2126,6 +2142,7 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
+            if (isLogistik(ctx)) return
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -2228,7 +2245,7 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
-            if (!isMagnit(ctx)) return
+            if (!isMagnit(ctx) || isLogistik(ctx)) return
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -2323,6 +2340,7 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
+            if (isLogistik(ctx)) return
             console.log(ctx.formData.hour * ctx.formData.object_price)
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
           },
@@ -2529,6 +2547,7 @@ export default {
     selectField({
       label: 'Банки.карта/нал',
       name: 'personal_bank_id',
+      alias: 'real_personal_bank_id',
       placeholder: '',
       class: ['noWrap'],
       selectOption: {
@@ -2673,6 +2692,12 @@ export default {
             },
             {
               field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'real_personal_bank_id',
               value: '',
               source: 'formData',
               type: 'num',
@@ -2896,6 +2921,12 @@ export default {
             },
             {
               field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'real_personal_bank_id',
               value: '',
               source: 'formData',
               type: 'num',
