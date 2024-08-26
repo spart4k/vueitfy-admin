@@ -9,7 +9,14 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, notValue, interval, onlyCard } from '@/utils/validation.js'
+import {
+  required,
+  notValue,
+  interval,
+  onlyCard,
+  numeric,
+  vneplSumm,
+} from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 import text from '@/components/Mails/letter/text/setup'
@@ -2435,7 +2442,7 @@ export default {
           default: 5,
         },
       },
-      validations: { required },
+      validations: { required, numeric, vneplSumm },
       bootstrapClass: [''],
       round: true,
       readonly: {

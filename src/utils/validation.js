@@ -95,6 +95,21 @@ const onlyCard = {
   $message: () => 'Нельзя создать с наличными',
 }
 
+const vneplSumm = {
+  $validator: (val, formData) => {
+    if (
+      [1, 6].includes(formData.direction_id) &&
+      formData.vid_vedomost_id === 9 &&
+      +val === 0
+    ) {
+      return false
+    } else {
+      return true
+    }
+  },
+  $message: () => 'Нельзя создать с 0',
+}
+
 const hasTime = {
   $validator: (val) => {
     const splitedValue = val.split(' ')
@@ -223,5 +238,6 @@ export {
   requiredFile,
   dateRange,
   onlyCard,
+  vneplSumm,
   // strongPassword
 }
