@@ -250,7 +250,6 @@ export default {
                   ctx.formData.direction_json.length === 1
                 ) && ctx.formData.permission_id !== 23
               )
-              // console.log(ctx, 'CONTEXT')
             },
           },
         ],
@@ -395,7 +394,6 @@ export default {
             target: 'funcCondition',
             funcCondition: (ctx) => {
               return ctx.formData.permission_id !== 23
-              // console.log(ctx, 'CONTEXT')
             },
           },
         ],
@@ -442,7 +440,6 @@ export default {
             target: 'funcCondition',
             funcCondition: (ctx) => {
               return ctx.formData.permission_id !== 23
-              // console.log(ctx, 'CONTEXT')
             },
           },
         ],

@@ -37,8 +37,6 @@ paymentConfig.requestId = 'payment_id'
 paymentConfig.routeParam = 'payment_id'
 paymentConfig.initDepStart = true
 // const btnClose = paymentConfig.actions.find((el) => el.action !== 'closePopup')
-// console.log(btnClose)
-console.log(paymentConfig)
 export default {
   id: uuidv4(),
   name: 'Основные',
@@ -667,7 +665,6 @@ export default {
           },
           // {
           //   funcCondition: function () {
-          //     console.log(this)
           //   },
           // },
         ],
