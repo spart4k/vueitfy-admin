@@ -9,7 +9,7 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, notValue, interval } from '@/utils/validation.js'
+import { required, notValue, interval, onlyCard } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 import text from '@/components/Mails/letter/text/setup'
@@ -34,8 +34,12 @@ const isX5 = (ctx) => {
   return ctx.formData.direction_id === 2 && ctx.formData.type === 1
 }
 
+const isRoznica = (ctx) => {
+  return ctx.formData.direction_id === 2
+}
+
 const isLogistik = (ctx) => {
-  return ctx.formData.direction_id === 1
+  return [1, 6].includes(ctx.formData.direction_id)
 }
 
 const conditionLogistik = (context) => {
@@ -2301,6 +2305,19 @@ export default {
         ],
       },
       requestType: 'number',
+      isShow: {
+        value: false,
+        type: 'every',
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return isRoznica(context)
+            },
+            type: true,
+          },
+        ],
+      },
       dependence: [
         {
           //fields: ['statement_card', 'cardowner'],
@@ -2572,7 +2589,7 @@ export default {
           type: true,
         },
       ],
-      validations: { required },
+      validations: { required, onlyCard },
       bootstrapClass: [''],
       dependence: [
         {
@@ -3256,7 +3273,8 @@ export default {
                 (isX5(context) &&
                   (isOKK(context) || isROKK(context)) &&
                   [2, 3].includes(context.formData.status_id)) ||
-                isMagnit(context)
+                isMagnit(context) ||
+                isLogistik(context)
               )
             },
             type: false,
@@ -3298,7 +3316,8 @@ export default {
                 (isX5(context) && (isOKK(context) || isROKK(context))) ||
                 isDBA(context) ||
                 isDirector(context) ||
-                isMagnit(context)
+                isMagnit(context) ||
+                isLogistik(context)
               )
             },
             type: false,
@@ -3356,7 +3375,8 @@ export default {
                     isManager(context) ||
                     isCUP(context)) &&
                   context.formData.status_id === 1) ||
-                isMagnit(context)
+                isMagnit(context) ||
+                isLogistik(context)
               )
             },
             type: false,
@@ -3403,7 +3423,10 @@ export default {
                 (isDBA(context) && context.formData.status_id === 4) ||
                 (isX5(context) &&
                   (isAllBug(context) || isDBA(context)) &&
-                  context.formData.status_id === 4)
+                  context.formData.status_id === 4) ||
+                (isLogistik(context) &&
+                  context.formData.status_id === 4 &&
+                  isAllBug(context))
               )
             },
             type: false,
