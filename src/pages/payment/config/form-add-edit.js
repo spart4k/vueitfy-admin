@@ -1654,7 +1654,6 @@ export default {
             condition: [
               {
                 funcCondition: (context) => {
-                  console.log(context, 'context')
                   if (!context.environment.readonlyAll) {
                     return !!(
                       [1, 2, 3].includes(context.formData.status_id) &&
@@ -1662,10 +1661,6 @@ export default {
                       isX5(context)
                     )
                   } else {
-                    console.log(
-                      'must show',
-                      isX5(context) && context.formData.real_personal_id
-                    )
                     return !!(
                       isX5(context) && context.formData.real_personal_id
                     )
@@ -2306,7 +2301,6 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           func: async (ctx) => {
-            console.log(ctx.formData.hour * ctx.formData.object_price)
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
           },
         },
@@ -3181,8 +3175,6 @@ export default {
         // } catch (err) {
         //   console.log(err)
         // }
-
-        // console.log(result)
       },
     }),
     stringAction({
@@ -3292,7 +3284,6 @@ export default {
           },
           // {
           //   funcCondition: (context) => {
-          //     console.log('isMagnit')
           //     return isMagnit(context)
           //   },
           //   type: false,

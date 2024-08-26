@@ -83,7 +83,6 @@ export default function ({
     fields = {}
     fieldAliases = {}
     for (let i = 0; i < form.fields.length; i++) {
-      console.log()
       fields[form.fields[i].name] = form.fields[i]
       if (form.fields[i].alias)
         fieldAliases[form.fields[i].alias] = form.fields[i].name
@@ -474,7 +473,6 @@ export default function ({
   const sharingFields = (sharedFields) => {
     sharedFields.fields.forEach((field) => {
       sharedFields.target.fields.forEach((targetField) => {
-        // console.log(targetField.name, field.name)
         if (Array.isArray(field.alias)) {
           field.alias.forEach((el) => {
             if (targetField.name === el) {
@@ -525,7 +523,6 @@ export default function ({
       let routeRequest = formData[action.target.requestKey]
         ? `/:${action.target.requestKey}`
         : '-add'
-      console.log(route)
       router.push({
         name: route.name + '/' + action.target.route + routeRequest,
         // name: `${route.name}/:${requestId}`,
@@ -832,10 +829,8 @@ export default function ({
     } else {
       result = await createForm(queryParams, params)
     }
-    console.log(queryParams, action)
     if (action.handlingResponse) {
       handlingResponse(action, result)
-      console.log(!queryParams?.action?.notClose && result?.cody)
       if (!queryParams?.action?.notClose && result?.code === 1) {
         emit('getItems')
         emit('closePopup')
@@ -870,7 +865,6 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
-    console.log(JSON.stringify(formData))
     queueMicrotask(async () => {
       params.field.dependence?.forEach((dependence) => {
         const depField = dependence.field
@@ -931,7 +925,6 @@ export default function ({
       })
     }
     findFieldName(field)
-    console.log(formDataNames)
     formDataNames.forEach((el) => {
       formData[el] = ''
     })
@@ -964,7 +957,6 @@ export default function ({
             },
           })
           formData[targetField] = result
-          // console.log(data)
         } else if (dependence.type === 'custom') {
           const conditionContext = {
             store,
@@ -987,7 +979,6 @@ export default function ({
     } else if (!value && el.source === 'mode') {
       value = mode
     } else if (el.source === 'formDataParent') {
-      console.log(JSON.stringify(formDataParent), props.formDataParent)
       value = [formDataParent[el.field]]
     } else {
       value = el.value
@@ -1061,7 +1052,6 @@ export default function ({
           }
         }
       }
-      // console.log(list, 'LISTLIST')
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
 
@@ -1289,7 +1279,6 @@ export default function ({
           await getFieldsList(fields[depField].updateList)
         }
       }
-      console.log(formData[depField], fields[depField]?.items, fields[depField])
       if (
         !hasValue(formData[depField], fields[depField]?.items, fields[depField])
       ) {
@@ -1498,12 +1487,9 @@ export default function ({
   }
 
   const putSelectItems = async (lists) => {
-    // console.log(JSON.stringify(lists.data))
     const stackDep = []
     for (let keyList in lists.data) {
       const field = fields[fieldAliases[keyList]]
-      console.log(fieldAliases, keyList)
-      console.log(field)
       if (field) {
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1544,7 +1530,6 @@ export default function ({
           : lists.data[keyList]
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
-          console.log('length 1')
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
               lists.data[keyList][0][field.selectOption.value],
@@ -1552,7 +1537,6 @@ export default function ({
           } else {
             formData[field.name] =
               lists.data[keyList][0][field.selectOption.value]
-            console.log(formData[field.name])
           }
           const fieldItem = field?.items?.find(
             (el) => el.id === formData[field.name]
@@ -1582,7 +1566,6 @@ export default function ({
               field.defaultItems[0][field.selectOption.value]
           }
         }
-        // console.log(JSON.stringify(lists.data))
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
           formData[field.name] = ''
         }
@@ -1602,7 +1585,6 @@ export default function ({
     await Promise.all(stackDep)
   }
   const hasValue = (value, list, field) => {
-    // console.log(value, list, field, field?.name)
     if (!value) return true
     else {
       if (Array.isArray(value)) {
@@ -1655,13 +1637,9 @@ export default function ({
 
   const getListField = (list) => {
     let listValue = undefined
-    console.log(fields, fieldAliases, list.alias)
     const listField = fields[fieldAliases[list.alias]]
-    console.log(listField)
     if (listField) {
       listValue = formData[listField.name]
-      console.log(formData)
-      console.log(listValue)
     }
     return listValue
   }

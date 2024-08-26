@@ -182,7 +182,6 @@ export default {
       }
     }
     const closePopupForm = (double) => {
-      console.log(route.matched)
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
       if (double) emit('closePopup')

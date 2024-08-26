@@ -629,7 +629,6 @@ const table = {
     }
 
     const closePopupForm = () => {
-      console.log(route)
       router.push({ name: route.matched.at(-2).name })
       popupForm.value.isShow = false
     }
