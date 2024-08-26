@@ -2452,6 +2452,7 @@ export const editFields = [
       // },
       {
         type: 'default',
+        isChange: true,
         fillField: [
           {
             formKey: 'account_id',
@@ -2709,6 +2710,7 @@ export const editFields = [
       // },
       {
         type: 'default',
+        isChange: true,
         fillField: [
           {
             formKey: 'account_id',
@@ -2738,6 +2740,7 @@ export const editFields = [
       },
       {
         type: 'computed',
+        isChange: true,
         funcComputed: (context) => {
           context.formData.personal_zr = null
           context.formData.personal_object_zr = null
@@ -2970,6 +2973,7 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
+        isChange: true,
         fillField: [
           {
             formKey: 'personal_zr',
@@ -3132,6 +3136,7 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
+        isChange: true,
         fillField: ['regions_id', 'city_id'],
       },
     ],
@@ -3429,6 +3434,7 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
+        isChange: true,
         fillField: [
           {
             formKey: 'object_zr',
@@ -3591,6 +3597,7 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
+        isChange: true,
         fillField: [
           {
             formKey: 'permission_accounts_zr',
@@ -4180,6 +4187,7 @@ export const editFields = [
     dependence: [
       {
         type: 'default',
+        isChange: true,
         fillField: ['rek1', 'rek2', 'bank_id', 'owner_id', 'realtor_id'],
       },
     ],

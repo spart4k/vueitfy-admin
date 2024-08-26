@@ -1069,6 +1069,7 @@ export default function ({
   const getDependies = async (params) => {
     const { value, field, clearId } = params
     field.dependence?.forEach(async (dependence) => {
+      if (dependence.isChange && params.init) return
       if (dependence.condition?.length) {
         const success = dependence.condition.every((conditionEl) => {
           return conditionEl.value.includes(formData[conditionEl.field])
@@ -1700,6 +1701,7 @@ export default function ({
           await getDependies({
             field: el,
             value: formData[el.name],
+            init: true,
           })
         }
       })
