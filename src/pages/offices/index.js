@@ -139,7 +139,6 @@ export const editFields = [
   //     condition: [
   //       {
   //         funcCondition: (context) => {
-  //           console.log(context.store.state.user)
   //           return context.store.state.user.permission_id !== 4
   //         },
   //         type: true,
