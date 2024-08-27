@@ -204,6 +204,18 @@
           @closePopup="$emit('closePopup')"
           @getItems="$emit('getItems')"
         />
+        <Form32
+          v-if="data.task.task_type_id === 32"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
+        <Form33
+          v-if="data.task.task_type_id === 33"
+          :data="data"
+          @closePopup="$emit('closePopup')"
+          @getItems="$emit('getItems')"
+        />
         <Form34
           v-if="data.task.task_type_id === 34"
           :data="data"

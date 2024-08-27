@@ -1,17 +1,22 @@
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
-import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import { useRouter, useRoute } from 'vue-router/composables'
+import useRequest from '@/compositions/useRequest'
+import useForm from '@/compositions/useForm'
+import { requiredIf } from '@/utils/validation'
+import Dropzone from '@/components/Dropzone/default'
 import moment from 'moment'
 
-const Form28 = defineComponent({
-  name: 'Form28',
+const Form32 = defineComponent({
+  name: 'Form32',
   components: {
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
+    Dropzone,
   },
   props: {
     data: {
@@ -20,15 +25,22 @@ const Form28 = defineComponent({
     },
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
+        router,
+        ctx,
+        route,
       },
     }
+    // const account_id = computed(() => store.state.user.account_id)
     const directionToMagnit = props.data.entity.object_type === 2
     const pathAct = props.data.data.shop_request_magnit.path_act
+    const isLoadedImage = ref(false)
+    const dropzone = ref([])
     const loading = ref(false)
-    const confirm = ref(false)
     const infoObj = {
       account_name: {
         key: 'Менеджер заявки',
@@ -79,81 +91,47 @@ const Form28 = defineComponent({
 
     const { makeRequest: changeStatusConfirm } = useRequest({
       context,
-      request: (cup) => {
+      request: (path) => {
+        const dataForConfirm = {
+          process_id: props.data.task.process_id,
+          task_id: props.data.task.id,
+          parent_action: props.data.task.id,
+          payment_id: props.data.entity.id,
+          file: path,
+        }
+
         return store.dispatch('taskModule/setPartTask', {
           status: 2,
-          data: {
-            process_id: props.data.task.process_id,
-            task_id: props.data.task.id,
-            parent_action: props.data.task.id,
-            payment_id: props.data.entity.id,
-            manager_id: props.data.task.to_account_id,
-            account_id: cup ? props.data.data.cup_id : undefined,
-            everyday: cup
-              ? undefined
-              : props.data.entity.vid_vedomost_id === 1
-              ? 1
-              : 0,
-            cup: cup ? 1 : 0,
-          },
+          data: dataForConfirm,
         })
-      },
-    })
-
-    const { makeRequest: confirmPayment } = useRequest({
-      context,
-      request: (data) => {
-        return store.dispatch('form/putForm', data)
       },
     })
 
     const endTask = async () => {
-      const data = {
-        url: `update/payment/${props.data.entity.id}`,
-        body: {
-          data: {
-            status_id: 1,
-            from_task_accept: true,
-          },
+      loading.value = true
+      const file = dropzone.value[0]
+      const name =
+        'confirmation' +
+        '_' +
+        store?.state?.user.id +
+        '_' +
+        new Date().getTime()
+      const ext = file.name.split('.').pop()
+      const storeForm = new FormData()
+      storeForm.append('name', name + '.' + ext)
+      storeForm.append('file', file)
+      const params = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
       }
-      loading.value = true
-      const { code } = await confirmPayment(data)
-      if (code === 2) {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Ошибка сервера',
-          timeout: 1000,
-        })
-      } else if (code === 3) {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Начисление уже оплачено',
-          timeout: 1000,
-        })
-      } else if (code === 4) {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Недостаточно данных',
-          timeout: 1000,
-        })
-      } else if (code === 1) {
-        endTaskConfirm()
-      }
-    }
-
-    const endTaskConfirm = async (cup) => {
-      if (cup && props.data.data.cup_id === 0) {
-        store.commit('notifies/showMessage', {
-          color: 'warning',
-          content: 'попробуйте позже',
-          timeout: 1000,
-        })
-        return
-      }
-      confirm.value = false
-      loading.value = true
-      const { success } = await changeStatusConfirm(cup)
+      const fullPath = `magnit_act_path/${name}.${ext}`
+      await store.dispatch('file/create', {
+        data: storeForm,
+        folder: fullPath,
+        params,
+      })
+      const { success } = await changeStatusConfirm(fullPath)
       loading.value = false
       if (success) {
         store.commit('notifies/showMessage', {
@@ -167,15 +145,15 @@ const Form28 = defineComponent({
     }
 
     return {
+      convertDate,
       infoObj,
+      endTask,
       directionToMagnit,
       pathAct,
-      convertDate,
-      endTask,
-      endTaskConfirm,
-      confirm,
       loading,
+      isLoadedImage,
+      dropzone,
     }
   },
 })
-export default Form28
+export default Form32

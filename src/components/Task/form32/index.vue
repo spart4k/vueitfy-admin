@@ -19,14 +19,20 @@
         </div>
         <span v-else> Не приложен</span>
       </div>
-      <v-textarea
-        rows="2"
-        clearable
-        @input="commentErr = ''"
-        label="Комментарий"
-        v-model="formData.comment"
-        :error-messages="commentErr"
-      ></v-textarea>
+      <span class="font-weight-bold mb2"
+        ><v-icon small v-if="dropzone.length">$IconGalka</v-icon>Приложите
+        документы подтверждающие смену:
+      </span>
+      <Dropzone
+        class="mt-2"
+        v-model="dropzone"
+        :options="{
+          withoutSave: false,
+          folder: 'magnit_act_path',
+          removeble: true,
+          countFiles: 1,
+        }"
+      ></Dropzone>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
@@ -34,21 +40,12 @@
         :loading="loading"
         class="mr-2"
         small
-        @click="endTask({ type: 1 })"
-        color="info"
+        @click="endTask"
+        color="primary"
+        :disabled="!dropzone.length"
       >
         <v-icon small>mdi-content-save</v-icon>
-        Согласовать
-      </v-btn>
-      <v-btn
-        :loading="loading"
-        class="mr-2"
-        small
-        @click="endTask({ type: 2 })"
-        color="error"
-      >
-        <v-icon small>mdi-close</v-icon>
-        Не согласовать
+        Завершить
       </v-btn>
       <v-btn
         :loading="loading"
