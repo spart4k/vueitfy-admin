@@ -9,8 +9,8 @@ import useForm from '@/compositions/useForm'
 import { requiredIf } from '@/utils/validation'
 import moment from 'moment'
 
-const Form27 = defineComponent({
-  name: 'Form27',
+const Form33 = defineComponent({
+  name: 'Form33',
   components: {
     TextInfo: textInfo,
     FormError: formError,
@@ -38,7 +38,6 @@ const Form27 = defineComponent({
     const pathAct = props.data.data.shop_request_magnit.path_act
     const isFormConfirmed = ref(null)
     const commentErr = ref('')
-    const confirm = ref(false)
     const loading = ref(false)
     const infoObj = {
       account_name: {
@@ -104,20 +103,17 @@ const Form27 = defineComponent({
       request: ({ type }) => {
         const dataForConfirm = {
           process_id: props.data.task.process_id,
-          task_id: props.data.task.id,
           parent_action: props.data.task.id,
+          task_id: props.data.task.id,
           payment_id: props.data.entity.id,
-          manager_id: JSON.parse(props.data.task.dop_data).manager_id,
-          comment: formData.comment ?? '',
-          account_id:
-            type === 2 || type === 3
-              ? JSON.parse(props.data.task.dop_data).manager_id
-              : undefined,
-          valid_lu: type === 2 ? 1 : type === 3 ? 0 : undefined,
+
+          manager_id: type === 2 ? props.data.entity.account_id : undefined,
+          comment: type === 2 ? formData.comment ?? '' : undefined,
+          account_id: type === 2 ? props.data.task.from_account_id : undefined,
         }
 
         return store.dispatch('taskModule/setPartTask', {
-          status: type === 2 || type === 3 ? 6 : 2,
+          status: type === 1 ? 2 : 6,
           data: dataForConfirm,
         })
       },
@@ -126,12 +122,12 @@ const Form27 = defineComponent({
     const { makeRequest: confirmPayment } = useRequest({
       context,
       request: (data) => {
-        return store.dispatch('form/putForm', data)
+        return store.dispatch('form/update', data)
       },
     })
 
     const endTask = async ({ type }) => {
-      if (type === 2 || type === 3) {
+      if (type === 2) {
         isFormConfirmed.value = false
         if (!formData.comment) {
           commentErr.value = 'Обязательное поле'
@@ -141,65 +137,33 @@ const Form27 = defineComponent({
         commentErr.value = ''
         isFormConfirmed.value = true
       }
-      if (type === 1) endTaskConfirm({ type: 1 })
-      else if (type === 2) endTaskConfirm({ type: 2 })
-      else if (type === 3) confirm.value = true
-    }
 
-    const endTaskConfirm = async ({ type }) => {
-      confirm.value = false
-      const data = {
-        url: `update/payment/${props.data.entity.id}`,
-        body: {
-          data: {
-            status_id: type === 2 || type === 3 ? 3 : 2,
-            from_task_accept: true,
-            comment_okk: formData.comment ?? '',
-          },
-        },
-      }
       loading.value = true
-      const { code } = await confirmPayment(data)
-      if (code === 2) {
+      let response
+      if (type === 1) {
+        const data = {
+          url: `set/data/payment`,
+          body: {
+            data: {
+              id: props.data.entity.id,
+              valid_lu: 1,
+            },
+          },
+        }
+        await confirmPayment(data)
+        response = await changeStatusConfirm({ type: 1 })
+      } else if (type === 2) {
+        response = await changeStatusConfirm({ type: 2 })
+      }
+      loading.value = false
+      if (response.success) {
         store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Ошибка сервера',
+          color: 'success',
+          content: 'Задача выполнена',
           timeout: 1000,
         })
-      } else if (code === 4) {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Недостаточно данных',
-          timeout: 1000,
-        })
-      } else if (code === 1 || code === 3) {
-        let data
-        if (type === 1) {
-          data = await changeStatusConfirm({ type: 1 })
-        } else if (type === 2) {
-          if (code === 1) {
-            data = await changeStatusConfirm({ type: 2 })
-          } else if (code === 3) {
-            data = await changeStatusConfirm({ type: 1 })
-          }
-        } else if (type === 3) {
-          if (code === 1) {
-            data = await changeStatusConfirm({ type: 3 })
-          } else if (code === 3) {
-            data = await changeStatusConfirm({ type: 1 })
-          }
-        }
-        loading.value = false
-        const { success } = data
-        if (success) {
-          store.commit('notifies/showMessage', {
-            color: 'success',
-            content: 'Задача выполнена',
-            timeout: 1000,
-          })
-          ctx.emit('closePopup')
-          ctx.emit('getItems')
-        }
+        ctx.emit('closePopup')
+        ctx.emit('getItems')
       }
     }
 
@@ -207,14 +171,12 @@ const Form27 = defineComponent({
       convertDate,
       infoObj,
       endTask,
-      endTaskConfirm,
       formData,
       directionToMagnit,
       pathAct,
       commentErr,
-      confirm,
       loading,
     }
   },
 })
-export default Form27
+export default Form33

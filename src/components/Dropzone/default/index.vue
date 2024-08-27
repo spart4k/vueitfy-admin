@@ -13,7 +13,7 @@
       v-if="field?.label"
       >{{ field.label }}</v-list-item-title
     >
-    <div v-if="field.options.showScan && originalData">
+    <div v-if="field?.options.showScan && originalData">
       <span>Скан:</span>
       <a download :href="$root.env.VUE_APP_STORE + originalData"
         ><v-icon left small> $IconDocument </v-icon></a
