@@ -29,6 +29,7 @@ import {
   isOKK,
   isRG,
   isROKK,
+  isRukfil,
   isVertical,
 } from '@/utils/permissions'
 import formChangePersonal from './form-change-personal.js'
@@ -3422,7 +3423,8 @@ export default {
                   (isDBA(context) ||
                     isOKK(context) ||
                     isROKK(context) ||
-                    isDirector(context))) ||
+                    isDirector(context) ||
+                    isRukfil(context))) ||
                 !isCreater(context)
               )
             },
@@ -3487,7 +3489,9 @@ export default {
                   (isDBA(context) ||
                     isOKK(context) ||
                     isROKK(context) ||
-                    isDirector(context)))
+                    isDirector(context) ||
+                    isRukfil(context) ||
+                    !isCreater(context)))
               )
             },
             type: false,
