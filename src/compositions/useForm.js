@@ -75,9 +75,11 @@ export default function ({
       loadStoreFile,
       emit,
       fields,
+      entityData: entityData.value,
     }
     await handlerEmit(conditionContext)
   }
+  const metaData = reactive({})
   const initFields = () => {
     if (!form) return
     fields = {}
@@ -349,6 +351,7 @@ export default function ({
         sortData,
         formDataParent,
         context,
+        entityData: entityData.value,
         loadStoreFile,
       })
       loading.value = false
@@ -372,6 +375,7 @@ export default function ({
       const conditionContext = {
         formData,
         result,
+        entityData: entityData.value,
       }
       let res = result.code
       let contextData = formData
@@ -1757,6 +1761,7 @@ export default function ({
                 environment,
                 originalData: originalData.value,
                 mode,
+                entityData: entityData.value,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1821,6 +1826,7 @@ export default function ({
                 originalData: originalData.value,
                 environment,
                 mode,
+                entityData: entityData.value,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1863,6 +1869,7 @@ export default function ({
                 formData,
                 originalData: originalData.value,
                 environment,
+                entityData: entityData.value,
               }
               return el.funcCondition(conditionContext)
             } else {
