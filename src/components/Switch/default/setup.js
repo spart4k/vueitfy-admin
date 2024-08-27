@@ -12,9 +12,9 @@ export default {
       type: Number || String,
       default: 1,
     },
-    config: {
+    context: {
       type: Object,
-      default: () => [],
+      default: () => {},
     },
   },
   setup(props, ctx) {
@@ -22,7 +22,7 @@ export default {
     const proxyValue = toRef(props, 'value')
     const button = toRef(props, 'button')
     const handlerSwitch = (tab) => {
-      tab.action && tab.action(props.config, tab)
+      tab.action && tab.action(props.context, tab)
       button.value.refreshTable && emit('getItems')
       testTask.value = tab.value
       proxyValue.value = tab.value

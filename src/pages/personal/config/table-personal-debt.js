@@ -13,15 +13,15 @@ import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
-function changeSort(config, tab) {
+function changeSort(context, tab) {
   // let btn = config.panel.buttons.find((x) => x.function === changeSort)
   // let heading = config.head.find((x) => x.changeable)
   if (tab.value === 2) {
-    config.head = holdPaymentsConfigHead
-    config.options.url = 'get/pagination/hold_payments'
+    context.config.head = holdPaymentsConfigHead
+    context.config.options.url = 'get/pagination/hold_payments'
   } else if (tab.value === 1) {
-    config.head = debetorConfigHead
-    config.options.url = 'get/pagination/personal_debit'
+    context.config.head = debetorConfigHead
+    context.config.options.url = 'get/pagination/personal_debit'
   }
 }
 
