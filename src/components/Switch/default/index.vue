@@ -7,7 +7,7 @@
           :key="tabIndex"
           class="switch-tab"
           :class="proxyValue === tab.value ? 'switch-tab--active' : ''"
-          @click="handlerSwitch(tab)"
+          @click="proxyValue !== tabIndex + 1 && handlerSwitch(tab)"
           ref="thumbs"
         >
           {{ tab.label }}

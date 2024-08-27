@@ -1,6 +1,21 @@
 import filters from './filters'
+import _ from 'lodash'
 import formMagnitZayavka from './config/form-magnit-zayavka.js'
-
+const changeFilter = (context, tab) => {
+  if (tab.value === 2) {
+    context.paramsQuery.initFilter.push({
+      type: 'switch',
+      subtype: 'single',
+      alias: 'is_my',
+    })
+  } else if (tab.value === 1) {
+    _.remove(context.paramsQuery.initFilter, {
+      type: 'switch',
+      subtype: 'single',
+      alias: 'is_my',
+    })
+  }
+}
 export const config = {
   selector: '#mainTable',
   options: {
@@ -13,6 +28,7 @@ export const config = {
     url: 'get/pagination_pivot/request_magnit_new',
     title: 'Новые',
     doubleHandlerType: 'cell',
+    initFilter: [],
   },
   type: 'TableFixed',
   panel: {
@@ -34,6 +50,34 @@ export const config = {
           condition: [
             {
               permissions: [3, 4, 8, 17],
+              type: true,
+            },
+          ],
+        },
+      },
+      {
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        type: 'switch',
+        value: 1,
+        refreshTable: true,
+        backgroundColor: '#ffffff',
+        values: [
+          {
+            label: 'Все',
+            value: 1,
+            action: changeFilter,
+          },
+          {
+            label: 'Мои',
+            value: 2,
+            action: changeFilter,
+          },
+        ],
+        isShow: {
+          condition: [
+            {
+              permissions: [9],
               type: true,
             },
           ],
