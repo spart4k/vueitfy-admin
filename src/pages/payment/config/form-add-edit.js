@@ -49,6 +49,10 @@ const isLogistik = (ctx) => {
   return [1, 6, 7].includes(ctx.formData.direction_id)
 }
 
+const isCreater = (ctx) => {
+  return ctx.entityData.from_account_id === ctx.store.state.user.id
+}
+
 const conditionLogistik = (context) => {
   return (
     [1, 6, 7].includes(context.formData.direction_id) &&
@@ -2128,9 +2132,11 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isX5(context) &&
-                [2, 3, 6].includes(context.formData.status_id) &&
-                [3, 5, 1].includes(context.originalData.vid_vedomost_id)
+                (isX5(context) &&
+                  [2, 3, 6].includes(context.formData.status_id) &&
+                  [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
+                isOKK(context) ||
+                isROKK(context)
               )
             },
             type: true,
@@ -2331,9 +2337,11 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isX5(context) &&
-                [2, 3, 6].includes(context.formData.status_id) &&
-                [3, 5, 1].includes(context.originalData.vid_vedomost_id)
+                (isX5(context) &&
+                  [2, 3, 6].includes(context.formData.status_id) &&
+                  [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
+                isOKK(context) ||
+                isROKK(context)
               )
             },
             type: true,
@@ -2660,6 +2668,9 @@ export default {
               (context.store.state.user.is_personal_vertical &&
                 (context.formData.status_id === 1 ||
                   context.formData.status_id === 3)) ||
+              (isLogistik(context) &&
+                [1, 3].includes(context.formData.status_id) &&
+                (isVertical(context) || isManager(context))) ||
               (context.formData.status_id === 6 && context.mode === 'edit'),
             type: false,
           },
@@ -2669,6 +2680,16 @@ export default {
             },
             type: true,
           },
+          // {
+          //   funcCondition: (context) => {
+          //     return (
+          //       isLogistik(context) &&
+          //       context.formData.vid_vedomost_id === 5 &&
+          //       context.originalData.status_id === 2
+          //     )
+          //   },
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -2849,6 +2870,13 @@ export default {
           //       context.formData.status_id === 3) &&
           //     context.mode === 'edit',
           //   type: true,
+          // },
+          // {
+          //   funcCondition: (context) =>
+          //     isLogistik(context) &&
+          //     context.formData.vid_vedomost_id === 9 &&
+          //     context.mode === 'edit',
+          //   type: false,
           // },
           {
             funcCondition: (context) =>
@@ -3096,6 +3124,22 @@ export default {
     stringField({
       label: 'ID тарифа',
       name: 'readonly',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'vertical',
+      name: 'vertical',
       placeholder: '',
       readonly: true,
       class: [''],
@@ -3378,7 +3422,8 @@ export default {
                   (isDBA(context) ||
                     isOKK(context) ||
                     isROKK(context) ||
-                    isDirector(context)))
+                    isDirector(context))) ||
+                !isCreater(context)
               )
             },
             type: false,
@@ -3433,7 +3478,8 @@ export default {
                     isDBA(context) ||
                     isRG(context) ||
                     isManager(context) ||
-                    isCUP(context)) &&
+                    isCUP(context) ||
+                    isDirector(context)) &&
                   context.formData.status_id === 1) ||
                 isMagnit(context) ||
                 (isLogistik(context) &&
