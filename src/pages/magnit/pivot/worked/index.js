@@ -1,4 +1,5 @@
 import filters from './filters'
+import _ from 'lodash'
 
 function changeSort(config) {
   let heading = config.head.find((x) => x.changeable)
@@ -20,6 +21,22 @@ function changeSort(config) {
     heading.click = undefined
     heading.type = 'default'
     config.options.url = 'get/pagination_pivot/request_magnit_personal'
+  }
+}
+
+const changeFilter = (context, tab) => {
+  if (tab.value === 2) {
+    context.paramsQuery.initFilter.push({
+      type: 'switch',
+      subtype: 'single',
+      alias: 'is_my',
+    })
+  } else if (tab.value === 1) {
+    _.remove(context.paramsQuery.initFilter, {
+      type: 'switch',
+      subtype: 'single',
+      alias: 'is_my',
+    })
   }
 }
 
@@ -55,6 +72,34 @@ export const config = {
         backgroundColor: '#ffffff',
         type: 'refresh',
         subtype: 'changeHeads',
+      },
+      {
+        class: ['v-table-button--custom'],
+        url: '$IconEdit',
+        type: 'switch',
+        value: 1,
+        refreshTable: true,
+        backgroundColor: '#ffffff',
+        values: [
+          {
+            label: 'Все',
+            value: 1,
+            action: changeFilter,
+          },
+          {
+            label: 'Мои',
+            value: 2,
+            action: changeFilter,
+          },
+        ],
+        isShow: {
+          condition: [
+            {
+              permissions: [9],
+              type: true,
+            },
+          ],
+        },
       },
     ],
     filters: true,

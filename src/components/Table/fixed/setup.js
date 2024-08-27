@@ -12,6 +12,7 @@ import vSidelist from '@/components/Sidelist/default/index.vue'
 import Sheet from '@/components/Sheet/default/index.vue'
 import Popup from '@/components/Popup/index.vue'
 import DropZone from '@/components/Dropzone/default/index.vue'
+import SwitchDefault from '@/components/Switch/default/index.vue'
 import Checklist from '@/components/Sidelist/content/checklist/index.vue'
 
 //import vTableButton from '../button/index.js'
@@ -39,6 +40,7 @@ const table = {
     Detail,
     DropZone,
     Checklist,
+    SwitchDefault,
   },
   props: {
     options: {
@@ -104,6 +106,12 @@ const table = {
       countRows: pagination.value.countRows,
       sorts: [],
       searchColumns: [],
+      initFilter: props.options.options.initFilter || [],
+    })
+    const tableContext = ref({
+      config: props.options,
+      paramsQuery,
+      store,
     })
     const popupForm = ref({
       isShow: false,
@@ -378,7 +386,7 @@ const table = {
           period: props.options.panel.date ? currentDate.value.date : undefined,
           searchColumns,
           sorts,
-          filter: filtersColumns.value,
+          filter: [...paramsQuery.value.initFilter, ...filtersColumns.value],
           by,
         },
         params: {
@@ -949,6 +957,12 @@ const table = {
         popupForm.value.isShow = true
       }
     })
+
+    const changeHeaders = async () => {
+      initHeadParams()
+      await getItems()
+    }
+
     return {
       // DATA
       headerOptions,
@@ -1014,6 +1028,8 @@ const table = {
       getDownLoadLink,
       openCell,
       openRow,
+      changeHeaders,
+      tableContext,
     }
   },
 }
