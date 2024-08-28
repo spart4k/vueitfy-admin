@@ -525,6 +525,15 @@ const routes = [
         ],
       },
       {
+        name: 'personal/employment',
+        path: '/personal/employment',
+        meta: {
+          mode: ['employment'],
+          label: 'employment',
+        },
+        component: Detail,
+      },
+      {
         name: 'personal/:key_id',
         path: '/personal/:key_id',
         meta: {
