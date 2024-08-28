@@ -40,6 +40,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    tableComp: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props) {
     const route = useRoute()

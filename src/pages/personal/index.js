@@ -13,6 +13,7 @@ import tablePersonalX5 from './config/table-personal-x5.js'
 import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalDirection from './config/form-personal-direction.js'
 import formDocumentDownload from './config/form-document-download.js'
+import formPersonalEmployment from './config/form-personal-employment'
 
 import formKeyAdd from './config/form-key-add.js'
 import formKeyEdit from './config/form-key-edit.js'
@@ -33,6 +34,7 @@ const nonExportTabs = [
   formPersonalAdd,
   formPersonalDirection,
   tablePersonalX5,
+  formPersonalEmployment,
 ]
 
 export const personalTabs = [
@@ -160,6 +162,13 @@ export const config = {
                 },
               ],
             },
+          },
+          {
+            label: 'Формирование',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'personal/employment',
+            backgroundColor: '#fff',
           },
         ],
       },

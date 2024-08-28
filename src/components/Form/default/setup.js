@@ -48,6 +48,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    tableComp: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -242,6 +246,7 @@ export default {
       originalData,
     } = useForm({
       form: props.tab,
+      tableComp: props.tableComp,
       context,
       detail: props.detail,
       loading,

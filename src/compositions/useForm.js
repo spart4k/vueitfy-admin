@@ -42,6 +42,7 @@ export default function ({
   makeRequestList,
   isEdit,
   prevTab,
+  tableComp,
   // setFields,
   mode,
   createForm,
@@ -312,7 +313,7 @@ export default function ({
         }
       }
       if (action.download && !Array.isArray(action.download))
-        Vue.downloadFile(result.path)
+        Vue.downloadFile(result.path || result.url)
       else if (Array.isArray(action.download)) {
         result.path.forEach((el, index) => {
           setTimeout(() => {
@@ -678,6 +679,26 @@ export default function ({
 
       // if (item.notSend || item.prescription) delete newForm[key]
     })
+    if (action.withTableFilter) {
+      let sorts = []
+      let searchColumns = []
+
+      tableComp.proxy.paramsQuery.sorts.forEach((el) => {
+        if (!el.value) return
+        else sorts.push(el)
+      })
+      tableComp.proxy.paramsQuery.searchColumns.forEach((el) => {
+        if (!el.value) return
+        else searchColumns.push(el)
+      })
+
+      newForm.filter = {
+        searchGlobal: tableComp.proxy.paramsQuery.searchGlobal,
+        searchColumns,
+        sorts,
+        filter: tableComp.proxy.filtersColumns,
+      }
+    }
     return newForm
   }
 

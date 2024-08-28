@@ -547,6 +547,7 @@
         :class="[...options.detail.bootstrapClass, ...options.detail.classes]"
         @closePopup="closePopupForm"
         @getItems="getItems"
+        :tableComp="tableComp"
       />
     </Popup>
   </div>
