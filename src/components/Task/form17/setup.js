@@ -347,6 +347,7 @@ const Form17 = defineComponent({
                 doljnost_id: data.entity.doljnost_id,
                 date_target: data.entity.date_target,
                 personal_target_id: data.entity.id,
+                from_account_id: store.state.user.id,
                 date_add: moment(
                   new Date().toLocaleString('en-US', {
                     timeZone: 'Europe/Moscow',
