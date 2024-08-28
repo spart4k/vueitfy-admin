@@ -891,11 +891,13 @@ export default function ({
       fields[params.field.putValueInItems].items = array
     }
     const { field } = params
-    getRecursiveDependes(params.field)
+
     if (field.updateList && field?.updateList.length) {
-      await getFieldsList(field?.updateList)
+      const list = await getFieldsList(field?.updateList)
+      console.log(list)
       field.loading = false
     }
+    getRecursiveDependes(params.field)
   }
   const getRecursiveDependes = (field) => {
     const formDataNames = []
@@ -929,8 +931,12 @@ export default function ({
       })
     }
     findFieldName(field)
+    // return formDataNames
     formDataNames.forEach((el) => {
       formData[el] = ''
+      if (fields[el].items.length === 1) {
+        formData[el] = fields[el].items[0][fields[el].selectOption.value]
+      }
     })
   }
   const changeValue = (params) => {
@@ -1057,6 +1063,7 @@ export default function ({
         }
       }
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
+      console.log(formData.vid_vedomost_id)
       const targetId = getListField(list)
 
       const element = {
@@ -1069,6 +1076,7 @@ export default function ({
     })
     const lists = await makeRequestList(listQuery)
     await putSelectItems(lists)
+    return lists
   }
   const getDependies = async (params) => {
     const { value, field, clearId } = params
@@ -1643,9 +1651,13 @@ export default function ({
   const getListField = (list) => {
     let listValue = undefined
     const listField = fields[fieldAliases[list.alias]]
+    console.log(fields, fieldAliases, list.alias)
+    console.log(listField)
     if (listField) {
+      console.log(JSON.stringify(formData))
       listValue = formData[listField.name]
     }
+    console.log(listValue)
     return listValue
   }
 

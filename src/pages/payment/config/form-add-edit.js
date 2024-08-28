@@ -3375,7 +3375,10 @@ export default {
                   (isOKK(context) || isROKK(context)) &&
                   [2, 3].includes(context.formData.status_id)) ||
                 isMagnit(context) ||
-                isLogistik(context)
+                (isLogistik(context) &&
+                  [2, 3].includes(context.formData.status_id) &&
+                  (isDBA(context) ||
+                    (!isCreater(context) && isVertical(context))))
               )
             },
             type: false,
@@ -3421,11 +3424,9 @@ export default {
                 (isLogistik(context) &&
                   context.formData.status_id === 1 &&
                   (isDBA(context) ||
+                    (!isCreater(context) && isVertical(context)) ||
                     isOKK(context) ||
-                    isROKK(context) ||
-                    isDirector(context) ||
-                    isRukfil(context))) ||
-                !isCreater(context)
+                    isROKK(context)))
               )
             },
             type: false,
@@ -3487,11 +3488,9 @@ export default {
                 (isLogistik(context) &&
                   [1, 2].includes(context.formData.status_id) &&
                   (isDBA(context) ||
+                    (!isCreater(context) && isVertical(context)) ||
                     isOKK(context) ||
-                    isROKK(context) ||
-                    isDirector(context) ||
-                    isRukfil(context) ||
-                    !isCreater(context)))
+                    isROKK(context)))
               )
             },
             type: false,
