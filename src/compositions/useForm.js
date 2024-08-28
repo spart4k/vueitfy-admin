@@ -933,9 +933,11 @@ export default function ({
     findFieldName(field)
     // return formDataNames
     formDataNames.forEach((el) => {
-      formData[el] = ''
-      if (fields[el].items.length === 1) {
-        formData[el] = fields[el].items[0][fields[el].selectOption.value]
+      if (!fields[el]?.readonly?.value) {
+        formData[el] = ''
+        if (fields[el].items.length === 1) {
+          formData[el] = fields[el].items[0][fields[el].selectOption.value]
+        }
       }
     })
   }
@@ -1541,7 +1543,11 @@ export default function ({
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
-        if (lists.data[keyList].length === 1) {
+        if (
+          lists.data[keyList].length === 1 &&
+          !field.hasOwnProperty('defaultItems')
+        ) {
+          console.log('1111')
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
@@ -1570,6 +1576,7 @@ export default function ({
           field.hasOwnProperty('defaultItems') &&
           field.defaultItems.length === 1
         ) {
+          console.log('2222')
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
               field.defaultItems[0][field.selectOption.value],
@@ -1577,6 +1584,19 @@ export default function ({
           } else {
             formData[field.name] =
               field.defaultItems[0][field.selectOption.value]
+          }
+        } else if (
+          lists.data[keyList].length === 1 &&
+          field.hasOwnProperty('defaultItems')
+        ) {
+          console.log('333')
+          if (fields[field.name]?.subtype === 'multiple') {
+            formData[field.name] = [
+              field.defaultItems[0][field.selectOption.value],
+            ]
+          } else {
+            // formData[field.name] =
+            //   lists.data[keyList][0][field.selectOption.value]
           }
         }
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
