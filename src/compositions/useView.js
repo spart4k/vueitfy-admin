@@ -135,7 +135,7 @@ export default function ({ tabs = [], activeTab }) {
   }
 
   onMounted(() => {
-    if (activeTab.value !== undefined) {
+    if (activeTab?.value !== undefined) {
       watch(
         () => activeTab.value,
         (newVal) => {

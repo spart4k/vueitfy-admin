@@ -6,9 +6,6 @@
           >№{{ data.entity.id }}</a
         >&nbsp; на дату {{ convertDate(data.entity.date_target) }}
       </v-card-title>
-      <FormError v-if="comment" class="mb-5">
-        {{ comment || '' }}
-      </FormError>
       <TextInfo :infoObj="infoObj" />
       <div v-if="directionToMagnit">
         <span style="font-weight: 600">Путевой лист:</span>
@@ -23,6 +20,20 @@
         </div>
         <span v-else> Не приложен</span>
       </div>
+      <span class="font-weight-bold mb2"
+        ><v-icon small v-if="dropzone.length">$IconGalka</v-icon>Приложите
+        документы подтверждающие смену:
+      </span>
+      <Dropzone
+        class="mt-2"
+        v-model="dropzone"
+        :options="{
+          withoutSave: false,
+          folder: 'magnit_act_path',
+          removeble: true,
+          countFiles: 1,
+        }"
+      ></Dropzone>
     </div>
     <v-divider></v-divider>
     <v-row class="py-2" justify="end">
@@ -31,21 +42,11 @@
         class="mr-2"
         small
         @click="endTask"
-        color="success"
+        color="primary"
+        :disabled="!dropzone.length"
       >
         <v-icon small>mdi-content-save</v-icon>
         Завершить
-      </v-btn>
-      <v-btn
-        v-if="valid_lu === 0"
-        class="mr-2"
-        small
-        @click="confirm = true"
-        color="warning"
-        :loading="loading"
-      >
-        <v-icon small>mdi-account</v-icon>
-        ЦУП
       </v-btn>
       <v-btn
         :loading="loading"
@@ -57,23 +58,6 @@
         Закрыть
       </v-btn>
     </v-row>
-    <v-dialog persistent v-model="confirm" width="400">
-      <v-card>
-        <v-card-title
-          class="text-h5 text-center"
-          style="word-break: auto-phrase"
-        >
-          Отправить путевой лист на согласование ЦУП?
-        </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="endTaskConfirm(true)">
-            Подтвердить
-          </v-btn>
-          <v-btn color="error" @click="confirm = false"> Отменить </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <Popup
       :options="{
         width: config.detail.width,
