@@ -915,7 +915,6 @@ export default function ({
 
     if (field.updateList && field?.updateList.length) {
       const list = await getFieldsList(field?.updateList)
-      console.log(list)
       field.loading = false
     }
     getRecursiveDependes(params.field)
@@ -954,9 +953,11 @@ export default function ({
     findFieldName(field)
     // return formDataNames
     formDataNames.forEach((el) => {
-      formData[el] = ''
-      if (fields[el].items.length === 1) {
-        formData[el] = fields[el].items[0][fields[el].selectOption.value]
+      if (!fields[el]?.readonly?.value) {
+        formData[el] = ''
+        if (fields[el].items.length === 1) {
+          formData[el] = fields[el].items[0][fields[el].selectOption.value]
+        }
       }
     })
   }
@@ -1084,7 +1085,6 @@ export default function ({
         }
       }
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
-      console.log(formData.vid_vedomost_id)
       const targetId = getListField(list)
 
       const element = {
@@ -1562,7 +1562,10 @@ export default function ({
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
-        if (lists.data[keyList].length === 1) {
+        if (
+          lists.data[keyList].length === 1 &&
+          !field.hasOwnProperty('defaultItems')
+        ) {
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
@@ -1598,6 +1601,18 @@ export default function ({
           } else {
             formData[field.name] =
               field.defaultItems[0][field.selectOption.value]
+          }
+        } else if (
+          lists.data[keyList].length === 1 &&
+          field.hasOwnProperty('defaultItems')
+        ) {
+          if (fields[field.name]?.subtype === 'multiple') {
+            formData[field.name] = [
+              field.defaultItems[0][field.selectOption.value],
+            ]
+          } else {
+            // formData[field.name] =
+            //   lists.data[keyList][0][field.selectOption.value]
           }
         }
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
@@ -1672,13 +1687,9 @@ export default function ({
   const getListField = (list) => {
     let listValue = undefined
     const listField = fields[fieldAliases[list.alias]]
-    console.log(fields, fieldAliases, list.alias)
-    console.log(listField)
     if (listField) {
-      console.log(JSON.stringify(formData))
       listValue = formData[listField.name]
     }
-    console.log(listValue)
     return listValue
   }
 
