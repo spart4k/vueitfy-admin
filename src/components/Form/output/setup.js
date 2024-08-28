@@ -12,6 +12,7 @@ import FormDefault from '@/components/Form/default/index.vue'
 import DefaultStage from './LastStage/default/index.vue'
 import PaymentStage from './LastStage/payment/index.vue'
 import ZayavkaStage from './LastStage/zayavka/index.vue'
+import EmploymentStage from './LastStage/employment/index.vue'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -37,6 +38,7 @@ export default {
     DefaultStage,
     PaymentStage,
     ZayavkaStage,
+    EmploymentStage,
   },
   props: {
     tab: {
@@ -257,6 +259,17 @@ export default {
           url: `add/target/service/${stage.value.outputId}`,
           body: { data: {} },
         })
+      } else if (proxyTab.value.outputType === 4) {
+        const firstReq = await changeOutputStage({
+          url: 'create/history_employed',
+          body: {
+            data: {
+              parser_id: stage.value.outputId,
+              type_parser: stage.value.type,
+            },
+          },
+        })
+        if (firstReq.code !== 1) return
       }
       const secondReq = await setFinalOutput({
         url: 'set/data/active_parsers',
