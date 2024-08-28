@@ -1,10 +1,16 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import textInfo from '@/components/Task/el/TextInfo/index.vue'
 import formError from '@/components/Task/el/FormError/index.vue'
 import formComment from '@/components/Task/el/FormComment/index.vue'
 import useRequest from '@/compositions/useRequest'
 import store from '@/store'
+import { useRouter, useRoute } from 'vue-router/composables'
 import moment from 'moment'
+
+import Popup from '@/components/Popup/index.vue'
+import paymentConfigOrig from '@/pages/payment/index'
+import useView from '@/compositions/useView.js'
+import _ from 'lodash'
 
 const Form28 = defineComponent({
   name: 'Form28',
@@ -12,6 +18,7 @@ const Form28 = defineComponent({
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
+    Popup,
   },
   props: {
     data: {
@@ -20,13 +27,49 @@ const Form28 = defineComponent({
     },
   },
   setup(props, ctx) {
+    const route = useRoute()
+    const router = useRouter()
     const context = {
       root: {
         store,
       },
     }
+
+    const { configRouteConvert } = useView({})
+    const config = _.cloneDeep(paymentConfigOrig)
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-edit',
+      settings: {
+        oldPath: 'add-edit-logistic',
+      },
+    })
+    const popupForm = ref({
+      isShow: false,
+    })
+    const openPayment = (val) => {
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          form_id: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+    const closePopupForm = () => {
+      router.back()
+      popupForm.value.isShow = false
+    }
+
     const directionToMagnit = props.data.entity.object_type === 2
     const pathAct = props.data.data.shop_request_magnit.path_act
+    const comment = JSON.parse(
+      props.data.task.dop_data.replace(/[\u0000-\u0019]+/g, '')
+    ).comment
+    const valid_lu = JSON.parse(
+      props.data.task.dop_data.replace(/[\u0000-\u0019]+/g, '')
+    ).valid_lu
     const loading = ref(false)
     const confirm = ref(false)
     const infoObj = {
@@ -175,6 +218,13 @@ const Form28 = defineComponent({
       endTaskConfirm,
       confirm,
       loading,
+      comment,
+      valid_lu,
+
+      config,
+      openPayment,
+      popupForm,
+      closePopupForm,
     }
   },
 })

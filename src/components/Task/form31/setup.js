@@ -9,12 +9,18 @@ import useForm from '@/compositions/useForm'
 import { requiredIf } from '@/utils/validation'
 import moment from 'moment'
 
+import Popup from '@/components/Popup/index.vue'
+import paymentConfigOrig from '@/pages/payment/index'
+import useView from '@/compositions/useView.js'
+import _ from 'lodash'
+
 const Form31 = defineComponent({
   name: 'Form31',
   components: {
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
+    Popup,
   },
   props: {
     data: {
@@ -33,6 +39,34 @@ const Form31 = defineComponent({
         route,
       },
     }
+
+    const { configRouteConvert } = useView({})
+    const config = _.cloneDeep(paymentConfigOrig)
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-edit',
+      settings: {
+        oldPath: 'add-edit-logistic',
+      },
+    })
+    const popupForm = ref({
+      isShow: false,
+    })
+    const openPayment = (val) => {
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          form_id: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+    const closePopupForm = () => {
+      router.back()
+      popupForm.value.isShow = false
+    }
+
     // const account_id = computed(() => store.state.user.account_id)
     const directionToMagnit = props.data.entity.object_type === 2
     const pathAct = props.data.data.shop_request_magnit.path_act
@@ -106,7 +140,9 @@ const Form31 = defineComponent({
           task_id: props.data.task.id,
           parent_action: props.data.task.id,
           payment_id: props.data.entity.id,
-          manager_id: JSON.parse(props.data.task.dop_data).manager_id,
+          manager_id: JSON.parse(
+            props.data.task.dop_data.replace(/[\u0000-\u0019]+/g, '')
+          ).manager_id,
           comment: formData.comment ?? '',
           account_id: props.data.task.to_account_id,
           valid_lu: 0,
@@ -196,6 +232,11 @@ const Form31 = defineComponent({
       pathAct,
       commentErr,
       loading,
+
+      config,
+      openPayment,
+      popupForm,
+      closePopupForm,
     }
   },
 })
