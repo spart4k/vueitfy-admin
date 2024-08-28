@@ -915,7 +915,6 @@ export default function ({
 
     if (field.updateList && field?.updateList.length) {
       const list = await getFieldsList(field?.updateList)
-      console.log(list)
       field.loading = false
     }
     getRecursiveDependes(params.field)
@@ -1086,7 +1085,6 @@ export default function ({
         }
       }
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
-      console.log(formData.vid_vedomost_id)
       const targetId = getListField(list)
 
       const element = {
@@ -1568,7 +1566,6 @@ export default function ({
           lists.data[keyList].length === 1 &&
           !field.hasOwnProperty('defaultItems')
         ) {
-          console.log('1111')
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
@@ -1597,7 +1594,6 @@ export default function ({
           field.hasOwnProperty('defaultItems') &&
           field.defaultItems.length === 1
         ) {
-          console.log('2222')
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
               field.defaultItems[0][field.selectOption.value],
@@ -1610,7 +1606,6 @@ export default function ({
           lists.data[keyList].length === 1 &&
           field.hasOwnProperty('defaultItems')
         ) {
-          console.log('333')
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
               field.defaultItems[0][field.selectOption.value],
@@ -1692,13 +1687,9 @@ export default function ({
   const getListField = (list) => {
     let listValue = undefined
     const listField = fields[fieldAliases[list.alias]]
-    console.log(fields, fieldAliases, list.alias)
-    console.log(listField)
     if (listField) {
-      console.log(JSON.stringify(formData))
       listValue = formData[listField.name]
     }
-    console.log(listValue)
     return listValue
   }
 

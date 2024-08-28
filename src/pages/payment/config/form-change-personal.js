@@ -215,10 +215,6 @@ export default {
           },
           {
             funcCondition: (context) => {
-              console.log(
-                context.formData.readonly,
-                'context.formData.readonly'
-              )
               return !!context.formData.readonly
             },
             type: true,
