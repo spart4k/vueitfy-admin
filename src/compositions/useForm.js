@@ -934,6 +934,9 @@ export default function ({
     // return formDataNames
     formDataNames.forEach((el) => {
       formData[el] = ''
+      if (fields[el].items.length === 1) {
+        formData[el] = fields[el].items[0][fields[el].selectOption.value]
+      }
     })
   }
   const changeValue = (params) => {
