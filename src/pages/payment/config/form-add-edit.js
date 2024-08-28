@@ -2282,7 +2282,6 @@ export default {
           init: true,
           type: 'custom',
           func: async (ctx) => {
-            console.log('CUSTOM HOUR')
             if (!isMagnit(ctx) || isLogistik(ctx)) return
             const body = {
               data: {
@@ -2385,9 +2384,7 @@ export default {
           type: 'custom',
           init: true,
           func: async (ctx) => {
-            console.log('CUSTOM DEP')
             if (isLogistik(ctx)) return
-            console.log(ctx.formData.hour * ctx.formData.object_price)
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
           },
         },
