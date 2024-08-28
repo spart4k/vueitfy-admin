@@ -1667,6 +1667,10 @@ export default {
               context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
+          {
+            funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.status_id === 6 && context.mode === 'edit',
@@ -1982,6 +1986,10 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.direction_id === 2 &&
@@ -2140,6 +2148,10 @@ export default {
                 isROKK(context)
               )
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
             type: true,
           },
         ],
@@ -2345,6 +2357,10 @@ export default {
                 isROKK(context)
               )
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
             type: true,
           },
         ],
@@ -3372,7 +3388,9 @@ export default {
             funcCondition: (context) => {
               return (
                 (isX5(context) &&
-                  (isOKK(context) || isROKK(context)) &&
+                  (isDBA(context) ||
+                    (!isCreater(context) && isVertical(context)))) ||
+                ((isOKK(context) || isROKK(context)) &&
                   [2, 3].includes(context.formData.status_id)) ||
                 isMagnit(context) ||
                 (isLogistik(context) &&
@@ -3426,7 +3444,20 @@ export default {
                   (isDBA(context) ||
                     (!isCreater(context) && isVertical(context)) ||
                     isOKK(context) ||
-                    isROKK(context)))
+                    isROKK(context)) &&
+                  // жесткие условия
+                  // - если предыдущий статус установлен менеджером или руководителем филиала, статус«Согласован» могут установить только директор, ОКК, РОКК и DBA;
+                  [1, 15].includes(context.entityData.status_permission) &&
+                  isDBA(context)) ||
+                isOKK(context) ||
+                isROKK(context) ||
+                isDirector(context) ||
+                // - если предыдущий статус установлен ОКК, статус «Согласован» могут установить только РОКК, директор, DBA;
+                (context.entityData.status_permission === 8 &&
+                  (isROKK(context) || isDirector(context) || isDBA(context))) ||
+                // 	если предыдущий статус установлен РОКК или DBA, статус «Согласован» может проставить только DBA.
+                ([17, 4].includes(context.entityData.status_permission) &&
+                  isDBA(context))
               )
             },
             type: false,
@@ -3545,6 +3576,10 @@ export default {
             },
             type: false,
           },
+          {
+            funcCondition: (context) => context.formData.status_id === 6,
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     // [22, 12].includes(context.store.state.user.permission_id),
@@ -3607,12 +3642,12 @@ export default {
             },
             type: true,
           },
-          {
-            funcCondition: (context) => {
-              return isMagnit(context)
-            },
-            type: false,
-          },
+          // {
+          //   funcCondition: (context) => {
+          //     return isMagnit(context)
+          //   },
+          //   type: false,
+          // },
           {
             funcCondition: (context) =>
               // [22, 12].includes(context.store.state.user.permission_id),
@@ -3645,6 +3680,10 @@ export default {
               context.formData?.status_id !== 6 &&
               !context.environment.readonlyAll,
             type: false,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
+            type: true,
           },
         ],
       },
