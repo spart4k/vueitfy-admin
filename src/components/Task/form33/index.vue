@@ -2,7 +2,8 @@
   <div>
     <div style="padding: 10px">
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
-        Начисление &nbsp;<a href="#" class="text-h6">№{{ data.entity.id }}</a
+        Начисление &nbsp;<a @click="openPayment(data.entity.id)" class="text-h6"
+          >№{{ data.entity.id }}</a
         >&nbsp; на дату {{ convertDate(data.entity.date_target) }}
       </v-card-title>
       <TextInfo :infoObj="infoObj" />
@@ -60,6 +61,19 @@
         Закрыть
       </v-btn>
     </v-row>
+    <Popup
+      :options="{
+        width: config.detail.width,
+        portal: 'table-detail',
+      }"
+      v-if="config.detail && config.detail.type === 'popup' && popupForm.isShow"
+    >
+      <router-view
+        :detail="config.detail"
+        :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+        @closePopup="closePopupForm"
+      />
+    </Popup>
   </div>
 </template>
 

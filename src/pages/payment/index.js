@@ -596,6 +596,7 @@ const config = {
     method: 'get',
     alias: 'payment',
     url: '/get/form/',
+    name: 'Начисление',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [formAddEdit, formLoad],
     activeTab: null,

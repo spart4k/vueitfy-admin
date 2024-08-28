@@ -2,11 +2,12 @@
   <div>
     <div style="padding: 10px">
       <v-card-title class="py-1 justify-center font-weight-bold text-h6">
-        Начисление &nbsp;<a href="#" class="text-h6">№{{ data.entity.id }}</a
+        Начисление &nbsp;<a @click="openPayment(data.entity.id)" class="text-h6"
+          >№{{ data.entity.id }}</a
         >&nbsp; на дату {{ convertDate(data.entity.date_target) }}
       </v-card-title>
-      <FormError v-if="JSON.parse(data.task.dop_data).comment" class="mb-5">
-        {{ JSON.parse(data.task.dop_data).comment || '' }}
+      <FormError v-if="comment" class="mb-5">
+        {{ comment || '' }}
       </FormError>
       <TextInfo :infoObj="infoObj" />
       <div v-if="directionToMagnit">
@@ -36,7 +37,7 @@
         Завершить
       </v-btn>
       <v-btn
-        v-if="JSON.parse(data.task.dop_data)?.valid_lu === 0"
+        v-if="valid_lu === 0"
         class="mr-2"
         small
         @click="confirm = true"
@@ -73,6 +74,19 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Popup
+      :options="{
+        width: config.detail.width,
+        portal: 'table-detail',
+      }"
+      v-if="config.detail && config.detail.type === 'popup' && popupForm.isShow"
+    >
+      <router-view
+        :detail="config.detail"
+        :class="[...config.detail.bootstrapClass, ...config.detail.classes]"
+        @closePopup="closePopupForm"
+      />
+    </Popup>
   </div>
 </template>
 

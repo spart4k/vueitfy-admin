@@ -166,4 +166,4 @@
 
 <script src="./setup"></script>
 
-<style src="./index.scss" lang="scss" scoped></style>
+<style src="./style.scss" lang="scss" scoped></style>
