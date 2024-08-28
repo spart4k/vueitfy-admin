@@ -14,6 +14,7 @@ import tablePersonalEmployment from './config/table-personal-employment.js'
 import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalDirection from './config/form-personal-direction.js'
 import formDocumentDownload from './config/form-document-download.js'
+import formPersonalParser from './config/form-personal-parser.js'
 import formPersonalEmployment from './config/form-personal-employment'
 
 import formKeyAdd from './config/form-key-add.js'
@@ -37,6 +38,7 @@ const nonExportTabs = [
   tablePersonalX5,
   formPersonalEmployment,
   tablePersonalEmployment,
+  formPersonalParser,
 ]
 
 export const personalTabs = [
@@ -166,10 +168,17 @@ export const config = {
             },
           },
           {
-            label: 'Формирование',
+            label: 'Формирование реестра',
             class: ['v-table-button--custom'],
             type: 'changeUrl',
             url: 'personal/employment',
+            backgroundColor: '#fff',
+          },
+          {
+            label: 'Парсер реестра',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'personal/employment_parser',
             backgroundColor: '#fff',
           },
         ],
@@ -1466,7 +1475,7 @@ export const config = {
           },
         ],
       },
-      filters: filtersKey,
+      // filters: filtersKey,
     },
   ],
 }
