@@ -1,6 +1,13 @@
 //import style from './style.css' assert { type: 'css' }
 //document.adoptedStyleSheets.push(style)
-import Vue, { onMounted, ref, computed, watch, toRef } from 'vue'
+import Vue, {
+  onMounted,
+  ref,
+  computed,
+  watch,
+  toRef,
+  getCurrentInstance,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router/composables'
 import store from '@/store'
 import axios from 'axios'
@@ -77,6 +84,7 @@ const table = {
     const tablePosition = ref(null)
     const searchField = ref('')
     const isMobile = useMobile()
+    const tableComp = getCurrentInstance()
     const { generalConfig } = useTable(props.options)
     const options = generalConfig()
     const proxyOptions = toRef(options, 'head')
@@ -1060,6 +1068,7 @@ const table = {
       triggerDialogFunction,
       route,
       customContent,
+      tableComp,
     }
   },
 }

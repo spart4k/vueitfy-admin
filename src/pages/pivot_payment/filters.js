@@ -47,7 +47,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.date_add',
+      aliasFilter: 'pt.date_add',
       validations: { required },
     }),
     dateRangeField({
@@ -62,7 +62,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.date_target',
+      aliasFilter: 'pt.date_target',
     }),
     selectField({
       label: 'Статус',
@@ -80,7 +80,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.status_id',
+      aliasFilter: 'pt.status_id',
     }),
     selectField({
       label: 'Вид ведомости',
@@ -98,7 +98,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.vid_vedomost_id',
+      aliasFilter: 'pt.vid_vedomost_id',
     }),
     selectField({
       label: 'Вид оплаты',
@@ -116,7 +116,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.bank_id',
+      aliasFilter: 'pt.bank_id',
     }),
     selectField({
       label: 'Менеджеры',
@@ -135,7 +135,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.account_id',
+      aliasFilter: 'pt.account_id',
       isShow: {
         value: false,
         condition: [
@@ -166,7 +166,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.object_id',
+      aliasFilter: 'pt.object_id',
     }),
     autocompleteField({
       label: 'Персонал',
@@ -188,7 +188,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.personal_id',
+      aliasFilter: 'pt.personal_id',
     }),
     selectField({
       label: 'Должность',
@@ -206,7 +206,7 @@ const filters = {
         sm: 12,
       },
       bootstrapClass: [''],
-      aliasFilter: 'p.doljnost_id',
+      aliasFilter: 'pt.doljnost_id',
     }),
   ],
 }

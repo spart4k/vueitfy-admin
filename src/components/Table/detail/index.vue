@@ -46,6 +46,7 @@
             @refreshData="$emit('refreshData')"
             @setFormData="setFormData"
             :formDataParent="formDataParent"
+            :tableComp="$props.tableComp"
             :mainData="mainData"
             :class="'form_' + item?.name"
             @emitFormData="$emit('emitFormData', $event)"
