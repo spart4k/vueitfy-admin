@@ -5,11 +5,8 @@
         v-show="$route.meta.label || detail.name || availableTabsAll.length > 1"
         class="pa-4 detail-header"
       >
-        <p v-if="detail.name" class="text-h4 mb-4">
-          {{ detail.name }}
-        </p>
-        <p v-else-if="$route.meta.label" class="text-h4 mb-4">
-          {{ $route.meta.label }}
+        <p class="text-h4 mb-4">
+          {{ $route.meta.label || detail.name }}
         </p>
         <v-tabs
           style="flex: unset"

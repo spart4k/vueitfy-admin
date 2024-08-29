@@ -538,7 +538,16 @@ const routes = [
         path: '/personal/employment',
         meta: {
           mode: ['employment'],
-          label: 'employment',
+          label: 'Выгрузка реестра',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal/employment_parser',
+        path: '/personal/employment_parser',
+        meta: {
+          mode: ['employment_parser'],
+          label: 'Парсер реестра',
         },
         component: Detail,
       },
