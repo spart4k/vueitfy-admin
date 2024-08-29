@@ -68,7 +68,7 @@ export default {
           filter: [
             {
               alias: 'type_parser',
-              value: [props.stage.type],
+              value: [props.stage.outputId],
               type: 'num',
             },
           ],
