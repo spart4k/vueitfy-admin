@@ -1445,6 +1445,7 @@ export default function ({
     const sameDep = (field) => {
       console.log(field.name)
       const result = form?.fields?.filter((subField) => {
+        if (!subField.dependence) return
         const subFieldResult = subField?.dependence?.filter((subFieldDep) => {
           // console.log(subFieldDep.url, field.url)
           return subFieldDep?.url === field.url
