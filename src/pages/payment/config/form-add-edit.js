@@ -54,6 +54,10 @@ const isCreater = (ctx) => {
   return ctx.entityData.from_account_id === ctx.store.state.user.id
 }
 
+const isTarget = (ctx) => {
+  return ctx.entityData.account_id === ctx.store.state.user.id
+}
+
 const conditionLogistik = (context) => {
   return (
     [1, 6, 7].includes(context.formData.direction_id) &&
@@ -1697,11 +1701,17 @@ export default {
               {
                 funcCondition: (context) => {
                   if (!context.environment.readonlyAll) {
-                    return !!(
-                      [1, 2, 3].includes(context.formData.status_id) &&
-                      isVertical(context) &&
-                      isX5(context)
-                    )
+                    if (context.formData.real_personal_id) {
+                      return !!(
+                        isX5(context) && context.formData.real_personal_id
+                      )
+                    } else {
+                      return !!(
+                        [1, 2, 3].includes(context.formData.status_id) &&
+                        isVertical(context) &&
+                        isX5(context)
+                      )
+                    }
                   } else {
                     return !!(
                       isX5(context) && context.formData.real_personal_id
@@ -3386,14 +3396,18 @@ export default {
               return (
                 (isX5(context) &&
                   (isDBA(context) ||
-                    (!isCreater(context) && isVertical(context)))) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)))) ||
                 ((isOKK(context) || isROKK(context)) &&
                   [2, 3].includes(context.formData.status_id)) ||
                 isMagnit(context) ||
                 (isLogistik(context) &&
                   [2, 3].includes(context.formData.status_id) &&
                   (isDBA(context) ||
-                    (!isCreater(context) && isVertical(context))))
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context))))
               )
             },
             type: false,
@@ -3439,7 +3453,9 @@ export default {
                 (isLogistik(context) &&
                   context.formData.status_id === 1 &&
                   (isDBA(context) ||
-                    (!isCreater(context) && isVertical(context)) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)) ||
                     isOKK(context) ||
                     isROKK(context)) &&
                   // жесткие условия
@@ -3504,19 +3520,20 @@ export default {
             funcCondition: (context) => {
               return (
                 (isX5(context) &&
-                  (isOKK(context) ||
-                    isROKK(context) ||
-                    isDBA(context) ||
-                    isRG(context) ||
-                    isManager(context) ||
-                    isCUP(context) ||
-                    isDirector(context)) &&
+                  (isDBA(context) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)) ||
+                    isOKK(context) ||
+                    isROKK(context)) &&
                   context.formData.status_id === 1) ||
                 isMagnit(context) ||
                 (isLogistik(context) &&
                   [1, 2].includes(context.formData.status_id) &&
                   (isDBA(context) ||
-                    (!isCreater(context) && isVertical(context)) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)) ||
                     isOKK(context) ||
                     isROKK(context)))
               )

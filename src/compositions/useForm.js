@@ -1072,6 +1072,7 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
+      if (filter.length !== list.filter.length) return []
       return element
     })
     const lists = await makeRequestList(listQuery)
@@ -1439,15 +1440,38 @@ export default function ({
     })
     return filters
   }
-
+  const unikalDepField = (field) => {
+    console.log('call')
+    const sameDep = (field) => {
+      console.log(field.name)
+      const result = form?.fields?.filter((subField) => {
+        const subFieldResult = subField?.dependence?.filter((subFieldDep) => {
+          // console.log(subFieldDep.url, field.url)
+          return subFieldDep?.url === field.url
+        })
+        console.log(subFieldResult, 'subFieldResult')
+        return subFieldResult
+      })
+      console.log(result)
+      return result
+    }
+    return form?.fields
+      .filter(
+        (el) => el.type === 'autocomplete' && el.isShow && !sameDep(el).length
+      )
+      .map((el) => el)
+  }
   const loadAutocompletes = async () => {
     const fields = form?.fields
       .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
-    const queryFields = fields.map(async (el) => {
+    const queryFields = fields.flatMap(async (el) => {
       // const filters = []
       const { url } = el
-      const data = await getList(url, {
+      const filter = getDepFilters(el)
+      console.log(filter, el.filter)
+      if (el.filter && filter?.length !== el?.filter?.length) return
+      const data = await getList.bind(url, {
         countRows: 10,
         currentPage: 1,
         searchValue: '',
@@ -1455,7 +1479,7 @@ export default function ({
           ? formData[el.name ? el.name : el.alias]
           : -1,
         readonly: environment.readonlyAll,
-        filter: getDepFilters(el),
+        filter,
       })
       if (el.defaultItems) el.items = [...el.defaultItems]
 
@@ -1484,19 +1508,19 @@ export default function ({
         const fieldItems = el.items.find((elItem) => {
           return elItem.id === formData[el.name]
         })
-        await getDependies({
-          field: el,
-          value: formData[el.name],
-          item: fieldItems,
-        })
-        if (el.updateList && el?.updateList.length) {
-          await getFieldsList(el?.updateList)
-          el.loading = false
-        }
+        // await getDependies({
+        //   field: el,
+        //   value: formData[el.name],
+        //   item: fieldItems,
+        // })
+        // if (el.updateList && el?.updateList.length) {
+        //   await getFieldsList(el?.updateList)
+        //   el.loading = false
+        // }
       }
       return data
     })
-    await Promise.all(queryFields)
+    // await Promise.all(queryFields)
   }
 
   const putSelectItems = async (lists) => {
@@ -1558,7 +1582,7 @@ export default function ({
             (el) => el.id === formData[field.name]
           )
           stackDep.push(
-            getDependies({
+            getDependies.bind({
               value: formData[field.name],
               field,
               item: fieldItem,
@@ -1566,7 +1590,7 @@ export default function ({
             })
           )
           if (field.updateList && field.updateList.length) {
-            stackDep.push(getFieldsList(field.updateList))
+            stackDep.push(getFieldsList.bind(field.updateList))
           }
         } else if (
           lists.data[keyList].length === 0 &&
@@ -1726,6 +1750,7 @@ export default function ({
     const loadWithDeps = async () => {
       form?.fields.forEach(async (el) => {
         if (el.dependence?.some((item) => item.init)) {
+          console.log(el.name)
           await getDependies({
             field: el,
             value: formData[el.name],
@@ -1734,8 +1759,9 @@ export default function ({
         }
       })
     }
-    await loadAutocompletes()
-    await loadWithDeps()
+    console.log(unikalDepField(), 'unikalDepField')
+    // await loadAutocompletes()
+    // await loadWithDeps()
 
     if (hasSelect()) {
       await getFieldsList(form.lists)
