@@ -999,7 +999,12 @@ export default function ({
       !el.routeKey &&
       !el.formStorage
     )
-      return acc
+      // return acc
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [],
+        type: el.type,
+      })
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
@@ -1063,6 +1068,7 @@ export default function ({
           }
         }
       }
+      console.log(list)
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
 
@@ -1072,6 +1078,7 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
+      console.log(filter, list.filter)
       if (filter.length !== list.filter.length) return []
       return element
     })
@@ -1126,10 +1133,21 @@ export default function ({
           if (targetField.filter && targetField.filter.length) {
             // query(targetField)
             filter = getDepFilters(targetField)
+            if (
+              targetField.filter &&
+              filter?.length !== targetField?.filter?.length
+            )
+              return
           } else if (dependence.filter && dependence.filter.length) {
             // query(dependence)
             filter = getDepFilters(dependence)
+            if (
+              dependence.filter &&
+              filter?.length !== dependence?.filter?.length
+            )
+              return
           }
+
           // if (clearId) {
           //   formData[targetField.name ? targetField.name : targetField.alias] =
           //     ''
@@ -1443,36 +1461,34 @@ export default function ({
   const unikalDepField = (field) => {
     console.log('call')
     const sameDep = (field) => {
-      console.log(field.name)
       const result = form?.fields?.filter((subField) => {
         if (!subField.dependence) return
         const subFieldResult = subField?.dependence?.filter((subFieldDep) => {
           // console.log(subFieldDep.url, field.url)
           return subFieldDep?.url === field.url
         })
-        console.log(subFieldResult, 'subFieldResult')
-        return subFieldResult
+        return subFieldResult.length
       })
-      console.log(result)
-      return result
+      return result.length
     }
     return form?.fields
-      .filter(
-        (el) => el.type === 'autocomplete' && el.isShow && !sameDep(el).length
-      )
+      .filter((el) => el.type === 'autocomplete' && el.isShow && !sameDep(el))
       .map((el) => el)
   }
   const loadAutocompletes = async () => {
-    const fields = form?.fields
-      .filter((el) => el.type === 'autocomplete' && el.isShow)
-      .map((el) => el)
-    const queryFields = fields.flatMap(async (el) => {
+    // const fields = form?.fields
+    //   .filter((el) => el.type === 'autocomplete' && el.isShow)
+    //   .map((el) => el)
+    const initFields = unikalDepField()
+    console.log(initFields)
+    const queryFields = initFields.flatMap(async (el) => {
       // const filters = []
       const { url } = el
       const filter = getDepFilters(el)
-      console.log(filter, el.filter)
+      console.log(filter, el.filter, el.name)
       if (el.filter && filter?.length !== el?.filter?.length) return
-      const data = await getList.bind(url, {
+      console.log('getList')
+      const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
         searchValue: '',
@@ -1521,7 +1537,9 @@ export default function ({
       }
       return data
     })
-    // await Promise.all(queryFields)
+    // console.log(queryFields)
+    // const resultAwait = await Promise.all(queryFields)
+    // console.log(resultAwait)
   }
 
   const putSelectItems = async (lists) => {
@@ -1583,7 +1601,7 @@ export default function ({
             (el) => el.id === formData[field.name]
           )
           stackDep.push(
-            getDependies.bind({
+            getDependies({
               value: formData[field.name],
               field,
               item: fieldItem,
@@ -1749,9 +1767,11 @@ export default function ({
     }
 
     const loadWithDeps = async () => {
+      const stackUrlDep = ['']
       form?.fields.forEach(async (el) => {
         if (el.dependence?.some((item) => item.init)) {
-          console.log(el.name)
+          // stackUrlDep.push(item.url)
+          // if (stackUrlDep.includes(item.url)) return
           await getDependies({
             field: el,
             value: formData[el.name],
@@ -1760,9 +1780,9 @@ export default function ({
         }
       })
     }
-    console.log(unikalDepField(), 'unikalDepField')
-    // await loadAutocompletes()
-    // await loadWithDeps()
+    // console.log(unikalDepField(), 'unikalDepField')
+    await loadAutocompletes()
+    await loadWithDeps()
 
     if (hasSelect()) {
       await getFieldsList(form.lists)

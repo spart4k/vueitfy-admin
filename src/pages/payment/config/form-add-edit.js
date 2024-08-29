@@ -1843,6 +1843,7 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           init: true,
           type: 'custom',
+          url: 'get/object/price',
           func: async (ctx) => {
             if (isLogistik(ctx)) return
             const body = {
