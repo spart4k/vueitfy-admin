@@ -529,7 +529,7 @@ const routes = [
         path: '/personal/employment',
         meta: {
           mode: ['employment'],
-          label: 'employment',
+          label: 'Выгрузка реестра',
         },
         component: Detail,
       },

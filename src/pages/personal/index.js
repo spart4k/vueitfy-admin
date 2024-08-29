@@ -168,7 +168,7 @@ export const config = {
             },
           },
           {
-            label: 'Формирование реестра',
+            label: 'Выгрузка реестра',
             class: ['v-table-button--custom'],
             type: 'changeUrl',
             url: 'personal/employment',
