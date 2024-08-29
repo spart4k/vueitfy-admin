@@ -103,6 +103,18 @@ export default {
         cols: 12,
         sm: 12,
       },
+      dependence: [
+        {
+          type: 'computed',
+          funcComputed: (context) => {
+            if (context.formData.reestr === 2) {
+              context.formData.employed = true
+            } else {
+              context.formData.employed = false
+            }
+          },
+        },
+      ],
       validations: { required },
       bootstrapClass: [''],
     }),
@@ -112,6 +124,17 @@ export default {
       placeholder: '',
       value: false,
       class: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return context.formData?.reestr === 2
+            },
+            type: true,
+          },
+        ],
+      },
       position: {
         cols: 12,
         sm: 12,
