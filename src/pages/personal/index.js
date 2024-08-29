@@ -1373,7 +1373,7 @@ export const config = {
           },
         },
         {
-          title: 'Дата начала',
+          title: 'Дата трудоустройства',
           type: 'default',
           align: 'center',
           fixed: {
@@ -1398,7 +1398,7 @@ export const config = {
           },
         },
         {
-          title: 'Дата конца',
+          title: 'Дата увольнения',
           type: 'default',
           align: 'center',
           fixed: {
@@ -1455,18 +1455,7 @@ export const config = {
         currentPage: 1,
         totalPages: null,
       },
-      detail: {
-        type: 'popup', // String 'popup' or 'page'
-        classes: [''], // List class
-        width: '550px',
-        method: 'get',
-        alias: 'user_keys',
-        url: '/get/form/',
-        name: 'Личные ключи',
-        bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [formKeyAdd, formKeyEdit],
-        activeTab: null,
-      },
+      detail: null,
       isShow: {
         condition: [
           {
