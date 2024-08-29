@@ -240,6 +240,7 @@ export default {
       environment,
       addFiles,
       originalData,
+      entityData,
     } = useForm({
       form: props.tab,
       context,
@@ -303,6 +304,7 @@ export default {
       environment,
       addFiles,
       originalData,
+      entityData,
     }
   },
 }

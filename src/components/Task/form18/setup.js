@@ -167,6 +167,8 @@ const Form18 = defineComponent({
                   timeZone: 'Europe/Moscow',
                 })
               ).format('YYYY-MM-DD HH:mm:ss'),
+              vertical: JSON.stringify(data.data.vertical),
+              from_account_id: store.state.user.id,
             },
           })
         },

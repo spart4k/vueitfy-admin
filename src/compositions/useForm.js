@@ -75,9 +75,11 @@ export default function ({
       loadStoreFile,
       emit,
       fields,
+      entityData: entityData.value,
     }
     await handlerEmit(conditionContext)
   }
+  const metaData = reactive({})
   const initFields = () => {
     if (!form) return
     fields = {}
@@ -349,6 +351,7 @@ export default function ({
         sortData,
         formDataParent,
         context,
+        entityData: entityData.value,
         loadStoreFile,
       })
       loading.value = false
@@ -372,6 +375,7 @@ export default function ({
       const conditionContext = {
         formData,
         result,
+        entityData: entityData.value,
       }
       let res = result.code
       let contextData = formData
@@ -887,11 +891,12 @@ export default function ({
       fields[params.field.putValueInItems].items = array
     }
     const { field } = params
-    getRecursiveDependes(params.field)
+
     if (field.updateList && field?.updateList.length) {
-      await getFieldsList(field?.updateList)
+      const list = await getFieldsList(field?.updateList)
       field.loading = false
     }
+    getRecursiveDependes(params.field)
   }
   const getRecursiveDependes = (field) => {
     const formDataNames = []
@@ -925,8 +930,14 @@ export default function ({
       })
     }
     findFieldName(field)
+    // return formDataNames
     formDataNames.forEach((el) => {
-      formData[el] = ''
+      if (!fields[el]?.readonly?.value) {
+        formData[el] = ''
+        if (fields[el].items.length === 1) {
+          formData[el] = fields[el].items[0][fields[el].selectOption.value]
+        }
+      }
     })
   }
   const changeValue = (params) => {
@@ -1065,6 +1076,7 @@ export default function ({
     })
     const lists = await makeRequestList(listQuery)
     await putSelectItems(lists)
+    return lists
   }
   const getDependies = async (params) => {
     const { value, field, clearId } = params
@@ -1529,7 +1541,10 @@ export default function ({
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
-        if (lists.data[keyList].length === 1) {
+        if (
+          lists.data[keyList].length === 1 &&
+          !field.hasOwnProperty('defaultItems')
+        ) {
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
@@ -1565,6 +1580,18 @@ export default function ({
           } else {
             formData[field.name] =
               field.defaultItems[0][field.selectOption.value]
+          }
+        } else if (
+          lists.data[keyList].length === 1 &&
+          field.hasOwnProperty('defaultItems')
+        ) {
+          if (fields[field.name]?.subtype === 'multiple') {
+            formData[field.name] = [
+              field.defaultItems[0][field.selectOption.value],
+            ]
+          } else {
+            // formData[field.name] =
+            //   lists.data[keyList][0][field.selectOption.value]
           }
         }
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
@@ -1757,6 +1784,7 @@ export default function ({
                 environment,
                 originalData: originalData.value,
                 mode,
+                entityData: entityData.value,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1821,14 +1849,7 @@ export default function ({
                 originalData: originalData.value,
                 environment,
                 mode,
-              }
-              if (form.path === 'change-personal') {
-                console.log(
-                  field.readonly.value,
-                  field.name,
-                  conditionEl.funcCondition(conditionContext) ===
-                    conditionEl.type
-                )
+                entityData: entityData.value,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1841,9 +1862,6 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        if (form.path === 'change-personal') {
-          console.log(field.readonly.value, field.name)
-        }
         return environment.readonlyAll && !form.notReadonly
           ? true
           : field.readonly.value
@@ -1874,6 +1892,7 @@ export default function ({
                 formData,
                 originalData: originalData.value,
                 environment,
+                entityData: entityData.value,
               }
               return el.funcCondition(conditionContext)
             } else {
