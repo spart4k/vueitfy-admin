@@ -135,6 +135,11 @@ const table = {
       sorts: [],
       searchColumns: [],
     })
+    const tableContext = ref({
+      config: props.options,
+      paramsQuery,
+      store,
+    })
     const popupForm = ref({
       isShow: false,
     })
@@ -1069,6 +1074,7 @@ const table = {
       route,
       customContent,
       tableComp,
+      tableContext,
     }
   },
 }
