@@ -550,6 +550,15 @@ const routes = [
         },
         component: Detail,
       },
+      {
+        name: 'personal/report',
+        path: '/personal/report',
+        meta: {
+          mode: ['report'],
+          label: 'Отчет А/В',
+        },
+        component: Detail,
+      },
     ],
   },
   {
