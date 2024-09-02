@@ -1843,14 +1843,6 @@ export default function ({
                 environment,
                 mode,
               }
-              if (form.path === 'change-personal') {
-                console.log(
-                  field.readonly.value,
-                  field.name,
-                  conditionEl.funcCondition(conditionContext) ===
-                    conditionEl.type
-                )
-              }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
               )
@@ -1862,9 +1854,6 @@ export default function ({
             }
           })
         field.readonly.value = condition()
-        if (form.path === 'change-personal') {
-          console.log(field.readonly.value, field.name)
-        }
         return environment.readonlyAll && !form.notReadonly
           ? true
           : field.readonly.value
@@ -2000,9 +1989,7 @@ export default function ({
       return value
     } else return field.position.sm
   }
-  const addFiles = (e) => {
-    console.log(e)
-  }
+  const addFiles = (e) => {}
   watch(
     () => watcher,
     (wtch) => {

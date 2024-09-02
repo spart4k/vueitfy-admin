@@ -15,6 +15,7 @@ const PersonalReport = defineComponent({
       period: false,
       errors: false,
     })
+    const dialog = ref(false)
     const data = ref({
       period: [
         {
@@ -61,6 +62,20 @@ const PersonalReport = defineComponent({
     const getParseTime = (val) => {
       return moment(val, 'YYYY-MM-DD HH:mm:ss').format('DD.MM.YYYY, HH:mm')
     }
+    const getErrors = async (val) => {
+      dialog.value = true
+      loading.value.errors = true
+      const responseData = await store.dispatch('form/update', {
+        url: 'report/autoload/x5/errors',
+        body: {
+          data: {
+            parser_id: val,
+          },
+        },
+      })
+      data.value.errors = responseData.data
+      loading.value.errors = false
+    }
     const changeMonth = (val) => {
       date.value = moment(date.value, 'YYYY-MM').add(val, 'M').format('YYYY-MM')
     }
@@ -81,7 +96,7 @@ const PersonalReport = defineComponent({
           signal: controller.signal,
         },
       })
-      // data.value.period = responseData.data
+      data.value.period = responseData.data
       loading.value.period = false
       controller = undefined
     }
@@ -103,10 +118,12 @@ const PersonalReport = defineComponent({
       monthArray,
       loading,
       data,
+      dialog,
 
       getYear,
       getMonth,
       getParseTime,
+      getErrors,
       changeMonth,
       download,
     }

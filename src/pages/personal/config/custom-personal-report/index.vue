@@ -74,7 +74,9 @@
                 <div class="text--text font-weight-500">
                   Автовыгрузка №{{ item.parser_id }}
                 </div>
-                <div class="text--disabled font-weight-500">Июнь 2024</div>
+                <div class="text--disabled font-weight-500">
+                  {{ item.period }}
+                </div>
               </div>
             </v-col>
             <v-col
@@ -101,14 +103,14 @@
                   >
                 </v-btn>
 
-                <v-menu left offset-x>
+                <v-menu left offset-x v-if="item.errors_count">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       v-bind="attrs"
                       v-on="on"
                       color="transparent"
                       elevation="0"
-                      class="px-0"
+                      class="px-0 mr-1"
                       min-width="40"
                       height="40"
                     >
@@ -124,6 +126,7 @@
                       class="height-100 px-3"
                       height="40"
                       color="text"
+                      @click="getErrors(item.parser_id)"
                       ><v-icon class="mr-3" size="24" color="error"
                         >mdi-alert-circle-outline</v-icon
                       >Посмотреть ошибки</v-btn
@@ -150,22 +153,47 @@
         </template>
       </template>
     </div>
-    <!-- <v-card-title class="py-0 px-0 text--text text-h5 font-weight-bold"
-      >Вывод ошибок</v-card-title
-    > -->
-    <!-- <div style="max-height: 70vh" class="text--text py-3 overflow-auto">
-      <v-row
-        v-for="(item, index) in proxyValue.response.data?.errors"
-        :key="index"
-      >
-        <v-icon color="error" class="mr-3"> mdi-alert </v-icon>
-        {{ item }}
-      </v-row>
-    </div> -->
     <v-divider class="mb-3"></v-divider>
     <v-row class="justify-end">
       <v-btn color="text" text> Закрыть </v-btn>
     </v-row>
+
+    <v-dialog persistent v-model="dialog" width="600">
+      <v-card class="py-6 px-6">
+        <v-card-title class="py-0 px-0 text--text text-h5 font-weight-bold"
+          >Вывод ошибок</v-card-title
+        >
+        <v-divider class="mt-3"></v-divider>
+        <div style="height: 400px" class="text--text py-3 overflow-auto">
+          <div
+            v-if="loading.errors"
+            class="d-flex justify-center align-center"
+            style="height: 100%"
+          >
+            <v-progress-circular color="primary" :size="80" indeterminate />
+          </div>
+          <template v-else>
+            <v-row v-for="(item, index) in data.errors" :key="index">
+              <v-icon color="error" class="mr-3"> mdi-alert </v-icon>
+              {{ item.error }}
+            </v-row>
+          </template>
+        </div>
+        <v-divider class="mb-3"></v-divider>
+        <v-row class="justify-end">
+          <v-btn
+            @click="
+              dialog = false
+              data.errors = []
+            "
+            color="text"
+            text
+          >
+            Закрыть
+          </v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
