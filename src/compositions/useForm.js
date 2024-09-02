@@ -1001,7 +1001,12 @@ export default function ({
       !el.routeKey &&
       !el.formStorage
     )
-      return acc
+      // return acc
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [],
+        type: el.type,
+      })
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
@@ -1065,6 +1070,7 @@ export default function ({
           }
         }
       }
+      console.log(list)
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
 
@@ -1074,6 +1080,8 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
+      console.log(filter, list.filter)
+      if (filter.length !== list.filter.length) return []
       return element
     })
     const lists = await makeRequestList(listQuery)
@@ -1127,10 +1135,21 @@ export default function ({
           if (targetField.filter && targetField.filter.length) {
             // query(targetField)
             filter = getDepFilters(targetField)
+            if (
+              targetField.filter &&
+              filter?.length !== targetField?.filter?.length
+            )
+              return
           } else if (dependence.filter && dependence.filter.length) {
             // query(dependence)
             filter = getDepFilters(dependence)
+            if (
+              dependence.filter &&
+              filter?.length !== dependence?.filter?.length
+            )
+              return
           }
+
           // if (clearId) {
           //   formData[targetField.name ? targetField.name : targetField.alias] =
           //     ''
@@ -1441,14 +1460,36 @@ export default function ({
     })
     return filters
   }
-
-  const loadAutocompletes = async () => {
-    const fields = form?.fields
-      .filter((el) => el.type === 'autocomplete' && el.isShow)
+  const unikalDepField = (field) => {
+    console.log('call')
+    const sameDep = (field) => {
+      const result = form?.fields?.filter((subField) => {
+        if (!subField.dependence) return
+        const subFieldResult = subField?.dependence?.filter((subFieldDep) => {
+          // console.log(subFieldDep.url, field.url)
+          return subFieldDep?.url === field.url
+        })
+        return subFieldResult.length
+      })
+      return result.length
+    }
+    return form?.fields
+      .filter((el) => el.type === 'autocomplete' && el.isShow && !sameDep(el))
       .map((el) => el)
-    const queryFields = fields.map(async (el) => {
+  }
+  const loadAutocompletes = async () => {
+    // const fields = form?.fields
+    //   .filter((el) => el.type === 'autocomplete' && el.isShow)
+    //   .map((el) => el)
+    const initFields = unikalDepField()
+    console.log(initFields)
+    const queryFields = initFields.flatMap(async (el) => {
       // const filters = []
       const { url } = el
+      const filter = getDepFilters(el)
+      console.log(filter, el.filter, el.name)
+      if (el.filter && filter?.length !== el?.filter?.length) return
+      console.log('getList')
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
@@ -1457,7 +1498,7 @@ export default function ({
           ? formData[el.name ? el.name : el.alias]
           : -1,
         readonly: environment.readonlyAll,
-        filter: getDepFilters(el),
+        filter,
       })
       if (el.defaultItems) el.items = [...el.defaultItems]
 
@@ -1486,19 +1527,21 @@ export default function ({
         const fieldItems = el.items.find((elItem) => {
           return elItem.id === formData[el.name]
         })
-        await getDependies({
-          field: el,
-          value: formData[el.name],
-          item: fieldItems,
-        })
-        if (el.updateList && el?.updateList.length) {
-          await getFieldsList(el?.updateList)
-          el.loading = false
-        }
+        // await getDependies({
+        //   field: el,
+        //   value: formData[el.name],
+        //   item: fieldItems,
+        // })
+        // if (el.updateList && el?.updateList.length) {
+        //   await getFieldsList(el?.updateList)
+        //   el.loading = false
+        // }
       }
       return data
     })
-    await Promise.all(queryFields)
+    // console.log(queryFields)
+    // const resultAwait = await Promise.all(queryFields)
+    // console.log(resultAwait)
   }
 
   const putSelectItems = async (lists) => {
@@ -1568,7 +1611,7 @@ export default function ({
             })
           )
           if (field.updateList && field.updateList.length) {
-            stackDep.push(getFieldsList(field.updateList))
+            stackDep.push(getFieldsList.bind(field.updateList))
           }
         } else if (
           lists.data[keyList].length === 0 &&
@@ -1726,8 +1769,11 @@ export default function ({
     }
 
     const loadWithDeps = async () => {
+      const stackUrlDep = ['']
       form?.fields.forEach(async (el) => {
         if (el.dependence?.some((item) => item.init)) {
+          // stackUrlDep.push(item.url)
+          // if (stackUrlDep.includes(item.url)) return
           await getDependies({
             field: el,
             value: formData[el.name],
@@ -1736,6 +1782,7 @@ export default function ({
         }
       })
     }
+    // console.log(unikalDepField(), 'unikalDepField')
     await loadAutocompletes()
     await loadWithDeps()
 
