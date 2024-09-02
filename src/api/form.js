@@ -2,7 +2,7 @@ import { get, post, del, put } from '@/api/axios'
 
 export const getForm = (url) => get(url)
 
-export const update = ({ url, body }) => post(url, body)
+export const update = ({ url, body, params }) => post(url, body, params)
 
 export const create = ({ url, body }) => post(url, body)
 

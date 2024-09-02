@@ -2066,9 +2066,7 @@ export default function ({
       return value
     } else return field.position.sm
   }
-  const addFiles = (e) => {
-    console.log(e)
-  }
+  const addFiles = (e) => {}
   watch(
     () => watcher,
     (wtch) => {
