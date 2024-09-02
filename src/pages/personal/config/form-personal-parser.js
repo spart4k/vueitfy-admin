@@ -13,6 +13,9 @@ import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import FormOutput from '@/components/Form/output/index.vue'
+import Vue, { toRef, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router/composables'
+import store from '@/store'
 
 export default {
   path: 'employment_parser',
@@ -182,6 +185,58 @@ export default {
           },
           action: 'loadParser',
           local: true,
+          conditionCode: {
+            key: 'code',
+            results: [
+              {
+                value: 1,
+                type: 'success',
+                text: '',
+                component: Vue.component('component', {
+                  template: `<template>
+                      <div>
+                        <p>Оформлено {{proxyValue.response.data.count - proxyValue.response.data.errors_count}}/{{proxyValue.response.data.count}} сотрудников</p>
+                        <p v-if="proxyValue.response.data.errors_count"><a @click="dialog = true" class="font-weight-bold">Просмотреть ошибки</a></p>
+                        <v-dialog persistent v-model="dialog" width="600">
+                          <v-card class="py-6 px-6">
+                            <v-card-title class="py-0 px-0 text--text text-h5 font-weight-bold"
+                              >Вывод ошибок</v-card-title
+                            >
+                            <v-divider class="mt-3"></v-divider>
+                            <div style="max-height: 70vh" class="text--text py-3 overflow-auto">
+                              <v-row v-for="(item, index) in proxyValue.response.data?.errors" :key="index">
+                                <v-icon color="error" class="mr-3"> mdi-alert </v-icon>
+                                {{ item }}
+                              </v-row>
+                            </div>
+                            <v-divider class="mb-3"></v-divider>
+                            <v-row class="justify-end">
+                              <v-btn @click="dialog = false" color="text" text> Закрыть </v-btn>
+                            </v-row>
+                          </v-card>
+                        </v-dialog>
+                      </div>
+                    </template>`,
+                  props: {
+                    data: {
+                      type: Object,
+                      default: () => {},
+                    },
+                  },
+                  setup(props, ctx) {
+                    const router = useRouter()
+                    const route = useRoute()
+                    const proxyValue = toRef(props, 'data')
+                    const dialog = ref(false)
+                    return {
+                      dialog,
+                      proxyValue,
+                    }
+                  },
+                }),
+              },
+            ],
+          },
         }),
       ],
     },

@@ -16,6 +16,7 @@ import formPersonalDirection from './config/form-personal-direction.js'
 import formDocumentDownload from './config/form-document-download.js'
 import formPersonalParser from './config/form-personal-parser.js'
 import formPersonalEmployment from './config/form-personal-employment'
+import customPersonalReport from './config/custom-personal-report'
 
 import formKeyAdd from './config/form-key-add.js'
 import formKeyEdit from './config/form-key-edit.js'
@@ -39,6 +40,7 @@ const nonExportTabs = [
   formPersonalEmployment,
   tablePersonalEmployment,
   formPersonalParser,
+  customPersonalReport,
 ]
 
 export const personalTabs = [
@@ -179,6 +181,13 @@ export const config = {
             class: ['v-table-button--custom'],
             type: 'changeUrl',
             url: 'personal/employment_parser',
+            backgroundColor: '#fff',
+          },
+          {
+            label: 'Отчет А/В',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'personal/report',
             backgroundColor: '#fff',
           },
         ],
@@ -1373,7 +1382,7 @@ export const config = {
           },
         },
         {
-          title: 'Дата начала',
+          title: 'Дата трудоустройства',
           type: 'default',
           align: 'center',
           fixed: {
@@ -1398,7 +1407,7 @@ export const config = {
           },
         },
         {
-          title: 'Дата конца',
+          title: 'Дата увольнения',
           type: 'default',
           align: 'center',
           fixed: {
@@ -1455,18 +1464,7 @@ export const config = {
         currentPage: 1,
         totalPages: null,
       },
-      detail: {
-        type: 'popup', // String 'popup' or 'page'
-        classes: [''], // List class
-        width: '550px',
-        method: 'get',
-        alias: 'user_keys',
-        url: '/get/form/',
-        name: 'Личные ключи',
-        bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [formKeyAdd, formKeyEdit],
-        activeTab: null,
-      },
+      detail: null,
       isShow: {
         condition: [
           {

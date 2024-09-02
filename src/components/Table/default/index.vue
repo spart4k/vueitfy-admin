@@ -29,7 +29,7 @@
               <SwitchDefault
                 @getItems="changeHeaders"
                 :button="button"
-                :config="options"
+                :context="tableContext"
                 v-if="button.type === 'switch'"
                 v-model="button.value"
                 :name="`btn_${button.label || button.type}`"

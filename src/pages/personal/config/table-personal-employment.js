@@ -114,7 +114,7 @@ export default {
         },
       },
       {
-        title: 'Дата начала',
+        title: 'Дата трудоустройства',
         type: 'default',
         align: 'center',
         fixed: {
@@ -139,7 +139,7 @@ export default {
         },
       },
       {
-        title: 'Дата конца',
+        title: 'Дата увольнения',
         type: 'default',
         align: 'center',
         fixed: {
