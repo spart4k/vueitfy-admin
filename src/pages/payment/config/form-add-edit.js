@@ -1724,6 +1724,28 @@ export default {
           },
         },
       ],
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          // init: true,
+          type: 'custom',
+          urlField: 'personal_id',
+          func: async (ctx) => {
+            // if (!isRoznica(ctx)) return
+            console.log('custom')
+            const { code, sum } = await ctx.store.dispatch(
+              'payments/checkDebit',
+              {
+                url: `check/debit/${ctx.formData.personal_id}`,
+              }
+            )
+            if (code) {
+              ctx.formData.deduction = sum
+              ctx.formData.end_total = ctx.formData.total - sum
+            }
+          },
+        },
+      ],
     }),
     autocompleteField({
       label: 'Должность',
@@ -2130,8 +2152,6 @@ export default {
     dateField({
       label: 'Дата назн',
       name: 'date_target',
-      type: 'datetime',
-      subtype: 'datetime',
       placeholder: '',
       classes: [''],
       position: {
@@ -2400,6 +2420,27 @@ export default {
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
           },
         },
+        {
+          //fields: ['statement_card', 'cardowner'],
+          // init: true,
+          type: 'custom',
+          urlField: 'personal_id',
+          func: async (ctx) => {
+            if (isLogistik(ctx)) return
+            // if (!isRoznica(ctx)) return
+            console.log('custom')
+            const { code, sum } = await ctx.store.dispatch(
+              'payments/checkDebit',
+              {
+                url: `check/debit/${ctx.formData.personal_id}`,
+              }
+            )
+            if (code) {
+              ctx.formData.deduction = sum
+              ctx.formData.end_total = ctx.formData.total - sum
+            }
+          },
+        },
       ],
     }),
     // stringField({
@@ -2582,7 +2623,7 @@ export default {
               }
             )
             if (code) {
-              ctx.formData.deducation = sum
+              ctx.formData.deduction = sum
               ctx.formData.end_total = ctx.formData.total - sum
             }
           },
@@ -2613,47 +2654,7 @@ export default {
       class: [''],
       position: {
         cols: 12,
-        sm: {
-          conditon: [
-            {
-              funcCondition: (context) =>
-                context.formData.vid_vedomost_id === 1,
-              value: {
-                true: 5,
-                false: 5,
-              },
-              // type: false,
-            },
-            {
-              funcCondition: (context) =>
-                context.formData.vid_vedomost_id === 9,
-              value: {
-                true: 4,
-                false: 5,
-              },
-              // type: false,
-            },
-            {
-              funcCondition: (context) =>
-                context.formData.vid_vedomost_id === 5,
-              value: {
-                true: 6,
-                false: 3,
-              },
-              // type: false,
-            },
-            // {
-            //   funcCondition: (context) =>
-            //     context.formData.vid_vedomost_id === 5,
-            //   value: {
-            //     true: 3,
-            //     false: 6,
-            //   },
-            //   // type: false,
-            // },
-          ],
-          default: 5,
-        },
+        sm: 3,
       },
       validations: { required, numeric, vneplSumm },
       bootstrapClass: [''],
@@ -2690,11 +2691,36 @@ export default {
           {
             target: 'funcCondition',
             funcCondition: (context) => {
-              return isRoznica(context) && context.formData.deducation
+              return isRoznica(context) && context.formData.deduction
             },
           },
         ],
       },
+    }),
+    stringField({
+      label: 'Удержано',
+      name: 'deduction',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 3,
+        sm: 3,
+      },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        type: 'every',
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return isRoznica(context) && context.formData.deduction
+            },
+          },
+        ],
+      },
+      //validations: { required },
     }),
     // stringField({
     //   label: '% удержания',
@@ -3297,22 +3323,7 @@ export default {
       name: 'vertical',
       placeholder: '',
       readonly: true,
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      //validations: { required },
-      isShow: {
-        value: true,
-      },
-    }),
-    stringField({
-      label: 'deduction',
-      name: 'deduction',
-      placeholder: '',
-      readonly: true,
+      stringify: true,
       class: [''],
       position: {
         cols: 12,
