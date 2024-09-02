@@ -977,7 +977,6 @@ export default function ({
         } else if (dependence.type === 'api') {
           const { url, body: bodyData, field: targetField } = dependence
           const acc = {}
-          console.log(bodyData)
           bodyData?.forEach((el) => {
             acc[el] = +formData[el]
           })
@@ -991,7 +990,6 @@ export default function ({
           })
           formData[targetField] = result
         } else if (dependence.type === 'custom') {
-          console.log('append')
           const conditionContext = {
             store,
             formData,
@@ -1091,7 +1089,6 @@ export default function ({
           }
         }
       }
-      console.log(list)
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
 
@@ -1101,7 +1098,6 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
-      console.log(filter, list.filter)
       if (filter.length !== list.filter.length) return []
       return element
     })
@@ -1482,7 +1478,6 @@ export default function ({
     return filters
   }
   const unikalDepField = (field) => {
-    console.log('call')
     const sameDep = (field) => {
       const result = form?.fields?.filter((subField) => {
         if (!subField.dependence) return
@@ -1495,7 +1490,7 @@ export default function ({
       return result.length
     }
     return form?.fields
-      .filter((el) => el.type === 'autocomplete' && el.isShow && !sameDep(el))
+      .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
   }
   const loadAutocompletes = async () => {
@@ -1508,9 +1503,7 @@ export default function ({
       // const filters = []
       const { url } = el
       const filter = getDepFilters(el)
-      console.log(filter, el.filter, el.name)
       if (el.filter && filter?.length !== el?.filter?.length) return
-      console.log('getList')
       const data = await getList(url, {
         countRows: 10,
         currentPage: 1,
