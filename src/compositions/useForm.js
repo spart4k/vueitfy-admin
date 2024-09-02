@@ -977,7 +977,8 @@ export default function ({
         } else if (dependence.type === 'api') {
           const { url, body: bodyData, field: targetField } = dependence
           const acc = {}
-          bodyData.forEach((el) => {
+          console.log(bodyData)
+          bodyData?.forEach((el) => {
             acc[el] = +formData[el]
           })
           const { result } = await store.dispatch(dependence.module, {
@@ -990,6 +991,7 @@ export default function ({
           })
           formData[targetField] = result
         } else if (dependence.type === 'custom') {
+          console.log('append')
           const conditionContext = {
             store,
             formData,
