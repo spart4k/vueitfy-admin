@@ -244,6 +244,7 @@ export default {
       environment,
       addFiles,
       originalData,
+      entityData,
     } = useForm({
       form: props.tab,
       tableComp: props.tableComp,
@@ -308,6 +309,7 @@ export default {
       environment,
       addFiles,
       originalData,
+      entityData,
     }
   },
 }

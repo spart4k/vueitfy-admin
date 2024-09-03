@@ -399,52 +399,53 @@ export default {
         ],
       },
     }),
-    selectField({
-      label: 'Объекты',
-      name: 'object_json',
-      alias: 'account_objects',
-      subtype: 'multiple',
-      readonly: true,
-      // requestKey: 'direction_json',
-      stringify: true,
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: {},
-      bootstrapClass: [''],
-      // updateList: [
-      //   {
-      //     alias: 'account_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_json',
-      //         value: '',
-      //         source: 'formData',
-      //         type: 'num',
-      //       },
-      //     ],
-      //   },
-      // ],
-      isShow: {
-        value: false,
-        conditions: [
-          {
-            target: 'funcCondition',
-            funcCondition: (ctx) => {
-              return ctx.formData.permission_id !== 23
-            },
-          },
-        ],
-      },
-    }),
+    // selectField({
+    //   label: 'Объекты',
+    //   name: 'object_json',
+    //   alias: 'account_objects',
+    //   subtype: 'multiple',
+    //   readonly: true,
+    //   // requestKey: 'direction_json',
+    //   stringify: true,
+    //   placeholder: '',
+    //   class: [''],
+    //   selectOption: {
+    //     text: 'name',
+    //     value: 'id',
+    //   },
+    //   items: [],
+    //   position: {
+    //     cols: 12,
+    //     sm: 6,
+    //   },
+    //   validations: {},
+    //   bootstrapClass: [''],
+    //   // updateList: [
+    //   //   {
+    //   //     alias: 'account_id',
+    //   //     filter: [
+    //   //       {
+    //   //         field: 'direction_json',
+    //   //         value: '',
+    //   //         source: 'formData',
+    //   //         type: 'num',
+    //   //       },
+    //   //     ],
+    //   //   },
+    //   // ],
+    //   isShow: {
+    //     value: false,
+    //     conditions: [
+    //       {
+    //         target: 'funcCondition',
+    //         funcCondition: (ctx) => {
+    //           return ctx.formData.permission_id !== 23
+    //           // console.log(ctx, 'CONTEXT')
+    //         },
+    //       },
+    //     ],
+    //   },
+    // }),
   ],
   actions: [
     stringAction({

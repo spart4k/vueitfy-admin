@@ -9,7 +9,14 @@ import {
   textBlock,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions'
-import { required, notValue, interval } from '@/utils/validation.js'
+import {
+  required,
+  notValue,
+  interval,
+  onlyCard,
+  numeric,
+  vneplSumm,
+} from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 import text from '@/components/Mails/letter/text/setup'
@@ -22,6 +29,7 @@ import {
   isOKK,
   isRG,
   isROKK,
+  isRukfil,
   isVertical,
 } from '@/utils/permissions'
 import formChangePersonal from './form-change-personal.js'
@@ -34,8 +42,20 @@ const isX5 = (ctx) => {
   return ctx.formData.direction_id === 2 && ctx.formData.type === 1
 }
 
+const isRoznica = (ctx) => {
+  return ctx.formData.direction_id === 2
+}
+
 const isLogistik = (ctx) => {
-  return ctx.formData.direction_id === 1
+  return [1, 6, 7].includes(ctx.formData.direction_id)
+}
+
+const isCreater = (ctx) => {
+  return ctx.entityData.from_account_id === ctx.store.state.user.id
+}
+
+const isTarget = (ctx) => {
+  return ctx.entityData.account_id === ctx.store.state.user.id
 }
 
 const conditionLogistik = (context) => {
@@ -352,6 +372,12 @@ export default {
         },
         {
           field: 'personal_bank_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'real_personal_bank_id',
           value: '',
           source: 'formData',
           type: 'num',
@@ -1012,6 +1038,12 @@ export default {
           },
           {
             funcCondition: (context) => {
+              return isLogistik(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
               return (
                 isX5(context) &&
                 [2, 3].includes(context.formData.status_id) &&
@@ -1338,6 +1370,9 @@ export default {
           init: true,
           type: 'custom',
           func: async (ctx) => {
+            if (isLogistik(ctx)) {
+              return
+            }
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -1460,6 +1495,12 @@ export default {
             },
             {
               field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'real_personal_bank_id',
               value: '',
               source: 'formData',
               type: 'num',
@@ -1630,6 +1671,10 @@ export default {
               context.formData.status_id === 6 && context.mode === 'edit',
             type: true,
           },
+          {
+            funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.status_id === 6 && context.mode === 'edit',
@@ -1640,7 +1685,7 @@ export default {
       appendAction: [
         {
           icon: '$IconAccoutSync',
-          label: 'Смешить линейщика',
+          label: 'Сменить линейщика',
           notReadonly: true,
           class: [
             (formData) => (formData.real_personal_id ? 'orange' : 'primary'),
@@ -1656,11 +1701,17 @@ export default {
               {
                 funcCondition: (context) => {
                   if (!context.environment.readonlyAll) {
-                    return !!(
-                      [1, 2, 3].includes(context.formData.status_id) &&
-                      isVertical(context) &&
-                      isX5(context)
-                    )
+                    if (context.formData.real_personal_id) {
+                      return !!(
+                        isX5(context) && context.formData.real_personal_id
+                      )
+                    } else {
+                      return !!(
+                        [1, 2, 3].includes(context.formData.status_id) &&
+                        isVertical(context) &&
+                        isX5(context)
+                      )
+                    }
                   } else {
                     return !!(
                       isX5(context) && context.formData.real_personal_id
@@ -1670,6 +1721,28 @@ export default {
                 type: true,
               },
             ],
+          },
+        },
+      ],
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          // init: true,
+          type: 'custom',
+          urlField: 'personal_id',
+          func: async (ctx) => {
+            // if (!isRoznica(ctx)) return
+            console.log('custom')
+            const { code, sum } = await ctx.store.dispatch(
+              'payments/checkDebit',
+              {
+                url: `check/debit/${ctx.formData.personal_id}`,
+              }
+            )
+            if (code) {
+              ctx.formData.deduction = sum
+              ctx.formData.end_total = ctx.formData.total - sum
+            }
           },
         },
       ],
@@ -1792,7 +1865,9 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           init: true,
           type: 'custom',
+          url: 'get/object/price',
           func: async (ctx) => {
+            if (isLogistik(ctx)) return
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -1938,6 +2013,16 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return isLogistik(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.direction_id === 2 &&
@@ -2067,8 +2152,6 @@ export default {
     dateField({
       label: 'Дата назн',
       name: 'date_target',
-      type: 'datetime',
-      subtype: 'datetime',
       placeholder: '',
       classes: [''],
       position: {
@@ -2089,11 +2172,17 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isX5(context) &&
-                [2, 3, 6].includes(context.formData.status_id) &&
-                [3, 5, 1].includes(context.originalData.vid_vedomost_id)
+                (isX5(context) &&
+                  [2, 3, 6].includes(context.formData.status_id) &&
+                  [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
+                isOKK(context) ||
+                isROKK(context)
               )
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
             type: true,
           },
         ],
@@ -2119,7 +2208,9 @@ export default {
           //fields: ['statement_card', 'cardowner'],
           init: true,
           type: 'custom',
+          url: 'get/object/price',
           func: async (ctx) => {
+            if (isLogistik(ctx)) return
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -2223,7 +2314,7 @@ export default {
           init: true,
           type: 'custom',
           func: async (ctx) => {
-            if (!isMagnit(ctx)) return
+            if (!isMagnit(ctx) || isLogistik(ctx)) return
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -2290,23 +2381,64 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isX5(context) &&
-                [2, 3, 6].includes(context.formData.status_id) &&
-                [3, 5, 1].includes(context.originalData.vid_vedomost_id)
+                (isX5(context) &&
+                  [2, 3, 6].includes(context.formData.status_id) &&
+                  [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
+                isOKK(context) ||
+                isROKK(context)
               )
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
             type: true,
           },
         ],
       },
       requestType: 'number',
+      isShow: {
+        value: false,
+        type: 'every',
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return isRoznica(context)
+            },
+            type: true,
+          },
+        ],
+      },
       dependence: [
         {
           //fields: ['statement_card', 'cardowner'],
           type: 'custom',
           init: true,
           func: async (ctx) => {
+            if (isLogistik(ctx)) return
             ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+          },
+        },
+        {
+          //fields: ['statement_card', 'cardowner'],
+          // init: true,
+          type: 'custom',
+          urlField: 'personal_id',
+          func: async (ctx) => {
+            if (isLogistik(ctx)) return
+            // if (!isRoznica(ctx)) return
+            console.log('custom')
+            const { code, sum } = await ctx.store.dispatch(
+              'payments/checkDebit',
+              {
+                url: `check/debit/${ctx.formData.personal_id}`,
+              }
+            )
+            if (code) {
+              ctx.formData.deduction = sum
+              ctx.formData.end_total = ctx.formData.total - sum
+            }
           },
         },
       ],
@@ -2397,7 +2529,7 @@ export default {
           default: 5,
         },
       },
-      validations: { required },
+      validations: { required, numeric, vneplSumm },
       bootstrapClass: [''],
       round: true,
       readonly: {
@@ -2439,6 +2571,12 @@ export default {
             type: true,
           },
           {
+            funcCondition: (context) => {
+              return isLogistik(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+          {
             funcCondition: (context) => isMagnit(context),
             type: true,
           },
@@ -2469,6 +2607,120 @@ export default {
           },
         },
       ],
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          // init: true,
+          type: 'custom',
+          urlField: 'personal_id',
+          func: async (ctx) => {
+            // if (!isRoznica(ctx)) return
+            console.log('custom')
+            const { code, sum } = await ctx.store.dispatch(
+              'payments/checkDebit',
+              {
+                url: `check/debit/${ctx.formData.personal_id}`,
+              }
+            )
+            if (code) {
+              ctx.formData.deduction = sum
+              ctx.formData.end_total = ctx.formData.total - sum
+            }
+          },
+        },
+        // {
+        //   //fields: ['statement_card', 'cardowner'],
+        //   type: 'api',
+        //   module: 'payment/checkDebit',
+        //   action: {
+        //     type: 'hideOptions',
+        //     //values: [8],
+        //     field: 'vid_vedomost_id_logistic',
+        //   },
+        //   //url: 'object_id/avatar_with_user_key_id',
+        //   url: [
+        //     {
+        //       source: 'formData',
+        //       field: 'this',
+        //     },
+        //   ],
+        // },
+      ],
+    }),
+    stringField({
+      label: 'Итого',
+      name: 'end_total',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 3,
+      },
+      validations: { required, numeric, vneplSumm },
+      bootstrapClass: [''],
+      readonly: true,
+      appendAction: [
+        {
+          icon: 'mdi-table-edit',
+          label: 'Изменить выработку',
+          action: {
+            type: 'changeUrl',
+            name: 'payment/:id/output',
+          },
+          isShow: {
+            value: true,
+            condition: [
+              {
+                funcCondition: (context) =>
+                  context.formData.vid_vedomost_id === 1 &&
+                  (context.formData.status_id === 1 ||
+                    context.formData.status_id === 2 ||
+                    context.formData.status_id === 3) &&
+                  (context.formData.direction_id === 1 ||
+                    context.formData.direction_id === 6),
+                type: true,
+              },
+            ],
+          },
+        },
+      ],
+      isShow: {
+        value: false,
+        type: 'every',
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return isRoznica(context) && context.formData.deduction
+            },
+          },
+        ],
+      },
+    }),
+    stringField({
+      label: 'Удержано',
+      name: 'deduction',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 3,
+        sm: 3,
+      },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        type: 'every',
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return isRoznica(context) && context.formData.deduction
+            },
+          },
+        ],
+      },
+      //validations: { required },
     }),
     // stringField({
     //   label: '% удержания',
@@ -2563,15 +2815,15 @@ export default {
           fio: '',
         },
       ],
-      hideOption: [
-        {
-          target: 'vid_vedomost_id',
-          targetValue: [1],
-          value: [0],
-          type: true,
-        },
-      ],
-      validations: { required },
+      // hideOption: [
+      //   {
+      //     target: 'vid_vedomost_id',
+      //     targetValue: [1],
+      //     value: [0],
+      //     type: true,
+      //   },
+      // ],
+      validations: { required, onlyCard },
       bootstrapClass: [''],
       dependence: [
         {
@@ -2597,6 +2849,9 @@ export default {
               (context.store.state.user.is_personal_vertical &&
                 (context.formData.status_id === 1 ||
                   context.formData.status_id === 3)) ||
+              (isLogistik(context) &&
+                [1, 3].includes(context.formData.status_id) &&
+                (isVertical(context) || isManager(context))) ||
               (context.formData.status_id === 6 && context.mode === 'edit'),
             type: false,
           },
@@ -2606,6 +2861,16 @@ export default {
             },
             type: true,
           },
+          // {
+          //   funcCondition: (context) => {
+          //     return (
+          //       isLogistik(context) &&
+          //       context.formData.vid_vedomost_id === 5 &&
+          //       context.originalData.status_id === 2
+          //     )
+          //   },
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -2655,6 +2920,12 @@ export default {
             },
             {
               field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'real_personal_bank_id',
               value: '',
               source: 'formData',
               type: 'num',
@@ -2781,6 +3052,13 @@ export default {
           //     context.mode === 'edit',
           //   type: true,
           // },
+          // {
+          //   funcCondition: (context) =>
+          //     isLogistik(context) &&
+          //     context.formData.vid_vedomost_id === 9 &&
+          //     context.mode === 'edit',
+          //   type: false,
+          // },
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
@@ -2878,6 +3156,12 @@ export default {
             },
             {
               field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'real_personal_bank_id',
               value: '',
               source: 'formData',
               type: 'num',
@@ -3023,6 +3307,23 @@ export default {
       name: 'readonly',
       placeholder: '',
       readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
+    stringField({
+      label: 'vertical',
+      name: 'vertical',
+      placeholder: '',
+      readonly: true,
+      stringify: true,
       class: [''],
       position: {
         cols: 12,
@@ -3252,9 +3553,19 @@ export default {
             funcCondition: (context) => {
               return (
                 (isX5(context) &&
-                  (isOKK(context) || isROKK(context)) &&
+                  (isDBA(context) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)))) ||
+                ((isOKK(context) || isROKK(context)) &&
                   [2, 3].includes(context.formData.status_id)) ||
-                isMagnit(context)
+                isMagnit(context) ||
+                (isLogistik(context) &&
+                  [2, 3].includes(context.formData.status_id) &&
+                  (isDBA(context) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context))))
               )
             },
             type: false,
@@ -3296,7 +3607,28 @@ export default {
                 (isX5(context) && (isOKK(context) || isROKK(context))) ||
                 isDBA(context) ||
                 isDirector(context) ||
-                isMagnit(context)
+                isMagnit(context) ||
+                (isLogistik(context) &&
+                  context.formData.status_id === 1 &&
+                  (isDBA(context) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)) ||
+                    isOKK(context) ||
+                    isROKK(context)) &&
+                  // жесткие условия
+                  // - если предыдущий статус установлен менеджером или руководителем филиала, статус«Согласован» могут установить только директор, ОКК, РОКК и DBA;
+                  [1, 15].includes(context.entityData.status_permission) &&
+                  isDBA(context)) ||
+                isOKK(context) ||
+                isROKK(context) ||
+                isDirector(context) ||
+                // - если предыдущий статус установлен ОКК, статус «Согласован» могут установить только РОКК, директор, DBA;
+                (context.entityData.status_permission === 8 &&
+                  (isROKK(context) || isDirector(context) || isDBA(context))) ||
+                // 	если предыдущий статус установлен РОКК или DBA, статус «Согласован» может проставить только DBA.
+                ([17, 4].includes(context.entityData.status_permission) &&
+                  isDBA(context))
               )
             },
             type: false,
@@ -3346,14 +3678,22 @@ export default {
             funcCondition: (context) => {
               return (
                 (isX5(context) &&
-                  (isOKK(context) ||
-                    isROKK(context) ||
-                    isDBA(context) ||
-                    isRG(context) ||
-                    isManager(context) ||
-                    isCUP(context)) &&
+                  (isDBA(context) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)) ||
+                    isOKK(context) ||
+                    isROKK(context)) &&
                   context.formData.status_id === 1) ||
-                isMagnit(context)
+                isMagnit(context) ||
+                (isLogistik(context) &&
+                  [1, 2].includes(context.formData.status_id) &&
+                  (isDBA(context) ||
+                    (!isCreater(context) &&
+                      !isTarget(context) &&
+                      isVertical(context)) ||
+                    isOKK(context) ||
+                    isROKK(context)))
               )
             },
             type: false,
@@ -3400,10 +3740,17 @@ export default {
                 (isDBA(context) && context.formData.status_id === 4) ||
                 (isX5(context) &&
                   (isAllBug(context) || isDBA(context)) &&
-                  context.formData.status_id === 4)
+                  context.formData.status_id === 4) ||
+                (isLogistik(context) &&
+                  context.formData.status_id === 4 &&
+                  isAllBug(context))
               )
             },
             type: false,
+          },
+          {
+            funcCondition: (context) => context.formData.status_id === 6,
+            type: true,
           },
           // {
           //   funcCondition: (context) =>
@@ -3467,12 +3814,12 @@ export default {
             },
             type: true,
           },
-          {
-            funcCondition: (context) => {
-              return isMagnit(context)
-            },
-            type: false,
-          },
+          // {
+          //   funcCondition: (context) => {
+          //     return isMagnit(context)
+          //   },
+          //   type: false,
+          // },
           {
             funcCondition: (context) =>
               // [22, 12].includes(context.store.state.user.permission_id),
@@ -3505,6 +3852,10 @@ export default {
               context.formData?.status_id !== 6 &&
               !context.environment.readonlyAll,
             type: false,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
+            type: true,
           },
         ],
       },

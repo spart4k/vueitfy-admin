@@ -522,6 +522,15 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/debt-add',
+            path: '/personal/:id/debt-add',
+            meta: {
+              mode: ['edit', 'debt-add'],
+              label: 'Создание задолженности',
+            },
+            component: Detail,
+          },
         ],
       },
       {

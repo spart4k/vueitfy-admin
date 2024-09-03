@@ -36,7 +36,6 @@ const nonExportTabs = [
   formBind,
   formPersonalAdd,
   formPersonalDirection,
-  tablePersonalX5,
   formPersonalEmployment,
   tablePersonalEmployment,
   formPersonalParser,
@@ -48,6 +47,7 @@ export const personalTabs = [
   formPersonalDocs,
   tablePersonalScan,
   tablePersonalBank,
+  tablePersonalX5,
   tablePersonalDebt,
   formDocumentDownload,
 ]
