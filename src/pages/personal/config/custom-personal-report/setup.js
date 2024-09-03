@@ -1,5 +1,6 @@
 import Vue, { computed, defineComponent, ref, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
+import { getList } from '@/api/selects'
 import moment from 'moment/moment'
 import store from '@/store'
 
@@ -16,21 +17,12 @@ const PersonalReport = defineComponent({
       errors: false,
     })
     const dialog = ref(false)
+    const parser = ref({
+      id: 0,
+      page: 1,
+    })
     const data = ref({
-      period: [
-        {
-          success: true,
-          date: '2024-08-16 12:02:44',
-          path: '/tmp/1723809533-2024-07.xlsx',
-          parser_id: 182,
-        },
-        {
-          success: false,
-          date: '2024-08-16 12:14:57',
-          path: '/tmp/1723810350-2024-08.xlsx',
-          parser_id: 183,
-        },
-      ],
+      period: [],
       errors: [],
     })
     const monthArray = [
@@ -62,18 +54,21 @@ const PersonalReport = defineComponent({
     const getParseTime = (val) => {
       return moment(val, 'YYYY-MM-DD HH:mm:ss').format('DD.MM.YYYY, HH:mm')
     }
-    const getErrors = async (val) => {
-      dialog.value = true
+    const getErrors = async () => {
       loading.value.errors = true
-      const responseData = await store.dispatch('form/update', {
-        url: 'report/autoload/x5/errors',
-        body: {
-          data: {
-            parser_id: val,
-          },
-        },
+      const responseData = await getList('get/pagination_list/parser_errors', {
+        countRows: 100,
+        currentPage: parser.value.page,
+        searchValue: '',
+        id: -1,
+        filter: [{ alias: 'parser_id', value: parser.value.id }],
+        readonly: 0,
       })
-      data.value.errors = responseData.data
+      if (parser.value.page < responseData.totalPage)
+        responseData.rows.at(-1).intersecting = true
+      if (parser.value.page === 1) data.value.errors = [...responseData.rows]
+      else data.value.errors = [...data.value.errors, ...responseData.rows]
+      parser.value.page++
       loading.value.errors = false
     }
     const changeMonth = (val) => {
@@ -119,6 +114,7 @@ const PersonalReport = defineComponent({
       loading,
       data,
       dialog,
+      parser,
 
       getYear,
       getMonth,

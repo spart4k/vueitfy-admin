@@ -126,7 +126,11 @@
                       class="height-100 px-3"
                       height="40"
                       color="text"
-                      @click="getErrors(item.parser_id)"
+                      @click="
+                        parser.id = item.parser_id
+                        dialog = true
+                        getErrors()
+                      "
                       ><v-icon class="mr-3" size="24" color="error"
                         >mdi-alert-circle-outline</v-icon
                       >Посмотреть ошибки</v-btn
@@ -155,7 +159,7 @@
     </div>
     <v-divider class="mb-3"></v-divider>
     <v-row class="justify-end">
-      <v-btn color="text" text> Закрыть </v-btn>
+      <v-btn @click="$emit('closePopup')" color="text" text> Закрыть </v-btn>
     </v-row>
 
     <v-dialog persistent v-model="dialog" width="600">
@@ -166,25 +170,39 @@
         <v-divider class="mt-3"></v-divider>
         <div style="height: 400px" class="text--text py-3 overflow-auto">
           <div
-            v-if="loading.errors"
+            v-if="loading.errors && parser.page === 1"
             class="d-flex justify-center align-center"
             style="height: 100%"
           >
             <v-progress-circular color="primary" :size="80" indeterminate />
           </div>
           <template v-else>
-            <v-row v-for="(item, index) in data.errors" :key="index">
-              <v-icon color="error" class="mr-3"> mdi-alert </v-icon>
-              {{ item.error }}
+            <v-row
+              v-intersect.once="item.intersecting && getErrors"
+              v-for="(item, index) in data.errors"
+              :key="index"
+            >
+              <span>
+                <v-icon color="error" class="mr-3"> mdi-alert </v-icon>
+                {{ item.name }}
+              </span>
             </v-row>
+            <div
+              v-if="loading.errors && parser.page !== 1"
+              class="d-flex justify-center py-1"
+            >
+              <v-progress-circular color="primary" :size="30" indeterminate />
+            </div>
           </template>
+          <div v-if="dialog"></div>
         </div>
         <v-divider class="mb-3"></v-divider>
         <v-row class="justify-end">
           <v-btn
             @click="
               dialog = false
-              data.errors = []
+              parser.id = 0
+              parser.page = 1
             "
             color="text"
             text
