@@ -7,6 +7,7 @@ import {
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 import { required } from '@/utils/validation.js'
+import { isManager } from '@/utils/permissions'
 
 export default {
   id: 0,
@@ -154,10 +155,13 @@ export default {
       aliasFilter: 'p.account_id',
       isShow: {
         value: false,
-        condition: [
+        type: 'every',
+        conditions: [
           {
-            permissions: [1],
-            type: false,
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return !isManager(context)
+            },
           },
         ],
       },
