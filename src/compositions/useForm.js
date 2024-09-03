@@ -889,36 +889,38 @@ export default function ({
     )
   }
 
-  const changeAutocomplete = async (params) => {
-    console.log(params)
-    queueMicrotask(async () => {
-      params.field.dependence?.forEach((dependence) => {
-        const depField = dependence.field
-        const targetField = fields[depField]
-        if (targetField) {
-          // formData[targetField.name ? targetField.name : targetField.alias] = ''
-        }
+  const changeAutocomplete = async ({ field, value, item }) => {
+    // console.log(params)
+    // if (field.hasOwnProperty('fillField')) {
+    // }
+    if (field.dependence)
+      queueMicrotask(async () => {
+        field.dependence?.forEach((dependence) => {
+          const depField = dependence.field
+          const targetField = fields[depField]
+          if (targetField) {
+            // formData[targetField.name ? targetField.name : targetField.alias] = ''
+          }
+        })
+        await getDependies({ field, value, item })
       })
-      await getDependies(params)
-    })
-    if (params.field.hasOwnProperty('selectOptionName')) {
-      const item = params.field.items.find((el) => el.id === params.value)
-      params.field.selectOptionName = item[params.field.selectOption.text]
+    if (field.hasOwnProperty('selectOptionName')) {
+      const item = field.items.find((el) => el.id === value)
+      field.selectOptionName = item[field.selectOption.text]
     }
-    if (params.field.hasOwnProperty('putValueInItems')) {
+    if (field.hasOwnProperty('putValueInItems')) {
       const array = []
-      params.value?.forEach((item) => {
-        array.push(params.field.items.find((x) => x.id === item))
+      value?.forEach((item) => {
+        array.push(field.items.find((x) => x.id === item))
       })
-      fields[params.field.putValueInItems].items = array
+      fields[field.putValueInItems].items = array
     }
-    const { field } = params
 
     if (field.updateList && field?.updateList.length) {
       const list = await getFieldsList(field?.updateList)
       field.loading = false
     }
-    getRecursiveDependes(params.field)
+    getRecursiveDependes(field)
   }
   const getRecursiveDependes = (field) => {
     const formDataNames = []
@@ -1098,7 +1100,6 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
-      console.log(filter, list.alias, filter.length, list.filter.length)
       if (filter.length !== list.filter.length) return []
       return element
     })
@@ -1108,6 +1109,7 @@ export default function ({
   }
   const getDependies = async (params) => {
     const { value, field, clearId } = params
+    console.log(field.name, field)
     field.dependence?.forEach(async (dependence) => {
       if (params.init && !dependence.init) return
       if (dependence.condition?.length) {
@@ -1198,11 +1200,21 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
+        console.log('fillField', dependence)
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
+            console.log(params)
             if (params?.item) formData[el] = params?.item[el]
-            else if (formData[el] && params.hasOwnProperty('item'))
-              formData[el] = null
+            else {
+              const selectedItem = field.items.find(
+                (fieldItem) => fieldItem.id === formData[field.name]
+              )
+              if (selectedItem) {
+                formData[el] = selectedItem[el]
+              }
+            }
+            // else if (formData[el] && params.hasOwnProperty('item'))
+            //   formData[el] = null
           } else if (typeof el === 'object') {
             const targetObject = fields[el.formKey]
             if (
@@ -1320,16 +1332,16 @@ export default function ({
         const fieldItems = fields[depField].items.find(
           (el) => el.id === formData[depField]
         )
-        await getDependies({
-          value: formData[depField],
-          field: fields[depField],
-          item: fieldItems,
-          // clearId: true,
-        })
-        if (fields[depField].updateList && fields[depField].updateList.length) {
-          // await queryList(fields[depField], false)
-          await getFieldsList(fields[depField].updateList)
-        }
+        // await getDependies({
+        //   value: formData[depField],
+        //   field: fields[depField],
+        //   item: fieldItems,
+        //   // clearId: true,
+        // })
+        // if (fields[depField].updateList && fields[depField].updateList.length) {
+        //   // await queryList(fields[depField], false)
+        //   await getFieldsList(fields[depField].updateList)
+        // }
       }
       if (
         !hasValue(formData[depField], fields[depField]?.items, fields[depField])
@@ -1491,7 +1503,7 @@ export default function ({
       return result.length
     }
     return form?.fields
-      .filter((el) => el.type === 'autocomplete' && el.isShow && !sameDep(el))
+      .filter((el) => el.type === 'autocomplete' && el.isShow)
       .map((el) => el)
   }
   const loadAutocompletes = async () => {
@@ -1520,6 +1532,14 @@ export default function ({
           Vue.set(el, 'items', [...el.items, ...data.rows])
         } else {
           Vue.set(el, 'items', [...data.rows])
+        }
+        if (el.hasOwnProperty('fillField')) {
+          const findItem = el.items.find(
+            (elItem) => elItem.id === formData[el.name]
+          )
+          el.fillField.forEach((fillFieldEl) => {
+            formData[fillFieldEl] = findItem[fillFieldEl]
+          })
         }
       }
       el.hideItems = el.items
@@ -1734,6 +1754,7 @@ export default function ({
 
   const getData = async () => {
     let syncForm = undefined
+    const depsApi = []
     if (getDetail() && form.alias) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
