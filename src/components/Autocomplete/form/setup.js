@@ -273,6 +273,7 @@ export default {
     watch(
       () => proxyValue.value,
       (newVal) => {
+        console.log('newVal')
         emit('input', newVal)
       }
     )

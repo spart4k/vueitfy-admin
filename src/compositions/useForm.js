@@ -890,6 +890,7 @@ export default function ({
   }
 
   const changeAutocomplete = async (params) => {
+    console.log(params)
     queueMicrotask(async () => {
       params.field.dependence?.forEach((dependence) => {
         const depField = dependence.field
@@ -1490,7 +1491,7 @@ export default function ({
       return result.length
     }
     return form?.fields
-      .filter((el) => el.type === 'autocomplete' && el.isShow)
+      .filter((el) => el.type === 'autocomplete' && el.isShow && !sameDep(el))
       .map((el) => el)
   }
   const loadAutocompletes = async () => {
@@ -1532,6 +1533,10 @@ export default function ({
             formData[el.name] = el.items[0][el.selectOption.value]
           }
         }
+        // changeAutocomplete({
+        //   value: formData[el.name],
+        //   field: fields[el.name],
+        // })
       }
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
