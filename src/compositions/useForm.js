@@ -1020,12 +1020,7 @@ export default function ({
       !el.routeKey &&
       !el.formStorage
     )
-      // return acc
-      acc.push({
-        alias: el.alias ?? el.field,
-        value: [],
-        type: el.type,
-      })
+      return acc
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
