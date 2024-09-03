@@ -1732,7 +1732,6 @@ export default {
           urlField: 'personal_id',
           func: async (ctx) => {
             // if (!isRoznica(ctx)) return
-            console.log('custom')
             const { code, sum } = await ctx.store.dispatch(
               'payments/checkDebit',
               {
@@ -2428,7 +2427,6 @@ export default {
           func: async (ctx) => {
             if (isLogistik(ctx)) return
             // if (!isRoznica(ctx)) return
-            console.log('custom')
             const { code, sum } = await ctx.store.dispatch(
               'payments/checkDebit',
               {
@@ -2615,7 +2613,6 @@ export default {
           urlField: 'personal_id',
           func: async (ctx) => {
             // if (!isRoznica(ctx)) return
-            console.log('custom')
             const { code, sum } = await ctx.store.dispatch(
               'payments/checkDebit',
               {
