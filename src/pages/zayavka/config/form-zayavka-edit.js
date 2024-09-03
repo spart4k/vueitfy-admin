@@ -2528,6 +2528,12 @@ export const config = {
           source: 'formData',
           type: 'num',
         },
+        {
+          field: 'personal_account_zr',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
       ],
     },
     {
@@ -2541,12 +2547,6 @@ export const config = {
         },
         {
           field: 'personal_zr',
-          value: '',
-          source: 'formData',
-          type: 'num',
-        },
-        {
-          field: 'personal_object_zr',
           value: '',
           source: 'formData',
           type: 'num',
