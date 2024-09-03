@@ -1508,12 +1508,12 @@ export default function ({
         readonly: environment.readonlyAll,
         filter,
       })
-      if (el.defaultItems) el.items = Vue.set(el, 'items', [...el.defaultItems])
+      if (el.defaultItems) Vue.set(el, 'items', [...el.defaultItems])
       if (data.rows) {
         if (el.items?.length) {
-          el.items = Vue.set(el, 'items', [...el.items, ...data.rows])
+          Vue.set(el, 'items', [...el.items, ...data.rows])
         } else {
-          el.items = Vue.set(el, 'items', [...data.rows])
+          Vue.set(el, 'items', [...data.rows])
         }
       }
       el.hideItems = el.items
