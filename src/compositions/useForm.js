@@ -1020,7 +1020,11 @@ export default function ({
       !el.routeKey &&
       !el.formStorage
     )
-      return acc
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [],
+        type: el.type,
+      })
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
@@ -1093,6 +1097,7 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
+      console.log(filter, list.alias, filter.length, list.filter.length)
       if (filter.length !== list.filter.length) return []
       return element
     })
