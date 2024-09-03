@@ -57,7 +57,12 @@
               :error-messages="formErrors[field?.name]"
               :formData="formData"
               ref="autocompleteRef"
-              @change="changeAutocomplete"
+              @input="
+                changeAutocomplete({
+                  value: formData[field.name],
+                  field,
+                })
+              "
               :readonly="readonlyField(field)"
               :class="[...field.class]"
               :fields="fields"
@@ -71,7 +76,12 @@
               :error-messages="formErrors[field?.name]"
               :formData="formData"
               ref="autocompleteRef"
-              @change="changeAutocomplete"
+              @input="
+                changeAutocomplete({
+                  value: formData[field.name],
+                  field,
+                })
+              "
               :readonly="readonlyField(field)"
               :class="[...field.class]"
               :fields="fields"
