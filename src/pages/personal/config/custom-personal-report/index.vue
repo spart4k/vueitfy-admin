@@ -159,7 +159,7 @@
     </div>
     <v-divider class="mb-3"></v-divider>
     <v-row class="justify-end">
-      <v-btn color="text" text> Закрыть </v-btn>
+      <v-btn @click="$emit('closePopup')" color="text" text> Закрыть </v-btn>
     </v-row>
 
     <v-dialog persistent v-model="dialog" width="600">

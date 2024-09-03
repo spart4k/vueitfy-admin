@@ -28,7 +28,12 @@
       </div>
       <v-tabs-items touchless v-model="activeTab">
         <v-tab-item v-for="item in availableTabsAll" :key="item.id">
-          <component v-if="item.render" :is="item"></component>
+          <component
+            v-if="item.render"
+            @closePopup="(e) => $emit('closePopup', e)"
+            @getItems="(e) => $emit('getItems', e)"
+            :is="item"
+          ></component>
           <component
             v-else
             :content="propsContent"
