@@ -1482,7 +1482,7 @@ export default function ({
       const result = form?.fields?.filter((subField) => {
         if (!subField.dependence) return
         const subFieldResult = subField?.dependence?.filter((subFieldDep) => {
-          // console.log(subFieldDep.url, field.url)
+          // (subFieldDep.url, field.url)
           return subFieldDep?.url === field.url
         })
         return subFieldResult.length
@@ -1498,7 +1498,6 @@ export default function ({
     //   .filter((el) => el.type === 'autocomplete' && el.isShow)
     //   .map((el) => el)
     const initFields = unikalDepField()
-    console.log(initFields)
     const queryFields = initFields.flatMap(async (el) => {
       // const filters = []
       const { url } = el
@@ -1514,13 +1513,12 @@ export default function ({
         readonly: environment.readonlyAll,
         filter,
       })
-      if (el.defaultItems) el.items = [...el.defaultItems]
-
+      if (el.defaultItems) Vue.set(el, 'items', [...el.defaultItems])
       if (data.rows) {
         if (el.items?.length) {
-          el.items = [...el.items, ...data.rows]
+          Vue.set(el, 'items', [...el.items, ...data.rows])
         } else {
-          el.items = [...data.rows]
+          Vue.set(el, 'items', [...data.rows])
         }
       }
       el.hideItems = el.items
@@ -1553,9 +1551,7 @@ export default function ({
       }
       return data
     })
-    // console.log(queryFields)
     // const resultAwait = await Promise.all(queryFields)
-    // console.log(resultAwait)
   }
 
   const putSelectItems = async (lists) => {
@@ -1796,7 +1792,6 @@ export default function ({
         }
       })
     }
-    // console.log(unikalDepField(), 'unikalDepField')
     await loadAutocompletes()
     await loadWithDeps()
 

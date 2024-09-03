@@ -18,7 +18,6 @@ function changeSort(context, tab) {
   // let btn = config.panel.buttons.find((x) => x.function === changeSort)
   // let heading = config.head.find((x) => x.changeable)
   if (tab.value === 2) {
-    console.log(context)
     context.config.head = holdPaymentsConfigHead
     context.config.options.url = 'get/pagination/hold_payments'
   } else if (tab.value === 1) {
