@@ -133,12 +133,21 @@ export default {
 
           if (props.field.filter && props.field.filter.length) {
             props.field.filter.forEach((el) => {
+              if (props.field.name === 'personal_id') {
+                console.log(el)
+              }
               if (el.routeKey) {
                 filter.push({
                   alias: el.alias ?? el.field,
                   value: el.toArray
                     ? [+route.params[el.routeKey]]
                     : +route.params[el.routeKey],
+                  type: el.type,
+                })
+              } else if (el.source === 'mode') {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  value: props.mode,
                   type: el.type,
                 })
               } else {
