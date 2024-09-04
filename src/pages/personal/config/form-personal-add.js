@@ -300,7 +300,6 @@ export default {
             {
               field: 'direction_id',
               value: '',
-              required: true,
             },
           ],
           updateList: [
