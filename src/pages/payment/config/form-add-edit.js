@@ -1015,8 +1015,16 @@ export default {
             funcCondition: (context) => {
               return (
                 context.formData.account_id !== context.store.state.user.id &&
-                (context.formData.status_id === 1 ||
-                  context.formData.status_id === 3 ||
+                ((context.formData.status_id === 1 &&
+                  !isX5(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
+                  (context.formData.status_id === 3 &&
+                    !isX5(context) &&
+                    !isDBA(context) &&
+                    isTarget(context) &&
+                    !isVertical(context)) ||
                   ((context.store.state.user.permission_id === 12 ||
                     context.store.state.user.permission_id === 22) &&
                     context.formData?.status_id === 4)) &&
@@ -1440,8 +1448,16 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
+              ((context.formData.status_id === 1 &&
+                !isX5(context) &&
+                !isDBA(context) &&
+                isTarget(context) &&
+                !isVertical(context)) ||
+                (context.formData.status_id === 3 &&
+                  !isX5(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -1634,10 +1650,16 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   target: 'formData',
+          //   field: 'status_id',
+          //   value: [2, 3, 6],
+          //   type: true,
+          // },
           {
-            target: 'formData',
-            field: 'status_id',
-            value: [2, 3, 6],
+            funcCondition: (context) =>
+              [2, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
           {
@@ -1816,10 +1838,16 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   target: 'formData',
+          //   field: 'status_id',
+          //   value: [2, 3, 6],
+          //   type: true,
+          // },
           {
-            target: 'formData',
-            field: 'status_id',
-            value: [2, 3, 6],
+            funcCondition: (context) =>
+              [2, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
           {
@@ -1840,8 +1868,16 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
+              ((context.formData.status_id === 1 &&
+                !isX5(context) &&
+                !isDBA(context) &&
+                isTarget(context) &&
+                !isVertical(context)) ||
+                (context.formData.status_id === 3 &&
+                  !isX5(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -2020,6 +2056,14 @@ export default {
           },
           {
             funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              isX5(context) &&
+              isOKK(context) &&
+              isROKK(context) &&
+              [2, 3].includes(context.formData.status_id),
             type: true,
           },
           // {
@@ -3036,10 +3080,10 @@ export default {
       readonly: {
         value: false,
         condition: [
-          {
-            permissions: [8, 17],
-            type: true,
-          },
+          // {
+          //   permissions: [8, 17],
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -3059,7 +3103,9 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
+              ((context.formData.status_id === 1 &&
+                isOKK(context) &&
+                isROKK(context)) ||
                 context.formData.status_id === 3 ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
@@ -3633,6 +3679,12 @@ export default {
           {
             funcCondition: (context) => {
               return context.mode === 'add'
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return context.formData.status_id === 6
             },
             type: true,
           },
