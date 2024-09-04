@@ -56,7 +56,7 @@ const config = {
         isShow: {
           condition: [
             {
-              permissions: [1, 15, 3, 4],
+              permissions: [1, 15, 3, 4, 9, 2],
               type: true,
             },
           ],

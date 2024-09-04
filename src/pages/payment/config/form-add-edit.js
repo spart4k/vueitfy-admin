@@ -3730,7 +3730,8 @@ export default {
                   (isDBA(context) ||
                     (!isCreater(context) &&
                       !isTarget(context) &&
-                      isVertical(context)) ||
+                      isVertical(context) &&
+                      !isManager(context)) ||
                     isOKK(context) ||
                     isROKK(context)) &&
                   context.formData.status_id === 1) ||
