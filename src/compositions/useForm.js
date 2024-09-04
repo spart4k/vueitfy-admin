@@ -1073,6 +1073,13 @@ export default function ({
     return acc
   }
 
+  const checkListRequired = (filter, list) => {
+    const requiredFilters = list.filter.filter((x) => x.required)
+    return requiredFilters.every((item) => {
+      return filter.some((x) => x.alias === (item.alias ?? item.field))
+    })
+  }
+
   const getFieldsList = async (arrayList) => {
     const listQuery = arrayList.flatMap((list) => {
       if (list.condition) {
@@ -1100,7 +1107,8 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
-      if (filter.length !== list.filter.length) return []
+      if (!checkListRequired(filter, list)) return []
+      // if (filter.length !== list.filter.length) return []
       return element
     })
     const lists = await makeRequestList(listQuery)
@@ -1155,18 +1163,12 @@ export default function ({
           if (targetField.filter && targetField.filter.length) {
             // query(targetField)
             filter = getDepFilters(targetField)
-            if (
-              targetField.filter &&
-              filter?.length !== targetField?.filter?.length
-            )
+            if (targetField.filter && !checkListRequired(filter, targetField))
               return
           } else if (dependence.filter && dependence.filter.length) {
             // query(dependence)
             filter = getDepFilters(dependence)
-            if (
-              dependence.filter &&
-              filter?.length !== dependence?.filter?.length
-            )
+            if (dependence.filter && !checkListRequired(filter, targetField))
               return
           }
 
