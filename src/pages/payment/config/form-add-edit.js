@@ -1650,10 +1650,16 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   target: 'formData',
+          //   field: 'status_id',
+          //   value: [2, 3, 6],
+          //   type: true,
+          // },
           {
-            target: 'formData',
-            field: 'status_id',
-            value: [2, 3, 6],
+            funcCondition: (context) =>
+              [2, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
           {
@@ -2050,6 +2056,14 @@ export default {
           },
           {
             funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              isX5(context) &&
+              isOKK(context) &&
+              isROKK(context) &&
+              [2, 3].includes(context.formData.status_id),
             type: true,
           },
           // {
