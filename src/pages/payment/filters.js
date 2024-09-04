@@ -193,7 +193,7 @@ export default {
       // ],
     }),
     selectField({
-      label: 'Направления',
+      label: 'Направления2',
       name: 'direction_id',
       subtype: 'multiple',
       placeholder: '',
@@ -222,24 +222,24 @@ export default {
           ],
         },
       ],
-      // dependence: [
-      //   {
-      //     type: 'api',
-      //     module: 'selects/getListUpdate',
-      //     field: 'object_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_id',
-      //         value: '',
-      //       },
-      //       {
-      //         field: 'account_id',
-      //         value: '',
-      //       },
-      //     ],
-      //     url: 'get/pagination_list/object',
-      //   },
-      // ],
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+            },
+            {
+              field: 'account_id',
+              value: '',
+            },
+          ],
+          url: 'get/pagination_list/object',
+        },
+      ],
     }),
     autocompleteField({
       label: 'Объект',
