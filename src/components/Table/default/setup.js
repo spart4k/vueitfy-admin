@@ -907,12 +907,14 @@ const table = {
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
+        console.log('perm')
         if (!el.permissions) return true
         else {
           return el.permissions.includes(permission.value)
         }
       }
       const checkIncludesDirections = (el) => {
+        console.log('dir')
         //return el.direction_id.includes(directions.value)
         if (!el.direction_id) return true
         else {
@@ -920,12 +922,14 @@ const table = {
         }
       }
       const checkIncludesVertical = (el) => {
+        console.log('ver')
         if (!el.vertical) return true
         else {
           return vertical.value === el.vertical
         }
       }
       const funcCondition = (el) => {
+        console.log('func')
         if (!el.funcCondition) return true
         const conditionContext = {
           store,
@@ -933,17 +937,20 @@ const table = {
           vertical,
           directions,
         }
+        console.log(el.funcCondition(conditionContext))
         return el.funcCondition(conditionContext)
       }
       return props.options.panel.buttons.filter((btn) => {
         if (!btn.isShow) return btn
         else {
+          console.log('btn', btn.label)
           return btn.isShow.condition.every((el) => {
             const result =
-              el.type === funcCondition(el) &&
-              checkIncludesPermissions(el) &&
-              checkIncludesVertical(el) &&
+              el.type === funcCondition(el) ||
+              checkIncludesPermissions(el) ||
+              checkIncludesVertical(el) ||
               checkIncludesDirections(el)
+
             return result
           })
           // if ()
