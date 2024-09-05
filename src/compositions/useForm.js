@@ -1538,10 +1538,12 @@ export default function ({
         if (fields[el.name]?.subtype === 'multiple') {
           if (mode === 'add') {
             formData[el.name] = [el.items[0][el.selectOption.value]]
+            changeAutocomplete({ value: formData[el.name], field: el })
           }
         } else {
           if (mode === 'add') {
             formData[el.name] = el.items[0][el.selectOption.value]
+            changeAutocomplete({ value: formData[el.name], field: el })
           }
         }
         // changeAutocomplete({
