@@ -1517,12 +1517,17 @@ export default function ({
         if (fields[el.name]?.subtype === 'multiple') {
           if (mode === 'add') {
             formData[el.name] = [el.items[0][el.selectOption.value]]
+            changeAutocomplete({ value: formData[el.name], field: el })
           }
         } else {
           if (mode === 'add') {
             formData[el.name] = el.items[0][el.selectOption.value]
+            changeAutocomplete({ value: formData[el.name], field: el })
           }
         }
+        // if (fields[depField].updateList && fields[depField].updateList.length) {
+        //   await getFieldsList(fields[depField].updateList)
+        // }
       }
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
