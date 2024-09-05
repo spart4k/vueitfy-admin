@@ -1014,6 +1014,7 @@ export default {
           {
             funcCondition: (context) => {
               return (
+                // isLogistik(context) &&
                 context.formData.account_id !== context.store.state.user.id &&
                 ((context.formData.status_id === 1 &&
                   !isRoznica(context) &&
@@ -1025,6 +1026,8 @@ export default {
                     !isDBA(context) &&
                     isTarget(context) &&
                     !isVertical(context)) ||
+                  isOKK(context) ||
+                  isROKK(context) ||
                   ((context.store.state.user.permission_id === 12 ||
                     context.store.state.user.permission_id === 22) &&
                     context.formData?.status_id === 4)) &&
@@ -1881,6 +1884,8 @@ export default {
                   !isDBA(context) &&
                   isTarget(context) &&
                   !isVertical(context)) ||
+                isOKK(context) ||
+                isROKK(context) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -2042,7 +2047,9 @@ export default {
                 conditionLogistik(context) ||
                 // conditionX5(context) ||
                 statusReject(context) ||
-                ROKKdOKKLogistika(context)
+                ROKKdOKKLogistika(context) ||
+                isOKK(context) ||
+                isROKK(context)
                 // (isX5(context) &&
                 //   [2, 3].includes(context.formData.status_id) &&
                 //   [3, 5, 1].includes(context.originalData.vid_vedomost_id))
@@ -3122,9 +3129,8 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              ((context.formData.status_id === 1 &&
-                isOKK(context) &&
-                isROKK(context)) ||
+              ((context.formData.status_id === 1 && isOKK(context)) ||
+                isROKK(context) ||
                 (context.formData.status_id === 3 &&
                   !isRoznica(context) &&
                   !isDBA(context) &&
