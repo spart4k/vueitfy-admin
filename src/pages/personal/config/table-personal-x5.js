@@ -48,7 +48,7 @@ export default {
       //url: 'https://dummyjson.com/users',
       url: 'get/pagination/personal_num_x5',
       urlDetail: 'personal_id',
-      alias: 'p.personal_id',
+      alias: 'personal_id',
       title: 'This is an about page1',
       contextMenu: {
         actions: [

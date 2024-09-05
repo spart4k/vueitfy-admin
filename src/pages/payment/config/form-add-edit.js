@@ -1014,9 +1014,20 @@ export default {
           {
             funcCondition: (context) => {
               return (
+                // isLogistik(context) &&
                 context.formData.account_id !== context.store.state.user.id &&
-                (context.formData.status_id === 1 ||
-                  context.formData.status_id === 3 ||
+                ((context.formData.status_id === 1 &&
+                  !isRoznica(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
+                  (context.formData.status_id === 3 &&
+                    !isRoznica(context) &&
+                    !isDBA(context) &&
+                    isTarget(context) &&
+                    !isVertical(context)) ||
+                  isOKK(context) ||
+                  isROKK(context) ||
                   ((context.store.state.user.permission_id === 12 ||
                     context.store.state.user.permission_id === 22) &&
                     context.formData?.status_id === 4)) &&
@@ -1440,8 +1451,16 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
+              ((context.formData.status_id === 1 &&
+                !isRoznica(context) &&
+                !isDBA(context) &&
+                isTarget(context) &&
+                !isVertical(context)) ||
+                (context.formData.status_id === 3 &&
+                  !isRoznica(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -1634,10 +1653,16 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   target: 'formData',
+          //   field: 'status_id',
+          //   value: [2, 3, 6],
+          //   type: true,
+          // },
           {
-            target: 'formData',
-            field: 'status_id',
-            value: [2, 3, 6],
+            funcCondition: (context) =>
+              [2, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
           {
@@ -1655,15 +1680,17 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              [1, 5].includes(context.originalData.vid_vedomost_id) &&
-              context.mode === 'edit',
+              (isLogistik(context) &&
+                context.formData.account_id !== context.store.state.user.id &&
+                (context.formData.status_id === 1 ||
+                  context.formData.status_id === 3 ||
+                  ((context.store.state.user.permission_id === 12 ||
+                    context.store.state.user.permission_id === 22) &&
+                    context.originalData?.status_id === 4)) &&
+                [1, 5].includes(context.originalData.vid_vedomost_id)) ||
+              (isX5(context) &&
+                context.formData.status_id === 1 &&
+                context.mode === 'edit'),
             type: true,
           },
           {
@@ -1709,7 +1736,8 @@ export default {
                       return !!(
                         [1, 2, 3].includes(context.formData.status_id) &&
                         isVertical(context) &&
-                        isX5(context)
+                        isX5(context) &&
+                        context.formData.vid_vedomost_id !== 10
                       )
                     }
                   } else {
@@ -1816,10 +1844,16 @@ export default {
       readonly: {
         value: false,
         condition: [
+          // {
+          //   target: 'formData',
+          //   field: 'status_id',
+          //   value: [2, 3, 6],
+          //   type: true,
+          // },
           {
-            target: 'formData',
-            field: 'status_id',
-            value: [2, 3, 6],
+            funcCondition: (context) =>
+              [2, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
           {
@@ -1840,8 +1874,18 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
+              ((context.formData.status_id === 1 &&
+                !isRoznica(context) &&
+                !isDBA(context) &&
+                isTarget(context) &&
+                !isVertical(context)) ||
+                (context.formData.status_id === 3 &&
+                  !isRoznica(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
+                isOKK(context) ||
+                isROKK(context) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -2003,7 +2047,9 @@ export default {
                 conditionLogistik(context) ||
                 // conditionX5(context) ||
                 statusReject(context) ||
-                ROKKdOKKLogistika(context)
+                ROKKdOKKLogistika(context) ||
+                isOKK(context) ||
+                isROKK(context)
                 // (isX5(context) &&
                 //   [2, 3].includes(context.formData.status_id) &&
                 //   [3, 5, 1].includes(context.originalData.vid_vedomost_id))
@@ -2020,6 +2066,14 @@ export default {
           },
           {
             funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              isX5(context) &&
+              isOKK(context) &&
+              isROKK(context) &&
+              [2, 3].includes(context.formData.status_id),
             type: true,
           },
           // {
@@ -2182,6 +2236,10 @@ export default {
           },
           {
             funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
+          {
+            funcCondition: (context) => context.formData.status_id === 6,
             type: true,
           },
         ],
@@ -2393,6 +2451,10 @@ export default {
             funcCondition: (context) => isAllBug(context),
             type: true,
           },
+          {
+            funcCondition: (context) => context.formData.status_id === 6,
+            type: true,
+          },
         ],
       },
       requestType: 'number',
@@ -2555,8 +2617,16 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
+              ((context.formData.status_id === 1 &&
+                !isRoznica(context) &&
+                !isDBA(context) &&
+                isTarget(context) &&
+                !isVertical(context)) ||
+                (context.formData.status_id === 3 &&
+                  !isRoznica(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -3036,10 +3106,10 @@ export default {
       readonly: {
         value: false,
         condition: [
-          {
-            permissions: [8, 17],
-            type: true,
-          },
+          // {
+          //   permissions: [8, 17],
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -3059,8 +3129,13 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
+              ((context.formData.status_id === 1 && isOKK(context)) ||
+                isROKK(context) ||
+                (context.formData.status_id === 3 &&
+                  !isRoznica(context) &&
+                  !isDBA(context) &&
+                  isTarget(context) &&
+                  !isVertical(context)) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -3582,6 +3657,18 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return (
+                (!isDBA(context) &&
+                  !isROKK &&
+                  [8].includes(context.entityData.status_permission)) ||
+                (!isDBA(context) &&
+                  [17].includes(context.entityData.status_permission))
+              )
+            },
+            type: true,
+          },
         ],
       },
     }),
@@ -3621,7 +3708,7 @@ export default {
                 isROKK(context) ||
                 isDirector(context) ||
                 // - если предыдущий статус установлен ОКК, статус «Согласован» могут установить только РОКК, директор, DBA;
-                (context.entityData.status_permission === 8 &&
+                ([8].includes(context.entityData.status_permission) &&
                   (isROKK(context) || isDirector(context) || isDBA(context))) ||
                 // 	если предыдущий статус установлен РОКК или DBA, статус «Согласован» может проставить только DBA.
                 ([17, 4].includes(context.entityData.status_permission) &&
@@ -3636,6 +3723,12 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return context.formData.status_id === 6
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) => {
           //     return isMagnit(context)
@@ -3643,10 +3736,12 @@ export default {
           //   type: false,
           // },
           {
-            funcCondition: (context) =>
-              (isMagnit(context) &&
-                ![1, 2, 3].includes(context.originalData?.status_id)) ||
-              context.formData.status_id === 2,
+            funcCondition: (context) => {
+              return (
+                ![1, 2, 3].includes(context.originalData?.status_id) ||
+                context.formData.status_id === 2
+              )
+            },
             type: true,
           },
         ],
@@ -3678,7 +3773,8 @@ export default {
                   (isDBA(context) ||
                     (!isCreater(context) &&
                       !isTarget(context) &&
-                      isVertical(context)) ||
+                      isVertical(context) &&
+                      !isManager(context)) ||
                     isOKK(context) ||
                     isROKK(context)) &&
                   context.formData.status_id === 1) ||

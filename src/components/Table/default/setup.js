@@ -933,6 +933,7 @@ const table = {
           vertical,
           directions,
         }
+        console.log(el.funcCondition(conditionContext))
         return el.funcCondition(conditionContext)
       }
       return props.options.panel.buttons.filter((btn) => {
@@ -940,10 +941,11 @@ const table = {
         else {
           return btn.isShow.condition.every((el) => {
             const result =
-              el.type === checkIncludesPermissions(el) &&
-              checkIncludesVertical(el) &&
-              checkIncludesDirections(el) &&
-              funcCondition(el)
+              el.type === funcCondition(el) ||
+              checkIncludesPermissions(el) ||
+              checkIncludesVertical(el) ||
+              checkIncludesDirections(el)
+
             return result
           })
           // if ()

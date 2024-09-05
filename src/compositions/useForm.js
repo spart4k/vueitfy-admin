@@ -889,35 +889,38 @@ export default function ({
     )
   }
 
-  const changeAutocomplete = async (params) => {
-    queueMicrotask(async () => {
-      params.field.dependence?.forEach((dependence) => {
-        const depField = dependence.field
-        const targetField = fields[depField]
-        if (targetField) {
-          // formData[targetField.name ? targetField.name : targetField.alias] = ''
-        }
+  const changeAutocomplete = async ({ field, value, item }) => {
+    // console.log(params)
+    // if (field.hasOwnProperty('fillField')) {
+    // }
+    if (field.dependence)
+      queueMicrotask(async () => {
+        field.dependence?.forEach((dependence) => {
+          const depField = dependence.field
+          const targetField = fields[depField]
+          if (targetField) {
+            // formData[targetField.name ? targetField.name : targetField.alias] = ''
+          }
+        })
+        await getDependies({ field, value, item })
       })
-      await getDependies(params)
-    })
-    if (params.field.hasOwnProperty('selectOptionName')) {
-      const item = params.field.items.find((el) => el.id === params.value)
-      params.field.selectOptionName = item[params.field.selectOption.text]
+    if (field.hasOwnProperty('selectOptionName')) {
+      const item = field.items.find((el) => el.id === value)
+      field.selectOptionName = item[field.selectOption.text]
     }
-    if (params.field.hasOwnProperty('putValueInItems')) {
+    if (field.hasOwnProperty('putValueInItems')) {
       const array = []
-      params.value?.forEach((item) => {
-        array.push(params.field.items.find((x) => x.id === item))
+      value?.forEach((item) => {
+        array.push(field.items.find((x) => x.id === item))
       })
-      fields[params.field.putValueInItems].items = array
+      fields[field.putValueInItems].items = array
     }
-    const { field } = params
 
     if (field.updateList && field?.updateList.length) {
       const list = await getFieldsList(field?.updateList)
       field.loading = false
     }
-    getRecursiveDependes(params.field)
+    getRecursiveDependes(field)
   }
   const getRecursiveDependes = (field) => {
     const formDataNames = []
@@ -1020,7 +1023,11 @@ export default function ({
       !el.routeKey &&
       !el.formStorage
     )
-      return acc
+      acc.push({
+        alias: el.alias ?? el.field,
+        value: [],
+        type: el.type,
+      })
     if (el.routeKey) {
       acc.push({
         alias: el.alias ?? el.field,
@@ -1146,7 +1153,6 @@ export default function ({
         await dependence.func(conditionContext)
       } else if (dependence.url && typeof dependence.url === 'string') {
         url = dependence.url
-
         if (targetField?.type === 'autocomplete') {
           let filter = []
           if (targetField.filter && targetField.filter.length) {
@@ -1191,8 +1197,16 @@ export default function ({
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
-            else if (formData[el] && params.hasOwnProperty('item'))
-              formData[el] = null
+            else {
+              const selectedItem = field.items.find(
+                (fieldItem) => fieldItem.id === formData[field.name]
+              )
+              if (selectedItem) {
+                formData[el] = selectedItem[el]
+              }
+            }
+            // else if (formData[el] && params.hasOwnProperty('item'))
+            //   formData[el] = null
           } else if (typeof el === 'object') {
             const targetObject = fields[el.formKey]
             if (
@@ -1252,7 +1266,6 @@ export default function ({
       field.loading = true
       if (depField && targetField) targetField.loading = true
       let data
-
       if (dependence.module) {
         data = await store.dispatch(dependence.module, {
           value,
@@ -1310,16 +1323,16 @@ export default function ({
         const fieldItems = fields[depField].items.find(
           (el) => el.id === formData[depField]
         )
-        await getDependies({
-          value: formData[depField],
-          field: fields[depField],
-          item: fieldItems,
-          // clearId: true,
-        })
-        if (fields[depField].updateList && fields[depField].updateList.length) {
-          // await queryList(fields[depField], false)
-          await getFieldsList(fields[depField].updateList)
-        }
+        // await getDependies({
+        //   value: formData[depField],
+        //   field: fields[depField],
+        //   item: fieldItems,
+        //   // clearId: true,
+        // })
+        // if (fields[depField].updateList && fields[depField].updateList.length) {
+        //   // await queryList(fields[depField], false)
+        //   await getFieldsList(fields[depField].updateList)
+        // }
       }
       if (
         !hasValue(formData[depField], fields[depField]?.items, fields[depField])
@@ -1511,6 +1524,14 @@ export default function ({
         } else {
           Vue.set(el, 'items', [...data.rows])
         }
+        if (el.hasOwnProperty('fillField')) {
+          const findItem = el.items.find(
+            (elItem) => elItem.id === formData[el.name]
+          )
+          el.fillField.forEach((fillFieldEl) => {
+            formData[fillFieldEl] = findItem[fillFieldEl]
+          })
+        }
       }
       el.hideItems = el.items
       if (data.rows?.length === 1 && data.totalPage === 1) {
@@ -1525,9 +1546,10 @@ export default function ({
             changeAutocomplete({ value: formData[el.name], field: el })
           }
         }
-        // if (fields[depField].updateList && fields[depField].updateList.length) {
-        //   await getFieldsList(fields[depField].updateList)
-        // }
+        // changeAutocomplete({
+        //   value: formData[el.name],
+        //   field: fields[el.name],
+        // })
       }
       if (el.putFirst && !formData[el.name] && el.items[0])
         formData[el.name] = el.items[0][el.selectOption.value]
@@ -1725,6 +1747,7 @@ export default function ({
 
   const getData = async () => {
     let syncForm = undefined
+    const depsApi = []
     if (getDetail() && form.alias) {
       syncForm = await makeRequest()
       entityData.value = syncForm.data
