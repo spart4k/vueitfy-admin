@@ -1107,10 +1107,13 @@ export default function ({
         readonly: environment.readonlyAll,
         id: targetId ? targetId : undefined,
       }
-      if (!checkListRequired(filter, list)) return []
-      // if (filter.length !== list.filter.length) return []
+      if (!checkListRequired(filter, list)) {
+        fields[fieldAliases[list.alias]].items = []
+        return []
+      }
       return element
     })
+    if (listQuery.length === 0) return
     const lists = await makeRequestList(listQuery)
     await putSelectItems(lists)
     return lists
@@ -1130,7 +1133,6 @@ export default function ({
       targetField = fields[depField]
       let url = ''
       if (dependence.url && Array.isArray(dependence.url)) {
-        //const splitedUrl = dependence.url.split('/')
         dependence.url.forEach((el) => {
           if (el.field === 'this' && el.source === 'formData') {
             fieldValue = value
@@ -1140,11 +1142,6 @@ export default function ({
             fieldValue = form?.formData[el.field]
           }
           url = url + '/' + fieldValue
-          //if (el.source === 'props') {
-          //  url = url + '/' + form?.formData[fieldValue]
-          //} else if (el.source === 'formData') {
-          //  url = url + '/' + formData[fieldValue]
-          //}
         })
       } else if (dependence.type === 'custom') {
         const conditionContext = {
@@ -1159,27 +1156,24 @@ export default function ({
         if (targetField?.type === 'autocomplete') {
           let filter = []
           if (targetField.filter && targetField.filter.length) {
-            // query(targetField)
             filter = getDepFilters(targetField)
-            if (targetField.filter && !checkListRequired(filter, targetField))
+            if (targetField.filter && !checkListRequired(filter, targetField)) {
+              targetField.items = []
               return
+            }
           } else if (dependence.filter && dependence.filter.length) {
-            // query(dependence)
             filter = getDepFilters(dependence)
-            if (dependence.filter && !checkListRequired(filter, targetField))
+            if (dependence.filter && !checkListRequired(filter, targetField)) {
+              console.log('dependence', dependence)
+              // fields[fieldAliases[dependence.alias]].items = []
               return
+            }
           }
 
-          // if (clearId) {
-          //   formData[targetField.name ? targetField.name : targetField.alias] =
-          //     ''
-          // }
-          // formData[targetField.name ? targetField.name : targetField.alias] = ''
           body = {
             countRows: 10,
             currentPage: 1,
             searchValue: '',
-            //id: params.id ? params.id : -1,
             id: clearId
               ? -1
               : formData[
@@ -1643,7 +1637,7 @@ export default function ({
             })
           )
           if (field.updateList && field.updateList.length) {
-            stackDep.push(getFieldsList.bind(field.updateList))
+            stackDep.push(getFieldsList(field.updateList))
           }
         } else if (
           lists.data[keyList].length === 0 &&

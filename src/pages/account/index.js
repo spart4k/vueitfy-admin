@@ -24,6 +24,7 @@ import _ from 'lodash'
 
 import tableAccountBank from './config/table-account-bank.js'
 import formAccountEdit from './config/form-account-edit.js'
+import formAccountAdd from './config/form-account-add'
 
 function consoleText(row) {}
 
