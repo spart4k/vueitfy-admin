@@ -907,33 +907,32 @@ const table = {
     )
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
-        if (!el.permissions) return true
+        if (!el.permissions) return false
         else {
           return el.permissions.includes(permission.value)
         }
       }
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        if (!el.direction_id) return true
+        if (!el.direction_id) return false
         else {
           return !!_.intersection(el.direction_id, directions.value).length
         }
       }
       const checkIncludesVertical = (el) => {
-        if (!el.vertical) return true
+        if (!el.vertical) return false
         else {
           return vertical.value === el.vertical
         }
       }
       const funcCondition = (el) => {
-        if (!el.funcCondition) return true
+        if (!el.funcCondition) return false
         const conditionContext = {
           store,
           permission,
           vertical,
           directions,
         }
-        console.log(el.funcCondition(conditionContext))
         return el.funcCondition(conditionContext)
       }
       return props.options.panel.buttons.filter((btn) => {

@@ -890,7 +890,6 @@ export default function ({
   }
 
   const changeAutocomplete = async ({ field, value, item }) => {
-    // console.log(params)
     // if (field.hasOwnProperty('fillField')) {
     // }
     if (field.dependence)
@@ -1164,7 +1163,6 @@ export default function ({
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
             if (dependence.filter && !checkListRequired(filter, targetField)) {
-              console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
               return
             }

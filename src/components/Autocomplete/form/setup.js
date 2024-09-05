@@ -133,9 +133,6 @@ export default {
 
           if (props.field.filter && props.field.filter.length) {
             props.field.filter.forEach((el) => {
-              if (props.field.name === 'personal_id') {
-                console.log(el)
-              }
               if (el.routeKey) {
                 filter.push({
                   alias: el.alias ?? el.field,
@@ -282,7 +279,6 @@ export default {
     watch(
       () => proxyValue.value,
       (newVal) => {
-        console.log('newVal')
         emit('input', newVal)
       }
     )
