@@ -420,10 +420,6 @@ const Form17 = defineComponent({
             })
           },
         })
-        console.log(
-          JSON.parse(data.task.dop_data).doljnost_id,
-          data.entity.doljnost_id
-        )
         await setPersonalTarget()
         result = await changeStatus()
       }
