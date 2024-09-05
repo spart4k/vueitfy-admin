@@ -1014,21 +1014,25 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                context.formData.account_id !== context.store.state.user.id &&
-                ((context.formData.status_id === 1 &&
-                  !isRoznica(context) &&
-                  !isDBA(context) &&
-                  isTarget(context) &&
-                  !isVertical(context)) ||
-                  (context.formData.status_id === 3 &&
+                // isLogistik(context) &&
+                (context.formData.account_id !== context.store.state.user.id &&
+                  ((context.formData.status_id === 1 &&
                     !isRoznica(context) &&
                     !isDBA(context) &&
                     isTarget(context) &&
                     !isVertical(context)) ||
-                  ((context.store.state.user.permission_id === 12 ||
-                    context.store.state.user.permission_id === 22) &&
-                    context.formData?.status_id === 4)) &&
-                context.mode === 'edit'
+                    (context.formData.status_id === 3 &&
+                      !isRoznica(context) &&
+                      !isDBA(context) &&
+                      isTarget(context) &&
+                      !isVertical(context)) ||
+                    isOKK(context) ||
+                    isROKK(context) ||
+                    ((context.store.state.user.permission_id === 12 ||
+                      context.store.state.user.permission_id === 22) &&
+                      context.formData?.status_id === 4))) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.mode === 'edit')
               )
             },
             type: true,
@@ -1881,6 +1885,8 @@ export default {
                   !isDBA(context) &&
                   isTarget(context) &&
                   !isVertical(context)) ||
+                isOKK(context) ||
+                isROKK(context) ||
                 ((context.store.state.user.permission_id === 12 ||
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
@@ -2042,7 +2048,9 @@ export default {
                 conditionLogistik(context) ||
                 // conditionX5(context) ||
                 statusReject(context) ||
-                ROKKdOKKLogistika(context)
+                ROKKdOKKLogistika(context) ||
+                isOKK(context) ||
+                isROKK(context)
                 // (isX5(context) &&
                 //   [2, 3].includes(context.formData.status_id) &&
                 //   [3, 5, 1].includes(context.originalData.vid_vedomost_id))
@@ -2417,7 +2425,7 @@ export default {
         cols: 12,
         sm: 2,
       },
-      validations: { required },
+      validations: { required, interval },
       bootstrapClass: [''],
       readonly: {
         value: false,
@@ -2639,6 +2647,10 @@ export default {
           },
           {
             funcCondition: (context) => isMagnit(context),
+            type: true,
+          },
+          {
+            funcCondition: (context) => isRoznica(context),
             type: true,
           },
         ],
@@ -3122,9 +3134,8 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              ((context.formData.status_id === 1 &&
-                isOKK(context) &&
-                isROKK(context)) ||
+              ((context.formData.status_id === 1 && isOKK(context)) ||
+                isROKK(context) ||
                 (context.formData.status_id === 3 &&
                   !isRoznica(context) &&
                   !isDBA(context) &&
@@ -3631,7 +3642,11 @@ export default {
                   (isDBA(context) ||
                     (!isCreater(context) &&
                       !isTarget(context) &&
-                      isVertical(context))))
+                      isVertical(context)))) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 3 &&
+                  context.store.state.user.id ===
+                    context.formData.status_account_id)
               )
             },
             type: false,
