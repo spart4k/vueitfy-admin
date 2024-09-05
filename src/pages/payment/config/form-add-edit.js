@@ -2610,7 +2610,11 @@ export default {
           {
             funcCondition: (context) =>
               context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
+              ((context.formData.status_id === 1 &&
+                !isRoznica(context) &&
+                !isDBA(context) &&
+                isTarget(context) &&
+                !isVertical(context)) ||
                 (context.formData.status_id === 3 &&
                   !isRoznica(context) &&
                   !isDBA(context) &&
@@ -3768,6 +3772,13 @@ export default {
           },
           {
             funcCondition: (context) => {
+              console.log(
+                // isDBA(context) ||
+                !isCreater(context) && !isTarget(context) && isVertical(context)
+                // !isManager(context)
+                // isOKK(context) ||
+                // isROKK(context)
+              )
               return (
                 (isX5(context) &&
                   (isDBA(context) ||

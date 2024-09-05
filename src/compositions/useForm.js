@@ -1117,7 +1117,6 @@ export default function ({
   }
   const getDependies = async (params) => {
     const { value, field, clearId } = params
-    console.log(field.name, field)
     field.dependence?.forEach(async (dependence) => {
       if (params.init && !dependence.init) return
       if (dependence.condition?.length) {
@@ -1157,7 +1156,6 @@ export default function ({
         await dependence.func(conditionContext)
       } else if (dependence.url && typeof dependence.url === 'string') {
         url = dependence.url
-        console.log('autocomplete1')
         if (targetField?.type === 'autocomplete') {
           let filter = []
           if (targetField.filter && targetField.filter.length) {
@@ -1196,17 +1194,14 @@ export default function ({
           }
         }
       }
-      console.log('module1')
       //if (dependence && (dependence.type !== 'api' || !dependence.type)) {
       //  const data = field.items.find((el) => el.id === value)
       //  dependence.fields.forEach((el) => (formData[el] = data[el]))
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
-        console.log('fillField', dependence)
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
-            console.log(params)
             if (params?.item) formData[el] = params?.item[el]
             else {
               const selectedItem = field.items.find(
@@ -1277,7 +1272,6 @@ export default function ({
       field.loading = true
       if (depField && targetField) targetField.loading = true
       let data
-      console.log('module2', field.name)
       if (dependence.module) {
         data = await store.dispatch(dependence.module, {
           value,
