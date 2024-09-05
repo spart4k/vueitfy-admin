@@ -890,7 +890,6 @@ export default function ({
   }
 
   const changeAutocomplete = async ({ field, value, item }) => {
-    // console.log(params)
     // if (field.hasOwnProperty('fillField')) {
     // }
     if (field.dependence)
@@ -1164,7 +1163,6 @@ export default function ({
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
             if (dependence.filter && !checkListRequired(filter, targetField)) {
-              console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
               return
             }
@@ -1436,13 +1434,21 @@ export default function ({
   }
 
   const getDepFilters = (target) => {
+    console.log(target)
     if (!target.filter) return []
     const filters = target?.filter?.flatMap((el) => {
+      console.log(target.name, el.with_me)
       const filter = {
         alias: el.alias ?? el.field,
         type: el.type,
       }
-      if (!formData[el.field] && !el.source && !el.routeKey) return []
+      if (
+        !formData[el.field] &&
+        !el.source &&
+        !el.routeKey &&
+        !el.hasOwnProperty('with_me')
+      )
+        return []
       if (el.source) {
         if (el.source === 'fromPrev') {
           filter.value = form?.formData[el.field]
@@ -1464,6 +1470,9 @@ export default function ({
         }
       } else if (el.routeKey) {
         filter.value = +route.params[el.routeKey]
+      } else if (el.hasOwnProperty('with_me') && el.with_me === false) {
+        filter.value = el.with_me
+        filter.alias = 'with_me'
       } else {
         filter.value = formData[el.field]
         if (moment(filter.value, 'YYYY.MM', true).isValid())
@@ -1538,10 +1547,12 @@ export default function ({
         if (fields[el.name]?.subtype === 'multiple') {
           if (mode === 'add') {
             formData[el.name] = [el.items[0][el.selectOption.value]]
+            changeAutocomplete({ value: formData[el.name], field: el })
           }
         } else {
           if (mode === 'add') {
             formData[el.name] = el.items[0][el.selectOption.value]
+            changeAutocomplete({ value: formData[el.name], field: el })
           }
         }
         // changeAutocomplete({
