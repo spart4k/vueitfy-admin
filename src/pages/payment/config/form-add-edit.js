@@ -416,18 +416,18 @@ export default {
         },
       ],
     },
-    {
-      alias: 'payment_direction_id',
-      filter: [
-        {
-          field: 'account_id',
-          // alias: 'account_id',
-          value: '',
-          source: 'formData',
-          type: 'num',
-        },
-      ],
-    },
+    // {
+    //   alias: 'payment_direction_id',
+    //   filter: [
+    //     {
+    //       field: 'account_id',
+    //       // alias: 'account_id',
+    //       value: '',
+    //       source: 'formData',
+    //       type: 'num',
+    //     },
+    //   ],
+    // },
     {
       alias: 'personal_bank_id',
       filter: [
