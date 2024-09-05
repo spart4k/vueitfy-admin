@@ -3731,16 +3731,6 @@ export default {
           // },
           {
             funcCondition: (context) => {
-              console.log(
-                isMagnit(context),
-                ![1, 2, 3].includes(context.originalData?.status_id),
-                context.formData.status_id === 2
-              )
-              console.log(
-                isMagnit(context) &&
-                  (![1, 2, 3].includes(context.originalData?.status_id) ||
-                    context.formData.status_id === 2)
-              )
               return (
                 ![1, 2, 3].includes(context.originalData?.status_id) ||
                 context.formData.status_id === 2
@@ -3772,13 +3762,6 @@ export default {
           },
           {
             funcCondition: (context) => {
-              console.log(
-                // isDBA(context) ||
-                !isCreater(context) && !isTarget(context) && isVertical(context)
-                // !isManager(context)
-                // isOKK(context) ||
-                // isROKK(context)
-              )
               return (
                 (isX5(context) &&
                   (isDBA(context) ||
