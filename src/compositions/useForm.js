@@ -1159,6 +1159,7 @@ export default function ({
             filter = getDepFilters(dependence)
             if (dependence.filter && !checkListRequired(filter, targetField)) {
               console.log('dependence', dependence)
+              // fields[fieldAliases[dependence.alias]].items = []
               return
             }
           }
@@ -1611,7 +1612,7 @@ export default function ({
             })
           )
           if (field.updateList && field.updateList.length) {
-            stackDep.push(getFieldsList.bind(field.updateList))
+            stackDep.push(getFieldsList(field.updateList))
           }
         } else if (
           lists.data[keyList].length === 0 &&
