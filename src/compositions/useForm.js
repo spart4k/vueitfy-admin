@@ -1073,8 +1073,8 @@ export default function ({
   }
 
   const checkListRequired = (filter, list) => {
-    const requiredFilters = list.filter.filter((x) => x.required)
-    return requiredFilters.every((item) => {
+    const requiredFilters = list?.filter?.filter((x) => x.required)
+    return requiredFilters?.every((item) => {
       return filter.some((x) => x.alias === (item.alias ?? item.field))
     })
   }
@@ -1107,6 +1107,7 @@ export default function ({
         id: targetId ? targetId : undefined,
       }
       if (!checkListRequired(filter, list)) {
+        console.log('getlist', arrayList)
         fields[fieldAliases[list.alias]].items = []
         return []
       }
@@ -1157,12 +1158,14 @@ export default function ({
           if (targetField.filter && targetField.filter.length) {
             filter = getDepFilters(targetField)
             if (targetField.filter && !checkListRequired(filter, targetField)) {
+              console.log('target')
               targetField.items = []
               return
             }
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
             if (dependence.filter && !checkListRequired(filter, targetField)) {
+              console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
               return
             }
@@ -1440,7 +1443,8 @@ export default function ({
         alias: el.alias ?? el.field,
         type: el.type,
       }
-      if (!formData[el.field] && !el.source && !el.routeKey) return []
+      if (!formData[el.field] && !el.source && !el.routeKey && !el.sendEmpty)
+        return []
       if (el.source) {
         if (el.source === 'fromPrev') {
           filter.value = form?.formData[el.field]
@@ -1462,6 +1466,8 @@ export default function ({
         }
       } else if (el.routeKey) {
         filter.value = +route.params[el.routeKey]
+      } else if (el.sendEmpty) {
+        filter.value = el.value
       } else {
         filter.value = formData[el.field]
         if (moment(filter.value, 'YYYY.MM', true).isValid())
