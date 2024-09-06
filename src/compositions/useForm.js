@@ -376,7 +376,9 @@ export default function ({
       const conditionContext = {
         formData,
         result,
+        fields,
         entityData: entityData.value,
+        changeAutocomplete,
       }
       let res = result.code
       let contextData = formData
@@ -386,6 +388,8 @@ export default function ({
           conditionContext[action.handlingResponse.context],
           res
         )
+      if (action.handlingResponse[res].func)
+        action.handlingResponse[res].func(conditionContext)
       let { text, color } = action.handlingResponse[res]
       // /%\w{n}%/
       //const text = 'Объект с именем %name% уже существует'
@@ -955,7 +959,11 @@ export default function ({
     findFieldName(field)
     // return formDataNames
     formDataNames.forEach((el) => {
-      if (!fields[el]?.readonly?.value) {
+      if (
+        (typeof fields[el].readonly === 'boolean' && !fields[el]?.readonly) ||
+        (typeof fields[el].readonly === 'object' &&
+          !fields[el]?.readonly?.value)
+      ) {
         formData[el] = ''
         if (fields[el].items.length === 1) {
           formData[el] = fields[el].items[0][fields[el].selectOption.value]
@@ -1694,6 +1702,12 @@ export default function ({
           )
           const value = formData[field.name]
           await getDependies({ value, field, item: fieldItem })
+        }
+        if (field.valueEqualList) {
+          formData[field.name] = lists.data[keyList].reduce((acc, item) => {
+            acc.push(item.id)
+            return acc
+          }, [])
         }
         showField(field.type, field, true)
       }
