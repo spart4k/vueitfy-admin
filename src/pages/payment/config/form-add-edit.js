@@ -914,6 +914,13 @@ export default {
           default: 4,
         },
       },
+      filter: [
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
       validations: { required },
       bootstrapClass: [''],
       updateList: [
@@ -1689,9 +1696,10 @@ export default {
                     context.store.state.user.permission_id === 22) &&
                     context.originalData?.status_id === 4)) &&
                 [1, 5].includes(context.originalData.vid_vedomost_id)) ||
-              (isX5(context) &&
-                context.formData.status_id === 1 &&
-                context.mode === 'edit'),
+              (isX5(context) && !isDBA(context) && isCreater(context)) ||
+              isTarget(context) ||
+              !isVertical(context) ||
+              (isManager(context) && context.mode === 'edit'),
             type: true,
           },
           {
@@ -1938,30 +1946,7 @@ export default {
         },
       ],
     }),
-    stringField({
-      label: 'Тариф',
-      name: 'object_price',
-      placeholder: '',
-      readonly: true,
-      class: [''],
-      position: {
-        cols: 12,
-        sm: 3,
-      },
-      bootstrapClass: [''],
-      isShow: {
-        value: false,
-        conditions: [
-          {
-            target: 'funcCondition',
-            funcCondition: (ctx) => {
-              return isMagnit(ctx) || isX5(ctx)
-            },
-          },
-        ],
-      },
-      validations: { notValue: notValue({ value: 0, text: 'Тариф' }) },
-    }),
+
     selectField({
       label: 'Вид ведомости',
       name: 'vid_vedomost_id',
@@ -2503,6 +2488,30 @@ export default {
           },
         },
       ],
+    }),
+    stringField({
+      label: 'Тариф',
+      name: 'object_price',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 3,
+      },
+      bootstrapClass: [''],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return isMagnit(ctx) || isX5(ctx)
+            },
+          },
+        ],
+      },
+      validations: { notValue: notValue({ value: 0, text: 'Тариф' }) },
     }),
     // stringField({
     //   label: 'Тариф',
@@ -3146,6 +3155,10 @@ export default {
                   context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
             type: true,
+          },
+          {
+            funcCondition: (context) => context.originalData?.status_id === 6,
+            type: false, //могу при этих условиях
           },
         ],
       },
