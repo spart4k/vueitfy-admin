@@ -24,6 +24,7 @@ import formObjectTarif from './config/form-object-tarif.js'
 import formObjectAdd from './config/form-object-add.js'
 import formObjectAppoint from './config/form-object-appoint.js'
 import tableObjectPayment from './config/table-object-payment.js'
+import formObjectReassign from './config/form-object-reassign'
 
 function consoleText(row) {}
 
@@ -79,6 +80,21 @@ export const config = {
                 },
               ],
             },
+          },
+          {
+            label: 'Переназначить',
+            class: ['v-table-button--custom'],
+            url: 'object-reassign',
+            type: 'changeUrl',
+            backgroundColor: '#fff',
+            // isShow: {
+            //   condition: [
+            //     {
+            //       permissions: [3, 4, 12, 16, 22],
+            //       type: true,
+            //     },
+            //   ],
+            // },
           },
         ],
       },
@@ -225,7 +241,7 @@ export const config = {
         url: '/get/form/',
         name: 'Объекты - добавления',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [formObjectAdd, ...objectTabs],
+        tabs: [formObjectAdd, ...objectTabs, formObjectReassign],
         activeTab: null,
       },
       filters: _.cloneDeep(filters),
