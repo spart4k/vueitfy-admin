@@ -147,6 +147,12 @@ export default {
                   value: props.mode,
                   type: el.type,
                 })
+              } else if (el.sendEmpty) {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  value: el.value,
+                  type: el.type,
+                })
               } else {
                 if (Array.isArray(props.formData[el.field])) {
                   if (!props.formData[el.field].length) return
@@ -268,7 +274,7 @@ export default {
           id: props.value,
           search: newVal,
         }
-        props.field.page
+        // props.field.page
         if (newVal !== null) {
           props.field.page = 1
           querySelections(params)
