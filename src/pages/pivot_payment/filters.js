@@ -14,14 +14,14 @@ const filters = {
   detail: false,
   isFilter: true,
   lists: [
-    { alias: 'vid_vedomost_id', filter: [] },
+    { alias: 'vid_vedomost_id_retail', filter: [] },
     { alias: 'status_id', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'st_rashod_id', filter: [] },
     { alias: 'managers', filter: [] },
     { alias: 'bank_id', filter: [] },
     { alias: 'bank_id', filter: [] },
-    { alias: 'doljnost_id', filter: [] },
+    { alias: 'doljnost_retail_id', filter: [] },
   ],
   actions: [
     stringAction({
@@ -84,7 +84,7 @@ const filters = {
     }),
     selectField({
       label: 'Вид ведомости',
-      name: 'vid_vedomost_id',
+      name: 'vid_vedomost_id_retail',
       subtype: 'multiple',
       placeholder: '',
       class: [''],
@@ -161,6 +161,20 @@ const filters = {
       page: 1,
       search: '',
       url: 'get/pagination_list/object',
+      filter: [
+        {
+          alias: 'od.direction_id',
+          value: 2,
+          type: 'num',
+          sendEmpty: true,
+        },
+        {
+          alias: 'o.type',
+          value: 1,
+          type: 'num',
+          sendEmpty: true,
+        },
+      ],
       position: {
         cols: 12,
         sm: 12,
@@ -182,7 +196,7 @@ const filters = {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/personals',
+      url: 'get/pagination_list/filter_personal_retail',
       position: {
         cols: 12,
         sm: 12,
@@ -192,7 +206,7 @@ const filters = {
     }),
     selectField({
       label: 'Должность',
-      name: 'doljnost_id',
+      name: 'doljnost_retail_id',
       subtype: 'multiple',
       placeholder: '',
       class: [''],
