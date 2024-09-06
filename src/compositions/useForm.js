@@ -1107,6 +1107,7 @@ export default function ({
         id: targetId ? targetId : undefined,
       }
       if (!checkListRequired(filter, list)) {
+        console.log('getlist', arrayList)
         fields[fieldAliases[list.alias]].items = []
         return []
       }
@@ -1157,12 +1158,14 @@ export default function ({
           if (targetField.filter && targetField.filter.length) {
             filter = getDepFilters(targetField)
             if (targetField.filter && !checkListRequired(filter, targetField)) {
+              console.log('target')
               targetField.items = []
               return
             }
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
             if (dependence.filter && !checkListRequired(filter, targetField)) {
+              console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
               return
             }
@@ -1446,6 +1449,7 @@ export default function ({
         !formData[el.field] &&
         !el.source &&
         !el.routeKey &&
+        !el.sendEmpty &&
         !el.hasOwnProperty('with_me')
       )
         return []
@@ -1470,6 +1474,8 @@ export default function ({
         }
       } else if (el.routeKey) {
         filter.value = +route.params[el.routeKey]
+      } else if (el.sendEmpty) {
+        filter.value = el.value
       } else if (el.hasOwnProperty('with_me') && el.with_me === false) {
         filter.value = el.with_me
         filter.alias = 'with_me'

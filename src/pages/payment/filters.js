@@ -135,7 +135,7 @@ export default {
       bootstrapClass: [''],
       aliasFilter: 'p.bank_id',
     }),
-    selectField({
+    autocompleteField({
       label: 'Менеджеры',
       name: 'account_id',
       alias: 'managers',
@@ -147,6 +147,9 @@ export default {
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_personal_target_manager',
       position: {
         cols: 12,
         sm: 12,
@@ -193,7 +196,7 @@ export default {
       // ],
     }),
     selectField({
-      label: 'Направления2',
+      label: 'Направления',
       name: 'direction_id',
       subtype: 'multiple',
       placeholder: '',
