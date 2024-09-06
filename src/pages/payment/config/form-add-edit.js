@@ -916,9 +916,9 @@ export default {
       },
       filter: [
         {
-          with_me: false,
-          // source: 'formData',
-          value: '',
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
         },
       ],
       validations: { required },
