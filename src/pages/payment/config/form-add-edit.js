@@ -107,6 +107,18 @@ const AvansEjednLogistik = (context) => {
   )
 }
 
+const onReview = (context) => {
+  return context.formData.status_id === 1
+}
+
+const agreed = (context) => {
+  return context.formData.status_id === 2
+}
+
+const rejected = (context) => {
+  return context.formData.status_id === 3
+}
+
 export default {
   id: uuidv4(),
   name: 'Добавить начисление',
@@ -1039,6 +1051,10 @@ export default {
                       context.store.state.user.permission_id === 22) &&
                       context.formData?.status_id === 4))) ||
                 (context.formData.vid_vedomost_id === 9 &&
+                  context.mode === 'edit') ||
+                (isX5(context) &&
+                  isDBA(context) &&
+                  context.formData.status_id === 4 &&
                   context.mode === 'edit')
               )
             },
@@ -1277,15 +1293,48 @@ export default {
           //     context.mode === 'edit',
           //   type: true,
           // },
+          // {
+          //   funcCondition: (context) => {
+          //     return (
+          //       (isX5(context) &&
+          //         (isDBA(context) ||
+          //           (!isCreater(context) &&
+          //             !isTarget(context) &&
+          //             isVertical(context)))) ||
+          //       ((isOKK(context) || isROKK(context)) &&
+          //         [2, 3].includes(context.formData.status_id)) ||
+          //       isMagnit(context) ||
+          //       (isLogistik(context) &&
+          //         [2, 3].includes(context.formData.status_id) &&
+          //         (isDBA(context) ||
+          //           (!isCreater(context) &&
+          //             !isTarget(context) &&
+          //             isVertical(context)))) ||
+          //       (context.formData.vid_vedomost_id === 9 &&
+          //         context.formData.status_id === 3 &&
+          //         context.store.state.user.id ===
+          //           context.formData.status_account_id)
+          //     )
+          //   },
+          //   type: false,
+          // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+              (context.formData.account_id !== context.store.state.user.id &&
+                (context.formData.status_id === 1 ||
+                  context.formData.status_id === 3 ||
+                  ((context.store.state.user.permission_id === 12 ||
+                    context.store.state.user.permission_id === 22) &&
+                    context.originalData?.status_id === 4)) &&
+                context.mode === 'edit') ||
+              (isX5(context) &&
+                isManager(context) &&
+                context.formData.status_id === 3) ||
+              (context.formData.status_id === 1 && context.mode === 'edit') ||
+              (isX5(context) &&
+                isDBA(context) &&
+                context.formData.status_id === 4 &&
+                context.mode === 'edit'),
             type: true,
           },
           {
@@ -1458,21 +1507,30 @@ export default {
           },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              ((context.formData.status_id === 1 &&
-                !isRoznica(context) &&
-                !isDBA(context) &&
-                isTarget(context) &&
-                !isVertical(context)) ||
-                (context.formData.status_id === 3 &&
+              (context.formData.account_id !== context.store.state.user.id &&
+                ((context.formData.status_id === 1 &&
                   !isRoznica(context) &&
                   !isDBA(context) &&
                   isTarget(context) &&
                   !isVertical(context)) ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+                  (context.formData.status_id === 3 &&
+                    !isRoznica(context) &&
+                    !isDBA(context) &&
+                    isTarget(context) &&
+                    !isVertical(context)) ||
+                  ((context.store.state.user.permission_id === 12 ||
+                    context.store.state.user.permission_id === 22) &&
+                    context.originalData?.status_id === 4)) &&
+                context.mode === 'edit') ||
+              (isX5(context) &&
+                isManager(context) &&
+                context.formData.status_id === 3) ||
+              (context.formData.status_id === 1 && context.mode === 'edit') ||
+              //
+              (isX5(context) &&
+                isDBA(context) &&
+                context.formData.status_id === 4 &&
+                context.mode === 'edit'),
             type: true,
           },
           {
@@ -1699,7 +1757,11 @@ export default {
               (isX5(context) && !isDBA(context) && isCreater(context)) ||
               isTarget(context) ||
               !isVertical(context) ||
-              (isManager(context) && context.mode === 'edit'),
+              (isManager(context) && context.mode === 'edit') ||
+              (isX5(context) &&
+                isDBA(context) &&
+                context.formData.status_id === 4 &&
+                context.mode === 'edit'),
             type: true,
           },
           {
@@ -1742,6 +1804,12 @@ export default {
                         isX5(context) && context.formData.real_personal_id
                       )
                     } else {
+                      console.log(
+                        [1, 2, 3].includes(context.formData.status_id) &&
+                          isVertical(context) &&
+                          isX5(context) &&
+                          context.formData.vid_vedomost_id !== 10
+                      )
                       return !!(
                         [1, 2, 3].includes(context.formData.status_id) &&
                         isVertical(context) &&
@@ -1882,23 +1950,31 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              ((context.formData.status_id === 1 &&
-                !isRoznica(context) &&
-                !isDBA(context) &&
-                isTarget(context) &&
-                !isVertical(context)) ||
-                (context.formData.status_id === 3 &&
+              (context.formData.account_id !== context.store.state.user.id &&
+                ((context.formData.status_id === 1 &&
                   !isRoznica(context) &&
                   !isDBA(context) &&
                   isTarget(context) &&
                   !isVertical(context)) ||
-                isOKK(context) ||
-                isROKK(context) ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+                  (context.formData.status_id === 3 &&
+                    !isRoznica(context) &&
+                    !isDBA(context) &&
+                    isTarget(context) &&
+                    !isVertical(context)) ||
+                  isOKK(context) ||
+                  isROKK(context) ||
+                  ((context.store.state.user.permission_id === 12 ||
+                    context.store.state.user.permission_id === 22) &&
+                    context.originalData?.status_id === 4)) &&
+                context.mode === 'edit') ||
+              (isX5(context) &&
+                isManager(context) &&
+                context.formData.status_id === 3) ||
+              (context.formData.status_id === 1 && context.mode === 'edit') ||
+              (isX5(context) &&
+                isDBA(context) &&
+                context.formData.status_id === 4 &&
+                context.mode === 'edit'),
             type: true,
           },
         ],
@@ -2035,7 +2111,11 @@ export default {
                 statusReject(context) ||
                 ROKKdOKKLogistika(context) ||
                 isOKK(context) ||
-                isROKK(context)
+                isROKK(context) ||
+                (isX5(context) &&
+                  isDBA(context) &&
+                  context.formData.status_id === 4 &&
+                  context.mode === 'edit')
                 // (isX5(context) &&
                 //   [2, 3].includes(context.formData.status_id) &&
                 //   [3, 5, 1].includes(context.originalData.vid_vedomost_id))
@@ -2215,7 +2295,11 @@ export default {
                   [2, 3, 6].includes(context.formData.status_id) &&
                   [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
                 isOKK(context) ||
-                isROKK(context)
+                isROKK(context) ||
+                (isX5(context) &&
+                  isDBA(context) &&
+                  context.formData.status_id === 4 &&
+                  context.mode === 'edit')
               )
             },
             type: true,
@@ -2428,7 +2512,11 @@ export default {
                   [2, 3, 6].includes(context.formData.status_id) &&
                   [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
                 isOKK(context) ||
-                isROKK(context)
+                isROKK(context) ||
+                (isX5(context) &&
+                  isDBA(context) &&
+                  context.formData.status_id === 4 &&
+                  context.mode === 'edit')
               )
             },
             type: true,
@@ -2942,6 +3030,17 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return (
+                (isX5(context) &&
+                  isManager(context) &&
+                  context.formData.status_id === 3) ||
+                (context.formData.status_id === 1 && context.mode === 'edit')
+              )
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) => {
           //     return (
@@ -3082,10 +3181,13 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              (context.store.state.user.permission_id === 12 ||
+              ((context.store.state.user.permission_id === 12 ||
                 context.store.state.user.permission_id === 22) &&
-              context.originalData?.status_id === 4,
-
+                context.originalData?.status_id === 4) ||
+              (isX5(context) &&
+                isDBA(context) &&
+                context.formData.status_id === 4 &&
+                context.mode === 'edit'),
             type: false, //могу при этих условиях
           },
         ],
@@ -3970,6 +4072,12 @@ export default {
           },
           {
             funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              (isAllBug(context) || isDBA(context)) &&
+              context.formData.status_id === 4,
             type: true,
           },
         ],

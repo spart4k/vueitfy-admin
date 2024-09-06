@@ -1073,8 +1073,8 @@ export default function ({
   }
 
   const checkListRequired = (filter, list) => {
-    const requiredFilters = list.filter.filter((x) => x.required)
-    return requiredFilters.every((item) => {
+    const requiredFilters = list?.filter?.filter((x) => x.required)
+    return requiredFilters?.every((item) => {
       return filter.some((x) => x.alias === (item.alias ?? item.field))
     })
   }
