@@ -1355,21 +1355,11 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isLogistik(context) &&
-                context.formData.vid_vedomost_id === 5 &&
-                context.formData.status_id === 2 &&
-                context.mode === 'edit'
-              )
-            },
-            type: true,
-          },
-          {
-            funcCondition: (context) => {
-              return (
-                isLogistik(context) &&
-                context.formData.vid_vedomost_id === 9 &&
-                context.formData.status_id === 2 &&
-                context.mode === 'edit'
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
               )
             },
             type: true,
@@ -1817,11 +1807,15 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
+              )
+            },
             type: true,
           },
           // {
@@ -2202,11 +2196,15 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
+              )
+            },
             type: true,
           },
           // {
@@ -2823,11 +2821,15 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
+              )
+            },
             type: true,
           },
         ],
