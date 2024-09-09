@@ -2225,17 +2225,17 @@ export default {
             },
             type: true,
           },
-          {
-            funcCondition: (context) => {
-              return (
-                isX5(context) &&
-                context.formData.vid_vedomost_id === 5 &&
-                [3, 1].includes(context.formData.status_id) &&
-                context.mode === 'edit'
-              )
-            },
-            type: true,
-          },
+          // {
+          //   funcCondition: (context) => {
+          //     return (
+          //       isX5(context) &&
+          //       context.formData.vid_vedomost_id === 5 &&
+          //       [3, 1].includes(context.formData.status_id) &&
+          //       context.mode === 'edit'
+          //     )
+          //   },
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.direction_id === 2 &&
@@ -3200,6 +3200,17 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                context.formData.vid_vedomost_id === 5 &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) => {
           //     return (
@@ -3415,6 +3426,17 @@ export default {
                   context.store.state.user.permission_id === 22) &&
                   context.originalData?.status_id === 4)) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                context.formData.vid_vedomost_id === 5 &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
           {
