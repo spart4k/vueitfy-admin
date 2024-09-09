@@ -10,6 +10,7 @@ import Pivotx5View from '../views/Pivotx5View.vue'
 import MagnitPivot from '../views/Magnit/PivotView.vue'
 import PivotPaymentView from '../views/PivotPaymentView.vue'
 import X5importView from '../views/X5importView.vue'
+import X5paymentView from '../views/X5paymentView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
 import ZayavkaView from '../views/ZayavkaView.vue'
@@ -964,6 +965,18 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/x5payment',
+    name: 'x5payment',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: X5paymentView,
+    children: [],
   },
   {
     path: '/object',

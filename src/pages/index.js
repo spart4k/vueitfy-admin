@@ -21,6 +21,7 @@ import card from './card'
 import bank from './bank'
 import service from './service'
 import mvd from './mvd'
+import x5payment from './x5payment'
 import jurFace from './jur-face'
 import rashod_vid from './rashod_vid'
 import rashod_category from './rashod_category'
@@ -52,4 +53,5 @@ export {
   rashod_vid,
   reportMagnit,
   reportFilial,
+  x5payment,
 }
