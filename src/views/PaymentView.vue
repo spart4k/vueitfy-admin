@@ -39,6 +39,15 @@ export default {
     } = useView({})
     const config = _.cloneDeep(paymentConfigOrig)
     const personalTabs = _.cloneDeep(personalTabsOrig)
+    const editTab = config.detail.tabs.find(
+      (el) =>
+        el.name === 'Добавить начисление' && el.path === 'add-edit-logistic'
+    )
+    const accountField = editTab.fields.find((el) => el.name === 'account_id')
+    accountField.filter.push({
+      with_me: false,
+    })
+    console.log(editTab)
 
     const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
       paymentConfigOrig,
