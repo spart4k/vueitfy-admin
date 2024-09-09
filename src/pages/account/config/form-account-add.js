@@ -30,7 +30,6 @@ export default {
   type: 'FormDefault',
   detail: true,
   lists: [
-    { alias: 'permissions_account', filter: [] },
     { alias: 'chief_id', filter: [] },
     { alias: 'direction_json', filter: [] },
     { alias: 'direction_id', filter: [] },
@@ -40,7 +39,7 @@ export default {
       filter: [],
     },
   ],
-  alias: 'account',
+  alias: '2account',
   active: false,
   fields: [
     stringField({
@@ -167,24 +166,12 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      // updateList: [
-      //   {
-      //     alias: 'doljnost_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_id',
-      //         value: '',
-      //         source: 'formData',
-      //         type: 'num',
-      //       },
-      //     ],
-      //   },
-      // ],
       updateList: [
         {
           alias: 'account_object_types',
           filter: [
             {
+              required: true,
               field: 'direction_json',
               value: '',
               source: 'formData',
@@ -196,6 +183,7 @@ export default {
           alias: 'permissions_account',
           filter: [
             {
+              required: true,
               field: 'direction_json',
               type: 'array',
               source: 'formData',
@@ -225,6 +213,22 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       requiredFields: ['direction_json'],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return (
+                !(
+                  ctx.formData.direction_json?.includes(4) &&
+                  ctx.formData.direction_json?.length === 1
+                ) && ctx.formData.permission_id !== 23
+              )
+            },
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Роль',
@@ -244,24 +248,24 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'chief_id',
-          url: 'get/pagination_list/chief_id',
-          filter: [
-            {
-              field: 'permission_id',
-              type: 'num',
-              value: '',
-            },
-            {
-              field: 'direction_json',
-              type: 'array',
-              value: '',
-            },
-          ],
-        },
+        // {
+        //   type: 'api',
+        //   module: 'selects/getListUpdate',
+        //   field: 'chief_id',
+        //   url: 'get/pagination_list/chief_id',
+        //   filter: [
+        //     {
+        //       field: 'permission_id',
+        //       type: 'num',
+        //       value: '',
+        //     },
+        //     {
+        //       field: 'direction_json',
+        //       type: 'array',
+        //       value: '',
+        //     },
+        //   ],
+        // },
       ],
     }),
     autocompleteField({
@@ -301,6 +305,26 @@ export default {
       ],
       requiredFields: ['direction_json', 'permission_id'],
     }),
+    autocompleteField({
+      label: 'Офис',
+      name: 'office_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/office_id',
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      bootstrapClass: [''],
+    }),
     colorPicker({
       label: 'Цвет',
       name: 'color',
@@ -322,7 +346,6 @@ export default {
       placeholder: '',
       readonly: false,
       class: [''],
-      value: false,
       position: {
         cols: 12,
         sm: 6,
@@ -330,6 +353,17 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.permission_id !== 23
+            },
+          },
+        ],
+      },
     }),
   ],
   actions: [
@@ -339,13 +373,13 @@ export default {
       color: 'text',
       name: 'closePopup',
       action: 'closePopup',
+      to: 'account',
       skipValidation: true,
     }),
     stringAction({
       text: 'Создать',
       type: 'submit',
       module: 'account/createData',
-      // url: 'v1/user/registration',
       url: 'set/account',
       name: 'createForm',
       action: 'createForm',

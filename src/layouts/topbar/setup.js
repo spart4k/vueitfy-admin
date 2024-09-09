@@ -19,19 +19,19 @@ export default {
     const messages = ref(0)
     const { $vuetify } = getCurrentInstance().proxy
 
-    // const pageName = computed(() => {
-    //   let name = 'CRM'
-    //   props.navData.forEach((item, index) => {
-    //     if (route?.matched?.[0]?.path === item.link) {
-    //       name = item.name
-    //     } else if (item.child) {
-    //       item?.child.forEach((navItem) => {
-    //         if (route?.matched?.[0]?.path === navItem.link) name = navItem.name
-    //       })
-    //     }
-    //   })
-    //   return name
-    // })
+    const pageName = computed(() => {
+      let name = 'CRM'
+      props.navData.forEach((item, index) => {
+        if (route?.matched?.[0]?.path === item.link) {
+          name = item.name
+        } else if (item.child) {
+          item?.child.forEach((navItem) => {
+            if (route?.matched?.[0]?.path === navItem.link) name = navItem.name
+          })
+        }
+      })
+      return name
+    })
 
     const store = useStore()
     const openMenu = computed(() => store?.state?.openMenu)
@@ -84,7 +84,7 @@ export default {
       messages,
       openMenu,
       miniMenu,
-      // pageName,
+      pageName,
       itemSecondMenu,
 
       showNotification,

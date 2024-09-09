@@ -30,15 +30,11 @@ export default {
   type: 'FormDefault',
   detail: true,
   lists: [
-    { alias: 'permissions_account', filter: [] },
-    { alias: 'chief_id', filter: [] },
-    { alias: 'direction_json', filter: [] },
-    { alias: 'direction_id', filter: [] },
-    { alias: 'grajdanstvo_id', filter: [] },
     {
       alias: 'object_type',
       filter: [
         {
+          required: true,
           field: 'direction_json',
           value: '',
           source: 'formData',
@@ -46,6 +42,22 @@ export default {
         },
       ],
     },
+    {
+      alias: 'permissions_account',
+      filter: [
+        {
+          required: true,
+          field: 'direction_json',
+          value: '',
+          source: 'formData',
+          type: 'array',
+        },
+      ],
+    },
+    { alias: 'chief_id', filter: [] },
+    { alias: 'direction_json', filter: [] },
+    { alias: 'direction_id', filter: [] },
+    { alias: 'grajdanstvo_id', filter: [] },
     {
       alias: 'account_objects',
       filter: [{ source: 'formData', type: 'num', value: 'id', field: 'id' }],
@@ -89,6 +101,7 @@ export default {
         sm: 6,
       },
       bootstrapClass: [''],
+      validations: { required },
     }),
     stringField({
       label: 'Телефон',
@@ -125,7 +138,7 @@ export default {
         sm: 4,
       },
       bootstrapClass: [''],
-      validations: { number, maxLength: maxLength(4), required },
+      validations: { number, maxLength: maxLength(4) },
     }),
     stringField({
       label: 'Логин',
@@ -189,6 +202,19 @@ export default {
           alias: 'object_type',
           filter: [
             {
+              required: true,
+              field: 'direction_json',
+              value: '',
+              source: 'formData',
+              type: 'array',
+            },
+          ],
+        },
+        {
+          alias: 'permissions_account',
+          filter: [
+            {
+              required: true,
               field: 'direction_json',
               value: '',
               source: 'formData',
@@ -237,6 +263,22 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       requiredFields: ['direction_json'],
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return (
+                !(
+                  ctx.formData.direction_json.includes(4) &&
+                  ctx.formData.direction_json.length === 1
+                ) && ctx.formData.permission_id !== 23
+              )
+            },
+          },
+        ],
+      },
     }),
     selectField({
       label: 'Роль',
@@ -313,6 +355,27 @@ export default {
       ],
       requiredFields: ['direction_json', 'permission_id'],
     }),
+    autocompleteField({
+      label: 'Офис',
+      name: 'office_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      value: null,
+      url: 'get/pagination_list/office_id',
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      bootstrapClass: [''],
+    }),
     colorPicker({
       label: 'Цвет',
       name: 'color',
@@ -338,42 +401,75 @@ export default {
       bootstrapClass: [''],
       //validations: { required },
       //isShow: false,
-    }),
-    selectField({
-      label: 'Объекты',
-      name: 'object_json',
-      alias: 'account_objects',
-      subtype: 'multiple',
-      readonly: true,
-      // requestKey: 'direction_json',
-      stringify: true,
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: {},
-      bootstrapClass: [''],
-      // updateList: [
-      //   {
-      //     alias: 'account_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_json',
-      //         value: '',
-      //         source: 'formData',
-      //         type: 'num',
+      // isShow: {
+      //   value: false,
+      //   conditions: [
+      //     {
+      //       funcCondition: (ctx) => {
+      //         return ctx.formData.permission_id !== 23
       //       },
-      //     ],
-      //   },
-      // ],
+      //       type: true,
+      //     },
+      //   ],
+      // },
+      isShow: {
+        value: false,
+        conditions: [
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.permission_id !== 23
+            },
+          },
+        ],
+      },
     }),
+    // selectField({
+    //   label: 'Объекты',
+    //   name: 'object_json',
+    //   alias: 'account_objects',
+    //   subtype: 'multiple',
+    //   readonly: true,
+    //   // requestKey: 'direction_json',
+    //   stringify: true,
+    //   placeholder: '',
+    //   class: [''],
+    //   selectOption: {
+    //     text: 'name',
+    //     value: 'id',
+    //   },
+    //   items: [],
+    //   position: {
+    //     cols: 12,
+    //     sm: 6,
+    //   },
+    //   validations: {},
+    //   bootstrapClass: [''],
+    //   // updateList: [
+    //   //   {
+    //   //     alias: 'account_id',
+    //   //     filter: [
+    //   //       {
+    //   //         field: 'direction_json',
+    //   //         value: '',
+    //   //         source: 'formData',
+    //   //         type: 'num',
+    //   //       },
+    //   //     ],
+    //   //   },
+    //   // ],
+    //   isShow: {
+    //     value: false,
+    //     conditions: [
+    //       {
+    //         target: 'funcCondition',
+    //         funcCondition: (ctx) => {
+    //           return ctx.formData.permission_id !== 23
+    //         },
+    //       },
+    //     ],
+    //   },
+    // }),
   ],
   actions: [
     stringAction({
@@ -382,6 +478,7 @@ export default {
       color: 'text',
       name: 'closePopup',
       action: 'closePopup',
+      to: 'account',
       skipValidation: true,
     }),
     stringAction({
@@ -389,7 +486,6 @@ export default {
       type: 'submit',
       module: 'form/putForm',
       name: 'saveFormId',
-      // url: 'v1/user/edit',
       url: 'set/account',
       action: 'saveFormId',
       color: 'primary',
