@@ -376,7 +376,9 @@ export default function ({
       const conditionContext = {
         formData,
         result,
+        fields,
         entityData: entityData.value,
+        changeAutocomplete,
       }
       let res = result.code
       let contextData = formData
@@ -386,6 +388,8 @@ export default function ({
           conditionContext[action.handlingResponse.context],
           res
         )
+      if (action.handlingResponse[res].func)
+        action.handlingResponse[res].func(conditionContext)
       let { text, color } = action.handlingResponse[res]
       // /%\w{n}%/
       //const text = 'Объект с именем %name% уже существует'
@@ -955,7 +959,11 @@ export default function ({
     findFieldName(field)
     // return formDataNames
     formDataNames.forEach((el) => {
-      if (!fields[el]?.readonly?.value) {
+      if (
+        (typeof fields[el].readonly === 'boolean' && !fields[el]?.readonly) ||
+        (typeof fields[el].readonly === 'object' &&
+          !fields[el]?.readonly?.value)
+      ) {
         formData[el] = ''
         if (fields[el].items.length === 1) {
           formData[el] = fields[el].items[0][fields[el].selectOption.value]
@@ -1075,7 +1083,7 @@ export default function ({
   const checkListRequired = (filter, list) => {
     const requiredFilters = list?.filter?.filter((x) => x.required)
     return requiredFilters?.every((item) => {
-      return filter.some((x) => x.alias === (item.alias ?? item.field))
+      return filter?.some((x) => x.alias === (item.alias ?? item.field))
     })
   }
 
@@ -1437,10 +1445,8 @@ export default function ({
   }
 
   const getDepFilters = (target) => {
-    console.log(target)
     if (!target.filter) return []
     const filters = target?.filter?.flatMap((el) => {
-      console.log(target.name, el.with_me)
       const filter = {
         alias: el.alias ?? el.field,
         type: el.type,
@@ -1492,8 +1498,17 @@ export default function ({
       if (Array.isArray(filter.value) && filter.value.length === 0) {
         return []
       }
+      if (el.required) {
+        if (
+          (Array.isArray(filter.value) && filter.value.length === 0) ||
+          !filter.value
+        ) {
+          return []
+        }
+      }
       return filter
     })
+    if (!checkListRequired(filters, target)) return null
     return filters
   }
   const unikalDepField = (field) => {
@@ -1521,6 +1536,7 @@ export default function ({
       // const filters = []
       const { url } = el
       const filter = getDepFilters(el)
+      if (filter === null) return
       if (el.filter && filter?.length !== el?.filter?.length) return
       const data = await getList(url, {
         countRows: 10,
@@ -1694,6 +1710,12 @@ export default function ({
           )
           const value = formData[field.name]
           await getDependies({ value, field, item: fieldItem })
+        }
+        if (field.valueEqualList) {
+          formData[field.name] = lists.data[keyList].reduce((acc, item) => {
+            acc.push(item.id)
+            return acc
+          }, [])
         }
         showField(field.type, field, true)
       }
