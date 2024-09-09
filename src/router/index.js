@@ -993,6 +993,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'object-reassign',
+        path: '/object/reassign',
+        meta: {
+          mode: ['reassign'],
+          label: 'Переназначить',
+        },
+        component: Detail,
+      },
+      {
         name: 'object-tarif',
         path: '/object/tarif',
         meta: {
