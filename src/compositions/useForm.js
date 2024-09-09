@@ -208,7 +208,7 @@ export default function ({
         emit('closePopup')
         emit('getItems')
         if (action.refreshData) {
-          emit('refreshData')
+          emit('refreshData', true)
         }
       }
       if (action.handlingResponse) {
@@ -1760,7 +1760,7 @@ export default function ({
     return listValue
   }
 
-  const getData = async () => {
+  const getData = async (refreshTable) => {
     let syncForm = undefined
     const depsApi = []
     if (getDetail() && form.alias) {
@@ -1834,6 +1834,9 @@ export default function ({
     }
     loading.value = false
     emit('setFormData', formData)
+    if (refreshTable) {
+      emit('getItems')
+    }
   }
 
   const isHideBtn = (button) => {
