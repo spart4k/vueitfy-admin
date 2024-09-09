@@ -1665,22 +1665,26 @@ export default {
           source: 'formData',
           type: 'array',
           value: '',
+          required: true,
         },
         {
           field: 'direction_id',
           source: 'formData',
           type: 'array',
+          required: true,
           value: '',
         },
         {
           field: 'object_id',
           source: 'formData',
           type: 'array',
+          required: true,
           value: '',
         },
         {
           alias: 'mode',
           source: 'mode',
+          required: true,
           type: 'num',
         },
       ],
@@ -1837,15 +1841,20 @@ export default {
           urlField: 'personal_id',
           func: async (ctx) => {
             // if (!isRoznica(ctx)) return
-            const { code, sum } = await ctx.store.dispatch(
-              'payments/checkDebit',
-              {
-                url: `check/debit/${ctx.formData.personal_id}`,
+            try {
+              if (!ctx.formData.personal_id) return
+              const { code, sum } = await ctx.store.dispatch(
+                'payments/checkDebit',
+                {
+                  url: `check/debit/${ctx.formData.personal_id}`,
+                }
+              )
+              if (code) {
+                ctx.formData.deduction = sum
+                ctx.formData.end_total = ctx.formData.total - sum
               }
-            )
-            if (code) {
-              ctx.formData.deduction = sum
-              ctx.formData.end_total = ctx.formData.total - sum
+            } catch (e) {
+              return e
             }
           },
         },
@@ -2561,17 +2570,22 @@ export default {
           type: 'custom',
           urlField: 'personal_id',
           func: async (ctx) => {
-            if (isLogistik(ctx)) return
-            // if (!isRoznica(ctx)) return
-            const { code, sum } = await ctx.store.dispatch(
-              'payments/checkDebit',
-              {
-                url: `check/debit/${ctx.formData.personal_id}`,
+            try {
+              if (isLogistik(ctx)) return
+              // if (!isRoznica(ctx)) return
+              if (!ctx.formData.personal_id) return
+              const { code, sum } = await ctx.store.dispatch(
+                'payments/checkDebit',
+                {
+                  url: `check/debit/${ctx.formData.personal_id}`,
+                }
+              )
+              if (code) {
+                ctx.formData.deduction = sum
+                ctx.formData.end_total = ctx.formData.total - sum
               }
-            )
-            if (code) {
-              ctx.formData.deduction = sum
-              ctx.formData.end_total = ctx.formData.total - sum
+            } catch (e) {
+              return e
             }
           },
         },
@@ -2785,15 +2799,20 @@ export default {
           urlField: 'personal_id',
           func: async (ctx) => {
             // if (!isRoznica(ctx)) return
-            const { code, sum } = await ctx.store.dispatch(
-              'payments/checkDebit',
-              {
-                url: `check/debit/${ctx.formData.personal_id}`,
+            try {
+              if (!ctx.formData.personal_id) return
+              const { code, sum } = await ctx.store.dispatch(
+                'payments/checkDebit',
+                {
+                  url: `check/debit/${ctx.formData.personal_id}`,
+                }
+              )
+              if (code) {
+                ctx.formData.deduction = sum
+                ctx.formData.end_total = ctx.formData.total - sum
               }
-            )
-            if (code) {
-              ctx.formData.deduction = sum
-              ctx.formData.end_total = ctx.formData.total - sum
+            } catch (e) {
+              return e
             }
           },
         },
