@@ -1165,6 +1165,7 @@ export default function ({
           let filter = []
           if (targetField.filter && targetField.filter.length) {
             filter = getDepFilters(targetField)
+            if (filter === null) return
             if (targetField.filter && !checkListRequired(filter, targetField)) {
               console.log('target')
               targetField.items = []
@@ -1172,6 +1173,7 @@ export default function ({
             }
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
+            if (filter === null) return
             if (dependence.filter && !checkListRequired(filter, targetField)) {
               console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
@@ -1445,10 +1447,8 @@ export default function ({
   }
 
   const getDepFilters = (target) => {
-    console.log(target)
     if (!target.filter) return []
     const filters = target?.filter?.flatMap((el) => {
-      console.log(target.name, el.with_me)
       const filter = {
         alias: el.alias ?? el.field,
         type: el.type,
@@ -1500,8 +1500,17 @@ export default function ({
       if (Array.isArray(filter.value) && filter.value.length === 0) {
         return []
       }
+      if (el.required) {
+        if (
+          (Array.isArray(filter.value) && filter.value.length === 0) ||
+          !filter.value
+        ) {
+          return []
+        }
+      }
       return filter
     })
+    if (!checkListRequired(filters, target)) return null
     return filters
   }
   const unikalDepField = (field) => {
@@ -1529,6 +1538,7 @@ export default function ({
       // const filters = []
       const { url } = el
       const filter = getDepFilters(el)
+      if (filter === null) return
       if (el.filter && filter?.length !== el?.filter?.length) return
       const data = await getList(url, {
         countRows: 10,
