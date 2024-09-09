@@ -3033,6 +3033,15 @@ export default {
           {
             funcCondition: (context) => {
               return (
+                (isLogistik(context) && isOKK(context)) ||
+                (isROKK(context) && context.formData.status_id === 6)
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
                 (isX5(context) &&
                   isManager(context) &&
                   context.formData.status_id === 3) ||
