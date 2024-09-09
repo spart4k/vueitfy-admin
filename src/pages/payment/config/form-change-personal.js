@@ -210,7 +210,8 @@ export default {
         condition: [
           {
             funcCondition: (context) =>
-              context.formData.status_id === 6 && context.mode === 'edit',
+              [4, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
           {
@@ -347,6 +348,12 @@ export default {
             funcCondition: (context) => {
               return !!context.formData.readonly
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              [4, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
           // {
@@ -492,6 +499,12 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              [4, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.status_id === 6 && context.mode === 'edit',
@@ -565,6 +578,23 @@ export default {
         value: true,
       },
     }),
+    stringField({
+      label: 'Должность',
+      name: 'status_id',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      value: 0,
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
   ],
   actions: [
     stringAction({
@@ -614,6 +644,12 @@ export default {
             funcCondition: (context) => {
               return !!context.formData.readonly
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              [4, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
             type: true,
           },
         ],

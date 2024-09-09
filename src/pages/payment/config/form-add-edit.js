@@ -1091,6 +1091,17 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                context.formData.vid_vedomost_id === 5 &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.status_id === 6 && context.mode === 'edit',
@@ -1355,21 +1366,11 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isLogistik(context) &&
-                context.formData.vid_vedomost_id === 5 &&
-                context.formData.status_id === 2 &&
-                context.mode === 'edit'
-              )
-            },
-            type: true,
-          },
-          {
-            funcCondition: (context) => {
-              return (
-                isLogistik(context) &&
-                context.formData.vid_vedomost_id === 9 &&
-                context.formData.status_id === 2 &&
-                context.mode === 'edit'
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
               )
             },
             type: true,
@@ -1817,11 +1818,27 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                isLogistik(context) &&
+                (context.formData.vid_vedomost_id === 5 ||
+                  context.formData.vid_vedomost_id === 9) &&
+                (context.formData.status_id === 2 ||
+                  context.formData.status_id === 4) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                context.formData.vid_vedomost_id === 5 &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
           // {
@@ -2196,11 +2213,27 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                isLogistik(context) &&
+                (context.formData.vid_vedomost_id === 5 ||
+                  context.formData.vid_vedomost_id === 9) &&
+                (context.formData.status_id === 2 ||
+                  context.formData.status_id === 4) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                context.formData.vid_vedomost_id === 5 &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
           // {
@@ -2371,6 +2404,17 @@ export default {
           },
           {
             funcCondition: (context) => context.formData.status_id === 6,
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                context.formData.vid_vedomost_id === 5 &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
         ],
@@ -2588,6 +2632,17 @@ export default {
           },
           {
             funcCondition: (context) => context.formData.status_id === 6,
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                context.formData.vid_vedomost_id === 5 &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
         ],
@@ -2817,11 +2872,15 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
+              )
+            },
             type: true,
           },
         ],
@@ -3656,6 +3715,9 @@ export default {
       {
         name: 'readonly',
       },
+      {
+        name: 'status_id',
+      },
     ],
     target: formChangePersonal,
   },
@@ -3966,6 +4028,12 @@ export default {
                 context.formData.status_id === 2
               )
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              (isRG(context) || isCUP(context) || isDirector(context)) &&
+              context.formData.status_id === 1,
             type: true,
           },
         ],
