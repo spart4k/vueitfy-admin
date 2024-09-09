@@ -38,7 +38,6 @@ export default {
     const miniMenu = computed(() => store?.state?.miniMenu)
     const logout = async () => {
       await store.dispatch('auth/logout')
-      store.commit('auth/setToken', '')
       router.push('/login')
     }
     const itemSecondMenu = ref({
