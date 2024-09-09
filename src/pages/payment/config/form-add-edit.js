@@ -1855,12 +1855,6 @@ export default {
                         isX5(context) && context.formData.real_personal_id
                       )
                     } else {
-                      console.log(
-                        [1, 2, 3].includes(context.formData.status_id) &&
-                          isVertical(context) &&
-                          isX5(context) &&
-                          context.formData.vid_vedomost_id !== 10
-                      )
                       return !!(
                         [1, 2, 3].includes(context.formData.status_id) &&
                         isVertical(context) &&
