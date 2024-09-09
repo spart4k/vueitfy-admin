@@ -1083,7 +1083,7 @@ export default function ({
   const checkListRequired = (filter, list) => {
     const requiredFilters = list?.filter?.filter((x) => x.required)
     return requiredFilters?.every((item) => {
-      return filter.some((x) => x.alias === (item.alias ?? item.field))
+      return filter?.some((x) => x.alias === (item.alias ?? item.field))
     })
   }
 
@@ -1165,7 +1165,6 @@ export default function ({
           let filter = []
           if (targetField.filter && targetField.filter.length) {
             filter = getDepFilters(targetField)
-            if (filter === null) return
             if (targetField.filter && !checkListRequired(filter, targetField)) {
               console.log('target')
               targetField.items = []
@@ -1173,7 +1172,6 @@ export default function ({
             }
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
-            if (filter === null) return
             if (dependence.filter && !checkListRequired(filter, targetField)) {
               console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
