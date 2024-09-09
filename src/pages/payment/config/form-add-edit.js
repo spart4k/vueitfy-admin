@@ -1355,21 +1355,11 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isLogistik(context) &&
-                context.formData.vid_vedomost_id === 5 &&
-                context.formData.status_id === 2 &&
-                context.mode === 'edit'
-              )
-            },
-            type: true,
-          },
-          {
-            funcCondition: (context) => {
-              return (
-                isLogistik(context) &&
-                context.formData.vid_vedomost_id === 9 &&
-                context.formData.status_id === 2 &&
-                context.mode === 'edit'
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
               )
             },
             type: true,
@@ -1704,22 +1694,26 @@ export default {
           source: 'formData',
           type: 'array',
           value: '',
+          required: true,
         },
         {
           field: 'direction_id',
           source: 'formData',
           type: 'array',
+          required: true,
           value: '',
         },
         {
           field: 'object_id',
           source: 'formData',
           type: 'array',
+          required: true,
           value: '',
         },
         {
           alias: 'mode',
           source: 'mode',
+          required: true,
           type: 'num',
         },
       ],
@@ -1813,11 +1807,15 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
+              )
+            },
             type: true,
           },
           // {
@@ -1884,15 +1882,20 @@ export default {
           urlField: 'personal_id',
           func: async (ctx) => {
             // if (!isRoznica(ctx)) return
-            const { code, sum } = await ctx.store.dispatch(
-              'payments/checkDebit',
-              {
-                url: `check/debit/${ctx.formData.personal_id}`,
+            try {
+              if (!ctx.formData.personal_id) return
+              const { code, sum } = await ctx.store.dispatch(
+                'payments/checkDebit',
+                {
+                  url: `check/debit/${ctx.formData.personal_id}`,
+                }
+              )
+              if (code) {
+                ctx.formData.deduction = sum
+                ctx.formData.end_total = ctx.formData.total - sum
               }
-            )
-            if (code) {
-              ctx.formData.deduction = sum
-              ctx.formData.end_total = ctx.formData.total - sum
+            } catch (e) {
+              return e
             }
           },
         },
@@ -2193,11 +2196,15 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
+              )
+            },
             type: true,
           },
           // {
@@ -2619,17 +2626,22 @@ export default {
           type: 'custom',
           urlField: 'personal_id',
           func: async (ctx) => {
-            if (isLogistik(ctx)) return
-            // if (!isRoznica(ctx)) return
-            const { code, sum } = await ctx.store.dispatch(
-              'payments/checkDebit',
-              {
-                url: `check/debit/${ctx.formData.personal_id}`,
+            try {
+              if (isLogistik(ctx)) return
+              // if (!isRoznica(ctx)) return
+              if (!ctx.formData.personal_id) return
+              const { code, sum } = await ctx.store.dispatch(
+                'payments/checkDebit',
+                {
+                  url: `check/debit/${ctx.formData.personal_id}`,
+                }
+              )
+              if (code) {
+                ctx.formData.deduction = sum
+                ctx.formData.end_total = ctx.formData.total - sum
               }
-            )
-            if (code) {
-              ctx.formData.deduction = sum
-              ctx.formData.end_total = ctx.formData.total - sum
+            } catch (e) {
+              return e
             }
           },
         },
@@ -2809,11 +2821,15 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) =>
-              isLogistik(context) &&
-              context.formData.vid_vedomost_id === 5 &&
-              context.formData.status_id === 4 &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                (isLogistik(context) &&
+                  context.formData.vid_vedomost_id === 5) ||
+                (context.formData.vid_vedomost_id === 9 &&
+                  context.formData.status_id === 2) ||
+                (context.formData.status_id === 4 && context.mode === 'edit')
+              )
+            },
             type: true,
           },
         ],
@@ -2851,15 +2867,20 @@ export default {
           urlField: 'personal_id',
           func: async (ctx) => {
             // if (!isRoznica(ctx)) return
-            const { code, sum } = await ctx.store.dispatch(
-              'payments/checkDebit',
-              {
-                url: `check/debit/${ctx.formData.personal_id}`,
+            try {
+              if (!ctx.formData.personal_id) return
+              const { code, sum } = await ctx.store.dispatch(
+                'payments/checkDebit',
+                {
+                  url: `check/debit/${ctx.formData.personal_id}`,
+                }
+              )
+              if (code) {
+                ctx.formData.deduction = sum
+                ctx.formData.end_total = ctx.formData.total - sum
               }
-            )
-            if (code) {
-              ctx.formData.deduction = sum
-              ctx.formData.end_total = ctx.formData.total - sum
+            } catch (e) {
+              return e
             }
           },
         },
