@@ -2179,7 +2179,7 @@ export default {
                 statusReject(context) ||
                 ROKKdOKKLogistika(context) ||
                 (isLogistik(context) && isOKK(context)) ||
-                isROKK(context) ||
+                (isROKK(context) && context.formData.status_id !== 1) ||
                 (isX5(context) &&
                   isDBA(context) &&
                   !isROKK(context) &&
@@ -3171,8 +3171,9 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                (isLogistik(context) && isOKK(context)) ||
-                (isROKK(context) && context.formData.status_id === 6)
+                isLogistik(context) &&
+                (isOKK(context) || isROKK(context)) &&
+                context.formData.status_id === 6
               )
             },
             type: true,
@@ -3206,6 +3207,7 @@ export default {
                 isX5(context) &&
                 context.formData.vid_vedomost_id === 5 &&
                 [3, 1].includes(context.formData.status_id) &&
+                !isRG(context) &&
                 context.mode === 'edit'
               )
             },
