@@ -38,6 +38,9 @@ export default {
     fields: {
       type: Object,
     },
+    mode: {
+      type: String,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -56,6 +59,7 @@ export default {
               store,
               formData: props.formData,
               originalData: props.originalData,
+              mode: props.mode,
             }
             if (!option.func(context)) return
           } else if (

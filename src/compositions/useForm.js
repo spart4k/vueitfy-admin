@@ -21,6 +21,7 @@ import useRequest from '@/compositions/useRequest'
 import _ from 'lodash'
 import router from '@/router'
 import { list } from 'postcss'
+import { props } from 'vue2-dropzone'
 
 /**
  * @param loading {boolean}
@@ -70,6 +71,7 @@ export default function ({
       else fieldAliases[form.fields[i].name] = form.fields[i].name
     }
     for (let key in fields) {
+      console.log(JSON.stringify(formData))
       if (formData.hasOwnProperty(key)) continue
       Vue.set(formData, key, ref(fields[key].value))
     }
@@ -221,6 +223,8 @@ export default function ({
       if (action.handlingResponse) {
         handlingResponse(action, result)
       }
+    } else if (action.action === 'openForm') {
+      openForm({ action })
     } else if (action.action === 'saveFormStore') {
       loading.value = true
       await loadStoreFile({
@@ -446,6 +450,55 @@ export default function ({
     }
   }
 
+  const openForm = ({ action }) => {
+    console.log(action)
+    console.log(form)
+    const sharedFields = form?.sharedFields
+    if (sharedFields) {
+      sharedFields.fields.forEach((field) => {
+        sharedFields.target.fields.forEach((targetField) => {
+          // console.log(targetField.name, field.name)
+          if (Array.isArray(field.alias)) {
+            console.log(field, 'FIELD_ALIAS')
+            field.alias.forEach((el) => {
+              if (targetField.name === el) {
+                targetField.value = formData[field.name]
+              }
+            })
+          } else {
+            if (targetField.name === field.alias) {
+              console.log(formData, targetField, formData[field.name])
+              targetField.value = formData[field.name]
+              if (field.value) targetField.value = field.value
+              if (field.readonly === true) targetField.readonly = true
+            } else if (targetField.name === field.name) {
+              console.log(formData, targetField, formData[field.name])
+              targetField.value = formData[field.name]
+              if (field.value) targetField.value = field.value
+              if (field.readonly === true) targetField.readonly = true
+            }
+          }
+        })
+      })
+    }
+    if (form.detail.type === 'popup') {
+      let requestId = 'id'
+      if (action.target.requestKey) requestId = action.target.requestKey
+      console.log(formData, action.target.requestKey)
+      let routeRequest = formData[action.target.requestKey]
+        ? `/:${action.target.requestKey}`
+        : '-add'
+      router.push({
+        name: action.target.route + routeRequest,
+        // name: `${route.name}/:${requestId}`,
+        params: {
+          [requestId]: formData[action.target.requestKey],
+        },
+      })
+      popupForm.value.isShow = true
+    }
+  }
+
   const responseHandler = ({ action, data }) => {
     const response = action?.conditionCode?.results?.find(
       (x) => x.value === data[action.conditionCode.key]
@@ -605,89 +658,99 @@ export default function ({
       setFormData(obj, dropzone)
     }
 
-    // const queries = []
-
     const dropzoneArray = form.fields.filter(
       (x) =>
         x.type === 'dropzone' &&
         ((typeof x.isShow === 'boolean' && x.isShow) ||
           (typeof x.isShow === 'object' && x.isShow.value))
     )
-    await Promise.all(
-      dropzoneArray.map(async (dropzone) => {
-        if (dropzone.value.length) {
-          let fileIndex = 1
-          const queries = []
-          for (const item of dropzone.value) {
-            const file = item
-            const valueId =
-              formData[dropzone.options.valueId] ?? store?.state?.user.id
-            const name =
-              (dropzone.options.fileName
-                ? file.name
-                : eval(dropzone.options.name).split(' ').join('_')) +
-              '_' +
-              valueId +
-              '_' +
-              fileIndex +
-              '_' +
-              new Date().getTime()
-            const ext = file.name.split('.').pop()
-            const storeForm = new FormData()
-            storeForm.append('name', name + '.' + ext)
-            storeForm.append('file', file)
-            const params = {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            }
-            queries.push({
-              request: store.dispatch('file/create', {
-                data: storeForm,
-                folder: `${dropzone.options.folder}/${name}.${ext}`,
-                params,
-              }),
-              path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
-              index: fileIndex,
-            })
-            fileIndex += 1
-          }
-          await Promise.all(queries).then((data) => {
-            if (dropzone.grouping) {
-              const fileArray = [...data]
-              fileArray.forEach((file) => {
-                delete file.request
-              })
-              setFormData(fileArray, dropzone)
-            } else if (dropzone.toObject) {
-              const fileArray = [...data]
-              toObject(fileArray, dropzone)
-            } else {
-              setFormData(data[0].path, dropzone)
-            }
-          })
-        } else if (dropzone.toObject) {
-          toObject(null, dropzone)
-        }
 
-        if (dropzone.stash) {
-          formData[dropzone.stash]?.forEach((file, index) => {
-            queryParams.formData[dropzone.name].push({
-              path: file.name,
-              index: queryParams.formData[dropzone.name].length + 1,
-            })
-          })
+    const loadDropzone = async (dropzone) => {
+      if (dropzone.value.length) {
+        let fileIndex = 1
+        const queries = {
+          requestArr: [],
+          fileArr: [],
         }
-        if (dropzone.options.stash && formData[dropzone.options.stash]) {
-          formData[dropzone.options.stash]?.forEach((file, index) => {
-            queryParams.formData[dropzone.requestKey || dropzone.name].push({
-              path: file.path,
-              index:
-                queryParams.formData[dropzone.requestKey || dropzone.name]
-                  .length + 1,
-            })
+        for (const item of dropzone.value) {
+          const file = item
+          const valueId =
+            formData[dropzone.options.valueId] ?? store?.state?.user.id
+          const name =
+            (dropzone.options.fileName
+              ? file.name
+              : eval(dropzone.options.name).split(' ').join('_')) +
+            '_' +
+            valueId +
+            '_' +
+            fileIndex +
+            '_' +
+            new Date().getTime()
+          const ext = file.name.split('.').pop()
+          const storeForm = new FormData()
+          storeForm.append('name', name + '.' + ext)
+          storeForm.append('file', file)
+          const params = {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+          queries.fileArr.push({
+            path: '/' + dropzone.options.folder + '/' + name + '.' + ext,
+            index: fileIndex,
           })
+          queries.requestArr.push(
+            store.dispatch('file/create', {
+              data: storeForm,
+              folder: `${dropzone.options.folder}/${name}.${ext}`,
+              params,
+            })
+          )
+          fileIndex += 1
         }
+        await Promise.all(queries.requestArr)
+        if (dropzone.grouping) {
+          const fileArray = [...queries.fileArr]
+          fileArray.forEach((file) => {
+            delete file.request
+          })
+          setFormData(fileArray, dropzone)
+        } else if (dropzone.toObject) {
+          const fileArray = [...queries.fileArr]
+          toObject(fileArray, dropzone)
+        } else {
+          setFormData(queries.fileArr[0].path, dropzone)
+        }
+      } else if (dropzone.toObject) {
+        toObject(null, dropzone)
+      }
+
+      if (dropzone.stash) {
+        formData[dropzone.stash]?.forEach((file, index) => {
+          queryParams.formData[dropzone.name].push({
+            path: file.name,
+            index: queryParams.formData[dropzone.name].length + 1,
+          })
+        })
+      }
+      if (dropzone.options.stash && formData[dropzone.options.stash]) {
+        formData[dropzone.options.stash]?.forEach((file, index) => {
+          queryParams.formData[dropzone.requestKey || dropzone.name].push({
+            path: file.path,
+            index:
+              queryParams.formData[dropzone.requestKey || dropzone.name]
+                .length + 1,
+          })
+        })
+      }
+      return true
+    }
+
+    await Promise.all(
+      dropzoneArray.map((dropzone) => {
+        return new Promise((resolve) => {
+          resolve(loadDropzone(dropzone))
+        })
       })
     )
 
@@ -789,7 +852,7 @@ export default function ({
   const changeValue = (params) => {
     const { value, field } = params
     if (field.dependence) {
-      field.dependence?.forEach((dependence) => {
+      field.dependence?.forEach(async (dependence) => {
         if (dependence?.type === 'computed' && dependence.funcComputed) {
           const context = {
             store,
@@ -799,6 +862,22 @@ export default function ({
             form,
           }
           dependence.funcComputed(context)
+        } else if (dependence.type === 'api') {
+          const { url, body: bodyData, field: targetField } = dependence
+          const acc = {}
+          bodyData.forEach((el) => {
+            acc[el] = +formData[el]
+          })
+          const { result } = await store.dispatch(dependence.module, {
+            value,
+            field,
+            url,
+            body: {
+              data: acc,
+            },
+          })
+          formData[targetField] = result
+          // console.log(data)
         }
       })
     }
@@ -810,6 +889,8 @@ export default function ({
     let value = ''
     if (!value && el.source === 'formData') {
       value = formData[el.field]
+    } else if (!value && el.source === 'mode') {
+      value = mode
     } else {
       value = el.value
     }
@@ -848,7 +929,7 @@ export default function ({
     } else if (el.sendEmpty) {
       acc.push({
         alias: el.alias ?? el.field,
-        value: [],
+        value: el.value,
         type: el.type,
       })
     } else {
@@ -879,7 +960,7 @@ export default function ({
           }
         }
       }
-
+      // console.log(list, 'LISTLIST')
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
       const targetId = getListField(list)
       const element = {
@@ -957,6 +1038,8 @@ export default function ({
             readonly: environment.readonlyAll,
             filter,
           }
+        } else {
+          console.log('computed!!')
         }
       }
       //if (dependence && (dependence.type !== 'api' || !dependence.type)) {
@@ -965,8 +1048,10 @@ export default function ({
       //  //return
       //}
       if (dependence && dependence.type === 'default' && dependence.fillField) {
+        console.log(field)
         dependence.fillField.forEach((el) => {
           if (typeof el === 'string') {
+            console.log(params)
             if (params?.item) formData[el] = params?.item[el]
             else if (formData[el] && params.hasOwnProperty('item'))
               formData[el] = null
@@ -1112,7 +1197,7 @@ export default function ({
           } else {
             formData[depField] = data[0]?.id
           }
-          card = targetField.items.find((el) => el.id === formData[depField])
+          card = targetField.items?.find((el) => el.id === formData[depField])
           if (dependence.fillField) {
             dependence.fillField.forEach((el) => (formData[el] = card[el]))
           }
@@ -1215,6 +1300,8 @@ export default function ({
           filter.value = source
         } else if (el.source === 'formData') {
           filter.value = formData[el.field]
+        } else if (el.source === 'mode') {
+          filter.value = mode
         } else {
           filter.value = el.source ? eval(el.source) : formData[el.field]
         }
@@ -1254,9 +1341,13 @@ export default function ({
       if (el.defaultItems) el.items = [...el.defaultItems]
 
       if (data.rows) {
-        el.items = [...el.items, ...data.rows]
+        console.log(el.items)
+        if (el.items?.length) {
+          el.items = [...el.items, ...data.rows]
+        } else {
+          el.items = [...data.rows]
+        }
       }
-
       el.hideItems = el.items
       if (data.rows?.length === 1 && data.totalPage === 1) {
         if (fields[el.name]?.subtype === 'multiple') {
@@ -1277,8 +1368,10 @@ export default function ({
   }
 
   const putSelectItems = async (lists) => {
+    // console.log(JSON.stringify(lists.data))
     const stackDep = []
     for (let keyList in lists.data) {
+      console.log(keyList, 'KEYLIST', lists.data[keyList], mode)
       const field = fields[fieldAliases[keyList]]
       if (field) {
         field.hideItems = lists.data[keyList]
@@ -1300,6 +1393,7 @@ export default function ({
             const formTargets = field.hiding.conditions.filter(
               (el) => el.target === 'formData'
             )
+            console.log(JSON.stringify(formData))
             if (formTargets?.length) {
               formTargets.forEach((formTarget) => {
                 if (formTarget.value.includes(formData[formTarget.field])) {
@@ -1318,6 +1412,10 @@ export default function ({
         field.items = field.defaultItems
           ? [...field.defaultItems, ...lists.data[keyList]]
           : lists.data[keyList]
+        console.log(field.name)
+        if (field.name === 'personal_id') {
+          console.log(JSON.stringify(field.items), 'JSON')
+        }
         if (lists.data[keyList].length === 1) {
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
@@ -1356,6 +1454,7 @@ export default function ({
               field.defaultItems[0][field.selectOption.value]
           }
         }
+        // console.log(JSON.stringify(lists.data))
         if (!hasValue(formData[field.name], lists.data[keyList], field)) {
           formData[field.name] = ''
         }
@@ -1375,6 +1474,7 @@ export default function ({
     await Promise.all(stackDep)
   }
   const hasValue = (value, list, field) => {
+    console.log(value, list, field, field?.name)
     if (!value) return true
     else {
       if (Array.isArray(value)) {
@@ -1382,6 +1482,7 @@ export default function ({
           _.intersection(el[field.selectOption.value], value)
         )
       } else {
+        console.log(list, value)
         return list.find((el) => el[field.selectOption.value] === value)
       }
     }
@@ -1516,6 +1617,7 @@ export default function ({
                 formData,
                 environment,
                 originalData: originalData.value,
+                mode,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -1630,6 +1732,7 @@ export default function ({
           } else if (el.target === 'direction_id') {
             return checkIncludesDirections(el)
           } else {
+            console.log(el.value)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {
@@ -1658,7 +1761,16 @@ export default function ({
             if (el.value === 'notEmpty') {
               return `${formData[el.field]}`
             }
+          } else if (el.target === 'funcCondition') {
+            const conditionContext = {
+              store,
+              formData,
+              originalData: originalData.value,
+              environment,
+            }
+            return el.funcCondition(conditionContext)
           } else {
+            console.log(el)
             const res = el.value.some((ai) => {
               let result
               if (Array.isArray(ai)) {

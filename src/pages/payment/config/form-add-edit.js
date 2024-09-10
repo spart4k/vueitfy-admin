@@ -12,6 +12,55 @@ import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
+const conditionLogistik = (context) => {
+  return (
+    [1, 6, 7].includes(context.formData.direction_id) &&
+    context.formData.account_id !== context.store.state.user.id &&
+    (context.formData.status_id === 1 ||
+      context.formData.status_id === 3 ||
+      ((context.store.state.user.permission_id === 12 ||
+        context.store.state.user.permission_id === 22) &&
+        context.originalData?.status_id === 4)) &&
+    context.mode === 'edit'
+  )
+}
+const conditionX5 = (context) => {
+  return !(
+    context.formData.direction_id === 2 &&
+    context.store.state.user.permission_id === 1 &&
+    context.formData.status_id === 1 &&
+    context.formData.bank_id === 1 &&
+    context.mode === 'edit'
+  )
+}
+
+const statusReject = (context) => {
+  return context.formData.status_id === 6 && context.mode === 'edit'
+}
+
+const ROKKdOKKLogistika = (context) => {
+  return (
+    [8, 17].includes(context.store.state.user.permission_id) &&
+    context.originalData.status_id !== 2 &&
+    [1, 6, 7].includes(context.formData.direction_id)
+  )
+}
+
+const ROKKdOKKRoznicd = (context) => {
+  return (
+    [8, 17].includes(context.store.state.user.permission_id) &&
+    context.originalData.status_id !== 2 &&
+    context.formData.direction_id === 2
+  )
+}
+
+const AvansEjednLogistik = (context) => {
+  return (
+    [1, 6, 7].includes(context.formData.direction_id) &&
+    [1, 5].includes(context.formData.vid_vedomost_id)
+  )
+}
+
 export default {
   id: uuidv4(),
   name: 'Добавить начисление',
@@ -252,25 +301,62 @@ export default {
   //lists: [],
   lists: [
     {
-      alias: 'vid_vedomost_id',
-      filter: [],
+      alias: 'payment_vid_vedomost_id',
+      filter: [
+        {
+          field: 'direction_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'type',
+          alias: 'type_object_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'date_target',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
     },
     {
-      alias: 'status_id',
-      filter: [],
+      alias: 'payment_status_id',
+      filter: [
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
     },
-    // {
-    //   alias: 'payment_direction_id',
-    //   filter: [
-    //     {
-    //       field: 'account_id',
-    //       // alias: 'account_id',
-    //       value: '',
-    //       source: 'formData',
-    //       type: 'num',
-    //     },
-    //   ],
-    // },
+    {
+      alias: 'payment_direction_id',
+      filter: [
+        {
+          field: 'account_id',
+          // alias: 'account_id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
+        },
+      ],
+    },
     {
       alias: 'doljnost_id',
       filter: [],
@@ -309,6 +395,7 @@ export default {
     selectField({
       label: 'Статус',
       name: 'status_id',
+      alias: 'payment_status_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -364,6 +451,22 @@ export default {
           //       context.formData.status_id === 3),
           //   type: false,
           // },
+          {
+            funcCondition: (context) => {
+              return AvansEjednLogistik(context)
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                context.mode === 'add' &&
+                context.formData.type === 2 &&
+                context.formData.direction_id === 2
+              )
+            },
+            type: true,
+          },
         ],
       },
       hiding: {
@@ -509,29 +612,6 @@ export default {
       bootstrapClass: [''],
       readonly: true,
     }),
-    dateField({
-      label: 'Дата назн',
-      name: 'date_target',
-      subtype: 'datetime',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 3,
-      },
-      // validations: { required },
-      bootstrapClass: [''],
-      readonly: true,
-      isShow: {
-        value: false,
-        conditions: [
-          {
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-          },
-        ],
-      },
-    }),
     selectField({
       label: 'Менеджер',
       name: 'account_id',
@@ -626,7 +706,7 @@ export default {
               value: [2],
             },
           ],
-          url: 'get/pagination_list/personal',
+          url: 'get/pagination_list/payment_personal_id',
         },
         // {
         //   type: 'api',
@@ -679,14 +759,17 @@ export default {
           //   type: true,
           // },
           {
-            funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                context.formData.account_id !== context.store.state.user.id &&
+                (context.formData.status_id === 1 ||
+                  context.formData.status_id === 3 ||
+                  ((context.store.state.user.permission_id === 12 ||
+                    context.store.state.user.permission_id === 22) &&
+                    context.formData?.status_id === 4)) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
           {
@@ -761,15 +844,6 @@ export default {
       },
       validations: { required },
       bootstrapClass: [''],
-      hiding: {
-        conditions: [
-          {
-            target: 'mode',
-            value: 'add',
-            values: [2],
-          },
-        ],
-      },
       dependence: [
         {
           type: 'api',
@@ -799,7 +873,7 @@ export default {
               value: [2],
             },
           ],
-          url: 'get/pagination_list/personal',
+          url: 'get/pagination_list/payment_personal_id',
         },
         {
           //fields: ['statement_card', 'cardowner'],
@@ -990,6 +1064,10 @@ export default {
           // ],
           url: 'get/pagination_list/payment_personal_id',
         },
+        {
+          type: 'default',
+          fillField: ['type'],
+        },
         // {
         //   type: 'api',
         //   module: 'selects/getListUpdate',
@@ -1044,6 +1122,38 @@ export default {
           // },
         ],
       },
+      updateList: [
+        {
+          alias: 'payment_vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -1123,6 +1233,11 @@ export default {
           source: 'formData',
           type: 'array',
           value: '',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
         },
       ],
       // dependence: [
@@ -1300,6 +1415,7 @@ export default {
     selectField({
       label: 'Вид ведомости',
       name: 'vid_vedomost_id',
+      alias: 'payment_vid_vedomost_id',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -1357,16 +1473,16 @@ export default {
       readonly: {
         value: false,
         condition: [
-          {
-            target: 'formData',
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-            type: true,
-          },
-          {
-            permissions: [8, 17],
-            type: true,
-          },
+          // {
+          //   funcCondition: (context) =>
+          //     [1, 6, 7].includes(context.formData.direction_id) &&
+          //     [1, 5].includes(context.formData.vid_vedomost_id),
+          //   type: true,
+          // },
+          // {
+          //   permissions: [8, 17],
+          //   type: true,
+          // },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id !== context.store.state.user.id &&
@@ -1377,20 +1493,149 @@ export default {
           //   type: true,
           // },
           {
-            funcCondition: (context) =>
-              context.formData.account_id !== context.store.state.user.id &&
-              (context.formData.status_id === 1 ||
-                context.formData.status_id === 3 ||
-                ((context.store.state.user.permission_id === 12 ||
-                  context.store.state.user.permission_id === 22) &&
-                  context.originalData?.status_id === 4)) &&
-              context.mode === 'edit',
+            funcCondition: (context) => {
+              return (
+                conditionLogistik(context) ||
+                // conditionX5(context) ||
+                statusReject(context) ||
+                ROKKdOKKLogistika(context)
+                // ROKKdOKKRoznicd(context)
+              )
+            },
             type: true,
           },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.direction_id === 2 &&
+          //     context.store.state.user.permission_id === 1 &&
+          //     context.formData.status_id === 1 &&
+          //     context.formData.bank_id === 1 &&
+          //     context.mode === 'edit',
+          //   type: false,
+          // },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.status_id === 6 && context.mode === 'edit',
+          //   type: true,
+          // },
+        ],
+      },
+      // hideOption: [
+      //   {
+      //     target: 'type',
+      //     targetValue: [1],
+      //     value: [9],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (
+      //         ctx.mode === 'add' &&
+      //         ctx.formData.type === 1 &&
+      //         ctx.formData.direction_id === 2
+      //       ) {
+      //         return true
+      //       } else {
+      //         return false
+      //       }
+      //     },
+      //   },
+      //   {
+      //     target: 'type',
+      //     targetValue: [1],
+      //     value: [10],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (
+      //         ctx.mode === 'add' &&
+      //         ctx.formData.type === 1 &&
+      //         ctx.formData.direction_id === 2
+      //       ) {
+      //         return false
+      //       } else {
+      //         return true
+      //       }
+      //     },
+      //   },
+      //   {
+      //     value: [1, 3, 5, 8],
+      //     type: true,
+      //     func: (ctx) => {
+      //       if (ctx.mode === 'add') {
+      //         return true
+      //       } else {
+      //         return false
+      //       }
+      //     },
+      //   },
+      // ],
+      filter: [
+        {
+          field: 'direction_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          source: 'mode',
+          type: 'num',
+        },
+      ],
+      // hiding: {
+      //   conditions: [
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'type',
+      //     //   value: [1],
+      //     //   values: [10],
+      //     // },
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'status_id',
+      //     //   value: [4],
+      //     //   values: [4, 6],
+      //     // },
+      //     // {
+      //     //   target: 'formData',
+      //     //   field: 'status_id',
+      //     //   permissions: [3, 15],
+      //     //   value: [1, 2, 3],
+      //     //   values: [1, 3],
+      //     // },
+      //     // {
+      //     //   funcCondition: (context) => {
+      //     //     context.formData.status_id === 1 && context.store.state.user.id === context.formData.status_account_id && context.store.state.permission_id !== 4
+      //     //   },
+      //     //   values: [1, 3],
+      //     // },
+      //   ],
+      // },
+    }),
+    dateField({
+      label: 'Дата назн',
+      name: 'date_target',
+      subtype: 'datetime',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      readonly: true,
+      isShow: {
+        value: false,
+        type: 'some',
+        conditions: [
           {
-            funcCondition: (context) =>
-              context.formData.status_id === 6 && context.mode === 'edit',
-            type: true,
+            field: 'vid_vedomost_id',
+            value: [1, 5],
+          },
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return ctx.formData.direction_id === 2 && ctx.formData.type === 2
+            },
           },
         ],
       },
@@ -1428,45 +1673,65 @@ export default {
     //  validations: { required },
     //  bootstrapClass: [''],
     //}),
-    // stringField({
-    //   label: 'Часы (план)',
-    //   name: 'hour_plan',
-    //   placeholder: '',
-    //   readonly: true,
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы(факт)',
-    //   name: 'hour_fact',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   bootstrapClass: [''],
-    //   //validations: { required },
-    //   //isShow: false,
-    // }),
-    // stringField({
-    //   label: 'Часы',
-    //   name: 'hour',
-    //   placeholder: '',
-    //   class: [''],
-    //   position: {
-    //     cols: 12,
-    //     sm: 2,
-    //   },
-    //   validations: { required },
-    //   bootstrapClass: [''],
-    // }),
+    stringField({
+      label: 'Часы (план)',
+      name: 'hour_plan',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      //isShow: false,
+    }),
+    stringField({
+      label: 'Часы(факт)',
+      name: 'hour_fact',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      //isShow: false,
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          type: 'api',
+          module: 'form/create',
+          // action: {
+          //   type: 'hideOptions',
+          //   //values: [8],
+          //   field: 'vid_vedomost_id',
+          //   condition: {
+          //     true: [],
+          //     false: 1,
+          //   },
+          // },
+          //url: 'object_id/avatar_with_user_key_id',
+          url: 'calculate/magnit/hour',
+          body: ['object_id', 'doljnost_id', 'hour_fact'],
+          field: 'hour',
+        },
+      ],
+    }),
+    stringField({
+      label: 'Часы',
+      name: 'hour',
+      placeholder: '',
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 2,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
     // stringField({
     //   label: 'Тариф',
     //   name: 'price',
@@ -1945,6 +2210,22 @@ export default {
         value: true,
       },
     }),
+    stringField({
+      label: 'Тип магазина',
+      name: 'type',
+      placeholder: '',
+      readonly: true,
+      class: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      //validations: { required },
+      isShow: {
+        value: true,
+      },
+    }),
   ],
   actions: [
     stringAction({
@@ -2039,3 +2320,4 @@ export default {
     }),
   ],
 }
+//

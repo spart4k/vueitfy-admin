@@ -8,7 +8,7 @@ import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
 import MagnitPivot from '../views/Magnit/PivotView.vue'
-import PivotRetailView from '../views/PivotRetailView.vue'
+import PivotPaymentView from '../views/PivotPaymentView.vue'
 import X5importView from '../views/X5importView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -610,30 +610,28 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: MagnitPivot,
-  },
-  {
-    path: '/pivot_retail',
-    name: 'pivot_retail',
-    meta: {
-      layout: 'blank-layout',
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: PivotRetailView,
     children: [
       {
-        name: 'pivot_retail-edit',
-        path: '/pivot_retail/:id',
+        name: 'magnit_pivot-zayavka',
+        path: '/magnit_pivot/zayavka',
         meta: {
-          mode: ['edit'],
-          label: 'Начисление',
+          mode: ['zayavka'],
+          label: 'Парсер заявок',
         },
         component: Detail,
       },
       {
-        name: 'pivot_retail-personal',
-        path: '/pivot_retail/:id',
+        name: 'magnit_pivot-edit',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Заявка "Магнит"',
+        },
+        component: Detail,
+      },
+      {
+        name: 'magnit_pivot-personal',
+        path: '/magnit_pivot/:id',
         meta: {
           mode: ['personal'],
           label: 'Персонал',
@@ -641,8 +639,8 @@ const routes = [
         component: Detail,
         children: [
           {
-            name: 'pivot_retail-personal/:payment',
-            path: '/pivot_retail/:id/:payment',
+            name: 'magnit_pivot-personal/:payment',
+            path: '/magnit_pivot/:id/:payment',
             meta: {
               mode: ['personal', 'personal-payment'],
               label: 'Начисление',
@@ -650,8 +648,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-personal/:zayavka',
-            path: '/pivot_retail/:id/:zayavka',
+            name: 'magnit_pivot-personal/:zayavka',
+            path: '/magnit_pivot/:id/:zayavka',
             meta: {
               mode: ['personal', 'personal-zayavka'],
               label: 'Заявка на расход',
@@ -659,8 +657,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-personal/:scan',
-            path: '/pivot_retail/:id/:scan',
+            name: 'magnit_pivot-personal/:scan',
+            path: '/magnit_pivot/:id/:scan',
             meta: {
               mode: ['personal', 'personal-scan'],
               label: 'Скан',
@@ -668,8 +666,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-personal/:card',
-            path: '/pivot_retail/:id/:card',
+            name: 'magnit_pivot-personal/:card',
+            path: '/magnit_pivot/:id/:card',
             meta: {
               mode: ['personal', 'personal-card'],
               label: 'Банковская карта',
@@ -679,8 +677,8 @@ const routes = [
         ],
       },
       {
-        name: 'pivot_retail-object',
-        path: '/pivot_retail/:id',
+        name: 'magnit_pivot-object',
+        path: '/magnit_pivot/:id',
         meta: {
           mode: ['object'],
           label: 'Объект',
@@ -688,8 +686,8 @@ const routes = [
         component: Detail,
       },
       {
-        name: 'pivot_retail-account',
-        path: '/pivot_retail/:id',
+        name: 'magnit_pivot-account',
+        path: '/magnit_pivot/:id',
         meta: {
           mode: ['account'],
           label: 'Аккаунт',
@@ -697,8 +695,8 @@ const routes = [
         component: Detail,
         children: [
           {
-            name: 'pivot_retail-account/:card_id',
-            path: '/pivot_retail/:id/:card_id',
+            name: 'magnit_pivot-account/:card_id',
+            path: '/magnit_pivot/:id/:card_id',
             meta: {
               mode: ['account', 'new_card'],
               label: 'Банковская карта',
@@ -706,8 +704,8 @@ const routes = [
             component: Detail,
           },
           {
-            name: 'pivot_retail-account/new_card',
-            path: '/pivot_retail/:id/new_card',
+            name: 'magnit_pivot-account/new_card',
+            path: '/magnit_pivot/:id/new_card',
             meta: {
               mode: ['account', 'new_card'],
               label: 'Банковская карта',
@@ -715,6 +713,122 @@ const routes = [
             component: Detail,
           },
         ],
+      },
+    ],
+  },
+  {
+    path: '/pivot_payment',
+    name: 'pivot_payment',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: PivotPaymentView,
+    children: [
+      {
+        name: 'pivot_payment-edit',
+        path: '/pivot_payment/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Начисление',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot_payment-personal',
+        path: '/pivot_payment/:id',
+        meta: {
+          mode: ['personal'],
+          label: 'Персонал',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'pivot_payment-personal/:payment',
+            path: '/pivot_payment/:id/:payment',
+            meta: {
+              mode: ['personal', 'personal-payment'],
+              label: 'Начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_payment-personal/:zayavka',
+            path: '/pivot_payment/:id/:zayavka',
+            meta: {
+              mode: ['personal', 'personal-zayavka'],
+              label: 'Заявка на расход',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_payment-personal/:scan',
+            path: '/pivot_payment/:id/:scan',
+            meta: {
+              mode: ['personal', 'personal-scan'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_payment-personal/:card',
+            path: '/pivot_payment/:id/:card',
+            meta: {
+              mode: ['personal', 'personal-card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'pivot_payment-object',
+        path: '/pivot_payment/:id',
+        meta: {
+          mode: ['object'],
+          label: 'Объект',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot_payment-account',
+        path: '/pivot_payment/:id',
+        meta: {
+          mode: ['account'],
+          label: 'Аккаунт',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'pivot_payment-account/:card_id',
+            path: '/pivot_payment/:id/:card_id',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'pivot_payment-account/new_card',
+            path: '/pivot_payment/:id/new_card',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'pivot_payment-output',
+        path: '/pivot_payment/output',
+        meta: {
+          mode: ['output'],
+          label: 'Парсер Х5',
+        },
+        component: Detail,
       },
     ],
   },
@@ -839,15 +953,51 @@ const routes = [
       {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
-        meta: {
-          mode: ['add'],
-        },
         component: Detail,
+        meta: {
+          label: 'Добавление заявки на Магнит',
+          mode: ['add-or-edit'],
+        },
+        children: [
+          {
+            name: 'shop-request-magnit-add-payment-add',
+            path: 'payment/add',
+            meta: {
+              mode: ['add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/:id',
         path: ':id',
         component: Detail,
+        meta: {
+          label: 'Редактирование заявки на Магнит',
+          mode: ['add-or-edit'],
+        },
+        children: [
+          {
+            name: 'shop-request-magnit/:id/payment-add',
+            path: 'payment/add',
+            meta: {
+              mode: ['add-or-edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'shop-request-magnit/:id/payment/:payment_id',
+            path: 'payment/:payment_id',
+            meta: {
+              mode: ['add-or-edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/upload',

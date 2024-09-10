@@ -1,6 +1,6 @@
 <template>
   <!--<Layout>-->
-  <div class="d-flex flex-column flex-grow-1 h-100">
+  <div class="d-flex flex-column flex-grow-1 h-100 view-table">
     <v-tabs
       style="flex: unset"
       v-model="activeTab"
@@ -31,14 +31,21 @@
 <script>
 import { ref } from 'vue'
 import _ from 'lodash'
-
-import pivotMagnit from '@/pages/magnit/pivot/index'
-import TableFixed from '@/components/Table/fixed/index.vue'
 import useView from '@/compositions/useView.js'
+import TableFixed from '@/components/Table/fixed/index.vue'
+
+import { config as pivotMagnitConfigOrig } from '@/pages/magnit/pivot/index'
+import paymentConfigOrig from '@/pages/payment/index'
+import zayavkaConfigOrig from '@/pages/zayavka/index'
+import { personalTabs as personalTabsOrig } from '@/pages/personal/index'
+import { initPaymentZayavka } from '@/utils/helpers.js'
+import { objectTabs as objectTabsOrig } from '@/pages/object/index'
+import tableAccountBankOrig from '@/pages/account/config/table-account-bank'
+import formAccountEditOrig from '@/pages/account/config/form-account-edit'
+import formPaymentEditOrig from '@/pages/payment/config/form-add-edit'
+import formMagnitRequestAddEditOrig from '@/pages/magnit/shop-request/config/form-magnit-request-add-edit'
 
 // import { config as personalConfigOrig } from '@/pages/personal/index'
-// import paymentConfigOrig from '@/pages/payment/index'
-// import zayavkaConfigOrig from '@/pages/zayavka/index'
 
 //import Layout from '@/layouts/default/index'
 //import Axios from 'axios'
@@ -58,12 +65,146 @@ export default {
   setup() {
     const activeTab = ref(0)
     const tabs = ref([])
-    useView({
+    const {
+      initTableConfig,
+      createHeadItem,
+      convertConfigPanel,
+      addCloseButton,
+      configRouteConvert,
+    } = useView({
       tabs,
       activeTab,
     })
-    console.log(pivotMagnit)
-    const config = _.cloneDeep(pivotMagnit)
+    const config = _.cloneDeep(pivotMagnitConfigOrig)
+    const personalTabs = _.cloneDeep(personalTabsOrig)
+    const objectTabs = _.cloneDeep(objectTabsOrig)
+
+    const formAccountEdit = _.cloneDeep(formAccountEditOrig)
+    const formMagnitRequestAddEdit = _.cloneDeep(formMagnitRequestAddEditOrig)
+    const tableAccountBank = _.cloneDeep(tableAccountBankOrig)
+
+    const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
+      paymentConfigOrig,
+      zayavkaConfigOrig
+    )
+    paymentConfig.isShow = {
+      value: true,
+      condition: [
+        {
+          permissions: [4, 3, 15, 1, 8, 17],
+          type: true,
+        },
+      ],
+    }
+    zayavkaConfig.isShow = {
+      value: true,
+      condition: [
+        {
+          permissions: [4, 3, 15, 1, 8, 17, 16, 19],
+          type: true,
+        },
+      ],
+    }
+    configRouteConvert({
+      config: paymentConfig.config,
+      route: 'payment',
+      newPath: 'personal-payment',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: zayavkaConfig.config,
+      route: 'zayavka',
+      newPath: 'personal-zayavka',
+      settings: {
+        oldPath: 'id',
+      },
+    })
+    personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])
+    const tabNew = config.tabs[0]
+    const tabWorked = config.tabs[1]
+
+    tabNew.detail.tabs.push(..._.cloneDeep(objectTabs))
+    configRouteConvert({
+      config: tabNew,
+      newPath: 'object',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+    tabNew.detail.tabs.push(formAccountEdit, tableAccountBank)
+    configRouteConvert({
+      config: tabNew,
+      newPath: 'account',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+    tabNew.detail.tabs.push(formMagnitRequestAddEdit)
+    configRouteConvert({
+      config: tabNew,
+      newPath: 'edit',
+      settings: {
+        oldPath: 'add-or-edit',
+      },
+    })
+
+    tabWorked.detail.tabs.push(...personalTabs)
+    configRouteConvert({
+      config: tabWorked.detail.tabs[2].config,
+      route: 'scan',
+      newPath: 'personal-scan',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: tabWorked.detail.tabs[3].config,
+      route: 'card',
+      newPath: 'personal-card',
+      settings: {
+        index: [0],
+      },
+    })
+
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'personal',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+
+    tabWorked.detail.tabs.push(..._.cloneDeep(objectTabs))
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'object',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+    tabWorked.detail.tabs.push(
+      _.cloneDeep(formAccountEdit),
+      _.cloneDeep(tableAccountBank)
+    )
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'account',
+      settings: {
+        oldPath: 'edit',
+      },
+    })
+    tabWorked.detail.tabs.push(_.cloneDeep(formMagnitRequestAddEdit))
+    configRouteConvert({
+      config: tabWorked,
+      newPath: 'edit',
+      settings: {
+        oldPath: 'add-or-edit',
+      },
+    })
 
     return {
       config,

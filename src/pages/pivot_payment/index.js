@@ -1,4 +1,5 @@
 import filters from './filters'
+import formPaymentOutput from './config/form-payment-output.js'
 
 function changeSort(config) {
   let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
@@ -8,7 +9,7 @@ function changeSort(config) {
     heading.title = 'Объект'
     heading.alias = 'o.name'
     heading.value = 'object_name'
-    heading.routeName = 'pivot_retail-object'
+    heading.routeName = 'pivot_payment-object'
     heading.routeParam = 'object_id'
     // heading.click = {
     //   condition: {
@@ -24,7 +25,7 @@ function changeSort(config) {
     heading.title = 'ФИО'
     heading.alias = "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)"
     heading.value = 'fio'
-    heading.routeName = 'pivot_retail-personal'
+    heading.routeName = 'pivot_payment-personal'
     heading.routeParam = 'personal_id'
     heading.click = undefined
     heading.type = 'default'
@@ -62,6 +63,21 @@ export const config = {
         type: 'refresh',
         subtype: 'changeHeads',
       },
+      {
+        label: 'Парсер Х5',
+        class: ['v-table-button--custom'],
+        url: 'pivot_payment-output',
+        type: 'changeUrl',
+        backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [3, 4, 8, 17],
+              type: true,
+            },
+          ],
+        },
+      },
     ],
     filters: true,
     search: true,
@@ -97,7 +113,7 @@ export const config = {
       ],
       click: undefined,
       routeParam: 'personal_id',
-      routeName: 'pivot_retail-personal',
+      routeName: 'pivot_payment-personal',
     },
     {
       id: 2,
@@ -125,7 +141,7 @@ export const config = {
         },
       ],
       routeParam: 'account_id',
-      routeName: 'pivot_retail-account',
+      routeName: 'pivot_payment-account',
     },
   ],
   data: {
@@ -145,7 +161,7 @@ export const config = {
     url: '/get/form/',
     name: 'Табель розница',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-    tabs: [],
+    tabs: [formPaymentOutput],
     activeTab: null,
   },
   filters,
