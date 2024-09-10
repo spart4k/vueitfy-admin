@@ -1606,10 +1606,8 @@ export default function ({
     const condition = () => {
       const checkIncludesDirections = (el) => {
         //return el.direction_id.includes(directions.value)
-        return !!_.intersection(
-          el.value,
-          JSON.parse(store.state.user.direction_json)
-        ).length
+        return !!_.intersection(el.value, store.state.user.direction_json)
+          .length
       }
       const everyMethod = () => {
         return field.isShow.conditions?.every((el) => {

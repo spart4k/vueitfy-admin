@@ -71,9 +71,7 @@ export default {
     })
 
     const permission = computed(() => store.state.user.permission_id)
-    const direction_id = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
+    const direction_id = computed(() => store.state.user.direction_json)
     const checkIncludesPermissions = (el) => {
       if (!el.permissions) return true
       return el.permissions.includes(permission.value)

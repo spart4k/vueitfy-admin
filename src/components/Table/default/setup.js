@@ -865,9 +865,7 @@ const table = {
 
     const permission = computed(() => store.state.user.permission_id)
     const vertical = computed(() => store.state.user.is_personal_vertical)
-    const directions = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
+    const directions = computed(() => store.state.user.direction_json)
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
         if (!el.permissions) return true

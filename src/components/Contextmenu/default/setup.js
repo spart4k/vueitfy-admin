@@ -44,9 +44,7 @@ export default {
     const is_personal_vertical = computed(
       () => store.state.user.is_personal_vertical
     )
-    const directions = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
+    const directions = computed(() => store.state.user.direction_json)
     const handlerClick = (action) => {
       //if (props.options.)
       //const event = action.type

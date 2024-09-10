@@ -49,9 +49,7 @@ export default {
     const { detail } = props
     const syncForm = ref({})
     const activeTab = ref(0)
-    const directions = computed(() =>
-      JSON.parse(store.state.user.direction_json)
-    )
+    const directions = computed(() => store.state.user.direction_json)
     const permission = computed(() => store.state.user.permission_id)
     const mainData = ref({})
     const checkIncludesPermissions = (el) => {
