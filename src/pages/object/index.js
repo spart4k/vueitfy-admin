@@ -628,9 +628,7 @@ export const config = {
         condition: [
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return directions.includes(2)
             },
           },
