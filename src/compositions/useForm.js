@@ -1856,6 +1856,7 @@ export default function ({
     }
     loading.value = false
     emit('setFormData', formData)
+    console.log(refreshTable)
     if (refreshTable) {
       emit('getItems')
     }
