@@ -4056,7 +4056,8 @@ export default {
           },
           {
             funcCondition: (context) =>
-              (isRG(context) || isCUP(context) || isDirector(context)) &&
+              isX5(context) &&
+              (isRG(context) || isCUP(context)) &&
               context.formData.status_id === 1,
             type: true,
           },
