@@ -41,7 +41,7 @@ const consumptionConfig = {
     search: {
       function: searchInputing,
     },
-    headerFixed: true,
+    // headerFixed: true,
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/payment',
     urlDetail: 'account_id',
@@ -102,7 +102,7 @@ const config = {
         search: {
           function: searchInputing,
         },
-        headerFixed: true,
+        // headerFixed: true,
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/account_active',
         title: 'Активные',
@@ -296,15 +296,15 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-        },
+        // {
+        //   title: 'Действия',
+        //   type: 'actions',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'right',
+        //   },
+        // },
         // {
         //   title: 'Действия',
         //   type: 'actions',

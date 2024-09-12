@@ -54,7 +54,6 @@ export default {
         },
       ],
     },
-    { alias: 'chief_id', filter: [] },
     { alias: 'direction_json', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },

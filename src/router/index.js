@@ -1055,6 +1055,15 @@ const routes = [
     component: AccountView,
     children: [
       {
+        name: 'account-add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавление аккаунта',
+        },
+        component: Detail,
+      },
+      {
         name: 'account/:id',
         path: ':id',
         component: Detail,
@@ -1065,7 +1074,7 @@ const routes = [
         children: [
           {
             name: 'account/:id/new_card',
-            path: '/account/:id/new_card',
+            path: ':id/new_card',
             meta: {
               mode: ['edit', 'new_card'],
               // label: 'Добавить аккаунта',
@@ -1074,7 +1083,7 @@ const routes = [
           },
           {
             name: 'account/:id/:card_id',
-            path: '/account/:id/:card_id',
+            path: ':id/:card_id',
             meta: {
               mode: ['edit', 'new_card'],
               // label: 'Добавить аккаунта',
@@ -1082,15 +1091,6 @@ const routes = [
             component: Detail,
           },
         ],
-      },
-      {
-        name: 'account-add',
-        path: '/account/add',
-        meta: {
-          mode: 'add',
-          label: 'Добавление аккаунта',
-        },
-        component: Detail,
       },
     ],
   },
