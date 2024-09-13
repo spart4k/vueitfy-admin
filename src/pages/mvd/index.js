@@ -31,8 +31,8 @@ export const config = {
             type: 'confirm',
             dialog: {
               text: 'Вы подтверждаете удаление МВД?',
-              function: (context) => {
-                context.store.dispatch('form/update', {
+              function: async (context) => {
+                await context.store.dispatch('form/update', {
                   url: 'set/data/mvd_spr',
                   body: { data: { id: context.data.row.id, del: 1 } },
                 })

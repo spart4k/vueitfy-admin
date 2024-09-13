@@ -56,8 +56,8 @@ export default {
               type: 'confirm',
               dialog: {
                 text: 'Вы подтверждаете удаление карты?',
-                function: (context) => {
-                  context.store.dispatch('form/update', {
+                function: async (context) => {
+                  await context.store.dispatch('form/update', {
                     url: 'set/data/personal_bank',
                     body: { data: { id: context.data.row.id, del: 1 } },
                   })

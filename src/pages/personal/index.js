@@ -1059,8 +1059,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете удаление ключа?',
-                  function: (context) => {
-                    context.store.dispatch('form/update', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/update', {
                       url: 'set/data/user_keys',
                       body: { data: { id: context.data.row.id, del: 1 } },
                     })

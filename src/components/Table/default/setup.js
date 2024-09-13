@@ -383,10 +383,10 @@ const table = {
 
     const triggerDialogFunction = async () => {
       confirmDialog.value.loading = true
-      confirmDialog.value.function(confirmDialog.value.context)
+      await confirmDialog.value.function(confirmDialog.value.context)
       confirmDialog.value.loading = false
       confirmDialog.value.isShow = false
-      getItems()
+      await getItems()
     }
 
     // Something like this should work:
