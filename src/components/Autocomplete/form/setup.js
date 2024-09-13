@@ -47,7 +47,7 @@ export default {
     },
     items: {
       type: Array,
-      default: () => [],
+      default: null,
     },
   },
   setup(props, ctx) {
