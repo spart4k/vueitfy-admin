@@ -145,6 +145,28 @@ const ZoneAddEdit = defineComponent({
         url: 'create/x5/zone',
         name: 'createForm',
         action: 'createForm',
+        handlingResponse: {
+          1: {
+            text: 'Успешно',
+            color: 'success',
+          },
+          2: {
+            text: 'Ошибка на стороне сервера',
+            color: 'error',
+          },
+          3: {
+            text: 'Доступ запрещен',
+            color: 'error',
+          },
+          4: {
+            text: 'Территория с таким названием уже существует',
+            color: 'error',
+          },
+          5: {
+            text: 'Неверный формат входных параметров',
+            color: 'error',
+          },
+        },
         isHide: {
           value: false,
           type: 'every',
@@ -167,6 +189,28 @@ const ZoneAddEdit = defineComponent({
         useRouteParam: 'id',
         action: 'saveForm',
         color: 'primary',
+        handlingResponse: {
+          1: {
+            text: 'Успешно',
+            color: 'success',
+          },
+          2: {
+            text: 'Ошибка на стороне сервера',
+            color: 'error',
+          },
+          3: {
+            text: 'Доступ запрещен',
+            color: 'error',
+          },
+          4: {
+            text: 'Территория с таким названием уже существует',
+            color: 'error',
+          },
+          5: {
+            text: 'Неверный формат входных параметров',
+            color: 'error',
+          },
+        },
         isHide: {
           value: false,
           type: 'every',
