@@ -510,13 +510,24 @@ export default function ({
       if (sharedFields) {
         sharingFields(sharedFields)
       }
-      router.push({
-        name: action.action.name,
-        // name: `${route.name}/:${requestId}`,
-        // params: {
-        //   [requestId]: row.id,
-        // },
-      })
+      console.log(action.action)
+      if (action.action.method === 'push') {
+        router.push({
+          name: `${route.name}/${action.action.name}`,
+          // name: `${route.name}/:${requestId}`,
+          // params: {
+          //   [requestId]: row.id,
+          // },
+        })
+      } else {
+        router.push({
+          name: action.action.name,
+          // name: `${route.name}/:${requestId}`,
+          // params: {
+          //   [requestId]: row.id,
+          // },
+        })
+      }
       popupForm.value.isShow = true
     }
   }
@@ -2191,5 +2202,6 @@ export default function ({
     handlerEmit,
     environment,
     addFiles,
+    getDepFilters,
   }
 }

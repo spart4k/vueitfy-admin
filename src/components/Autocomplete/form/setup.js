@@ -45,6 +45,9 @@ export default {
     environment: {
       type: Object,
     },
+    getDepFilters: {
+      type: Function,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -129,9 +132,10 @@ export default {
           loading.value = true
 
           const { url } = props.field
-          const filter = []
+          let filter = []
 
           if (props.field.filter && props.field.filter.length) {
+            console.log(props.field.filter)
             props.field.filter.forEach((el) => {
               if (el.routeKey) {
                 filter.push({
@@ -168,6 +172,7 @@ export default {
                 })
               }
             })
+            filter = props.getDepFilters(props.field)
           }
           const data = await getList(
             url,

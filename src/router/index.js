@@ -851,6 +851,17 @@ const routes = [
           label: 'Начисление',
         },
         component: Detail,
+        children: [
+          {
+            name: 'pivot_payment-edit/change-personal',
+            path: 'change-personal',
+            meta: {
+              mode: ['edit', 'change-personal'],
+              label: 'Сменить линейщика',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'pivot_payment-personal',

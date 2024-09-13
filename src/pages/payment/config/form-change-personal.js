@@ -220,6 +220,12 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return isOKK(context) || isROKK(context)
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.status_id === 6 && context.mode === 'edit',
@@ -354,6 +360,12 @@ export default {
             funcCondition: (context) =>
               [4, 6].includes(context.formData.status_id) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isOKK(context) || isROKK(context)
+            },
             type: true,
           },
           // {
@@ -503,6 +515,12 @@ export default {
             funcCondition: (context) =>
               [4, 6].includes(context.formData.status_id) &&
               context.mode === 'edit',
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return isOKK(context) || isROKK(context)
+            },
             type: true,
           },
           // {
