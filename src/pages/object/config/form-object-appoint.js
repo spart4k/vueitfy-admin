@@ -22,12 +22,45 @@ export default {
   detail: true,
   alias: 'object',
   active: false,
+  lists: [
+    {
+      alias: 'direction_id',
+      filter: [],
+    },
+  ],
   fields: [
+    selectField({
+      label: 'Направление',
+      name: 'direction_id',
+      subtype: 'single',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      // object
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          url: 'get/pagination_list/assign_objects',
+        },
+      ],
+      validations: { required },
+      bootstrapClass: [''],
+    }),
     autocompleteField({
       label: 'Объект',
       name: 'object_id',
       alias: 'assign_objects',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -38,38 +71,6 @@ export default {
       page: 1,
       search: '',
       url: 'get/pagination_list/assign_objects',
-      // object
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      validations: { required },
-      bootstrapClass: [''],
-      dependence: [
-        {
-          type: 'api',
-          module: 'selects/getListUpdate',
-          field: 'direction_id',
-          url: 'get/pagination_list/assign_object_directions',
-        },
-      ],
-    }),
-    autocompleteField({
-      label: 'Направление',
-      name: 'direction_id',
-      alias: 'assign_object_directions',
-      subtype: 'single',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      page: 1,
-      search: '',
-      url: 'get/pagination_list/assign_object_directions',
-      // object
       position: {
         cols: 12,
         sm: 12,
@@ -78,7 +79,8 @@ export default {
       bootstrapClass: [''],
       filter: [
         {
-          field: 'object_id',
+          required: true,
+          field: 'direction_id',
           value: '',
         },
       ],
