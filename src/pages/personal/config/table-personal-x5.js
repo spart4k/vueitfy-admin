@@ -59,8 +59,8 @@ export default {
               type: 'confirm',
               dialog: {
                 text: 'Вы подтверждаете удаление?',
-                function: (context) => {
-                  context.store.dispatch('form/delForm', {
+                function: async (context) => {
+                  await context.store.dispatch('form/delForm', {
                     url: `delete/personal/num_x5/${context.data.row.id}`,
                   })
                 },

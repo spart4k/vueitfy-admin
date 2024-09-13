@@ -31,8 +31,8 @@ export const config = {
             type: 'confirm',
             dialog: {
               text: 'Вы подтверждаете удаление территории?',
-              function: (context) => {
-                context.store.dispatch('form/delForm', {
+              function: async (context) => {
+                await context.store.dispatch('form/delForm', {
                   url: `delete/x5/territories/${context.data.row.id}`,
                 })
               },
