@@ -10,6 +10,7 @@
               clearable
               :error-messages="formErrors?.name"
               :name="proxyFields.name.name"
+              :readonly="loading"
             />
           </v-col>
           <v-col :cols="12" :sm="12">
@@ -19,6 +20,7 @@
               v-model="formData.territories_id"
               :error-messages="formErrors?.territories_id"
               :formData="formData"
+              :readonly="loading"
               ref="autocompleteRef"
               @input="
                 changeAutocomplete({
@@ -39,6 +41,7 @@
                   color="#EDF5FD"
                   elevation="0"
                   block
+                  :disabled="loading"
                 >
                   <v-icon color="#4E9EEE">mdi-plus</v-icon>
                 </v-btn>
@@ -50,7 +53,11 @@
                     class="text--text font-weight-500 align-center justify-space-between"
                   >
                     <span>{{ item.name }} ({{ item.regions_name }})</span>
-                    <v-btn @click="formData.cities.splice(index, 1)" icon>
+                    <v-btn
+                      :disabled="loading"
+                      @click="formData.cities.splice(index, 1)"
+                      icon
+                    >
                       <v-icon color="error">mdi-minus-box</v-icon>
                     </v-btn>
                   </v-row>
