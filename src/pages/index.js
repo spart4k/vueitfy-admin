@@ -22,6 +22,8 @@ import bank from './bank'
 import service from './service'
 import mvd from './mvd'
 import x5payment from './x5payment'
+import x5territories from './x5territories'
+import x5zone from './x5zone'
 import jurFace from './jur-face'
 import rashod_vid from './rashod_vid'
 import rashod_category from './rashod_category'
@@ -54,4 +56,6 @@ export {
   reportMagnit,
   reportFilial,
   x5payment,
+  x5territories,
+  x5zone,
 }
