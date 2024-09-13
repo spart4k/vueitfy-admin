@@ -166,6 +166,10 @@ const ZoneAddEdit = defineComponent({
             text: 'Неверный формат входных параметров',
             color: 'error',
           },
+          6: {
+            text: 'Отсутствуют необходимые данные',
+            color: 'error',
+          },
         },
         isHide: {
           value: false,
@@ -208,6 +212,10 @@ const ZoneAddEdit = defineComponent({
           },
           5: {
             text: 'Неверный формат входных параметров',
+            color: 'error',
+          },
+          6: {
+            text: 'Отсутствуют необходимые данные',
             color: 'error',
           },
         },
