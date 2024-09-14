@@ -31,8 +31,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете перемещение в архив?',
-                  function: (context) => {
-                    context.store.dispatch('form/putForm', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/putForm', {
                       url: 'update/realty/archive',
                       body: { data: { id: context.data.row.id } },
                     })

@@ -89,7 +89,6 @@
             <v-row>
               <v-col :cols="12" :sm="12">
                 <Autocomplete
-                  :items="proxyFields.regions_id.items"
                   :field="proxyFields.regions_id"
                   v-model="formData.regions_id"
                   :error-messages="formErrors?.regions_id"
@@ -108,7 +107,6 @@
               <v-col :cols="12" :sm="12">
                 <Autocomplete
                   :field="proxyFields.city_id"
-                  :items="proxyFields.city_id.items"
                   v-model="formData.city_id"
                   :error-messages="formErrors?.city_id"
                   :formData="formData"
