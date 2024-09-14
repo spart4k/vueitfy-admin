@@ -698,7 +698,7 @@ export default function ({
 
       // if (item.notSend || item.prescription) delete newForm[key]
     })
-    if (action.withTableFilter) {
+    if (action?.withTableFilter) {
       let sorts = []
       let searchColumns = []
 
