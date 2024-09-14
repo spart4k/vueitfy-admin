@@ -976,7 +976,7 @@ export default function ({
           !fields[el]?.readonly?.value)
       ) {
         formData[el] = ''
-        if (fields[el].items.length === 1) {
+        if (fields[el]?.items?.length === 1) {
           formData[el] = fields[el].items[0][fields[el].selectOption.value]
         }
       }
@@ -1218,7 +1218,7 @@ export default function ({
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
             else {
-              const selectedItem = field.items.find(
+              const selectedItem = field.items?.find(
                 (fieldItem) => fieldItem.id === formData[field.name]
               )
               if (selectedItem) {

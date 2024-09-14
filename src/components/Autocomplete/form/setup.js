@@ -136,42 +136,42 @@ export default {
 
           if (props.field.filter && props.field.filter.length) {
             console.log(props.field.filter)
-            props.field.filter.forEach((el) => {
-              if (el.routeKey) {
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  value: el.toArray
-                    ? [+route.params[el.routeKey]]
-                    : +route.params[el.routeKey],
-                  type: el.type,
-                })
-              } else if (el.source === 'mode') {
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  value: props.mode,
-                  type: el.type,
-                })
-              } else if (el.sendEmpty) {
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  value: el.value,
-                  type: el.type,
-                })
-              } else {
-                if (Array.isArray(props.formData[el.field])) {
-                  if (!props.formData[el.field].length) return
-                } else {
-                  if (!props.formData[el.field]) return
-                }
-                filter.push({
-                  alias: el.alias ?? el.field,
-                  value: el.toArray
-                    ? [props.formData[el.field]]
-                    : props.formData[el.field],
-                  type: el.type,
-                })
-              }
-            })
+            // props.field.filter.forEach((el) => {
+            //   if (el.routeKey) {
+            //     filter.push({
+            //       alias: el.alias ?? el.field,
+            //       value: el.toArray
+            //         ? [+route.params[el.routeKey]]
+            //         : +route.params[el.routeKey],
+            //       type: el.type,
+            //     })
+            //   } else if (el.source === 'mode') {
+            //     filter.push({
+            //       alias: el.alias ?? el.field,
+            //       value: props.mode,
+            //       type: el.type,
+            //     })
+            //   } else if (el.sendEmpty) {
+            //     filter.push({
+            //       alias: el.alias ?? el.field,
+            //       value: el.value,
+            //       type: el.type,
+            //     })
+            //   } else {
+            //     if (Array.isArray(props.formData[el.field])) {
+            //       if (!props.formData[el.field].length) return
+            //     } else {
+            //       if (!props.formData[el.field]) return
+            //     }
+            //     filter.push({
+            //       alias: el.alias ?? el.field,
+            //       value: el.toArray
+            //         ? [props.formData[el.field]]
+            //         : props.formData[el.field],
+            //       type: el.type,
+            //     })
+            //   }
+            // })
             filter = props.getDepFilters(props.field)
           }
           const data = await getList(
