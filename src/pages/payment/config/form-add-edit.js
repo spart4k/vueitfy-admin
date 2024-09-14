@@ -1587,7 +1587,17 @@ export default {
             },
             type: true,
           },
-
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id === context.store.state.user.id &&
@@ -1838,7 +1848,7 @@ export default {
             funcCondition: (context) => {
               return (
                 isX5(context) &&
-                [5, 1].includes(context.formData.vid_vedomost_id) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [3, 1].includes(context.formData.status_id) &&
                 context.mode === 'edit'
               )
@@ -2013,6 +2023,17 @@ export default {
             target: 'formData',
             field: 'vid_vedomost_id',
             value: [1, 5],
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
           // {
@@ -2419,7 +2440,7 @@ export default {
             funcCondition: (context) => {
               return (
                 isX5(context) &&
-                [5, 1].includes(context.formData.vid_vedomost_id) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [3, 1].includes(context.formData.status_id) &&
                 context.mode === 'edit'
               )
@@ -2647,7 +2668,7 @@ export default {
             funcCondition: (context) => {
               return (
                 isX5(context) &&
-                [5, 1].includes(context.formData.vid_vedomost_id) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [3, 1].includes(context.formData.status_id) &&
                 context.mode === 'edit'
               )
@@ -3214,7 +3235,7 @@ export default {
             funcCondition: (context) => {
               return (
                 isX5(context) &&
-                [5, 1].includes(context.formData.vid_vedomost_id) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [3, 1].includes(context.formData.status_id) &&
                 !isRG(context) &&
                 context.mode === 'edit'
@@ -3994,7 +4015,20 @@ export default {
           },
           {
             funcCondition: (ctx) => {
-              return !!ctx.entityData.from_account_chief
+              return !!(
+                ctx.entityData.from_account_chief &&
+                ctx.formData.status_id !== 1
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (ctx) => {
+              return !!(
+                [2, 3].includes(ctx.formData.status_id) &&
+                [4, 3].includes(ctx.entityData.status_permission) &&
+                isOKK(ctx)
+              )
             },
             type: true,
           },
@@ -4099,7 +4133,20 @@ export default {
           },
           {
             funcCondition: (ctx) => {
-              return !!ctx.entityData.from_account_chief
+              return !!(
+                ctx.entityData.from_account_chief &&
+                ctx.formData.status_id !== 1
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (ctx) => {
+              return !!(
+                [2, 3].includes(ctx.formData.status_id) &&
+                [4, 3].includes(ctx.entityData.status_permission) &&
+                isOKK(ctx)
+              )
             },
             type: true,
           },
@@ -4142,16 +4189,23 @@ export default {
                   context.formData.vid_vedomost_id === 5 &&
                   [8].includes(context.entityData.status_permission) &&
                   context.formData.status_id !== 1 &&
-                  (isROKK(context) || isDirector(context) || isDBA(context))) ||
+                  (isROKK(context) ||
+                    isOKK(context) ||
+                    isDirector(context) ||
+                    isDBA(context))) ||
                 // 	если предыдущий статус установлен РОКК или DBA, статус «Согласован» может проставить только DBA.
-                (context.formData.vid_vedomost_id === 5 &&
+                ([5, 3].includes(context.formData.vid_vedomost_id) &&
                   [17, 4].includes(context.entityData.status_permission) &&
                   context.formData.status_id !== 1 &&
-                  isDBA(context)) ||
+                  isROKK(context)) ||
+                isDBA(context) ||
                 (context.formData.status_id === 2 &&
                   context.entityData.status_permission === 8 &&
-                  context.formData.vid_vedomost_id === 5 &&
-                  (isROKK(context) || isDirector(context) || isDBA(context))) ||
+                  [5, 3].includes(context.formData.vid_vedomost_id) &&
+                  (isROKK(context) ||
+                    isOKK(context) ||
+                    isDirector(context) ||
+                    isDBA(context))) ||
                 //
                 isMagnit(context) ||
                 //
@@ -4181,7 +4235,20 @@ export default {
           },
           {
             funcCondition: (ctx) => {
-              return !!ctx.entityData.from_account_chief
+              return !!(
+                ctx.entityData.from_account_chief &&
+                ctx.formData.status_id !== 1
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (ctx) => {
+              return !!(
+                [2, 3].includes(ctx.formData.status_id) &&
+                [4, 3].includes(ctx.entityData.status_permission) &&
+                isOKK(ctx)
+              )
             },
             type: true,
           },
@@ -4286,7 +4353,10 @@ export default {
           },
           {
             funcCondition: (ctx) => {
-              return !!ctx.entityData.from_account_chief
+              return !!(
+                ctx.entityData.from_account_chief &&
+                ctx.formData.status_id !== 1
+              )
             },
             type: true,
           },
@@ -4327,7 +4397,10 @@ export default {
           },
           {
             funcCondition: (ctx) => {
-              return !!ctx.entityData.from_account_chief
+              return !!(
+                ctx.entityData.from_account_chief &&
+                ctx.formData.status_id !== 1
+              )
             },
             type: true,
           },

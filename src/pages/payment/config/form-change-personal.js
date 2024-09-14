@@ -670,6 +670,11 @@ export default {
               context.mode === 'edit',
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              !isVertical(context) && context.mode === 'edit',
+            type: true,
+          },
         ],
       },
     }),
