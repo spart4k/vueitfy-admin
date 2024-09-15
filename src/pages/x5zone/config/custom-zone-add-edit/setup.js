@@ -291,7 +291,7 @@ const ZoneAddEdit = defineComponent({
           }),
           selectField({
             label: 'Территория',
-            name: 'territories_id',
+            name: 'territory_id',
             alias: 'x5_territories',
             subtype: 'single',
             placeholder: '',
