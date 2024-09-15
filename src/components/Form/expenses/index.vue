@@ -141,6 +141,7 @@
                 :disabled="
                   readonlyField(field) ||
                   (item.value === 2 && formData.is_migr) ||
+                  (item.value === 3 && !store.state.user.is_chief) ||
                   checkPermission(item.value)
                 "
               >

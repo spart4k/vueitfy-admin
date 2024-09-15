@@ -12,7 +12,7 @@ import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
 
-export default {
+export const config = {
   id: uuidv4(),
   path: 'load',
   name: 'load',
@@ -49,7 +49,6 @@ export default {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'payment',
       skipValidation: true,
     }),
     stringAction({
@@ -71,3 +70,5 @@ export default {
     //}),
   ],
 }
+
+export default config

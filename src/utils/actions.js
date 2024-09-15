@@ -18,4 +18,12 @@ const stringAction = (properties) => {
   }
 }
 
-export { stringAction }
+const stringActionDop = (properties) => {
+  return {
+    type: 'button',
+    secondary: true,
+    ...defaultProperties(properties),
+  }
+}
+
+export { stringAction, stringActionDop }

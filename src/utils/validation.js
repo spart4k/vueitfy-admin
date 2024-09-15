@@ -10,6 +10,13 @@ const numeric = Object.assign({}, vueNumeric, {
   $message: () => 'Только числа',
 })
 
+const notValue = (param) => {
+  return {
+    $validator: (value) => param.value !== +value,
+    $message: () => `${param.text} не должен быть равен ${param.value}`,
+  }
+}
+
 const required = Object.assign({}, vueRequired, {
   $message: () => 'Обязательное поле',
 })
@@ -73,6 +80,36 @@ const validDate = {
   $message: () => 'Указанная дата не существует',
 }
 
+const onlyCard = {
+  $validator: (val, formData) => {
+    if (
+      [1, 6].includes(formData.direction_id) &&
+      formData.vid_vedomost_id === 9 &&
+      val === 0
+    ) {
+      return false
+    } else {
+      return true
+    }
+  },
+  $message: () => 'Нельзя создать с наличными',
+}
+
+const vneplSumm = {
+  $validator: (val, formData) => {
+    if (
+      [1, 6].includes(formData.direction_id) &&
+      formData.vid_vedomost_id === 9 &&
+      +val === 0
+    ) {
+      return false
+    } else {
+      return true
+    }
+  },
+  $message: () => 'Нельзя создать с 0',
+}
+
 const hasTime = {
   $validator: (val) => {
     const splitedValue = val.split(' ')
@@ -114,6 +151,31 @@ const minFileLength = {
   $message: () => 'Необходимо приложить минимум 1 счет',
 }
 
+const requiredFile = {
+  $validator: (val, formData) => {
+    if (formData.status === 1 && !val) {
+      return true
+    } else if (formData.status === 2 && !val) {
+      return false
+    } else {
+      return true
+    }
+  },
+  $message: () => 'Необходимо приложить минимум 1 счет',
+}
+
+const dateRange = (dateFrom, dateTo) => {
+  return {
+    $validator: (val, formData) => {
+      return (
+        moment(formData[dateFrom], 'YYYY.MM.DD').valueOf() <=
+        moment(formData[dateTo], 'YYYY.MM.DD').valueOf()
+      )
+    },
+    $message: () => 'Неверно указан период',
+  }
+}
+
 const sameAs = (value) => ({
   $validator: (val, formData) => {
     try {
@@ -131,6 +193,14 @@ const number = {
       ? true
       : Number(val) && !val.toString().split('').includes(' '),
   $message: () => 'Некорректные символы',
+}
+
+const interval = {
+  $validator: (val) => {
+    console.log('interval', +val > 0 && +val < 16)
+    return +val > 0 && +val < 16
+  },
+  $message: () => 'Больше 0 и не больше 15',
 }
 
 const password = {
@@ -164,5 +234,11 @@ export {
   maxLength,
   dayOfMonth,
   minFileLength,
+  notValue,
+  interval,
+  requiredFile,
+  dateRange,
+  onlyCard,
+  vneplSumm,
   // strongPassword
 }

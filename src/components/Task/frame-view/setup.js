@@ -26,6 +26,8 @@ import Form27 from '@/components/Task/form27/index.vue'
 import Form28 from '@/components/Task/form28/index.vue'
 import Form29 from '@/components/Task/form29/index.vue'
 import Form31 from '@/components/Task/form31/index.vue'
+import Form32 from '@/components/Task/form32/index.vue'
+import Form33 from '@/components/Task/form33/index.vue'
 import Form34 from '@/components/Task/form34/index.vue'
 import Form35 from '@/components/Task/form35/index.vue'
 import Form36 from '@/components/Task/form36/index.vue'
@@ -70,7 +72,9 @@ const taskNameSpr = {
   28: 'Корректировка начисления',
   29: 'Подтверждение увольнения',
   30: 'Техобращение',
-  31: 'Подтверждение рабочего статуса',
+  31: 'Согласование П/Л',
+  32: 'Подтверждение П/Л',
+  33: 'Проверка П/Л',
   34: 'Уточнения статуса',
   35: 'Уточнение деталей документа',
   36: 'Прикладывание документов',
@@ -110,6 +114,8 @@ const task = defineComponent({
     Form28,
     Form29,
     Form31,
+    Form32,
+    Form33,
     Form34,
     Form35,
     Form36,

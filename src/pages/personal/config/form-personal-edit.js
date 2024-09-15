@@ -455,8 +455,8 @@ export default {
         // type: 'some',
         conditions: [
           {
-            field: 'direction_id',
-            value: [1, 6],
+            field: 'direction_json',
+            value: [1, 6, 7],
             type: true,
           },
         ],
@@ -568,7 +568,6 @@ export default {
       color: 'textDefault',
       name: 'closePopup',
       action: 'closePopup',
-      to: 'personal',
       skipValidation: true,
     }),
     stringAction({

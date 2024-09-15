@@ -7,6 +7,12 @@ import { useRouter, useRoute } from 'vue-router/composables'
 import useRequest from '@/compositions/useRequest'
 import useForm from '@/compositions/useForm'
 import { requiredIf } from '@/utils/validation'
+import moment from 'moment'
+
+import Popup from '@/components/Popup/index.vue'
+import paymentConfigOrig from '@/pages/payment/index'
+import useView from '@/compositions/useView.js'
+import _ from 'lodash'
 
 const Form27 = defineComponent({
   name: 'Form27',
@@ -14,6 +20,7 @@ const Form27 = defineComponent({
     TextInfo: textInfo,
     FormError: formError,
     FormComment: formComment,
+    Popup,
   },
   props: {
     data: {
@@ -32,29 +39,59 @@ const Form27 = defineComponent({
         route,
       },
     }
-    const account_id = computed(() => store.state.user.account_id)
-    const directionToMagnit = props.data.entity.direction_id === 5
+
+    const { configRouteConvert } = useView({})
+    const config = _.cloneDeep(paymentConfigOrig)
+    configRouteConvert({
+      config: config,
+      route: 'form_id',
+      newPath: 'zayavka-edit',
+      settings: {
+        oldPath: 'add-edit-logistic',
+      },
+    })
+    const popupForm = ref({
+      isShow: false,
+    })
+    const openPayment = (val) => {
+      router.push({
+        name: 'main/:id/:form_id',
+        params: {
+          form_id: val,
+        },
+      })
+      popupForm.value.isShow = true
+    }
+    const closePopupForm = () => {
+      router.back()
+      popupForm.value.isShow = false
+    }
+
+    // const account_id = computed(() => store.state.user.account_id)
+    const directionToMagnit = props.data.entity.object_type === 2
     const pathAct = props.data.data.shop_request_magnit.path_act
     const isFormConfirmed = ref(null)
     const commentErr = ref('')
+    const confirm = ref(false)
+    const loading = ref(false)
     const infoObj = {
-      creator: {
-        key: 'Создатель',
+      account_name: {
+        key: 'Менеджер заявки',
         value: props.data.entity.account_name,
       },
-      ved_type: {
+      vid_vedomost_name: {
         key: 'Вид ведомости',
         value: props.data.entity.vid_vedomost_name,
       },
-      employee: {
+      personal_name: {
         key: 'Сотрудник',
         value: props.data.entity.personal_name,
       },
-      object: {
+      object_name: {
         key: 'Объект',
         value: props.data.entity.object_name,
       },
-      position: {
+      doljnost_name: {
         key: 'Должность',
         value: props.data.entity.doljnost_name,
       },
@@ -62,7 +99,7 @@ const Form27 = defineComponent({
         key: 'Часы',
         value: props.data.entity.hour,
       },
-      sum: {
+      total: {
         key: 'Сумма',
         value: props.data.entity.total,
       },
@@ -79,24 +116,18 @@ const Form27 = defineComponent({
               }...${props.data.entity.invoice.split('').splice(-4).join('')}`
             : 'Наличные',
       },
-      meals: {
-        key: 'Питание',
-        value: props.data.entity.sum_nutrition,
-      },
     }
 
-    const dataForConfirm = {
-      process_id: props.data.task.process_id,
-      task_id: props.data.task.id,
-      parent_action: props.data.task.id,
-      payment_id: props.data.entity.id,
-      manager_id: JSON.parse(props.data.task.dop_data).manager_id,
+    const convertDate = (val) => {
+      return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
     }
 
     const { formData } = useForm({
-      fields: {
-        comment: {
-          validations: { requiredIf: requiredIf(!isFormConfirmed.value) },
+      form: {
+        fields: {
+          comment: {
+            validations: { requiredIf: requiredIf(!isFormConfirmed.value) },
+          },
         },
       },
       context,
@@ -104,88 +135,128 @@ const Form27 = defineComponent({
 
     const { makeRequest: changeStatusConfirm } = useRequest({
       context,
-      request: () => {
+      request: ({ type }) => {
+        const dataForConfirm = {
+          process_id: props.data.task.process_id,
+          task_id: props.data.task.id,
+          parent_action: props.data.task.id,
+          payment_id: props.data.entity.id,
+          manager_id: JSON.parse(
+            props.data.task.dop_data.replace(/[\u0000-\u0019]+/g, '')
+          ).manager_id,
+          comment: formData.comment ?? '',
+          account_id:
+            type === 2 || type === 3
+              ? JSON.parse(
+                  props.data.task.dop_data.replace(/[\u0000-\u0019]+/g, '')
+                ).manager_id
+              : undefined,
+          valid_lu: type === 2 ? 1 : type === 3 ? 0 : undefined,
+        }
+
         return store.dispatch('taskModule/setPartTask', {
-          status: 2,
+          status: type === 2 || type === 3 ? 6 : 2,
           data: dataForConfirm,
         })
       },
     })
 
-    const { makeRequest: setPaymentData } = useRequest({
+    const { makeRequest: confirmPayment } = useRequest({
       context,
-      request: () => {
-        return store.dispatch('taskModule/setDataPayment', {
-          data: {
-            id: props.data.entity.id,
-            status_id: isFormConfirmed.value ? 2 : 3,
-            status_account_id: account_id, // TODO: Поменять, когда появится авторизация
-          },
-        })
+      request: (data) => {
+        return store.dispatch('form/putForm', data)
       },
     })
 
-    const { makeRequest: changeStatusReject } = useRequest({
-      context,
-      request: () => {
-        return store.dispatch('taskModule/setPartTask', {
-          status: 6,
-          data: {
-            ...dataForConfirm,
-            account_id: JSON.parse(props.data.task.dop_data).manager_id,
-            comment: 'commentariy)',
-          },
-        })
-      },
-    })
-
-    const confirm = async () => {
-      isFormConfirmed.value = true
-      const statusId = props.data.entity.status_id
-      if (statusId === 4 || statusId === 5) {
-        await changeStatusConfirm()
+    const endTask = async ({ type }) => {
+      if (type === 2 || type === 3) {
+        isFormConfirmed.value = false
+        if (!formData.comment) {
+          commentErr.value = 'Обязательное поле'
+          return
+        }
       } else {
-        await setPaymentData()
-        const { success } = await changeStatusConfirm()
+        commentErr.value = ''
+        isFormConfirmed.value = true
+      }
+      if (type === 1) endTaskConfirm({ type: 1 })
+      else if (type === 2) endTaskConfirm({ type: 2 })
+      else if (type === 3) confirm.value = true
+    }
+
+    const endTaskConfirm = async ({ type }) => {
+      confirm.value = false
+      const data = {
+        url: `update/payment/${props.data.entity.id}`,
+        body: {
+          data: {
+            status_id: type === 2 || type === 3 ? 3 : 2,
+            from_task_accept: true,
+            comment_okk: formData.comment ?? '',
+          },
+        },
+      }
+      loading.value = true
+      const { code } = await confirmPayment(data)
+      if (code === 2) {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Ошибка сервера',
+          timeout: 1000,
+        })
+      } else if (code === 4) {
+        store.commit('notifies/showMessage', {
+          color: 'error',
+          content: 'Недостаточно данных',
+          timeout: 1000,
+        })
+      } else if (code === 1 || code === 3) {
+        let data
+        if (type === 1) {
+          data = await changeStatusConfirm({ type: 1 })
+        } else if (type === 2) {
+          if (code === 1) {
+            data = await changeStatusConfirm({ type: 2 })
+          } else if (code === 3) {
+            data = await changeStatusConfirm({ type: 1 })
+          }
+        } else if (type === 3) {
+          if (code === 1) {
+            data = await changeStatusConfirm({ type: 3 })
+          } else if (code === 3) {
+            data = await changeStatusConfirm({ type: 1 })
+          }
+        }
+        loading.value = false
+        const { success } = data
         if (success) {
+          store.commit('notifies/showMessage', {
+            color: 'success',
+            content: 'Задача выполнена',
+            timeout: 1000,
+          })
           ctx.emit('closePopup')
           ctx.emit('getItems')
         }
       }
     }
-    const reject = async () => {
-      isFormConfirmed.value = false
-      if (!formData.comment) {
-        commentErr.value = 'Обязательное поле'
-        return
-      }
-      if (window.confirm('Начисление будет не согласовано, подтвердите!')) {
-        const statusId = props.data.entity.status_id
-        if (statusId === 4 || statusId === 5) {
-          const { success } = await changeStatusReject()
-          if (success) {
-            ctx.emit('closePopup')
-            ctx.emit('getItems')
-          }
-        } else {
-          await setPaymentData()
-          const { success } = await changeStatusReject()
-          if (success) {
-            ctx.emit('closePopup')
-            ctx.emit('getItems')
-          }
-        }
-      }
-    }
+
     return {
+      convertDate,
       infoObj,
-      confirm,
-      reject,
+      endTask,
+      endTaskConfirm,
       formData,
       directionToMagnit,
-      entity: props.data.entity,
       pathAct,
       commentErr,
+      confirm,
+      loading,
+
+      config,
+      openPayment,
+      popupForm,
+      closePopupForm,
     }
   },
 })

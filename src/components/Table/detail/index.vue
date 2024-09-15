@@ -5,11 +5,8 @@
         v-show="$route.meta.label || detail.name || availableTabsAll.length > 1"
         class="pa-4 detail-header"
       >
-        <p v-if="$route.meta.label" class="text-h4 mb-4">
-          {{ $route.meta.label }}
-        </p>
-        <p v-else-if="detail.name" class="text-h4 mb-4">
-          {{ detail.name }}
+        <p class="text-h4 mb-4">
+          {{ $route.meta.label || detail.name }}
         </p>
         <v-tabs
           style="flex: unset"
@@ -20,7 +17,11 @@
           v-show="availableTabsAll.length > 1"
           mobile-breakpoint="0"
         >
-          <v-tab v-for="item in availableTabsAll" :key="item.id">
+          <v-tab
+            v-for="item in availableTabsAll"
+            :name="`tab_${item.name}`"
+            :key="item.id"
+          >
             {{ item.name }}
           </v-tab>
         </v-tabs>
@@ -28,6 +29,13 @@
       <v-tabs-items touchless v-model="activeTab">
         <v-tab-item v-for="item in availableTabsAll" :key="item.id">
           <component
+            v-if="item.render"
+            @closePopup="(e) => $emit('closePopup', e)"
+            @getItems="(e) => $emit('getItems', e)"
+            :is="item"
+          ></component>
+          <component
+            v-else
             :content="propsContent"
             :loading="loading"
             :is="item.type"
@@ -42,8 +50,10 @@
             @refreshData="$emit('refreshData')"
             @setFormData="setFormData"
             :formDataParent="formDataParent"
+            :tableComp="$props.tableComp"
             :mainData="mainData"
-            :class="item?.label"
+            :class="'form_' + item?.name"
+            @emitFormData="$emit('emitFormData', $event)"
           />
         </v-tab-item>
       </v-tabs-items>

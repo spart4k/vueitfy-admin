@@ -5,6 +5,7 @@ import {
   dateRangeField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
+import { required } from '@/utils/validation.js'
 
 const filters = {
   id: 0,
@@ -13,17 +14,60 @@ const filters = {
   detail: false,
   isFilter: true,
   lists: [
+    { alias: 'vid_vedomost_id_retail', filter: [] },
     { alias: 'status_id', filter: [] },
-    { alias: 'vid_vedomost_id', filter: [] },
+    { alias: 'direction_id', filter: [] },
+    { alias: 'st_rashod_id', filter: [] },
+    { alias: 'managers', filter: [] },
+    { alias: 'bank_id', filter: [] },
+    { alias: 'bank_id', filter: [] },
     { alias: 'doljnost_retail_id', filter: [] },
+  ],
+  actions: [
+    stringAction({
+      text: 'Сохранить',
+      type: 'submit',
+      action: 'saveFilter',
+      name: 'saveFilter',
+      // nextForm: true,
+    }),
   ],
   alias: 'payment',
   active: false,
   fields: [
+    dateRangeField({
+      label: 'Дата начисления',
+      name: 'date_add',
+      subtype: 'range',
+      typeFilter: 'date',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.date_add',
+      validations: { required },
+    }),
+    dateRangeField({
+      label: 'Дата назначения',
+      name: 'date_target',
+      subtype: 'range',
+      typeFilter: 'date',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.date_target',
+    }),
     selectField({
       label: 'Статус',
       name: 'status_id',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -40,8 +84,8 @@ const filters = {
     }),
     selectField({
       label: 'Вид ведомости',
-      name: 'vid_vedomost_id',
-      subtype: 'single',
+      name: 'vid_vedomost_id_retail',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -56,11 +100,93 @@ const filters = {
       bootstrapClass: [''],
       aliasFilter: 'pt.vid_vedomost_id',
     }),
+    selectField({
+      label: 'Вид оплаты',
+      name: 'bank_id',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.bank_id',
+    }),
+    selectField({
+      label: 'Менеджеры',
+      name: 'account_id',
+      alias: 'managers',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.account_id',
+      isShow: {
+        value: false,
+        condition: [
+          {
+            permissions: [1],
+            type: false,
+          },
+        ],
+      },
+    }),
     autocompleteField({
-      label: 'Линейщик',
-      name: 'personal_id',
-      subtype: 'single',
+      label: 'Объект',
+      name: 'object_id',
       typeFilter: 'select',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/object',
+      filter: [
+        {
+          alias: 'od.direction_id',
+          value: 2,
+          type: 'num',
+          sendEmpty: true,
+        },
+        {
+          alias: 'o.type',
+          value: 1,
+          type: 'num',
+          sendEmpty: true,
+        },
+      ],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'pt.object_id',
+    }),
+    autocompleteField({
+      label: 'Персонал',
+      name: 'personal_id',
+      typeFilter: 'select',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -78,32 +204,10 @@ const filters = {
       bootstrapClass: [''],
       aliasFilter: 'pt.personal_id',
     }),
-    autocompleteField({
-      label: 'Объект',
-      name: 'object_id',
-      subtype: 'single',
-      typeFilter: 'select',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      page: 1,
-      search: '',
-      url: 'get/pagination_list/filter_object_retail',
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'pt.object_id',
-    }),
     selectField({
       label: 'Должность',
       name: 'doljnost_retail_id',
-      subtype: 'single',
+      subtype: 'multiple',
       placeholder: '',
       class: [''],
       selectOption: {
@@ -117,37 +221,6 @@ const filters = {
       },
       bootstrapClass: [''],
       aliasFilter: 'pt.doljnost_id',
-    }),
-    autocompleteField({
-      label: 'Менеджеры',
-      name: 'account_id',
-      subtype: 'single',
-      typeFilter: 'select',
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      page: 1,
-      search: '',
-      url: 'get/pagination_list/filter_manager_retail',
-      position: {
-        cols: 12,
-        sm: 12,
-      },
-      bootstrapClass: [''],
-      aliasFilter: 'pt.account_id',
-    }),
-  ],
-  actions: [
-    stringAction({
-      text: 'Сохранить',
-      type: 'submit',
-      action: 'saveFilter',
-      name: 'saveFilter',
-      nextForm: true,
     }),
   ],
 }

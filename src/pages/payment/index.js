@@ -1,6 +1,7 @@
 import filters from './filters'
 import formAddEdit from './config/form-add-edit.js'
 import formLoad from './config/form-load.js'
+import { isLogistik } from '@/utils/permissions'
 
 function consoleText(row) {}
 
@@ -55,8 +56,30 @@ const config = {
         type: 'addItem',
         isShow: {
           condition: [
+            // {
+            //   permissions: [1, 15, 3, 4, 9, 2],
+            //   type: true,
+            // },
             {
-              permissions: [1, 15, 3, 4],
+              funcCondition: (ctx) => {
+                // const directions = JSON.parse(
+                //   ctx.store.state.user.direction_json
+                // )
+                const directions = ctx.store.state.user.direction_json
+                if (
+                  directions.includes(1) ||
+                  directions.includes(6) ||
+                  directions.includes(7)
+                ) {
+                  return [1, 15, 3, 4, 9, 2].includes(
+                    ctx.store.state.user.permission_id
+                  )
+                } else {
+                  return [15, 3, 4, 9, 2].includes(
+                    ctx.store.state.user.permission_id
+                  )
+                }
+              },
               type: true,
             },
           ],
@@ -68,7 +91,7 @@ const config = {
         url: '$IconSetting',
         backgroundColor: '#fff',
         type: 'sendPage',
-        requestPage: 'payment',
+        requestUrl: 'accounting/payment/export',
         isShow: {
           condition: [
             {
@@ -596,6 +619,7 @@ const config = {
     method: 'get',
     alias: 'payment',
     url: '/get/form/',
+    name: 'Начисление',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
     tabs: [formAddEdit, formLoad],
     activeTab: null,

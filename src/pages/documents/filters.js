@@ -1,5 +1,6 @@
 import { dateField, selectField, autocompleteField } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
+import { isBrigadir, isManager } from '@/utils/permissions'
 
 const filters = {
   id: 0,
@@ -56,10 +57,13 @@ const filters = {
       aliasFilter: 'p.account_json',
       isShow: {
         value: false,
-        condition: [
+        type: 'every',
+        conditions: [
           {
-            permissions: [13, 1],
-            type: false,
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return !isManager(context) && !isBrigadir(context)
+            },
           },
         ],
       },

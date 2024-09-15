@@ -125,20 +125,34 @@
         </div>
         <div class="v-table-panel-items">
           <div class="v-table-panel-items__actions flex-wrap">
-            <v-btn
+            <div
               v-for="(button, indexButton) in availablePanelBtn"
               :key="indexButton"
-              @click="panelHandler(button)"
-              :disabled="button.isDisabled"
-              class="mb-2"
-              :color="button.color && 'rgb(255, 144, 0)'"
+              :class="`panel-button_${button.label}`"
               small
             >
-              <v-icon small :class="[button.label && 'mr-2']">
-                {{ button.url }}
-              </v-icon>
-              <p v-if="true">{{ button.label }}</p>
-            </v-btn>
+              <SwitchDefault
+                @getItems="changeHeaders"
+                :button="button"
+                :context="tableContext"
+                v-if="button.type === 'switch'"
+                v-model="button.value"
+                :name="`btn_${button.label || button.type}`"
+              />
+              <v-btn
+                v-else
+                @click="panelHandler(button)"
+                :disabled="button.isDisabled"
+                class="mb-2"
+                :color="button.color && 'rgb(255, 144, 0)'"
+                small
+              >
+                <v-icon small :class="[button.label && 'mr-2']">
+                  {{ button.url }}
+                </v-icon>
+                <p>{{ button.label }}</p>
+              </v-btn>
+            </div>
           </div>
           <div class="v-table-panel-items__search">
             <v-text-field
@@ -362,16 +376,17 @@
                           {{ card.price }}
                         </p>
                         <p class="v-table-body-row-cell-item_text">
-                          {{ card.hour ?? card.position }}
+                          {{ card.doljnost_name ?? card.smena }}
                         </p>
                         <p class="v-table-body-row-cell-item_text">
-                          {{ card.doljnost_name ?? card.smena }}
+                          {{ card.hour ?? card.position }}
                         </p>
                         <p
                           class="v-table-body-row-cell-item_text v-table-body-row-cell-item_text__bold"
                         >
                           {{
-                            options.head[0].value === 'fio'
+                            options.head[0].value === 'fio' ||
+                            options.head[1].value === 'personal_name'
                               ? card.object_name
                               : card.fio
                           }}

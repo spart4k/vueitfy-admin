@@ -23,6 +23,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    field: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -40,6 +44,11 @@ export default {
         value: props.value ? props.value.split(' ')[1] : '',
       },
     })
+    const mask = computed(() => {
+      if (props.field.subtype === 'multiple') return ''
+      else if (props.field.subtype === 'period') return '####.##'
+      return '####.##.## ##:##'
+    })
     const activeTab = ref(null)
     const formatedValue = computed(() => {
       return `${tabs.value.date.value} ${tabs.value.time.value}`
@@ -54,6 +63,7 @@ export default {
       () => formatedValue.value,
       (newValue) => {
         emit('input', newValue)
+        emit('change', newValue)
       }
     )
     onMounted(() => {})
@@ -63,6 +73,7 @@ export default {
       activeTab,
       formatedValue,
       menuRef,
+      mask,
     }
   },
 }

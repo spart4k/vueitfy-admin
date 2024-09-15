@@ -154,7 +154,6 @@ export const editFields = [
   //     condition: [
   //       {
   //         funcCondition: (context) => {
-  //           console.log(context.store.state.user)
   //           return context.store.state.user.permission_id !== 4
   //         },
   //         type: true,
@@ -196,12 +195,6 @@ const config = {
             condition: [
               {
                 funcCondition: (ctx) => {
-                  console.log(ctx)
-                  console.log(
-                    ctx.store.state.user.permission_id === 4,
-                    (ctx.store.state.user.permission_id === 3,
-                    ctx.data.row.from_account_id === ctx.store.state.user.id)
-                  )
                   return (
                     ctx.store.state.user.permission_id === 4 ||
                     (ctx.store.state.user.permission_id === 3 &&
@@ -217,7 +210,6 @@ const config = {
             dialog: {
               text: 'Вы подтверждаете архивацию офиса?',
               function: async (context) => {
-                console.log(context)
                 const { code } = await context.store.dispatch('form/putForm', {
                   url: 'update/office/archive ',
                   body: { data: { office_id: context.data.row.id } },
@@ -252,12 +244,6 @@ const config = {
             condition: [
               {
                 funcCondition: (ctx) => {
-                  console.log(ctx)
-                  console.log(
-                    ctx.store.state.user.permission_id === 4,
-                    (ctx.store.state.user.permission_id === 3,
-                    ctx.data.row.from_account_id === ctx.store.state.user.id)
-                  )
                   return (
                     ctx.store.state.user.permission_id === 4 ||
                     (ctx.store.state.user.permission_id === 3 &&
@@ -305,7 +291,6 @@ const config = {
             // },
             {
               funcCondition: (ctx) => {
-                console.log('TEST FUNC')
                 return (
                   ctx.store.state.user.permission_id === 4 ||
                   ctx.store.state.user.permission_id === 3

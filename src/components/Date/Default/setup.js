@@ -113,6 +113,7 @@ export default {
             proxyValue.value = proxyValue.value.replaceAll('-', '.')
         }
         emit('input', newVal)
+        emit('change', newVal)
       }
     )
 

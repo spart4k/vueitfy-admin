@@ -10,6 +10,7 @@ import { useRoute } from 'vue-router/composables'
 import { getList } from '@/api/selects'
 import _ from 'lodash'
 import store from '@/store'
+import form from '@/store/modules/form'
 
 export default {
   name: 'autocomplete',
@@ -38,13 +39,23 @@ export default {
     fields: {
       type: Object,
     },
+    mode: {
+      type: String,
+    },
+    environment: {
+      type: Object,
+    },
+    items: {
+      type: Array,
+      default: null,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
     const loading = ref(false)
     const route = useRoute()
     const proxyValue = toRef(props, 'value')
-    const proxyItems = toRef(props.field, 'items')
+    const proxyItems = toRef(props.items ? props : props.field, 'items')
     const searchProps = ref(props.field.search)
 
     const availableItems = computed(() => {
@@ -56,6 +67,7 @@ export default {
               store,
               formData: props.formData,
               originalData: props.originalData,
+              mode: props.mode,
             }
             if (!option.func(context)) return
           } else if (
@@ -133,8 +145,24 @@ export default {
                     : +route.params[el.routeKey],
                   type: el.type,
                 })
+              } else if (el.source === 'mode') {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  value: props.mode,
+                  type: el.type,
+                })
+              } else if (el.sendEmpty) {
+                filter.push({
+                  alias: el.alias ?? el.field,
+                  value: el.value,
+                  type: el.type,
+                })
               } else {
-                if (!props.formData[el.field]) return
+                if (Array.isArray(props.formData[el.field])) {
+                  if (!props.formData[el.field].length) return
+                } else {
+                  if (!props.formData[el.field]) return
+                }
                 filter.push({
                   alias: el.alias ?? el.field,
                   value: el.toArray
@@ -145,7 +173,6 @@ export default {
               }
             })
           }
-
           const data = await getList(
             url,
             {
@@ -154,6 +181,7 @@ export default {
               searchValue: params.search ? params.search : '',
               id: params.id ? params.id : -1,
               filter,
+              readonly: props.environment?.readonlyAll,
             },
             {
               signal: controller.signal,
@@ -183,7 +211,7 @@ export default {
       if (loading.value) return
       const isAtFinalPage = [queryData.totalPage, queryData.page].includes(null)
         ? true
-        : queryData.totalPage > queryData.page
+        : queryData.totalPage >= queryData.page
       if (isIntersecting) {
         if (
           proxyItems.value?.length &&
@@ -227,7 +255,17 @@ export default {
             })
         : false
     })
-
+    const appendClass = (classes) => {
+      return classes.reduce((acc, el) => {
+        if (typeof el === 'string') {
+          acc.push(el)
+        } else if (typeof el === 'function') {
+          acc.push(el(props.formData))
+        }
+        // acc.push(el)
+        return acc
+      }, [])
+    }
     const parentComp = getCurrentInstance().proxy.$parent.$parent
 
     //const styleChip = computed(() =>)
@@ -240,7 +278,7 @@ export default {
           id: props.value,
           search: newVal,
         }
-        props.field.page
+        // props.field.page
         if (newVal !== null) {
           props.field.page = 1
           querySelections(params)
@@ -255,7 +293,9 @@ export default {
       }
     )
 
-    onMounted(() => {})
+    onMounted(() => {
+      props.field.page = 1
+    })
 
     return {
       proxyValue,
@@ -272,6 +312,7 @@ export default {
       parentComp,
       availableItems,
       proxyItems,
+      appendClass,
     }
   },
 }

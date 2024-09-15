@@ -3,6 +3,8 @@ import appointments from './appointments'
 import personal from './personal'
 import shopRequestMagnit from './magnit/shop-request'
 import shopRequestMagnitReport from './magnit/shop-request-report'
+import reportMagnit from './magnit/report'
+import reportFilial from './magnit/filial'
 import userKeys from './user-keys'
 import reportTaxi from './report-taxi'
 import tasks from './tasks'
@@ -19,6 +21,9 @@ import card from './card'
 import bank from './bank'
 import service from './service'
 import mvd from './mvd'
+import x5payment from './x5payment'
+import x5territories from './x5territories'
+import x5zone from './x5zone'
 import jurFace from './jur-face'
 import rashod_vid from './rashod_vid'
 import rashod_category from './rashod_category'
@@ -48,4 +53,9 @@ export {
   jurFace,
   rashod_category,
   rashod_vid,
+  reportMagnit,
+  reportFilial,
+  x5payment,
+  x5territories,
+  x5zone,
 }

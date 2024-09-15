@@ -25,6 +25,7 @@ export default {
       root: {
         store,
         router,
+        route,
         ctx,
       },
     }
@@ -283,12 +284,10 @@ export default {
       stringAction({
         text: 'Закрыть',
         type: 'submit',
-        color: 'transparent',
+        color: 'textDefault',
         name: 'closePopup',
         action: 'closePopup',
-        to: 'object',
         skipValidation: true,
-        notClose: true,
       }),
     ])
     const tabRef = ref(null)

@@ -30,15 +30,11 @@ export default {
   type: 'FormDefault',
   detail: true,
   lists: [
-    { alias: 'permissions_account', filter: [] },
-    { alias: 'chief_id', filter: [] },
-    { alias: 'direction_json', filter: [] },
-    { alias: 'direction_id', filter: [] },
-    { alias: 'grajdanstvo_id', filter: [] },
     {
       alias: 'object_type',
       filter: [
         {
+          required: true,
           field: 'direction_json',
           value: '',
           source: 'formData',
@@ -46,6 +42,22 @@ export default {
         },
       ],
     },
+    {
+      alias: 'permissions_account',
+      filter: [
+        {
+          required: true,
+          field: 'direction_json',
+          value: '',
+          source: 'formData',
+          type: 'array',
+        },
+      ],
+    },
+    { alias: 'chief_id', filter: [] },
+    { alias: 'direction_json', filter: [] },
+    { alias: 'direction_id', filter: [] },
+    { alias: 'grajdanstvo_id', filter: [] },
     {
       alias: 'account_objects',
       filter: [{ source: 'formData', type: 'num', value: 'id', field: 'id' }],
@@ -190,6 +202,19 @@ export default {
           alias: 'object_type',
           filter: [
             {
+              required: true,
+              field: 'direction_json',
+              value: '',
+              source: 'formData',
+              type: 'array',
+            },
+          ],
+        },
+        {
+          alias: 'permissions_account',
+          filter: [
+            {
+              required: true,
               field: 'direction_json',
               value: '',
               source: 'formData',
@@ -250,7 +275,6 @@ export default {
                   ctx.formData.direction_json.length === 1
                 ) && ctx.formData.permission_id !== 23
               )
-              // console.log(ctx, 'CONTEXT')
             },
           },
         ],
@@ -395,59 +419,57 @@ export default {
             target: 'funcCondition',
             funcCondition: (ctx) => {
               return ctx.formData.permission_id !== 23
-              // console.log(ctx, 'CONTEXT')
             },
           },
         ],
       },
     }),
-    selectField({
-      label: 'Объекты',
-      name: 'object_json',
-      alias: 'account_objects',
-      subtype: 'multiple',
-      readonly: true,
-      // requestKey: 'direction_json',
-      stringify: true,
-      placeholder: '',
-      class: [''],
-      selectOption: {
-        text: 'name',
-        value: 'id',
-      },
-      items: [],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      validations: {},
-      bootstrapClass: [''],
-      // updateList: [
-      //   {
-      //     alias: 'account_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_json',
-      //         value: '',
-      //         source: 'formData',
-      //         type: 'num',
-      //       },
-      //     ],
-      //   },
-      // ],
-      isShow: {
-        value: false,
-        conditions: [
-          {
-            target: 'funcCondition',
-            funcCondition: (ctx) => {
-              return ctx.formData.permission_id !== 23
-              // console.log(ctx, 'CONTEXT')
-            },
-          },
-        ],
-      },
-    }),
+    // selectField({
+    //   label: 'Объекты',
+    //   name: 'object_json',
+    //   alias: 'account_objects',
+    //   subtype: 'multiple',
+    //   readonly: true,
+    //   // requestKey: 'direction_json',
+    //   stringify: true,
+    //   placeholder: '',
+    //   class: [''],
+    //   selectOption: {
+    //     text: 'name',
+    //     value: 'id',
+    //   },
+    //   items: [],
+    //   position: {
+    //     cols: 12,
+    //     sm: 6,
+    //   },
+    //   validations: {},
+    //   bootstrapClass: [''],
+    //   // updateList: [
+    //   //   {
+    //   //     alias: 'account_id',
+    //   //     filter: [
+    //   //       {
+    //   //         field: 'direction_json',
+    //   //         value: '',
+    //   //         source: 'formData',
+    //   //         type: 'num',
+    //   //       },
+    //   //     ],
+    //   //   },
+    //   // ],
+    //   isShow: {
+    //     value: false,
+    //     conditions: [
+    //       {
+    //         target: 'funcCondition',
+    //         funcCondition: (ctx) => {
+    //           return ctx.formData.permission_id !== 23
+    //         },
+    //       },
+    //     ],
+    //   },
+    // }),
   ],
   actions: [
     stringAction({

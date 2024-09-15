@@ -7,8 +7,12 @@ import PersonalView from '../views/PersonalView.vue'
 import RealtyView from '../views/RealtyView.vue'
 import PivotView from '../views/PivotView.vue'
 import Pivotx5View from '../views/Pivotx5View.vue'
+import MagnitPivot from '../views/Magnit/PivotView.vue'
 import PivotPaymentView from '../views/PivotPaymentView.vue'
 import X5importView from '../views/X5importView.vue'
+import X5paymentView from '../views/X5paymentView.vue'
+import X5territoriesView from '../views/X5territoriesView.vue'
+import X5zoneView from '../views/X5zoneView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
 import ZayavkaView from '../views/ZayavkaView.vue'
@@ -26,7 +30,8 @@ import ServiceView from '../views/ServiceView.vue'
 import RashodCategoryView from '../views/RashodCategoryView.vue'
 import RashodVidView from '../views/RashodVidView.vue'
 import OfficeView from '../views/OfficeView.vue'
-
+import ReportMagnit from '../views/Magnit/ReportMagnit.vue'
+import ReportFilial from '../views/Magnit/ReportFilial.vue'
 import MailView from '../views/DefaultMails.vue'
 import Navbar from '@/views/Navbar'
 import LoginView from '@/views/LoginView'
@@ -36,6 +41,7 @@ import SlataReportView from '@/views/SlataReportView.vue'
 import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
+import ContractView from '@/views/ContractView.vue'
 //import TestTs from '@/views/testts'
 // import GanttaView from '@/views/GanttaView.vue'
 
@@ -167,6 +173,15 @@ const routes = [
             meta: {
               mode: ['add-edit-logistic', 'output'],
               label: 'Редактировать начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'payment/:id/change-personal',
+            path: 'change-personal',
+            meta: {
+              mode: ['add-edit-logistic', 'change-personal'],
+              label: 'Сменить линейщика',
             },
             component: Detail,
           },
@@ -511,13 +526,49 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'personal/:id/debt-add',
+            path: '/personal/:id/debt-add',
+            meta: {
+              mode: ['edit', 'debt-add'],
+              label: 'Создание задолженности',
+            },
+            component: Detail,
+          },
         ],
+      },
+      {
+        name: 'personal/employment',
+        path: '/personal/employment',
+        meta: {
+          mode: ['employment'],
+          label: 'Выгрузка реестра',
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal/employment_parser',
+        path: '/personal/employment_parser',
+        meta: {
+          mode: ['employment_parser'],
+          label: 'Парсер реестра',
+        },
+        component: Detail,
       },
       {
         name: 'personal/:key_id',
         path: '/personal/:key_id',
         meta: {
           mode: ['edit-key'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'personal/report',
+        path: '/personal/report',
+        meta: {
+          mode: ['report'],
+          label: 'Отчет А/В',
         },
         component: Detail,
       },
@@ -649,6 +700,142 @@ const routes = [
     component: Pivotx5View,
   },
   {
+    path: '/magnit_pivot',
+    name: 'magnit_pivot',
+    meta: {
+      layout: 'blank-layout',
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: MagnitPivot,
+    children: [
+      {
+        name: 'magnit_pivot-zayavka',
+        path: '/magnit_pivot/zayavka',
+        meta: {
+          mode: ['zayavka'],
+          label: 'Парсер заявок',
+        },
+        component: Detail,
+      },
+      {
+        name: 'magnit_pivot-edit',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['edit'],
+          label: 'Заявка "Магнит"',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-edit/payment-add',
+            path: '/magnit_pivot/:id/payment-add',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-edit/payment/:payment_id',
+            path: '/magnit_pivot:id/payment/:payment_id',
+            meta: {
+              mode: ['edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'magnit_pivot-personal',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['personal'],
+          label: 'Персонал',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-personal/:payment',
+            path: '/magnit_pivot/:id/:payment',
+            meta: {
+              mode: ['personal', 'personal-payment'],
+              label: 'Начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:zayavka',
+            path: '/magnit_pivot/:id/:zayavka',
+            meta: {
+              mode: ['personal', 'personal-zayavka'],
+              label: 'Заявка на расход',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:scan',
+            path: '/magnit_pivot/:id/:scan',
+            meta: {
+              mode: ['personal', 'personal-scan'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-personal/:card',
+            path: '/magnit_pivot/:id/:card',
+            meta: {
+              mode: ['personal', 'personal-card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+      {
+        name: 'magnit_pivot-object',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['object'],
+          label: 'Объект',
+        },
+        component: Detail,
+      },
+      {
+        name: 'magnit_pivot-account',
+        path: '/magnit_pivot/:id',
+        meta: {
+          mode: ['account'],
+          label: 'Аккаунт',
+        },
+        component: Detail,
+        children: [
+          {
+            name: 'magnit_pivot-account/:card_id',
+            path: '/magnit_pivot/:id/:card_id',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+          {
+            name: 'magnit_pivot-account/new_card',
+            path: '/magnit_pivot/:id/new_card',
+            meta: {
+              mode: ['account', 'new_card'],
+              label: 'Банковская карта',
+            },
+            component: Detail,
+          },
+        ],
+      },
+    ],
+  },
+  {
     path: '/pivot_payment',
     name: 'pivot_payment',
     meta: {
@@ -762,15 +949,6 @@ const routes = [
         },
         component: Detail,
       },
-      {
-        name: 'pivot_payment-zayavka',
-        path: '/pivot_payment/zayavka',
-        meta: {
-          mode: ['zayavka'],
-          label: 'Парсер заявок',
-        },
-        component: Detail,
-      },
     ],
   },
   {
@@ -787,6 +965,71 @@ const routes = [
       {
         name: 'x5import/:id',
         path: ':id',
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/x5payment',
+    name: 'x5payment',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: X5paymentView,
+    children: [],
+  },
+  {
+    path: '/x5territories',
+    name: 'x5territories',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: X5territoriesView,
+    children: [
+      {
+        name: 'x5territories/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить территорию',
+        },
+        component: Detail,
+      },
+      {
+        name: 'x5territories/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать территорию',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/x5zone',
+    name: 'x5zone',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: X5zoneView,
+    children: [
+      {
+        name: 'x5zone/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить зону',
+        },
+        component: Detail,
+      },
+      {
+        name: 'x5zone/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать зону',
+        },
         component: Detail,
       },
     ],
@@ -815,6 +1058,42 @@ const routes = [
         path: '/object/appoint',
         meta: {
           mode: ['appoint'],
+        },
+        component: Detail,
+      },
+      {
+        name: 'object-reassign',
+        path: '/object/reassign',
+        meta: {
+          mode: ['reassign'],
+          label: 'Переназначить',
+        },
+        component: Detail,
+      },
+      {
+        name: 'object-tarif',
+        path: '/object/tarif',
+        meta: {
+          mode: ['tarif'],
+          label: 'Смена тарифа',
+        },
+        component: Detail,
+      },
+      {
+        name: 'object-load',
+        path: '/object/load',
+        meta: {
+          mode: ['load'],
+          label: 'Загрузить тариф',
+        },
+        component: Detail,
+      },
+      {
+        name: 'object/tarif_parser',
+        path: '/object/tarif_parser',
+        meta: {
+          mode: ['tarif_parser'],
+          label: 'Парсер тарифа',
         },
         component: Detail,
       },
@@ -894,15 +1173,51 @@ const routes = [
       {
         name: 'shop-request-magnit-add',
         path: '/shop-request-magnit/add',
-        meta: {
-          mode: ['add'],
-        },
         component: Detail,
+        meta: {
+          label: 'Добавление заявки на Магнит',
+          mode: ['add-or-edit'],
+        },
+        children: [
+          {
+            name: 'shop-request-magnit-add-payment-add',
+            path: '/shop-request-magnitpayment/add',
+            meta: {
+              mode: ['add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/:id',
-        path: ':id',
+        path: '/shop-request-magnit/:id',
         component: Detail,
+        meta: {
+          label: 'Редактирование заявки на Магнит',
+          mode: ['add-or-edit'],
+        },
+        children: [
+          {
+            name: 'shop-request-magnit/:id/payment-add',
+            path: '/shop-request-magnit/:id/payment-add',
+            meta: {
+              mode: ['add-or-edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+          {
+            name: 'shop-request-magnit/:id/payment/:payment_id',
+            path: '/shop-request-magnit/:id/payment/:payment_id',
+            meta: {
+              mode: ['add-or-edit', 'add-edit-logistic'],
+              label: 'Добавить начисление',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'shop-request-magnit/upload',
@@ -931,6 +1246,24 @@ const routes = [
         component: Detail,
       },
     ],
+  },
+  {
+    path: '/report_magnit',
+    name: 'report_magnit',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ReportMagnit,
+    children: [],
+  },
+  {
+    path: '/report_filial',
+    name: 'report_filial',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ReportFilial,
+    children: [],
   },
   {
     path: '/user-keys',
@@ -1560,6 +1893,14 @@ const routes = [
       },
     ],
     component: CorporateCardsView,
+  },
+  {
+    path: '/contract',
+    name: 'contract',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ContractView,
   },
   {
     path: '/schedule',

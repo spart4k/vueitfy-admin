@@ -41,7 +41,7 @@ const initPaymentZayavka = (paymentConfigOrig, zayavkaConfigOrig) => {
   paymentConfig.config.options = {
     ...paymentConfig.config.options,
     urlDetail: 'personal_id',
-    alias: 'pb.personal_id',
+    alias: 'p.personal_id',
   }
 
   zayavkaConfig.config.options = {
