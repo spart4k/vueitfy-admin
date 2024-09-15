@@ -25,7 +25,7 @@ function searchInputing(field) {}
 const config = {
   selector: '#mainTable',
   options: {
-    selecting: true,
+    selecting: false,
     search: {
       function: searchInputing,
     },
@@ -76,6 +76,31 @@ const config = {
     ],
   },
   head: [
+    {
+      title: 'id',
+      type: 'default',
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 't.id',
+      isShow: true,
+      width: '40',
+      value: 'id',
+      search: {
+        field: '',
+        isShow: true,
+      },
+    },
     {
       title: 'Статус',
       type: 'default',
@@ -277,6 +302,57 @@ const config = {
       },
     },
     {
+      title: 'Файл счета / чек',
+      type: 'download',
+      actionCondition: false,
+      align: 'center',
+      fixed: {
+        value: false,
+        position: 'left',
+      },
+      sorts: [
+        {
+          type: 'string',
+          default: '',
+          value: '',
+          isShow: false,
+        },
+      ],
+      alias: 'z.payment_schet',
+      isShow: true,
+      width: '40',
+      value: 'path_act',
+      search: {
+        field: '',
+        isShow: true,
+      },
+      actions: [
+        {
+          funcCondition: (context) => {
+            return context.row.row.path_act
+          },
+          type: 'button',
+          url: '$IconDownload',
+          method: async (context) => {
+            context.Vue.downloadFile(context.row.row.path_act)
+            // const data = await context.store.dispatch('form/update', {
+            //   url: 'create/zayavka_archive',
+            //   body: { zayavka_id: context.row.row.id, type: 'schet' },
+            // })
+            // if (data.code === 1) {
+
+            // } else {
+            //   context.store.commit('notifies/showMessage', {
+            //     color: 'error',
+            //     content: 'Что-то пошло не так...',
+            //     timeout: 2000,
+            //   })
+            // }
+          },
+        },
+      ],
+    },
+    {
       title: 'Примечание',
       type: 'default',
       align: 'center',
@@ -300,32 +376,6 @@ const config = {
         field: '',
         isShow: true,
       },
-    },
-    {
-      title: 'Действия',
-      type: 'actions',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'right',
-      },
-      isShow: true,
-      width: '100',
-      value: 'actions',
-      actions: [
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleText,
-          label: 'Редактировать',
-        },
-        {
-          type: 'button',
-          url: '$IconSetting',
-          function: consoleButton,
-          label: 'Удалить',
-        },
-      ],
     },
   ],
   data: {
