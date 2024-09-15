@@ -1598,6 +1598,12 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return !context.formData.vid_vedomost_id
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     context.formData.account_id === context.store.state.user.id &&
