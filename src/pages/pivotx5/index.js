@@ -243,6 +243,7 @@ export const config = {
               removeble: true,
               withoutSave: false,
               maxSize: 500,
+              type: ['xlsx'],
               valueId: 'parser_objects',
               folder: 'parser',
               name: '`parser_logistic`',
