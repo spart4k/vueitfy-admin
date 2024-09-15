@@ -65,9 +65,7 @@ const contextMenuPersonal = {
           },
           {
             funcCondition: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return (
                 directions.length === 1 &&
                 (directions.includes(7) || directions.includes(2))
@@ -94,9 +92,7 @@ const contextMenuPersonal = {
           },
           {
             funcCondition: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return (
                 directions.length === 1 &&
                 (directions.includes(7) || directions.includes(2))
@@ -816,17 +812,13 @@ export const config = {
         condition: [
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return !(directions.length === 1 && directions.includes(7))
             },
           },
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return directions.includes(1)
             },
           },
@@ -1284,17 +1276,13 @@ export const config = {
           },
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return !(directions.length === 1 && directions.includes(7))
             },
           },
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return directions.includes(1)
             },
           },
