@@ -459,6 +459,7 @@ export default function ({
                 formData,
                 originalData: originalData.value,
                 environment,
+                entityData,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type

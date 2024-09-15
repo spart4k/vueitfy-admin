@@ -1881,22 +1881,32 @@ export default {
             condition: [
               {
                 funcCondition: (context) => {
+                  console.log(context)
                   if (!context.environment.readonlyAll) {
                     if (context.formData.real_personal_id) {
                       return !!(
                         isX5(context) && context.formData.real_personal_id
                       )
                     } else {
-                      return !!(
-                        [1, 2, 3].includes(context.formData.status_id) &&
-                        isVertical(context) &&
-                        isX5(context) &&
-                        !(
-                          context.entityData.status_permission === 4 &&
-                          context.formData.status_id === 1
-                        ) &&
-                        context.formData.vid_vedomost_id !== 10
-                      )
+                      if (
+                        context.entityData.status_permission === 4 &&
+                        context.formData.status_id !== 1
+                      ) {
+                        return false
+                      } else {
+                        console.log(
+                          [1, 2, 3].includes(context.formData.status_id) &&
+                            isVertical(context) &&
+                            isX5(context) &&
+                            context.formData.vid_vedomost_id !== 10
+                        )
+                        return !!(
+                          [1, 2, 3].includes(context.formData.status_id) &&
+                          isVertical(context) &&
+                          isX5(context) &&
+                          context.formData.vid_vedomost_id !== 10
+                        )
+                      }
                     }
                   } else {
                     return !!(
@@ -4150,6 +4160,16 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (ctx) => {
+              return !!(
+                isRoznica(ctx) &&
+                ctx.formData.account_id === ctx.store.state.user.id &&
+                (isManager(ctx) || isRG(ctx))
+              )
+            },
+            type: true,
+          },
         ],
       },
     }),
@@ -4252,6 +4272,16 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (ctx) => {
+              return !!(
+                isRoznica(ctx) &&
+                ctx.formData.account_id === ctx.store.state.user.id &&
+                (isManager(ctx) || isRG(ctx))
+              )
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) =>
           //     (isX5(context) &&
@@ -4308,6 +4338,16 @@ export default {
           {
             funcCondition: (ctx) => {
               return !!ctx.entityData.from_account_chief
+            },
+            type: true,
+          },
+          {
+            funcCondition: (ctx) => {
+              return !!(
+                isRoznica(ctx) &&
+                ctx.formData.account_id === ctx.store.state.user.id &&
+                (isManager(ctx) || isRG(ctx))
+              )
             },
             type: true,
           },
