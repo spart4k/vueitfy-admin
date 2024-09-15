@@ -564,7 +564,7 @@ export default function ({
         tabStorageChange(response, data)
       }
       if (response?.emit === 'closePopup') {
-        emit('closePopup', response?.to)
+        emit('closePopup')
         emit('getItems')
       }
     } else if (response?.type === 'error') {
