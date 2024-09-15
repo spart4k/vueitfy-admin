@@ -15,17 +15,17 @@
           </v-col>
           <v-col :cols="12" :sm="12">
             <Autocomplete
-              :items="proxyFields.territories_id.items"
-              :field="proxyFields.territories_id"
-              v-model="formData.territories_id"
-              :error-messages="formErrors?.territories_id"
+              :items="proxyFields.territory_id.items"
+              :field="proxyFields.territory_id"
+              v-model="formData.territory_id"
+              :error-messages="formErrors?.territory_id"
               :formData="formData"
               :readonly="loading"
               ref="autocompleteRef"
               @input="
                 changeAutocomplete({
-                  value: formData.territories_id,
-                  field: proxyFields.territories_id,
+                  value: formData.territory_id,
+                  field: proxyFields.territory_id,
                 })
               "
               :fields="proxyFields"
