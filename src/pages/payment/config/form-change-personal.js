@@ -125,6 +125,25 @@ export default {
         },
       ],
     },
+    {
+      alias: 'personal_bank_id',
+      filter: [
+        {
+          field: 'personal_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+        {
+          field: 'vid_vedomost_id',
+          // alias: 'pb.id',
+          value: '',
+          source: 'formData',
+          type: 'num',
+        },
+      ],
+    },
   ],
   alias: 'payment',
   active: false,
