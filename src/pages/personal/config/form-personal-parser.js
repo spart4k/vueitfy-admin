@@ -75,6 +75,7 @@ export default {
         removeble: true,
         withoutSave: false,
         maxSize: 500,
+        type: ['xlsx'],
         valueId: 'parser_employment',
         folder: 'parser',
         name: '`parser_employment`',

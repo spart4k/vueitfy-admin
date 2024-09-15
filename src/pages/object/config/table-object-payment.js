@@ -64,7 +64,7 @@ export default {
         type: 'default',
         align: 'center',
         fixed: {
-          value: true,
+          value: false,
           position: 'left',
         },
         sorts: [

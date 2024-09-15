@@ -62,9 +62,10 @@ const config = {
             // },
             {
               funcCondition: (ctx) => {
-                const directions = JSON.parse(
-                  ctx.store.state.user.direction_json
-                )
+                // const directions = JSON.parse(
+                //   ctx.store.state.user.direction_json
+                // )
+                const directions = ctx.store.state.user.direction_json
                 if (
                   directions.includes(1) ||
                   directions.includes(6) ||
