@@ -2447,6 +2447,10 @@ export default {
             type: true,
           },
           {
+            funcCondition: (context) => !context.formData.vid_vedomost_id,
+            type: true,
+          },
+          {
             funcCondition: (context) => {
               return (
                 isX5(context) &&
@@ -2695,6 +2699,10 @@ export default {
                 context.mode === 'edit'
               )
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) => !context.formData.vid_vedomost_id,
             type: true,
           },
         ],
@@ -3216,7 +3224,14 @@ export default {
                 (isROKK(context) || isOKK(context)) &&
                 [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [1, 2, 3, 6].includes(context.formData.status_id) &&
-                context.mode === 'edit'),
+                context.mode === 'edit') ||
+              (isX5(context) &&
+                context.formData.status_id === 1 &&
+                isCUP(context)) ||
+              isDirector(context) ||
+              isDBA(context) ||
+              isROKK(context) ||
+              isOKK(context),
             type: false,
           },
           {
@@ -3264,10 +3279,28 @@ export default {
                 isX5(context) &&
                 [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [3, 1].includes(context.formData.status_id) &&
-                !isRG(context) &&
+                !isVertical(context) &&
+                isOKK(context) &&
+                isROKK(context) &&
                 context.mode === 'edit'
               )
             },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isMagnit(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [1].includes(context.formData.status_id) &&
+                (isOKK(context) || isROKK(context)) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => !context.formData.vid_vedomost_id,
             type: true,
           },
           // {
@@ -4140,12 +4173,14 @@ export default {
                 (isX5(context) &&
                   context.formData.vid_vedomost_id === 5 &&
                   [8].includes(context.entityData.status_permission) &&
+                  !isOKK(context) &&
                   !isROKK(context) &&
                   !isDirector(context) &&
                   !isDBA(context)) ||
                 // 	если предыдущий статус установлен РОКК или DBA, статус «Согласован» может проставить только DBA.
                 ([17, 4].includes(context.entityData.status_permission) &&
                   !isDBA(context) &&
+                  !isROKK(context) &&
                   context.formData.status_id !== 1)
               )
             },
