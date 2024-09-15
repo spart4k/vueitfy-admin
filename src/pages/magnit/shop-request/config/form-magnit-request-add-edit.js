@@ -781,6 +781,11 @@ export default {
         value: 2,
         readonly: true,
       },
+      {
+        name: 'type',
+        value: 2,
+        readonly: true,
+      },
     ],
     target: paymentConfig,
   },
