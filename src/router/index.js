@@ -41,6 +41,7 @@ import SlataReportView from '@/views/SlataReportView.vue'
 import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
+import ContractView from '@/views/ContractView.vue'
 //import TestTs from '@/views/testts'
 // import GanttaView from '@/views/GanttaView.vue'
 
@@ -1099,6 +1100,15 @@ const routes = [
         component: Detail,
       },
       {
+        name: 'object/tarif_parser',
+        path: '/object/tarif_parser',
+        meta: {
+          mode: ['tarif_parser'],
+          label: 'Парсер тарифа',
+        },
+        component: Detail,
+      },
+      {
         name: 'object/:id',
         path: ':id',
         meta: {
@@ -1894,6 +1904,14 @@ const routes = [
       },
     ],
     component: CorporateCardsView,
+  },
+  {
+    path: '/contract',
+    name: 'contract',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ContractView,
   },
   {
     path: '/schedule',

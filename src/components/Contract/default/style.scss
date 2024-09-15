@@ -1,0 +1,31 @@
+.contractPanel {
+  border: 1px solid var(--v-disabled-base);
+  border-radius: 4px;
+  &::v-deep .v-expansion-panel-content__wrap {
+    padding: 0 0 12px 0;
+  }
+}
+.contractPanel.v-expansion-panel--active {
+  background-color: #f1f2f6 !important;
+}
+
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  &::after {
+    content: '';
+    flex-grow: 1000000000;
+  }
+}
+.btn {
+  border: 1px solid var(--v-disabled-base) !important;
+  background-color: var(--v-background-base);
+  flex-grow: 1;
+  &--active {
+    border: 1px solid transparent;
+  }
+  &::v-deep .v-btn__content {
+    width: 100%;
+  }
+}

@@ -25,6 +25,7 @@ import formObjectAdd from './config/form-object-add.js'
 import formObjectAppoint from './config/form-object-appoint.js'
 import tableObjectPayment from './config/table-object-payment.js'
 import formObjectReassign from './config/form-object-reassign'
+import formObjectParser from './config/form-object-parser'
 
 function consoleText(row) {}
 
@@ -665,6 +666,13 @@ export const config = {
             type: 'changeUrl',
             url: 'object-load',
           },
+          {
+            label: 'Парсер тарифа',
+            class: ['v-table-button--custom'],
+            backgroundColor: '#fff',
+            type: 'changeUrl',
+            url: 'object/tarif_parser',
+          },
         ],
       },
       head: [
@@ -835,7 +843,7 @@ export const config = {
         url: '/get/form/',
         name: 'Персонал',
         bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-        tabs: [formObjectTarif],
+        tabs: [formObjectTarif, formObjectParser],
         activeTab: null,
       },
       filters: _.cloneDeep(filtersTarif),
