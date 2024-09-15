@@ -2569,7 +2569,7 @@ export default {
       },
     }),
     stringField({
-      label: 'Часы(факт)',
+      label: 'Часы (факт)',
       name: 'hour_fact',
       placeholder: '',
       class: [''],
@@ -2611,6 +2611,18 @@ export default {
           {
             funcCondition: (context) => {
               return isMagnit(context) && context.originalData.status_id === 2
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isRoznica(context) &&
+                (isROKK(context) || isOKK(context)) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [1, 2, 3, 6].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
             },
             type: true,
           },
@@ -3199,7 +3211,12 @@ export default {
               (isLogistik(context) &&
                 [1, 3].includes(context.formData.status_id) &&
                 (isVertical(context) || isManager(context))) ||
-              (context.formData.status_id === 6 && context.mode === 'edit'),
+              (context.formData.status_id === 6 && context.mode === 'edit') ||
+              (isRoznica(context) &&
+                (isROKK(context) || isOKK(context)) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [1, 2, 3, 6].includes(context.formData.status_id) &&
+                context.mode === 'edit'),
             type: false,
           },
           {
