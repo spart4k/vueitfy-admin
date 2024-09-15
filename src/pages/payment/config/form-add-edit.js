@@ -86,6 +86,7 @@ const statusReject = (context) => {
 
 const ROKKdOKKLogistika = (context) => {
   return (
+    // isLogistik(context) &&
     [8, 17].includes(context.store.state.user.permission_id) &&
     context.originalData.status_id !== 2 &&
     [1, 6, 7].includes(context.formData.direction_id)
@@ -2225,7 +2226,6 @@ export default {
                 statusReject(context) ||
                 ROKKdOKKLogistika(context) ||
                 (isLogistik(context) && isOKK(context)) ||
-                (isROKK(context) && context.formData.status_id !== 1) ||
                 (isX5(context) &&
                   isDBA(context) &&
                   !isROKK(context) &&
@@ -2250,14 +2250,14 @@ export default {
             funcCondition: (context) => isAllBug(context),
             type: true,
           },
-          {
-            funcCondition: (context) =>
-              isX5(context) &&
-              isOKK(context) &&
-              isROKK(context) &&
-              [2, 3].includes(context.formData.status_id),
-            type: true,
-          },
+          // {
+          //   funcCondition: (context) =>
+          //     isX5(context) &&
+          //     isOKK(context) &&
+          //     isROKK(context) &&
+          //     [2, 3].includes(context.formData.status_id),
+          //   type: true,
+          // },
           {
             funcCondition: (context) => {
               return (
