@@ -11,6 +11,8 @@ import MagnitPivot from '../views/Magnit/PivotView.vue'
 import PivotPaymentView from '../views/PivotPaymentView.vue'
 import X5importView from '../views/X5importView.vue'
 import X5paymentView from '../views/X5paymentView.vue'
+import X5territoriesView from '../views/X5territoriesView.vue'
+import X5zoneView from '../views/X5zoneView.vue'
 import ObjectView from '../views/ObjectView.vue'
 import AccountView from '../views/AccountView.vue'
 import ZayavkaView from '../views/ZayavkaView.vue'
@@ -39,6 +41,7 @@ import SlataReportView from '@/views/SlataReportView.vue'
 import CorporateCardsView from '@/views/CorporateCardsView.vue'
 import MainView from '@/views/MainView.vue'
 import ScheduleView from '@/views/ScheduleView.vue'
+import ContractView from '@/views/ContractView.vue'
 //import TestTs from '@/views/testts'
 // import GanttaView from '@/views/GanttaView.vue'
 
@@ -972,11 +975,64 @@ const routes = [
     meta: {
       layout: 'blank-layout',
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: X5paymentView,
     children: [],
+  },
+  {
+    path: '/x5territories',
+    name: 'x5territories',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: X5territoriesView,
+    children: [
+      {
+        name: 'x5territories/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить территорию',
+        },
+        component: Detail,
+      },
+      {
+        name: 'x5territories/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать территорию',
+        },
+        component: Detail,
+      },
+    ],
+  },
+  {
+    path: '/x5zone',
+    name: 'x5zone',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: X5zoneView,
+    children: [
+      {
+        name: 'x5zone/add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавить зону',
+        },
+        component: Detail,
+      },
+      {
+        name: 'x5zone/:id',
+        path: ':id',
+        meta: {
+          mode: ['edit'],
+          label: 'Редактировать зону',
+        },
+        component: Detail,
+      },
+    ],
   },
   {
     path: '/object',
@@ -1029,6 +1085,15 @@ const routes = [
         meta: {
           mode: ['load'],
           label: 'Загрузить тариф',
+        },
+        component: Detail,
+      },
+      {
+        name: 'object/tarif_parser',
+        path: '/object/tarif_parser',
+        meta: {
+          mode: ['tarif_parser'],
+          label: 'Парсер тарифа',
         },
         component: Detail,
       },
@@ -1828,6 +1893,14 @@ const routes = [
       },
     ],
     component: CorporateCardsView,
+  },
+  {
+    path: '/contract',
+    name: 'contract',
+    meta: {
+      layout: 'blank-layout',
+    },
+    component: ContractView,
   },
   {
     path: '/schedule',

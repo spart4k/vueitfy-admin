@@ -1,9 +1,9 @@
 import _ from 'lodash'
 
-import formBankAddEdit from './config/form-bank-add-edit'
+import formTerritoriesAddEdit from './config/form-territories-add-edit'
 
 export const config = {
-  title: 'Банки',
+  title: 'Территории',
   selector: '#mainTable',
   type: 'TableDefault',
   options: {
@@ -12,8 +12,8 @@ export const config = {
       //   function: searchInputing,
     },
     headerFixed: true,
-    url: 'get/pagination/bank',
-    title: 'Банки',
+    url: 'get/pagination/x5_territories',
+    title: 'Территории',
     contextMenu: {
       actions: [
         {
@@ -22,7 +22,7 @@ export const config = {
           isShow: {
             condition: [
               {
-                permissions: [4],
+                permissions: [4, 17],
                 type: true,
               },
             ],
@@ -30,11 +30,10 @@ export const config = {
           action: {
             type: 'confirm',
             dialog: {
-              text: 'Вы подтверждаете удаление банка?',
+              text: 'Вы подтверждаете удаление территории?',
               function: async (context) => {
-                await context.store.dispatch('form/update', {
-                  url: 'set/data/bank',
-                  body: { data: { id: context.data.row.id, del: 1 } },
+                await context.store.dispatch('form/delForm', {
+                  url: `delete/x5/territories/${context.data.row.id}`,
                 })
               },
             },
@@ -56,7 +55,7 @@ export const config = {
         label: 'Добавить',
         class: ['v-table-button--custom'],
         type: 'changeUrl',
-        url: 'bank/add',
+        url: 'x5territories/add',
         backgroundColor: '#fff',
       },
     ],
@@ -79,8 +78,8 @@ export const config = {
         },
       ],
       isShow: true,
-      width: '90',
-      alias: 'id',
+      width: '20',
+      alias: 'x5.id',
       value: 'id',
       search: {
         field: '',
@@ -105,33 +104,8 @@ export const config = {
       ],
       isShow: true,
       width: '90',
-      alias: 'name',
+      alias: 'x5.name',
       value: 'name',
-      search: {
-        field: '',
-        isShow: true,
-      },
-    },
-    {
-      title: 'Цвет',
-      type: 'default',
-      align: 'center',
-      fixed: {
-        value: false,
-        position: 'left',
-      },
-      sorts: [
-        {
-          type: 'text',
-          default: '',
-          value: '',
-          isShow: false,
-        },
-      ],
-      isShow: true,
-      width: '90',
-      alias: 'color',
-      value: 'color',
       search: {
         field: '',
         isShow: true,
@@ -153,9 +127,12 @@ export const config = {
     method: 'get',
     alias: 'bank',
     url: '/get/form/',
-    name: 'Банки',
+    name: 'Зоны',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-    tabs: [_.cloneDeep(formBankAddEdit), _.cloneDeep(formBankAddEdit)],
+    tabs: [
+      _.cloneDeep(formTerritoriesAddEdit),
+      _.cloneDeep(formTerritoriesAddEdit),
+    ],
     activeTab: null,
   },
 }

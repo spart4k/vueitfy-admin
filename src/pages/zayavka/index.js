@@ -62,8 +62,8 @@ const config = {
             type: 'confirm',
             dialog: {
               text: 'Вы подтверждаете удаление заявки?',
-              function: (context) => {
-                context.store.dispatch('form/update', {
+              function: async (context) => {
+                await context.store.dispatch('form/update', {
                   url: 'set/data/zayavka',
                   body: { data: { id: context.data.row.id, del: 1 } },
                 })
