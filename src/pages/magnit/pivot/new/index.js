@@ -49,7 +49,7 @@ export const config = {
         isShow: {
           condition: [
             {
-              permissions: [3, 4, 8, 17],
+              permissions: [3, 4, 5, 8, 17],
               type: true,
             },
           ],
