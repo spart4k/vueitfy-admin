@@ -1401,7 +1401,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/payment_object_id',
+      url: 'get/pagination_list/object_payment_id',
       position: {
         cols: 12,
         sm: {
@@ -1451,6 +1451,11 @@ export default {
           // source: 'formData',
           type: 'array',
           value: '',
+        },
+        {
+          alias: 'mode',
+          source: 'mode',
+          type: 'num',
         },
       ],
       dependence: [
