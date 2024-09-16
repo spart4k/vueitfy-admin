@@ -12,16 +12,17 @@ import {
 import { stringAction } from '@/utils/actions'
 import { required, hasDate, hasTime, nameLength } from '@/utils/validation.js'
 import { v4 as uuidv4 } from 'uuid'
+import deptAdd from './form-personal-debetor-add.js'
 
-function changeSort(config, tab) {
+function changeSort(context, tab) {
   // let btn = config.panel.buttons.find((x) => x.function === changeSort)
   // let heading = config.head.find((x) => x.changeable)
   if (tab.value === 2) {
-    config.head = holdPaymentsConfigHead
-    config.options.url = 'get/pagination/hold_payments'
+    context.config.head = holdPaymentsConfigHead
+    context.config.options.url = 'get/pagination/hold_payments'
   } else if (tab.value === 1) {
-    config.head = debetorConfigHead
-    config.options.url = 'get/pagination/personal_debit'
+    context.config.head = debetorConfigHead
+    context.config.options.url = 'get/pagination/personal_debit'
   }
 }
 
@@ -409,6 +410,21 @@ const tablePersonalDebt = {
             },
           ],
         },
+        {
+          label: 'Добавить',
+          class: ['v-table-button--custom'],
+          type: 'changeUrl',
+          url: 'personal/:id/debt-add',
+          backgroundColor: '#fff',
+          // isShow: {
+          //   condition: [
+          //     {
+          //       permissions: [1, 9],
+          //       type: true,
+          //     },
+          //   ],
+          // },
+        },
         // {
         //   label: 'Скачать',
         //   class: ['v-table-button--custom'],
@@ -426,7 +442,15 @@ const tablePersonalDebt = {
       totalPages: null,
       footer: null,
     },
-    detail: undefined,
+    detail: {
+      type: 'popup', // String 'popup' or 'page'
+      classes: [''], // List class
+      width: '780px',
+      method: 'get',
+      url: '/get/form/',
+      bootstrapClass: [''],
+      tabs: [deptAdd],
+    },
     actions: [
       stringAction({
         text: 'Закрыть',
@@ -448,7 +472,7 @@ const tablePersonalDebt = {
       },
       {
         mainData: 'direction_json',
-        value: [1, 6],
+        value: [1, 6, 2],
         type: true,
       },
     ],

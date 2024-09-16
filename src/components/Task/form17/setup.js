@@ -114,7 +114,6 @@ const Form17 = defineComponent({
       let form_data = new FormData()
       form_data.append('file', e[0])
       isSetTask.value = true
-      console.log('load')
       // updateFileData = useRequest({
       //   context,
       //   request: () =>
@@ -125,7 +124,6 @@ const Form17 = defineComponent({
       //       from_task: true,
       //     }),
       // })
-      console.log(loadImage)
       loadImage = useRequest({
         context,
         request: () =>
@@ -147,13 +145,17 @@ const Form17 = defineComponent({
               process_id: data.task.process_id,
               manager_id: data.task.from_account_id,
               task_id: data.task.id,
+              file_output: '/personal_doc' + '/' + fileName,
               parent_action: data.task.id,
               personal_target_id: data.entity.id,
-              file_output: fileName,
+              object_id: data.entity.object_id,
+              service_id: services_spr[data.entity.doljnost_id],
+              date_target: data.entity.date_target,
               have_price: data.entity.direction_id !== 7,
               constructed: data.entity.direction_id === 7,
-              object_id: data.entity.object_id,
-              date_target: data.entity.date_target,
+              doljnost_id: JSON.parse(data.task.dop_data).doljnost_id
+                ? JSON.parse(data.task.dop_data).doljnost_id
+                : data.entity.doljnost_id,
             },
           })
         },
@@ -270,7 +272,6 @@ const Form17 = defineComponent({
         data.entity.doljnost_id === 33
       ) {
         // updateFileData.makeRequest()
-        console.log(loadImage)
         await loadImage.makeRequest()
         result = await changeStatusTask.makeRequest()
       } else if (data.entity.direction_id == 6) {
@@ -348,6 +349,7 @@ const Form17 = defineComponent({
                 doljnost_id: data.entity.doljnost_id,
                 date_target: data.entity.date_target,
                 personal_target_id: data.entity.id,
+                from_account_id: store.state.user.id,
                 date_add: moment(
                   new Date().toLocaleString('en-US', {
                     timeZone: 'Europe/Moscow',

@@ -13,10 +13,12 @@
           v-model="value"
           :label="label"
           append-icon="mdi-calendar"
-          readonly
+          :readonly="readonly"
           v-bind="attrs"
+          v-mask="mask"
           v-on="on"
           :error-messages="errorMessages"
+          @click:append="menu = true"
         ></v-text-field>
       </template>
       <v-tabs mobile-breakpoint="0" grow v-model="activeTab">
@@ -24,7 +26,7 @@
           {{ item.name }}
         </v-tab>
       </v-tabs>
-      <v-tabs-items touchless v-model="activeTab">
+      <v-tabs-items v-model="activeTab">
         <v-tab-item>
           <v-date-picker
             v-model="tabs.date.value"
@@ -32,7 +34,7 @@
             color="primary"
             locale="ru-RU"
             append-icon="mdi-calendar"
-            readonly
+            :readonly="readonly"
             :first-day-of-week="1"
           ></v-date-picker>
         </v-tab-item>
@@ -41,7 +43,7 @@
             ref="menuTime"
             v-model="tabs.time.value"
             format="ampm"
-            readonly
+            :readonly="readonly"
             @click:minute="menuRef.save(tabs.time.value)"
           />
         </v-tab-item>

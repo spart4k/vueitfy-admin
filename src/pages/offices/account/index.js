@@ -140,7 +140,6 @@ export const editFields = [
   //     condition: [
   //       {
   //         funcCondition: (context) => {
-  //           console.log(context.store.state.user)
   //           return context.store.state.user.permission_id !== 4
   //         },
   //         type: true,
@@ -354,12 +353,6 @@ const config = {
       //         condition: [
       //           {
       //             funcCondition: (ctx) => {
-      //               console.log(ctx)
-      //               console.log(
-      //                 ctx.store.state.user.permission_id === 4,
-      //                 (ctx.store.state.user.permission_id === 3,
-      //                 ctx.mainData.from_account_id === ctx.store.state.user.id)
-      //               )
       //               return (
       //                 ctx.store.state.user.permission_id === 4 ||
       //                 (ctx.store.state.user.permission_id === 3 &&
@@ -376,7 +369,6 @@ const config = {
       //         dialog: {
       //           text: 'Вы подтверждаете удаление назначения?',
       //           function: async (context) => {
-      //             console.log(context)
       //             const { code } = await context.store.dispatch(
       //               'form/putForm',
       //               {

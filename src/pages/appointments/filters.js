@@ -5,6 +5,7 @@ import {
   dateRangeField,
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
+import { isBrigadir, isManager } from '@/utils/permissions'
 
 const filters = {
   id: 0,
@@ -117,10 +118,13 @@ const filters = {
       aliasFilter: 'pt.manager',
       isShow: {
         value: false,
-        condition: [
+        type: 'every',
+        conditions: [
           {
-            permissions: [13, 1],
-            type: false,
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return !isManager(context) && !isBrigadir(context)
+            },
           },
         ],
       },

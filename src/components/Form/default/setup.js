@@ -44,6 +44,14 @@ export default {
       type: Object,
       default: () => {},
     },
+    formDataParent: {
+      type: Object,
+      default: () => {},
+    },
+    tableComp: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -232,8 +240,15 @@ export default {
       appendActionShow,
       isRequired,
       fields,
+      emitFormData,
+      environment,
+      addFiles,
+      originalData,
+      entityData,
+      getDepFilters,
     } = useForm({
       form: props.tab,
+      tableComp: props.tableComp,
       context,
       detail: props.detail,
       loading,
@@ -247,6 +262,7 @@ export default {
       createForm,
       deleteFormById,
       changeFormId,
+      formDataParent: props.formDataParent,
     })
 
     onMounted(async () => {
@@ -289,6 +305,13 @@ export default {
       changeValue,
       isRequired,
       fields,
+      mode: isEdit.value,
+      emitFormData,
+      environment,
+      addFiles,
+      originalData,
+      entityData,
+      getDepFilters,
     }
   },
 }

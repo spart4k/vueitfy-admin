@@ -2,6 +2,7 @@ import Vue, {
   nextTick,
   computed,
   ref,
+  unref,
   onMounted,
   watch,
   onUnmounted,
@@ -12,6 +13,7 @@ import FormDefault from '@/components/Form/default/index.vue'
 import DefaultStage from './LastStage/default/index.vue'
 import PaymentStage from './LastStage/payment/index.vue'
 import ZayavkaStage from './LastStage/zayavka/index.vue'
+import EmploymentStage from './LastStage/employment/index.vue'
 
 import useForm from '@/compositions/useForm.js'
 import useRequest from '@/compositions/useRequest'
@@ -37,6 +39,7 @@ export default {
     DefaultStage,
     PaymentStage,
     ZayavkaStage,
+    EmploymentStage,
   },
   props: {
     tab: {
@@ -229,8 +232,9 @@ export default {
     }
 
     const loadParser = async () => {
+      let firstReq
       if (proxyTab.value.outputType === 1) {
-        const firstReq = await changeOutputStage({
+        firstReq = await changeOutputStage({
           url: 'create/pay/by_import',
           body: {
             data: {
@@ -242,7 +246,7 @@ export default {
         if (firstReq.code !== 1) return
         stage.value.count_payment = firstReq.data.count_payment
       } else if (proxyTab.value.outputType === 2) {
-        const firstReq = await changeOutputStage({
+        firstReq = await changeOutputStage({
           url: 'create/magnit/query/by_parser',
           body: {
             data: {
@@ -253,10 +257,21 @@ export default {
         if (firstReq.code !== 1) return
         stage.value.count_query = firstReq.data.count_query
       } else if (proxyTab.value.outputType === 3) {
-        const firstReq = await changeOutputStage({
+        firstReq = await changeOutputStage({
           url: `add/target/service/${stage.value.outputId}`,
           body: { data: {} },
         })
+      } else if (proxyTab.value.outputType === 4) {
+        firstReq = await changeOutputStage({
+          url: 'create/history_employed',
+          body: {
+            data: {
+              parser_id: stage.value.outputId,
+              type_parser: stage.value.type,
+            },
+          },
+        })
+        if (firstReq.code !== 1) return
       }
       const secondReq = await setFinalOutput({
         url: 'set/data/active_parsers',
@@ -267,7 +282,7 @@ export default {
           },
         },
       })
-      if (secondReq.result === 1) {
+      if (secondReq.result === 1 && proxyTab.value.outputType !== 4) {
         store.commit('notifies/showMessage', {
           color: 'success',
           content:
@@ -275,7 +290,9 @@ export default {
               ? `Создано ${stage.value.count_payment} начислений`
               : proxyTab.value.outputType === 2
               ? `Создано ${stage.value.count_query} заявок`
-              : `Добавлена выработка на ${stage.value.count} назначений`,
+              : proxyTab.value.outputType === 3
+              ? `Добавлена выработка на ${stage.value.count} назначений`
+              : '',
           timeout: 3000,
         })
       }
@@ -283,6 +300,7 @@ export default {
         emit('getItems')
         emit('closePopup')
       }
+      return firstReq
     }
 
     const getDownloadPath = async () => {
@@ -303,7 +321,8 @@ export default {
       }
     }
 
-    const buttonHandler = (action) => {
+    const buttonHandler = async (action) => {
+      let parserData
       if (action.confirm && !confirm.value.isShow) {
         confirm.value = {
           isShow: true,
@@ -313,11 +332,27 @@ export default {
         }
         return
       } else if (action.local) {
-        if (action.action === 'changeStage') changeStage(action.changeDirection)
-        if (action.action === 'loadParser') loadParser()
+        if (action.action === 'changeStage')
+          await changeStage(action.changeDirection)
+        if (action.action === 'loadParser') parserData = await loadParser()
         stage.value.showForm = false
       } else {
         clickHandler({ action, skipValidation: action.skipValidation })
+      }
+      if (action.conditionCode) {
+        const response = action?.conditionCode?.results?.find((x) => {
+          return x.value === parserData[action.conditionCode.key]
+        })
+        if (response.type) {
+          store.commit('notifies/showMessage', {
+            color: response.type,
+            content: unref(response.text),
+            component: response.component,
+            data: {
+              response: parserData,
+            },
+          })
+        }
       }
       confirm.value.isShow = false
     }

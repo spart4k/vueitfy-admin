@@ -10,9 +10,13 @@ import tablePersonalScan from './config/table-personal-scan.js'
 import formPersonalEdit from './config/form-personal-edit.js'
 import formPersonalAdd from './config/form-personal-add.js'
 import tablePersonalX5 from './config/table-personal-x5.js'
+import tablePersonalEmployment from './config/table-personal-employment.js'
 import formPersonalDocs from './config/form-personal-docs.js'
 import formPersonalDirection from './config/form-personal-direction.js'
 import formDocumentDownload from './config/form-document-download.js'
+import formPersonalParser from './config/form-personal-parser.js'
+import formPersonalEmployment from './config/form-personal-employment'
+import customPersonalReport from './config/custom-personal-report'
 
 import formKeyAdd from './config/form-key-add.js'
 import formKeyEdit from './config/form-key-edit.js'
@@ -32,7 +36,10 @@ const nonExportTabs = [
   formBind,
   formPersonalAdd,
   formPersonalDirection,
-  tablePersonalX5,
+  formPersonalEmployment,
+  tablePersonalEmployment,
+  formPersonalParser,
+  customPersonalReport,
 ]
 
 export const personalTabs = [
@@ -40,6 +47,7 @@ export const personalTabs = [
   formPersonalDocs,
   tablePersonalScan,
   tablePersonalBank,
+  tablePersonalX5,
   tablePersonalDebt,
   formDocumentDownload,
 ]
@@ -57,9 +65,7 @@ const contextMenuPersonal = {
           },
           {
             funcCondition: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return (
                 directions.length === 1 &&
                 (directions.includes(7) || directions.includes(2))
@@ -86,9 +92,7 @@ const contextMenuPersonal = {
           },
           {
             funcCondition: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return (
                 directions.length === 1 &&
                 (directions.includes(7) || directions.includes(2))
@@ -160,6 +164,27 @@ export const config = {
                 },
               ],
             },
+          },
+          {
+            label: 'Выгрузка реестра',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'personal/employment',
+            backgroundColor: '#fff',
+          },
+          {
+            label: 'Парсер реестра',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'personal/employment_parser',
+            backgroundColor: '#fff',
+          },
+          {
+            label: 'Отчет А/В',
+            class: ['v-table-button--custom'],
+            type: 'changeUrl',
+            url: 'personal/report',
+            backgroundColor: '#fff',
           },
         ],
       },
@@ -787,17 +812,13 @@ export const config = {
         condition: [
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return !(directions.length === 1 && directions.includes(7))
             },
           },
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return directions.includes(1)
             },
           },
@@ -1255,17 +1276,13 @@ export const config = {
           },
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return !(directions.length === 1 && directions.includes(7))
             },
           },
           {
             funcComputed: (context) => {
-              const directions = JSON.parse(
-                context.store.state.user.direction_json
-              )
+              const directions = context.store.state.user.direction_json
               return directions.includes(1)
             },
           },
@@ -1276,6 +1293,175 @@ export const config = {
         ],
       },
       filters: filtersKey,
+    },
+    {
+      selector: '#mainTable',
+      options: {
+        selecting: true,
+        search: {
+          function: searchInputing,
+        },
+        headerFixed: true,
+        //url: 'https://dummyjson.com/users',
+        url: 'get/pagination/employment_personal',
+        title: 'Трудоустройства',
+      },
+      type: 'TableDefault',
+      panel: {
+        buttons: [
+          {
+            label: 'Обновить',
+            class: ['v-table-button--custom'],
+            url: '$IconEdit',
+            function: consolePanel,
+            backgroundColor: '#ffffff',
+          },
+        ],
+      },
+      head: [
+        {
+          title: 'Линейщик',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '90',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'personal_name',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Юридическое название',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: 'left',
+          },
+          sorts: [
+            {
+              type: 'string',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '150',
+          alias: "CONCAT(p.surname, ' ', p.name_n, ' ', p.patronymic)",
+          value: 'juridical_name',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Дата трудоустройства',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: undefined,
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '150',
+          value: 'date_start',
+          alias: 'm.max_date',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Дата увольнения',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: undefined,
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '150',
+          value: 'date_end',
+          alias: 'hep.date_end',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+        {
+          title: 'Дата редактирования',
+          type: 'default',
+          align: 'center',
+          fixed: {
+            value: false,
+            position: undefined,
+          },
+          sorts: [
+            {
+              type: 'text',
+              default: '',
+              value: '',
+              isShow: false,
+            },
+          ],
+          isShow: true,
+          width: '150',
+          value: 'date_edit',
+          alias: 'l.date_edit',
+          search: {
+            field: '',
+            isShow: true,
+          },
+        },
+      ],
+      data: {
+        rows: [],
+        totalRows: null,
+        pageLength: 20,
+        currentPage: 1,
+        totalPages: null,
+      },
+      detail: null,
+      isShow: {
+        condition: [
+          {
+            permissions: [4, 12, 22],
+            type: true,
+          },
+        ],
+      },
+      // filters: filtersKey,
     },
   ],
 }

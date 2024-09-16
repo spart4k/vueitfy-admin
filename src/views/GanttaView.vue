@@ -136,9 +136,7 @@ function generateItems() {
     // const id = GSTC.api.GSTCID(i.toString())
     const id = `gstcid-${i}`
     // const rowId = GSTC.api.GSTCID(Math.floor(Math.random() * 100).toString())
-    // console.log(rowId)
     start = start.add(1, 'day')
-    // console.log(start.valueOf())
     items[id] = {
       id,
       // label: poeples.value[i].name,

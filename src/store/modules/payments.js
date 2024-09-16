@@ -1,5 +1,5 @@
 //import
-import { getOutput, updateOutput } from '@/api/payments'
+import { getOutput, updateOutput, checkDebit } from '@/api/payments'
 //import axios from 'axios'
 
 const account = {
@@ -15,6 +15,11 @@ const account = {
     },
     async updateOutput(_, body) {
       const result = await updateOutput(body)
+      return result
+    },
+    async checkDebit(_, params) {
+      const { url } = params
+      const result = await checkDebit(url)
       return result
     },
   },

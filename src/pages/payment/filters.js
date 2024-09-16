@@ -7,6 +7,7 @@ import {
 } from '@/utils/fields.js'
 import { stringAction } from '@/utils/actions.js'
 import { required } from '@/utils/validation.js'
+import { isManager } from '@/utils/permissions'
 
 export default {
   id: 0,
@@ -23,6 +24,8 @@ export default {
     { alias: 'bank_id', filter: [] },
     { alias: 'bank_id', filter: [] },
     { alias: 'doljnost_id', filter: [] },
+    { alias: 'object_type', filter: [] },
+    { alias: 'object_subtype', filter: [] },
   ],
   actions: [
     stringAction({
@@ -132,7 +135,7 @@ export default {
       bootstrapClass: [''],
       aliasFilter: 'p.bank_id',
     }),
-    selectField({
+    autocompleteField({
       label: 'Менеджеры',
       name: 'account_id',
       alias: 'managers',
@@ -144,6 +147,9 @@ export default {
         value: 'id',
       },
       items: [],
+      page: 1,
+      search: '',
+      url: 'get/pagination_list/filter_personal_target_manager',
       position: {
         cols: 12,
         sm: 12,
@@ -152,10 +158,13 @@ export default {
       aliasFilter: 'p.account_id',
       isShow: {
         value: false,
-        condition: [
+        type: 'every',
+        conditions: [
           {
-            permissions: [1],
-            type: false,
+            target: 'funcCondition',
+            funcCondition: (context) => {
+              return !isManager(context)
+            },
           },
         ],
       },
@@ -203,24 +212,37 @@ export default {
       },
       bootstrapClass: [''],
       aliasFilter: 'p.direction_id',
-      // dependence: [
-      //   {
-      //     type: 'api',
-      //     module: 'selects/getListUpdate',
-      //     field: 'object_id',
-      //     filter: [
-      //       {
-      //         field: 'direction_id',
-      //         value: '',
-      //       },
-      //       {
-      //         field: 'account_id',
-      //         value: '',
-      //       },
-      //     ],
-      //     url: 'get/pagination_list/object',
-      //   },
-      // ],
+      updateList: [
+        {
+          alias: 'object_type',
+          filter: [
+            {
+              field: 'direction_json',
+              value: '',
+              source: 'formData',
+              type: 'array',
+            },
+          ],
+        },
+      ],
+      dependence: [
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'object_id',
+          filter: [
+            {
+              field: 'direction_id',
+              value: '',
+            },
+            {
+              field: 'account_id',
+              value: '',
+            },
+          ],
+          url: 'get/pagination_list/object',
+        },
+      ],
     }),
     autocompleteField({
       label: 'Объект',
@@ -297,6 +319,57 @@ export default {
       //   //   url: 'get/pagination_list/object',
       //   // },
       // ],
+    }),
+    selectField({
+      label: 'Тип',
+      name: 'object_type',
+      typeFilter: 'select',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'o.type',
+      updateList: [
+        {
+          alias: 'object_subtype',
+          filter: [
+            {
+              field: 'object_type',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+          ],
+        },
+      ],
+    }),
+    selectField({
+      label: 'Подтип',
+      name: 'object_subtype',
+      typeFilter: 'select',
+      subtype: 'multiple',
+      placeholder: '',
+      class: [''],
+      selectOption: {
+        text: 'name',
+        value: 'id',
+      },
+      items: [],
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      bootstrapClass: [''],
+      aliasFilter: 'o.subtype',
     }),
     autocompleteField({
       label: 'Персонал',

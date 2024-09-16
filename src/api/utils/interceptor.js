@@ -5,14 +5,17 @@ import router from '@/router'
 import { useRouter } from 'vue-router/composables'
 
 const setup = (axios) => {
-  axios.interceptors.request.use((config) => {
-    //config.headers['Content-Type'] = ''
+  const axiosApiInstance = axios.create()
+
+  const setToken = (config) => {
     const token = localStorage.getItem('token')
     if (token && token.length > 0) {
-      //const header = process.env.VUE_APP_ENVIRONMENT === 'staging' ? 'XAuth' : 'Authorization'
       const header = 'Authorization'
       config.headers[header] = `Bearer ${token}`
     }
+  }
+  axios.interceptors.request.use((config) => {
+    setToken(config)
     config.paramsSerializer = (params) =>
       Qs.stringify(params, {
         arrayFormat: 'brackets',
@@ -32,25 +35,9 @@ const setup = (axios) => {
       return response
     },
     async (error) => {
-      const originalConfig = error.config
+      const originalRequest = error.config
       // Do something with response error
-
-      if (
-        error?.response?.status === 403 &&
-        error?.response?.data?.message === 'invalid credentials'
-      ) {
-        store.commit('notifies/showMessage', {
-          color: 'error',
-          content: 'Не верный логин или пароль',
-          timeout: 1000,
-        })
-        return Promise.reject(error.response)
-      }
-      if (error?.response?.status === 401 && !originalConfig._retry) {
-        originalConfig._retry = true
-        // await refresh()
-        //
-
+      if (error?.response?.status === 403) {
         if (router.currentRoute.path !== '/login') {
           store.commit('notifies/showMessage', {
             color: 'error',
@@ -59,10 +46,12 @@ const setup = (axios) => {
           })
           router.push('/login')
         }
-        // const router = useRouter()
-        // router.push('/login')
-        // return axios(originalConfig)
-        //
+      } else if (error?.response?.status === 401) {
+        const data = await store.dispatch('auth/refresh', { is_refresh: false })
+        if (data.code === 1) {
+          setToken(originalRequest)
+          return axiosApiInstance(originalRequest)
+        }
       }
       return Promise.reject(error)
     }

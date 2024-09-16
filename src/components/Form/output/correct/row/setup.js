@@ -59,6 +59,7 @@ export default {
               cols: 12,
               sm: 6,
             },
+            value: props.service.price,
             bootstrapClass: [''],
             // required: { required },
           })
@@ -75,6 +76,7 @@ export default {
               sm: 6,
             },
             bootstrapClass: [''],
+            value: props.service.qty,
             // required: { required },
             validations: { required },
           })
@@ -91,6 +93,7 @@ export default {
               sm: 6,
             },
             bootstrapClass: [''],
+            value: props.service.sum,
             // required: { required },
           })
           break
@@ -111,8 +114,8 @@ export default {
               cols: 12,
               sm: 6,
             },
-            value: 1,
             disable: true,
+            value: props.service.service_id,
             validations: { required },
             bootstrapClass: [''],
           })
