@@ -4047,7 +4047,11 @@ export default {
                 (context.formData.vid_vedomost_id === 9 &&
                   context.formData.status_id === 3 &&
                   context.store.state.user.id ===
-                    context.formData.status_account_id)
+                    context.formData.status_account_id) ||
+                (isRoznica(context) &&
+                  [2, 3].includes(context.formData.status_id) &&
+                  (isOKK(context) || isROKK(context)) &&
+                  context.mode === 'edit')
               )
             },
             type: false,
@@ -4141,7 +4145,11 @@ export default {
                   (isROKK(context) || isDirector(context) || isDBA(context))) ||
                 // 	если предыдущий статус установлен РОКК или DBA, статус «Согласован» может проставить только DBA.
                 ([17, 4].includes(context.entityData.status_permission) &&
-                  isDBA(context))
+                  isDBA(context)) ||
+                (isRoznica(context) &&
+                  [1, 3].includes(context.formData.status_id) &&
+                  (isOKK(context) || isROKK(context)) &&
+                  context.mode === 'edit')
               )
             },
             type: false,
@@ -4296,8 +4304,8 @@ export default {
                     isOKK(context) ||
                     isROKK(context))) ||
                 (isRoznica(context) &&
-                  [2].includes(context.formData.status_id) &&
-                  [3].includes(context.entityData.status_permission) &&
+                  [2, 1].includes(context.formData.status_id) &&
+                  (isOKK(context) || isROKK(context)) &&
                   context.mode === 'edit')
               )
             },
