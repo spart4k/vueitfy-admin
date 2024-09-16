@@ -782,6 +782,15 @@ const routes = [
             component: Detail,
           },
           {
+            name: 'magnit_pivot-personal/scan-add',
+            path: '/magnit_pivot/:id/new',
+            meta: {
+              mode: ['personal', 'new'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
             name: 'magnit_pivot-personal/:card',
             path: '/magnit_pivot/:id/:card',
             meta: {
