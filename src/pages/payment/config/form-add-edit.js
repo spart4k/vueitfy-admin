@@ -4410,12 +4410,12 @@ export default {
             funcCondition: (context) => context.formData.status_id === 6,
             type: true,
           },
-          {
-            funcCondition: (ctx) => {
-              return !!ctx.entityData.from_account_chief
-            },
-            type: true,
-          },
+          // {
+          //   funcCondition: (ctx) => {
+          //     return !!ctx.entityData.from_account_chief
+          //   },
+          //   type: true,
+          // },
           {
             funcCondition: (ctx) => {
               return !!(
@@ -4466,15 +4466,15 @@ export default {
             },
             type: false,
           },
-          {
-            funcCondition: (ctx) => {
-              return !!(
-                ctx.entityData.from_account_chief &&
-                ctx.formData.status_id !== 1
-              )
-            },
-            type: true,
-          },
+          // {
+          //   funcCondition: (ctx) => {
+          //     return !!(
+          //       ctx.entityData.from_account_chief &&
+          //       ctx.formData.status_id !== 1
+          //     )
+          //   },
+          //   type: true,
+          // },
         ],
       },
     }),
@@ -4510,15 +4510,15 @@ export default {
               context.formData.status_id === 4,
             type: false,
           },
-          {
-            funcCondition: (ctx) => {
-              return !!(
-                ctx.entityData.from_account_chief &&
-                ctx.formData.status_id !== 1
-              )
-            },
-            type: true,
-          },
+          // {
+          //   funcCondition: (ctx) => {
+          //     return !!(
+          //       ctx.entityData.from_account_chief &&
+          //       ctx.formData.status_id !== 1
+          //     )
+          //   },
+          //   type: true,
+          // },
         ],
       },
     }),
