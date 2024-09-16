@@ -85,8 +85,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете изъятие карты?',
-                  function: (context) => {
-                    context.store.dispatch('form/putForm', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/putForm', {
                       url: 'update/bank/remove_assign',
                       body: { data: { card_id: context.data.row.id } },
                     })
@@ -120,8 +120,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете блокировку карты?',
-                  function: (context) => {
-                    context.store.dispatch('form/putForm', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/putForm', {
                       url: `update/corp_card/block/${context.data.row.id}`,
                       body: { data: { is_block: true } },
                     })
@@ -155,8 +155,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете разблокировку карты?',
-                  function: (context) => {
-                    context.store.dispatch('form/putForm', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/putForm', {
                       url: `update/corp_card/block/${context.data.row.id}`,
                       body: { data: { is_block: false } },
                     })
@@ -203,8 +203,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете удаление карты?',
-                  function: (context) => {
-                    context.store.dispatch('form/putForm', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/putForm', {
                       url: `update/corp_card/archive/${context.data.row.id}`,
                       body: { data: { is_archive: true } },
                     })
@@ -239,8 +239,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете восстановление карты?',
-                  function: (context) => {
-                    context.store.dispatch('form/putForm', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/putForm', {
                       url: `update/corp_card/archive/${context.data.row.id}`,
                       body: { data: { is_archive: false } },
                     })
@@ -556,8 +556,8 @@ export const config = {
                 type: 'confirm',
                 dialog: {
                   text: 'Вы подтверждаете восстановление карты?',
-                  function: (context) => {
-                    context.store.dispatch('form/putForm', {
+                  function: async (context) => {
+                    await context.store.dispatch('form/putForm', {
                       url: `update/corp_card/archive/${context.data.row.id}`,
                       body: { data: { is_archive: false } },
                     })

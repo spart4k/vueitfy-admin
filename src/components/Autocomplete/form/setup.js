@@ -48,13 +48,17 @@ export default {
     getDepFilters: {
       type: Function,
     },
+    items: {
+      type: Array,
+      default: null,
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
     const loading = ref(false)
     const route = useRoute()
     const proxyValue = toRef(props, 'value')
-    const proxyItems = toRef(props.field, 'items')
+    const proxyItems = toRef(props.items ? props : props.field, 'items')
     const searchProps = ref(props.field.search)
 
     const availableItems = computed(() => {

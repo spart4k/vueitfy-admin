@@ -564,7 +564,7 @@ export default function ({
         tabStorageChange(response, data)
       }
       if (response?.emit === 'closePopup') {
-        emit('closePopup', response?.to)
+        emit('closePopup')
         emit('getItems')
       }
     } else if (response?.type === 'error') {
@@ -1344,6 +1344,10 @@ export default function ({
         const fieldItems = fields[depField].items.find(
           (el) => el.id === formData[depField]
         )
+        changeAutocomplete({
+          value: formData[depField],
+          field: fields[depField],
+        })
         // await getDependies({
         //   value: formData[depField],
         //   field: fields[depField],
