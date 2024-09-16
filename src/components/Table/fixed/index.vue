@@ -147,8 +147,12 @@
                 :color="button.color && 'rgb(255, 144, 0)'"
                 small
               >
-                <v-icon small :class="[button.label && 'mr-2']">
-                  {{ button.url }}
+                <v-icon
+                  v-if="button.type === 'icon' || button.icon"
+                  small
+                  :class="[button.label && 'mr-2']"
+                >
+                  {{ button.icon }}
                 </v-icon>
                 <p>{{ button.label }}</p>
               </v-btn>

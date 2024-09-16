@@ -681,7 +681,7 @@ const config = {
       {
         label: 'Обновить',
         class: ['v-table-button--custom'],
-        url: '$IconEdit',
+        icon: '$IconEdit',
         type: 'refresh',
         function: consolePanel,
         backgroundColor: '#ffffff',
