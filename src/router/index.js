@@ -563,15 +563,6 @@ const routes = [
         },
         component: Detail,
       },
-      {
-        name: 'personal/report',
-        path: '/personal/report',
-        meta: {
-          mode: ['report'],
-          label: 'Отчет А/В',
-        },
-        component: Detail,
-      },
     ],
   },
   {
@@ -946,6 +937,15 @@ const routes = [
         meta: {
           mode: ['output'],
           label: 'Парсер Х5',
+        },
+        component: Detail,
+      },
+      {
+        name: 'pivot_payment/report',
+        path: '/pivot_payment/report',
+        meta: {
+          mode: ['report'],
+          label: 'Отчет А/В',
         },
         component: Detail,
       },
