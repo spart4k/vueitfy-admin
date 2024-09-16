@@ -1,5 +1,6 @@
 import filters from './filters'
 import formPaymentOutput from './config/form-payment-output.js'
+import customPivotReport from './config/custom-pivot-report'
 
 function changeSort(config) {
   let btn = config.panel.buttons.find((x) => x.subtype === 'changeHeads')
@@ -57,7 +58,7 @@ export const config = {
         label: '',
         class: ['v-table-button--custom'],
         typeLabel: 'Объекты',
-        url: '$IconUpdate',
+        icon: '$IconUpdate',
         function: changeSort,
         backgroundColor: '#ffffff',
         type: 'refresh',
@@ -66,8 +67,8 @@ export const config = {
       {
         label: 'Парсер Х5',
         class: ['v-table-button--custom'],
-        url: 'pivot_payment-output',
         type: 'changeUrl',
+        url: 'pivot_payment-output',
         backgroundColor: '#fff',
         isShow: {
           condition: [
@@ -77,6 +78,13 @@ export const config = {
             },
           ],
         },
+      },
+      {
+        label: 'Отчет А/В Х5',
+        class: ['v-table-button--custom'],
+        type: 'changeUrl',
+        url: 'pivot_payment/report',
+        backgroundColor: '#fff',
       },
     ],
     filters: true,
@@ -161,7 +169,7 @@ export const config = {
     url: '/get/form/',
     name: 'Табель розница',
     bootstrapClass: [''], // List class from bootstrap ( col-6, pa-2... )
-    tabs: [formPaymentOutput],
+    tabs: [formPaymentOutput, customPivotReport],
     activeTab: null,
   },
   filters,
