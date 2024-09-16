@@ -3298,18 +3298,18 @@ export default {
             },
             type: true,
           },
-          {
-            funcCondition: (context) => {
-              return (
-                isMagnit(context) &&
-                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
-                [1].includes(context.formData.status_id) &&
-                (isOKK(context) || isROKK(context)) &&
-                context.mode === 'edit'
-              )
-            },
-            type: true,
-          },
+          // {
+          //   funcCondition: (context) => {
+          //     return (
+          //       isMagnit(context) &&
+          //       [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+          //       [1].includes(context.formData.status_id) &&
+          //       (isOKK(context) || isROKK(context)) &&
+          //       context.mode === 'edit'
+          //     )
+          //   },
+          //   type: true,
+          // },
           {
             funcCondition: (context) => !context.formData.vid_vedomost_id,
             type: true,
@@ -4393,7 +4393,6 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isMagnit(context) ||
                 isAllBug(context) ||
                 (isDBA(context) && context.formData.status_id === 4) ||
                 (isX5(context) &&
@@ -4454,12 +4453,12 @@ export default {
             },
             type: true,
           },
-          {
-            funcCondition: (context) => {
-              return isMagnit(context)
-            },
-            type: false,
-          },
+          // {
+          //   funcCondition: (context) => {
+          //     return isMagnit(context)
+          //   },
+          //   type: false,
+          // },
           {
             funcCondition: (context) => {
               return isAllBug(context) && context.formData.status_id === 2
