@@ -4294,7 +4294,11 @@ export default {
                       !isTarget(context) &&
                       isVertical(context)) ||
                     isOKK(context) ||
-                    isROKK(context)))
+                    isROKK(context))) ||
+                (isRoznica(context) &&
+                  [2].includes(context.formData.status_id) &&
+                  [3].includes(context.entityData.status_permission) &&
+                  context.mode === 'edit')
               )
             },
             type: false,
@@ -4320,16 +4324,16 @@ export default {
             },
             type: true,
           },
-          {
-            funcCondition: (ctx) => {
-              return !!(
-                [2, 3].includes(ctx.formData.status_id) &&
-                [4, 3].includes(ctx.entityData.status_permission) &&
-                isOKK(ctx)
-              )
-            },
-            type: true,
-          },
+          // {
+          //   funcCondition: (ctx) => {
+          //     return !!(
+          //       [2, 3].includes(ctx.formData.status_id) &&
+          //       [4, 3].includes(ctx.entityData.status_permission) &&
+          //       isOKK(ctx)
+          //     )
+          //   },
+          //   type: true,
+          // },
           {
             funcCondition: (ctx) => {
               return !!(
