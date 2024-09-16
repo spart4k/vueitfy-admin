@@ -60,6 +60,7 @@ const isTarget = (ctx) => {
 
 const conditionLogistik = (context) => {
   return (
+    isLogistik(context) &&
     [1, 6, 7].includes(context.formData.direction_id) &&
     context.formData.account_id !== context.store.state.user.id &&
     (context.formData.status_id === 1 ||
@@ -81,12 +82,16 @@ const conditionX5 = (context) => {
 }
 
 const statusReject = (context) => {
-  return context.formData.status_id === 6 && context.mode === 'edit'
+  return (
+    context.formData.status_id === 6 &&
+    isLogistik(context) &&
+    context.mode === 'edit'
+  )
 }
 
 const ROKKdOKKLogistika = (context) => {
   return (
-    // isLogistik(context) &&
+    isLogistik(context) &&
     [8, 17].includes(context.store.state.user.permission_id) &&
     context.originalData.status_id !== 2 &&
     [1, 6, 7].includes(context.formData.direction_id)
