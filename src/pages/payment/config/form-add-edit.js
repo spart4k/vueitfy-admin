@@ -1606,7 +1606,9 @@ export default {
           },
           {
             funcCondition: (context) => {
-              return !context.formData.vid_vedomost_id
+              return (
+                !context.formData.vid_vedomost_id && context.mode === 'edit'
+              )
             },
             type: true,
           },
@@ -2445,7 +2447,8 @@ export default {
             type: true,
           },
           {
-            funcCondition: (context) => !context.formData.vid_vedomost_id,
+            funcCondition: (context) =>
+              !!(!context.formData.vid_vedomost_id && context.mode === 'edit'),
             type: true,
           },
           {
