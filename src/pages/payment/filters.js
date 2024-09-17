@@ -343,6 +343,7 @@ export default {
           alias: 'object_subtype',
           filter: [
             {
+              alias: 'type',
               field: 'object_type',
               value: '',
               source: 'formData',
