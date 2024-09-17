@@ -47,7 +47,7 @@
             :routeParam="id || $route.params[item.routeParam]"
             @closePopup="(e) => $emit('closePopup', e)"
             @getItems="(e) => $emit('getItems', e)"
-            @refreshData="$emit('refreshData')"
+            @refreshData="$emit('refreshData', $event)"
             @setFormData="setFormData"
             :formDataParent="formDataParent"
             :tableComp="$props.tableComp"

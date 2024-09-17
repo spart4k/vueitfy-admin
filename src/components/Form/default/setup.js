@@ -248,6 +248,7 @@ export default {
       addFiles,
       originalData,
       entityData,
+      getDepFilters,
     } = useForm({
       form: props.tab,
       tableComp: props.tableComp,
@@ -313,6 +314,7 @@ export default {
       addFiles,
       originalData,
       entityData,
+      getDepFilters,
     }
   },
 }

@@ -785,6 +785,15 @@ const routes = [
             component: Detail,
           },
           {
+            name: 'magnit_pivot-personal/scan-add',
+            path: '/magnit_pivot/:id/new',
+            meta: {
+              mode: ['personal', 'new'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
+          {
             name: 'magnit_pivot-personal/:card',
             path: '/magnit_pivot/:id/:card',
             meta: {
@@ -854,6 +863,17 @@ const routes = [
           label: 'Начисление',
         },
         component: Detail,
+        children: [
+          {
+            name: 'pivot_payment-edit/change-personal',
+            path: 'change-personal',
+            meta: {
+              mode: ['edit', 'change-personal'],
+              label: 'Сменить линейщика',
+            },
+            component: Detail,
+          },
+        ],
       },
       {
         name: 'pivot_payment-personal',
@@ -1120,6 +1140,15 @@ const routes = [
     component: AccountView,
     children: [
       {
+        name: 'account-add',
+        path: 'add',
+        meta: {
+          mode: ['add'],
+          label: 'Добавление аккаунта',
+        },
+        component: Detail,
+      },
+      {
         name: 'account/:id',
         path: ':id',
         component: Detail,
@@ -1130,7 +1159,7 @@ const routes = [
         children: [
           {
             name: 'account/:id/new_card',
-            path: '/account/:id/new_card',
+            path: ':id/new_card',
             meta: {
               mode: ['edit', 'new_card'],
               // label: 'Добавить аккаунта',
@@ -1139,7 +1168,7 @@ const routes = [
           },
           {
             name: 'account/:id/:card_id',
-            path: '/account/:id/:card_id',
+            path: ':id/:card_id',
             meta: {
               mode: ['edit', 'new_card'],
               // label: 'Добавить аккаунта',
@@ -1147,15 +1176,6 @@ const routes = [
             component: Detail,
           },
         ],
-      },
-      {
-        name: 'account-add',
-        path: '/account/add',
-        meta: {
-          mode: 'add',
-          label: 'Добавление аккаунта',
-        },
-        component: Detail,
       },
     ],
   },

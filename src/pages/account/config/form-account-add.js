@@ -30,7 +30,6 @@ export default {
   type: 'FormDefault',
   detail: true,
   lists: [
-    { alias: 'chief_id', filter: [] },
     { alias: 'direction_json', filter: [] },
     { alias: 'direction_id', filter: [] },
     { alias: 'grajdanstvo_id', filter: [] },
@@ -248,24 +247,24 @@ export default {
       validations: { required },
       bootstrapClass: [''],
       dependence: [
-        // {
-        //   type: 'api',
-        //   module: 'selects/getListUpdate',
-        //   field: 'chief_id',
-        //   url: 'get/pagination_list/chief_id',
-        //   filter: [
-        //     {
-        //       field: 'permission_id',
-        //       type: 'num',
-        //       value: '',
-        //     },
-        //     {
-        //       field: 'direction_json',
-        //       type: 'array',
-        //       value: '',
-        //     },
-        //   ],
-        // },
+        {
+          type: 'api',
+          module: 'selects/getListUpdate',
+          field: 'chief_id',
+          url: 'get/pagination_list/chief_id',
+          filter: [
+            {
+              field: 'permission_id',
+              type: 'num',
+              value: '',
+            },
+            {
+              field: 'direction_json',
+              type: 'array',
+              value: '',
+            },
+          ],
+        },
       ],
     }),
     autocompleteField({

@@ -208,7 +208,7 @@ export default function ({
         emit('closePopup')
         emit('getItems')
         if (action.refreshData) {
-          emit('refreshData')
+          emit('refreshData', true)
         }
       }
       if (action.handlingResponse) {
@@ -459,6 +459,7 @@ export default function ({
                 formData,
                 originalData: originalData.value,
                 environment,
+                entityData,
               }
               return (
                 conditionEl.funcCondition(conditionContext) === conditionEl.type
@@ -510,13 +511,24 @@ export default function ({
       if (sharedFields) {
         sharingFields(sharedFields)
       }
-      router.push({
-        name: action.action.name,
-        // name: `${route.name}/:${requestId}`,
-        // params: {
-        //   [requestId]: row.id,
-        // },
-      })
+      console.log(action.action)
+      if (action.action.method === 'push') {
+        router.push({
+          name: `${route.name}/${action.action.name}`,
+          // name: `${route.name}/:${requestId}`,
+          // params: {
+          //   [requestId]: row.id,
+          // },
+        })
+      } else {
+        router.push({
+          name: action.action.name,
+          // name: `${route.name}/:${requestId}`,
+          // params: {
+          //   [requestId]: row.id,
+          // },
+        })
+      }
       popupForm.value.isShow = true
     }
   }
@@ -687,7 +699,7 @@ export default function ({
 
       // if (item.notSend || item.prescription) delete newForm[key]
     })
-    if (action.withTableFilter) {
+    if (action?.withTableFilter) {
       let sorts = []
       let searchColumns = []
 
@@ -965,7 +977,7 @@ export default function ({
           !fields[el]?.readonly?.value)
       ) {
         formData[el] = ''
-        if (fields[el].items.length === 1) {
+        if (fields[el]?.items?.length === 1) {
           formData[el] = fields[el].items[0][fields[el].selectOption.value]
         }
       }
@@ -1207,7 +1219,7 @@ export default function ({
           if (typeof el === 'string') {
             if (params?.item) formData[el] = params?.item[el]
             else {
-              const selectedItem = field.items.find(
+              const selectedItem = field.items?.find(
                 (fieldItem) => fieldItem.id === formData[field.name]
               )
               if (selectedItem) {
@@ -1786,7 +1798,7 @@ export default function ({
     return listValue
   }
 
-  const getData = async () => {
+  const getData = async (refreshTable) => {
     let syncForm = undefined
     const depsApi = []
     if (getDetail() && form.alias) {
@@ -1860,6 +1872,10 @@ export default function ({
     }
     loading.value = false
     emit('setFormData', formData)
+    console.log(refreshTable)
+    if (refreshTable) {
+      emit('getItems')
+    }
   }
 
   const isHideBtn = (button) => {
@@ -2191,5 +2207,6 @@ export default function ({
     handlerEmit,
     environment,
     addFiles,
+    getDepFilters,
   }
 }

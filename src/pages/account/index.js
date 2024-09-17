@@ -24,7 +24,7 @@ import _ from 'lodash'
 
 import tableAccountBank from './config/table-account-bank.js'
 import formAccountEdit from './config/form-account-edit.js'
-import formAccountAdd from './config/form-account-add'
+import formAccountAdd from './config/form-account-add.js'
 
 function consoleText(row) {}
 
@@ -41,7 +41,7 @@ const consumptionConfig = {
     search: {
       function: searchInputing,
     },
-    headerFixed: true,
+    // headerFixed: true,
     //url: 'https://dummyjson.com/users',
     url: 'get/pagination/payment',
     urlDetail: 'account_id',
@@ -102,7 +102,7 @@ const config = {
         search: {
           function: searchInputing,
         },
-        headerFixed: true,
+        // headerFixed: true,
         //url: 'https://dummyjson.com/users',
         url: 'get/pagination/account_active',
         title: 'Активные',
@@ -296,15 +296,15 @@ const config = {
             isShow: true,
           },
         },
-        {
-          title: 'Действия',
-          type: 'actions',
-          align: 'center',
-          fixed: {
-            value: false,
-            position: 'right',
-          },
-        },
+        // {
+        //   title: 'Действия',
+        //   type: 'actions',
+        //   align: 'center',
+        //   fixed: {
+        //     value: false,
+        //     position: 'right',
+        //   },
+        // },
         // {
         //   title: 'Действия',
         //   type: 'actions',

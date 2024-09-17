@@ -87,6 +87,7 @@
               :fields="fields"
               :mode="mode"
               :environment="environment"
+              :getDepFilters="getDepFilters"
             />
 
             <v-text-field
