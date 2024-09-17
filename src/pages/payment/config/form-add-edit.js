@@ -3256,7 +3256,8 @@ export default {
                 isMagnit(context) &&
                 context.originalData.status_id === 2 &&
                 !isOKK(context) &&
-                !isROKK(context)
+                !isROKK(context) &&
+                !isDBA(context)
               )
             },
             type: true,
