@@ -3242,7 +3242,12 @@ export default {
           },
           {
             funcCondition: (context) => {
-              return isMagnit(context) && context.originalData.status_id === 2
+              return (
+                isMagnit(context) &&
+                context.originalData.status_id === 2 &&
+                !isOKK(context) &&
+                !isROKK(context)
+              )
             },
             type: true,
           },
@@ -3263,6 +3268,8 @@ export default {
                 isManager(context) &&
                 (context.formData.status_id === 3 ||
                   context.formData.status_id === 1) &&
+                !isOKK(context) &&
+                !isROKK(context) &&
                 context.mode === 'edit'
               )
             },
@@ -3306,7 +3313,8 @@ export default {
           //   type: true,
           // },
           {
-            funcCondition: (context) => !context.formData.vid_vedomost_id,
+            funcCondition: (context) =>
+              !context.formData.vid_vedomost_id && context.mode === 'edit',
             type: true,
           },
           // {
@@ -4078,6 +4086,7 @@ export default {
                   !isROKK &&
                   [8].includes(context.entityData.status_permission)) ||
                 (!isDBA(context) &&
+                  !isROKK(context) &&
                   [17].includes(context.entityData.status_permission))
               )
             },
