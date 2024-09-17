@@ -195,6 +195,7 @@ export default {
       colsField,
       entityData,
       fields,
+      getDepFilters,
     } = useForm({
       form: props.tab,
       context,
@@ -246,6 +247,7 @@ export default {
       colsField,
       entityData,
       hasOutput,
+      getDepFilters,
     }
   },
 }

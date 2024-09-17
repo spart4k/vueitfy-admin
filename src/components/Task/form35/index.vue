@@ -63,6 +63,7 @@
               :readonly="fieldsTemplate.object_id.readonly"
               v-model="formData.object_id"
               :error-messages="formErrors.object_id"
+              :getDepFilters="getDepFilters"
             />
           </v-col>
           <v-row>

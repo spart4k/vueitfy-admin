@@ -1568,6 +1568,7 @@ export default {
       vForm,
       touchedForm,
       openMenu,
+      getDepFilters,
     } = useForm({
       // form: props.document,
       // fields: fields(),
@@ -1927,6 +1928,7 @@ export default {
       dropZoneRef,
       folderPanel,
       removeFile,
+      getDepFilters,
       // documentData,
     }
   },

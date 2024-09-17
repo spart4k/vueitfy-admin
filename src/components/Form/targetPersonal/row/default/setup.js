@@ -332,6 +332,7 @@ export default {
       changeAutocomplete,
       changeSelect,
       showField,
+      getDepFilters,
     } = useForm({
       form: cloneForm.value,
       // fields: fields(),
@@ -373,6 +374,7 @@ export default {
       fieldsTemplate,
       form,
       personalRef,
+      getDepFilters,
     }
   },
 }
