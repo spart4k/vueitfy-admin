@@ -905,6 +905,7 @@ const table = {
     const directions = computed(() => store.state.user.direction_json)
     const availablePanelBtn = computed(() => {
       const checkIncludesPermissions = (el) => {
+        console.log('1')
         if (!el.permissions) return false
         else {
           return el.permissions.includes(permission.value)
@@ -942,7 +943,7 @@ const table = {
               checkIncludesPermissions(el) ||
               checkIncludesVertical(el) ||
               checkIncludesDirections(el)
-
+            console.log(result)
             return result
           })
           // if ()

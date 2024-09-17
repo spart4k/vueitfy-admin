@@ -64,6 +64,16 @@ export default {
           url: '/new_card',
           type: 'pushUrl',
           backgroundColor: '#fff',
+          isShow: {
+            condition: [
+              {
+                funcCondition: (ctx) => {
+                  return !!ctx.store.state.user.is_chief
+                },
+                type: true,
+              },
+            ],
+          },
         },
         // {
         //   label: 'Скачать',
