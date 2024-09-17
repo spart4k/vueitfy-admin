@@ -917,6 +917,15 @@ const routes = [
             },
             component: Detail,
           },
+          {
+            name: 'pivot_payment-personal/scan-add',
+            path: '/pivot_payment/:id/new',
+            meta: {
+              mode: ['personal', 'new'],
+              label: 'Скан',
+            },
+            component: Detail,
+          },
         ],
       },
       {

@@ -73,6 +73,17 @@ export default {
         },
       ],
     }
+    const convertPathButtonAddSnak = () => {
+      const tableSkan = personalTabs.find((el) => el.name === 'Сканы')
+      console.log(tableSkan)
+      const addBtn = tableSkan.config.panel.buttons.find(
+        (el) => el.label === 'Добавить'
+      )
+      addBtn.type = 'pushUrl'
+      addBtn.url = '/scan-add'
+      console.log(addBtn)
+    }
+    convertPathButtonAddSnak()
     configRouteConvert({
       config: paymentConfig.config,
       route: 'payment',
