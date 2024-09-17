@@ -1611,7 +1611,7 @@ export default {
           },
           {
             funcCondition: (context) => {
-              return (
+              return !!(
                 !context.formData.vid_vedomost_id && context.mode === 'edit'
               )
             },
@@ -1869,6 +1869,16 @@ export default {
                 isRoznica(context) &&
                 [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return !!(
+                !context.formData.vid_vedomost_id &&
+                [1, 3, 5].includes(context.entityData.vid_vedomost_id) &&
                 context.mode === 'edit'
               )
             },
