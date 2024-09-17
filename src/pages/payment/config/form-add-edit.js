@@ -1302,7 +1302,7 @@ export default {
           {
             target: 'formData',
             field: 'vid_vedomost_id',
-            value: [1, 5],
+            value: [1, 5, 3],
             type: true,
           },
           {
@@ -1540,7 +1540,7 @@ export default {
           {
             target: 'formData',
             field: 'vid_vedomost_id',
-            value: [1, 5],
+            value: [1, 5, 3],
             type: true,
           },
           {
