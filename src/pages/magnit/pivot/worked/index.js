@@ -67,7 +67,7 @@ export const config = {
         label: '',
         class: ['v-table-button--custom'],
         typeLabel: 'Объекты',
-        url: '$IconUpdate',
+        icon: '$IconUpdate',
         function: changeSort,
         backgroundColor: '#ffffff',
         type: 'refresh',

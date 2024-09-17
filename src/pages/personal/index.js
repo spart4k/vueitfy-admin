@@ -16,7 +16,6 @@ import formPersonalDirection from './config/form-personal-direction.js'
 import formDocumentDownload from './config/form-document-download.js'
 import formPersonalParser from './config/form-personal-parser.js'
 import formPersonalEmployment from './config/form-personal-employment'
-import customPersonalReport from './config/custom-personal-report'
 
 import formKeyAdd from './config/form-key-add.js'
 import formKeyEdit from './config/form-key-edit.js'
@@ -39,7 +38,6 @@ const nonExportTabs = [
   formPersonalEmployment,
   tablePersonalEmployment,
   formPersonalParser,
-  customPersonalReport,
 ]
 
 export const personalTabs = [
