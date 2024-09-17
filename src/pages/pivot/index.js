@@ -325,6 +325,12 @@ export const config = {
                     source: 'formData',
                     type: 'num',
                   },
+                  {
+                    alias: 'type_parser',
+                    value: [3],
+                    type: 'num',
+                    sendEmpty: true,
+                  },
                 ],
               },
             ],
