@@ -964,7 +964,20 @@ export default function ({
         (typeof fields[el].readonly === 'object' &&
           !fields[el]?.readonly?.value)
       ) {
-        formData[el] = ''
+        if (typeof formData[el] === 'object') {
+          const itemsValue = fields[el].items.reduce((acc, item) => {
+            acc.push(item[fields[el].selectOption.value])
+            return acc
+          }, [])
+          formData[el] = _.intersection(itemsValue, formData[el])
+        } else {
+          if (
+            !fields[el].items.some(
+              (x) => x[fields[el].selectOption.value] === formData[el]
+            )
+          )
+            formData[el] = ''
+        }
         if (fields[el].items.length === 1) {
           formData[el] = fields[el].items[0][fields[el].selectOption.value]
         }
