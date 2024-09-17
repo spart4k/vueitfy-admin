@@ -124,6 +124,7 @@
                       @change="changeAutocomplete"
                       :readonly="confirm"
                       :class="'docInput_' + field.name"
+                      :getDepFilters="getDepFilters"
                     />
                     <!-- <v-textarea
                 v-else-if="showField('textarea', field)"

@@ -361,6 +361,7 @@ export default {
       vForm,
       touchedForm,
       openMenu,
+      getDepFilters,
     } = useForm({
       // form: props.document,
       fields: fields(),
@@ -525,6 +526,7 @@ export default {
       serviceField,
       isNumber,
       errorSerivce,
+      getDepFilters,
     }
   },
 }

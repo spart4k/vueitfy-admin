@@ -65,6 +65,7 @@
               @change="changeAutocomplete"
               :readonly="readonlyField(field)"
               :class="[...field.class]"
+              :getDepFilters="getDepFilters"
             />
 
             <v-text-field

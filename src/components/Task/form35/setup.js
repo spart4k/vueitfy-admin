@@ -809,6 +809,7 @@ const Form7 = defineComponent({
       appendFieldHandler,
       popupForm,
       appendActionShow,
+      getDepFilters,
     } = useForm({
       form: tab,
       context,
@@ -869,6 +870,7 @@ const Form7 = defineComponent({
       addFiles,
       sendZayavka,
       vForm,
+      getDepFilters,
     }
   },
 })

@@ -173,7 +173,9 @@ export default {
             //   }
             // })
             filter = props.getDepFilters(props.field)
+            console.log('getfil')
           }
+          console.log('log')
           const data = await getList(
             url,
             {

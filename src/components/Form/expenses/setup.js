@@ -575,6 +575,7 @@ export default {
       changeValue,
       isHideBtn,
       getDependies,
+      getDepFilters,
     } = useForm({
       form: proxyTab.value,
       context,
@@ -630,6 +631,7 @@ export default {
       proxyTab,
       checkPermission,
       changeValue,
+      getDepFilters,
     }
   },
 }
