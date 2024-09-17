@@ -1866,7 +1866,7 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                isX5(context) &&
+                isRoznica(context) &&
                 [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
                 [3, 1].includes(context.formData.status_id) &&
                 context.mode === 'edit'
@@ -2031,38 +2031,6 @@ export default {
           // },
           {
             funcCondition: (context) =>
-              [2, 6].includes(context.formData.status_id) &&
-              context.mode === 'edit',
-            type: true,
-          },
-          {
-            target: 'formData',
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-            type: true,
-          },
-          {
-            funcCondition: (context) => {
-              return (
-                isX5(context) &&
-                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
-                [3, 1].includes(context.formData.status_id) &&
-                context.mode === 'edit'
-              )
-            },
-            type: true,
-          },
-          // {
-          //   funcCondition: (context) =>
-          //     context.formData.account_id !== context.store.state.user.id &&
-          //     (context.formData.status_id === 2 ||
-          //       context.formData.status_id === 1 ||
-          //       context.formData.status_id === 3) &&
-          //     context.mode === 'edit',
-          //   type: true,
-          // },
-          {
-            funcCondition: (context) =>
               (context.formData.account_id !== context.store.state.user.id &&
                 ((context.formData.status_id === 1 &&
                   !isRoznica(context) &&
@@ -2091,6 +2059,38 @@ export default {
                 context.mode === 'edit'),
             type: true,
           },
+          {
+            funcCondition: (context) =>
+              [2, 6].includes(context.formData.status_id) &&
+              context.mode === 'edit',
+            type: true,
+          },
+          {
+            target: 'formData',
+            field: 'vid_vedomost_id',
+            value: [1, 5, 3],
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isRoznica(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          // {
+          //   funcCondition: (context) =>
+          //     context.formData.account_id !== context.store.state.user.id &&
+          //     (context.formData.status_id === 2 ||
+          //       context.formData.status_id === 1 ||
+          //       context.formData.status_id === 3) &&
+          //     context.mode === 'edit',
+          //   type: true,
+          // },
         ],
       },
       isShow: {
