@@ -68,7 +68,7 @@ export default {
             condition: [
               {
                 funcCondition: (ctx) => {
-                  return ctx.store.state.user.is_chief
+                  return !!ctx.store.state.user.is_chief
                 },
                 type: true,
               },
