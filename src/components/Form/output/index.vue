@@ -131,6 +131,7 @@
                 ref="autocompleteRef"
                 @change="changeAutocomplete"
                 :readonly="readonlyField(field)"
+                :getDepFilters="getDepFilters"
               />
               <v-text-field
                 v-else-if="showField('string', field)"

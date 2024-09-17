@@ -219,6 +219,7 @@ export default {
       changeAutocomplete,
       changeSelect,
       showField,
+      getDepFilters,
     } = useForm({
       form: props.tab,
       // fields: fields(),
@@ -305,6 +306,7 @@ export default {
       rows,
       targets,
       activeTab,
+      getDepFilters,
     }
   },
 }

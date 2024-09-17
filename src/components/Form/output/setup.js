@@ -401,6 +401,7 @@ export default {
       readonlyField,
       isHideBtn,
       getDependies,
+      getDepFilters,
     } = useForm({
       form: proxyTab.value,
       context,
@@ -449,6 +450,7 @@ export default {
       DefaultStage,
       ZayavkaStage,
       PaymentStage,
+      getDepFilters,
     }
   },
 }

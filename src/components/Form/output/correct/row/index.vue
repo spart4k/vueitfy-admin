@@ -24,6 +24,7 @@
           :formData="formData"
           ref="autocompleteRef"
           @change="changeAutocomplete"
+          :getDepFilters="getDepFilters"
         />
       </v-col>
       <v-col cols="12" sm="2" class="">
