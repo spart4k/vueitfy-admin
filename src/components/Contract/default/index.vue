@@ -1,18 +1,17 @@
 <template>
   <v-card class="height-100 py-3 px-3" color="background" elevation="0">
     <template v-if="!loading">
-      <v-expansion-panels flat accordion multiple v-model="types">
-        <!-- {{ data.types }} -->
+      <v-expansion-panels flat accordion multiple v-model="expansion">
         <v-expansion-panel
-          v-for="type in 1"
+          v-for="type in types"
           :key="type.id"
           class="contractPanel mb-3 mt-0 py-0 px-3"
         >
           <v-expansion-panel-header style="min-height: 48px" class="py-0 px-0">
-            {{ type.name ?? 'zxc' }}
+            {{ type.name }}
             <template v-slot:actions>
               <v-progress-circular
-                v-if="type.loaded === false"
+                v-if="type.data.loaded === false"
                 color="primary"
                 :size="22"
                 indeterminate
@@ -21,17 +20,24 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content class="">
             <v-row class="btn-container mb-3">
-              <!-- {{ type.territories }} -->
               <v-btn
-                v-for="(territory, index) in 6"
+                v-for="(territory, index) in type.data.territories"
                 :key="territory.id"
                 min-height="48px"
                 elevation="0"
-                :color="!index ? 'primary' : 'text'"
-                :class="['btn', !index && 'btn--active', 'text-capitalize']"
-                :outlined="index"
+                @click.shift="changeTerritory(index, type.data, 'shift')"
+                @click.ctrl="changeTerritory(index, type.data, 'ctrl')"
+                @click.meta="changeTerritory(index, type.data, 'ctrl')"
+                @click.exact="changeTerritory(index, type.data)"
+                :color="type.data.active.includes(index) ? 'primary' : 'text'"
+                :class="[
+                  'btn',
+                  type.data.active.includes(index) && 'btn--active',
+                  'text-none',
+                ]"
+                :outlined="!type.data.active.includes(index)"
               >
-                {{ territory.name ?? 'территория' }}
+                {{ territory.name }}
               </v-btn>
             </v-row>
             <v-row>
@@ -41,9 +47,13 @@
                   :key="index"
                   min-height="35px"
                   elevation="0"
-                  :color="!index ? 'primary' : 'text'"
-                  :class="[!index && 'btn--active', 'text-capitalize']"
-                  :text="index"
+                  @click="type.data.docType = item.value"
+                  :color="type.data.docType === index ? 'primary' : 'text'"
+                  :class="[
+                    type.data.docType === index && 'btn--active',
+                    'text-none',
+                  ]"
+                  :text="type.data.docType !== index"
                 >
                   {{ item.name }}
                 </v-btn>

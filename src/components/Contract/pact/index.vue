@@ -10,7 +10,12 @@
             >
             <span class="textGray--text">Осн. услуги/сборка</span>
           </span>
-          <v-btn class="mr-3" @click.stop elevation="0" color="primary" text
+          <v-btn
+            class="px-3 mr-3 text-none"
+            @click.stop
+            elevation="0"
+            color="primary"
+            text
             ><v-icon class="mr-2" size="24" color="primary"
               >mdi-file-document-outline</v-icon
             >Добавить версию</v-btn
