@@ -1,15 +1,18 @@
 <template>
-  <v-expansion-panels flat accordion multiple>
-    <v-expansion-panel class="additionalPanel" v-for="pact in 3">
+  <v-expansion-panels v-model="expansion" flat accordion multiple>
+    <v-expansion-panel class="additionalPanel" v-for="version in proxyValue">
       <v-expansion-panel-header style="min-height: 56px" class="px-3 py-0">
         <v-row class="d-flex align-center justify-space-between">
           <span>
-            <span class="primary--text mr-3">v {{ pact }}.0</span>
-            <span class="text--text">Договор №{{ pact }} </span>
+            <span class="primary--text mr-3">v {{ version.version }}</span>
+            <span class="text--text">{{ version.name }} </span>
             <v-icon class="ml-3 mr-2" color="textGray" size="22"
               >mdi-calendar-clock-outline</v-icon
             >
-            <span class="textGray--text">12.09.2024 - 12.10.2024</span>
+            <span class="textGray--text"
+              >{{ convertDate(version.date_from) }} -
+              {{ convertDate(version.date_to) }}</span
+            >
           </span>
           <span>
             <v-btn
@@ -24,7 +27,7 @@
             >
             <v-btn
               class="mr-3 px-0"
-              @click.stop
+              @click.stop="download(version.file)"
               elevation="0"
               min-width="40px"
               color="primary"
@@ -35,6 +38,14 @@
             >
           </span>
         </v-row>
+        <template v-slot:actions>
+          <v-progress-circular
+            v-if="version.loaded === false"
+            color="primary"
+            :size="22"
+            indeterminate
+          />
+        </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content class="px-3">
         <v-divider class="mb-3"></v-divider>
@@ -46,15 +57,23 @@
             >Дополнительное соглашение</span
           >
         </v-btn>
-        <v-row class="d-flex mx-3 align-center justify-space-between">
+        <v-row
+          v-for="subversion in version.items"
+          :key="subversion.id"
+          class="d-flex mx-3 align-center justify-space-between"
+        >
           <span>
-            <span class="primary--text mr-3">v {{ pact }}.1</span>
-            <span class="text--text">Договор №{{ pact }} </span>
+            <span class="primary--text mr-3">v {{ subversion.version }}</span>
+            <span class="text--text">{{ subversion.name }} </span>
             <v-icon class="ml-3 mr-2" color="textGray" size="22"
               >mdi-calendar-clock-outline</v-icon
             >
-            <span class="textGray--text">12.09.2024 - 12.10.2024</span>
+            <span class="textGray--text"
+              >{{ convertDate(subversion.date_from) }} -
+              {{ convertDate(subversion.date_to) }}</span
+            >
             <span
+              v-if="subversion.with_prolongation"
               class="ml-3 px-1 py-1 font-size-14"
               style="background-color: #eaf8ef; color: #29b560"
               >Пролонгация</span
@@ -64,6 +83,7 @@
             <v-btn
               class="px-3 mx-1 text-none"
               @click.stop
+              v-if="!subversion.with_prolongation"
               elevation="0"
               color="primary"
               text
@@ -73,7 +93,7 @@
             >
             <v-btn
               class="px-0"
-              @click.stop
+              @click.stop="download(subversion.file)"
               elevation="0"
               min-width="40px"
               color="primary"

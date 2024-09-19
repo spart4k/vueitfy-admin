@@ -25,10 +25,21 @@
                 :key="territory.id"
                 min-height="48px"
                 elevation="0"
-                @click.shift="changeTerritory(index, type.data, 'shift')"
-                @click.ctrl="changeTerritory(index, type.data, 'ctrl')"
-                @click.meta="changeTerritory(index, type.data, 'ctrl')"
-                @click.exact="changeTerritory(index, type.data)"
+                @click.shift="
+                  changeTerritory({
+                    index,
+                    data: type.data,
+                    btn: 'shift',
+                    type,
+                  })
+                "
+                @click.ctrl="
+                  changeTerritory({ index, data: type.data, btn: 'ctrl', type })
+                "
+                @click.meta="
+                  changeTerritory({ index, data: type.data, btn: 'ctrl', type })
+                "
+                @click.exact="changeTerritory({ index, data: type.data, type })"
                 :color="type.data.active.includes(index) ? 'primary' : 'text'"
                 :class="[
                   'btn',
@@ -47,7 +58,7 @@
                   :key="index"
                   min-height="35px"
                   elevation="0"
-                  @click="type.data.docType = item.value"
+                  @click="changeDoc(type, item.value)"
                   :color="type.data.docType === index ? 'primary' : 'text'"
                   :class="[
                     type.data.docType === index && 'btn--active',
@@ -59,12 +70,35 @@
                 </v-btn>
               </v-card>
             </v-row>
-            <v-list-item-title class="text--text font-weight-700 my-3"
-              >ЮГ</v-list-item-title
-            >
-
-            <!-- Договор -->
-            <Pact />
+            <div v-for="(item, i) in type.data.items" :key="i">
+              <v-list-item-title class="text--text font-weight-700 my-3"
+                ><span
+                  >{{ type.data.territories[item.index].name }}
+                </span></v-list-item-title
+              >
+              <v-divider class="mb-3"></v-divider>
+              <template v-if="type.data.docType === 0">
+                <Pact v-if="item.data.length" :data="item.data" />
+              </template>
+              <template v-else-if="type.data.docType === 1">
+                <Zone v-if="item.data.length" :data="item.data" />
+              </template>
+              <div
+                v-if="!item.data.length"
+                class="d-flex justify-center flex-column py-7"
+              >
+                <v-icon size="52" class="mb-3" color="textGray">{{
+                  type.data.docType === 0 ? 'mdi-text-box' : 'mdi-map-clock'
+                }}</v-icon>
+                <span class="text--text text-center"
+                  >{{ type.data.docType === 0 ? 'Документы' : 'Зоны' }} не
+                  найдены</span
+                >
+              </div>
+            </div>
+            <div v-if="type.data.loading" class="py-4 d-flex justify-center">
+              <v-progress-circular color="primary" :size="32" indeterminate />
+            </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>

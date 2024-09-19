@@ -3,6 +3,7 @@ import Vue, { onMounted, computed, ref, watch } from 'vue'
 import store from '@/store'
 import _ from 'lodash'
 import Pact from './../pact/index.vue'
+import Zone from './../zone/index.vue'
 
 export default {
   name: 'Contract',
@@ -10,6 +11,7 @@ export default {
   components: {
     SwitchDefault,
     Pact,
+    Zone,
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -30,15 +32,9 @@ export default {
       response.data.forEach((item) => {
         Vue.set(item, 'data', {
           loaded: null,
+          loading: true,
           territories: [],
-          zones: {
-            loaded: null,
-            data: [],
-          },
-          contracts: {
-            loaded: null,
-            data: [],
-          },
+          items: [],
           active: [0],
           lastTarget: 0,
           docType: 0,
@@ -58,18 +54,14 @@ export default {
         'form/get',
         `get/territories/${type.id}`
       )
-      // response.data.forEach((item) => {
-      //   Vue.set(item, 'loaded', null)
-      //   Vue.set(item, 'contracts', [])
-      //   Vue.set(item, 'zones', [])
-      // })
       type.data.territories = response.data
       type.data.loaded = true
       expansion.value.push(index)
+      getContracts(type)
     }
 
-    const changeTerritory = (index, data, type) => {
-      if (type === 'shift') {
+    const changeTerritory = ({ index, data, btn, type }) => {
+      if (btn === 'shift') {
         if (data.active.includes(index)) {
           if (data.lastTarget > index) {
             for (
@@ -111,7 +103,7 @@ export default {
             }
           }
         }
-      } else if (type === 'ctrl') {
+      } else if (btn === 'ctrl') {
         if (data.active.includes(index) && data.active.length > 1) {
           Vue.set(
             data,
@@ -125,6 +117,51 @@ export default {
         Vue.set(data, 'active', [index])
       }
       data.lastTarget = index
+      getContracts(type)
+    }
+
+    const changeDoc = (type, val) => {
+      type.data.docType = val
+      type.data.items = []
+      getContracts(type)
+    }
+
+    const getContracts = async (type) => {
+      Vue.set(
+        type.data,
+        'items',
+        type.data.items.filter((item) => type.data.active.includes(item.index))
+      )
+      type.data.loading = true
+      const request = type.data.active.reduce(
+        (acc, typeIndex) => {
+          if (!type.data.items.some((item) => item.index === typeIndex)) {
+            acc.data.push(
+              store.dispatch(
+                'form/get',
+                `get/${type.data.docType === 0 ? 'contract' : 'zones'}/${
+                  type.data.territories[typeIndex].id
+                }`
+              )
+            )
+            acc.i.push(typeIndex)
+          }
+          return acc
+        },
+        { data: [], i: [] }
+      )
+      const response = await Promise.all(request.data)
+      type.data.loading = false
+      response.forEach((item, index) => {
+        Vue.set(item, 'index', request.i[index])
+        if (item.data.length) {
+          item.data.forEach((pact) => {
+            Vue.set(pact, 'loaded', null)
+            Vue.set(pact, 'items', [])
+          })
+        }
+      })
+      type.data.items.push(...response)
     }
 
     onMounted(() => {
@@ -151,6 +188,7 @@ export default {
       expansion,
 
       changeTerritory,
+      changeDoc,
     }
   },
 }

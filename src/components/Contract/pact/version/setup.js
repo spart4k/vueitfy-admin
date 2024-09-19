@@ -1,25 +1,27 @@
-import Vue, { onMounted, computed, ref, watch, toRef } from 'vue'
+import Vue, { onMounted, computed, toRef, ref, watch } from 'vue'
 import store from '@/store'
 import _ from 'lodash'
-import Version from './version/index.vue'
+import moment from 'moment'
 
 export default {
-  name: 'Pact',
+  name: 'Version',
   props: {
     data: {
       type: Array,
       default: () => [],
     },
   },
-  components: { Version },
+  components: {},
   setup(props, ctx) {
     const { emit } = ctx
     const proxyValue = toRef(props, 'data')
     const expansion = ref([])
 
-    onMounted(() => {})
+    const convertDate = (val) => {
+      return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
+    }
 
-    const getVersions = async (index) => {
+    const getSubversions = async (index) => {
       const version = proxyValue.value[index]
       if (version.loaded !== true)
         expansion.value = _.without(expansion.value, index)
@@ -27,16 +29,18 @@ export default {
       version.loaded = false
       const response = await store.dispatch(
         'form/get',
-        `get/contract/versions/${version.id}`
+        `get/contract/versions/additional/${version.id}`
       )
-      response.data.forEach((version) => {
-        Vue.set(version, 'loaded', null)
-        Vue.set(version, 'items', [])
-      })
       version.loaded = true
       version.items = response.data
       expansion.value.push(index)
     }
+
+    const download = (url) => {
+      Vue.downloadFile(url)
+    }
+
+    onMounted(() => {})
 
     watch(
       () => expansion.value,
@@ -46,15 +50,17 @@ export default {
           index = _.difference(newVal, oldVal)[0]
         else index = _.difference(oldVal, newVal)[0]
         if (index !== undefined && !proxyValue.value[index]?.loaded)
-          getVersions(index)
+          getSubversions(index)
       },
       { deep: true }
     )
 
     return {
+      proxyValue,
       expansion,
 
-      proxyValue,
+      convertDate,
+      download,
     }
   },
 }
