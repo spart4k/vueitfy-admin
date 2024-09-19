@@ -40,6 +40,8 @@
         :multiple="field.subtype === 'multiple'"
         :readonly="readonly"
         :first-day-of-week="1"
+        @click:month="changeDate(year)"
+        :picker-date.sync="pickerDate"
         @input="
           field.subtype !== 'multiple' ? (menu = false) : undefined
           changeDate()

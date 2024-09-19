@@ -904,7 +904,10 @@ export default function ({
       (field) => field.type === 'select' && field.isShow && !field.withoutList
     )
   }
-
+  const changeMonth = ({ field, value, month }) => {
+    console.log(field, value, month)
+    changeAutocomplete({ field, value, month })
+  }
   const changeAutocomplete = async ({ field, value, item }) => {
     // if (field.hasOwnProperty('fillField')) {
     // }
@@ -957,9 +960,13 @@ export default function ({
         }
       })
       field?.updateList?.forEach((el) => {
+        if (el?.method === 'getAllowDate') {
+          return
+        }
         if (!formDataNames.includes(fieldAliases[el.alias])) {
           formDataNames.push(fieldAliases[el.alias])
         }
+        console.log(fields, fieldAliases, fieldAliases[el.alias])
         if (
           fields[fieldAliases[el.alias]].hasOwnProperty('updateList') ||
           fields[fieldAliases[el.alias]].hasOwnProperty('dependence')
@@ -1147,9 +1154,13 @@ export default function ({
       return element
     })
     if (listQuery.length === 0) return
+    console.log(arrayList)
     const lists = await makeRequestList(listQuery)
     await putSelectItems(lists)
     return lists
+  }
+  const getAllowDates = (arrayList) => {
+    console.log(arrayList)
   }
   const getDependies = async (params) => {
     const { value, field, clearId } = params
@@ -1637,6 +1648,14 @@ export default function ({
     for (let keyList in lists.data) {
       const field = fields[fieldAliases[keyList]]
       if (field) {
+        if (
+          field.type === 'date' &&
+          field.updateList.filter((el) => el?.method === 'getAllowDate').length
+        ) {
+          console.log('getAllowDate')
+          Vue.set(field, 'allowDates')
+          field.allowDates = lists.data[keyList]
+        }
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
           if (field.hiding.conditions) {
@@ -1748,6 +1767,11 @@ export default function ({
         }
         showField(field.type, field, true)
       }
+      console.log('keyList', list)
+      // if (arrayList?.method === 'getAllowDate') {
+      //   getAllowDates(arrayList)
+      //   return
+      // }
     }
     await Promise.all(stackDep)
   }
@@ -2221,5 +2245,6 @@ export default function ({
     environment,
     addFiles,
     getDepFilters,
+    changeMonth,
   }
 }

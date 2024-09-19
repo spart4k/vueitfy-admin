@@ -67,8 +67,11 @@ export default {
         }
       }
     }
-
-    const changeDate = () => {
+    const changeMonth = () => {
+      console.log('changemonth')
+    }
+    const changeDate = (year) => {
+      console.log('change month', year)
       if (props.field.subtype === 'multiple') {
         proxyValue.value = _.cloneDeep(dateValue.value)
         proxyValue.value?.forEach((item, index) => {
@@ -99,8 +102,24 @@ export default {
         proxyValue.value = ''
       }
     })
-
+    const pickerDate = ref(null)
     const clearField = () => {}
+    watch(
+      () => pickerDate.value,
+      (val) => {
+        console.log({
+          field: props.field,
+          value: proxyValue.value,
+          val,
+        })
+        emit('changeMonth', {
+          field: props.field,
+          value: proxyValue.value,
+          month: val,
+        })
+        proxyValue.value = val + '-01'
+      }
+    )
     watch(
       () => proxyValue.value,
       (newVal) => {
@@ -126,6 +145,8 @@ export default {
       changeDate,
       changeValue,
       clearField,
+      changeMonth,
+      pickerDate,
     }
   },
 }
