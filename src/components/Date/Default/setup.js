@@ -35,20 +35,30 @@ export default {
       type: Boolean,
       default: false,
     },
+    options: {
+      type: Object,
+      default: () => {
+        return {
+          outlined: false,
+          dense: false,
+          hideDetails: false,
+        }
+      },
+    },
   },
   setup(props, ctx) {
     const { emit } = ctx
     const menu = ref(false)
     const mask = computed(() => {
-      if (props.field.subtype === 'multiple') return ''
-      else if (props.field.subtype === 'period') return '####.##'
+      if (props.field?.subtype === 'multiple') return ''
+      else if (props.field?.subtype === 'period') return '####.##'
       return '####.##.##'
     })
     const proxyValue = toRef(props, 'value')
     const dateValue = ref()
 
     const changeValue = () => {
-      if (props.field.subtype === 'multiple') {
+      if (props.field?.subtype === 'multiple') {
         dateValue.value = _.cloneDeep(proxyValue.value)
         dateValue.value?.forEach((item, index) => {
           dateValue.value[index] = item.replaceAll('.', '-')
@@ -69,7 +79,7 @@ export default {
     }
 
     const changeDate = () => {
-      if (props.field.subtype === 'multiple') {
+      if (props.field?.subtype === 'multiple') {
         proxyValue.value = _.cloneDeep(dateValue.value)
         proxyValue.value?.forEach((item, index) => {
           proxyValue.value[index] = item.replaceAll('-', '.')
@@ -81,7 +91,7 @@ export default {
     }
 
     onMounted(() => {
-      if (props.field.subtype === 'multiple') {
+      if (props.field?.subtype === 'multiple') {
         proxyValue.value?.forEach((item, index) => {
           proxyValue.value[index] = item.replaceAll('-', '.')
         })
@@ -104,7 +114,7 @@ export default {
     watch(
       () => proxyValue.value,
       (newVal) => {
-        if (props.field.subtype === 'multiple') {
+        if (props.field?.subtype === 'multiple') {
           proxyValue.value?.forEach((item, index) => {
             proxyValue.value[index] = item.replaceAll('-', '.')
           })

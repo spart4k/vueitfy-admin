@@ -58,7 +58,9 @@
                   :key="index"
                   min-height="35px"
                   elevation="0"
-                  @click="changeDoc(type, item.value)"
+                  @click="
+                    type.data.docType !== index && changeDoc(type, item.value)
+                  "
                   :color="type.data.docType === index ? 'primary' : 'text'"
                   :class="[
                     type.data.docType === index && 'btn--active',

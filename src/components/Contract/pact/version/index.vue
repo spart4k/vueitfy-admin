@@ -49,7 +49,13 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content class="px-3">
         <v-divider class="mb-3"></v-divider>
-        <v-btn color="#EDF5FD" class="mb-2" elevation="0" block>
+        <v-btn
+          @click="dialog = true"
+          color="#EDF5FD"
+          class="mb-2"
+          elevation="0"
+          block
+        >
           <v-icon class="mr-2" color="#4E9EEE">mdi-plus</v-icon>
           <span
             style="text-transform: none; color: #4e9eee"
@@ -57,6 +63,13 @@
             >Дополнительное соглашение</span
           >
         </v-btn>
+        <v-dialog width="470" v-model="dialog"
+          ><Dialog
+            v-if="dialog"
+            @close="dialog = false"
+            @refreshItem="refreshItem(version)"
+            :version="version"
+        /></v-dialog>
         <v-row
           v-for="subversion in version.items"
           :key="subversion.id"

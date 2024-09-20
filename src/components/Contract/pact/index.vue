@@ -32,7 +32,13 @@
       </v-expansion-panel-header>
       <v-expansion-panel-content class="px-3">
         <v-divider class="mb-3"></v-divider>
-        <v-btn color="#EDF5FD" class="mb-2" elevation="0" block>
+        <v-btn
+          @click="dialog = true"
+          color="#EDF5FD"
+          class="mb-2"
+          elevation="0"
+          block
+        >
           <v-icon class="mr-2" color="#4E9EEE">mdi-plus</v-icon>
           <span
             style="text-transform: none; color: #4e9eee"
@@ -40,7 +46,14 @@
             >Добавить версию</span
           >
         </v-btn>
-        <Version :data="pact.items" />
+        <v-dialog width="470" v-model="dialog"
+          ><Dialog
+            v-if="dialog"
+            @close="dialog = false"
+            @refreshItem="refreshItem(pact)"
+            :version="pact"
+        /></v-dialog>
+        <Version @refreshItem="refreshItem" :data="pact.items" />
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
