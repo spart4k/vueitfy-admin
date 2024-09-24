@@ -161,6 +161,7 @@
               @change="
                 changeAutocomplete({ field, value: formData[field.name] })
               "
+              @changeMonth="changeMonth"
             ></Datepicker>
             <v-textarea
               v-else-if="showField('textarea', field)"

@@ -249,6 +249,7 @@ export default {
       originalData,
       entityData,
       getDepFilters,
+      changeMonth,
     } = useForm({
       form: props.tab,
       tableComp: props.tableComp,
@@ -315,6 +316,7 @@ export default {
       originalData,
       entityData,
       getDepFilters,
+      changeMonth,
     }
   },
 }
