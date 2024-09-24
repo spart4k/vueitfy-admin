@@ -1,34 +1,42 @@
-import Vue, { onMounted, computed, ref, watch, toRef } from 'vue'
+import Vue, { onMounted, computed, toRef, ref, watch } from 'vue'
 import store from '@/store'
 import _ from 'lodash'
-import Version from './version/index.vue'
+import moment from 'moment'
 import Dialog from './dialog'
 
 export default {
-  name: 'Pact',
+  name: 'Version',
   props: {
     data: {
       type: Array,
       default: () => [],
+    },
+    pact: {
+      type: Object,
+      default: () => {},
     },
     territory: {
       type: Object,
       default: () => {},
     },
   },
-  components: { Version, Dialog },
+  components: {
+    Dialog,
+  },
   setup(props, ctx) {
     const { emit } = ctx
     const proxyValue = toRef(props, 'data')
     const expansion = ref([])
     const dialog = ref({
       isShow: false,
-      pact: null,
+      version: null,
     })
 
-    onMounted(() => {})
+    const convertDate = (val) => {
+      return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
+    }
 
-    const getVersions = async ({ index, refresh = false }) => {
+    const getSubversions = async ({ index, refresh = false }) => {
       const version = proxyValue.value[index]
       if (!refresh) {
         if (version.loaded !== true)
@@ -38,24 +46,24 @@ export default {
       version.loaded = false
       const response = await store.dispatch(
         'form/get',
-        `get/contract/versions/${version.id}`
+        `get/contract/versions/additional/${version.id}`
       )
-      response.data.forEach((version) => {
-        Vue.set(version, 'loaded', null)
-        Vue.set(version, 'items', [])
-      })
       version.loaded = true
       version.items = response.data
       if (!refresh) expansion.value.push(index)
     }
 
-    const refreshItem = (version) => {
-      const index = proxyValue.value.findIndex((x) => x.id === version.id)
-      getVersions({ index, refresh: true })
+    const download = (url) => {
+      Vue.downloadFile(url)
     }
 
-    const openDialog = (pact) => {
-      dialog.value.pact = pact
+    const refreshItem = (version) => {
+      const index = proxyValue.value.findIndex((x) => x.id === version.id)
+      getSubversions({ index, refresh: true })
+    }
+
+    const openDialog = (version) => {
+      dialog.value.version = version
       dialog.value.isShow = true
     }
 
@@ -67,16 +75,18 @@ export default {
           index = _.difference(newVal, oldVal)[0]
         else index = _.difference(oldVal, newVal)[0]
         if (index !== undefined && !proxyValue.value[index]?.loaded)
-          getVersions({ index })
+          getSubversions({ index })
       },
       { deep: true }
     )
 
     return {
-      expansion,
       proxyValue,
+      expansion,
       dialog,
 
+      convertDate,
+      download,
       refreshItem,
       openDialog,
     }

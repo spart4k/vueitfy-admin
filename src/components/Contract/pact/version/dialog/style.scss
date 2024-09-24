@@ -1,0 +1,21 @@
+.textField {
+  &::v-deep .v-input__slot {
+    fieldset {
+      border: 1px solid var(--v-disabled-base);
+    }
+  }
+}
+
+.datePicker {
+  &::v-deep .v-input__slot {
+    fieldset {
+      border: 1px solid var(--v-disabled-base);
+    }
+  }
+}
+
+.dialogSwitch {
+  &::v-deep .v-label {
+    color: var(--v-text-base);
+  }
+}

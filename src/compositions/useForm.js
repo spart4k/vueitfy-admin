@@ -986,7 +986,10 @@ export default function ({
             acc.push(item[fields[el].selectOption.value])
             return acc
           }, [])
-          formData[el] = _.intersection(itemsValue, formData[el])
+          const intersection = _.intersection(itemsValue, formData[el])
+          if (fields[el].subtype === 'single' && intersection.length === 0)
+            formData[el] = null
+          else formData[el] = []
         } else {
           if (
             !fields[el].items.some(

@@ -85,6 +85,14 @@ export const config = {
         type: 'changeUrl',
         url: 'pivot_payment/report',
         backgroundColor: '#fff',
+        isShow: {
+          condition: [
+            {
+              permissions: [4, 8, 17],
+              type: false,
+            },
+          ],
+        },
       },
     ],
     filters: true,

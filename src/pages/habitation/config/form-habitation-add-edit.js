@@ -124,7 +124,7 @@ export default {
         sm: 12,
       },
       bootstrapClass: [''],
-      validations: { required },
+      // validations: { required },
       options: {
         removeble: true,
         withoutSave: false,
@@ -1304,6 +1304,24 @@ export default {
       url: 'create/habitation',
       name: 'saveFormStore',
       action: 'saveFormStore',
+      handlingResponse: {
+        1: {
+          text: 'Успешно',
+          color: 'success',
+        },
+        2: {
+          text: 'Ошибка на стороне сервера',
+          color: 'error',
+        },
+        3: {
+          text: 'Проживание с таким названием уже существует',
+          color: 'error',
+        },
+        4: {
+          text: 'Некорректные данные запроса',
+          color: 'error',
+        },
+      },
       isHide: {
         value: false,
         type: 'every',
@@ -1326,6 +1344,24 @@ export default {
       useRouteParam: 'habitation_id',
       action: 'updateFormStore',
       color: 'primary',
+      handlingResponse: {
+        1: {
+          text: 'Успешно',
+          color: 'success',
+        },
+        2: {
+          text: 'Ошибка на стороне сервера',
+          color: 'error',
+        },
+        3: {
+          text: 'Проживание с таким названием уже существует',
+          color: 'error',
+        },
+        4: {
+          text: 'Некорректные данные запроса',
+          color: 'error',
+        },
+      },
       isHide: {
         value: false,
         type: 'every',
