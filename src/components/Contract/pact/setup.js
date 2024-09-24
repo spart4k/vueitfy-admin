@@ -11,13 +11,20 @@ export default {
       type: Array,
       default: () => [],
     },
+    territory: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: { Version, Dialog },
   setup(props, ctx) {
     const { emit } = ctx
     const proxyValue = toRef(props, 'data')
     const expansion = ref([])
-    const dialog = ref(false)
+    const dialog = ref({
+      isShow: false,
+      pact: null,
+    })
 
     onMounted(() => {})
 
@@ -47,6 +54,11 @@ export default {
       getVersions({ index, refresh: true })
     }
 
+    const openDialog = (pact) => {
+      dialog.value.pact = pact
+      dialog.value.isShow = true
+    }
+
     watch(
       () => expansion.value,
       (newVal, oldVal) => {
@@ -66,6 +78,7 @@ export default {
       dialog,
 
       refreshItem,
+      openDialog,
     }
   },
 }

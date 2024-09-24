@@ -11,6 +11,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    pact: {
+      type: Object,
+      default: () => {},
+    },
+    territory: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: {
     Dialog,
@@ -19,7 +27,10 @@ export default {
     const { emit } = ctx
     const proxyValue = toRef(props, 'data')
     const expansion = ref([])
-    const dialog = ref(false)
+    const dialog = ref({
+      isShow: false,
+      version: null,
+    })
 
     const convertDate = (val) => {
       return moment(val, 'YYYY-MM-DD').format('DD.MM.YYYY')
@@ -51,6 +62,11 @@ export default {
       getSubversions({ index, refresh: true })
     }
 
+    const openDialog = (version) => {
+      dialog.value.version = version
+      dialog.value.isShow = true
+    }
+
     watch(
       () => expansion.value,
       (newVal, oldVal) => {
@@ -72,6 +88,7 @@ export default {
       convertDate,
       download,
       refreshItem,
+      openDialog,
     }
   },
 }

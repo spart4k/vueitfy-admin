@@ -80,7 +80,12 @@
               >
               <v-divider class="mb-3"></v-divider>
               <template v-if="type.data.docType === 0">
-                <Pact v-if="item.data.length" :data="item.data" />
+                <Pact
+                  v-if="item.data.length"
+                  :territory="type.data.territories[item.index]"
+                  :data="item.data"
+                  @openParser="openParser"
+                />
               </template>
               <template v-else-if="type.data.docType === 1">
                 <Zone v-if="item.data.length" :data="item.data" />
@@ -110,6 +115,18 @@
         <v-progress-circular :size="80" color="primary" indeterminate />
       </div>
     </template>
+    <v-dialog width="1000" v-model="parser">
+      <v-card v-if="parserClone">
+        <p class="text-h4 mb-4 pa-4">Парсер тарифа</p>
+        <component
+          :is="parserClone.type"
+          :tab="parserClone"
+          :options="parserClone.config"
+          :stages="parserClone.stages"
+          @closePopup="parser = false"
+        />
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 

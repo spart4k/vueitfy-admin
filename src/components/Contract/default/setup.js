@@ -4,6 +4,9 @@ import store from '@/store'
 import _ from 'lodash'
 import Pact from './../pact/index.vue'
 import Zone from './../zone/index.vue'
+import parserTarif from '@/pages/object/config/form-object-parser'
+import Detail from '@/components/Table/detail/index.vue'
+// import FormOutput from '@/components/Form/output/correct/index.vue'
 
 export default {
   name: 'Contract',
@@ -12,11 +15,13 @@ export default {
     SwitchDefault,
     Pact,
     Zone,
+    Detail,
   },
   setup(props, ctx) {
     const { emit } = ctx
-    const loading = ref(false)
+    const loading = ref(true)
     const types = ref([])
+    const parser = ref(false)
     const expansion = ref([])
 
     const switchBtn = [
@@ -164,6 +169,29 @@ export default {
       type.data.items.push(...response)
     }
 
+    const parserClone = ref()
+    const openParser = ({
+      territory,
+      contract,
+      version,
+      contract_id,
+      contract_type,
+    }) => {
+      parserClone.value = _.cloneDeep(parserTarif)
+      parserClone.value.fields[0].value = territory.id
+      parserClone.value.fields[1].value = contract.id
+      parserClone.value.fields[2].filter.push({
+        alias: 'version',
+        sendEmpty: true,
+        value: version,
+      })
+      parserClone.value.fields[3].value = contract_id
+      parserClone.value.fields[4].value = contract_type
+      parserClone.value.fields[5].value = contract.type_id
+
+      parser.value = true
+    }
+
     onMounted(() => {
       getTypes()
     })
@@ -186,9 +214,12 @@ export default {
       switchBtn,
 
       expansion,
+      parser,
+      parserClone,
 
       changeTerritory,
       changeDoc,
+      openParser,
     }
   },
 }

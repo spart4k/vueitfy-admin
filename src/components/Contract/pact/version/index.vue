@@ -17,7 +17,15 @@
           <span>
             <v-btn
               class="px-3 mx-1 text-none"
-              @click.stop
+              @click.stop="
+                $emit('openParser', {
+                  territory: territory,
+                  contract: pact,
+                  version: version.version,
+                  contract_id: version.id,
+                  contract_type: 1,
+                })
+              "
               elevation="0"
               color="primary"
               text
@@ -50,7 +58,7 @@
       <v-expansion-panel-content class="px-3">
         <v-divider class="mb-3"></v-divider>
         <v-btn
-          @click="dialog = true"
+          @click="openDialog(version)"
           color="#EDF5FD"
           class="mb-2"
           elevation="0"
@@ -63,13 +71,6 @@
             >Дополнительное соглашение</span
           >
         </v-btn>
-        <v-dialog width="470" v-model="dialog"
-          ><Dialog
-            v-if="dialog"
-            @close="dialog = false"
-            @refreshItem="refreshItem(version)"
-            :version="version"
-        /></v-dialog>
         <v-row
           v-for="subversion in version.items"
           :key="subversion.id"
@@ -95,7 +96,15 @@
           <span>
             <v-btn
               class="px-3 mx-1 text-none"
-              @click.stop
+              @click.stop="
+                $emit('openParser', {
+                  territory: territory,
+                  contract: pact,
+                  version: subversion.version,
+                  contract_id: subversion.id,
+                  contract_type: 2,
+                })
+              "
               v-if="!subversion.with_prolongation"
               elevation="0"
               color="primary"
@@ -119,6 +128,16 @@
         </v-row>
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-dialog width="470" v-model="dialog.isShow"
+      ><Dialog
+        v-if="dialog.isShow"
+        @close="dialog.isShow = false"
+        @refreshItem="refreshItem(dialog.version)"
+        :version="dialog.version"
+        :pact="pact"
+        :territory="territory"
+        @openParser="(e) => $emit('openParser', e)"
+    /></v-dialog>
   </v-expansion-panels>
 </template>
 

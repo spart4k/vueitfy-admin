@@ -63,7 +63,7 @@
           clickHandler({
             action: {
               module: 'form/create',
-              url: 'add/contract/additional',
+              url: 'add/contract/version',
               action: 'saveFormStore',
               notClose: true,
             },

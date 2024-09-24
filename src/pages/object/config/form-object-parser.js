@@ -94,7 +94,11 @@ export default {
           type: 'api',
           module: 'selects/getListUpdate',
           field: 'type_contract_id',
-          url: 'get/pagination_list/territory_contract_x5',
+          url: 'get/pagination_list/versions_agreement',
+        },
+        {
+          type: 'default',
+          fillField: ['type_id'],
         },
       ],
       position: {
@@ -109,6 +113,7 @@ export default {
       name: 'type_contract_id',
       subtype: 'single',
       placeholder: '',
+      notSend: true,
       class: [''],
       selectOption: {
         text: 'name',
@@ -117,7 +122,7 @@ export default {
       items: [],
       page: 1,
       search: '',
-      url: 'get/pagination_list/territory_contract_x5',
+      url: 'get/pagination_list/versions_agreement',
       position: {
         cols: 12,
         sm: 12,
@@ -132,14 +137,7 @@ export default {
       dependence: [
         {
           type: 'default',
-          fillField: [
-            {
-              formKey: 'contract_id',
-              compareKey: 'id',
-              objectKey: 'name',
-              targetKey: 'name',
-            },
-          ],
+          fillField: ['contract_id', 'contract_type'],
         },
       ],
       validations: { required },
@@ -149,6 +147,42 @@ export default {
       label: 'contract_id',
       name: 'contract_id',
       requestType: 'number',
+      placeholder: '',
+      class: [''],
+      disabled: true,
+      // isShow: {
+      //   value: true,
+      // },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'contract_type',
+      name: 'contract_type',
+      requestKey: 'type_contract_id',
+      requestType: 'number',
+      placeholder: '',
+      class: [''],
+      disabled: true,
+      // isShow: {
+      //   value: true,
+      // },
+      position: {
+        cols: 12,
+        sm: 12,
+      },
+      validations: { required },
+      bootstrapClass: [''],
+    }),
+    stringField({
+      label: 'type_id',
+      name: 'type_id',
+      requestType: 'number',
+      requestKey: 'type_parser',
       placeholder: '',
       class: [''],
       disabled: true,

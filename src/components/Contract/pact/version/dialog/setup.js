@@ -29,6 +29,14 @@ export default {
       type: Object,
       default: () => {},
     },
+    pact: {
+      type: Object,
+      default: () => {},
+    },
+    territory: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: { Datepicker, DropZone },
   setup(props, ctx) {
@@ -67,7 +75,15 @@ export default {
           emit('refreshItem')
         }
         if (formData.prolongation_tarif) {
-          console.log('zxc')
+          emit('openParser', {
+            territory: props.territory,
+            contract: props.pact,
+            version: Number(
+              `${props.version.version}.${props.version.items.length + 1}`
+            ),
+            contract_id: response.id,
+            contract_type: 2,
+          })
         }
       },
     })

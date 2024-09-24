@@ -33,7 +33,7 @@
       <v-expansion-panel-content class="px-3">
         <v-divider class="mb-3"></v-divider>
         <v-btn
-          @click="dialog = true"
+          @click="openDialog(pact)"
           color="#EDF5FD"
           class="mb-2"
           elevation="0"
@@ -46,16 +46,23 @@
             >Добавить версию</span
           >
         </v-btn>
-        <v-dialog width="470" v-model="dialog"
-          ><Dialog
-            v-if="dialog"
-            @close="dialog = false"
-            @refreshItem="refreshItem(pact)"
-            :version="pact"
-        /></v-dialog>
-        <Version @refreshItem="refreshItem" :data="pact.items" />
+        <Version
+          @openParser="(e) => $emit('openParser', e)"
+          @refreshItem="refreshItem"
+          :territory="territory"
+          :pact="pact"
+          :data="pact.items"
+        />
       </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-dialog width="470" v-model="dialog.isShow"
+      ><Dialog
+        v-if="dialog.isShow"
+        @close="dialog.isShow = false"
+        @refreshItem="refreshItem(dialog.pact)"
+        :version="dialog.pact"
+        :territory="territory"
+    /></v-dialog>
   </v-expansion-panels>
 </template>
 
