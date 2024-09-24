@@ -18,6 +18,8 @@ const dateField = (properties) => {
     menu: false,
     type: 'date',
     ...defaultProperties(properties),
+    loading: false,
+    period: '',
   }
 }
 const dateRangeField = (properties) => {

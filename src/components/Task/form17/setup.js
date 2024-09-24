@@ -135,7 +135,6 @@ const Form17 = defineComponent({
           }),
         successMessage: 'Файл успешно загружен',
       })
-      console.log(loadImage)
       changeStatusTask = useRequest({
         context,
         request: () => {

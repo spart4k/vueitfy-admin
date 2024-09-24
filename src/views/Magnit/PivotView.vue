@@ -122,16 +122,13 @@ export default {
         oldPath: 'id',
       },
     })
-    console.log(personalTabs)
     const convertPathButtonAddSnak = () => {
       const tableSkan = personalTabs.find((el) => el.name === 'Сканы')
-      console.log(tableSkan)
       const addBtn = tableSkan.config.panel.buttons.find(
         (el) => el.label === 'Добавить'
       )
       addBtn.type = 'pushUrl'
       addBtn.url = '/scan-add'
-      console.log(addBtn)
     }
     convertPathButtonAddSnak()
     personalTabs.splice(4, 0, ...[paymentConfig, zayavkaConfig])

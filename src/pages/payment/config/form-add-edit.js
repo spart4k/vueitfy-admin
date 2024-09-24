@@ -966,7 +966,7 @@ export default {
           //    value: '',
           //  },
           //],
-          url: 'get/pagination_list/payment_object_id',
+          url: 'get/pagination_list/object_payment_id',
         },
         {
           type: 'api',
@@ -984,7 +984,7 @@ export default {
               value: [2],
             },
           ],
-          url: 'get/pagination_list/personal_payment_id',
+          url: 'get/pagination_list/object_payment_id',
         },
         // {
         //   type: 'api',
@@ -1194,7 +1194,7 @@ export default {
           //    value: '',
           //  },
           //],
-          url: 'get/pagination_list/payment_object_id',
+          url: 'get/pagination_list/object_payment_id',
         },
         {
           type: 'api',
@@ -1672,6 +1672,198 @@ export default {
         },
       ],
     }),
+    dateField({
+      label: 'Дата назн',
+      name: 'date_target',
+      placeholder: '',
+      classes: [''],
+      position: {
+        cols: 12,
+        sm: 6,
+      },
+      // validations: { required },
+      bootstrapClass: [''],
+      readonly: {
+        value: false,
+        condition: [
+          {
+            funcCondition: (context) => {
+              return isX5(context)
+            },
+            type: false,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                (isX5(context) &&
+                  [2, 3, 6].includes(context.formData.status_id) &&
+                  [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
+                isOKK(context) ||
+                isROKK(context) ||
+                (isX5(context) &&
+                  isDBA(context) &&
+                  context.formData.status_id === 4 &&
+                  context.mode === 'edit')
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => isAllBug(context),
+            type: true,
+          },
+          {
+            funcCondition: (context) => context.formData.status_id === 6,
+            type: true,
+          },
+          {
+            funcCondition: (context) =>
+              !!(!context.formData.vid_vedomost_id && context.mode === 'edit'),
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isX5(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [3, 1].includes(context.formData.status_id) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+        ],
+      },
+      isShow: {
+        value: false,
+        type: 'some',
+        conditions: [
+          {
+            field: 'vid_vedomost_id',
+            value: [1, 5],
+          },
+          {
+            target: 'funcCondition',
+            funcCondition: (ctx) => {
+              return isMagnit(ctx) || isX5(ctx)
+            },
+          },
+        ],
+      },
+      dependence: [
+        {
+          //fields: ['statement_card', 'cardowner'],
+          init: true,
+          type: 'custom',
+          url: 'get/object/price',
+          func: async (ctx) => {
+            if (isLogistik(ctx)) return
+            if (
+              !ctx.formData.object_id ||
+              !ctx.formData.doljnost_id ||
+              !ctx.formData.date_target
+            ) {
+              return
+            }
+            const body = {
+              data: {
+                object_id: ctx.formData.object_id,
+                doljnost_id: ctx.formData.doljnost_id,
+                date_target: moment(
+                  ctx.formData.date_target,
+                  'YYYY.MM.DD'
+                ).format('YYYY-MM-DD'),
+              },
+            }
+            const { code, result } = await ctx.store.dispatch('form/create', {
+              body,
+              url: 'get/object/price',
+            })
+            if (code) {
+              ctx.formData.object_price = result.price
+              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
+              ctx.formData.object_price_id = result.id
+            } else {
+              ctx.formData.object_price = 0
+              ctx.formData.object_price_id = 0
+            }
+          },
+        },
+      ],
+      updateList: [
+        {
+          field: 'date_target',
+          alias: 'date_target',
+          method: 'getAllowDate',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'object_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'account_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              source: 'formData',
+              value: '',
+            },
+          ],
+        },
+        {
+          alias: 'payment_vid_vedomost_id',
+          field: 'vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
+      ],
+      allowDates: true,
+    }),
     autocompleteField({
       label: 'Линейщик',
       name: 'personal_id',
@@ -1876,6 +2068,18 @@ export default {
           },
           {
             funcCondition: (context) => {
+              return (
+                isRoznica(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [4].includes(context.formData.status_id) &&
+                (isDBA(context) || isAllBug(context)) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
               return !!(
                 !context.formData.vid_vedomost_id &&
                 [1, 3, 5].includes(context.entityData.vid_vedomost_id) &&
@@ -1910,7 +2114,6 @@ export default {
             condition: [
               {
                 funcCondition: (context) => {
-                  console.log(context)
                   if (!context.environment.readonlyAll) {
                     if (context.formData.real_personal_id) {
                       return !!(
@@ -2280,6 +2483,18 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return (
+                isRoznica(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [4].includes(context.formData.status_id) &&
+                (isDBA(context) || isAllBug(context)) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
           // {
           //   funcCondition: (context) => {
           //     return (
@@ -2416,118 +2631,6 @@ export default {
       //     // },
       //   ],
       // },
-    }),
-    dateField({
-      label: 'Дата назн',
-      name: 'date_target',
-      placeholder: '',
-      classes: [''],
-      position: {
-        cols: 12,
-        sm: 6,
-      },
-      // validations: { required },
-      bootstrapClass: [''],
-      readonly: {
-        value: false,
-        condition: [
-          {
-            funcCondition: (context) => {
-              return isX5(context)
-            },
-            type: false,
-          },
-          {
-            funcCondition: (context) => {
-              return (
-                (isX5(context) &&
-                  [2, 3, 6].includes(context.formData.status_id) &&
-                  [3, 5, 1].includes(context.originalData.vid_vedomost_id)) ||
-                isOKK(context) ||
-                isROKK(context) ||
-                (isX5(context) &&
-                  isDBA(context) &&
-                  context.formData.status_id === 4 &&
-                  context.mode === 'edit')
-              )
-            },
-            type: true,
-          },
-          {
-            funcCondition: (context) => isAllBug(context),
-            type: true,
-          },
-          {
-            funcCondition: (context) => context.formData.status_id === 6,
-            type: true,
-          },
-          {
-            funcCondition: (context) =>
-              !!(!context.formData.vid_vedomost_id && context.mode === 'edit'),
-            type: true,
-          },
-          {
-            funcCondition: (context) => {
-              return (
-                isX5(context) &&
-                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
-                [3, 1].includes(context.formData.status_id) &&
-                context.mode === 'edit'
-              )
-            },
-            type: true,
-          },
-        ],
-      },
-      isShow: {
-        value: false,
-        type: 'some',
-        conditions: [
-          {
-            field: 'vid_vedomost_id',
-            value: [1, 5],
-          },
-          {
-            target: 'funcCondition',
-            funcCondition: (ctx) => {
-              return isMagnit(ctx) || isX5(ctx)
-            },
-          },
-        ],
-      },
-      dependence: [
-        {
-          //fields: ['statement_card', 'cardowner'],
-          init: true,
-          type: 'custom',
-          url: 'get/object/price',
-          func: async (ctx) => {
-            if (isLogistik(ctx)) return
-            const body = {
-              data: {
-                object_id: ctx.formData.object_id,
-                doljnost_id: ctx.formData.doljnost_id,
-                date_target: moment(
-                  ctx.formData.date_target,
-                  'YYYY.MM.DD'
-                ).format('YYYY-MM-DD'),
-              },
-            }
-            const { code, result } = await ctx.store.dispatch('form/create', {
-              body,
-              url: 'get/object/price',
-            })
-            if (code) {
-              ctx.formData.object_price = result.price
-              ctx.formData.total = ctx.formData.hour * ctx.formData.object_price
-              ctx.formData.object_price_id = result.id
-            } else {
-              ctx.formData.object_price = 0
-              ctx.formData.object_price_id = 0
-            }
-          },
-        },
-      ],
     }),
     //selectField({
     //  label: 'Статья расхода',
@@ -2719,6 +2822,18 @@ export default {
           },
           {
             funcCondition: (context) => !context.formData.vid_vedomost_id,
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isRoznica(context) &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                [4].includes(context.formData.status_id) &&
+                (isDBA(context) || isAllBug(context)) &&
+                context.mode === 'edit'
+              )
+            },
             type: true,
           },
         ],
