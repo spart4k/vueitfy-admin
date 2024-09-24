@@ -172,7 +172,7 @@ export const config = {
               condition: [
                 {
                   permissions: [4, 12, 22],
-                  type: false,
+                  type: true,
                 },
               ],
             },
@@ -188,7 +188,7 @@ export const config = {
               condition: [
                 {
                   permissions: [4, 12, 22],
-                  type: false,
+                  type: true,
                 },
               ],
             },
