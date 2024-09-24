@@ -1758,6 +1758,13 @@ export default {
           url: 'get/object/price',
           func: async (ctx) => {
             if (isLogistik(ctx)) return
+            if (
+              !ctx.formData.object_id ||
+              !ctx.formData.doljnost_id ||
+              !ctx.formData.date_target
+            ) {
+              return
+            }
             const body = {
               data: {
                 object_id: ctx.formData.object_id,
@@ -1812,13 +1819,50 @@ export default {
             },
             {
               field: 'date_target',
-              alias: 'period',
               source: 'formData',
               value: '',
             },
           ],
         },
+        {
+          alias: 'payment_vid_vedomost_id',
+          field: 'vid_vedomost_id',
+          filter: [
+            {
+              field: 'direction_id',
+              // alias: 'pb.id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'type',
+              alias: 'type_object_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'date_target',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              field: 'personal_bank_id',
+              value: '',
+              source: 'formData',
+              type: 'num',
+            },
+            {
+              alias: 'mode',
+              source: 'mode',
+              type: 'num',
+            },
+          ],
+        },
       ],
+      allowDates: true,
     }),
     autocompleteField({
       label: 'Линейщик',
@@ -2070,7 +2114,6 @@ export default {
             condition: [
               {
                 funcCondition: (context) => {
-                  console.log(context)
                   if (!context.environment.readonlyAll) {
                     if (context.formData.real_personal_id) {
                       return !!(

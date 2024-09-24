@@ -32,6 +32,9 @@
           @click:clear="clearField"
         ></v-text-field>
       </template>
+      <div v-if="field.loading" class="date-picker-loading">
+        <v-progress-circular color="primary" :size="80" indeterminate />
+      </div>
       <v-date-picker
         v-model="dateValue"
         color="primary"
@@ -42,6 +45,7 @@
         :first-day-of-week="1"
         @click:month="changeDate(year)"
         :picker-date.sync="pickerDate"
+        :allowed-dates="allowDates"
         @input="
           field.subtype !== 'multiple' ? (menu = false) : undefined
           changeDate()

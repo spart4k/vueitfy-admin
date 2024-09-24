@@ -511,7 +511,6 @@ export default function ({
       if (sharedFields) {
         sharingFields(sharedFields)
       }
-      console.log(action.action)
       if (action.action.method === 'push') {
         router.push({
           name: `${route.name}/${action.action.name}`,
@@ -905,7 +904,6 @@ export default function ({
     )
   }
   const changeMonth = ({ field, value, month }) => {
-    console.log(field, value, month)
     changeAutocomplete({ field, value, month })
   }
   const changeAutocomplete = async ({ field, value, item }) => {
@@ -935,6 +933,7 @@ export default function ({
     }
 
     if (field.updateList && field?.updateList.length) {
+      field.loading = true
       const list = await getFieldsList(field?.updateList)
       field.loading = false
     }
@@ -966,7 +965,6 @@ export default function ({
         if (!formDataNames.includes(fieldAliases[el.alias])) {
           formDataNames.push(fieldAliases[el.alias])
         }
-        console.log(fields, fieldAliases, fieldAliases[el.alias])
         if (
           fields[fieldAliases[el.alias]].hasOwnProperty('updateList') ||
           fields[fieldAliases[el.alias]].hasOwnProperty('dependence')
@@ -1137,9 +1135,20 @@ export default function ({
           }
         }
       }
+      console.log(list)
       let filter = list.filter.reduce((acc, el) => convertFilter(acc, el), [])
-      const targetId = getListField(list)
 
+      let targetId = getListField(list)
+      if (list?.method === 'getAllowDate') {
+        const period = fields[fieldAliases[list.alias]]?.period
+        console.log(period)
+        if (period?.length) {
+          targetId = +(period.split('-')[0] + period.split('-')[1])
+          filter = filter.filter((el) => {
+            return el.alias !== fieldAliases[list.alias]
+          })
+        }
+      }
       const element = {
         alias: list.alias,
         filter,
@@ -1147,14 +1156,12 @@ export default function ({
         id: targetId ? targetId : undefined,
       }
       if (!checkListRequired(filter, list)) {
-        console.log('getlist', arrayList)
         fields[fieldAliases[list.alias]].items = []
         return []
       }
       return element
     })
     if (listQuery.length === 0) return
-    console.log(arrayList)
     const lists = await makeRequestList(listQuery)
     await putSelectItems(lists)
     return lists
@@ -1202,14 +1209,12 @@ export default function ({
           if (targetField.filter && targetField.filter.length) {
             filter = getDepFilters(targetField)
             if (targetField.filter && !checkListRequired(filter, targetField)) {
-              console.log('target')
               targetField.items = []
               return
             }
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
             if (dependence.filter && !checkListRequired(filter, targetField)) {
-              console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
               return
             }
@@ -1647,14 +1652,30 @@ export default function ({
     const stackDep = []
     for (let keyList in lists.data) {
       const field = fields[fieldAliases[keyList]]
+      console.log(keyList)
       if (field) {
-        if (
+        const allowList =
           field.type === 'date' &&
-          field.updateList.filter((el) => el?.method === 'getAllowDate').length
+          field.updateList.filter((el) => el?.method === 'getAllowDate')
+        console.log(
+          allowList.alias,
+          keyList,
+          field.type === 'date',
+          field?.updateList?.filter((el) => el?.method === 'getAllowDate')
+        )
+        console.log(
+          field.type === 'date' &&
+            field.updateList.filter((el) => el?.method === 'getAllowDate')
+        )
+        if (
+          allowList?.length &&
+          allowList?.filter((el) => el.alias === keyList).length
         ) {
-          console.log('getAllowDate')
           Vue.set(field, 'allowDates')
+          console.log('allowDATES', keyList)
           field.allowDates = lists.data[keyList]
+          lists.data[keyList] = []
+          continue
         }
         field.hideItems = lists.data[keyList]
         if (field.hiding) {
@@ -1697,14 +1718,15 @@ export default function ({
           lists.data[keyList].length === 1 &&
           !field.hasOwnProperty('defaultItems')
         ) {
+          console.log(field)
           // Если массив, вставить массив
           if (fields[field.name]?.subtype === 'multiple') {
             formData[field.name] = [
-              lists.data[keyList][0][field.selectOption.value],
+              lists.data[keyList][0][field?.selectOption?.value],
             ]
           } else {
             formData[field.name] =
-              lists.data[keyList][0][field.selectOption.value]
+              lists.data[keyList][0][field?.selectOption?.value]
           }
           const fieldItem = field?.items?.find(
             (el) => el.id === formData[field.name]
@@ -1767,7 +1789,6 @@ export default function ({
         }
         showField(field.type, field, true)
       }
-      console.log('keyList', list)
       // if (arrayList?.method === 'getAllowDate') {
       //   getAllowDates(arrayList)
       //   return
@@ -1909,7 +1930,6 @@ export default function ({
     }
     loading.value = false
     emit('setFormData', formData)
-    console.log(refreshTable)
     if (refreshTable) {
       emit('getItems')
     }

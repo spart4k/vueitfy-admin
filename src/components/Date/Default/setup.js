@@ -1,6 +1,11 @@
 import { ref, computed, watch, onMounted, toRef } from 'vue'
 import _ from 'lodash'
 
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
+
+const moment = extendMoment(Moment)
+
 export default {
   name: 'datepicker',
   props: {
@@ -83,6 +88,31 @@ export default {
       }
     }
 
+    const allowDates = (val) => {
+      if (props.field.allowDates) {
+        if (props.field.allowDates?.length) {
+          const hasInterval = props.field.allowDates.some((el) => {
+            const { date_target_start, date_target_end } = el
+            const start = moment(date_target_start, 'YYYY-MM-DD')
+            const end = moment(date_target_end, 'YYYY-MM-DD')
+            const when = moment(val, 'YYYY-MM-DD')
+            const range = moment.range(start, end)
+            const result = range.contains(when)
+            return result
+          })
+          if (hasInterval) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
+    }
+
     onMounted(() => {
       if (props.field.subtype === 'multiple') {
         proxyValue.value?.forEach((item, index) => {
@@ -107,17 +137,15 @@ export default {
     watch(
       () => pickerDate.value,
       (val) => {
-        console.log({
-          field: props.field,
-          value: proxyValue.value,
-          val,
-        })
+        console.log(val)
+        console.log('changeMonth', val + '-01')
+        props.field.period = val
         emit('changeMonth', {
           field: props.field,
           value: proxyValue.value,
           month: val,
         })
-        proxyValue.value = val + '-01'
+        // proxyValue.value = val
       }
     )
     watch(
@@ -147,6 +175,7 @@ export default {
       clearField,
       changeMonth,
       pickerDate,
+      allowDates,
     }
   },
 }
