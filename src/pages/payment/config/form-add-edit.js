@@ -2739,6 +2739,12 @@ export default {
           },
           {
             funcCondition: (context) => {
+              return isMagnit(context) && context.originalData.status_id === 4
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
               return (
                 isRoznica(context) &&
                 (isROKK(context) || isOKK(context)) &&
