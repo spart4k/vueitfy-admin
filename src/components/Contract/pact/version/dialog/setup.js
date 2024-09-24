@@ -88,6 +88,10 @@ export default {
       },
     })
 
+    const getUnix = (val) => {
+      return moment(val, 'YYYY-MM-DD').unix()
+    }
+
     const { formData, fields, clickHandler } = useForm({
       form: {
         detail: true,
@@ -217,6 +221,8 @@ export default {
       formData,
       clickHandler,
       fields,
+
+      getUnix,
     }
   },
 }

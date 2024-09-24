@@ -150,9 +150,9 @@ export default {
       placeholder: '',
       class: [''],
       disabled: true,
-      // isShow: {
-      //   value: true,
-      // },
+      isShow: {
+        value: true,
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -168,9 +168,9 @@ export default {
       placeholder: '',
       class: [''],
       disabled: true,
-      // isShow: {
-      //   value: true,
-      // },
+      isShow: {
+        value: true,
+      },
       position: {
         cols: 12,
         sm: 12,
@@ -186,9 +186,9 @@ export default {
       placeholder: '',
       class: [''],
       disabled: true,
-      // isShow: {
-      //   value: true,
-      // },
+      isShow: {
+        value: true,
+      },
       position: {
         cols: 12,
         sm: 12,

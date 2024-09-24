@@ -97,7 +97,8 @@
             formData.name &&
             formData.date_from &&
             formData.date_to &&
-            formData.file.length
+            formData.file.length &&
+            getUnix(formData.date_to) >= getUnix(formData.date_from)
           )
         "
         color="primary"

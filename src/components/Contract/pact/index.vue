@@ -62,6 +62,7 @@
         @refreshItem="refreshItem(dialog.pact)"
         :version="dialog.pact"
         :territory="territory"
+        @openParser="(e) => $emit('openParser', e)"
     /></v-dialog>
   </v-expansion-panels>
 </template>

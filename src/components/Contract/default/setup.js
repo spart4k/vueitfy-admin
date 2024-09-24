@@ -179,12 +179,15 @@ export default {
     }) => {
       parserClone.value = _.cloneDeep(parserTarif)
       parserClone.value.fields[0].value = territory.id
+      parserClone.value.fields[0].readonly = true
       parserClone.value.fields[1].value = contract.id
+      parserClone.value.fields[1].readonly = true
       parserClone.value.fields[2].filter.push({
         alias: 'version',
         sendEmpty: true,
         value: version,
       })
+      parserClone.value.fields[2].readonly = true
       parserClone.value.fields[3].value = contract_id
       parserClone.value.fields[4].value = contract_type
       parserClone.value.fields[5].value = contract.type_id
