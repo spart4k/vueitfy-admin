@@ -168,6 +168,14 @@ export const config = {
             class: ['v-table-button--custom'],
             type: 'changeUrl',
             url: 'personal/employment',
+            isShow: {
+              condition: [
+                {
+                  permissions: [4, 12, 22],
+                  type: false,
+                },
+              ],
+            },
             backgroundColor: '#fff',
           },
           {
@@ -176,13 +184,14 @@ export const config = {
             type: 'changeUrl',
             url: 'personal/employment_parser',
             backgroundColor: '#fff',
-          },
-          {
-            label: 'Отчет А/В',
-            class: ['v-table-button--custom'],
-            type: 'changeUrl',
-            url: 'personal/report',
-            backgroundColor: '#fff',
+            isShow: {
+              condition: [
+                {
+                  permissions: [4, 12, 22],
+                  type: false,
+                },
+              ],
+            },
           },
         ],
       },

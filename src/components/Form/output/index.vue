@@ -15,15 +15,18 @@
           v-for="(item, index) in stage.items"
           :key="index"
         >
-          <v-app-bar-title
+          <div
             :class="[
-              'title',
+              'status',
               stage.value === index && 'current',
               stage.value > index && 'completed',
               'text-center',
+              'font-weight-500',
+              'font-size-20',
             ]"
-            >{{ item.name }}</v-app-bar-title
           >
+            {{ item.name }}
+          </div>
           <v-progress-linear
             class="mt-2"
             :class="stage.firstLoad && 'firstLoad'"

@@ -1,8 +1,8 @@
 <template>
   <div class="">
     <v-menu
-      :key="field.id"
-      :ref="`menuRef_${field.id}`"
+      :key="field?.id"
+      :ref="`menuRef_${field?.id}`"
       v-model="menu"
       :close-on-content-click="false"
       transition="scale-transition"
@@ -22,8 +22,11 @@
           v-mask="mask"
           :disabled="disabled"
           :readonly="readonly"
-          :class="field.subtype === 'range' && 'mt-0 pt-0'"
+          :class="field?.subtype === 'range' && 'mt-0 pt-0'"
           clearable
+          :outlined="options.outlined"
+          :dense="options.dense"
+          :hide-details="options.hideDetails"
           @input="changeValue"
           @focus="$emit('focus')"
           @blur="$emit('blur')"
@@ -36,12 +39,12 @@
         v-model="dateValue"
         color="primary"
         locale="ru-RU"
-        :type="field.subtype === 'period' ? 'month' : undefined"
-        :multiple="field.subtype === 'multiple'"
+        :type="field?.subtype === 'period' ? 'month' : undefined"
+        :multiple="field?.subtype === 'multiple'"
         :readonly="readonly"
         :first-day-of-week="1"
         @input="
-          field.subtype !== 'multiple' ? (menu = false) : undefined
+          field?.subtype !== 'multiple' ? (menu = false) : undefined
           changeDate()
         "
       >
