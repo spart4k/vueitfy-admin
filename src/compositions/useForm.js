@@ -511,7 +511,6 @@ export default function ({
       if (sharedFields) {
         sharingFields(sharedFields)
       }
-      console.log(action.action)
       if (action.action.method === 'push') {
         router.push({
           name: `${route.name}/${action.action.name}`,
@@ -1143,7 +1142,6 @@ export default function ({
         id: targetId ? targetId : undefined,
       }
       if (!checkListRequired(filter, list)) {
-        console.log('getlist', arrayList)
         fields[fieldAliases[list.alias]].items = []
         return []
       }
@@ -1194,14 +1192,12 @@ export default function ({
           if (targetField.filter && targetField.filter.length) {
             filter = getDepFilters(targetField)
             if (targetField.filter && !checkListRequired(filter, targetField)) {
-              console.log('target')
               targetField.items = []
               return
             }
           } else if (dependence.filter && dependence.filter.length) {
             filter = getDepFilters(dependence)
             if (dependence.filter && !checkListRequired(filter, targetField)) {
-              console.log('dependence', dependence)
               // fields[fieldAliases[dependence.alias]].items = []
               return
             }
@@ -1888,7 +1884,6 @@ export default function ({
     }
     loading.value = false
     emit('setFormData', formData)
-    console.log(refreshTable)
     if (refreshTable) {
       emit('getItems')
     }

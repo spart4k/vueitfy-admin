@@ -1910,7 +1910,6 @@ export default {
             condition: [
               {
                 funcCondition: (context) => {
-                  console.log(context)
                   if (!context.environment.readonlyAll) {
                     if (context.formData.real_personal_id) {
                       return !!(

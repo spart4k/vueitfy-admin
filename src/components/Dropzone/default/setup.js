@@ -112,7 +112,6 @@ export default {
           proxyVal.value = []
           proxyVal.value.push(...arr)
           emit('addFiles', { ...arr, ...props.paramsForEmit }, props.options)
-          console.log(proxyVal.value)
           nextTick(() => {
             fileValidation()
           })

@@ -47,7 +47,6 @@ export default {
     accountField.filter.push({
       with_me: false,
     })
-    console.log(editTab)
 
     const { paymentConfig, zayavkaConfig } = initPaymentZayavka(
       paymentConfigOrig,

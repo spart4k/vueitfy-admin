@@ -187,6 +187,10 @@ export default {
                     options: [1, 3, 4, 5, 6, 7],
                   },
                   {
+                    value: [4],
+                    options: [1, 3, 2, 5, 6, 7],
+                  },
+                  {
                     value: [1],
                     options: [7, 2],
                   },
@@ -268,7 +272,7 @@ export default {
           bootstrapClass: [''],
           isShow: {
             value: false,
-            conditions: [{ field: 'direction_id', value: [[2]] }],
+            conditions: [{ field: 'direction_id', value: [[2], [4]] }],
           },
         }),
         autocompleteField({
@@ -364,7 +368,7 @@ export default {
             conditions: [
               {
                 field: 'direction_id',
-                value: [[1], [6], [1, 6], [6, 1], [7], [2]],
+                value: [[1], [6], [1, 6], [6, 1], [7], [2], [4]],
               },
             ],
           },

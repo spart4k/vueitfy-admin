@@ -139,7 +139,6 @@ export default {
           let filter = []
 
           if (props.field.filter && props.field.filter.length) {
-            console.log(props.field.filter)
             // props.field.filter.forEach((el) => {
             //   if (el.routeKey) {
             //     filter.push({
@@ -177,9 +176,7 @@ export default {
             //   }
             // })
             filter = props.getDepFilters(props.field)
-            console.log('getfil')
           }
-          console.log('log')
           const data = await getList(
             url,
             {

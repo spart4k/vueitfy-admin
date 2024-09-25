@@ -131,6 +131,7 @@ export default {
       getContracts(type)
     }
 
+    let controller
     const getContracts = async (type) => {
       Vue.set(
         type.data,
@@ -141,13 +142,18 @@ export default {
       const request = type.data.active.reduce(
         (acc, typeIndex) => {
           if (!type.data.items.some((item) => item.index === typeIndex)) {
+            if (controller) controller.abort()
+            controller = new AbortController()
             acc.data.push(
-              store.dispatch(
-                'form/get',
-                `get/${type.data.docType === 0 ? 'contract' : 'zones'}/${
+              store.dispatch('form/getParams', {
+                url: `get/${type.data.docType === 0 ? 'contract' : 'zones'}/${
                   type.data.territories[typeIndex].id
-                }`
-              )
+                }`,
+                data: undefined,
+                params: {
+                  signal: controller.signal,
+                },
+              })
             )
             acc.i.push(typeIndex)
           }
@@ -167,6 +173,7 @@ export default {
         }
       })
       type.data.items.push(...response)
+      controller = undefined
     }
 
     const parserClone = ref()
