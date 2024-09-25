@@ -192,15 +192,15 @@ export default {
                   },
                   {
                     value: [1],
-                    options: [7, 2],
+                    options: [7, 2, 4],
                   },
                   {
                     value: [1, 6],
-                    options: [7, 2],
+                    options: [7, 2, 4],
                   },
                   {
                     value: [6],
-                    options: [7, 2],
+                    options: [7, 2, 4],
                   },
                 ],
               },
