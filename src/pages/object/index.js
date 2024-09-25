@@ -92,10 +92,10 @@ export const config = {
               condition: [
                 {
                   funcCondition: (ctx) => {
-                    const directions = ctx.store.state.user.direction_json
-                    if (directions.includes(1)) {
-                      return true
-                    }
+                    return (
+                      ctx.store.state.user.is_chief &&
+                      ctx.store.state.user.is_personal_vertical
+                    )
                   },
                   type: true,
                 },
