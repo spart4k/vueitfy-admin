@@ -1255,6 +1255,12 @@ const editFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'direction_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
     ],
@@ -1390,6 +1396,12 @@ const editFields = [
           {
             field: 'type_zayavka',
             alias: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'direction_id',
             value: '',
             source: 'formData',
             type: 'num',
