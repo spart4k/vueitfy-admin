@@ -88,14 +88,19 @@ export const config = {
             url: 'object-reassign',
             type: 'changeUrl',
             backgroundColor: '#fff',
-            // isShow: {
-            //   condition: [
-            //     {
-            //       permissions: [3, 4, 12, 16, 22],
-            //       type: true,
-            //     },
-            //   ],
-            // },
+            isShow: {
+              condition: [
+                {
+                  funcCondition: (ctx) => {
+                    const directions = ctx.store.state.user.direction_json
+                    if (directions.includes(2)) {
+                      return true
+                    }
+                  },
+                  type: true,
+                },
+              ],
+            },
           },
         ],
       },
