@@ -1,6 +1,7 @@
 //import
 import {
   getForm,
+  getParams,
   update,
   create,
   remove,
@@ -18,6 +19,10 @@ const form = {
   actions: {
     async get(_, url) {
       const result = await getForm(url)
+      return result
+    },
+    async getParams(_, params) {
+      const result = await getParams(params)
       return result
     },
     async update(_, params) {
