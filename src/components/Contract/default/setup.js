@@ -142,14 +142,15 @@ export default {
       if (controller.length)
         controller.forEach((item) => {
           item.abort()
+          console.log('item', item.signal.aborted)
         })
       controller = []
       const request = type.data.active.reduce(
         (acc, typeIndex) => {
           if (!type.data.items.some((item) => item.index === typeIndex)) {
-            const contr = new AbortController()
-            controller.push(contr)
-            console.log(controller)
+            // const contr = new AbortController()
+            controller.push(new AbortController())
+            console.log('c', controller, typeIndex)
             acc.data.push(
               store.dispatch('form/getParams', {
                 url: `get/${type.data.docType === 0 ? 'contract' : 'zones'}/${
@@ -157,7 +158,7 @@ export default {
                 }`,
                 data: undefined,
                 params: {
-                  signal: contr.signal,
+                  signal: controller.at(-1).signal,
                 },
               })
             )
@@ -167,20 +168,20 @@ export default {
         },
         { data: [], i: [] }
       )
-      const response = await Promise.all(request.data)
-      type.data.loading = false
-      response.forEach((item, index) => {
-        Vue.set(item, 'index', request.i[index])
-        if (item.data.length) {
-          item.data.forEach((pact) => {
-            Vue.set(pact, 'loaded', null)
-            Vue.set(pact, 'items', [])
-          })
-        }
+      await Promise.all(request.data).then((response) => {
+        type.data.loading = false
+        response.forEach((item, index) => {
+          Vue.set(item, 'index', request.i[index])
+          if (item.data.length) {
+            item.data.forEach((pact) => {
+              Vue.set(pact, 'loaded', null)
+              Vue.set(pact, 'items', [])
+            })
+          }
+        })
+        type.data.items.push(...response)
+        controller = []
       })
-      type.data.items.push(...response)
-      console.log('clearController')
-      controller = []
     }
 
     const parserClone = ref()
