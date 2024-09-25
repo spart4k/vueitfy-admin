@@ -93,7 +93,7 @@ export const config = {
                 {
                   funcCondition: (ctx) => {
                     const directions = ctx.store.state.user.direction_json
-                    if (directions.includes(2)) {
+                    if (directions.includes(1)) {
                       return true
                     }
                   },
