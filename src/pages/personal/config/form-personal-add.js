@@ -244,7 +244,7 @@ export default {
                   field: 'object_id',
                   value: '',
                   source: 'formData',
-                  required: true,
+                  // required: true,
                   type: 'array',
                 },
                 {
@@ -313,7 +313,7 @@ export default {
                 {
                   field: 'object_id',
                   value: '',
-                  required: true,
+                  // required: true,
                   source: 'formData',
                   type: 'array',
                 },
