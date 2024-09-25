@@ -1255,6 +1255,12 @@ const editFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'direction_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
     ],
@@ -1390,6 +1396,12 @@ const editFields = [
           {
             field: 'type_zayavka',
             alias: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'direction_id',
             value: '',
             source: 'formData',
             type: 'num',
@@ -2102,8 +2114,12 @@ const editFields = [
     ],
     hideOption: [
       {
-        target: 'type_zayavka',
-        targetValue: [2, 3],
+        func: (context) => {
+          return (
+            [2, 3].includes(context.formData.type_zayavka) &&
+            context.formData.direction_id !== 4
+          )
+        },
         value: [1],
         type: true,
       },

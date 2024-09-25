@@ -187,16 +187,20 @@ export default {
                     options: [1, 3, 4, 5, 6, 7],
                   },
                   {
+                    value: [4],
+                    options: [1, 3, 2, 5, 6, 7],
+                  },
+                  {
                     value: [1],
-                    options: [7, 2],
+                    options: [7, 2, 4],
                   },
                   {
                     value: [1, 6],
-                    options: [7, 2],
+                    options: [7, 2, 4],
                   },
                   {
                     value: [6],
-                    options: [7, 2],
+                    options: [7, 2, 4],
                   },
                 ],
               },
@@ -240,7 +244,7 @@ export default {
                   field: 'object_id',
                   value: '',
                   source: 'formData',
-                  required: true,
+                  // required: true,
                   type: 'array',
                 },
                 {
@@ -268,7 +272,7 @@ export default {
           bootstrapClass: [''],
           isShow: {
             value: false,
-            conditions: [{ field: 'direction_id', value: [[2]] }],
+            conditions: [{ field: 'direction_id', value: [[2], [4]] }],
           },
         }),
         autocompleteField({
@@ -309,7 +313,7 @@ export default {
                 {
                   field: 'object_id',
                   value: '',
-                  required: true,
+                  // required: true,
                   source: 'formData',
                   type: 'array',
                 },
@@ -364,7 +368,7 @@ export default {
             conditions: [
               {
                 field: 'direction_id',
-                value: [[1], [6], [1, 6], [6, 1], [7], [2]],
+                value: [[1], [6], [1, 6], [6, 1], [7], [2], [4]],
               },
             ],
           },

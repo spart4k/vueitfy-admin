@@ -89,7 +89,7 @@ export const config = {
           condition: [
             {
               permissions: [4, 8, 17],
-              type: false,
+              type: true,
             },
           ],
         },

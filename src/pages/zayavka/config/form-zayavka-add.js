@@ -1070,6 +1070,12 @@ const addFields = [
             source: 'formData',
             type: 'num',
           },
+          {
+            field: 'direction_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
         ],
       },
     ],
@@ -1131,6 +1137,12 @@ const addFields = [
           },
           {
             field: 'vector_id',
+            value: '',
+            source: 'formData',
+            type: 'num',
+          },
+          {
+            field: 'direction_id',
             value: '',
             source: 'formData',
             type: 'num',
@@ -1712,8 +1724,12 @@ const addFields = [
     ],
     hideOption: [
       {
-        target: 'vector_id',
-        targetValue: [2, 3],
+        func: (context) => {
+          return (
+            [2, 3].includes(context.formData.vector_id) &&
+            context.formData.direction_id !== 4
+          )
+        },
         value: [1],
         type: true,
       },

@@ -53,7 +53,6 @@ export default {
       context,
       successMessage: 'Сохранено',
       request: async (params) => {
-        console.log(params.formData)
         const response = await store.dispatch(params.module, {
           url: params.url,
           body: {

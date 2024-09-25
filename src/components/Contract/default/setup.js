@@ -131,6 +131,7 @@ export default {
       getContracts(type)
     }
 
+    let controller = []
     const getContracts = async (type) => {
       Vue.set(
         type.data,
@@ -138,16 +139,28 @@ export default {
         type.data.items.filter((item) => type.data.active.includes(item.index))
       )
       type.data.loading = true
+      if (controller.length)
+        controller.forEach((item) => {
+          item.abort()
+          console.log('item', item.signal.aborted)
+        })
+      controller = []
       const request = type.data.active.reduce(
         (acc, typeIndex) => {
           if (!type.data.items.some((item) => item.index === typeIndex)) {
+            // const contr = new AbortController()
+            controller.push(new AbortController())
+            console.log('c', controller, typeIndex)
             acc.data.push(
-              store.dispatch(
-                'form/get',
-                `get/${type.data.docType === 0 ? 'contract' : 'zones'}/${
+              store.dispatch('form/getParams', {
+                url: `get/${type.data.docType === 0 ? 'contract' : 'zones'}/${
                   type.data.territories[typeIndex].id
-                }`
-              )
+                }`,
+                data: undefined,
+                params: {
+                  signal: controller.at(-1).signal,
+                },
+              })
             )
             acc.i.push(typeIndex)
           }
@@ -155,18 +168,20 @@ export default {
         },
         { data: [], i: [] }
       )
-      const response = await Promise.all(request.data)
-      type.data.loading = false
-      response.forEach((item, index) => {
-        Vue.set(item, 'index', request.i[index])
-        if (item.data.length) {
-          item.data.forEach((pact) => {
-            Vue.set(pact, 'loaded', null)
-            Vue.set(pact, 'items', [])
-          })
-        }
+      await Promise.all(request.data).then((response) => {
+        type.data.loading = false
+        response.forEach((item, index) => {
+          Vue.set(item, 'index', request.i[index])
+          if (item.data.length) {
+            item.data.forEach((pact) => {
+              Vue.set(pact, 'loaded', null)
+              Vue.set(pact, 'items', [])
+            })
+          }
+        })
+        type.data.items.push(...response)
+        controller = []
       })
-      type.data.items.push(...response)
     }
 
     const parserClone = ref()
