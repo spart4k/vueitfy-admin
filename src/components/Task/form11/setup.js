@@ -69,7 +69,7 @@ const Form11 = defineComponent({
       url: 'http://10.63.1.132:5000/file/save/act/TESTFILE.jpg',
       autoProcessQueue: false,
       autoDiscover: false,
-      acceptedFiles: 'image/*',
+      // acceptedFiles: 'image/*',
       thumbnailWidth: 150,
       countFiles: 20,
       // maxFilesize: props.options.maxSize ? props.options.maxSize : 10,
