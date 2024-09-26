@@ -3480,10 +3480,11 @@ export default {
           {
             funcCondition: (context) => {
               return (
-                (isLogistik(context) &&
-                  context.formData.vid_vedomost_id === 9 &&
-                  context.formData.status_id === 2) ||
-                (context.formData.status_id === 4 && context.mode === 'edit')
+                isLogistik(context) &&
+                context.formData.vid_vedomost_id === 9 &&
+                (context.formData.status_id === 2 ||
+                  context.formData.status_id === 4) &&
+                context.mode === 'edit'
               )
             },
             type: true,
@@ -3536,7 +3537,18 @@ export default {
                 isX5(context) &&
                 context.formData.status_id === 3 &&
                 context.formData.vid_vedomost_id === 10 &&
-                (isOKK(context) || isROKK(context))
+                (isOKK(context) || isROKK(context)) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isRoznica(context) &&
+                context.formData.status_id === 4 &&
+                context.mode === 'edit'
               )
             },
             type: true,
