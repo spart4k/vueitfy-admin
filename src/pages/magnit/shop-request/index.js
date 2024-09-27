@@ -52,8 +52,22 @@ const config = {
         type: 'addItem',
         isShow: {
           condition: [
+            // {
+            //   permissions: [4, 5],
+            //   type: true,
+            // },
             {
-              permissions: [4, 5],
+              funcCondition: (ctx) => {
+                console.log(JSON.stringify(ctx.store.state.user))
+                const { permission_id, object_types, direction_json } =
+                  ctx.store.state.user
+                return !!(
+                  [4, 5].includes(permission_id) ||
+                  (permission_id === 3 &&
+                    direction_json.includes(2) &&
+                    object_types.includes(2))
+                )
+              },
               type: true,
             },
           ],

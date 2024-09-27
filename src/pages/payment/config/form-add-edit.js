@@ -3434,11 +3434,11 @@ export default {
                 context.mode === 'edit') ||
               (isX5(context) &&
                 context.formData.status_id === 1 &&
-                isCUP(context)) ||
-              isDirector(context) ||
-              isDBA(context) ||
-              isROKK(context) ||
-              isOKK(context),
+                (isCUP(context) ||
+                  isDirector(context) ||
+                  isDBA(context) ||
+                  isROKK(context) ||
+                  isOKK(context))),
             type: false,
           },
           {
@@ -3548,6 +3548,18 @@ export default {
               return (
                 isRoznica(context) &&
                 context.formData.status_id === 4 &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isLogistik(context) &&
+                context.formData.status_id === 2 &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                isDBA(context) &&
                 context.mode === 'edit'
               )
             },
@@ -4838,6 +4850,18 @@ export default {
                 context.formData.status_id === 3 &&
                 context.formData.vid_vedomost_id === 10 &&
                 (isOKK(context) || isROKK(context))
+              )
+            },
+            type: true,
+          },
+          {
+            funcCondition: (context) => {
+              return (
+                isLogistik(context) &&
+                context.formData.status_id === 2 &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                isDBA(context) &&
+                context.mode === 'edit'
               )
             },
             type: true,
