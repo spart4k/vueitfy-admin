@@ -82,6 +82,7 @@
               <v-icon
                 class="rates-row-wrap__close"
                 small
+                v-if="permission_id !== 5"
                 @click="removeRow(item.id)"
               >
                 $IconClose
