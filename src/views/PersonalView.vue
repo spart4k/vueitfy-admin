@@ -161,6 +161,9 @@ export default {
     addTabs.forEach((item) => {
       item.path = 'id'
     })
+    addTabs[0].fields.find((x) => x.name === 'account_json').validations =
+      undefined
+    console.log(addTabs[0].fields)
     addTabs[0].actions.pop()
     addTabs[0].fields.forEach((item) => {
       item.readonly = true
@@ -175,6 +178,7 @@ export default {
         name: 'saveForm',
         action: 'saveForm',
         color: 'primary',
+        skipValidation: true,
         closeDouble: true,
         useStorageKey: [
           { requestKey: 'account_json', storageKey: 'account_json' },
