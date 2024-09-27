@@ -4854,6 +4854,18 @@ export default {
             },
             type: true,
           },
+          {
+            funcCondition: (context) => {
+              return (
+                isLogistik(context) &&
+                context.formData.status_id === 2 &&
+                [5, 1, 3].includes(context.formData.vid_vedomost_id) &&
+                isDBA(context) &&
+                context.mode === 'edit'
+              )
+            },
+            type: true,
+          },
         ],
       },
     }),
